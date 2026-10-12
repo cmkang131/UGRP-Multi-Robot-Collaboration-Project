@@ -176,11 +176,13 @@ class Backup:
         return 'backup'
 
 
-def install(goal,options=Options()):
+def install(goal,options=Options(),*,vo_floor_mask='off',vo_rotation_policy='off'):
+    if (vo_floor_mask != 'off' or vo_rotation_policy != 'off') and options.stall_odometry not in (VO,VO2,VO_US):
+        raise ValueError('VO_MASK_REQUIRES_RGB_VO')
     if not options.enabled:return goal
     if options.stall_odometry in (VO,VO2,VO_US):
         from harness.e2e_rgb_vo import install as vo_install
-        return vo_install(goal,options.stall_odometry)
+        return vo_install(goal,options.stall_odometry,vo_floor_mask=vo_floor_mask,rotation_policy=vo_rotation_policy)
     grid=goal.explorer.memory.self_map;odom=grid.odom;base=getattr(odom,'base',odom);driver=base.driver
     from harness.self_pulse_odom import PulseOdometry
     if not isinstance(driver,PulseOdometry) or driver.motion_filter is not None:

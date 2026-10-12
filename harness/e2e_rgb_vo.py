@@ -141,14 +141,24 @@ def rigid_fit_covariance(servo, p, q, a, b, rot, delta):
     return sigma2*np.linalg.inv(jac.T@jac), float(np.sqrt(np.mean(residual**2)))
 
 
-def ground_pair(before, after, servo):
+def ground_pair(before, after, servo, *, vo_floor_mask='off', static_walls=None,
+                before_map_pose=None, after_map_pose=None):
     """Robot SE(2) motion from ``before`` to ``after`` (static floor: p_b = R p_a + t)."""
     if before.shape != (HEIGHT, WIDTH, 3) or after.shape != before.shape:
         raise ValueError('640x480 RGB required')
+    from harness.e2e_vo_floor_mask import validate, geometric_mask, homography_inliers, MAP_OPTIONS, HOMOGRAPHY_OPTIONS
+    validate(vo_floor_mask)
     unknown = dict(status='unknown_texture', tracks=0, inliers=0, cells=0)
     if np.array_equal(before, after):
         return {**unknown, 'status': 'unknown_identical_rgb'}
     ma, mb = image_mask(before, servo), image_mask(after, servo)
+    if vo_floor_mask != 'off':
+        unknown.update(vo_floor_mask=vo_floor_mask, homography_inliers=0)
+    if vo_floor_mask in MAP_OPTIONS:
+        masks = [geometric_mask(servo, static_walls, pose) for pose in (before_map_pose, after_map_pose)]
+        if any(mask is None for mask in masks):
+            return {**unknown, 'status': 'unknown_map_registration'}
+        ma &= masks[0]; mb &= masks[1]
     ga, gb = cv2.cvtColor(before, cv2.COLOR_RGB2GRAY), cv2.cvtColor(after, cv2.COLOR_RGB2GRAY)
     pts = cv2.goodFeaturesToTrack(ga, maxCorners=PARAMS['max_corners'], qualityLevel=PARAMS['quality'],
                                   minDistance=PARAMS['min_distance_px'], mask=ma, blockSize=7)
@@ -168,6 +178,11 @@ def ground_pair(before, after, servo):
     good = inside&ok.ravel().astype(bool)&ok2.ravel().astype(bool)&(np.abs(p-back[:, 0]).max(1) < PARAMS['fb_max_px'])
     good[inside] &= mb[xy[inside, 1], xy[inside, 0]] > 0
     p, q = p[good], q[good]
+    if vo_floor_mask in HOMOGRAPHY_OPTIONS:
+        unknown['pre_homography_tracks'] = len(p)
+        h_inliers = homography_inliers(p, q)
+        p, q = p[h_inliers], q[h_inliers]
+        unknown['homography_inliers'] = len(p)
     if len(p) < PARAMS['min_tracks']:  # E2E14 crash: 0 tracked floor points reached ground()
         return {**unknown, 'tracks': len(p)}
     a, da = ground(servo, p);b, db = ground(servo, q)
@@ -191,7 +206,7 @@ def ground_pair(before, after, servo):
     cov, rms = rigid_fit_covariance(servo, p, q, a, b, rot, delta)
     if cov is None:
         return {**unknown, 'status': 'unknown_information_rank', 'inliers': len(a), 'cells': cells}
-    return dict(status='measured', tracks=unknown['tracks'], inliers=len(a), cells=cells,
+    return dict(unknown, status='measured', tracks=unknown['tracks'], inliers=len(a), cells=cells,
                 delta=[float(delta[0]), float(delta[1]), float(math.atan2(rot[1, 0], rot[0, 0]))],
                 covariance=((cov+cov.T)/2).tolist(), fit_rms_m=rms)
 
@@ -215,7 +230,17 @@ def fuse(command_delta, command_cov, vo_delta, vo_cov, *, mode='fused', chi2_gat
 class VOFusion:
     """Own-input VO adapter around a PulseOdometry driver (live and fixed replay)."""
 
-    def __init__(self, driver, mode='fused', *, chi2_gate=None, fallback=None):
+    def __init__(self, driver, mode='fused', *, chi2_gate=None, fallback=None,
+                 vo_floor_mask='off', static_walls=None, rotation_policy='off'):
+        from harness.e2e_vo_floor_mask import validate, ROTATION_OPTIONS
+        validate(vo_floor_mask)
+        if rotation_policy not in ROTATION_OPTIONS:
+            raise ValueError('UNKNOWN_VO_ROTATION_POLICY')
+        self.max_pair_gap_s = PARAMS['max_pair_gap_s']
+        self.rotation_policy = rotation_policy
+        self.interval_axes = set()
+        self.vo_floor_mask = vo_floor_mask
+        self.static_walls = static_walls
         if mode not in ('fused', 'replace'):
             raise ValueError('UNKNOWN_VO_FUSION_MODE')
         if fallback not in (None, 'pulse_gate', 'ultrasonic'):
@@ -245,6 +270,8 @@ class VOFusion:
             self.counts['us_zero'] = 0
 
     def _record(self, delta, variance):
+        if self.nominal.active is not None and np.any(np.asarray(delta) != 0):
+            self.interval_axes.add(self.nominal.active[1]['axis'])
         self.steps.append((np.asarray(delta, float).copy(), np.asarray(variance, float).copy()))
         return delta, variance
 
@@ -267,12 +294,19 @@ class VOFusion:
             total = compose(total, delta)
         return total, P
 
-    def observe(self, *, t, frame_id, rgb, servo, sha256=None, range_reading=None):
+    def observe(self, *, t, frame_id, rgb, servo, sha256=None, range_reading=None, estimated_map_pose=None):
         t = float(t)
         if self.last is not None and (t <= self.last['t'] or frame_id <= self.last['frame_id']):
             raise ValueError('FRESH_MONOTONIC_OWN_RGB_REQUIRED')
         self.nominal.advance(t)
         command_delta, command_cov = self._command_increment()
+        # Calibrated turn pulses contain parasitic translation; do not classify
+        # turns by a threshold on estimated motion or evaluation labels.
+        turning = 'turn' in self.interval_axes
+        self.interval_axes.clear()
+        effective_mask = self.vo_floor_mask
+        if turning and self.rotation_policy == 'no_ransac_v1':
+            effective_mask = {'geom_v1': 'map_v1', 'homography_v1': 'off'}.get(effective_mask, effective_mask)
         steps = self.steps;self.steps = []
         gate = None
         if self.detector is not None:
@@ -281,14 +315,21 @@ class VOFusion:
                    command_delta=command_delta.tolist(), command_substeps=len(steps), status='no_previous_frame')
         loaded = int(int(servo.get(1, 2000)) <= 1600)
         if self.last is not None:
-            if t-self.last['t'] > PARAMS['max_pair_gap_s']+1e-8:
+            if t-self.last['t'] > self.max_pair_gap_s+1e-8:
                 row['status'] = 'unknown_frame_gap'
             elif _servo_key(self.last['servo']) != _servo_key(servo):
                 row['status'] = 'unknown_servo_change'
             elif self.last['t']-self.servo_since+1e-8 < PARAMS['settle_s'][loaded]:
                 row['status'] = 'unknown_camera_settling'
             else:
-                row.update(ground_pair(self.last['rgb'], rgb, servo))
+                if turning and self.rotation_policy == 'command_v1':
+                    row['status'] = 'rotation_command_policy'
+                elif effective_mask == 'off':
+                    row.update(ground_pair(self.last['rgb'], rgb, servo))
+                else:
+                    row.update(ground_pair(self.last['rgb'], rgb, servo,
+                        vo_floor_mask=effective_mask, static_walls=self.static_walls,
+                        before_map_pose=self.last['estimated_map_pose'], after_map_pose=estimated_map_pose))
         us = None
         if self.range_stall is not None:
             us = self.range_stall.observe(t=t, report=range_reading, servo=servo, delta=command_delta,
@@ -336,11 +377,17 @@ class VOFusion:
             row['gate'] = {k: gate.get(k) for k in ('status', 'stationary', 'stationary_streak', 'median_px', 'p90_px', 'tracks')}
         self.cursor = 0
         self.last = dict(t=t, frame_id=frame_id, rgb=rgb.copy(), servo=dict(servo))
+        if self.vo_floor_mask != 'off':
+            self.last['estimated_map_pose'] = None if estimated_map_pose is None else list(estimated_map_pose)
+            row['vo_floor_mask'] = self.vo_floor_mask
+        if self.rotation_policy != 'off':
+            row.update(rotation_policy=self.rotation_policy, commanded_turn=turning,
+                       effective_vo_floor_mask=effective_mask)
         return row
 
     def skip(self, t):
         """Frame without an image (offline replay): no pair across it, reset gate history."""
-        self.nominal.advance(t);self.steps = []
+        self.nominal.advance(t);self.steps = [];self.interval_axes.clear()
         if self.range_stall is not None:
             self.range_stall.reset()
         if self.detector is not None:
@@ -381,7 +428,7 @@ class VOFusion:
         self.plan = None;self.cursor = 0
 
 
-def install(goal, option=OPTION):
+def install(goal, option=OPTION, *, vo_floor_mask='off', static_map=None, map_pose_provider=None, rotation_policy='off'):
     """Live E2E wiring (default off); same wrapper pattern as e2e_stall_odometry.install."""
     grid = goal.explorer.memory.self_map;odom = grid.odom;base = getattr(odom, 'base', odom);driver = base.driver
     from harness.self_pulse_odom import PulseOdometry
@@ -389,7 +436,14 @@ def install(goal, option=OPTION):
         raise ValueError('UNMODIFIED_PULSE_ODOMETRY_REQUIRED')
     if option not in (OPTION, OPTION_V2, OPTION_US):
         raise ValueError('UNKNOWN_RGB_VO_OPTION')
-    vo = VOFusion(driver, fallback='ultrasonic' if option == OPTION_US else 'pulse_gate' if option == OPTION_V2 else None);goal.e2e_vo = vo
+    from harness.e2e_vo_floor_mask import validate, wall_boxes, MAP_OPTIONS
+    validate(vo_floor_mask)
+    if vo_floor_mask in MAP_OPTIONS and (static_map is None or not callable(map_pose_provider)):
+        raise ValueError('REGISTERED_MAP_POSE_PROVIDER_REQUIRED')
+    vo = VOFusion(driver, fallback='ultrasonic' if option == OPTION_US else 'pulse_gate' if option == OPTION_V2 else None,
+                  vo_floor_mask=vo_floor_mask, static_walls=wall_boxes(static_map) if vo_floor_mask in MAP_OPTIONS else None,
+                  rotation_policy=rotation_policy)
+    goal.e2e_vo = vo
     active = False
     pending_commands = []
 
@@ -413,7 +467,13 @@ def install(goal, option=OPTION):
         if kw['robot_id'] != goal.robot_id:
             raise ValueError('SELF_MAP_PEER_INPUT_FORBIDDEN')
         own_range = kw.pop('own_range', None)
-        row = vo.observe(range_reading=own_range, t=kw['t'], frame_id=kw['frame_id'], rgb=kw['rgb'], servo=kw['servo'], sha256=kw['frame_sha256'])
+        # The provider consumes only own observations/command history. It must
+        # return a current pose registered to static_map, or None. Never pass
+        # explorer.local_pose here: its origin is the robot's own start.
+        map_pose = (map_pose_provider(t=kw['t'], frame_id=kw['frame_id'], rgb=kw['rgb'], servo=kw['servo'])
+                    if vo_floor_mask in MAP_OPTIONS else None)
+        row = vo.observe(range_reading=own_range, t=kw['t'], frame_id=kw['frame_id'], rgb=kw['rgb'], servo=kw['servo'],
+                         sha256=kw['frame_sha256'], estimated_map_pose=map_pose)
         active = True;before = np.asarray(driver.pose)
         mismatches = vo.counts['substep_mismatch']
         try:

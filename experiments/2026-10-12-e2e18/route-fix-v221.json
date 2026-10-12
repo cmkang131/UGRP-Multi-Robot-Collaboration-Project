@@ -1,0 +1,33 @@
+{
+  "bundle": "e2e18-v221",
+  "trigger": "v220 repeated S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED; some earlier OWN_GRID_ROUTE_UNAVAILABLE; covariance and beam angles absent from ownmap logs",
+  "fix": "route diagnostics with beam angle/covariance/free-cell/path counts; DEV-only nominal footprint retry after strict sigma path failure; one route search per fresh RGB",
+  "limits": "beam axis gate unchanged; unknown and occupied cells blocked; sigma as actual blocker not yet established",
+  "verification": "41 passed: tests/test_e2e18_route_guard.py tests/test_e2e_goal_route.py",
+  "references": [
+    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/costmap_2d/",
+    "https://github.com/ros-navigation/navigation2/blob/main/nav2_smac_planner/README.md"
+  ],
+  "execution": {
+    "replacement_seeds": [
+      61004,
+      61005,
+      61009,
+      61010
+    ],
+    "continuing_v220_seeds": [
+      61001,
+      61002,
+      61003,
+      61006,
+      61007,
+      61008,
+      61011,
+      61012
+    ],
+    "per_vm_gate": "2 new 30-SIM-second previews alongside 4 continuing cohorts; total6",
+    "limit": 3.0,
+    "wall_cap_s": 21600,
+    "wall_cap_reason": "within user7h upper bound and existing finite relay lease"
+  }
+}

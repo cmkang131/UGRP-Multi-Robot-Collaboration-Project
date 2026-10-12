@@ -1,0 +1,92 @@
+{
+  "schema": "ugrp.e2e17.native-registration.v1",
+  "pr": 453,
+  "criteria": [
+    "LLM_operated",
+    "own_map_completed",
+    "start_to_finish_transport"
+  ],
+  "early_compare": [
+    "B_boundary",
+    "native_clear vs strict_clear",
+    "completed views",
+    "physical error"
+  ],
+  "cohort": "DEV adaptive; sampled seeds reused; not confirmatory",
+  "cells": [
+    {
+      "host": "azure3",
+      "name": "e2e-idle-a-s61001-r6",
+      "seed": 61001,
+      "bundle": 213,
+      "association": "extent_v1",
+      "retry": "off",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage",
+      "retry_of": "e2e-idle-a-s61001-r5"
+    },
+    {
+      "host": "azure3",
+      "name": "e2e-idle-a-s61002-r6",
+      "seed": 61002,
+      "bundle": 213,
+      "association": "extent_v1",
+      "retry": "off",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage",
+      "retry_of": "e2e-idle-a-s61002-r5"
+    },
+    {
+      "host": "azure3",
+      "name": "e2e-idle-a-s61003-r6",
+      "seed": 61003,
+      "bundle": 213,
+      "association": "extent_v1",
+      "retry": "off",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage",
+      "retry_of": "e2e-idle-a-s61003-r5"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-b-s61001-r6",
+      "seed": 61001,
+      "bundle": 213,
+      "association": "extent_v1",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage + retry",
+      "retry_of": "e2e-idle-b-s61001-r5"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-b-s61002-r6",
+      "seed": 61002,
+      "bundle": 213,
+      "association": "extent_v1",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage + retry",
+      "retry_of": "e2e-idle-b-s61002-r5"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-b-s61003-r6",
+      "seed": 61003,
+      "bundle": 213,
+      "association": "extent_v1",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "coverage": "native_v1",
+      "variant": "native coverage + retry",
+      "retry_of": "e2e-idle-b-s61003-r5"
+    }
+  ],
+  "source_scope": "Merged reviewed parent includes motion/runtime fixes; compare against continuing original source runs descriptively, not isolated causal coverage proof.",
+  "retry_reason": "original r5 failed before model response: reverse SSH tunnel absent; exact receipt identity restored, same controller bundle213"
+}

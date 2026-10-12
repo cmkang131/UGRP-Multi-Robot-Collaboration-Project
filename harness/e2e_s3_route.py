@@ -22,8 +22,11 @@ def compile_route(route, *, now, observed, profiles, option='off', source='own_m
         raise ContractViolation('UNKNOWN_SETDOWN_ONLY_WHEN_RELOOK')
     if len(route['waypoints']) > 64:
         raise ContractViolation('OWN_ROUTE_TOO_LONG')
-    points = [copy.deepcopy(route['waypoints'][0])]
-    for a, b in zip(route['waypoints'], route['waypoints'][1:]):
+    basis=route.get('carrier_basis')
+    from harness.e2e_carrier_axes import to_axes,from_axes
+    input_points=to_axes(route['waypoints'],basis) if basis else route['waypoints']
+    points = [copy.deepcopy(input_points[0])]
+    for a, b in zip(input_points, input_points[1:]):
         dx, dy = b[0]-a[0], b[1]-a[1]
         if math.hypot(dx, dy) < 1e-6 or abs(dx)>1e-8 and abs(dy)>1e-8:
             raise ContractViolation('S3_CARDINAL_NONZERO_LEG_REQUIRED')
@@ -64,6 +67,10 @@ def compile_route(route, *, now, observed, profiles, option='off', source='own_m
                     leg['plans']['r1']['pulses']>PULSES[leg['axis']]):
                 raise ContractViolation('SEGMENT_EXCEEDS_MEASURED_CONTINUOUS_ENVELOPE')
         previous_heading = heading
+    command_points=copy.deepcopy(points)
+    if basis:
+        points=from_axes(points,basis)
+        for leg in legs:leg['start'],leg['end']=from_axes([leg['start'],leg['end']],basis)
     result = dict(schema='ugrp.e2e_s3_plan.v1', source=source, frame=route['own_map']['frame'],
                   map_version=route['map_version'], route_hash=route['route_hash'],
                   B_rgb_sources=copy.deepcopy(route['B_rgb_sources']),
@@ -71,6 +78,7 @@ def compile_route(route, *, now, observed, profiles, option='off', source='own_m
                   length_m=sum(l['distance_m'] for l in legs),
                   transport_admitted=False, research_result=False,
                   requires='received route approval and fresh per-grip-epoch GO/ACK')
+    if basis:result.update(carrier_basis=copy.deepcopy(basis),command_waypoints=command_points)
     if pulse_budget != 'off': result['pulse_budget'] = pulse_budget
     if setdown_only_when_relook!='off':
         from harness.e2e_setdown_relook import narrow_boundaries
@@ -87,7 +95,7 @@ def plan_from_route(base_plan, compiled):
             raise ContractViolation('AUTHORED_RUNTIME_SHELL_FORBIDDEN')
         if compiled['plan_hash'] != digest({k:v for k,v in compiled.items() if k != 'plan_hash'}):
             raise ContractViolation('S3_PLAN_HASH_MISMATCH')
-        return dict(route=copy.deepcopy(compiled['waypoints']),
+        return dict(route=copy.deepcopy(compiled.get('command_waypoints',compiled['waypoints'])),
                     checkpoint_segments={'before_destination':len(compiled['legs'])-1},
                     own_route=copy.deepcopy(compiled), registered_route_source='own_map')
     if compiled['source'] != 'test_route_provider':

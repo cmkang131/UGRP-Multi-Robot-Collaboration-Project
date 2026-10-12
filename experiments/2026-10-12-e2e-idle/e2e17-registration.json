@@ -1,0 +1,126 @@
+{
+  "schema": "ugrp.e2e17.registration.v1",
+  "pr": 453,
+  "class": "dev",
+  "registered_unix": 1791793959.345414,
+  "wall_cap_s": 25200,
+  "task_cap_s": 28800,
+  "cells": [
+    {
+      "vm": "azure3",
+      "group": "a",
+      "seed": 61001,
+      "bundle": 208,
+      "cohort": "paired"
+    },
+    {
+      "vm": "azure3",
+      "group": "b",
+      "seed": 61001,
+      "bundle": 207,
+      "cohort": "paired"
+    },
+    {
+      "vm": "azure3",
+      "group": "a",
+      "seed": 61002,
+      "bundle": 208,
+      "cohort": "paired"
+    },
+    {
+      "vm": "azure3",
+      "group": "b",
+      "seed": 61002,
+      "bundle": 207,
+      "cohort": "paired"
+    },
+    {
+      "vm": "azure3",
+      "group": "a",
+      "seed": 61003,
+      "bundle": 208,
+      "cohort": "paired"
+    },
+    {
+      "vm": "azure3",
+      "group": "b",
+      "seed": 61003,
+      "bundle": 207,
+      "cohort": "paired"
+    },
+    {
+      "vm": "azure4",
+      "group": "a",
+      "seed": 61004,
+      "bundle": 208,
+      "cohort": "broad_candidate_only"
+    },
+    {
+      "vm": "azure4",
+      "group": "a",
+      "seed": 61005,
+      "bundle": 208,
+      "cohort": "broad_candidate_only"
+    },
+    {
+      "vm": "azure4",
+      "group": "a",
+      "seed": 61006,
+      "bundle": 208,
+      "cohort": "broad_candidate_only"
+    },
+    {
+      "vm": "azure4",
+      "group": "a",
+      "seed": 61007,
+      "bundle": 208,
+      "cohort": "broad_candidate_only"
+    },
+    {
+      "vm": "azure4",
+      "group": "a",
+      "seed": 61008,
+      "bundle": 208,
+      "cohort": "broad_candidate_only"
+    },
+    {
+      "vm": "azure4",
+      "group": "a",
+      "seed": 61009,
+      "bundle": 208,
+      "cohort": "broad_candidate_only"
+    }
+  ],
+  "success": [
+    "LLM_operated",
+    "own_map_completed",
+    "start_to_finish_transport"
+  ],
+  "initial_check_s": [
+    180,
+    300
+  ],
+  "periodic_check_s": 600,
+  "stop_and_repair": [
+    "zero translation >120 SIM s",
+    "repeated nonprogress action",
+    "confirmed B or route blockage",
+    "traceback"
+  ],
+  "retrieval": "lite only Mac, full raw ARM verified",
+  "changes": [
+    "pair azure3, broad azure4",
+    "v208-only seed61005..61009 admission; older seeds unchanged",
+    "relay ports18424/18426 and broad call-id allowlist"
+  ],
+  "references": [
+    {
+      "url": "https://docs.python.org/3/library/argparse.html#choices",
+      "finding": "explicit allowed input sets; CLI int parser remains unchanged and bundle validates per candidate"
+    },
+    {
+      "url": "https://numpy.org/doc/stable/reference/random/parallel.html",
+      "finding": "record each independent seed; paired cases reuse same explicit seed, no RNG algorithm change"
+    }
+  ]
+}

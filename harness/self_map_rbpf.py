@@ -27,7 +27,11 @@ class RBPFOptions:
     seed: int = 20261006
 
     def __post_init__(self):
-        if type(self.particles) is not int or self.particles not in (30, 100, 500):
+        from harness.e2e_speed4 import current
+        allowed = (30, 100, 500)
+        if current().rbpf_particles == 50:
+            allowed += (50,)
+        if type(self.particles) is not int or self.particles not in allowed:
             raise ValueError('RBPF_PARTICLES_REQUIRE_30_OR_100')
         if type(self.seed) is not int or self.seed < 0:
             raise ValueError('RBPF_INVALID_SEED')

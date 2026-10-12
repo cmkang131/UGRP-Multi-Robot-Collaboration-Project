@@ -119,9 +119,11 @@ def validate_map(value, rid, now, observed, *, speedups=OFF):
 
 
 def validate_route(value, rid, now, observed):
+    from harness.e2e_carrier_axes import ROUTE_SCHEMA as AXIS_SCHEMA,validate as validate_basis
+    axis_schema=value.get('schema')==AXIS_SCHEMA
     closed(value, ('schema', 'robot_id', 'frame_id', 'map_version', 'own_map',
-                   'B_rgb_sources', 'waypoints', 'route_hash'), 'OWN_ROUTE')
-    if value['schema'] != ROUTE_SCHEMA or value['robot_id'] != rid:
+                   'B_rgb_sources', 'waypoints', 'route_hash')+(('carrier_basis',) if axis_schema else ()), 'OWN_ROUTE')
+    if value['schema'] not in (ROUTE_SCHEMA,AXIS_SCHEMA) or value['robot_id'] != rid:
         raise ContractViolation('OWN_ROUTE_IDENTITY_REQUIRED')
     mapped = validate_map(value['own_map'], rid, now, observed)
     if value['map_version'] != mapped['map_version'] or value['frame_id'] != max(r['frame_id'] for r in mapped['sources']):
@@ -134,6 +136,7 @@ def validate_route(value, rid, now, observed):
     if not isinstance(value['waypoints'], list) or len(value['waypoints']) < 2:
         raise ContractViolation('OWN_ROUTE_WAYPOINTS_REQUIRED')
     for xy in value['waypoints']: numbers(xy, 2, 'WAYPOINT')
+    if axis_schema:validate_basis(value['carrier_basis'],rid,now,observed,value['waypoints'][0])
     body = {k: v for k, v in value.items() if k != 'route_hash'}
     if value['route_hash'] != digest(body): raise ContractViolation('ROUTE_HASH_MISMATCH')
     scan(value)

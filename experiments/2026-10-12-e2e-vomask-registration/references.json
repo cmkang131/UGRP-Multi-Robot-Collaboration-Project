@@ -1,0 +1,35 @@
+{
+  "accessed": "2026-10-12",
+  "sources": [
+    {
+      "title": "ROS REP-105",
+      "url": "https://raw.githubusercontent.com/ros-infrastructure/rep/master/rep-0105.rst",
+      "verified": "official raw text; ros.org page access denied",
+      "application": "Map and odometry transforms require an anchored localization estimate; local SLAM origin is not authored world origin."
+    },
+    {
+      "title": "Nav2 AMCL calculateMaptoOdomTransform",
+      "url": "https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/amcl_node.cpp",
+      "verified": "implementation read",
+      "application": "Compose an independently localized map pose with odometry; never relabel odometry as world."
+    },
+    {
+      "title": "OpenCV homography",
+      "url": "https://docs.opencv.org/4.13.0/d9/dab/tutorial_homography.html",
+      "verified": "official tutorial read",
+      "application": "Pure camera rotation admits homography for arbitrary scene depths; homography consensus does not establish a floor. Turn policies are DEV candidates, not a literature guarantee."
+    },
+    {
+      "title": "Ground-VIO",
+      "url": "https://arxiv.org/abs/2306.08341",
+      "verified": "abstract read; full implementation unverified",
+      "application": "Calibrated camera-ground geometry; our command FK is already wired. No IMU added."
+    },
+    {
+      "title": "CUAHN-VIO",
+      "url": "https://arxiv.org/abs/2208.13935",
+      "verified": "abstract read; not reproduced",
+      "application": "Non-homography image content and uncertainty require explicit treatment; no learned model or IMU introduced."
+    }
+  ]
+}

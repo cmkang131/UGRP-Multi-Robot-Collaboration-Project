@@ -454,6 +454,28 @@ raise SystemExit(3 if a.fail else 0)
         for name in ('e2e-combo14-v202', 'e2e-combo14-v204', 'e2e-combo14-vo2-v205', 'e2e-usstall-v206'):
             samples[name] = [*e2e_args, '--boundary-views', 'off', '--b-marker-detect', 'off']
         samples['e2e-usstall-v206'] += ['--ultrasonic-front', 'on_v1']
+        samples['e2e-vomask-turn-v207'] = [*samples['e2e-usstall-v206'], '--vo-floor-mask', 'homography_v1', '--vo-rotation-policy', 'no_ransac_v1']
+        samples['e2e-explore-deadlock-v208'] = [*samples['e2e-vomask-turn-v207'], '--explore-deadlock', 'replan_v1']
+        samples['e2e-boundary-repair-v212'] = [*samples['e2e-explore-deadlock-v208'], '--boundary-association', 'extent_v1', '--boundary-retry', 'navigation_v1']
+        samples['e2e-boundary-native-v213'] = [*samples['e2e-boundary-repair-v212'], '--boundary-coverage', 'native_v1', '--dev-light']
+        for version, mode in ((214, 'dt1_v1'), (215, 'adaptive_v1')):
+            samples[f'e2e-speed3-v{version}'] = [*samples['e2e-boundary-native-v213'], '--speed3', mode]
+        samples['e2e-speed3-physics-probe'] = [*sha, '--profiles', 'dt1_v1', '--pr', '454']
+        e2e18_args = [*samples['e2e-speed3-v215'], '--b-partial-accept', 'on_v1', '--speed4', '{}']
+        additions = {
+            217: ['--speed5', 'lean_v1'],
+            220: ['--observation-cadence', 'on_v1'],
+            221: ['--route-guard', 'dev_nominal_v1'],
+            222: ['--beam-axis', 'undirected_v1'],
+            223: ['--route-coverage', 'native_v1'],
+            224: ['--carrier-axes', 'beam_v1', '--carrier-approach', 'standoff_v1'],
+            225: ['--route-extent', 'goal_envelope_v1', '--record-scalars', 'python_v1'],
+        }
+        for version in range(216, 226):
+            e2e18_args += additions.get(version, [])
+            if version in (218, 219):
+                e2e18_args[e2e18_args.index('--speed5')+1] = 'lean_v2' if version == 218 else 'lean_v3'
+            samples[f'e2e18-v{version}'] = list(e2e18_args)
         samples['e2e-one-beam-ownmap-inputs'] = sha
         # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
         # value for this boolean. Keep its original bytes and the rejection.

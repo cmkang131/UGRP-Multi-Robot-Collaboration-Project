@@ -29,6 +29,11 @@ OPTION = 'rgb_geometry_v1'
 # floor-tone patches always reach the B edge, the marks lie inside it.
 # Island count/area and quad shape checks are unchanged.
 MARKER_OPTION = 'contrast_v1'
+# contrast_v2: same mark pixels as v1; the B quad is fitted by harness/e2e_b_quad.py
+# (floor-blue hue mask, undistort + convex hull + adaptive approxPolyDP, lens/border/solidity guards).
+MARKER_OPTION_V2 = 'contrast_v2'
+MARKER_PARTIAL = 'partial_known_size_v1'
+MARKER_OPTIONS = (MARKER_OPTION, MARKER_OPTION_V2, MARKER_PARTIAL)
 MARKER_CONTRAST = dict(min_rgb_ratio=1.3, min_rgb_delta=12, saturation_ratio=.78, background_value_min=50,
                        kernel_fraction=.25, kernel_px_min=15, kernel_px_max=151)
 
@@ -48,7 +53,7 @@ def white_markers(rgb, hsv, inner, *, region_area_px2, option='off'):
     """Boolean mark mask inside ``inner``; own RGB only."""
     if option == 'off':
         return (hsv[:, :, 1] < 55) & (hsv[:, :, 2] > 180) & inner
-    if option != MARKER_OPTION: raise ContractViolation('UNKNOWN_B_MARKER_DETECT')
+    if option not in MARKER_OPTIONS: raise ContractViolation('UNKNOWN_B_MARKER_DETECT')
     c = MARKER_CONTRAST
     k = int(np.clip(c['kernel_fraction']*math.sqrt(max(region_area_px2, 0.)),
                     c['kernel_px_min'], c['kernel_px_max'])) | 1
@@ -102,18 +107,33 @@ def geometric_match(reference, current):
                 matches=len(matches), inliers=int(good.sum()), coverage=float(spread))
 
 
-def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off'):
+def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off', partial_accept='off', partial_state=None, ref=None):
     """All four visible blue edges + three white islands, projected by command FK.
 
-    Image/camera-mask clipped regions remain unknown. A partial patch's hull or
-    a remembered authored size is never promoted to the full B boundary.
+    Image/camera-mask clipped regions remain unknown. The opt-in partial path retains complete=False and requires temporal consensus.
     """
+    if partial_accept not in ('off', 'on_v1'): raise ContractViolation('UNKNOWN_B_PARTIAL_ACCEPT')
+    if marker_detect == MARKER_PARTIAL:
+        full = boundary(rgb, servo, pose, diagnostics=diagnostics, marker_detect=MARKER_OPTION_V2)
+        if full is not None: return full
+        if partial_accept == 'off': return None
+        if partial_state is None or ref is None: raise ContractViolation('PARTIAL_TEMPORAL_STATE_REQUIRED')
+        from harness.e2e_b_partial import detect_partial
+        candidates = detect_partial(rgb, servo, pose, diagnostics=diagnostics)
+        accepted = partial_state.observe(candidates, ref, pose)
+        if diagnostics is not None: diagnostics['partial_acceptance'] = copy.deepcopy(partial_state.last)
+        return accepted
     height, width = rgb.shape[:2]
     origin, axes = goal_camera(servo, 'camera_v3')
     self_mask = project_envelopes(body_envelopes(servo, 'camera_v3'), origin, axes, width, height)
     hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)
-    blue = cv2.inRange(hsv, (90, 70, 35), (135, 255, 255))
-    blue[self_mask] = 0
+    v2 = marker_detect == MARKER_OPTION_V2
+    if v2:
+        from harness import e2e_b_quad
+        blue = e2e_b_quad.floor_blue_mask(hsv, self_mask)
+    else:
+        blue = cv2.inRange(hsv, (90, 70, 35), (135, 255, 255))
+        blue[self_mask] = 0
     if diagnostics is not None:
         diagnostics.update(blue_pixels=int(np.count_nonzero(blue)), contours=[], accepted_candidates=0)
     contours, _ = cv2.findContours(blue, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -122,14 +142,22 @@ def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off'):
         row = dict(area_px2=float(cv2.contourArea(contour)), reason='area_below_100')
         if diagnostics is not None: diagnostics['contours'].append(row)
         if row['area_px2'] < 100: continue
-        quad = cv2.approxPolyDP(contour, .02*cv2.arcLength(contour, True), True).reshape(-1, 2)
-        row.update(vertices=len(quad), convex=bool(cv2.isContourConvex(quad)), reason='not_convex_quad')
-        if len(quad) != 4 or not cv2.isContourConvex(quad): continue
+        if v2:
+            quad, why, fit = e2e_b_quad.fit_quad(contour, lens_valid(width, height))
+            row.update(fit, reason=why)
+            if quad is None: continue
+            row.update(vertices=4, convex=True)
+            region = np.zeros((height, width), np.uint8)
+            cv2.fillConvexPoly(region, cv2.convexHull(contour), 255)
+        else:
+            quad = cv2.approxPolyDP(contour, .02*cv2.arcLength(contour, True), True).reshape(-1, 2)
+            row.update(vertices=len(quad), convex=bool(cv2.isContourConvex(quad)), reason='not_convex_quad')
+            if len(quad) != 4 or not cv2.isContourConvex(quad): continue
         row.update(border_margin_px=int(min(quad[:, 0].min(), quad[:, 1].min(),
             width-1-quad[:, 0].max(), height-1-quad[:, 1].max())), reason='image_clipped')
         if (quad[:, 0].min() <= 2 or quad[:, 1].min() <= 2 or
                 quad[:, 0].max() >= width-3 or quad[:, 1].max() >= height-3): continue
-        region = np.zeros((height, width), np.uint8); cv2.fillConvexPoly(region, quad, 255)
+        if not v2: region = np.zeros((height, width), np.uint8); cv2.fillConvexPoly(region, quad, 255)
         row.update(self_mask_overlap_px=int(np.count_nonzero(self_mask &
             (cv2.dilate(region, np.ones((5, 5), np.uint8)) != 0))), reason='self_mask_clipped')
         if row['self_mask_overlap_px']: continue
@@ -139,7 +167,7 @@ def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off'):
             row['low_saturation_pixels'] = int(low_s.sum())
             row['low_saturation_value_max'] = int(hsv[:,:,2][low_s].max()) if low_s.any() else None
         white = white_markers(rgb, hsv, inner, region_area_px2=float(cv2.contourArea(quad.astype(np.float32))),
-                              option=marker_detect).astype(np.uint8)
+                              option=MARKER_OPTION if v2 else marker_detect).astype(np.uint8)
         _, _, stats, _ = cv2.connectedComponentsWithStats(white)
         islands = [v for v in stats[1:] if v[cv2.CC_STAT_AREA] >= 9]
         row.update(white_islands=len(islands), white_island_areas_px=[int(v[cv2.CC_STAT_AREA]) for v in islands],
@@ -150,6 +178,10 @@ def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off'):
         row.update(valid_floor_corners=int(valid.sum()), reason='invalid_floor_projection')
         if not valid.all(): continue
         polygon = transform(xyz[:, :2], pose)
+        if v2:
+            shape_ok, shape = e2e_b_quad.floor_shape_ok(polygon)
+            row.update(shape, reason='floor_shape_implausible')
+            if not shape_ok: continue
         row.update(reason='accepted', projected_area_m2=float(cv2.contourArea(polygon.astype(np.float32))))
         candidates.append(dict(polygon=polygon.tolist(), center=np.mean(polygon, axis=0).tolist(),
                                pixel_polygon=quad.tolist(), complete=True, white_markers=3))
@@ -159,10 +191,13 @@ def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off'):
 
 
 class ArrivalGate:
-    def __init__(self, robot_id, *, option='off', marker_detect='off'):
+    def __init__(self, robot_id, *, option='off', marker_detect='off', partial_accept='off'):
         if option not in ('off', OPTION): raise ContractViolation('UNKNOWN_RGB_ARRIVAL_GATE')
-        if marker_detect not in ('off', MARKER_OPTION): raise ContractViolation('UNKNOWN_B_MARKER_DETECT')
+        if marker_detect not in ('off', *MARKER_OPTIONS): raise ContractViolation('UNKNOWN_B_MARKER_DETECT')
         self.option, self.robot_id, self.marker_detect = option, robot_id, marker_detect
+        from harness.e2e_b_partial_accept import Consensus
+        if partial_accept not in ('off','on_v1'): raise ContractViolation('UNKNOWN_B_PARTIAL_ACCEPT')
+        self.partial_accept, self.partial_state = partial_accept, Consensus()
         self.references, self.current, self.history = {}, None, {}
 
     def observe(self, *, ref, rgb, servo, pose, covariance):
@@ -177,7 +212,8 @@ class ArrivalGate:
         diagnostics = {} if getattr(self, 'diagnostics_enabled', False) else None
         self.current = dict(ref=copy.deepcopy(ref), features=features(rgb, (~mask).astype(np.uint8)*255),
                             boundary=boundary(rgb, servo, pose, diagnostics=diagnostics,
-                                                   marker_detect=self.marker_detect),
+                                                   marker_detect=self.marker_detect, partial_accept=self.partial_accept,
+                                                   partial_state=self.partial_state, ref=ref),
                             pose=list(pose), covariance=copy.deepcopy(covariance))
         if diagnostics is not None: self.current['boundary_diagnostics'] = diagnostics
         self.references.setdefault('start', copy.deepcopy(self.current))

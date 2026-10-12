@@ -1,0 +1,46 @@
+{
+  "base_sha": "153f6ac954cd039ab4ddc1c9015100b724fd231d",
+  "scope": "PR453 v213 follow-up; synthetic/static tests only",
+  "fixed": [
+    "saved probe forwards observed keyword and restores hook in finally",
+    "terminal and rotation coverage would-stops retained separately in the actual receive trace",
+    "historical artifact manifest retained; README digest corrected in separate overlay"
+  ],
+  "tests": {
+    "passed": 30,
+    "files": 2,
+    "logs": [
+      {
+        "path": "outputs/merge-train-20261012/pr453-native-fix-tests.txt",
+        "sha256": "7e67a4242f6f4a830d1d0f95674d75d4090e6c9ccc9ac484a47715c0d7dbded5"
+      },
+      {
+        "path": "outputs/merge-train-20261012/pr453-native-artifact-test.txt",
+        "sha256": "f9c684a79977ff1a5e73ad07b06ebe5942fb5893e2e738d093a0772e789a3e91"
+      }
+    ]
+  },
+  "source_sha256": {
+    "harness/e2e_boundary_views.py": "e8b17f704a6e75ed7c31007bb396ffa04d3dcf43bd7153a7e40eeaa2b0c37b2c",
+    "experiments/2026-10-12-e2e-idle/probe_view_path.py": "639a8a876b2f74b7ae59ec562dc3803e48bbd2d0abb5855b29b4052803a17b87",
+    "tests/test_e2e_boundary_repair.py": "51f9ce909cf66f38239c112eeedc3d66e8430942392ae159fc3d59d8f9cbbc66",
+    "experiments/2026-10-12-merge-train/pr453/native-artifact-correction.json": "ac7a3670145de3b72f6b49a342273c584091bbabc2b8c043300e6b6931f2f7b9"
+  },
+  "raw_modified": false,
+  "physical_execution": false,
+  "results_inherited": false,
+  "references": [
+    {
+      "url": "https://docs.python.org/3/reference/compound_stmts.html#function-definitions",
+      "use": "Forward keyword-only argument and restore a replaced hook in finally."
+    },
+    {
+      "url": "https://docs.python.org/3/howto/logging-cookbook.html#implementing-structured-logging",
+      "use": "Preserve each decision site as structured fields."
+    },
+    {
+      "url": "https://docs.python.org/3/library/hashlib.html",
+      "use": "Verify immutable original bytes and separate corrected hash overlay."
+    }
+  ]
+}

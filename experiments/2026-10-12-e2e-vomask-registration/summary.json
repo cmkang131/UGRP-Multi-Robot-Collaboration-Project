@@ -1,0 +1,272 @@
+{
+ "schema": "ugrp.e2e_vomask_registration.v1",
+ "pr": 452,
+ "status": "DRAFT: static map mask comparison incomplete; v207 exploratory preparation only",
+ "source_sha": "1d8bc3eed879a01ec0878b2df59a6b6a5c4e2ec8",
+ "classification": "dev",
+ "frames": {
+  "replayed": 124,
+  "total": 124
+ },
+ "pairs": {
+  "moving": 64,
+  "rotation": 42,
+  "partial_slip": 14,
+  "stalled": 0,
+  "total": 120
+ },
+ "registration": {
+  "controller_poses": 120,
+  "total": 124,
+  "missing_terminal_poses": 4,
+  "static_map_registered": 0,
+  "missing_static_transform": 120,
+  "reason": "Original Mac fetch-lite omitted all four ownmap ledgers. Recovered from ARM and verified; local own-map estimate is present but not anchored to authored world. map_to_odom is local SLAM -> command odometry only.",
+  "terminal_reason": "All four original runs crashed in RGB VO ground(None). Ownmap append follows receive, so frame N has no row after frame N-1.",
+  "terminal_frame_ids": [
+   361,
+   299,
+   381,
+   540
+  ],
+  "clock_reset_offset_s": 1.3,
+  "max_clock_join_error_s": 1.5e-14,
+  "max_local_transform_closure_error": 8.890490962766376e-16,
+  "camera_extrinsics": {
+   "n": 124,
+   "N": 124,
+   "origin_m": [
+    0.1252442319522042,
+    0.0,
+    0.23086086509496048
+   ],
+   "image_size": [
+    640,
+    480
+   ]
+  },
+  "static_map": {
+   "frame": "world metres; x east, y north",
+   "extent_m": [
+    6.45,
+    4.6
+   ],
+   "walls": 6,
+   "wall_height_m": 0.4,
+   "sha256": "2da6cd61a9a8289e1f46ca105a23d16a828eb610b17ede22890211c5f9461032"
+  },
+  "inference": "No unit/FK/reset-time omission explains the failure; the missing transform has 3 SE(2) degrees of freedom. A local B center alone does not supply a full rigid anchor."
+ },
+ "metric_columns": [
+  "off",
+  "homography_v1",
+  "map_v1",
+  "geom_v1",
+  "homography_turn_off",
+  "homography_turn_command"
+ ],
+ "error_units": [
+  "sum_translation_mm",
+  "sum_yaw_deg",
+  "valid_n",
+  "category_N"
+ ],
+ "errors": {
+  "moving": {
+   "off": [
+    103.00575353409104,
+    7.069470201619154,
+    64,
+    64
+   ],
+   "homography_v1": [
+    86.3799583382339,
+    6.481577427677303,
+    64,
+    64
+   ],
+   "map_v1": [
+    null,
+    null,
+    0,
+    64
+   ],
+   "geom_v1": [
+    null,
+    null,
+    0,
+    64
+   ],
+   "homography_turn_off": [
+    86.37995833823386,
+    6.481577427677278,
+    64,
+    64
+   ],
+   "homography_turn_command": [
+    86.37995833823376,
+    6.481577427677278,
+    64,
+    64
+   ]
+  },
+  "rotation": {
+   "off": [
+    113.60651676926382,
+    6.529885865176473,
+    42,
+    42
+   ],
+   "homography_v1": [
+    119.9148240858619,
+    6.050337451711422,
+    42,
+    42
+   ],
+   "map_v1": [
+    null,
+    null,
+    0,
+    42
+   ],
+   "geom_v1": [
+    null,
+    null,
+    0,
+    42
+   ],
+   "homography_turn_off": [
+    113.60651676926341,
+    6.529885865176473,
+    42,
+    42
+   ],
+   "homography_turn_command": [
+    106.24429916959677,
+    8.76064796002234,
+    42,
+    42
+   ]
+  },
+  "partial_slip": {
+   "off": [
+    147.86800863549232,
+    0.7383228037873983,
+    14,
+    14
+   ],
+   "homography_v1": [
+    148.19496598727915,
+    0.7137009663969408,
+    14,
+    14
+   ],
+   "map_v1": [
+    null,
+    null,
+    0,
+    14
+   ],
+   "geom_v1": [
+    null,
+    null,
+    0,
+    14
+   ],
+   "homography_turn_off": [
+    148.19496598727915,
+    0.7137009663969408,
+    14,
+    14
+   ],
+   "homography_turn_command": [
+    148.19496598727915,
+    0.7137009663969408,
+    14,
+    14
+   ]
+  },
+  "stalled": {
+   "off": [
+    null,
+    null,
+    0,
+    0
+   ],
+   "homography_v1": [
+    null,
+    null,
+    0,
+    0
+   ],
+   "map_v1": [
+    null,
+    null,
+    0,
+    0
+   ],
+   "geom_v1": [
+    null,
+    null,
+    0,
+    0
+   ],
+   "homography_turn_off": [
+    null,
+    null,
+    0,
+    0
+   ],
+   "homography_turn_command": [
+    null,
+    null,
+    0,
+    0
+   ]
+  }
+ },
+ "selection": {
+  "candidate": "homography_turn_off",
+  "bundle": "e2e-vomask-turn-v207",
+  "baseline": "e2e-usstall-v206",
+  "why": "Only candidate with no worse translation AND yaw sums in moving AND rotation. Command-only turns improve xy but worsen yaw.",
+  "criterion": "Observed DEV category sums; not per-window dominance or new confirmation.",
+  "partial_slip_regression_mm": 0.32695735178683094,
+  "overfit": true,
+  "warning": "Selected on already seen 124 frames. Stationary, new seeds, online feedback, and sonar-inclusive full v206 remain unverified."
+ },
+ "validation": {
+  "tests_passed": 59,
+  "tests_total": 59,
+  "test_files": [
+   "tests/test_e2e_vo_floor_mask.py",
+   "tests/test_e2e_rgb_vo.py",
+   "tests/test_e2e_us_stall.py"
+  ],
+  "baseline_reproduction_abs": 0.0,
+  "final_replay_predictions_equal_exploration": true,
+  "prepared_bundle_sources_verified": true,
+  "azure_pair_shell_syntax": "pass",
+  "mac_relay_port": 18417,
+  "mac_relay_listeners_at_check": 0,
+  "physics_runs": 0,
+  "provider_calls": 0,
+  "azure_operations": 0
+ },
+ "raw": {
+  "controller_ledgers": "/Users/changmin/projects/ugrp/outputs/e2e-vomask-registration-20261012",
+  "retrieval": "retrieval.json",
+  "frame_and_command_roots": [
+   "/Users/changmin/projects/ugrp-wt/e2e14-combo/outputs/e2e14-combo/r2/fetch-lite",
+   "/Users/changmin/projects/ugrp-wt/e2e-usstall/outputs/e2e-usstall-audit"
+  ],
+  "sha256": "replay-final/input-hashes.json",
+  "predictions": "replay-final/predictions.json.zst",
+  "evaluation": "replay-final/evaluation.json.zst"
+ },
+ "remaining": [
+  "Steps 2 static-map wall projection on actual frames is NOT complete: no eligible static-world pose/transform in saved controller ledgers. Two map conditions have null error, never fallback-as-improvement.",
+  "v207 contains only homography plus turn selection; mapping and full v206 sonar are not validated.",
+  "Independent controller review, CI completion and any execution/acceptance are pending; PR stays draft."
+ ]
+}

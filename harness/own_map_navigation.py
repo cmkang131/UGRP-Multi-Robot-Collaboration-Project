@@ -296,17 +296,22 @@ class DoorMemory:
         if lines is None:
             return []
         lines = np.asarray(lines).reshape(-1,2,2)  # OpenCV 4: Nx1x4; 5: Nx4
+        from harness.e2e_speed4 import current, door_pair_indices
+        vector_pairs = current().vector_door_pairs
         for i,a in enumerate(lines):
             va = a[1]-a[0]
             va = va/np.linalg.norm(va)
-            for b in lines[i+1:]:
-                vb = b[1]-b[0]
-                vb = vb/np.linalg.norm(vb)
-                if abs(np.dot(va,vb)) < math.cos(math.radians(10)):
-                    continue
+            candidates_j = door_pair_indices(lines,i,grid.resolution) if vector_pairs else range(i+1,len(lines))
+            for j in candidates_j:
+                b = lines[j]
                 normal = np.array([-va[1],va[0]])
-                if max(abs((b-a[0])@normal))*grid.resolution > .15:
-                    continue
+                if not vector_pairs:
+                    vb = b[1]-b[0]
+                    vb = vb/np.linalg.norm(vb)
+                    if abs(np.dot(va,vb)) < math.cos(math.radians(10)):
+                        continue
+                    if max(abs((b-a[0])@normal))*grid.resolution > .15:
+                        continue
                 aa,bb = sorted(a@va),sorted(b@va)
                 if aa[1] < bb[0]:
                     left,right = a[np.argmax(a@va)],b[np.argmin(b@va)]

@@ -1,0 +1,668 @@
+{
+  "bundle": "e2e18-v225",
+  "toggles": {
+    "route_extent": "goal_envelope_v1",
+    "record_scalars": "python_v1"
+  },
+  "cause": [
+    "B carrier footprint outside dense observed-grid storage bounds: seed61004 at95.6SIM target free0 unknown63 occupied0 outside216 of279 cells",
+    "seed61010 first own route126SIM; next RGB126.4: HOST_ERROR numpy bool serialization in ownmap_record. Real Detector expired-pulse reproduction confirms stationary=np.bool_(False)"
+  ],
+  "method": "Finite planner-only bounds enclose own-observed beam and remembered B plus carrier radius. Occupied cells unchanged; added unknown cells never become observed provenance or map completion. Diagnostic-only NumPy scalar .item conversion leaves live estimator untouched.",
+  "tests": "10 passed: test_e2e_route_extent.py,test_e2e_record_scalars.py,test_e2e18_route_coverage.py; preceding carrier regression18 passed",
+  "source_evidence": [
+    {
+      "host": "azure3",
+      "name": "e2e18-v224-s61004-r10",
+      "checked_unix": 1791811237.1762626,
+      "progress": {
+        "wall_s": 731.0558769689997,
+        "sim_s": 239.0,
+        "frames": 598,
+        "model_attempts": 3,
+        "first_model_response": true,
+        "own_map_B_generated": true,
+        "own_B_boundary_remembered": true,
+        "own_route_generated": false,
+        "own_route_observed_complete": false,
+        "phase": "mapping",
+        "setdowns": 0,
+        "robots": {
+          "r1": {
+            "pose_own_m": [
+              -3.052049725349571,
+              2.03062505909428,
+              2.3137550871240045
+            ],
+            "stage": "explore",
+            "map_frames": 598,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 790,
+            "carrier_approach": null
+          },
+          "r2": {
+            "pose_own_m": [
+              2.2531921076811927,
+              -1.0256337752227827,
+              -1.2721019666106468
+            ],
+            "stage": "explore",
+            "map_frames": 598,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 810,
+            "carrier_approach": null
+          },
+          "r3": {
+            "pose_own_m": [
+              -0.08517561839210253,
+              0.009952407508591641,
+              0.023647355130867354
+            ],
+            "stage": "explore",
+            "map_frames": 598,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 0,
+            "carrier_approach": null
+          }
+        },
+        "latest_route_wait": "OWN_GRID_ROUTE_UNAVAILABLE",
+        "route_diagnostics": {
+          "t": 235.6,
+          "beam_pose_own_m": [
+            -3.3153124453234035,
+            2.262328794788769,
+            3.1272808416040085
+          ],
+          "beam_rgb": {
+            "robot_id": "r1",
+            "frame_id": 590,
+            "t_sim": 235.6,
+            "sha256": "0225da85acbcd3067d826484ff43ee50dd1e56ec1f953f4782459bf08169d9c6"
+          },
+          "sigma_xy_m": 0.2684786152543007,
+          "stage": "grid_route",
+          "beam_axis_error_rad": 0.014311811985784696,
+          "strict_margin_m": 0.8254358457629022,
+          "B_own_m": [
+            1.0514047792111714,
+            0.06484000015778058
+          ],
+          "nominal_footprint_cells": {
+            "start": {
+              "free": 285,
+              "unknown": 0,
+              "occupied": 0,
+              "outside": 0
+            },
+            "target": {
+              "free": 0,
+              "unknown": 30,
+              "occupied": 0,
+              "outside": 255
+            }
+          },
+          "would_stop_unknown": false,
+          "attempts": [
+            {
+              "margin_m": 0.8254358457629022,
+              "allowed_cells": 0,
+              "total_cells": 21726,
+              "start_clear": false,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "allowed_cells": 2563,
+              "total_cells": 21726,
+              "start_clear": true,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "coverage": "native_allow_unknown",
+              "allowed_cells": 8447,
+              "total_cells": 21726,
+              "start_clear": true,
+              "target_clear": false,
+              "path_cells": 0
+            }
+          ],
+          "would_stop_sigma": false,
+          "applied_margin_m": 0.02,
+          "pair_dimensions_m": [
+            1.25,
+            0.4
+          ],
+          "observed_coverage_complete": true,
+          "sigma_contribution_unresolved": false
+        }
+      },
+      "result": {
+        "status": "HOST_ERROR",
+        "LLM_operated": false,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "finalization_complete": false,
+        "finalization_errors": []
+      },
+      "exit": null
+    },
+    {
+      "host": "azure3",
+      "name": "e2e18-v224-s61005-r10",
+      "checked_unix": 1791811237.1762626,
+      "progress": {
+        "wall_s": 730.8088880630003,
+        "sim_s": 249.0,
+        "frames": 623,
+        "model_attempts": 3,
+        "first_model_response": true,
+        "own_map_B_generated": true,
+        "own_B_boundary_remembered": true,
+        "own_route_generated": false,
+        "own_route_observed_complete": false,
+        "phase": "mapping",
+        "setdowns": 0,
+        "robots": {
+          "r1": {
+            "pose_own_m": [
+              -3.5339165901709872,
+              -0.05300914203035673,
+              1.5103406980392844
+            ],
+            "stage": "explore",
+            "map_frames": 623,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 1024,
+            "carrier_approach": null
+          },
+          "r2": {
+            "pose_own_m": [
+              3.7324312464572835,
+              -0.09546553527298446,
+              1.7433030144275978
+            ],
+            "stage": "explore",
+            "map_frames": 623,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 842,
+            "carrier_approach": null
+          },
+          "r3": {
+            "pose_own_m": [
+              -0.08496498892416524,
+              -0.030585943718641824,
+              0.018623498713856712
+            ],
+            "stage": "explore",
+            "map_frames": 623,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 0,
+            "carrier_approach": null
+          }
+        },
+        "latest_route_wait": "OWN_GRID_ROUTE_UNAVAILABLE",
+        "route_diagnostics": {
+          "t": 248.8,
+          "beam_pose_own_m": [
+            -2.8557471256188336,
+            1.6204233060772235,
+            0.3817736344596385
+          ],
+          "beam_rgb": {
+            "robot_id": "r1",
+            "frame_id": 623,
+            "t_sim": 248.8,
+            "sha256": "410e545364a01504c591a5a0898fb848c88f21d88c1fb23a51edb99aa57777b3"
+          },
+          "sigma_xy_m": 0.26274712550596974,
+          "stage": "grid_route",
+          "beam_axis_error_rad": 0.3817736344596385,
+          "strict_margin_m": 0.8082413765179093,
+          "B_own_m": [
+            1.0517479463841826,
+            0.06387361818729072
+          ],
+          "nominal_footprint_cells": {
+            "start": {
+              "free": 279,
+              "unknown": 0,
+              "occupied": 0,
+              "outside": 0
+            },
+            "target": {
+              "free": 260,
+              "unknown": 0,
+              "occupied": 19,
+              "outside": 0
+            }
+          },
+          "would_stop_unknown": false,
+          "attempts": [
+            {
+              "margin_m": 0.8082413765179093,
+              "allowed_cells": 79,
+              "total_cells": 33288,
+              "start_clear": false,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "allowed_cells": 4831,
+              "total_cells": 33288,
+              "start_clear": true,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "coverage": "native_allow_unknown",
+              "allowed_cells": 11094,
+              "total_cells": 33288,
+              "start_clear": true,
+              "target_clear": false,
+              "path_cells": 0
+            }
+          ],
+          "would_stop_sigma": false,
+          "applied_margin_m": 0.02,
+          "pair_dimensions_m": [
+            1.25,
+            0.4
+          ],
+          "observed_coverage_complete": true,
+          "sigma_contribution_unresolved": false
+        }
+      },
+      "result": {
+        "status": "HOST_ERROR",
+        "LLM_operated": false,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "finalization_complete": false,
+        "finalization_errors": []
+      },
+      "exit": null
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v224-s61009-r10",
+      "checked_unix": 1791811237.0050144,
+      "progress": {
+        "wall_s": 732.1791714709998,
+        "sim_s": 273.0,
+        "frames": 683,
+        "model_attempts": 3,
+        "first_model_response": true,
+        "own_map_B_generated": true,
+        "own_B_boundary_remembered": true,
+        "own_route_generated": false,
+        "own_route_observed_complete": false,
+        "phase": "mapping",
+        "setdowns": 0,
+        "robots": {
+          "r1": {
+            "pose_own_m": [
+              -2.3716034305732525,
+              2.0909520526790977,
+              2.204699776394996
+            ],
+            "stage": "explore",
+            "map_frames": 683,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 970,
+            "carrier_approach": null
+          },
+          "r2": {
+            "pose_own_m": [
+              3.9152769629181625,
+              0.2647213206788357,
+              -0.8544381007599422
+            ],
+            "stage": "explore",
+            "map_frames": 683,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 1006,
+            "carrier_approach": null
+          },
+          "r3": {
+            "pose_own_m": [
+              -0.08828280523648477,
+              0.019209693509225904,
+              0.02487035804912363
+            ],
+            "stage": "explore",
+            "map_frames": 683,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 0,
+            "carrier_approach": null
+          }
+        },
+        "latest_route_wait": "OWN_GRID_ROUTE_UNAVAILABLE",
+        "route_diagnostics": {
+          "t": 192.8,
+          "beam_pose_own_m": [
+            -2.8435541558346533,
+            2.254273138255066,
+            3.032047714544535
+          ],
+          "beam_rgb": {
+            "robot_id": "r1",
+            "frame_id": 483,
+            "t_sim": 192.8,
+            "sha256": "622da3c607c3fd4f25d00511a012b57d026e48770a076651549c0d8fe239a54e"
+          },
+          "sigma_xy_m": 0.4290757418168149,
+          "stage": "grid_route",
+          "beam_axis_error_rad": 0.1095449390452582,
+          "strict_margin_m": 1.3072272254504447,
+          "B_own_m": [
+            1.0514047792111714,
+            0.06484000015778058
+          ],
+          "nominal_footprint_cells": {
+            "start": {
+              "free": 180,
+              "unknown": 101,
+              "occupied": 0,
+              "outside": 0
+            },
+            "target": {
+              "free": 0,
+              "unknown": 31,
+              "occupied": 0,
+              "outside": 250
+            }
+          },
+          "would_stop_unknown": false,
+          "attempts": [
+            {
+              "margin_m": 1.3072272254504447,
+              "allowed_cells": 0,
+              "total_cells": 13390,
+              "start_clear": false,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "allowed_cells": 173,
+              "total_cells": 13390,
+              "start_clear": false,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "coverage": "native_allow_unknown",
+              "allowed_cells": 7020,
+              "total_cells": 13390,
+              "start_clear": true,
+              "target_clear": false,
+              "path_cells": 0
+            }
+          ],
+          "would_stop_sigma": false,
+          "applied_margin_m": 0.02,
+          "pair_dimensions_m": [
+            1.25,
+            0.4
+          ],
+          "observed_coverage_complete": true,
+          "sigma_contribution_unresolved": false
+        }
+      },
+      "result": {
+        "status": "HOST_ERROR",
+        "LLM_operated": false,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "finalization_complete": false,
+        "finalization_errors": []
+      },
+      "exit": null
+    },
+    {
+      "host": "azure4",
+      "name": "e2e18-v224-s61010-r10",
+      "checked_unix": 1791811237.0050144,
+      "progress": {
+        "wall_s": 336.84342357900005,
+        "sim_s": 126.0,
+        "frames": 316,
+        "model_attempts": 3,
+        "first_model_response": true,
+        "own_map_B_generated": true,
+        "own_B_boundary_remembered": true,
+        "own_route_generated": true,
+        "own_route_observed_complete": false,
+        "phase": "mapping",
+        "setdowns": 0,
+        "robots": {
+          "r1": {
+            "pose_own_m": [
+              -0.7051058068517484,
+              0.47914383360355,
+              0.3073886699649564
+            ],
+            "stage": "explore",
+            "map_frames": 316,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 506,
+            "carrier_approach": null
+          },
+          "r2": {
+            "pose_own_m": [
+              2.320620282072831,
+              0.3711988694700806,
+              0.1805828993107541
+            ],
+            "stage": "explore",
+            "map_frames": 316,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 515,
+            "carrier_approach": null
+          },
+          "r3": {
+            "pose_own_m": [
+              -0.08209371821764261,
+              -0.02119113177369505,
+              0.011729955940706027
+            ],
+            "stage": "explore",
+            "map_frames": 316,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 0,
+            "carrier_approach": null
+          }
+        },
+        "latest_route_wait": "OWN_GRID_ROUTE_UNAVAILABLE",
+        "route_diagnostics": {
+          "t": 126.0,
+          "beam_pose_own_m": [
+            0.39063232510223744,
+            0.5528522648256418,
+            -0.16806519826836883
+          ],
+          "beam_rgb": {
+            "robot_id": "r1",
+            "frame_id": 316,
+            "t_sim": 126.0,
+            "sha256": "424862b5d8fb32d5d88589d97c082bb738c3371e2ee07cf16aec37345e35ad69"
+          },
+          "sigma_xy_m": 0.07735514193267373,
+          "stage": "grid_route",
+          "beam_axis_error_rad": 0.16806519826836883,
+          "strict_margin_m": 0.2520654257980212,
+          "B_own_m": [
+            1.0517479463841826,
+            0.06387361818729072
+          ],
+          "nominal_footprint_cells": {
+            "start": {
+              "free": 201,
+              "unknown": 76,
+              "occupied": 0,
+              "outside": 0
+            },
+            "target": {
+              "free": 0,
+              "unknown": 277,
+              "occupied": 0,
+              "outside": 0
+            }
+          },
+          "would_stop_unknown": true,
+          "attempts": [
+            {
+              "margin_m": 0.2520654257980212,
+              "allowed_cells": 4,
+              "total_cells": 15194,
+              "start_clear": false,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "allowed_cells": 445,
+              "total_cells": 15194,
+              "start_clear": false,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "coverage": "native_allow_unknown",
+              "allowed_cells": 6742,
+              "total_cells": 15194,
+              "start_clear": true,
+              "target_clear": true,
+              "path_cells": 15
+            }
+          ],
+          "would_stop_sigma": false,
+          "applied_margin_m": 0.02,
+          "pair_dimensions_m": [
+            1.25,
+            0.4
+          ],
+          "observed_coverage_complete": false,
+          "sigma_contribution_unresolved": true
+        }
+      },
+      "result": {
+        "status": "HOST_ERROR",
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false,
+        "finalization_complete": true,
+        "finalization_errors": [],
+        "failure": "Object of type bool is not JSON serializable",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/075d4273b83c52542b1df3eeaa125adfe39497c7/scripts/run_e2e_ownmap_live.py\", line 397, in run\n    backend._append(f'robots/{rid}/ownmap.jsonl',ownmap_record(robot,obs,trace,now))\n  File \"/home/ugrp/ugrp-sim/src/075d4273b83c52542b1df3eeaa125adfe39497c7/sim/s3_buffered_io.py\", line 44, in _append\n    self.streams[relative].write(json.dumps(value, ensure_ascii=False, allow_nan=False)+'\\n')\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/__init__.py\", line 238, in dumps\n    **kw).encode(obj)\n          ^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/encoder.py\", line 200, in encode\n    chunks = self.iterencode(o, _one_shot=True)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/encoder.py\", line 258, in iterencode\n    return _iterencode(o, 0)\n           ^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/json/encoder.py\", line 180, in default\n    raise TypeError(f'Object of type {o.__class__.__name__} '\nTypeError: Object of type bool is not JSON serializable\n",
+        "wall_s": 375.49804818699977,
+        "stage_milestones": {
+          "LLM": {
+            "sim_s": 0.0,
+            "wall_s": 23.56875534699975
+          },
+          "mapping": {
+            "sim_s": 0.0,
+            "wall_s": 23.56875534699975
+          },
+          "B_boundary": {
+            "sim_s": 3.0,
+            "wall_s": 30.629421540000294
+          },
+          "route": {
+            "sim_s": 126.0,
+            "wall_s": 336.84342357900005
+          }
+        },
+        "sim_s": 126.4,
+        "controller_failure": null
+      },
+      "exit": "1"
+    }
+  ],
+  "references": [
+    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/costmap_2d/",
+    "https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp",
+    "https://docs.python.org/3/library/json.html",
+    "https://numpy.org/doc/stable/reference/generated/numpy.ndarray.item.html"
+  ],
+  "replacement_seeds": [
+    61001,
+    61002,
+    61007,
+    61008,
+    61010
+  ],
+  "gate_context": {
+    "azure3": "2 new+4 ongoing",
+    "azure4": "3 new+3 ongoing"
+  },
+  "wall_cap_s": 18000
+}
