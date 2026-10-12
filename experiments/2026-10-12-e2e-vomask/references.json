@@ -1,0 +1,62 @@
+{
+ "accessed": "2026-10-12",
+ "sources": [
+  {
+   "title": "OpenCV homography and returned RANSAC inlier mask",
+   "url": "https://docs.opencv.org/4.x/d1/de0/tutorial_py_feature_homography.html",
+   "verified_scope": "official tutorial read",
+   "application": "Use returned inliers only; a coherent wall is also planar, so RANSAC alone is not ground segmentation."
+  },
+  {
+   "title": "OpenCV plane-induced homography",
+   "url": "https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html",
+   "verified_scope": "official tutorial read",
+   "application": "Plane normal and camera-to-plane distance constrain homography; calibrated height supplies metric scale."
+  },
+  {
+   "title": "OpenCV fisheye model",
+   "url": "https://docs.opencv.org/4.x/db/d58/group__calib3d__fisheye.html",
+   "verified_scope": "official documentation read",
+   "application": "Undistort points before projective homography fitting; raw fisheye coordinates do not obey a single planar homography."
+  },
+  {
+   "title": "Zhou et al. Ground-VIO (2023)",
+   "url": "https://arxiv.org/abs/2306.08341",
+   "verified_scope": "abstract read; full experimental replication unverified",
+   "application": "Uses camera-ground geometry and IPM ground features. Our implementation reuses fixed calibration; does not adopt IMU or claim their accuracy."
+  },
+  {
+   "title": "Zhou et al. Accurate and Robust Scale Recovery (2021)",
+   "url": "https://arxiv.org/abs/2101.05995",
+   "verified_scope": "abstract read; optimizer details unverified",
+   "application": "Constant camera height and RANSAC plane geometry support scale estimation; not evidence that a gray pixel is floor."
+  },
+  {
+   "title": "Xu and de Croon CUAHN-VIO (RAS 2025; preprint 2022)",
+   "url": "https://arxiv.org/abs/2208.13935",
+   "verified_scope": "abstract read",
+   "application": "Content and uncertainty awareness addresses non-homography image content; learned model and IMU not adopted in this own-RGB patch."
+  },
+  {
+   "title": "CUAHN-VIO author implementation",
+   "url": "https://github.com/tudelft/CUAHN-VIO",
+   "verified_scope": "README read; source/runtime not replicated",
+   "application": "Confirms 2025 publication and public ROS/OpenVINS/libtorch implementation; no weights installed."
+  },
+  {
+   "title": "PBRT 4e ray-box slabs",
+   "url": "https://pbr-book.org/4ed/Shapes/Basic_Shape_Interface",
+   "verified_scope": "section 6.1.2 and code read",
+   "application": "Ray-box interval intersection used for inverse projection. Transform calibrated camera rays by estimated map pose; remove a pixel if a fixed wall occludes its ground intersection."
+  }
+ ],
+ "decision": "Combine registered map occlusion + calibrated horizon + ideal-pixel RANSAC + existing metric ground SE2. Do not equate own-start odometry with a registered map pose.",
+ "constants": {
+  "ransac_reprojection_px": 3,
+  "confidence": 0.995,
+  "max_iters": 2000,
+  "wall_margin_px": 3,
+  "horizon_margin_px": 3
+ },
+ "engineering_note": "OpenCV RANSAC defaults; 3px geometry margin is a fixed DEV erosion, not uncertainty calibration."
+}
