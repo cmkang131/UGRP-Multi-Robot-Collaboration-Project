@@ -32,7 +32,8 @@
    }
   ],
   "scope": "pure camera arithmetic, images and command estimators; no physics/render/provider",
-  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_e2e_vo_floor_mask.py tests/test_e2e_rgb_vo.py tests/test_e2e_us_stall.py"
+  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_e2e_vo_floor_mask.py tests/test_e2e_rgb_vo.py tests/test_e2e_us_stall.py",
+  "ci_discovery": "new file present in exactly one of 8 shards; --list-shards only"
  },
  "replay": {
   "n": 124,
@@ -354,5 +355,6 @@
   "Draft only: no simulation, VM operation, other checkout update, merge or new workflow registration."
  ],
  "artifact_hash_manifest": "artifact-hashes.json",
- "pr_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/452"
+ "pr_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/452",
+ "ci": "No GitHub checks attached at PR verification; not reported as passed"
 }
