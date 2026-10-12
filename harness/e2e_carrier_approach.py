@@ -29,6 +29,10 @@ def advance(transport,rid,now):
         end,grip,basis=station(b,target['center_m'],rid)
         state.update(station=end,grip=grip,basis=basis,last_seen=now)
         state.pop('search_started',None);state.pop('search_step',None)
+    if 'station' not in state and getattr(transport,'pregrasp_acquire','off')!='off':
+        from harness.e2e_pregrasp_acquire import acquire
+        result=acquire(transport,rid,now,state,target)
+        if result is not None:return result
     if 'station' not in state:
         r.carrier_approach=dict(t=now,status='search_own_beam')
         # Preserve the existing own-map exploration until this robot sees its beam.

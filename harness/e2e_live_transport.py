@@ -31,7 +31,7 @@ class AgreementView:
 
 
 class Transport:
-    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pregrasp_progress='off',gaze_cadence='off'):
+    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pregrasp_progress='off',gaze_cadence='off',pregrasp_acquire='off',align_queues='off'):
         self.robots,self.dialogue,self.profiles=robots,dialogue,profiles
         self.pulse_budget=pulse_budget;self.relook_option=setdown_only_when_relook
         self.state='mapping';self.stage_t=0.;self.seg=0;self.first_seg=0;self.epoch=0
@@ -51,6 +51,8 @@ class Transport:
         self.pregrasp_progress=pregrasp_progress
         if gaze_cadence not in ('off','settled_frames_v1'):raise ValueError('UNKNOWN_GAZE_CADENCE')
         self.gaze_cadence=gaze_cadence
+        if pregrasp_acquire not in ('off','remember_scan_v1') or align_queues not in ('off','per_robot_v1'):raise ValueError('UNKNOWN_PREGRASP_ACQUISITION')
+        self.pregrasp_acquire=pregrasp_acquire;self.align_queues=align_queues;self.robot_queue_until={}
 
     def event(self,t,kind,**data):self.events.append(dict(t=t,event=kind,**data))
     def set(self,state,t):self.state=state;self.stage_t=t;self.event(t,'phase',state=state,seg=self.seg,epoch=self.epoch)
@@ -81,6 +83,7 @@ class Transport:
                     self.queue.append((round(at,8),rid,command))
             previous={**original,**pose};start+=duration+settle
         self.queue_until=max(self.queue_until,start)
+        self.robot_queue_until[rid]=max(self.robot_queue_until.get(rid,0.),start)
         self.queue.sort(key=lambda row:(row[0],row[1]))
 
     def _drain(self,now):
@@ -113,6 +116,8 @@ class Transport:
         for rid in PAIR:
             r=self.robots[rid];b=r.beam
             if rid in self.aligned:continue
+            from harness.e2e_pregrasp_acquire import busy
+            if busy(self,rid,now):continue
             if self.carrier_approach!='off':
                 from harness.e2e_carrier_approach import advance
                 fine,actions=advance(self,rid,now)
@@ -210,7 +215,7 @@ class Transport:
     def step(self,now):
         if self.failure or self.done:return []
         out=self._drain(now)
-        if self.queue or now<self.queue_until-1e-8:return out
+        if (self.queue or now<self.queue_until-1e-8) and not (self.state=='align' and self.align_queues=='per_robot_v1'):return out
         if self.state=='mapping':self._route(now)
         elif self.state=='align':out+=self._align(now)
         elif self.state=='grasp_lift':self._open_epoch(now)

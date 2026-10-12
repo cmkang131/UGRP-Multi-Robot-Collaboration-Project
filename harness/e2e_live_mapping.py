@@ -74,7 +74,7 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
     return goal
 
 
-def beam_observer(option='off'):
+def beam_observer(option='off',decode='off'):
     from harness import owncam_pair_beam as v1, owncam_pair_beam_v2 as v2
     from harness.owncam_view import _pixel_rays
     def rays(servo,step=8):
@@ -87,11 +87,15 @@ def beam_observer(option='off'):
     observer=bind(v2.observe_beam,v1=SimpleNamespace(**{**vars(v1),'observe_beam':first}),base_rays=rays)
     from harness.e2e_beam_end_model import refine,OPTION
     if option not in ('off',OPTION):raise ValueError('UNKNOWN_BEAM_END_MODEL')
-    return lambda image,servo:refine(observer(image,servo),image,servo,rays,option)
+    if decode not in ('off','once_v1'):raise ValueError('UNKNOWN_BEAM_DECODE')
+    def observe(image,servo):
+        if decode=='once_v1':image=v1.decode(image)
+        return refine(observer(image,servo),image,servo,rays,option)
+    return observe
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',b_partial_accept='off',exact_speedups=OFF,vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',boundary_frame='off',speed4=SPEED4_OFF,speed5='off',beam_end_model='off'):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',b_partial_accept='off',exact_speedups=OFF,vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',boundary_frame='off',speed4=SPEED4_OFF,speed5='off',beam_end_model='off',beam_decode='off'):
         self.exact_speedups=exact_speedups
         self.speed4=speed4
         self.speed5=speed5
@@ -99,7 +103,8 @@ class Robot:
         with speed4_using(speed4), speed5_using(speed5):
             self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
                                 exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect,b_partial_accept=b_partial_accept,vo_floor_mask=vo_floor_mask,vo_rotation_policy=vo_rotation_policy,explore_deadlock=explore_deadlock,boundary_association=boundary_association,boundary_retry=boundary_retry,boundary_coverage=boundary_coverage,boundary_frame=boundary_frame)
-        self.observe_beam=beam_observer(beam_end_model)
+        self.observe_beam=beam_observer(beam_end_model,beam_decode)
+        self.last_beam=None;self.pregrasp_acquire="off"
         self.servo=dict(SEARCH);self.now=0.;self.frame=None;self.last_obs=None
         self.nav_command=dict(kind='hold');self.packet=None;self.beam=None;self.events=[]
         self.call_ref=None;self.trace=None;self.revision=0
@@ -141,6 +146,7 @@ class Robot:
                            grip_base_m=b['grip_base_m'],axis_heading_rad=b['axis_heading_rad'])
             if beam_end_model := b.get('endpoint_model'):
                 self.beam.update(endpoint_model=beam_end_model,observed_band_side=b.get('observed_band_side'),endpoint_side_evidence=b.get('endpoint_side_evidence'))
+            if self.pregrasp_acquire=='remember_scan_v1':self.last_beam=copy.deepcopy(self.beam)
         if self.camera_load!='off':
             from harness.e2e_camera_load import qualification
             trace['camera_geometry']=qualification(self.servo)
