@@ -25,6 +25,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CANDIDATES = dict(baseline={}, pixels={'render_half': True},
     map_budget={'rbpf_particles':50,'floor_ray_stride':2},
     moving={'moving_observation_stride':2}, vector={'vector_envelopes':True,'vector_door_pairs':True},
+    recommended={'rbpf_particles':50,'floor_ray_stride':2,
+                 'vector_envelopes':True,'vector_door_pairs':True},
     combined={'render_half':True,'rbpf_particles':50,'floor_ray_stride':2,
               'moving_observation_stride':2,'vector_envelopes':True,'vector_door_pairs':True})
 
