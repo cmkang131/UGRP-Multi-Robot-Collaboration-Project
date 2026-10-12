@@ -27,6 +27,7 @@ def test_historical_ids_and_default_off_are_preserved_but_require_original_check
     assert new['parent_execution_bundle_id'] == old['execution_bundle_id']
     assert new['inherited_results'] is False
     assert new['e2e_options']['pulse_budget'] == 'off'
+    assert new['e2e_options']['pulse_authorization'] == 'current_go_v1'
     require_current(new, ROOT)
 
 
@@ -78,6 +79,46 @@ def test_fabricated_current_registration_cannot_reenable_unmeasured_fractional_p
     b['e2e_options']['pulse_budget'] = 'fractional_duration_v1'
     with pytest.raises(ValueError, match='ORIGINAL_CHECKOUT_OR_REVIEWED_RUNTIME'):
         require_current(b, ROOT)
+
+
+def test_full_pulse_native_dispatch_rejects_revoked_go_and_reuse():
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
+    from harness.e2e_live_transport import Transport
+    from sim.e2e_pulse_port import ResidualPulsePort
+    from tests.s3_stage_probe import Motor
+    from tests.test_s3_coarse_fine import profiles
+    robots = {rid: SimpleNamespace(servo={1:1500}) for rid in ('r1','r2')}
+    key = ('order-5', 'a'*64, 1, 0)
+    gate = SimpleNamespace(key=key, allowed=lambda actual,t: actual==key)
+    options = candidate()['e2e_options']
+    transport = Transport(robots, gate, profiles(), pulse_budget=options['pulse_budget'])
+    transport.plan = dict(route=[[0.,0.],[.1518,0.]], agreement_route_hash='a'*64,
+                          own_route={'legs':[{'distance_m':.1518}]})
+    assert transport._carry(1.)
+    times = sorted({when for when,_,_ in transport.queue})
+    motors = {rid:Motor() for rid in robots}
+    world = SimpleNamespace(robot=lambda rid:motors[rid],data=SimpleNamespace(time=0.))
+    ports = {rid:ResidualPulsePort(world,rid,coupled=lambda:True,
+        allow_reverse=True,allow_mecanum=True,min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1',
+        pulse_budget=options['pulse_budget'],require_authorization=options['pulse_authorization']=='current_go_v1',
+        authorize_pulse=lambda action,t,rid=rid:transport.authorize(rid,action,t)) for rid in robots}
+    for rid, command in transport.step(times[0]):
+        assert ports[rid].apply(command,times[0])['ok']
+        with pytest.raises(ValueError,match='GO_OR_SCHEDULE'):
+            ports[rid].apply(command,times[0])
+    gate.key = None  # a new proposal revoked the admitted route epoch
+    for rid, command in transport.step(times[1]):
+        before = motors[rid].motors
+        with pytest.raises(ValueError,match='GO_OR_SCHEDULE'):
+            ports[rid].apply(command,times[1])
+        assert motors[rid].motors == before
+
+
+def test_current_registration_cannot_disable_dispatch_authorization():
+    b = candidate()
+    b['e2e_options']['pulse_authorization'] = 'off'
+    with pytest.raises(ValueError,match='ORIGINAL_CHECKOUT_OR_REVIEWED_RUNTIME'):
+        require_current(b,ROOT)
 
 
 def test_workflow_adapter_always_selects_its_registered_bundle(monkeypatch):
