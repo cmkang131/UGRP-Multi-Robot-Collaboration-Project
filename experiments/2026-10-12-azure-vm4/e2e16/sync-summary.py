@@ -6,6 +6,10 @@ live=json.loads((out/'live.json').read_text());runs=[]
 for r in live['runs']:
  h=r['latest'] or r['initial'];p=r['progress'];result=r['result'];robots=h.get('robots',{})
  runs.append(dict(run=r['run'],status='RUNNING' if r['exit'] is None else result.get('status','EXIT'),exit=r['exit'],raw='azure4:/home/ugrp/ugrp-sim/runs/'+r['run'],sim_s=p.get('sim_s'),wall_s=p.get('wall_s'),phase=p.get('phase'),furthest_stages={k:v.get('stage') for k,v in robots.items()},stage_milestones=h.get('stage_milestones',{}),conditions=dict(LLM_operated=bool(result.get('LLM_operated') or p.get('first_model_response')),own_map_completed=bool(result.get('own_map_completed')),start_to_finish_transport=bool(result.get('start_to_finish_transport'))),initial_check=dict(unix=r['initial'].get('unix'),elapsed_s=r['initial'].get('elapsed_since_submit_s'),passed=r['initial'].get('passed'),checks=r['initial'].get('checks')),latest_check_unix=h.get('unix'),robots={k:{n:v.get(n) for n in ('frames','forward_commands','actual_displacement_m','ultrasonic','vo','map_error_m','control_error_m')} for k,v in robots.items()},model=h.get('model',{}),failure=result.get('failure'),failure_type=result.get('failure_type'),archive_verified=bool(r['archive']),archive_path=r['archive'].get('proof',{}).get('native_verification',{}).get('native_arm_path')))
+for r in runs:
+ for robot in r['robots'].values():
+  vo=robot.get('vo') or {};robot['vo']={k:vo.get(k) for k in ('trace_frames','measured_frames','applied_frames','applied_fraction')}
+  us=robot.get('ultrasonic') or {};robot['ultrasonic']={k:us.get(k) for k in ('range_rows','judgements','zupt_count','zupt_applied','statuses')}
 counts={k:sum(r['conditions'][k] for r in runs) for k in ('LLM_operated','own_map_completed','start_to_finish_transport')}
 retrieval=out/'ALL_RETRIEVED.json';shutdown=out/'deallocated.json';verified=out/'arm-all-verified.json'
 status='RUNNING' if any(r['exit'] is None for r in runs) else 'COMPLETED_PENDING_RETRIEVAL'
