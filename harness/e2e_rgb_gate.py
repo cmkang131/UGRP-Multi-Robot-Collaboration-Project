@@ -22,8 +22,8 @@ OPTION = 'rgb_geometry_v1'
 # lower saturation relative to their OWN local background (two blue tones).
 # Local background = grayscale opening (min-RGB) / closing (S) with a square
 # element larger than a mark, i.e. ratio forms of the white/black top-hat
-# (Gonzalez & Woods ch. 9; OpenCV morphologyEx). Ratios are invariant to a
-# global exposure gain. Saturation of dark pixels (V < 50) is ill-conditioned
+# (OpenCV morphologyEx). The two ratio tests are gain-invariant; the absolute
+# floors (delta 12, V 50) are not. Replay verified gains 0.7-1.3 only. Saturation of dark pixels (V < 50) is ill-conditioned
 # and is excluded from the background. A 3x3 binary opening removes 1-2 px
 # edge ringing, and marks touching the region border are cleared (imclearborder):
 # floor-tone patches always reach the B edge, the marks lie inside it.
