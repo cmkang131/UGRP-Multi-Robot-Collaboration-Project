@@ -1,4 +1,4 @@
-"""Finite Mac fetch-lite completion and VM1 shutdown; no controller feedback."""
+"""Finite Mac fetch-lite completion and VM3 retrieval; no controller feedback."""
 from pathlib import Path
 import subprocess,json,time,sys,os,signal,hashlib
 out=Path(__file__).parent;names=[f'e2e15-{g}-s{s}' for s in range(61001,61004) for g in ('a','b')]

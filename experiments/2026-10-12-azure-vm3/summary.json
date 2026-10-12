@@ -1,5 +1,5 @@
 {
-  "status": "IDLE_DEALLOCATION_PENDING",
+  "status": "PASS",
   "checked_utc": "2026-10-12T03:31:57.522830+00:00",
   "vm": "ugrp-sim-azure3",
   "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
@@ -12,7 +12,16 @@
     "ssh_alias": "azure3",
     "proxyjump": "oracle-codex",
     "allowed_ssh_source": "161.33.46.134/32",
-    "bootstrap_egress_fence_removed": true
+    "bootstrap_egress_fence_removed": true,
+    "nsg_rules": [
+      {
+        "access": "Allow",
+        "destinationPort": "22",
+        "direction": "Inbound",
+        "name": "allow-ssh-from-oracle",
+        "source": "161.33.46.134/32"
+      }
+    ]
   },
   "identity": {
     "principal": "8bfaf742-6a37-4def-b64d-20cf26b05c19",
@@ -93,6 +102,16 @@
           "startTime": "2026-10-12T03:12:59+00:00",
           "endTime": "2026-10-12T03:12:59+00:00"
         }
+      }
+    ],
+    "verified_assignments": [
+      {
+        "role": "UGRP VM Deallocator",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure3"
+      },
+      {
+        "role": "UGRP Graceful VM Stop Command",
+        "scope": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure3"
       }
     ]
   },
@@ -265,8 +284,40 @@
     "idle_seconds": 1200,
     "max_uptime_seconds": 28800,
     "archive_native": "on_v1",
-    "idle_actual_verified": false,
-    "boot_recovery": "success; no cloned runs admitted"
+    "idle_actual_verified": true,
+    "boot_recovery": "success; no cloned runs admitted",
+    "idle_deallocated": {
+      "utc": "2026-10-12T03:35:59.548724+00:00",
+      "statuses": [
+        {
+          "code": "ProvisioningState/succeeded",
+          "level": "Info",
+          "displayStatus": "Provisioning succeeded",
+          "time": "2026-10-12T03:35:51.1079449+00:00"
+        },
+        {
+          "code": "PowerState/deallocated",
+          "level": "Info",
+          "displayStatus": "VM deallocated"
+        }
+      ]
+    },
+    "idle_events": [
+      {
+        "id": "2206b2fbeae5477fb1310b0fdfabf262",
+        "action": "stop",
+        "reason": "twenty_minutes_idle",
+        "boot_id": "698be5b1-2826-421d-8e27-d5266c7b3569",
+        "status": "complete",
+        "signalled": [],
+        "archived": [
+          "azure3-smoke-20261012-01",
+          "azure3-smoke-20261012-02"
+        ],
+        "failed": [],
+        "elapsed_seconds": 0.045
+      }
+    ]
   },
   "clone": {
     "path": "azure3:~/ugrp-sim/clone-excluded-vm1-20261012",
