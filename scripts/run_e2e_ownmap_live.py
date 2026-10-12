@@ -30,7 +30,9 @@ def relay_url(profile, decider='off'):
 
 from harness.e2e_result_writer import write, Finalizer
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,speed2_bundle=False,runtime_registration='off'):
+WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
+
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False):
     if profile not in PROFILES or seed not in (61001,61002,61003,61004):raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
@@ -38,12 +40,19 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if exploration_progress not in ('off','frontier_progress_v1'):raise ValueError('UNKNOWN_EXPLORATION_PROGRESS')
     if pose_fix not in ('off','innovation'):raise ValueError('UNKNOWN_E2E_POSE_FIX')
     if path_follow not in ('off','rpp_v1'):raise ValueError('UNKNOWN_PATH_FOLLOW')
-    if not 0 < wall_cap_s <= 12600:raise ValueError('FINITE_WALL_CAP_REQUIRED')
+    # Finite ceiling 7 h (E2E14): the old 12600 s (3.5 h) ceiling stopped case_cap_s=1800
+    # SIM runs at ~12-15 wall/SIM before the case cap. Default stays 12600 s.
+    if not 0 < wall_cap_s <= WALL_CAP_MAX_S:raise ValueError('FINITE_WALL_CAP_REQUIRED')
+    from harness.e2e_boundary_views import OPTION as VIEWS_OPTION
+    from harness.e2e_rgb_gate import MARKER_OPTION
+    if boundary_views not in ('off',VIEWS_OPTION):raise ValueError('UNKNOWN_B_BOUNDARY_VIEWS')
+    if b_marker_detect not in ('off',MARKER_OPTION):raise ValueError('UNKNOWN_B_MARKER_DETECT')
+    if boundary_views!='off' and exploration_progress=='off':raise ValueError('FRONTIER_PROGRESS_V1_REQUIRED_BEFORE_VIEWS')
     if mapping_budget not in ('off','case_cap_v1'):raise ValueError('UNKNOWN_MAPPING_BUDGET')
     from harness.e2e_stall_odometry import Options as StallOptions
     stall=StallOptions(stall_odometry,stall_recovery,stall_noise)
-    if stall.stall_odometry=='rgb_vo_v2':
-        # Registered only inside a composition bundle that names it; never fall back to v198/v201.
+    if stall.stall_odometry=='rgb_vo_v2' and boundary_views=='off' and b_marker_detect=='off':
+        # Registered only inside the E2E14 composition bundle (v205); never fall back to v198/v201.
         raise ValueError('RGB_VO_V2_HAS_NO_STANDALONE_BUNDLE')
     from harness.e2e_exact_speedups import Options as SpeedOptions
     speed=SpeedOptions(**(exact_speedups or {}))
@@ -92,6 +101,16 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         b.update(schema='ugrp.e2e_ownmap_live.v203',execution_bundle_id='e2e-exact-speed2-v203',workflow_version='7.96.0')
     if stall.stall_odometry=='rgb_vo_v1':
         b.update(schema='ugrp.e2e_ownmap_live.v201',execution_bundle_id='e2e-rgb-vo-v201',workflow_version='7.94.0')
+    combo=boundary_views!='off' or b_marker_detect!='off'
+    if combo:
+        # E2E14 composition: B confirmation views / B mark contrast (#443) on the same
+        # runner; keys are added only when on so older bundles stay byte-identical.
+        b['e2e_options'].update(boundary_views=boundary_views,b_marker_detect=b_marker_detect)
+        # v202 (source e4fc8354) crashed in rgb_vo_v1 ground() on 0 floor points; v204 carries the guard.
+        b.update(schema='ugrp.e2e_ownmap_live.v204',execution_bundle_id='e2e-combo14-v204',workflow_version='7.97.0')
+        if stall.stall_odometry=='rgb_vo_v2':
+            # v205 = v204 composition with rgb_vo_v2 (VO, then pulse-gate stall fallback, then command).
+            b.update(schema='ugrp.e2e_ownmap_live.v205',execution_bundle_id='e2e-combo14-vo2-v205',workflow_version='7.98.0')
     from harness.e2e_runtime_registration import register
     runtime_assets=register(b,runtime_registration)
     from harness.python_source_closure import source_closure
@@ -110,8 +129,10 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if stall.enabled or stall_bundle:paths.add('configs/simulation_workflows.d/e2e_stall_odometry_v198.json')
     if mapping_budget!='off':paths.add('configs/simulation_workflows.d/e2e_stall_budget_v199.json')
     if speed_bundle or any(vars(speed).values()):paths.add('configs/simulation_workflows.d/e2e_exact_speed_v200.json')
-    if speed2:paths.update(('configs/simulation_workflows.d/e2e_exact_speed2_v203.json','scripts/e2e_speed_measure.py'))
     if stall.stall_odometry=='rgb_vo_v1':paths.add('configs/simulation_workflows.d/e2e_rgb_vo_v201.json')
+    if combo:paths.add('configs/simulation_workflows.d/e2e_combo14_v204.json' if stall.stall_odometry!='rgb_vo_v2' else
+                       'configs/simulation_workflows.d/e2e_combo14_vo2_v205.json')
+    if speed2:paths.update(('configs/simulation_workflows.d/e2e_exact_speed2_v203.json','scripts/e2e_speed_measure.py'))
     paths.update(runtime_assets)
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
@@ -184,6 +205,8 @@ def run(b,out,receipt,*,backend_factory=None):
                         path_follow=b['e2e_options'].get('path_follow','off'),
                         stall_options=StallOptions(**{k:b['e2e_options'].get(k,'off') for k in ('stall_odometry','stall_recovery','stall_noise')}),
                         mapping_budget_s=b['e2e_options'].get('mapping_budget_s'),
+                        boundary_views=b['e2e_options'].get('boundary_views','off'),
+                        b_marker_detect=b['e2e_options'].get('b_marker_detect','off'),
                         exact_speedups=SpeedOptions(**b['e2e_options'].get('exact_speedups',{})))
                 for i,r in enumerate(('r1','r2','r3'))}
         for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
@@ -339,6 +362,8 @@ def main(argv=None):
     p.add_argument('--stall-bundle',action='store_true')
     p.add_argument('--mapping-budget',choices=('off','case_cap_v1'),default='off')
     p.add_argument('--dev-light',action='store_true')
+    p.add_argument('--boundary-views',choices=('off','candidate_views_v1'),default='off')
+    p.add_argument('--b-marker-detect',choices=('off','contrast_v1'),default='off')
     p.add_argument('--wall-cap-s',type=float,default=12600.)
     p.add_argument('--exact-provenance-index',action='store_true')
     p.add_argument('--exact-sha-cache',action='store_true')
@@ -367,7 +392,7 @@ def main(argv=None):
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
                  vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
                  vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
-             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,runtime_registration=a.runtime_registration)
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration)
     if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
     if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
         raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')

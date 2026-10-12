@@ -14,6 +14,7 @@ from harness.zone_study_llm_driver import HostError
 from harness.zone_pilot_budget import PROXY_SHA256
 
 URL = 'http://127.0.0.1:18391/v1/chat/completions'
+MAX_RELAY_SECONDS = 28800  # 7 h E2E plus setup/flush, bounded by the VM's 8 h guard.
 
 
 def validate_receipt(receipt, now=None, *, remote_url=URL):
@@ -41,7 +42,7 @@ def validate_receipt(receipt, now=None, *, remote_url=URL):
     if (receipt.get('schema') != 'ugrp.s4_ssh_proxy.v1'
             or receipt.get('remote_url') != remote_url
             or receipt.get('proxy', {}).get('source_sha256') != expected
-            or not 0 < receipt.get('valid_for_s', 3600) <= 14400
+            or not 0 < receipt.get('valid_for_s', 3600) <= MAX_RELAY_SECONDS
             or not 0 <= now-receipt.get('checked_unix', 0) <= receipt.get('valid_for_s', 3600)
             or receipt.get('authentication') != 'existing_mac_proxy_no_credentials_transferred'
             or receipt.get('audit_per_post') is not True):

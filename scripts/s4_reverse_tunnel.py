@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import time
 import signal
+from harness.s4_live_transport import MAX_RELAY_SECONDS
 
 
 def command(seconds, *, host='oracle-x86',dual_model=False):
@@ -54,8 +55,8 @@ def main():
     p.add_argument('--dual-model',action='store_true')
     a = p.parse_args()
     deadline = datetime.fromisoformat(a.deadline_utc.replace('Z', '+00:00'))
-    if deadline.tzinfo is None or not 0 < deadline.timestamp()-time.time() <= 14400:
-        raise ValueError('explicit timezone and finite <=4h session required')
+    if deadline.tzinfo is None or not 0 < deadline.timestamp()-time.time() <= MAX_RELAY_SECONDS:
+        raise ValueError('explicit timezone and finite <=8h session required')
     def stop(signum, frame): raise KeyboardInterrupt
     signal.signal(signal.SIGTERM, stop)
     supervise(deadline.timestamp(), a.output, reconnect=a.reconnect,host=a.host,dual_model=a.dual_model)
