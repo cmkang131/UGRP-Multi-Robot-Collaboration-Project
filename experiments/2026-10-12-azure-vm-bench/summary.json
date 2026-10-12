@@ -1,7 +1,7 @@
 {
  "status": "COMPLETE",
  "run_class": "dev",
- "pr": null,
+ "pr": 447,
  "branch": "claude/vm-bench",
  "date": "2026-10-12",
  "question": "Is the slow E2E (11-16 wall s per SIM s on Azure D16as_v5) caused by the VM? Paired same-source benchmark on three sizes.",
@@ -1022,7 +1022,8 @@
  "recommendation": {
   "size": "Standard_D16as_v6",
   "reason": "Best measured SIM s per USD (2319 vs 1886 D16as_v5, 1718 F16as_v6 at 6 concurrent) and 21-23% faster per run than D16as_v5 for +5% price. F16as_v6 has no SMT penalty (6 concurrent = solo) but costs 51% more; it would only win at >~9-10 concurrent runs, which was not measured.",
-  "unverified": "Concurrency above 6 and F16 at 10+ runs not measured; resize of the existing VM not performed (other tasks own it)."
+  "unverified": "Concurrency above 6 and F16 at 10+ runs not measured; resize of the existing VM not performed (other tasks own it).",
+  "cohort_caveat": "Zen3 (D16as_v5) and Zen4 (D16as_v6/F16as_v6) produce different RGB and RBPF bytes for the same source. After a resize, do not pool v5 and v6 results in one cohort; record the host CPU model with the execution bundle hash."
  },
  "answer": {
   "vm_share": "Same code: D16as_v5 (Zen3) is 1.27x slower solo and 1.30x slower at 6 concurrent than D16as_v6 (Zen4). So about 21-23% of the per-run wall time is attributable to the CPU generation.",
