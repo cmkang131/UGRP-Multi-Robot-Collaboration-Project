@@ -77,4 +77,5 @@ def advance(transport,rid,now):
         if not transport.dev_light:command=dict(kind='hold');twist=np.zeros(3)
     diag.update(projected_clear=bool(clear),status='navigate_pregrasp')
     if np.linalg.norm(twist)>1e-10:state['motion_until']=now+command['duration_s']
-    return False,[command]
+    from harness.e2e_pregrasp_gaze import fresh_gaze
+    return False,[*fresh_gaze(transport,rid,grip),command]

@@ -6,6 +6,9 @@ WORKFLOW='configs/simulation_workflows.d/e2e18_v229.json'
 
 
 def lost_search(transport,rid,now,state):
+    from harness.e2e_pregrasp_gaze import recover
+    recovered=recover(transport,rid,now,state)
+    if recovered is not None:return recovered
     # A fresh own beam immediately cancels this state in the caller.
     started=state.setdefault('search_started',now)
     sequence=(('search',1500),('p45',1500),('inspect',1500),('search',1250),('search',1750))

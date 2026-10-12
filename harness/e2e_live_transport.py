@@ -31,7 +31,7 @@ class AgreementView:
 
 
 class Transport:
-    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off',align_progress='off',pregrasp_recovery='off'):
+    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off'):
         self.robots,self.dialogue,self.profiles=robots,dialogue,profiles
         self.pulse_budget=pulse_budget;self.relook_option=setdown_only_when_relook
         self.state='mapping';self.stage_t=0.;self.seg=0;self.first_seg=0;self.epoch=0
@@ -45,6 +45,8 @@ class Transport:
         self.carrier_approach=carrier_approach;self.approach={}
         if align_progress not in ('off','dev_continue_v1') or pregrasp_recovery not in ('off','bounded_search_v1'):raise ValueError('UNKNOWN_ALIGN_RECOVERY')
         self.align_progress=align_progress;self.pregrasp_recovery=pregrasp_recovery
+        if pregrasp_gaze not in ('off','own_bearing_v1') or search_bearing not in ('off','last_seen_v1'):raise ValueError('UNKNOWN_PREGRASP_GAZE')
+        self.pregrasp_gaze=pregrasp_gaze;self.search_bearing=search_bearing
 
     def event(self,t,kind,**data):self.events.append(dict(t=t,event=kind,**data))
     def set(self,state,t):self.state=state;self.stage_t=t;self.event(t,'phase',state=state,seg=self.seg,epoch=self.epoch)
