@@ -35,6 +35,7 @@ from harness.zone_solo_cyan_progress_noise import PARAMS as S2_PARAMS, rigid_ran
 from sim.masterpi_camera_profile import CAMERA_FISHEYE_D, scaled_camera_matrix
 
 OPTION = 'rgb_vo_v1'
+OPTION_US = 'rgb_vo_us_v1'
 OPTION_V2 = 'rgb_vo_v2'  # v1 + rgb_pulse_gate_v1 stationarity fallback when VO is unavailable
 WIDTH, HEIGHT = 640, 480
 K = scaled_camera_matrix(WIDTH, HEIGHT)
@@ -217,9 +218,11 @@ class VOFusion:
     def __init__(self, driver, mode='fused', *, chi2_gate=None, fallback=None):
         if mode not in ('fused', 'replace'):
             raise ValueError('UNKNOWN_VO_FUSION_MODE')
-        if fallback not in (None, 'pulse_gate'):
+        if fallback not in (None, 'pulse_gate', 'ultrasonic'):
             raise ValueError('UNKNOWN_VO_FALLBACK')
         self.fallback = fallback
+        from harness.e2e_us_stall import RangeStall
+        self.range_stall = RangeStall() if fallback == 'ultrasonic' else None
         # v2: when VO cannot measure (e.g. pressed against a plain wall), use the
         # existing binary own-RGB stationarity decision; unknown still keeps command.
         from harness.e2e_stall_odometry import Detector, PULSE_GATE
@@ -238,12 +241,17 @@ class VOFusion:
         self.servo_since = getattr(driver, 'servo_since', 0.)
         self.counts = dict(measured=0, fused=0, vo_replaced=0, unknown=0, unapplied=0, substep_mismatch=0, gate_zero=0)
 
+        if self.range_stall is not None:
+            self.counts['us_zero'] = 0
+
     def _record(self, delta, variance):
         self.steps.append((np.asarray(delta, float).copy(), np.asarray(variance, float).copy()))
         return delta, variance
 
     def command(self, row):
         self.nominal.command(row)
+        if self.range_stall is not None:
+            self.range_stall.command(row)
         if self.detector is not None:
             self.detector.command(row)
         if row['kind'] in ('arm', 'look', 'initial_servo_command'):
@@ -259,7 +267,7 @@ class VOFusion:
             total = compose(total, delta)
         return total, P
 
-    def observe(self, *, t, frame_id, rgb, servo, sha256=None):
+    def observe(self, *, t, frame_id, rgb, servo, sha256=None, range_reading=None):
         t = float(t)
         if self.last is not None and (t <= self.last['t'] or frame_id <= self.last['frame_id']):
             raise ValueError('FRESH_MONOTONIC_OWN_RGB_REQUIRED')
@@ -269,7 +277,7 @@ class VOFusion:
         gate = None
         if self.detector is not None:
             gate = self.detector.observe(t=t, frame_id=frame_id, rgb=rgb, servo=servo, sha256=sha256)
-        row = dict(option=OPTION_V2 if self.fallback else OPTION, mode=self.mode, t=t, frame_id=frame_id, sha256=sha256,
+        row = dict(option=OPTION_US if self.range_stall is not None else OPTION_V2 if self.fallback else OPTION, mode=self.mode, t=t, frame_id=frame_id, sha256=sha256,
                    command_delta=command_delta.tolist(), command_substeps=len(steps), status='no_previous_frame')
         loaded = int(int(servo.get(1, 2000)) <= 1600)
         if self.last is not None:
@@ -281,6 +289,11 @@ class VOFusion:
                 row['status'] = 'unknown_camera_settling'
             else:
                 row.update(ground_pair(self.last['rgb'], rgb, servo))
+        us = None
+        if self.range_stall is not None:
+            us = self.range_stall.observe(t=t, report=range_reading, servo=servo, delta=command_delta,
+                                         measured=row['status'] == 'measured')
+            row['ultrasonic'] = us
         fused = command_delta
         if row['status'] == 'measured':
             self.counts['measured'] += 1
@@ -293,6 +306,16 @@ class VOFusion:
                 self.counts['unapplied'] += 1;row['fusion_applied'] = False
             else:
                 row['fusion_applied'] = True
+        elif us is not None and us['stationary'] and steps:
+            from harness.e2e_stall_odometry import alpha_extra
+            fused = np.array([0., 0., command_delta[2]])
+            cov = command_cov+np.diag(alpha_extra(command_delta, True))
+            self.counts['us_zero'] += 1
+            # Every RBPF proposal must see zero translation, not cancelling
+            # nonzero substeps whose final composition merely happens to be zero.
+            self.plan = [(np.array([0., 0., d[2]]), q) for d, q in self._plan(steps, fused, cov)]
+            row.update(fusion='us_zero', fused_delta=fused.tolist(), fused_variance=np.diag(cov).tolist(),
+                       fusion_applied=True)
         elif gate is not None and self.detector.suppressed and steps:
             # Confirmed stationary view while translating: zero translation, keep
             # commanded yaw, inflate Q (AMCL alpha 2.0) -- never false certainty.
@@ -317,6 +340,8 @@ class VOFusion:
     def skip(self, t):
         """Frame without an image (offline replay): no pair across it, reset gate history."""
         self.nominal.advance(t);self.steps = []
+        if self.range_stall is not None:
+            self.range_stall.reset()
         if self.detector is not None:
             d = self.detector
             d.frames.clear();d.stationary_since = None;d.streak = 0
@@ -361,9 +386,9 @@ def install(goal, option=OPTION):
     from harness.self_pulse_odom import PulseOdometry
     if not isinstance(driver, PulseOdometry) or driver.motion_filter is not None:
         raise ValueError('UNMODIFIED_PULSE_ODOMETRY_REQUIRED')
-    if option not in (OPTION, OPTION_V2):
+    if option not in (OPTION, OPTION_V2, OPTION_US):
         raise ValueError('UNKNOWN_RGB_VO_OPTION')
-    vo = VOFusion(driver, fallback='pulse_gate' if option == OPTION_V2 else None);goal.e2e_vo = vo
+    vo = VOFusion(driver, fallback='ultrasonic' if option == OPTION_US else 'pulse_gate' if option == OPTION_V2 else None);goal.e2e_vo = vo
     active = False
 
     def motion_filter(delta, variance):
@@ -380,7 +405,8 @@ def install(goal, option=OPTION):
         nonlocal active
         if kw['robot_id'] != goal.robot_id:
             raise ValueError('SELF_MAP_PEER_INPUT_FORBIDDEN')
-        row = vo.observe(t=kw['t'], frame_id=kw['frame_id'], rgb=kw['rgb'], servo=kw['servo'], sha256=kw['frame_sha256'])
+        own_range = kw.pop('own_range', None)
+        row = vo.observe(range_reading=own_range, t=kw['t'], frame_id=kw['frame_id'], rgb=kw['rgb'], servo=kw['servo'], sha256=kw['frame_sha256'])
         active = True;before = np.asarray(driver.pose)
         try:
             odom.advance(kw['t'])

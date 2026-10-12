@@ -103,7 +103,11 @@ class Robot:
                                    jpeg=base64.b64decode(obs['image']))
         detection=observe(rgb,self.servo,body_settling=.7)
         self.wall_segments=copy.deepcopy(detection['segments'])
-        command,trace=self.goal.receive(robot_id=self.robot_id,t=self.now,frame_id=obs['frame_id'],
+        extra = {}
+        if hasattr(self.goal, 'e2e_vo') and self.goal.e2e_vo.range_stall is not None:
+            from harness.ultrasonic_input import range_report
+            extra['own_range'] = range_report(self, self.now)
+        command,trace=self.goal.receive(**extra, robot_id=self.robot_id,t=self.now,frame_id=obs['frame_id'],
             rgb=rgb,servo=self.servo,observation=detection,frame_sha256=obs['sha256'])
         self.nav_command={k:v for k,v in command.items() if k!='t'};self.trace=trace
         self.revision+=1
