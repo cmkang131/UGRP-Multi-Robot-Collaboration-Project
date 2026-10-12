@@ -19,6 +19,10 @@ def advance(transport,rid,now):
     frame=r.last_obs['frame_id'] if r.last_obs else None
     if state.get('frame')==frame:return state.get('fine',False),[]
     state['frame']=frame;state['fine']=False
+    from harness.e2e_stage_cadence import settling,admit_gaze
+    if settling(transport,rid,now):
+        r.carrier_approach=dict(t=now,status='gaze_settle')
+        return False,[dict(kind='hold')]
     fresh=b is not None and now-b['rgb']['t_sim']<=.45
     target=g.entities.get('B')
     if fresh and target:
@@ -82,4 +86,4 @@ def advance(transport,rid,now):
     diag.update(projected_clear=bool(clear),status='navigate_pregrasp')
     if np.linalg.norm(twist)>1e-10:state['motion_until']=now+command['duration_s']
     from harness.e2e_pregrasp_gaze import fresh_gaze
-    return False,[*fresh_gaze(transport,rid,grip),command]
+    return False,admit_gaze(transport,rid,now,fresh_gaze(transport,rid,grip),command)

@@ -186,6 +186,8 @@ class Dialogue:
             if receipt.accepted and contract is not None:
                 source = contract['source_message_id']
                 origin = self.origins[source] if source else receipt.envelope.message_id
+                from harness.e2e_route_idempotency import origin as idempotent_origin
+                origin = idempotent_origin(self,contract,origin)
                 self.origins[receipt.envelope.message_id] = origin
                 if source is None:
                     self.outgoing_by_call[call_id] = origin
@@ -269,7 +271,8 @@ class Dialogue:
             raise ContractViolation('MODEL_RESPONSE_ALREADY_RELEASED')
         self.used_responses.add(call_id)
         actor, kind = context['actor'], action['kind']
-        if call_id in self.outgoing_by_call:
+        from harness.e2e_route_idempotency import resets
+        if call_id in self.outgoing_by_call and resets(self,self.outgoing_by_call[call_id]):
             self.latest_origin = self.outgoing_by_call[call_id]
             self.proposal, self.approved, self.key = None, False, None
             self.claims, self.votes = set(), {}

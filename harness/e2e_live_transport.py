@@ -31,7 +31,7 @@ class AgreementView:
 
 
 class Transport:
-    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pregrasp_progress='off'):
+    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pregrasp_progress='off',gaze_cadence='off'):
         self.robots,self.dialogue,self.profiles=robots,dialogue,profiles
         self.pulse_budget=pulse_budget;self.relook_option=setdown_only_when_relook
         self.state='mapping';self.stage_t=0.;self.seg=0;self.first_seg=0;self.epoch=0
@@ -49,6 +49,8 @@ class Transport:
         self.pregrasp_gaze=pregrasp_gaze;self.search_bearing=search_bearing
         if pregrasp_progress not in ('off','backup_replan_v1'):raise ValueError('UNKNOWN_PREGRASP_PROGRESS')
         self.pregrasp_progress=pregrasp_progress
+        if gaze_cadence not in ('off','settled_frames_v1'):raise ValueError('UNKNOWN_GAZE_CADENCE')
+        self.gaze_cadence=gaze_cadence
 
     def event(self,t,kind,**data):self.events.append(dict(t=t,event=kind,**data))
     def set(self,state,t):self.state=state;self.stage_t=t;self.event(t,'phase',state=state,seg=self.seg,epoch=self.epoch)
