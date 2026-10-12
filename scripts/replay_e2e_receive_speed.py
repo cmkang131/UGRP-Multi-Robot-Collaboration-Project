@@ -95,7 +95,8 @@ def build_robots(speedups, seed=61001):
 
 
 def replay(frames, speedups, *, profile=None, period=.2):
-    from scripts.e2e_speed_measure import rbpf_digest
+    from scripts.e2e_speed_measure import rbpf_digest, rbpf_digest_binary
+    hash_s = dict(json_v1=0., binary_v1=0.)
     robots, installed = build_robots(speedups)
     rows = []
     n = max(len(v) for v in frames.values())
@@ -131,8 +132,12 @@ def replay(frames, speedups, *, profile=None, period=.2):
                 row.update(trace=canonical(trace), command=robot.nav_command,
                            command_digest=canonical(robot.nav_command),
                            wall_segments=canonical(robot.wall_segments),
-                           own_inputs=inputs_digest, rbpf=rbpf_digest(robot),
+                           own_inputs=inputs_digest,
                            pose=canonical(robot.goal.explorer.local_pose))
+                start = time.perf_counter(); row['rbpf'] = rbpf_digest(robot)
+                hash_s['json_v1'] += time.perf_counter()-start
+                start = time.perf_counter(); row['rbpf_binary'] = rbpf_digest_binary(robot)
+                hash_s['binary_v1'] += time.perf_counter()-start
                 if rid != 'r3' and robot.packet is None:
                     robot.commanded(copy.deepcopy(robot.nav_command), now)
             else:
@@ -146,6 +151,7 @@ def replay(frames, speedups, *, profile=None, period=.2):
         snapshot['exact_speedups2'] = dict(STATS)
     except ImportError:  # pre-round-2 harness (default-path overhead check)
         snapshot['exact_speedups2'] = None
+    snapshot['rbpf_hash_s'] = hash_s
     return rows, receive_s, snapshot
 
 
@@ -167,10 +173,11 @@ def main(argv=None):
                frame_sha256={r: [f['sha256'] for f in v] for r, v in frames.items()},
                receives=len(rows), errors=sum(r['error'] is not None for r in rows),
                receive_s=receive_s, wall_s=time.perf_counter() - started,
-               controller_speedups=controller.get('applied'), exact_speedups2=controller['exact_speedups2'], rows=rows)
+               controller_speedups=controller.get('applied'), exact_speedups2=controller['exact_speedups2'],
+               rbpf_hash_s=controller['rbpf_hash_s'], rows=rows)
     Path(a.output).parent.mkdir(parents=True, exist_ok=True)
     Path(a.output).write_text(json.dumps(out, sort_keys=True, default=str))
-    print(json.dumps({k: out[k] for k in ('receives', 'errors', 'receive_s', 'wall_s', 'exact_speedups2')}))
+    print(json.dumps({k: out[k] for k in ('receives', 'errors', 'receive_s', 'wall_s', 'exact_speedups2', 'rbpf_hash_s')}))
 
 
 if __name__ == '__main__':

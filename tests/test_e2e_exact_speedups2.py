@@ -158,12 +158,120 @@ def test_costmap_writes_identical_including_fallback():
         assert outputs[0] == outputs[1]
 
 
-def test_v200_bundle_unchanged_and_round2_requires_new_bundle():
+def test_v200_bundle_unchanged_and_round2_registers_v203():
     from scripts.run_e2e_ownmap_live import bundle
     v200 = dict(provenance_index=True, sha_validation_cache=True, omit_discarded_copy=True, scalar_cells=True,
                 geometry_cache=True)
-    b = bundle('0'*40, 61001, 'study_gemma4_31b_v1', enabled=True, exact_speedups=v200)
-    assert b['execution_bundle_id'] == 'e2e-exact-speed-v200'
-    assert b['e2e_options']['exact_speedups'] == v200
-    with pytest.raises(ValueError, match='ROUND2_EXACT_SPEEDUPS_REQUIRE_NEW_BUNDLE_ID'):
-        bundle('0'*40, 61001, 'study_gemma4_31b_v1', enabled=True, exact_speedups={**v200, 'vector_rays': True})
+    common = dict(enabled=True, mapping_budget='case_cap_v1', path_follow='rpp_v1', dev_light=True,
+                  stall_odometry='rgb_pulse_gate_v1', stall_recovery='backup_replan_v1', stall_noise='amcl_alpha_v1')
+    old = bundle('0'*40, 61001, 'study_gemma4_31b_v1', **common, exact_speedups=v200)
+    assert old['execution_bundle_id'] == 'e2e-exact-speed-v200' and old['workflow_version'] == '7.93.0'
+    assert old['e2e_options']['exact_speedups'] == v200
+    assert not any(k.endswith('_v203.json') for k in old['source_sha256'])
+    new = bundle('0'*40, 61001, 'study_gemma4_31b_v1', **common, exact_speedups={**v200, 'vector_rays': True})
+    assert new['execution_bundle_id'] == 'e2e-exact-speed2-v203' and new['workflow_version'] == '7.96.0'
+    assert new['e2e_options']['exact_speedups'] == {**vars(Options(**v200)), 'vector_rays': True}
+    assert {'configs/simulation_workflows.d/e2e_exact_speed2_v203.json', 'scripts/e2e_speed_measure.py'} <= set(new['source_sha256'])
+    assert {k for k in old if old[k] != new[k]} == {'schema', 'execution_bundle_id', 'workflow_version', 'e2e_options', 'source_sha256'}
+    for k in ('contact_profile', 'calibration', 'case_cap_s', 's3_camera_binding', 'controller_config'):
+        assert old[k] == new[k]
+    flag = bundle('0'*40, 61001, 'study_gemma4_31b_v1', **common, exact_speedups=v200, speed2_bundle=True)
+    assert flag['execution_bundle_id'] == 'e2e-exact-speed2-v203'
+
+
+# ---- rbpf_audit_hash=binary_v1 ------------------------------------------------
+
+def _audit_robot(seed=0, n=6):
+    from types import SimpleNamespace as NS
+    rng = np.random.default_rng(seed)
+    maps = []
+    for i in range(n):
+        cells = {(int(x), int(y)): float(rng.normal()) for x, y in rng.integers(-30, 30, size=(40, 2))}
+        maps.append(NS(cells=cells))
+    histories = [[dict(t=.2*k, frame_id=k, pose=rng.normal(size=3).tolist(),
+                       wall_confidence=[dict(weight=float(rng.random()), factors=dict(range=np.float64(rng.random())))])
+                  for k in range(3)] for _ in range(n)]
+    grid = NS(poses=rng.normal(size=(n, 3)), pending_cov=rng.normal(size=(n, 3, 3)), weights=np.full(n, 1/n),
+              log_weights=np.zeros(n), rng=np.random.default_rng(seed+7), best=0, resamples=1, revision=4,
+              histories=histories, maps=maps)
+    return NS(robot_id='r1', frame=NS(index=3), now=.6, goal=NS(explorer=NS(memory=NS(self_map=grid))))
+
+
+def _mutations():
+    def first_cell(g):
+        return next(iter(g.maps[0].cells))
+    yield 'poses value', lambda g: g.poses.__setitem__((0, 0), g.poses[0, 0]+1e-12)
+    yield 'pending_cov value', lambda g: g.pending_cov.__setitem__((1, 2, 0), 0.)
+    yield 'weights -0.0', lambda g: g.weights.__setitem__(0, -0.)
+    yield 'log_weights dtype', lambda g: setattr(g, 'log_weights', g.log_weights.astype(np.float32))
+    yield 'poses shape', lambda g: setattr(g, 'poses', g.poses.reshape(3, -1))
+    yield 'rng advanced', lambda g: g.rng.random()
+    yield 'best', lambda g: setattr(g, 'best', 1)
+    yield 'best bool', lambda g: setattr(g, 'best', False)
+    yield 'resamples', lambda g: setattr(g, 'resamples', 2)
+    yield 'revision float', lambda g: setattr(g, 'revision', 4.)
+    yield 'history float', lambda g: g.histories[2][1]['pose'].__setitem__(0, 9.)
+    yield 'history np.float64', lambda g: g.histories[0][0]['wall_confidence'][0]['factors'].__setitem__('range', np.float64(.5))
+    yield 'history key', lambda g: g.histories[1][0].__setitem__('extra', None)
+    yield 'history append', lambda g: g.histories[3].append(dict(t=9.))
+    yield 'map value', lambda g: g.maps[0].cells.__setitem__(first_cell(g), g.maps[0].cells[first_cell(g)]+1.)
+    yield 'map value -0.0', lambda g: g.maps[1].cells.__setitem__(first_cell(g) if False else next(iter(g.maps[1].cells)), -0.)
+    yield 'map value int', lambda g: g.maps[2].cells.__setitem__(next(iter(g.maps[2].cells)), 1)
+    yield 'map key moved', lambda g: g.maps[0].cells.__setitem__((99, -99), g.maps[0].cells.pop(first_cell(g)))
+    yield 'map key bool', lambda g: g.maps[4].cells.__setitem__((True, 5), 1.)
+    yield 'map cell added', lambda g: g.maps[5].cells.__setitem__((1000, 1000), .25)
+    yield 'map key beyond int64', lambda g: g.maps[5].cells.__setitem__((2**70, 1), .25)
+    yield 'map cell removed', lambda g: g.maps[5].cells.pop(next(iter(g.maps[5].cells)))
+    yield 'map emptied', lambda g: g.maps[3].cells.clear()
+    yield 'maps swapped', lambda g: g.maps.reverse()
+    yield 'map dropped', lambda g: g.maps.pop()
+
+
+@pytest.mark.parametrize('name', [n for n, _ in _mutations()])
+def test_binary_audit_changes_whenever_json_audit_changes(name):
+    from scripts.e2e_speed_measure import rbpf_digest, rbpf_digest_binary
+    mutate = dict(_mutations())[name]
+    robot = _audit_robot()
+    j0, b0 = rbpf_digest(robot), rbpf_digest_binary(robot)
+    mutate(robot.goal.explorer.memory.self_map)
+    j1, b1 = rbpf_digest(robot), rbpf_digest_binary(robot)
+    assert j1 != j0, name  # each mutation is visible to the legacy JSON digest
+    assert b1 != b0, name
+
+
+def test_binary_audit_pure_and_order_independent_like_json():
+    from scripts.e2e_speed_measure import rbpf_digest, rbpf_digest_binary
+    a, b = _audit_robot(), _audit_robot()
+    gb = b.goal.explorer.memory.self_map
+    for m in gb.maps:  # same content, reversed dict insertion order
+        m.cells = dict(reversed(list(m.cells.items())))
+    for h in gb.histories:
+        for rec in h:
+            items = list(rec.items()); rec.clear(); rec.update(reversed(items))
+    assert rbpf_digest(a) == rbpf_digest(b)
+    assert rbpf_digest_binary(a) == rbpf_digest_binary(b)
+    assert rbpf_digest_binary(a) != rbpf_digest(a)
+    gb.maps[0].cells[next(iter(gb.maps[0].cells))] = np.float64(gb.maps[0].cells[next(iter(gb.maps[0].cells))])
+    rbpf_digest_binary(b)  # typed fallback path still hashes
+
+
+def test_audit_modes_rows_compare_like_with_like_and_mapping():
+    from scripts.e2e_speed_measure import audit_row, compare_rbpf, hash_mapping, rbpf_digest
+    robot = _audit_robot()
+    seconds = dict(json_v1=0., binary_v1=0.)
+    off = audit_row(robot, 'off', seconds)
+    assert list(off) == ['robot', 'frame', 't', 'sha256'] and off['sha256'] == rbpf_digest(robot)
+    binary = audit_row(robot, 'binary_v1', seconds)
+    both = audit_row(robot, 'both_v1', seconds)
+    assert set(binary) == {'robot', 'frame', 't', 'binary_sha256'} and both['binary_sha256'] == binary['binary_sha256']
+    with pytest.raises(ValueError, match='RBPF_HASH_SCHEME_MISMATCH'):
+        compare_rbpf([off], [binary])
+    with pytest.raises(ValueError, match='RBPF_HASH_SCHEME_MISMATCH'):
+        compare_rbpf([both], [off], 'binary_v1')
+    assert compare_rbpf([off], [both])['scheme'] == 'json_v1'
+    assert compare_rbpf([binary], [both])['scheme'] == 'binary_v1'
+    assert compare_rbpf([both], [both], 'binary_v1')['equal']
+    mapping = hash_mapping([both])
+    assert mapping['functional'] and mapping['mapping'][0]['json_v1'] == off['sha256']
+    with pytest.raises(ValueError):
+        audit_row(robot, 'json', seconds)
