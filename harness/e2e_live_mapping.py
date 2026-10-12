@@ -111,10 +111,12 @@ class Robot:
         self.wall_segments=[]
         self.translation_commands=0
         self.camera_load='off'
+        self.perception_settle='off';self.camera_settle_until=0.;self.landmark_cache='off'
 
     def receive(self,obs,rgb):
         from harness.e2e_camera_load import using as load_using
-        with using(self.exact_speedups), speed4_using(self.speed4), speed5_using(self.speed5), load_using(self.camera_load):
+        from harness.e2e_camera_settle import using as cache_using
+        with using(self.exact_speedups), speed4_using(self.speed4), speed5_using(self.speed5), load_using(self.camera_load), cache_using(self.landmark_cache):
             return self._receive(obs,rgb)
 
     def _receive(self,obs,rgb):
@@ -153,6 +155,8 @@ class Robot:
         return trace
 
     def commanded(self,action,now):
+        from harness.e2e_camera_settle import commanded as camera_commanded
+        camera_commanded(self,action,now)
         if self.speed4.enabled and action['kind'] in ('mecanum','drive','hold','wait'):
             self._speed4_last_motion = dict(action)
         if self.speed4.enabled and action['kind'] in ('arm','look'):

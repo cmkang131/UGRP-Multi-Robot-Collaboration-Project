@@ -73,6 +73,8 @@ class Transport:
         # Fixed command-space trajectory, one common start, no servo measurements.
         start=now
         for pose,duration,settle in path:
+            from harness.e2e_camera_settle import duration as camera_duration
+            duration=camera_duration(self,pose,duration)
             original=self.robots[rid].servo if start==now else previous
             n=max(1,round(duration/.05))
             for i in range(1,n+1):

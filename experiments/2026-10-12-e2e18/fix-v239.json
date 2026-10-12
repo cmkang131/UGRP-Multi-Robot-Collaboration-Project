@@ -1,0 +1,129 @@
+{
+  "schema": "e2e18.fix.v239",
+  "parent": "e2e18-v238",
+  "toggles": {
+    "perception_settle": "command0p6_v1",
+    "landmark_cache": "bounded64_v1",
+    "camera_motion": "slow_scan_v1",
+    "defaults": "off"
+  },
+  "evidence": {
+    "file": "camera-settle-evidence-v239.json",
+    "sha256": "c0b2571f189f51c73423195b008625f6c844a100393e04bdd76b891d557157f4",
+    "tilt_file": "tilt-v236-s61005.json"
+  },
+  "profile": {
+    "source": "outputs/e2e18-admin/profile-align-v236.raw",
+    "sha256": "64f348dba194f9f1434e05201083ac557259234005f5a6a8254afcb7eebfb080",
+    "samples": 544,
+    "receive_samples": 372,
+    "top_leaf": [
+      [
+        "_physics_step_for (sim/masterpi_drive_friction_v7.py:231)",
+        94
+      ],
+      [
+        "render (classic/renderer.py:184)",
+        50
+      ],
+      [
+        "_amin (numpy/_core/_methods.py:45)",
+        34
+      ],
+      [
+        "_amax (numpy/_core/_methods.py:41)",
+        26
+      ],
+      [
+        "box_depth (harness/own_map_amcl_vendor/visibility.py:115)",
+        15
+      ],
+      [
+        "floor_features (harness/own_map_amcl_vendor/landmarks.py:75)",
+        14
+      ],
+      [
+        "_all (numpy/_core/_methods.py:70)",
+        9
+      ],
+      [
+        "floor_features (harness/own_map_amcl_vendor/landmarks.py:79)",
+        9
+      ],
+      [
+        "receive_rays (harness/public_navigation_raytrace.py:62)",
+        8
+      ],
+      [
+        "norm (numpy/linalg/_linalg.py:2804)",
+        8
+      ],
+      [
+        "__call__ (harness/controller_exact_speedups.py:126)",
+        7
+      ],
+      [
+        "_floor_intersections (harness/floor_goal.py:104)",
+        7
+      ],
+      [
+        "_any (numpy/_core/_methods.py:61)",
+        7
+      ],
+      [
+        "_rays (harness/active_wall_mapping.py:125)",
+        6
+      ],
+      [
+        "dense (harness/own_map_navigation.py:148)",
+        6
+      ],
+      [
+        "state (harness/own_map_navigation.py:139)",
+        6
+      ]
+    ],
+    "scope": "30wall sampling of actual Azurev236 align; not gate measurement"
+  },
+  "causes": [
+    "v237 seed61007 r1:86/288 and r2:44/288 integrated frames within0.6SIM after camera command; nominal camera FK does not prove actual settling",
+    "camera movement correlated with tilt exit; no proven timestep cause",
+    "Sensor per-command geometry cache never evicted; interpolation poses generate one-use expensive ray/box masks"
+  ],
+  "changes": {
+    "settle": "raw capture retained; controller/model retains last accepted stable frame and mapping until0.6SIM after changed own camera/arm command; rejection sha refs logged",
+    "cache": "both deterministic Sensor and visibility caches capped64; exact value recomputed after eviction",
+    "motion": "registered search/p45/inspect camera transitions in mapping/align take at least0.8SIM; grasp/carry state schedules unchanged",
+    "physics": "same v232 stage dt profile; no changed physical timestep"
+  },
+  "prereg": {
+    "azure3_seeds": [
+      61001,
+      61006
+    ],
+    "azure4_seeds": [
+      61007,
+      61009,
+      61010
+    ],
+    "gate_load_per_vm": 6,
+    "gate_limit": 3.0,
+    "probe_sim_s": 30,
+    "wall_cap_s": 5400
+  },
+  "tests": {
+    "passed": 15,
+    "seconds": 10.76,
+    "files": [
+      "test_e2e_camera_settle.py",
+      "test_e2e_approach_recovery.py",
+      "test_e2e_pregrasp_acquire.py"
+    ],
+    "scope": "offline actual Transport scheduling, RGB admission refs, cache preservation, bundle; no Mac physics"
+  },
+  "references": [
+    "https://faculty.cc.gatech.edu/~seth/ResPages/pdfs/HutHagCor96.pdf",
+    "https://arxiv.org/html/2506.13367v1"
+  ],
+  "research": "Classical look/move visual control: compose camera geometry only after commanded settle, then observe. Active perception separates exploration and target approach. Delay is a command-only heuristic, not measured-joint proof; no depth/GT pose assumptions imported."
+}

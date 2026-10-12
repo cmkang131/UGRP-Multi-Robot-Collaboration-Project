@@ -32,6 +32,8 @@ class Sensor:
             idx = np.argmin(abs(np.arange(width)[:, None]-cm.columns[None, :]), axis=1)
             clear = valid.reshape(height, width) & (depth.reshape(height, width) < shadow[:, idx])
             self.cache[key] = cm, clear
+        from harness.e2e_camera_settle import trim
+        trim(self,key)
         cm, visible = self.cache[key]
         image = mp.undistort(bgr)
         radius = vis.PARAMS['cargo_padding_px']
