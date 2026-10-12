@@ -25,6 +25,9 @@ def advance(transport,rid,now):
         return False,[dict(kind='hold')]
     fresh=b is not None and now-b['rgb']['t_sim']<=.45
     target=g.entities.get('B')
+    from harness.e2e_approach_recovery import seek_goal
+    seeking=seek_goal(transport,rid,now,target)
+    if seeking is not None:return seeking
     if fresh and target:
         end,grip,basis=station(b,target['center_m'],rid)
         state.update(station=end,grip=grip,basis=basis,last_seen=now)
@@ -88,9 +91,13 @@ def advance(transport,rid,now):
         diag['would_stop_path_unavailable']=True
         transport.event(now,'would_stop_pregrasp_no_path',robot_id=rid,dev_light=True,source='fresh_own_rgb_station' if fresh else 'last_own_rgb_station',last_seen_age_s=now-state['last_seen'])
     if not path:
+        from harness.e2e_approach_recovery import no_path
+        recovered=no_path(transport,rid,now,state,distance)
+        if recovered is not None:return recovered
         diag['status']='approach_path_unavailable'
         transport.event(now,'own_pregrasp_path_wait',robot_id=rid,distance_m=distance)
         return False,[dict(kind='hold')]
+    state['no_path_frames']=0
     command,rpp=rpp_command(dict(coordinate_frame=rid+'/own_odom',path_m=transform(path,inverse(tf)).tolist(),
         status='goal_approach',heading_rad=float(end[2])),pose,transport.profiles,robot_id=rid)
     diag['rpp']=rpp

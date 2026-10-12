@@ -1,0 +1,60 @@
+{
+  "schema": "e2e18.fix.v238",
+  "parent": "e2e18-v237",
+  "toggles": {
+    "carrier_goal": "seek_own_B_v1",
+    "blocked_path_recovery": "backup_v1",
+    "defaults": "off"
+  },
+  "evidence": {
+    "file": "approach-failure-evidence-v238.json",
+    "sha256": "db7b52e69e2882d322f44265eebd69ca9530ee94b39a5b6e1ce022f606fa7e18"
+  },
+  "causes": [
+    "r2 own B absent at151/132/159SIM in seeds61002/61003/61004; station needs own B, but bounded beam scan used most time instead of own frontier navigation",
+    "r1 seed61004 plan failure73/75frames; no issued translations means existing progress checker intentionally never starts recovery"
+  ],
+  "size_check": {
+    "observed_robot_frame_beam_center_m": [
+      0.17019017589082458,
+      0.35051792560874284
+    ],
+    "beam_rectangle_m": [
+      0.6,
+      0.06
+    ],
+    "robot_origin_distance_to_beam_rectangle_m": 0.08953915736887574,
+    "scope": "own image geometry; no simulator truth; explains planner start clearance risk"
+  },
+  "changes": {
+    "missing_B": "restore registered search posture then own frontier navigation; peer/local frame not substituted",
+    "plan_failure": "three fresh-frame failed plans trigger existing .1s calibrated backward pulses, maximum6SIM or .12m thenboundedturn; obstacle map/provenance never erased"
+  },
+  "prereg": {
+    "azure3_seeds": [
+      61002,
+      61003,
+      61004
+    ],
+    "other_running": 3,
+    "total_load": 6,
+    "gate_limit": 3.0,
+    "probe_sim_s": 30,
+    "wall_cap_s": 5400
+  },
+  "tests": {
+    "passed": 9,
+    "seconds": 7.66,
+    "files": [
+      "test_e2e_approach_recovery.py",
+      "test_e2e_pregrasp_progress.py",
+      "test_e2e_mapping_cadence.py"
+    ],
+    "scope": "offline controller integration, no Mac physics"
+  },
+  "references": [
+    "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml",
+    "https://openaccess.thecvf.com/content/ICCV2025/html/Qin_Active_Perception_Meets_Rule-Guided_RL_A_Two-Phase_Approach_for_Precise_ICCV_2025_paper.html"
+  ],
+  "research": "Nav2 planner/controller failures enter bounded spin/backup recovery. Recent active target perception separates exploration from final approach. Use existing calibrated pulses and own frontier, no clearing observed evidence or learned policy imported; CVF abstract verified via primary search, direct open returned403."
+}
