@@ -51,12 +51,12 @@ def install_exact():
     return install()
 
 
-def build(options):
+def build(options, *, install_controller=True):
     from harness.e2e_live_mapping import Robot
     from harness.e2e_exact_speedups import Options as Exact
     from harness.e2e_stall_odometry import Options as Stall
     from harness.s4_event_policy import Options as Study
-    install_exact()
+    if install_controller:install_exact()
     cov = json.loads((ROOT/'configs/e2e_nees_egomap70_dev_v1.json').read_text())
     exact = Exact(**{k:True for k in asdict(Exact())})
     return {rid:Robot(rid,61001+i,cov,Study(True,True,'en'),
@@ -166,6 +166,7 @@ def main():
             result=dict(candidate=name,status='HOST_ERROR',error=type(exc).__name__+':'+str(exc))
         results.append(result);write(a.output/'summary.json',results)
     print(json.dumps(results),flush=True)
+    return int(any(r.get("status")=="HOST_ERROR" or r.get("errors",0) for r in results))
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':raise SystemExit(main())

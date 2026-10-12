@@ -54,7 +54,7 @@ def main():
                 loadavg_start=os.getloadavg(),options=vars(opt),initial_check=None)
     prof=cProfile.Profile();backend=None;start=time.perf_counter();cpu=time.process_time();origin=None
     try:
-        robots=build(opt)
+        robots=build(opt,install_controller=False)
         backend=PhysicsBackend(b,a.output,seed=61001);backend.reset(b['reset_cap_s'])
         origin=backend.now;backend.set_deadline(origin+60.)
         from harness.active_camera import SEARCH
