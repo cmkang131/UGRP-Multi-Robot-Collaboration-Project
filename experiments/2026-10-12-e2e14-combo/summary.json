@@ -298,7 +298,7 @@
       "attempt": 2,
       "group": "a",
       "seed": 61001,
-      "status": "RUNNING",
+      "status": "HOST_ERROR",
       "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
       "started_unix": 1791770001.0806468,
       "initial_health_passed": true,
@@ -351,7 +351,42 @@
           "vo_applied_fraction": 0.9629629629629629
         }
       },
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61001-r2"
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61001-r2",
+      "cause": "'NoneType' object has no attribute 'reshape'",
+      "sim_s": 72.0,
+      "wall_s": 809.8744083089998,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 25.023650534999888
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 25.023650534999888
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 45.501522528999885,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 130.12738388100001,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "archive": {
+        "files": 1184,
+        "hash_matches": 1184,
+        "inventory_sha256": "43fc938be51823c7ea64c1bd707dad663e53aadf7729891f65ce3c7cd0337e94"
+      },
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e14-a-s61001-r2",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false
     },
     {
       "id": "e2e14-b-s61001-r2",
@@ -417,7 +452,7 @@
       "attempt": 2,
       "group": "a",
       "seed": 61002,
-      "status": "RUNNING",
+      "status": "HOST_ERROR",
       "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
       "started_unix": 1791770001.0829506,
       "initial_health_passed": true,
@@ -470,7 +505,42 @@
           "vo_applied_fraction": 0.9629629629629629
         }
       },
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61002-r2"
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61002-r2",
+      "cause": "'NoneType' object has no attribute 'reshape'",
+      "sim_s": 59.6,
+      "wall_s": 695.2366800350003,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 27.425245493000148
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 27.425245493000148
+        },
+        "B_candidate": {
+          "sim_s": 4.4,
+          "wall_s": 69.81674255200005,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 26.4,
+          "wall_s": 304.27747766900006,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "archive": {
+        "files": 998,
+        "hash_matches": 998,
+        "inventory_sha256": "dfed28093d6e32028f54d63da3dbe48111d050256dcdebd2ebe73f4a40adabeb"
+      },
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e14-a-s61002-r2",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false
     },
     {
       "id": "e2e14-b-s61002-r2",
@@ -536,7 +606,7 @@
       "attempt": 2,
       "group": "a",
       "seed": 61003,
-      "status": "RUNNING",
+      "status": "HOST_ERROR",
       "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
       "started_unix": 1791770001.0852554,
       "initial_health_passed": true,
@@ -589,7 +659,42 @@
           "vo_applied_fraction": 0.9651162790697675
         }
       },
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61003-r2"
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61003-r2",
+      "cause": "'NoneType' object has no attribute 'reshape'",
+      "sim_s": 76.0,
+      "wall_s": 832.2081404929997,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 22.577849258000015
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 22.577849258000015
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 43.42474263599979,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 127.76214455399986,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "archive": {
+        "files": 1244,
+        "hash_matches": 1244,
+        "inventory_sha256": "297876176a7466b36bef8c480c93faa403ab4d47d2261fe9610bed0320ee9095"
+      },
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e14-a-s61003-r2",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false
     },
     {
       "id": "e2e14-b-s61003-r2",
@@ -655,7 +760,7 @@
       "attempt": 2,
       "group": "a",
       "seed": 61004,
-      "status": "RUNNING",
+      "status": "HOST_ERROR",
       "source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
       "started_unix": 1791770001.0874,
       "initial_health_passed": true,
@@ -708,7 +813,46 @@
           "vo_applied_fraction": 0.9651162790697675
         }
       },
-      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61004-r2"
+      "raw": "azure:/home/ugrp/ugrp-sim/runs/e2e14-a-s61004-r2",
+      "cause": "'NoneType' object has no attribute 'reshape'",
+      "sim_s": 107.8,
+      "wall_s": 1244.2747546849998,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 23.80442635700001
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 23.80442635700001
+        },
+        "B_boundary": {
+          "sim_s": 59.0,
+          "wall_s": 695.3018140030001
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 44.323828823999975,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 22.2,
+          "wall_s": 251.02301876699994,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "archive": {
+        "files": 1721,
+        "hash_matches": 1721,
+        "inventory_sha256": "e27a869f02fc5016d26cde86dc62c7052d316caf729dd20fbb9a2f9b277e88d7"
+      },
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e14-a-s61004-r2",
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false
     },
     {
       "id": "e2e14-b-s61004-r2",
@@ -772,13 +916,16 @@
   ],
   "outcomes": {
     "N": 8,
-    "completed": 0,
+    "completed": 4,
     "LLM_operated_observed": 8,
     "own_map_completed_observed": 0,
     "start_to_finish_transport_observed": 0,
-    "note": "retry cohort running; first 8 startup HOST_ERROR preserved separately"
+    "note": "retry cohort running; first 8 startup HOST_ERROR preserved separately",
+    "running": 4,
+    "HOST_ERROR": 4,
+    "B_boundary_remembered_observed": 1
   },
-  "last_recorded_utc": "2026-10-12T01:57:52.220897+00:00",
+  "last_recorded_utc": "2026-10-12T02:26:04.917634+00:00",
   "references": [
     {
       "url": "https://docs.python.org/3/library/time.html#time.monotonic",
@@ -796,8 +943,8 @@
     "N": 27
   },
   "comparison_source_sha": "e4fc83549131b24583fd9e979ca4ee6f911e401d",
-  "completed_launches": 8,
-  "unfinished_launches": 8,
+  "completed_launches": 12,
+  "unfinished_launches": 4,
   "initial_health": {
     "n": 8,
     "N": 8,
@@ -818,5 +965,214 @@
       "bytes": 11801,
       "sha256": "fcbb96d4cc0f0476b2e47421140aedee2a137a71352ef09de399e92ed4c4dde9"
     }
-  ]
+  ],
+  "matched_position_error_comparison": {
+    "a": {
+      "map_error_m": {
+        "median": 0.4284220106506535,
+        "max": 1.2438161857548224
+      },
+      "control_error_m": {
+        "median": 0.27345554938782496,
+        "max": 0.34847231737628537
+      }
+    },
+    "b": {
+      "map_error_m": {
+        "median": 0.4849011642104893,
+        "max": 1.0897371936084224
+      },
+      "control_error_m": {
+        "median": 0.163241248666887,
+        "max": 0.552114817152089
+      }
+    }
+  },
+  "matched_position_error_scope": "Each seed uses common completed RGB time window of A/B and both moving robots. Aggregate is median of 8 robot summaries, max column is median of robot maxima.",
+  "matched_common_sim_s": {
+    "61001": 71.8,
+    "61002": 59.4,
+    "61003": 75.8,
+    "61004": 107.6
+  },
+  "last_progress": {
+    "e2e14-b-s61001-r2": {
+      "sim_s": 187.0,
+      "wall_s": 1931.15688502,
+      "frames": 936,
+      "phase": "mapping",
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false
+    },
+    "e2e14-b-s61002-r2": {
+      "sim_s": 188.0,
+      "wall_s": 1920.2661124640001,
+      "frames": 941,
+      "phase": "mapping",
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false
+    },
+    "e2e14-b-s61003-r2": {
+      "sim_s": 175.0,
+      "wall_s": 1922.1770428920001,
+      "frames": 876,
+      "phase": "mapping",
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false
+    },
+    "e2e14-b-s61004-r2": {
+      "sim_s": 182.0,
+      "wall_s": 1926.6443123940003,
+      "frames": 911,
+      "phase": "mapping",
+      "own_map_B_generated": true,
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false
+    }
+  },
+  "progress_30min": {
+    "e2e14-b-s61001-r2": {
+      "elapsed_s": 2007,
+      "sim_s": 193.0,
+      "phase": "mapping",
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "candidate_first_sim_s": 2.4,
+          "map_error_m": {
+            "n": 966,
+            "max": 1.81565187874657,
+            "median": 1.7744141291329818
+          },
+          "control_error_m": {
+            "n": 966,
+            "max": 0.5649488800086032,
+            "median": 0.5645878508895412
+          }
+        },
+        "r2": {
+          "stage": "explore",
+          "candidate_first_sim_s": 116.4,
+          "map_error_m": {
+            "n": 966,
+            "max": 2.528071270248623,
+            "median": 1.1436599687627638
+          },
+          "control_error_m": {
+            "n": 966,
+            "max": 3.1956726435214686,
+            "median": 1.6262247653200599
+          }
+        }
+      }
+    },
+    "e2e14-b-s61002-r2": {
+      "elapsed_s": 2007,
+      "sim_s": 194.0,
+      "phase": "mapping",
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "candidate_first_sim_s": 2.4,
+          "map_error_m": {
+            "n": 971,
+            "max": 1.985264200317793,
+            "median": 0.7816534494866569
+          },
+          "control_error_m": {
+            "n": 971,
+            "max": 1.1450755431939843,
+            "median": 0.13983534572603473
+          }
+        },
+        "r2": {
+          "stage": "explore",
+          "candidate_first_sim_s": 121.0,
+          "map_error_m": {
+            "n": 971,
+            "max": 6.137647666254563,
+            "median": 2.244392622365437
+          },
+          "control_error_m": {
+            "n": 971,
+            "max": 6.224311512865857,
+            "median": 2.3311236230939505
+          }
+        }
+      }
+    },
+    "e2e14-b-s61003-r2": {
+      "elapsed_s": 2008,
+      "sim_s": 179.0,
+      "phase": "mapping",
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "candidate_first_sim_s": 2.4,
+          "map_error_m": {
+            "n": 896,
+            "max": 1.3105106475305146,
+            "median": 0.3260596460815425
+          },
+          "control_error_m": {
+            "n": 896,
+            "max": 0.30051980690847035,
+            "median": 0.10298712744863697
+          }
+        },
+        "r2": {
+          "stage": "explore",
+          "candidate_first_sim_s": 165.2,
+          "map_error_m": {
+            "n": 896,
+            "max": 3.490356997640649,
+            "median": 1.6918622904515954
+          },
+          "control_error_m": {
+            "n": 896,
+            "max": 3.6956106484396813,
+            "median": 1.8844402885219005
+          }
+        }
+      }
+    },
+    "e2e14-b-s61004-r2": {
+      "elapsed_s": 2008,
+      "sim_s": 189.0,
+      "phase": "mapping",
+      "robots": {
+        "r1": {
+          "stage": "explore",
+          "candidate_first_sim_s": 2.4,
+          "map_error_m": {
+            "n": 946,
+            "max": 2.0381194130152283,
+            "median": 1.008264023029708
+          },
+          "control_error_m": {
+            "n": 946,
+            "max": 1.2839422363047752,
+            "median": 0.36080085576933074
+          }
+        },
+        "r2": {
+          "stage": "explore",
+          "candidate_first_sim_s": null,
+          "map_error_m": {
+            "n": 946,
+            "max": 0.7162427568131623,
+            "median": 0.715833879265539
+          },
+          "control_error_m": {
+            "n": 946,
+            "max": 0.8587900063797077,
+            "median": 0.8583677771797567
+          }
+        }
+      }
+    }
+  }
 }
