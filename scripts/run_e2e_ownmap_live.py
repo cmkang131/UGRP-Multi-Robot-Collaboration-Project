@@ -186,6 +186,16 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     return b
 
 
+def ownmap_record(robot, obs, trace, now):
+    """Persist both accepted and rejected own-input association diagnostics."""
+    return dict(t=now,frame_id=obs['frame_id'],sha256=obs['sha256'],
+        pose_own_m=robot.goal.explorer.local_pose.tolist(),
+        remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command,
+        pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
+        navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry'),
+        **{k:trace[k] for k in ('boundary_view','boundary_diagnostics','explore_deadlock','boundary_association') if k in trace})
+
+
 def health(robots,host,transport,sim_s,wall_s,frames):
     from harness.llm_completion import normal_completion
     ledger=host.trial.send_ledger.entries if host else []
@@ -314,12 +324,7 @@ def run(b,out,receipt,*,backend_factory=None):
                     own_obs={k:obs[k] for k in ('frame_id','sim_time','sha256','image')}
                     own_obs['sim_time']=round(obs['sim_time']-origin,8)
                     trace=robot.receive(own_obs,rgb)
-                    backend._append(f'robots/{rid}/ownmap.jsonl',dict(t=now,frame_id=obs['frame_id'],
-                        sha256=obs['sha256'],pose_own_m=robot.goal.explorer.local_pose.tolist(),
-                        remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command,
-                        pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
-                        navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry'),
-                        **{k:trace[k] for k in ('boundary_view','boundary_diagnostics','explore_deadlock') if k in trace}))
+                    backend._append(f'robots/{rid}/ownmap.jsonl',ownmap_record(robot,obs,trace,now))
                 frames_seen+=1
                 if not host.started:
                     write(out/'e2e-progress.json',health(robots,host,transport,now,time.monotonic()-started,frames_seen))
