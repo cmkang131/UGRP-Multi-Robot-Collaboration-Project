@@ -149,6 +149,10 @@ class Robot:
 
     def route(self,profiles,pulse_budget):
         if self.robot_id!='r1' or self.beam is None:return None
+        if getattr(self.goal,'e2e_route_guard','off')!='off':
+            frame=self.beam['rgb']['frame_id']
+            if getattr(self,'_route_attempt_frame',None)==frame:return None
+            self._route_attempt_frame=frame
         beam={k:self.beam[k] for k in ('rgb','pose_own_m')}
         return self.goal.route_to_B(beam,now=self.now,profiles=profiles,pulse_budget=pulse_budget)
 

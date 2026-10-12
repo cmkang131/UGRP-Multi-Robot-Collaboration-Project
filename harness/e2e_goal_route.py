@@ -108,6 +108,9 @@ class IntegratedGoalRoute(GoalRoute):
         own.scan(beam); own.rgb_ref(beam['rgb'], 'r1', now, self.e2e_observed)
         own.numbers(beam['pose_own_m'], 3, 'OWN_BEAM_POSE')
         if now-beam['rgb']['t_sim'] > .25: raise ContractViolation('FRESH_OWN_BEAM_REQUIRED')
+        diagnostic=getattr(self,'e2e_route_guard','off')!='off'
+        if diagnostic:
+            self.e2e_route_diagnostics=dict(t=now,beam_pose_own_m=copy.deepcopy(beam['pose_own_m']),beam_rgb=copy.deepcopy(beam['rgb']),sigma_xy_m=math.sqrt(float(np.linalg.eigvalsh(np.asarray(self.pose_covariance())[:2,:2]).max())),stage='beam_axes')
         if abs(beam['pose_own_m'][2]) > math.radians(5):
             raise ContractViolation('S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED')
         entity, reference = self.entities.get('B'), self.e2e_gate.references.get('B')
@@ -131,6 +134,10 @@ class IntegratedGoalRoute(GoalRoute):
         first, last = transform([start, target], tf)
         cells = astar(allowed, np.asarray(grid.cell(first))-lo, np.asarray(grid.cell(last))-lo,
                       grid.resolution, clearance)
+        if diagnostic:
+            from harness.e2e_route_guard import search as dev_search
+            self.e2e_route_diagnostics.update(stage='grid_route',strict_margin_m=margin,B_own_m=list(target))
+            allowed,clearance,lo,cells=dev_search(self,grid,tf,beam,first,last,margin,(allowed,clearance,lo,cells))
         if not cells: raise ContractViolation('OWN_GRID_ROUTE_UNAVAILABLE')
         path = [start] + transform([grid.point(np.asarray(c)+lo) for c in cells], inverse(tf)).tolist() + [list(target)]
 
