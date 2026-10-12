@@ -5,6 +5,8 @@ from scripts.azure_speed_gate import replace_option,main as gate_main
 from scripts.run_e2e_ownmap_live import relay_url
 from harness.s4_live_transport import validate_receipt
 
+# Explicit render/CPU environment, shared with the r45 retry.
+for key,value in {'MUJOCO_GL':'osmesa','PYOPENGL_PLATFORM':'osmesa','OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MKL_NUM_THREADS':'1','LP_NUM_THREADS':'1'}.items():os.environ[key]=value
 b=Path.home()/'ugrp-sim';sha=sys.argv[1];host=os.uname().nodename
 assert host in ('ugrp-sim-azure3','ugrp-sim-azure4')
 seeds=[61007] if host.endswith('3') else [61009]

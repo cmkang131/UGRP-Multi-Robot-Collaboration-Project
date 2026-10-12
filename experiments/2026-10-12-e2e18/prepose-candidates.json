@@ -129,5 +129,19 @@
       ]
     }
   },
-  "wave_reason": "Submit fixed candidates immediately after replacing confirmed repeated approach/clearance cases; keep v257/s61006 with observed visual-servo progress and recently entered s61011 align runs. Each wave adds 3 per VM with total <=6."
+  "wave_reason": "Submit fixed candidates immediately after replacing confirmed repeated approach/clearance cases; keep v257/s61006 with observed visual-servo progress and recently entered s61011 align runs. Each wave adds 3 per VM with total <=6.",
+  "retry": {
+    "r43": "6/6 gate initialization failures: missing MUJOCO_GL=osmesa, no physics or cohort execution",
+    "r45": "same seeds and candidates; explicitly set OSMesa and single BLAS/OMP thread environment in runner",
+    "reference": "https://github.com/google-deepmind/mujoco/blob/main/python/mujoco/rendering/classic/gl_context.py",
+    "source_line": "scripts/run_e2e_ownmap_live.py:693",
+    "matched_live_r42_environment": {
+      "MUJOCO_GL": "osmesa",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "LP_NUM_THREADS": "1"
+    },
+    "validation": "Python AST parsed both finite runners; actual remote gate is required before cohort admission."
+  }
 }
