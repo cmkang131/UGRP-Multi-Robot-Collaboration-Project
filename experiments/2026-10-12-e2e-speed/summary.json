@@ -1,5 +1,5 @@
 {
-  "status": "COMPARISON_PREPARING",
+  "status": "COMPLETE_DEV_SPEED_MEASUREMENT",
   "pr": 433,
   "class": "dev",
   "seed": 61001,
@@ -108,7 +108,10 @@
       "wall_per_sim": 2.144156707016667
     }
   ],
-  "equivalence": null,
+  "equivalence": {
+    "N": 6,
+    "n": 6
+  },
   "references": [
     {
       "url": "https://github.com/benfred/py-spy",
@@ -141,6 +144,10 @@
     {
       "url": "https://docs.python.org/3.12/library/math.html#math.floor",
       "use": "scalar floor retaining IEEE division; exact boundary regression"
+    },
+    {
+      "url": "https://numpy.org/doc/stable/user/basics.indexing.html#advanced-indexing",
+      "use": "integer indexed dense writes; duplicates retain identical cell values"
     }
   ],
   "profile_source": "7821864aa7a37005e67749f368e152495b520ae8",
@@ -177,15 +184,6 @@
     ]
   },
   "tests": {
-    "passed": 94,
-    "files": [
-      "tests/test_e2e_speed.py",
-      "tests/test_grid_acceleration.py",
-      "tests/test_e2e_own_inputs.py"
-    ]
-  },
-  "profile_artifact": "profile.json",
-  "targeted_tests": {
     "files": [
       "tests/test_e2e_speed.py",
       "tests/test_grid_acceleration.py",
@@ -193,5 +191,911 @@
     ],
     "passed": 95,
     "seconds": 6.42
+  },
+  "profile_artifact": "profile.json",
+  "candidate_source": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb",
+  "storage_budget": {
+    "x86": {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "x86",
+          "free_bytes": 33548840960,
+          "expected_bytes": 19864223744,
+          "projected_free_bytes": 13684617216,
+          "floor_bytes": 8589934592,
+          "ok": true
+        }
+      ]
+    },
+    "arm": {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "arm",
+          "free_bytes": 85269438464,
+          "expected_bytes": 19864223744,
+          "projected_free_bytes": 65405214720,
+          "floor_bytes": 26843545600,
+          "ok": true
+        }
+      ]
+    },
+    "mac": {
+      "schema": "ugrp.storage-budget.v1",
+      "ok": true,
+      "checks": [
+        {
+          "host": "mac",
+          "free_bytes": 139085754368,
+          "expected_bytes": 301989888,
+          "projected_free_bytes": 138783764480,
+          "floor_bytes": 21474836480,
+          "ok": true
+        }
+      ]
+    }
+  },
+  "submitted_runs": [
+    {
+      "batch_resources": {
+        "mem_available": 66093944832,
+        "loadavg": [
+          0.45849609375,
+          0.35400390625,
+          0.4521484375
+        ],
+        "cores": 16,
+        "started_unix": 1791766364.5515723
+      }
+    },
+    {
+      "run": "e2e13-off-s61001-p1",
+      "pid": 8678,
+      "submitted_unix": 1791766364.6029267,
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb"
+    },
+    {
+      "run": "e2e13-both-s61001-p1",
+      "pid": 8683,
+      "submitted_unix": 1791766364.6513479,
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb"
+    },
+    {
+      "run": "e2e13-off-s61001-p2",
+      "pid": 8688,
+      "submitted_unix": 1791766364.7003527,
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb"
+    },
+    {
+      "run": "e2e13-both-s61001-p2",
+      "pid": 8693,
+      "submitted_unix": 1791766364.7493362,
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb"
+    },
+    {
+      "run": "e2e13-off-s61001-p3",
+      "pid": 8698,
+      "submitted_unix": 1791766364.797725,
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb"
+    },
+    {
+      "run": "e2e13-both-s61001-p3",
+      "pid": 8746,
+      "submitted_unix": 1791766364.8490632,
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb"
+    },
+    {
+      "run": "e2e13-cell-s61001",
+      "pid": 8772,
+      "submitted_unix": 1791766364.898039,
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb"
+    },
+    {
+      "run": "e2e13-geometry-s61001",
+      "pid": 8801,
+      "submitted_unix": 1791766364.9496284,
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb"
+    },
+    {
+      "run": "e2e13-validation-s61001",
+      "pid": 8828,
+      "submitted_unix": 1791766365.0175858,
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb"
+    }
+  ],
+  "optimization_details": {
+    "cell": "finite float64 scalar floor fast path plus exact integer vectorized dense writes",
+    "geometry": "bounded pure content-keyed cache, original math on misses and owned result copies",
+    "validation": "per-call provenance set, bounded SHA syntax cache, omit only ignored validation return copy",
+    "defaults": "all off",
+    "physical_camera_render_cadence": "unchanged"
+  },
+  "optimization_targets": [
+    {
+      "file": "e2e_own_inputs.py",
+      "line": 62,
+      "function": "rgb_ref",
+      "calls": 556067,
+      "self_s": 3.5740370390000002,
+      "cumulative_s": 12.802956903,
+      "cumulative_wall_per_sim": 0.21338261505
+    },
+    {
+      "file": "e2e_own_inputs.py",
+      "line": 73,
+      "function": "validate_map",
+      "calls": 3606,
+      "self_s": 0.35045655400000003,
+      "cumulative_s": 32.946036684,
+      "cumulative_wall_per_sim": 0.5491006114
+    },
+    {
+      "file": "floor_goal_self_mask.py",
+      "line": 70,
+      "function": "project_envelopes",
+      "calls": 1801,
+      "self_s": 55.939165161000005,
+      "cumulative_s": 86.813191648,
+      "cumulative_wall_per_sim": 1.4468865274666667
+    },
+    {
+      "file": "floor_goal.py",
+      "line": 85,
+      "function": "floor_intersections",
+      "calls": 1788,
+      "self_s": 36.660854969,
+      "cumulative_s": 74.337194904,
+      "cumulative_wall_per_sim": 1.2389532484
+    },
+    {
+      "file": "own_map_navigation.py",
+      "line": 135,
+      "function": "dense",
+      "calls": 2700,
+      "self_s": 35.703085212000005,
+      "cumulative_s": 61.337014325000005,
+      "cumulative_wall_per_sim": 1.0222835720833334
+    },
+    {
+      "file": "own_map_navigation.py",
+      "line": 88,
+      "function": "cell",
+      "calls": 16887644,
+      "self_s": 64.76606583600001,
+      "cumulative_s": 101.15684558100001,
+      "cumulative_wall_per_sim": 1.6859474263500003
+    }
+  ],
+  "profile_disjoint_spans": {
+    "control_perception_mapping_s": 810.38185324,
+    "physics_advance_s": 195.250676551,
+    "capture_s": 128.649402421,
+    "sim_s": 60,
+    "note": "cProfile instrumentation overhead included; nested function times must not be summed"
+  },
+  "initial_check": {
+    "n": 9,
+    "N": 9,
+    "actual_elapsed_s": [
+      213.88185358047485,
+      214.12979078292847
+    ],
+    "required_checks": [
+      "model response",
+      "SIM/frame increase",
+      "mapping phase",
+      "r1/r2 evaluation displacement",
+      "translation commands",
+      "no exception"
+    ],
+    "raw_file": "initial-health-confirmed.json"
+  },
+  "limitations": [
+    "60 SIM seconds of mapping only; no claim for later B-boundary or full E2E completion",
+    "cProfile and sampling change timing; paired runs disable profilers",
+    "RBPF audit hashing remains in both paired timings and is reported separately",
+    "one seed on one Azure VM; DEV evidence only"
+  ],
+  "profile_raw": {
+    "azure": "/home/ugrp/ugrp-sim/runs/e2e13-profile-s61001",
+    "arm": "/home/ubuntu/ugrp-archive/runs/native-e2e13-profile-s61001",
+    "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-profile-s61001",
+    "hashes": {
+      "measurement.json": "aec1119c10eef2ac2b63fddd2bb182834f61178cf50902124fd9c0f312dc7655",
+      "cprofile.pstats": "7c49d34a2dc72d81a2367a6add883969bfd38c693ee7c8f9ef113b164dc5daff",
+      "pyspy.speedscope.json.zst": "030cb294ca17ecbb34f50046ceeab0d6884eb22ab8d778ed14087b00c8738b92",
+      "SHA256SUMS.tsv": "01937eabbd63bee2b0cde47535975e082ec9002aada9017aec491945af807778",
+      "rbpf-sha256.json.zst": "1b9390729f9d0e17a9018888e2479c714a2301a340e135d720db35888fbcd76e"
+    }
+  },
+  "paired_medians": {
+    "wall_before": 15.485547041549998,
+    "wall_after": 13.300863829683331,
+    "cpu_before": 20.648191877416664,
+    "cpu_after": 18.434578093516667
+  },
+  "speed_reduction_pct": {
+    "wall": 14.107885281707134,
+    "cpu": 10.72061804269201
+  },
+  "median_paired_reduction_pct": {
+    "wall": 14.502057717036344,
+    "cpu": 11.091294004386409
+  },
+  "profile_to_off_equivalence": {
+    "baseline": "e2e13-profile-s61001",
+    "candidate": "e2e13-off-s61001-p1",
+    "commands_equal": true,
+    "frame_ledgers_equal": true,
+    "images_equal": true,
+    "image_matches": 900,
+    "image_N": 900,
+    "image_candidate_N": 900,
+    "rbpf_equal": true,
+    "rbpf_states": 900,
+    "ownmap_traces_equal": true
+  },
+  "adopted_candidate": "both",
+  "result": "All 5 default-off switches enabled in v200 combined candidate; exact at measured seed and 60 SIM segment.",
+  "candidate_single_run_wall_per_sim": {
+    "e2e13-cell-s61001": 14.547881581133334,
+    "e2e13-geometry-s61001": 14.563245825166662,
+    "e2e13-validation-s61001": 15.551573101283338
+  },
+  "remaining": "Unchanged physics/capture and remaining controller/raytrace work; later B boundary and full E2E are unmeasured.",
+  "measurement_completion": {
+    "n": 10,
+    "N": 10,
+    "host_errors": 0,
+    "expected_end": "MEASUREMENT_SIM_LIMIT; raw EARLY_STOP is a bounded measurement, not E2E success"
+  },
+  "runs": [
+    {
+      "name": "e2e13-profile-s61001",
+      "source_sha": "7821864aa7a37005e67749f368e152495b520ae8",
+      "sim_s": 60.0,
+      "wall_per_sim": 22.637466251333333,
+      "cpu_per_sim": 19.752638326066666,
+      "rbpf_hash_wall_s": 157.50880269899892,
+      "profiling": true,
+      "exit": 0,
+      "verdict": "EXPECTED_MEASUREMENT_STOP",
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/e2e13-profile-s61001",
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e13-profile-s61001",
+      "arm_files": 1001,
+      "arm_hash_matches": 1001,
+      "inventory_sha256": "b70fa6bfff365ce563d85e5fe868e6467df717cf07b3c698b8a0012de574af54",
+      "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-profile-s61001",
+      "lite_checksum_verified": true,
+      "measurement_sha256": "aec1119c10eef2ac2b63fddd2bb182834f61178cf50902124fd9c0f312dc7655",
+      "initial_health_passed": true
+    },
+    {
+      "name": "e2e13-off-s61001-p1",
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb",
+      "sim_s": 60.0,
+      "wall_per_sim": 15.458674454583328,
+      "cpu_per_sim": 20.635361023633333,
+      "rbpf_hash_wall_s": 144.9308033410016,
+      "profiling": false,
+      "exit": 1,
+      "verdict": "EXPECTED_MEASUREMENT_STOP",
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/e2e13-off-s61001-p1",
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e13-off-s61001-p1",
+      "arm_files": 1001,
+      "arm_hash_matches": 1001,
+      "inventory_sha256": "29ac39c6046945f1ccfe3ab71ff0f79b2ad79808bc54b25f0fb3fd301baf5d3c",
+      "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-off-s61001-p1",
+      "lite_checksum_verified": true,
+      "measurement_sha256": "2289c184d7272ccaf626b776cd0845e07a94b07d587a183c77935c5de6335eff",
+      "initial_health_passed": true,
+      "initial_check_s": 214.12979078292847,
+      "RBPF_states": 900,
+      "image_frames": 900,
+      "finalization_complete": true,
+      "model_calls": 3,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 3,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 3,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 3,
+            "tokens_total_known": 4758,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 4612,
+        "tokens_completion": 146,
+        "tokens_total_known": 4758,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 6543.13,
+          "max": 2518.576,
+          "median": 2137.559
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "E2E_success": false
+    },
+    {
+      "name": "e2e13-both-s61001-p1",
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb",
+      "sim_s": 60.0,
+      "wall_per_sim": 13.357865438033333,
+      "cpu_per_sim": 18.507739232133336,
+      "rbpf_hash_wall_s": 159.15861179999683,
+      "profiling": false,
+      "exit": 1,
+      "verdict": "EXPECTED_MEASUREMENT_STOP",
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/e2e13-both-s61001-p1",
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e13-both-s61001-p1",
+      "arm_files": 1001,
+      "arm_hash_matches": 1001,
+      "inventory_sha256": "3c76d57f456213922ee3ef9670570c4cbef1fc0ef0b2910f9f0995ce84981dec",
+      "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-both-s61001-p1",
+      "lite_checksum_verified": true,
+      "measurement_sha256": "f2fa8358012f64d6785f58ae2f21afdde02b5c464880c5c25af26e4da16a4f0a",
+      "initial_health_passed": true,
+      "initial_check_s": 214.10099291801453,
+      "RBPF_states": 900,
+      "image_frames": 900,
+      "finalization_complete": true,
+      "model_calls": 3,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 3,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 3,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 3,
+            "tokens_total_known": 4758,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 4612,
+        "tokens_completion": 146,
+        "tokens_total_known": 4758,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 8173.63,
+          "max": 4372.309,
+          "median": 2186.574
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "E2E_success": false
+    },
+    {
+      "name": "e2e13-off-s61001-p2",
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb",
+      "sim_s": 60.0,
+      "wall_per_sim": 15.556940289466668,
+      "cpu_per_sim": 20.734277804499996,
+      "rbpf_hash_wall_s": 148.0825349979973,
+      "profiling": false,
+      "exit": 1,
+      "verdict": "EXPECTED_MEASUREMENT_STOP",
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/e2e13-off-s61001-p2",
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e13-off-s61001-p2",
+      "arm_files": 1001,
+      "arm_hash_matches": 1001,
+      "inventory_sha256": "26d91aaa7c9b312fb68fc9afdb074abe9ad99688ba21e6db2d4630ba6372ad3f",
+      "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-off-s61001-p2",
+      "lite_checksum_verified": true,
+      "measurement_sha256": "5c24ad13d40f106d93e51cee1807f614230218c22d6a173e082af53e4c60b564",
+      "initial_health_passed": true,
+      "initial_check_s": 214.0748996734619,
+      "RBPF_states": 900,
+      "image_frames": 900,
+      "finalization_complete": true,
+      "model_calls": 3,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 3,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 3,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 3,
+            "tokens_total_known": 4758,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 4612,
+        "tokens_completion": 146,
+        "tokens_total_known": 4758,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 6755.799,
+          "max": 2653.538,
+          "median": 2266.005
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "E2E_success": false
+    },
+    {
+      "name": "e2e13-both-s61001-p2",
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb",
+      "sim_s": 60.0,
+      "wall_per_sim": 13.300863829683331,
+      "cpu_per_sim": 18.434578093516667,
+      "rbpf_hash_wall_s": 157.12452275500573,
+      "profiling": false,
+      "exit": 1,
+      "verdict": "EXPECTED_MEASUREMENT_STOP",
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/e2e13-both-s61001-p2",
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e13-both-s61001-p2",
+      "arm_files": 1001,
+      "arm_hash_matches": 1001,
+      "inventory_sha256": "e1346dd1e3e83bbb5afa6994c81d11c8a2e59fc6b02b7d34d97a807753d59060",
+      "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-both-s61001-p2",
+      "lite_checksum_verified": true,
+      "measurement_sha256": "fd1daa6307eeed16dfd4f6691a190d870aa602bf0571316b93f62b2a2baaa734",
+      "initial_health_passed": true,
+      "initial_check_s": 214.04471945762634,
+      "RBPF_states": 900,
+      "image_frames": 900,
+      "finalization_complete": true,
+      "model_calls": 3,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 3,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 3,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 3,
+            "tokens_total_known": 4758,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 4612,
+        "tokens_completion": 146,
+        "tokens_total_known": 4758,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 8338.553,
+          "max": 3649.222,
+          "median": 2507.08
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "E2E_success": false
+    },
+    {
+      "name": "e2e13-off-s61001-p3",
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb",
+      "sim_s": 60.0,
+      "wall_per_sim": 15.485547041549998,
+      "cpu_per_sim": 20.648191877416664,
+      "rbpf_hash_wall_s": 146.92146699700788,
+      "profiling": false,
+      "exit": 1,
+      "verdict": "EXPECTED_MEASUREMENT_STOP",
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/e2e13-off-s61001-p3",
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e13-off-s61001-p3",
+      "arm_files": 1001,
+      "arm_hash_matches": 1001,
+      "inventory_sha256": "0a5cff534961acd06866fad1dbe685a37aca7621390fbe7d66955bdc3be26e37",
+      "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-off-s61001-p3",
+      "lite_checksum_verified": true,
+      "measurement_sha256": "74f0d6d8d221672c0ebc6dc7b1f6606daf130f234a2c4992bdfcc94a3a3706e3",
+      "initial_health_passed": true,
+      "initial_check_s": 214.01712131500244,
+      "RBPF_states": 900,
+      "image_frames": 900,
+      "finalization_complete": true,
+      "model_calls": 3,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 3,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 3,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 3,
+            "tokens_total_known": 4756,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 4612,
+        "tokens_completion": 144,
+        "tokens_total_known": 4756,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 7670.454,
+          "max": 3490.74,
+          "median": 2292.719
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "E2E_success": false
+    },
+    {
+      "name": "e2e13-both-s61001-p3",
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb",
+      "sim_s": 60.0,
+      "wall_per_sim": 13.168911655433332,
+      "cpu_per_sim": 18.329980196983335,
+      "rbpf_hash_wall_s": 154.54240563800522,
+      "profiling": false,
+      "exit": 1,
+      "verdict": "EXPECTED_MEASUREMENT_STOP",
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/e2e13-both-s61001-p3",
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e13-both-s61001-p3",
+      "arm_files": 1001,
+      "arm_hash_matches": 1001,
+      "inventory_sha256": "f11547e96b188a9ded2f18bf979f45011664251deaa9a395d56c2836feb92710",
+      "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-both-s61001-p3",
+      "lite_checksum_verified": true,
+      "measurement_sha256": "9a7a2b050765ae8ca36fb605d4093030a95b212bca32d340b267a0c64f947c63",
+      "initial_health_passed": true,
+      "initial_check_s": 213.98458576202393,
+      "RBPF_states": 900,
+      "image_frames": 900,
+      "finalization_complete": true,
+      "model_calls": 3,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 3,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 3,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 3,
+            "tokens_total_known": 4751,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 4612,
+        "tokens_completion": 139,
+        "tokens_total_known": 4751,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 7052.258,
+          "max": 3632.573,
+          "median": 1767.145
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "E2E_success": false
+    },
+    {
+      "name": "e2e13-cell-s61001",
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb",
+      "sim_s": 60.0,
+      "wall_per_sim": 14.547881581133334,
+      "cpu_per_sim": 19.76502675916667,
+      "rbpf_hash_wall_s": 154.03408938699886,
+      "profiling": false,
+      "exit": 1,
+      "verdict": "EXPECTED_MEASUREMENT_STOP",
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/e2e13-cell-s61001",
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e13-cell-s61001",
+      "arm_files": 1001,
+      "arm_hash_matches": 1001,
+      "inventory_sha256": "00d10d71bf518dde5eb72cbfdc67666ab809536ad9b851fc79b0cc56718870bd",
+      "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-cell-s61001",
+      "lite_checksum_verified": true,
+      "measurement_sha256": "05f80a5083482e22f11db3f97073784d7843b28ab10043971d6e45717a5f35c5",
+      "initial_health_passed": true,
+      "initial_check_s": 213.9592981338501,
+      "RBPF_states": 900,
+      "image_frames": 900,
+      "finalization_complete": true,
+      "model_calls": 3,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 3,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 3,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 3,
+            "tokens_total_known": 4758,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 4612,
+        "tokens_completion": 146,
+        "tokens_total_known": 4758,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 7651.125,
+          "max": 3073.095,
+          "median": 2669.28
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "E2E_success": false
+    },
+    {
+      "name": "e2e13-geometry-s61001",
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb",
+      "sim_s": 60.0,
+      "wall_per_sim": 14.563245825166662,
+      "cpu_per_sim": 19.709143235650004,
+      "rbpf_hash_wall_s": 154.85891014099116,
+      "profiling": false,
+      "exit": 1,
+      "verdict": "EXPECTED_MEASUREMENT_STOP",
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/e2e13-geometry-s61001",
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e13-geometry-s61001",
+      "arm_files": 1001,
+      "arm_hash_matches": 1001,
+      "inventory_sha256": "51f4f77058cc8922d45c62196127f1eeca1a169344f463d1e2c1ceee76707257",
+      "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-geometry-s61001",
+      "lite_checksum_verified": true,
+      "measurement_sha256": "b34f1ab10553ab2e2430417f86b9d09cb0f13886937c053025dba0f84ae2b082",
+      "initial_health_passed": true,
+      "initial_check_s": 213.9272801876068,
+      "RBPF_states": 900,
+      "image_frames": 900,
+      "finalization_complete": true,
+      "model_calls": 3,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 3,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 3,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 3,
+            "tokens_total_known": 4758,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 4612,
+        "tokens_completion": 146,
+        "tokens_total_known": 4758,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 8218.418,
+          "max": 3755.675,
+          "median": 2440.715
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "E2E_success": false
+    },
+    {
+      "name": "e2e13-validation-s61001",
+      "source_sha": "ae1a7028fb7fbbeb6a41a3aba638b6b20a765efb",
+      "sim_s": 60.0,
+      "wall_per_sim": 15.551573101283338,
+      "cpu_per_sim": 20.71999550575,
+      "rbpf_hash_wall_s": 147.8192508770103,
+      "profiling": false,
+      "exit": 1,
+      "verdict": "EXPECTED_MEASUREMENT_STOP",
+      "azure_raw": "/home/ugrp/ugrp-sim/runs/e2e13-validation-s61001",
+      "arm_raw": "/home/ubuntu/ugrp-archive/runs/native-e2e13-validation-s61001",
+      "arm_files": 1001,
+      "arm_hash_matches": 1001,
+      "inventory_sha256": "1c5d43132f085c19f07f6f5ab68a71754773040a31ae032734ca182593307852",
+      "mac_lite": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-validation-s61001",
+      "lite_checksum_verified": true,
+      "measurement_sha256": "d19143236147dfe232f1ec4c6ba6d6f830214b08922c1a0d3a7bf9bf5f34affe",
+      "initial_health_passed": true,
+      "initial_check_s": 213.88185358047485,
+      "RBPF_states": 900,
+      "image_frames": 900,
+      "finalization_complete": true,
+      "model_calls": 3,
+      "model_usage": {
+        "upstream_generation_requests_confirmed": 3,
+        "local_quota_wait_responses": 0,
+        "upstream_generation_status_unknown": 0,
+        "requests": 3,
+        "blocked": 0,
+        "by_model": {
+          "DeepInfra/google/gemma-4-31b-it": {
+            "requests": 3,
+            "tokens_total_known": 4758,
+            "usage_unknown_requests": 0
+          }
+        },
+        "upstream_by_model": {},
+        "tokens_prompt": 4612,
+        "tokens_completion": 146,
+        "tokens_total_known": 4758,
+        "usage_unknown_requests": 0,
+        "tokens_complete": true,
+        "api_error_requests": 0,
+        "api_error_fraction": 0.0,
+        "api_clean": true,
+        "latency_ms": {
+          "n": 3,
+          "sum": 7646.756,
+          "max": 3780.157,
+          "median": 2356.835
+        },
+        "failure_classes": {},
+        "response_models": [
+          "google/gemma-4-31b-it"
+        ]
+      },
+      "E2E_success": false
+    }
+  ],
+  "timing_scope": "Wall and process CPU include setup/finalization and per-frame RBPF hash audit. py-spy/cProfile enabled only in profile run; paired runs unprofiled. CPU includes native worker threads.",
+  "audit_subtracted_wall_per_sim_reference": {
+    "off": 13.043161065566634,
+    "both": 10.68212178376657
+  },
+  "audit_subtracted_note": "Accounting subtraction only; not a separately measured audit-free production run.",
+  "storage": {
+    "arm_verified_runs": 10,
+    "arm_hash_matches": 10010,
+    "arm_files": 10010,
+    "arm_bytes": 169657972,
+    "mac_lite_verified_runs": 10,
+    "mac_lite_bytes": 33971692,
+    "dev_raw_retention": "PR433 still open; no heavy raw deletion performed"
+  },
+  "vm": {
+    "id": "/subscriptions/88b7ee7f-f2f3-4a0d-a0ce-cf7306943676/resourceGroups/UGRP-SIM-RG/providers/Microsoft.Compute/virtualMachines/ugrp-sim-azure",
+    "statuses": [
+      {
+        "code": "ProvisioningState/succeeded",
+        "displayStatus": "Provisioning succeeded",
+        "level": "Info",
+        "time": "2026-10-12T01:10:30.0017845+00:00"
+      },
+      {
+        "code": "PowerState/deallocated",
+        "displayStatus": "VM deallocated",
+        "level": "Info"
+      }
+    ],
+    "verified_unix": 1791767481.1878662,
+    "elapsed_since_task_cap_started_s": 4304.500597000122,
+    "under_3_hour_limit": true,
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "deallocate_requested": {
+      "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+      "resource_group": "UGRP-SIM-RG",
+      "vm": "ugrp-sim-azure",
+      "requested_unix": 1791767418.078162
+    }
+  },
+  "bundle_comparison": [
+    {
+      "run": "e2e13-off-s61001-p1",
+      "changed_keys": [
+        "e2e_options",
+        "execution_bundle_id",
+        "schema",
+        "source_sha",
+        "source_sha256",
+        "workflow_version"
+      ],
+      "changed_e2e_options": [
+        "exact_speedups"
+      ],
+      "exact_speedups": {
+        "provenance_index": false,
+        "sha_validation_cache": false,
+        "omit_discarded_copy": false,
+        "scalar_cells": false,
+        "geometry_cache": false
+      }
+    },
+    {
+      "run": "e2e13-both-s61001-p1",
+      "changed_keys": [
+        "e2e_options",
+        "execution_bundle_id",
+        "schema",
+        "source_sha",
+        "source_sha256",
+        "workflow_version"
+      ],
+      "changed_e2e_options": [
+        "exact_speedups"
+      ],
+      "exact_speedups": {
+        "provenance_index": true,
+        "sha_validation_cache": true,
+        "omit_discarded_copy": true,
+        "scalar_cells": true,
+        "geometry_cache": true
+      }
+    }
+  ],
+  "artifact_sha256": {
+    "bundle-reservation.json": "4b1f9e96185717703425e8c4aa0934e7a5398aee3064fcbaaed224bdbd8045f8",
+    "README.md": "2ba7652d2e37f5c34768618f3053fafd1f9fa6715671b55cd45a4a1b9c6fad8c",
+    "comparison.json.zst": "2d8e2ad3ca8e6e00540cb2e8456184bd6272d278b8a43f425618c7c23a344c11",
+    "protocol.json.zst": "a286469fda8f6d811eccb729f4760f4e30465f575f0ff1e6c83dba9148e2fc9e",
+    "archive-receipts.json.zst": "97779453841a2954dadef64ea3d140b2aca590cd979897d14bb7fda9ef3c0362",
+    "profile.json": "eebc266b5802c9b0385102219141977f977c286c4d37c3d622d48f2aeaaf5eb2"
   }
 }
