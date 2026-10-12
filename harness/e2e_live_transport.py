@@ -31,7 +31,7 @@ class AgreementView:
 
 
 class Transport:
-    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off'):
+    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off',align_progress='off',pregrasp_recovery='off'):
         self.robots,self.dialogue,self.profiles=robots,dialogue,profiles
         self.pulse_budget=pulse_budget;self.relook_option=setdown_only_when_relook
         self.state='mapping';self.stage_t=0.;self.seg=0;self.first_seg=0;self.epoch=0
@@ -43,6 +43,8 @@ class Transport:
         self.dev_light=dev_light;self.would_stops=set()
         if carrier_approach not in ('off','standoff_v1'):raise ValueError('UNKNOWN_CARRIER_APPROACH')
         self.carrier_approach=carrier_approach;self.approach={}
+        if align_progress not in ('off','dev_continue_v1') or pregrasp_recovery not in ('off','bounded_search_v1'):raise ValueError('UNKNOWN_ALIGN_RECOVERY')
+        self.align_progress=align_progress;self.pregrasp_recovery=pregrasp_recovery
 
     def event(self,t,kind,**data):self.events.append(dict(t=t,event=kind,**data))
     def set(self,state,t):self.state=state;self.stage_t=t;self.event(t,'phase',state=state,seg=self.seg,epoch=self.epoch)
@@ -133,7 +135,10 @@ class Transport:
                     (dict(hover)|{1:1500},.8,.4),
                     *[(dict(p)|{1:1500},d,s) for p,d,s in raise_path()]])
             self.set('grasp_lift',now)
-        elif now-self.stage_t>75:return self.observation_timeout('OWN_RGB_ALIGNMENT_TIMEOUT',now)
+        elif now-self.stage_t>75:
+            stopped=self.observation_timeout('OWN_RGB_ALIGNMENT_TIMEOUT',now)
+            if not (self.dev_light and self.align_progress=='dev_continue_v1'):return stopped
+            out+=stopped
         return out
 
     def _open_epoch(self,now):

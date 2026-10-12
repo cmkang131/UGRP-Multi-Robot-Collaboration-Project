@@ -24,6 +24,7 @@ def advance(transport,rid,now):
     if fresh and target:
         end,grip,basis=station(b,target['center_m'],rid)
         state.update(station=end,grip=grip,basis=basis,last_seen=now)
+        state.pop('search_started',None);state.pop('search_step',None)
     if 'station' not in state:
         r.carrier_approach=dict(t=now,status='search_own_beam')
         # Preserve the existing own-map exploration until this robot sees its beam.
@@ -36,6 +37,10 @@ def advance(transport,rid,now):
         distance_m=distance,heading_error_rad=heading_error,own_beam_age_s=now-state['last_seen'],camera=tag,
         basis_yaw_rad=state['basis']['yaw_rad'])
     r.carrier_approach=diag
+    recovery=getattr(transport,'pregrasp_recovery','off')=='bounded_search_v1'
+    if recovery and not fresh and now-state['last_seen']>2.:
+        from harness.e2e_align_progress import lost_search
+        return lost_search(transport,rid,now,state)
     if any(r.servo.get(sid)!=pwm[sid] for sid in (3,4,5)):
         transport._poses(rid,now,[(pwm,.4,.5)])
         transport.align[rid].gate.until=now+.9
@@ -54,6 +59,10 @@ def advance(transport,rid,now):
     costmap=from_observed_grid(g.explorer.grid,mp,g.explorer.latest,set())
     path=g.explorer.navigator.plan_to(costmap,mp,mt[:2])
     diag['path_points']=len(path)
+    if not path and recovery and fresh and transport.dev_light:
+        path=[mp[:2],mt[:2]]
+        diag['would_stop_path_unavailable']=True
+        transport.event(now,'would_stop_pregrasp_no_path',robot_id=rid,dev_light=True,source='fresh_own_rgb_station')
     if not path:
         diag['status']='approach_path_unavailable'
         transport.event(now,'own_pregrasp_path_wait',robot_id=rid,distance_m=distance)
