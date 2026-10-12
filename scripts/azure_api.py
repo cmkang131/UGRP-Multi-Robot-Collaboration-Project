@@ -9,9 +9,26 @@ SUB = '88b7ee7f-f2f3-4a0d-a0ce-cf7306943676'
 SUBS = [SUB, 'c02f839a-2a6b-49d8-9c9a-f3d9f09aa5ea']
 RG = 'UGRP-SIM-RG'
 VM = 'ugrp-sim-azure'
+AZURE_HOSTS = {'azure': VM, 'azure2': 'ugrp-sim-azure2'}
 BASE = f'/subscriptions/{SUB}/resourceGroups/{RG}'
 VM_ID = BASE + f'/providers/Microsoft.Compute/virtualMachines/{VM}'
 ACCOUNT = BASE + '/providers/Microsoft.Automation/automationAccounts/ugrp-cost-guard'
+
+
+def vm_target(vm=None, host=None):
+    """Resolve a known VM/SSH pair without changing the subscription or VM1 default."""
+    if vm is None and host is None:
+        return VM, 'azure'
+    if host is not None and host not in AZURE_HOSTS:
+        raise ValueError('Unknown Azure SSH host')
+    if vm is None:
+        vm = AZURE_HOSTS[host]
+    if vm not in AZURE_HOSTS.values():
+        raise ValueError('Unknown Azure VM')
+    expected = next(alias for alias, name in AZURE_HOSTS.items() if name == vm)
+    if host is not None and host != expected:
+        raise ValueError('VM and SSH host select different machines')
+    return vm, expected
 
 
 class Arm:
