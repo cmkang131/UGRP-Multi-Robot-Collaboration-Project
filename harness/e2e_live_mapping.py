@@ -17,8 +17,10 @@ from harness.self_odom_grid import transform
 from harness.e2e_exact_speedups import OFF, using
 
 
-def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None):
+def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off'):
     if goal_geometry not in ('off','e2e_b80_v1'):raise ValueError('UNKNOWN_GOAL_GEOMETRY')
+    from harness.e2e_rgb_gate import MARKER_OPTION
+    if b_marker_detect not in ('off',MARKER_OPTION):raise ValueError('UNKNOWN_B_MARKER_DETECT')
     from harness.active_navfn_start import make_mapper
     from harness.grid_acceleration import install
     from harness.self_graph_cache import install as graph_cache
@@ -41,6 +43,7 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
         setdown_reobserve='boundary_reobserve_v1' if rid=='r1' else 'off',
         setdown_only_when_relook=relook)
     install(goal,map_acceleration='scalar_rays_v1')
+    goal.e2e_gate.marker_detect=b_marker_detect
     # This mission maps a beam route, not the old B+cyan+return benchmark.
     # Keep the same receive/localization/GoalRoute memory, but frontier exploration
     # owns locomotion until a fresh own beam and a fully observed corridor exist.
@@ -53,6 +56,8 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
         pose_install(goal,PoseOptions(correction_gate='mahalanobis_v1',pose_continuity='rep105_offset_v1'))
     from harness.e2e_exploration import install as exploration_install
     exploration_install(goal,exploration_progress)
+    from harness.e2e_boundary_views import install as views_install
+    views_install(goal,boundary_views)
     from harness.e2e_rpp_path import install as path_install
     path_install(goal,path_follow)
     if stall_options is not None:
@@ -75,11 +80,11 @@ def beam_observer():
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,exact_speedups=OFF):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',exact_speedups=OFF):
         self.exact_speedups=exact_speedups
         self.robot_id=rid;self.study_options=options
         self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
-                            exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s)
+                            exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect)
         self.observe_beam=beam_observer()
         self.servo=dict(SEARCH);self.now=0.;self.frame=None;self.last_obs=None
         self.nav_command=dict(kind='hold');self.packet=None;self.beam=None;self.events=[]

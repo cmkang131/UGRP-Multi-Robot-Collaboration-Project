@@ -232,7 +232,8 @@ def run(b,out,receipt,*,backend_factory=None):
                         sha256=obs['sha256'],pose_own_m=robot.goal.explorer.local_pose.tolist(),
                         remembered_B=robot.goal.entities.get('B'),stage=robot.goal.stage,command=robot.nav_command,
                         pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
-                        navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry')))
+                        navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry'),
+                        **{k:trace[k] for k in ('boundary_view','boundary_diagnostics') if k in trace}))
                 frames_seen+=1
                 if not host.started:
                     write(out/'e2e-progress.json',health(robots,host,transport,now,time.monotonic()-started,frames_seen))
