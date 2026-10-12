@@ -16,7 +16,7 @@ from harness.e2e_setdown_relook import OwnRGBRelook
 from harness.self_odom_grid import transform
 
 
-def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None):
+def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off'):
     if goal_geometry not in ('off','e2e_b80_v1'):raise ValueError('UNKNOWN_GOAL_GEOMETRY')
     from harness.active_navfn_start import make_mapper
     from harness.grid_acceleration import install
@@ -52,6 +52,8 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
         pose_install(goal,PoseOptions(correction_gate='mahalanobis_v1',pose_continuity='rep105_offset_v1'))
     from harness.e2e_exploration import install as exploration_install
     exploration_install(goal,exploration_progress)
+    from harness.e2e_boundary_views import install as views_install
+    views_install(goal,boundary_views)
     from harness.e2e_rpp_path import install as path_install
     path_install(goal,path_follow)
     if stall_options is not None:
@@ -74,10 +76,10 @@ def beam_observer():
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off'):
         self.robot_id=rid;self.study_options=options
         self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
-                            exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s)
+                            exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views)
         self.observe_beam=beam_observer()
         self.servo=dict(SEARCH);self.now=0.;self.frame=None;self.last_obs=None
         self.nav_command=dict(kind='hold');self.packet=None;self.beam=None;self.events=[]
