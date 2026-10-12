@@ -19,6 +19,14 @@ def command(host, seconds, remote_port=18391, local_port=18392):
         '-R', f'127.0.0.1:{remote_port}:127.0.0.1:{local_port}', host, f'sleep {seconds}']
 
 
+def validate_deadline(deadline, max_hours=4, now=None):
+    if not 0 < max_hours <= 7.5:
+        raise ValueError('Session cap must be positive and <=7.5h (8h VM guard)')
+    remaining = deadline.timestamp() - (time.time() if now is None else now)
+    if deadline.tzinfo is None or not 0 < remaining <= max_hours * 3600:
+        raise ValueError('Explicit timezone and finite session within selected cap required')
+
+
 def supervise(host, deadline, output, *, reconnect=False, remote_port=18391, local_port=18392):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
@@ -58,10 +66,11 @@ def main():
     parser.add_argument('--reconnect', action='store_true')
     parser.add_argument('--remote-port', type=int, default=18391)
     parser.add_argument('--local-port', type=int, default=18392)
+    parser.add_argument('--max-session-hours', type=float, default=4,
+                        help='explicit long-session opt-in, maximum 7.5; default 4')
     args = parser.parse_args()
     deadline = datetime.fromisoformat(args.deadline_utc.replace('Z', '+00:00'))
-    if deadline.tzinfo is None or not 0 < deadline.timestamp()-time.time() <= 14400:
-        raise ValueError('Explicit timezone and finite <=4h session required')
+    validate_deadline(deadline, args.max_session_hours)
     if not all(1024 <= port <= 65535 for port in (args.remote_port, args.local_port)):
         raise ValueError('Ports must be in 1024..65535')
     def stop(*_):
