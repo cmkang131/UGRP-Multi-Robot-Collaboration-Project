@@ -78,7 +78,14 @@ def ground(servo, uv):
     """Raw fisheye pixels -> floor z=0 points in the robot base frame."""
     origin, rotation = _camera(_servo_key(servo))
     uv = np.asarray(uv, np.float64).reshape(-1, 1, 2)
-    normal = cv2.fisheye.undistortPoints(uv, K, D).reshape(-1, 2)
+    if len(uv) == 0:
+        return np.zeros((0, 2)), np.zeros(0)
+    normal = cv2.fisheye.undistortPoints(uv, K, D)
+    if normal is None:  # OpenCV may return None for degenerate input: no floor point, never zero motion
+        return np.full((len(uv), 2), np.nan), np.full(len(uv), np.nan)
+    normal = np.asarray(normal, np.float64).reshape(-1, 2)
+    if len(normal) != len(uv):
+        return np.full((len(uv), 2), np.nan), np.full(len(uv), np.nan)
     rays = np.column_stack((normal, np.ones(len(normal))))@rotation.T
     down = rays[:, 2] < -1e-9
     depth = np.full(len(rays), np.nan)
@@ -159,6 +166,8 @@ def ground_pair(before, after, servo):
     good = inside&ok.ravel().astype(bool)&ok2.ravel().astype(bool)&(np.abs(p-back[:, 0]).max(1) < PARAMS['fb_max_px'])
     good[inside] &= mb[xy[inside, 1], xy[inside, 0]] > 0
     p, q = p[good], q[good]
+    if len(p) < PARAMS['min_tracks']:  # E2E14 crash: 0 tracked floor points reached ground()
+        return {**unknown, 'tracks': len(p)}
     a, da = ground(servo, p);b, db = ground(servo, q)
     valid = np.isfinite(a).all(1)&np.isfinite(b).all(1)&(da > 0)&(db > 0)
     p, q, a, b = p[valid], q[valid], a[valid], b[valid]

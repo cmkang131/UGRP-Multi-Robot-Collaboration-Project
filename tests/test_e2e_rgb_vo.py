@@ -161,3 +161,29 @@ def test_live_robot_wiring_feeds_driver_and_rbpf_cloud(monkeypatch):
     assert abs(view.base.driver.pose[0]) < .03  # only camera-settle intervals kept the command
     assert np.abs(view.base.owner.poses[:, 0]).max() < .06
     assert r.goal.e2e_vo.counts['substep_mismatch'] == 0
+
+
+@pytest.mark.parametrize('n', [0, 1])
+def test_ground_accepts_zero_and_one_point(n):
+    pts, depth = vo.ground(SEARCH, np.full((n, 2), [320., 400.]))
+    assert pts.shape == (n, 2) and depth.shape == (n,)
+
+
+def test_opencv_none_is_unknown_not_crash_or_zero(monkeypatch):
+    """E2E14 v202: cv2.fisheye.undistortPoints returned None -> AttributeError in observe."""
+    monkeypatch.setattr(vo.cv2.fisheye, 'undistortPoints', lambda *a, **k: None)
+    pts, depth = vo.ground(SEARCH, np.array([[320., 400.], [300., 420.]]))
+    assert np.isnan(pts).all() and np.isnan(depth).all()
+    out = vo.ground_pair(render((0., 0., 0.)), render((.01, 0., 0.)), SEARCH)
+    assert out['status'].startswith('unknown_') and 'delta' not in out
+
+
+@pytest.mark.parametrize('n', [0, 1])
+def test_few_tracked_points_keep_command_increment(monkeypatch, n):
+    real = vo.cv2.goodFeaturesToTrack
+    monkeypatch.setattr(vo.cv2, 'goodFeaturesToTrack',
+                        lambda *a, **k: None if n == 0 else real(*a, **k)[:n])
+    d, f, rows = run((0., 0., 0.), frames=5)
+    assert all(r['status'].startswith('unknown_') or r['status'] == 'no_previous_frame' for r in rows)
+    assert all(r['fusion'] == 'command_kept' for r in rows[1:])
+    np.testing.assert_allclose(d.pose, f.nominal.pose, atol=1e-12)  # identical to off
