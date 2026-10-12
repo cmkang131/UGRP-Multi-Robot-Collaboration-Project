@@ -1,0 +1,2235 @@
+{
+  "schema": "ugrp.e2e16.vm4.summary.v1",
+  "status": "RUNNING",
+  "checked_utc": "2026-10-12T06:48:20.611041+00:00",
+  "source_sha": "f92abe144c5b0db0f3bfecd47bfd3edf7554a75d",
+  "pr": 450,
+  "setup_pr": 451,
+  "branch": "codex/e2e-usstall",
+  "vm": "ugrp-sim-azure4",
+  "conditions": {
+    "A": "v206 rgb_vo_us_v1 + ultrasonic on_v1",
+    "B": "v205 rgb_vo_v2 + ultrasonic off"
+  },
+  "seeds": [
+    61001,
+    61002,
+    61003
+  ],
+  "N": 6,
+  "submitted": 6,
+  "exited": 0,
+  "three_condition_success": 0,
+  "condition_counts": {
+    "LLM_operated": 6,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0
+  },
+  "zupt_judgements": 969,
+  "zupt_stationary": 0,
+  "zupt_applied": 0,
+  "execution_errors": 0,
+  "caps": {
+    "runner_wall_s": 25200,
+    "workflow_timeout_s": 25200,
+    "observer_wall_s": 25200,
+    "guest_uptime_s": 28800
+  },
+  "relay": {
+    "local_port": 18416,
+    "remote_port": 18393,
+    "credential_location": "Mac Keychain only"
+  },
+  "admission_errors": [
+    {
+      "time": 1791787432.581339,
+      "kind": "HOST_PREFLIGHT_ERROR",
+      "processes_launched": 0,
+      "cause": "System python lacks PIL when importing sealed receipt validation",
+      "fix": "Use existing shared .venv-sim interpreter; source and bundle unchanged"
+    }
+  ],
+  "retention": {
+    "run_class": "dev",
+    "pr": 450,
+    "raw": "VM4 persistent disk then hash-verified ARM",
+    "mac": "fetch-lite, no media/npz/embedded images",
+    "prune": "only after PR merge/close with hashes and cleanup-records"
+  },
+  "evidence": {
+    "live_sha256": "f222c02346b7fa261d56f52c1debc44867102f88ed8fd919063e11dc384d05d9",
+    "live_local": "/Users/changmin/projects/ugrp-wt/azure-vm4/outputs/e2e16/live.json",
+    "source_location": "azure4:/home/ugrp/ugrp-sim/src/f92abe144c5b0db0f3bfecd47bfd3edf7554a75d"
+  },
+  "runs": [
+    {
+      "run": "e2e-usstall-a-s61001",
+      "status": "RUNNING",
+      "exit": null,
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61001",
+      "sim_s": 25.0,
+      "wall_s": 228.31950814900006,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.363825507
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.363825507
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 33.654658330000075,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 100.81242605,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.04782,
+        "elapsed_s": 205.1444718837738,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true,
+          "ultrasonic_recorded": true
+        }
+      },
+      "latest_check_unix": 1791787647.04782,
+      "robots": {
+        "r1": {
+          "frames": 106,
+          "forward_commands": 53,
+          "actual_displacement_m": 0.6833238220601846,
+          "ultrasonic": {
+            "range_rows": 117,
+            "judgements": 106,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 11,
+              "unconfirmed": 3,
+              "vo_available": 92
+            },
+            "latest": {
+              "status": "vo_available",
+              "stationary": false,
+              "samples": 0
+            }
+          },
+          "vo": {
+            "trace_frames": 106,
+            "measured_frames": 92,
+            "applied_frames": 92,
+            "applied_fraction": 0.8679245283018868,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 21.0,
+              "frame_id": 106,
+              "sha256": "b8658b0ab5501cdeff77ed1e69784733f4b07e71e08aa30c10890990c9ee6add",
+              "command_delta": [
+                0.00013277632403880675,
+                -0.002817502506441058,
+                0.10354346792033252
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 63,
+              "inliers": 41,
+              "cells": 4,
+              "delta": [
+                0.0037184679948165655,
+                -0.0022664737602840594,
+                0.10643021828187851
+              ],
+              "fit_rms_m": 0.001701856200516659,
+              "ultrasonic": {
+                "status": "vo_available",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "vo_replaced",
+              "nis": 13.272440571852039,
+              "fused_delta": [
+                0.0037184679948165655,
+                -0.0022664737602840594,
+                0.10643021828187851
+              ],
+              "fused_variance": [
+                1.2472076583209793e-06,
+                1.6866197349710346e-05,
+                1.6243397757205462e-05
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                0.0037184679948165707,
+                -0.002266473760284039,
+                0.10643021828187837
+              ],
+              "counts": {
+                "measured": 92,
+                "fused": 77,
+                "vo_replaced": 15,
+                "unknown": 13,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 106,
+            "max": 0.15398866920762386,
+            "median": 0.07333357627953682
+          },
+          "control_error_m": {
+            "n": 106,
+            "max": 0.07089960712017913,
+            "median": 0.018026521412285806
+          }
+        },
+        "r2": {
+          "frames": 106,
+          "forward_commands": 106,
+          "actual_displacement_m": 0.3011230138738242,
+          "ultrasonic": {
+            "range_rows": 117,
+            "judgements": 106,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 1,
+              "unconfirmed": 2,
+              "vo_available": 103
+            },
+            "latest": {
+              "status": "vo_available",
+              "stationary": false,
+              "samples": 0
+            }
+          },
+          "vo": {
+            "trace_frames": 106,
+            "measured_frames": 103,
+            "applied_frames": 103,
+            "applied_fraction": 0.9716981132075472,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 21.0,
+              "frame_id": 106,
+              "sha256": "d6b77caa25287f8f99cd406503ccc7bb56482872f72e38cb31bdb290e85d6d81",
+              "command_delta": [
+                0.012917157771402142,
+                -0.0004020679808201143,
+                -0.00029378953563691376
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 7,
+              "inliers": 7,
+              "cells": 3,
+              "delta": [
+                0.0008274563633061671,
+                -0.0019019216611295964,
+                -0.0003785657365466401
+              ],
+              "fit_rms_m": 0.0012814215640770917,
+              "ultrasonic": {
+                "status": "vo_available",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "fused",
+              "nis": 8.329954824004705,
+              "fused_delta": [
+                0.01264424552174561,
+                -0.0004014564007764929,
+                -0.0016491246943684322
+              ],
+              "fused_variance": [
+                3.870539291650522e-07,
+                1.6329998106618997e-06,
+                6.125335460470003e-06
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 1.3601478338241577,
+                "p90_px": 1.4382563829421997,
+                "tracks": 11
+              },
+              "applied_delta": [
+                0.012644245521745616,
+                -0.0004014564007764924,
+                -0.0016491246943681759
+              ],
+              "counts": {
+                "measured": 103,
+                "fused": 58,
+                "vo_replaced": 45,
+                "unknown": 2,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 106,
+            "max": 0.493364759306939,
+            "median": 0.19996795694364175
+          },
+          "control_error_m": {
+            "n": 106,
+            "max": 0.46099309676140915,
+            "median": 0.160788645079315
+          }
+        },
+        "r3": {
+          "frames": 106,
+          "forward_commands": 0,
+          "actual_displacement_m": 9.223761042363616e-05,
+          "ultrasonic": {
+            "range_rows": 117,
+            "judgements": 106,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 3,
+              "vo_available": 103
+            },
+            "latest": {
+              "status": "vo_available",
+              "stationary": false,
+              "samples": 0
+            }
+          },
+          "vo": {
+            "trace_frames": 106,
+            "measured_frames": 103,
+            "applied_frames": 0,
+            "applied_fraction": 0.0,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 21.0,
+              "frame_id": 106,
+              "sha256": "3e8b4a4479390b5255c855873dd4a0722ebbd81727df3f40027efb97f1b15171",
+              "command_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "command_substeps": 0,
+              "status": "measured",
+              "tracks": 24,
+              "inliers": 24,
+              "cells": 5,
+              "delta": [
+                -3.088950247143174e-05,
+                -0.0001478975164312668,
+                0.00013112788420567746
+              ],
+              "fit_rms_m": 0.00019480885608935488,
+              "ultrasonic": {
+                "status": "vo_available",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "fused",
+              "nis": 0.0010294504276849245,
+              "fused_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fused_variance": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fusion_applied": false,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "counts": {
+                "measured": 103,
+                "fused": 103,
+                "vo_replaced": 0,
+                "unknown": 2,
+                "unapplied": 103,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 106,
+            "max": 0.09232041751984506,
+            "median": 0.09117643687009483
+          },
+          "control_error_m": {
+            "n": 106,
+            "max": 9.219570512498231e-05,
+            "median": 4.544623963235402e-05
+          }
+        }
+      },
+      "model": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "failure_type": null,
+      "archive_verified": false,
+      "archive_path": null
+    },
+    {
+      "run": "e2e-usstall-b-s61001",
+      "status": "RUNNING",
+      "exit": null,
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61001",
+      "sim_s": 25.0,
+      "wall_s": 225.91227588499999,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.056305651999992
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.056305651999992
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 32.99910287900002,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 99.93613135499993,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.1190114,
+        "elapsed_s": 205.21467781066895,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "latest_check_unix": 1791787647.1190114,
+      "robots": {
+        "r1": {
+          "frames": 111,
+          "forward_commands": 53,
+          "actual_displacement_m": 0.6833238220601846,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {},
+            "latest": {}
+          },
+          "vo": {
+            "trace_frames": 111,
+            "measured_frames": 96,
+            "applied_frames": 96,
+            "applied_fraction": 0.8648648648648649,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_v2",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_v2",
+              "mode": "fused",
+              "t": 22.0,
+              "frame_id": 111,
+              "sha256": "313eb2524bf811d7bb21a401637a538602c83829ba1d94f71b921468f7aaaff3",
+              "command_delta": [
+                0.00013277632403880675,
+                -0.002817502506441058,
+                0.10354346792033252
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 68,
+              "inliers": 48,
+              "cells": 9,
+              "delta": [
+                0.0024272892688703696,
+                0.00019148944804890655,
+                0.10377461365809428
+              ],
+              "fit_rms_m": 0.0016560442456604533,
+              "fusion": "fused",
+              "nis": 7.5144360294095485,
+              "fused_delta": [
+                0.0004908244918879433,
+                -0.0024863496298215444,
+                0.10462840954034053
+              ],
+              "fused_variance": [
+                2.1211240728511818e-07,
+                2.2484672575891427e-07,
+                5.900351314834006e-07
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                0.0004908244918879522,
+                -0.002486349629821536,
+                0.1046284095403407
+              ],
+              "counts": {
+                "measured": 96,
+                "fused": 79,
+                "vo_replaced": 17,
+                "unknown": 14,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 111,
+            "max": 0.15398866920762386,
+            "median": 0.07347864461748005
+          },
+          "control_error_m": {
+            "n": 111,
+            "max": 0.07089960712017913,
+            "median": 0.018163201482837413
+          }
+        },
+        "r2": {
+          "frames": 111,
+          "forward_commands": 111,
+          "actual_displacement_m": 0.30242896408012326,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {},
+            "latest": {}
+          },
+          "vo": {
+            "trace_frames": 111,
+            "measured_frames": 108,
+            "applied_frames": 108,
+            "applied_fraction": 0.972972972972973,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_v2",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_v2",
+              "mode": "fused",
+              "t": 22.0,
+              "frame_id": 111,
+              "sha256": "8fc17b203f08f2513204255e5ac3c62c4cb14e77dce2938c31a696a78cb7c466",
+              "command_delta": [
+                0.012917157771402142,
+                -0.0004020679808201143,
+                -0.00029378953563691376
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 10,
+              "inliers": 10,
+              "cells": 4,
+              "delta": [
+                -0.00010077220479831617,
+                0.002441564109602043,
+                0.00043960958960313117
+              ],
+              "fit_rms_m": 0.0013212364265527416,
+              "fusion": "vo_replaced",
+              "nis": 15.377296537857813,
+              "fused_delta": [
+                -0.00010077220479831617,
+                0.002441564109602043,
+                0.00043960958960313117
+              ],
+              "fused_variance": [
+                1.2210125929322881e-05,
+                0.00012573301917045783,
+                7.755807399267224e-05
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 1.7612799406051636,
+                "p90_px": 1.9489525318145753,
+                "tracks": 13
+              },
+              "applied_delta": [
+                -0.0001007722047982843,
+                0.002441564109602046,
+                0.0004396095896033181
+              ],
+              "counts": {
+                "measured": 108,
+                "fused": 60,
+                "vo_replaced": 48,
+                "unknown": 2,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 111,
+            "max": 0.5173715649697919,
+            "median": 0.21041360479357923
+          },
+          "control_error_m": {
+            "n": 111,
+            "max": 0.4849654844261929,
+            "median": 0.17117267130251204
+          }
+        },
+        "r3": {
+          "frames": 111,
+          "forward_commands": 0,
+          "actual_displacement_m": 9.223761042363616e-05,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {},
+            "latest": {}
+          },
+          "vo": {
+            "trace_frames": 111,
+            "measured_frames": 108,
+            "applied_frames": 0,
+            "applied_fraction": 0.0,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_v2",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_v2",
+              "mode": "fused",
+              "t": 22.0,
+              "frame_id": 111,
+              "sha256": "1bf57d9bb9ecf0e2f1397e78dbee5ade6cd8855f292392360d21c718756cb7c5",
+              "command_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "command_substeps": 0,
+              "status": "measured",
+              "tracks": 30,
+              "inliers": 30,
+              "cells": 5,
+              "delta": [
+                6.704671642765447e-06,
+                -1.1515476274662206e-05,
+                1.517664048855085e-05
+              ],
+              "fit_rms_m": 5.792934145947788e-05,
+              "fusion": "fused",
+              "nis": 2.8995031447652943e-05,
+              "fused_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fused_variance": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fusion_applied": false,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "counts": {
+                "measured": 108,
+                "fused": 108,
+                "vo_replaced": 0,
+                "unknown": 2,
+                "unapplied": 108,
+                "substep_mismatch": 0,
+                "gate_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 111,
+            "max": 0.09232041751984506,
+            "median": 0.09117863702900124
+          },
+          "control_error_m": {
+            "n": 111,
+            "max": 9.219570512498231e-05,
+            "median": 5.061103902884872e-05
+          }
+        }
+      },
+      "model": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "failure_type": null,
+      "archive_verified": false,
+      "archive_path": null
+    },
+    {
+      "run": "e2e-usstall-a-s61002",
+      "status": "RUNNING",
+      "exit": null,
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61002",
+      "sim_s": 25.0,
+      "wall_s": 225.898658792,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 15.238919828999997
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 15.238919828999997
+        },
+        "B_candidate": {
+          "sim_s": 4.4,
+          "wall_s": 48.10388018899994,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.1758287,
+        "elapsed_s": 205.27075672149658,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true,
+          "ultrasonic_recorded": true
+        }
+      },
+      "latest_check_unix": 1791787647.1758287,
+      "robots": {
+        "r1": {
+          "frames": 111,
+          "forward_commands": 54,
+          "actual_displacement_m": 0.6953335880836174,
+          "ultrasonic": {
+            "range_rows": 117,
+            "judgements": 111,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 10,
+              "unconfirmed": 4,
+              "vo_available": 97
+            },
+            "latest": {
+              "status": "vo_available",
+              "stationary": false,
+              "samples": 0
+            }
+          },
+          "vo": {
+            "trace_frames": 111,
+            "measured_frames": 97,
+            "applied_frames": 97,
+            "applied_fraction": 0.8738738738738738,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 22.0,
+              "frame_id": 111,
+              "sha256": "e4539328fb52ac2e6287ef1c82b1d660a0381acb76712d352a620f29013c976c",
+              "command_delta": [
+                0.00013277632403880675,
+                -0.002817502506441058,
+                0.10354346792033252
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 86,
+              "inliers": 71,
+              "cells": 10,
+              "delta": [
+                -0.001214961618481114,
+                -0.002111601968906876,
+                0.09783549632070022
+              ],
+              "fit_rms_m": 0.002061088308808508,
+              "ultrasonic": {
+                "status": "vo_available",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "vo_replaced",
+              "nis": 13.24542700586794,
+              "fused_delta": [
+                -0.001214961618481114,
+                -0.002111601968906876,
+                0.09783549632070022
+              ],
+              "fused_variance": [
+                1.4664437593974506e-06,
+                8.14255031997361e-06,
+                6.50269574955252e-06
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                -0.001214961618481113,
+                -0.0021116019689069545,
+                0.09783549632070021
+              ],
+              "counts": {
+                "measured": 97,
+                "fused": 86,
+                "vo_replaced": 11,
+                "unknown": 13,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 111,
+            "max": 0.21253067768492365,
+            "median": 0.11706316822731216
+          },
+          "control_error_m": {
+            "n": 111,
+            "max": 0.0526667017452939,
+            "median": 0.024434530683064518
+          }
+        },
+        "r2": {
+          "frames": 111,
+          "forward_commands": 111,
+          "actual_displacement_m": 0.3020615544349465,
+          "ultrasonic": {
+            "range_rows": 117,
+            "judgements": 111,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 1,
+              "unconfirmed": 2,
+              "vo_available": 108
+            },
+            "latest": {
+              "status": "vo_available",
+              "stationary": false,
+              "samples": 0
+            }
+          },
+          "vo": {
+            "trace_frames": 111,
+            "measured_frames": 108,
+            "applied_frames": 108,
+            "applied_fraction": 0.972972972972973,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 22.0,
+              "frame_id": 111,
+              "sha256": "a4d92db6b75e39db7c29096c2d3fd436eb761009ad7680e3815a85ba6f483c84",
+              "command_delta": [
+                0.012917157771402142,
+                -0.0004020679808201143,
+                -0.00029378953563691376
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 8,
+              "inliers": 8,
+              "cells": 4,
+              "delta": [
+                0.0010268748163140273,
+                -0.0004504527914277849,
+                0.0017816377068714934
+              ],
+              "fit_rms_m": 0.0003369947737629331,
+              "ultrasonic": {
+                "status": "vo_available",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "fused",
+              "nis": 7.889143881665904,
+              "fused_delta": [
+                0.012659332531650141,
+                -0.0002868178754084031,
+                0.0007260052127528737
+              ],
+              "fused_variance": [
+                3.874512877433647e-07,
+                1.6361283793615929e-06,
+                6.205027101106012e-06
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "stationary_view",
+                "stationary": false,
+                "stationary_streak": 1,
+                "median_px": 0.9792969524860382,
+                "p90_px": 1.0387946128845216,
+                "tracks": 12
+              },
+              "applied_delta": [
+                0.012659332531650169,
+                -0.0002868178754083997,
+                0.0007260052127535666
+              ],
+              "counts": {
+                "measured": 108,
+                "fused": 49,
+                "vo_replaced": 59,
+                "unknown": 2,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 111,
+            "max": 0.3679856963848317,
+            "median": 0.17610978155110654
+          },
+          "control_error_m": {
+            "n": 111,
+            "max": 0.35152578862039086,
+            "median": 0.1346535098090705
+          }
+        },
+        "r3": {
+          "frames": 111,
+          "forward_commands": 0,
+          "actual_displacement_m": 9.020677934663743e-05,
+          "ultrasonic": {
+            "range_rows": 117,
+            "judgements": 111,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 3,
+              "vo_available": 108
+            },
+            "latest": {
+              "status": "vo_available",
+              "stationary": false,
+              "samples": 0
+            }
+          },
+          "vo": {
+            "trace_frames": 111,
+            "measured_frames": 108,
+            "applied_frames": 0,
+            "applied_fraction": 0.0,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 22.0,
+              "frame_id": 111,
+              "sha256": "6b50f3578ed128bdb8ada56dca23040e8cf2ff644ea6f07f39a8aae4fbf33b65",
+              "command_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "command_substeps": 0,
+              "status": "measured",
+              "tracks": 26,
+              "inliers": 26,
+              "cells": 5,
+              "delta": [
+                3.822035926215328e-05,
+                6.241420226446581e-05,
+                -4.336940882620954e-05
+              ],
+              "fit_rms_m": 7.495323679346366e-05,
+              "ultrasonic": {
+                "status": "vo_available",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "fused",
+              "nis": 0.0004074734426132297,
+              "fused_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fused_variance": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fusion_applied": false,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "counts": {
+                "measured": 108,
+                "fused": 108,
+                "vo_replaced": 0,
+                "unknown": 2,
+                "unapplied": 108,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 111,
+            "max": 0.09223543361394262,
+            "median": 0.09111545543687279
+          },
+          "control_error_m": {
+            "n": 111,
+            "max": 9.019933275998169e-05,
+            "median": 4.769246600041847e-05
+          }
+        }
+      },
+      "model": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "failure_type": null,
+      "archive_verified": false,
+      "archive_path": null
+    },
+    {
+      "run": "e2e-usstall-b-s61002",
+      "status": "RUNNING",
+      "exit": null,
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61002",
+      "sim_s": 25.0,
+      "wall_s": 229.07881827799997,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 19.345467690999953
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 19.345467690999953
+        },
+        "B_candidate": {
+          "sim_s": 4.4,
+          "wall_s": 52.19923173399991,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.2377,
+        "elapsed_s": 205.33192372322083,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "latest_check_unix": 1791787647.2377,
+      "robots": {
+        "r1": {
+          "frames": 106,
+          "forward_commands": 54,
+          "actual_displacement_m": 0.6953335880836174,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {},
+            "latest": {}
+          },
+          "vo": {
+            "trace_frames": 106,
+            "measured_frames": 94,
+            "applied_frames": 94,
+            "applied_fraction": 0.8867924528301887,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_v2",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_v2",
+              "mode": "fused",
+              "t": 21.0,
+              "frame_id": 106,
+              "sha256": "49a94bdb6ec7d4e1963901970a981dd1c3d526f9d512f65e12dc3871a785e293",
+              "command_delta": [
+                0.00013277632403880675,
+                -0.002817502506441058,
+                0.10354346792033252
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 24,
+              "inliers": 16,
+              "cells": 4,
+              "delta": [
+                0.0005680558924356927,
+                -0.00323595043326802,
+                0.1031925416416333
+              ],
+              "fit_rms_m": 0.0014714955689674274,
+              "fusion": "fused",
+              "nis": 0.06286309047736453,
+              "fused_delta": [
+                0.00014049214899656949,
+                -0.0028297283322493063,
+                0.10346105295687656
+              ],
+              "fused_variance": [
+                2.462323067130093e-07,
+                2.466210029162679e-07,
+                8.750954242453386e-07
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                0.00014049214899652918,
+                -0.0028297283322492248,
+                0.10346105295687645
+              ],
+              "counts": {
+                "measured": 94,
+                "fused": 84,
+                "vo_replaced": 10,
+                "unknown": 11,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 106,
+            "max": 0.21253067768492365,
+            "median": 0.11120919379154706
+          },
+          "control_error_m": {
+            "n": 106,
+            "max": 0.0526667017452939,
+            "median": 0.027156618395534658
+          }
+        },
+        "r2": {
+          "frames": 106,
+          "forward_commands": 106,
+          "actual_displacement_m": 0.30099182466663704,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {},
+            "latest": {}
+          },
+          "vo": {
+            "trace_frames": 106,
+            "measured_frames": 103,
+            "applied_frames": 103,
+            "applied_fraction": 0.9716981132075472,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_v2",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_v2",
+              "mode": "fused",
+              "t": 21.0,
+              "frame_id": 106,
+              "sha256": "b60ab7e202b3572b4475e47d42ccda8eb1d04a44f03ac5e583d999cdf61d1cd4",
+              "command_delta": [
+                0.012917157771402142,
+                -0.0004020679808201143,
+                -0.00029378953563691376
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 12,
+              "inliers": 10,
+              "cells": 4,
+              "delta": [
+                0.0001832967904717986,
+                -3.740793600657145e-05,
+                -9.001686548319416e-05
+              ],
+              "fit_rms_m": 0.00013724156019961938,
+              "fusion": "vo_replaced",
+              "nis": 14.649305270889206,
+              "fused_delta": [
+                0.0001832967904717986,
+                -3.740793600657145e-05,
+                -9.001686548319416e-05
+              ],
+              "fused_variance": [
+                1.068330463816572e-05,
+                0.00012822895951608107,
+                8.133244464436835e-05
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "stationary_view",
+                "stationary": false,
+                "stationary_streak": 1,
+                "median_px": 0.10273904725909233,
+                "p90_px": 0.13164051622152328,
+                "tracks": 14
+              },
+              "applied_delta": [
+                0.00018329679047189636,
+                -3.740793600656883e-05,
+                -9.001686548293363e-05
+              ],
+              "counts": {
+                "measured": 103,
+                "fused": 47,
+                "vo_replaced": 56,
+                "unknown": 2,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 106,
+            "max": 0.3679856963848317,
+            "median": 0.16925358533692794
+          },
+          "control_error_m": {
+            "n": 106,
+            "max": 0.33167212297068904,
+            "median": 0.12575078862572459
+          }
+        },
+        "r3": {
+          "frames": 106,
+          "forward_commands": 0,
+          "actual_displacement_m": 9.020677934663743e-05,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {},
+            "latest": {}
+          },
+          "vo": {
+            "trace_frames": 106,
+            "measured_frames": 103,
+            "applied_frames": 0,
+            "applied_fraction": 0.0,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_v2",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_v2",
+              "mode": "fused",
+              "t": 21.0,
+              "frame_id": 106,
+              "sha256": "aa265e67ee837787662594f2dc864e9caf04440fe8853fd78eb0dcad07b84a2b",
+              "command_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "command_substeps": 0,
+              "status": "measured",
+              "tracks": 25,
+              "inliers": 25,
+              "cells": 5,
+              "delta": [
+                1.5460979994275093e-05,
+                4.456275375780416e-05,
+                -2.8310081571267354e-05
+              ],
+              "fit_rms_m": 9.06589293609543e-05,
+              "fusion": "fused",
+              "nis": 0.00010475557450570814,
+              "fused_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fused_variance": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fusion_applied": false,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "counts": {
+                "measured": 103,
+                "fused": 103,
+                "vo_replaced": 0,
+                "unknown": 2,
+                "unapplied": 103,
+                "substep_mismatch": 0,
+                "gate_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 106,
+            "max": 0.09223543361394262,
+            "median": 0.09111392983890937
+          },
+          "control_error_m": {
+            "n": 106,
+            "max": 9.019933275998169e-05,
+            "median": 4.3907707960648145e-05
+          }
+        }
+      },
+      "model": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "failure_type": null,
+      "archive_verified": false,
+      "archive_path": null
+    },
+    {
+      "run": "e2e-usstall-a-s61003",
+      "status": "RUNNING",
+      "exit": null,
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61003",
+      "sim_s": 25.0,
+      "wall_s": 228.01406839599997,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 18.42462548399999
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 18.42462548399999
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 35.04295136500002,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 102.13267830000007,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.3005593,
+        "elapsed_s": 205.39403295516968,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true,
+          "vo_recorded": true,
+          "ultrasonic_recorded": true
+        }
+      },
+      "latest_check_unix": 1791787647.3005593,
+      "robots": {
+        "r1": {
+          "frames": 106,
+          "forward_commands": 71,
+          "actual_displacement_m": 0.7757411897669335,
+          "ultrasonic": {
+            "range_rows": 117,
+            "judgements": 106,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 9,
+              "unconfirmed": 5,
+              "vo_available": 92
+            },
+            "latest": {
+              "status": "vo_available",
+              "stationary": false,
+              "samples": 0
+            }
+          },
+          "vo": {
+            "trace_frames": 106,
+            "measured_frames": 92,
+            "applied_frames": 92,
+            "applied_fraction": 0.8679245283018868,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 21.0,
+              "frame_id": 106,
+              "sha256": "4efd7fcd6af76690fc7f7dd4b38e15a488652d5ed08e38791fa1a82e2eaaa71c",
+              "command_delta": [
+                0.00013277632403880675,
+                -0.002817502506441058,
+                0.10354346792033252
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 13,
+              "inliers": 12,
+              "cells": 5,
+              "delta": [
+                -0.001207107988862921,
+                -0.0013095945528332348,
+                0.10678691228977881
+              ],
+              "fit_rms_m": 0.0009314494689738963,
+              "ultrasonic": {
+                "status": "vo_available",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "fused",
+              "nis": 2.4527856265975045,
+              "fused_delta": [
+                0.00010348005670440413,
+                -0.0027219937270340946,
+                0.10407347575210997
+              ],
+              "fused_variance": [
+                2.451668179197589e-07,
+                2.456773447820606e-07,
+                8.78378523778344e-07
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                0.0001034800567043801,
+                -0.002721993727034111,
+                0.10407347575211023
+              ],
+              "counts": {
+                "measured": 92,
+                "fused": 77,
+                "vo_replaced": 15,
+                "unknown": 13,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 106,
+            "max": 0.08327574701039175,
+            "median": 0.07037063107885981
+          },
+          "control_error_m": {
+            "n": 106,
+            "max": 0.05692234331152832,
+            "median": 0.03112482045591023
+          }
+        },
+        "r2": {
+          "frames": 106,
+          "forward_commands": 106,
+          "actual_displacement_m": 0.30167316204806555,
+          "ultrasonic": {
+            "range_rows": 117,
+            "judgements": 106,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 1,
+              "unconfirmed": 2,
+              "vo_available": 103
+            },
+            "latest": {
+              "status": "vo_available",
+              "stationary": false,
+              "samples": 0
+            }
+          },
+          "vo": {
+            "trace_frames": 106,
+            "measured_frames": 103,
+            "applied_frames": 103,
+            "applied_fraction": 0.9716981132075472,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 21.0,
+              "frame_id": 106,
+              "sha256": "3d8cca49893ae4d77e5eef50599da7c43ac7ba8a00426c67a1337f1106bdc6fa",
+              "command_delta": [
+                0.012917157771402142,
+                -0.0004020679808201143,
+                -0.00029378953563691376
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 8,
+              "inliers": 7,
+              "cells": 3,
+              "delta": [
+                0.0012587326962638645,
+                0.001841169580571525,
+                -0.005562261010055031
+              ],
+              "fit_rms_m": 0.0005695009428759332,
+              "ultrasonic": {
+                "status": "vo_available",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "fused",
+              "nis": 10.327707977133988,
+              "fused_delta": [
+                0.012593038472118191,
+                -0.0005180776197789806,
+                -0.002798631672998521
+              ],
+              "fused_variance": [
+                3.853467643275336e-07,
+                1.621762780456056e-06,
+                5.987591488836497e-06
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 2.7291159629821777,
+                "p90_px": 2.801165294647217,
+                "tracks": 13
+              },
+              "applied_delta": [
+                0.01259303847211817,
+                -0.0005180776197789773,
+                -0.002798631672998209
+              ],
+              "counts": {
+                "measured": 103,
+                "fused": 45,
+                "vo_replaced": 58,
+                "unknown": 2,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 106,
+            "max": 0.3040873882943198,
+            "median": 0.18188075069260334
+          },
+          "control_error_m": {
+            "n": 106,
+            "max": 0.3032118261100782,
+            "median": 0.14216832853270372
+          }
+        },
+        "r3": {
+          "frames": 106,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.00010027293306676652,
+          "ultrasonic": {
+            "range_rows": 117,
+            "judgements": 106,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {
+              "not_forward": 3,
+              "vo_available": 103
+            },
+            "latest": {
+              "status": "vo_available",
+              "stationary": false,
+              "samples": 0
+            }
+          },
+          "vo": {
+            "trace_frames": 106,
+            "measured_frames": 103,
+            "applied_frames": 0,
+            "applied_fraction": 0.0,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_us_v1",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_us_v1",
+              "mode": "fused",
+              "t": 21.0,
+              "frame_id": 106,
+              "sha256": "1d75fba837dc6dfbdb8e688cb271b0c2172d23e0f76e3a9258c97a08f84cb83c",
+              "command_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "command_substeps": 0,
+              "status": "measured",
+              "tracks": 22,
+              "inliers": 22,
+              "cells": 5,
+              "delta": [
+                -1.4666216894942963e-05,
+                3.754266248640059e-05,
+                -2.9146518599504986e-05
+              ],
+              "fit_rms_m": 3.848018625336936e-05,
+              "ultrasonic": {
+                "status": "vo_available",
+                "stationary": false,
+                "samples": 0
+              },
+              "fusion": "fused",
+              "nis": 4.845892277693911e-05,
+              "fused_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fused_variance": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fusion_applied": false,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "counts": {
+                "measured": 103,
+                "fused": 103,
+                "vo_replaced": 0,
+                "unknown": 2,
+                "unapplied": 103,
+                "substep_mismatch": 0,
+                "gate_zero": 0,
+                "us_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 106,
+            "max": 0.09214055805774603,
+            "median": 0.09111404338166491
+          },
+          "control_error_m": {
+            "n": 106,
+            "max": 0.0001002729330667665,
+            "median": 4.459853858483183e-05
+          }
+        }
+      },
+      "model": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "failure_type": null,
+      "archive_verified": false,
+      "archive_path": null
+    },
+    {
+      "run": "e2e-usstall-b-s61003",
+      "status": "RUNNING",
+      "exit": null,
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61003",
+      "sim_s": 25.0,
+      "wall_s": 223.40843344500001,
+      "phase": "mapping",
+      "furthest_stages": {
+        "r1": "explore",
+        "r2": "explore",
+        "r3": "explore"
+      },
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 17.843757124000035
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 17.843757124000035
+        },
+        "B_candidate": {
+          "sim_s": 2.4,
+          "wall_s": 34.182378604000064,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        },
+        "B_view_approach": {
+          "sim_s": 9.6,
+          "wall_s": 100.05926989199997,
+          "robot": "r1",
+          "wall_alignment": "nearest logged SIM second"
+        }
+      },
+      "conditions": {
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false
+      },
+      "initial_check": {
+        "unix": 1791787647.3644488,
+        "elapsed_s": 205.45720505714417,
+        "passed": true,
+        "checks": {
+          "first_model_response": true,
+          "sim_frames_increase": true,
+          "actual_movement": true,
+          "straight_commands": true,
+          "mapping_entered": true,
+          "no_exception": true
+        }
+      },
+      "latest_check_unix": 1791787647.3644488,
+      "robots": {
+        "r1": {
+          "frames": 111,
+          "forward_commands": 76,
+          "actual_displacement_m": 0.7757411897669335,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {},
+            "latest": {}
+          },
+          "vo": {
+            "trace_frames": 111,
+            "measured_frames": 97,
+            "applied_frames": 97,
+            "applied_fraction": 0.8738738738738738,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_v2",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_v2",
+              "mode": "fused",
+              "t": 22.0,
+              "frame_id": 111,
+              "sha256": "b6b5c8ef0ccedbfbe8a0fdee809d3c36138c5a40b84d9c74068c13a619a20339",
+              "command_delta": [
+                0.012917157771402142,
+                -0.0004020679808201143,
+                -0.00029378953563691376
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 32,
+              "inliers": 24,
+              "cells": 5,
+              "delta": [
+                0.00879879628420599,
+                3.0255841513004977e-06,
+                0.00035050407302652126
+              ],
+              "fit_rms_m": 0.0016588770847366769,
+              "fusion": "fused",
+              "nis": 2.8710549776334946,
+              "fused_delta": [
+                0.01264540937140055,
+                -0.0003992972725583097,
+                0.0006913554590879094
+              ],
+              "fused_variance": [
+                3.698709433892257e-07,
+                1.5641691185926717e-06,
+                3.2629113376509428e-06
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "changed_view",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": 0.7406445145606995,
+                "p90_px": 2.9705719947814964,
+                "tracks": 53
+              },
+              "applied_delta": [
+                0.0126454093714006,
+                -0.0003992972725582926,
+                0.0006913554590877169
+              ],
+              "counts": {
+                "measured": 97,
+                "fused": 82,
+                "vo_replaced": 15,
+                "unknown": 13,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 111,
+            "max": 0.08327574701039175,
+            "median": 0.0696565202941144
+          },
+          "control_error_m": {
+            "n": 111,
+            "max": 0.05692234331152832,
+            "median": 0.03217954589171161
+          }
+        },
+        "r2": {
+          "frames": 111,
+          "forward_commands": 110,
+          "actual_displacement_m": 0.30246340205832306,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {},
+            "latest": {}
+          },
+          "vo": {
+            "trace_frames": 111,
+            "measured_frames": 108,
+            "applied_frames": 108,
+            "applied_fraction": 0.972972972972973,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_v2",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_v2",
+              "mode": "fused",
+              "t": 22.0,
+              "frame_id": 111,
+              "sha256": "4698a14f8a1c6db2936fdc786fdc48f697c2459a333a5d3860860b5544a795fd",
+              "command_delta": [
+                0.012917157771402142,
+                -0.0004020679808201143,
+                -0.00029378953563691376
+              ],
+              "command_substeps": 4,
+              "status": "measured",
+              "tracks": 7,
+              "inliers": 7,
+              "cells": 4,
+              "delta": [
+                6.354726511292874e-05,
+                -0.0005914811113342938,
+                -0.0006708091033989001
+              ],
+              "fit_rms_m": 0.0001903827631515019,
+              "fusion": "fused",
+              "nis": 9.789716285061365,
+              "fused_delta": [
+                0.012615984224550934,
+                -0.00037838119971905196,
+                -0.0010512053123247673
+              ],
+              "fused_variance": [
+                3.867896817233296e-07,
+                1.634230941354914e-06,
+                6.091031823572292e-06
+              ],
+              "fusion_applied": true,
+              "gate": {
+                "status": "stationary_view",
+                "stationary": false,
+                "stationary_streak": 1,
+                "median_px": 0.7649940252304077,
+                "p90_px": 0.8388890385627747,
+                "tracks": 13
+              },
+              "applied_delta": [
+                0.01261598422455091,
+                -0.0003783811997190502,
+                -0.001051205312324388
+              ],
+              "counts": {
+                "measured": 108,
+                "fused": 50,
+                "vo_replaced": 58,
+                "unknown": 2,
+                "unapplied": 0,
+                "substep_mismatch": 0,
+                "gate_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 111,
+            "max": 0.3225748069484339,
+            "median": 0.19815864206018308
+          },
+          "control_error_m": {
+            "n": 111,
+            "max": 0.36498385638135095,
+            "median": 0.16015542696656732
+          }
+        },
+        "r3": {
+          "frames": 111,
+          "forward_commands": 0,
+          "actual_displacement_m": 0.00010036431577355427,
+          "ultrasonic": {
+            "range_rows": 0,
+            "judgements": 0,
+            "zupt_count": 0,
+            "zupt_applied": 0,
+            "statuses": {},
+            "latest": {}
+          },
+          "vo": {
+            "trace_frames": 111,
+            "measured_frames": 108,
+            "applied_frames": 0,
+            "applied_fraction": 0.0,
+            "latest": {
+              "options": {
+                "stall_odometry": "rgb_vo_v2",
+                "stall_recovery": "off",
+                "stall_noise": "off"
+              },
+              "option": "rgb_vo_v2",
+              "mode": "fused",
+              "t": 22.0,
+              "frame_id": 111,
+              "sha256": "82d805e1d2d1ae5b9b09cb6f09ac73d702a5ed23b20b98e53f86dcbefce833ee",
+              "command_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "command_substeps": 0,
+              "status": "measured",
+              "tracks": 24,
+              "inliers": 24,
+              "cells": 5,
+              "delta": [
+                4.101664079336764e-05,
+                9.050754786529835e-05,
+                -6.95187972806692e-05
+              ],
+              "fit_rms_m": 0.00010365914938365066,
+              "fusion": "fused",
+              "nis": 0.0006085312844639047,
+              "fused_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fused_variance": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "fusion_applied": false,
+              "gate": {
+                "status": "warming_up",
+                "stationary": false,
+                "stationary_streak": 0,
+                "median_px": null,
+                "p90_px": null,
+                "tracks": 0
+              },
+              "applied_delta": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "counts": {
+                "measured": 108,
+                "fused": 108,
+                "vo_replaced": 0,
+                "unknown": 2,
+                "unapplied": 108,
+                "substep_mismatch": 0,
+                "gate_zero": 0
+              }
+            }
+          },
+          "map_error_m": {
+            "n": 111,
+            "max": 0.09214055805774603,
+            "median": 0.09111573273571946
+          },
+          "control_error_m": {
+            "n": 111,
+            "max": 0.00010036431577355427,
+            "median": 4.872726500207001e-05
+          }
+        }
+      },
+      "model": {
+        "calls": 0,
+        "known_cost_usd": 0,
+        "missing_cost_calls": 0
+      },
+      "failure": null,
+      "failure_type": null,
+      "archive_verified": false,
+      "archive_path": null
+    }
+  ]
+}
