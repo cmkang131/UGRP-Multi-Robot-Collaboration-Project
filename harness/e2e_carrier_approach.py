@@ -33,7 +33,8 @@ def advance(transport,rid,now):
         state.update(station=end,grip=grip,basis=basis,last_seen=now)
         state.pop('search_started',None);state.pop('search_step',None)
     from harness.e2e_mapping_cadence import expire
-    expire(transport,rid,now,state,fresh)
+    from harness import e2e_approach_commit as committed
+    if not committed.retained(transport,now,state):expire(transport,rid,now,state,fresh)
     if 'station' not in state and getattr(transport,'pregrasp_acquire','off')!='off':
         from harness.e2e_pregrasp_acquire import acquire
         result=acquire(transport,rid,now,state,target)
@@ -45,7 +46,7 @@ def advance(transport,rid,now):
     pose=np.asarray(g.explorer.local_pose);end=state['station'];grip=state['grip']
     distance=float(np.linalg.norm(end[:2]-pose[:2]));heading_error=wrap(end[2]-pose[2])
     grip_distance=float(np.linalg.norm(grip-pose[:2]))
-    tag,pwm=look_posture(grip_distance)
+    tag,pwm=committed.view(transport,rid,state,fresh,grip_distance)
     diag=dict(t=now,status='approach',station_own_m=end.tolist(),grip_own_m=grip.tolist(),
         distance_m=distance,heading_error_rad=heading_error,own_beam_age_s=now-state['last_seen'],camera=tag,
         basis_yaw_rad=state['basis']['yaw_rad'])
@@ -55,6 +56,7 @@ def advance(transport,rid,now):
     progressed=progress_step(transport,rid,now,state,distance)
     if progressed is not None:return progressed
     cached_navigation=getattr(transport,'pregrasp_progress','off')=='backup_replan_v1' and now<=state.get('lost_nav_until',-math.inf)
+    cached_navigation=cached_navigation or committed.navigating(transport,rid,now,state,distance)
     if recovery and not fresh and now-state['last_seen']>2. and not cached_navigation:
         from harness.e2e_align_progress import lost_search
         return lost_search(transport,rid,now,state)
@@ -109,4 +111,6 @@ def advance(transport,rid,now):
     diag.update(projected_clear=bool(clear),status='navigate_pregrasp')
     if np.linalg.norm(twist)>1e-10:state['motion_until']=now+command['duration_s']
     from harness.e2e_pregrasp_gaze import fresh_gaze
-    return False,admit_gaze(transport,rid,now,fresh_gaze(transport,rid,grip),command)
+    target=committed.gaze_target(transport,rid,fresh,grip)
+    gazes=[] if target is None else fresh_gaze(transport,rid,target)
+    return False,admit_gaze(transport,rid,now,gazes,command)
