@@ -81,6 +81,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if speed_bundle or any(vars(speed).values()):
         b['e2e_options']['exact_speedups']=dataclasses.asdict(speed)
         b.update(schema='ugrp.e2e_ownmap_live.v200',execution_bundle_id='e2e-exact-speed-v200',workflow_version='7.93.0')
+    if stall.stall_odometry=='rgb_vo_v1':
+        b.update(schema='ugrp.e2e_ownmap_live.v201',execution_bundle_id='e2e-rgb-vo-v201',workflow_version='7.94.0')
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -97,6 +99,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if stall.enabled or stall_bundle:paths.add('configs/simulation_workflows.d/e2e_stall_odometry_v198.json')
     if mapping_budget!='off':paths.add('configs/simulation_workflows.d/e2e_stall_budget_v199.json')
     if speed_bundle or any(vars(speed).values()):paths.add('configs/simulation_workflows.d/e2e_exact_speed_v200.json')
+    if stall.stall_odometry=='rgb_vo_v1':paths.add('configs/simulation_workflows.d/e2e_rgb_vo_v201.json')
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -314,7 +317,7 @@ def main():
     p.add_argument('--exploration-progress',choices=('off','frontier_progress_v1'),default='off')
     p.add_argument('--pose-fix',choices=('off','innovation'),default='off')
     p.add_argument('--path-follow',choices=('off','rpp_v1'),default='off')
-    p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1'),default='off')
+    p.add_argument('--stall-odometry',choices=('off','rgb_gate_v1','rgb_pulse_gate_v1','rgb_vo_v1'),default='off')
     p.add_argument('--stall-recovery',choices=('off','backup_replan_v1'),default='off')
     p.add_argument('--stall-noise',choices=('off','amcl_alpha_v1'),default='off')
     p.add_argument('--stall-bundle',action='store_true')
