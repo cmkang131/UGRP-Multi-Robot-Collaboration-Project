@@ -66,6 +66,9 @@ export MUJOCO_GL=osmesa OMP_NUM_THREADS=1 LP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=
 # Publish the native libraries before any of the simultaneous children loads them.
 .venv-sim/bin/python -c 'from scripts.run_e2e_azure_batch import prepare_native; prepare_native()'
 COMMON=(--expected-source-sha "$SHA" --driver-profile study_gemma4_31b_v1 --relay-receipt "$B/relays/e2e-idle/a.json" --e2e-live --event-driven-llm --compact-prompt --setdown-only-when-relook on_v1 --decider off --exploration-progress frontier_progress_v1 --pose-fix innovation --path-follow rpp_v1 --dev-light --stall-bundle --mapping-budget case_cap_v1 --wall-cap-s 25200 --stall-recovery off --stall-noise off --boundary-views candidate_views_v1 --b-marker-detect contrast_v1 --stall-odometry rgb_vo_us_v1 --ultrasonic-front on_v1 --vo-floor-mask homography_v1 --vo-rotation-policy no_ransac_v1)
+GATE_ROOT=$B/runs/speed-gate-e2e-idle-${MODE}-${SHA:0:12}-$(date +%s)
+GATE_PLAN=$GATE_ROOT-plan.json
+test ! -e "$GATE_PLAN"
 for seed in "${SEEDS[@]}"; do
   for group in "${COHORT_ARMS[@]}"; do
     # Admission is checked for every child; wait if memory/load cannot admit it.
@@ -103,9 +106,12 @@ r,sha,pr,group,seed,mode,vm=sys.argv[1:]
 (Path(r)/'SOURCE_SHA').write_text(sha+'\n')
 (Path(r)/'resource-admission.json').write_text(json.dumps(dict(loadavg=os.getloadavg(),mem_available_kib=int(next(x.split()[1] for x in Path('/proc/meminfo').read_text().splitlines() if x.startswith('MemAvailable:')))))+'\n')
 PYTHON
-    setsid nohup python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "$S" --run "$R" -- .venv-sim/bin/python -m scripts.sim_cli workflow run "$WF" --timeout 25200 -- "${COMMON[@]}" --seed "$seed" --output "$R/raw" "${X[@]}" --execute </dev/null >"$R/launch.log" 2>&1 &
+    .venv-sim/bin/python -m scripts.azure_speed_gate add --plan "$GATE_PLAN" --name "$NAME" --target "$R" -- .venv-sim/bin/python -m scripts.sim_cli workflow run "$WF" --timeout 25200 -- "${COMMON[@]}" --seed "$seed" --output "$R/raw" "${X[@]}" --execute
   done
  done
 # Coordinator must observe EACH run within wall 180..300s of its own start (also while admission waits).
 # Keep per-run process handles: stop only a failing run, write EXIT, repair and resubmit.
 # Keep run names unique; broad is candidate-only and is not a paired comparison.
+
+# Synchronously reject before starting any cohort member; each admitted child has a speed monitor.
+.venv-sim/bin/python -m scripts.azure_speed_gate start --plan "$GATE_PLAN" --gate-root "$GATE_ROOT" "${@:5}"

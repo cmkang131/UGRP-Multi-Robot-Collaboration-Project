@@ -49,6 +49,9 @@ validate_receipt(a,now=time.time()+25300,remote_url=url)
 PYTHON
 export MUJOCO_GL=osmesa OMP_NUM_THREADS=1 LP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 COMMON=(--expected-source-sha "$SHA" --driver-profile study_gemma4_31b_v1 --relay-receipt "$B/relays/e2e-vomask/a.json" --e2e-live --event-driven-llm --compact-prompt --setdown-only-when-relook on_v1 --decider off --exploration-progress frontier_progress_v1 --pose-fix innovation --path-follow rpp_v1 --dev-light --stall-bundle --mapping-budget case_cap_v1 --wall-cap-s 25200 --stall-recovery off --stall-noise off --boundary-views candidate_views_v1 --b-marker-detect contrast_v1)
+GATE_ROOT=$B/runs/speed-gate-e2e-vomask-${SHA:0:12}-$(date +%s)
+GATE_PLAN=$GATE_ROOT-plan.json
+test ! -e "$GATE_PLAN"
 for seed in 61001 61002 61003; do
   for group in a b; do
     # Admission is checked for every new child; retry later if memory/load cannot admit the pair.
@@ -72,7 +75,10 @@ r,sha,pr,group,seed=sys.argv[1:]
 (Path(r)/'RUN_META.json').write_text(json.dumps(dict(class_='dev',pr=int(pr),branch='codex/e2e-vomask',sha=sha,batch='e2e-vomask',group=group,seed=int(seed),wall_cap_s=25200,storage_budget_bytes=4*2**30)).replace('"class_"','"class"')+'\n')
 (Path(r)/'SOURCE_SHA').write_text(sha+'\n')
 PYTHON
-    setsid nohup python3 /usr/local/lib/ugrp-storage/scripts/remote_run_finish.py --source "$S" --run "$R" -- .venv-sim/bin/python -m scripts.sim_cli workflow run "$WF" --timeout 25200 -- "${COMMON[@]}" --seed "$seed" --output "$R/raw" "${X[@]}" --execute </dev/null >"$R/launch.log" 2>&1 &
+    .venv-sim/bin/python -m scripts.azure_speed_gate add --plan "$GATE_PLAN" --name "$NAME" --target "$R" -- .venv-sim/bin/python -m scripts.sim_cli workflow run "$WF" --timeout 25200 -- "${COMMON[@]}" --seed "$seed" --output "$R/raw" "${X[@]}" --execute
   done
  done
 # Coordinator observes all six now, including initial health, bounded completion and immediate archival.
+
+# Synchronously reject before starting any cohort member; each admitted child has a speed monitor.
+.venv-sim/bin/python -m scripts.azure_speed_gate start --plan "$GATE_PLAN" --gate-root "$GATE_ROOT" "${@:4}"

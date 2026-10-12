@@ -15,6 +15,7 @@ import sys
 import time
 
 from scripts.run_e2e_ownmap_live import write
+from scripts.azure_speed_gate import add_arguments, preflight, SpeedWarning, progress_sim
 
 
 def cells(attempt='r1'):
@@ -82,6 +83,7 @@ def main():
     p.add_argument('--expected-source-sha',required=True);p.add_argument('--relay-root',type=Path,required=True)
     p.add_argument('--attempt',choices=('r1','r2','r3'),default='r1')
     p.add_argument('--reserved-cpus',help='Default off: four otherwise unused Linux CPU IDs, rechecked at admission')
+    add_arguments(p)
     a=p.parse_args();root=a.run_root.resolve()
     if not root.is_relative_to(Path.home()/'ugrp-sim/runs'):raise ValueError('PERSISTENT_RUN_REQUIRED')
     if subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()!=a.expected_source_sha:
@@ -100,6 +102,8 @@ def main():
     signal.signal(signal.SIGTERM,stop)
     try:
         write(root/'native-preflight.json',dict(libraries=prepare_native(),before_any_case=True))
+        specs=[]
+        env={**os.environ,'OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MKL_NUM_THREADS':'1','LP_NUM_THREADS':'1'}
         for index,(name,seed,model,profile) in enumerate(cells(a.attempt)):
             target=root/'cases'/name;target.mkdir(parents=True,exist_ok=False)
             write(target/'RUN_META.json',{**parent,'batch':root.name,'run':name,'class':'dev','pr':433})
@@ -108,10 +112,16 @@ def main():
                 '--output',str(target/'raw'),'--seed',str(seed),'--driver-profile',profile,
                 '--relay-receipt',str(a.relay_root/(model+'-r1.json')),'--e2e-live','--event-driven-llm',
                 '--compact-prompt','--setdown-only-when-relook','on_v1','--execute']
-            log=(target/'log.txt').open('x')
-            env={**os.environ,'OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MKL_NUM_THREADS':'1','LP_NUM_THREADS':'1'}
             selected_cpu=cpus[index] if cpus else None
             if selected_cpu is not None:command=['taskset','-c',str(selected_cpu),*command]
+            specs.append(dict(name=name,target=str(target),command=command,env=env,cpu=selected_cpu))
+        gate=preflight(specs,root/'speed-gate',a.speed_gate_limit,a.speed_gate_override)
+        if not gate['admitted']:raise RuntimeError('SPEED_GATE_FAIL')
+        warnings={s['name']:SpeedWarning(a.speed_gate_limit) for s in specs}
+        for spec in specs:
+            target=Path(spec['target']);command=spec['command'];selected_cpu=spec['cpu']
+            write(target/'speed-gate-admission.json',{k:v for k,v in gate.items() if k!='samples'})
+            log=(target/'log.txt').open('x')
             process=subprocess.Popen(command,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,env=env)
             try:start_ticks=Path(f'/proc/{process.pid}/stat').read_text().rsplit(')',1)[1].split()[19]
             except FileNotFoundError:start_ticks=None
@@ -121,6 +131,9 @@ def main():
             jobs.append((target,process,log,time.monotonic()))
         while any(proc.poll() is None for _,proc,_,_ in jobs):
             for target,proc,log,started in jobs:
+                if proc.poll() is None:
+                    warning=warnings[target.name].observe(time.monotonic(),progress_sim(target))
+                    if warning:write(target/'SPEED_GATE_WARNING.json',warning)
                 if proc.poll() not in (None,0):reason='INITIAL_BATCH_MEMBER_FAILED';break
                 if time.monotonic()-started>=285:
                     check=target/'raw/initial-check.json'
@@ -148,7 +161,7 @@ def main():
             # The outer standard supervisor preserves each child's manifest.
             for line in (target/'log.txt').read_text().splitlines():
                 if line.startswith('Simulation record: '):print(line,flush=True)
-        write(root/'batch-result.json',dict(status='STOPPED' if reason else 'FINISHED',reason=reason,
+        write(root/'batch-result.json',dict(status='SPEED_GATE_FAIL' if reason and 'SPEED_GATE_FAIL' in reason else 'STOPPED' if reason else 'FINISHED',reason=reason,
             runs=[dict(name=t.name,exit=p.returncode) for t,p,_,_ in jobs],expansion_admitted=False))
     return int(bool(reason))
 
