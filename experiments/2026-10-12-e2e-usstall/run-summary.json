@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.e2e16.vm4.summary.v1",
   "status": "RUNNING",
-  "checked_utc": "2026-10-12T06:57:57.800594+00:00",
+  "checked_utc": "2026-10-12T07:49:08.910805+00:00",
   "source_sha": "f92abe144c5b0db0f3bfecd47bfd3edf7554a75d",
   "pr": 450,
   "setup_pr": 451,
@@ -25,9 +25,9 @@
     "own_map_completed": 0,
     "start_to_finish_transport": 0
   },
-  "zupt_judgements": 3789,
-  "zupt_stationary": 23,
-  "zupt_applied": 23,
+  "zupt_judgements": 13719,
+  "zupt_stationary": 412,
+  "zupt_applied": 412,
   "execution_errors": 0,
   "caps": {
     "runner_wall_s": 25200,
@@ -57,7 +57,7 @@
     "prune": "only after PR merge/close with hashes and cleanup-records"
   },
   "evidence": {
-    "live_sha256": "aecabe8aa9dacc11c8b5ee35a57ccbb54c25798f78c0cb7a897c0ba53b904311",
+    "live_sha256": "f3046186e48aa28872c3a13b3cb284e4669d1da1b6ea50312d3915580e3ec1f5",
     "live_local": "/Users/changmin/projects/ugrp-wt/azure-vm4/outputs/e2e16/live.json",
     "source_location": "azure4:/home/ugrp/ugrp-sim/src/f92abe144c5b0db0f3bfecd47bfd3edf7554a75d"
   },
@@ -67,8 +67,8 @@
       "status": "RUNNING",
       "exit": null,
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61001",
-      "sim_s": 84.0,
-      "wall_s": 798.326726456,
+      "sim_s": 290.0,
+      "wall_s": 3886.0552138700004,
       "phase": "mapping",
       "furthest_stages": {
         "r1": "explore",
@@ -117,102 +117,107 @@
           "ultrasonic_recorded": true
         }
       },
-      "latest_check_unix": 1791788247.7738817,
+      "latest_check_unix": 1791791263.3481095,
       "robots": {
         "r1": {
-          "frames": 421,
-          "forward_commands": 272,
-          "actual_displacement_m": 1.2992467528393932,
+          "frames": 1441,
+          "forward_commands": 846,
+          "actual_displacement_m": 2.274819632482397,
           "ultrasonic": {
-            "range_rows": 789,
-            "judgements": 421,
-            "zupt_count": 0,
-            "zupt_applied": 0,
+            "range_rows": 2782,
+            "judgements": 1441,
+            "zupt_count": 70,
+            "zupt_applied": 70,
             "statuses": {
-              "not_forward": 42,
-              "unconfirmed": 50,
-              "vo_available": 323,
-              "invalid_reading": 6
+              "not_forward": 416,
+              "unconfirmed": 191,
+              "vo_available": 748,
+              "invalid_reading": 12,
+              "stationary_range": 70,
+              "not_near": 4
             }
           },
           "vo": {
-            "trace_frames": 421,
-            "measured_frames": 323,
-            "applied_frames": 317,
-            "applied_fraction": 0.7529691211401425
+            "trace_frames": 1441,
+            "measured_frames": 748,
+            "applied_frames": 811,
+            "applied_fraction": 0.5628036086051353
           },
           "map_error_m": {
-            "n": 421,
-            "max": 2.431087684160024,
-            "median": 0.6185218888663978
+            "n": 1441,
+            "max": 4.756425316353693,
+            "median": 2.382537552005514
           },
           "control_error_m": {
-            "n": 421,
-            "max": 0.07089960712017913,
-            "median": 0.029995110492627607
+            "n": 1441,
+            "max": 1.0996138332592933,
+            "median": 0.1675816943137154
           }
         },
         "r2": {
-          "frames": 421,
-          "forward_commands": 253,
-          "actual_displacement_m": 0.6731056900827208,
+          "frames": 1441,
+          "forward_commands": 1171,
+          "actual_displacement_m": 4.831869618178682,
           "ultrasonic": {
-            "range_rows": 789,
-            "judgements": 421,
-            "zupt_count": 0,
-            "zupt_applied": 0,
+            "range_rows": 2886,
+            "judgements": 1441,
+            "zupt_count": 28,
+            "zupt_applied": 28,
             "statuses": {
-              "not_forward": 37,
-              "unconfirmed": 16,
-              "vo_available": 368
+              "not_forward": 70,
+              "unconfirmed": 218,
+              "vo_available": 1026,
+              "stationary_range": 28,
+              "invalid_reading": 97,
+              "not_near": 2
             }
           },
           "vo": {
-            "trace_frames": 421,
-            "measured_frames": 368,
-            "applied_frames": 365,
-            "applied_fraction": 0.8669833729216152
+            "trace_frames": 1441,
+            "measured_frames": 1026,
+            "applied_frames": 1049,
+            "applied_fraction": 0.7279666897987509
           },
           "map_error_m": {
-            "n": 421,
-            "max": 0.6812681602940189,
-            "median": 0.5976275160581532
+            "n": 1441,
+            "max": 7.057758217654878,
+            "median": 3.3710011134432363
           },
           "control_error_m": {
-            "n": 421,
-            "max": 0.667802633387678,
-            "median": 0.6323779286938284
+            "n": 1441,
+            "max": 1.0249160633996135,
+            "median": 0.6464487393949908
           }
         },
         "r3": {
-          "frames": 421,
+          "frames": 1441,
           "forward_commands": 0,
-          "actual_displacement_m": 0.000355286999449801,
+          "actual_displacement_m": 0.0019278748145880383,
           "ultrasonic": {
-            "range_rows": 792,
-            "judgements": 421,
+            "range_rows": 2788,
+            "judgements": 1441,
             "zupt_count": 0,
             "zupt_applied": 0,
             "statuses": {
               "not_forward": 3,
-              "vo_available": 418
+              "vo_available": 1438
             }
           },
           "vo": {
-            "trace_frames": 421,
-            "measured_frames": 418,
+            "trace_frames": 1441,
+            "measured_frames": 1438,
             "applied_frames": 0,
             "applied_fraction": 0.0
           },
           "map_error_m": {
-            "n": 421,
+            "n": 1441,
             "max": 0.09234263962142522,
-            "median": 0.08447821007376259
+            "median": 0.08390788538783736
           },
           "control_error_m": {
-            "n": 421,
-            "max": 0.00035519535184812934,
-            "median": 0.00014760479006130134
+            "n": 1441,
+            "max": 0.001927833682627334,
+            "median": 0.0005457536892837485
           }
         }
       },
@@ -231,8 +236,8 @@
       "status": "RUNNING",
       "exit": null,
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61001",
-      "sim_s": 85.0,
-      "wall_s": 800.4925066129999,
+      "sim_s": 300.0,
+      "wall_s": 3882.1277415839995,
       "phase": "mapping",
       "furthest_stages": {
         "r1": "explore",
@@ -279,12 +284,12 @@
           "no_exception": true
         }
       },
-      "latest_check_unix": 1791788247.9713001,
+      "latest_check_unix": 1791791264.1840627,
       "robots": {
         "r1": {
-          "frames": 426,
-          "forward_commands": 274,
-          "actual_displacement_m": 1.2992467528393932,
+          "frames": 1491,
+          "forward_commands": 1228,
+          "actual_displacement_m": 5.290518666517558,
           "ultrasonic": {
             "range_rows": 0,
             "judgements": 0,
@@ -293,26 +298,26 @@
             "statuses": {}
           },
           "vo": {
-            "trace_frames": 426,
-            "measured_frames": 328,
-            "applied_frames": 321,
-            "applied_fraction": 0.7535211267605634
+            "trace_frames": 1491,
+            "measured_frames": 1045,
+            "applied_frames": 1035,
+            "applied_fraction": 0.6941649899396378
           },
           "map_error_m": {
-            "n": 426,
-            "max": 2.431087684160024,
-            "median": 0.6302109696634123
+            "n": 1491,
+            "max": 10.137920416708049,
+            "median": 2.6324748261058084
           },
           "control_error_m": {
-            "n": 426,
-            "max": 0.07089960712017913,
-            "median": 0.03037604289759434
+            "n": 1491,
+            "max": 1.8233340552377804,
+            "median": 0.12695631145218697
           }
         },
         "r2": {
-          "frames": 426,
-          "forward_commands": 258,
-          "actual_displacement_m": 0.7033204153363698,
+          "frames": 1491,
+          "forward_commands": 1197,
+          "actual_displacement_m": 4.113815442826587,
           "ultrasonic": {
             "range_rows": 0,
             "judgements": 0,
@@ -321,26 +326,26 @@
             "statuses": {}
           },
           "vo": {
-            "trace_frames": 426,
-            "measured_frames": 373,
-            "applied_frames": 370,
-            "applied_fraction": 0.8685446009389671
+            "trace_frames": 1491,
+            "measured_frames": 924,
+            "applied_frames": 911,
+            "applied_fraction": 0.6109993293091884
           },
           "map_error_m": {
-            "n": 426,
-            "max": 0.6812681602940189,
-            "median": 0.5934750404227623
+            "n": 1491,
+            "max": 6.666741070261525,
+            "median": 4.395685757741946
           },
           "control_error_m": {
-            "n": 426,
-            "max": 0.6684248359005593,
-            "median": 0.6325913712844651
+            "n": 1491,
+            "max": 4.321918921457027,
+            "median": 0.8020306237613152
           }
         },
         "r3": {
-          "frames": 426,
+          "frames": 1491,
           "forward_commands": 0,
-          "actual_displacement_m": 0.0003564225263985093,
+          "actual_displacement_m": 0.251730225716912,
           "ultrasonic": {
             "range_rows": 0,
             "judgements": 0,
@@ -349,20 +354,20 @@
             "statuses": {}
           },
           "vo": {
-            "trace_frames": 426,
-            "measured_frames": 423,
+            "trace_frames": 1491,
+            "measured_frames": 1446,
             "applied_frames": 0,
             "applied_fraction": 0.0
           },
           "map_error_m": {
-            "n": 426,
-            "max": 0.09234263962142522,
-            "median": 0.08447779359177204
+            "n": 1491,
+            "max": 0.20681681935320526,
+            "median": 0.08390241859010747
           },
           "control_error_m": {
-            "n": 426,
-            "max": 0.0003564225263985094,
-            "median": 0.0001480566528449196
+            "n": 1491,
+            "max": 0.25166284456287424,
+            "median": 0.0005714775456804031
           }
         }
       },
@@ -381,8 +386,8 @@
       "status": "RUNNING",
       "exit": null,
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61002",
-      "sim_s": 82.0,
-      "wall_s": 798.470016851,
+      "sim_s": 323.0,
+      "wall_s": 3875.6642741099995,
       "phase": "mapping",
       "furthest_stages": {
         "r1": "explore",
@@ -431,105 +436,107 @@
           "ultrasonic_recorded": true
         }
       },
-      "latest_check_unix": 1791788248.1757226,
+      "latest_check_unix": 1791791264.9779494,
       "robots": {
         "r1": {
-          "frames": 411,
-          "forward_commands": 230,
-          "actual_displacement_m": 1.1657391183407178,
+          "frames": 1596,
+          "forward_commands": 940,
+          "actual_displacement_m": 1.6658833789472276,
           "ultrasonic": {
-            "range_rows": 774,
-            "judgements": 411,
-            "zupt_count": 9,
-            "zupt_applied": 9,
+            "range_rows": 3165,
+            "judgements": 1596,
+            "zupt_count": 75,
+            "zupt_applied": 75,
             "statuses": {
-              "not_forward": 41,
-              "unconfirmed": 51,
-              "vo_available": 292,
-              "invalid_reading": 17,
+              "not_forward": 180,
+              "unconfirmed": 288,
+              "vo_available": 1022,
+              "invalid_reading": 30,
               "not_near": 1,
-              "stationary_range": 9
+              "stationary_range": 75
             }
           },
           "vo": {
-            "trace_frames": 411,
-            "measured_frames": 292,
-            "applied_frames": 289,
-            "applied_fraction": 0.7031630170316302
+            "trace_frames": 1596,
+            "measured_frames": 1022,
+            "applied_frames": 784,
+            "applied_fraction": 0.49122807017543857
           },
           "map_error_m": {
-            "n": 411,
-            "max": 0.6521963983697581,
-            "median": 0.35198155658458236
+            "n": 1596,
+            "max": 3.2236469942278307,
+            "median": 1.1171899634426412
           },
           "control_error_m": {
-            "n": 411,
-            "max": 0.2538089717905396,
-            "median": 0.06367044201804033
+            "n": 1596,
+            "max": 2.2952816846055653,
+            "median": 0.442349028406096
           }
         },
         "r2": {
-          "frames": 411,
-          "forward_commands": 338,
-          "actual_displacement_m": 2.1827113958210327,
+          "frames": 1596,
+          "forward_commands": 928,
+          "actual_displacement_m": 3.932190095285654,
           "ultrasonic": {
-            "range_rows": 791,
-            "judgements": 411,
-            "zupt_count": 0,
-            "zupt_applied": 0,
+            "range_rows": 3181,
+            "judgements": 1596,
+            "zupt_count": 111,
+            "zupt_applied": 111,
             "statuses": {
-              "not_forward": 19,
-              "unconfirmed": 29,
-              "vo_available": 362,
-              "invalid_reading": 1
+              "not_forward": 585,
+              "unconfirmed": 253,
+              "vo_available": 636,
+              "invalid_reading": 5,
+              "stationary_range": 111,
+              "not_near": 6
             }
           },
           "vo": {
-            "trace_frames": 411,
-            "measured_frames": 362,
-            "applied_frames": 361,
-            "applied_fraction": 0.878345498783455
+            "trace_frames": 1596,
+            "measured_frames": 636,
+            "applied_frames": 746,
+            "applied_fraction": 0.4674185463659148
           },
           "map_error_m": {
-            "n": 411,
-            "max": 0.3750333299198289,
-            "median": 0.17811424076768484
+            "n": 1596,
+            "max": 1.3615649143093407,
+            "median": 0.3731085425010384
           },
           "control_error_m": {
-            "n": 411,
-            "max": 0.4658311650736626,
-            "median": 0.4014053227473346
+            "n": 1596,
+            "max": 1.1638334766067011,
+            "median": 0.40878055212931985
           }
         },
         "r3": {
-          "frames": 411,
+          "frames": 1596,
           "forward_commands": 0,
-          "actual_displacement_m": 0.0006409608356081696,
+          "actual_displacement_m": 0.0022676948048933614,
           "ultrasonic": {
-            "range_rows": 792,
-            "judgements": 411,
+            "range_rows": 3183,
+            "judgements": 1596,
             "zupt_count": 0,
             "zupt_applied": 0,
             "statuses": {
               "not_forward": 3,
-              "vo_available": 408
+              "vo_available": 1593
             }
           },
           "vo": {
-            "trace_frames": 411,
-            "measured_frames": 408,
+            "trace_frames": 1596,
+            "measured_frames": 1593,
             "applied_frames": 0,
             "applied_fraction": 0.0
           },
           "map_error_m": {
-            "n": 411,
+            "n": 1596,
             "max": 0.09224691870418271,
-            "median": 0.08564879075208562
+            "median": 0.08419158227887022
           },
           "control_error_m": {
-            "n": 411,
-            "max": 0.0006409608356081696,
-            "median": 0.0001689595617259786
+            "n": 1596,
+            "max": 0.002267694804893362,
+            "median": 0.0011377744198455173
           }
         }
       },
@@ -548,8 +555,8 @@
       "status": "RUNNING",
       "exit": null,
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61002",
-      "sim_s": 83.0,
-      "wall_s": 806.838338523,
+      "sim_s": 304.0,
+      "wall_s": 3885.742415171,
       "phase": "mapping",
       "furthest_stages": {
         "r1": "explore",
@@ -596,12 +603,12 @@
           "no_exception": true
         }
       },
-      "latest_check_unix": 1791788248.380009,
+      "latest_check_unix": 1791791265.8228498,
       "robots": {
         "r1": {
-          "frames": 411,
-          "forward_commands": 230,
-          "actual_displacement_m": 1.1657391183407178,
+          "frames": 1496,
+          "forward_commands": 841,
+          "actual_displacement_m": 1.903925430260079,
           "ultrasonic": {
             "range_rows": 0,
             "judgements": 0,
@@ -610,26 +617,26 @@
             "statuses": {}
           },
           "vo": {
-            "trace_frames": 411,
-            "measured_frames": 292,
-            "applied_frames": 280,
-            "applied_fraction": 0.681265206812652
+            "trace_frames": 1496,
+            "measured_frames": 1216,
+            "applied_frames": 827,
+            "applied_fraction": 0.5528074866310161
           },
           "map_error_m": {
-            "n": 411,
-            "max": 0.772954111975367,
-            "median": 0.35198155658458236
+            "n": 1496,
+            "max": 1.6121614932744963,
+            "median": 1.0302817529305646
           },
           "control_error_m": {
-            "n": 411,
-            "max": 0.20699391173905243,
-            "median": 0.06367044201804033
+            "n": 1496,
+            "max": 0.9270086195739572,
+            "median": 0.3294832313838906
           }
         },
         "r2": {
-          "frames": 411,
-          "forward_commands": 338,
-          "actual_displacement_m": 2.1827113958210327,
+          "frames": 1496,
+          "forward_commands": 654,
+          "actual_displacement_m": 3.992966683591082,
           "ultrasonic": {
             "range_rows": 0,
             "judgements": 0,
@@ -638,26 +645,26 @@
             "statuses": {}
           },
           "vo": {
-            "trace_frames": 411,
-            "measured_frames": 362,
-            "applied_frames": 361,
-            "applied_fraction": 0.878345498783455
+            "trace_frames": 1496,
+            "measured_frames": 1323,
+            "applied_frames": 701,
+            "applied_fraction": 0.46858288770053474
           },
           "map_error_m": {
-            "n": 411,
-            "max": 0.3750333299198289,
-            "median": 0.17811424076768484
+            "n": 1496,
+            "max": 0.569028169320969,
+            "median": 0.4096709589755483
           },
           "control_error_m": {
-            "n": 411,
+            "n": 1496,
             "max": 0.4658311650736626,
-            "median": 0.4014053227473346
+            "median": 0.24670747006831173
           }
         },
         "r3": {
-          "frames": 411,
+          "frames": 1496,
           "forward_commands": 0,
-          "actual_displacement_m": 0.0006409608356081696,
+          "actual_displacement_m": 0.001935070040505485,
           "ultrasonic": {
             "range_rows": 0,
             "judgements": 0,
@@ -666,20 +673,20 @@
             "statuses": {}
           },
           "vo": {
-            "trace_frames": 411,
-            "measured_frames": 408,
+            "trace_frames": 1496,
+            "measured_frames": 1493,
             "applied_frames": 0,
             "applied_fraction": 0.0
           },
           "map_error_m": {
-            "n": 411,
+            "n": 1496,
             "max": 0.09224691870418271,
-            "median": 0.08564879075208562
+            "median": 0.08416533151257746
           },
           "control_error_m": {
-            "n": 411,
-            "max": 0.0006409608356081696,
-            "median": 0.0001689595617259786
+            "n": 1496,
+            "max": 0.001935070040505485,
+            "median": 0.001117536681514801
           }
         }
       },
@@ -698,8 +705,8 @@
       "status": "RUNNING",
       "exit": null,
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-a-s61003",
-      "sim_s": 87.0,
-      "wall_s": 802.0684069690001,
+      "sim_s": 310.0,
+      "wall_s": 3882.898846585,
       "phase": "mapping",
       "furthest_stages": {
         "r1": "explore",
@@ -748,104 +755,107 @@
           "ultrasonic_recorded": true
         }
       },
-      "latest_check_unix": 1791788248.6030867,
+      "latest_check_unix": 1791791266.7441964,
       "robots": {
         "r1": {
-          "frames": 431,
-          "forward_commands": 272,
-          "actual_displacement_m": 1.5236162289811235,
+          "frames": 1536,
+          "forward_commands": 1059,
+          "actual_displacement_m": 2.655311826444422,
           "ultrasonic": {
-            "range_rows": 792,
-            "judgements": 431,
-            "zupt_count": 14,
-            "zupt_applied": 14,
+            "range_rows": 3041,
+            "judgements": 1536,
+            "zupt_count": 67,
+            "zupt_applied": 67,
             "statuses": {
-              "not_forward": 54,
-              "unconfirmed": 79,
-              "vo_available": 280,
-              "not_near": 3,
-              "invalid_reading": 1,
-              "stationary_range": 14
+              "not_forward": 174,
+              "unconfirmed": 323,
+              "vo_available": 946,
+              "not_near": 7,
+              "invalid_reading": 19,
+              "stationary_range": 67
             }
           },
           "vo": {
-            "trace_frames": 431,
-            "measured_frames": 280,
-            "applied_frames": 290,
-            "applied_fraction": 0.6728538283062645
+            "trace_frames": 1536,
+            "measured_frames": 946,
+            "applied_frames": 965,
+            "applied_fraction": 0.6282552083333334
           },
           "map_error_m": {
-            "n": 431,
-            "max": 1.371238432799573,
-            "median": 0.1499739691060739
+            "n": 1536,
+            "max": 1.9642821517371616,
+            "median": 1.5569521928332468
           },
           "control_error_m": {
-            "n": 431,
-            "max": 0.35731503127535,
-            "median": 0.07407285042725938
+            "n": 1536,
+            "max": 0.8692198454427268,
+            "median": 0.3132725560001318
           }
         },
         "r2": {
-          "frames": 431,
-          "forward_commands": 353,
-          "actual_displacement_m": 0.6312091829336763,
+          "frames": 1536,
+          "forward_commands": 1269,
+          "actual_displacement_m": 2.768630458617534,
           "ultrasonic": {
-            "range_rows": 787,
-            "judgements": 431,
-            "zupt_count": 0,
-            "zupt_applied": 0,
+            "range_rows": 3049,
+            "judgements": 1536,
+            "zupt_count": 61,
+            "zupt_applied": 61,
             "statuses": {
-              "not_forward": 22,
-              "unconfirmed": 3,
-              "vo_available": 406
+              "not_forward": 96,
+              "unconfirmed": 235,
+              "vo_available": 1137,
+              "invalid_reading": 6,
+              "stationary_range": 61,
+              "not_near": 1
             }
           },
           "vo": {
-            "trace_frames": 431,
-            "measured_frames": 406,
-            "applied_frames": 402,
-            "applied_fraction": 0.9327146171693735
+            "trace_frames": 1536,
+            "measured_frames": 1137,
+            "applied_frames": 1184,
+            "applied_fraction": 0.7708333333333334
           },
           "map_error_m": {
-            "n": 431,
-            "max": 1.9207220167288386,
-            "median": 0.9296538404419159
+            "n": 1536,
+            "max": 2.9240710818902613,
+            "median": 1.9557047566644195
           },
           "control_error_m": {
-            "n": 431,
-            "max": 2.123317618433942,
-            "median": 1.0803395074710234
+            "n": 1536,
+            "max": 3.3325091405978617,
+            "median": 2.8037670327952293
           }
         },
         "r3": {
-          "frames": 431,
+          "frames": 1536,
           "forward_commands": 0,
-          "actual_displacement_m": 0.0005605238050240092,
+          "actual_displacement_m": 0.002244883038467724,
           "ultrasonic": {
-            "range_rows": 791,
-            "judgements": 431,
+            "range_rows": 3051,
+            "judgements": 1536,
             "zupt_count": 0,
             "zupt_applied": 0,
             "statuses": {
               "not_forward": 3,
-              "vo_available": 428
+              "vo_available": 1533
             }
           },
           "vo": {
-            "trace_frames": 431,
-            "measured_frames": 428,
+            "trace_frames": 1536,
+            "measured_frames": 1533,
             "applied_frames": 0,
             "applied_fraction": 0.0
           },
           "map_error_m": {
-            "n": 431,
+            "n": 1536,
             "max": 0.09214211398685261,
-            "median": 0.08448633018676248
+            "median": 0.08531218866632766
           },
           "control_error_m": {
-            "n": 431,
-            "max": 0.0005605238050240092,
-            "median": 0.00012077641445003817
+            "n": 1536,
+            "max": 0.002244883038467724,
+            "median": 0.0011126808640295129
           }
         }
       },
@@ -864,8 +874,8 @@
       "status": "RUNNING",
       "exit": null,
       "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e-usstall-b-s61003",
-      "sim_s": 88.0,
-      "wall_s": 807.871984335,
+      "sim_s": 339.0,
+      "wall_s": 3882.6718595059997,
       "phase": "mapping",
       "furthest_stages": {
         "r1": "explore",
@@ -912,12 +922,12 @@
           "no_exception": true
         }
       },
-      "latest_check_unix": 1791788248.8224018,
+      "latest_check_unix": 1791791267.7150102,
       "robots": {
         "r1": {
-          "frames": 436,
-          "forward_commands": 316,
-          "actual_displacement_m": 1.6872796757333335,
+          "frames": 1666,
+          "forward_commands": 1361,
+          "actual_displacement_m": 2.575759583844732,
           "ultrasonic": {
             "range_rows": 0,
             "judgements": 0,
@@ -926,26 +936,26 @@
             "statuses": {}
           },
           "vo": {
-            "trace_frames": 436,
-            "measured_frames": 292,
-            "applied_frames": 292,
-            "applied_fraction": 0.6697247706422018
+            "trace_frames": 1666,
+            "measured_frames": 1034,
+            "applied_frames": 1031,
+            "applied_fraction": 0.6188475390156063
           },
           "map_error_m": {
-            "n": 436,
-            "max": 1.6275309589969518,
-            "median": 0.15739914922293866
+            "n": 1666,
+            "max": 2.541590307981946,
+            "median": 1.1036734041548488
           },
           "control_error_m": {
-            "n": 436,
-            "max": 0.21218948830710152,
-            "median": 0.07549183911452617
+            "n": 1666,
+            "max": 1.1610800253958378,
+            "median": 0.9778475349185565
           }
         },
         "r2": {
-          "frames": 436,
-          "forward_commands": 353,
-          "actual_displacement_m": 0.6312091829336763,
+          "frames": 1671,
+          "forward_commands": 1245,
+          "actual_displacement_m": 3.0984565107572934,
           "ultrasonic": {
             "range_rows": 0,
             "judgements": 0,
@@ -954,26 +964,26 @@
             "statuses": {}
           },
           "vo": {
-            "trace_frames": 436,
-            "measured_frames": 411,
-            "applied_frames": 407,
-            "applied_fraction": 0.9334862385321101
+            "trace_frames": 1671,
+            "measured_frames": 1126,
+            "applied_frames": 919,
+            "applied_fraction": 0.5499700777977259
           },
           "map_error_m": {
-            "n": 436,
-            "max": 1.9672505102162199,
-            "median": 0.9600176585962461
+            "n": 1671,
+            "max": 2.3876320091522385,
+            "median": 1.905797615371865
           },
           "control_error_m": {
-            "n": 436,
-            "max": 2.123317618433942,
-            "median": 1.1107192968199253
+            "n": 1671,
+            "max": 2.7067301932080117,
+            "median": 2.038994507805511
           }
         },
         "r3": {
-          "frames": 436,
+          "frames": 1671,
           "forward_commands": 0,
-          "actual_displacement_m": 0.0005693427035635111,
+          "actual_displacement_m": 0.002304860338953066,
           "ultrasonic": {
             "range_rows": 0,
             "judgements": 0,
@@ -982,20 +992,20 @@
             "statuses": {}
           },
           "vo": {
-            "trace_frames": 436,
-            "measured_frames": 433,
+            "trace_frames": 1671,
+            "measured_frames": 1668,
             "applied_frames": 0,
             "applied_fraction": 0.0
           },
           "map_error_m": {
-            "n": 436,
+            "n": 1671,
             "max": 0.09214211398685261,
-            "median": 0.08448871512714462
+            "median": 0.08532993000836213
           },
           "control_error_m": {
-            "n": 436,
-            "max": 0.0005693427035635111,
-            "median": 0.00012257291667497913
+            "n": 1671,
+            "max": 0.0023048466678717286,
+            "median": 0.0012756115878756779
           }
         }
       },
