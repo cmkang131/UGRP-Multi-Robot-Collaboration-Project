@@ -146,6 +146,12 @@ class ObservedGrid:
         if np.prod(hi-lo) > 1_000_000:
             raise ValueError('NAV_GRID_RESOURCE_LIMIT')
         a = np.zeros(tuple((hi-lo)[::-1]),np.int8)
+        if cells_enabled() and type(self) is ObservedGrid and xy.dtype.kind in 'iu':
+            # Integer indexing only. Repeated cells have the same pure state,
+            # so duplicate indexed writes preserve the original dense bytes.
+            indices=xy-lo
+            a[indices[:,1],indices[:,0]]=np.fromiter((self.state(c) for c in cells),np.int8)
+            return a,lo
         for c in set(cells):
             x,y = np.array(c)-lo
             a[y,x] = self.state(c)

@@ -132,3 +132,19 @@ def test_geometry_cache_is_bit_exact_owned_and_invalidates_changed_inputs():
     # Context must never leak into another robot or the default path.
     from harness.e2e_exact_speedups import geometry_enabled,cells_enabled
     assert not geometry_enabled() and not cells_enabled()
+
+
+def test_dense_integer_indexing_preserves_duplicates_unknown_and_provenance():
+    import numpy as np
+    from harness.own_map_navigation import ObservedGrid
+    from harness.e2e_exact_speedups import Options,using
+    grid=ObservedGrid('r1',.05)
+    for i in range(-20,21):
+        grid.odds[(i,i//3)]=float((i%3)-1)
+        if i%2:grid.floor_frames[(i,i//3)]={1}
+        if i%5:grid.support.add((i,i//3))
+    grid.support.add((-24,3))
+    for pose in ([0.,0.,0.],[-1.05,.15,0.],[2.,-2.,1.]):
+        before=grid.dense(pose)
+        with using(Options(scalar_cells=True)):after=grid.dense(pose)
+        assert all(a.dtype==b.dtype and a.shape==b.shape and a.tobytes()==b.tobytes() for a,b in zip(before,after))
