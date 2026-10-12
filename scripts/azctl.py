@@ -10,30 +10,30 @@ import time
 if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.azure_api import ACCOUNT, BASE, RG, SUB, SUBS, VM, Arm
+from scripts.azure_api import ACCOUNT, AZURE_HOSTS, BASE, RG, SUB, SUBS, VM, Arm, vm_target
 
 EXPIRY = dt.datetime(2026, 11, 18, 15, tzinfo=dt.timezone.utc)
 
 
-def guest(action):
-    return subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10', 'azure',
+def guest(action, host='azure'):
+    return subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10', host,
         'python3 /usr/local/lib/ugrp-storage/scripts/azure_shutdown.py ' + action],
         capture_output=True, text=True, timeout=660)
 
 
-def recover():
+def recover(host='azure'):
     for attempt in range(12):
-        ready = subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10', 'azure', 'true'], capture_output=True)
+        ready = subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10', host, 'true'], capture_output=True)
         if ready.returncode == 0:
             break
         time.sleep(5)
     else:
         raise RuntimeError('SSH unavailable; boot recovery will retry, admission refused')
-    result = guest('recover --reason start_recovery')
+    result = guest('recover --reason start_recovery', host)
     if result.returncode:
         raise RuntimeError('Recovery helper failed; new execution refused')
     from scripts.remote_run import fetch_lifecycle
-    fetch_lifecycle()
+    fetch_lifecycle(host)
 
 
 def az(*args):
@@ -65,39 +65,42 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('action', choices=['status', 'start', 'stop', 'resize'])
     parser.add_argument('--size', default='Standard_D16as_v5')
+    parser.add_argument('--vm', choices=AZURE_HOSTS.values())
+    parser.add_argument('--host', choices=AZURE_HOSTS)
     args = parser.parse_args()
+    vm, host = vm_target(args.vm, args.host)
     if args.action == 'status':
-        az('vm', 'get-instance-view', '-g', RG, '-n', VM, '--query',
+        az('vm', 'get-instance-view', '-g', RG, '-n', vm, '--query',
            '{size:hardwareProfile.vmSize,status:instanceView.statuses}', '-o', 'json')
     elif args.action == 'stop':
         # Refuse to kill another job; VM-local guards still enforce the hard cap.
         arm = Arm()
-        view = arm.request('GET', BASE + f'/providers/Microsoft.Compute/virtualMachines/{VM}/instanceView?api-version=2024-11-01')
+        view = arm.request('GET', BASE + f'/providers/Microsoft.Compute/virtualMachines/{vm}/instanceView?api-version=2024-11-01')
         if any(s['code'] == 'PowerState/deallocated' for s in view['statuses']):
             print('Already deallocated')
             return
-        running = guest('status')
+        running = guest('status', host)
         from scripts.remote_run import fetch_lifecycle
-        fetch_lifecycle()
+        fetch_lifecycle(host)
         if running.returncode == 75:
             print('Unarchived runs/leases; deallocation deferred: ' + running.stdout.strip())
             return
         if running.returncode:
             raise RuntimeError('Cannot verify remote jobs; stop refused (cloud and VM guards remain active)')
-        az('vm', 'deallocate', '-g', RG, '-n', VM)
+        az('vm', 'deallocate', '-g', RG, '-n', vm)
     elif args.action == 'resize':
         arm = Arm()
-        data = arm.request('GET', BASE + f'/providers/Microsoft.Compute/virtualMachines/{VM}/instanceView?api-version=2024-11-01')
+        data = arm.request('GET', BASE + f'/providers/Microsoft.Compute/virtualMachines/{vm}/instanceView?api-version=2024-11-01')
         if not any(s['code'] == 'PowerState/deallocated' for s in data['statuses']):
             raise RuntimeError('Resize requires deallocated VM')
-        az('vm', 'resize', '-g', RG, '-n', VM, '--size', args.size)
+        az('vm', 'resize', '-g', RG, '-n', vm, '--size', args.size)
     else:
         if dt.datetime.now(dt.timezone.utc) >= EXPIRY:
             raise RuntimeError('Credit expired; start refused')
         total = safety(Arm())
         print(f'Safety resources enabled; cumulative CostUSD={total:.4f}', flush=True)
-        az('vm', 'start', '-g', RG, '-n', VM)
-        recover()
+        az('vm', 'start', '-g', RG, '-n', vm)
+        recover(host)
 
 
 if __name__ == '__main__':
