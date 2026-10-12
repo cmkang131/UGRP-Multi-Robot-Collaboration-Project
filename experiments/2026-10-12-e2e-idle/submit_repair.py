@@ -30,10 +30,10 @@ def active():
 def main():
     p=argparse.ArgumentParser();p.add_argument('--sha',required=True)
     p.add_argument('--host',choices=('azure3','azure4'),required=True)
-    p.add_argument('--registration',choices=('repair','native'),default='repair')
+    p.add_argument('--registration',choices=('repair','native','native-retry'),default='repair')
     p.add_argument('--plan',action='store_true');a=p.parse_args()
     cells=[r for r in json.loads((HERE/f'boundary-{a.registration}-registration.json').read_text())['cells'] if r['host']==a.host]
-    assert len(cells)==(3 if a.registration=='native' else 6 if a.host=='azure3' else 5)
+    assert len(cells)==(3 if a.registration.startswith('native') else 6 if a.host=='azure3' else 5)
     assert len({r['name'] for r in cells})==len(cells)
     if a.plan:print(json.dumps(cells));return
     assert socket.gethostname().split('.')[0]=='ugrp-sim-'+a.host
