@@ -1,0 +1,25 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-s4-pair-live-v183-gemma-dev-v1",
+      "version": "7.76.0",
+      "purpose": "DEV only opt-in Gemini subscription -> Gemma fallback; own-map E2E still BLOCKED",
+      "entry": "scripts/run_s4_pair_live12.py",
+      "runner": "scripts.run_s4_pair_live12",
+      "docs": "experiments/2026-10-11-gemma-fallback/README.md",
+      "requires": "Mac Keychain key, models.list + actual RGB probe, matching --gemma-fallback relay, committed source; not main study",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--condition",
+        "--relay-receipt",
+        "--seed",
+        "--gemma-fallback"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

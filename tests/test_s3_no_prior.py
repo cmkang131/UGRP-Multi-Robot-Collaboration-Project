@@ -6,6 +6,8 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
+pytest.importorskip("mujoco")
+
 from harness import zone_s3_no_prior as m
 from harness import zone_s3_no_prior_contract as c
 
@@ -166,7 +168,10 @@ def test_prior_present_frozen_runtime_and_config_bytes_unchanged():
     paths = ['harness/zone_s3_host.py', 'harness/zone_s3_door_yield.py', 'scripts/run_s3_host.py',
         'sim/zone_s3_host.py', 'configs/zone_study_dev/dev_s1lite.json', 'configs/simulation_workflows.json']
     for p in paths:
-        frozen = subprocess.check_output(['git', 'show', 'd3393847f763a9b67db2789de434d47ec7ae1fdc:'+p], cwd=c.ROOT)
+        # sim/zone_s3_host.py is pinned to main's f012da8e (opt-in lazy camera capture, merged after d3393847);
+        # #416 itself must not change it further.
+        ref = 'f012da8e' if p == 'sim/zone_s3_host.py' else 'd3393847f763a9b67db2789de434d47ec7ae1fdc'
+        frozen = subprocess.check_output(['git', 'show', ref+':'+p], cwd=c.ROOT)
         assert (c.ROOT/p).read_bytes() == frozen, p
 
 

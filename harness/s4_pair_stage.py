@@ -31,6 +31,15 @@ GO 의사·상대 확인·이탈을 알립니다. structured는 기존 형식의
 고정 안전신호는 네 조건에 동일합니다. 상대의 자유 대화는 상태 정답이 아니며 스스로 확인해야 합니다.
 응답의 자기 영상은 요청 시각부터 10 SIM초 미만만 유효합니다. 이탈/운반 중 unknown/기한 만료는 두 로봇을 정지합니다.'''
 
+HEARTBEAT_PROMPT = '''all_phase_rgb_heartbeat_v2: pair_handshake.own_executor_phase는 자기 발행 명령의
+소프트웨어 단계이며 실제 접촉/성공 판정이 아닙니다. 운반 세션의 모든 단계에서 정상 응답은 동일한 liveness
+heartbeat가 됩니다. 명령 거부와 heartbeat는 별개이며, 거부된 명령은 실행되지 않습니다.
+carry/lift/raise/wait_carry 단계에서는 위의 자기 RGB held/grip_lost/unknown 규칙을 따르십시오.
+lower/open/refix_look/refix_post_look 등 의도적인 내려놓기·재관측 단계에는 잡고 있을 의무가 없으므로
+그 이유만으로 grip_lost/unknown을 보고하지 마십시오. 열린 decision_window에 맞춰 carry_decision 또는
+post_look_decision을 선택하고, 창이 없으면 continue로 자기 명령 진행을 기다리십시오.
+정렬·재집기·운반 중 예상하지 않은 이탈이 자기 RGB에 보이면 abort로 정지하십시오.'''
+
 
 def validate_reply(raw, **kwargs):
     try:
@@ -61,10 +70,15 @@ def plan(action, job, **kwargs):
     return old.s4.routing.executor_plan(action, job, **kwargs)
 
 
+def heartbeat_prompt(mode):
+    return HEARTBEAT_PROMPT.replace(hs.PHASE_HEARTBEAT, mode)
+
+
 @lru_cache(maxsize=32)
-def fixed_tokens(total, per_actor, seed):
+def fixed_tokens(total, per_actor, seed, heartbeat='off'):
     return max(si.pk.count_tokens(si.system_prompt(c, r, cap_window=total, cap_robot=per_actor, seed=seed)
-                                 + '\n\n' + PROMPT) for c in old.CONDITIONS for r in si.ROBOTS)
+                                 + '\n\n' + PROMPT + ('\n\n'+heartbeat_prompt(heartbeat) if heartbeat != 'off' else ''))
+               for c in old.CONDITIONS for r in si.ROBOTS)
 
 
 @dataclass(frozen=True)
@@ -129,13 +143,20 @@ class Trial(old.Trial):
         if self.links['r2'].handshake is not self.handshake:
             raise ValueError('one pair safety wire required')
         self.pair_snapshots = {}
+        self.carry_sources = {}
 
     def snapshot(self, call):
         super().snapshot(call)
         if call.actor in hs.PAIR:
             frame = self._snapshots[(call.actor, round(float(call.started_sim_s), 6))]['frame']
+            seen = self.handshake.view(call.actor, call.started_sim_s)
+            if self.handshake.carry_lease_renewal in hs.PHASE_RENEWALS:
+                # Own executor software state only: no measurements or peer state.
+                adapter = self.links[call.actor].stop_adapter
+                ctl = adapter.controller() if adapter is not None else None
+                seen['own_executor_phase'] = getattr(ctl, 'state', None)
             self.pair_snapshots[call.call_id] = dict(requested_at=call.started_sim_s,
-                frame_t=frame.t, frame_sha256=frame.sha256, seen=self.handshake.view(call.actor, call.started_sim_s))
+                frame_t=frame.t, frame_sha256=frame.sha256, seen=seen)
 
     def prepare_call(self, call):
         prepared = super().prepare_call(call)
@@ -145,6 +166,8 @@ class Trial(old.Trial):
         body = json.loads(request['messages'][1]['content'])
         body['pair_handshake'] = state
         system = request['messages'][0]['content'] + '\n\n' + PROMPT
+        if self.handshake.carry_lease_renewal in hs.PHASE_RENEWALS:
+            system += '\n\n' + heartbeat_prompt(self.handshake.carry_lease_renewal)
         user = json.dumps(body, ensure_ascii=False, sort_keys=True)
         request.update(prompt_version='ugrp.s4_pair_prompt.v1', input_sha256=bundled.payload_sha256,
             messages=[dict(role='system', content=system), dict(role='user', content=user)])
@@ -152,16 +175,32 @@ class Trial(old.Trial):
         request['tokens'] = si.pk.request_tokens(system, user, request['images'])
         caps = body.get(si.pk.WINDOW_KEY, {})
         request['billed_tokens'] = si.billing.billed_tokens(request['tokens'], system_billed=fixed_tokens(
-            caps.get('max_utterances', 12), caps.get('max_your_utterances', 6), self.seed))
+            caps.get('max_utterances', 12), caps.get('max_your_utterances', 6), self.seed,
+            self.handshake.carry_lease_renewal if self.handshake.carry_lease_renewal in hs.PHASE_RENEWALS else 'off'))
         return old.s4.zo.PreparedCall(bundled, request, prepared.request_id)
 
     def finish_call(self, call, prepared, raw, **kwargs):
-        return bind(pair.PairTrial.finish_call, validate_reply=validate_reply)(
+        reply = bind(pair.PairTrial.finish_call, validate_reply=validate_reply)(
             self, call, prepared, raw, robots=si.ROBOTS, **kwargs)
+        if reply.action:
+            value = pair.zp.parse(raw) if isinstance(raw, str) else raw
+            self.carry_sources[call.call_id] = tuple(value['decision_sources'])
+        return reply
 
     def _on_action(self, actor, action, sim_s):
         if action['kind'] != 'pair_decision':
-            return super()._on_action(actor, action, sim_s)
+            result = super()._on_action(actor, action, sim_s)
+            if actor in hs.PAIR and (action['kind'] == 'carry_decision'
+                    or self.handshake.carry_lease_renewal in hs.PHASE_RENEWALS):
+                call_id = self.scheduler.calls[-1].call_id
+                ack = self.dispatch_log[-1].get('ack') or {}
+                row = self.handshake.renew_carry(actor, action, call_id=call_id,
+                    command_accepted=ack.get('accepted', False),
+                    decision_sources=self.carry_sources.get(call_id, ()),
+                    **self.pair_snapshots[call_id], now=sim_s)
+                if row is not None:
+                    self.dispatch_log[-1]['carry_lease_renewal'] = copy.deepcopy(row)
+            return result
         old.s4.live.check_health(self)
         call = self.scheduler.calls[-1]
         link = self.links[actor]
@@ -172,6 +211,13 @@ class Trial(old.Trial):
                 self, actor, action, sim_s, call.call_id, planner=plan)
         finally:
             link.call_ref = link.response_context = None
+        if self.handshake.carry_lease_renewal in hs.PHASE_RENEWALS:
+            ack = self.dispatch_log[-1].get('ack') or {}
+            row = self.handshake.renew_carry(actor, action, call_id=call.call_id,
+                command_accepted=ack.get('accepted', False),
+                decision_sources=self.carry_sources.get(call.call_id, ()),
+                **self.pair_snapshots[call.call_id], now=sim_s)
+            self.dispatch_log[-1]['carry_lease_renewal'] = copy.deepcopy(row)
 
     def _remember_command(self, actor, call_id, sim_s, plan, ack, kind, arguments, local):
         if plan.api == 'pair_decision':
@@ -183,6 +229,7 @@ class Trial(old.Trial):
 
     def study_config(self):
         return {**super().study_config(), 'pair_mode': hs.MODE, 'research_result': False,
+                'carry_lease_renewal': self.handshake.carry_lease_renewal,
                 'grip_detector': 'own_RGB_LLM_unvalidated', 'fixed_safety_wire_same_all_conditions': True}
 
 
@@ -207,8 +254,10 @@ class Driver:
         self.host, self.runtime, self.on_admit = host, pair_runtime, on_admit
         self.handshake = host.trial.handshake
         self.attached, self.next_ask, self.ask_keys, self.next_submit = set(), {}, {}, 0.
+        self.endpoints = {}
 
     def _attach(self, rid, ep):
+        self.endpoints[rid] = ep
         link = self.host.links[rid]
         original = ep.controller._wait_carry
         released_epochs = set()
@@ -249,6 +298,17 @@ class Driver:
         self.runtime.team.poll(now)
         return [(rid, {'kind': 'hold'}) for rid in hs.PAIR]
 
+    def _own_terminals(self, rel):
+        if self.handshake.carry_lease_renewal != hs.ACTIVE_PHASE_HEARTBEAT:
+            return
+        # team.poll can remove failed endpoints; keep the admitted own handle.
+        for rid, ep in self.endpoints.items():
+            if ep.terminal:
+                if ep.controller.state == 'done':
+                    self.handshake.close(rid, rel)
+                else:
+                    self.handshake.abort(rid, rel, 'S3_PAIR_TERMINAL')
+
     def step(self, now):
         rel = now-self.host.links['r1'].origin_s
         self.handshake.tick(rel)
@@ -281,11 +341,13 @@ class Driver:
                 raise RuntimeError('S4 pair requires a fresh own frame before tick')
             issued.extend((rid, c) for c in decision['commands'])
         self.runtime.team.poll(now)
+        self._own_terminals(rel)
         for rid in hs.PAIR:
             ep = self.runtime.actors[rid]._pair
             if ep is not None:
                 issued.extend((rid, c) for c in ep.arm_step(now))
         self.runtime.team.poll(now)
+        self._own_terminals(rel)
         for rid in hs.PAIR:
             ep = self.runtime.actors[rid]._pair
             if ep is not None and ep.terminal and ep.controller.state != 'done':

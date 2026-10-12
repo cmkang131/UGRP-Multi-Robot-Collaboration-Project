@@ -3,14 +3,31 @@ from types import SimpleNamespace
 import copy
 import json
 import pytest
+pytest.importorskip("mujoco", reason="Engine import closure; no physics is executed")
 from scripts import run_s4_pair_live5 as run
 from scripts import submit_s4_live5 as submit
 from scripts.evaluate_s4_live5 import first_carry_window,contact_carry
 
 
 def test_frozen_release_and_all_four_bundles_share_control_source():
-    r=run.validate_release();assert r['s3_source_sha'].startswith('60eaf042')
-    bundles=[run.bundle('a'*40,c) for c in run.live.stage.CONDITIONS]
+    import subprocess
+    from harness.zone_s3_recovery_contract import bundle as current_bundle
+    from tests.pinned_source_bundle import json_at
+    # Production admission must reject today's changed source. Positive
+    # registration assertions use the original complete Git source instead.
+    with pytest.raises(ValueError,match='S3 v165 source changed: sim/s3_synchronized_carry.py'):
+        run.validate_release()
+    revision=subprocess.check_output(['git','rev-parse','917b485c'],cwd=run.ROOT,text=True).strip()
+    tree=subprocess.check_output(['git','ls-tree','-r','--name-only',revision],cwd=run.ROOT,text=True).splitlines()
+    prefixes=('experiments/2026-10-06-s4-llm/',
+              'experiments/2026-10-09-s3-no-prior/',
+              'experiments/2026-10-05-loaded-rest-calibration-v104/','tests/')
+    extras=set(current_bundle('a'*40)['source_sha256'])|{
+        p for p in tree if p.startswith(prefixes) and p.endswith(('.json','.md','.py','.csv','.txt'))}
+    code=("import json; from scripts import run_s4_pair_live5 as run; "
+          "print(json.dumps([run.bundle('a'*40,c) for c in run.live.stage.CONDITIONS]))")
+    bundles=json_at(revision,code,tuple(sorted(extras)))
+    r=bundles[0]['s3_release'];assert r['s3_source_sha'].startswith('60eaf042')
     for b in bundles:
         assert b['case']=='pair' and b['seed']==601 and b['case_cap_s']==90
         assert b['execution_bundle_id']==run.BUNDLE_ID and b['synchronized_carry']['params']['go_ack_settle_s']==.2

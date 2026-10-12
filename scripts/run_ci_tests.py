@@ -24,6 +24,10 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_azure*.py",
+    "tests/test_storage_automation.py",
+    "tests/test_ownmap_s2.py",
+    "tests/test_lazy_camera.py",
     "tests/test_s2_path_heading.py",
     "tests/test_path_heading_default.py",
     "tests/test_opencv_wall_robot_mask.py",
@@ -109,6 +113,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_edge_fit.py",  # v98 HIGH beam-edge consensus fit (recorded own frames)
     "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
     "tests/test_highpose_own_load_occlusion.py",  # v98 own-load occlusion rule: held beam blocking the own camera is no observation, not INVALID_OWN_IMAGE
+    "tests/test_s2_*.py",  # Include real-site, freeze-scope and in-hand S2 option regressions.
     "tests/test_solo_cyan_v106*.py",  # S2 v3 cyan: own RGB/commands, synthetic backend only
     "tests/test_s3_host*.py",  # S3 fixed-role host, no physics or model calls
     "tests/test_s3_pair_heading.py",
@@ -119,6 +124,9 @@ TEST_PATTERNS = (
     "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
     "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
     "tests/test_s4_live_stage.py",  # S4 stage admission and transport: stub model, fake physics
+    "tests/test_gemma_fallback_proxy.py",  # Mac DEV fallback/quota/Keychain: fake API only
+    "tests/test_gemma_multi_key.py",  # Opt-in independent key buckets: fake API only
+    "tests/test_s4_study_policy.py",  # English/event/quota policy: offline only
     "tests/test_s4_live5.py",  # opt-in frozen S3 pair integration, no physics/model
     "tests/test_s4_grip_r3.py",
     "tests/test_s4_grip_visual.py",
@@ -365,6 +373,7 @@ TEST_PATTERNS = (
     "tests/test_navigation_evidence.py",
     "tests/test_navigation_temporal.py",
     "tests/test_ugrp_session.py",
+    "tests/test_storage_tools.py",
     "tests/test_sim_speed_tools.py",
     "tests/test_sim_speed_review2.py",
     "tests/test_sim_speed_review3.py",

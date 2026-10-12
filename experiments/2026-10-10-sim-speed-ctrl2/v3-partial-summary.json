@@ -1,0 +1,1310 @@
+{
+  "schema": "ugrp.controller_abba.v1",
+  "source": "37360616cf48fa09881ecd9ea21de6dd9bdac514",
+  "complete": false,
+  "failure": {
+    "type": "InterruptedError",
+    "message": "HOST_INTERRUPTED:SIGTERM"
+  },
+  "raw": "/Users/changmin/projects/ugrp/outputs/speedctrl2-20261010-v3",
+  "raw_sha256": "31e0a82796a460676625a1ecbc2de32473f2cdd9d809869ddfa71cf9ad08a167",
+  "cases": [
+    {
+      "id": "s3-v148",
+      "measurement_source": "37360616cf48fa09881ecd9ea21de6dd9bdac514",
+      "proof": {
+        "verified": true,
+        "files": [
+          {
+            "name": "commands.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "state.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "record.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          }
+        ],
+        "input_hashes_equal": true,
+        "completed_callbacks": true,
+        "adapter_source_hashes_equal": true,
+        "scope": "direct decoded behavior bytes; per-frame particle-array hashes and full RNG state; final maps",
+        "excluded": [
+          "timing, load, profile, implementation/adapter/storage provenance"
+        ]
+      },
+      "load": {
+        "mean_1min": [
+          2.3878499163582005,
+          2.5803695365888384,
+          2.2674668992027334,
+          2.5917290272636673
+        ],
+        "A": 2.489789471810934,
+        "B": 2.423918217895786,
+        "tolerance": 0.6059795544739465,
+        "comparable": true,
+        "rule": "both crossover pairs and aggregate: |A-B| <= max(0.5, 0.25*min(A,B))",
+        "limitation": "load average is a host-load proxy, not identical scheduling or cache state"
+      },
+      "A_wall_per_input_sim": 1.9997531240638537,
+      "B_wall_per_input_sim": 1.6742833513930253,
+      "percent_saved": 16.27549764790046,
+      "exclusive_mean": {
+        "A": {
+          "physics": 0.0,
+          "render": 0.0,
+          "pf_update": 0.1746030379212717,
+          "posterior_summary": 0.1044403142497777,
+          "scan_match": 0.0,
+          "map_insert": 0.0,
+          "path_plan": 0.0,
+          "graph": 0.0,
+          "vision": 0.49419876391500805,
+          "record_io": 0.024488832514263162,
+          "controller_other": 0.00021864128507435596,
+          "setup_proof": 0.03237973882834806,
+          "belief_report": 0.005350415145693407,
+          "cache_key": 0.021857386470887148,
+          "pose_estimate": 0.16166734546646222,
+          "flow_observation": 0.0,
+          "floor_detection": 0.0,
+          "wall_detection": 0.0,
+          "raytrace": 0.0,
+          "costmap_build": 0.0,
+          "grid_export": 0.0,
+          "frontier_forecast": 0.0,
+          "controller_receive": 0.2977779511291615,
+          "controller_step": 0.023724727822174257,
+          "command_feedback": 0.0010209167272503144,
+          "frame_hash_decode": 0.04538189441435567,
+          "state_proof": 0.02056374843710753,
+          "trend_record": 0.00032773175086511395,
+          "visibility_geometry": 0.4477139630157726,
+          "likelihood_lookup": 0.07320156579807435,
+          "rgb_preprocess": 0.07035970319084797
+        },
+        "B": {
+          "physics": 0.0,
+          "render": 0.0,
+          "pf_update": 0.17016671812714645,
+          "posterior_summary": 0.10412629722318821,
+          "scan_match": 0.0,
+          "map_insert": 0.0,
+          "path_plan": 0.0,
+          "graph": 0.0,
+          "vision": 0.47760547608531567,
+          "record_io": 0.024797777015637165,
+          "controller_other": 0.0002144955321359682,
+          "setup_proof": 0.031136573658039852,
+          "belief_report": 0.0051375208970065745,
+          "cache_key": 0.02126032460510697,
+          "pose_estimate": 0.16068093783406065,
+          "flow_observation": 0.0,
+          "floor_detection": 0.0,
+          "wall_detection": 0.0,
+          "raytrace": 0.0,
+          "costmap_build": 0.0,
+          "grid_export": 0.0,
+          "frontier_forecast": 0.0,
+          "controller_receive": 0.29381910334878125,
+          "controller_step": 0.023338575197594268,
+          "command_feedback": 0.0010023367209530108,
+          "frame_hash_decode": 0.044054836048064205,
+          "state_proof": 0.02052842950890666,
+          "trend_record": 0.00031189774545802647,
+          "visibility_geometry": 0.15427024259320227,
+          "likelihood_lookup": 0.0718009748951145,
+          "rgb_preprocess": 0.06947320497240744
+        }
+      },
+      "storage": [
+        {
+          "schema": "ugrp.lossless-records.v1",
+          "files": [
+            {
+              "logical_name": "commands.json",
+              "stored_name": "commands.json",
+              "storage": "off",
+              "logical_bytes": 268794,
+              "logical_sha256": "e65bbecec2a37ef4abe92b15d5396ed6713068074cd2dd1eb95d7707c6e66f8a",
+              "stored_bytes": 268794,
+              "stored_sha256": "e65bbecec2a37ef4abe92b15d5396ed6713068074cd2dd1eb95d7707c6e66f8a"
+            },
+            {
+              "logical_name": "state.json",
+              "stored_name": "state.json",
+              "storage": "off",
+              "logical_bytes": 5109822,
+              "logical_sha256": "b3fda13685a0784080347daed67b6f61d196a5c743cedb969e6a235d230ea44e",
+              "stored_bytes": 5109822,
+              "stored_sha256": "b3fda13685a0784080347daed67b6f61d196a5c743cedb969e6a235d230ea44e"
+            },
+            {
+              "logical_name": "record.json",
+              "stored_name": "record.json",
+              "storage": "off",
+              "logical_bytes": 13022104,
+              "logical_sha256": "42b71dbc0a46602231cd74b0934c298138b6cc658d7515ad7ea1767ff8efdfd7",
+              "stored_bytes": 13022104,
+              "stored_sha256": "42b71dbc0a46602231cd74b0934c298138b6cc658d7515ad7ea1767ff8efdfd7"
+            }
+          ],
+          "decoded_bytes_identical_claim": false,
+          "scope": "storage hashes only; direct decoded comparison performed separately"
+        },
+        {
+          "schema": "ugrp.lossless-records.v1",
+          "files": [
+            {
+              "logical_name": "commands.json",
+              "stored_name": "commands.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 268794,
+              "logical_sha256": "e65bbecec2a37ef4abe92b15d5396ed6713068074cd2dd1eb95d7707c6e66f8a",
+              "stored_bytes": 11626,
+              "stored_sha256": "970c3e18c9c78b18d28c8ee63117e2fb6e8a1ad94e5f3ae8b3c2d35c940e19af"
+            },
+            {
+              "logical_name": "state.json",
+              "stored_name": "state.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 5109822,
+              "logical_sha256": "b3fda13685a0784080347daed67b6f61d196a5c743cedb969e6a235d230ea44e",
+              "stored_bytes": 216666,
+              "stored_sha256": "5a7fcc7922197e381760353d5df719d344b67862e9f7f3370366ee2cb23d824b"
+            },
+            {
+              "logical_name": "record.json",
+              "stored_name": "record.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 13022104,
+              "logical_sha256": "42b71dbc0a46602231cd74b0934c298138b6cc658d7515ad7ea1767ff8efdfd7",
+              "stored_bytes": 891310,
+              "stored_sha256": "640e0a008e9693d18cc758b224488fb2da7f9c268d2679c6428c316b5e465ec3"
+            }
+          ],
+          "decoded_bytes_identical_claim": false,
+          "scope": "storage hashes only; direct decoded comparison performed separately"
+        },
+        {
+          "schema": "ugrp.lossless-records.v1",
+          "files": [
+            {
+              "logical_name": "commands.json",
+              "stored_name": "commands.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 268794,
+              "logical_sha256": "e65bbecec2a37ef4abe92b15d5396ed6713068074cd2dd1eb95d7707c6e66f8a",
+              "stored_bytes": 11626,
+              "stored_sha256": "970c3e18c9c78b18d28c8ee63117e2fb6e8a1ad94e5f3ae8b3c2d35c940e19af"
+            },
+            {
+              "logical_name": "state.json",
+              "stored_name": "state.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 5109822,
+              "logical_sha256": "b3fda13685a0784080347daed67b6f61d196a5c743cedb969e6a235d230ea44e",
+              "stored_bytes": 216666,
+              "stored_sha256": "5a7fcc7922197e381760353d5df719d344b67862e9f7f3370366ee2cb23d824b"
+            },
+            {
+              "logical_name": "record.json",
+              "stored_name": "record.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 13022104,
+              "logical_sha256": "42b71dbc0a46602231cd74b0934c298138b6cc658d7515ad7ea1767ff8efdfd7",
+              "stored_bytes": 891310,
+              "stored_sha256": "640e0a008e9693d18cc758b224488fb2da7f9c268d2679c6428c316b5e465ec3"
+            }
+          ],
+          "decoded_bytes_identical_claim": false,
+          "scope": "storage hashes only; direct decoded comparison performed separately"
+        },
+        {
+          "schema": "ugrp.lossless-records.v1",
+          "files": [
+            {
+              "logical_name": "commands.json",
+              "stored_name": "commands.json",
+              "storage": "off",
+              "logical_bytes": 268794,
+              "logical_sha256": "e65bbecec2a37ef4abe92b15d5396ed6713068074cd2dd1eb95d7707c6e66f8a",
+              "stored_bytes": 268794,
+              "stored_sha256": "e65bbecec2a37ef4abe92b15d5396ed6713068074cd2dd1eb95d7707c6e66f8a"
+            },
+            {
+              "logical_name": "state.json",
+              "stored_name": "state.json",
+              "storage": "off",
+              "logical_bytes": 5109822,
+              "logical_sha256": "b3fda13685a0784080347daed67b6f61d196a5c743cedb969e6a235d230ea44e",
+              "stored_bytes": 5109822,
+              "stored_sha256": "b3fda13685a0784080347daed67b6f61d196a5c743cedb969e6a235d230ea44e"
+            },
+            {
+              "logical_name": "record.json",
+              "stored_name": "record.json",
+              "storage": "off",
+              "logical_bytes": 13022104,
+              "logical_sha256": "42b71dbc0a46602231cd74b0934c298138b6cc658d7515ad7ea1767ff8efdfd7",
+              "stored_bytes": 13022104,
+              "stored_sha256": "42b71dbc0a46602231cd74b0934c298138b6cc658d7515ad7ea1767ff8efdfd7"
+            }
+          ],
+          "decoded_bytes_identical_claim": false,
+          "scope": "storage hashes only; direct decoded comparison performed separately"
+        }
+      ]
+    },
+    {
+      "id": "ego59-55001",
+      "measurement_source": "37360616cf48fa09881ecd9ea21de6dd9bdac514",
+      "proof": {
+        "verified": true,
+        "files": [
+          {
+            "name": "commands.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "traces.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "state.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "route-map.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "frontend-grid.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "frontend-ledger.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "decisions.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "graphs.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "navigation.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "heading-decisions.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "utility-events.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "own-inputs.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "return-navigation.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "frontend-poses.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "active-events.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "all-particle-maps.json",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "own-controller.jsonl",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "own-contacts.jsonl",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "frontend-covariances.jsonl",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          },
+          {
+            "name": "online-maps.jsonl",
+            "equal": true,
+            "comparisons": [
+              true,
+              true,
+              true
+            ]
+          }
+        ],
+        "input_hashes_equal": true,
+        "completed_callbacks": true,
+        "adapter_source_hashes_equal": true,
+        "scope": "direct decoded behavior bytes; per-frame particle-array hashes and full RNG state; final maps",
+        "excluded": [
+          "timing, load, profile, implementation/adapter/storage provenance"
+        ]
+      },
+      "load": {
+        "mean_1min": [
+          2.5356958531874536,
+          13.964839412934863,
+          3.9807600562083643,
+          4.689994173875832
+        ],
+        "A": 3.612845013531643,
+        "B": 8.972799734571613,
+        "tolerance": 0.9032112533829108,
+        "comparable": false,
+        "rule": "both crossover pairs and aggregate: |A-B| <= max(0.5, 0.25*min(A,B))",
+        "limitation": "load average is a host-load proxy, not identical scheduling or cache state"
+      },
+      "A_wall_per_input_sim": 1.4559721462964297,
+      "B_wall_per_input_sim": 1.4911191353388993,
+      "percent_saved": null,
+      "exclusive_mean": {
+        "A": {
+          "physics": 0.0,
+          "render": 0.0,
+          "pf_update": 0.05210787963393765,
+          "posterior_summary": 0.0006544672520788111,
+          "scan_match": 0.4153760680167815,
+          "map_insert": 0.05345113731972459,
+          "path_plan": 0.0010847949755973078,
+          "graph": 0.024805291423453363,
+          "vision": 0.016746211055605847,
+          "record_io": 0.02895300717177128,
+          "controller_other": 3.703105914475465e-05,
+          "setup_proof": 0.001011695832669459,
+          "belief_report": 0.0,
+          "cache_key": 0.0,
+          "pose_estimate": 0.0,
+          "flow_observation": 0.0,
+          "floor_detection": 0.1274329139915709,
+          "wall_detection": 0.10399557826749514,
+          "raytrace": 0.1694091369898093,
+          "costmap_build": 0.16110613787691197,
+          "grid_export": 0.0011286546374860876,
+          "frontier_forecast": 0.06999498268231508,
+          "controller_receive": 0.2134657560588999,
+          "controller_step": 0.0,
+          "command_feedback": 0.00017856181226239573,
+          "frame_hash_decode": 0.005970690763421806,
+          "state_proof": 7.691566694389892e-05,
+          "trend_record": 0.0001328911169871895,
+          "visibility_geometry": 0.0,
+          "likelihood_lookup": 0.0,
+          "rgb_preprocess": 0.008852280732201137
+        },
+        "B": {
+          "physics": 0.0,
+          "render": 0.0,
+          "pf_update": 0.051591297567507285,
+          "posterior_summary": 0.0006641438341897878,
+          "scan_match": 0.43961778010243846,
+          "map_insert": 0.0563879559811472,
+          "path_plan": 0.0010457526271541915,
+          "graph": 0.02590529750040905,
+          "vision": 0.016542517277412117,
+          "record_io": 0.03418718463583867,
+          "controller_other": 3.6070153281023655e-05,
+          "setup_proof": 0.0009794730658608452,
+          "belief_report": 0.0,
+          "cache_key": 0.0,
+          "pose_estimate": 0.0,
+          "flow_observation": 0.0,
+          "floor_detection": 0.1258148426967199,
+          "wall_detection": 0.10282229140942002,
+          "raytrace": 0.1787828995293239,
+          "costmap_build": 0.1609613118001208,
+          "grid_export": 0.0025089300210648043,
+          "frontier_forecast": 0.06971472421331176,
+          "controller_receive": 0.2083792799364784,
+          "controller_step": 0.0,
+          "command_feedback": 0.00018971214465434767,
+          "frame_hash_decode": 0.005765847048799818,
+          "state_proof": 7.755110316254475e-05,
+          "trend_record": 0.00015325155799035675,
+          "visibility_geometry": 0.0,
+          "likelihood_lookup": 0.0,
+          "rgb_preprocess": 0.008990957628810536
+        }
+      },
+      "storage": [
+        {
+          "schema": "ugrp.lossless-records.v1",
+          "files": [
+            {
+              "logical_name": "own-controller.jsonl",
+              "stored_name": "own-controller.jsonl",
+              "storage": "off",
+              "logical_bytes": 25222827,
+              "logical_sha256": "38607b4038401f394770445ea316b82e3477d8cb68ead075561fad72ecd8d737",
+              "stored_bytes": 25222827,
+              "stored_sha256": "38607b4038401f394770445ea316b82e3477d8cb68ead075561fad72ecd8d737"
+            },
+            {
+              "logical_name": "own-contacts.jsonl",
+              "stored_name": "own-contacts.jsonl",
+              "storage": "off",
+              "logical_bytes": 130549444,
+              "logical_sha256": "8a0bcb929fea94de90f932f50cee816f1b89834ea9534b1ed742971e491aff3f",
+              "stored_bytes": 130549444,
+              "stored_sha256": "8a0bcb929fea94de90f932f50cee816f1b89834ea9534b1ed742971e491aff3f"
+            },
+            {
+              "logical_name": "frontend-covariances.jsonl",
+              "stored_name": "frontend-covariances.jsonl",
+              "storage": "off",
+              "logical_bytes": 442472,
+              "logical_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b",
+              "stored_bytes": 442472,
+              "stored_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b"
+            },
+            {
+              "logical_name": "online-maps.jsonl",
+              "stored_name": "online-maps.jsonl",
+              "storage": "off",
+              "logical_bytes": 58687164,
+              "logical_sha256": "0d97478de15d6c136a5da411e9b8150b8516e56fbb0c361b5a36199efb0f4d94",
+              "stored_bytes": 58687164,
+              "stored_sha256": "0d97478de15d6c136a5da411e9b8150b8516e56fbb0c361b5a36199efb0f4d94"
+            },
+            {
+              "logical_name": "commands.json",
+              "stored_name": "commands.json",
+              "storage": "off",
+              "logical_bytes": 157434,
+              "logical_sha256": "4481b0eb95f661edd549c81ac1b55eb6cda0c068bf79c91b7e4eba7cd34abecd",
+              "stored_bytes": 157434,
+              "stored_sha256": "4481b0eb95f661edd549c81ac1b55eb6cda0c068bf79c91b7e4eba7cd34abecd"
+            },
+            {
+              "logical_name": "traces.json",
+              "stored_name": "traces.json",
+              "storage": "off",
+              "logical_bytes": 45121495,
+              "logical_sha256": "ab179c78953fc3ecfe063f5aad042f79e12f872c4cfa8d3cb429b7f7c140b597",
+              "stored_bytes": 45121495,
+              "stored_sha256": "ab179c78953fc3ecfe063f5aad042f79e12f872c4cfa8d3cb429b7f7c140b597"
+            },
+            {
+              "logical_name": "state.json",
+              "stored_name": "state.json",
+              "storage": "off",
+              "logical_bytes": 681445,
+              "logical_sha256": "34684d200fe754ae002ace0a6738bfed8290bd4e4588a92f4be7bdaf2e310832",
+              "stored_bytes": 681445,
+              "stored_sha256": "34684d200fe754ae002ace0a6738bfed8290bd4e4588a92f4be7bdaf2e310832"
+            },
+            {
+              "logical_name": "route-map.json",
+              "stored_name": "route-map.json",
+              "storage": "off",
+              "logical_bytes": 24540633,
+              "logical_sha256": "ac78ffe7ab37e123d2006b8ec9a21d1cca3963131c3d6a8ecaab7540e6145c18",
+              "stored_bytes": 24540633,
+              "stored_sha256": "ac78ffe7ab37e123d2006b8ec9a21d1cca3963131c3d6a8ecaab7540e6145c18"
+            },
+            {
+              "logical_name": "frontend-grid.json",
+              "stored_name": "frontend-grid.json",
+              "storage": "off",
+              "logical_bytes": 159889,
+              "logical_sha256": "980ad8f6266a321f4b21fb9ac4224036cd364cbba5abd21d364915fc121d8328",
+              "stored_bytes": 159889,
+              "stored_sha256": "980ad8f6266a321f4b21fb9ac4224036cd364cbba5abd21d364915fc121d8328"
+            },
+            {
+              "logical_name": "frontend-ledger.json",
+              "stored_name": "frontend-ledger.json",
+              "storage": "off",
+              "logical_bytes": 730443,
+              "logical_sha256": "067de21366e3e47cd8aeef9c3c3fe0fe4c4ef3bdbe44e2340fc3e26530f07684",
+              "stored_bytes": 730443,
+              "stored_sha256": "067de21366e3e47cd8aeef9c3c3fe0fe4c4ef3bdbe44e2340fc3e26530f07684"
+            },
+            {
+              "logical_name": "decisions.json",
+              "stored_name": "decisions.json",
+              "storage": "off",
+              "logical_bytes": 23223164,
+              "logical_sha256": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed",
+              "stored_bytes": 23223164,
+              "stored_sha256": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed"
+            },
+            {
+              "logical_name": "graphs.json",
+              "stored_name": "graphs.json",
+              "storage": "off",
+              "logical_bytes": 47444103,
+              "logical_sha256": "3c85cf9b092f1120d744e83747c552a3f641e57d4af2cb5e9ef2e6646447f993",
+              "stored_bytes": 47444103,
+              "stored_sha256": "3c85cf9b092f1120d744e83747c552a3f641e57d4af2cb5e9ef2e6646447f993"
+            },
+            {
+              "logical_name": "navigation.json",
+              "stored_name": "navigation.json",
+              "storage": "off",
+              "logical_bytes": 13850,
+              "logical_sha256": "2469b3218fb92adaa7b1075eeb18d10a791334cb191b0db1600210051ddedfe9",
+              "stored_bytes": 13850,
+              "stored_sha256": "2469b3218fb92adaa7b1075eeb18d10a791334cb191b0db1600210051ddedfe9"
+            },
+            {
+              "logical_name": "heading-decisions.json",
+              "stored_name": "heading-decisions.json",
+              "storage": "off",
+              "logical_bytes": 9143414,
+              "logical_sha256": "2e68eb3b437296b50c3fe13179d1e77add6682b372339b17a23688acb2cde949",
+              "stored_bytes": 9143414,
+              "stored_sha256": "2e68eb3b437296b50c3fe13179d1e77add6682b372339b17a23688acb2cde949"
+            },
+            {
+              "logical_name": "utility-events.json",
+              "stored_name": "utility-events.json",
+              "storage": "off",
+              "logical_bytes": 67603,
+              "logical_sha256": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3",
+              "stored_bytes": 67603,
+              "stored_sha256": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3"
+            },
+            {
+              "logical_name": "own-inputs.json",
+              "stored_name": "own-inputs.json",
+              "storage": "off",
+              "logical_bytes": 321532,
+              "logical_sha256": "ac62b361ba0f237e226de4bd0de77c29791ddc06bfd5de59c19b98faf32037c6",
+              "stored_bytes": 321532,
+              "stored_sha256": "ac62b361ba0f237e226de4bd0de77c29791ddc06bfd5de59c19b98faf32037c6"
+            },
+            {
+              "logical_name": "return-navigation.json",
+              "stored_name": "return-navigation.json",
+              "storage": "off",
+              "logical_bytes": 6908,
+              "logical_sha256": "fdb60c98ca7cabf5cca9617b5fed1fbd210bb532f5fc31ac335b39e0107e918c",
+              "stored_bytes": 6908,
+              "stored_sha256": "fdb60c98ca7cabf5cca9617b5fed1fbd210bb532f5fc31ac335b39e0107e918c"
+            },
+            {
+              "logical_name": "frontend-poses.json",
+              "stored_name": "frontend-poses.json",
+              "storage": "off",
+              "logical_bytes": 193443,
+              "logical_sha256": "d13b3c83c90e21b721557cb15d3e0910cf79d91c0238172b550e00ed5e7d3267",
+              "stored_bytes": 193443,
+              "stored_sha256": "d13b3c83c90e21b721557cb15d3e0910cf79d91c0238172b550e00ed5e7d3267"
+            },
+            {
+              "logical_name": "active-events.json",
+              "stored_name": "active-events.json",
+              "storage": "off",
+              "logical_bytes": 191019,
+              "logical_sha256": "5a0b516bacfb9d261ffe7e97fb3678d955b9a4c53f5fa6db43a75eca14cf3d03",
+              "stored_bytes": 191019,
+              "stored_sha256": "5a0b516bacfb9d261ffe7e97fb3678d955b9a4c53f5fa6db43a75eca14cf3d03"
+            },
+            {
+              "logical_name": "all-particle-maps.json",
+              "stored_name": "all-particle-maps.json",
+              "storage": "off",
+              "logical_bytes": 14095398,
+              "logical_sha256": "f46e92c08341e31b0c5a6f17fe58301a5cd8d9d9cb844dc5db92b5388e095f43",
+              "stored_bytes": 14095398,
+              "stored_sha256": "f46e92c08341e31b0c5a6f17fe58301a5cd8d9d9cb844dc5db92b5388e095f43"
+            }
+          ],
+          "decoded_bytes_identical_claim": false,
+          "scope": "storage hashes only; direct decoded comparison performed separately"
+        },
+        {
+          "schema": "ugrp.lossless-records.v1",
+          "files": [
+            {
+              "logical_name": "own-controller.jsonl",
+              "stored_name": "own-controller.jsonl.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 25222827,
+              "logical_sha256": "38607b4038401f394770445ea316b82e3477d8cb68ead075561fad72ecd8d737",
+              "stored_bytes": 3516324,
+              "stored_sha256": "d4cb0cb95819d2ac4420aca80a111f234a186fbe2b08f33673cc9be9ec74218c"
+            },
+            {
+              "logical_name": "own-contacts.jsonl",
+              "stored_name": "own-contacts.jsonl.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 130549444,
+              "logical_sha256": "8a0bcb929fea94de90f932f50cee816f1b89834ea9534b1ed742971e491aff3f",
+              "stored_bytes": 51225785,
+              "stored_sha256": "56902d0e93dff8488ba609d0006b6b162db77deed5d0506bc1869ea3720bd738"
+            },
+            {
+              "logical_name": "frontend-covariances.jsonl",
+              "stored_name": "frontend-covariances.jsonl.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 442472,
+              "logical_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b",
+              "stored_bytes": 148068,
+              "stored_sha256": "65aeddce36ceb17da7b56f05759d64655cda3ec05022be9b77d6fdf285ddb39c"
+            },
+            {
+              "logical_name": "online-maps.jsonl",
+              "stored_name": "online-maps.jsonl.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 58687164,
+              "logical_sha256": "0d97478de15d6c136a5da411e9b8150b8516e56fbb0c361b5a36199efb0f4d94",
+              "stored_bytes": 20353627,
+              "stored_sha256": "abde2f9d21e4eee2b1f37fcaa1f9cfbd4e6f8cc9cf38c3c532498d3d0fa55f32"
+            },
+            {
+              "logical_name": "commands.json",
+              "stored_name": "commands.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 157434,
+              "logical_sha256": "4481b0eb95f661edd549c81ac1b55eb6cda0c068bf79c91b7e4eba7cd34abecd",
+              "stored_bytes": 6326,
+              "stored_sha256": "1070fdecbaf4849cc3a8bafb1fd50ed7dd4c4ae895bf26d2ea73fe64d3ccbbcc"
+            },
+            {
+              "logical_name": "traces.json",
+              "stored_name": "traces.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 45121495,
+              "logical_sha256": "ab179c78953fc3ecfe063f5aad042f79e12f872c4cfa8d3cb429b7f7c140b597",
+              "stored_bytes": 7274928,
+              "stored_sha256": "65cb863bd61d831b15ad19a2b8f914cfa7c03664845036dc79168931926bc0e0"
+            },
+            {
+              "logical_name": "state.json",
+              "stored_name": "state.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 681445,
+              "logical_sha256": "34684d200fe754ae002ace0a6738bfed8290bd4e4588a92f4be7bdaf2e310832",
+              "stored_bytes": 123558,
+              "stored_sha256": "721d5ce4804698357b5fdcf07d4743269be7a36f1aaf5350ee615f79c887d00e"
+            },
+            {
+              "logical_name": "route-map.json",
+              "stored_name": "route-map.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 24540633,
+              "logical_sha256": "ac78ffe7ab37e123d2006b8ec9a21d1cca3963131c3d6a8ecaab7540e6145c18",
+              "stored_bytes": 4938711,
+              "stored_sha256": "9e6489bb60263e9f753f08e297d03837e9ce7023a90893c6d6c2bc8f506f886b"
+            },
+            {
+              "logical_name": "frontend-grid.json",
+              "stored_name": "frontend-grid.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 159889,
+              "logical_sha256": "980ad8f6266a321f4b21fb9ac4224036cd364cbba5abd21d364915fc121d8328",
+              "stored_bytes": 36920,
+              "stored_sha256": "a246f1965174de08b872a872abd8c33975e0d813fb25c260dbbd4960892fbe2f"
+            },
+            {
+              "logical_name": "frontend-ledger.json",
+              "stored_name": "frontend-ledger.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 730443,
+              "logical_sha256": "067de21366e3e47cd8aeef9c3c3fe0fe4c4ef3bdbe44e2340fc3e26530f07684",
+              "stored_bytes": 197215,
+              "stored_sha256": "82873d292c7d8d7b30a00aea3b3f3d1485e58d02b3d6c46797a157abeee5f56b"
+            },
+            {
+              "logical_name": "decisions.json",
+              "stored_name": "decisions.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 23223164,
+              "logical_sha256": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed",
+              "stored_bytes": 4194495,
+              "stored_sha256": "ac524bfa120fdec94231735ec1bb47105cc4ffae03151a3fff969276ed2a5b03"
+            },
+            {
+              "logical_name": "graphs.json",
+              "stored_name": "graphs.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 47444103,
+              "logical_sha256": "3c85cf9b092f1120d744e83747c552a3f641e57d4af2cb5e9ef2e6646447f993",
+              "stored_bytes": 5912677,
+              "stored_sha256": "b35a76ecb2b751d21b303d7918ccad5fdba41890ad7712dd983b2cbf72306495"
+            },
+            {
+              "logical_name": "navigation.json",
+              "stored_name": "navigation.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 13850,
+              "logical_sha256": "2469b3218fb92adaa7b1075eeb18d10a791334cb191b0db1600210051ddedfe9",
+              "stored_bytes": 2030,
+              "stored_sha256": "b5e3bda272280dd70b03250312cc69b6a5adc354c7325642562172f91f7152cd"
+            },
+            {
+              "logical_name": "heading-decisions.json",
+              "stored_name": "heading-decisions.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 9143414,
+              "logical_sha256": "2e68eb3b437296b50c3fe13179d1e77add6682b372339b17a23688acb2cde949",
+              "stored_bytes": 1487944,
+              "stored_sha256": "9cd0b0329132ab22da6bf5879e1d4d9345c5503235a9705169f9d08b72b93faa"
+            },
+            {
+              "logical_name": "utility-events.json",
+              "stored_name": "utility-events.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 67603,
+              "logical_sha256": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3",
+              "stored_bytes": 4242,
+              "stored_sha256": "49dd4efbae92d4014bb4644a56c8e6fd8ce8c71ad5042beb557eace2dae5d817"
+            },
+            {
+              "logical_name": "own-inputs.json",
+              "stored_name": "own-inputs.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 321532,
+              "logical_sha256": "ac62b361ba0f237e226de4bd0de77c29791ddc06bfd5de59c19b98faf32037c6",
+              "stored_bytes": 81063,
+              "stored_sha256": "bddd98b622d50759b64dbd8925951342bada6c0b55bfbe703f580f6b456dadab"
+            },
+            {
+              "logical_name": "return-navigation.json",
+              "stored_name": "return-navigation.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 6908,
+              "logical_sha256": "fdb60c98ca7cabf5cca9617b5fed1fbd210bb532f5fc31ac335b39e0107e918c",
+              "stored_bytes": 987,
+              "stored_sha256": "ac86bba8de2428a5e38135fc21e3da7fc34a6623b821c30da0c7b5ceb5c6041f"
+            },
+            {
+              "logical_name": "frontend-poses.json",
+              "stored_name": "frontend-poses.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 193443,
+              "logical_sha256": "d13b3c83c90e21b721557cb15d3e0910cf79d91c0238172b550e00ed5e7d3267",
+              "stored_bytes": 46088,
+              "stored_sha256": "89bc02c2dfe5cc992e9650a996ec553955535713b98ffbcb2d419cbd7defbd77"
+            },
+            {
+              "logical_name": "active-events.json",
+              "stored_name": "active-events.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 191019,
+              "logical_sha256": "5a0b516bacfb9d261ffe7e97fb3678d955b9a4c53f5fa6db43a75eca14cf3d03",
+              "stored_bytes": 45563,
+              "stored_sha256": "23ea0bb31ef6d800e846377af55e6fa2313c65dcdd026036f3d3ab07296de2f5"
+            },
+            {
+              "logical_name": "all-particle-maps.json",
+              "stored_name": "all-particle-maps.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 14095398,
+              "logical_sha256": "f46e92c08341e31b0c5a6f17fe58301a5cd8d9d9cb844dc5db92b5388e095f43",
+              "stored_bytes": 3028156,
+              "stored_sha256": "b0ec6dbd71a15cce65c7fd1d21e94d0ac060213f6cd0d6af05d1ed7effb19138"
+            }
+          ],
+          "decoded_bytes_identical_claim": false,
+          "scope": "storage hashes only; direct decoded comparison performed separately"
+        },
+        {
+          "schema": "ugrp.lossless-records.v1",
+          "files": [
+            {
+              "logical_name": "own-controller.jsonl",
+              "stored_name": "own-controller.jsonl.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 25222827,
+              "logical_sha256": "38607b4038401f394770445ea316b82e3477d8cb68ead075561fad72ecd8d737",
+              "stored_bytes": 3516324,
+              "stored_sha256": "d4cb0cb95819d2ac4420aca80a111f234a186fbe2b08f33673cc9be9ec74218c"
+            },
+            {
+              "logical_name": "own-contacts.jsonl",
+              "stored_name": "own-contacts.jsonl.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 130549444,
+              "logical_sha256": "8a0bcb929fea94de90f932f50cee816f1b89834ea9534b1ed742971e491aff3f",
+              "stored_bytes": 51225785,
+              "stored_sha256": "56902d0e93dff8488ba609d0006b6b162db77deed5d0506bc1869ea3720bd738"
+            },
+            {
+              "logical_name": "frontend-covariances.jsonl",
+              "stored_name": "frontend-covariances.jsonl.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 442472,
+              "logical_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b",
+              "stored_bytes": 148068,
+              "stored_sha256": "65aeddce36ceb17da7b56f05759d64655cda3ec05022be9b77d6fdf285ddb39c"
+            },
+            {
+              "logical_name": "online-maps.jsonl",
+              "stored_name": "online-maps.jsonl.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 58687164,
+              "logical_sha256": "0d97478de15d6c136a5da411e9b8150b8516e56fbb0c361b5a36199efb0f4d94",
+              "stored_bytes": 20353627,
+              "stored_sha256": "abde2f9d21e4eee2b1f37fcaa1f9cfbd4e6f8cc9cf38c3c532498d3d0fa55f32"
+            },
+            {
+              "logical_name": "commands.json",
+              "stored_name": "commands.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 157434,
+              "logical_sha256": "4481b0eb95f661edd549c81ac1b55eb6cda0c068bf79c91b7e4eba7cd34abecd",
+              "stored_bytes": 6326,
+              "stored_sha256": "1070fdecbaf4849cc3a8bafb1fd50ed7dd4c4ae895bf26d2ea73fe64d3ccbbcc"
+            },
+            {
+              "logical_name": "traces.json",
+              "stored_name": "traces.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 45121495,
+              "logical_sha256": "ab179c78953fc3ecfe063f5aad042f79e12f872c4cfa8d3cb429b7f7c140b597",
+              "stored_bytes": 7274928,
+              "stored_sha256": "65cb863bd61d831b15ad19a2b8f914cfa7c03664845036dc79168931926bc0e0"
+            },
+            {
+              "logical_name": "state.json",
+              "stored_name": "state.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 681445,
+              "logical_sha256": "34684d200fe754ae002ace0a6738bfed8290bd4e4588a92f4be7bdaf2e310832",
+              "stored_bytes": 123558,
+              "stored_sha256": "721d5ce4804698357b5fdcf07d4743269be7a36f1aaf5350ee615f79c887d00e"
+            },
+            {
+              "logical_name": "route-map.json",
+              "stored_name": "route-map.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 24540633,
+              "logical_sha256": "ac78ffe7ab37e123d2006b8ec9a21d1cca3963131c3d6a8ecaab7540e6145c18",
+              "stored_bytes": 4938711,
+              "stored_sha256": "9e6489bb60263e9f753f08e297d03837e9ce7023a90893c6d6c2bc8f506f886b"
+            },
+            {
+              "logical_name": "frontend-grid.json",
+              "stored_name": "frontend-grid.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 159889,
+              "logical_sha256": "980ad8f6266a321f4b21fb9ac4224036cd364cbba5abd21d364915fc121d8328",
+              "stored_bytes": 36920,
+              "stored_sha256": "a246f1965174de08b872a872abd8c33975e0d813fb25c260dbbd4960892fbe2f"
+            },
+            {
+              "logical_name": "frontend-ledger.json",
+              "stored_name": "frontend-ledger.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 730443,
+              "logical_sha256": "067de21366e3e47cd8aeef9c3c3fe0fe4c4ef3bdbe44e2340fc3e26530f07684",
+              "stored_bytes": 197215,
+              "stored_sha256": "82873d292c7d8d7b30a00aea3b3f3d1485e58d02b3d6c46797a157abeee5f56b"
+            },
+            {
+              "logical_name": "decisions.json",
+              "stored_name": "decisions.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 23223164,
+              "logical_sha256": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed",
+              "stored_bytes": 4194495,
+              "stored_sha256": "ac524bfa120fdec94231735ec1bb47105cc4ffae03151a3fff969276ed2a5b03"
+            },
+            {
+              "logical_name": "graphs.json",
+              "stored_name": "graphs.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 47444103,
+              "logical_sha256": "3c85cf9b092f1120d744e83747c552a3f641e57d4af2cb5e9ef2e6646447f993",
+              "stored_bytes": 5912677,
+              "stored_sha256": "b35a76ecb2b751d21b303d7918ccad5fdba41890ad7712dd983b2cbf72306495"
+            },
+            {
+              "logical_name": "navigation.json",
+              "stored_name": "navigation.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 13850,
+              "logical_sha256": "2469b3218fb92adaa7b1075eeb18d10a791334cb191b0db1600210051ddedfe9",
+              "stored_bytes": 2030,
+              "stored_sha256": "b5e3bda272280dd70b03250312cc69b6a5adc354c7325642562172f91f7152cd"
+            },
+            {
+              "logical_name": "heading-decisions.json",
+              "stored_name": "heading-decisions.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 9143414,
+              "logical_sha256": "2e68eb3b437296b50c3fe13179d1e77add6682b372339b17a23688acb2cde949",
+              "stored_bytes": 1487944,
+              "stored_sha256": "9cd0b0329132ab22da6bf5879e1d4d9345c5503235a9705169f9d08b72b93faa"
+            },
+            {
+              "logical_name": "utility-events.json",
+              "stored_name": "utility-events.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 67603,
+              "logical_sha256": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3",
+              "stored_bytes": 4242,
+              "stored_sha256": "49dd4efbae92d4014bb4644a56c8e6fd8ce8c71ad5042beb557eace2dae5d817"
+            },
+            {
+              "logical_name": "own-inputs.json",
+              "stored_name": "own-inputs.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 321532,
+              "logical_sha256": "ac62b361ba0f237e226de4bd0de77c29791ddc06bfd5de59c19b98faf32037c6",
+              "stored_bytes": 81063,
+              "stored_sha256": "bddd98b622d50759b64dbd8925951342bada6c0b55bfbe703f580f6b456dadab"
+            },
+            {
+              "logical_name": "return-navigation.json",
+              "stored_name": "return-navigation.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 6908,
+              "logical_sha256": "fdb60c98ca7cabf5cca9617b5fed1fbd210bb532f5fc31ac335b39e0107e918c",
+              "stored_bytes": 987,
+              "stored_sha256": "ac86bba8de2428a5e38135fc21e3da7fc34a6623b821c30da0c7b5ceb5c6041f"
+            },
+            {
+              "logical_name": "frontend-poses.json",
+              "stored_name": "frontend-poses.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 193443,
+              "logical_sha256": "d13b3c83c90e21b721557cb15d3e0910cf79d91c0238172b550e00ed5e7d3267",
+              "stored_bytes": 46088,
+              "stored_sha256": "89bc02c2dfe5cc992e9650a996ec553955535713b98ffbcb2d419cbd7defbd77"
+            },
+            {
+              "logical_name": "active-events.json",
+              "stored_name": "active-events.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 191019,
+              "logical_sha256": "5a0b516bacfb9d261ffe7e97fb3678d955b9a4c53f5fa6db43a75eca14cf3d03",
+              "stored_bytes": 45563,
+              "stored_sha256": "23ea0bb31ef6d800e846377af55e6fa2313c65dcdd026036f3d3ab07296de2f5"
+            },
+            {
+              "logical_name": "all-particle-maps.json",
+              "stored_name": "all-particle-maps.json.gz",
+              "storage": "gzip-v1",
+              "logical_bytes": 14095398,
+              "logical_sha256": "f46e92c08341e31b0c5a6f17fe58301a5cd8d9d9cb844dc5db92b5388e095f43",
+              "stored_bytes": 3028156,
+              "stored_sha256": "b0ec6dbd71a15cce65c7fd1d21e94d0ac060213f6cd0d6af05d1ed7effb19138"
+            }
+          ],
+          "decoded_bytes_identical_claim": false,
+          "scope": "storage hashes only; direct decoded comparison performed separately"
+        },
+        {
+          "schema": "ugrp.lossless-records.v1",
+          "files": [
+            {
+              "logical_name": "own-controller.jsonl",
+              "stored_name": "own-controller.jsonl",
+              "storage": "off",
+              "logical_bytes": 25222827,
+              "logical_sha256": "38607b4038401f394770445ea316b82e3477d8cb68ead075561fad72ecd8d737",
+              "stored_bytes": 25222827,
+              "stored_sha256": "38607b4038401f394770445ea316b82e3477d8cb68ead075561fad72ecd8d737"
+            },
+            {
+              "logical_name": "own-contacts.jsonl",
+              "stored_name": "own-contacts.jsonl",
+              "storage": "off",
+              "logical_bytes": 130549444,
+              "logical_sha256": "8a0bcb929fea94de90f932f50cee816f1b89834ea9534b1ed742971e491aff3f",
+              "stored_bytes": 130549444,
+              "stored_sha256": "8a0bcb929fea94de90f932f50cee816f1b89834ea9534b1ed742971e491aff3f"
+            },
+            {
+              "logical_name": "frontend-covariances.jsonl",
+              "stored_name": "frontend-covariances.jsonl",
+              "storage": "off",
+              "logical_bytes": 442472,
+              "logical_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b",
+              "stored_bytes": 442472,
+              "stored_sha256": "12401de2f3685e06b600cd60161ac7d31cb910a74ce0cc7a5c70cfe49246146b"
+            },
+            {
+              "logical_name": "online-maps.jsonl",
+              "stored_name": "online-maps.jsonl",
+              "storage": "off",
+              "logical_bytes": 58687164,
+              "logical_sha256": "0d97478de15d6c136a5da411e9b8150b8516e56fbb0c361b5a36199efb0f4d94",
+              "stored_bytes": 58687164,
+              "stored_sha256": "0d97478de15d6c136a5da411e9b8150b8516e56fbb0c361b5a36199efb0f4d94"
+            },
+            {
+              "logical_name": "commands.json",
+              "stored_name": "commands.json",
+              "storage": "off",
+              "logical_bytes": 157434,
+              "logical_sha256": "4481b0eb95f661edd549c81ac1b55eb6cda0c068bf79c91b7e4eba7cd34abecd",
+              "stored_bytes": 157434,
+              "stored_sha256": "4481b0eb95f661edd549c81ac1b55eb6cda0c068bf79c91b7e4eba7cd34abecd"
+            },
+            {
+              "logical_name": "traces.json",
+              "stored_name": "traces.json",
+              "storage": "off",
+              "logical_bytes": 45121495,
+              "logical_sha256": "ab179c78953fc3ecfe063f5aad042f79e12f872c4cfa8d3cb429b7f7c140b597",
+              "stored_bytes": 45121495,
+              "stored_sha256": "ab179c78953fc3ecfe063f5aad042f79e12f872c4cfa8d3cb429b7f7c140b597"
+            },
+            {
+              "logical_name": "state.json",
+              "stored_name": "state.json",
+              "storage": "off",
+              "logical_bytes": 681445,
+              "logical_sha256": "34684d200fe754ae002ace0a6738bfed8290bd4e4588a92f4be7bdaf2e310832",
+              "stored_bytes": 681445,
+              "stored_sha256": "34684d200fe754ae002ace0a6738bfed8290bd4e4588a92f4be7bdaf2e310832"
+            },
+            {
+              "logical_name": "route-map.json",
+              "stored_name": "route-map.json",
+              "storage": "off",
+              "logical_bytes": 24540633,
+              "logical_sha256": "ac78ffe7ab37e123d2006b8ec9a21d1cca3963131c3d6a8ecaab7540e6145c18",
+              "stored_bytes": 24540633,
+              "stored_sha256": "ac78ffe7ab37e123d2006b8ec9a21d1cca3963131c3d6a8ecaab7540e6145c18"
+            },
+            {
+              "logical_name": "frontend-grid.json",
+              "stored_name": "frontend-grid.json",
+              "storage": "off",
+              "logical_bytes": 159889,
+              "logical_sha256": "980ad8f6266a321f4b21fb9ac4224036cd364cbba5abd21d364915fc121d8328",
+              "stored_bytes": 159889,
+              "stored_sha256": "980ad8f6266a321f4b21fb9ac4224036cd364cbba5abd21d364915fc121d8328"
+            },
+            {
+              "logical_name": "frontend-ledger.json",
+              "stored_name": "frontend-ledger.json",
+              "storage": "off",
+              "logical_bytes": 730443,
+              "logical_sha256": "067de21366e3e47cd8aeef9c3c3fe0fe4c4ef3bdbe44e2340fc3e26530f07684",
+              "stored_bytes": 730443,
+              "stored_sha256": "067de21366e3e47cd8aeef9c3c3fe0fe4c4ef3bdbe44e2340fc3e26530f07684"
+            },
+            {
+              "logical_name": "decisions.json",
+              "stored_name": "decisions.json",
+              "storage": "off",
+              "logical_bytes": 23223164,
+              "logical_sha256": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed",
+              "stored_bytes": 23223164,
+              "stored_sha256": "a69883141993d5808344b8f2f9ce9867032b4569b5c407b47ba51e975aa39eed"
+            },
+            {
+              "logical_name": "graphs.json",
+              "stored_name": "graphs.json",
+              "storage": "off",
+              "logical_bytes": 47444103,
+              "logical_sha256": "3c85cf9b092f1120d744e83747c552a3f641e57d4af2cb5e9ef2e6646447f993",
+              "stored_bytes": 47444103,
+              "stored_sha256": "3c85cf9b092f1120d744e83747c552a3f641e57d4af2cb5e9ef2e6646447f993"
+            },
+            {
+              "logical_name": "navigation.json",
+              "stored_name": "navigation.json",
+              "storage": "off",
+              "logical_bytes": 13850,
+              "logical_sha256": "2469b3218fb92adaa7b1075eeb18d10a791334cb191b0db1600210051ddedfe9",
+              "stored_bytes": 13850,
+              "stored_sha256": "2469b3218fb92adaa7b1075eeb18d10a791334cb191b0db1600210051ddedfe9"
+            },
+            {
+              "logical_name": "heading-decisions.json",
+              "stored_name": "heading-decisions.json",
+              "storage": "off",
+              "logical_bytes": 9143414,
+              "logical_sha256": "2e68eb3b437296b50c3fe13179d1e77add6682b372339b17a23688acb2cde949",
+              "stored_bytes": 9143414,
+              "stored_sha256": "2e68eb3b437296b50c3fe13179d1e77add6682b372339b17a23688acb2cde949"
+            },
+            {
+              "logical_name": "utility-events.json",
+              "stored_name": "utility-events.json",
+              "storage": "off",
+              "logical_bytes": 67603,
+              "logical_sha256": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3",
+              "stored_bytes": 67603,
+              "stored_sha256": "70f8345f3065a562b7c257f825b4b4853897d75800a8e10d5b58934c9ea12de3"
+            },
+            {
+              "logical_name": "own-inputs.json",
+              "stored_name": "own-inputs.json",
+              "storage": "off",
+              "logical_bytes": 321532,
+              "logical_sha256": "ac62b361ba0f237e226de4bd0de77c29791ddc06bfd5de59c19b98faf32037c6",
+              "stored_bytes": 321532,
+              "stored_sha256": "ac62b361ba0f237e226de4bd0de77c29791ddc06bfd5de59c19b98faf32037c6"
+            },
+            {
+              "logical_name": "return-navigation.json",
+              "stored_name": "return-navigation.json",
+              "storage": "off",
+              "logical_bytes": 6908,
+              "logical_sha256": "fdb60c98ca7cabf5cca9617b5fed1fbd210bb532f5fc31ac335b39e0107e918c",
+              "stored_bytes": 6908,
+              "stored_sha256": "fdb60c98ca7cabf5cca9617b5fed1fbd210bb532f5fc31ac335b39e0107e918c"
+            },
+            {
+              "logical_name": "frontend-poses.json",
+              "stored_name": "frontend-poses.json",
+              "storage": "off",
+              "logical_bytes": 193443,
+              "logical_sha256": "d13b3c83c90e21b721557cb15d3e0910cf79d91c0238172b550e00ed5e7d3267",
+              "stored_bytes": 193443,
+              "stored_sha256": "d13b3c83c90e21b721557cb15d3e0910cf79d91c0238172b550e00ed5e7d3267"
+            },
+            {
+              "logical_name": "active-events.json",
+              "stored_name": "active-events.json",
+              "storage": "off",
+              "logical_bytes": 191019,
+              "logical_sha256": "5a0b516bacfb9d261ffe7e97fb3678d955b9a4c53f5fa6db43a75eca14cf3d03",
+              "stored_bytes": 191019,
+              "stored_sha256": "5a0b516bacfb9d261ffe7e97fb3678d955b9a4c53f5fa6db43a75eca14cf3d03"
+            },
+            {
+              "logical_name": "all-particle-maps.json",
+              "stored_name": "all-particle-maps.json",
+              "storage": "off",
+              "logical_bytes": 14095398,
+              "logical_sha256": "f46e92c08341e31b0c5a6f17fe58301a5cd8d9d9cb844dc5db92b5388e095f43",
+              "stored_bytes": 14095398,
+              "stored_sha256": "f46e92c08341e31b0c5a6f17fe58301a5cd8d9d9cb844dc5db92b5388e095f43"
+            }
+          ],
+          "decoded_bytes_identical_claim": false,
+          "scope": "storage hashes only; direct decoded comparison performed separately"
+        }
+      ]
+    }
+  ]
+}
