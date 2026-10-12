@@ -33,6 +33,9 @@ def navigating(tr,rid,now,state,distance):
 
 
 def view(tr,rid,state,fresh,grip_distance):
+    from harness.e2e_fine_view import view as fine_view
+    final=fine_view(tr,rid,state,grip_distance)
+    if final is not None:return final
     if getattr(tr,'approach_commit','off')!='memory60_view_v1':return look_posture(grip_distance)
     r=tr.robots[rid];previous=state.get('committed_camera')
     # The visible band guides viewing even when the assigned grasp is the far
@@ -49,6 +52,8 @@ def view(tr,rid,state,fresh,grip_distance):
 
 
 def gaze_target(tr,rid,fresh,assigned):
+    from harness.e2e_fine_view import active
+    if active(tr,rid,tr.approach.get(rid,{})):return assigned
     if getattr(tr,'approach_commit','off')!='memory60_view_v1':return assigned
     if not fresh:return None
     r=tr.robots[rid]
