@@ -1,0 +1,882 @@
+{
+  "registered": 6,
+  "physical_attempts": 6,
+  "arrivals": 0,
+  "false_declarations": 0,
+  "final_error_median_m": 0.29044637563480896,
+  "final_error_max_m": 0.8820390971431559,
+  "endpoint_error_n": 6,
+  "over_3sigma": 1,
+  "uncertainty_available_n": 6,
+  "failure_classes": {
+    "localization": 1,
+    "path_or_budget": 1,
+    "other": 4
+  },
+  "excluded": [],
+  "conditions": [
+    {
+      "seed": 49001,
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "b3cc09dce60e8b93ec2bea7f8e81afe4c3c94b61",
+        "model_calls": 0,
+        "freeze": false,
+        "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+        "loadavg_start": [
+          6.53271484375,
+          5.837890625,
+          4.4736328125
+        ],
+        "start_sim_s": 1.3,
+        "frames": 3151,
+        "total_sim_s": 631.3,
+        "stage": "return",
+        "declared_goal": false,
+        "loss_t": 361.3,
+        "wall_s": 3463.244158332993,
+        "loadavg_end": [
+          2.1806640625,
+          2.95947265625,
+          3.3203125
+        ]
+      },
+      "started": true,
+      "arrived": false,
+      "false_declarations": 0,
+      "final_xy_m": 0.35744125563009616,
+      "final_sigma_xy_m": 0.1342038953638229,
+      "final_error_sigma_ratio": 2.6634193788569487,
+      "final_nees_xy": 51.39016472853571,
+      "over_3sigma": false,
+      "goal_observed": true,
+      "failure_class": "localization",
+      "excluded": false,
+      "thresholds_unchanged": true,
+      "goal": {
+        "entity": {
+          "kind": "floor_zone",
+          "id": "B"
+        },
+        "center_m": [
+          -1.080708661417323,
+          3.2279527559055117
+        ],
+        "source": "own",
+        "detector": "floor_color_v3",
+        "candidate_id": 9,
+        "obs_id": "r3-obs-000112",
+        "t_sim": 23.5,
+        "frame_sha256": "51cc7927765925a1042bcec3818741068a83c45397455192222612d1aeb52fd3",
+        "observations": 11,
+        "first_t": 21.5,
+        "bounds_m": [
+          [
+            -1.4500000000000002,
+            2.45
+          ],
+          [
+            -0.75,
+            4.05
+          ]
+        ],
+        "confidence": 0.8461248936748883,
+        "partial_extent": true
+      },
+      "target_assignment": {
+        "t": 361.3,
+        "frame_id": 1801,
+        "reason": "remembered_target_assigned",
+        "target": 9,
+        "first_detection_t": 21.5,
+        "first_confirmation_t": 23.5
+      },
+      "loss_t": 361.3,
+      "correct_convergence": true,
+      "false_convergence_frames": 1071,
+      "post_loss_frames": 1350,
+      "declarations": [],
+      "final_yaw_deg": -2.115201220006297,
+      "final_sigma_definition": "sqrt_trace_cov_xy",
+      "post_loss_over_3sigma": 1165,
+      "path_rmse_m": 0.3329882993577564,
+      "error_samples": 3140,
+      "missing_gt_trace_samples": 0,
+      "final_error_t": 631.3,
+      "last_truth_t": 631.3,
+      "sim_s": 630.0,
+      "wall_s": 3463.244158332993,
+      "arrival_after_loss_s": null,
+      "contacts": {
+        "wall": {
+          "frames": 0,
+          "episodes": 0
+        },
+        "robot": {
+          "frames": 0,
+          "episodes": 0
+        }
+      },
+      "contact_samples": 3151,
+      "contact_scope": "5Hz samples/contiguous sampled episodes, plus native failure reason; not exhaustive",
+      "command_frames": 3141,
+      "hold_frames": 110,
+      "return_statuses": {
+        "unknown_start_reset": 1,
+        "relocalize": 24,
+        "sensor_sweep": 575,
+        "public_static": 50,
+        "public_frontier": 696,
+        "no_path": 5
+      },
+      "return_navigation": {
+        "sensor_sweep_started": 8,
+        "sensor_sweep_completed": 8,
+        "frontier_selected": 7,
+        "frontier_cycle_committed": 8,
+        "controller_no_progress": 7,
+        "navigation_action_aborted": 7,
+        "ABORTED_goal_blacklisted": 8,
+        "next_frontier_requested": 7,
+        "sensor_sweep_requested": 7,
+        "frontier_navigation_action": 1,
+        "planner_failed": 2,
+        "recovery_context_clear": 3,
+        "context_clear_planner": 2,
+        "navigation_layer_reset": 3,
+        "recovery_success": 3,
+        "predicted_footprint_collision": 1,
+        "controller_collision": 1,
+        "context_clear_controller": 1
+      },
+      "travelled_m": 15.46330325647893,
+      "map": {
+        "quality": {
+          "occupied_cells": 723,
+          "precision_015": 0.37344398340248963,
+          "precision_cell": 0.15767634854771784,
+          "wall_coverage": 0.7112462006079028,
+          "wall_error_rmse_m": 0.48957409269971186
+        },
+        "occupied_cells": 723,
+        "inserted_scans": 220,
+        "visible_samples": 175,
+        "total_wall_samples": 329,
+        "covered_samples": 234,
+        "coverage": 0.7112462006079028
+      },
+      "insertion_gate_counts": {
+        "bootstrap/bootstrap": 1,
+        "deferred/gmapping_motion_gate": 1560,
+        "rejected/low_overlap": 16,
+        "accepted/improved_proposal": 161,
+        "rejected/high_residual": 36,
+        "deferred/insufficient_match_points": 5,
+        "rejected/search_boundary": 1
+      }
+    },
+    {
+      "seed": 49002,
+      "acquisition": {
+        "status": "RECORDED",
+        "source_sha": "b3cc09dce60e8b93ec2bea7f8e81afe4c3c94b61",
+        "model_calls": 0,
+        "freeze": false,
+        "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+        "loadavg_start": [
+          1.857421875,
+          2.80126953125,
+          3.248046875
+        ],
+        "start_sim_s": 1.3,
+        "frames": 3151,
+        "total_sim_s": 631.3,
+        "stage": "return",
+        "declared_goal": false,
+        "loss_t": 361.3,
+        "wall_s": 2623.990393917018,
+        "loadavg_end": [
+          3.48974609375,
+          4.14453125,
+          3.931640625
+        ]
+      },
+      "started": true,
+      "arrived": false,
+      "false_declarations": 0,
+      "final_xy_m": 0.2234514956395218,
+      "final_sigma_xy_m": 0.07651049184881054,
+      "final_error_sigma_ratio": 2.9205340370974975,
+      "final_nees_xy": 18.904847669926223,
+      "over_3sigma": false,
+      "goal_observed": true,
+      "failure_class": "path_or_budget",
+      "excluded": false,
+      "thresholds_unchanged": true,
+      "goal": {
+        "entity": {
+          "kind": "floor_zone",
+          "id": "B"
+        },
+        "center_m": [
+          -1.747014925373134,
+          2.7567164179104475
+        ],
+        "source": "own",
+        "detector": "floor_color_v3",
+        "candidate_id": 9,
+        "obs_id": "r3-obs-000107",
+        "t_sim": 22.5,
+        "frame_sha256": "39a757f0162de16856f26dcb14e933931d86e25d25767d6e0006a06483a19a7e",
+        "observations": 11,
+        "first_t": 20.5,
+        "bounds_m": [
+          [
+            -2.15,
+            1.9500000000000002
+          ],
+          [
+            -1.35,
+            3.5500000000000003
+          ]
+        ],
+        "confidence": 0.8843585908010421,
+        "partial_extent": true
+      },
+      "target_assignment": {
+        "t": 361.3,
+        "frame_id": 1801,
+        "reason": "remembered_target_assigned",
+        "target": 9,
+        "first_detection_t": 20.5,
+        "first_confirmation_t": 22.5
+      },
+      "loss_t": 361.3,
+      "correct_convergence": true,
+      "false_convergence_frames": 351,
+      "post_loss_frames": 1350,
+      "declarations": [],
+      "final_yaw_deg": -0.34294400989065127,
+      "final_sigma_definition": "sqrt_trace_cov_xy",
+      "post_loss_over_3sigma": 387,
+      "path_rmse_m": 0.326597600677909,
+      "error_samples": 3140,
+      "missing_gt_trace_samples": 0,
+      "final_error_t": 631.3,
+      "last_truth_t": 631.3,
+      "sim_s": 630.0,
+      "wall_s": 2623.990393917018,
+      "arrival_after_loss_s": null,
+      "contacts": {
+        "wall": {
+          "frames": 0,
+          "episodes": 0
+        },
+        "robot": {
+          "frames": 0,
+          "episodes": 0
+        }
+      },
+      "contact_samples": 3151,
+      "contact_scope": "5Hz samples/contiguous sampled episodes, plus native failure reason; not exhaustive",
+      "command_frames": 3141,
+      "hold_frames": 229,
+      "return_statuses": {
+        "unknown_start_reset": 1,
+        "relocalize": 22,
+        "sensor_sweep": 585,
+        "no_path": 15,
+        "recover_spin": 20,
+        "recover_wait": 25,
+        "recover_backup": 25,
+        "public_static": 55,
+        "public_frontier": 603
+      },
+      "return_navigation": {
+        "sensor_sweep_started": 8,
+        "sensor_sweep_collision_hold": 150,
+        "sensor_sweep_incomplete": 1,
+        "frontier_selected": 8,
+        "frontier_cycle_committed": 8,
+        "predicted_footprint_collision": 1,
+        "controller_collision": 1,
+        "recovery_context_clear": 7,
+        "context_clear_controller": 1,
+        "navigation_layer_reset": 9,
+        "recovery_success": 13,
+        "planner_failed": 12,
+        "context_clear_planner": 6,
+        "recovery_clear": 2,
+        "recovery_spin": 2,
+        "recovery_wait": 1,
+        "recovery_backup": 1,
+        "controller_no_progress": 6,
+        "navigation_action_aborted": 6,
+        "ABORTED_goal_blacklisted": 7,
+        "next_frontier_requested": 6,
+        "sensor_sweep_requested": 7,
+        "sensor_sweep_completed": 7,
+        "frontier_cycle_visited": 1
+      },
+      "travelled_m": 20.084443980452157,
+      "map": {
+        "quality": {
+          "occupied_cells": 702,
+          "precision_015": 0.3319088319088319,
+          "precision_cell": 0.15384615384615385,
+          "wall_coverage": 0.5623100303951368,
+          "wall_error_rmse_m": 0.5708221674879748
+        },
+        "occupied_cells": 702,
+        "inserted_scans": 155,
+        "visible_samples": 175,
+        "total_wall_samples": 329,
+        "covered_samples": 185,
+        "coverage": 0.5623100303951368
+      },
+      "insertion_gate_counts": {
+        "bootstrap/bootstrap": 1,
+        "deferred/gmapping_motion_gate": 1626,
+        "rejected/low_overlap": 17,
+        "rejected/high_residual": 41,
+        "accepted/improved_proposal": 95,
+        "deferred/insufficient_match_points": 1
+      }
+    },
+    {
+      "seed": 49003,
+      "acquisition": {
+        "status": "PHYSICAL_FAILURE",
+        "source_sha": "b3cc09dce60e8b93ec2bea7f8e81afe4c3c94b61",
+        "model_calls": 0,
+        "freeze": false,
+        "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+        "loadavg_start": [
+          3.4931640625,
+          3.84033203125,
+          3.5732421875
+        ],
+        "start_sim_s": 1.3,
+        "frames": 179,
+        "total_sim_s": 36.9,
+        "failure": {
+          "type": "PhysicalStop",
+          "message": "WALL_CONTACT"
+        },
+        "enospc": false,
+        "wall_s": 68.42522666696459,
+        "loadavg_end": [
+          2.72216796875,
+          3.5390625,
+          3.4794921875
+        ]
+      },
+      "started": true,
+      "arrived": false,
+      "false_declarations": 0,
+      "final_xy_m": 0.04350372456980685,
+      "final_sigma_xy_m": 0.17361077967944336,
+      "final_error_sigma_ratio": 0.250581931894624,
+      "final_nees_xy": 0.07527521135308612,
+      "over_3sigma": false,
+      "goal_observed": false,
+      "failure_class": "other",
+      "excluded": false,
+      "thresholds_unchanged": true,
+      "goal": null,
+      "target_assignment": null,
+      "loss_t": null,
+      "correct_convergence": false,
+      "false_convergence_frames": 0,
+      "post_loss_frames": 0,
+      "declarations": [],
+      "final_yaw_deg": 15.825089838980942,
+      "final_sigma_definition": "frontend_reported_max_axis",
+      "post_loss_over_3sigma": 0,
+      "path_rmse_m": 0.12557817904404095,
+      "error_samples": 169,
+      "missing_gt_trace_samples": 0,
+      "final_error_t": 36.9,
+      "last_truth_t": 36.9,
+      "sim_s": 35.6,
+      "wall_s": 68.42522666696459,
+      "arrival_after_loss_s": null,
+      "contacts": {
+        "wall": {
+          "frames": 1,
+          "episodes": 1
+        },
+        "robot": {
+          "frames": 0,
+          "episodes": 0
+        }
+      },
+      "contact_samples": 179,
+      "contact_scope": "5Hz samples/contiguous sampled episodes, plus native failure reason; not exhaustive",
+      "command_frames": 169,
+      "hold_frames": 1,
+      "return_statuses": {},
+      "return_navigation": {},
+      "travelled_m": 1.310812884164303,
+      "map": {
+        "quality": {
+          "occupied_cells": 173,
+          "precision_015": 0.5549132947976878,
+          "precision_cell": 0.20809248554913296,
+          "wall_coverage": 0.40425531914893614,
+          "wall_error_rmse_m": 0.38209378639937597
+        },
+        "occupied_cells": 173,
+        "inserted_scans": 15,
+        "visible_samples": 108,
+        "total_wall_samples": 329,
+        "covered_samples": 133,
+        "coverage": 0.40425531914893614
+      },
+      "insertion_gate_counts": {
+        "bootstrap/bootstrap": 1,
+        "deferred/gmapping_motion_gate": 154,
+        "rejected/low_overlap": 6,
+        "accepted/improved_proposal": 1,
+        "rejected/high_residual": 7
+      }
+    },
+    {
+      "seed": 49004,
+      "acquisition": {
+        "status": "PHYSICAL_FAILURE",
+        "source_sha": "b3cc09dce60e8b93ec2bea7f8e81afe4c3c94b61",
+        "model_calls": 0,
+        "freeze": false,
+        "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+        "loadavg_start": [
+          3.14306640625,
+          3.5009765625,
+          3.46484375
+        ],
+        "start_sim_s": 1.3,
+        "frames": 399,
+        "total_sim_s": 80.9,
+        "failure": {
+          "type": "PhysicalStop",
+          "message": "WALL_CONTACT"
+        },
+        "enospc": false,
+        "wall_s": 143.0254285419942,
+        "loadavg_end": [
+          6.62939453125,
+          4.8935546875,
+          4.0234375
+        ]
+      },
+      "started": true,
+      "arrived": false,
+      "false_declarations": 0,
+      "final_xy_m": 0.20786604101420245,
+      "final_sigma_xy_m": 0.1270007474298493,
+      "final_error_sigma_ratio": 1.6367308478166263,
+      "final_nees_xy": 3.9287256916306115,
+      "over_3sigma": false,
+      "goal_observed": false,
+      "failure_class": "other",
+      "excluded": false,
+      "thresholds_unchanged": true,
+      "goal": null,
+      "target_assignment": null,
+      "loss_t": null,
+      "correct_convergence": false,
+      "false_convergence_frames": 0,
+      "post_loss_frames": 0,
+      "declarations": [],
+      "final_yaw_deg": -2.9012224768780386,
+      "final_sigma_definition": "frontend_reported_max_axis",
+      "post_loss_over_3sigma": 0,
+      "path_rmse_m": 0.181460118309587,
+      "error_samples": 389,
+      "missing_gt_trace_samples": 0,
+      "final_error_t": 80.9,
+      "last_truth_t": 80.9,
+      "sim_s": 79.60000000000001,
+      "wall_s": 143.0254285419942,
+      "arrival_after_loss_s": null,
+      "contacts": {
+        "wall": {
+          "frames": 1,
+          "episodes": 1
+        },
+        "robot": {
+          "frames": 0,
+          "episodes": 0
+        }
+      },
+      "contact_samples": 399,
+      "contact_scope": "5Hz samples/contiguous sampled episodes, plus native failure reason; not exhaustive",
+      "command_frames": 389,
+      "hold_frames": 192,
+      "return_statuses": {},
+      "return_navigation": {},
+      "travelled_m": 1.116248349618655,
+      "map": {
+        "quality": {
+          "occupied_cells": 193,
+          "precision_015": 0.5958549222797928,
+          "precision_cell": 0.24870466321243523,
+          "wall_coverage": 0.46504559270516715,
+          "wall_error_rmse_m": 0.5535157991786477
+        },
+        "occupied_cells": 193,
+        "inserted_scans": 24,
+        "visible_samples": 102,
+        "total_wall_samples": 329,
+        "covered_samples": 153,
+        "coverage": 0.46504559270516715
+      },
+      "insertion_gate_counts": {
+        "bootstrap/bootstrap": 1,
+        "deferred/gmapping_motion_gate": 363,
+        "rejected/low_overlap": 11,
+        "rejected/high_residual": 3,
+        "accepted/improved_proposal": 6,
+        "rejected/search_boundary": 1,
+        "deferred/insufficient_match_points": 2
+      }
+    },
+    {
+      "seed": 49005,
+      "acquisition": {
+        "status": "PHYSICAL_FAILURE",
+        "source_sha": "b3cc09dce60e8b93ec2bea7f8e81afe4c3c94b61",
+        "model_calls": 0,
+        "freeze": false,
+        "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+        "loadavg_start": [
+          4.94775390625,
+          4.6298828125,
+          3.9521484375
+        ],
+        "start_sim_s": 1.3,
+        "frames": 2667,
+        "total_sim_s": 534.5,
+        "failure": {
+          "type": "PhysicalStop",
+          "message": "WALL_CONTACT"
+        },
+        "enospc": false,
+        "wall_s": 2286.8546899160137,
+        "loadavg_end": [
+          6.2822265625,
+          5.314453125,
+          4.8798828125
+        ]
+      },
+      "started": true,
+      "arrived": false,
+      "false_declarations": 0,
+      "final_xy_m": 0.41158492534703683,
+      "final_sigma_xy_m": 0.0865450420654393,
+      "final_error_sigma_ratio": 4.7557308370804785,
+      "final_nees_xy": 31.96424707213491,
+      "over_3sigma": true,
+      "goal_observed": true,
+      "failure_class": "other",
+      "excluded": false,
+      "thresholds_unchanged": true,
+      "goal": {
+        "entity": {
+          "kind": "floor_zone",
+          "id": "B"
+        },
+        "center_m": [
+          -1.4129032258064524,
+          3.1379032258064514
+        ],
+        "source": "own",
+        "detector": "floor_color_v3",
+        "candidate_id": 31,
+        "obs_id": "r3-obs-000723",
+        "t_sim": 145.7,
+        "frame_sha256": "fcd66c9339d95b9ce00b5067eac4c514be51684d14ba6067076e62ab505caea8",
+        "observations": 3,
+        "first_t": 142.3,
+        "bounds_m": [
+          [
+            -1.85,
+            2.35
+          ],
+          [
+            -1.05,
+            3.95
+          ]
+        ],
+        "confidence": 0.8210306394879905,
+        "partial_extent": true
+      },
+      "target_assignment": {
+        "t": 361.3,
+        "frame_id": 1801,
+        "reason": "remembered_target_assigned",
+        "target": 31,
+        "first_detection_t": 142.3,
+        "first_confirmation_t": 145.7
+      },
+      "loss_t": 361.3,
+      "correct_convergence": true,
+      "false_convergence_frames": 362,
+      "post_loss_frames": 866,
+      "declarations": [],
+      "final_yaw_deg": 7.9876995771438315,
+      "final_sigma_definition": "sqrt_trace_cov_xy",
+      "post_loss_over_3sigma": 355,
+      "path_rmse_m": 0.220460315709173,
+      "error_samples": 2656,
+      "missing_gt_trace_samples": 0,
+      "final_error_t": 534.5,
+      "last_truth_t": 534.5,
+      "sim_s": 533.2,
+      "wall_s": 2286.8546899160137,
+      "arrival_after_loss_s": null,
+      "contacts": {
+        "wall": {
+          "frames": 1,
+          "episodes": 1
+        },
+        "robot": {
+          "frames": 0,
+          "episodes": 0
+        }
+      },
+      "contact_samples": 2667,
+      "contact_scope": "5Hz samples/contiguous sampled episodes, plus native failure reason; not exhaustive",
+      "command_frames": 2657,
+      "hold_frames": 209,
+      "return_statuses": {
+        "unknown_start_reset": 1,
+        "relocalize": 18,
+        "sensor_sweep": 185,
+        "public_static": 390,
+        "public_frontier": 185,
+        "no_path": 20,
+        "recover_spin": 18,
+        "recover_wait": 25,
+        "recover_backup": 25
+      },
+      "return_navigation": {
+        "sensor_sweep_started": 3,
+        "sensor_sweep_completed": 3,
+        "frontier_selected": 2,
+        "frontier_cycle_committed": 3,
+        "controller_no_progress": 2,
+        "navigation_action_aborted": 2,
+        "ABORTED_goal_blacklisted": 3,
+        "next_frontier_requested": 2,
+        "sensor_sweep_requested": 2,
+        "planner_failed": 13,
+        "recovery_context_clear": 7,
+        "context_clear_planner": 7,
+        "navigation_layer_reset": 9,
+        "recovery_success": 12,
+        "frontier_navigation_action": 1,
+        "recovery_clear": 2,
+        "recovery_spin": 2,
+        "recovery_wait": 1,
+        "recovery_backup": 1
+      },
+      "travelled_m": 15.979890077867761,
+      "map": {
+        "quality": {
+          "occupied_cells": 687,
+          "precision_015": 0.5240174672489083,
+          "precision_cell": 0.2692867540029112,
+          "wall_coverage": 0.8389057750759878,
+          "wall_error_rmse_m": 0.540007479501321
+        },
+        "occupied_cells": 687,
+        "inserted_scans": 199,
+        "visible_samples": 172,
+        "total_wall_samples": 329,
+        "covered_samples": 276,
+        "coverage": 0.8389057750759878
+      },
+      "insertion_gate_counts": {
+        "bootstrap/bootstrap": 1,
+        "deferred/gmapping_motion_gate": 1583,
+        "rejected/low_overlap": 24,
+        "rejected/high_residual": 55,
+        "rejected/search_boundary": 1,
+        "accepted/improved_proposal": 111,
+        "deferred/insufficient_match_points": 7
+      }
+    },
+    {
+      "seed": 49006,
+      "acquisition": {
+        "status": "PHYSICAL_FAILURE",
+        "source_sha": "b3cc09dce60e8b93ec2bea7f8e81afe4c3c94b61",
+        "model_calls": 0,
+        "freeze": false,
+        "qualification": "one MuJoCo DEV attempt, not real hardware or confirmation cohort",
+        "loadavg_start": [
+          5.02734375,
+          5.095703125,
+          4.81201171875
+        ],
+        "start_sim_s": 1.3,
+        "frames": 2483,
+        "total_sim_s": 497.7,
+        "failure": {
+          "type": "PhysicalStop",
+          "message": "WALL_CONTACT"
+        },
+        "enospc": false,
+        "wall_s": 2513.2883389999624,
+        "loadavg_end": [
+          2.421875,
+          5.2373046875,
+          7.50830078125
+        ]
+      },
+      "started": true,
+      "arrived": false,
+      "false_declarations": 0,
+      "final_xy_m": 0.8820390971431559,
+      "final_sigma_xy_m": 0.6594357759743503,
+      "final_error_sigma_ratio": 1.3375663397089697,
+      "final_nees_xy": 11.648897477603516,
+      "over_3sigma": false,
+      "goal_observed": true,
+      "failure_class": "other",
+      "excluded": false,
+      "thresholds_unchanged": true,
+      "goal": {
+        "entity": {
+          "kind": "floor_zone",
+          "id": "B"
+        },
+        "center_m": [
+          3.523333333333333,
+          2.9033333333333333
+        ],
+        "source": "own",
+        "detector": "floor_color_v3",
+        "candidate_id": 8,
+        "obs_id": "r3-obs-000224",
+        "t_sim": 45.9,
+        "frame_sha256": "68b1bb617fbc837fb7792e61fccdbd798945a6407d4a26a4f0d7d5a9ce6bc12b",
+        "observations": 4,
+        "first_t": 43.7,
+        "bounds_m": [
+          [
+            3.35,
+            2.6500000000000004
+          ],
+          [
+            3.75,
+            3.0500000000000003
+          ]
+        ],
+        "confidence": 0.29299599493655826,
+        "partial_extent": true
+      },
+      "target_assignment": {
+        "t": 361.3,
+        "frame_id": 1801,
+        "reason": "remembered_target_assigned",
+        "target": 8,
+        "first_detection_t": 43.7,
+        "first_confirmation_t": 45.9
+      },
+      "loss_t": 361.3,
+      "correct_convergence": true,
+      "false_convergence_frames": 255,
+      "post_loss_frames": 682,
+      "declarations": [],
+      "final_yaw_deg": 68.03974953009958,
+      "final_sigma_definition": "sqrt_trace_cov_xy",
+      "post_loss_over_3sigma": 275,
+      "path_rmse_m": 0.28640991228999585,
+      "error_samples": 2472,
+      "missing_gt_trace_samples": 0,
+      "final_error_t": 497.7,
+      "last_truth_t": 497.7,
+      "sim_s": 496.4,
+      "wall_s": 2513.2883389999624,
+      "arrival_after_loss_s": null,
+      "contacts": {
+        "wall": {
+          "frames": 1,
+          "episodes": 1
+        },
+        "robot": {
+          "frames": 147,
+          "episodes": 4
+        }
+      },
+      "contact_samples": 2483,
+      "contact_scope": "5Hz samples/contiguous sampled episodes, plus native failure reason; not exhaustive",
+      "command_frames": 2473,
+      "hold_frames": 329,
+      "return_statuses": {
+        "unknown_start_reset": 1,
+        "relocalize": 12,
+        "sensor_sweep": 425,
+        "no_path": 10,
+        "recover_spin": 30,
+        "recover_wait": 25,
+        "recover_backup": 30,
+        "public_static": 55,
+        "public_frontier": 95
+      },
+      "return_navigation": {
+        "sensor_sweep_started": 4,
+        "sensor_sweep_collision_hold": 254,
+        "sensor_sweep_incomplete": 2,
+        "frontier_selected": 4,
+        "frontier_cycle_committed": 4,
+        "predicted_footprint_collision": 2,
+        "controller_collision": 2,
+        "recovery_context_clear": 9,
+        "context_clear_controller": 2,
+        "navigation_layer_reset": 11,
+        "recovery_success": 15,
+        "planner_failed": 14,
+        "context_clear_planner": 7,
+        "recovery_clear": 2,
+        "recovery_spin": 2,
+        "recovery_wait": 1,
+        "recovery_backup": 1,
+        "navigation_action_aborted": 3,
+        "ABORTED_goal_blacklisted": 4,
+        "next_frontier_requested": 3,
+        "sensor_sweep_requested": 3,
+        "sensor_sweep_completed": 2,
+        "controller_no_progress": 2
+      },
+      "travelled_m": 14.829891320863915,
+      "map": {
+        "quality": {
+          "occupied_cells": 728,
+          "precision_015": 0.6112637362637363,
+          "precision_cell": 0.364010989010989,
+          "wall_coverage": 0.8145896656534954,
+          "wall_error_rmse_m": 0.5429494139631738
+        },
+        "occupied_cells": 728,
+        "inserted_scans": 157,
+        "visible_samples": 175,
+        "total_wall_samples": 329,
+        "covered_samples": 268,
+        "coverage": 0.8145896656534954
+      },
+      "insertion_gate_counts": {
+        "bootstrap/bootstrap": 1,
+        "deferred/gmapping_motion_gate": 1624,
+        "rejected/low_overlap": 20,
+        "rejected/search_boundary": 1,
+        "rejected/high_residual": 35,
+        "accepted/improved_proposal": 95,
+        "deferred/insufficient_match_points": 5
+      }
+    }
+  ],
+  "qualification": "Six preregistered seeds, same scene/start. No parameter selection or retuning. Not real hardware."
+}

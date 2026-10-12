@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "active-nav2",
+      "version": "1.0.0",
+      "purpose": "egomap31 one frozen PR409 native costmap confirmation",
+      "entry": "scripts/run_active_wall_nav2.py",
+      "runner": "scripts.run_active_wall_nav2",
+      "docs": "experiments/2026-10-08-active-frontier-audit/README.md",
+      "requires": "Committed frozen source, exclusive agent lock, one 180s run, no freeze/model",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--case",
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

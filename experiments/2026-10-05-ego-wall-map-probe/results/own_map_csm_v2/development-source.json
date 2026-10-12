@@ -1,0 +1,50 @@
+{
+  "source_sha": "0b002a41d6d3d5e6da06ef9841a64460825d6ac8",
+  "split": "development",
+  "options": {
+    "field_resolution_m": 0.05,
+    "translation_window_m": 0.5,
+    "yaw_window_deg": 8.0,
+    "yaw_step_deg": 1.0,
+    "submap_age_s": 15.0,
+    "submap_radius_m": 6.0,
+    "submap_keyframes": 12,
+    "keyframe_interval_s": 1.0,
+    "min_points": 6,
+    "min_overlap": 0.6,
+    "overlap_distance_m": 0.2,
+    "max_residual_m": 0.15,
+    "mode_distance_m": 0.15,
+    "mode_gap": 0.5,
+    "hessian_ratio": 0.03,
+    "effective_points": 12.0,
+    "calibration_floor_m": 0.08,
+    "pixel_sigma": 2.0,
+    "focal_y_px": 622.1654884818748,
+    "height_lower_bound_m": 0.15,
+    "covariance_floor_xy_m": 0.1,
+    "covariance_floor_yaw_deg": 2.0,
+    "loaded_unexplained_xy_m_sqrt_s": 0.02
+  },
+  "preregistered_criteria_sha": "e44f12c9",
+  "v2_unchanged_criteria_commit": "5538499b",
+  "insertion_policy": "accepted/bootstrap/deferred current-estimate mapping; actual rejections excluded; unchanged v1 matching keyframes",
+  "design_sha256": "c60948eb734c8489663d402a73ff62ee3469bd0a09bdd40e0821b43291304fab",
+  "files_sha256": {
+    "harness/self_map_csm.py": "96f6010f44477673240d39183c67c26407a9e4c087717ae5ffa76c1c854ad40f",
+    "harness/self_map_csm_v2.py": "f8b13afffe0c55bab43a846c461a2293876d924b3cb48ed5c36549ca2ade8b20",
+    "harness/self_wall_memory.py": "01fb06f8b8d3d6397bab450bafa2671510989800ccd71a947d9b72b4a288b998",
+    "harness/self_odom_grid.py": "0c70b4f2d34c0a1d6952d81164893b0e9726dc81d9d349aab58e8bc824998798",
+    "experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_replay.py": "85cdae2791f66d98b74db19c624aff5cd18dc36bf9bde3cadaeea6889b3cc1ac",
+    "experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_v2_replay.py": "70e336227c7c9a5c6b4c7cc6b48c2a4cf2fababa2051e36df89fad4fb4f1b601",
+    "experiments/2026-10-05-ego-wall-map-probe/code/odom_grid_replay.py": "4f96b68b7bf838dc8824f6e037e253eaff32dd5bef576989c2f3e5a38674fc9a"
+  },
+  "input_scope": "frozen own contacts after historical settle/range gates; own commands; own frame times; no GT/peer/static map",
+  "invocation": [
+    "experiments/2026-10-05-ego-wall-map-probe/code/own_map_csm_v2_replay.py",
+    "--split",
+    "development",
+    "--output",
+    "outputs/self-map-csm-v2-development"
+  ]
+}

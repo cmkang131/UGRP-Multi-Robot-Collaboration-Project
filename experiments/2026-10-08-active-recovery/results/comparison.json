@@ -1,0 +1,565 @@
+{
+  "baseline": {
+    "case": "new-seed",
+    "acquisition": {
+      "status": "RECORDED",
+      "source_sha": "cff655e4d02bf11917b2ebe146de1265f80146a0",
+      "case": "new-seed",
+      "model_calls": 0,
+      "freeze": false,
+      "loadavg_start": [
+        7.68212890625,
+        6.9521484375,
+        7.57666015625
+      ],
+      "start_sim_s": 1.3,
+      "frames": 901,
+      "total_sim_s": 181.3,
+      "prediction_view": "completed_graph",
+      "wall_s": 569.6820785000164,
+      "loadavg_end": [
+        8.82763671875,
+        8.26416015625,
+        8.0009765625
+      ]
+    },
+    "full_map": {
+      "occupied_cells": 154,
+      "precision_015": 0.24675324675324675,
+      "precision_cell": 0.09740259740259741,
+      "wall_coverage": 0.1884498480243161,
+      "wall_error_rmse_m": 0.4125322692201222
+    },
+    "wall_sample_count": 329,
+    "prediction_view": "completed_graph",
+    "observed_region": {
+      "precision": 0.1744186046511628,
+      "precision_correct": 15,
+      "precision_cells": 86,
+      "recall": 0.3069306930693069,
+      "recalled_samples": 31,
+      "visible_samples": 101,
+      "visible_wall_fraction": 0.3069908814589666,
+      "sampled_wall_length_proxy_m": 10.100000000000001,
+      "qualification": "actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled"
+    },
+    "coverage": {
+      "travelled_m": 1.0900284644319769,
+      "footprint_union_m2": 0.4850000000000001,
+      "footprint_cells_005m": 194,
+      "frames": 901,
+      "mapped_frames": 22,
+      "occupied_cells": 154
+    },
+    "path": {
+      "n": 891,
+      "rmse_m": 0.5784538904189361,
+      "end_m": 0.6473924712566551,
+      "missing_gt_samples": 0
+    },
+    "b": {
+      "first_own_confirmation_s": 37.1,
+      "reached_gt": false,
+      "first_gt_reach_s": null
+    },
+    "wall_contacts": 0,
+    "wrong_door_attempts": [
+      {
+        "t": 24.7,
+        "door": "r3:opening_003"
+      },
+      {
+        "t": 26.7,
+        "door": "r3:opening_004"
+      },
+      {
+        "t": 27.1,
+        "door": "r3:opening_002"
+      },
+      {
+        "t": 27.1,
+        "door": "r3:opening_004"
+      },
+      {
+        "t": 29.3,
+        "door": "r3:opening_002"
+      }
+    ],
+    "door_exposure": {
+      "candidate_frames": 599,
+      "feasible_rows": 16,
+      "selected_path_rows": 9
+    },
+    "loop_counts": {
+      "member_scan": 34,
+      "temporal_separation": 9,
+      "low_probability": 19,
+      "insufficient_points": 4
+    },
+    "switch_counts": {},
+    "calibration": {
+      "occupancy_ece_diagnostic": {
+        "n": 154,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.1,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.2,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.3,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.4,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.5,
+            "n": 140,
+            "score": 0.5172946895585123,
+            "precision": 0.18571428571428572
+          },
+          {
+            "lo": 0.6,
+            "n": 7,
+            "score": 0.634385477277473,
+            "precision": 0.7142857142857143
+          },
+          {
+            "lo": 0.7,
+            "n": 3,
+            "score": 0.7093136517775842,
+            "precision": 1.0
+          },
+          {
+            "lo": 0.8,
+            "n": 4,
+            "score": 0.8677086220755369,
+            "precision": 1.0
+          },
+          {
+            "lo": 0.9,
+            "n": 0,
+            "score": null,
+            "precision": null
+          }
+        ],
+        "gap": 0.3141674204780163
+      },
+      "support_score_gap": {
+        "n": 154,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 101,
+            "score": 0.0329078476826455,
+            "precision": 0.2376237623762376
+          },
+          {
+            "lo": 0.1,
+            "n": 37,
+            "score": 0.15025144053333556,
+            "precision": 0.1891891891891892
+          },
+          {
+            "lo": 0.2,
+            "n": 5,
+            "score": 0.20602396067906228,
+            "precision": 0.4
+          },
+          {
+            "lo": 0.3,
+            "n": 3,
+            "score": 0.35563356322033707,
+            "precision": 0.6666666666666666
+          },
+          {
+            "lo": 0.4,
+            "n": 3,
+            "score": 0.44579852777490875,
+            "precision": 0.3333333333333333
+          },
+          {
+            "lo": 0.5,
+            "n": 5,
+            "score": 0.5649794358136685,
+            "precision": 0.4
+          },
+          {
+            "lo": 0.6,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.7,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.8,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.9,
+            "n": 0,
+            "score": null,
+            "precision": null
+          }
+        ],
+        "gap": 0.16352127502374114
+      },
+      "qualification": "TSDF support is NOT probability"
+    },
+    "criteria": {
+      "recorded": true,
+      "no_contact": true,
+      "no_wrong_door": false,
+      "distance": false,
+      "area": false,
+      "visible_samples": true,
+      "precision": false,
+      "recall": false,
+      "wall_rmse": false,
+      "path_rmse": false
+    },
+    "passed": false
+  },
+  "baseline_uncertainty": {
+    "endpoint_error_m": 0.6473924712566551,
+    "sigma_xy_m": 0.12040236098126655,
+    "error_sigma_ratio": 5.376908442496266,
+    "over_2sigma": 706,
+    "n": 891,
+    "path_rmse_m": 0.5784538904189361,
+    "yaw_end_deg": -3.352275537906103,
+    "yaw_rmse_deg": 6.485098278908513,
+    "full_map": {
+      "occupied_cells": 154,
+      "precision_015": 0.24675324675324675,
+      "precision_cell": 0.09740259740259741,
+      "wall_coverage": 0.1884498480243161,
+      "wall_error_rmse_m": 0.4125322692201222
+    },
+    "region": {
+      "precision": 0.1744186046511628,
+      "precision_correct": 15,
+      "precision_cells": 86,
+      "recall": 0.3069306930693069,
+      "recalled_samples": 31,
+      "visible_samples": 101,
+      "total_samples": 329
+    },
+    "occupied_cells": 154,
+    "mapped_frames": 22,
+    "resamples": 5,
+    "rejected_resamples": 0,
+    "rejected_csm_updates": 0
+  },
+  "fresh": {
+    "case": "new-seed",
+    "acquisition": {
+      "status": "RECORDED",
+      "source_sha": "00e4cebd749c56765936312d22d82c82cf4ebbce",
+      "case": "new-seed",
+      "model_calls": 0,
+      "freeze": false,
+      "loadavg_start": [
+        7.3017578125,
+        6.57470703125,
+        7.3212890625
+      ],
+      "start_sim_s": 1.3,
+      "frames": 901,
+      "total_sim_s": 181.3,
+      "prediction_view": "completed_graph",
+      "wall_s": 479.1087916249817,
+      "loadavg_end": [
+        11.96044921875,
+        9.34423828125,
+        8.24658203125
+      ]
+    },
+    "full_map": {
+      "occupied_cells": 174,
+      "precision_015": 0.27011494252873564,
+      "precision_cell": 0.16091954022988506,
+      "wall_coverage": 0.1398176291793313,
+      "wall_error_rmse_m": 0.3920953098975392
+    },
+    "wall_sample_count": 329,
+    "prediction_view": "completed_graph",
+    "observed_region": {
+      "precision": 0.32222222222222224,
+      "precision_correct": 29,
+      "precision_cells": 90,
+      "recall": 0.21621621621621623,
+      "recalled_samples": 16,
+      "visible_samples": 74,
+      "visible_wall_fraction": 0.22492401215805471,
+      "sampled_wall_length_proxy_m": 7.4,
+      "qualification": "actual camera poses/FOV/range and wall-only occlusion; object/self occlusion not modelled"
+    },
+    "coverage": {
+      "travelled_m": 4.225362688081592,
+      "footprint_union_m2": 1.5225000000000002,
+      "footprint_cells_005m": 609,
+      "frames": 901,
+      "mapped_frames": 20,
+      "occupied_cells": 174
+    },
+    "path": {
+      "n": 891,
+      "rmse_m": 0.4699532769035522,
+      "end_m": 0.5724732011467965,
+      "missing_gt_samples": 0
+    },
+    "b": {
+      "first_own_confirmation_s": null,
+      "reached_gt": false,
+      "first_gt_reach_s": null
+    },
+    "wall_contacts": 0,
+    "wrong_door_attempts": [
+      {
+        "t": 17.1,
+        "door": "r3:opening_001"
+      },
+      {
+        "t": 69.7,
+        "door": "r3:opening_026"
+      }
+    ],
+    "door_exposure": {
+      "candidate_frames": 473,
+      "feasible_rows": 29,
+      "selected_path_rows": 22
+    },
+    "loop_counts": {
+      "member_scan": 30,
+      "low_probability": 6,
+      "insufficient_points": 2,
+      "temporal_separation": 2
+    },
+    "switch_counts": {},
+    "calibration": {
+      "occupancy_ece_diagnostic": {
+        "n": 174,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.1,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.2,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.3,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.4,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.5,
+            "n": 163,
+            "score": 0.5287887942762544,
+            "precision": 0.24539877300613497
+          },
+          {
+            "lo": 0.6,
+            "n": 9,
+            "score": 0.6533773846649767,
+            "precision": 0.5555555555555556
+          },
+          {
+            "lo": 0.7,
+            "n": 2,
+            "score": 0.733704076021382,
+            "precision": 1.0
+          },
+          {
+            "lo": 0.8,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.9,
+            "n": 0,
+            "score": null,
+            "precision": null
+          }
+        ],
+        "gap": 0.2735951826262729
+      },
+      "support_score_gap": {
+        "n": 174,
+        "bins": [
+          {
+            "lo": 0.0,
+            "n": 115,
+            "score": 0.04551196221118021,
+            "precision": 0.28695652173913044
+          },
+          {
+            "lo": 0.1,
+            "n": 35,
+            "score": 0.14268886623258684,
+            "precision": 0.2
+          },
+          {
+            "lo": 0.2,
+            "n": 24,
+            "score": 0.23141082787281975,
+            "precision": 0.2916666666666667
+          },
+          {
+            "lo": 0.3,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.4,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.5,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.6,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.7,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.8,
+            "n": 0,
+            "score": null,
+            "precision": null
+          },
+          {
+            "lo": 0.9,
+            "n": 0,
+            "score": null,
+            "precision": null
+          }
+        ],
+        "gap": 0.17941467907256362
+      },
+      "qualification": "TSDF support is NOT probability"
+    },
+    "criteria": {
+      "recorded": true,
+      "no_contact": true,
+      "no_wrong_door": false,
+      "distance": true,
+      "area": true,
+      "visible_samples": true,
+      "precision": false,
+      "recall": false,
+      "wall_rmse": false,
+      "path_rmse": false
+    },
+    "passed": false
+  },
+  "frontend": {
+    "endpoint_error_m": 0.5724732011467965,
+    "sigma_xy_m": 0.09808298027575081,
+    "error_sigma_ratio": 5.836621190927757,
+    "over_2sigma": 815,
+    "n": 891,
+    "path_rmse_m": 0.4699532769035522,
+    "yaw_end_deg": 3.1813993452982836,
+    "yaw_rmse_deg": 10.612701073052552,
+    "full_map": {
+      "occupied_cells": 174,
+      "precision_015": 0.27011494252873564,
+      "precision_cell": 0.16091954022988506,
+      "wall_coverage": 0.1398176291793313,
+      "wall_error_rmse_m": 0.3920953098975392
+    },
+    "region": {
+      "precision": 0.32222222222222224,
+      "precision_correct": 29,
+      "precision_cells": 90,
+      "recall": 0.21621621621621623,
+      "recalled_samples": 16,
+      "visible_samples": 74,
+      "total_samples": 329
+    },
+    "occupied_cells": 174,
+    "mapped_frames": 20,
+    "resamples": 3,
+    "rejected_resamples": 0,
+    "rejected_csm_updates": 0
+  },
+  "egomap27_gate": {
+    "within_2sigma": false,
+    "precision_improves": true
+  },
+  "qualification": "Single preregistered fresh-seed acquisition versus egomap28. Graph sigma unavailable.",
+  "hold": {
+    "n": 468,
+    "total": 891,
+    "fraction": 0.5252525252525253,
+    "baseline_n": 695,
+    "baseline_total": 891
+  },
+  "recovery_gate": {
+    "recorded": true,
+    "distance": true,
+    "area": true,
+    "hold_fraction": true,
+    "no_contact": true
+  }
+}

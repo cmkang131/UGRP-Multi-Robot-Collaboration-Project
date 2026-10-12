@@ -1,0 +1,147 @@
+{
+  "source_sha": "00e4cebd749c56765936312d22d82c82cf4ebbce",
+  "seed": 29001,
+  "physical_runs": 1,
+  "sim_duration_s": 180.0,
+  "frozen_options_changed": false,
+  "event_counts": {
+    "frontier_selected": 25,
+    "planner_failed": 10,
+    "recovery_context_clear": 6,
+    "context_clear_planner": 6,
+    "navigation_layer_reset": 8,
+    "recovery_success": 8,
+    "recovery_clear": 2,
+    "recovery_spin": 2,
+    "graph_preserved_recovery": 18,
+    "ABORTED_unreachable": 4,
+    "exploration_finished_no_frontier": 1
+  },
+  "recovery_started": {
+    "context_clear": 6,
+    "clear": 2,
+    "spin": 2
+  },
+  "recovery_success": {
+    "context_clear": 6,
+    "clear": 2
+  },
+  "recovery_failure": {},
+  "recovery_success_total": 8,
+  "navigation_resets": 8,
+  "blacklist_total": 4,
+  "blacklist_by_reason": {
+    "ABORTED_unreachable": 4
+  },
+  "blacklist_followups": [
+    {
+      "blacklist": {
+        "t": 45.7,
+        "reason": "ABORTED_unreachable",
+        "target": [
+          0.7436893203883495,
+          4.363106796116504
+        ]
+      },
+      "next_selection": {
+        "t": 45.7,
+        "reason": "frontier_selected",
+        "target": [
+          1.93875,
+          2.07875
+        ]
+      }
+    },
+    {
+      "blacklist": {
+        "t": 64.9,
+        "reason": "ABORTED_unreachable",
+        "target": [
+          1.7808441558441555,
+          4.712012987012987
+        ]
+      },
+      "next_selection": {
+        "t": 64.9,
+        "reason": "frontier_selected",
+        "target": [
+          1.9405405405405405,
+          1.7351351351351347
+        ]
+      }
+    },
+    {
+      "blacklist": {
+        "t": 90.5,
+        "reason": "ABORTED_unreachable",
+        "target": [
+          4.679477611940298,
+          1.8466417910447752
+        ]
+      },
+      "next_selection": null
+    },
+    {
+      "blacklist": {
+        "t": 90.5,
+        "reason": "ABORTED_unreachable",
+        "target": [
+          5.450490196078429,
+          4.034803921568627
+        ]
+      },
+      "next_selection": null
+    }
+  ],
+  "frontier_selections": 25,
+  "exhaustion_abort_count": 0,
+  "permanent_failed_frames": 0,
+  "first_exploration_finished_absolute_s": 90.5,
+  "first_exploration_finished_elapsed_s": 89.2,
+  "tail_frames": 455,
+  "tail_hold_frames": 455,
+  "tail_duration_s": 90.80000000000001,
+  "all_status_counts": {
+    "public_frontier": 395,
+    "no_path": 20,
+    "recover_spin": 15,
+    "public_static": 10,
+    "exploration_finished": 451
+  },
+  "hold": {
+    "n": 468,
+    "total": 891,
+    "fraction": 0.5252525252525253,
+    "baseline_n": 695,
+    "baseline_total": 891
+  },
+  "wall_contact_sample_pairs": 0,
+  "eval_contact_frames": 901,
+  "recovery_gate": {
+    "recorded": true,
+    "distance": true,
+    "area": true,
+    "hold_fraction": true,
+    "no_contact": true
+  },
+  "recovery_gate_pass_count": 5,
+  "egomap27_gate": {
+    "within_2sigma": false,
+    "precision_improves": true
+  },
+  "original_quality_criteria": {
+    "recorded": true,
+    "no_contact": true,
+    "no_wrong_door": false,
+    "distance": true,
+    "area": true,
+    "visible_samples": true,
+    "precision": false,
+    "recall": false,
+    "wall_rmse": false,
+    "path_rmse": false
+  },
+  "original_quality_pass_count": 5,
+  "wrong_door_plan_proxy_count": 2,
+  "qualification": "Recovery starts include contextual clears. Starts without terminal events are not successes. Unreachable-frontier blacklists and retry-budget exhaustion are reported separately. Contact count is saved sample pairs plus abort-only runtime safety, not hardware sensing."
+}
