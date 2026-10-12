@@ -1,0 +1,114 @@
+{
+  "schema": "ugrp.s3_continuous_distance.registration.v1",
+  "host": "ugrp-sim-azure",
+  "class_": "dev",
+  "pr": 416,
+  "batch": "s3-continuous-20261011-v186",
+  "runs": [
+    {
+      "name": "s3-continuous-d0p85-s18601",
+      "distance_m": 0.85,
+      "seed": 18601,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d0p85-s18602",
+      "distance_m": 0.85,
+      "seed": 18602,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d0p85-s18603",
+      "distance_m": 0.85,
+      "seed": 18603,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d1p5-s18601",
+      "distance_m": 1.5,
+      "seed": 18601,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d1p5-s18602",
+      "distance_m": 1.5,
+      "seed": 18602,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d1p5-s18603",
+      "distance_m": 1.5,
+      "seed": 18603,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d2p5-s18601",
+      "distance_m": 2.5,
+      "seed": 18601,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d2p5-s18602",
+      "distance_m": 2.5,
+      "seed": 18602,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d2p5-s18603",
+      "distance_m": 2.5,
+      "seed": 18603,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d4p0-s18601",
+      "distance_m": 4.0,
+      "seed": 18601,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d4p0-s18602",
+      "distance_m": 4.0,
+      "seed": 18602,
+      "condition": 0
+    },
+    {
+      "name": "s3-continuous-d4p0-s18603",
+      "distance_m": 4.0,
+      "seed": 18603,
+      "condition": 0
+    }
+  ],
+  "route_start": [
+    0.0,
+    0.05
+  ],
+  "route_axis": [
+    1.0,
+    0.0
+  ],
+  "cap_sim_s": 180.0,
+  "vm_wall_cap_s": 7200,
+  "concurrency": 12,
+  "reserved_vcpus": 4,
+  "per_run_expected_cores": 0.6,
+  "eval_only_limits": {
+    "tilt_deg": 10.0,
+    "persistent_grip_loss_s": 0.2,
+    "endpoint_shortfall_m": 0.02,
+    "axis_displacement_disagreement_m": 0.02,
+    "opposed_heading_drift_rad": 0.1
+  },
+  "criteria": "largest tested distance with 3/3 reaching distance-20mm under continuous bilateral grip, no drop/tilt abort, no persistent >=0.20s grip loss, <=20mm carrier displacement disagreement and <=0.10rad opposed heading drift; provisional DEV limit, 3 seeds not a safety guarantee",
+  "setup": "same saved synthetic pair alignment fixture rigidly translated to public static straight lane; fresh own RGB PF without pose prior; no intermediate release",
+  "input_boundary": "own RGB/static map/own commands only; no LLM; GT positions/contact/tilt evaluation only",
+  "physics": {
+    "weld": "off",
+    "render": "floor_light_v1",
+    "drive": "masterpi_drive_friction_v7",
+    "contact": "cargo_noslip_v1"
+  },
+  "raw_policy": "Azure persistent runs -> hash-verified ARM archive; Mac fetch-lite only; ENOSPC=HOST_ERROR",
+  "source_template": "configs/s3_continuous_carry_template_v1.json",
+  "tuning": false,
+  "confirmation": false
+}

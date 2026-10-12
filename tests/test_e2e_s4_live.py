@@ -89,6 +89,7 @@ def test_live_trial_preserves_native_dialogue_validation(tmp_path,setup_data):
 
 
 def test_native_rgb_mapping_and_model_snapshot_no_scene_input(monkeypatch):
+    pytest.importorskip("mujoco", exc_type=ModuleNotFoundError)
     import base64,hashlib,cv2,numpy as np,sys
     # The fixed CAD XML builder imports type definitions from the simulation
     # package. Permit import, but forbid constructing either a model or state.

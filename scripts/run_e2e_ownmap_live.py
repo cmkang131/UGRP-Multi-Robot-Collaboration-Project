@@ -30,7 +30,7 @@ def relay_url(profile, decider='off'):
 
 from harness.e2e_result_writer import write, Finalizer
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,runtime_registration='off'):
     if profile not in PROFILES or seed not in (61001,61002,61003,61004):raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')
@@ -42,6 +42,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if mapping_budget not in ('off','case_cap_v1'):raise ValueError('UNKNOWN_MAPPING_BUDGET')
     from harness.e2e_stall_odometry import Options as StallOptions
     stall=StallOptions(stall_odometry,stall_recovery,stall_noise)
+    from harness.e2e_exact_speedups import Options as SpeedOptions
+    speed=SpeedOptions(**(exact_speedups or {}))
     from harness.zone_study_llm_driver import load_registry
     b=json.loads((ROOT/'configs/e2e_s3_test_runtime_v1.json').read_text())
     # The template contributes physical/calibration constants only. Its authored
@@ -76,6 +78,11 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     if mapping_budget!='off':
         b['e2e_options'].update(mapping_budget=mapping_budget,mapping_budget_s=b['case_cap_s'])
         b.update(schema='ugrp.e2e_ownmap_live.v199',execution_bundle_id='e2e-stall-budget-v199',workflow_version='7.92.0')
+    if speed_bundle or any(vars(speed).values()):
+        b['e2e_options']['exact_speedups']=dataclasses.asdict(speed)
+        b.update(schema='ugrp.e2e_ownmap_live.v200',execution_bundle_id='e2e-exact-speed-v200',workflow_version='7.93.0')
+    from harness.e2e_runtime_registration import register
+    runtime_assets=register(b,runtime_registration)
     from harness.python_source_closure import source_closure
     paths=set(source_closure(ROOT,['scripts/run_e2e_ownmap_live.py','sim/e2e_ownmap_live.py',
         'harness/e2e_live_transport.py','harness/e2e_live_mapping.py','harness/e2e_s4_live.py',
@@ -91,6 +98,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         paths.add('configs/simulation_workflows.d/e2e_rpp_lookahead_v197.json')
     if stall.enabled or stall_bundle:paths.add('configs/simulation_workflows.d/e2e_stall_odometry_v198.json')
     if mapping_budget!='off':paths.add('configs/simulation_workflows.d/e2e_stall_budget_v199.json')
+    if speed_bundle or any(vars(speed).values()):paths.add('configs/simulation_workflows.d/e2e_exact_speed_v200.json')
+    paths.update(runtime_assets)
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -125,7 +134,10 @@ def startup_decision(progress, b):
 
 def run(b,out,receipt,*,backend_factory=None):
     if not b['e2e_options']['enabled']:raise ValueError('E2E_LIVE_TOGGLE_OFF')
+    from harness.e2e_runtime_registration import require_current
+    require_current(b,ROOT)
     from harness.e2e_live_mapping import Robot,Link
+    from harness.e2e_exact_speedups import Options as SpeedOptions
     from harness.e2e_stall_odometry import Options as StallOptions
     from harness.e2e_live_transport import Transport
     from harness.e2e_s4_live import Host
@@ -158,7 +170,8 @@ def run(b,out,receipt,*,backend_factory=None):
                         pose_fix=b['e2e_options'].get('pose_fix','off'),
                         path_follow=b['e2e_options'].get('path_follow','off'),
                         stall_options=StallOptions(**{k:b['e2e_options'].get(k,'off') for k in ('stall_odometry','stall_recovery','stall_noise')}),
-                        mapping_budget_s=b['e2e_options'].get('mapping_budget_s'))
+                        mapping_budget_s=b['e2e_options'].get('mapping_budget_s'),
+                        exact_speedups=SpeedOptions(**b['e2e_options'].get('exact_speedups',{})))
                 for i,r in enumerate(('r1','r2','r3'))}
         for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
         offered=json.loads(receipt.read_text())
@@ -297,7 +310,7 @@ def run(b,out,receipt,*,backend_factory=None):
     return result
 
 
-def main():
+def main(argv=None):
     p=argparse.ArgumentParser();p.add_argument('--expected-source-sha',required=True)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--seed',type=int,required=True)
     p.add_argument('--driver-profile',choices=PROFILES,required=True);p.add_argument('--relay-receipt',type=Path,required=True)
@@ -314,12 +327,23 @@ def main():
     p.add_argument('--mapping-budget',choices=('off','case_cap_v1'),default='off')
     p.add_argument('--dev-light',action='store_true')
     p.add_argument('--wall-cap-s',type=float,default=12600.)
-    p.add_argument('--execute',action='store_true');a=p.parse_args()
+    p.add_argument('--exact-provenance-index',action='store_true')
+    p.add_argument('--exact-sha-cache',action='store_true')
+    p.add_argument('--exact-omit-copy',action='store_true')
+    p.add_argument('--exact-scalar-cells',action='store_true')
+    p.add_argument('--exact-geometry-cache',action='store_true')
+    p.add_argument('--exact-speed-bundle',action='store_true')
+    p.add_argument('--measure-sim-s',type=float,default=0.,help='External measurement stop; bundle horizon unchanged')
+    p.add_argument('--measure-profile',action='store_true')
+    p.add_argument('--runtime-registration',choices=('off','reviewed_v1'),default='off')
+    p.add_argument('--execute',action='store_true');a=p.parse_args(argv)
     b=bundle(a.expected_source_sha,a.seed,a.driver_profile,enabled=a.e2e_live,relook=a.setdown_only_when_relook,
              options=Options(a.event_driven_llm,a.compact_prompt,'en'),decider=a.decider,
              exploration_progress=a.exploration_progress,pose_fix=a.pose_fix,
              path_follow=a.path_follow,dev_light=a.dev_light,wall_cap_s=a.wall_cap_s,
-             stall_odometry=a.stall_odometry,stall_recovery=a.stall_recovery,stall_noise=a.stall_noise,stall_bundle=a.stall_bundle,mapping_budget=a.mapping_budget)
+             stall_odometry=a.stall_odometry,stall_recovery=a.stall_recovery,stall_noise=a.stall_noise,stall_bundle=a.stall_bundle,mapping_budget=a.mapping_budget,
+             exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache),
+             speed_bundle=a.exact_speed_bundle,runtime_registration=a.runtime_registration)
     if not a.execute:print(json.dumps(b));return
     if platform.system()!='Linux' or platform.machine()!='x86_64' or os.environ.get('MUJOCO_GL')!='osmesa':
         raise ValueError('AZURE_X86_OSMESA_ONLY')
@@ -327,7 +351,11 @@ def main():
     if subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()!=a.expected_source_sha:raise ValueError('COMMITTED_SHA_REQUIRED')
     from harness.zone_pair_highpose_exact_speedups import install
     _,undo=install('v98-exact-v6')
-    try:r=run(b,a.output,a.relay_receipt)
+    try:
+        if a.measure_sim_s:
+            from scripts.e2e_speed_measure import measured_run
+            r=measured_run(run,b,a.output,a.relay_receipt,a.measure_sim_s,a.measure_profile)
+        else:r=run(b,a.output,a.relay_receipt)
     finally:undo()
     print(json.dumps(r));return int(r['status']!='FINISHED')
 

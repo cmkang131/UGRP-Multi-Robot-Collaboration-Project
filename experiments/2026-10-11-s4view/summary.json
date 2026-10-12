@@ -1,0 +1,666 @@
+{
+  "base_sha": "1ed6df46d342e55983ca8ad3af586995bed7d7d0",
+  "execution_sha": "6b42849be3426f42b0a18daa13bb536785f94e95",
+  "status": "COMPLETED",
+  "oracle_only": true,
+  "new_model_calls": 0,
+  "tensorboard": false,
+  "tests": "3 passed",
+  "storage": "own source/run temp workspace in /dev/shm; durable ARM copy verified before delivery; originals untouched",
+  "originals": {
+    "no_comm": {
+      "original": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live5-no_comm-s601-v168-r3/raw",
+      "start_sim_s": 2.35,
+      "end_sim_s": 53.6,
+      "issued_commands": 2979,
+      "commands_sha256": {
+        "r1": "749b05173ac1ae1596def32dc9bc30e7fa18547272e5aa06b26c20d4216c83a2",
+        "r2": "29744976a9d967fb73e9d49cc9a17067581fdfe147623a2744d0b5ad6ec6cd0c",
+        "r3": "c90c8385f2d9be6062381c8e98de565de3bfe8b1d5b7119ff9964478e8f005fc"
+      },
+      "message_events": 7,
+      "dependency_hashes_match": 523
+    },
+    "peer_ko": {
+      "original": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live5-peer_ko-s601-v168-r3/raw",
+      "start_sim_s": 2.35,
+      "end_sim_s": 57.75,
+      "issued_commands": 3083,
+      "commands_sha256": {
+        "r1": "b65f78ac633f54703955a55b786c6126f5f463796db7b5029a0348c6c812cd36",
+        "r2": "a532bd04afa2bddd6fec1354076a9b7c0e51b0e427de55bef343f2edafc6d6af",
+        "r3": "5cdf3e6c189d08d59ccbe8ae241304aaf14df68bf1afb208ff1e510500f86d99"
+      },
+      "message_events": 8,
+      "dependency_hashes_match": 523
+    },
+    "leader_ko": {
+      "original": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live5-leader_ko-s601-v168-r3/raw",
+      "start_sim_s": 2.35,
+      "end_sim_s": 58.6,
+      "issued_commands": 3077,
+      "commands_sha256": {
+        "r1": "18165dae91fa63466497affaafe621d42f3450aec41dc581989bbae478104d09",
+        "r2": "f66e63924f13a45b540c5d0141b324d14f5f7cae0e2ceb8f89ddb70f734fc16b",
+        "r3": "a0915e816d90cfac7147f6b406e1b9828e7b120355bb127e69ec824ec7a445da"
+      },
+      "message_events": 8,
+      "dependency_hashes_match": 523
+    },
+    "structured": {
+      "original": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4live5-structured-s601-v168-r3/raw",
+      "start_sim_s": 2.35,
+      "end_sim_s": 58.6,
+      "issued_commands": 3123,
+      "commands_sha256": {
+        "r1": "2e9a086d672fb33dfb2e658c278428a7edf1ec9ecaf9ef3acab6c0d379d2dbc0",
+        "r2": "08d1ce1571e8d02203323add371d446d9aff60af471dd5fd623a7f599403f636",
+        "r3": "a0915e816d90cfac7147f6b406e1b9828e7b120355bb127e69ec824ec7a445da"
+      },
+      "message_events": 7,
+      "dependency_hashes_match": 523
+    }
+  },
+  "pr": 431,
+  "simultaneous_runs": 4,
+  "health_after_three_minutes": {
+    "checked_at_unix": 1791645475.5940526,
+    "runs": {
+      "no_comm": {
+        "status": "RUNNING",
+        "absolute_sim_s": 53.35,
+        "relative_sim_s": 51.0,
+        "wall_s": 187.38075427399997,
+        "video_frames": 256,
+        "pid": 9808,
+        "loadavg": [
+          14.505859375,
+          6.40478515625,
+          2.548828125
+        ]
+      },
+      "peer_ko": {
+        "status": "RUNNING",
+        "absolute_sim_s": 51.35,
+        "relative_sim_s": 49.0,
+        "wall_s": 186.202830652,
+        "video_frames": 246,
+        "pid": 9776,
+        "loadavg": [
+          15.15966796875,
+          6.39453125,
+          2.5244140625
+        ]
+      },
+      "leader_ko": {
+        "status": "RUNNING",
+        "absolute_sim_s": 52.35,
+        "relative_sim_s": 50.0,
+        "wall_s": 187.33709052700004,
+        "video_frames": 251,
+        "pid": 9781,
+        "loadavg": [
+          14.505859375,
+          6.40478515625,
+          2.548828125
+        ]
+      },
+      "structured": {
+        "status": "RUNNING",
+        "absolute_sim_s": 52.35,
+        "relative_sim_s": 50.0,
+        "wall_s": 185.81555858199994,
+        "video_frames": 251,
+        "pid": 9798,
+        "loadavg": [
+          15.15966796875,
+          6.39453125,
+          2.5244140625
+        ]
+      }
+    }
+  },
+  "visual_check": "full arena, two beam robots, own r1/r2 images and timestamped GO/ACK caption visually inspected; 1280x480 at20fps, 4x",
+  "original_outcome": "all PAIR_STOP / PAIR_VISUAL_LEASE_EXPIRED; replay does not claim transport success",
+  "archive": {
+    "host": "oracle ARM",
+    "root": "/home/ubuntu/ugrp-archive/runs",
+    "full_raw_copy": "rsync -a, rsync -anc comparison empty for all four and path check",
+    "video_sha256": "independent ARM read confirmed for all four",
+    "x86_workspace": "RAM, still preserved",
+    "originals": "untouched"
+  },
+  "runs": {
+    "no_comm": {
+      "condition": "no_comm",
+      "status": "COMPLETED",
+      "execution_sha": "6b42849be3426f42b0a18daa13bb536785f94e95",
+      "base_sha": "1ed6df46d342e55983ca8ad3af586995bed7d7d0",
+      "original_source_sha": "4ea229487b623bd3b5e5f4156a9b926aff2b852c",
+      "original_path": "/home/ubuntu/ugrp-sim/runs/s4live5-no_comm-s601-v168-r3",
+      "original_outcome": "PAIR_STOP",
+      "model_calls": 0,
+      "evaluation_only": true,
+      "controller_run": false,
+      "physics_correction": false,
+      "loadavg_start": [
+        0.474609375,
+        0.4658203125,
+        0.224609375
+      ],
+      "start_sim_s": 2.35,
+      "end_sim_s": 53.6,
+      "subtitle_time_basis": "recorded stage-relative acceptance time; SIM+ label, absolute t also shown",
+      "playback_speed": 4,
+      "width": 1280,
+      "height": 480,
+      "initial_state_exact": true,
+      "video_frames": 257,
+      "wall_s": 188.32726896500003,
+      "loadavg_end": [
+        14.505859375,
+        6.40478515625,
+        2.548828125
+      ],
+      "global_command_order": {
+        "original": "f6dadd231adac1987c2f5522e4ceb507d3fef7f4f66e50977b4627e815739c06",
+        "replay": "f6dadd231adac1987c2f5522e4ceb507d3fef7f4f66e50977b4627e815739c06"
+      },
+      "commands": {
+        "r1": {
+          "original": "749b05173ac1ae1596def32dc9bc30e7fa18547272e5aa06b26c20d4216c83a2",
+          "replay": "749b05173ac1ae1596def32dc9bc30e7fa18547272e5aa06b26c20d4216c83a2"
+        },
+        "r2": {
+          "original": "29744976a9d967fb73e9d49cc9a17067581fdfe147623a2744d0b5ad6ec6cd0c",
+          "replay": "29744976a9d967fb73e9d49cc9a17067581fdfe147623a2744d0b5ad6ec6cd0c"
+        },
+        "r3": {
+          "original": "c90c8385f2d9be6062381c8e98de565de3bfe8b1d5b7119ff9964478e8f005fc",
+          "replay": "c90c8385f2d9be6062381c8e98de565de3bfe8b1d5b7119ff9964478e8f005fc"
+        }
+      },
+      "command_trajectory_match": true,
+      "evaluation_trajectories": {
+        "r1": {
+          "original": "3c75baa1661de98e59863d65689e090d5c7285226f208ecf81cb91da38fe2de8",
+          "replay": "3c75baa1661de98e59863d65689e090d5c7285226f208ecf81cb91da38fe2de8"
+        },
+        "r2": {
+          "original": "3d77a508174b3eff02751bf05370dff4b9af46ca745f969ff532eb66b0619d60",
+          "replay": "3d77a508174b3eff02751bf05370dff4b9af46ca745f969ff532eb66b0619d60"
+        },
+        "r3": {
+          "original": "bd6f5d72c8c6220914f40dad6ce3044ffe20b0bb3b22ff19fe6a69b04852e66c",
+          "replay": "bd6f5d72c8c6220914f40dad6ce3044ffe20b0bb3b22ff19fe6a69b04852e66c"
+        }
+      },
+      "evaluation_trajectory_match": true,
+      "video_sha256": "5d09fc9669d3ca36ece7147caa327d15e03f0aa611854114512004a8668c760c",
+      "delivery": {
+        "video_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4view-no_comm/overview.mp4",
+        "sha256": "5d09fc9669d3ca36ece7147caa327d15e03f0aa611854114512004a8668c760c",
+        "bytes": 250117,
+        "metadata": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "width": 1280,
+              "height": 480,
+              "r_frame_rate": "20/1",
+              "nb_frames": "257"
+            }
+          ],
+          "format": {
+            "duration": "12.850000"
+          }
+        },
+        "full_decode": true,
+        "remote_hash_match": true
+      },
+      "camera_and_qpos": {
+        "r1": {
+          "eval_only/r1/render_camera.jsonl": {
+            "original": "e4f5685e65c1d5d39576a0c65fd34d258193aca58e402f25c40384b1276cbcba",
+            "replay": "e4f5685e65c1d5d39576a0c65fd34d258193aca58e402f25c40384b1276cbcba",
+            "match": true
+          },
+          "robots/r1/frames.jsonl": {
+            "original": "74ba80db043bc38b526f18df480fc3160151518d6f95463276989ba6306fa7ab",
+            "replay": "74ba80db043bc38b526f18df480fc3160151518d6f95463276989ba6306fa7ab",
+            "match": true
+          }
+        },
+        "r2": {
+          "eval_only/r2/render_camera.jsonl": {
+            "original": "ae8effbf8cde39a06356f9eef0f5ca212369c5572ffde6fb660c11f8ff6319fd",
+            "replay": "ae8effbf8cde39a06356f9eef0f5ca212369c5572ffde6fb660c11f8ff6319fd",
+            "match": true
+          },
+          "robots/r2/frames.jsonl": {
+            "original": "f5df6e65d684a637cf5f3a06f2f15a2ecfee9e4a3c5d43c337741704de1fcc6f",
+            "replay": "f5df6e65d684a637cf5f3a06f2f15a2ecfee9e4a3c5d43c337741704de1fcc6f",
+            "match": true
+          }
+        },
+        "r3": {
+          "eval_only/r3/render_camera.jsonl": {
+            "original": "dd2360a9a3149ac6fee74e5481764c7a8200de02c90763fe3d9d2fc85acaae16",
+            "replay": "dd2360a9a3149ac6fee74e5481764c7a8200de02c90763fe3d9d2fc85acaae16",
+            "match": true
+          },
+          "robots/r3/frames.jsonl": {
+            "original": "44a7100b183e14bf321bab6b7e419990e6c844e5341a2226fdf8b218b8c1ccc8",
+            "replay": "44a7100b183e14bf321bab6b7e419990e6c844e5341a2226fdf8b218b8c1ccc8",
+            "match": true
+          }
+        }
+      },
+      "source_dependencies_checked": 523
+    },
+    "peer_ko": {
+      "condition": "peer_ko",
+      "status": "COMPLETED",
+      "execution_sha": "6b42849be3426f42b0a18daa13bb536785f94e95",
+      "base_sha": "1ed6df46d342e55983ca8ad3af586995bed7d7d0",
+      "original_source_sha": "4ea229487b623bd3b5e5f4156a9b926aff2b852c",
+      "original_path": "/home/ubuntu/ugrp-sim/runs/s4live5-peer_ko-s601-v168-r3",
+      "original_outcome": "PAIR_STOP",
+      "model_calls": 0,
+      "evaluation_only": true,
+      "controller_run": false,
+      "physics_correction": false,
+      "loadavg_start": [
+        0.474609375,
+        0.4658203125,
+        0.224609375
+      ],
+      "start_sim_s": 2.35,
+      "end_sim_s": 57.75,
+      "subtitle_time_basis": "recorded stage-relative acceptance time; SIM+ label, absolute t also shown",
+      "playback_speed": 4,
+      "width": 1280,
+      "height": 480,
+      "initial_state_exact": true,
+      "video_frames": 278,
+      "wall_s": 215.41707844799998,
+      "loadavg_end": [
+        26.01220703125,
+        9.7509765625,
+        3.75732421875
+      ],
+      "global_command_order": {
+        "original": "0a31eca81b403674dd6ceeae507a09af08e249b52658c0e88e6978114370a48c",
+        "replay": "0a31eca81b403674dd6ceeae507a09af08e249b52658c0e88e6978114370a48c"
+      },
+      "commands": {
+        "r1": {
+          "original": "b65f78ac633f54703955a55b786c6126f5f463796db7b5029a0348c6c812cd36",
+          "replay": "b65f78ac633f54703955a55b786c6126f5f463796db7b5029a0348c6c812cd36"
+        },
+        "r2": {
+          "original": "a532bd04afa2bddd6fec1354076a9b7c0e51b0e427de55bef343f2edafc6d6af",
+          "replay": "a532bd04afa2bddd6fec1354076a9b7c0e51b0e427de55bef343f2edafc6d6af"
+        },
+        "r3": {
+          "original": "5cdf3e6c189d08d59ccbe8ae241304aaf14df68bf1afb208ff1e510500f86d99",
+          "replay": "5cdf3e6c189d08d59ccbe8ae241304aaf14df68bf1afb208ff1e510500f86d99"
+        }
+      },
+      "command_trajectory_match": true,
+      "evaluation_trajectories": {
+        "r1": {
+          "original": "12af4cc887f3d083fb48acc8c0e022c6a04d1e6899e3363afeef3c90fb1e2ded",
+          "replay": "12af4cc887f3d083fb48acc8c0e022c6a04d1e6899e3363afeef3c90fb1e2ded"
+        },
+        "r2": {
+          "original": "954516e2c439421ea7b82146606b7be438d6d96852224bd1a35168bdab648ca9",
+          "replay": "954516e2c439421ea7b82146606b7be438d6d96852224bd1a35168bdab648ca9"
+        },
+        "r3": {
+          "original": "4eaf930657c86bd1a012746ff0cceb60b005f9a4e6a4b40f5ee6abdf8f28ec48",
+          "replay": "4eaf930657c86bd1a012746ff0cceb60b005f9a4e6a4b40f5ee6abdf8f28ec48"
+        }
+      },
+      "evaluation_trajectory_match": true,
+      "video_sha256": "5451ad210e179c686b808120d24f86e8a0088665f93cd53c01a3f3f498afc66b",
+      "delivery": {
+        "video_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4view-peer_ko/overview.mp4",
+        "sha256": "5451ad210e179c686b808120d24f86e8a0088665f93cd53c01a3f3f498afc66b",
+        "bytes": 266587,
+        "metadata": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "width": 1280,
+              "height": 480,
+              "r_frame_rate": "20/1",
+              "nb_frames": "278"
+            }
+          ],
+          "format": {
+            "duration": "13.900000"
+          }
+        },
+        "full_decode": true,
+        "remote_hash_match": true
+      },
+      "camera_and_qpos": {
+        "r1": {
+          "eval_only/r1/render_camera.jsonl": {
+            "original": "f23d0adf67f1b4453bbba84c3e1c390fb9b4933061f3373fdb03abf739172349",
+            "replay": "f23d0adf67f1b4453bbba84c3e1c390fb9b4933061f3373fdb03abf739172349",
+            "match": true
+          },
+          "robots/r1/frames.jsonl": {
+            "original": "cf844675cbd1f99c4e8d4afcd68650f4d48ebceb9dbfdad037e25037d58df30b",
+            "replay": "cf844675cbd1f99c4e8d4afcd68650f4d48ebceb9dbfdad037e25037d58df30b",
+            "match": true
+          }
+        },
+        "r2": {
+          "eval_only/r2/render_camera.jsonl": {
+            "original": "ff030142866e4a216a52b013f15443115404da4e1ac2fe21de9d66c46d81b9c0",
+            "replay": "ff030142866e4a216a52b013f15443115404da4e1ac2fe21de9d66c46d81b9c0",
+            "match": true
+          },
+          "robots/r2/frames.jsonl": {
+            "original": "05c0cbdf1022b8f4463f335ac82d66db3dff9706106ffda9991c7145f7c65c91",
+            "replay": "05c0cbdf1022b8f4463f335ac82d66db3dff9706106ffda9991c7145f7c65c91",
+            "match": true
+          }
+        },
+        "r3": {
+          "eval_only/r3/render_camera.jsonl": {
+            "original": "3e9105a2208d00607b196573e09efd2a4421dae0b66e5c08023c3d95f4fa53ba",
+            "replay": "3e9105a2208d00607b196573e09efd2a4421dae0b66e5c08023c3d95f4fa53ba",
+            "match": true
+          },
+          "robots/r3/frames.jsonl": {
+            "original": "29fbfec0afb3f6e303627cfd45b3397687124d98317754ca3b83de2401ca8732",
+            "replay": "29fbfec0afb3f6e303627cfd45b3397687124d98317754ca3b83de2401ca8732",
+            "match": true
+          }
+        }
+      },
+      "source_dependencies_checked": 523
+    },
+    "leader_ko": {
+      "condition": "leader_ko",
+      "status": "COMPLETED",
+      "execution_sha": "6b42849be3426f42b0a18daa13bb536785f94e95",
+      "base_sha": "1ed6df46d342e55983ca8ad3af586995bed7d7d0",
+      "original_source_sha": "4ea229487b623bd3b5e5f4156a9b926aff2b852c",
+      "original_path": "/home/ubuntu/ugrp-sim/runs/s4live5-leader_ko-s601-v168-r3",
+      "original_outcome": "PAIR_STOP",
+      "model_calls": 0,
+      "evaluation_only": true,
+      "controller_run": false,
+      "physics_correction": false,
+      "loadavg_start": [
+        0.474609375,
+        0.4658203125,
+        0.224609375
+      ],
+      "start_sim_s": 2.35,
+      "end_sim_s": 58.6,
+      "subtitle_time_basis": "recorded stage-relative acceptance time; SIM+ label, absolute t also shown",
+      "playback_speed": 4,
+      "width": 1280,
+      "height": 480,
+      "initial_state_exact": true,
+      "video_frames": 282,
+      "wall_s": 216.23292191500008,
+      "loadavg_end": [
+        26.01220703125,
+        9.7509765625,
+        3.75732421875
+      ],
+      "global_command_order": {
+        "original": "385cb3f0314b6e3b3208775d3fc3682192ccd487f0bec07abe1a1d66ee8c6b64",
+        "replay": "385cb3f0314b6e3b3208775d3fc3682192ccd487f0bec07abe1a1d66ee8c6b64"
+      },
+      "commands": {
+        "r1": {
+          "original": "18165dae91fa63466497affaafe621d42f3450aec41dc581989bbae478104d09",
+          "replay": "18165dae91fa63466497affaafe621d42f3450aec41dc581989bbae478104d09"
+        },
+        "r2": {
+          "original": "f66e63924f13a45b540c5d0141b324d14f5f7cae0e2ceb8f89ddb70f734fc16b",
+          "replay": "f66e63924f13a45b540c5d0141b324d14f5f7cae0e2ceb8f89ddb70f734fc16b"
+        },
+        "r3": {
+          "original": "a0915e816d90cfac7147f6b406e1b9828e7b120355bb127e69ec824ec7a445da",
+          "replay": "a0915e816d90cfac7147f6b406e1b9828e7b120355bb127e69ec824ec7a445da"
+        }
+      },
+      "command_trajectory_match": true,
+      "evaluation_trajectories": {
+        "r1": {
+          "original": "5cf0476d89cd94a1326adcbcf7a894e60990741bbe0e10d752b406b8b664068f",
+          "replay": "5cf0476d89cd94a1326adcbcf7a894e60990741bbe0e10d752b406b8b664068f"
+        },
+        "r2": {
+          "original": "6a2701de896f794b1c19c0cce22d219e2b171107ff2344a964bab93abc9f0023",
+          "replay": "6a2701de896f794b1c19c0cce22d219e2b171107ff2344a964bab93abc9f0023"
+        },
+        "r3": {
+          "original": "656dc5a438448d3e1b38f4633b1ea9a303b69608d707e6cc7adcc04c4912f2c1",
+          "replay": "656dc5a438448d3e1b38f4633b1ea9a303b69608d707e6cc7adcc04c4912f2c1"
+        }
+      },
+      "evaluation_trajectory_match": true,
+      "video_sha256": "dcaa2bb23283f66c9ea14b39386c55024c97d169c55899d4b9239f49dc5d58ca",
+      "delivery": {
+        "video_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4view-leader_ko/overview.mp4",
+        "sha256": "dcaa2bb23283f66c9ea14b39386c55024c97d169c55899d4b9239f49dc5d58ca",
+        "bytes": 267986,
+        "metadata": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "width": 1280,
+              "height": 480,
+              "r_frame_rate": "20/1",
+              "nb_frames": "282"
+            }
+          ],
+          "format": {
+            "duration": "14.100000"
+          }
+        },
+        "full_decode": true,
+        "remote_hash_match": true
+      },
+      "camera_and_qpos": {
+        "r1": {
+          "eval_only/r1/render_camera.jsonl": {
+            "original": "c8be038ea4c1e38a80312b3f11156a13d7c76be75a9057e3cb77ce11224f1110",
+            "replay": "c8be038ea4c1e38a80312b3f11156a13d7c76be75a9057e3cb77ce11224f1110",
+            "match": true
+          },
+          "robots/r1/frames.jsonl": {
+            "original": "04e910762cf8d0e2bc42af2ec7ac73048543225fa0cca1b6c6d83021bcb87827",
+            "replay": "04e910762cf8d0e2bc42af2ec7ac73048543225fa0cca1b6c6d83021bcb87827",
+            "match": true
+          }
+        },
+        "r2": {
+          "eval_only/r2/render_camera.jsonl": {
+            "original": "520a0f7a5838c48d446e72fd69bb4a83d4d709aee68d217f5ae832e8f0a87956",
+            "replay": "520a0f7a5838c48d446e72fd69bb4a83d4d709aee68d217f5ae832e8f0a87956",
+            "match": true
+          },
+          "robots/r2/frames.jsonl": {
+            "original": "50792358011ae32ac404aee2cea357bad0076f6d1f7883b94d4173b64da41a18",
+            "replay": "50792358011ae32ac404aee2cea357bad0076f6d1f7883b94d4173b64da41a18",
+            "match": true
+          }
+        },
+        "r3": {
+          "eval_only/r3/render_camera.jsonl": {
+            "original": "c0a711df5bb3195830c1e3e06a07936c7e12743c8c0654207b95a9426b701897",
+            "replay": "c0a711df5bb3195830c1e3e06a07936c7e12743c8c0654207b95a9426b701897",
+            "match": true
+          },
+          "robots/r3/frames.jsonl": {
+            "original": "8391c2d30aa5f5eba986694792d0858dcbadafcdc248a86a083aad2a00792ad2",
+            "replay": "8391c2d30aa5f5eba986694792d0858dcbadafcdc248a86a083aad2a00792ad2",
+            "match": true
+          }
+        }
+      },
+      "source_dependencies_checked": 523
+    },
+    "structured": {
+      "condition": "structured",
+      "status": "COMPLETED",
+      "execution_sha": "6b42849be3426f42b0a18daa13bb536785f94e95",
+      "base_sha": "1ed6df46d342e55983ca8ad3af586995bed7d7d0",
+      "original_source_sha": "4ea229487b623bd3b5e5f4156a9b926aff2b852c",
+      "original_path": "/home/ubuntu/ugrp-sim/runs/s4live5-structured-s601-v168-r3",
+      "original_outcome": "PAIR_STOP",
+      "model_calls": 0,
+      "evaluation_only": true,
+      "controller_run": false,
+      "physics_correction": false,
+      "loadavg_start": [
+        0.474609375,
+        0.4658203125,
+        0.224609375
+      ],
+      "start_sim_s": 2.35,
+      "end_sim_s": 58.6,
+      "subtitle_time_basis": "recorded stage-relative acceptance time; SIM+ label, absolute t also shown",
+      "playback_speed": 4,
+      "width": 1280,
+      "height": 480,
+      "initial_state_exact": true,
+      "video_frames": 282,
+      "wall_s": 213.64614719499997,
+      "loadavg_end": [
+        26.01220703125,
+        9.7509765625,
+        3.75732421875
+      ],
+      "global_command_order": {
+        "original": "df779cae851bc573961e811892788e01342b562cf3e989f97ac334bd72a314a1",
+        "replay": "df779cae851bc573961e811892788e01342b562cf3e989f97ac334bd72a314a1"
+      },
+      "commands": {
+        "r1": {
+          "original": "2e9a086d672fb33dfb2e658c278428a7edf1ec9ecaf9ef3acab6c0d379d2dbc0",
+          "replay": "2e9a086d672fb33dfb2e658c278428a7edf1ec9ecaf9ef3acab6c0d379d2dbc0"
+        },
+        "r2": {
+          "original": "08d1ce1571e8d02203323add371d446d9aff60af471dd5fd623a7f599403f636",
+          "replay": "08d1ce1571e8d02203323add371d446d9aff60af471dd5fd623a7f599403f636"
+        },
+        "r3": {
+          "original": "a0915e816d90cfac7147f6b406e1b9828e7b120355bb127e69ec824ec7a445da",
+          "replay": "a0915e816d90cfac7147f6b406e1b9828e7b120355bb127e69ec824ec7a445da"
+        }
+      },
+      "command_trajectory_match": true,
+      "evaluation_trajectories": {
+        "r1": {
+          "original": "7cf5a7b1efd6c9d82d28403e416df2e65e05bc5c10ed053114398ea6991c107c",
+          "replay": "7cf5a7b1efd6c9d82d28403e416df2e65e05bc5c10ed053114398ea6991c107c"
+        },
+        "r2": {
+          "original": "5f1b1dd7de2307a594f8f90c31d349e1577bd39ddab096901d51ac511b22be8b",
+          "replay": "5f1b1dd7de2307a594f8f90c31d349e1577bd39ddab096901d51ac511b22be8b"
+        },
+        "r3": {
+          "original": "656dc5a438448d3e1b38f4633b1ea9a303b69608d707e6cc7adcc04c4912f2c1",
+          "replay": "656dc5a438448d3e1b38f4633b1ea9a303b69608d707e6cc7adcc04c4912f2c1"
+        }
+      },
+      "evaluation_trajectory_match": true,
+      "video_sha256": "7179f150a90978033493b7ff08b9e7702f321b6d7e337be02e3b27b5f9ade068",
+      "delivery": {
+        "video_path": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4view-structured/overview.mp4",
+        "sha256": "7179f150a90978033493b7ff08b9e7702f321b6d7e337be02e3b27b5f9ade068",
+        "bytes": 267929,
+        "metadata": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "width": 1280,
+              "height": 480,
+              "r_frame_rate": "20/1",
+              "nb_frames": "282"
+            }
+          ],
+          "format": {
+            "duration": "14.100000"
+          }
+        },
+        "full_decode": true,
+        "remote_hash_match": true
+      },
+      "camera_and_qpos": {
+        "r1": {
+          "eval_only/r1/render_camera.jsonl": {
+            "original": "7cd284f165b35de46fcd53ea8f25a747fa852fddd45e1bbd8e6dea9580dd8f93",
+            "replay": "7cd284f165b35de46fcd53ea8f25a747fa852fddd45e1bbd8e6dea9580dd8f93",
+            "match": true
+          },
+          "robots/r1/frames.jsonl": {
+            "original": "f3e1e3cfa8b2cc2bc9a725f47d4eb4f089e683d06660e2d98f9f8692fbb4a9dd",
+            "replay": "f3e1e3cfa8b2cc2bc9a725f47d4eb4f089e683d06660e2d98f9f8692fbb4a9dd",
+            "match": true
+          }
+        },
+        "r2": {
+          "eval_only/r2/render_camera.jsonl": {
+            "original": "c448832d7e0f3509f5f58de5eee3f13001a6f8c43e808515487fdd2e6dfeafa7",
+            "replay": "c448832d7e0f3509f5f58de5eee3f13001a6f8c43e808515487fdd2e6dfeafa7",
+            "match": true
+          },
+          "robots/r2/frames.jsonl": {
+            "original": "887481f85e5ca782da0c09fdf1ba28e70df30abb83becb2ba6914e82d3ac5cf6",
+            "replay": "887481f85e5ca782da0c09fdf1ba28e70df30abb83becb2ba6914e82d3ac5cf6",
+            "match": true
+          }
+        },
+        "r3": {
+          "eval_only/r3/render_camera.jsonl": {
+            "original": "a9bb178f2bfca83eef4509316638390e59cffbca8d162dd052496b0d6161551f",
+            "replay": "a9bb178f2bfca83eef4509316638390e59cffbca8d162dd052496b0d6161551f",
+            "match": true
+          },
+          "robots/r3/frames.jsonl": {
+            "original": "8391c2d30aa5f5eba986694792d0858dcbadafcdc248a86a083aad2a00792ad2",
+            "replay": "8391c2d30aa5f5eba986694792d0858dcbadafcdc248a86a083aad2a00792ad2",
+            "match": true
+          }
+        }
+      },
+      "source_dependencies_checked": 523
+    }
+  },
+  "command_trajectory_match_n_of_4": 4,
+  "evaluation_trajectory_match_n_of_4": 4,
+  "path_check": {
+    "status": "PATH_CHECK",
+    "initial_state_exact": true,
+    "sim_ticks": 2,
+    "archive": "/home/ubuntu/ugrp-archive/runs/s4view-check",
+    "video": "/Users/changmin/projects/ugrp/outputs/oracle-runs/s4view-check/overview.mp4"
+  },
+  "issues": [
+    {
+      "issue": "initial x86 SSH timeout",
+      "resolution": "connectivity restored before submission"
+    },
+    {
+      "issue": "x86 disk below 11GiB reserve",
+      "resolution": "new source and runs in own RAM workspace; generated raw copied and verified on durable ARM storage"
+    }
+  ]
+}

@@ -110,6 +110,7 @@ def test_registered_cohort_workflow_and_no_reset():
 
 
 def test_standard_p1_scene_registry_spawn_without_physics():
+    pytest.importorskip('mujoco')  # scene/backend modules need MuJoCo; CI offline shards lack it
     from scripts.run_goal_route_continuous import bundle
     from sim.goal_route_continuous import make_scene
     for seed in range(55001,55010):
@@ -161,6 +162,7 @@ def test_evaluation_shortest_path_respects_wall_and_door():
 
 
 def test_own_range_channel_contains_no_hit_identity_and_off_no_reads():
+    pytest.importorskip('mujoco')  # scene/backend modules need MuJoCo; CI offline shards lack it
     from sim.goal_route_continuous import PhysicsBackend
     b=PhysicsBackend.__new__(PhysicsBackend);b.range_rig=None
     assert b.own_range() is None

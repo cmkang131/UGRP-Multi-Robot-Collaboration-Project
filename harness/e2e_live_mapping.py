@@ -14,6 +14,7 @@ from harness.active_wall_vision import observe
 from harness.e2e_goal_route import GoalRoute, attach
 from harness.e2e_setdown_relook import OwnRGBRelook
 from harness.self_odom_grid import transform
+from harness.e2e_exact_speedups import OFF, using
 
 
 def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off'):
@@ -79,7 +80,8 @@ def beam_observer():
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off'):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',exact_speedups=OFF):
+        self.exact_speedups=exact_speedups
         self.robot_id=rid;self.study_options=options
         self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
                             exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect)
@@ -91,6 +93,10 @@ class Robot:
         self.translation_commands=0
 
     def receive(self,obs,rgb):
+        with using(self.exact_speedups):
+            return self._receive(obs,rgb)
+
+    def _receive(self,obs,rgb):
         own.closed(obs,('frame_id','sim_time','sha256','image'),'OWN_CAPTURE')
         self.now=float(obs['sim_time']);self.last_obs=copy.deepcopy(obs)
         self.frame=SimpleNamespace(index=obs['frame_id'],t=self.now,sha256=obs['sha256'],
@@ -142,7 +148,7 @@ class Robot:
             mapped=dict(robot_id=self.robot_id,frame=self.robot_id+'/own_start',map_version=self.revision,
                 pose=dict(mean=pose.tolist(),covariance=np.asarray(self.goal.pose_covariance()).tolist(),sources=[refs[-1]]),
                 walls=walls,goal=dict(label='B',sources=[ref['ref']]) if ref else None,sources=refs)
-        own.validate_map(mapped,self.robot_id,now,refs)
+        own.validate_map(mapped,self.robot_id,now,refs,speedups=self.exact_speedups)
         return dict(own_map=mapped,observed_rgb=refs,
                     own_route=self.packet['route'] if self.packet is not None else None)
 

@@ -32,7 +32,8 @@ def validate_pulse(action, profiles, *, loaded, goal_distance, alignment):
 
 
 def approach_proposal(profiles, pose, waypoint, goal, goal_yaw):
-    profile, score = select_waypoint(profiles, False, pose, waypoint, goal, goal_yaw=goal_yaw)
+    profile, score = select_waypoint(profiles, False, pose, waypoint, goal,
+        goal_yaw=goal_yaw, min_command_contract=True)
     action = dict(kind='hold') if profile is None else action_of(profile)
     validate_pulse(action, profiles, loaded=False, goal_distance=math.dist(pose[:2], goal), alignment=True)
     return action, profile, score

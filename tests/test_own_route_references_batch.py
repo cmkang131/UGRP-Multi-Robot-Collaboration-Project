@@ -19,9 +19,10 @@ def test_registration_full36_same6_and_fixed_budgets(tmp_path):
 
 
 def test_every_checkpoint_module_remains_frozen():
-    p=json.loads((m.ROOT/'experiments/2026-10-10-own-route-full-budget/batch-plan.json').read_text())
-    for name,digest in p['frozen_modules'].items():
-        assert hashlib.sha256((m.ROOT/name).read_bytes()).hexdigest()==digest,name
+    from tests.own_route_retired_plans import assert_frozen_or_retired
+    for plan in ('experiments/2026-10-10-own-route-full-budget/batch-plan.json',
+                 'experiments/2026-10-10-own-route-heading-stability/batch-plan.json'):
+        assert_frozen_or_retired(m.ROOT,plan)
 
 
 def test_mac_execution_forbidden(tmp_path,monkeypatch):
