@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.e2e18.takeover.v1",
-  "checked_unix": 1791835142.7115688,
+  "checked_unix": 1791835625.980779,
   "status": "RUNNING",
   "PR": 461,
   "deadline_utc": "2026-10-13T01:00:00Z",
@@ -16,20 +16,20 @@
   },
   "completion": {
     "LLM_operated": {
-      "observed": 43,
-      "total": 43
+      "observed": 49,
+      "total": 49
     },
     "own_map_completed": {
-      "observed": 17,
-      "total": 43
+      "observed": 23,
+      "total": 49
     },
     "start_to_finish_transport": {
       "observed": 0,
-      "total": 43
+      "total": 49
     },
     "all_three": {
       "confirmed": 0,
-      "total": 43
+      "total": 49
     }
   },
   "tilt_prior_analysis": {
@@ -40,8 +40,8 @@
     "takeover_new_stops": 2
   },
   "vm": {
-    "azure3": 3,
-    "azure4": 3
+    "azure3": 6,
+    "azure4": 6
   },
   "new_candidates": {
     "versions": [
@@ -980,10 +980,10 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61006-r46",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 65.0,
-      "phase": "mapping",
+      "sim_s": 231.0,
+      "phase": "align",
       "LLM": true,
-      "own_map": false,
+      "own_map": true,
       "transport": false,
       "failure": null
     },
@@ -994,10 +994,10 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61006-r46",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 65.0,
-      "phase": "mapping",
+      "sim_s": 232.0,
+      "phase": "align",
       "LLM": true,
-      "own_map": false,
+      "own_map": true,
       "transport": false,
       "failure": null
     },
@@ -1008,10 +1008,10 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61006-r46",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 65.0,
-      "phase": "mapping",
+      "sim_s": 231.0,
+      "phase": "align",
       "LLM": true,
-      "own_map": false,
+      "own_map": true,
       "transport": false,
       "failure": null
     },
@@ -1022,10 +1022,10 @@
       "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61012-r46",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 76.0,
+      "sim_s": 320.0,
       "phase": "mapping",
       "LLM": true,
-      "own_map": false,
+      "own_map": true,
       "transport": false,
       "failure": null
     },
@@ -1036,10 +1036,10 @@
       "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61012-r46",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 77.0,
+      "sim_s": 320.0,
       "phase": "mapping",
       "LLM": true,
-      "own_map": false,
+      "own_map": true,
       "transport": false,
       "failure": null
     },
@@ -1050,7 +1050,91 @@
       "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61012-r46",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 77.0,
+      "sim_s": 320.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": null
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v259-s61007-r44",
+      "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61007-r44",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 104.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v260-s61007-r44",
+      "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61007-r44",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 104.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v258-s61007-r44",
+      "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61007-r44",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 104.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null
+    },
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v260-s61009-r44",
+      "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61009-r44",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 108.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null
+    },
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v258-s61009-r44",
+      "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61009-r44",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 108.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null
+    },
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v259-s61009-r44",
+      "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61009-r44",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 109.0,
       "phase": "mapping",
       "LLM": true,
       "own_map": false,
@@ -1093,15 +1177,15 @@
   },
   "archive_registry": {
     "path": "takeover-archives.json",
-    "sha256": "52515a2cd53b5b666a0f1c753dd677a3f6550a9b657f22436da48304a4646d01",
-    "records": 64,
-    "verified": 64
+    "sha256": "3d56b8c100293a1ddb9dfde9c90978feb3e114e850ea6fd5538ef99cdcd2ba31",
+    "records": 72,
+    "verified": 72
   },
   "counts": {
-    "actual_started": 43,
+    "actual_started": 49,
     "terminal": 37,
     "cohort_not_started": 12,
-    "active": 6,
+    "active": 12,
     "physical_stop": 2
   },
   "session_transition": {

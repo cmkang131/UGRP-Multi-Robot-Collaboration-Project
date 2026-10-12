@@ -31,7 +31,9 @@ def carrot(path, pose, distance):
     return next((p for p in path if math.dist(pose[:2], p) >= distance), path[-1])
 
 
-def command(plan, pose, profiles, *, robot_id):
+def command(plan, pose, profiles, *, robot_id, rotate_min_angle=None):
+    if rotate_min_angle is not None and (not math.isfinite(rotate_min_angle) or not 0<rotate_min_angle<=math.pi):
+        raise ValueError('finite positive path rotation threshold required')
     if plan.get('coordinate_frame') != f'{robot_id}/own_odom':
         raise ValueError('own plan frame required')
     if len(pose) != 3 or not all(math.isfinite(v) for v in pose):
@@ -51,7 +53,7 @@ def command(plan, pose, profiles, *, robot_id):
         p, score = None, dict(phase='goal_reached')
     else:
         p, score = select(profiles,False,error,yaw,goal_distance,
-            path_rotate_min_angle=PARAMS['rotate_to_heading_min_angle'],final_alignment_m=.03)
+            path_rotate_min_angle=PARAMS['rotate_to_heading_min_angle'] if rotate_min_angle is None else rotate_min_angle,final_alignment_m=.03)
     return (dict(kind='hold') if p is None else action_of(p)), dict(
         path_follow=OPTION, lookahead_m=distance, carrot_m=list(point),
         carrot_distance_m=math.dist(pose[:2],point), **score)

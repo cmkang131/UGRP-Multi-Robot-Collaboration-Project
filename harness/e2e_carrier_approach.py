@@ -100,8 +100,9 @@ def advance(transport,rid,now):
         transport.event(now,'own_pregrasp_path_wait',robot_id=rid,distance_m=distance)
         return False,[dict(kind='hold')]
     state['no_path_frames']=0
+    from harness.e2e_approach_heading import kwargs as heading_kwargs
     command,rpp=rpp_command(dict(coordinate_frame=rid+'/own_odom',path_m=transform(path,inverse(tf)).tolist(),
-        status='goal_approach',heading_rad=float(end[2])),pose,transport.profiles,robot_id=rid)
+        status='goal_approach',heading_rad=float(end[2])),pose,transport.profiles,robot_id=rid,**heading_kwargs(transport))
     diag['rpp']=rpp
     twist=issued_twist(command) if command['kind']=='mecanum' else np.zeros(3)
     clear=projected_clear(costmap,mp,twist)
