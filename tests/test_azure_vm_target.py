@@ -15,12 +15,14 @@ def test_default_and_explicit_targets_cannot_cross_machines():
     assert vm_target(vm='ugrp-sim-azure2') == ('ugrp-sim-azure2', 'azure2')
     assert vm_target(host='azure3') == ('ugrp-sim-azure3', 'azure3')
     assert vm_target(vm='ugrp-sim-azure3') == ('ugrp-sim-azure3', 'azure3')
-    for vm, host in [('ugrp-sim-azure', 'azure2'), ('other', None), (None, 'other')]:
+    assert vm_target(host='azure4') == ('ugrp-sim-azure4', 'azure4')
+    assert vm_target(vm='ugrp-sim-azure4') == ('ugrp-sim-azure4', 'azure4')
+    for vm, host in [('ugrp-sim-azure', 'azure2'), ('ugrp-sim-azure4', 'azure3'), ('other', None), (None, 'other')]:
         with pytest.raises(ValueError):
             vm_target(vm, host)
 
 
-@pytest.mark.parametrize('host', ['azure2', 'azure3'])
+@pytest.mark.parametrize('host', ['azure2', 'azure3', 'azure4'])
 def test_vm_status_is_explicitly_scoped(host):
     with patch('sys.argv', ['azctl', 'status', '--host', host]), patch.object(azctl, 'az') as call:
         azctl.main()

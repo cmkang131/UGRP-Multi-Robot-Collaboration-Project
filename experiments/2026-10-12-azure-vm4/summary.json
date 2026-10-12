@@ -1,0 +1,15 @@
+{
+  "status": "CONFIGURING",
+  "vm": "ugrp-sim-azure4",
+  "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+  "size": "Standard_D16as_v6",
+  "source_snapshot": "ugrp-sim-azure3-source-20261012",
+  "tests": {
+    "passed": 8,
+    "file": "tests/test_azure_vm_target.py"
+  },
+  "references": [
+    "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/tutorial-manage-disks",
+    "https://learn.microsoft.com/en-us/azure/virtual-machines/linux/run-command-managed"
+  ]
+}
