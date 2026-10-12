@@ -5,6 +5,7 @@ stage. Three fresh observations are required; descriptor similarity alone never
 declares a place. No scene, authored B coordinate, or evaluation input is read.
 """
 import copy
+import functools
 import math
 import cv2
 import numpy as np
@@ -15,6 +16,57 @@ from harness.self_odom_grid import transform
 from harness.zone_study_contract import ContractViolation
 
 OPTION = 'rgb_geometry_v1'
+# B marker pixel rule (default off = the original fixed HSV thresholds).
+# contrast_v1: the sim slot marks are 35 %-alpha white over 30 %-alpha blue over
+# a checker floor, so they keep the floor hue and only raise min(R,G,B) and
+# lower saturation relative to their OWN local background (two blue tones).
+# Local background = grayscale opening (min-RGB) / closing (S) with a square
+# element larger than a mark, i.e. ratio forms of the white/black top-hat
+# (Gonzalez & Woods ch. 9; OpenCV morphologyEx). Ratios are invariant to a
+# global exposure gain. Saturation of dark pixels (V < 50) is ill-conditioned
+# and is excluded from the background. A 3x3 binary opening removes 1-2 px
+# edge ringing, and marks touching the region border are cleared (imclearborder):
+# floor-tone patches always reach the B edge, the marks lie inside it.
+# Island count/area and quad shape checks are unchanged.
+MARKER_OPTION = 'contrast_v1'
+MARKER_CONTRAST = dict(min_rgb_ratio=1.3, min_rgb_delta=12, saturation_ratio=.78, background_value_min=50,
+                       kernel_fraction=.25, kernel_px_min=15, kernel_px_max=151)
+
+
+@functools.lru_cache(maxsize=4)
+def lens_valid(width, height, erode_px=5):
+    """Fixed camera calibration: pixels inside the raw fisheye image circle."""
+    from sim.masterpi_camera_profile import raw_fisheye_remap
+    x, y = raw_fisheye_remap(width, height)
+    valid = ((x >= 0) & (x <= width-1) & (y >= 0) & (y <= height-1)).astype(np.uint8)
+    valid = cv2.erode(valid, np.ones((erode_px, erode_px), np.uint8)) != 0
+    valid.setflags(write=False)
+    return valid
+
+
+def white_markers(rgb, hsv, inner, *, region_area_px2, option='off'):
+    """Boolean mark mask inside ``inner``; own RGB only."""
+    if option == 'off':
+        return (hsv[:, :, 1] < 55) & (hsv[:, :, 2] > 180) & inner
+    if option != MARKER_OPTION: raise ContractViolation('UNKNOWN_B_MARKER_DETECT')
+    c = MARKER_CONTRAST
+    k = int(np.clip(c['kernel_fraction']*math.sqrt(max(region_area_px2, 0.)),
+                    c['kernel_px_min'], c['kernel_px_max'])) | 1
+    element = cv2.getStructuringElement(cv2.MORPH_RECT, (k, k))
+    w, s = np.asarray(rgb).min(axis=2), hsv[:, :, 1]
+    valid = lens_valid(w.shape[1], w.shape[0])
+    # Outside the lens circle is neutral: it can neither lower the min-RGB
+    # background (255) nor raise the saturation background (0).
+    reliable_s = np.where(valid & (hsv[:, :, 2] >= c['background_value_min']), s, 0).astype(np.uint8)
+    wb = cv2.morphologyEx(np.where(valid, w, 255).astype(np.uint8), cv2.MORPH_OPEN, element).astype(np.float32)
+    sb = cv2.morphologyEx(reliable_s, cv2.MORPH_CLOSE, element).astype(np.float32)
+    w, s = w.astype(np.float32), s.astype(np.float32)
+    mask = inner & valid & (w >= c['min_rgb_ratio']*wb) & (w-wb >= c['min_rgb_delta']) & (s <= c['saturation_ratio']*sb)
+    mask = cv2.morphologyEx(mask.astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    n, labels = cv2.connectedComponents(mask)
+    edge = inner & ~(cv2.erode(inner.astype(np.uint8), np.ones((3, 3), np.uint8)) != 0)
+    touching = np.unique(labels[edge & (labels > 0)])
+    return (labels > 0) & ~np.isin(labels, touching)
 
 
 def features(rgb, mask=None):
@@ -50,7 +102,7 @@ def geometric_match(reference, current):
                 matches=len(matches), inliers=int(good.sum()), coverage=float(spread))
 
 
-def boundary(rgb, servo, pose, *, diagnostics=None):
+def boundary(rgb, servo, pose, *, diagnostics=None, marker_detect='off'):
     """All four visible blue edges + three white islands, projected by command FK.
 
     Image/camera-mask clipped regions remain unknown. A partial patch's hull or
@@ -86,7 +138,8 @@ def boundary(rgb, servo, pose, *, diagnostics=None):
             low_s = inner & (hsv[:, :, 1] < 55)
             row['low_saturation_pixels'] = int(low_s.sum())
             row['low_saturation_value_max'] = int(hsv[:,:,2][low_s].max()) if low_s.any() else None
-        white = ((hsv[:, :, 1] < 55) & (hsv[:, :, 2] > 180) & inner).astype(np.uint8)
+        white = white_markers(rgb, hsv, inner, region_area_px2=float(cv2.contourArea(quad.astype(np.float32))),
+                              option=marker_detect).astype(np.uint8)
         _, _, stats, _ = cv2.connectedComponentsWithStats(white)
         islands = [v for v in stats[1:] if v[cv2.CC_STAT_AREA] >= 9]
         row.update(white_islands=len(islands), white_island_areas_px=[int(v[cv2.CC_STAT_AREA]) for v in islands],
@@ -106,9 +159,10 @@ def boundary(rgb, servo, pose, *, diagnostics=None):
 
 
 class ArrivalGate:
-    def __init__(self, robot_id, *, option='off'):
+    def __init__(self, robot_id, *, option='off', marker_detect='off'):
         if option not in ('off', OPTION): raise ContractViolation('UNKNOWN_RGB_ARRIVAL_GATE')
-        self.option, self.robot_id = option, robot_id
+        if marker_detect not in ('off', MARKER_OPTION): raise ContractViolation('UNKNOWN_B_MARKER_DETECT')
+        self.option, self.robot_id, self.marker_detect = option, robot_id, marker_detect
         self.references, self.current, self.history = {}, None, {}
 
     def observe(self, *, ref, rgb, servo, pose, covariance):
@@ -122,7 +176,8 @@ class ArrivalGate:
         mask = project_envelopes(body_envelopes(servo, 'camera_v3'), origin, axes, rgb.shape[1], rgb.shape[0])
         diagnostics = {} if getattr(self, 'diagnostics_enabled', False) else None
         self.current = dict(ref=copy.deepcopy(ref), features=features(rgb, (~mask).astype(np.uint8)*255),
-                            boundary=boundary(rgb, servo, pose, diagnostics=diagnostics),
+                            boundary=boundary(rgb, servo, pose, diagnostics=diagnostics,
+                                                   marker_detect=self.marker_detect),
                             pose=list(pose), covariance=copy.deepcopy(covariance))
         if diagnostics is not None: self.current['boundary_diagnostics'] = diagnostics
         self.references.setdefault('start', copy.deepcopy(self.current))
