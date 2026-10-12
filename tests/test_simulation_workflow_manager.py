@@ -457,6 +457,7 @@ raise SystemExit(3 if a.fail else 0)
         samples['e2e-vomask-turn-v207'] = [*samples['e2e-usstall-v206'], '--vo-floor-mask', 'homography_v1', '--vo-rotation-policy', 'no_ransac_v1']
         samples['e2e-explore-deadlock-v208'] = [*samples['e2e-vomask-turn-v207'], '--explore-deadlock', 'replan_v1']
         samples['e2e-boundary-repair-v212'] = [*samples['e2e-explore-deadlock-v208'], '--boundary-association', 'extent_v1', '--boundary-retry', 'navigation_v1']
+        samples['e2e-boundary-native-v213'] = [*samples['e2e-boundary-repair-v212'], '--boundary-coverage', 'native_v1', '--dev-light']
         samples['e2e-one-beam-ownmap-inputs'] = sha
         # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
         # value for this boolean. Keep its original bytes and the rejection.
