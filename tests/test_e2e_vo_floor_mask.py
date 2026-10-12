@@ -217,3 +217,22 @@ def test_static_map_whitelist_and_option_validation():
     assert mask.wall_boxes(m) == ((.8, 0., .025, 2., .4, 0.),)
     with pytest.raises(ValueError, match='UNKNOWN_VO_FLOOR_MASK'):
         vo.VOFusion(RotationPulseOdometry(), vo_floor_mask='oops')
+
+
+def test_cli_preserves_mask_rotation_options_and_expected_id(capsys):
+    import json
+    from scripts.run_e2e_ownmap_live import main
+    args = ['--expected-source-sha', 'x', '--output', '/tmp/unused', '--seed', '61001',
+            '--driver-profile', 'study_gemma4_31b_v1', '--relay-receipt', '/tmp/receipt.json',
+            '--exploration-progress', 'frontier_progress_v1', '--stall-odometry', 'rgb_vo_us_v1',
+            '--ultrasonic-front', 'on_v1', '--boundary-views', 'candidate_views_v1',
+            '--b-marker-detect', 'contrast_v1', '--vo-floor-mask', 'homography_v1',
+            '--vo-rotation-policy', 'no_ransac_v1']
+    main([*args, '--expected-workflow-id', 'e2e-vomask-turn-v207'])
+    b = json.loads(capsys.readouterr().out)
+    assert b['execution_bundle_id'] == 'e2e-vomask-turn-v207'
+    assert b['e2e_options']['vo_floor_mask'] == 'homography_v1'
+    assert b['e2e_options']['vo_rotation_policy'] == 'no_ransac_v1'
+    with pytest.raises(ValueError, match='WORKFLOW_BUNDLE_ID_MISMATCH'):
+        main([*args, '--expected-workflow-id', 'e2e-usstall-v206'])
+    assert not capsys.readouterr().out

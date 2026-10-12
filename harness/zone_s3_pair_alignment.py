@@ -15,7 +15,8 @@ def project(profiles, errors):
     ex,ey,ea=map(float,errors)
     distance=math.hypot(ex,ey)
     p,score=select(profiles,False,np.array([ex,ey]),-ea,distance,
-        position_tolerance_m=min(ALIGN_TOL_X_M,ALIGN_TOL_Y_M))
+        position_tolerance_m=min(ALIGN_TOL_X_M,ALIGN_TOL_Y_M),
+        min_command_contract=True)
     action=(dict(kind='mecanum',forward=0.,left=0.,turn=0.,duration_s=.1)
         if p is None else action_of(p))
     validate_pulse(action,profiles,loaded=False,goal_distance=distance,alignment=True)

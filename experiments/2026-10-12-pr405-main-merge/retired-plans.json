@@ -1,0 +1,65 @@
+{
+  "schema": "ugrp.retired_checkpoint_plans.v1",
+  "pr": 405,
+  "merged_main": "ac45025b",
+  "retired": [
+    {
+      "plan": "experiments/2026-10-10-own-route-full-budget/batch-plan.json",
+      "experiment": "egomap64",
+      "sha256": "a72bf02de43b065865bdb2371345ffbeaab2c9cf0a8458e182aaee0e6ef55391",
+      "preserved_copy": "experiments/2026-10-12-pr405-main-merge/retired-plan/experiments/2026-10-10-own-route-full-budget/batch-plan.json",
+      "host": "oracle-x86",
+      "replay_only_at_source_sha": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+      "pr_head_before_merge": "e6cd300ce25eabc505fbb061a5e2d0bc05e675dd",
+      "frozen_module_count": 1257,
+      "changed_after_main_merge": [
+        "harness/own_map_heading.py",
+        "harness/pair_llm_live.py",
+        "harness/s4_llm_host.py",
+        "harness/s4_llm_inputs.py",
+        "harness/zone_solo_cyan_path_heading.py",
+        "harness/zone_study_llm_driver.py",
+        "scripts/dev_pair_checkpoint.py",
+        "scripts/run_ci_tests.py",
+        "scripts/ugrp_session.py",
+        "sim/final_environment_checks.py",
+        "sim/solo_cyan_v106.py",
+        "sim/v7_exact_speedups.py",
+        "sim/workflow_manager.py",
+        "sim/zone_s3_host.py"
+      ],
+      "replacement": null,
+      "reason": "main merge changed frozen modules; egomap63 checkpoints resume only at the original SHA. Not re-hashed: new hashes would let old pickles resume under different code. Oracle x86 host is stopped (2026-10-11); new resume needs new checkpoints and a new plan.",
+      "runtime_guard": "scripts/own_route_budget_schedule.admit_checkpoint -> FROZEN_MODULE_CHANGED"
+    },
+    {
+      "plan": "experiments/2026-10-10-own-route-heading-stability/batch-plan.json",
+      "experiment": "egomap65",
+      "sha256": "a2aa3e476aa510b89df51275dcae397ae27df3a7498808c0424834a6d234e5d3",
+      "preserved_copy": "experiments/2026-10-12-pr405-main-merge/retired-plan/experiments/2026-10-10-own-route-heading-stability/batch-plan.json",
+      "host": "oracle-x86",
+      "replay_only_at_source_sha": "6f1fa9251a2d78afcad29e3655a20aee02086761",
+      "pr_head_before_merge": "e6cd300ce25eabc505fbb061a5e2d0bc05e675dd",
+      "frozen_module_count": 1257,
+      "changed_after_main_merge": [
+        "harness/own_map_heading.py",
+        "harness/pair_llm_live.py",
+        "harness/s4_llm_host.py",
+        "harness/s4_llm_inputs.py",
+        "harness/zone_solo_cyan_path_heading.py",
+        "harness/zone_study_llm_driver.py",
+        "scripts/dev_pair_checkpoint.py",
+        "scripts/run_ci_tests.py",
+        "scripts/ugrp_session.py",
+        "sim/final_environment_checks.py",
+        "sim/solo_cyan_v106.py",
+        "sim/v7_exact_speedups.py",
+        "sim/workflow_manager.py",
+        "sim/zone_s3_host.py"
+      ],
+      "replacement": null,
+      "reason": "main merge changed frozen modules; egomap63 checkpoints resume only at the original SHA. Not re-hashed: new hashes would let old pickles resume under different code. Oracle x86 host is stopped (2026-10-11); new resume needs new checkpoints and a new plan.",
+      "runtime_guard": "scripts/own_route_budget_schedule.admit_checkpoint -> FROZEN_MODULE_CHANGED"
+    }
+  ]
+}

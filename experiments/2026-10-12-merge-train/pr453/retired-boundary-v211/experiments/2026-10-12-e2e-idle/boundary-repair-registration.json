@@ -1,0 +1,128 @@
+{
+  "schema": "ugrp.e2e17.repair-registration.v1",
+  "pr": 453,
+  "criteria": [
+    "LLM_operated",
+    "own_map_completed",
+    "start_to_finish_transport"
+  ],
+  "early_compare": [
+    "B_boundary",
+    "own_route_generated",
+    "exhausted_views",
+    "zero_motion_120_sim"
+  ],
+  "cohort": "DEV adaptive, prior seeds reused; not confirmatory",
+  "cells": [
+    {
+      "host": "azure3",
+      "name": "e2e-idle-a-s61001-r2",
+      "seed": 61001,
+      "bundle": 211,
+      "association": "extent_v1",
+      "retry": "off",
+      "deadlock": "replan_v1",
+      "variant": "association"
+    },
+    {
+      "host": "azure3",
+      "name": "e2e-idle-b-s61001-r2",
+      "seed": 61001,
+      "bundle": 211,
+      "association": "extent_v1",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "variant": "both"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-a-s61001-r3",
+      "seed": 61001,
+      "bundle": 211,
+      "association": "off",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "variant": "retry"
+    },
+    {
+      "host": "azure3",
+      "name": "e2e-idle-a-s61002-r2",
+      "seed": 61002,
+      "bundle": 211,
+      "association": "extent_v1",
+      "retry": "off",
+      "deadlock": "replan_v1",
+      "variant": "association"
+    },
+    {
+      "host": "azure3",
+      "name": "e2e-idle-b-s61002-r2",
+      "seed": 61002,
+      "bundle": 211,
+      "association": "extent_v1",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "variant": "both"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-a-s61002-r3",
+      "seed": 61002,
+      "bundle": 211,
+      "association": "off",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "variant": "retry"
+    },
+    {
+      "host": "azure3",
+      "name": "e2e-idle-a-s61003-r2",
+      "seed": 61003,
+      "bundle": 211,
+      "association": "extent_v1",
+      "retry": "off",
+      "deadlock": "replan_v1",
+      "variant": "association"
+    },
+    {
+      "host": "azure3",
+      "name": "e2e-idle-b-s61003-r2",
+      "seed": 61003,
+      "bundle": 211,
+      "association": "extent_v1",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "variant": "both"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-a-s61003-r3",
+      "seed": 61003,
+      "bundle": 211,
+      "association": "off",
+      "retry": "navigation_v1",
+      "deadlock": "replan_v1",
+      "variant": "retry"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-a-s61001-r4",
+      "seed": 61001,
+      "bundle": 208,
+      "association": "off",
+      "retry": "off",
+      "deadlock": "replan_v1",
+      "variant": "baseline"
+    },
+    {
+      "host": "azure4",
+      "name": "e2e-idle-b-s61001-r4",
+      "seed": 61001,
+      "bundle": 207,
+      "association": "off",
+      "retry": "off",
+      "deadlock": "off",
+      "variant": "baseline"
+    }
+  ]
+}

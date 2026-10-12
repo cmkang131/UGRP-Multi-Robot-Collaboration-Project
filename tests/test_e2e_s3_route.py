@@ -76,6 +76,7 @@ def test_test_provider_is_explicit_and_authored_route_replaced_without_mutation(
 
 
 def test_scene_retains_original_beam_and_b_size_without_world():
+    pytest.importorskip("mujoco", exc_type=ModuleNotFoundError)
     from sim.e2e_s3_test import test_scenario
     from harness.e2e_environment import resolve
     from sim.zone_scenario_scene import load_scenario,ScenarioFinalV3Scene
@@ -188,6 +189,7 @@ def floor_row():
 
 
 def test_final_release_counterexample_is_floor_supported_before_OPEN_dispatch():
+    pytest.importorskip("mujoco", exc_type=ModuleNotFoundError)
     from sim.s3_setdown import supported_lower
     from sim.e2e_s3_final_release import supported_final
     row=floor_row()
@@ -213,6 +215,7 @@ def test_final_release_classifier_never_admits_unsupported_or_nonfinal_rows(chan
 
 
 def test_backend_final_guard_is_eval_only_and_latch_rearms_on_lost_floor(monkeypatch):
+    pytest.importorskip("mujoco", exc_type=ModuleNotFoundError)
     import numpy as np
     from sim.e2e_s3_test import PhysicsBackend
     from sim.s3_release_epoch import PhysicsBackend as Parent
@@ -264,6 +267,7 @@ def test_residual_pulses_replay_saved_three_lateral_legs_and_keep_off_exact():
 
 
 def test_residual_tail_runs_through_real_controller_integer_dispatch_and_native_port_stub():
+    pytest.importorskip("mujoco", exc_type=ModuleNotFoundError)
     from types import MethodType
     from scripts.study_owncam_pair_beam import PairStudent
     from tests.s3_stage_probe import Motor

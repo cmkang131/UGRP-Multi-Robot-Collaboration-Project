@@ -8,6 +8,8 @@ import numpy as np
 from harness.public_navigation_persistent import raytrace_cells
 from harness.public_navigation_resolution import ResolutionActor
 from harness.self_odom_grid import transform
+from harness.e2e_exact_speedups import rays_enabled
+from harness.e2e_exact_speedups2 import bresenham_cells, cells
 
 OPTION = 'public_ros_v6'
 
@@ -39,11 +41,27 @@ def receive_rays(grid, latest, static_hits, observation, pose):
         # Validate before transforming or mutating any map state.
         if not np.isfinite(points).all():
             raise ValueError('NAV_INVALID_OBSERVATION')
-        rays.update((grid.cell(a), grid.cell(b)) for a, b in
-                    zip(transform(origins, pose), transform(points, pose)))
+        a_xy, b_xy = transform(origins, pose), transform(points, pose)
+        a_cells = b_cells = None
+        if rays_enabled():
+            a_cells, b_cells = cells(grid, a_xy), cells(grid, b_xy)
+        if a_cells is not None and b_cells is not None:
+            rays.update(zip(a_cells, b_cells))
+        else:
+            rays.update((grid.cell(a), grid.cell(b)) for a, b in zip(a_xy, b_xy))
     grid.observe(**payload, pose=pose)  # own identity, frame, schema and pose validation
-    hits = {grid.cell(p) for p in transform(np.asarray(payload['wall_xy'], float).reshape(-1, 2), pose)}
-    cleared = {cell for start, end in rays for cell in raytrace_cells(start, end)}
+    wall = transform(np.asarray(payload['wall_xy'], float).reshape(-1, 2), pose)
+    traced = None
+    if rays_enabled():
+        wall_cells = cells(grid, wall)
+        hits = set(wall_cells) if wall_cells is not None else {grid.cell(p) for p in wall}
+        traced = bresenham_cells(rays)
+    else:
+        hits = {grid.cell(p) for p in wall}
+    if traced is not None:
+        cleared = set(zip(*traced))
+    else:
+        cleared = {cell for start, end in rays for cell in raytrace_cells(start, end)}
     for cell in cleared-set(static_hits):
         latest[cell] = False
         grid.odds[cell] = -max(1., abs(grid.odds.get(cell, 0.)))

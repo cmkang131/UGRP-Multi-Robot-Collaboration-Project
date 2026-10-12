@@ -44,6 +44,8 @@ def observed_path_clear(costmap, pose, path, yaw):
     previous = np.asarray(pose, float)
     for point in path[1:]:
         point = np.asarray(point)
+        # A repeated NavFn point has no direction; retain the actual heading.
+        if np.array_equal(point, previous[:2]): continue
         heading = math.atan2(point[1]-previous[1], point[0]-previous[0])
         oriented = np.array([*previous[:2], heading])
         endpoint = np.array([*point, heading])

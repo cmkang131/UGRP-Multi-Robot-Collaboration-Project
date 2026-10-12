@@ -9,6 +9,25 @@ from harness import pf_resampling_diversity as pf
 from harness import zone_s3_door_lease as door
 
 
+@pytest.mark.parametrize('pose', [None, SimpleNamespace(
+    x=float('nan'), y=0., yaw=0., std_xy=.01, std_yaw=.01)])
+def test_missing_pose_wait_is_explicit_and_s3_only(pose):
+    from harness.zone_final_pair_guards import PairRecheck as Frozen
+    from harness.zone_s3_pair_recheck import PairRecheck, SweepRecheck
+    calls = []
+    guard = SimpleNamespace(transition_clear=lambda *a, **kw: calls.append(a[2]) or True)
+    # Historical final-pair/highpose and the S3 adapter's omitted option
+    # preserve the existing geometry decision, even for an unavailable pose.
+    for recheck in (Frozen(), PairRecheck(), SweepRecheck()):
+        assert recheck.check(0., guard, {}, {}, pose, loaded=False) == 'clear'
+    assert len(calls) == 3
+    for cls in (PairRecheck, SweepRecheck):
+        recheck = cls(fail_closed_without_pose=True)
+        assert recheck.check(0., guard, {}, {}, pose, loaded=False) == 'wait'
+        assert recheck.check(10., guard, {}, {}, pose, loaded=False) == 'blocked'
+        assert recheck.waited_s == 10. and len(calls) == 3
+
+
 def signals(pair=True, solo=True, clear=True, progress=False):
     return [door.Signal(r, pair if r != 'r3' else solo, clear, progress) for r in door.ROBOTS]
 
@@ -138,7 +157,8 @@ def test_full_existing_sweep_on_new_options(tmp_path,monkeypatch):
     def selected(sha):
         b=old.bundle(sha)
         b['controller_config']['options'].update(pose_validity='defer_unmeasured_v1',
-            door_lease=door.OPTION,visual_alignment='own_rgb_align_v1',resampling_diversity='off')
+            door_lease=door.OPTION,visual_alignment='own_rgb_align_v1',resampling_diversity='off',
+            min_command_contract='on_v1')
         return b
     monkeypatch.setattr(probe,'contract',SimpleNamespace(**{**vars(old),'bundle':selected}))
     monkeypatch.setattr(probe,'Runtime',Runtime)
@@ -329,8 +349,14 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
     from harness import zone_s3_recovery_contract as contract
     from harness.zone_s3_recovery_runtime import Runtime
     b=contract.bundle('0'*40)
+    assert b['execution_bundle_id']=='zone-s3-recovery-v211'
+    assert b['workflow_version']=='7.104.0'
+    assert b['retired_bundles'][0]['execution_bundle_id']=='zone-s3-recovery-v152'
+    assert b['preregistration']['inherited_results'] is False
+    contract.verify(b)
     assert b['s3_camera_binding']=='v3_persistent_v1' and b['eval_render_camera']
     assert b['options']['heading_mode']=='path_tangent_v1'
+    assert b['options']['min_command_contract']=='on_v1'
     assert b['options']==b['controller_config']['options']
     monkeypatch.setattr(probe,'contract',contract)
     monkeypatch.setattr(probe,'Runtime',Runtime)
@@ -339,12 +365,67 @@ def test_registered_smoke_bundle_options_reach_actual_runtime(tmp_path,monkeypat
         out=p.runtime.record()
         assert out['door_yield']['profile']==b['options']['door_lease']
         for r in ('r1','r2'):
+            recheck = p.eps[r].command_guard.recheck
+            from harness.zone_s3_pair_recheck import PairRecheck
+            assert isinstance(recheck, PairRecheck) and recheck.fail_closed_without_pose
+            assert p.eps[r].controller.driver.sweep_recheck is recheck
             assert out['pair']['visual_alignment'][r]['option']==b['options']['visual_alignment']
             assert out['pair']['visual_alignment'][r]['pf_used_for_local_error'] is False
         for own in p.runtime.localizers.values():
+            assert own.min_command_contract is True
             assert own.record()['heading_mode']['option']=='path_tangent_v1'
             if b['options']['resampling_diversity']=='off':
                 assert not hasattr(own,'resampling_diversity_audit')
             else:
                 assert own.resampling_diversity_audit['option']==b['options']['resampling_diversity']
     finally:p.runtime.close()
+
+
+@pytest.mark.parametrize('bundle_id', ['zone-s3-recovery-v152', 'zone-s3-recovery-v193', 'zone-s3-recovery-v195'])
+def test_retired_bytes_and_consumers_match_original_git_source(bundle_id):
+    import hashlib
+    import io
+    import json
+    import subprocess
+    import tarfile
+    from harness import zone_s3_recovery_contract as contract
+    record=next(row for row in json.loads((contract.ROOT/contract.RETIRED).read_text())['retired']
+                if row['execution_bundle_id']==bundle_id)
+    if bundle_id=='zone-s3-recovery-v152':
+        comparison=contract.ROOT/record['comparison_path']
+        assert hashlib.sha256(comparison.read_bytes()).hexdigest()==record['comparison_sha256']
+        decision=json.loads(comparison.read_text())
+        expected=decision['runtime_source_sha256']
+        assert len(expected)==record['runtime_source_count']==379
+        paths=[*expected,record['comparison_path'],*record['preserved_files']]
+    else:
+        seal_path=next(p for p in record['preserved_files'] if p.endswith('source-seal-'+bundle_id.rsplit('-',1)[1]+'.json'))
+        decision=json.loads((contract.ROOT/record['preserved_files'][seal_path]['path']).read_text())
+        expected=decision['runtime_source_sha256']
+        assert len(expected)==record['runtime_source_count']==(433 if bundle_id.endswith('v193') else 434)
+        retired={row['execution_bundle_id']:row for row in json.loads((contract.ROOT/contract.RETIRED).read_text())['retired']}
+        cursor=record['replacement'];seen={bundle_id}
+        while cursor!=contract.BUNDLE_ID:
+            assert cursor not in seen
+            seen.add(cursor);cursor=retired[cursor]['replacement']
+        paths=[*expected,*record['preserved_files']]
+    archive=subprocess.check_output(['git','archive',record['source_sha'],'--',*paths],cwd=contract.ROOT)
+    with tarfile.open(fileobj=io.BytesIO(archive)) as source:
+        blobs={m.name:source.extractfile(m).read() for m in source if m.isfile()}
+    if bundle_id=='zone-s3-recovery-v152':
+        assert blobs[record['comparison_path']]==comparison.read_bytes()
+    for path,digest in expected.items():
+        assert hashlib.sha256(blobs[path]).hexdigest()==digest,path
+    for path,row in record['preserved_files'].items():
+        preserved=(contract.ROOT/row['path']).read_bytes()
+        assert preserved==blobs[path]
+        assert hashlib.sha256(preserved).hexdigest()==row['sha256']
+
+
+def test_new_registration_refuses_changed_consumers(monkeypatch):
+    from harness import zone_s3_recovery_contract as contract
+    original=contract.hp.base.sha
+    path=contract.ROOT/'harness/zone_own_sweep.py'
+    monkeypatch.setattr(contract.hp.base,'sha',lambda p:'0'*64 if p==path else original(p))
+    with pytest.raises(ValueError,match='registered S3 consumer changed: harness/zone_own_sweep.py'):
+        contract.bundle('0'*40)

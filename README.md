@@ -9,6 +9,7 @@
 - **[연구 TODO와 우선순위](docs/research_todo.md)** — 독립 에이전트의 무통신·정형·자연어 비교를 중심으로 실행 기반·본실험·ACT/Jev 보조 과제 정리(§0 로드맵 상태 2026-09-29 갱신)
 - **[Kaggle CLI 배치 실행](docs/kaggle_simulation.md)** — 비공개 CPU·오프라인 실행·결과 회수 검증 완료; 신규 계정은 최초 인증 필요
 - **[Colab CLI 시뮬레이션·평가](docs/colab_simulation.md)** — 선택 가능한 원격 배치 경로; 실제 런타임 검증 상태는 안내 참조
+- **[Azure CPU 실행 서버](docs/azure_simulation.md)** — 비용·만료·유휴 가드, 작업 후 할당 해제와 Oracle ARM 원본 보관
 
 - **[현재 상태와 실행 경로](docs/current_status.md)** — 2026-09-30 저녁 요약: 단계 인수 재생·조건부 예측·열린 검토와 E2E의 남은 관문
 - **[Ubuntu 설치·무료 데모](docs/ubuntu_quickstart.md)** — 새 팀원은 여기서 시작

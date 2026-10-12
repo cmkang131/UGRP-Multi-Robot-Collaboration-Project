@@ -20,7 +20,7 @@ COMBO = dict(stall_odometry='rgb_vo_v1', boundary_views='candidate_views_v1', b_
 def test_paired_speed_options_and_relay_admission():
     from harness.e2e_exact_speedups import Options as Speed
     from scripts.s4_proxy_relay import accepted_call_id
-    speed = {k: True for k in vars(Speed())}
+    speed = {k: True for k in ('provenance_index','sha_validation_cache','omit_discarded_copy','scalar_cells','geometry_cache')}
     a = make(**COMBO, exact_speedups=speed, wall_cap_s=25200.)
     b = make(**A12, exact_speedups=speed, wall_cap_s=25200.)
     assert a['e2e_options']['exact_speedups'] == b['e2e_options']['exact_speedups'] == speed
@@ -110,6 +110,20 @@ def test_cli_dry_run_and_catalog(monkeypatch, capsys):
     rows, _ = catalog(Path('.'))
     w = next(w for w in rows['workflows'] if w['id'] == 'e2e-combo14-v204')
     assert w['version'] == '7.97.0' and {'--boundary-views', '--b-marker-detect', '--stall-odometry'} <= set(w['required_inputs'])
+    from sim import workflow_manager as wm
+    from scripts import run_e2e_reviewed as current
+    args = [*sys.argv[1:], '--decider', 'off', '--stall-recovery', 'off', '--stall-noise', 'off']
+    old = wm._row(Path('.'), 'e2e-combo14-v202')[0]
+    command, _ = wm._runner_command(Path('.'), old, args, record=None)
+    with pytest.raises(ValueError, match='WORKFLOW_BUNDLE_ID_MISMATCH'):
+        main(command[3:])
+    assert not capsys.readouterr().out
+    row = wm._row(Path('.'), 'e2e-reviewed-runtime-v210')[0]
+    command, _ = wm._runner_command(Path('.'), row, args, record=None)
+    current.main(command[3:])
+    prepared = json.loads(capsys.readouterr().out)
+    assert prepared['execution_bundle_id'] == row['id']
+    assert prepared['parent_execution_bundle_id'] == 'e2e-combo14-v204'
 
 
 def test_robot_with_all_three_wires_each_toggle():

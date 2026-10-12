@@ -80,7 +80,7 @@ def test_bundle_default_identity_three_candidates_relay_and_real_wiring():
     assert old==bundle('sha',61001,'study_gemma4_31b_v1',**kw,boundary_association='off',boundary_retry='off')
     for association,retry in [('extent_v1','off'),('off','navigation_v1'),('extent_v1','navigation_v1')]:
         b=bundle('sha',61001,'study_gemma4_31b_v1',**kw,boundary_association=association,boundary_retry=retry)
-        assert b['execution_bundle_id']=='e2e-boundary-repair-v211'
+        assert b['execution_bundle_id']=='e2e-boundary-repair-v212'
         assert b['e2e_options']['boundary_association']==association
         assert b['e2e_options']['boundary_retry']==retry
     for name in ['e2e-idle-a-s61001-r2','e2e-idle-b-s61003-r3']:
@@ -102,3 +102,28 @@ def test_recorded_full_boundary_replay_overcomes_partial_centroid_rejection():
         assert np.linalg.norm(np.asarray(r['boundary']['center'])-r['candidate']['center_m'])>.20
         a.observe()
     assert g.e2e_gate.references and a.last['accepted']
+
+
+def test_renumbered_cli_and_historical_registration_preserved(capsys):
+    import hashlib
+    from scripts.run_e2e_ownmap_live import main
+    from scripts.run_e2e_reviewed import main as reviewed
+    args = ['--expected-source-sha', 'x', '--output', '/tmp/unused', '--seed', '61001',
+            '--driver-profile', 'study_gemma4_31b_v1', '--relay-receipt', '/tmp/receipt.json',
+            '--exploration-progress', 'frontier_progress_v1', '--stall-odometry', 'rgb_vo_us_v1',
+            '--ultrasonic-front', 'on_v1', '--boundary-views', 'candidate_views_v1',
+            '--b-marker-detect', 'contrast_v1', '--vo-floor-mask', 'homography_v1',
+            '--vo-rotation-policy', 'no_ransac_v1', '--explore-deadlock', 'replan_v1',
+            '--boundary-association', 'extent_v1', '--boundary-retry', 'navigation_v1']
+    main([*args, '--expected-workflow-id', 'e2e-boundary-repair-v212'])
+    b = json.loads(capsys.readouterr().out)
+    assert b['execution_bundle_id'] == 'e2e-boundary-repair-v212'
+    assert b['e2e_options']['boundary_association'] == 'extent_v1'
+    assert b['e2e_options']['boundary_retry'] == 'navigation_v1'
+    reviewed([*args, '--expected-workflow-id', 'e2e-reviewed-runtime-v210'])
+    b = json.loads(capsys.readouterr().out)
+    assert b['parent_execution_bundle_id'] == 'e2e-boundary-repair-v212'
+    assert b['inherited_results'] is False
+    record = json.loads(Path('experiments/2026-10-12-merge-train/pr453/retired-bundles.json').read_text())
+    for item in record['retired'][0]['blobs']:
+        assert hashlib.sha256(Path(item['preserved']).read_bytes()).hexdigest() == item['sha256']
