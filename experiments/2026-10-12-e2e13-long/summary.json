@@ -1,8 +1,41 @@
 {
-  "status": "RUNNING",
+  "status": "COMPLETE_WITH_FAILURES",
   "pr": 433,
   "branch": "codex/e2e13-long",
-  "vm": "ugrp-sim-azure2",
+  "vm": {
+    "name": "ugrp-sim-azure2",
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "state": "deallocated",
+    "deallocate_requested_utc": "2026-10-12T08:24:14.182677+00:00",
+    "deallocated_verified_utc": "2026-10-12T08:24:46.764383+00:00",
+    "raw_archive_verified_runs": 6,
+    "fetch_lite_verified_runs": 6,
+    "run_start_unix": 1791767965.7023993,
+    "rate_usd_per_h": 0.848,
+    "boot_unix": 1791767501,
+    "boot_id": "d19766d1-431c-411f-81a1-71f28390d6c5",
+    "guest_uptime_s_at_retrieval": 25952.18,
+    "batch_evidence_sha256": "45801b3d34d80657325ae334f107c6755d26612d5c6b01b1af51dd218a45afc5",
+    "observed_allocation_intervals": [
+      {
+        "purpose": "provisioning_and_idle_guard_verification",
+        "start": "2026-10-12T00:18:56.2948442+00:00",
+        "end": "2026-10-12T01:11:03.429176+00:00",
+        "observed_interval_s": 3127.134332180023
+      },
+      {
+        "purpose": "long_cohort_and_archive_retrieval",
+        "start": "2026-10-12T01:11:21.452818+00:00",
+        "end": "2026-10-12T08:24:46.764383+00:00",
+        "observed_interval_s": 26005.31156516075
+      }
+    ],
+    "observed_total_s": 29132.445897340775,
+    "boot_to_deallocate_request_s": 25953.182677030563,
+    "usage_scope": "Observed request/verification intervals; not metered billing. Includes provisioning and retrieval.",
+    "compute_cost_estimate_usd": 6.862309478040271,
+    "estimate_scope": "User-provided hourly compute rate; disk, snapshot, public IP and traffic excluded."
+  },
   "run_class": "dev",
   "preregistration": {
     "conditions": {
@@ -76,7 +109,22 @@
   "verification": {
     "tests": "tests/test_e2e13_long.py tests/test_e2e_stall_odometry.py tests/test_openrouter_upstream.py",
     "passed": 27,
-    "duration_s": 34.76
+    "duration_s": 34.76,
+    "record_evidence": {
+      "path": "record-verification.json",
+      "sha256": "0f686c4c18f6f300b18f28bb6fd4673ee7148786a604585d8cfd2d2082190745",
+      "status": "PASS"
+    },
+    "infra_pr_latest": {
+      "observed_utc": "2026-10-12T08:31:22.564519+00:00",
+      "pr": 445,
+      "state": "OPEN",
+      "head": "63f0fab2cdaf415e05ce7fd1da7259895fca0db7",
+      "completed": 22,
+      "pending": 10,
+      "failed": 0,
+      "scope": "Latest PR head changed after the original infrastructure verification; earlier 33-pass CI evidence is historical. No merge performed."
+    }
   },
   "source_sha": "7befc0f2de999846ac271f044909752d8b135e07",
   "submissions": [
@@ -293,5 +341,1597 @@
       "sha256": "9e2846aed9ac6de131093b20f8a86f2b4f1ad14008c3da66b092d0f66e75496f",
       "log_exceptions": false
     }
-  }
+  },
+  "runs": [
+    {
+      "id": "e2e13-long-a-s61001",
+      "condition": "A",
+      "seed": 61001,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07",
+      "status": "EARLY_STOP",
+      "source_result_status": "EARLY_STOP",
+      "finalization_complete": true,
+      "exit": 130,
+      "cause": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+      "supervisor_host_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "health_stop": {
+        "reason": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+        "unix": 1791793165.7971828,
+        "pid": 2506
+      },
+      "submitted_unix": 1791767965.7023993,
+      "sim_s": 753.8000000000001,
+      "wall_s": 25190.291333875997,
+      "wall_per_sim": 33.41773856974794,
+      "frames": 3769,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 22.598281602000043
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 22.598281602000043
+        },
+        "B_candidate": {
+          "sim_s": 3.0,
+          "wall_s": 52.41743267800007,
+          "timing": "first recorded progress sample; one-SIM-second sampling"
+        }
+      },
+      "navigation_stages": {
+        "r1": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 22.598281602000043
+          }
+        },
+        "r2": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 22.598281602000043
+          }
+        }
+      },
+      "wall_stage_timing": "Recorded one-SIM-second progress samples; raw first candidate SIM time separately retained",
+      "first_B_candidate_sim_s": 2.4,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "initial_check": {
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "normal_model_response": true,
+          "model_response_accepted": true,
+          "translation_command": true,
+          "recent_translation_command": true
+        },
+        "passed": true,
+        "actual_displacement_m": {
+          "r1": 0.6637547759294601,
+          "r2": 0.28967531769170995,
+          "r3": 9.219910789495546e-05
+        },
+        "elapsed_since_submit_s": 242.1376736164093
+      },
+      "boundary_values": {
+        "r1": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 3770,
+          "sim_s": 755.1,
+          "frame_sha256": "da281194c6b8c1a9f9309563219e356586f1f2231668d3fa161049430158abec",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 155577.0,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 0.0,
+              "vertices": 2,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 0.0,
+              "vertices": 2,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 0.0,
+              "vertices": 2,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        },
+        "r2": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 3770,
+          "sim_s": 755.1,
+          "frame_sha256": "95e8d74a27d358f8f641ef33a8882b13ae886173d9ab24d45aac80b0c85240d9",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 58311.5,
+              "vertices": 7,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 15660.0,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 4.0,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 3.0,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        }
+      },
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "stall_duration_s": 0,
+          "map_error_m": {
+            "n": 3770,
+            "max": 1.81565187874657,
+            "median": 1.7735620605898705
+          },
+          "control_error_m": {
+            "n": 3770,
+            "max": 0.5654986967169157,
+            "median": 0.5650840654075757
+          },
+          "gated_frames": 0
+        },
+        "r2": {
+          "status": "SCORED",
+          "stall_duration_s": 36.200000000000145,
+          "map_error_m": {
+            "n": 3770,
+            "max": 11.163746083808798,
+            "median": 4.65941307473923
+          },
+          "control_error_m": {
+            "n": 3770,
+            "max": 11.39569376026306,
+            "median": 5.046283417343341
+          },
+          "gated_frames": 149
+        }
+      },
+      "model": {
+        "calls": 3,
+        "ledger_entries": 3,
+        "known_cost_usd": 0.00043528,
+        "cost_source": "Mac OpenRouter forwarding ledger, reported provider usage",
+        "missing_cost_calls": 0,
+        "driver_missing_cost_calls": 0,
+        "driver_known_cost_usd": 0.00043528,
+        "forwarded_without_driver_record": [],
+        "driver_without_forward_record": [],
+        "http_attempts": 3,
+        "earlier_attempts_without_separate_cost": 0,
+        "prompt_tokens": 4612,
+        "completion_tokens": 146
+      },
+      "raw": "azure2:/home/ugrp/ugrp-sim/runs/e2e13-long-a-s61001",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e13-long-a-s61001",
+      "result_sha256": "70fbc72e22c87850cf027610d0fe2fce13d5e2a819f7cf0ccb2a75b1937d3855",
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e13-long-a-s61001",
+        "files": 11414,
+        "hash_matches": 11414,
+        "inventory_sha256": "15492ea179a5074b149e5c5160d4de4949c1b3e8b5c3df2301ded10a025ffed6",
+        "reused": false,
+        "receiver_seconds": 11.324
+      },
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false
+    },
+    {
+      "id": "e2e13-long-a-s61002",
+      "condition": "A",
+      "seed": 61002,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07",
+      "status": "EARLY_STOP",
+      "source_result_status": "EARLY_STOP",
+      "finalization_complete": true,
+      "exit": 130,
+      "cause": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+      "supervisor_host_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "health_stop": {
+        "reason": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+        "unix": 1791793170.8080726,
+        "pid": 2586
+      },
+      "submitted_unix": 1791767967.4700341,
+      "sim_s": 763.5,
+      "wall_s": 25195.355694789,
+      "wall_per_sim": 32.99981099513949,
+      "frames": 3818,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 22.68280221499998
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 22.68280221499998
+        },
+        "B_candidate": {
+          "sim_s": 3.0,
+          "wall_s": 52.819153183000026,
+          "timing": "first recorded progress sample; one-SIM-second sampling"
+        }
+      },
+      "navigation_stages": {
+        "r1": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 22.68280221499998
+          }
+        },
+        "r2": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 22.68280221499998
+          }
+        }
+      },
+      "wall_stage_timing": "Recorded one-SIM-second progress samples; raw first candidate SIM time separately retained",
+      "first_B_candidate_sim_s": 2.4,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "initial_check": {
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "normal_model_response": true,
+          "model_response_accepted": true,
+          "translation_command": true,
+          "recent_translation_command": true
+        },
+        "passed": true,
+        "actual_displacement_m": {
+          "r1": 0.6526754571289023,
+          "r2": 0.28954415229636415,
+          "r3": 9.013910166995631e-05
+        },
+        "elapsed_since_submit_s": 240.7092249393463
+      },
+      "boundary_values": {
+        "r1": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 3818,
+          "sim_s": 764.7,
+          "frame_sha256": "f3dc7b51406f16f03100314613b413aa417a04b7f5e5590364e22f5e654d0c51",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 74070.5,
+              "vertices": 7,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 25883.5,
+              "vertices": 7,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 7422.5,
+              "vertices": 3,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 697.5,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        },
+        "r2": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 3818,
+          "sim_s": 764.7,
+          "frame_sha256": "5ae57bf54dbf6bc3a8be4d563fcf8cf0724d9d3d3be96e833643d7297753e63b",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 97122.5,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 39506.0,
+              "vertices": 5,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 2586.0,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 225.0,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        }
+      },
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "stall_duration_s": 202.79999999999964,
+          "map_error_m": {
+            "n": 3818,
+            "max": 4.263945247339805,
+            "median": 0.5726342636367334
+          },
+          "control_error_m": {
+            "n": 3818,
+            "max": 5.0103664931865906,
+            "median": 1.9752149475151954
+          },
+          "gated_frames": 362
+        },
+        "r2": {
+          "status": "SCORED",
+          "stall_duration_s": 17.200000000000014,
+          "map_error_m": {
+            "n": 3818,
+            "max": 6.694481365252879,
+            "median": 1.8518044374007463
+          },
+          "control_error_m": {
+            "n": 3818,
+            "max": 6.224311512865857,
+            "median": 1.0635673859471475
+          },
+          "gated_frames": 80
+        }
+      },
+      "model": {
+        "calls": 3,
+        "ledger_entries": 3,
+        "known_cost_usd": 0.00040535,
+        "cost_source": "Mac OpenRouter forwarding ledger, reported provider usage",
+        "missing_cost_calls": 0,
+        "driver_missing_cost_calls": 0,
+        "driver_known_cost_usd": 0.00040535,
+        "forwarded_without_driver_record": [],
+        "driver_without_forward_record": [],
+        "http_attempts": 3,
+        "earlier_attempts_without_separate_cost": 0,
+        "prompt_tokens": 4615,
+        "completion_tokens": 140
+      },
+      "raw": "azure2:/home/ugrp/ugrp-sim/runs/e2e13-long-a-s61002",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e13-long-a-s61002",
+      "result_sha256": "f08cb7cbe6b78ab7365a44472f5a72b97349b71cfc1afa32cb71d6475b02c9bf",
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e13-long-a-s61002",
+        "files": 11558,
+        "hash_matches": 11558,
+        "inventory_sha256": "77de1ffc7e03185a1c9b12aed30d7f8f768b93fc62bd72b3187d61d3af5db1e5",
+        "reused": false,
+        "receiver_seconds": 11.546
+      },
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false
+    },
+    {
+      "id": "e2e13-long-a-s61003",
+      "condition": "A",
+      "seed": 61003,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07",
+      "status": "EARLY_STOP",
+      "source_result_status": "EARLY_STOP",
+      "finalization_complete": true,
+      "exit": 130,
+      "cause": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+      "supervisor_host_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "health_stop": {
+        "reason": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+        "unix": 1791793170.8721538,
+        "pid": 2666
+      },
+      "submitted_unix": 1791767968.9000847,
+      "sim_s": 703.2,
+      "wall_s": 25195.421431800998,
+      "wall_per_sim": 35.82966642747582,
+      "frames": 3516,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 24.27476780400002
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 24.27476780400002
+        },
+        "B_candidate": {
+          "sim_s": 3.0,
+          "wall_s": 54.169122885000036,
+          "timing": "first recorded progress sample; one-SIM-second sampling"
+        }
+      },
+      "navigation_stages": {
+        "r1": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 24.27476780400002
+          }
+        },
+        "r2": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 24.27476780400002
+          }
+        }
+      },
+      "wall_stage_timing": "Recorded one-SIM-second progress samples; raw first candidate SIM time separately retained",
+      "first_B_candidate_sim_s": 2.4,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "initial_check": {
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "normal_model_response": true,
+          "model_response_accepted": true,
+          "translation_command": true,
+          "recent_translation_command": true
+        },
+        "passed": true,
+        "actual_displacement_m": {
+          "r1": 0.6449257447668444,
+          "r2": 0.29303218661972275,
+          "r3": 0.00010027293306676652
+        },
+        "elapsed_since_submit_s": 244.47583889961243
+      },
+      "boundary_values": {
+        "r1": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 3516,
+          "sim_s": 704.3,
+          "frame_sha256": "7eb13a05442c9f4be603486ba1f6945bf9ec3de515a8d4921a31dfdd9e48ebaa",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 7529.0,
+              "vertices": 7,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 2626.5,
+              "vertices": 14,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 202.5,
+              "vertices": 4,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 202.0,
+              "vertices": 4,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        },
+        "r2": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 3516,
+          "sim_s": 704.3,
+          "frame_sha256": "5acc6a475bd0dfc38400a9bcdada5bc68889858abe4589469b82d0144de6eb7d",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 122559.0,
+              "vertices": 11,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 1026.5,
+              "vertices": 8,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 382.0,
+              "vertices": 2,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 118.5,
+              "vertices": 5,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        }
+      },
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "stall_duration_s": 0,
+          "map_error_m": {
+            "n": 3516,
+            "max": 1.3772254406462667,
+            "median": 0.7835499783386599
+          },
+          "control_error_m": {
+            "n": 3516,
+            "max": 1.3536735244713858,
+            "median": 0.20076959641225312
+          },
+          "gated_frames": 0
+        },
+        "r2": {
+          "status": "SCORED",
+          "stall_duration_s": 67.80000000000007,
+          "map_error_m": {
+            "n": 3516,
+            "max": 9.1888520320631,
+            "median": 6.2886602014314725
+          },
+          "control_error_m": {
+            "n": 3516,
+            "max": 7.1299161213553,
+            "median": 3.8122807987584277
+          },
+          "gated_frames": 295
+        }
+      },
+      "model": {
+        "calls": 3,
+        "ledger_entries": 3,
+        "known_cost_usd": 0.00041123,
+        "cost_source": "Mac OpenRouter forwarding ledger, reported provider usage",
+        "missing_cost_calls": 0,
+        "driver_missing_cost_calls": 0,
+        "driver_known_cost_usd": 0.00041123,
+        "forwarded_without_driver_record": [],
+        "driver_without_forward_record": [],
+        "http_attempts": 3,
+        "earlier_attempts_without_separate_cost": 0,
+        "prompt_tokens": 4615,
+        "completion_tokens": 146
+      },
+      "raw": "azure2:/home/ugrp/ugrp-sim/runs/e2e13-long-a-s61003",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e13-long-a-s61003",
+      "result_sha256": "1049cf118d39ea870dff2ab9966f3c36bb67c915e7d21363f11ea009011e0764",
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e13-long-a-s61003",
+        "files": 10655,
+        "hash_matches": 10655,
+        "inventory_sha256": "896fbf0d55173923988e71c445b17a210a5f30fbc99f405beb3ed3bfb821b7d2",
+        "reused": false,
+        "receiver_seconds": 11.605
+      },
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false
+    },
+    {
+      "id": "e2e13-long-a-s61004",
+      "condition": "A",
+      "seed": 61004,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07",
+      "status": "EARLY_STOP",
+      "source_result_status": "EARLY_STOP",
+      "finalization_complete": true,
+      "exit": 130,
+      "cause": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+      "supervisor_host_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "health_stop": {
+        "reason": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+        "unix": 1791793170.9237788,
+        "pid": 2747
+      },
+      "submitted_unix": 1791767970.3741672,
+      "sim_s": 750.0,
+      "wall_s": 25195.452264959,
+      "wall_per_sim": 33.593936353278664,
+      "frames": 3750,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 22.36727306299997
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 22.36727306299997
+        },
+        "B_candidate": {
+          "sim_s": 3.0,
+          "wall_s": 52.79445835699994,
+          "timing": "first recorded progress sample; one-SIM-second sampling"
+        }
+      },
+      "navigation_stages": {
+        "r1": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 22.36727306299997
+          }
+        },
+        "r2": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 22.36727306299997
+          }
+        }
+      },
+      "wall_stage_timing": "Recorded one-SIM-second progress samples; raw first candidate SIM time separately retained",
+      "first_B_candidate_sim_s": 2.4,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "initial_check": {
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "normal_model_response": true,
+          "model_response_accepted": true,
+          "translation_command": true,
+          "recent_translation_command": true
+        },
+        "passed": true,
+        "actual_displacement_m": {
+          "r1": 0.689716946309081,
+          "r2": 0.2914462793305307,
+          "r3": 9.583674793562177e-05
+        },
+        "elapsed_since_submit_s": 243.20905089378357
+      },
+      "boundary_values": {
+        "r1": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 3751,
+          "sim_s": 751.3,
+          "frame_sha256": "0cbb4b2cdf20c3405fbf3219f3b0aa61596d99e1d69fcd7f6910650968be1d9a",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 246324.5,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 0.0,
+              "vertices": 2,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 0.0,
+              "vertices": 2,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 0.0,
+              "vertices": 1,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        },
+        "r2": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 3750,
+          "sim_s": 751.1,
+          "frame_sha256": "d55eb1b7651b40fed061ebefb40ea415d260ffe613b7837ce8b4156d899d8253",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 79476.5,
+              "vertices": 10,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 22085.0,
+              "vertices": 8,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 3468.0,
+              "vertices": 3,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 1237.0,
+              "vertices": 5,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        }
+      },
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "stall_duration_s": 22.80000000000001,
+          "map_error_m": {
+            "n": 3751,
+            "max": 6.086094260546302,
+            "median": 2.98343762554023
+          },
+          "control_error_m": {
+            "n": 3751,
+            "max": 4.554551138198349,
+            "median": 3.0989175442113117
+          },
+          "gated_frames": 106
+        },
+        "r2": {
+          "status": "SCORED",
+          "stall_duration_s": 36.8,
+          "map_error_m": {
+            "n": 3750,
+            "max": 0.7162427568131623,
+            "median": 0.7155578520997563
+          },
+          "control_error_m": {
+            "n": 3750,
+            "max": 0.8587900063797077,
+            "median": 0.8580838637452843
+          },
+          "gated_frames": 121
+        }
+      },
+      "model": {
+        "calls": 3,
+        "ledger_entries": 3,
+        "known_cost_usd": 0.00044280999999999997,
+        "cost_source": "Mac OpenRouter forwarding ledger, reported provider usage",
+        "missing_cost_calls": 0,
+        "driver_missing_cost_calls": 0,
+        "driver_known_cost_usd": 0.00044280999999999997,
+        "forwarded_without_driver_record": [],
+        "driver_without_forward_record": [],
+        "http_attempts": 3,
+        "earlier_attempts_without_separate_cost": 0,
+        "prompt_tokens": 4605,
+        "completion_tokens": 170
+      },
+      "raw": "azure2:/home/ugrp/ugrp-sim/runs/e2e13-long-a-s61004",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e13-long-a-s61004",
+      "result_sha256": "2a977cefd86b8e0c13c1cb2adfc2a2e6c66f2e470dc0d5385743f5a25a12625b",
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e13-long-a-s61004",
+        "files": 11357,
+        "hash_matches": 11357,
+        "inventory_sha256": "5751073cf9ee50441a8cc14b70eb7b18216e2cac93a00b192405f0de7192aaa2",
+        "reused": false,
+        "receiver_seconds": 11.128
+      },
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false
+    },
+    {
+      "id": "e2e13-long-b-s61001",
+      "condition": "B",
+      "seed": 61001,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07",
+      "status": "EARLY_STOP",
+      "source_result_status": "EARLY_STOP",
+      "finalization_complete": true,
+      "exit": 130,
+      "cause": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+      "supervisor_host_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "health_stop": {
+        "reason": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+        "unix": 1791793175.9537706,
+        "pid": 2828
+      },
+      "submitted_unix": 1791767971.8004637,
+      "sim_s": 730.0,
+      "wall_s": 25199.42497381,
+      "wall_per_sim": 34.51976023809589,
+      "frames": 3650,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 22.137613552999994
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 22.137613552999994
+        },
+        "B_candidate": {
+          "sim_s": 3.0,
+          "wall_s": 51.80010145099999,
+          "timing": "first recorded progress sample; one-SIM-second sampling"
+        }
+      },
+      "navigation_stages": {
+        "r1": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 22.137613552999994
+          }
+        },
+        "r2": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 22.137613552999994
+          }
+        }
+      },
+      "wall_stage_timing": "Recorded one-SIM-second progress samples; raw first candidate SIM time separately retained",
+      "first_B_candidate_sim_s": 2.4,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "initial_check": {
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "normal_model_response": true,
+          "model_response_accepted": true,
+          "translation_command": true,
+          "recent_translation_command": true
+        },
+        "passed": true,
+        "actual_displacement_m": {
+          "r1": 0.6637547759294601,
+          "r2": 0.3011230138738242,
+          "r3": 9.223761042363616e-05
+        },
+        "elapsed_since_submit_s": 241.9604368209839
+      },
+      "boundary_values": {
+        "r1": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 3650,
+          "sim_s": 731.1,
+          "frame_sha256": "f8974c32d8bb9b22aa813ba138140ac25185e3265f8ef898d9c0cc660b494076",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 127299.5,
+              "vertices": 8,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 14214.0,
+              "vertices": 5,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 2464.5,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 311.0,
+              "vertices": 3,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        },
+        "r2": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 3650,
+          "sim_s": 731.1,
+          "frame_sha256": "f921c5f1e651cdaa24cf68683981bf9b28a11af18839b76911a2ecb5f4080d7a",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 36804.0,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 5102.0,
+              "vertices": 9,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 1600.5,
+              "vertices": 3,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 777.5,
+              "vertices": 3,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        }
+      },
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "stall_duration_s": 2.599999999999966,
+          "map_error_m": {
+            "n": 3650,
+            "max": 4.572538786778499,
+            "median": 1.678314224555292
+          },
+          "control_error_m": {
+            "n": 3650,
+            "max": 5.713278204554097,
+            "median": 3.5724664972069764
+          },
+          "gated_frames": 0
+        },
+        "r2": {
+          "status": "SCORED",
+          "stall_duration_s": 102.40000000000003,
+          "map_error_m": {
+            "n": 3650,
+            "max": 6.593789831839443,
+            "median": 4.605393747305385
+          },
+          "control_error_m": {
+            "n": 3650,
+            "max": 6.565903851187988,
+            "median": 5.044842559232198
+          },
+          "gated_frames": 0
+        }
+      },
+      "model": {
+        "calls": 3,
+        "ledger_entries": 3,
+        "known_cost_usd": 0.0004756,
+        "cost_source": "Mac OpenRouter forwarding ledger, reported provider usage",
+        "missing_cost_calls": 0,
+        "driver_missing_cost_calls": 0,
+        "driver_known_cost_usd": 0.0004756,
+        "forwarded_without_driver_record": [],
+        "driver_without_forward_record": [],
+        "http_attempts": 3,
+        "earlier_attempts_without_separate_cost": 0,
+        "prompt_tokens": 4612,
+        "completion_tokens": 178
+      },
+      "raw": "azure2:/home/ugrp/ugrp-sim/runs/e2e13-long-b-s61001",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e13-long-b-s61001",
+      "result_sha256": "99f194214599431ed83366c9e5040f66bc5437c2efd158ad6ae2650c9f7876b1",
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e13-long-b-s61001",
+        "files": 11057,
+        "hash_matches": 11057,
+        "inventory_sha256": "e90daec3be13d997ddc50f8952dc4f55c5210c12a5925a21f733f8f8cf28d632",
+        "reused": false,
+        "receiver_seconds": 12.022
+      },
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false
+    },
+    {
+      "id": "e2e13-long-b-s61002",
+      "condition": "B",
+      "seed": 61002,
+      "source_sha": "7befc0f2de999846ac271f044909752d8b135e07",
+      "status": "EARLY_STOP",
+      "source_result_status": "EARLY_STOP",
+      "finalization_complete": true,
+      "exit": 130,
+      "cause": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+      "supervisor_host_error": {
+        "reason": "cost_stop_signal",
+        "command_exit": 130
+      },
+      "health_stop": {
+        "reason": "AUTHORIZED_SEVEN_HOUR_WALL_CAP",
+        "unix": 1791793175.9616048,
+        "pid": 2909
+      },
+      "submitted_unix": 1791767973.2097528,
+      "sim_s": 804.45,
+      "wall_s": 25197.720400701,
+      "wall_per_sim": 31.322916776308034,
+      "frames": 4023,
+      "stage_milestones": {
+        "LLM": {
+          "sim_s": 0.0,
+          "wall_s": 20.12418338599997
+        },
+        "mapping": {
+          "sim_s": 0.0,
+          "wall_s": 20.12418338599997
+        },
+        "B_candidate": {
+          "sim_s": 3.0,
+          "wall_s": 49.60221918399998,
+          "timing": "first recorded progress sample; one-SIM-second sampling"
+        }
+      },
+      "navigation_stages": {
+        "r1": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 20.12418338599997
+          }
+        },
+        "r2": {
+          "last": "explore",
+          "first_reached_sim_s": {
+            "explore": 0.0
+          },
+          "first_sampled_wall_s": {
+            "explore": 20.12418338599997
+          }
+        }
+      },
+      "wall_stage_timing": "Recorded one-SIM-second progress samples; raw first candidate SIM time separately retained",
+      "first_B_candidate_sim_s": 2.4,
+      "furthest_stage": "B_candidate_before_boundary_confirmation",
+      "initial_check": {
+        "checks": {
+          "no_exceptions": true,
+          "frames_increased": true,
+          "sim_time_increased": true,
+          "actual_translation": true,
+          "ownmap_trace": true,
+          "mapping_phase_entered": true,
+          "normal_model_response": true,
+          "model_response_accepted": true,
+          "translation_command": true,
+          "recent_translation_command": true
+        },
+        "passed": true,
+        "actual_displacement_m": {
+          "r1": 0.6707166578248083,
+          "r2": 0.30099182466663704,
+          "r3": 9.020677934663743e-05
+        },
+        "elapsed_since_submit_s": 240.72730350494385
+      },
+      "boundary_values": {
+        "r1": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 4023,
+          "sim_s": 805.7,
+          "frame_sha256": "f20cd9c2ad24188cc74d9368c368e020bae09337b26dc65b059e5dc595488495",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 138349.5,
+              "vertices": 8,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 34214.5,
+              "vertices": 7,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 6544.0,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 5.0,
+              "vertices": 8,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        },
+        "r2": {
+          "status": "saved_rgb_evaluation",
+          "frame_id": 4023,
+          "sim_s": 805.7,
+          "frame_sha256": "f4fd7261f4409a2d478d0bd535009d9e4dd2a4776897c36dd8f221503255e528",
+          "complete_boundary": null,
+          "candidates": [
+            {
+              "area_px2": 247484.0,
+              "vertices": 4,
+              "convex": true,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 0.0,
+              "vertices": 2,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 0.0,
+              "vertices": 2,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            },
+            {
+              "area_px2": 0.0,
+              "vertices": 2,
+              "convex": false,
+              "image_clipped": false,
+              "self_mask_overlap": false,
+              "white_islands_ge9px": 0
+            }
+          ],
+          "thresholds": {
+            "min_area_px2": 100,
+            "vertices": 4,
+            "white_islands": 3
+          },
+          "feedback_to_controller": false
+        }
+      },
+      "evaluation": {
+        "r1": {
+          "status": "SCORED",
+          "stall_duration_s": 87.80000000000064,
+          "map_error_m": {
+            "n": 4023,
+            "max": 11.989307255486304,
+            "median": 6.944312412279651
+          },
+          "control_error_m": {
+            "n": 4023,
+            "max": 7.52164171191462,
+            "median": 2.483219640423369
+          },
+          "gated_frames": 0
+        },
+        "r2": {
+          "status": "SCORED",
+          "stall_duration_s": 194.99999999999997,
+          "map_error_m": {
+            "n": 4023,
+            "max": 8.724896154171415,
+            "median": 5.4413013584320495
+          },
+          "control_error_m": {
+            "n": 4023,
+            "max": 8.89066112240309,
+            "median": 5.36697516684158
+          },
+          "gated_frames": 0
+        }
+      },
+      "model": {
+        "calls": 3,
+        "ledger_entries": 3,
+        "known_cost_usd": 0.00040737,
+        "cost_source": "Mac OpenRouter forwarding ledger, reported provider usage",
+        "missing_cost_calls": 0,
+        "driver_missing_cost_calls": 0,
+        "driver_known_cost_usd": 0.00040737,
+        "forwarded_without_driver_record": [],
+        "driver_without_forward_record": [],
+        "http_attempts": 3,
+        "earlier_attempts_without_separate_cost": 0,
+        "prompt_tokens": 4615,
+        "completion_tokens": 161
+      },
+      "raw": "azure2:/home/ugrp/ugrp-sim/runs/e2e13-long-b-s61002",
+      "arm_raw": "oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e13-long-b-s61002",
+      "result_sha256": "e7673e8f3639fa883d91627a4e0907d3b61662e99df380d5c7b75244de19c30e",
+      "archive": {
+        "verified": true,
+        "schema": "ugrp.archive-native.v1",
+        "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-e2e13-long-b-s61002",
+        "files": 12173,
+        "hash_matches": 12173,
+        "inventory_sha256": "8af4793ee3d7710be433397d027e1730b03e317bcc4305001a5d9130cd680a86",
+        "reused": false,
+        "receiver_seconds": 22.982
+      },
+      "LLM_operated": true,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false
+    }
+  ],
+  "completed": 6,
+  "unfinished": 0,
+  "outcomes": {
+    "N": 6,
+    "LLM_operated": 6,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "E2E_success": 0
+  },
+  "retrieval": {
+    "completed": 6,
+    "expected": 6,
+    "files": 68214,
+    "hash_matches": 68214,
+    "mac_lite_bytes": 153039175
+  },
+  "model_accounting": {
+    "calls": 18,
+    "known_cost_usd": 0.00257764,
+    "cost_source": "Mac OpenRouter forwarding ledger, reported provider usage",
+    "upstream_forwards": 18,
+    "http_attempts": 18,
+    "missing_cost_calls": 0,
+    "earlier_attempts_without_separate_cost": 0
+  },
+  "last_recorded_utc": "2026-10-12T08:26:57.252078+00:00",
+  "condition_outcomes": {
+    "A": {
+      "N": 4,
+      "LLM_operated": 4,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0,
+      "E2E_success": 0
+    },
+    "B": {
+      "N": 2,
+      "LLM_operated": 2,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0,
+      "E2E_success": 0
+    }
+  },
+  "artifacts": [
+    {
+      "path": "run-details.json.zst",
+      "bytes": 26121,
+      "sha256": "2b9ea59f21f9b96209c16a4615bf49ca4478e14e333f92b9eb68f2083fcaed34"
+    },
+    {
+      "path": "operational-evidence.json.zst",
+      "bytes": 3001,
+      "sha256": "b899169bfdea696d71ca5870ab676f125847065093cc563e2a30c54a6f6d3eed"
+    },
+    {
+      "path": "remote-batch-evidence.json.zst",
+      "bytes": 28479,
+      "sha256": "c8f9009f5682a2c4862bcc75d6d01e14b2161a817efcc838211a7bf31375745a",
+      "uncompressed_sha256": "45801b3d34d80657325ae334f107c6755d26612d5c6b01b1af51dd218a45afc5"
+    },
+    {
+      "path": "archive-inventories/e2e13-long-a-s61001.json.zst",
+      "bytes": 692235,
+      "sha256": "32301be449398788b4c865baa57bf3fefd434131d6da81fd29d8e65b7fc6befa",
+      "uncompressed_sha256": "6d4c4db1a82577b65cef00c06d4ecfd54318a53be120284f86d4f078f99ff42a"
+    },
+    {
+      "path": "archive-inventories/e2e13-long-a-s61002.json.zst",
+      "bytes": 705919,
+      "sha256": "a1615cfc1a63c85a3c8416bf0b3cbfc877e37a24d3d6e53413ca28e1d538cad0",
+      "uncompressed_sha256": "72f1d2e8ccf917a23898a0c1f7f9ac62adce6ce7ec11053d1752d8d395b4d864"
+    },
+    {
+      "path": "archive-inventories/e2e13-long-a-s61003.json.zst",
+      "bytes": 650882,
+      "sha256": "64759754403053e45a3c9df4150fd3573495bb4f5a149e74493bbef1523840d3",
+      "uncompressed_sha256": "0779c0d0ea07748354fec22a3cd756601f309ff8aaecb0dfd8bcd70427ca8938"
+    },
+    {
+      "path": "archive-inventories/e2e13-long-a-s61004.json.zst",
+      "bytes": 655832,
+      "sha256": "f7d26ae04826e68c43e5d81c63b39c4bc4f1c78f108bea0cc68a675ac22fb156",
+      "uncompressed_sha256": "2772336a0d665a3c28dc11f76fa5a42b6dd3566cda27085bdc104dbd87e6d9ce"
+    },
+    {
+      "path": "archive-inventories/e2e13-long-b-s61001.json.zst",
+      "bytes": 670025,
+      "sha256": "1b0ba7549456cce7b7246ff23442e5d4b95da8b105ed6c5c54aba8933c03ab9d",
+      "uncompressed_sha256": "5fd202f3a1eb30d46554d03fce1c547dfd9ebb88bf0a4e0b08b3362c64da1020"
+    },
+    {
+      "path": "archive-inventories/e2e13-long-b-s61002.json.zst",
+      "bytes": 743122,
+      "sha256": "ecf7283f5cf5f30c36a871f834f762958fb0dfb5ad5726ab5d8fed02c25aa7ae",
+      "uncompressed_sha256": "092cf2ff7d270bb5543cae7566044283413ccd3f6ab65fd50c905b6f226f5bc3"
+    },
+    {
+      "path": "infra-pr-status.json",
+      "bytes": 342,
+      "sha256": "d6b5d1402d72056cb2119e9cd6056b99cc01487f672eea6ef8e6f620e1418134"
+    }
+  ],
+  "monitoring": {
+    "checkpoints": 90,
+    "checkpoints_per_run": {
+      "e2e13-long-a-s61001": 15,
+      "e2e13-long-a-s61002": 15,
+      "e2e13-long-a-s61003": 15,
+      "e2e13-long-a-s61004": 15,
+      "e2e13-long-b-s61001": 15,
+      "e2e13-long-b-s61002": 15
+    },
+    "initial_checks_passed": 6,
+    "controller_interventions_after_initial_check": 0,
+    "authorized_wall_cap_stops": 6,
+    "tunnel_starts": 15,
+    "network_note": "Mac tunnel disconnected and reconnected; remote runs and periodic checkpoints continued. No additional model attempts beyond the 18 reconciled calls."
+  },
+  "operational_evidence": {
+    "path": "operational-evidence.json.zst",
+    "bytes": 3001,
+    "sha256": "b899169bfdea696d71ca5870ab676f125847065093cc563e2a30c54a6f6d3eed"
+  },
+  "failure_counts": {
+    "AUTHORIZED_SEVEN_HOUR_WALL_CAP": 6
+  },
+  "remaining_issue": "All six remained in mapping: B candidate points were remembered, but full B boundaries and own-map routes were never completed; transport did not begin."
 }
