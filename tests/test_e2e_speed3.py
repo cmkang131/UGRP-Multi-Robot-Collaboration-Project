@@ -35,6 +35,7 @@ def test_audit_disabled_never_reads_particle_state():
     assert audit_row(robot,'none',{})==dict(robot='r1',frame=4,t=1.)
 
 def test_capture_same_sim_time_renders_once(monkeypatch):
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
     from sim.e2e_ownmap_live import PhysicsBackend,Evaluation
     calls=[]
     monkeypatch.setattr(Evaluation,'capture',lambda self:calls.append(self.now) or {'r1':object()})
@@ -63,6 +64,7 @@ def test_adaptive_switch_uses_issued_action_and_resnaps_clock():
 
 
 def test_issue_keeps_high_level_drive_conversion_in_parent(monkeypatch):
+    pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
     from sim.e2e_ownmap_live import PhysicsBackend,Evaluation
     action=dict(kind='drive',forward=.3,lateral=0.,yaw=0.)
     calls=[]

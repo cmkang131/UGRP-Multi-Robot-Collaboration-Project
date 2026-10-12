@@ -52,7 +52,7 @@
     "failed": 2,
     "log": "outputs/merge-a-20261012/targeted-tests.log"
   },
-  "ci": "new_head_required_after_catalog_fixture_fix",
+  "ci": "pending_final_fix_push",
   "review": "in_progress",
   "raw_modified": false,
   "ci_new_test_registration": {
@@ -90,6 +90,16 @@
       "checked": "2026-10-12",
       "scope": "Frame transforms require the missing static-map-to-own relation; self-SLAM map_to_odom is not that relation.",
       "method": "Reject unsupported live conversion; do not infer it from simulator spawn state."
+    },
+    {
+      "url": "https://docs.python.org/3/library/contextvars.html",
+      "scope": "Keep experimental particle allowance local to the explicit context; reset restores baseline.",
+      "checked": "2026-10-13"
+    },
+    {
+      "url": "https://docs.pytest.org/en/stable/how-to/skipping.html",
+      "scope": "Missing optional simulation dependencies are explicit skips, consistent with the minimal CI requirements.",
+      "checked": "2026-10-13"
     }
   ],
   "P1_counterexample": {
@@ -138,5 +148,35 @@
     "log": "outputs/merge-a-20261012/catalog-fix-tests.log",
     "log_sha256": "72c0a098434ff57a46350a5eb089bcad7a95762aec8baaa3d0552fe7f515f1fb",
     "production_code_changed": false
+  },
+  "ci39_completed": {
+    "run": 38263656798,
+    "jobs_success": 30,
+    "jobs_total": 33,
+    "failed_shards": [
+      2,
+      4
+    ],
+    "failed_tests": 5,
+    "aggregate_failed": true
+  },
+  "ci39_fix": {
+    "particle_50": "Allowed only while explicit speed4 rbpf_particles=50 context is active; baseline 30/100/500 and original error preserved.",
+    "optional_dependencies": "Simulation-backed fixtures use explicit importorskip for unavailable mujoco/matplotlib in intentionally minimal offline CI; local environment executes them. No CI dependency policy change.",
+    "review": "outputs/merge-a-20261012/review-ci2.md",
+    "review_sha256": "64fdee2ea84b35c26287dc52ed5305cac90cca5888f4d07c00962b52d3f77bf1",
+    "review_result": "narrow ready"
+  },
+  "ci39_particle_tests": {
+    "passed": 40,
+    "failed": 0,
+    "log": "outputs/merge-a-20261012/ci2-fix-tests.log",
+    "sha256": "ee60c8428c75565081802d01d4856f9ea804e4608b5ddecef79019803548636b"
+  },
+  "ci39_optional_tests": {
+    "passed": 38,
+    "failed": 0,
+    "log": "outputs/merge-a-20261012/ci-optional-fix-tests.log",
+    "sha256": "98068584268272ba14aeb1788ea4143f6353f3aa78efa149ee71398fd29e71e3"
   }
 }
