@@ -23,7 +23,10 @@ def planner_functions(callback, seen=None):
             for leaf in planner_functions(closure[name], seen)]
 
 
-def configure(runtime, route, transform):
+def configure(runtime, route, transform, *, e2e_own_inputs_v1='off'):
+    from harness.e2e_own_inputs import enabled
+    if enabled(e2e_own_inputs_v1):
+        raise ValueError('E2E_STATIC_ROUTE_OVERLAY_FORBIDDEN: use s3_inputs for planner/guard/provider')
     leaves = []
     for rid in ('r1', 'r2'):
         found = planner_functions(runtime.links[rid].submit)

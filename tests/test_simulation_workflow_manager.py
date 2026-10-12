@@ -328,7 +328,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-sweep-v149": ["--expected-source-sha", "0" * 40],
             "zone-s3-odometry-v150": ["--expected-source-sha", "0" * 40],
             "zone-s3-consistency-v151": ["--expected-source-sha", "0" * 40],
-            "zone-s3-recovery-v195": ["--expected-source-sha", "0" * 40],
+            "zone-s3-recovery-v209": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-probe-v153": ["--expected-source-sha", "0" * 40],
             "zone-s3-alignment-entry-probe-v154": ["--expected-source-sha", "0" * 40],
             "zone-s3-oracle-stage-probe-v155": ["--expected-source-sha", "0" * 40],
@@ -348,6 +348,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-s3-route-resume-v172": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
             "zone-s3-full-route-v175": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
             "zone-s3-checkpoint-correction-v177": ["--expected-source-sha", "0" * 40, "--condition", "0", "--route-case", "multi-left", "--seed", "14201"],
+            "e2e-s3-ownroute-v179": ["--expected-source-sha", "0" * 40, "--seed", "61001"],
             "zone-s3-release-ack-v187": ["--expected-source-sha", "0" * 40],
             "zone-s3-continuous-distance-v186": ["--expected-source-sha", "0" * 40],
             "zone-s3-synchronized-start-v165": ["--expected-source-sha", "0" * 40],
@@ -441,12 +442,29 @@ raise SystemExit(3 if a.fail else 0)
                            ('goal-route-preflight-dev', '55001'), ('own-map-return-repeat', '49001'),
                            ('own-teach-capture', '49002'), ('own-teach-return-dev', '54001')):
             samples[name] = ['--seed', seed, *sha]
+        e2e_args = ['--expected-source-sha', '0'*40, '--seed', '61001',
+                    '--driver-profile', 'study_gemma4_31b_v1', '--relay-receipt', str(source),
+                    '--decider', 'off', '--exploration-progress', 'off', '--pose-fix', 'off',
+                    '--path-follow', 'off', '--wall-cap-s', '12600', '--stall-odometry', 'off',
+                    '--stall-recovery', 'off', '--stall-noise', 'off', '--mapping-budget', 'off']
+        for name in ('e2e-ownmap-live-v185', 'e2e-ownmap-jev-v192', 'e2e-explore-posefix-v194',
+                     'e2e-rpp-lookahead-v197', 'e2e-stall-odometry-v198', 'e2e-stall-budget-v199',
+                     'e2e-exact-speed-v200', 'e2e-reviewed-runtime-v210'):
+            samples[name] = list(e2e_args)
+        samples['e2e-one-beam-ownmap-inputs'] = sha
+        # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
+        # value for this boolean. Keep its original bytes and the rejection.
+        samples['e2e-rpp-lookahead-v196'] = [*e2e_args, '--dev-light']
+        retired_invalid = {'e2e-rpp-lookahead-v196'}
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
-            plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}
+            plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"] if row["id"] not in retired_invalid}
+            for name in retired_invalid:
+                with self.assertRaises(ValueError):
+                    wm.plan(PROJECT, name, samples[name])
             with self.assertRaisesRegex(ValueError, "unknown workflow: zone-s3-recovery-v193"):
                 wm.plan(PROJECT, "zone-s3-recovery-v193", ["--expected-source-sha", "0" * 40])
-        self.assertEqual(set(plans), set(samples))
+        self.assertEqual(set(plans) | retired_invalid, set(samples))
         self.assertEqual(plans["physical"]["command"][-1], "<record>/artifacts")
         self.assertEqual(plans["communication"]["output"], "<record>/artifacts.json")
         self.assertEqual(plans["dispatch-skills"]["command"][3:5], ["--executor", "skills"])

@@ -1,0 +1,205 @@
+{
+  "status": "COMPLETE_WITH_FAILURES",
+  "pr": 433,
+  "run_class": "dev",
+  "source_sha": "47f698b4970fa3497d3e830931b6b024ce36b670",
+  "bundle": "e2e-stall-budget-v199",
+  "preregistration": {
+    "seeds": [
+      61001,
+      61002
+    ],
+    "conditions": {
+      "A": "v199 + RPP + Gemma + rgb_pulse_gate_v1 + backup_replan_v1 + amcl_alpha_v1",
+      "B": "v199 + RPP + Gemma; stall toggles off"
+    },
+    "mapping_budget": "case_cap_v1",
+    "case_cap_sim_s": 1800,
+    "start_before_utc": "2026-10-11T20:30:00Z",
+    "run_end_before_utc": "2026-10-11T21:35:00Z",
+    "guard_cap_utc": "2026-10-11T21:50:00Z",
+    "outcomes": [
+      "LLM_operated",
+      "own_map_completed",
+      "start_to_finish_transport"
+    ],
+    "early_check_s": 210,
+    "conservative_guards": "record_only",
+    "raw_per_run_mib": 4096
+  },
+  "tests": {
+    "passed": 32,
+    "seconds": 10.32,
+    "files": [
+      "tests/test_e2e_stall_odometry.py",
+      "tests/test_goal_route_continuous.py"
+    ],
+    "scope": "Offline regression; no physics/render"
+  },
+  "counting": {
+    "launched": 4,
+    "preregistered": 4,
+    "admission_failures_before_process": 1,
+    "denominator": "Four actual launched simulations; one source-transfer admission failure produced no run process or model call and is separately preserved."
+  },
+  "outcomes": {
+    "N": 4,
+    "LLM_operated": 4,
+    "own_map_completed": 0,
+    "start_to_finish_transport": 0,
+    "E2E_success": 0
+  },
+  "conditions": {
+    "A": {
+      "N": 2,
+      "LLM_operated": 2,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0,
+      "E2E_success": 0
+    },
+    "B": {
+      "N": 2,
+      "LLM_operated": 2,
+      "own_map_completed": 0,
+      "start_to_finish_transport": 0,
+      "E2E_success": 0
+    }
+  },
+  "e2e10_budget": {
+    "affected_runs": 8,
+    "N": 8,
+    "affected_mapping_robots": 16,
+    "post270_hold_frames": 14732,
+    "post270_non_hold_frames": 0,
+    "artifact": "e2e10-budget-audit.json"
+  },
+  "budget_fix_verdict": {
+    "runs_beyond270": 4,
+    "N": 4,
+    "runs_with_new_targets_after270": 4,
+    "mapping_robots_no_budget_stop": 8,
+    "mapping_robots_with_new_targets": 6,
+    "mapping_robots_with_nonhold": 7,
+    "total_mapping_robots": 8,
+    "post270_target_selections": 16,
+    "adopted": false,
+    "mission_ready": false
+  },
+  "model_accounting": {
+    "provider_calls": 12,
+    "known_cost_usd": 0.00179942,
+    "missing_cost_calls": 0,
+    "artifact": "model-accounting.json.zst",
+    "scope": "Provider model usage only; excludes VM compute"
+  },
+  "retrieval": {
+    "expected": 4,
+    "completed": 4,
+    "files": 19957,
+    "hash_matches": 19957,
+    "mac_lite_bytes": 50700981
+  },
+  "vm": {
+    "verified_utc": "2026-10-11T23:52:50.637366+00:00",
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "resource_group": "UGRP-SIM-RG",
+    "vm": "ugrp-sim-azure",
+    "statuses": [
+      {
+        "code": "ProvisioningState/succeeded",
+        "displayStatus": "Provisioning succeeded",
+        "level": "Info",
+        "time": "2026-10-11T23:52:28.827281+00:00"
+      },
+      {
+        "code": "PowerState/deallocated",
+        "displayStatus": "VM deallocated",
+        "level": "Info"
+      }
+    ]
+  },
+  "remaining": [
+    "B boundary and own transport route not completed in 4/4; no transport execution success.",
+    "A61001 r1 exhausted reachable frontiers from 84 SIMs despite repaired budget; r2 continued.",
+    "Partial slip and heading drift remain; full-run map error reaches 8.972m. Three A toggles are not causally isolated.",
+    "Historical RBPF and pure-render times were not individually instrumented; residual must not be reported as exact RBPF time.",
+    "The cap timer archived/stopped but omitted Azure deallocate. VM was manually deallocated and verified at 23:52:50 UTC; lifecycle cap wiring remains a future repair.",
+    "Draft PR adoption/merge still requires conflict resolution, full CI and independent controller review."
+  ],
+  "speed_breakdown": {
+    "artifact": "speed-breakdown.json",
+    "round_median_wall_per_sim": {
+      "9": 17.880424225908932,
+      "10": 13.064827863465199,
+      "11": 11.43234936633413
+    },
+    "ranked_components": [
+      {
+        "rank": 1,
+        "name": "unattributed control/perception/map/validation/scheduler work",
+        "round_median_wall_per_sim": [
+          12.406317408022662,
+          8.600512088851568,
+          7.696601780003693
+        ],
+        "exact_rbpf_isolated": false,
+        "candidate": "Timer spans around Robot.receive / own_inputs_at / host.step_to; immutable per-frame snapshots and indexed provenance membership with identical causal checks. No implementation in this round."
+      },
+      {
+        "rank": 2,
+        "name": "physics_advance (step loop and issued-command port ticks)",
+        "round_median_wall_per_sim": [
+          3.350573368164566,
+          2.6320442712055363,
+          2.3468372935690156
+        ],
+        "candidate": "MuJoCo built-in step/collision/solver timers, then separately versioned solver/sparse-Jacobian comparison. No physical parameters changed."
+      },
+      {
+        "rank": 3,
+        "name": "capture including software render, encoding and image I/O",
+        "round_median_wall_per_sim": [
+          2.065425880185863,
+          1.8104663204752036,
+          1.4547150965242825
+        ],
+        "candidate": "Persistent render context / exact render reuse; EGL only if suitable hardware exists. Preserve camera, render cadence and evidence bytes."
+      }
+    ],
+    "limitations": "RBPF not isolated; capture includes render+encode+image IO; jsonl_append nested. Historical idle tails separated in speed-windows.json. No speed changes applied."
+  },
+  "operational_issues": {
+    "status": "RESOLVED_MANUAL_DEALLOCATION",
+    "cause": "Recreated transient cap invoked azure_shutdown.py stop, which stops writers/archives but does not call Azure deallocate. This was an orchestration configuration error in this round.",
+    "cap_started_utc": "2026-10-11T21:50:00Z",
+    "cap_cloud_deallocation_performed": false,
+    "last_vm_running_observed_utc": "2026-10-11T23:50:38Z",
+    "monitoring_gap": {
+      "last_interactive_before_gap_utc": "2026-10-11T20:24:09Z",
+      "next_interactive_utc": "2026-10-11T23:50:27Z",
+      "cause": "unverified",
+      "guest_monitor_continued": true
+    },
+    "fetch_retry": {
+      "initial_error": "SSH rsync exit255",
+      "subsequent_complete": 4,
+      "checksum_verified": true
+    }
+  },
+  "records": {
+    "full": "full-summary.json.zst",
+    "run_detail": "run-details.json.zst",
+    "operations": "operations.json.zst",
+    "references": "references.json",
+    "local_root": "/Users/changmin/projects/ugrp/outputs/e2e12-budget-fix",
+    "raw_media_retrieved_to_mac": false,
+    "pr_state": "DRAFT_NOT_READY"
+  },
+  "last_recorded_utc": "2026-10-11T23:54:11.891095+00:00",
+  "runs": [
+    {"id":"e2e12-a-s61001","batch":"A","seed":61001,"status":"HOST_ERROR","exit":124,"cause":"E2E_WALL_CAP","sim_s":330.05,"wall_s":4920.027925376,"furthest_stage":"B_candidate_before_boundary_confirmation","first_B_candidate_sim_s":2.4,"first_model_response_wall_s":26.901223411000018,"guest_terminal_observed_utc":"2026-10-11T21:34:52.794507+00:00","finalization_complete":true,"budget_after270":{"r1":{"post270_frames":300,"post270_budget_exhausted":0,"post270_non_hold":0,"post270_target_selections":0,"first_target_after270":null,"post270_last_t":330.0},"r2":{"post270_frames":300,"post270_budget_exhausted":0,"post270_non_hold":300,"post270_target_selections":2,"first_target_after270":{"t":315.0,"reason":"frontier_selected","target":[3.009166666666667,-2.4141666666666666],"cost":-0.8758756133590034,"path_length_m":6.597048499174554},"post270_last_t":330.0}},"model":{"calls":3,"provider_receipts":3,"prompt_tokens":4612,"completion_tokens":139,"known_cost_usd":0.00039962,"missing_cost_calls":0,"response_latency_sum_s":13.801408},"raw":"azure:/home/ugrp/ugrp-sim/runs/e2e12-a-s61001","arm_raw":"oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e12-a-s61001","result_sha256":"1e1a83e4037604cd27b117a230fcac74ab60dda7493b1d1bbea3b045a4702e53","archive":{"files":5056,"hash_matches":5056,"inventory_sha256":"00b9d55c49aa1909e44bea7a702bd9bafcb60da7ee05fbf633acf3725e4bc9ae"},"initial_check":{"passed":true,"elapsed_since_submit_s":211.09840536117554},"outcomes":{"LLM_operated":true,"own_map_completed":false,"start_to_finish_transport":false},"evaluation":{"r1":{"map_error_m":{"max":1.81565187874657,"median":1.781168845149035},"control_error_m":{"max":0.5650818551948346,"median":0.5648211855961242},"map_frame_jump_m":{"max":0.15570970126018974,"median":0.0,"over_5cm":5,"over_20cm":0},"control_frame_jump_m":{"max":0.01292341377316771,"median":0.0,"over_5cm":0,"over_20cm":0},"stall_segments":0,"stall_duration_s":0,"longest_stalls":[]},"r2":{"map_error_m":{"max":3.7575700915900483,"median":2.379211034974477},"control_error_m":{"max":5.187379496961881,"median":2.9072317831694385},"map_frame_jump_m":{"max":0.3101598263274056,"median":0.012923413773167188,"over_5cm":22,"over_20cm":4},"control_frame_jump_m":{"max":0.012923413773168217,"median":0.012923413773167186,"over_5cm":0,"over_20cm":0},"stall_segments":17,"stall_duration_s":29.400000000000077,"longest_stalls":[{"t0":87.2,"t1":95.4,"duration_s":8.200000000000003,"expected_m":0.5298599646998576,"actual_path_m":0.05213759794938777},{"t0":20.0,"t1":25.4,"duration_s":5.399999999999999,"expected_m":0.3489321718755228,"actual_path_m":0.034046392683338304},{"t0":4.4,"t1":9.0,"duration_s":4.6,"expected_m":0.29723851678285285,"actual_path_m":0.026439002099405494}]}},"B_candidate_wall_bracket_s":[45.428369325000006,54.807727707000026]},
+    {"id":"e2e12-b-s61001","batch":"B","seed":61001,"status":"HOST_ERROR","exit":1,"cause":"E2E_WALL_CAP","sim_s":323.05,"wall_s":4877.509604056,"furthest_stage":"B_candidate_before_boundary_confirmation","first_B_candidate_sim_s":2.4,"first_model_response_wall_s":25.38048544,"guest_terminal_observed_utc":"2026-10-11T21:34:10.622696+00:00","finalization_complete":true,"budget_after270":{"r1":{"post270_frames":265,"post270_budget_exhausted":0,"post270_non_hold":265,"post270_target_selections":4,"first_target_after270":{"t":286.2,"reason":"frontier_selected","target":[-2.679333333333333,-1.5673333333333337],"cost":-3.164231274307001,"path_length_m":4.547257969920845},"post270_last_t":323.0},"r2":{"post270_frames":265,"post270_budget_exhausted":0,"post270_non_hold":265,"post270_target_selections":2,"first_target_after270":{"t":281.0,"reason":"frontier_selected","target":[7.52852564102564,0.4137820512820512],"cost":-3.757302768071697,"path_length_m":1.3336002069571056},"post270_last_t":323.0}},"model":{"calls":3,"provider_receipts":3,"prompt_tokens":4612,"completion_tokens":139,"known_cost_usd":0.00046234,"missing_cost_calls":0,"response_latency_sum_s":12.323938},"raw":"azure:/home/ugrp/ugrp-sim/runs/e2e12-b-s61001","arm_raw":"oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e12-b-s61001","result_sha256":"4fda98ce693bce007a160f475a24c0d5481c33b6a0a7b00c4f7a54a3751589a5","archive":{"files":4951,"hash_matches":4951,"inventory_sha256":"544ee60527cabd671da204d42ca9752e94a8a9485ef4b5abb3d2516c8cc904c8"},"initial_check":{"passed":true,"elapsed_since_submit_s":212.89247465133667},"outcomes":{"LLM_operated":true,"own_map_completed":false,"start_to_finish_transport":false},"evaluation":{"r1":{"map_error_m":{"max":4.3815736020911435,"median":1.8165420033656248},"control_error_m":{"max":4.057777072957904,"median":0.7176052263666235},"map_frame_jump_m":{"max":0.51535039656558,"median":0.012923413773167207,"over_5cm":12,"over_20cm":2},"control_frame_jump_m":{"max":0.012923413773168349,"median":0.012923413773167192,"over_5cm":0,"over_20cm":0},"stall_segments":0,"stall_duration_s":0,"longest_stalls":[]},"r2":{"map_error_m":{"max":6.593789831839443,"median":5.120199794690684},"control_error_m":{"max":6.565903851187988,"median":4.944562027672257},"map_frame_jump_m":{"max":0.48378422562595996,"median":0.012923413773167268,"over_5cm":16,"over_20cm":3},"control_frame_jump_m":{"max":0.012923413773168593,"median":0.012923413773167225,"over_5cm":0,"over_20cm":0},"stall_segments":78,"stall_duration_s":94.7999999999999,"longest_stalls":[{"t0":55.6,"t1":74.6,"duration_s":18.999999999999993,"expected_m":1.2277243084508822,"actual_path_m":0.1642305002633196},{"t0":30.6,"t1":41.4,"duration_s":10.799999999999997,"expected_m":0.6978643437510313,"actual_path_m":0.06408267331161902},{"t0":10.6,"t1":19.6,"duration_s":9.000000000000002,"expected_m":0.581553619792537,"actual_path_m":0.07806573930281992}]}},"B_candidate_wall_bracket_s":[43.823682667000014,53.18979228800001]},
+    {"id":"e2e12-a-s61002","batch":"A","seed":61002,"status":"HOST_ERROR","exit":1,"cause":"E2E_WALL_CAP","sim_s":305.25,"wall_s":4876.8756219120005,"furthest_stage":"B_candidate_before_boundary_confirmation","first_B_candidate_sim_s":2.4,"first_model_response_wall_s":27.723394745000007,"guest_terminal_observed_utc":"2026-10-11T21:34:11.235035+00:00","finalization_complete":true,"budget_after270":{"r1":{"post270_frames":176,"post270_budget_exhausted":0,"post270_non_hold":176,"post270_target_selections":0,"first_target_after270":null,"post270_last_t":305.2},"r2":{"post270_frames":176,"post270_budget_exhausted":0,"post270_non_hold":176,"post270_target_selections":1,"first_target_after270":{"t":271.0,"reason":"frontier_selected","target":[1.6384868421052634,4.0904605263157885],"cost":-3.501127117322431,"path_length_m":3.6570698699899684},"post270_last_t":305.2}},"model":{"calls":3,"provider_receipts":3,"prompt_tokens":4615,"completion_tokens":161,"known_cost_usd":0.00047009,"missing_cost_calls":0,"response_latency_sum_s":14.564064},"raw":"azure:/home/ugrp/ugrp-sim/runs/e2e12-a-s61002","arm_raw":"oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e12-a-s61002","result_sha256":"c853f98ec366ed1bc013f5ae7f00bafd1c31a743885def32e5cd33c61aa74ba3","archive":{"files":4684,"hash_matches":4684,"inventory_sha256":"1bdcb4de81baa1e9abe527754de4f8af2e9480554a2bb97a31a62cc4c93b088b"},"initial_check":{"passed":true,"elapsed_since_submit_s":211.68606162071228},"outcomes":{"LLM_operated":true,"own_map_completed":false,"start_to_finish_transport":false},"evaluation":{"r1":{"map_error_m":{"max":3.437931043765623,"median":0.8358225623210048},"control_error_m":{"max":4.16875005374997,"median":0.31091921620219365},"map_frame_jump_m":{"max":0.18947646775762156,"median":0.012923413773167216,"over_5cm":11,"over_20cm":0},"control_frame_jump_m":{"max":0.012923413773168347,"median":0.012923413773167204,"over_5cm":0,"over_20cm":0},"stall_segments":27,"stall_duration_s":76.79999999999987,"longest_stalls":[{"t0":195.6,"t1":226.4,"duration_s":30.80000000000001,"expected_m":1.9902057210677702,"actual_path_m":0.28538190324102675},{"t0":271.6,"t1":282.2,"duration_s":10.599999999999966,"expected_m":0.6849409299778676,"actual_path_m":0.09647549203261162},{"t0":298.0,"t1":302.6,"duration_s":4.600000000000023,"expected_m":0.29723851678284696,"actual_path_m":0.04257325027510909}]},"r2":{"map_error_m":{"max":6.137647666254563,"median":2.593632576959581},"control_error_m":{"max":6.224311512865857,"median":2.85289067802301},"map_frame_jump_m":{"max":0.4757385019464529,"median":0.01292341377316722,"over_5cm":20,"over_20cm":5},"control_frame_jump_m":{"max":0.012923413773168522,"median":0.012923413773167212,"over_5cm":0,"over_20cm":0},"stall_segments":18,"stall_duration_s":17.000000000000025,"longest_stalls":[{"t0":20.2,"t1":25.6,"duration_s":5.400000000000002,"expected_m":0.3489321718755229,"actual_path_m":0.0364427999228259},{"t0":4.4,"t1":9.4,"duration_s":5.0,"expected_m":0.3230853443291879,"actual_path_m":0.03474083765147798},{"t0":244.0,"t1":246.0,"duration_s":2.0,"expected_m":0.12923413773167383,"actual_path_m":0.023583235580483496}]}},"B_candidate_wall_bracket_s":[46.32190222900002,55.607850539000026]},
+    {"id":"e2e12-b-s61002","batch":"B","seed":61002,"status":"HOST_ERROR","exit":1,"cause":"E2E_WALL_CAP","sim_s":344.2,"wall_s":4875.235601133,"furthest_stage":"B_candidate_before_boundary_confirmation","first_B_candidate_sim_s":2.4,"first_model_response_wall_s":26.846091596000008,"guest_terminal_observed_utc":"2026-10-11T21:34:11.858222+00:00","finalization_complete":true,"budget_after270":{"r1":{"post270_frames":370,"post270_budget_exhausted":0,"post270_non_hold":370,"post270_target_selections":3,"first_target_after270":{"t":275.8,"reason":"frontier_selected","target":[1.1532,6.208799999999998],"cost":-6.08482963340841,"path_length_m":2.820109789781356},"post270_last_t":344.0},"r2":{"post270_frames":370,"post270_budget_exhausted":0,"post270_non_hold":362,"post270_target_selections":4,"first_target_after270":{"t":277.2,"reason":"frontier_selected","target":[4.333743842364533,3.869950738916257],"cost":-9.950720046166204,"path_length_m":3.328041404110777},"post270_last_t":344.0}},"model":{"calls":3,"provider_receipts":3,"prompt_tokens":4615,"completion_tokens":153,"known_cost_usd":0.00046737000000000005,"missing_cost_calls":0,"response_latency_sum_s":13.787782},"raw":"azure:/home/ugrp/ugrp-sim/runs/e2e12-b-s61002","arm_raw":"oracle-codex:/home/ubuntu/ugrp-archive/runs/native-e2e12-b-s61002","result_sha256":"92cdc2d417b8b3d9c67717a27e869d604ae00f086a76c34c58ea94b82db73b71","archive":{"files":5266,"hash_matches":5266,"inventory_sha256":"199a4aa01c80b6054c0a2d3aa87475592d8abe1e5d30ee0db1ace53cbe440bf7"},"initial_check":{"passed":true,"elapsed_since_submit_s":210.46949315071106},"outcomes":{"LLM_operated":true,"own_map_completed":false,"start_to_finish_transport":false},"evaluation":{"r1":{"map_error_m":{"max":8.971823426240855,"median":1.9571184316905312},"control_error_m":{"max":6.175388969637637,"median":0.4775324025661364},"map_frame_jump_m":{"max":0.5282307231724874,"median":0.012923413773167212,"over_5cm":12,"over_20cm":2},"control_frame_jump_m":{"max":0.012923413773168932,"median":0.012923413773167202,"over_5cm":0,"over_20cm":0},"stall_segments":10,"stall_duration_s":5.599999999999966,"longest_stalls":[{"t0":264.2,"t1":265.8,"duration_s":1.6000000000000227,"expected_m":0.10338731018533803,"actual_path_m":0.011868504195876092},{"t0":258.2,"t1":258.8,"duration_s":0.6000000000000227,"expected_m":0.038770241319502005,"actual_path_m":0.005748465029042907},{"t0":259.2,"t1":259.8,"duration_s":0.6000000000000227,"expected_m":0.038770241319502,"actual_path_m":0.006188294070105611}]},"r2":{"map_error_m":{"max":4.322273317111418,"median":2.72257487159423},"control_error_m":{"max":5.253456878663381,"median":3.599912467806607},"map_frame_jump_m":{"max":0.13548605643030268,"median":0.012923413773167271,"over_5cm":4,"over_20cm":0},"control_frame_jump_m":{"max":0.012923413773168586,"median":0.012923413773167228,"over_5cm":0,"over_20cm":0},"stall_segments":127,"stall_duration_s":182.79999999999998,"longest_stalls":[{"t0":11.0,"t1":41.0,"duration_s":30.0,"expected_m":1.9385120659751138,"actual_path_m":0.2015068078941425},{"t0":279.8,"t1":304.0,"duration_s":24.19999999999999,"expected_m":1.563733066553237,"actual_path_m":0.18718713918645877},{"t0":200.2,"t1":211.6,"duration_s":11.400000000000006,"expected_m":0.7366345850705384,"actual_path_m":0.10390251341600322}]}},"B_candidate_wall_bracket_s":[45.434397021999985,54.750293333]}
+  ]
+}

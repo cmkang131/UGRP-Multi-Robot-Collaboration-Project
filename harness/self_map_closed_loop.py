@@ -45,14 +45,14 @@ def own_measurement(rgb,servo):
     return points
 
 
-def remembered_goal(snapshot,*,t,frame_id,frame_sha256):
-    assert snapshot['robot_id']=='r3' and snapshot['coordinate_frame']=='r3/own_odom'
+def remembered_goal(snapshot,*,t,frame_id,frame_sha256,robot_id='r3'):
+    assert snapshot['robot_id']==robot_id and snapshot['coordinate_frame']==f'{robot_id}/own_odom'
     confirmed=[c for c in snapshot['candidates'] if c['state']=='locally_confirmed_region']
     if not confirmed:return None
     c=min(confirmed,key=lambda c:(c['confirmed_t'],c['id']))
     return dict(entity=dict(kind='floor_zone',id='B'),center_m=copy.deepcopy(c['center_m']),
         source='own',detector='floor_color_v3',candidate_id=c['id'],
-        obs_id=f'r3-obs-{frame_id:06d}',t_sim=float(t),frame_sha256=frame_sha256,
+        obs_id=f'{robot_id}-obs-{frame_id:06d}',t_sim=float(t),frame_sha256=frame_sha256,
         observations=c['observations'],first_t=c['first_t'],bounds_m=copy.deepcopy(c['bounds_m']),
         confidence=c['confidence'],partial_extent=True)
 

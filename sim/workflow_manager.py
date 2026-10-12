@@ -636,7 +636,7 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
             status, failure = "timeout", f"timeout after {timeout}s"
             _signal_owned_group(child, signal.SIGTERM)
             try:
-                child.wait(timeout=3)
+                child.wait(timeout=float(row.get('shutdown_grace_s',3)))
             except subprocess.TimeoutExpired:
                 _signal_owned_group(child, signal.SIGKILL)
                 child.wait()
@@ -648,7 +648,7 @@ def run_workflow(root: Path, workflow_id: str, argv: list[str], *, inputs: list[
         if child is not None and child.poll() is None:
             _signal_owned_group(child, signal.SIGTERM)
             try:
-                child.wait(timeout=3)
+                child.wait(timeout=float(row.get('shutdown_grace_s',3)))
             except subprocess.TimeoutExpired:
                 _signal_owned_group(child, signal.SIGKILL)
                 child.wait()

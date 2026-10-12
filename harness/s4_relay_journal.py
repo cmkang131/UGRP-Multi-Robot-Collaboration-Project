@@ -14,13 +14,14 @@ from harness.s4_call_recovery import server_delay
 
 
 class Journal:
-    def __init__(self, root, *, clock=time.time, retry_rate_limits=True):
+    def __init__(self, root, *, clock=time.time, retry_rate_limits=True, cache_errors=True):
         self.root = Path(root)
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = threading.Lock()
         self.pending = {}
         self.clock = clock
         self.retry_rate_limits = retry_rate_limits
+        self.cache_errors = cache_errors
 
     def write(self, path, value):
         temporary = path.with_suffix('.new')
@@ -71,7 +72,10 @@ class Journal:
                 record['retry_at'] = self.clock() + max(2., server_delay(
                     {'Retry-After': retry_after}, response.decode(), self.clock()))
             with self.lock:
-                self.write(path, record)
+                if self.cache_errors or 200 <= status < 300:
+                    self.write(path, record)
+                else:  # failed upstream call is not a result: a client retry re-forwards
+                    path.unlink(missing_ok=True)
             return value, 'forwarded'
         finally:
             with self.lock:

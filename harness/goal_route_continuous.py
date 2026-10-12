@@ -115,8 +115,10 @@ class StationaryPitch:
 
 
 class GoalRoute:
-    def __init__(self,explorer,*,heading_mode='path_tangent_v1',heading_host='off',dev_light=False):
+    def __init__(self,explorer,*,heading_mode='path_tangent_v1',heading_host='off',dev_light=False,leg_budget_s=270.):
         if heading_mode not in ('off','path_tangent_v1'):raise ValueError('UNKNOWN_HEADING_MODE')
+        if not math.isfinite(leg_budget_s) or leg_budget_s<=0:raise ValueError('FINITE_LEG_BUDGET_REQUIRED')
+        self.leg_budget_s=float(leg_budget_s)
         self.explorer=explorer;self.robot_id=explorer.robot_id;self.started=explorer.started
         self.dev_light=dev_light;self.heading_mode=heading_mode;self.stage='explore';self.done=False;self.declared=False
         from harness.goal_route_heading import Host,OPTION as HOST
@@ -149,6 +151,12 @@ class GoalRoute:
 
     def event(self,t,reason,**data):self.events.append(dict(t=float(t),reason=reason,**data))
 
+    # E2E overrides only these own-input hooks; the default path is unchanged.
+    def pose_covariance(self):return self.explorer.memory.self_map.odom.covariance
+    def own_rgb_received(self,**kwargs):pass
+    def arrival_evidence(self,name,t,frame_id,pose,evidence):return evidence
+    def return_evidence(self,sample,near):return near
+
     def _entity(self,name,center,t,frame_id,sha,**evidence):
         if name not in self.entities:
             self.entities[name]=dict(kind=name,center_m=list(center),first_t=t,first_frame_id=frame_id,
@@ -164,7 +172,7 @@ class GoalRoute:
         self.entities[name]['last_t']=t
 
     def _localize(self,sample,t):
-        cov=self.explorer.memory.self_map.odom.covariance
+        cov=np.asarray(self.pose_covariance())
         uncertain=math.sqrt(float(np.linalg.eigvalsh(cov[:2,:2]).max()))>=.15 or math.sqrt(max(0,cov[2,2]))>=math.radians(5)
         if not uncertain:self.tracking_blocked=False
         wanted=None
@@ -211,6 +219,7 @@ class GoalRoute:
             lower=0 if self.labels is None else int(np.count_nonzero(self.labels[2*self.labels.shape[0]//3:]))
             evidence=fresh and lower>=self.explorer.goal.options.min_pixels
         else:evidence=box_visible
+        evidence=self.arrival_evidence(name,t,frame_id,pose,evidence)
         self.streak=self.streak+1 if near and evidence else 0
         if self.streak<5:return
         self.reached[name]=dict(t=t,frame_id=frame_id,pose=pose.tolist(),node=self.graph.anchor)
@@ -242,7 +251,7 @@ class GoalRoute:
             return cmd,trace
         cmd,trace=self.explorer.receive(robot_id=robot_id,t=t,frame_id=frame_id,rgb=rgb,servo=servo,observation=observation)
         g=self.explorer.memory.self_map
-        sample=own_sample(trace,observation,rgb=rgb,frame_sha256=frame_sha256,covariance=g.odom.covariance)
+        sample=own_sample(trace,observation,rgb=rgb,frame_sha256=frame_sha256,covariance=self.pose_covariance())
         self._localize(sample,t)
         pose=np.asarray(sample['pose'])
         if not self.graph.sealed:self.graph.observe(sample)
@@ -251,7 +260,7 @@ class GoalRoute:
         if features:
             self.cues.append(dict(t=t,frame_id=frame_id,pose=pose.tolist(),features=features,source='own'))
         self.inputs.append(dict(t=t,frame_id=frame_id,sha256=frame_sha256,own_range=copy.deepcopy(own_range)))
-        b=remembered_goal(trace['goal'],t=t,frame_id=frame_id,frame_sha256=frame_sha256)
+        b=remembered_goal(trace['goal'],t=t,frame_id=frame_id,frame_sha256=frame_sha256,robot_id=self.robot_id)
         if b is not None and 'B' not in self.reached:
             self._entity('B',b['center_m'],t,frame_id,frame_sha256,observation=b)
         boxes=self.detect_boxes(rgb,servo);box_visible=False
@@ -262,16 +271,17 @@ class GoalRoute:
             self.box_track=center;box_visible=True
             if self.box_count>=3 and 'box' not in self.reached:self._entity('box',center,t,frame_id,frame_sha256,observation=box)
         else:self.box_count=0
+        self.own_rgb_received(t=t,frame_id=frame_id,rgb=rgb,servo=servo,sample=sample)
         if self.stage!='return':
             self._select(t);self._arrival(t,frame_id,pose,box_visible);self._select(t)
-        if t-self.leg_start>=270:
-            self.done=True;self.stage='budget_exhausted';self.event(t,'leg_budget_exhausted',reached=list(self.reached),active=self.active)
+        if t-self.leg_start>=self.leg_budget_s:
+            self.done=True;self.stage='budget_exhausted';self.event(t,'leg_budget_exhausted',reached=list(self.reached),active=self.active,leg_budget_s=self.leg_budget_s)
         target=None;nav=self.navigator;shared_used=False
         if self.stage=='approach':target=np.asarray(self.entities[self.active]['center_m'])
         elif self.stage=='return':
             target=np.asarray(self._return_target(pose))
             near=math.dist(pose[:2],self.graph.nodes[0]['pose'][:2])<=.20 and self.cursor>=len(self.route['samples'])
-            self.streak=self.streak+1 if near else 0
+            self.streak=self.streak+1 if self.return_evidence(sample,near) else 0
             if self.streak>=5:
                 self.done=self.declared=True;self.stage='declared';self.event(t,'return_start_declared',pose=pose.tolist())
         costmap=from_observed_grid(self.explorer.grid,self.explorer.pose,self.explorer.latest,set())
@@ -346,7 +356,7 @@ class GoalRoute:
             declared_goal='B' in self.reached,declared_return=self.declared,tracking_reset=False,
             route=dict(nodes=len(self.graph.nodes),edges=len(self.graph.edges),cursor=self.cursor,
                 length_m=None if self.route is None else self.route['length_m'],matches=len(self.matches)),
-            sigma_xy=math.sqrt(float(np.linalg.eigvalsh(g.odom.covariance[:2,:2]).max())))
+            sigma_xy=math.sqrt(float(np.linalg.eigvalsh(np.asarray(self.pose_covariance())[:2,:2]).max())))
         self.last_trace=copy.deepcopy(trace)
         return cmd,trace
 

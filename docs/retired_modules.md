@@ -227,6 +227,12 @@ RGB 구간 출력 누락·S3 종료 검사·동결 adapter Python 지문 검증�
 ## 감사 기록
 
 [작업 기록과 검증 결과](../experiments/2026-10-09-module-retirement/README.md). DRAFT PR이며 감독·사용자 확인 전 병합 금지.
+## speedctrl2 종료 기록 보완 (2026-10-10)
+
+`controller-replay-abba` 1.2.0과 `controller-replay-profile` 1.3.0의 새 실행은
+1.3.0/1.4.0으로 대체한다. 기존 raw는 보존하며 정상 제어기 수학은 동일하다.
+TERM/HUP 실패 기록과 현재 lease 신원 확인을 추가했다. SIGTERM으로 미완료인
+`speedctrl2-20261010-v2`를 완료로 승계하지 않는다.
 
 - 2026-10-09 S3 준비용 `zone-s3-host-heading-v144` / workflow7.37.0: 물리 실행0·heading 의존성 미승인 상태에서 퇴역. 사용자 새 최대+1 지시에 따라 `zone-s3-host-heading-v146` /7.39.0으로 대체; 계획 원본은 `experiments/2026-10-09-s3-no-prior/s3next/registration.json`과89357a64에 보존. 과거v142 실행과 원본은 유지.
 
@@ -235,13 +241,13 @@ RGB 구간 출력 누락·S3 종료 검사·동결 adapter Python 지문 검증�
 - 2026-10-10 S3 `zone-s3-odometry-v150` / `zone-s3-consistency-v151`는 원본 SHA `4c9eb3aa` / `3ec2d781`와 raw를 보존하는 과거 DEV 실행이다. 새 실행은 문 임대·자기 RGB 정렬의 `zone-s3-recovery-v152` /7.45.0을 사용한다. PF 다양성 후보는 저장 재생에서 미채택되어 off를 유지한다. 과거 번들의 봉인은 완화하지 않는다.
 ## speedctrl2 종료 기록 보완 (2026-10-10)
 
-`controller-replay-abba` 1.2.0과 `controller-replay-profile` 1.3.0의 새 실행은
-1.3.0/1.4.0으로 대체한다. 기존 raw는 보존하며 정상 제어기 수학은 동일하다.
-TERM/HUP 실패 기록과 현재 lease 신원 확인을 추가했다. SIGTERM으로 미완료인
-`speedctrl2-20261010-v2`를 완료로 승계하지 않는다.
+- 2026-10-11 S4 `zone-s4-pair-live-v173` /7.66.0 명령표는 interpreter 진입 전 HOST EXIT127 8/8로 퇴역한다(물리·모델0). 소스 `95a258dc8245df3e045ff107e679ac1d19466a50`와 첫 plan.json·raw는 s4live8 기록에 보존한다. 실제 모델·물리 비교는 가상환경 경로를 명시한 v174 /7.67.0, 소스 `7b25757369d0a069d9c5fa47d916caec35681382`이다.
 
+- 2026-10-11: E2E `e2e-rpp-lookahead-v196 / 7.89.0` (`65ddd09d`)는 boolean `--dev-light`를 값 필수 항목으로 등록하여 8/8 HOST_ERROR(물리 진입 0)였다. 카탈로그 바이트를 보존하고 `e2e-rpp-lookahead-v197 / 7.90.0`으로 대체한다. [기록](../experiments/2026-10-11-e2e10-rpp-lookahead/summary.json).
 2026-10-11: #425는 #416 `6af2afa4`를 반영한 S4 소비자를 v191 / 7.84.0으로 별도 봉인한다. 미실행 v189/v190 등록·계약·실행기·workflow·seal은 원래 SHA의 바이트로 퇴역 목록에 보존하며 결과를 승계하지 않는다. S3/S4 런타임의 `min_command_contract=on_v1`, 공통 기본 off를 유지한다. [기록](../experiments/2026-10-11-pr425-main-sync/summary.json).
 
 2026-10-12: #425 main 동기화: #416 병합 `eebb2490`의 v193 / 7.86.0 등록·봉인·퇴역 기록은 원본 바이트로 보존한다. 미병합·실행 0회의 v191 / 7.84.0은 `00418638` 원본 6파일(계약·실행기·workflow·등록·봉인·퇴역 원장)을 퇴역 목록에 보존하고 S4 소비자 차이를 v195 / 7.88.0으로 재등록했다. PR433의 v194 / 7.87.0 예약을 확인했다. S3 전용 가드와 공통 `min_command_contract` 기본 off를 유지하며 새 실행 결과를 승계하지 않는다. [기록](../experiments/2026-10-11-pr425-main-sync/summary.json).
 
 2026-10-12: #425 후속 P2 정리로 v193 / 7.86.0을 퇴역한다. 등록 커밋 `cadf4da8`과 #416 병합 `eebb2490`의 봉인 런타임 소스 433개는 동일하지만, #425에서 계약·실행기·`harness/zone_study_llm_driver.py`·`sim/zone_s3_no_prior.py` 4개가 변경되어 기존 workflow ID로 v195 번들이 생성된다. 앞선 보존은 등록·봉인·퇴역 원장 기록 3파일에 한정되며 런타임 보존을 뜻하지 않는다. `eebb2490`의 계약·실행기·workflow·등록·봉인·퇴역 원장 6파일을 [퇴역 목록](../experiments/2026-10-11-ci-bundle-reregistration/retired-bundles.json)의 `retired-bundle/v193/`에 원본 바이트와 sha256으로 보존하고, 현재 workflow 등록을 제거했다. 대체는 `zone-s3-recovery-v195` / 7.88.0이며 과거 결과를 승계하지 않는다. [검증 범위](../experiments/2026-10-12-retire-v193/summary.json).
+
+2026-10-12: PR #433 병합으로 zone-s3-recovery-v195를 퇴역하고 zone-s3-recovery-v209 / 7.102.0으로 별도 등록한다. 원본 등록·봉인·실행기와 전체 런타임 해시는 `experiments/2026-10-12-merge-train/pr433/summary.json`에 보존하며 실행 결과는 승계하지 않는다.
