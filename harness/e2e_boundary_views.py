@@ -279,7 +279,9 @@ def install(goal, option='off', *, retry='off', coverage='off'):
     goal.explorer.navigator.option = option
     if option == STANDOFF_OPTION:
         from harness.e2e_b_standoff import plan_standoffs
-        views, _, _ = plan_standoffs(top=100)  # static map + fixed camera only; one-time, ~9 s
+        from harness.e2e_speed5 import ACTIVE, plan_views
+        if ACTIVE.get() != 'off': views = plan_views()
+        else: views, _, _ = plan_standoffs(top=100)
         goal.explorer.navigator.standoff = [v['pose'] for v in views]
     goal.explorer.navigator.retry_option = retry
     goal.explorer.navigator.coverage_option = coverage

@@ -77,3 +77,30 @@ def test_registered_bundle_seeds_and_runtime():
     with pytest.raises(ValueError):bundle('a'*40,61013,'study_gemma4_31b_v1',**options())
     b['speed4']['rbpf_particles']=99
     with pytest.raises(ValueError):require_current(b,ROOT)
+
+
+def test_cached_static_views_and_fast_distance():
+    from harness.e2e_speed5 import plan_views,using
+    from harness.e2e_b_partial import rect_sd
+    views=plan_views();assert len(views)==85
+    altered=plan_views();altered[0]['pose'][0]=999
+    assert plan_views()[0]['pose'][0]!=999
+    points=np.random.default_rng(5).uniform(-2,2,(40,2))
+    old=rect_sd(points,(.3,.2),.37,(.4,.7))
+    with using('cache_v1'):new=rect_sd(points,(.3,.2),.37,(.4,.7))
+    np.testing.assert_array_equal(old,new)
+
+
+def test_speed5_registered_and_preserves_fit_quality():
+    from harness.e2e_runtime_registration import require_current
+    from harness.e2e_speed5 import using
+    from tests.test_e2e_b_partial import render
+    from harness.e2e_b_partial import detect_partial
+    b=bundle('a'*40,61001,'study_gemma4_31b_v1',**options(),speed5='lean_v1')
+    assert b['execution_bundle_id']=='e2e18-v217';require_current(b,ROOT)
+    with using('lean_v1'):
+        for center,yaw in [((.9,.45),0.),((1.,.5),.07),((.95,-.5),-.09)]:
+            got=detect_partial(render(np.array(center),yaw),SEARCH,(0,0,0))
+            assert len(got)==1 and valid_fit(got[0])
+            assert math.dist(got[0]['center_robot_m'],center)<.06
+        assert detect_partial(render(np.array([.9,0.]),0.),SEARCH,(0,0,0))==[]

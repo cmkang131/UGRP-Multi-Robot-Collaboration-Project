@@ -32,6 +32,14 @@ def board_half_extents():
 
 def rect_sd(points, center, yaw, half):
     """Signed distance (m) from points to a centred rectangle (negative inside)."""
+    from harness.e2e_speed5 import ACTIVE
+    if ACTIVE.get() != 'off':
+        # Broadcasting scalar components avoids an N*2 temporary at each grid pose.
+        c, s = math.cos(yaw), math.sin(yaw)
+        d = np.asarray(points, float)-center
+        ex = np.abs(c*d[...,0]+s*d[...,1])-half[0]
+        ey = np.abs(-s*d[...,0]+c*d[...,1])-half[1]
+        return np.hypot(np.maximum(ex,0),np.maximum(ey,0))+np.minimum(np.maximum(ex,ey),0)
     c, s = math.cos(yaw), math.sin(yaw)
     d = np.asarray(points, float)-center
     q = np.stack([c*d[..., 0]+s*d[..., 1], -s*d[..., 0]+c*d[..., 1]], axis=-1)
@@ -181,7 +189,9 @@ def detect_partial(rgb, servo, pose, *, diagnostics=None, board_half=None):
         if quad is not None:  # a complete quad belongs to the full-boundary stage
             if diagnostics is not None: diagnostics.setdefault('patches', []).append(dict(reason='full_quad_stage'))
             continue
-        fit, reason, stats = estimate(contour, servo, usable, board_half)
+        from harness.e2e_speed5 import ACTIVE
+        cfg = dict(CFG,interior_samples=80) if ACTIVE.get() == 'lean_v1' else CFG
+        fit, reason, stats = estimate(contour, servo, usable, board_half, cfg=cfg)
         if diagnostics is not None: diagnostics.setdefault('patches', []).append(dict(full_quad_reason=why, reason=reason, **stats))
         if fit is None: continue
         polygon = transform(np.asarray(fit['corners_robot_m']), pose)

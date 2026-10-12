@@ -15,6 +15,7 @@ from harness.e2e_goal_route import GoalRoute, attach
 from harness.e2e_setdown_relook import OwnRGBRelook
 from harness.self_odom_grid import transform
 from harness.e2e_exact_speedups import OFF, using
+from harness.e2e_speed5 import using as speed5_using
 from harness.e2e_speed4 import OFF as SPEED4_OFF, using as speed4_using
 
 
@@ -87,11 +88,12 @@ def beam_observer():
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',b_partial_accept='off',exact_speedups=OFF,vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed4=SPEED4_OFF):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',b_partial_accept='off',exact_speedups=OFF,vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed4=SPEED4_OFF,speed5='off'):
         self.exact_speedups=exact_speedups
         self.speed4=speed4
+        self.speed5=speed5
         self.robot_id=rid;self.study_options=options
-        with speed4_using(speed4):
+        with speed4_using(speed4), speed5_using(speed5):
             self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
                                 exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect,b_partial_accept=b_partial_accept,vo_floor_mask=vo_floor_mask,vo_rotation_policy=vo_rotation_policy,explore_deadlock=explore_deadlock,boundary_association=boundary_association,boundary_retry=boundary_retry,boundary_coverage=boundary_coverage)
         self.observe_beam=beam_observer()
@@ -102,7 +104,7 @@ class Robot:
         self.translation_commands=0
 
     def receive(self,obs,rgb):
-        with using(self.exact_speedups), speed4_using(self.speed4):
+        with using(self.exact_speedups), speed4_using(self.speed4), speed5_using(self.speed5):
             return self._receive(obs,rgb)
 
     def _receive(self,obs,rgb):
