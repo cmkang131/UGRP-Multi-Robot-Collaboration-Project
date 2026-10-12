@@ -32,6 +32,9 @@ def args(out):
             '--output', str(out), '--seed', '911']
 
 
+PRESERVED_SKILL = 'experiments/2026-10-12-merge-train/pr433/retired-v92/harness/zone_final_pair_skill.py'
+
+
 def test_schedule_archive_and_preserved_sources():
     record = v92.schedule_registration()
     raw = gzip.decompress((c.ROOT/v92.SCHEDULE).read_bytes())
@@ -48,7 +51,23 @@ def test_schedule_archive_and_preserved_sources():
         path: frozen['unchanged_sha256'][path] for path in imported_358['imported_sha256']}
     for path, digest in {**frozen['unchanged_sha256'], **imported['imported_sha256'],
                          **imported_358['imported_sha256']}.items():
-        assert c.base.sha(c.ROOT/path) == digest, path
+        # E2E adds an opt-in adapter to this shared source. Preserve V92's exact
+        # source separately; its original evidence/hash remains immutable.
+        preserved = PRESERVED_SKILL if path == 'harness/zone_final_pair_skill.py' else path
+        assert c.base.sha(c.ROOT/preserved) == digest, path
+
+
+@pytest.mark.parametrize('map_id', tuple(c.registry()['maps']))
+def test_e2e_off_preserves_v92_default_plan(map_id):
+    import runpy
+    from harness import zone_final_pair_skill as current
+    original = runpy.run_path(str(c.ROOT/PRESERVED_SKILL))
+    static, _, _ = c.resolve(map_id)
+    task = current.task(static)
+    expected = original['make_plan'](static, task['sheet'], task['target'])
+    assert current.make_plan(static, task['sheet'], task['target']) == expected
+    assert current.make_plan(static, task['sheet'], task['target'],
+                             e2e_own_inputs_v1='off') == expected
 
 
 def test_high_carry_only_measurement_with_floor_and_old_hover_preparation_only():

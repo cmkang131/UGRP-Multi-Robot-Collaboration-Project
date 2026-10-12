@@ -28,6 +28,7 @@ TEST_PATTERNS = (
     "tests/test_e2e_b_marker_detect.py",
     "tests/test_e2e_rgb_vo.py",
     "tests/test_e2e14_combo.py",
+    "tests/test_e2e_runtime_registration.py",
     "tests/test_e2e_s4_live.py",
     "tests/test_e2e_goal_route.py",
     "tests/test_e2e_dialogue.py",
@@ -73,6 +74,8 @@ TEST_PATTERNS = (
     "tests/test_self_wall_robust.py",
     "tests/test_self_wall_memory.py",
     "tests/test_coela_runtime_self_walls.py",
+    "tests/test_azure*.py",
+    "tests/test_storage_automation.py",
     "tests/test_s2_path_heading.py",
     "tests/test_path_heading_default.py",
     "tests/test_opencv_wall_robot_mask.py",
@@ -170,6 +173,7 @@ TEST_PATTERNS = (
     "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
     "tests/test_s4_live_stage.py",  # S4 stage admission and transport: stub model, fake physics
     "tests/test_gemma_fallback_proxy.py",  # Mac DEV fallback/quota/Keychain: fake API only
+    "tests/test_gemma_multi_key.py",  # Opt-in independent key buckets: fake API only
     "tests/test_s4_study_policy.py",  # English/event/quota policy: offline only
     "tests/test_s4_live5.py",  # opt-in frozen S3 pair integration, no physics/model
     "tests/test_s4_grip_r3.py",
@@ -417,6 +421,7 @@ TEST_PATTERNS = (
     "tests/test_navigation_evidence.py",
     "tests/test_navigation_temporal.py",
     "tests/test_ugrp_session.py",
+    "tests/test_storage_tools.py",
     "tests/test_sim_speed_tools.py",
     "tests/test_sim_speed_review2.py",
     "tests/test_sim_speed_review3.py",

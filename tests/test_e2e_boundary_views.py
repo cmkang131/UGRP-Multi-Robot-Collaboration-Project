@@ -151,3 +151,14 @@ def test_evaluator_clock_and_initial_frame_are_used_only_in_diagnostic(tmp_path)
     assert measured['max_candidate_rigid_reprojection_shift_m']<1e-12
     assert measured['max_capture_time_residual_s']==0
     assert rows[0]['pose_own_m']==[0,0,0] and rows[1]['pose_own_m']==[1,0,0]
+
+
+def test_repeated_waypoint_preserves_heading_and_terminal_rotation_check(monkeypatch):
+    seen=[]
+    def sweep(costmap,start,end):
+        seen.append((list(start),list(end)))
+        return abs(end[2]-np.pi)<1e-12
+    monkeypatch.setattr(m,'observed_sweep_clear',sweep)
+    assert m.observed_path_clear(object(),[0.,0.,np.pi],[[0.,0.],[0.,0.]],np.pi)
+    assert len(seen)==1 and seen[0][0][2]==np.pi
+    assert not m.observed_path_clear(object(),[0.,0.,np.pi],[[0.,0.],[0.,0.]],0.)
