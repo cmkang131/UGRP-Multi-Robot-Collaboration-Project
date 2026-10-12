@@ -11,7 +11,7 @@ import math
 
 import cv2
 import numpy as np
-from harness.e2e_exact_speedups import cells_enabled
+from harness.e2e_exact_speedups import cells_enabled, rays_enabled
 from scipy.ndimage import binary_dilation, distance_transform_edt, label
 
 from harness.self_odom_grid import transform
@@ -119,7 +119,12 @@ class ObservedGrid:
             p = np.asarray(points,float).reshape(-1,2)
             if not np.isfinite(p).all():
                 raise ValueError('NAV_INVALID_OBSERVATION')
-            groups.append({self.cell(v) for v in transform(p,pose)})
+            xy = transform(p,pose)
+            fast = None
+            if rays_enabled():
+                from harness.e2e_exact_speedups2 import cells as vector_cells
+                fast = vector_cells(self, xy)
+            groups.append(set(fast) if fast is not None else {self.cell(v) for v in xy})
         free, hit = groups
         for cells, delta, provenance in ((free-hit,math.log(.3/.7),self.floor_frames),
                                          (hit,math.log(.7/.3),self.wall_frames)):

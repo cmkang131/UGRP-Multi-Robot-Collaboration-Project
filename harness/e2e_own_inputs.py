@@ -13,7 +13,7 @@ import math
 
 from harness.zone_study_contract import ContractViolation, Vocabulary, channel_section, digest
 from harness import zone_study_prompts_ko as pk
-from harness.e2e_exact_speedups import OFF, ObservedIndex, cached_invalid_sha
+from harness.e2e_exact_speedups import OFF, ObservedIndex, cached_invalid_sha, lazy_scan_enabled
 
 OPTION = 'on_v1'
 SCHEMA = 'ugrp.e2e_own_inputs.v1'
@@ -42,6 +42,9 @@ def closed(value, keys, label):
 
 
 def scan(value, path='input'):
+    if lazy_scan_enabled():
+        from harness.e2e_exact_speedups2 import scan_lazy
+        return scan_lazy(value, path, forbidden=FORBIDDEN, violation=ContractViolation, original=scan)
     if isinstance(value, dict):
         for key, child in value.items():
             if key in FORBIDDEN:

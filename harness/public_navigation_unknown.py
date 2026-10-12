@@ -102,6 +102,16 @@ class UnknownCostmap(Costmap):
 def from_observed_grid(grid, pose, latest, static_hits):
     state,lo = grid.dense(pose,pad_m=1.)
     raw = np.where(state==0,255,np.where(state>0,254,0)).astype(np.uint8)
+    from harness.e2e_exact_speedups import costmap_writes_enabled
+    if costmap_writes_enabled():
+        from harness.e2e_exact_speedups2 import indexed_cells, STATS
+        live, fixed = indexed_cells(latest, lo, raw.shape), indexed_cells(static_hits, lo, raw.shape)
+        if live is not None and fixed is not None:
+            raw[live] = np.fromiter((254 if hit else 0 for hit in latest.values()), np.uint8, len(latest))
+            raw[fixed] = 254
+            STATS['costmap_fast'] += 1
+            return UnknownCostmap(raw,lo*grid.resolution,grid.resolution)
+        STATS['costmap_fallback'] += 1
     for cell,hit in latest.items():
         x,y = np.asarray(cell)-lo
         raw[y,x] = 254 if hit else 0

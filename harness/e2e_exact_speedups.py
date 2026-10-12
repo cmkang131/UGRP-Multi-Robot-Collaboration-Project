@@ -12,6 +12,12 @@ class Options:
     omit_discarded_copy: bool = False
     scalar_cells: bool = False
     geometry_cache: bool = False
+    # Round 2 (Refs #433): exact, default off; see harness/e2e_exact_speedups2.py.
+    vector_rays: bool = False
+    shared_wall_frontend: bool = False
+    lazy_scan_path: bool = False
+    vector_costmap_writes: bool = False
+    track_cell_tuples: bool = False
 
     def __post_init__(self):
         if any(type(v) is not bool for v in vars(self).values()):
@@ -31,6 +37,11 @@ def using(options):
 
 def cells_enabled():return _ACTIVE.get().scalar_cells
 def geometry_enabled():return _ACTIVE.get().geometry_cache
+def rays_enabled():return _ACTIVE.get().vector_rays
+def wall_frontend_enabled():return _ACTIVE.get().shared_wall_frontend
+def lazy_scan_enabled():return _ACTIVE.get().lazy_scan_path
+def costmap_writes_enabled():return _ACTIVE.get().vector_costmap_writes
+def track_cells_enabled():return _ACTIVE.get().track_cell_tuples
 
 
 def invalid_sha(value):
