@@ -95,7 +95,15 @@ class SkillsBodyGate(BodyGate):
 
     def menu_direct(self,rid,now,proposal):
         if self.tr.state not in ('mapping','align') or any(c.get('kind') in ('arm','look') for c in proposal):
-            return super().menu_direct(rid,now,proposal)
+            facts,_,_=self.facts(rid,now)
+            script=[(0.,copy.deepcopy(c)) for c in proposal]
+            duration=max([c.get('duration_s',0.) for c in proposal]+[.6])
+            menu={'re_observe':('Execute the planned own-camera observation/positioning skill, then inspect a fresh image. '+
+                                '; '.join(sem.effect_of(c) for c in proposal),('script',duration,script)),
+                  'wait_and_reobserve':('Hold still briefly to inspect a fresh own image before repositioning.',('script',1.,[]))}
+            safe=self.safe_menu(rid,now,menu,facts)
+            if facts['blocked_persistently'] and 're_observe' in safe:safe.pop('wait_and_reobserve',None)
+            return safe,'re_observe' if 're_observe' in safe else next(iter(safe)),facts
         facts,_,_=self.facts(rid,now)
         visual=facts['visual_category']
         fine=bool(self.tr.approach.get(rid,{}).get('fine'))

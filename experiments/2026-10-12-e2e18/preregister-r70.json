@@ -1,0 +1,32 @@
+{
+  "class_": "dev",
+  "pr": 461,
+  "seed": 61006,
+  "candidates": [
+    330,
+    331,
+    335,
+    336,
+    337
+  ],
+  "continuing_baselines": [
+    324,
+    325,
+    326,
+    327,
+    328,
+    329
+  ],
+  "planned_concurrency": 11,
+  "speed_gate": {
+    "sim_s": 30,
+    "max_wall_per_sim": 3.0
+  },
+  "criterion": [
+    "same-run actual paired grasp",
+    "fresh segment GO/ACK",
+    "actual start-to-B transport",
+    "LLM and own-map complete"
+  ],
+  "note": "Separate memory and body backends; no offline score counted as physical success; model cost missing means unknown."
+}

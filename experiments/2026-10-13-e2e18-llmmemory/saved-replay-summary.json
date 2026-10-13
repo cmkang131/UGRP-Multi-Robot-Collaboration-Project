@@ -1,0 +1,937 @@
+{
+  "schema": "ugrp.llm_memory.saved_replay.v1",
+  "research_result": false,
+  "scope": "Stored next-protocol-action proxy; not image grip correctness, full reply validation, live timing, or physical success",
+  "source_status": "Inherited uncommitted Claude prototype; not the final Codex candidate",
+  "provider": "openrouter_v1/google/gemma-4-31b-it/DeepInfra (inherited paid path; exact cost was not saved)",
+  "calls_this_analysis": 0,
+  "identical_control_requests": {
+    "old": 10,
+    "vote_ref": 10
+  },
+  "groups": {
+    "llmmemory-replay-v0/memory": {
+      "correct": 50,
+      "total": 100,
+      "completion_tokens_median": 53.0,
+      "wall_median_s": 3.9885,
+      "http_errors": 0
+    },
+    "llmmemory-replay-v0/memory_vote_ref": {
+      "correct": 60,
+      "total": 100,
+      "completion_tokens_median": 47.0,
+      "wall_median_s": 2.9305,
+      "http_errors": 0
+    },
+    "llmmemory-replay-v0/old": {
+      "correct": 15,
+      "total": 100,
+      "completion_tokens_median": 139.0,
+      "wall_median_s": 6.5105,
+      "http_errors": 0
+    },
+    "llmmemory-replay-v0/vote_ref": {
+      "correct": 40,
+      "total": 100,
+      "completion_tokens_median": 66.0,
+      "wall_median_s": 3.471,
+      "http_errors": 0
+    },
+    "llmmemory-replay-v1/memory": {
+      "correct": 68,
+      "total": 100,
+      "completion_tokens_median": 44.0,
+      "wall_median_s": 3.0890000000000004,
+      "http_errors": 0
+    },
+    "llmmemory-replay-v1/memory_vote_ref": {
+      "correct": 79,
+      "total": 100,
+      "completion_tokens_median": 42.0,
+      "wall_median_s": 2.9364999999999997,
+      "http_errors": 0
+    }
+  },
+  "per_case": {
+    "llmmemory-replay-v0/memory": [
+      {
+        "run": "e2e18-v304-s61006-r64",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v320-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0020-r2",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0021-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0023-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0024-r2",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0025-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0026-r2",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v322-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v323-s61006-r65",
+        "call_id": "call-0018-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      }
+    ],
+    "llmmemory-replay-v0/memory_vote_ref": [
+      {
+        "run": "e2e18-v304-s61006-r64",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v320-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0020-r2",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0021-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0023-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0024-r2",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0025-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0026-r2",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v322-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v323-s61006-r65",
+        "call_id": "call-0018-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      }
+    ],
+    "llmmemory-replay-v0/old": [
+      {
+        "run": "e2e18-v304-s61006-r64",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 5,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v320-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 4,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0020-r2",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0021-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0023-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0024-r2",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0025-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0026-r2",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v322-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 6,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v323-s61006-r65",
+        "call_id": "call-0018-r1",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      }
+    ],
+    "llmmemory-replay-v0/vote_ref": [
+      {
+        "run": "e2e18-v304-s61006-r64",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v320-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0020-r2",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0021-r1",
+        "expected": "GO",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0023-r1",
+        "expected": "GO",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0024-r2",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0025-r1",
+        "expected": "GO",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0026-r2",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v322-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v323-s61006-r65",
+        "call_id": "call-0018-r1",
+        "expected": "continue",
+        "correct": 0,
+        "total": 10
+      }
+    ],
+    "llmmemory-replay-v1/memory": [
+      {
+        "run": "e2e18-v304-s61006-r64",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v320-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0020-r2",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0021-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0023-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0024-r2",
+        "expected": "continue",
+        "correct": 8,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0025-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0026-r2",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v322-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v323-s61006-r65",
+        "call_id": "call-0018-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      }
+    ],
+    "llmmemory-replay-v1/memory_vote_ref": [
+      {
+        "run": "e2e18-v304-s61006-r64",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v320-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0020-r2",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0021-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0023-r1",
+        "expected": "GO",
+        "correct": 0,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0024-r2",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0025-r1",
+        "expected": "GO",
+        "correct": 9,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0026-r2",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v322-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      },
+      {
+        "run": "e2e18-v323-s61006-r65",
+        "call_id": "call-0018-r1",
+        "expected": "continue",
+        "correct": 10,
+        "total": 10
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v304-s61006-r64__call-0014-r1__memory.json",
+      "sha256": "5181e041db30527966f901d47c76c9dc25803a8d4abac6bedee4c366f1830c0d",
+      "bytes": 24130
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v304-s61006-r64__call-0014-r1__memory_vote_ref.json",
+      "sha256": "1ccde647de6b5a5341f34b61091b186bd3b4e07717e18cb0e8054ff8fe6efa7e",
+      "bytes": 24222
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v304-s61006-r64__call-0014-r1__old.json",
+      "sha256": "12cb689f5e0546fbd88daa6a7dfcf4b2b91e4e4bf72ca4e219c5842f55b04a67",
+      "bytes": 23367
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v304-s61006-r64__call-0014-r1__vote_ref.json",
+      "sha256": "71f30490bb8078410d4d8e08be34b52c7d7b640ed5de943912095d1606f877b2",
+      "bytes": 23459
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v320-s61006-r65__call-0014-r1__memory.json",
+      "sha256": "5181e041db30527966f901d47c76c9dc25803a8d4abac6bedee4c366f1830c0d",
+      "bytes": 24130
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v320-s61006-r65__call-0014-r1__memory_vote_ref.json",
+      "sha256": "1ccde647de6b5a5341f34b61091b186bd3b4e07717e18cb0e8054ff8fe6efa7e",
+      "bytes": 24222
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v320-s61006-r65__call-0014-r1__old.json",
+      "sha256": "12cb689f5e0546fbd88daa6a7dfcf4b2b91e4e4bf72ca4e219c5842f55b04a67",
+      "bytes": 23367
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v320-s61006-r65__call-0014-r1__vote_ref.json",
+      "sha256": "71f30490bb8078410d4d8e08be34b52c7d7b640ed5de943912095d1606f877b2",
+      "bytes": 23459
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0020-r2__memory.json",
+      "sha256": "22f09d4be0a6e985b8a2664c54cea8ef324fd6cc63302941741da5f86474cc13",
+      "bytes": 23587
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0020-r2__memory_vote_ref.json",
+      "sha256": "21e1436033f24dfbcc41d9f31399d0c18784b3af753b95bedd5bcbf772f00fc8",
+      "bytes": 23679
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0020-r2__old.json",
+      "sha256": "afd3cdec38a71b57f235238de9d89e980984792776533cc604188aa0efb2ed72",
+      "bytes": 22610
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0020-r2__vote_ref.json",
+      "sha256": "c3793a5d40fa549a2259ebe4b4c18aeae3c03586ef30b59540e156b722626786",
+      "bytes": 22702
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0021-r1__memory.json",
+      "sha256": "f0249841638d0511aa3eef0ed619ba179e979413d34f2c106c42532fdcc6a6fd",
+      "bytes": 23573
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0021-r1__memory_vote_ref.json",
+      "sha256": "c5e2941bb61e079f50689e54ad24aa1564103020749fad5c3106c1e45845e7dd",
+      "bytes": 23665
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0021-r1__old.json",
+      "sha256": "a5ce23e79fa05556d4acb14c206ea3e7658de115b307b925fe44d86323b2b459",
+      "bytes": 22275
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0021-r1__vote_ref.json",
+      "sha256": "6b8b035dcc013ad3641cdf2fd80c15b934f934a8afe5c605f271f8f74a16bff4",
+      "bytes": 22367
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0023-r1__memory.json",
+      "sha256": "035ad17c47499e0866285ef6fb22afe3557b8965f2ea4f61c98978cdc76e1358",
+      "bytes": 23824
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0023-r1__memory_vote_ref.json",
+      "sha256": "08b9c3b08235c96308dfbf5a1d34a547786d3f4d363ef484755fac3465ff8a0b",
+      "bytes": 23916
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0023-r1__old.json",
+      "sha256": "c2a5b1e38a8f3dedd93b49473e522a77684d4cf08ff5a4c5657c16640e829519",
+      "bytes": 22455
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0023-r1__vote_ref.json",
+      "sha256": "7d78347f30275ed3966e0d451691226263e454c48a9306d417ce5cee47cb96d9",
+      "bytes": 22547
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0024-r2__memory.json",
+      "sha256": "2406369f57d14e4004af7b25aeb17d990c40acd4e87dd0d6c5697a353acfa1c1",
+      "bytes": 22817
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0024-r2__memory_vote_ref.json",
+      "sha256": "7d57b18fe8f1689b1635f6258fdb74bb402960d22f1803e81dd2baf0105b4666",
+      "bytes": 22909
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0024-r2__old.json",
+      "sha256": "45d97dbc863c86a7ed65cd6d5373e550f7cd52969cd92c40992d28748ebd2e67",
+      "bytes": 21765
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0024-r2__vote_ref.json",
+      "sha256": "d8a7a288ff9ad41ebe5c5e2387fef87c96991d9398a91d639b2e96af31a89756",
+      "bytes": 21857
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0025-r1__memory.json",
+      "sha256": "73544454b68bc34326d42a1c76a54523a791031889de86f6c6e121533c8d9735",
+      "bytes": 24203
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0025-r1__memory_vote_ref.json",
+      "sha256": "ee6b269ac6729be572392c85c94e6e17dedff46c0fa52a70eb1125c73fc95376",
+      "bytes": 24295
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0025-r1__old.json",
+      "sha256": "20a4bfe53f04d476f0d715223d8e13e4d131407469462bdb2dfc694fbf218051",
+      "bytes": 22711
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0025-r1__vote_ref.json",
+      "sha256": "dd6a85eec703d798c65a94b6801888aeb005560a7add538f957966a5307f50e6",
+      "bytes": 22803
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0026-r2__memory.json",
+      "sha256": "7019a0ae98816fdbcf40dfaa09f22bdcb013e8c86feaa1aa4eadc28575b95c9d",
+      "bytes": 23045
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0026-r2__memory_vote_ref.json",
+      "sha256": "93d206890419d8252b5c8db128b5389c2f39aa2a10f627c49a05cdcf14ecb744",
+      "bytes": 23137
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0026-r2__old.json",
+      "sha256": "02e8148660737e1daf05ee0a41d7f3459d3cd8dfad9cd689d38103a74598b431",
+      "bytes": 21757
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v321-s61006-r65__call-0026-r2__vote_ref.json",
+      "sha256": "e789288b479d3647311cee4823967fe2b0690bb1973ab5dd57b53de2552895c8",
+      "bytes": 21849
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v322-s61006-r65__call-0014-r1__memory.json",
+      "sha256": "5181e041db30527966f901d47c76c9dc25803a8d4abac6bedee4c366f1830c0d",
+      "bytes": 24130
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v322-s61006-r65__call-0014-r1__memory_vote_ref.json",
+      "sha256": "1ccde647de6b5a5341f34b61091b186bd3b4e07717e18cb0e8054ff8fe6efa7e",
+      "bytes": 24222
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v322-s61006-r65__call-0014-r1__old.json",
+      "sha256": "12cb689f5e0546fbd88daa6a7dfcf4b2b91e4e4bf72ca4e219c5842f55b04a67",
+      "bytes": 23367
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v322-s61006-r65__call-0014-r1__vote_ref.json",
+      "sha256": "71f30490bb8078410d4d8e08be34b52c7d7b640ed5de943912095d1606f877b2",
+      "bytes": 23459
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v323-s61006-r65__call-0018-r1__memory.json",
+      "sha256": "1d3994020f61f1542d5462ad0e6b0f242e175c997b890d9be8cb0c5aec631682",
+      "bytes": 24567
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v323-s61006-r65__call-0018-r1__memory_vote_ref.json",
+      "sha256": "fca2523dae71a3944b12105ddd5031d195d73559e09a546d23f3abb91a81ed8e",
+      "bytes": 24659
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v323-s61006-r65__call-0018-r1__old.json",
+      "sha256": "94195bfea0b10d04654cd7e155bb91b210ac6506726994bbdbaf8fab61593bf4",
+      "bytes": 23610
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/e2e18-v323-s61006-r65__call-0018-r1__vote_ref.json",
+      "sha256": "e44914998976ad9afb425ae7d99c9e9b9c019d817fa4b653e3f62b09ed1ac3c9",
+      "bytes": 23702
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/manifest.json",
+      "sha256": "b26cf0db8fcfdc034733aac17e791a20a33056ea154f7c7b36e903d148872c1f",
+      "bytes": 12055
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v0/results.jsonl",
+      "sha256": "02d1e30e336862a65988865cb834fded5715004ce12b71d4ee0b2b2c9ac07a26",
+      "bytes": 179010
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v304-s61006-r64__call-0014-r1__memory.json",
+      "sha256": "8f67dcb88b110cc05ba28fb020092b39c4c686de39fd7d88a412e4d36ae5527b",
+      "bytes": 24153
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v304-s61006-r64__call-0014-r1__memory_vote_ref.json",
+      "sha256": "5c96380ec7f271a7fc7a75ce2f963531b25cb3296896243f262775bed498c98a",
+      "bytes": 24245
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v304-s61006-r64__call-0014-r1__old.json",
+      "sha256": "12cb689f5e0546fbd88daa6a7dfcf4b2b91e4e4bf72ca4e219c5842f55b04a67",
+      "bytes": 23367
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v304-s61006-r64__call-0014-r1__vote_ref.json",
+      "sha256": "71f30490bb8078410d4d8e08be34b52c7d7b640ed5de943912095d1606f877b2",
+      "bytes": 23459
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v320-s61006-r65__call-0014-r1__memory.json",
+      "sha256": "8f67dcb88b110cc05ba28fb020092b39c4c686de39fd7d88a412e4d36ae5527b",
+      "bytes": 24153
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v320-s61006-r65__call-0014-r1__memory_vote_ref.json",
+      "sha256": "5c96380ec7f271a7fc7a75ce2f963531b25cb3296896243f262775bed498c98a",
+      "bytes": 24245
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v320-s61006-r65__call-0014-r1__old.json",
+      "sha256": "12cb689f5e0546fbd88daa6a7dfcf4b2b91e4e4bf72ca4e219c5842f55b04a67",
+      "bytes": 23367
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v320-s61006-r65__call-0014-r1__vote_ref.json",
+      "sha256": "71f30490bb8078410d4d8e08be34b52c7d7b640ed5de943912095d1606f877b2",
+      "bytes": 23459
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0020-r2__memory.json",
+      "sha256": "dcca8c2519eee9744f659e6a31cc9995f754fd4eb22e6b7c120d87cd6f6f0936",
+      "bytes": 23633
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0020-r2__memory_vote_ref.json",
+      "sha256": "ff63834844d79167b0aa216e82424bf57bef84701121e8a29bbbcdfa947e7f20",
+      "bytes": 23725
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0020-r2__old.json",
+      "sha256": "afd3cdec38a71b57f235238de9d89e980984792776533cc604188aa0efb2ed72",
+      "bytes": 22610
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0020-r2__vote_ref.json",
+      "sha256": "c3793a5d40fa549a2259ebe4b4c18aeae3c03586ef30b59540e156b722626786",
+      "bytes": 22702
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0021-r1__memory.json",
+      "sha256": "94a472d86b45efccc3e2abfc03e90c00115eb23a329ed11c5cc962916d067648",
+      "bytes": 23619
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0021-r1__memory_vote_ref.json",
+      "sha256": "112fcd1f132333c0362488f00a976485729063101ef70af07a1500ddbf08a8d5",
+      "bytes": 23711
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0021-r1__old.json",
+      "sha256": "a5ce23e79fa05556d4acb14c206ea3e7658de115b307b925fe44d86323b2b459",
+      "bytes": 22275
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0021-r1__vote_ref.json",
+      "sha256": "6b8b035dcc013ad3641cdf2fd80c15b934f934a8afe5c605f271f8f74a16bff4",
+      "bytes": 22367
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0023-r1__memory.json",
+      "sha256": "8bc0611686ac67b5f1836cc94fcec012b3bdf66e7be271e0577777dba0c13632",
+      "bytes": 23893
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0023-r1__memory_vote_ref.json",
+      "sha256": "69d7788514b716fc55052dc72dab077ee1ad31325e1da66d8795cf5ad277cb64",
+      "bytes": 23985
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0023-r1__old.json",
+      "sha256": "c2a5b1e38a8f3dedd93b49473e522a77684d4cf08ff5a4c5657c16640e829519",
+      "bytes": 22455
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0023-r1__vote_ref.json",
+      "sha256": "7d78347f30275ed3966e0d451691226263e454c48a9306d417ce5cee47cb96d9",
+      "bytes": 22547
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0024-r2__memory.json",
+      "sha256": "e1bcf22dc7d98327ec0e0fc5dca3ca8bab8918da7a13e705b88b196e7a6e9a94",
+      "bytes": 22909
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0024-r2__memory_vote_ref.json",
+      "sha256": "2c40ff9eafabb80b08714de3babd5b2327ecf3434cb63cf5e540917e4ff1ae9b",
+      "bytes": 23001
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0024-r2__old.json",
+      "sha256": "45d97dbc863c86a7ed65cd6d5373e550f7cd52969cd92c40992d28748ebd2e67",
+      "bytes": 21765
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0024-r2__vote_ref.json",
+      "sha256": "d8a7a288ff9ad41ebe5c5e2387fef87c96991d9398a91d639b2e96af31a89756",
+      "bytes": 21857
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0025-r1__memory.json",
+      "sha256": "221e295bc777a7e35cb2c4dd71e4cbe35dddc2ee438ee512fc6a8938a4bb933f",
+      "bytes": 24295
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0025-r1__memory_vote_ref.json",
+      "sha256": "c8267d1f6ac9f31eef64123237601c80265b8fc2b427e834b86b5f1d1ae8cea1",
+      "bytes": 24387
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0025-r1__old.json",
+      "sha256": "20a4bfe53f04d476f0d715223d8e13e4d131407469462bdb2dfc694fbf218051",
+      "bytes": 22711
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0025-r1__vote_ref.json",
+      "sha256": "dd6a85eec703d798c65a94b6801888aeb005560a7add538f957966a5307f50e6",
+      "bytes": 22803
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0026-r2__memory.json",
+      "sha256": "af3fa010bf130dc84f1580cc013eb5617fc6d45ccb485e47532aec4bc14cf98f",
+      "bytes": 23160
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0026-r2__memory_vote_ref.json",
+      "sha256": "15683363918412f81d0b5d09185aba66767c46c98b1e6a34a04bc7f70190869f",
+      "bytes": 23252
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0026-r2__old.json",
+      "sha256": "02e8148660737e1daf05ee0a41d7f3459d3cd8dfad9cd689d38103a74598b431",
+      "bytes": 21757
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v321-s61006-r65__call-0026-r2__vote_ref.json",
+      "sha256": "e789288b479d3647311cee4823967fe2b0690bb1973ab5dd57b53de2552895c8",
+      "bytes": 21849
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v322-s61006-r65__call-0014-r1__memory.json",
+      "sha256": "8f67dcb88b110cc05ba28fb020092b39c4c686de39fd7d88a412e4d36ae5527b",
+      "bytes": 24153
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v322-s61006-r65__call-0014-r1__memory_vote_ref.json",
+      "sha256": "5c96380ec7f271a7fc7a75ce2f963531b25cb3296896243f262775bed498c98a",
+      "bytes": 24245
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v322-s61006-r65__call-0014-r1__old.json",
+      "sha256": "12cb689f5e0546fbd88daa6a7dfcf4b2b91e4e4bf72ca4e219c5842f55b04a67",
+      "bytes": 23367
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v322-s61006-r65__call-0014-r1__vote_ref.json",
+      "sha256": "71f30490bb8078410d4d8e08be34b52c7d7b640ed5de943912095d1606f877b2",
+      "bytes": 23459
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v323-s61006-r65__call-0018-r1__memory.json",
+      "sha256": "4c06a1ef77d9f45791683f8ca149544b20ae40d72b1db4cf354816df9e9502be",
+      "bytes": 24613
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v323-s61006-r65__call-0018-r1__memory_vote_ref.json",
+      "sha256": "4589366f1727b47f853763693596fee82f8e9130145463cb6b154eab70bf94b8",
+      "bytes": 24705
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v323-s61006-r65__call-0018-r1__old.json",
+      "sha256": "94195bfea0b10d04654cd7e155bb91b210ac6506726994bbdbaf8fab61593bf4",
+      "bytes": 23610
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/e2e18-v323-s61006-r65__call-0018-r1__vote_ref.json",
+      "sha256": "e44914998976ad9afb425ae7d99c9e9b9c019d817fa4b653e3f62b09ed1ac3c9",
+      "bytes": 23702
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/manifest.json",
+      "sha256": "cd4769211efd285e5f1c651ca1152753b73c5f7c41ad7ad9d4ccdb1e1b80e5bd",
+      "bytes": 12055
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-v1/results.jsonl",
+      "sha256": "f17b02c72e8c625cbfb211b7605545dae15d06bac5b73a837665deb40e98af41",
+      "bytes": 78846
+    }
+  ],
+  "final_candidate": {
+    "requests_prepared": 20,
+    "model_calls": 0,
+    "memory_source_sha256": "133c1a993559e649301e36926bd138a073b0fb8f21ec29a1c562dae22d77eacf",
+    "path": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-candidate-v3",
+    "delivery_receipts": "unavailable in inherited replay snapshot"
+  },
+  "pilot": {
+    "total": 40,
+    "used_in_formal_comparison": false,
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18-llmmemory/outputs/llmmemory-replay-r1/results-v0-1rep.jsonl",
+    "sha256": "86084a5b93debac55e70971ca2de8baa6b7564c36361b4740ef415953659f56e"
+  },
+  "evidence_pack": {
+    "path": "replay-text-evidence.json.zst",
+    "bytes": 15343,
+    "sha256": "a1a7ad0ba23a81f70cb0490bce4418c77e4152f73ac284c683f10a93af741b41",
+    "uncompressed_bytes": 864129,
+    "uncompressed_sha256": "4452a48e8e3b733f752a82a080c4e1ddacd155ea2473a95fd6f7e186d9b2b8f8",
+    "originals_preserved": true,
+    "request_count": 80,
+    "response_count": 640,
+    "pilot_count": 40
+  },
+  "superseded_unsubmitted_candidate": "outputs/llmmemory-candidate-v2 (kept; t/did field names before final sim_s/kind/choice)"
+}
