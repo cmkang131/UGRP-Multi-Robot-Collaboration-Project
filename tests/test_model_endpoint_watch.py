@@ -90,3 +90,11 @@ def test_missing_or_bad_price_is_reported():
     e = endpoint(); e['pricing'] = dict(prompt='0.000000021', completion=None, input_cache_read='abc')
     kinds = w.check(CONFIG, get=lambda m: dict(data=dict(endpoints=[e])))
     assert [k['kind'] for k in kinds] == ['price_missing', 'price_missing']
+
+
+def test_malformed_response_is_check_failure():
+    import pytest
+    for payload in (dict(data=[]), dict(data=dict(endpoints=[dict(status=0)])),
+                    dict(data=dict(endpoints=[dict(provider_name='Novita', pricing=[1])]))):
+        with pytest.raises(w.CheckFailed):
+            w.check(CONFIG, get=lambda m, p=payload: p)

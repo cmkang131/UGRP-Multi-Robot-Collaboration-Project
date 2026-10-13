@@ -45,33 +45,45 @@ def check(config, get=fetch):
             raise CheckFailed(f'{model}: HTTP {exc.code}') from exc
         except (urllib.error.URLError, OSError, KeyError, ValueError, TypeError) as exc:
             raise CheckFailed(f'{model}: {exc!r}') from exc
-        found = {e['provider_name']: e for e in data.get('endpoints', [])}
-        e = found.get(provider)
-        if e is None:
-            alerts.append(dict(kind='provider_stopped', model=model, provider=provider,
-                               remaining_providers=sorted(found)))
+        try:
+            alerts.extend(_judge(ep, data, tol))
+        except (KeyError, AttributeError, TypeError, ValueError) as exc:
+            raise CheckFailed(f'{model}: unexpected response shape {exc!r}') from exc
+    return alerts
+
+
+def _judge(ep, data, tol):
+    model, provider = ep['model'], ep['provider']
+    alerts = []
+    found = {e['provider_name']: e for e in data.get('endpoints', [])}
+    e = found.get(provider)
+    if e is None:
+        alerts.append(dict(kind='provider_stopped', model=model, provider=provider,
+                           remaining_providers=sorted(found)))
+        return alerts
+    if e.get('status', 0) != 0:
+        alerts.append(dict(kind='endpoint_status', model=model, provider=provider,
+                           status=e.get('status')))
+    base = ep['baseline_usd_per_million']
+    pricing = e.get('pricing') or {}
+    if not isinstance(pricing, dict):
+        raise TypeError(f'pricing is {type(pricing).__name__}')
+    missing = sorted(k for k in base if pricing.get(k) in (None, ''))
+    if missing:
+        alerts.append(dict(kind='price_missing', model=model, provider=provider, keys=missing))
+    up = {}
+    for k in base:
+        if k in missing:
             continue
-        if e.get('status', 0) != 0:
-            alerts.append(dict(kind='endpoint_status', model=model, provider=provider,
-                               status=e.get('status'), uptime_last_1d=e.get('uptime_last_1d')))
-        base = ep['baseline_usd_per_million']
-        pricing = e.get('pricing') or {}
-        missing = sorted(k for k in base if pricing.get(k) in (None, ''))
-        if missing:
-            alerts.append(dict(kind='price_missing', model=model, provider=provider, keys=missing))
-        up = {}
-        for k in base:
-            if k in missing:
-                continue
-            try:
-                now = float(pricing[k]) * 1e6
-            except (TypeError, ValueError):
-                alerts.append(dict(kind='price_missing', model=model, provider=provider, keys=[k]))
-                continue
-            if now > base[k] * (1 + tol):
-                up[k] = dict(baseline=base[k], now=round(now, 6))
-        if up:
-            alerts.append(dict(kind='price_increase', model=model, provider=provider, prices=up))
+        try:
+            now = float(pricing[k]) * 1e6
+        except (TypeError, ValueError):
+            alerts.append(dict(kind='price_missing', model=model, provider=provider, keys=[k]))
+            continue
+        if now > base[k] * (1 + tol):
+            up[k] = dict(baseline=base[k], now=round(now, 6))
+    if up:
+        alerts.append(dict(kind='price_increase', model=model, provider=provider, prices=up))
     return alerts
 
 
