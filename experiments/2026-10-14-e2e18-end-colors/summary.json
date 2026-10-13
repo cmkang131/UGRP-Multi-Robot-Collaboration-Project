@@ -1,16 +1,26 @@
 {
-  "status": "main_16_running",
+  "status": "recovery_cohort_running",
   "exception": "사용자 명시 예외(물체 외관 변경)",
   "unit_tests": {
-    "passed": 44,
+    "passed": 45,
     "files": 3
   },
   "physical": {
-    "n": 0,
-    "N": 0,
-    "not_run": true
+    "completed_primary": 12,
+    "resource_censored": 4,
+    "colored_opposite": 3,
+    "colored_N": 9,
+    "colored_both_held": 0,
+    "colored_first_attempt": 0,
+    "black_control_opposite": 1,
+    "black_control_both_held": 1,
+    "black_control_N": 3,
+    "recovery_running_N": 12
   },
-  "raw_locations": [],
+  "raw_locations": [
+    "azure3:~/ugrp-sim/runs/stage-color-*",
+    "oracle-codex:~/ugrp-archive/runs/native-stage-color-*"
+  ],
   "sha256": {
     "README.md": "d7a3ded36d87ca61a1277f08998bfd36d2edaa06ce64b49ac64a266a74ce0844",
     "stage-plan.json": "3312ed5a5e9470d1ce4fe0a6bcb603f50d83442dfda0450bb9c297b4c29e1feb",
@@ -47,5 +57,125 @@
   },
   "scene_invariance": "scene-invariance.json",
   "model_cost_usd": 0,
-  "vm": "azure3 only; others deallocated at start"
+  "vm": "azure3 only; others deallocated at start",
+  "cohort1": {
+    "groups": {
+      "primary_3_checkpoints/v419": {
+        "N": 3,
+        "opposite": 1,
+        "simultaneous_opposite": 1,
+        "relations": {
+          "opposite": 1,
+          "same": 2
+        },
+        "both_held": 1,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          33.60000000000002,
+          0,
+          188.0
+        ]
+      },
+      "primary_3_checkpoints/v420": {
+        "N": 3,
+        "opposite": 0,
+        "simultaneous_opposite": 0,
+        "relations": {
+          "unreached": 3
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      },
+      "primary_3_checkpoints/v421": {
+        "N": 3,
+        "opposite": 2,
+        "simultaneous_opposite": 2,
+        "relations": {
+          "unreached": 1,
+          "opposite": 2
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          221.2
+        ]
+      },
+      "primary_3_checkpoints/v422": {
+        "N": 3,
+        "opposite": 1,
+        "simultaneous_opposite": 2,
+        "relations": {
+          "unreached": 1,
+          "same": 1,
+          "opposite": 1
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          121.60000000000002
+        ]
+      },
+      "separate_seed_repeat_checkpoint377/v419": {
+        "N": 0,
+        "opposite": 0,
+        "simultaneous_opposite": 0,
+        "relations": {},
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      },
+      "separate_seed_repeat_checkpoint377/v420": {
+        "N": 0,
+        "opposite": 0,
+        "simultaneous_opposite": 0,
+        "relations": {},
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      },
+      "separate_seed_repeat_checkpoint377/v421": {
+        "N": 0,
+        "opposite": 0,
+        "simultaneous_opposite": 0,
+        "relations": {},
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      },
+      "separate_seed_repeat_checkpoint377/v422": {
+        "N": 0,
+        "opposite": 0,
+        "simultaneous_opposite": 0,
+        "relations": {},
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      }
+    },
+    "excluded_extra_seed_runs": 4,
+    "known_stall_stops": 3,
+    "full_raw_arm_verified": 16,
+    "raw_files": 27866
+  },
+  "recovery": {
+    "source_sha": "69f71de434c38f1bd38b8d0ffacda722b6ac9244",
+    "bundles": [
+      419,
+      423,
+      424,
+      425
+    ],
+    "gate_N": 12,
+    "main_N": 12,
+    "unit_tests_passed": 45,
+    "gate_verified": {
+      "N": 12,
+      "median_wall_per_sim": 2.3535849645666644,
+      "max_wall_per_sim": 2.5977201007,
+      "limit": 3.5
+    },
+    "initial_health": "cohort2-initial-health.json"
+  },
+  "video_review": "video-review.json"
 }

@@ -1,0 +1,892 @@
+{
+  "evaluation_only": true,
+  "first_attempt_definition": "conservative common criterion: held without any legacy acquisition entry or new color search view; raw legacy field retained separately",
+  "stance_offset_m": 0.4732,
+  "threshold_m": 0.25,
+  "groups": {
+    "primary_3_checkpoints/v419": {
+      "N": 3,
+      "opposite": 1,
+      "simultaneous_opposite": 1,
+      "relations": {
+        "opposite": 1,
+        "same": 2
+      },
+      "both_held": 1,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": [
+        33.60000000000002,
+        0,
+        188.0
+      ]
+    },
+    "primary_3_checkpoints/v420": {
+      "N": 3,
+      "opposite": 0,
+      "simultaneous_opposite": 0,
+      "relations": {
+        "unreached": 3
+      },
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": []
+    },
+    "primary_3_checkpoints/v421": {
+      "N": 3,
+      "opposite": 2,
+      "simultaneous_opposite": 2,
+      "relations": {
+        "unreached": 1,
+        "opposite": 2
+      },
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": [
+        221.2
+      ]
+    },
+    "primary_3_checkpoints/v422": {
+      "N": 3,
+      "opposite": 1,
+      "simultaneous_opposite": 2,
+      "relations": {
+        "unreached": 1,
+        "same": 1,
+        "opposite": 1
+      },
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": [
+        121.60000000000002
+      ]
+    },
+    "separate_seed_repeat_checkpoint377/v419": {
+      "N": 0,
+      "opposite": 0,
+      "simultaneous_opposite": 0,
+      "relations": {},
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": []
+    },
+    "separate_seed_repeat_checkpoint377/v420": {
+      "N": 0,
+      "opposite": 0,
+      "simultaneous_opposite": 0,
+      "relations": {},
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": []
+    },
+    "separate_seed_repeat_checkpoint377/v421": {
+      "N": 0,
+      "opposite": 0,
+      "simultaneous_opposite": 0,
+      "relations": {},
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": []
+    },
+    "separate_seed_repeat_checkpoint377/v422": {
+      "N": 0,
+      "opposite": 0,
+      "simultaneous_opposite": 0,
+      "relations": {},
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": []
+    }
+  },
+  "runs": [
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-color-cohort1-00-v419",
+      "condition": "v419",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 293.1,
+      "status": "BOTH_HELD",
+      "both_held": true,
+      "both_held_s": 293.1,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.01730725672772906,
+            0.19211630892037593
+          ],
+          "ready_t": 253.99999999999997,
+          "ready_wait_sim_s": 33.60000000000002,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.9213194715445836,
+            0.03637008871261739
+          ],
+          "ready_t": 287.6,
+          "ready_wait_sim_s": 0,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "off",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {}
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {
+        "reason": "COLOR_SEARCH_NO_ASSIGNED_BAND_OVER_100_SIM_S",
+        "classification": "known search defect: discarded prior beam center; 2s spin slot resets before full sweep; representative own RGB six paired times directly inspected; no success claimed",
+        "progress": {
+          "sim_s": 173.0,
+          "phase": "align",
+          "wall_s": 399.8077604240001
+        },
+        "r2_status": "search_own_color",
+        "cycle": null
+      },
+      "name": "stage-color-cohort1-01-v420",
+      "condition": "v420",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 173.6,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.2490632027632336,
+            0.3239677634198553
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.5748230170053708,
+            1.6919272285589513
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 50,
+        "r2": 66
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {
+        "reason": "COLOR_SEARCH_NO_ASSIGNED_BAND_OVER_100_SIM_S",
+        "classification": "known search defect: discarded prior beam center; 2s spin slot resets before full sweep; representative own RGB six paired times directly inspected; no success claimed",
+        "progress": {
+          "sim_s": 174.0,
+          "phase": "align",
+          "wall_s": 400.60385597100003
+        },
+        "r2_status": "search_own_color",
+        "cycle": null
+      },
+      "name": "stage-color-cohort1-02-v421",
+      "condition": "v421",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 174.4,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.2490632027632336,
+            0.3239677634198553
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.5748230170053708,
+            1.6919272285589513
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 50,
+        "r2": 66
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {
+        "reason": "COLOR_SEARCH_NO_ASSIGNED_BAND_OVER_100_SIM_S",
+        "classification": "known search defect: discarded prior beam center; 2s spin slot resets before full sweep; representative own RGB six paired times directly inspected; no success claimed",
+        "progress": {
+          "sim_s": 174.0,
+          "phase": "align",
+          "wall_s": 400.28134328399995
+        },
+        "r2_status": "search_own_color",
+        "cycle": null
+      },
+      "name": "stage-color-cohort1-03-v422",
+      "condition": "v422",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 174.8,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.2490632027632336,
+            0.3239677634198553
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.5748230170053708,
+            1.6919272285589513
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 50,
+        "r2": 66
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-color-cohort1-04-v419",
+      "condition": "v419",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "same",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.015239249654089923,
+            0.23049648635213738
+          ],
+          "ready_t": 112.0,
+          "ready_wait_sim_s": 188.0,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.06003491226519538,
+            0.2834584183072983
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "off",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {}
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-color-cohort1-05-v420",
+      "condition": "v420",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.5879502531874016,
+            0.21248178599828674
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            0.32930703446340276,
+            0.41310017362257173
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 104,
+        "r2": 113
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-color-cohort1-06-v421",
+      "condition": "v421",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.09235795712930757,
+            0.2298342671339264
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.4317660184699069,
+            0.053592617968502516
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 44,
+        "r2": 60
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-color-cohort1-07-v422",
+      "condition": "v422",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "same",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.026162099208893497,
+            0.2298342671339264
+          ],
+          "ready_t": 178.39999999999998,
+          "ready_wait_sim_s": 121.60000000000002,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.034585277076244175,
+            0.1978143424951877
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 7,
+        "r2": 61
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-color-cohort1-08-v419",
+      "condition": "v419",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "same",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.4152071414589854,
+            0.08091008608525804
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.11971809839723599,
+            0.008922559540136467
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "off",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {}
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-color-cohort1-09-v420",
+      "condition": "v420",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            0.5427823581331402,
+            0.3479922531286557
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            0.4303442623708686,
+            0.37875582414726067
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 93,
+        "r2": 110
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-color-cohort1-10-v421",
+      "condition": "v421",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.044587489454918736,
+            0.3479922531286557
+          ],
+          "ready_t": 78.80000000000001,
+          "ready_wait_sim_s": 221.2,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.4899781842422209,
+            0.1279965007659421
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 6,
+        "r2": 56
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-color-cohort1-11-v422",
+      "condition": "v422",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.05121366895961216,
+            0.3479922531286557
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.4899781842422209,
+            0.040216359245848265
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "primary_3_checkpoints",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 6,
+        "r2": 44
+      }
+    },
+    {
+      "eligible_for_denominator": false,
+      "supervisor_stop": {
+        "reason": "MAIN_LOAD_16_EXCEEDS_12_8_REPEAT_CENSOR",
+        "classification": "resource censored extra repeat, excluded success/failure denominator; primary12 preserved",
+        "load": [
+          17.06689453125,
+          12.0341796875,
+          6.9833984375
+        ],
+        "progress": {
+          "sim_s": 91.0,
+          "phase": "align",
+          "wall_s": 199.76406911100003
+        }
+      },
+      "name": "stage-color-cohort1-12-v419",
+      "condition": "v419",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 91.6,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.56582371736819,
+            0.19177187587882194
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.7462872927517938,
+            1.8059551785248127
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "separate_seed_repeat_checkpoint377",
+      "appearance": "off",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {}
+    },
+    {
+      "eligible_for_denominator": false,
+      "supervisor_stop": {
+        "reason": "MAIN_LOAD_16_EXCEEDS_12_8_REPEAT_CENSOR",
+        "classification": "resource censored extra repeat, excluded success/failure denominator; primary12 preserved",
+        "load": [
+          17.06689453125,
+          12.0341796875,
+          6.9833984375
+        ],
+        "progress": {
+          "sim_s": 88.0,
+          "phase": "align",
+          "wall_s": 200.67214300199998
+        }
+      },
+      "name": "stage-color-cohort1-13-v420",
+      "condition": "v420",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 88.8,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.7815030718476856,
+            0.19038650998969836
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.5979584908254914,
+            1.7084504506857003
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "separate_seed_repeat_checkpoint377",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 24,
+        "r2": 35
+      }
+    },
+    {
+      "eligible_for_denominator": false,
+      "supervisor_stop": {
+        "reason": "MAIN_LOAD_16_EXCEEDS_12_8_REPEAT_CENSOR",
+        "classification": "resource censored extra repeat, excluded success/failure denominator; primary12 preserved",
+        "load": [
+          17.06689453125,
+          12.0341796875,
+          6.9833984375
+        ],
+        "progress": {
+          "sim_s": 87.0,
+          "phase": "align",
+          "wall_s": 200.11859464500003
+        }
+      },
+      "name": "stage-color-cohort1-14-v421",
+      "condition": "v421",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 88.0,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.787073512590551,
+            0.19038650998969836
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.5979584908254914,
+            1.7084504506857003
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "separate_seed_repeat_checkpoint377",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 24,
+        "r2": 34
+      }
+    },
+    {
+      "eligible_for_denominator": false,
+      "supervisor_stop": {
+        "reason": "MAIN_LOAD_16_EXCEEDS_12_8_REPEAT_CENSOR",
+        "classification": "resource censored extra repeat, excluded success/failure denominator; primary12 preserved",
+        "load": [
+          17.06689453125,
+          12.0341796875,
+          6.9833984375
+        ],
+        "progress": {
+          "sim_s": 87.0,
+          "phase": "align",
+          "wall_s": 199.52129514500007
+        }
+      },
+      "name": "stage-color-cohort1-15-v422",
+      "condition": "v422",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 88.0,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.787073512590551,
+            0.19038650998969836
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.5979584908254914,
+            1.7084504506857003
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      },
+      "analysis_set": "separate_seed_repeat_checkpoint377",
+      "appearance": "teal_blue_v1",
+      "legacy_raw_first_attempt_success": false,
+      "color_search_views": {
+        "r1": 24,
+        "r2": 34
+      }
+    }
+  ]
+}

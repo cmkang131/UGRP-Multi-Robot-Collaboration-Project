@@ -1,0 +1,26 @@
+{
+  "known_failure_runs": [
+    "stage-color-cohort2-09-v423",
+    "stage-color-cohort2-10-v424"
+  ],
+  "source_sha": "69f71de434c38f1bd38b8d0ffacda722b6ac9244",
+  "cause": "Acquisition records requested view_pose/index before arm-clearance accepts it. Clearance abandons the pending scan; acquisition requires exact issued servo match to advance, never reissues same index, so waits indefinitely.",
+  "code": [
+    "harness/e2e_pregrasp_acquire.py:73",
+    "harness/e2e_pregrasp_acquire.py:82",
+    "harness/e2e_pregrasp_acquire.py:86",
+    "harness/e2e_arm_clearance.py:140"
+  ],
+  "observed": {
+    "run": "stage-color-cohort2-09-v423",
+    "requested_pan": 1500,
+    "issued_pan": 1250,
+    "request_t_absolute_sim": 149.1,
+    "abandoned_t_absolute_sim": 167.8,
+    "checkpoint_offset": 135.5,
+    "last_frame_raw_sim": 111.3,
+    "latest_progress_sim": 110.0
+  },
+  "action": "Scoped SIGINT, counted as failure, raw ARM verified. No same-source resubmission.",
+  "scope": "Cause supported by final trace, issued-command/frame history and source. Does not explain all unsuccessful color trials."
+}
