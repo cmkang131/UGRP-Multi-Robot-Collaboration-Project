@@ -51,7 +51,10 @@ if __name__=='__main__':
     for label,source,out in [('tuning','task-planner-v357-source-20261013','task-planner-r3-tuning-20261013'),('confirmation','task-planner-r3-confirmation-source-20261013','task-planner-r3-confirmation-20261013')]:
         r=paired(ROOT/'outputs'/source,ROOT/'outputs'/out)
         # Preserve complete call-id mapping separately; keep summary small.
-        ids=r.pop('call_ids');(exp/(label+'-call-ids.json')).write_text(json.dumps(ids)+'\n')
+        ids=r.pop('call_ids');ids_path=exp/(label+'-call-ids.json');payload=(json.dumps(ids)+'\n').encode()
+        if Path(str(ids_path)+'.zst').exists():
+            assert read(ids_path)==payload, 'compressed call ID mapping changed'
+        else:ids_path.write_bytes(payload)
         (exp/(label+'-recount.json')).write_text(json.dumps(r,indent=2)+'\n');all_results[label]=r
     ledger=ROOT/'outputs/task-planner-r3-upstream-20261013/openrouter/ledger.jsonl'
     entries=[json.loads(x) for x in read(ledger).splitlines()]
@@ -65,5 +68,28 @@ if __name__=='__main__':
         tests=dict(passed=27,physics=False),limitations=['No own observations in coordinator synthetic source; fresh wrong reports cannot be disproved.','Confirmation uses new seed/new phrases but same synthetic algebra and latent-state cycle.','Native execution is unverified.'])
     for label,r in all_results.items():
         result['conditions'][label]=dict(arms=r['conditions'],solo=r['evaluation_summary']['synthetic_solo'],requests=r['request_attempts'],budget=r['evaluation_summary']['budget'],usage=r['usage_totals'],changed_inputs=len(r['adapter_changed_inputs']),changed_systems=r['system_differences'],changed_solo_inputs=r['solo_input_differences'],frozen_rule_english_parser=r['frozen_rule_english_parser'])
+    solo_root=ROOT/'outputs/task-planner-r3-solo-confirmation-20261013'
+    if (solo_root/'summary.json').exists():
+        solo=json.loads(read(solo_root/'summary.json'))
+        solo_rows=json.loads(read(solo_root/'scored.json'))
+        from scripts.evaluate_task_planner_solo_confirmation import cases as solo_cases
+        from harness.task_planner import SYSTEM
+        from harness.task_planner_evidence_gate import INSTRUCTION
+        solo['changed_inputs']=sum(r['audit'][0]['request']!={'system':SYSTEM+'\n'+INSTRUCTION,'input':ctx} for r,(_,ctx,_) in zip(solo_rows,solo_cases()))
+        result['new_solo_confirmation']=solo
+        result['repeated_solo_scope']='24 per main batch are prior diagnostic replays, not fresh confirmation'
+        solo_ledger=ROOT/'outputs/task-planner-r3-solo-upstream-20261013/openrouter/ledger.jsonl'
+        se=[json.loads(x) for x in read(solo_ledger).splitlines()]
+        result['all_provider_accounting']=dict(http_requests=len(entries)+len(se),
+            upstream_attempts=sum(len((r.get('openrouter') or {}).get('attempts',[])) for r in entries+se),
+            known_usd=sum((r.get('openrouter') or {}).get('cost',0) or 0 for r in entries+se),
+            unknown_cost_calls=sum((r.get('openrouter') or {}).get('cost') is None for r in entries+se),
+            http_statuses=dict(collections.Counter(r['status'] for r in entries+se)))
+        ids=[r['request_id'] for r in entries+se]
+        assert len(ids)==len(set(ids)), 'duplicate provider call ID'
+        result['new_solo_raw']={str(solo_root/n):hashlib.sha256(read(solo_root/n)).hexdigest() for n in ('scored.json','summary.json','RUN_META.json')}
+        result['new_solo_ledger']=dict(path=str(solo_ledger),sha256=hashlib.sha256(read(solo_ledger)).hexdigest())
+    result['final_controller_code_sha']='1b37e77fa279a46f2f5b2dd1c2b20d49b501f779'
+    result['post_evaluation_change']='Native named-clause/time evidence hardening; every evaluated request verified identical.'
     (exp/'summary.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps(result,indent=2))

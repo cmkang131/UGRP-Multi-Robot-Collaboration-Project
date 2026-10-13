@@ -1,0 +1,23 @@
+{
+  "source_sha": "961a49474cac1e25c079cd0b459d446ddf693741",
+  "source_dirty": false,
+  "gate": "on_v1",
+  "threshold_s": 30,
+  "confirmation_seed": 2026101303,
+  "changes_after_confirmation": "none; frozen before both calls",
+  "execution": "remote provider text only, no simulation",
+  "relay_startup_failure": {
+    "attempt": 1,
+    "status": "ModuleNotFoundError:harness",
+    "provider_calls": 0,
+    "resolution": "existing relay module invocation python -m scripts.s4_proxy_relay"
+  },
+  "relay": "outputs/task-planner-r3-relay-20261013",
+  "upstream": "outputs/task-planner-r3-upstream-20261013/openrouter",
+  "budget_usd": 1.2,
+  "parallelism": {
+    "tuning": 8,
+    "confirmation": 8
+  },
+  "vm_status": "not_submitted; hold after PR475/476"
+}
