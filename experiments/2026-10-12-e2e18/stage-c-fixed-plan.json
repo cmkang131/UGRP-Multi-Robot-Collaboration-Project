@@ -1,0 +1,137 @@
+{
+  "stage_only": true,
+  "runs": [
+    {
+      "kind": "grasp",
+      "sha": "fda6fb960c02dce165263793da9ad3ec2df2b69c",
+      "source_run": "e2e18-v379-s61008-r80",
+      "condition": "v375",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v394",
+      "extra": [
+        "--stage-wrapper",
+        "v394",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "fda6fb960c02dce165263793da9ad3ec2df2b69c",
+      "source_run": "e2e18-v379-s61008-r80",
+      "condition": "v399",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v399",
+      "extra": [
+        "--stage-wrapper",
+        "v399",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "fda6fb960c02dce165263793da9ad3ec2df2b69c",
+      "source_run": "e2e18-v379-s61008-r80",
+      "condition": "v400",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v400",
+      "extra": [
+        "--stage-wrapper",
+        "v400",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "fda6fb960c02dce165263793da9ad3ec2df2b69c",
+      "source_run": "e2e18-v380-s61007-r80",
+      "condition": "v375",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v394",
+      "extra": [
+        "--stage-wrapper",
+        "v394",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "fda6fb960c02dce165263793da9ad3ec2df2b69c",
+      "source_run": "e2e18-v380-s61007-r80",
+      "condition": "v399",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v399",
+      "extra": [
+        "--stage-wrapper",
+        "v399",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "fda6fb960c02dce165263793da9ad3ec2df2b69c",
+      "source_run": "e2e18-v380-s61007-r80",
+      "condition": "v400",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v400",
+      "extra": [
+        "--stage-wrapper",
+        "v400",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "fda6fb960c02dce165263793da9ad3ec2df2b69c",
+      "source_run": "e2e18-v377-s61006-r80",
+      "condition": "v399",
+      "seed": 62001,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v399",
+      "extra": [
+        "--stage-wrapper",
+        "v399",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "fda6fb960c02dce165263793da9ad3ec2df2b69c",
+      "source_run": "e2e18-v377-s61006-r80",
+      "condition": "v400",
+      "seed": 62001,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v400",
+      "extra": [
+        "--stage-wrapper",
+        "v400",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    }
+  ],
+  "planned_N": 8,
+  "concurrency_max": 16,
+  "gate_limit": 3.5,
+  "reason": "Remaining C slots only; previously stopped v395/v396 are not resubmitted. Near-once fixes path/view arbitration; B-search prerequisite remains separately monitored."
+}

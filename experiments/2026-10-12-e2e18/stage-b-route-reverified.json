@@ -1,0 +1,75 @@
+{
+  "checked_unix": 1791902158.933294,
+  "runs": [
+    {
+      "name": "stage-b-cohort2-08-route-v391",
+      "exit": 0,
+      "source_sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-b-cohort2-08-route-v391/raw",
+      "phase": "mapping",
+      "result": {
+        "status": "OWN_ROUTE_GENERATED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 34.2,
+        "wall_s": 89.67795234799996,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 1,
+          "r2": 0
+        },
+        "condition": "v375",
+        "source_run": "e2e18-v375-s61008-r80",
+        "checkpoint_sha256": "b7cad338cef40cab3a2ac8de2a3a3aa6a90677234cb390019e066c1f7b18be3a",
+        "own_map_sha256": {
+          "r1": "776513d6df365e4cd427c134365f4e33f2fff6c3f17ebf0435ec2b0d25c352f6",
+          "r2": "5f9924a181d6402958642d70d9a079b4a5bd8b4185ad711a80eae56e5d8bf404",
+          "r3": "4836e0007d9278d1101f9b4b343ff4d742109adb35ed1a80877c6b63ca94e6a0"
+        },
+        "initial_physics_sha256": "29d6683b0647913431ef49d20227679e96f12d47c3e91bdf1761b4d285a3e9e3",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-b-cohort2-08-route-v391",
+        "files": 243,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-b-cohort2-08-route-v391",
+          "files": 243,
+          "hash_matches": 243,
+          "inventory_sha256": "179be60cd3a43c81fa10a341c4a222fedc10fa2334aa5eea99d562888a96f1a0",
+          "reused": true,
+          "receiver_seconds": 0.394
+        },
+        "inventory_sha256": "1324c423a2f48bac6286ee25fe702b3f8585e818262aa207b97199d7352b759e",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-b-cohort2-08-route-v391.json",
+        "proof_sha256": "3c8b5230c67bc68fe62aa9191fe166842cdf59fcfdabc357f935e28d76083bf9"
+      },
+      "sha256": {
+        "result.json": "70e496285115923877bd5a0abeb5a62b5b146ab21d03357ad0dd579b92202f69",
+        "progress.json": "4f4a141b07f6955c8700ca1ac5131c1ba2d64f96ed7fefa8bed50099b9d5a870",
+        "transport-trace.json": "d8888e3aeea9fe787b54be27d22a252819f94cffe27ddd62e18a8a7921c04b6e"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-b-cohort2-08-route-v391",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    }
+  ]
+}

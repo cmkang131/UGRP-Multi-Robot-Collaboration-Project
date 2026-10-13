@@ -1,0 +1,61 @@
+[
+  {
+    "name": "route1-stage-replay-b1",
+    "verified": true,
+    "path": "/home/ugrp/ugrp-sim/arm/native-route1-stage-replay-b1",
+    "native_verification": {
+      "verified": true,
+      "schema": "ugrp.archive-native.v1",
+      "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-route1-stage-replay-b1",
+      "files": 63,
+      "hash_matches": 63,
+      "inventory_sha256": "0bcd84574ce4bd8100b2cbc03fbbc163b131dcc9f225b46b24aea2f0e53c9ed9",
+      "reused": false,
+      "receiver_seconds": 0.308
+    },
+    "inventory_sha256": "0bcd84574ce4bd8100b2cbc03fbbc163b131dcc9f225b46b24aea2f0e53c9ed9",
+    "files": 63,
+    "RUN_META": {
+      "class": "dev",
+      "pr": 476,
+      "branch": "codex/e2e18",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "batch": "route1-stage-replay-b1"
+    },
+    "proof_sha256": "4accf40faed92a3f8498b374da85a140aa4ce40030fb409a05408f46e48d1f95"
+  },
+  {
+    "name": "route1-stage-v398-milestone-copy",
+    "verified": true,
+    "path": "/home/ugrp/ugrp-sim/arm/native-route1-stage-v398-milestone-copy",
+    "native_verification": {
+      "verified": true,
+      "schema": "ugrp.archive-native.v1",
+      "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-route1-stage-v398-milestone-copy",
+      "files": 243,
+      "hash_matches": 243,
+      "inventory_sha256": "3302e7068d58d4b7f64cbe15d52e78efb49c436232756039c75baa97dab31db9",
+      "reused": false,
+      "receiver_seconds": 1.534
+    },
+    "inventory_sha256": "3302e7068d58d4b7f64cbe15d52e78efb49c436232756039c75baa97dab31db9",
+    "files": 243,
+    "RUN_META": {
+      "class": "milestone",
+      "pr": 476,
+      "branch": "codex/e2e18",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "batch": "stage-b-cohort2",
+      "class_history": [
+        {
+          "previous": "dev",
+          "changed_unix": 1791900814.9130402,
+          "reason": "first successful route-generation evidence of repaired v398 stage wrapper; geometric quality pending"
+        }
+      ],
+      "preservation_copy_of": "stage-b-cohort2-08-route-v391",
+      "not_additional_execution": true
+    },
+    "proof_sha256": "b1d0c73800d1e99a689ce2a8181c65048cff86cbbf147d5b358d253887822185"
+  }
+]

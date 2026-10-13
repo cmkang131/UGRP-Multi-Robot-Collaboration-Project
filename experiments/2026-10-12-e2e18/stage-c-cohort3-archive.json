@@ -1,0 +1,565 @@
+{
+  "checked_unix": 1791902216.389063,
+  "runs": [
+    {
+      "name": "stage-c-cohort3-00-grasp-v375",
+      "exit": 0,
+      "source_sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-c-cohort3-00-grasp-v375/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 882.2662365830001,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 7
+        },
+        "condition": "v375",
+        "source_run": "e2e18-v375-s61008-r80",
+        "checkpoint_sha256": "beedc32a05f3cc12b7dbcd930eaa22c9ba425f9c16f63830eb5d4200d65e0acb",
+        "own_map_sha256": {
+          "r1": "8765a8e08761ef1665ad2f3415f8bcb2340cd29159c9402df57f2f94fbd3c906",
+          "r2": "6837deb10ff2339f706becadc00f0657b720afda846eeaf37d8fed5f1769f05a",
+          "r3": "97374554ddd6bc9d0d2bfd475e2595c63925d9ad23c1943cf21018adcba16a70"
+        },
+        "initial_physics_sha256": "91bd6ef1b56325fb026f66cf576c21aca8a34c06b65977afea9358537710a11c",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-c-cohort3-00-grasp-v375",
+        "files": 2312,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-c-cohort3-00-grasp-v375",
+          "files": 2312,
+          "hash_matches": 2312,
+          "inventory_sha256": "14a6fb774df2bbb62b0a9d1c03e907cdf64eb838e75f5606dc6be9a0a01d25dd",
+          "reused": false,
+          "receiver_seconds": 12.819
+        },
+        "inventory_sha256": "2a629c1737e2ca9f0fc857b9919a243a090392c9895f8466c973df11d04c4c24",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-c-cohort3-00-grasp-v375.json",
+        "proof_sha256": "c41b9e163476fd32d09951b8467ec1471e68390f1c5b0e4c506d27dbead38437"
+      },
+      "sha256": {
+        "result.json": "536e3bf2e9be4fef60dd4314deae64f1ef8fbd4c8542968cf452aec9403d239f",
+        "progress.json": "41cb3d32c5c068f5b6e49179d533236c576e21a8db11ef9f0a5ca4b3b46fad2b",
+        "transport-trace.json": "931a34d19ab79b51dbb3f0cc31dd7183c6776ba7c6287fa4e7fc89ed95b1d79a"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-c-cohort3-00-grasp-v375",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-c-cohort3-01-grasp-v395",
+      "exit": 130,
+      "source_sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-c-cohort3-01-grasp-v395/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 153.6,
+        "wall_s": 450.2122858590001,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 6,
+          "r2": 0
+        },
+        "condition": "v395",
+        "source_run": "e2e18-v375-s61008-r80",
+        "checkpoint_sha256": "beedc32a05f3cc12b7dbcd930eaa22c9ba425f9c16f63830eb5d4200d65e0acb",
+        "own_map_sha256": {
+          "r1": "8765a8e08761ef1665ad2f3415f8bcb2340cd29159c9402df57f2f94fbd3c906",
+          "r2": "6837deb10ff2339f706becadc00f0657b720afda846eeaf37d8fed5f1769f05a",
+          "r3": "97374554ddd6bc9d0d2bfd475e2595c63925d9ad23c1943cf21018adcba16a70"
+        },
+        "initial_physics_sha256": "91bd6ef1b56325fb026f66cf576c21aca8a34c06b65977afea9358537710a11c",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-c-cohort3-01-grasp-v395",
+        "files": 1218,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-c-cohort3-01-grasp-v395",
+          "files": 1218,
+          "hash_matches": 1218,
+          "inventory_sha256": "904d9178fff8c39ef5a1467d2b1c6314d7d0a793f051521c9284b155975b09e9",
+          "reused": false,
+          "receiver_seconds": 4.609
+        },
+        "inventory_sha256": "f597570ae12eabe84088376db06824ff1d42c3193978f8f8c015e518ae4562ec",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-c-cohort3-01-grasp-v395.json",
+        "proof_sha256": "4da4390b4d16e776258746fc24821d5b5a38fbf5551771fecd98b9d6bf7487b5"
+      },
+      "sha256": {
+        "result.json": "f9adc2da8ab220143b74dd07034271b8aad3ac9524e0ff28d3d0cd30968d88f9",
+        "progress.json": "6744e48f02ebcd28221cd83f0bd33d7f90c969ff18534d39f7702837deaf4b46",
+        "transport-trace.json": "413a32d08b8c4abbbefff16124bc8cffae140970be01bfc134bcb597feaf90d7"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-c-cohort3-01-grasp-v395",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-c-cohort3-02-grasp-v396",
+      "exit": 130,
+      "source_sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-c-cohort3-02-grasp-v396/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 140.8,
+        "wall_s": 450.2112865849999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 1
+        },
+        "condition": "v396",
+        "source_run": "e2e18-v375-s61008-r80",
+        "checkpoint_sha256": "beedc32a05f3cc12b7dbcd930eaa22c9ba425f9c16f63830eb5d4200d65e0acb",
+        "own_map_sha256": {
+          "r1": "8765a8e08761ef1665ad2f3415f8bcb2340cd29159c9402df57f2f94fbd3c906",
+          "r2": "6837deb10ff2339f706becadc00f0657b720afda846eeaf37d8fed5f1769f05a",
+          "r3": "97374554ddd6bc9d0d2bfd475e2595c63925d9ad23c1943cf21018adcba16a70"
+        },
+        "initial_physics_sha256": "91bd6ef1b56325fb026f66cf576c21aca8a34c06b65977afea9358537710a11c",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-c-cohort3-02-grasp-v396",
+        "files": 1119,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-c-cohort3-02-grasp-v396",
+          "files": 1119,
+          "hash_matches": 1119,
+          "inventory_sha256": "0f5be3372a66bbf7ea440e5eceb15640fc819c8d60d74534ca23e6affaf62e7d",
+          "reused": false,
+          "receiver_seconds": 4.044
+        },
+        "inventory_sha256": "fd89a067e0c775fc27d2fb8c23bf470eabd3421f6215fbac43efef5a933b236a",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-c-cohort3-02-grasp-v396.json",
+        "proof_sha256": "692e4ed2b33b05906c6121881e05fb8e6152c9db6c032469445ff8d650d0eb29"
+      },
+      "sha256": {
+        "result.json": "e791427242381acfa2a8cae5523a572571c93e970531c9315f399eb1c9d9e748",
+        "progress.json": "8136cdf27bb3ea1ce019ce48da5590905d221c22988197dd88b709296e9dfc8f",
+        "transport-trace.json": "520413961e7fb16c0b944fabb74c82184b90f7b936d0572ed650758085a9558d"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-c-cohort3-02-grasp-v396",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-c-cohort3-03-grasp-v375",
+      "exit": 0,
+      "source_sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-c-cohort3-03-grasp-v375/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 745.5731795830002,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 2
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 11
+        },
+        "condition": "v375",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-c-cohort3-03-grasp-v375",
+        "files": 2312,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-c-cohort3-03-grasp-v375",
+          "files": 2312,
+          "hash_matches": 2312,
+          "inventory_sha256": "28298fec63dd7435f4e21b19d990d1b2e5ab28242338acf8731f5a4490d126ef",
+          "reused": false,
+          "receiver_seconds": 5.993
+        },
+        "inventory_sha256": "28cc1df323ed9a871cc9ac541e75a5773af1e6c155470d090d6b7a227e18e8b2",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-c-cohort3-03-grasp-v375.json",
+        "proof_sha256": "966efe0558e75629bd35835bc73adf03b6dce1a22795957ab51bb21530cb355a"
+      },
+      "sha256": {
+        "result.json": "790d2eedac89c677226ee3b530940bc8bfd64c9f2db046736c7390adb36c3cd1",
+        "progress.json": "b1307d6104aa2b49eeeca56cc1fdf8f54e678e1dbbcde00c9feb31b28529ad49",
+        "transport-trace.json": "f5ec457fcd7a4cdafd2fac09ee8eb4035c9aa2cefd949bfe739d275497ec2681"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-c-cohort3-03-grasp-v375",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-c-cohort3-04-grasp-v395",
+      "exit": 130,
+      "source_sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-c-cohort3-04-grasp-v395/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 154.4,
+        "wall_s": 450.2353743570002,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 6,
+          "r2": 10
+        },
+        "condition": "v395",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-c-cohort3-04-grasp-v395",
+        "files": 1225,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-c-cohort3-04-grasp-v395",
+          "files": 1225,
+          "hash_matches": 1225,
+          "inventory_sha256": "8d3d5163ddcd52ee9a553d39fb418b0ed38a6d077d96a522ffba60e2ddbeee0e",
+          "reused": false,
+          "receiver_seconds": 4.72
+        },
+        "inventory_sha256": "64486cd0543eb432c112ab428343359d7d63dfc066f04991ac92186152ae9610",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-c-cohort3-04-grasp-v395.json",
+        "proof_sha256": "66347d7dbbf6e04c2919ea7de359f2c287ae5c9878cddcb071c7579916b5f2e2"
+      },
+      "sha256": {
+        "result.json": "be88777e05c748317859d5891a423cfb40feb3a19bf66989f32982e31d084544",
+        "progress.json": "a0317bc16f6d8ffb913e4100bbb29c6b975b053b0c771171a8230086ddfeb57f",
+        "transport-trace.json": "d16b14b4aea1542cba1035eca70bc14e20c4e60b87cd8ea1d7b6e1af6317bc58"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-c-cohort3-04-grasp-v395",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-c-cohort3-05-grasp-v396",
+      "exit": 130,
+      "source_sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-c-cohort3-05-grasp-v396/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 145.2,
+        "wall_s": 450.21024997099994,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 3,
+          "r2": 10
+        },
+        "condition": "v396",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-c-cohort3-05-grasp-v396",
+        "files": 1156,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-c-cohort3-05-grasp-v396",
+          "files": 1156,
+          "hash_matches": 1156,
+          "inventory_sha256": "5971c5f2df191124c5765ebfa282933b1c94ac62aad9fe2b0035542188e67221",
+          "reused": false,
+          "receiver_seconds": 2.856
+        },
+        "inventory_sha256": "ee90e202f70f881ff94451e78b5e636e2a4126cb0e48ee49961c041a51aed39a",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-c-cohort3-05-grasp-v396.json",
+        "proof_sha256": "d83f36cddca8ab7665f8ea283348c8d5d9db5e4685fbc1bf89d528bcf673ecdc"
+      },
+      "sha256": {
+        "result.json": "ddb9213d260b2b1b0c5aa414c06635f3ee6b376dc13870c015453917aa33bda7",
+        "progress.json": "b9c2c080bc48a6c85e9ed837d7f3d6005942d581a9bb36d13ff6ea8a1891ba96",
+        "transport-trace.json": "1d3c79b8dce8c392a41c75db7bb87d897ca2945956e41c9f4cc7564dcc260bf6"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-c-cohort3-05-grasp-v396",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-c-cohort3-06-grasp-v395",
+      "exit": 130,
+      "source_sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-c-cohort3-06-grasp-v395/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 173.0,
+        "wall_s": 450.20923673900006,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 9,
+          "r2": 0
+        },
+        "condition": "v395",
+        "source_run": "e2e18-v375-s61008-r80",
+        "checkpoint_sha256": "beedc32a05f3cc12b7dbcd930eaa22c9ba425f9c16f63830eb5d4200d65e0acb",
+        "own_map_sha256": {
+          "r1": "8765a8e08761ef1665ad2f3415f8bcb2340cd29159c9402df57f2f94fbd3c906",
+          "r2": "6837deb10ff2339f706becadc00f0657b720afda846eeaf37d8fed5f1769f05a",
+          "r3": "97374554ddd6bc9d0d2bfd475e2595c63925d9ad23c1943cf21018adcba16a70"
+        },
+        "initial_physics_sha256": "9d4ca0afd96915e4a43cb1487611b75701c548c5b658e1b39e2593b43a863666",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-c-cohort3-06-grasp-v395",
+        "files": 1362,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-c-cohort3-06-grasp-v395",
+          "files": 1362,
+          "hash_matches": 1362,
+          "inventory_sha256": "678863b8ff0b879afbfc44f3737a4068e04b6e70a49b4039fd669f3da9dbc85b",
+          "reused": false,
+          "receiver_seconds": 6.429
+        },
+        "inventory_sha256": "4890bf9c5fe861b7b5ced9bc52298e2f690e1d590ff74364f5d92287590f1696",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-c-cohort3-06-grasp-v395.json",
+        "proof_sha256": "b3a7551f6468fdc93b515800ce9f63098f335c6e2ea1f152e1675b6d346a0f3b"
+      },
+      "sha256": {
+        "result.json": "de58420cf16b32a751e564064df5541b6b292b07d151bebaa35a36b58e6cf451",
+        "progress.json": "fae0ca23ea00e58ad4904ed46c7bff3e40bab309faff9dba595d524e79bf78a9",
+        "transport-trace.json": "850dc977c3ebf14c54198b2f978d6d215db1f474798f4f1a9190b954916f40ce"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-c-cohort3-06-grasp-v395",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-c-cohort3-07-grasp-v396",
+      "exit": 130,
+      "source_sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-c-cohort3-07-grasp-v396/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 138.0,
+        "wall_s": 450.22244767699976,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 2
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 4
+        },
+        "condition": "v396",
+        "source_run": "e2e18-v375-s61008-r80",
+        "checkpoint_sha256": "beedc32a05f3cc12b7dbcd930eaa22c9ba425f9c16f63830eb5d4200d65e0acb",
+        "own_map_sha256": {
+          "r1": "8765a8e08761ef1665ad2f3415f8bcb2340cd29159c9402df57f2f94fbd3c906",
+          "r2": "6837deb10ff2339f706becadc00f0657b720afda846eeaf37d8fed5f1769f05a",
+          "r3": "97374554ddd6bc9d0d2bfd475e2595c63925d9ad23c1943cf21018adcba16a70"
+        },
+        "initial_physics_sha256": "9d4ca0afd96915e4a43cb1487611b75701c548c5b658e1b39e2593b43a863666",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-c-cohort3-07-grasp-v396",
+        "files": 1102,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-c-cohort3-07-grasp-v396",
+          "files": 1102,
+          "hash_matches": 1102,
+          "inventory_sha256": "b0d6ea7ab94f6f2c22e1767c09bb776744d549b18282b17102ac9b415e5602e8",
+          "reused": false,
+          "receiver_seconds": 4.589
+        },
+        "inventory_sha256": "2991d4984beea937841aa993963e36c79d5acb4bb983ccbb7a6dcc6d57a33971",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-c-cohort3-07-grasp-v396.json",
+        "proof_sha256": "4328c6e026d91df1142c5e7376c00366982458b54e4ce6cc64e1f0be5c5d1b2c"
+      },
+      "sha256": {
+        "result.json": "0afeda4fda8e98a6e5de240c482c83517fdde5795179539e56ab0b24c739cb96",
+        "progress.json": "8c9d953939992c49c73c5f308d24af7e35f18e897161d17cf29d1c2e55bb97d1",
+        "transport-trace.json": "7968b120456f5696f6c4c71aa32f41e7f68f7ea26cac37f985ab58414a561aa9"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-c-cohort3-07-grasp-v396",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    }
+  ]
+}

@@ -606,13 +606,22 @@
     "summary": "r80-final-summary.json"
   },
   "stage_only_2026_10_13": {
-    "status": "B gate3 pending after corrected cadence; no E2E",
+    "status": "stage campaign ended; coordinator redirected work to pose diagnosis",
+    "observed_first_attempt_grasp": "0/40 including 8 invalid staging and 2 supervisor-censored runs; adjudicated 0/30",
+    "route_generated": {
+      "baseline": "3/4",
+      "footprint": "0/4",
+      "quality": "not accepted"
+    },
     "A": "stage-a1-summary.json",
-    "A_archive": "stage-a1-archive.json",
-    "gate2": "stage-b-gate2-summary.json",
-    "B_plan": "stage-b-corrected-plan.json",
-    "vm": "azure3 only",
-    "r77_vm4_archive": "unverified; VM4 not started",
-    "api_cost_usd": 0
+    "B": "stage-b-cohort2-summary.json",
+    "C": [
+      "stage-c-cohort3-summary.json",
+      "stage-c-cohort4-summary.json"
+    ],
+    "api_cost_usd": 0,
+    "vm": "coordinator deallocated all VMs; retrieval-only restart separately recorded in pose experiment",
+    "r77_vm4_archive": "unverified; not started",
+    "next": "../2026-10-14-e2e18-pose/"
   }
 }
