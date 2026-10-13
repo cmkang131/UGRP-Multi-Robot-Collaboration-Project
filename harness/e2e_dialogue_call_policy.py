@@ -5,7 +5,7 @@ import json
 import re
 
 OPTION = 'event_v1'
-VERSIONS = {f'e2e18-v{v}': v + 5 for v in range(352, 356)}
+VERSIONS = {f'e2e18-v{v}': v + 9 for v in range(352, 356)}
 PARAMETERS = dict(observation_interval_sim_s=15., history_n=8, dialogue_n=6,
                   prompt_utf8_bytes=14000, prompt_text_tokens=4500)
 

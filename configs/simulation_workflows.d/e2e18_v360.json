@@ -4,10 +4,10 @@
     {
       "id": "e2e18-v360",
       "version": "7.253.0",
-      "purpose": "DEV event_v1 dialogue admission and bounded context; parent v355",
+      "purpose": "DEV bounded Gemma speech context with full protocol evidence",
       "entry": "scripts/run_e2e_ownmap_live.py",
       "runner": "scripts.run_e2e_ownmap_live",
-      "docs": "experiments/2026-10-13-e2e18-callrate/README.md",
+      "docs": "experiments/2026-10-13-e2e18-body/approach-v356.md",
       "requires": "Committed Azure x86 OSMesa source; current lease/admission; persistent runs",
       "output_flag": "--output",
       "output_kind": "directory",
@@ -98,8 +98,9 @@
         "--body-backend",
         "--body-skills",
         "--body-protocol-stack",
+        "--approach-efficiency",
         "--boundary-lifecycle",
-        "--dialogue-call-policy"
+        "--speech-context"
       ],
       "side_effect": "local_simulation",
       "adapter": "managed_legacy_cli",

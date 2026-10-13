@@ -17,7 +17,11 @@ def advance(transport,rid,now):
     r=transport.robots[rid];g=r.goal;b=r.beam
     state=transport.approach.setdefault(rid,{})
     frame=r.last_obs['frame_id'] if r.last_obs else None
-    if state.get('frame')==frame:return state.get('fine',False),[]
+    from harness import e2e_approach_efficiency as efficient
+    if state.get('frame')==frame:
+        continued=efficient.continuation(transport,rid,now,state)
+        return continued if continued is not None else (state.get('fine',False),[])
+    if efficient.enabled(transport):state.pop('efficient_cruise',None)
     state['frame']=frame;state['fine']=False
     from harness.e2e_stage_cadence import settling,admit_gaze
     if settling(transport,rid,now):
@@ -101,7 +105,7 @@ def advance(transport,rid,now):
         beam_yaw=state['basis']['yaw_rad']+tf[2]
         costmap=add(costmap,beam_center,beam_yaw)
         diag['beam_obstacle_source']='own_rgb_center_axis_known_size'
-    path=[mp[:2]] if rotate_station else g.explorer.navigator.plan_to(costmap,mp,mt[:2])
+    path=[mp[:2]] if rotate_station else efficient.navigation_path(transport,rid,now,state,costmap,mp,mt)
     diag['path_points']=len(path)
     if not path and recovery and (fresh or cached_navigation) and transport.dev_light:
         if avoidance:
@@ -134,4 +138,6 @@ def advance(transport,rid,now):
     from harness.e2e_pregrasp_gaze import fresh_gaze
     target=committed.gaze_target(transport,rid,fresh,grip)
     gazes=[] if target is None else fresh_gaze(transport,rid,target)
-    return False,admit_gaze(transport,rid,now,gazes,command)
+    actions=admit_gaze(transport,rid,now,gazes,command)
+    if actions==[command]:efficient.prepare_cruise(transport,rid,now,state,command,diag,costmap,mp,path)
+    return False,actions

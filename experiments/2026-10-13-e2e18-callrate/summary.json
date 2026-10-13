@@ -1,15 +1,20 @@
 {
   "schema": "ugrp.e2e18_callrate_offline.v1",
   "base_source_sha": "f0907d7ff02441357b8cd0259b3cc21c8ee91777",
-  "source_identity": "source files committed with this record; final integration receipt follows",
-  "class_": "dev",
+  "source_identity": "Implementation commit plus integrated_base_sha; final tested source file hashes are in validation-manifest.json.",
   "tests": {
-    "passed": 75,
-    "total": 75,
+    "passed": 78,
+    "total": 78,
     "failed": 0,
     "skipped": 0,
-    "junit": "outputs/e2e18-callrate/focused-tests.xml",
-    "junit_sha256": "e548b135092822df0e30836af44b4c395e7f644f2ec27368a1e2bb8d9549b852"
+    "junit": "outputs/e2e18-callrate/integration-tests.xml",
+    "junit_sha256": "dd0fad034afcbb7b22e2ad88d9139f1ce93ce0a747416848f42f15a68d2cfea3",
+    "scope": [
+      "tests/test_e2e_dialogue_call_policy.py",
+      "tests/test_e2e_dialogue_decider.py",
+      "tests/test_zone_event_scheduler.py",
+      "tests/test_e2e_speech_context.py"
+    ]
   },
   "fixture_runs": [
     {
@@ -104,5 +109,22 @@
     "new provider tokens",
     "full r76 event replay",
     "VM submission execution"
-  ]
+  ],
+  "class": "dev",
+  "implementation_source_sha": "3ccc8f431e151a376bf5cea18669a96db43d2f61",
+  "integrated_base_sha": "b9d6e2a3c949996ee75b8feb8a5c2932b66c8c5d",
+  "candidate_bundles": [
+    361,
+    362,
+    363,
+    364
+  ],
+  "prior_validation": {
+    "passed": 75,
+    "total": 75,
+    "failed": 0,
+    "skipped": 0,
+    "junit": "outputs/e2e18-callrate/focused-tests.xml",
+    "junit_sha256": "e548b135092822df0e30836af44b4c395e7f644f2ec27368a1e2bb8d9549b852"
+  }
 }

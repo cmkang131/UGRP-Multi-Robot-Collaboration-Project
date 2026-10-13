@@ -107,11 +107,19 @@ class SkillsBodyGate(BodyGate):
         facts,_,_=self.facts(rid,now)
         visual=facts['visual_category']
         fine=bool(self.tr.approach.get(rid,{}).get('fine'))
+        from harness.e2e_approach_efficiency import enabled as efficient
+        searching=(efficient(self.tr) and self.tr.state=='align' and not fine
+                   and 'station' not in self.tr.approach.get(rid,{})
+                   and 'acquisition' in self.tr.approach.get(rid,{}))
         menu={}
         if self.tr.state=='mapping':
             label='follow_own_path'
             description='Follow the current own-RGB map exploration goal with feedback for up to 3 SIM seconds; stop at a new camera view, blockage or phase change. Expected effect: cover a new viewpoint and build own map; no beam alignment yet.'
             mode='skill_mapping';duration=PARAMS['mapping_s']
+        elif searching:
+            label='search_own_beam'
+            description='Follow the own last-seen search sector with feedback, then inspect the next untried camera view; bounded navigation changes viewpoint. Expected effect: re-acquire the end without restarting a fixed-direction scan.'
+            mode='skill_search';duration=PARAMS['approach_s']
         elif fine and visual not in ('not_visible','unknown'):
             label='align_visible_end'
             description='Use fresh own-RGB visual servo feedback to reduce the grasp distance, side and angle errors for up to 2 SIM seconds; stop immediately if the end is lost or ready. Expected effect: the same banded end moves into grasp tolerance.'
@@ -122,7 +130,7 @@ class SkillsBodyGate(BodyGate):
             mode='skill_approach';duration=PARAMS['approach_s']
         # Executability is evaluated on the current proposed first action; every
         # later feedback command is rechecked against own RGB/range/map below.
-        if proposal and (self.tr.state=='mapping' or facts['own_map']['standoff'] is not None or fine):
+        if proposal and (self.tr.state=='mapping' or facts['own_map']['standoff'] is not None or fine or searching):
             menu[label]=(description,(mode,duration,[(0.,copy.deepcopy(c)) for c in proposal]))
         for side in ('left','right'):
             menu['detour_'+side]=(f'Sidestep {side} away from an overlapping partner/obstacle with four calibrated short pulses, then replan from the new own RGB and own map; stop if blocked. Expected effect: create lateral clearance; no forward approach toward the obstacle.',

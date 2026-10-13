@@ -132,7 +132,7 @@ def test_four_registered_children_keep_parent_options_and_cap(monkeypatch):
             flags=dict(post_relook='carry_nominal_v1',perception_fast='shadow_axes_v1',controller_timing='phase_v1',llm_memory='v1_commands',dialogue_decider='code_v1',explore_idle='idle5_v1' if parent.endswith('347') else 'idle10_v1')
         b=bundle(*args,**kw,**flags,boundary_lifecycle=option,dialogue_call_policy='event_v1')
         require_current(b,ROOT)
-        assert b['execution_bundle_id']==f'e2e18-v{version+5}'
+        assert b['execution_bundle_id']==f'e2e18-v{version+9}'
         assert m.parent_for_validation(b)['e2e_options']==bundle(*args,**kw,**flags,boundary_lifecycle=option)['e2e_options']
         assert accepted_call_id(b['execution_bundle_id']+'-s61013-r77:call-0001-r1:1')
         bad=copy.deepcopy(b);bad['dialogue_call_policy_parameters']['observation_interval_sim_s']=0

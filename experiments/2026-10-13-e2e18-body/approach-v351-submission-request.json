@@ -1,0 +1,30 @@
+{
+  "schema": "ugrp.supervisor_submission_request.v1",
+  "execute": false,
+  "source_sha": "343bce426217c4cca75b0518764f5378b2417cfb",
+  "bundle": "e2e18-v351",
+  "parent": "e2e18-v350",
+  "seed": 61006,
+  "flags_relative_to_parent": [
+    "--approach-efficiency",
+    "regulated_v1"
+  ],
+  "vm": "azure3",
+  "submitter": "supervisor_only",
+  "max_worker_concurrency": "supervisor decides",
+  "deadline_kst": "2026-10-13T22:00:00+09:00",
+  "requested_comparison": "v350 vs v351 same seed/host load; existing manager scripts and new source/bundle admission",
+  "body_relay_required": false,
+  "checks": [
+    "first 30 SIM raw actual-issued decisions/stop intervals/errors",
+    "align start to evaluated joint grasp SIM time",
+    "actual extra-pulse counts and camera settle budgets",
+    "reacquisition gaps and oscillations",
+    "E2E delivery separately"
+  ],
+  "status": "superseded_without_execution_by_v356",
+  "local_tests": "39/39 in 3 files",
+  "evidence": "approach-v351-summary.json",
+  "replacement": "approach-v356-submission-request.json",
+  "reason": "supervisor confirmed common v350 missing viewpoint target defect; use v354 fixed parent"
+}

@@ -32,10 +32,12 @@ def acquire(tr,rid,now,state,target):
         tr.event(now,'own_recent_beam_station_hypothesis',robot_id=rid,rgb=last['rgb'],age_s=age)
         return None
     pose=np.asarray(r.goal.explorer.local_pose)
+    from harness import e2e_approach_efficiency as efficient
     if 'acquisition' not in state:
         point=np.asarray(last['pose_own_m'][:2]) if last and 0<=age<=120. else None
         yaw=math.atan2(*(point-pose[:2])[::-1]) if point is not None else float(pose[2])
         state['acquisition']=dict(phase='turn',started=now,yaw=yaw,cycles=0,view=-1)
+        efficient.search_memory(tr,rid,state['acquisition'],pose,last,now)
         tr.event(now,'own_pregrasp_acquisition_begin',robot_id=rid,
                  source='last_own_rgb_search_hypothesis' if point is not None else 'own_camera_scan',age_s=age if math.isfinite(age) else None,
                  rgb=last['rgb'] if point is not None else None,execution_phase=tr.state)
@@ -58,15 +60,30 @@ def acquire(tr,rid,now,state,target):
         recovered=explore(tr,rid,now,a)
         if recovered is not None:return recovered
         if elapsed<5.:return False,[{k:v for k,v in r.nav_command.items() if k!='t'}]
-        a.update(phase='turn',started=now,yaw=float(pose[2]+math.pi/3))
+        a.update(phase='turn',started=now,yaw=efficient.next_yaw(tr,rid,a,pose))
         return False,[dict(kind='hold')]
+    sequence=efficient.views(tr,rid,a,pose,VIEWS)
     index=int(elapsed//view_period)
-    if index>=len(VIEWS):
+    if efficient.enabled(tr):
+        # Advance only after an accepted image from the commanded view. Existing
+        # queue and camera-settling barriers still own the .8+.6 s trajectory.
+        frame=(r.last_obs or {}).get('frame_id')
+        observed=(a.get('view_frame')!=frame and not busy(tr,rid,now)
+                  and now>=getattr(r,'camera_settle_until',-1.)
+                  and all(r.servo.get(k)==v for k,v in a.get('view_pose',{}).items()))
+        index=a['view']+(1 if observed else 0)
+        if a['view']<0:index=0
+    if index>=len(sequence):
         a['cycles']+=1
-        a.update(phase='explore' if a['cycles']%2==0 else 'turn',started=now,yaw=float(pose[2]+math.pi/3))
+        phase='explore' if a['cycles']%2==0 else 'turn'
+        yaw=a['yaw'] if efficient.enabled(tr) and phase=='explore' else efficient.next_yaw(tr,rid,a,pose)
+        a.update(phase=phase,started=now,yaw=yaw)
         return False,[dict(kind='hold')]
     if index!=a['view']:
-        a['view']=index;tag,pan=VIEWS[index];posture=pose_of(tag);posture[6]=pan
+        a['view']=index
+        tag,pan=sequence[index];posture=pose_of(tag);posture[6]=pan
+        if efficient.enabled(tr):
+            a.update(view_frame=(r.last_obs or {}).get('frame_id'),view_pose=dict(posture))
         tr._poses(rid,now,[(posture,.3,.6)])
         tr.event(now,'own_pregrasp_acquisition_view',robot_id=rid,camera=tag,pan_pulse=pan)
     return False,[dict(kind='hold')]

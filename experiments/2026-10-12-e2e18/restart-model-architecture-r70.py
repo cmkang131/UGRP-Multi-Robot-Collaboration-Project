@@ -50,6 +50,10 @@ for version,parent in ((352,347),(353,348),(354,350),(355,350)):
 EXTRA[304]=[('--relook-giveup','dev_light_rest_v1')]
 EXTRA[305]=EXTRA[304]
 MODE={304:'view5_pan_v1',305:'view5_pan_v1',303:'view5_pan_v1',295:None,296:None,297:'view5_pan_v1',298:'view5_pan_v1',300:'view5_pan_v1',301:'view5_pan_v1',302:'view5_pan_v1'}
+EXTRA[356]=EXTRA[354]+[('--approach-efficiency','regulated_v1')]
+for version,parent in ((357,352),(358,354),(359,356),(360,356)):
+ EXTRA[version]=EXTRA[parent]+[('--speech-context','recent8_v1' if version==360 else 'recent4_v1')]
+
 selected=[(seed,version,'view5_pan_v1') for seed in seeds for version in VERS]
 assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sha
 assert not subprocess.check_output(['git','status','--porcelain'])
