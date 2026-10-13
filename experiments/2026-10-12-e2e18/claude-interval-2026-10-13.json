@@ -1,0 +1,165 @@
+{
+ "schema": "ugrp.e2e18.claude_interval.v1",
+ "interval_kst": "2026-10-13 12:30-16:00",
+ "pr": 461,
+ "seed_primary": 61006,
+ "runs": [
+  {
+   "name": "e2e18-v273-s61006-r52",
+   "host": "azure3",
+   "sha": "cf894f7c",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v273-s61006-r52/raw",
+   "exit": 1,
+   "status": "WALL_CAP_7200S",
+   "sim_s": 1378,
+   "note": "paired grasp 517.5 SIM s; relook ~800 SIM s without match; wall cap",
+   "arm_archive": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v273-s61006-r52",
+   "arm_verified": true,
+   "paired_grasp": true,
+   "class_": "milestone"
+  },
+  {
+   "name": "e2e18-v275-s61006-r53",
+   "host": "azure3",
+   "sha": "6633de81",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v275-s61006-r53/raw",
+   "exit": 130,
+   "status": "SIGINT_RELOOK_STUCK",
+   "sim_s": 1041,
+   "note": "relook view5 modes, matches=0 ~500 SIM s; manual stop (HOST_ERROR cost_stop_signal)",
+   "arm_archive": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v275-s61006-r53",
+   "arm_verified": true,
+   "paired_grasp": true,
+   "class_": "milestone"
+  },
+  {
+   "name": "e2e18-v277-s61006-r53",
+   "host": "azure3",
+   "sha": "6633de81",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v277-s61006-r53/raw",
+   "exit": 130,
+   "status": "SIGINT_RELOOK_STUCK",
+   "sim_s": 1198,
+   "note": "same as v275 (view5_restore)",
+   "arm_archive": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v277-s61006-r53",
+   "arm_verified": true,
+   "paired_grasp": true,
+   "class_": "milestone"
+  },
+  {
+   "name": "e2e18-v276-s61006-r56",
+   "host": "azure3",
+   "sha": "9f12ab36",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v276-s61006-r56/raw",
+   "exit": 130,
+   "status": "SIGINT_RELOOK_STUCK",
+   "sim_s": null,
+   "note": "pan relook, insufficient_mutual_matches 200+ SIM s",
+   "arm_archive": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v276-s61006-r56",
+   "arm_verified": true,
+   "paired_grasp": true,
+   "class_": "milestone"
+  },
+  {
+   "name": "e2e18-v278-s61006-r55",
+   "host": "azure3",
+   "sha": "2c756a5d",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v278-s61006-r55/raw",
+   "exit": 130,
+   "status": "SIGINT_ALIGN_STUCK",
+   "sim_s": null,
+   "note": "Jev decider; align r1 only ~1560 SIM s, r2 never aligned",
+   "arm_archive": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v278-s61006-r55",
+   "arm_verified": true,
+   "paired_grasp": false,
+   "class_": "dev"
+  },
+  {
+   "name": "e2e18-v296-s61006-r57",
+   "host": "azure3",
+   "sha": "0e43eb51",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v296-s61006-r57/raw",
+   "exit": 130,
+   "status": "SIGINT_MAPPING_STUCK",
+   "sim_s": 715,
+   "note": "beam_lost_standoff+align_skip+scan_fast: mapping 715 SIM s (v273/v295: align at 76 s); diverges from SIM 30 s",
+   "arm_archive": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v296-s61006-r57",
+   "arm_verified": true,
+   "paired_grasp": false,
+   "class_": "dev"
+  },
+  {
+   "name": "e2e18-v298-s61006-r58",
+   "host": "azure3",
+   "sha": "cabe13c1",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v298-s61006-r58/raw",
+   "exit": 130,
+   "status": "SIGINT_MAPPING_STUCK",
+   "sim_s": 250,
+   "note": "v297(v296 toggles + pan relook)+release_dt1: same fast-scan stall",
+   "arm_archive": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v298-s61006-r58",
+   "arm_verified": true,
+   "paired_grasp": false,
+   "class_": "dev"
+  },
+  {
+   "name": "e2e18-v274-s61006-r52",
+   "status": "ENDED_1800SIM_BUDGET_BEFORE_INTERVAL",
+   "arm_verified": true,
+   "arm_archive": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v274-s61006-r52"
+  },
+  {
+   "name": "e2e18-v280-s61006-r56",
+   "status": "RUNNING",
+   "note": "release_dt1 + pan relook; wall/SIM 3.2-3.8 in relook (v276: 3.3-3.45)",
+   "paired_grasp": true,
+   "class_": "milestone"
+  },
+  {
+   "name": "e2e18-v295-s61006-r58",
+   "status": "RUNNING",
+   "note": "standoff only; identical to v273 to SIM 100 s, align without aligned robots at 986 SIM s"
+  },
+  {
+   "name": "e2e18-v302-s61006-r59",
+   "status": "RUNNING",
+   "note": "standoff+pan+release_dt1+relook_giveup"
+  },
+  {
+   "name": "e2e18-v302-s61007-r60",
+   "status": "RUNNING"
+  },
+  {
+   "name": "e2e18-v302-s61008-r60",
+   "status": "RUNNING"
+  },
+  {
+   "name": "e2e18-v302-s61009-r60",
+   "status": "RUNNING"
+  }
+ ],
+ "counts": {
+  "new_attempts_in_interval": 11,
+  "note": "87 (Codex last tally) + v276/v280 (r56, submitted after that tally) + 9 new by Claude interval (v296,v298,v295,v302x4 ... see runs); paired_grasp replicas of the same seed share first_held_t=517.5 (bit-identical prefix)"
+ },
+ "changes": {
+  "merged": [
+   "claude/e2e18-standoff 4b9988b3 (v295,v296)",
+   "azure_speed_gate Rolling/PhaseSpeedWarning + e2e_speed_phase.py from claude/e2e18-speedfix d817cbe0 (controller-timing not wired; v290/v291 dropped)"
+  ],
+  "added": [
+   "v297/v298 (v296 toggles on pan relook, +release_dt1)",
+   "v300/v301/v302 (v295 standoff on pan relook, +release_dt1, +relook_giveup dev_light_v1 120 SIM s)"
+  ],
+  "cleanup": "srcprune.py --execute on azure3: 83 source trees pruned (outputs kept, GitHub-restorable); runs/ untouched; record ~/ugrp-sim/cleanup-records/src-prune-20261013T035628Z.json; free 9.6 GiB -> 86 GiB"
+ },
+ "findings": [
+  "acquire_scan_fast_v1 stalls mapping on seed 61006 (needs code diagnosis; single seed)",
+  "relook never matched (matches=0) in any pan/restore variant; dev_light waited forever -> relook_giveup toggle",
+  "v302 early trajectory differs from v295 by SIM 150 s (release_dt1 stage physics changes dt before relook? unverified)"
+ ],
+ "pending_verification": [
+  "relook_giveup behaviour in a live run",
+  "standoff effect (v295 not yet aligned)"
+ ]
+}
