@@ -42,12 +42,13 @@ def main():
         shutil.copy2(src, dst)
         assert digest(src) == digest(dst)
     python = shutil.which('python3')
+    subprocess.run([python, '--version'], check=True, capture_output=True)  # must run under launchd too
     alerts = home / 'projects/ugrp/outputs/model-endpoint-alerts'
     plist = {'Label': LABEL,
              'ProgramArguments': [python, str(dest / 'model_endpoint_watch.py'), '--config',
                                   str(dest / 'model_endpoints.json'), '--alerts', str(alerts), '--notify'],
              'StartInterval': 3600, 'RunAtLoad': True, 'ProcessType': 'Background',
-             'StandardOutPath': str(dest / 'last-run.jsonl'), 'StandardErrorPath': str(dest / 'last-run.err')}
+             'StandardOutPath': '/dev/null', 'StandardErrorPath': str(dest / 'errors.log')}  # outcomes live in the alerts folder
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_bytes(plistlib.dumps(plist))
     subprocess.run(['plutil', '-lint', str(target)], check=True)

@@ -49,3 +49,44 @@ def test_alert_written_once(tmp_path, monkeypatch):
     assert w.main(['--config', str(cfg), '--alerts', str(out)]) == 2
     assert w.main(['--config', str(cfg), '--alerts', str(out)]) == 2
     assert len([p for p in out.iterdir() if p.name != 'last-alerts.json']) == 1
+
+
+def _run(tmp_path, monkeypatch, alerts_or_exc):
+    cfg = tmp_path / 'c.json'
+    cfg.write_text(json.dumps(CONFIG))
+
+    def fake(c, get=None):
+        if isinstance(alerts_or_exc, Exception):
+            raise alerts_or_exc
+        return alerts_or_exc
+    monkeypatch.setattr(w, 'check', fake)
+    return w.main(['--config', str(cfg), '--alerts', str(tmp_path / 'alerts')])
+
+
+def _alert_files(tmp_path):
+    return [p for p in (tmp_path / 'alerts').iterdir() if p.name not in ('last-alerts.json', 'check-failures.json')]
+
+
+def test_alert_clear_then_recur_alerts_again(tmp_path, monkeypatch):
+    a = [dict(kind='price_increase', model='m/x', provider='Novita')]
+    assert _run(tmp_path, monkeypatch, a) == 2
+    assert _run(tmp_path, monkeypatch, []) == 0
+    assert not (tmp_path / 'alerts' / 'last-alerts.json').exists()
+    import time; time.sleep(1.1)
+    assert _run(tmp_path, monkeypatch, a) == 2
+    assert len(_alert_files(tmp_path)) == 2
+
+
+def test_three_failures_raise_check_failed_alert(tmp_path, monkeypatch):
+    for _ in range(3):
+        assert _run(tmp_path, monkeypatch, w.CheckFailed('net down')) == 3
+    files = _alert_files(tmp_path)
+    assert len(files) == 1 and 'check_failed' in files[0].read_text()
+    assert _run(tmp_path, monkeypatch, []) == 0
+    assert not (tmp_path / 'alerts' / 'check-failures.json').exists()
+
+
+def test_missing_or_bad_price_is_reported():
+    e = endpoint(); e['pricing'] = dict(prompt='0.000000021', completion=None, input_cache_read='abc')
+    kinds = w.check(CONFIG, get=lambda m: dict(data=dict(endpoints=[e])))
+    assert [k['kind'] for k in kinds] == ['price_missing', 'price_missing']
