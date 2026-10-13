@@ -46,6 +46,7 @@ def main():
     p.add_argument('--driver-profile',choices=('main_study_gemini_v1','study_gemma4_31b_v1'),
                    default='main_study_gemini_v1')
     p.add_argument('--decider',choices=('off','jev_v1'),default='off')
+    p.add_argument('--dialogue-decider',choices=('gemma_v0','d1_v1'),default='gemma_v0')
     p.add_argument('--gemma-state', type=Path,
         default=Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback'))
     a = p.parse_args()
@@ -56,6 +57,8 @@ def main():
         raise ValueError('multi_key_v1 requires a Gemma profile')
     openrouter = a.upstream == 'openrouter_v1'
     if a.decider!='off' and not openrouter:raise ValueError('JEV_REQUIRES_OPENROUTER')
+    if a.dialogue_decider=='d1_v1' and (not openrouter or a.decider!='off'):
+        raise ValueError('D1_DIALOGUE_REQUIRES_OPENROUTER_NO_LEGACY_DECIDER')
     if openrouter and not single: raise ValueError('openrouter_v1 requires --driver-profile study_gemma4_31b_v1')
     if openrouter and (a.multi_key_v1 or a.gemma_fallback): raise ValueError('openrouter_v1 excludes multi_key_v1/gemma_fallback')
     if single and a.gemma_fallback:raise ValueError('single model cannot fallback')
@@ -86,6 +89,13 @@ def main():
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
 
     jev = None
+    d1 = None
+    if a.dialogue_decider=='d1_v1':
+        from scripts.d1_dialogue_upstream import D1
+        d1=D1(a.output/'d1-dialogue')
+        receipt['dialogue_decider']='d1_v1'
+        receipt['d1_dialogue_source_sha256']={p:hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest()
+            for p in ('scripts/d1_dialogue_upstream.py','harness/e2e_dialogue_decider.py','harness/e2e_llm_memory.py')}
     if a.decider=='jev_v1':
         from scripts.jev_relay_upstream import Jev
         jev=Jev(a.output/'jev')
@@ -152,7 +162,22 @@ def main():
                         except HTTPError as exc:
                             return exc.code, exc.read(8_000_000), exc.headers.get('Retry-After')
                     if single:
-                        status,raw,retry_after=fallback.complete(body,call_id,idempotency_key=key)
+                        from harness.e2e_dialogue_decider import unpack
+                        request_mode=unpack(json.loads(body))[0].get('dialogue_decider','gemma_v0')
+                        if request_mode!=a.dialogue_decider:
+                            raise ValueError('DIALOGUE_DECIDER_REQUEST_RELAY_MISMATCH')
+                        if d1 is not None:
+                            for p,digest in receipt['d1_dialogue_source_sha256'].items():
+                                if hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest()!=digest:
+                                    raise ValueError('D1_DIALOGUE_SOURCE_CHANGED')
+                            def speak(request):
+                                s,r,_=fallback.complete(json.dumps(request).encode(),call_id,idempotency_key=key+':speech')
+                                if s!=200:raise ValueError('GEMMA_SPEECH_UPSTREAM_FAILURE')
+                                return json.loads(r)
+                            raw=json.dumps(d1.complete(json.loads(body),call_id,speak)).encode()
+                            status,retry_after=200,None
+                        else:
+                            status,raw,retry_after=fallback.complete(body,call_id,idempotency_key=key)
                         if jev is not None and status==200:
                             for p,digest in receipt['jev_source_sha256'].items():
                                 if hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest()!=digest:
@@ -180,6 +205,7 @@ def main():
                     row.update(upstream='openrouter_v1', response_model=response.get('model'),
                         provider=response.get('provider'), openrouter=response.get('ugrp_openrouter'),
                         jev=response.get('ugrp_jev'),
+                        d1_dialogue=response.get('ugrp_d1_dialogue'),
                         host_error=response.get('host_error', False))
                 except (ValueError, AttributeError): pass
             elif fallback:

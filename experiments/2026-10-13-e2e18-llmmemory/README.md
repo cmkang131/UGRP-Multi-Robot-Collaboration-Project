@@ -75,3 +75,20 @@ VM3 읽기 점검은 `vm3-admission.json`에 있다. 실행 폴더 0개, 디스�
 - [SayCan, Ahn et al.](https://arxiv.org/abs/2204.01691): 가능한 스킬과 언어 선택의 결합. 여기서는 현재 프로토콜 계약으로 후보를 제한하며 학습된 affordance 성능을 주장하지 않는다.
 - [Inner Monologue, Huang et al.](https://arxiv.org/abs/2207.05608): 닫힌 루프 언어 피드백을 계획에 반영. 논문의 성공 검출기와 달리 여기서는 물리 성공·접촉 정답을 제어 입력에 주지 않는다.
 - [Lamport, Time, Clocks, and the Ordering of Events in a Distributed System](https://lamport.azurewebsites.net/pubs/time-clocks.pdf): 발신·수신 사건과 인과 순서 구별의 표준 근거. LLM 다중 에이전트의 별도 성능 검증으로 인용하지 않는다.
+
+## 17:10 설계 변경 — d1 결정 / Gemma 메시지
+
+사용자 지시에 따라 `dialogue_decider=gemma_v0`(기본) / `d1_v1`로 분리한다. 기존 Gemma 행동 선택 재생은 종전 구조의 탐색 기록이다. 새 v338 / 7.231.0은 v332(자기 명령 포함 기억)에 d1 프로토콜 결정을 추가한다. 번호는 2026-10-13 원격 main·전체 열린 PR 최대 v337을 확인한 뒤 예약했다. 감독자가 작업 도중 #463을 병합했으므로 후속 draft PR로 변경을 연결하며 작업자는 병합·VM3 조작을 하지 않는다.
+
+`d1_v1`은 같은 Mac S4 릴레이에 `--dialogue-decider d1_v1`을 추가해 사용한다. d1이 자기 RGB와 과제·역할·프로토콜 단계·자기 결정 8개·발행 명령·수신 메시지 원문/시각/나이·현재 GO 참조를 받아 먼저 선택한다. 코드가 이미 claim한 역할, 이미 한 투표, 참조가 없는 ACK, 오래된 영상/epoch 후보를 제거한다. d1은 현재 자기 RGB의 grip/alignment도 범주로 평가한다. 사전 범주가 없으면 입력은 미분류로 명시하며 다른 모델의 해석이나 정답으로 채우지 않는다.
+
+Gemma에는 확정된 행동과 자기 상태를 전달하고 `{text: ...}`만 받는다. 행동·구간·참조·허용 수신자·경로 계약은 호스트가 캡처에서 고정하며 추가 행동 필드가 나오면 거절한다. no_comm에서도 d1이 돌고 메시지는 빈칸이다. 정형 조건은 기존 enum 스키마만 쓰며 자유 문장을 섞지 않는다. 자유/리더 대화의 원문은 다음 d1 요청으로 그대로 전달한다. 기본 경로 및 몸 제어는 유지한다.
+
+주의: 10사례의 기존 정답은 **현재 프로토콜 상태에서 다음 투표가 무엇인가**를 나타낸다. 파지의 영상 정답은 없다. ACK가 정답인 사례도 없다. call-0021 저장 자기 영상은 빔이 화면 대부분을 차지해 집게가 명확하지 않다. 초기 d1 1회는 grip=unknown, WAIT를 골랐다. 이를 실패 분모에서 빼거나 프롬프트에 잡았다는 정답을 넣지 않는다.
+
+### 추가 참고 자료 (2026-10-13 원문/공식 문서 확인)
+
+- [RoCo](https://arxiv.org/abs/2307.04738): 로봇 간 대화와 실행 가능성 피드백으로 협업 계획을 수정한다. 여기서는 원문 대화와 호스트 프로토콜 거절만 사용하며 논문의 환경 피드백 전체를 허용 관측으로 간주하지 않는다.
+- [CoELA](https://arxiv.org/abs/2307.02485): 분산 관측·유료 통신에서 지각/기억/실행을 모듈로 연결한다. d1/Gemma 분리의 성능을 입증한 논문은 아니다.
+- [Liquid 공식 decision model 문서](https://docs.liquid.ai/lfm/models/decision-models): 고정 선택지의 결정과 자유 텍스트 생성을 구분한다. [공식 d1 vision 예제](https://www.liquid.ai/blog/d1-decision-model)는 `images` data URL 입력을 확인한다. 실호출에서 Choice는 최소 2개 라벨을 요구해, 둘 다 기존 continue인 프로토콜 대기/시각 불확실 대기로 표현한다. 불가능한 투표를 후보로 넣지 않는다.
+- [Google Gemma 대화 문서](https://ai.google.dev/gemma/docs/gemma_chat): 매 호출에 관련 과거 맥락을 명시적으로 공급한다. [Google 공식 프롬프트 지침](https://ai.google.dev/gemini-api/docs/prompting-strategies): 역할·제약·출력 형식을 구체적으로 지정한다. 후자는 Gemini 지침이며 Gemma 성능 보장은 아니다.

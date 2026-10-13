@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id']=='e2e18-v338':
+        from harness.e2e_dialogue_decider import parent_for_validation as dialogue_parent
+        return require_current(dialogue_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v330','e2e18-v331','e2e18-v332'):
         from harness.e2e_llm_memory import parent_for_validation as memory_parent
         return require_current(memory_parent(bundle),root)
