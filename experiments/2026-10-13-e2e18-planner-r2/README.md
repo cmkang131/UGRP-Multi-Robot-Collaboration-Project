@@ -81,3 +81,5 @@ peer wait은 **18/38→25/38**, help·uncertain은 **1/7→6/7**. 기존 wait은
 - [Online Replanning in Belief Space](https://arxiv.org/abs/1911.04577): 부분 관측의 확인·재계획과 기대 비용. 공개 비용 미리 보기에 한정해 적용했다.
 - [Confidence is Not Universal](https://proceedings.mlr.press/v306/jang26a.html): 과제에 따른 신뢰 보정의 한계. 가중치가 보정된 신뢰라고 부르지 않는다.
 - [OpenRouter structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs): 조사했지만 현재 Gemma endpoint 지원은 미확인이라 response_format을 켜지 않았다. 실제 개선은 프롬프트/출력 여유/닫힌 파서이다.
+
+감독자 제출 요청: [issuecomment-6145775985](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/461#issuecomment-6145775985). 고정 실행 소스는 ccd845fc이며, 요청 게시와 실제 실행/결과 회수는 별개다.
