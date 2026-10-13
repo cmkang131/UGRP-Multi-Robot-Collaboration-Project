@@ -59,3 +59,20 @@ def test_collision_guard_holds_except_explicit_dev_light(monkeypatch):
     tr.dev_light=True
     assert fov.step(tr,'r1',1,{})[1][0]['turn']==.35
     assert len(events)==2
+
+
+def test_near_once_yields_to_path_and_cannot_rearm_same_approach(monkeypatch):
+    tr,r=case(105,'near_once60_v1')
+    monkeypatch.setattr(fov,'command',lambda *a,**kw:(dict(kind='mecanum',forward=0.,left=0.,turn=.35,duration_s=.1),{}))
+    state={}
+    assert fov.step(tr,'r1',1.,state,distance_m=.79) is None
+    assert fov.step(tr,'r1',1.,state,distance_m=.3) is not None
+    r.goal.explorer.local_pose[2]=math.radians(70)
+    assert fov.step(tr,'r1',2.,state,distance_m=.3) is None
+    r.goal.explorer.local_pose[2]=0
+    assert fov.step(tr,'r1',3.,state,distance_m=.3) is None
+    assert state['fov_completed']
+    state={}
+    assert fov.step(tr,'r1',1.,state,distance_m=.3) is not None
+    assert fov.step(tr,'r1',4.,state,distance_m=.3) is None
+    assert state['fov_completed']

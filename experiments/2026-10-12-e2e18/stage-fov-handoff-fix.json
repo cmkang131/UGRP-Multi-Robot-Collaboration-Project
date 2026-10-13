@@ -1,0 +1,32 @@
+{
+  "failed_bundles": [
+    "v395",
+    "v396"
+  ],
+  "failure": "continuous FOV turn and primary path yaw fight",
+  "raw_case": "stage-b-cohort2-02-grasp-v395/r2",
+  "own_time_window_s": [
+    223.4,
+    283.0
+  ],
+  "mode_transitions_in_sample": 97,
+  "distance_m": [
+    0.788,
+    0.816
+  ],
+  "path_yaw_error_rad": -1.0,
+  "view_bearing_error_rad": 1.07,
+  "stopped_all_affected": true,
+  "replacement": {
+    "v399": "near_once60_v1",
+    "v400": "near_once45_v1"
+  },
+  "default": "off",
+  "policy": "Only within own station distance0.35m; one bounded view correction per approach, at most3SIMs, then primary path owns yaw. Rearm only when normal approach state is cleared. Existing view/freshness/contact criteria retained.",
+  "reference": "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/controller_plugins/configuring_rotation_shim_controller/",
+  "tests": {
+    "passed": 39,
+    "files": 3
+  },
+  "physics": "pending"
+}

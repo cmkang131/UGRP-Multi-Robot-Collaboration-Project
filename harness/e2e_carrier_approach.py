@@ -110,7 +110,7 @@ def advance(transport,rid,now):
         costmap=add(costmap,beam_center,beam_yaw)
         diag['beam_obstacle_source']='own_rgb_center_axis_known_size'
     from harness.e2e_grasp_fov import step as fov_step
-    fov=fov_step(transport,rid,now,state,costmap,mp)
+    fov=fov_step(transport,rid,now,state,costmap,mp,distance)
     if fov is not None:return fov
     path=[mp[:2]] if rotate_station else efficient.navigation_path(transport,rid,now,state,costmap,mp,mt)
     diag['path_points']=len(path)

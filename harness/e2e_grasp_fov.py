@@ -13,13 +13,19 @@ from harness.e2e_rpp_path import command
 from harness.public_navigation.follower import projected_clear
 from harness.public_navigation_recovery import issued_twist
 
-OPTIONS = {'turn60_v1': 60., 'turn45_v1': 45.}
+OPTIONS = {'turn60_v1': 60., 'turn45_v1': 45., 'near_once60_v1':60., 'near_once45_v1':45.}
 
 
-def step(tr, rid, now, state, costmap=None, map_pose=None):
+def step(tr, rid, now, state, costmap=None, map_pose=None, distance_m=math.inf):
     option=getattr(tr,'grasp_fov','off')
     if option=='off':return None
     if option not in OPTIONS:raise ValueError('UNKNOWN_GRASP_FOV')
+    once=option.startswith('near_once')
+    if once and (state.get('fov_completed') or distance_m>.35):
+        return None
+    if once and now-state.get('fov_started',now)>=3.:
+        state['fov_completed']=True;state.pop('fov_turning',None)
+        return None
     r=tr.robots[rid]
     if not valid(r,now):return None
     pose=np.asarray(r.goal.explorer.local_pose,float)
@@ -29,9 +35,11 @@ def step(tr, rid, now, state, costmap=None, map_pose=None):
     active=state.get('fov_turning',False)
     release=limit-math.radians(15.)
     if abs(error)<=(release if active else limit):
+        if once and active:state['fov_completed']=True
         state.pop('fov_turning',None)
         return None
     state['fov_turning']=True
+    if once:state.setdefault('fov_started',now)
     yaw=wrap(bearing(pose,target)-math.copysign(max(0.,release-.07),error))
     action,diag=command(dict(coordinate_frame=rid+'/own_odom',path_m=[pose[:2].tolist()],
         status='goal_reobserve',heading_rad=yaw),pose,tr.profiles,robot_id=rid)
