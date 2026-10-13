@@ -8,3 +8,5 @@
 적용: 코드는 자기 관측의 끝 후보·비용·점유 근거만 만들고, 판단과 메시지는 같은 LLM 호출에서 나온다. 무통신/모델 실패는 고정 규칙과 자기 RGB 점유 검사로 처리하고 결과를 LLM 결과와 분리한다. 한 번 선택한 물리 끝은 후속 B 방향 변화만으로 뒤집지 않으며, 점유 때문에 바꿀 때도 새 자기 관측과 선택 기록을 남긴다.
 
 - [OpenRouter structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs): 실제 Gemma 2호출 중1개가 Markdown fence를 반환하여 엄격 파싱 실패. 공식 response_format=json_schema, strict, provider.require_parameters를 적용한다. 이는 로컬 판단 반환 형식이며 로봇 사이 별도 통신 경로를 만들지 않는다.
+
+- [Python fcntl/flock](https://docs.python.org/3/library/fcntl.html): 프로세스별 파일 잠금으로 복원 8슬롯을 제한하고, 사전 등록한 16개 준비 후 같은 monotonic 시작 시각을 사용한다. 로봇 관측·선택·메시지는 공유하지 않는다.

@@ -1,5 +1,5 @@
 {
-  "status": "preparing_stage_gate",
+  "status": "gate1_invalid_replacing_barrier",
   "same_end": 7,
   "opposite_end": 5,
   "both_reached": 12,
@@ -12,8 +12,8 @@
   "stance_offset_m": 0.4732,
   "threshold_m": 0.25,
   "live_runs": 0,
-  "model_calls": 4,
-  "vm3": "deallocated_verified",
+  "model_calls": 7,
+  "vm3": "running",
   "reserved_bundles": [
     407,
     408,
@@ -39,17 +39,30 @@
     "model_calls": 0
   },
   "remaining": [
-    "Saved-input occupancy insufficient; active prearrival views require new stage observations",
-    "Gemma relay provider and stage hook not yet exercised",
+    "Sparse saved RGB did not establish counterfactual separation",
+    "v411-v414 synchronized gate then main stage pending",
     "Other communication conditions model/channel runtime not connected"
   ],
   "registered_bundles": [
     407,
     408,
     409,
-    410
+    410,
+    411,
+    412,
+    413,
+    414
   ],
   "source_stage": "grasp checkpoint only; no_comm; no full E2E",
   "related_tests_passed": 41,
-  "latest_related_tests_passed": 33
+  "latest_related_tests_passed": 35,
+  "live_gate_runs": 16,
+  "live_main_runs": 0,
+  "gate1": {
+    "completed_30_sim_s": 4,
+    "administratively_interrupted": 12,
+    "valid_speed_gate": false,
+    "reason": "restore load 14.74 >12.8 and no common physics start"
+  },
+  "model_cost_usd": 0.00110159
 }

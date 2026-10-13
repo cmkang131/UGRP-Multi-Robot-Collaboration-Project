@@ -118,7 +118,7 @@ def own_map_record(robot):
                 memory=normalize(robot.goal.snapshot()))
 
 
-def replay(recipe, raw, *, robot_factory=None, grasp_once='off'):
+def replay(recipe, raw, *, robot_factory=None, grasp_once='off', progress=None):
     """Rebuild source robot state from own inputs, never pass setup_only to it.
 
     Returns live robots and a verification receipt. Any estimate mismatch aborts
@@ -164,6 +164,7 @@ def replay(recipe, raw, *, robot_factory=None, grasp_once='off'):
             robot.receive(obs,np.asarray(Image.open(io.BytesIO(jpeg)).convert('RGB')))
             error = float(np.max(np.abs(np.asarray(robot.goal.explorer.local_pose)-row['expected_pose'])))
             max_error=max(max_error,error);n+=1
+            if progress is not None and n%10==0:progress(rid,n)
             if error > 1e-6 or digest(robot.goal.entities.get('B')) != row['expected_B_sha256']:
                 raise ValueError(f'OWN_REPLAY_MISMATCH:{rid}:frame={row["frame_id"]}:pose_error={error}')
             if digest(robot.beam) != row['expected_beam_sha256']:
