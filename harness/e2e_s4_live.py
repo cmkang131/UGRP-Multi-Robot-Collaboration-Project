@@ -19,7 +19,7 @@ Until a route exists, continue while the own-camera mapper explores. r1 must sen
 GO/ACK use the exact current dialogue.key [order_id,route_hash,grip_epoch,seg]. GO requires own RGB supporting the grip; ACK requires your GO and the current peer_go_ref. Never reuse a previous epoch or segment. When unsure, continue holds transport. Only channel.can_send_to may receive messages. reply_to must be a received ID or null. All prose is English. Examples describe syntax, not evidence.'''
 
 
-def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off',route_handle='off'):
+def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off',route_handle='off',vote_ref='off'):
     """Validate before projection; retain the typed E2E action/message contract."""
     r = copy.deepcopy(request)
     b = json.loads(r['messages'][1]['content'])
@@ -27,6 +27,7 @@ def project(request, *, options, decider='off', epoch_age_s=None, protocol_recov
     if b.get('schema') != own.SCHEMA or 'dialogue' not in b:
         raise base.ContractViolation('E2E_DIALOGUE_INPUT_REQUIRED')
     if not options.compact_prompt_v1 and options.prompt_lang == 'ko' and decider=='off':
+        if vote_ref!='off':raise ValueError('VOTE_REF_REQUIRES_PROJECTED_PROMPT')
         return r
     b['condition'] = prompt.external_condition(b['condition'], options.prompt_lang)
     b['channel']['condition'] = b['condition']
@@ -82,6 +83,10 @@ def project(request, *, options, decider='off', epoch_age_s=None, protocol_recov
         from harness.e2e_route_handle import OPTION,prompt as handle_prompt
         if route_handle!=OPTION:raise ValueError('UNKNOWN_ROUTE_HANDLE')
         system=handle_prompt(b,system)
+    if vote_ref!='off':
+        from harness.e2e_vote_ref import OPTIONS as VOTE_OPTIONS,prompt as vote_prompt
+        if vote_ref not in VOTE_OPTIONS or options.prompt_lang!='en':raise ValueError('UNKNOWN_VOTE_REF')
+        system=vote_prompt(b,system)
     b['prompt_lang'] = options.prompt_lang
     own.scan(b)
     if len(r['images']) != 1 or len(r['image_refs']) != 1:
@@ -126,7 +131,7 @@ class Trial(base.Trial):
         p = super().prepare_call(call)
         view=self.dialogue.view(call.actor,call.started_sim_s)
         age=None if view['key'] is None else call.started_sim_s-self.dialogue.opened
-        request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age,protocol_recovery=self.protocol_recovery,protocol_progress=self.protocol_progress,route_handle=getattr(self.dialogue,'route_handle','off'))
+        request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age,protocol_recovery=self.protocol_recovery,protocol_progress=self.protocol_progress,route_handle=getattr(self.dialogue,'route_handle','off'),vote_ref=getattr(self.dialogue,'vote_ref','off'))
         return type(p)(ProjectedInputs(p.bundled,json.loads(request['messages'][1]['content'])),request,p.request_id)
 
     def finish_call(self,call,prepared,raw,*,provider_usage=None):

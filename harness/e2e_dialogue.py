@@ -8,6 +8,7 @@ import copy
 from dataclasses import dataclass, replace
 
 from harness import e2e_own_inputs as own
+from harness import e2e_vote_ref as vote_ref
 from harness import pair_llm_dispatch as pair
 from harness import zone_study_protocol as zp
 from harness.zone_final_pair_binding import bind
@@ -145,7 +146,8 @@ class Dialogue:
             own_go_sent='GO' in self.votes.get(actor, {}), own_ack_sent='ACK' in self.votes.get(actor, {}),
             peer_go_ref=peer['GO']['call_id'] if visible and peer else None,
             transport_admitted=bool(visible and self.allowed(self.key, now)),
-            motion_connected=bool(getattr(self,'motion_connected',False)))
+            motion_connected=bool(getattr(self,'motion_connected',False)),
+            **vote_ref.view_field(self, list(self.key) if visible and self.key else None))
 
     def fresh(self, context, now):
         return context['frame_t'] <= context['requested_at'] <= now < context['frame_t'] + WINDOW_S
@@ -295,6 +297,7 @@ class Dialogue:
         def validate(value, **checks):
             try:
                 value = zp.parse(value) if isinstance(value, str) else copy.deepcopy(value)
+                value['action'] = vote_ref.expand(self, value['action'], context)   # off: unchanged
                 clean = copy.deepcopy(value)
                 contracts = [m.pop('contract', None) for m in clean['messages']]
                 if sum(c is not None for c in contracts) > 1:

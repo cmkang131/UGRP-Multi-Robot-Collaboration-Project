@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] in ('e2e18-v314','e2e18-v315'):
+        from harness.e2e_vote_ref import parent_for_validation as vote_parent
+        return require_current(vote_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v312','e2e18-v313'):
         from harness.e2e_clip_hysteresis import parent_for_validation as hyst_parent
         return require_current(hyst_parent(bundle),root)
