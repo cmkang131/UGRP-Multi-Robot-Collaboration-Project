@@ -198,7 +198,7 @@ class CodeBodyGate(SkillsBodyGate):
                 choice = next((k for k in ('back_off_and_replan', 'recover_wide_view') if k in safe), None)
                 reason = 'widen_clipped_own_view'
             if (choice is None and self.tr.state == 'align' and facts['visual_category'] == 'not_visible'
-                    and facts['own_map']['standoff'] is None):
+                    and facts['own_map']['standoff'] is None and 'search_own_beam' not in safe):
                 choice = next((k for k in safe if k.startswith('scan_') and k not in failed[-2:]), None)
                 reason = 'search_last_seen_direction'
             if choice is None and not blocked and proposal in safe and proposal not in failed[-2:] and proposal not in WAIT:

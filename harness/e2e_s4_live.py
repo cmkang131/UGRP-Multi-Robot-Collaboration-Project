@@ -20,7 +20,7 @@ Until a route exists, continue while the own-camera mapper explores. r1 must sen
 GO/ACK use the exact current dialogue.key [order_id,route_hash,grip_epoch,seg]. GO requires own RGB supporting the grip; ACK requires your GO and the current peer_go_ref. Never reuse a previous epoch or segment. When unsure, continue holds transport. Only channel.can_send_to may receive messages. reply_to must be a received ID or null. All prose is English. Examples describe syntax, not evidence.'''
 
 
-def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off',route_handle='off',vote_ref='off',llm_memory='off',memory=None,body_controller='off',dialogue_decider='gemma_v0',own_protocol_observation=None):
+def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off',route_handle='off',vote_ref='off',llm_memory='off',memory=None,body_controller='off',dialogue_decider='gemma_v0',own_protocol_observation=None,speech_context='off'):
     """Validate before projection; retain the typed E2E action/message contract."""
     r = copy.deepcopy(request)
     b = json.loads(r['messages'][1]['content'])
@@ -101,6 +101,9 @@ def project(request, *, options, decider='off', epoch_age_s=None, protocol_recov
         b['dialogue_epoch_age_s']=epoch_age_s
         if dialogue_decider=='code_v1' and own_protocol_observation is not None:
             b['own_protocol_observation']=copy.deepcopy(own_protocol_observation)
+    if speech_context!='off':
+        if speech_context not in ('recent4_v1','recent8_v1') or dialogue_decider!='code_v1':raise ValueError('UNKNOWN_SPEECH_CONTEXT')
+        b['speech_context']=speech_context
     if body_controller != 'off':
         if body_controller != 'jev_v1':raise ValueError('UNKNOWN_BODY_CONTROLLER')
         system += ' Body-controller separation: you choose communication acts only (continue, route proposal/approval, claim, current GO/ACK). The body decision backend selects every body, gripper and camera motion. Do not select look_around, release or any motor action. Continue means no dialogue act; it does not control motion. Describe only your own visual evidence when deciding GO/ACK, including before lifting.'
@@ -153,7 +156,7 @@ class Trial(base.Trial):
         view=self.dialogue.view(call.actor,call.started_sim_s)
         age=None if view['key'] is None else call.started_sim_s-self.dialogue.opened
         request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age,protocol_recovery=self.protocol_recovery,protocol_progress=self.protocol_progress,route_handle=getattr(self.dialogue,'route_handle','off'),vote_ref=getattr(self.dialogue,'vote_ref','off'),llm_memory=self.llm_memory,body_controller=self.body_controller,
-            dialogue_decider=self.dialogue_decider,own_protocol_observation=(self.protocol_observer(call.actor) if self.dialogue_decider=='code_v1' and hasattr(self,'protocol_observer') else None),memory=None if self.llm_memory=='off' else mem_collect(self,self.memory,call,commands=self.llm_memory=='v1_commands'))
+            speech_context=getattr(self,'speech_context','off'),dialogue_decider=self.dialogue_decider,own_protocol_observation=(self.protocol_observer(call.actor) if self.dialogue_decider=='code_v1' and hasattr(self,'protocol_observer') else None),memory=None if self.llm_memory=='off' else mem_collect(self,self.memory,call,commands=self.llm_memory=='v1_commands'))
         return type(p)(ProjectedInputs(p.bundled,json.loads(request['messages'][1]['content'])),request,p.request_id)
 
     def finish_call(self,call,prepared,raw,*,provider_usage=None):
