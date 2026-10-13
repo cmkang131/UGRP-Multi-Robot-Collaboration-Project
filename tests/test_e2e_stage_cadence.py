@@ -64,3 +64,55 @@ def test_bundle_requires_profile_and_hashes_implementation():
     assert {'harness/e2e_stage_cadence.py','sim/e2e_stage_physics.py'}<=b['source_sha256'].keys()
     b['stage_physics_profile']['align_dt_s']=.002
     with pytest.raises(ValueError):require_current(b,ROOT)
+
+
+def test_release_dt1_clears_latch_per_robot_from_issued_open_and_relook_phase():
+    from sim.e2e_stage_physics import RELEASE
+    close=dict(kind='arm',servo_id=1,pulse=1500);opened=dict(kind='arm',servo_id=1,pulse=2000)
+    host,calls=shell(RELEASE)
+    assert update(host,'align') and host.dt==.001
+    update(host,'grasp_lift',close,'r1');update(host,'grasp_lift',close,'r2');assert host.dt==.00025
+    update(host,'lower_open',opened,'r1');assert host.dt==.00025   # r2 may still hold
+    update(host,'lower_open',opened,'r2');assert host.dt==.00025 and host._stage_contact_latched is False  # contact-sensitive phase keeps old dt
+    assert update(host,'relook_camera') and host.dt==.001
+    update(host,'relook');assert host.dt==.001
+    update(host,'relook',close,'r1');assert host.dt==.00025          # a new close re-latches
+    update(host,'relook',opened,'r1');assert host.dt==.001
+    assert [c[1]['reason'] for c in calls if isinstance(c,tuple)][-1]=='own_gripper_open_release'
+    assert [c[1]['grip_command_latched'] for c in calls if isinstance(c,tuple)][-1] is False
+
+
+def test_release_off_and_pregrasp_keep_latch_after_open():
+    host,_=shell(OPTION)
+    update(host,'grasp_lift',dict(kind='arm',servo_id=1,pulse=1500),'r1')
+    update(host,'relook',dict(kind='arm',servo_id=1,pulse=2000),'r1');assert host.dt==.00025
+
+
+def test_controller_timing_off_installs_nothing_and_on_records_by_phase(tmp_path):
+    from types import SimpleNamespace
+    from harness import e2e_speed_phase as m
+    assert m.install('off',{},None,None,None) is None
+    goal=SimpleNamespace(receive=lambda **k:'g');robot=SimpleNamespace(_receive=lambda *a:'r',goal=goal,observe_beam=lambda *a:'b')
+    transport=SimpleNamespace(step=lambda now:'s');host=SimpleNamespace(step_to=lambda now:'h')
+    backend=SimpleNamespace(capture=lambda:'c')
+    t=m.install(m.TIMING,{'r1':robot},transport,host,backend)
+    t.phase='relook';assert robot._receive()=='r' and robot.goal.receive()=='g' and transport.step(1)=='s' and host.step_to(1)=='h'
+    t.phase='align';assert backend.capture()=='c'
+    out=[];t.flush(tmp_path/'x.json',lambda p,v:out.append(v),force=True)
+    assert out[0]['phases']['relook']['robot._receive']['calls']==1 and out[0]['phases']['align']['backend.capture']['calls']==1
+    assert out[0]['controller_feedback'] is False
+    from harness import e2e_live_mapping,e2e_camera_settle
+    import importlib;importlib.reload(e2e_live_mapping);importlib.reload(e2e_camera_settle)   # undo module patches
+
+
+def test_speed_phase_compose_requires_both_and_registers_v290_v291():
+    from harness import e2e_speed_phase as m
+    b=dict(execution_bundle_id='e2e18-v273',e2e_options={});before=dict(b)
+    assert m.compose(b,'off','off')==() and b==before
+    for args in (('release_dt1_v1','off'),('off','phase_v1'),('pregrasp_dt1_v1','phase_v1')):
+        with pytest.raises(ValueError):m.compose(dict(b,e2e_options={}),*args)
+    m.compose(b,'release_dt1_v1','phase_v1');assert b['execution_bundle_id']=='e2e18-v290' and b['workflow_version']=='7.183.0'
+    with pytest.raises(ValueError):m.compose(b,'release_dt1_v1','phase_v1')
+    b=dict(execution_bundle_id='e2e18-v277',e2e_options={});m.compose(b,'release_dt1_v1','phase_v1');assert b['execution_bundle_id']=='e2e18-v291'
+    m.validate(b);b['stage_physics_profile']=dict(m.PROFILE,relook_dt_s=.002)
+    with pytest.raises(ValueError):m.validate(b)
