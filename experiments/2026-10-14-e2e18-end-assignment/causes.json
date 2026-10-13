@@ -1,0 +1,461 @@
+{
+  "counts": {
+    "no_assigned_approach_incidental_B_search": 1,
+    "initial_basis_reversed": 4,
+    "basis_reassigned_during_approach": 2
+  },
+  "runs": [
+    {
+      "run": "stage-b-cohort2-05-grasp-v384",
+      "robot": "r2",
+      "cause": "no_assigned_approach_incidental_B_search",
+      "first_wrong": null,
+      "approach_status_counts": {
+        "none": 1,
+        "seek_own_B": 383
+      }
+    },
+    {
+      "run": "stage-c-cohort4-00-grasp-v375",
+      "robot": "r2",
+      "cause": "initial_basis_reversed",
+      "first_wrong": {
+        "own_t": 307.8,
+        "physical_t": 214.10000000000002,
+        "status": "navigate_pregrasp",
+        "axis_dot": -0.9094221897209717,
+        "axis_assigned_end": 0,
+        "grip_projected_end": 0,
+        "grip_world_m": [
+          1.0085370648388838,
+          0.03359956159770877
+        ],
+        "station_world_m": [
+          0.8245506560358151,
+          -0.05265147535692788
+        ],
+        "own_pose": [
+          0.8530856026101459,
+          -0.5917196412469982,
+          -3.0455839669986258
+        ],
+        "gt_pose": [
+          1.4562528988259962,
+          0.4207057890774379,
+          3.1880629688398696
+        ],
+        "basis_yaw": -2.653684713117913,
+        "remembered_B": [
+          -1.2100000000000004,
+          -2.2
+        ],
+        "frame_id": 693
+      },
+      "approach_status_counts": {
+        "none": 1,
+        "seek_own_B": 103,
+        "acquire_turn": 69,
+        "acquire_scan": 83,
+        "acquire_explore": 183,
+        "navigate_pregrasp": 162,
+        "gaze_settle": 6,
+        "camera_settle": 2
+      },
+      "B_world_evaluation_m": [
+        -0.6839407708649163,
+        -1.0834414684285887
+      ],
+      "B_position_error_m": 5.380838347146209,
+      "own_B": [
+        -1.2100000000000004,
+        -2.2
+      ],
+      "own_beam": {
+        "rgb": {
+          "robot_id": "r2",
+          "frame_id": 693,
+          "t_sim": 307.8,
+          "sha256": "4946570aa92172b0eef316eab94a5053412cbd58e45fcec01a075cb952b70014"
+        },
+        "pose_own_m": [
+          0.6913046261929952,
+          -0.9461413071061203,
+          0.18529906461387594
+        ],
+        "grip_base_m": [
+          0.46393562501299834,
+          0.36135730129881893
+        ],
+        "axis_heading_rad": -3.0523022755670848,
+        "endpoint_model": "long_side_v1",
+        "observed_band_side": "far",
+        "endpoint_side_evidence": {
+          "points": 1844,
+          "q02_m": -0.1654150032121371,
+          "q98_m": 0.02486668416098514,
+          "long_before": 516,
+          "long_after": 0
+        }
+      }
+    },
+    {
+      "run": "stage-c-cohort4-01-grasp-v399",
+      "robot": "r2",
+      "cause": "initial_basis_reversed",
+      "first_wrong": {
+        "own_t": 135.8,
+        "physical_t": 42.10000000000001,
+        "status": "camera_settle",
+        "axis_dot": -0.9818860802240877,
+        "axis_assigned_end": 0,
+        "grip_projected_end": 0,
+        "grip_world_m": [
+          0.8700298768923149,
+          -0.03118531120051063
+        ],
+        "station_world_m": [
+          0.6708839989119835,
+          -0.07157292419562286
+        ],
+        "own_pose": [
+          0.9593188616563874,
+          -0.5437062333558909,
+          -2.42239789750545
+        ],
+        "gt_pose": [
+          1.3826034466076156,
+          0.18047358796894833,
+          -2.289639554977376
+        ],
+        "basis_yaw": -3.0742605859487053,
+        "remembered_B": [
+          -0.5357142857142857,
+          -2.2357142857142853
+        ],
+        "frame_id": 263
+      },
+      "approach_status_counts": {
+        "none": 1,
+        "seek_own_B": 98,
+        "camera_settle": 2,
+        "navigate_pregrasp": 434,
+        "gaze_settle": 10,
+        "acquire_turn": 7,
+        "acquire_scan": 3,
+        "approach_path_unavailable": 12,
+        "recover_backup": 66,
+        "approach": 12,
+        "recover_turn": 64,
+        "turn_for_own_beam_view": 4
+      },
+      "B_world_evaluation_m": [
+        0.12469470247824099,
+        -1.6945413326185035
+      ],
+      "B_position_error_m": 4.493634857994261,
+      "own_B": [
+        -0.5357142857142857,
+        -2.2357142857142853
+      ],
+      "own_beam": null
+    },
+    {
+      "run": "stage-c-cohort4-02-grasp-v400",
+      "robot": "r2",
+      "cause": "initial_basis_reversed",
+      "first_wrong": {
+        "own_t": 135.8,
+        "physical_t": 42.10000000000001,
+        "status": "camera_settle",
+        "axis_dot": -0.9818860802240877,
+        "axis_assigned_end": 0,
+        "grip_projected_end": 0,
+        "grip_world_m": [
+          0.8700298768923149,
+          -0.03118531120051063
+        ],
+        "station_world_m": [
+          0.6708839989119835,
+          -0.07157292419562286
+        ],
+        "own_pose": [
+          0.9593188616563874,
+          -0.5437062333558909,
+          -2.42239789750545
+        ],
+        "gt_pose": [
+          1.3826034466076156,
+          0.18047358796894833,
+          -2.289639554977376
+        ],
+        "basis_yaw": -3.0742605859487053,
+        "remembered_B": [
+          -0.5357142857142857,
+          -2.2357142857142853
+        ],
+        "frame_id": 263
+      },
+      "approach_status_counts": {
+        "none": 1,
+        "seek_own_B": 98,
+        "camera_settle": 2,
+        "navigate_pregrasp": 224,
+        "gaze_settle": 10,
+        "acquire_turn": 7,
+        "acquire_scan": 3,
+        "approach_path_unavailable": 6,
+        "recover_backup": 27,
+        "approach": 6,
+        "recover_turn": 35,
+        "turn_for_own_beam_view": 3,
+        "rotate_station_heading": 61,
+        "clip_recovery_backup": 70,
+        "clip_recovery_settle": 70,
+        "base_settle": 1,
+        "visual_servo": 72
+      },
+      "B_world_evaluation_m": [
+        0.12469470247824099,
+        -1.6945413326185035
+      ],
+      "B_position_error_m": 4.493634857994261,
+      "own_B": [
+        -0.5357142857142857,
+        -2.2357142857142853
+      ],
+      "own_beam": null
+    },
+    {
+      "run": "stage-c-cohort4-03-grasp-v375",
+      "robot": "r2",
+      "cause": "initial_basis_reversed",
+      "first_wrong": {
+        "own_t": 388.3,
+        "physical_t": 254.10000000000002,
+        "status": "navigate_pregrasp",
+        "axis_dot": -0.9997244484825115,
+        "axis_assigned_end": 0,
+        "grip_projected_end": 0,
+        "grip_world_m": [
+          0.9950707774204135,
+          0.04647231239460102
+        ],
+        "station_world_m": [
+          0.7921097900246005,
+          0.05632510871425786
+        ],
+        "own_pose": [
+          1.6888540448157006,
+          0.367351516755239,
+          -2.3199222683272636
+        ],
+        "gt_pose": [
+          1.6003398384851457,
+          0.16724267390823871,
+          10.108963613225072
+        ],
+        "basis_yaw": -3.0526151118893172,
+        "remembered_B": [
+          0.1911764705882353,
+          -1.9794117647058826
+        ],
+        "frame_id": 860
+      },
+      "approach_status_counts": {
+        "none": 1,
+        "seek_own_B": 631,
+        "navigate_pregrasp": 88,
+        "gaze_settle": 2,
+        "approach_path_unavailable": 2,
+        "recover_backup": 10,
+        "approach": 2,
+        "recover_turn": 10
+      },
+      "B_world_evaluation_m": [
+        -0.20483407168972056,
+        -1.9521164673375344
+      ],
+      "B_position_error_m": 4.807109318052081,
+      "own_B": [
+        0.1911764705882353,
+        -1.9794117647058826
+      ],
+      "own_beam": null
+    },
+    {
+      "run": "stage-c-cohort4-04-grasp-v399",
+      "robot": "r1",
+      "cause": "basis_reassigned_during_approach",
+      "first_wrong": {
+        "own_t": 206.7,
+        "physical_t": 72.49999999999999,
+        "status": "navigate_pregrasp",
+        "axis_dot": -0.9986080053268461,
+        "axis_assigned_end": 1,
+        "grip_projected_end": 1,
+        "grip_world_m": [
+          1.5389707891125302,
+          0.07041472235885426
+        ],
+        "station_world_m": [
+          1.7415561194290365,
+          0.05462156116319594
+        ],
+        "own_pose": [
+          0.5569186267275447,
+          -1.6630026036028744,
+          1.1067934996688527
+        ],
+        "gt_pose": [
+          0.8629860264021498,
+          1.1125529871707296,
+          4.710593228677259
+        ],
+        "basis_yaw": -0.5400077889648504,
+        "remembered_B": [
+          1.0515235455267893,
+          0.0565451915879588
+        ],
+        "frame_id": 406
+      },
+      "approach_status_counts": {
+        "none": 1,
+        "navigate_pregrasp": 343,
+        "gaze_settle": 23,
+        "camera_settle": 48,
+        "turn_for_own_beam_view": 11,
+        "acquire_turn": 17,
+        "acquire_scan": 7,
+        "rotate_station_heading": 54,
+        "clip_recovery_backup": 9,
+        "clip_recovery_settle": 9
+      },
+      "B_world_evaluation_m": [
+        1.1870685593943544,
+        -0.6471200385517824
+      ],
+      "B_position_error_m": 3.7093073747874143,
+      "own_B": [
+        1.0515235455267893,
+        0.0565451915879588
+      ],
+      "own_beam": {
+        "rgb": {
+          "robot_id": "r1",
+          "frame_id": 406,
+          "t_sim": 206.7,
+          "sha256": "41533a6492e9473005a7216083a02a803597e7255165c36488df801a655239a5"
+        },
+        "pose_own_m": [
+          0.651178100167009,
+          -0.5666138700387442,
+          2.587617557329774
+        ],
+        "grip_base_m": [
+          0.9983899747449714,
+          0.1374670901377064
+        ],
+        "axis_heading_rad": 1.4808240576609217,
+        "endpoint_model": "long_side_v1",
+        "observed_band_side": "near",
+        "endpoint_side_evidence": {
+          "points": 621,
+          "q02_m": -0.02504482418605467,
+          "q98_m": 0.4551147283540431,
+          "long_before": 0,
+          "long_after": 388
+        }
+      }
+    },
+    {
+      "run": "stage-c-cohort4-05-grasp-v400",
+      "robot": "r1",
+      "cause": "basis_reassigned_during_approach",
+      "first_wrong": {
+        "own_t": 206.7,
+        "physical_t": 72.49999999999999,
+        "status": "navigate_pregrasp",
+        "axis_dot": -0.9986080053268461,
+        "axis_assigned_end": 1,
+        "grip_projected_end": 1,
+        "grip_world_m": [
+          1.5389707891125302,
+          0.07041472235885426
+        ],
+        "station_world_m": [
+          1.7415561194290365,
+          0.05462156116319594
+        ],
+        "own_pose": [
+          0.5569186267275447,
+          -1.6630026036028744,
+          1.1067934996688527
+        ],
+        "gt_pose": [
+          0.8629860264021498,
+          1.1125529871707296,
+          4.710593228677259
+        ],
+        "basis_yaw": -0.5400077889648504,
+        "remembered_B": [
+          1.0515235455267893,
+          0.0565451915879588
+        ],
+        "frame_id": 406
+      },
+      "approach_status_counts": {
+        "none": 1,
+        "navigate_pregrasp": 408,
+        "gaze_settle": 18,
+        "camera_settle": 4,
+        "turn_for_own_beam_view": 11,
+        "acquire_turn": 34,
+        "acquire_scan": 19,
+        "rotate_station_heading": 44,
+        "clip_recovery_backup": 5,
+        "clip_recovery_settle": 5,
+        "approach_path_unavailable": 6,
+        "recover_backup": 38,
+        "approach": 6,
+        "recover_turn": 38
+      },
+      "B_world_evaluation_m": [
+        1.1870685593943544,
+        -0.6471200385517824
+      ],
+      "B_position_error_m": 3.7093073747874143,
+      "own_B": [
+        1.0515235455267893,
+        0.0565451915879588
+      ],
+      "own_beam": {
+        "rgb": {
+          "robot_id": "r1",
+          "frame_id": 406,
+          "t_sim": 206.7,
+          "sha256": "41533a6492e9473005a7216083a02a803597e7255165c36488df801a655239a5"
+        },
+        "pose_own_m": [
+          0.651178100167009,
+          -0.5666138700387442,
+          2.587617557329774
+        ],
+        "grip_base_m": [
+          0.9983899747449714,
+          0.1374670901377064
+        ],
+        "axis_heading_rad": 1.4808240576609217,
+        "endpoint_model": "long_side_v1",
+        "observed_band_side": "near",
+        "endpoint_side_evidence": {
+          "points": 621,
+          "q02_m": -0.02504482418605467,
+          "q98_m": 0.4551147283540431,
+          "long_before": 0,
+          "long_after": 388
+        }
+      }
+    }
+  ],
+  "scope": "assignment diagnostic only; near stance anywhere in trajectory does not establish intentional grasp or simultaneous occupancy"
+}

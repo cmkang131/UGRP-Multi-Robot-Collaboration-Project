@@ -1,0 +1,45 @@
+{
+  "status": "offline_candidate_incomplete",
+  "same_end": 7,
+  "opposite_end": 5,
+  "both_reached": 12,
+  "main_runs": 24,
+  "causes": {
+    "initial_basis_reversed": 4,
+    "basis_reassigned_during_approach": 2,
+    "incidental_B_search": 1
+  },
+  "stance_offset_m": 0.4732,
+  "threshold_m": 0.25,
+  "live_runs": 0,
+  "model_calls": 0,
+  "vm3": "deallocated_verified",
+  "reserved_bundles": [
+    403,
+    404,
+    405
+  ],
+  "raw": "outputs/azure3-runs/stage-*-cohort*-*-grasp-*; oracle-codex:/home/ubuntu/ugrp-archive/runs/native-*",
+  "notes": [
+    "nearest approach over full run, not simultaneous occupancy",
+    "saved-frame replay cannot establish counterfactual physical separation"
+  ],
+  "module_tests_passed": 6,
+  "offline": {
+    "evaluated_saved_rgb_frames": 90,
+    "uniform_samples_per_robot": 13,
+    "lock_changed_runs": 4,
+    "occupancy_confirmed_runs": 0,
+    "physical_separation_verified": false
+  },
+  "budget": {
+    "attempt_cap": 600,
+    "cost_cap_usd": 0.3,
+    "model_calls": 0
+  },
+  "remaining": [
+    "Replay all decision history, only selected RGB currently sampled",
+    "Active view check and model/channel runtime wiring not implemented",
+    "VM stage cohort not submitted"
+  ]
+}
