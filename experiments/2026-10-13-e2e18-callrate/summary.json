@@ -1,0 +1,108 @@
+{
+  "schema": "ugrp.e2e18_callrate_offline.v1",
+  "base_source_sha": "f0907d7ff02441357b8cd0259b3cc21c8ee91777",
+  "source_identity": "source files committed with this record; final integration receipt follows",
+  "class_": "dev",
+  "tests": {
+    "passed": 75,
+    "total": 75,
+    "failed": 0,
+    "skipped": 0,
+    "junit": "outputs/e2e18-callrate/focused-tests.xml",
+    "junit_sha256": "e548b135092822df0e30836af44b4c395e7f644f2ec27368a1e2bb8d9549b852"
+  },
+  "fixture_runs": [
+    {
+      "condition": "no_comm",
+      "policy": "off",
+      "calls": "61",
+      "fixture_tokens": "193370"
+    },
+    {
+      "condition": "no_comm",
+      "policy": "event_v1",
+      "calls": "3",
+      "fixture_tokens": "9510"
+    },
+    {
+      "condition": "structured",
+      "policy": "off",
+      "calls": "61",
+      "fixture_tokens": "193370"
+    },
+    {
+      "condition": "structured",
+      "policy": "event_v1",
+      "calls": "17",
+      "fixture_tokens": "53890"
+    },
+    {
+      "condition": "peer_ko",
+      "policy": "off",
+      "calls": "61",
+      "fixture_tokens": "193370"
+    },
+    {
+      "condition": "peer_ko",
+      "policy": "event_v1",
+      "calls": "17",
+      "fixture_tokens": "53890"
+    },
+    {
+      "condition": "leader_ko",
+      "policy": "off",
+      "calls": "62",
+      "fixture_tokens": "196540"
+    },
+    {
+      "condition": "leader_ko",
+      "policy": "event_v1",
+      "calls": "18",
+      "fixture_tokens": "57060"
+    }
+  ],
+  "r76": {
+    "local_runs": 2,
+    "reported_total_runs": 32,
+    "sampled_requests": 21,
+    "ledger_calls": 205,
+    "actual_new_provider_calls": 0
+  },
+  "raw_sha256": {
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/summary.json": "cf8ea5a1a786e490d3ea91f457bde9698cf0d878e3f57a08fafee1e0ead59166",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/e2e-progress.json": "259ef0cfd824364a7ef382ea8821a901d590612a2ecd17005bf6a20ba6d20676",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/summary.json": "3c6e46ce75fe8e0ca53ce0acc5e8d1c3a960ad0c2352b72f8c2eaa925071864f",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/e2e-progress.json": "2cc5fb21aec90827cf246e1aab7c00af2561350a339d8a26232e3d94647e4962",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/llm/dialogue.json": "7a9366ed5d076c3e8f130ca29e020df41f94985b848b8d2a79c7c7a98668ac1d",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/llm/model_calls.json": "9dc9a3b3dc449e45533cb0827551b7baf75ea1051d9302b10dc454e040284d4a",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000001-call-0001-r1-request.json": "65d7c3f55a3fc3d08d2088b226f2b07f492fdc61af65576e1929d648c2c775d0",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000071-call-0071-r2-request.json": "266ebf3622d9d0d8b8f1e5d95fd6fded84cc7a33965cf5299246eed7e568be83",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000061-call-0061-r2-request.json": "4516e2e7d6042d3d9098077696a106ad4b46cbd8625d081e7412ecdd928b9a70",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000051-call-0051-r2-request.json": "cec7e4b09d18c1c210eb71ad1188c0a983aa7bc850dda390d82b675e62e019a9",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000021-call-0021-r1-request.json": "6a21c4b8c66aefb18a460db77f6efbf5c7128416a717cf7793bd83a60d5b8354",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000031-call-0031-r1-request.json": "15da8dc1d0c4ebe0e0dc5f653e08be85bd74ceac9747401cbfce587fda5a63f2",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000081-call-0081-r2-request.json": "390bc307deccb4f7e4dc05c4b119ff3454402940fdf5bdde1744ec6d901d97d9",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000041-call-0041-r1-request.json": "33fea1ceb9131e8c1e127e7bf92b9e1cb2b66e6909ba37b9725972c511f8d264",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000101-call-0101-r2-request.json": "2cc176dd953f489589e9bcc10f1b025e35a03a657332b31634806d2afef03812",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000091-call-0091-r2-request.json": "0f0cf4259b965cbf257f1c357cdb6473f068c49547197c6d767baa46bcc7b7b6",
+    "outputs/e2e18-callrate/r76/e2e18-v353-s61006-r76/wire/000011-call-0011-r2-request.json": "92419a9f03d9daa1cee257a2f0e9d5821cc66cfed0921eb2a33753bb14308f8b",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/llm/dialogue.json": "fb4ad97ef5a2df9ecd34ad75edc9174aa427185016f87a6c95771fcc20c5001b",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/llm/model_calls.json": "eb289ff16919ba2339b7b64d04eb23cd84bf89f147cf25e778befbd6be1e4aa5",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/wire/000001-call-0001-r1-request.json": "70c1c24380f4d5f92b2e297fc5ae0397e191a991f611a274af855cf848236591",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/wire/000071-call-0071-r2-request.json": "d487bf4499023d3d191d78f5c79aad6a2c5882f2ea8c65c1c46f9fee75b59e41",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/wire/000061-call-0061-r2-request.json": "b4c73f6b2482263b0ea17e9fe67f48fd3df7e59a6135145d082354f6c282cb0e",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/wire/000051-call-0051-r2-request.json": "04a1d9c49d27c5ca86e2eb65e17c27d87ccf423ebdb73b7b0b48d14c650bdac6",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/wire/000021-call-0021-r1-request.json": "31a48e30b0ce92c4a7164db8e1f3a9a78a93d626108f4e385724ed1d91f49756",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/wire/000041-call-0041-r2-request.json": "cacd303c06d95cbf3191d9999306a68a32dc19eb31a80a193900fa450c7cf20f",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/wire/000081-call-0081-r2-request.json": "99893e4d176ffa07efa229174e4bbe12e9e2048aaa1dcb2e2200a953bf55cd50",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/wire/000031-call-0031-r2-request.json": "03b2c0a5c0f24cc0f098fdc3259f6a72f2049d279111945454ad7e60a92c4d11",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/wire/000091-call-0091-r2-request.json": "e9ec554e0b0ba240a03a98164b058394fc994f75a4039c58fea71793cd0a4858",
+    "outputs/e2e18-callrate/r76/e2e18-v355-s61010-r76/wire/000011-call-0011-r2-request.json": "c8811ef311bf1202dd171e046ecd8fc6f9f84d8dd3c35a2e482a3411d412869a"
+  },
+  "unverified": [
+    "physical E2E",
+    "new provider tokens",
+    "full r76 event replay",
+    "VM submission execution"
+  ]
+}

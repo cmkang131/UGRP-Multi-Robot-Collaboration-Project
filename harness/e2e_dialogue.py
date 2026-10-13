@@ -183,9 +183,17 @@ class Dialogue:
         receipts = []
         for message in value['messages']:
             contract = message.get('contract')
+            policy = self.trial.call_events if getattr(self.trial, 'dialogue_call_policy', 'off') != 'off' else None
+            if policy is not None and not policy.allow_message(actor, at_sim_s, value['action'], message):
+                # Keep one rejection receipt per generated utterance: wire and
+                # SIM/provider billing remain intact, no silent response edit.
+                receipts.append(zp.Receipt(False, rejection='EVENT_OBSERVATION_SUPPRESSED'))
+                continue
             receipt = transport.send(actor, recipients=message['recipients'], text=message.get('text'),
                 structured=message.get('message'), reply_to=message['reply_to'], at_sim_s=at_sim_s, contract=contract)
             receipts.append(receipt)
+            if receipt.accepted and policy is not None:
+                policy.message_sent(actor, at_sim_s, message)
             memory = getattr(self.trial, 'memory', None)
             if receipt.accepted and memory is not None and getattr(self.trial, 'llm_memory', 'off') != 'off':
                 memory.sent_keys[receipt.envelope.message_id] = copy.deepcopy(self.captures[call_id]['view']['key'])
