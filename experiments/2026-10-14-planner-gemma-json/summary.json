@@ -1,0 +1,169 @@
+{
+  "schema": "planner.gemma_json.result.v1",
+  "source_sha": "007f9b23a598c302b5528125c6f0395a615a54b1",
+  "status": "complete",
+  "stop_reason": null,
+  "bundles": [
+    405,
+    406
+  ],
+  "settings": {
+    "model": "google/gemma-4-31b-it",
+    "provider_order": [
+      "deepinfra/turbo"
+    ],
+    "response_format": "json_object",
+    "require_parameters": true,
+    "response_parser": "first_object_v1",
+    "temperature": 0,
+    "max_tokens": 768
+  },
+  "planned_decisions": 445,
+  "called_decisions": 445,
+  "main_called": 400,
+  "not_called": {
+    "off": 0,
+    "static_first_v1": 0,
+    "image": 0
+  },
+  "fallback": {
+    "n": 1,
+    "N": 445
+  },
+  "format_errors_before": {
+    "n": 1,
+    "N": 445
+  },
+  "format_errors_after": {
+    "n": 1,
+    "N": 445
+  },
+  "raw_json_syntax_errors": 0,
+  "prior_two_response_reparse": {
+    "N": 2,
+    "before": 1,
+    "after": 0,
+    "new_provider_calls": 0
+  },
+  "http_cumulative": {
+    "N": 447,
+    "statuses": {
+      "200": 447
+    },
+    "cost_usd": 0.16645624,
+    "unknown_cost_attempts": 0,
+    "cap": 600,
+    "budget_usd": 0.3
+  },
+  "http_current": {
+    "N": 445,
+    "statuses": {
+      "200": 445
+    },
+    "cost_usd": 0.16563214
+  },
+  "http429": {
+    "n": 0,
+    "N": 447
+  },
+  "retry_distribution": {
+    "1": 445
+  },
+  "reasks": 0,
+  "response_latency_s": {
+    "N": 445,
+    "median": 2.3907464160583913,
+    "p90": 3.6769767500227317
+  },
+  "decision_latency_s": {
+    "N": 445,
+    "median": 2.392765040975064,
+    "p90": 3.678520582965575
+  },
+  "cache_off_all": 0.1688488795204703,
+  "cache_off_matched40": 0.14160143332972597,
+  "cache_on": 0.15703065802292435,
+  "prompt_tokens_median": 3741.5,
+  "images": {
+    "accepted": 5,
+    "prompt_increased": 5,
+    "called": 5,
+    "N": 5,
+    "checks": [
+      {
+        "case_id": "000f9c4a4951b6",
+        "condition": "no_comm",
+        "called": true,
+        "without_image_prompt_tokens": 3636,
+        "with_image_prompt_tokens": 3970,
+        "image_accepted": true,
+        "prompt_increased": true
+      },
+      {
+        "case_id": "000f9c4a4951b6",
+        "condition": "peer_en",
+        "called": true,
+        "without_image_prompt_tokens": 5022,
+        "with_image_prompt_tokens": 5356,
+        "image_accepted": true,
+        "prompt_increased": true
+      },
+      {
+        "case_id": "004e11af13be35",
+        "condition": "no_comm",
+        "called": true,
+        "without_image_prompt_tokens": 3591,
+        "with_image_prompt_tokens": 3925,
+        "image_accepted": true,
+        "prompt_increased": true
+      },
+      {
+        "case_id": "004e11af13be35",
+        "condition": "peer_en",
+        "called": true,
+        "without_image_prompt_tokens": 5025,
+        "with_image_prompt_tokens": 5359,
+        "image_accepted": true,
+        "prompt_increased": true
+      },
+      {
+        "case_id": "0367079b8536d0",
+        "condition": "no_comm",
+        "called": true,
+        "without_image_prompt_tokens": 3153,
+        "with_image_prompt_tokens": 3487,
+        "image_accepted": true,
+        "prompt_increased": true
+      }
+    ]
+  },
+  "r4_agreement": {
+    "n": 395,
+    "N_planned": 400,
+    "N_called": 400,
+    "N_valid": 399,
+    "definition": "Exact act and args; invalid/failed responses are nonmatches; historical totals not combined"
+  },
+  "accuracy_reference": {
+    "no_comm": {
+      "n": 55,
+      "N": 200,
+      "rule_n": 52,
+      "effective_n": 55
+    },
+    "peer_en": {
+      "n": 85,
+      "N": 200,
+      "rule_n": 83,
+      "effective_n": 85
+    }
+  },
+  "tests_passed": 54,
+  "raw": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-gemma-json-20261014",
+  "limitations": [
+    "Tuning synthetic task decisions, not confirmation or physical success.",
+    "JSON mode and wrapper parser changed together; not a parser-only causal comparison.",
+    "Prior two calls are separate performance evidence but included in cumulative budget.",
+    "Returned model alias does not attest immutable served weights."
+  ]
+}
