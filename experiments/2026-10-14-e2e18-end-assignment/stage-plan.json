@@ -1,0 +1,248 @@
+{
+  "vm": "azure3",
+  "concurrency": 16,
+  "speed_gate_limit": 3.5,
+  "gate_sim_s": 30,
+  "runs": [
+    {
+      "source_run": "e2e18-v375-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80.json.zst",
+      "condition": "v410",
+      "wrapper": "v410",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v410",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v375-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80.json.zst",
+      "condition": "v407",
+      "wrapper": "v407",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v407",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v375-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80.json.zst",
+      "condition": "v408",
+      "wrapper": "v408",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v408",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v375-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80.json.zst",
+      "condition": "v409",
+      "wrapper": "v409",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v409",
+        "--stage-policy-handoff",
+        "baseline_v1",
+        "--end-model-relay",
+        "http://127.0.0.1:18093/end"
+      ]
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v410",
+      "wrapper": "v410",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v410",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v407",
+      "wrapper": "v407",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v407",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v408",
+      "wrapper": "v408",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v408",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v409",
+      "wrapper": "v409",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v409",
+        "--stage-policy-handoff",
+        "baseline_v1",
+        "--end-model-relay",
+        "http://127.0.0.1:18093/end"
+      ]
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v410",
+      "wrapper": "v410",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v410",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v407",
+      "wrapper": "v407",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v407",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v408",
+      "wrapper": "v408",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v408",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v409",
+      "wrapper": "v409",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v409",
+        "--stage-policy-handoff",
+        "baseline_v1",
+        "--end-model-relay",
+        "http://127.0.0.1:18093/end"
+      ]
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v410",
+      "wrapper": "v410",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v410",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v407",
+      "wrapper": "v407",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v407",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v408",
+      "wrapper": "v408",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v408",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v409",
+      "wrapper": "v409",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v409",
+        "--stage-policy-handoff",
+        "baseline_v1",
+        "--end-model-relay",
+        "http://127.0.0.1:18093/end"
+      ]
+    }
+  ],
+  "metrics": [
+    "opposite_end_stance_n/N",
+    "first_attempt_grasp_n/N",
+    "ready_wait_sim_s"
+  ],
+  "condition": "no_comm",
+  "provider": "Gemma DeepInfra via Mac Keychain OpenRouter relay; no Ling",
+  "caveat": "Saved sparse RGB alone did not verify separation; new prearrival view intervention is the stage hypothesis"
+}

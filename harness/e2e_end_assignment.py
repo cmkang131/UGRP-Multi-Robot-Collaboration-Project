@@ -207,7 +207,7 @@ def update_station(tr,rid,now,state,target):
     if event['previous']!=event['choice'] or reply is not None:
         tr.event(now,'end_assignment',robot_id=rid,**event,candidates=candidates)
     if choice is None:
-        r.carrier_approach=dict(t=now,status='end_both_occupied')
+        r.carrier_approach=dict(t=now,status='end_model_wait' if reply is not None and reply.get('choice')=='wait' else 'end_both_occupied')
         return False,[dict(kind='hold')]
     state.update(station=np.array(choice['station_own_m']),grip=np.array(choice['grip_own_m']),basis=choice['basis'])
     if selected_before!=s.selected:

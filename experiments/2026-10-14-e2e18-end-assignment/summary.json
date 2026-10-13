@@ -1,5 +1,5 @@
 {
-  "status": "offline_candidate_incomplete",
+  "status": "preparing_stage_gate",
   "same_end": 7,
   "opposite_end": 5,
   "both_reached": 12,
@@ -12,12 +12,13 @@
   "stance_offset_m": 0.4732,
   "threshold_m": 0.25,
   "live_runs": 0,
-  "model_calls": 0,
+  "model_calls": 4,
   "vm3": "deallocated_verified",
   "reserved_bundles": [
-    403,
-    404,
-    405
+    407,
+    408,
+    409,
+    410
   ],
   "raw": "outputs/azure3-runs/stage-*-cohort*-*-grasp-*; oracle-codex:/home/ubuntu/ugrp-archive/runs/native-*",
   "notes": [
@@ -43,10 +44,12 @@
     "Other communication conditions model/channel runtime not connected"
   ],
   "registered_bundles": [
-    403,
-    404,
-    405
+    407,
+    408,
+    409,
+    410
   ],
   "source_stage": "grasp checkpoint only; no_comm; no full E2E",
-  "related_tests_passed": 41
+  "related_tests_passed": 41,
+  "latest_related_tests_passed": 33
 }
