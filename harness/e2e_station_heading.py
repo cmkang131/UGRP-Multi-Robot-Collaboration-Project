@@ -26,9 +26,13 @@ def control(tr, rid, now, state, diag):
     from harness.e2e_approach_commit import retained
     radius = RADII[mode]
     attempt = state.get('station_heading_attempt')
-    if not retained(tr, now, state) or diag['distance_m'] > radius*(PARAMS['exit_multiplier'] if attempt else 1.):
+    if not retained(tr, now, state) or diag['distance_m'] > radius*(PARAMS['exit_multiplier'] if attempt or state.get('station_handoff') else 1.):
         state.pop('station_heading_attempt', None)
+        state.pop('station_handoff', None)
         return None
+    from harness.e2e_station_handoff import active as handoff_active
+    if handoff_active(tr, rid, now, state, diag):
+        return 'observe'
     error = abs(diag['heading_error_rad'])
     if error <= PARAMS['yaw_tolerance_rad']:
         if attempt and not attempt.get('finished'):

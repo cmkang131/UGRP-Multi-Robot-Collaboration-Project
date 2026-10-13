@@ -60,13 +60,14 @@ def advance(transport,rid,now):
         diag['status']='station_heading_settle'
         return False,[dict(kind='hold')]
     rotate_station=station_control_mode=='rotate'
+    observe_station=station_control_mode=='observe'
     recovery=getattr(transport,'pregrasp_recovery','off')=='bounded_search_v1'
     from harness.e2e_pregrasp_progress import step as progress_step
-    progressed=None if rotate_station else progress_step(transport,rid,now,state,distance)
+    progressed=None if rotate_station or observe_station else progress_step(transport,rid,now,state,distance)
     if progressed is not None:return progressed
     cached_navigation=getattr(transport,'pregrasp_progress','off')=='backup_replan_v1' and now<=state.get('lost_nav_until',-math.inf)
     cached_navigation=cached_navigation or committed.navigating(transport,rid,now,state,distance)
-    if recovery and not fresh and now-state['last_seen']>2. and not cached_navigation and not rotate_station:
+    if recovery and not fresh and now-state['last_seen']>2. and not cached_navigation and not rotate_station and not observe_station:
         from harness.e2e_align_progress import lost_search
         return lost_search(transport,rid,now,state)
     if any(r.servo.get(sid)!=pwm[sid] for sid in (3,4,5)):
@@ -84,6 +85,9 @@ def advance(transport,rid,now):
                 diag['status']='base_settle';return False,[dict(kind='hold')]
             state['fine']=True;diag['status']='visual_servo'
             return True,[]
+    if observe_station:
+        from harness.e2e_station_handoff import observe
+        return observe(transport,rid,now,state,diag)
     tf=g.explorer.map_to_odom;mp=compose(tf,pose);mt=compose(tf,end)
     costmap=from_observed_grid(g.explorer.grid,mp,g.explorer.latest,set())
     avoidance=getattr(transport,'beam_avoidance','off')=='own_obstacle_v1'
