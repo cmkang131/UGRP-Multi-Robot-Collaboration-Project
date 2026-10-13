@@ -1,0 +1,17 @@
+{
+ "batch": "r57",
+ "pr": 461,
+ "seed": 61006,
+ "candidates": {
+  "e2e18-v295": "beam_lost_standoff_v1 on v273",
+  "e2e18-v296": "v295 + arm_clearance_align_skip_v1 + acquire_scan_fast_v1",
+  "e2e18-v297": "v296 toggles on v276 (relook_search=view5_pan_v1)",
+  "e2e18-v298": "v297 + stage_physics=release_dt1_v1 (relook dt release; Codex c8ce330a impl)"
+ },
+ "numbers": "v290/v291 (speedfix) dropped; v297/v298 chosen after main+open PR max check (v29x reserved range)",
+ "phase_timing": "harness/e2e_speed_phase.py brought but --controller-timing not wired (measurement only)",
+ "sources": [
+  "https://github.com/ros-navigation/navigation2 (Backup recovery behavior)",
+  "experiments/2026-10-12-e2e18/standoff-candidates.md"
+ ]
+}

@@ -2,7 +2,7 @@
 import copy
 from sim.e2e_stage_physics import RELEASE,RELEASE_SETTLE_S
 
-VERSIONS={'e2e18-v275':279,'e2e18-v276':280,'e2e18-v277':281,'e2e18-v278':282}
+VERSIONS={'e2e18-v275':279,'e2e18-v276':280,'e2e18-v277':281,'e2e18-v278':282,'e2e18-v297':298}
 PROFILE=dict(mapping_dt_s=.002,align_dt_s=.001,contact_dt_s=.00025,
              relook_open_dt_s=.001,release_settle_s=RELEASE_SETTLE_S,
              release_basis='both_issued_gripper_open_commands_and_relook_phase',

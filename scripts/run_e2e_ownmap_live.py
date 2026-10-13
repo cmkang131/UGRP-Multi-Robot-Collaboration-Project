@@ -297,10 +297,10 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     paths.update(relook_search_compose(b,relook_search))
     from harness.e2e_jev_current_route import compose as current_jev_compose
     paths.update(current_jev_compose(b))
-    from harness.e2e_release_physics import compose as release_physics_compose
-    paths.update(release_physics_compose(b,requested_stage_physics))
     from harness.e2e_acquire_standoff import compose as standoff_compose
     paths.update(standoff_compose(b,beam_lost_standoff,arm_clearance_align_skip,acquire_scan_fast))
+    from harness.e2e_release_physics import compose as release_physics_compose
+    paths.update(release_physics_compose(b,requested_stage_physics))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 

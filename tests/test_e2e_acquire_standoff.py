@@ -116,3 +116,40 @@ def test_clearance_defer_wiring_skips_only_when_enabled_and_logs_sensor_evidence
     assert tr.events[0]['reason']=='near_own_station' and 'range_status' in tr.events[0]
     c2=Clearance('range_wall_v1')
     assert c2.align_skip=='off'
+
+
+def _pan_parent(monkeypatch):
+    import copy
+    from scripts.run_e2e_ownmap_live import bundle
+    from tests import test_e2e_camera_hold as parent_test
+    captured = {}
+    def save(*args, **kwargs):
+        captured.update(args=args, kwargs=kwargs)
+        return bundle(*args, **kwargs)
+    monkeypatch.setattr(parent_test, 'bundle', save)
+    parent_test.test_registered_wheel_wait_candidate('zero_wheel_v1', 276, 'range_wall_v1')
+    return captured['args'], captured['kwargs']
+
+
+def test_v297_v298_stack_standoff_on_pan_relook_and_release(monkeypatch):
+    import copy
+    from harness.e2e_runtime_registration import require_current
+    from scripts.run_e2e_ownmap_live import ROOT, bundle
+    args, kw = _pan_parent(monkeypatch)
+    on = dict(beam_lost_standoff='v1', arm_clearance_align_skip='v1', acquire_scan_fast='v1')
+    b = bundle(*args, **dict(kw, **on))
+    assert b['execution_bundle_id'] == 'e2e18-v297' and b['e2e_options']['relook_search'] == 'view5_pan_v1'
+    require_current(b, ROOT)
+    for field in ('beam_lost_standoff', 'relook_search'):
+        bad = copy.deepcopy(b); bad['e2e_options'][field] = 'off'
+        with pytest.raises(ValueError):
+            require_current(bad, ROOT)
+    r = bundle(*args, **dict(kw, **on, stage_physics='release_dt1_v1'))
+    assert r['execution_bundle_id'] == 'e2e18-v298' and r['e2e_options']['stage_physics'] == 'release_dt1_v1'
+    assert r['e2e_options']['beam_lost_standoff'] == 'v1' and r['e2e_options']['relook_search'] == 'view5_pan_v1'
+    require_current(r, ROOT)
+    bad = copy.deepcopy(r); bad['stage_physics_profile']['contact_dt_s'] = .001
+    with pytest.raises(ValueError):
+        require_current(bad, ROOT)
+    # parts alone keep their old identities
+    assert bundle(*args, **kw)['execution_bundle_id'] == 'e2e18-v276'
