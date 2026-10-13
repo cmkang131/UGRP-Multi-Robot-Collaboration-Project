@@ -360,6 +360,12 @@ class BodyGate:
         return safe
 
     # -------------------------------------------------------------- decide
+    def prepare_decision(self, rid, now, kind, menu, proposal, facts):
+        return menu, proposal, facts
+
+    def query_decision(self, rid, kind, state, candidates, menu, proposal, facts):
+        return self.client.decide(state, candidates, self.image(rid))
+
     def decide(self, rid, now, kind, menu, proposal_label=None, facts=None):
         """menu: label -> (description, executor). Returns label or None on failure."""
         if facts is None:
@@ -367,10 +373,13 @@ class BodyGate:
         decision_started=time.monotonic()
         if self.visual_check=='d1_v1' and facts.get('visual_category') in ('clipped','not_visible'):
             self.crosscheck(rid,now,facts)
+        menu, proposal_label, facts = self.prepare_decision(rid, now, kind, menu, proposal_label, facts)
         state = sem.state_text(rid, self.tr.state, facts)
         candidates = {k: v[0] for k, v in menu.items()}
-        out = self.client.decide(state, candidates, self.image(rid))
+        out = self.query_decision(rid, kind, state, candidates, menu, proposal_label, facts)
         latency = max(time.monotonic()-decision_started,float(out.get('wall_s') or out.get('latency_s') or 0.))
+        if out.get('provider_called') is False:
+            latency = 0.  # local rule evaluation is not an external API wait
         if not math.isfinite(latency) or latency < 0 or latency > PARAMS['http_timeout_s']:
             out['status']='late_or_invalid_latency'; latency=PARAMS['http_timeout_s']
         row = dict(t=now, robot_id=rid, phase=self.tr.state, decision=kind, state=state, facts=facts,
@@ -379,6 +388,9 @@ class BodyGate:
                    tier=out.get('tier'), model=out.get('model'), latency_s=latency, wall_s=out.get('wall_s'),
                    usage=out.get('usage'), attempts=out.get('attempts'), call_id=out.get('call_id'),
                    image_sha256=out.get('image_sha256'), sim_hold_s=ceil_dt(latency))
+        if 'selection' in out:
+            row.update(selection=out['selection'], model_choice=out.get('model_choice'),
+                       provider_called=out.get('provider_called', True))
         executor = menu.get(out.get('choice'), (None, None))[1]
         duration = executor[1] if isinstance(executor, tuple) else .6
         self.memory[rid].selected(now, out.get('choice'), facts.get('visual_category'), facts.get('target_distance_m'),
@@ -742,15 +754,16 @@ def install(transport, robots, bundle, out, receipt_path, root, *, send=None, ap
     o = bundle['e2e_options']
     if o.get('body_controller', 'off') == 'off':
         return None
-    receipt = json.loads(Path(receipt_path).read_text())
-    if send is None:
+    code_backend = o['body_backend'] == 'code_v1'
+    receipt = None if code_backend else json.loads(Path(receipt_path).read_text())
+    if send is None and not code_backend:
         validate_receipt(receipt, root, o['body_backend'])
         if o.get('body_visual_check')=='d1_v1':validate_receipt(receipt,root,'liquid_d1')
         with urllib.request.urlopen(URL.replace('/v1/body/decide', '/identity'), timeout=5) as r:
             if json.load(r) != receipt:
                 raise ValueError('LIVE_BODY_RELAY_IDENTITY_REQUIRED')
     profiles = json.loads((Path(root) / 'configs/s2_v133_full_template.json').read_text())['pulse_calibration']['profiles']
-    client = Client(o['body_backend'], out.parent.name, send=send)
+    client = None if code_backend else Client(o['body_backend'], out.parent.name, send=send)
     path = Path(out) / 'body-decisions.jsonl'
 
     def record(row):
@@ -763,6 +776,9 @@ def install(transport, robots, bundle, out, receipt_path, root, *, send=None, ap
     if o.get('body_skills','off')!='off':
         from harness.e2e_body_skills import SkillsBodyGate
         gate_class=SkillsBodyGate
+    if code_backend:
+        from harness.e2e_body_code import CodeBodyGate
+        gate_class=CodeBodyGate
     gate = gate_class(transport, robots, client, profiles=profiles, record=record)
     gate.visual_check=o.get('body_visual_check','off')
     transport.body_gate = gate
