@@ -23,10 +23,10 @@ PORTS=dict(zip(PROFILES,(18393,18391)))
 
 
 def relay_url(profile, decider='off', *, dialogue_decider='gemma_v0', receipt=None):
-    if dialogue_decider=='d1_v1':
+    if dialogue_decider in ('d1_v1','code_v1'):
         url=(receipt or {}).get('remote_url')
         if (profile!='study_gemma4_31b_v1' or decider!='off'
-                or (receipt or {}).get('dialogue_decider')!='d1_v1'
+                or (receipt or {}).get('dialogue_decider')!=dialogue_decider
                 or url not in ('http://127.0.0.1:18391/v1/chat/completions',
                                'http://127.0.0.1:18393/v1/chat/completions')):
             raise ValueError('D1_REGISTERED_RELAY_RECEIPT_REQUIRED')
@@ -561,6 +561,10 @@ def run(b,out,receipt,*,backend_factory=None,body_receipt=None):
         from harness.e2e_body_controller import install as body_install
         body_gate=body_install(transport,robots,b,out,body_receipt or receipt.with_name('body.json'),ROOT,
             append=lambda row:backend._append('body-decisions.jsonl',row))
+        if host.trial.dialogue_decider=='code_v1':
+            from harness.e2e_dialogue_decider import CodeObservation
+            protocol_observer=CodeObservation()
+            host.trial.protocol_observer=lambda rid:protocol_observer.observe(rid,robots[rid],aligned=rid in transport.aligned)
         cadence_phase=None
         for tick in range(round(b['case_cap_s']/.05)):
             now=round(backend.now-origin,8)
@@ -692,7 +696,7 @@ def main(argv=None):
     p.add_argument('--driver-profile',choices=PROFILES,required=True);p.add_argument('--relay-receipt',type=Path,required=True)
     p.add_argument('--e2e-live',action='store_true');p.add_argument('--event-driven-llm',action='store_true')
     p.add_argument('--compact-prompt',action='store_true');p.add_argument('--setdown-only-when-relook',choices=('off','on_v1'),default='off')
-    p.add_argument('--dialogue-decider',choices=('gemma_v0','d1_v1'),default='gemma_v0')
+    p.add_argument('--dialogue-decider',choices=('gemma_v0','d1_v1','code_v1'),default='gemma_v0')
     p.add_argument('--decider',choices=('off','jev_v1'),default='off')
     p.add_argument('--exploration-progress',choices=('off','frontier_progress_v1'),default='off')
     p.add_argument('--explore-deadlock',choices=('off','replan_v1'),default='off')

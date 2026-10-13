@@ -33,7 +33,7 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
-    if bundle['execution_bundle_id']=='e2e18-v338':
+    if bundle['execution_bundle_id'] in ('e2e18-v338','e2e18-v346'):
         from harness.e2e_dialogue_decider import parent_for_validation as dialogue_parent
         return require_current(dialogue_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v344','e2e18-v345'):

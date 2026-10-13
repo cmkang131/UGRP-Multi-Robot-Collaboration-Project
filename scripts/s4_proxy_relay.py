@@ -60,7 +60,7 @@ def main():
     p.add_argument('--driver-profile',choices=('main_study_gemini_v1','study_gemma4_31b_v1'),
                    default='main_study_gemini_v1')
     p.add_argument('--decider',choices=('off','jev_v1'),default='off')
-    p.add_argument('--dialogue-decider',choices=('gemma_v0','d1_v1'),default='gemma_v0')
+    p.add_argument('--dialogue-decider',choices=('gemma_v0','d1_v1','code_v1'),default='gemma_v0')
     p.add_argument('--gemma-state', type=Path,
         default=Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback'))
     a = p.parse_args()
@@ -71,7 +71,7 @@ def main():
         raise ValueError('multi_key_v1 requires a Gemma profile')
     openrouter = a.upstream == 'openrouter_v1'
     if a.decider!='off' and not openrouter:raise ValueError('JEV_REQUIRES_OPENROUTER')
-    if a.dialogue_decider=='d1_v1' and (not openrouter or a.decider!='off'):
+    if a.dialogue_decider in ('d1_v1','code_v1') and (not openrouter or a.decider!='off'):
         raise ValueError('D1_DIALOGUE_REQUIRES_OPENROUTER_NO_LEGACY_DECIDER')
     if openrouter and not single: raise ValueError('openrouter_v1 requires --driver-profile study_gemma4_31b_v1')
     if openrouter and (a.multi_key_v1 or a.gemma_fallback): raise ValueError('openrouter_v1 excludes multi_key_v1/gemma_fallback')
@@ -104,10 +104,10 @@ def main():
 
     jev = None
     d1 = None
-    if a.dialogue_decider=='d1_v1':
-        from scripts.d1_dialogue_upstream import D1
-        d1=D1(a.output/'d1-dialogue')
-        receipt['dialogue_decider']='d1_v1'
+    if a.dialogue_decider in ('d1_v1','code_v1'):
+        from scripts.d1_dialogue_upstream import D1, Code
+        d1=(D1 if a.dialogue_decider=='d1_v1' else Code)(a.output/(a.dialogue_decider+'-dialogue'))
+        receipt['dialogue_decider']=a.dialogue_decider
         receipt['d1_dialogue_source_sha256']={p:hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest()
             for p in ('scripts/d1_dialogue_upstream.py','harness/e2e_dialogue_decider.py','harness/e2e_llm_memory.py')}
     if a.decider=='jev_v1':
@@ -219,7 +219,7 @@ def main():
                     row.update(upstream='openrouter_v1', response_model=response.get('model'),
                         provider=response.get('provider'), openrouter=response.get('ugrp_openrouter'),
                         jev=response.get('ugrp_jev'),
-                        d1_dialogue=response.get('ugrp_d1_dialogue'),
+                        d1_dialogue=response.get('ugrp_d1_dialogue'),code_dialogue=response.get('ugrp_code_dialogue'),
                         host_error=response.get('host_error', False))
                 except (ValueError, AttributeError): pass
             elif fallback:
