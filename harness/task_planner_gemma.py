@@ -92,7 +92,9 @@ class Gemma:
         elapsed = time.monotonic()-started
         usage = dict(data.get('usage') or {})
         cost = usage.get('cost', (data.get('ugrp_openrouter') or {}).get('cost'))
-        self.budget.reconcile(cost)
+        routing=data.get('ugrp_openrouter') or {}
+        self.budget.reconcile(None if routing.get('unknown_cost_attempts',0) else routing.get('total_cost',cost))
+        usage['transport']=routing
         if data.get('model') != selection.model or data.get('provider') != selection.provider:
             raise ValueError('PROVIDER_IDENTITY_MISMATCH')
         usage.update(cost=cost, call_id=call_id, request_sha256=key, model=data['model'], provider=data['provider'])

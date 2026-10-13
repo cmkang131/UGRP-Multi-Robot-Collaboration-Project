@@ -42,9 +42,9 @@ def test_shared_spending_and_concurrent_call_cap():
     def call(_):
         try:budget.reserve();budget.reconcile(.000001);return True
         except ModelBudgetExceeded:return False
-    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:accepted=list(pool.map(call,range(500)))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as pool:accepted=list(pool.map(call,range(700)))
     assert sum(accepted)==MAX_CALLS==budget.calls
-    assert shared.actual==pytest.approx(.00044)
+    assert shared.actual==pytest.approx(.0006)
     for i in range(0):budget.repair()
     with pytest.raises(ValueError):budget.repair()
     # Missing usage retains its entire reservation, never counts as zero cost.
@@ -137,3 +137,54 @@ def test_ling_receipt_is_only_admitted_with_matching_explicit_selection():
         authentication='existing_mac_proxy_no_credentials_transferred')
     assert validate_receipt(r,now=101,remote_url=r['remote_url'],planner_selection=LING)==r
     with pytest.raises(HostError):validate_receipt(r,now=101,remote_url=r['remote_url'])
+
+
+def test_retry_after_pacing_safe_errors_and_cost_ledger(tmp_path):
+    from scripts.openrouter_upstream import OpenRouter
+    from harness.task_planner_model import LING
+    now=[0.];waits=[];sent=[]
+    def sleep(delay):waits.append(delay);now[0]+=delay
+    def send(body,key):
+        sent.append(now[0]);now[0]+=.1
+        if len(sent)==1:
+            return 429,json.dumps({'error':{'message':'Bearer SECRET sk-or-secret','metadata':{'provider_name':'Novita'}}}).encode(),'4',{'Retry-After':'4','X-RateLimit-Limit':'30','Authorization':'SECRET','Set-Cookie':'SECRET'}
+        return 200,json.dumps(dict(model=LING.model,provider='Novita',choices=[{}],usage={'cost':.0001})).encode(),None,{}
+    m=OpenRouter(tmp_path,key='SECRET',selection=LING,send=send,sleep=sleep,monotonic=lambda:now[0],
+        random_fn=lambda:.5,max_attempts=3,max_calls=600,max_usd=.08,rate_limit_policy='ling_rate_limit_v1')
+    raw=json.dumps({'model':LING.model,'max_tokens':768,'messages':[]}).encode()
+    assert m.complete(raw,'one')[0]==200
+    assert sent==[0,4.1] and waits==[4]
+    m.complete(raw,'two')
+    assert sent[2]>=6.1
+    evidence=(tmp_path/'http_responses.jsonl').read_text()
+    assert 'SECRET' not in evidence and 'sk-or-secret' not in evidence and 'set-cookie' not in evidence
+    rows=[json.loads(x) for x in evidence.splitlines()]
+    assert rows[0]['headers']['x-ratelimit-limit']=='30' and rows[0]['retry_wait_source']=='retry_after'
+    assert rows[0]['error_body']['error']['metadata']['provider_name']=='Novita'
+    assert m.actual_cost==pytest.approx(.0002) and m.calls==3
+    restarted=OpenRouter(tmp_path,key='SECRET',selection=LING,send=send,rate_limit_policy='ling_rate_limit_v1',max_usd=.08)
+    assert restarted.calls==3 and restarted.accounted==pytest.approx(m.accounted)
+
+
+def test_ling_exponential_jitter_and_bounded_retry(tmp_path):
+    from scripts.openrouter_upstream import OpenRouter
+    from scripts.openrouter_ling_policy import retry_delay
+    from harness.task_planner_model import LING
+    assert retry_delay(1,{},.5,0)==(1.,'exponential_full_jitter')
+    assert retry_delay(2,{},.5,0)==(2.,'exponential_full_jitter')
+    assert retry_delay(1,{'retry-after':'Thu, 01 Jan 1970 00:00:10 GMT'},.5,0)==(10.,'retry_after')
+    n=[];clock=[0.]
+    def send(body,key):n.append(1);return 503,b'{"error":{"message":"capacity"}}',None,{}
+    m=OpenRouter(tmp_path,key='fake',selection=LING,send=send,rate_limit_policy='ling_rate_limit_v1',max_calls=600,max_attempts=3,
+        sleep=lambda s:clock.__setitem__(0,clock[0]+s),monotonic=lambda:clock[0],random_fn=lambda:.5)
+    assert m.complete(json.dumps({'model':LING.model}).encode(),'one')[0]==503
+    assert len(n)==3 and m.calls==3
+    with pytest.raises(ValueError):OpenRouter(tmp_path/'bad',key='fake',rate_limit_policy='ling_rate_limit_v1')
+
+
+def test_fallback_stop_counts_actual_called_decisions():
+    from scripts.check_task_planner_ling import guard
+    good={'called':True,'fallback':False,'wall_s':1,'audit':[{'request':{}}]}
+    bad={**good,'fallback':True}
+    assert guard([good]*19+[bad]) is None
+    assert guard([good]*18+[bad])=='FALLBACK_RATE_OVER_5_PERCENT'

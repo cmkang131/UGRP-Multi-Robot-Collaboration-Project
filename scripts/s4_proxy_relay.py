@@ -90,6 +90,8 @@ def main():
     add_model_options(p)
     p.add_argument('--openrouter-max-attempts', type=int, choices=(1, 2, 3))
     p.add_argument('--openrouter-max-calls', type=int)
+    p.add_argument('--openrouter-rate-policy',choices=('off','ling_rate_limit_v1'),default='off')
+    p.add_argument('--openrouter-max-usd',type=float)
     a = p.parse_args()
     if not 0 < a.seconds <= MAX_RELAY_SECONDS: raise ValueError('finite <=8h relay required')
     a.output.mkdir(parents=True, exist_ok=False)
@@ -116,7 +118,7 @@ def main():
     if openrouter:
         from scripts import openrouter_upstream as orp
         choice = selected(a)
-        kwargs = dict(selection=choice, max_attempts=a.openrouter_max_attempts or (3 if choice.model == DEFAULT_MODEL else 1), max_calls=a.openrouter_max_calls)
+        kwargs = dict(selection=choice, max_attempts=a.openrouter_max_attempts or (3 if choice.model == DEFAULT_MODEL else 1), max_calls=a.openrouter_max_calls,rate_limit_policy=a.openrouter_rate_policy,max_usd=a.openrouter_max_usd)
         if a.openrouter_providers is not None:
             if choice.model != DEFAULT_MODEL or choice.provider != 'DeepInfra' or choice.reasoning != 'default':
                 raise ValueError('USE_PLANNER_PROVIDER_WITH_PLANNER_MODEL')

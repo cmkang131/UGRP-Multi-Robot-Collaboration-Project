@@ -34,6 +34,8 @@ def validate_receipt(receipt, now=None, *, remote_url=URL, planner_selection=Non
                 raise HostError('registered Ling planner identity required')
             expected_cfg=dict(config(selection=planner_selection,max_attempts=1),source_sha256=expected,
                 selection_source_sha256=hashlib.sha256((Path(__file__).resolve().parents[1]/'harness/task_planner_model.py').read_bytes()).hexdigest())
+        if planner_selection is not None and receipt.get('openrouter_v1',{}).get('rate_limit_policy')=='ling_rate_limit_v1':
+            expected_cfg.update(config(selection=planner_selection,max_attempts=3,rate_limit_policy='ling_rate_limit_v1'))
         if (not single or receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
                 or receipt.get('openrouter_v1') != expected_cfg):
             raise HostError('pinned OpenRouter identity required')

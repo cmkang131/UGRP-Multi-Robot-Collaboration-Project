@@ -28,7 +28,7 @@ SOURCE = ROOT/'outputs/task-planner-r4-source-20261013'
 BASELINE = ROOT/'outputs/task-planner-r4-dev-20261013'
 MODEL = LING
 PRICES = {'ling': (0.000000021, 0.0000000616)}
-MAX_CALLS, MAX_REPAIRS, MAX_USD, MIN_REMAINING = 440, 0, .08, 1.5
+MAX_CALLS, MAX_REPAIRS, MAX_USD, MIN_REMAINING = 600, 0, .08, 1.5
 
 
 def read(path):
@@ -60,7 +60,7 @@ def frozen():
         ctx=req['input'];labels={signature(c):c['preview']['public_cost_label'] for c in ctx['candidates']}
         assert labels.get(signature(strong_rule(ctx))) == r['rule_choice']
     usage=[a['usage'] for r in rows for a in r['audit'] if 'usage' in a]
-    manifest['expected_usd_from_gemma_tokens']={k:sum(u['prompt_tokens']*p+u['completion_tokens']*c for u in usage)*440/len(usage) for k,(p,c) in PRICES.items()}
+    manifest['expected_usd_from_gemma_tokens']={k:sum(u['prompt_tokens']*p+u['completion_tokens']*c for u in usage)*600/len(usage) for k,(p,c) in PRICES.items()}
     return rows, manifest
 
 
@@ -99,7 +99,7 @@ class ModelBudget:
     def reserve(self):
         # This is immediately before the client's only HTTP request.
         with self.lock:
-            if self.calls>=MAX_CALLS:raise ModelBudgetExceeded('MODEL_440_CALL_LIMIT')
+            if self.calls>=MAX_CALLS:raise ModelBudgetExceeded('MODEL_600_CALL_LIMIT')
             self.shared.reserve(self.reserve_usd);self.calls+=1
 
     def reconcile(self, cost):self.shared.reconcile(self.reserve_usd,cost)
@@ -133,7 +133,10 @@ def guard(rows):
     attempts=[a for r in rows for a in r['audit'] if 'request' in a]
     if attempts and sum('rejection' in a for a in attempts)/len(attempts)>.05:
         return 'FORMAT_ERROR_RATE_OVER_5_PERCENT'
-    times=[r['wall_s'] for r in rows if r.get('called')]
+    called=[r for r in rows if r.get('called')]
+    if called and sum(r.get('fallback',False) for r in called)/len(called)>.05:
+        return 'FALLBACK_RATE_OVER_5_PERCENT'
+    times=[r['wall_s'] for r in called]
     if times and statistics.median(times)>8:return 'MEDIAN_LATENCY_OVER_8_SECONDS'
     return None
 
@@ -141,13 +144,14 @@ def guard(rows):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--out',type=Path,required=True)
     ap.add_argument('--freeze',type=Path,required=True);ap.add_argument('--execute',action='store_true')
+    ap.add_argument('--upstream-root',type=Path,required=True)
     ap.add_argument('--relay-url',default='http://127.0.0.1:18424')
     ap.add_argument('--cache-decisions',type=int,choices=(35,40),required=True)
     ap.add_argument('--main-only',action='store_true',help='Run only the authorized 400; probes await count clarification')
     ap.add_argument('--continue-from',type=Path,help='Continue cache/image probes using the same relay counter and paid ledger')
     ap.add_argument('--image',type=Path,required=True);ap.add_argument('--image-sha256',required=True)
     a=ap.parse_args();old,manifest=frozen()
-    if not a.main_only and 400+a.cache_decisions+5>MAX_CALLS:raise ValueError('400_PLUS_CACHE_PLUS_5_EXCEEDS_440')
+    if not a.main_only and 400+a.cache_decisions+5>MAX_CALLS:raise ValueError('400_PLUS_CACHE_PLUS_5_EXCEEDS_600')
     image=a.image.read_bytes()
     if hashlib.sha256(image).hexdigest()!=a.image_sha256:raise ValueError('R80_IMAGE_HASH_MISMATCH')
     manifest.update(cache_decisions=a.cache_decisions,image_probes=5,image_sha256=a.image_sha256,
@@ -167,10 +171,18 @@ def main():
     dump(a.out/'RUN_META.json',dict(**{'class':'dev'},pr=473,sha=sha,branch='claude/e2e18-gemma-planner',batch='ling-vl-r4-dev'))
     gold={g['case_id']:g for g in json.loads(read(SOURCE/'eval_only.json'))}
     shared=SharedBudget()
+    # The upstream owns the HTTP-attempt cap and paid ledger, including the
+    # diagnostic probes and every retry; the client is an additional guard.
+    history=a.upstream_root/'http_responses.jsonl'
+    if history.exists():
+        for line in history.read_text().splitlines():
+            entry=json.loads(line);shared.actual+=entry.get('cost') or 0;shared.charged+=entry['accounted_cost']
+            shared.unknown+=entry.get('cost') is None
+
     # Uncached UTF-8 upper bound plus wrapper margin; image probes separately
     # reserve a full 16k image-token allowance (the saved r80 RGB is small).
     max_bytes=max(len(json.dumps(r['audit'][0]['request'],ensure_ascii=True).encode()) for r in old)+4096
-    price,completion=PRICES['ling'];budget=ModelBudget(shared,max_bytes*price+MAX_TOKENS*completion)
+    price,completion=PRICES['ling'];budget=ModelBudget(shared,3*(max_bytes*price+MAX_TOKENS*completion))
     if a.continue_from:
         if a.main_only:raise ValueError('MAIN_ALREADY_EXECUTED')
         previous=json.loads((a.continue_from/'summary.json').read_text())
@@ -180,7 +192,7 @@ def main():
         shared.unknown=previous['unknown_cost_calls'];shared.calls=budget.calls=previous['calls']
     client=Gemma(url=a.relay_url,selection=MODEL,budget=budget)
     cfg=client.identity['openrouter_v1']
-    if cfg.get('max_calls')!=440 or cfg.get('max_attempts')!=1:raise ValueError('ACTUAL_UPSTREAM_CAP_REQUIRED')
+    if cfg.get('max_calls')!=600 or cfg.get('max_attempts')!=3 or cfg.get('max_usd')!=.08 or cfg.get('rate_limit_policy')!='ling_rate_limit_v1':raise ValueError('ACTUAL_UPSTREAM_CAP_REQUIRED')
     dump(a.out/'identity.json',client.identity)
     results={'off':[],'static_first_v1':[],'image':[]};all_called=[];started=time.monotonic()
     if a.continue_from:
@@ -227,18 +239,27 @@ def main():
     # queued requests after a failing observation and no hidden retries.
     phases=([('off',old)] if a.main_only else [('static_first_v1',old[:a.cache_decisions]),('image',old[:5])] if a.continue_from else [('off',old),('static_first_v1',old[:a.cache_decisions]),('image',old[:5])])
     for phase,cases in phases:
-        if phase=='image':budget.reserve_usd+=16000*price
+        if phase=='image':budget.reserve_usd+=3*16000*price
         for previous in cases:
             results[phase].append(run(previous,phase))
             if budget.calls and budget.calls%20==0:print(json.dumps(dict(phase=phase,decisions=len(results[phase]),calls=budget.calls,cost=shared.actual,stop=shared.stopped)),flush=True)
         if shared.stopped:print(json.dumps(dict(stopped=shared.stopped,phase=phase)),flush=True)
-    summary=dict(schema='planner.ling_vl.r4dev.v1',source_sha=sha,manifest=manifest,
+    http_rows=[json.loads(line) for line in (a.upstream_root/'http_responses.jsonl').read_text().splitlines()]
+    attempt_rows=[json.loads(line) for line in (a.upstream_root/'http_attempts.jsonl').read_text().splitlines()]
+    shared.actual=sum(r.get('cost') or 0 for r in http_rows)
+    shared.charged=sum(r['accounted_cost'] for r in http_rows)
+    shared.unknown=sum(r.get('cost') is None for r in http_rows)
+    summary=dict(http_attempts=len(attempt_rows),http_responses=len(http_rows),
+        http_statuses={str(status):sum(r['status']==status for r in http_rows) for status in sorted({r['status'] for r in http_rows})},
+        total_retry_wait_s=sum(r.get('retry_wait_before_s',0) for r in http_rows),
+        total_pacing_wait_s=sum(r.get('pacing_wait_s',0) for r in http_rows),
+        schema='planner.ling_vl.r4dev.v1',source_sha=sha,manifest=manifest,
         status='stopped' if shared.stopped else 'main_complete_probes_pending' if a.main_only else 'complete',stop_reason=shared.stopped,wall_s=time.monotonic()-started,
         total_actual_cost_usd=shared.actual,conservative_accounted_usd=shared.charged,unknown_cost_calls=shared.unknown,
         calls=budget.calls,repairs_dispatched=0,key_checks=shared.key_checks,
         phases={k:metrics(rs) for k,rs in results.items()},gemma_r4_dev=metrics(old),
         not_called={k:sum(not r['called'] for r in rs) for k,rs in results.items()},
-        limitations=['Tuning synthetic dataset, not confirmation or physical success.','Gemma is historical reference only.','Alias and dated endpoint metadata do not attest immutable served weights.','No reasks: 400 decisions plus cache and image probes exhaust 440-call allowance.'])
+        limitations=['Tuning synthetic dataset, not confirmation or physical success.','Gemma is historical reference only.','Alias and dated endpoint metadata do not attest immutable served weights.','No format reasks; 400+40+5 decisions plus diagnostics and bounded HTTP retries stay within 600 attempts.'])
     summary['cache_off_matched']=metrics(results['off'][:a.cache_decisions])
     image_checks=[]
     for before,after in zip(results['off'][:5],results['image']):
