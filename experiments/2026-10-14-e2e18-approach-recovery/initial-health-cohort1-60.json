@@ -1,0 +1,776 @@
+{
+  "window_sim_s": 60,
+  "N": 12,
+  "runs": [
+    {
+      "name": "stage-approach-cohort1-00-v426",
+      "sim_s_at_check": 83.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 58,
+            "mecanum": 184,
+            "arm": 192
+          },
+          "frames": 132,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 119,
+            "camera_settle": 1,
+            "gaze_settle": 1,
+            "acquire_turn": 9,
+            "acquire_scan": 1
+          },
+          "max_no_motion_s": 0.9499999999999957,
+          "position_delta_max_m": 1.4463569016110303,
+          "latest_approach": {
+            "t": 136.6,
+            "status": "acquire_scan",
+            "own_beam_age_s": 64.0,
+            "B_candidate_available": true,
+            "cycle": 0,
+            "search_memory": {
+              "origin_yaw": 0.046814703518723876,
+              "direction": 1,
+              "index": 0,
+              "tried": [],
+              "source": "last_own_rgb",
+              "pose": [
+                -1.6667368987557567,
+                -0.55711741358589
+              ]
+            }
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 84,
+            "arm": 1472,
+            "look": 368
+          },
+          "frames": 86,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 37,
+            "acquire_scan": 26,
+            "acquire_explore": 22
+          },
+          "max_no_motion_s": 2.0500000000000007,
+          "position_delta_max_m": 0.02700202610090011,
+          "latest_approach": {
+            "t": 138.2,
+            "status": "acquire_turn",
+            "own_beam_age_s": 109.39999999999999,
+            "B_candidate_available": true,
+            "cycle": 4
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-01-v427",
+      "sim_s_at_check": 83.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 136,
+            "arm": 1408,
+            "look": 352
+          },
+          "frames": 88,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 26,
+            "acquire_scan": 25,
+            "arm_clearance_backup": 9,
+            "arm_clearance_turn": 3,
+            "arm_clearance_verify": 2,
+            "acquire_explore": 22
+          },
+          "max_no_motion_s": 2.3499999999999996,
+          "position_delta_max_m": 0.3513814705601763,
+          "latest_approach": {
+            "t": 139.0,
+            "status": "acquire_turn",
+            "own_beam_age_s": 66.4,
+            "B_candidate_available": false,
+            "cycle": 4
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 84,
+            "arm": 1472,
+            "look": 368
+          },
+          "frames": 86,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 37,
+            "acquire_scan": 26,
+            "acquire_explore": 22
+          },
+          "max_no_motion_s": 2.0500000000000007,
+          "position_delta_max_m": 0.02700202610090011,
+          "latest_approach": {
+            "t": 138.2,
+            "status": "acquire_turn",
+            "own_beam_age_s": 109.39999999999999,
+            "B_candidate_available": false,
+            "cycle": 4
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-02-v428",
+      "sim_s_at_check": 83.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 58,
+            "mecanum": 199,
+            "arm": 192
+          },
+          "frames": 132,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 120,
+            "camera_settle": 1,
+            "acquire_turn": 9,
+            "acquire_scan": 1
+          },
+          "max_no_motion_s": 0.8500000000000014,
+          "position_delta_max_m": 1.6521551260824672,
+          "latest_approach": {
+            "t": 136.6,
+            "status": "acquire_scan",
+            "own_beam_age_s": 64.0,
+            "B_candidate_available": true,
+            "cycle": 0,
+            "search_memory": {
+              "origin_yaw": 0.001704253334830602,
+              "direction": 1,
+              "index": 0,
+              "tried": [],
+              "source": "last_own_rgb",
+              "pose": [
+                -1.6514491680966559,
+                -0.5374308033093999
+              ]
+            }
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 86,
+            "arm": 1408,
+            "look": 352
+          },
+          "frames": 88,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 33,
+            "acquire_scan": 26,
+            "acquire_explore": 28
+          },
+          "max_no_motion_s": 3.3500000000000014,
+          "position_delta_max_m": 0.025730534314714643,
+          "latest_approach": {
+            "t": 139.0,
+            "status": "acquire_explore",
+            "own_beam_age_s": 110.2,
+            "B_candidate_available": true,
+            "cycle": 4
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-03-v429",
+      "sim_s_at_check": 79.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 97,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 121,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 17,
+            "acquire_scan": 13,
+            "arm_clearance_backup": 20,
+            "arm_clearance_turn": 6,
+            "arm_clearance_verify": 3,
+            "acquire_explore": 61
+          },
+          "max_no_motion_s": 2.3499999999999996,
+          "position_delta_max_m": 0.3991914607950277,
+          "latest_approach": {
+            "t": 139.35,
+            "status": "arm_clearance_backup",
+            "cycle": 2
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 86,
+            "arm": 1408,
+            "look": 352
+          },
+          "frames": 88,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 33,
+            "acquire_scan": 26,
+            "acquire_explore": 28
+          },
+          "max_no_motion_s": 3.3500000000000014,
+          "position_delta_max_m": 0.025730534314714643,
+          "latest_approach": {
+            "t": 139.0,
+            "status": "acquire_explore",
+            "own_beam_age_s": 110.2,
+            "B_candidate_available": false,
+            "cycle": 4
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-04-v426",
+      "sim_s_at_check": 73.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 130,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 100,
+            "camera_settle": 1,
+            "gaze_settle": 4,
+            "rotate_station_heading": 19,
+            "station_perception_pan_v1": 5
+          },
+          "max_no_motion_s": 1.0999999999999943,
+          "position_delta_max_m": 1.034477147129008,
+          "latest_approach": {
+            "t": 153.8,
+            "status": "station_perception_pan_v1",
+            "station_own_m": [
+              -0.9676568591392405,
+              -0.5083413347291761,
+              0.8170504337723297
+            ],
+            "grip_own_m": [
+              -0.8285918998671178,
+              -0.36018203835313745
+            ],
+            "distance_m": 0.07005475283849312,
+            "heading_error_rad": -0.043319884752186066,
+            "own_beam_age_s": 38.80000000000001,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.8170504337723297
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 132,
+            "arm": 384,
+            "look": 97
+          },
+          "frames": 132,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 98,
+            "camera_settle": 1,
+            "navigate_pregrasp": 10,
+            "gaze_settle": 1,
+            "acquire_turn": 15,
+            "acquire_scan": 6
+          },
+          "max_no_motion_s": 1.6999999999999957,
+          "position_delta_max_m": 0.12892840815699302,
+          "latest_approach": {
+            "t": 154.6,
+            "status": "acquire_turn",
+            "own_beam_age_s": 74.19999999999999,
+            "B_candidate_available": true,
+            "cycle": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-05-v427",
+      "sim_s_at_check": 75.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 152,
+            "look": 106,
+            "arm": 384
+          },
+          "frames": 123,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 11,
+            "navigate_pregrasp": 94,
+            "camera_settle": 1,
+            "rotate_station_heading": 9,
+            "gaze_settle": 1,
+            "acquire_scan": 6
+          },
+          "max_no_motion_s": 2.3499999999999943,
+          "position_delta_max_m": 1.0263102430136029,
+          "latest_approach": {
+            "t": 154.6,
+            "status": "acquire_scan",
+            "own_beam_age_s": 41.599999999999994,
+            "B_candidate_available": false,
+            "cycle": 0,
+            "search_memory": {
+              "origin_yaw": 0.48673800294363784,
+              "direction": 1,
+              "index": 0,
+              "tried": [],
+              "source": "last_own_rgb",
+              "pose": [
+                -1.3335739576030827,
+                -0.44302195842229636
+              ]
+            }
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 49,
+            "arm": 768,
+            "look": 191
+          },
+          "frames": 104,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 25,
+            "acquire_scan": 16,
+            "acquire_explore": 11,
+            "navigate_pregrasp": 49,
+            "gaze_settle": 2
+          },
+          "max_no_motion_s": 1.75,
+          "position_delta_max_m": 0.21265366401452127,
+          "latest_approach": {
+            "t": 154.6,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              1.291074687325553,
+              -0.5877769857783471,
+              -2.8514233472110013
+            ],
+            "grip_own_m": [
+              1.0963693722425092,
+              -0.6459154436045798
+            ],
+            "distance_m": 0.2880809781007066,
+            "heading_error_rad": -2.5372535698591556,
+            "own_beam_age_s": 20.0,
+            "camera": "inspect",
+            "basis_yaw_rad": -2.8514233472110013,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": false,
+            "path_points": 16,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                1.291074687325553,
+                -0.5877769857783471
+              ],
+              "carrot_distance_m": 0.2880809781007066,
+              "before": 0.0829906499434598,
+              "after": 0.07586918487796687,
+              "body_error_m": [
+                0.28368456753218596,
+                0.05013697325862848
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.17492854936452804,
+              "goal_distance_m": 0.2880809781007066
+            },
+            "projected_clear": false
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-06-v428",
+      "sim_s_at_check": 73.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 130,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 100,
+            "camera_settle": 1,
+            "gaze_settle": 4,
+            "rotate_station_heading": 19,
+            "station_perception_pan_v1": 5
+          },
+          "max_no_motion_s": 1.0999999999999943,
+          "position_delta_max_m": 1.034477147129008,
+          "latest_approach": {
+            "t": 153.8,
+            "status": "station_perception_pan_v1",
+            "station_own_m": [
+              -0.9676568591392405,
+              -0.5083413347291761,
+              0.8170504337723297
+            ],
+            "grip_own_m": [
+              -0.8285918998671178,
+              -0.36018203835313745
+            ],
+            "distance_m": 0.07005475283849312,
+            "heading_error_rad": -0.043319884752186066,
+            "own_beam_age_s": 38.80000000000001,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.8170504337723297
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 132,
+            "arm": 384,
+            "look": 97
+          },
+          "frames": 132,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 98,
+            "camera_settle": 1,
+            "navigate_pregrasp": 10,
+            "gaze_settle": 1,
+            "acquire_turn": 15,
+            "acquire_scan": 6
+          },
+          "max_no_motion_s": 1.6999999999999957,
+          "position_delta_max_m": 0.12892840815699302,
+          "latest_approach": {
+            "t": 154.6,
+            "status": "acquire_turn",
+            "own_beam_age_s": 74.19999999999999,
+            "B_candidate_available": true,
+            "cycle": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-07-v429",
+      "sim_s_at_check": 77.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 153,
+            "look": 105,
+            "arm": 384
+          },
+          "frames": 124,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 12,
+            "navigate_pregrasp": 99,
+            "camera_settle": 1,
+            "rotate_station_heading": 5,
+            "gaze_settle": 1,
+            "acquire_scan": 5
+          },
+          "max_no_motion_s": 2.1499999999999986,
+          "position_delta_max_m": 1.0531497333398834,
+          "latest_approach": {
+            "t": 153.4,
+            "status": "acquire_scan",
+            "own_beam_age_s": 40.400000000000006,
+            "B_candidate_available": false,
+            "cycle": 0,
+            "search_memory": {
+              "origin_yaw": 0.4747728711884274,
+              "direction": 1,
+              "index": 0,
+              "tried": [],
+              "source": "last_own_rgb",
+              "pose": [
+                -1.3193196323694123,
+                -0.42851298593223913
+              ]
+            }
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 96,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 103,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 25,
+            "acquire_scan": 16,
+            "acquire_explore": 61
+          },
+          "max_no_motion_s": 1.75,
+          "position_delta_max_m": 0.2933763876178321,
+          "latest_approach": {
+            "t": 152.2,
+            "status": "acquire_scan",
+            "own_beam_age_s": 71.79999999999998,
+            "B_candidate_available": false,
+            "cycle": 2,
+            "search_memory": {
+              "origin_yaw": -2.9517463518695206,
+              "direction": -1,
+              "index": 2,
+              "tried": [
+                0,
+                1
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                0.9406204609846138,
+                -0.6198334525886346
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-08-v426",
+      "sim_s_at_check": 69.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 136,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 120,
+            "gaze_settle": 5,
+            "camera_settle": 1,
+            "acquire_turn": 9
+          },
+          "max_no_motion_s": 1.1000000000000014,
+          "position_delta_max_m": 1.56059455127705,
+          "latest_approach": {
+            "t": 193.9,
+            "status": "acquire_turn",
+            "own_beam_age_s": 64.9,
+            "B_candidate_available": true,
+            "cycle": 0
+          }
+        },
+        "r2": {
+          "command_distribution": {},
+          "frames": 151,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 150
+          },
+          "max_no_motion_s": 0.25,
+          "position_delta_max_m": 0.9638484948186468,
+          "latest_approach": {
+            "t": 195.1,
+            "status": "seek_own_B",
+            "source": "own_frontier_navigation"
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-09-v427",
+      "sim_s_at_check": 73.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 286,
+            "arm": 448,
+            "look": 112
+          },
+          "frames": 133,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 18,
+            "acquire_scan": 24,
+            "arm_clearance_backup": 40,
+            "arm_clearance_turn": 29,
+            "arm_clearance_verify": 7,
+            "acquire_explore": 14
+          },
+          "max_no_motion_s": 5.25,
+          "position_delta_max_m": 1.506689407046718,
+          "latest_approach": {
+            "t": 194.25,
+            "status": "arm_clearance_verify",
+            "cycle": 2
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 49,
+            "arm": 768,
+            "look": 191
+          },
+          "frames": 106,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 25,
+            "acquire_scan": 16,
+            "acquire_explore": 11,
+            "navigate_pregrasp": 11,
+            "approach_path_unavailable": 4,
+            "recover_backup": 22,
+            "approach": 2,
+            "recover_turn": 14
+          },
+          "max_no_motion_s": 1.8500000000000014,
+          "position_delta_max_m": 0.07419328368506779,
+          "latest_approach": {
+            "t": 195.1,
+            "status": "recover_backup",
+            "station_own_m": [
+              0.7994274927481599,
+              -0.46689304226374073,
+              2.718994270826868
+            ],
+            "grip_own_m": [
+              0.6141037401815306,
+              -0.3835542953651777
+            ],
+            "distance_m": 0.5736339617175716,
+            "heading_error_rad": 2.946801349487714,
+            "own_beam_age_s": 10.0,
+            "camera": "inspect",
+            "basis_yaw_rad": 2.718994270826868,
+            "progress_recovery": true
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-10-v428",
+      "sim_s_at_check": 69.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 136,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 120,
+            "gaze_settle": 5,
+            "camera_settle": 1,
+            "acquire_turn": 9
+          },
+          "max_no_motion_s": 1.1000000000000014,
+          "position_delta_max_m": 1.56059455127705,
+          "latest_approach": {
+            "t": 193.9,
+            "status": "acquire_turn",
+            "own_beam_age_s": 64.9,
+            "B_candidate_available": true,
+            "cycle": 0
+          }
+        },
+        "r2": {
+          "command_distribution": {},
+          "frames": 151,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 150
+          },
+          "max_no_motion_s": 0.25,
+          "position_delta_max_m": 0.9638484948186468,
+          "latest_approach": {
+            "t": 195.1,
+            "status": "seek_own_B",
+            "source": "own_frontier_navigation"
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-cohort1-11-v429",
+      "sim_s_at_check": 69.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 136,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 10,
+            "acquire_scan": 21,
+            "arm_clearance_backup": 24,
+            "arm_clearance_turn": 18,
+            "arm_clearance_verify": 4,
+            "acquire_explore": 58
+          },
+          "max_no_motion_s": 5.25,
+          "position_delta_max_m": 1.029415039779421,
+          "latest_approach": {
+            "t": 195.1,
+            "status": "acquire_explore",
+            "own_beam_age_s": 40.0,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 96,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 118,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 25,
+            "acquire_scan": 12,
+            "acquire_explore": 61,
+            "arm_clearance_backup": 15,
+            "arm_clearance_turn": 3,
+            "arm_clearance_verify": 1
+          },
+          "max_no_motion_s": 2.1000000000000014,
+          "position_delta_max_m": 0.23747019048847112,
+          "latest_approach": {
+            "t": 195.45,
+            "status": "arm_clearance_verify",
+            "cycle": 1
+          }
+        }
+      }
+    }
+  ],
+  "max_no_motion_s": 5.25,
+  "errors": []
+}

@@ -1,0 +1,821 @@
+{
+  "runs": [
+    {
+      "name": "stage-approach-cohort1-00-v426",
+      "exit": 0,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-00-v426/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "BOTH_HELD",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "condition": "v426",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v377-s61006-r80",
+        "first_attempt_success": false,
+        "both_held": true,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.857958521,
+          "member": "stage-approach-cohort1-00-v426",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "scan_cycles": {
+          "r1": 5,
+          "r2": 13
+        },
+        "commands": 11044,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 838.3637380580001,
+        "sim_s": 293.1,
+        "physics_wall_s": 658.2822418110001,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 1
+        },
+        "held_first_s": {
+          "r1": 293.1,
+          "r2": 293.1
+        },
+        "both_held_s": 293.1,
+        "censored_s": null,
+        "held_gap_s": 0.0
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-00-v426",
+        "files": 2264,
+        "raw_sha256sum_matches": 2249,
+        "raw_mismatches": [],
+        "inventory_sha256": "d3a98b53a5f16ad3ef8d7cfe9bfc2c9cd91b5dffd7ccba0d35e434a8d8e5595a",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-00-v426.json.zst",
+        "inventory_zstd_sha256": "e76aced9585086b19c26f91cb0d769b0f7a96d70c132b54aabcb47ba875f0ff3"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-00-v426"
+    },
+    {
+      "name": "stage-approach-cohort1-01-v427",
+      "exit": 0,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-01-v427/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "condition": "v427",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v377-s61006-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.848417123,
+          "member": "stage-approach-cohort1-01-v427",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "scan_cycles": {
+          "r1": 17,
+          "r2": 20
+        },
+        "commands": 16268,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 904.76986011,
+        "sim_s": 300.0,
+        "physics_wall_s": 724.707319453,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 1
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 300.0,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-01-v427",
+        "files": 2315,
+        "raw_sha256sum_matches": 2300,
+        "raw_mismatches": [],
+        "inventory_sha256": "c98397ae19fc7f93c9a94e226ea5df81262f99c05bf8cddcccd2271ba771ae71",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-01-v427.json.zst",
+        "inventory_zstd_sha256": "f6bdc32376d3f0c9c4b5f3af58218c41bbe8219616f18d627febc87182154e83"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-01-v427"
+    },
+    {
+      "name": "stage-approach-cohort1-02-v428",
+      "exit": 0,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-02-v428/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "condition": "v428",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v377-s61006-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.784829865,
+          "member": "stage-approach-cohort1-02-v428",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "scan_cycles": {
+          "r1": 5,
+          "r2": 14
+        },
+        "commands": 7186,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 921.9026219389999,
+        "sim_s": 300.0,
+        "physics_wall_s": 741.8965920400001,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 2
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 300.0,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-02-v428",
+        "files": 2315,
+        "raw_sha256sum_matches": 2300,
+        "raw_mismatches": [],
+        "inventory_sha256": "93ac1700cf3cf2fd5320a2355e36439a413d6c614719236db9428f29d38131be",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-02-v428.json.zst",
+        "inventory_zstd_sha256": "6dfa6287336693c38ee421d801db60dff28147acd72384fb71ed53dfab100e08"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-02-v428"
+    },
+    {
+      "name": "stage-approach-cohort1-03-v429",
+      "exit": 0,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-03-v429/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "condition": "v429",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v377-s61006-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.808585885,
+          "member": "stage-approach-cohort1-03-v429",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "scan_cycles": {
+          "r1": 17,
+          "r2": 14
+        },
+        "commands": 12469,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 974.9591095180001,
+        "sim_s": 300.0,
+        "physics_wall_s": 794.9189430099999,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 1
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 300.0,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-03-v429",
+        "files": 2315,
+        "raw_sha256sum_matches": 2300,
+        "raw_mismatches": [],
+        "inventory_sha256": "0fbffc36e45d725461bf5de11b14e381549f9b98c54e0858275c525f924ee928",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-03-v429.json.zst",
+        "inventory_zstd_sha256": "4acdc67e1a660cbae700d3dd0849fb4e988c4416dfc316d0db876e065b897d3c"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-03-v429"
+    },
+    {
+      "name": "stage-approach-cohort1-04-v426",
+      "exit": 0,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-04-v426/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "condition": "v426",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v379-s61008-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.88043493,
+          "member": "stage-approach-cohort1-04-v426",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 17
+        },
+        "commands": 6063,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 941.162143489,
+        "sim_s": 300.0,
+        "physics_wall_s": 760.905309278,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 2
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 300.0,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-04-v426",
+        "files": 2315,
+        "raw_sha256sum_matches": 2300,
+        "raw_mismatches": [],
+        "inventory_sha256": "6d81eff0c6770695f0c3e9eda978ee99f420fd0175d90c62c18240eeae2d563e",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-04-v426.json.zst",
+        "inventory_zstd_sha256": "a9db085b69a45dbba90d24ca6bdbede53ca2b1dd0718b83584428c7f8753db11"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-04-v426"
+    },
+    {
+      "name": "stage-approach-cohort1-05-v427",
+      "exit": 0,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-05-v427/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "condition": "v427",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v379-s61008-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.86566812,
+          "member": "stage-approach-cohort1-05-v427",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "scan_cycles": {
+          "r1": 17,
+          "r2": 2
+        },
+        "commands": 10107,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 897.8764137409999,
+        "sim_s": 300.0,
+        "physics_wall_s": 717.668601709,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 2
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 300.0,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-05-v427",
+        "files": 2315,
+        "raw_sha256sum_matches": 2300,
+        "raw_mismatches": [],
+        "inventory_sha256": "c966b264cf0d2598badc66e248fc7eaec3d6171faea673e286f00851edb18e79",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-05-v427.json.zst",
+        "inventory_zstd_sha256": "e53bf1147f759359a0d1929be745ce3d5306c3b9fcc40b531921b58a72e85430"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-05-v427"
+    },
+    {
+      "name": "stage-approach-cohort1-06-v428",
+      "exit": 0,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-06-v428/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "condition": "v428",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v379-s61008-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.879398307,
+          "member": "stage-approach-cohort1-06-v428",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 3
+        },
+        "commands": 9072,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 914.466147571,
+        "sim_s": 300.0,
+        "physics_wall_s": 734.208430884,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 300.0,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-06-v428",
+        "files": 2315,
+        "raw_sha256sum_matches": 2300,
+        "raw_mismatches": [],
+        "inventory_sha256": "963b30bfb3edde0ce53889bd0c66f584a3bfe605e05053404d8765fe12affe47",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-06-v428.json.zst",
+        "inventory_zstd_sha256": "cacf0c02bba10822153abcf9c845245b13e6ae5e2d1fe5cb45948e22dfb1a3e0"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-06-v428"
+    },
+    {
+      "name": "stage-approach-cohort1-07-v429",
+      "exit": 0,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-07-v429/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "condition": "v429",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v379-s61008-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.803780777,
+          "member": "stage-approach-cohort1-07-v429",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "scan_cycles": {
+          "r1": 9,
+          "r2": 8
+        },
+        "commands": 9634,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 931.009210683,
+        "sim_s": 300.0,
+        "physics_wall_s": 750.8362296150001,
+        "reacquisition_entries": {
+          "r1": 3,
+          "r2": 3
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 300.0,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-07-v429",
+        "files": 2315,
+        "raw_sha256sum_matches": 2300,
+        "raw_mismatches": [],
+        "inventory_sha256": "ebf9b3b6536a88bb7e454c443ffca37d2a1f584e34a9996f919d43cdef2c97a8",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-07-v429.json.zst",
+        "inventory_zstd_sha256": "5da26060683bbd1b4e2eb31bf54f2dadbddb3a9a1e676a64d92a2db065ce6d53"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-07-v429"
+    },
+    {
+      "name": "stage-approach-cohort1-08-v426",
+      "exit": 130,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-08-v426/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "EARLY_STOP",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "condition": "v426",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v380-s61007-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [
+          2
+        ],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.790343192,
+          "member": "stage-approach-cohort1-08-v426",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "error": "SIGNAL_SIGINT",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/scripts/run_e2e_stage_probe.py\", line 225, in run\n    trace=receive(r,own,rgb,now,backend._append)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_camera_settle.py\", line 40, in receive\n    return robot.receive(obs,rgb)\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_live_mapping.py\", line 120, in receive\n    return self._receive(obs,rgb)\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_live_mapping.py\", line 133, in _receive\n    command,trace=self.goal.receive(**extra, robot_id=self.robot_id,t=self.now,frame_id=obs['frame_id'],\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_relook_search.py\", line 47, in received\n    result=_receive(**kw)\n           ^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_explore_deadlock.py\", line 116, in received\n    action, trace = receive(**kwargs)\n                    ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_rgb_vo.py\", line 491, in received\n    action, trace = receive(**kw)\n                    ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_boundary_association.py\", line 90, in received\n    command, trace = receive(**kwargs)\n                     ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_boundary_views.py\", line 292, in with_diagnostics\n    command, trace = receive(**kwargs)\n                     ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_exploration.py\", line 137, in receive_progress\n    command, trace = receive(**kwargs)\n                     ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/ego_pose_continuity.py\", line 284, in receive_pose\n    command, trace = receive(**kw)\n                     ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_setdown_relook.py\", line 102, in receive_rgb\n    result = receive(**kw)\n             ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/grid_acceleration.py\", line 106, in receive\n    with using(map_acceleration):return original(**kwargs)\n                                        ^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_goal_route.py\", line 74, in receive\n    return super().receive(**kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/goal_route_continuous.py\", line 252, in receive\n    cmd,trace=self.explorer.receive(robot_id=robot_id,t=t,frame_id=frame_id,rgb=rgb,servo=servo,observation=observation)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/active_wall_recovery.py\", line 160, in receive\n    costmap=from_observed_grid(self.grid,pose,self.latest,set())\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/public_navigation_unknown.py\", line 104, in from_observed_grid\n    state,lo = grid.dense(pose,pad_m=1.)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/own_map_navigation.py\", line 158, in dense\n    a[indices[:,1],indices[:,0]]=np.fromiter((self.state(c) for c in cells),np.int8)\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/own_map_navigation.py\", line 158, in <genexpr>\n    a[indices[:,1],indices[:,0]]=np.fromiter((self.state(c) for c in cells),np.int8)\n                                              ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/own_map_navigation.py\", line 139, in state\n    value = self.odds.get(cell,0.)\n            ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_result_writer.py\", line 45, in signal\n    raise KeyboardInterrupt('SIGNAL_' + signal.Signals(signum).name)\nKeyboardInterrupt: SIGNAL_SIGINT\n",
+        "scan_cycles": {
+          "r1": 1,
+          "r2": 0
+        },
+        "commands": 1350,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 523.513236618,
+        "sim_s": 124.8,
+        "physics_wall_s": 343.342781825,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 0
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 124.8,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-08-v426",
+        "files": 1005,
+        "raw_sha256sum_matches": 988,
+        "raw_mismatches": [],
+        "inventory_sha256": "85d61dcfd574026d68fbe8f2eb7ae1cbd793e65b1df37ec0f02553584a14a4e1",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-08-v426.json.zst",
+        "inventory_zstd_sha256": "9c93d0ea27f940d7a54e4d030d40dbe7484c3086f75de613dd6d86bdd7836c74"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-08-v426"
+    },
+    {
+      "name": "stage-approach-cohort1-09-v427",
+      "exit": 0,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-09-v427/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "condition": "v427",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v380-s61007-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.870229711,
+          "member": "stage-approach-cohort1-09-v427",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "scan_cycles": {
+          "r1": 21,
+          "r2": 15
+        },
+        "commands": 13986,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 961.8825221620001,
+        "sim_s": 300.0,
+        "physics_wall_s": 781.637143336,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 4
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 300.0,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-09-v427",
+        "files": 2315,
+        "raw_sha256sum_matches": 2300,
+        "raw_mismatches": [],
+        "inventory_sha256": "b4a1488999b2aacb303c08be1a9bcdf080b25c1e4b876f89a1b88c7e9c3c2610",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-09-v427.json.zst",
+        "inventory_zstd_sha256": "4482693dc3750aed21a7e31846ce7ea9e038f9ab2e3003bc60de5708e5b70979"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-09-v427"
+    },
+    {
+      "name": "stage-approach-cohort1-10-v428",
+      "exit": 130,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-10-v428/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "EARLY_STOP",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "condition": "v428",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v380-s61007-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [
+          2
+        ],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.829152038,
+          "member": "stage-approach-cohort1-10-v428",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "error": "SIGNAL_SIGINT",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/scripts/run_e2e_stage_probe.py\", line 225, in run\n    trace=receive(r,own,rgb,now,backend._append)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_camera_settle.py\", line 40, in receive\n    return robot.receive(obs,rgb)\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_live_mapping.py\", line 120, in receive\n    return self._receive(obs,rgb)\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_live_mapping.py\", line 133, in _receive\n    command,trace=self.goal.receive(**extra, robot_id=self.robot_id,t=self.now,frame_id=obs['frame_id'],\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_relook_search.py\", line 47, in received\n    result=_receive(**kw)\n           ^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_explore_deadlock.py\", line 116, in received\n    action, trace = receive(**kwargs)\n                    ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_rgb_vo.py\", line 491, in received\n    action, trace = receive(**kw)\n                    ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_boundary_association.py\", line 90, in received\n    command, trace = receive(**kwargs)\n                     ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_boundary_views.py\", line 292, in with_diagnostics\n    command, trace = receive(**kwargs)\n                     ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_exploration.py\", line 137, in receive_progress\n    command, trace = receive(**kwargs)\n                     ^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/ego_pose_continuity.py\", line 284, in receive_pose\n    command, trace = receive(**kw)\n                     ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_setdown_relook.py\", line 102, in receive_rgb\n    result = receive(**kw)\n             ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/grid_acceleration.py\", line 106, in receive\n    with using(map_acceleration):return original(**kwargs)\n                                        ^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_goal_route.py\", line 74, in receive\n    return super().receive(**kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/goal_route_continuous.py\", line 287, in receive\n    costmap=from_observed_grid(self.explorer.grid,self.explorer.pose,self.explorer.latest,set())\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/public_navigation_unknown.py\", line 104, in from_observed_grid\n    state,lo = grid.dense(pose,pad_m=1.)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/own_map_navigation.py\", line 158, in dense\n    a[indices[:,1],indices[:,0]]=np.fromiter((self.state(c) for c in cells),np.int8)\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/own_map_navigation.py\", line 158, in <genexpr>\n    a[indices[:,1],indices[:,0]]=np.fromiter((self.state(c) for c in cells),np.int8)\n                                              ^^^^^^^^^^^^^\n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/own_map_navigation.py\", line 138, in state\n    def state(self, cell):\n    \n  File \"/home/ugrp/ugrp-sim/src/ed033f246ac4b2c51885bea9abb5eb8d44cdeffd/harness/e2e_result_writer.py\", line 45, in signal\n    raise KeyboardInterrupt('SIGNAL_' + signal.Signals(signum).name)\nKeyboardInterrupt: SIGNAL_SIGINT\n",
+        "scan_cycles": {
+          "r1": 1,
+          "r2": 0
+        },
+        "commands": 1348,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 523.588626818,
+        "sim_s": 124.4,
+        "physics_wall_s": 343.3758563690001,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 0
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 124.4,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-10-v428",
+        "files": 1002,
+        "raw_sha256sum_matches": 985,
+        "raw_mismatches": [],
+        "inventory_sha256": "7c6a107fdd1656910c308e07724cdaf1a6af46ac5b6d4d93c7dc8221f90df018",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-10-v428.json.zst",
+        "inventory_zstd_sha256": "f97f99d56cc4a6de7f9349b837133f8ab07a5f000fe09cdfce8bb44eca6cd6e3"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-10-v428"
+    },
+    {
+      "name": "stage-approach-cohort1-11-v429",
+      "exit": 0,
+      "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+      "class_": "dev",
+      "raw": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-11-v429/raw",
+      "result": {
+        "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "E2E_success_eligible": false,
+        "physical_hardware": false,
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "condition": "v429",
+        "seed": 62002,
+        "stage": "align",
+        "source_run": "e2e18-v380-s61007-r80",
+        "first_attempt_success": false,
+        "both_held": false,
+        "finalization_complete": true,
+        "shutdown_signals": [],
+        "finalization_errors": [],
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "stage_start": {
+          "start_monotonic": 662.7826626,
+          "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+          "actual_start_monotonic": 662.88012344,
+          "member": "stage-approach-cohort1-11-v429",
+          "members": 12,
+          "restore_slots": 8
+        },
+        "scan_cycles": {
+          "r1": 15,
+          "r2": 22
+        },
+        "commands": 12753,
+        "model_calls": 0,
+        "provider_cost_usd": 0,
+        "wall_s": 978.201937911,
+        "sim_s": 300.0,
+        "physics_wall_s": 797.9367670579999,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "held_first_s": {},
+        "both_held_s": null,
+        "censored_s": 300.0,
+        "held_gap_s": null
+      },
+      "archive": {
+        "verified": true,
+        "native_verified_before_deallocation": true,
+        "arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-approach-cohort1-11-v429",
+        "files": 2315,
+        "raw_sha256sum_matches": 2300,
+        "raw_mismatches": [],
+        "inventory_sha256": "292f285d8145ecc6e48b769f70412a317e011db3fe2d69c2afce0ad24864ef29",
+        "inventory_zstd": "/home/ubuntu/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories/stage-approach-cohort1-11-v429.json.zst",
+        "inventory_zstd_sha256": "2716bba712b9f5772ea178dd1838277ddb2defabe9c983a4446e690b46123f4a"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-approach-cohort1-11-v429"
+    }
+  ],
+  "fetch_source": "ARM verified immutable archive; VM3 remains deallocated",
+  "interruption": "VM3 deallocation interrupted original fetch-lite at run05; resumed entirely from ARM without starting VM"
+}

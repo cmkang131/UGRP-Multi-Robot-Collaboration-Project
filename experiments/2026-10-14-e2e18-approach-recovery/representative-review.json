@@ -1,0 +1,34 @@
+{
+  "reviewed": [
+    {
+      "label": "black-B-search-v426",
+      "frames": 6,
+      "raw_sim_range": [
+        1.3,
+        126.1
+      ],
+      "relationship": "r2는51초에 검정 끝을 보고76초에는 짝이 가까이 보이지만 B 재탐색을 계속; 양쪽 파지로 연결되지 않음.",
+      "notes": "no physical wall collision asserted"
+    },
+    {
+      "label": "success-black-v426",
+      "frames": 6,
+      "raw_sim_range": [
+        1.3,
+        294.1
+      ],
+      "relationship": "118초 r1이 먼저 빔을 보고235초 두 로봇 모두 끝을 가까이 봄; 마지막 양쪽 카메라에 파지한 빔이 크게 보임.",
+      "notes": "joint grasp success confirmed by independent stage-held ledger, images alone do not prove bilateral contact"
+    },
+    {
+      "label": "color-wall-recovery-v427",
+      "frames": 6,
+      "raw_sim_range": [
+        1.3,
+        300.9
+      ],
+      "relationship": "r1은 벽 정지에서 벗어난 뒤 바닥·목적 표식 쪽을 탐색하며 빔을 재획득하지 못함; r2만121/241초 빔·파랑 끝을 보고 둘의 접근이 연결되지 않음.",
+      "notes": "separate color appearance; no pair contact or opposite-end success inferred from images"
+    }
+  ]
+}
