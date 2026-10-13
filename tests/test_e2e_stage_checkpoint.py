@@ -198,3 +198,20 @@ def test_replay_hash_matches_source_numpy_scalar_writer():
     from harness.e2e_record_scalars import normalize
     value=dict(observation=dict(confirmed=np.bool_(True),node=np.int64(4),area=np.float32(.25)))
     assert cp.digest(value)==cp.digest(normalize(value))
+
+
+def test_source_policy_handoff_keeps_map_and_recovery_history():
+    from harness.e2e_stage_policy import install
+    robots={rid:SimpleNamespace(body_controller='jev_v1',decider='off',
+        goal=SimpleNamespace(explore_deadlock=SimpleNamespace(idle_threshold_s=30.,idle_since=127.4,cycles=0),
+                             explorer=SimpleNamespace(grid=object()))) for rid in cp.ROBOTS}
+    grids={rid:r.goal.explorer.grid for rid,r in robots.items()}
+    assert not install(robots,{},dict(explore_idle='idle5_v1'))['applied']
+    assert robots['r2'].goal.explore_deadlock.idle_threshold_s==30
+    receipt=install(robots,dict(body_controller='jev_v1'),dict(explore_idle='idle5_v1'),'baseline_v1')
+    assert receipt['before']['r2']['idle_s']==30 and receipt['after']['r2']['idle_s']==5
+    assert all(r.goal.explorer.grid is grids[rid] for rid,r in robots.items())
+    assert robots['r2'].goal.explore_deadlock.idle_since==127.4
+    assert robots['r2'].body_controller=='off'
+    with pytest.raises(ValueError,match='STATE_MIGRATION'):
+        install(robots,dict(pose_fix='old'),dict(pose_fix='new'),'baseline_v1')
