@@ -416,6 +416,101 @@ def startup_decision(progress, b):
                 stop=bool(failed and not b['e2e_options'].get('dev_light',False)))
 
 
+def make_robots(b, out=None):
+    """Shared own-input construction for live execution and staged replay."""
+    from harness.e2e_live_mapping import Robot
+    from harness.e2e_exact_speedups import Options as SpeedOptions
+    from harness.e2e_stall_odometry import Options as StallOptions
+    options=Options(**b['study_options'])
+    from harness.e2e_speed4 import Options as Speed4Options, processing_due
+    speed4=Speed4Options(**b.get('speed4',{}))
+    if speed4.enabled and out is not None:write(out/'speed4.json',b['speed4_record'])
+    cov=json.loads((ROOT/'configs/e2e_nees_egomap70_dev_v1.json').read_text())
+    robots={r:Robot(r,b['seed']+i,cov,options,beam_end_model=b['e2e_options'].get('beam_end_model','off'),beam_decode=b['e2e_options'].get('beam_decode','off'),speed4=speed4,speed5=b['e2e_options'].get('speed5','off'),relook=b['e2e_options']['setdown_only_when_relook'],
+                    goal_geometry=b['e2e_options']['goal_geometry'],
+                    exploration_progress=b['e2e_options'].get('exploration_progress','off'),
+                    pose_fix=b['e2e_options'].get('pose_fix','off'),
+                    path_follow=b['e2e_options'].get('path_follow','off'),
+                    stall_options=StallOptions(**{k:b['e2e_options'].get(k,'off') for k in ('stall_odometry','stall_recovery','stall_noise')}),
+                    explore_deadlock=b['e2e_options'].get('explore_deadlock','off'),
+                    boundary_association=b['e2e_options'].get('boundary_association','off'),
+                    boundary_retry=b['e2e_options'].get('boundary_retry','off'),
+                    boundary_coverage=b['e2e_options'].get('boundary_coverage','off'),
+                    vo_floor_mask=b['e2e_options'].get('vo_floor_mask','off'),
+                    vo_rotation_policy=b['e2e_options'].get('vo_rotation_policy','off'),
+                    mapping_budget_s=b['e2e_options'].get('mapping_budget_s'),
+                    boundary_views=b['e2e_options'].get('boundary_views','off'),boundary_frame=b['e2e_options'].get('boundary_frame','off'),
+                    b_marker_detect=b['e2e_options'].get('b_marker_detect','off'),
+                    b_partial_accept=b['e2e_options'].get('b_partial_accept','off'),
+                    exact_speedups=SpeedOptions(**b['e2e_options'].get('exact_speedups',{})))
+            for i,r in enumerate(('r1','r2','r3'))}
+    from harness.e2e_observation_cadence import configure as cadence_configure
+    for robot in robots.values():cadence_configure(robot.goal,b['e2e_options'].get('observation_cadence','off'),b.get('speed3_profile',{}).get('observation_period_s',.2))
+    for robot in robots.values():
+        robot.goal.e2e_route_guard=b['e2e_options'].get('route_guard','off')
+        robot.goal.e2e_beam_axis=b['e2e_options'].get('beam_axis','off')
+        robot.goal.e2e_route_coverage=b['e2e_options'].get('route_coverage','off')
+        robot.goal.e2e_carrier_axes=b['e2e_options'].get('carrier_axes','off')
+        robot.goal.e2e_route_extent=b['e2e_options'].get('route_extent','off')
+        robot.goal.e2e_record_scalars=b['e2e_options'].get('record_scalars','off')
+    from harness.e2e_route_cost import configure as cost_configure
+    for robot in robots.values():cost_configure(robot.goal,b['e2e_options'].get('route_cost','off'))
+    from harness.e2e_pose_guard import configure as pose_guard_configure
+    for robot in robots.values():pose_guard_configure(robot.goal,b['e2e_options'].get('pose_guard','off'))
+    for robot in robots.values():
+        robot.perception_settle=b['e2e_options'].get('perception_settle','off');robot.landmark_cache=b['e2e_options'].get('landmark_cache','off')
+    for robot in robots.values():robot.pregrasp_acquire=b['e2e_options'].get('pregrasp_acquire','off')
+    for robot in robots.values():robot.camera_load=b['e2e_options'].get('camera_load','off')
+    for robot in robots.values():robot.protocol_progress=b['e2e_options'].get('protocol_progress','off')
+    for robot in robots.values():robot.protocol_recovery=b['e2e_options'].get('protocol_recovery','off')
+    for robot in robots.values():robot.body_controller=b['e2e_options'].get('body_controller','off')
+    for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
+    return robots
+
+
+def make_transport(b, robots, dialogue):
+    """Same approach, gaze, clearance and acquisition options as live run."""
+    from harness.e2e_live_transport import Transport
+    profiles=json.loads((ROOT/'configs/s2_v133_full_template.json').read_text())['pulse_calibration']['profiles']
+    transport=Transport(robots,dialogue,profiles,pulse_budget=b['e2e_options']['pulse_budget'],
+                        setdown_only_when_relook=b['e2e_options']['setdown_only_when_relook'],
+                        dev_light=b['e2e_options'].get('dev_light',False),carrier_approach=b['e2e_options'].get('carrier_approach','off'),align_progress=b['e2e_options'].get('align_progress','off'),pregrasp_recovery=b['e2e_options'].get('pregrasp_recovery','off'),pregrasp_gaze=b['e2e_options'].get('pregrasp_gaze','off'),search_bearing=b['e2e_options'].get('search_bearing','off'),pregrasp_progress=b['e2e_options'].get('pregrasp_progress','off'),gaze_cadence=b['e2e_options'].get('gaze_cadence','off'),pregrasp_acquire=b['e2e_options'].get('pregrasp_acquire','off'),align_queues=b['e2e_options'].get('align_queues','off'))
+    from harness.e2e_arm_clearance import Clearance
+    transport.arm_clearance=Clearance(b['e2e_options'].get('arm_clearance','off'),b['e2e_options'].get('scan_guard','off'))
+    transport.approach_commit=b['e2e_options'].get('approach_commit','off')
+    transport.fine_view=b['e2e_options'].get('fine_view','off')
+    transport.approach_heading=b['e2e_options'].get('approach_heading','off')
+    from harness.e2e_fine_entry import install as install_fine_entry
+    install_fine_entry(transport,b['e2e_options'].get('fine_entry','off'))
+    transport.station_heading=b['e2e_options'].get('station_heading','off')
+    transport.clip_recovery=b['e2e_options'].get('clip_recovery','off')
+    transport.station_handoff=b['e2e_options'].get('station_handoff','off')
+    from harness.e2e_capture_pose import install as capture_install
+    capture_install(transport,b['e2e_options'].get('capture_pose','off'))
+    from harness.e2e_relook_search import install as relook_search_install
+    relook_search_install(transport,b['e2e_options'].get('relook_search','off'))
+    from harness.e2e_acquire_standoff import install as standoff_install
+    standoff_install(transport,b['e2e_options'].get('beam_lost_standoff','off'),b['e2e_options'].get('arm_clearance_align_skip','off'),b['e2e_options'].get('acquire_scan_fast','off'))
+    from harness.e2e_relook_giveup import install as relook_giveup_install
+    relook_giveup_install(transport,b['e2e_options'].get('relook_giveup','off'))
+    from harness.e2e_post_relook import install as post_relook_install
+    post_relook_install(transport,b['e2e_options'].get('post_relook','off'))
+    from harness.e2e_approach_floor import install as approach_floor_install
+    approach_floor_install(transport,b['e2e_options'].get('approach_floor','off'))
+    from harness.e2e_clip_hysteresis import install as clip_hysteresis_install
+    clip_hysteresis_install(transport,b['e2e_options'].get('clip_hysteresis','off'))
+    transport.acquisition_mobility=b['e2e_options'].get('acquisition_mobility','off')
+    transport.camera_motion=b['e2e_options'].get('camera_motion','off')
+    transport.carrier_goal=b['e2e_options'].get('carrier_goal','off');transport.blocked_path_recovery=b['e2e_options'].get('blocked_path_recovery','off')
+    transport.stale_station=b['e2e_options'].get('stale_station','off')
+    transport.beam_avoidance=b['e2e_options'].get('beam_avoidance','off')
+    transport.mapping_acquire=b['e2e_options'].get('mapping_acquire','off');transport.mapping_acquisitions={}
+    transport.approach_efficiency=b['e2e_options'].get('approach_efficiency','off')
+    from harness.e2e_grasp_once import install as grasp_once_install
+    grasp_once_install(transport,b['e2e_options'].get('grasp_once','off'))
+    return transport
+
+
 def run(b,out,receipt,*,backend_factory=None,body_receipt=None):
     if not b['e2e_options']['enabled']:raise ValueError('E2E_LIVE_TOGGLE_OFF')
     from harness.e2e_runtime_registration import require_current
@@ -452,50 +547,9 @@ def run(b,out,receipt,*,backend_factory=None,body_receipt=None):
             cv2.setNumThreads(1)
         from harness.e2e_perception_fast import install as perception_fast_install
         perception_fast_install(b['e2e_options'].get('perception_fast','off'))
-        options=Options(**b['study_options'])
-        from harness.e2e_speed4 import Options as Speed4Options, processing_due
-        speed4=Speed4Options(**b.get('speed4',{}))
-        if speed4.enabled:write(out/'speed4.json',b['speed4_record'])
-        cov=json.loads((ROOT/'configs/e2e_nees_egomap70_dev_v1.json').read_text())
-        robots={r:Robot(r,b['seed']+i,cov,options,beam_end_model=b['e2e_options'].get('beam_end_model','off'),beam_decode=b['e2e_options'].get('beam_decode','off'),speed4=speed4,speed5=b['e2e_options'].get('speed5','off'),relook=b['e2e_options']['setdown_only_when_relook'],
-                        goal_geometry=b['e2e_options']['goal_geometry'],
-                        exploration_progress=b['e2e_options'].get('exploration_progress','off'),
-                        pose_fix=b['e2e_options'].get('pose_fix','off'),
-                        path_follow=b['e2e_options'].get('path_follow','off'),
-                        stall_options=StallOptions(**{k:b['e2e_options'].get(k,'off') for k in ('stall_odometry','stall_recovery','stall_noise')}),
-                        explore_deadlock=b['e2e_options'].get('explore_deadlock','off'),
-                        boundary_association=b['e2e_options'].get('boundary_association','off'),
-                        boundary_retry=b['e2e_options'].get('boundary_retry','off'),
-                        boundary_coverage=b['e2e_options'].get('boundary_coverage','off'),
-                        vo_floor_mask=b['e2e_options'].get('vo_floor_mask','off'),
-                        vo_rotation_policy=b['e2e_options'].get('vo_rotation_policy','off'),
-                        mapping_budget_s=b['e2e_options'].get('mapping_budget_s'),
-                        boundary_views=b['e2e_options'].get('boundary_views','off'),boundary_frame=b['e2e_options'].get('boundary_frame','off'),
-                        b_marker_detect=b['e2e_options'].get('b_marker_detect','off'),
-                        b_partial_accept=b['e2e_options'].get('b_partial_accept','off'),
-                        exact_speedups=SpeedOptions(**b['e2e_options'].get('exact_speedups',{})))
-                for i,r in enumerate(('r1','r2','r3'))}
+        robots=make_robots(b,out)
+        from harness.e2e_speed4 import processing_due
         from harness.e2e_observation_cadence import configure as cadence_configure
-        for robot in robots.values():cadence_configure(robot.goal,b['e2e_options'].get('observation_cadence','off'),b.get('speed3_profile',{}).get('observation_period_s',.2))
-        for robot in robots.values():
-            robot.goal.e2e_route_guard=b['e2e_options'].get('route_guard','off')
-            robot.goal.e2e_beam_axis=b['e2e_options'].get('beam_axis','off')
-            robot.goal.e2e_route_coverage=b['e2e_options'].get('route_coverage','off')
-            robot.goal.e2e_carrier_axes=b['e2e_options'].get('carrier_axes','off')
-            robot.goal.e2e_route_extent=b['e2e_options'].get('route_extent','off')
-            robot.goal.e2e_record_scalars=b['e2e_options'].get('record_scalars','off')
-        from harness.e2e_route_cost import configure as cost_configure
-        for robot in robots.values():cost_configure(robot.goal,b['e2e_options'].get('route_cost','off'))
-        from harness.e2e_pose_guard import configure as pose_guard_configure
-        for robot in robots.values():pose_guard_configure(robot.goal,b['e2e_options'].get('pose_guard','off'))
-        for robot in robots.values():
-            robot.perception_settle=b['e2e_options'].get('perception_settle','off');robot.landmark_cache=b['e2e_options'].get('landmark_cache','off')
-        for robot in robots.values():robot.pregrasp_acquire=b['e2e_options'].get('pregrasp_acquire','off')
-        for robot in robots.values():robot.camera_load=b['e2e_options'].get('camera_load','off')
-        for robot in robots.values():robot.protocol_progress=b['e2e_options'].get('protocol_progress','off')
-        for robot in robots.values():robot.protocol_recovery=b['e2e_options'].get('protocol_recovery','off')
-        for robot in robots.values():robot.body_controller=b['e2e_options'].get('body_controller','off')
-        for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
         offered=json.loads(receipt.read_text())
         if offered.get('decider','off')!=b['e2e_options'].get('decider','off'):
             raise ValueError('RELAY_DECIDER_MISMATCH')
@@ -533,10 +587,7 @@ def run(b,out,receipt,*,backend_factory=None,body_receipt=None):
             e2e_own_inputs_v1='on_v1',e2e_dialogue_v1='on_v1',
             policy=CallPolicy(max_calls_per_actor=120,max_http_attempts_per_actor=120,max_attempts_total=300,max_retries=0),
             decision_limits=DecisionLimits(max_calls_total=300,max_utterances_per_actor=80,max_utterances_total=160))
-        profiles=json.loads((ROOT/'configs/s2_v133_full_template.json').read_text())['pulse_calibration']['profiles']
-        transport=Transport(robots,host.trial.dialogue,profiles,pulse_budget=b['e2e_options']['pulse_budget'],
-                            setdown_only_when_relook=b['e2e_options']['setdown_only_when_relook'],
-                            dev_light=b['e2e_options'].get('dev_light',False),carrier_approach=b['e2e_options'].get('carrier_approach','off'),align_progress=b['e2e_options'].get('align_progress','off'),pregrasp_recovery=b['e2e_options'].get('pregrasp_recovery','off'),pregrasp_gaze=b['e2e_options'].get('pregrasp_gaze','off'),search_bearing=b['e2e_options'].get('search_bearing','off'),pregrasp_progress=b['e2e_options'].get('pregrasp_progress','off'),gaze_cadence=b['e2e_options'].get('gaze_cadence','off'),pregrasp_acquire=b['e2e_options'].get('pregrasp_acquire','off'),align_queues=b['e2e_options'].get('align_queues','off'))
+        transport=make_transport(b,robots,host.trial.dialogue)
         from harness.e2e_pulse_admission import Admission
         pulse_dispatch=Admission(b['e2e_options'].get('pulse_admission','off'))
         host.trial.event_projection=b['e2e_options'].get('event_projection','off')
@@ -552,39 +603,6 @@ def run(b,out,receipt,*,backend_factory=None,body_receipt=None):
         host.trial.call_events.sink=lambda row:backend._append('dialogue-call-policy.jsonl',row)
         host.trial.dialogue_decider=b['e2e_options'].get('dialogue_decider','gemma_v0')
         host.trial.speech_context=b['e2e_options'].get('speech_context','off')
-        from harness.e2e_arm_clearance import Clearance
-        transport.arm_clearance=Clearance(b['e2e_options'].get('arm_clearance','off'),b['e2e_options'].get('scan_guard','off'))
-        transport.approach_commit=b['e2e_options'].get('approach_commit','off')
-        transport.fine_view=b['e2e_options'].get('fine_view','off')
-        transport.approach_heading=b['e2e_options'].get('approach_heading','off')
-        from harness.e2e_fine_entry import install as install_fine_entry
-        install_fine_entry(transport,b['e2e_options'].get('fine_entry','off'))
-        transport.station_heading=b['e2e_options'].get('station_heading','off')
-        transport.clip_recovery=b['e2e_options'].get('clip_recovery','off')
-        transport.station_handoff=b['e2e_options'].get('station_handoff','off')
-        from harness.e2e_capture_pose import install as capture_install
-        capture_install(transport,b['e2e_options'].get('capture_pose','off'))
-        from harness.e2e_relook_search import install as relook_search_install
-        relook_search_install(transport,b['e2e_options'].get('relook_search','off'))
-        from harness.e2e_acquire_standoff import install as standoff_install
-        standoff_install(transport,b['e2e_options'].get('beam_lost_standoff','off'),b['e2e_options'].get('arm_clearance_align_skip','off'),b['e2e_options'].get('acquire_scan_fast','off'))
-        from harness.e2e_relook_giveup import install as relook_giveup_install
-        relook_giveup_install(transport,b['e2e_options'].get('relook_giveup','off'))
-        from harness.e2e_post_relook import install as post_relook_install
-        post_relook_install(transport,b['e2e_options'].get('post_relook','off'))
-        from harness.e2e_approach_floor import install as approach_floor_install
-        approach_floor_install(transport,b['e2e_options'].get('approach_floor','off'))
-        from harness.e2e_clip_hysteresis import install as clip_hysteresis_install
-        clip_hysteresis_install(transport,b['e2e_options'].get('clip_hysteresis','off'))
-        transport.acquisition_mobility=b['e2e_options'].get('acquisition_mobility','off')
-        transport.camera_motion=b['e2e_options'].get('camera_motion','off')
-        transport.carrier_goal=b['e2e_options'].get('carrier_goal','off');transport.blocked_path_recovery=b['e2e_options'].get('blocked_path_recovery','off')
-        transport.stale_station=b['e2e_options'].get('stale_station','off')
-        transport.beam_avoidance=b['e2e_options'].get('beam_avoidance','off')
-        transport.mapping_acquire=b['e2e_options'].get('mapping_acquire','off');transport.mapping_acquisitions={}
-        transport.approach_efficiency=b['e2e_options'].get('approach_efficiency','off')
-        from harness.e2e_grasp_once import install as grasp_once_install
-        grasp_once_install(transport,b['e2e_options'].get('grasp_once','off'))
         host.trial.dialogue.motion_connected=True
         host.trial.provenance.update(provider=offered.get('upstream',host.trial.provenance['provider']),
             decider=b['e2e_options'].get('decider','off'))
