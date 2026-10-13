@@ -1,0 +1,35 @@
+{
+  "verified_wire_requests": 1617,
+  "verified_wire_requests_sha256": "db813a8919e3c6e95efd934c034d4a27b3254f70f863b9168f0d12ef35d4b2bd",
+  "schema": "ugrp.task_planner.saved_response_replay.v1",
+  "new_model_calls": 0,
+  "audit_note": "Old request audit references included later refusals; reconstructed actual context from refusal prefix and verified captured wire body SHA for every original call. Originals retained. New code freezes request audit.",
+  "source_sha": "7e3eef0427639b39365305dbdc654ba2bb1c0032",
+  "exact_request_and_decision_replays": 1536,
+  "actual_requests": 1593,
+  "solo_replays": 24,
+  "failures": {
+    "exact contract fields required": 77,
+    "Unterminated string starting at: line 1 column 302 (char 301)": 1,
+    "RuntimeError": 8,
+    "Extra data: line 3 column 1 (char 622)": 1,
+    "Extra data: line 3 column 1 (char 541)": 1,
+    "Extra data: line 3 column 1 (char 711)": 1,
+    "ACT_NOT_IN_FEASIBLE_MENU": 1,
+    "Expecting ':' delimiter: line 1 column 81 (char 80)": 1
+  },
+  "failed_cases_by_ambiguity": {
+    "ambiguous": 3,
+    "nonambiguous": 31
+  },
+  "candidate_files_sha256": {
+    "harness/task_planner.py": "b9f5637d7e0a5130b8f906e95da964888ff9681a6d8b0f4a9a7a857eeb17b0ec",
+    "harness/task_planner_cost_rules.py": "1d6de5f742c169bdb830d1f8cb4b5b589132c7793aca2aa38b1d0c7808dac190",
+    "harness/task_planner_gemma.py": "3e849664bcecc4a536a2b42e655cc5d12cc60310f41dcf0b0c5d0bbc292ba8d3",
+    "harness/task_planner_pair.py": "1a0ad1376c31fe1833d5301f947cc6c29a4cdcd9bebe02e4d0c038e10be73e98",
+    "harness/task_planner_recovery.py": "bebb79ed4846e85f832e9b446c661541ab4321877b342203a5d5a160c63fd4e8",
+    "harness/task_planner_runtime.py": "fa009ddc448b270041c02bd23a555faab554e4469ab32502ee6a179e9f7217c0",
+    "harness/task_planner_zone.py": "6a4ee873df8c043392d1bc46911b6a8bbe96744cf959f6e04a2b86bfc65ea447"
+  },
+  "scope": "Saved-response regression after native adapter edits, not new independent model evidence or physics"
+}

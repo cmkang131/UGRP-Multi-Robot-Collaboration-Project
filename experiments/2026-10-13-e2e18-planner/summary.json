@@ -1,0 +1,538 @@
+{
+  "schema": "ugrp.task_planner.work_summary.v1",
+  "date": "2026-10-13",
+  "pr": 473,
+  "base": "codex/e2e18",
+  "branch": "claude/e2e18-gemma-planner",
+  "execution_bundle_id": "e2e18-v357",
+  "workflow_version": "7.250.0",
+  "implementation_sha": "584ce45a1b9e449376c87c868682f885d690dd5b",
+  "research_result": false,
+  "local_tests": {
+    "passed": 39,
+    "total": 39,
+    "files": [
+      "tests/test_task_planner.py",
+      "tests/test_task_planner_zone.py",
+      "tests/test_task_planner_dataset.py"
+    ],
+    "physics": false
+  },
+  "source_preserved": "outputs/task-planner-v357-source-20261013",
+  "runs": [
+    {
+      "id": "task-planner-v357-eval-20261013",
+      "status": "HOST_ERROR_RELAY_HEADER_REJECTED",
+      "source_sha": "23e1b36384b2ce426aec172a8927d6d910fda584",
+      "raw_path": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-v357-eval-20261013",
+      "summary": {
+        "schema": "ugrp.task_planner.offline.v1",
+        "research_result": false,
+        "source_count": 384,
+        "main_count": 331,
+        "ambiguous_count": 53,
+        "leader_scope": "r1 leader receives r2 original English report; same observation as peer_en; not multi-turn relay",
+        "conditions": {
+          "no_comm": {
+            "n": 0,
+            "N": 331,
+            "ambiguous": {
+              "n": 0,
+              "N": 53
+            },
+            "errors": 384,
+            "by_domain": {
+              "correct": {
+                "n": 0,
+                "N": 42
+              },
+              "help": {
+                "n": 0,
+                "N": 42
+              },
+              "next": {
+                "n": 0,
+                "N": 42
+              },
+              "pair": {
+                "n": 0,
+                "N": 41
+              },
+              "relation": {
+                "n": 0,
+                "N": 42
+              },
+              "route": {
+                "n": 0,
+                "N": 42
+              },
+              "wait": {
+                "n": 0,
+                "N": 38
+              },
+              "yield": {
+                "n": 0,
+                "N": 42
+              }
+            }
+          },
+          "structured": {
+            "n": 0,
+            "N": 331,
+            "ambiguous": {
+              "n": 0,
+              "N": 53
+            },
+            "errors": 384,
+            "by_domain": {
+              "correct": {
+                "n": 0,
+                "N": 42
+              },
+              "help": {
+                "n": 0,
+                "N": 42
+              },
+              "next": {
+                "n": 0,
+                "N": 42
+              },
+              "pair": {
+                "n": 0,
+                "N": 41
+              },
+              "relation": {
+                "n": 0,
+                "N": 42
+              },
+              "route": {
+                "n": 0,
+                "N": 42
+              },
+              "wait": {
+                "n": 0,
+                "N": 38
+              },
+              "yield": {
+                "n": 0,
+                "N": 42
+              }
+            }
+          },
+          "peer_en": {
+            "n": 0,
+            "N": 331,
+            "ambiguous": {
+              "n": 0,
+              "N": 53
+            },
+            "errors": 384,
+            "by_domain": {
+              "correct": {
+                "n": 0,
+                "N": 42
+              },
+              "help": {
+                "n": 0,
+                "N": 42
+              },
+              "next": {
+                "n": 0,
+                "N": 42
+              },
+              "pair": {
+                "n": 0,
+                "N": 41
+              },
+              "relation": {
+                "n": 0,
+                "N": 42
+              },
+              "route": {
+                "n": 0,
+                "N": 42
+              },
+              "wait": {
+                "n": 0,
+                "N": 38
+              },
+              "yield": {
+                "n": 0,
+                "N": 42
+              }
+            }
+          },
+          "leader_en": {
+            "n": 0,
+            "N": 331,
+            "ambiguous": {
+              "n": 0,
+              "N": 53
+            },
+            "errors": 384,
+            "by_domain": {
+              "correct": {
+                "n": 0,
+                "N": 42
+              },
+              "help": {
+                "n": 0,
+                "N": 42
+              },
+              "next": {
+                "n": 0,
+                "N": 42
+              },
+              "pair": {
+                "n": 0,
+                "N": 41
+              },
+              "relation": {
+                "n": 0,
+                "N": 42
+              },
+              "route": {
+                "n": 0,
+                "N": 42
+              },
+              "wait": {
+                "n": 0,
+                "N": 38
+              },
+              "yield": {
+                "n": 0,
+                "N": 42
+              }
+            }
+          }
+        },
+        "synthetic_solo": {
+          "n": 0,
+          "N": 24
+        },
+        "budget": {
+          "calls": 999,
+          "accounted_usd": 1.9980000000000016,
+          "unknown_cost_calls": 999
+        }
+      },
+      "source_manifest_sha256": "136733bcdd5239c67dc1039664e94a454bdaf1bf4921ddada70581024745f57d",
+      "note": "999 invalid header requests rejected by existing relay before forward; 537 budget refusals; all 1536 cases retained. $1.998 is conservative unknown-cost reservation, not verified spend."
+    },
+    {
+      "id": "task-planner-v357-probe-20261013",
+      "status": "COMPLETED_PROVIDER_PROBE",
+      "source_sha": "eed092075b1c8070f8fb281127f254a4baa05f5a",
+      "raw_path": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-v357-probe-20261013",
+      "summary": {
+        "schema": "ugrp.task_planner.offline.v1",
+        "research_result": false,
+        "source_count": 384,
+        "main_count": 331,
+        "ambiguous_count": 53,
+        "leader_scope": "r1 leader receives r2 original English report; same observation as peer_en; not multi-turn relay",
+        "conditions": {
+          "no_comm": {
+            "n": 2,
+            "N": 4,
+            "ambiguous": {
+              "n": 0,
+              "N": 0
+            },
+            "errors": 0,
+            "by_domain": {
+              "next": {
+                "n": 2,
+                "N": 4
+              }
+            }
+          },
+          "structured": {
+            "n": 0,
+            "N": 0,
+            "ambiguous": {
+              "n": 0,
+              "N": 0
+            },
+            "errors": 0,
+            "by_domain": {}
+          },
+          "peer_en": {
+            "n": 0,
+            "N": 0,
+            "ambiguous": {
+              "n": 0,
+              "N": 0
+            },
+            "errors": 0,
+            "by_domain": {}
+          },
+          "leader_en": {
+            "n": 0,
+            "N": 0,
+            "ambiguous": {
+              "n": 0,
+              "N": 0
+            },
+            "errors": 0,
+            "by_domain": {}
+          }
+        },
+        "synthetic_solo": {
+          "n": 24,
+          "N": 24
+        },
+        "budget": {
+          "calls": 28,
+          "accounted_usd": 0.003413710000000004,
+          "unknown_cost_calls": 0
+        }
+      },
+      "source_manifest_sha256": "136733bcdd5239c67dc1039664e94a454bdaf1bf4921ddada70581024745f57d",
+      "note": "Provider-reported usage cost; billing receipt not independently verified."
+    },
+    {
+      "id": "task-planner-v357-full-20261013",
+      "status": "COMPLETED_OFFLINE_EVALUATION",
+      "source_sha": "7e3eef0427639b39365305dbdc654ba2bb1c0032",
+      "raw_path": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-v357-full-20261013",
+      "summary": {
+        "schema": "ugrp.task_planner.offline.v1",
+        "research_result": false,
+        "source_count": 384,
+        "main_count": 331,
+        "ambiguous_count": 53,
+        "leader_scope": "r1 leader receives r2 original English report; same observation as peer_en; not multi-turn relay",
+        "conditions": {
+          "no_comm": {
+            "n": 131,
+            "N": 331,
+            "ambiguous": {
+              "n": 46,
+              "N": 53
+            },
+            "errors": 34,
+            "by_domain": {
+              "correct": {
+                "n": 14,
+                "N": 42
+              },
+              "help": {
+                "n": 11,
+                "N": 42
+              },
+              "next": {
+                "n": 20,
+                "N": 42
+              },
+              "pair": {
+                "n": 18,
+                "N": 41
+              },
+              "relation": {
+                "n": 14,
+                "N": 42
+              },
+              "route": {
+                "n": 16,
+                "N": 42
+              },
+              "wait": {
+                "n": 21,
+                "N": 38
+              },
+              "yield": {
+                "n": 17,
+                "N": 42
+              }
+            }
+          },
+          "structured": {
+            "n": 187,
+            "N": 331,
+            "ambiguous": {
+              "n": 50,
+              "N": 53
+            },
+            "errors": 0,
+            "by_domain": {
+              "correct": {
+                "n": 23,
+                "N": 42
+              },
+              "help": {
+                "n": 26,
+                "N": 42
+              },
+              "next": {
+                "n": 25,
+                "N": 42
+              },
+              "pair": {
+                "n": 27,
+                "N": 41
+              },
+              "relation": {
+                "n": 18,
+                "N": 42
+              },
+              "route": {
+                "n": 28,
+                "N": 42
+              },
+              "wait": {
+                "n": 15,
+                "N": 38
+              },
+              "yield": {
+                "n": 25,
+                "N": 42
+              }
+            }
+          },
+          "peer_en": {
+            "n": 207,
+            "N": 331,
+            "ambiguous": {
+              "n": 51,
+              "N": 53
+            },
+            "errors": 0,
+            "by_domain": {
+              "correct": {
+                "n": 28,
+                "N": 42
+              },
+              "help": {
+                "n": 22,
+                "N": 42
+              },
+              "next": {
+                "n": 28,
+                "N": 42
+              },
+              "pair": {
+                "n": 27,
+                "N": 41
+              },
+              "relation": {
+                "n": 28,
+                "N": 42
+              },
+              "route": {
+                "n": 28,
+                "N": 42
+              },
+              "wait": {
+                "n": 18,
+                "N": 38
+              },
+              "yield": {
+                "n": 28,
+                "N": 42
+              }
+            }
+          },
+          "leader_en": {
+            "n": 208,
+            "N": 331,
+            "ambiguous": {
+              "n": 51,
+              "N": 53
+            },
+            "errors": 0,
+            "by_domain": {
+              "correct": {
+                "n": 28,
+                "N": 42
+              },
+              "help": {
+                "n": 23,
+                "N": 42
+              },
+              "next": {
+                "n": 28,
+                "N": 42
+              },
+              "pair": {
+                "n": 27,
+                "N": 41
+              },
+              "relation": {
+                "n": 27,
+                "N": 42
+              },
+              "route": {
+                "n": 28,
+                "N": 42
+              },
+              "wait": {
+                "n": 19,
+                "N": 38
+              },
+              "yield": {
+                "n": 28,
+                "N": 42
+              }
+            }
+          }
+        },
+        "synthetic_solo": {
+          "n": 24,
+          "N": 24
+        },
+        "budget": {
+          "calls": 1617,
+          "accounted_usd": 0.24476471000000197,
+          "unknown_cost_calls": 0
+        }
+      },
+      "source_manifest_sha256": "136733bcdd5239c67dc1039664e94a454bdaf1bf4921ddada70581024745f57d",
+      "note": "Provider-reported usage cost; billing receipt not independently verified."
+    },
+    {
+      "id": "task-planner-v357-prepared-20261013",
+      "status": "PREPARED_NOT_EXECUTED",
+      "raw_path": "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/task-planner-v357-prepared-20261013",
+      "source_sha": "eed092075b1c8070f8fb281127f254a4baa05f5a",
+      "physics_calls": 0
+    }
+  ],
+  "rule_baseline": {
+    "no_comm": {
+      "n": 123,
+      "N": 331
+    },
+    "structured": {
+      "n": 222,
+      "N": 331
+    },
+    "peer_en": {
+      "n": 231,
+      "N": 331
+    },
+    "leader_en": {
+      "n": 231,
+      "N": 331
+    }
+  },
+  "replay": "replay_verification.json",
+  "compression": {
+    "status": "BLOCKED_GUARD",
+    "reason": "sandbox rejected ps; standard compress_json_traces.py refused; all original bytes retained",
+    "dry_run_files": 8
+  },
+  "physical": {
+    "status": "NOT_EXECUTED_SUBMISSION_VIA_PR461",
+    "azure_vm_operated": false,
+    "mac_physics_or_render": false
+  },
+  "limits": [
+    "Native scene is existing temporary-tag zone own-camera scene, not full E2E18 ownmap beam transport.",
+    "Native solo supports cyan, west approach and one mapped door; unsupported route/approach rejected. Joint submission/safety and regrip only software-tested.",
+    "Offline leader arm is one r1 decision with r2 English report, not a multi-turn relay evaluation.",
+    "Offline dataset is synthetic effort scoring; no physical success claim.",
+    "Raw request audit retry alias was repaired; 1617 actual wire hashes verified, old originals retained with verified_wire_requests.jsonl supplement.",
+    "Raw files are local; only small results/manifests/code are GitHub-backed."
+  ]
+}
