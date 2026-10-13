@@ -270,3 +270,50 @@ def test_approach_floor_filter(monkeypatch):
     st['approach_floor']['gate'].ok = True
     t.robots['r2'].beam_observation['rgb']['t_sim'] = 31.
     assert f.apply(t, 'r2', 31., st, go, {}) is go and 'approach_floor_released' in t.events   # released after 20 s
+
+
+def test_v312_v313_clip_hysteresis_bundle(monkeypatch):
+    import copy
+    from harness.e2e_runtime_registration import require_current
+    from scripts.run_e2e_ownmap_live import ROOT, bundle
+    args, kw = _pan_parent(monkeypatch)
+    base = dict(kw, stage_physics='release_dt1_v1', relook_giveup='dev_light_v1')
+    for extra, num, parent in (({'approach_floor': 'v1'}, 312, 'e2e18-v310'), ({}, 313, 'e2e18-v303')):
+        b = bundle(*args, **dict(base, **extra, clip_hysteresis='v1'))
+        assert b['execution_bundle_id'] == f'e2e18-v{num}' and b['clip_hysteresis_parent'] == parent
+        assert (b['e2e_options'].get('approach_floor') == 'v1') == (num == 312)
+        require_current(b, ROOT)
+        bad = copy.deepcopy(b); bad['clip_hysteresis_parameters']['exit_frames'] = 1
+        with pytest.raises(ValueError):
+            require_current(bad, ROOT)
+    with pytest.raises(ValueError):
+        bundle(*args, **dict(kw, clip_hysteresis='v1'))      # needs the v303/v310 parent
+
+
+def test_clip_hysteresis_breaks_servo_clip_cycle_and_keeps_budget():
+    from types import SimpleNamespace as NS
+    from harness import e2e_clip_hysteresis as hy
+    tr = NS(clip_hysteresis='v1', dev_light=True, events=[])
+    tr.event = lambda now, kind, **d: tr.events.append(kind)
+    off = NS(clip_hysteresis='off')
+    assert hy.blocked(off, 'r1', 1., {'clip_hyst': dict(hold_t=0.)}) is False      # off: never blocks
+    st = {}
+    obs = lambda i, t: dict(rgb=dict(frame_id=i, t_sim=t))
+    assert not hy.clipped_seen(tr, 'r1', 1., st, obs(1, 1.))                        # 1 clipped frame: debounced
+    assert hy.clipped_seen(tr, 'r1', 1.4, st, obs(2, 1.4))
+    assert hy.clipped_seen(tr, 'r1', 1.4, st, obs(2, 1.4))                          # same frame: no double count
+    hy.pulsed(st, 1.4)
+    assert hy.blocked(tr, 'r1', 1.8, st)                                            # servo handoff held
+    att = dict(count=1)
+    for i in range(3, 5):                                                           # 2 visible frames: still held
+        assert not hy.end_visible_seen(tr, 'r1', 1.4+.4*i, st, obs(i, 1.4+.4*i), att)
+    assert hy.blocked(tr, 'r1', 3.0, st)
+    assert not hy.end_visible_seen(tr, 'r1', 3.2, st, obs(5, 3.2), att)             # 3 frames + >=1.6 s dwell: released
+    assert not hy.blocked(tr, 'r1', 3.2, st)
+    assert not hy.clipped_seen(tr, 'r1', 3.6, st, obs(6, 3.6))                      # flicker: visible run resets
+    for i in range(7, 12):                                                          # lone flicker never resets the budget
+        reset = hy.end_visible_seen(tr, 'r1', 3.6+.4*i, st, obs(i, 3.6+.4*i), att)
+    assert not reset
+    assert hy.end_visible_seen(tr, 'r1', 9., st, obs(12, 9.), att)                  # 6 consecutive frames: reset
+    hy.pulsed(st, 10.)
+    assert not hy.blocked(tr, 'r1', 22.5, st) and 'clip_hysteresis_released' in tr.events   # bounded hold
