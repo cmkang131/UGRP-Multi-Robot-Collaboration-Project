@@ -1,0 +1,32 @@
+{
+  "scope": "saved RGB feature extraction on VM3, no physical simulation; subsequent fixed-feature MCL offline",
+  "runs": [
+    "grasp1-stage-a1-00-v375",
+    "grasp1-stage-a1-04-v375",
+    "stage-b-cohort2-00-grasp-v375",
+    "stage-b-cohort2-04-grasp-v375",
+    "stage-b-cohort2-08-route-v391",
+    "stage-b-cohort2-09-route-v390"
+  ],
+  "candidates": [
+    "static_walls_v1 + command_delta",
+    "static_walls_v1 + fused_delta",
+    "static_landmarks_v1 + command_delta",
+    "static_landmarks_v1 + fused_delta"
+  ],
+  "seed": 64001,
+  "particles": 2000,
+  "start_prior": "uniform static free geometry; no pose from previous GT/ownmap",
+  "max_parallel_feature_jobs": 6,
+  "budget_bytes": 402653184,
+  "thresholds": {
+    "xy_median_m": 0.05,
+    "yaw_median_deg": 5,
+    "path_ratio": [
+      0.9,
+      1.1
+    ]
+  },
+  "ground_truth": "evaluation only, no coefficient fitting",
+  "limitations": "Cold-start static localization from staged suffix, not replay of historical prefix; report unresolved observations and full-interval errors without hiding convergence time"
+}
