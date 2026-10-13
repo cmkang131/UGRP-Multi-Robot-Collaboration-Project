@@ -1,6 +1,6 @@
 # v387 저장 상태 단계 시험
 
-실행 소스 SHA: `4c1589ddae56509213909edeb27489187d6c1c83` (이후 기록 고정 커밋과 구분).
+실행 소스 SHA: `88a2a792bdfd61b606364a58bb9aeb6543c7adad` (이후 기록 고정 커밋과 구분).
 
 2026-10-13 조정자 후속 지시에 따라 이 PR에서 직접 만들었다. `stage-request-v2.json`이 이전 540초/16회/어댑터 대기 계획을 대체한다. **정렬 상태 준비 4/4, 매핑 중간 상태 준비 1/1; 실제 시험 0/32, 핵심 부분집합 0/16. 파지 성공 수·시간, 물리 배치 오차, 실제 RGB 재생 일치, 기준선 재탐색 재현은 미확인이다.**
 
@@ -56,4 +56,4 @@ python -m scripts.run_e2e_stage_probe prepare --raw "$R80_ROOT/e2e18-v375-s61008
 - 저장소 `harness/pair_stage_probe.py`, `harness/zone_pair_highpose_staging.py`, `scripts/run_pair_stage_probes.py`의 기존 staging/평가 경계와 저장 방식을 확인·재사용했다.
 - 시선 제어·추적·Nav2 docking의 표준/공개 코드 및 최신 논문 조사와 채택/미확인 구분은 같은 폴더 README의 참고 자료 절에 유지한다. 이번 공식 Nav2 튜토리얼 URL 재조회는 오류였으며 새 근거로 추가하지 않았다.
 
-최종 로컬 검증: 관련3파일 **34/34 통과**. CI 목록 등록 및 표준 관리 CLI plan 확인. 물리/렌더 실행과 실제 원본 RGB 복원은 이 결과에 포함하지 않는다.
+최종 로컬 검증: 관련3파일 **35/35 통과**. CI 목록 등록 및 표준 관리 CLI plan 확인. 물리/렌더 실행과 실제 원본 RGB 복원은 이 결과에 포함하지 않는다.
