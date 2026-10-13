@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.e2e18.takeover.v1",
-  "checked_unix": 1791849712.941588,
-  "status": "THIRD_TAKEOVER_TUNNEL_RESTORED",
+  "checked_unix": 1791850161.2063339,
+  "status": "R48_RUNNING",
   "PR": 461,
   "deadline_utc": "2026-10-13T07:00:00Z",
   "scope": "DEV; VM3/VM4; no Mac physics",
@@ -16,20 +16,20 @@
   },
   "completion": {
     "LLM_operated": {
-      "observed": 49,
-      "total": 52
+      "observed": 59,
+      "total": 62
     },
     "own_map_completed": {
-      "observed": 23,
-      "total": 52
+      "observed": 28,
+      "total": 62
     },
     "start_to_finish_transport": {
       "observed": 0,
-      "total": 52
+      "total": 62
     },
     "all_three": {
       "confirmed": 0,
-      "total": 52
+      "total": 62
     }
   },
   "tilt_prior_analysis": {
@@ -40,8 +40,8 @@
     "takeover_new_stops": 2
   },
   "vm": {
-    "azure3": "running,0 active",
-    "azure4": "running,0 active"
+    "ugrp-sim-azure3": "running,5 active",
+    "ugrp-sim-azure4": "running,5 active"
   },
   "new_candidates": {
     "versions": [
@@ -1197,6 +1197,156 @@
       "transport": false,
       "failure": "S4_TUNNEL_RECOVERY_EXHAUSTED",
       "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v260-s61006-r48",
+      "sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61006-r48/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 88.0,
+      "phase": "align",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v261-s61006-r48",
+      "sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v261-s61006-r48/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 85.0,
+      "phase": "align",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v262-s61006-r48",
+      "sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v262-s61006-r48/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 89.0,
+      "phase": "align",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v263-s61006-r48",
+      "sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v263-s61006-r48/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 82.0,
+      "phase": "align",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v264-s61006-r48",
+      "sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v264-s61006-r48/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 89.0,
+      "phase": "align",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v260-s61007-r48",
+      "sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61007-r48/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 127.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v261-s61007-r48",
+      "sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v261-s61007-r48/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 127.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v262-s61007-r48",
+      "sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v262-s61007-r48/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 126.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v263-s61007-r48",
+      "sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v263-s61007-r48/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 120.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v264-s61007-r48",
+      "sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v264-s61007-r48/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 128.0,
+      "phase": "mapping",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false
     }
   ],
   "next_batch": {
@@ -1239,12 +1389,12 @@
     "verified": 72
   },
   "counts": {
-    "cohort_attempted": 52,
-    "positive_sim": 49,
+    "cohort_attempted": 62,
+    "positive_sim": 59,
     "zero_sim_host_error": 3,
     "terminal": 52,
     "cohort_not_started": 12,
-    "active": 0
+    "active": 10
   },
   "session_transition": {
     "status": "BOTH_RESTARTED_GUARDS_ACTIVE_RELAY_IDENTITIES_VERIFIED",
@@ -1283,19 +1433,25 @@
   },
   "latest_candidates": {
     "bundles": [
-      258,
-      259,
-      260
+      260,
+      261,
+      262,
+      263,
+      264
     ],
-    "source_sha": "a72b364100975d796b59a6fd64afd2de29897947",
-    "batch": "r46",
-    "gate": "6/6 PASS",
-    "initial_health": "6/6 at 197 s; actual translation, positive translation commands, frames and SIM advance, LLM; no exceptions",
-    "records": {
-      "speed-gate-r46.json": "bd66bd551aef7e15efac03dd32be1572025eb9933e42607d0276e8135846dc63",
-      "initial-health-r46.json": "d22aa376e441db316d8a818c47d883f36ba37d2903f54155e69d2149813ace92",
-      "prepose-candidates.json": "15d75b288d835961e80a34e05d1f676e3e6787b7d38f273322ca8e98b1faccc0",
-      "native-build-race.json": "c7f523a983ad2ed144b4ebab227c40118865e2f646a761d0ce30bf9a7a0084bb"
+    "source_sha": "f746300ef78032827d20d2f6d326487cac9a3f42",
+    "batch": "r48",
+    "record": "cohort-r48.json",
+    "sha256": "ac1ec900b618bf19a68a71bb7eca094ea73cdebdce114daa8674f421e681a3dd",
+    "initial_health": {
+      "file": "initial-health-r48.json",
+      "sha256": "dd56eb260c6394206630bbcf8f6ef4021ff8b8103c0b6401bb35ed3269fa4c5e",
+      "passed": 10,
+      "total": 10,
+      "submission_elapsed_s": [
+        192.46312308311462,
+        192.54172658920288
+      ]
     }
   },
   "third_takeover": {
