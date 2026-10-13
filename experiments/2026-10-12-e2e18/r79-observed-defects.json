@@ -1,0 +1,30 @@
+{
+  "batch_adjudication": "HOST_ERROR provider402; whole batch excluded from control comparison per coordinator",
+  "observed_body_watch_stops": [
+    {
+      "file": "outputs/e2e18-admin/stop-e2e18-v376-s61008-r79-body-health.json",
+      "sha256": "b03c42fcce94fd9f1a56e7a1a237f14b415516fb61625736f3d55390a4943a2d",
+      "stop": {
+        "run": "e2e18-v376-s61008-r79",
+        "pid": 47688,
+        "signal": "SIGINT",
+        "reason": "CONFIRMED_BODY_OR_TERMINAL_EXPLORATION_NO_MOTION_20_SIM:r1",
+        "checked_unix": 1791891675.431385
+      }
+    },
+    {
+      "file": "outputs/e2e18-admin/stop-e2e18-v376-s61009-r79-body-health.json",
+      "sha256": "da2850f6f7a13b0003e05f3e9e2d9fdab4f43bacd1d2a6ce84c1e1e85b5b23a0",
+      "stop": {
+        "run": "e2e18-v376-s61009-r79",
+        "pid": 47692,
+        "signal": "SIGINT",
+        "reason": "CONFIRMED_BODY_OR_TERMINAL_EXPLORATION_NO_MOTION_20_SIM:r1",
+        "checked_unix": 1791891795.5311549
+      }
+    }
+  ],
+  "shared_defect_stops_record": "stop-r79-event-snapshot.json",
+  "actual_terminal_results": "r79-azure3-final-archive.json",
+  "separation": "Preserve observed control defects and exact raw terminal statuses; do not relabel raw files or claim every individual run ended on402"
+}
