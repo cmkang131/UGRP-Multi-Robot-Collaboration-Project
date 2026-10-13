@@ -1,0 +1,41 @@
+{
+  "schema": "ugrp.e2e18.dev_candidates.v1",
+  "seed": 61006,
+  "criterion": "actual current GO/ACK accepted with ugrp_jev receipt; paired grasp/carry and final transport separately",
+  "candidates": [
+    {
+      "bundle": "e2e18-v275",
+      "decider": "off",
+      "role": "running parent comparison"
+    },
+    {
+      "bundle": "e2e18-v278",
+      "decider": "jev_v1",
+      "parent": "e2e18-v275",
+      "windows_unchanged": true
+    }
+  ],
+  "offline_verified": {
+    "holdout": [
+      90,
+      90
+    ],
+    "GO": [
+      12,
+      12
+    ],
+    "ACK": [
+      21,
+      21
+    ],
+    "median_s": 0.29956891702022403
+  },
+  "raw_diagnosis": "go-ack-r51-diagnosis.json",
+  "source": "harness/e2e_jev_decider.py",
+  "key_location": "Mac Keychain only",
+  "pending": "v276 separate pan candidate remains queued for natural termination slot",
+  "references": [
+    "experiments/2026-10-11-jev-decider-offline/summary.json",
+    "harness/e2e_dialogue.py"
+  ]
+}

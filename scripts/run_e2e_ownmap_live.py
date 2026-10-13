@@ -293,6 +293,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     paths.update(capture_compose(b,capture_pose))
     from harness.e2e_relook_search import compose as relook_search_compose
     paths.update(relook_search_compose(b,relook_search))
+    from harness.e2e_jev_current_route import compose as current_jev_compose
+    paths.update(current_jev_compose(b))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 

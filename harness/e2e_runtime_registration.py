@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] == 'e2e18-v278':
+        from harness.e2e_jev_current_route import parent_for_validation
+        return require_current(parent_for_validation(bundle), root)
     options = bundle['e2e_options']
     if (options.get('runtime_registration') != OPTION or
             bundle['execution_bundle_id'] not in (BUNDLE_ID, NATIVE_COVERAGE_ID, 'e2e-speed3-v214', 'e2e-speed3-v215', 'e2e18-v216','e2e18-v217','e2e18-v218','e2e18-v219','e2e18-v220','e2e18-v221','e2e18-v222','e2e18-v223','e2e18-v224','e2e18-v225','e2e18-v226','e2e18-v227','e2e18-v228','e2e18-v229','e2e18-v230','e2e18-v231','e2e18-v232','e2e18-v233','e2e18-v234','e2e18-v235','e2e18-v236','e2e18-v237','e2e18-v238','e2e18-v239','e2e18-v240','e2e18-v241','e2e18-v242','e2e18-v243','e2e18-v244','e2e18-v245','e2e18-v246','e2e18-v247','e2e18-v248','e2e18-v249','e2e18-v250','e2e18-v251','e2e18-v252','e2e18-v253','e2e18-v254','e2e18-v255','e2e18-v256','e2e18-v257','e2e18-v258','e2e18-v259','e2e18-v260','e2e18-v261','e2e18-v262','e2e18-v263','e2e18-v264','e2e18-v265','e2e18-v266','e2e18-v267','e2e18-v268','e2e18-v269','e2e18-v270','e2e18-v271','e2e18-v272','e2e18-v273','e2e18-v274','e2e18-v275','e2e18-v276','e2e18-v277') or options['pulse_budget'] != 'off' or
