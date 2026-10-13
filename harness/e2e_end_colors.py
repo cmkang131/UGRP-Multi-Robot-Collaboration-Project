@@ -12,7 +12,7 @@ import numpy as np
 from harness import owncam_pair_beam as v1
 
 PROFILE='teal_blue_v1'
-OPTIONS=('scan_v1','remember_v1','short_side_v1','anchor_v2','anchor_short_v2','sweep_v2')
+OPTIONS=('scan_v1','remember_v1','short_side_v1','anchor_v2','anchor_short_v2','sweep_v2','component_v3','component_short_v3')
 COLORS={'teal':dict(rgba=[.02,.95,.60,1.],hsv_lo=[74,185,45],hsv_hi=[83,255,255]),
         'blue':dict(rgba=[.02,.02,.95,1.],hsv_lo=[116,185,45],hsv_hi=[124,255,255])}
 ORDER={'r1':'teal','r2':'blue'}
@@ -37,7 +37,11 @@ def observe(image,servo,color,rays,option='scan_v1'):
     if option not in OPTIONS:raise ValueError('UNKNOWN_END_COLOR_POLICY')
     frame=v1.decode(image)
     base=bind(v1.observe_beam,base_rays=rays)(frame,servo)
-    out=dict(base,perception=PROFILE,target_color=color,end_visible=False,
+    pixel_mask=None;presence={}
+    if option in ('component_v3','component_short_v3'):
+        from harness.e2e_color_detection import detect
+        pixel_mask,presence=detect(frame,color)
+    out=dict(base,**presence,perception=PROFILE,target_color=color,end_visible=False,
         provenance='own_RGB_HSV+issued_camera_PWM+beam_top_plane+static_color_order')
     if not base.get('visible'):return out
     origin,directions,xs,ys,valid=rays(servo,v1.RAY_STEP)
@@ -50,7 +54,7 @@ def observe(image,servo,color,rays,option='scan_v1'):
     n=np.array([-u[1],u[0]]);anchor=np.array(base['grip_base_m'])
     across=(pts-anchor)@n
     corridor=valid&(abs(across)<.028)
-    selected=corridor&mask(frame,color)[yi,xi]
+    selected=corridor&(mask(frame,color) if pixel_mask is None else pixel_mask)[yi,xi]
     if selected.sum()<8:return dict(out,reason='OWN_COLOR_NOT_VISIBLE',color_points=int(selected.sum()))
     # Connected color patches are measured separately, never averaged across distractors.
     from harness.owncam_pair_beam_v2 import _runs
@@ -67,7 +71,8 @@ def observe(image,servo,color,rays,option='scan_v1'):
         offsets=(pts[lime]-center)@u
         if len(offsets)<25:continue
         low,high=np.quantile(offsets,[.02,.98])
-        required=.06 if option in ('short_side_v1','anchor_short_v2') else .12
+        required=(.045 if option=='component_short_v3' else
+                  .06 if option in ('short_side_v1','anchor_short_v2') else .12)
         neg=low < -required and high < .10
         pos=high > required and low > -.10
         if neg==pos:continue
@@ -100,7 +105,7 @@ def install(tr,option='off'):
         r.observe_beam=lambda image,servo,color=ORDER[rid]:observe(image,servo,color,rays,option)
         previous=r.beam or getattr(r,'last_beam',None) or (getattr(r,'grasp_track',None) or {}).get('beam')
         r.color_search_anchor=(dict(pose_own_m=[*previous['pose_own_m'][:2],0.],rgb=copy.deepcopy(previous['rgb']))
-            if previous and option in ('anchor_v2','anchor_short_v2') else None)
+            if previous and option in ('anchor_v2','anchor_short_v2','component_v3','component_short_v3') else None)
         # Only the old center may guide search, never a grip/axis/end assignment.
         # The restored black-band history cannot establish a colored end identity.
         r.beam=None;r.last_beam=None;r.beam_observation=None;r.grasp_track=None
@@ -131,7 +136,7 @@ def step(tr,rid,now,state):
     retention=2. if mode=='scan_v1' else 30.
     if 'station' in state and age<=retention:return True,None
     state.pop('station',None);state.pop('grip',None)
-    if mode in ('anchor_v2','anchor_short_v2','sweep_v2'):
+    if mode in ('anchor_v2','anchor_short_v2','sweep_v2','component_v3','component_short_v3'):
         # Reuse the settled-image/goal-angle bounded search already used by the baseline.
         # Explicit target=None prevents its legacy remembered-end station shortcut.
         from harness.e2e_pregrasp_acquire import acquire

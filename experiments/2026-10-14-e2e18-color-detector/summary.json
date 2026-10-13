@@ -1,0 +1,145 @@
+{
+  "schema": "ugrp.e2e18.color_detector.v1",
+  "status": "offline_provisional_human_labels_pending",
+  "label_author": "Codex visual review, NOT a human annotator",
+  "human_confirmed": false,
+  "counts": {
+    "teal_visible": 30,
+    "blue_visible": 30,
+    "negative": 30,
+    "ambiguous_excluded": 1
+  },
+  "results": {
+    "anchor_v2": {
+      "positives": {
+        "teal": {
+          "n": 30,
+          "metric_grasp_admitted": 14,
+          "band_presence": null,
+          "reasons": {
+            "OWN_COLOR_NOT_VISIBLE": 1,
+            "BAND_VISIBLE": 14,
+            "OWN_COLOR_GEOMETRY_UNRESOLVED": 13,
+            "BAND_CLIPPED": 2
+          }
+        },
+        "blue": {
+          "n": 30,
+          "metric_grasp_admitted": 7,
+          "band_presence": null,
+          "reasons": {
+            "OWN_COLOR_GEOMETRY_UNRESOLVED": 15,
+            "BAND_VISIBLE": 7,
+            "BAND_CLIPPED": 4,
+            "OWN_COLOR_NOT_VISIBLE": 4
+          }
+        }
+      },
+      "negative_n": 30,
+      "false_grasp_admission": 0,
+      "false_band_presence": null
+    },
+    "component_v3": {
+      "positives": {
+        "teal": {
+          "n": 30,
+          "metric_grasp_admitted": 14,
+          "band_presence": 30,
+          "reasons": {
+            "OWN_COLOR_NOT_VISIBLE": 1,
+            "BAND_VISIBLE": 14,
+            "OWN_COLOR_GEOMETRY_UNRESOLVED": 12,
+            "BAND_CLIPPED": 3
+          }
+        },
+        "blue": {
+          "n": 30,
+          "metric_grasp_admitted": 7,
+          "band_presence": 30,
+          "reasons": {
+            "OWN_COLOR_GEOMETRY_UNRESOLVED": 15,
+            "BAND_VISIBLE": 7,
+            "BAND_CLIPPED": 4,
+            "OWN_COLOR_NOT_VISIBLE": 4
+          }
+        }
+      },
+      "negative_n": 30,
+      "false_grasp_admission": 0,
+      "false_band_presence": 0
+    },
+    "component_short_v3": {
+      "positives": {
+        "teal": {
+          "n": 30,
+          "metric_grasp_admitted": 19,
+          "band_presence": 30,
+          "reasons": {
+            "OWN_COLOR_NOT_VISIBLE": 1,
+            "BAND_VISIBLE": 19,
+            "OWN_COLOR_GEOMETRY_UNRESOLVED": 3,
+            "BAND_CLIPPED": 7
+          }
+        },
+        "blue": {
+          "n": 30,
+          "metric_grasp_admitted": 13,
+          "band_presence": 30,
+          "reasons": {
+            "OWN_COLOR_GEOMETRY_UNRESOLVED": 6,
+            "BAND_VISIBLE": 13,
+            "BAND_CLIPPED": 7,
+            "OWN_COLOR_NOT_VISIBLE": 4
+          }
+        }
+      },
+      "negative_n": 30,
+      "false_grasp_admission": 0,
+      "false_band_presence": 0
+    }
+  },
+  "criteria": {
+    "band_presence_recall_min": 0.9,
+    "false_presence_max": 0.05,
+    "provisional_presence_pass": true,
+    "metric_grasp_recall": 0.5333333333333333,
+    "metric_grasp_90pct_pass": false
+  },
+  "limitations": [
+    "Same deliberately selected DEV frames were used for tuning and regression; no independent holdout",
+    "No human-confirmed labels yet",
+    "Presence is not a metric grasp pose and does not seed a grasp station",
+    "Clipped/too-distant/insufficient-support views still rejected for metric grasp",
+    "New stage runs 0/12; no physical improvement claim"
+  ],
+  "bundles": [
+    "v430",
+    "v431"
+  ],
+  "tests": {
+    "files": [
+      "tests/test_e2e_color_detection.py",
+      "tests/test_e2e_end_colors.py",
+      "tests/test_e2e_acquire_recovery.py"
+    ],
+    "passed": 18
+  },
+  "raw_root": "oracle-codex:/home/ubuntu/ugrp-archive/runs",
+  "raw_files": "labels.json: each original JPEG sha256 and archive path; no recompression",
+  "model": {
+    "calls": 0,
+    "cost_usd": 0
+  },
+  "vm": "all four deallocated; none started",
+  "source_files": {
+    "harness/e2e_color_detection.py": "ccea2b977bacd91b95363eace88ad93f69300c2ff9850018d0bf5b3622609bfe",
+    "harness/e2e_end_colors.py": "a67a7c1d251019edea2df3c7e16f1d385459cb5571295acd1ada41ab57c7ce28",
+    "scripts/evaluate_e2e_color_detector.py": "d0b2646b4846762ca9fdd482537ffda15ef08fb2a3560f9f43d81e905542135d",
+    "scripts/run_e2e_stage_probe.py": "524d797fbb194fa86780b66d1318b11a1a67ffeb115893f4b126f20ceb55f45b"
+  },
+  "representative_video_review": {
+    "success": "Existing v419: r1 beam at118, both beam at235, bilateral close beam at294; not a new v431 result",
+    "failure": "Existing v423: r1 wall from23 to111; r2 blue band at45/89/111 with final clipping; pair split between wall and beam",
+    "frames_per_video": 6
+  }
+}
