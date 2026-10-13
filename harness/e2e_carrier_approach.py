@@ -82,6 +82,9 @@ def advance(transport,rid,now):
         from harness.e2e_fine_entry import heading_limit
         from harness.e2e_capture_pose import admit as capture_admit
         if correct_end and capture_admit(transport,distance) and abs(b['axis_heading_rad'])<heading_limit(transport) and .10<b['grip_base_m'][0]<.40 and abs(b['grip_base_m'][1])<.10:
+            from harness.e2e_clip_hysteresis import blocked as clip_blocked
+            if clip_blocked(transport,rid,now,state):
+                diag['status']='clip_hysteresis_hold';return False,[dict(kind='hold')]
             if now-state.get('motion_until',-math.inf)<.45:
                 diag['status']='base_settle';return False,[dict(kind='hold')]
             state['fine']=True;diag['status']='visual_servo'
@@ -119,6 +122,8 @@ def advance(transport,rid,now):
     command,rpp=rpp_command(dict(coordinate_frame=rid+'/own_odom',path_m=transform(path,inverse(tf)).tolist(),
         status='goal_approach',heading_rad=float(end[2])),pose,transport.profiles,robot_id=rid,**heading_kwargs(transport))
     diag['rpp']=rpp
+    from harness.e2e_approach_floor import apply as floor_apply
+    command=floor_apply(transport,rid,now,state,command,diag)
     twist=issued_twist(command) if command['kind']=='mecanum' else np.zeros(3)
     clear=projected_clear(costmap,mp,twist)
     if not clear:

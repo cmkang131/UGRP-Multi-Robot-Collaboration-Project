@@ -36,6 +36,15 @@ def require_current(bundle, root):
     if bundle['execution_bundle_id'] in ('e2e18-v320','e2e18-v321','e2e18-v322','e2e18-v323'):
         from harness.e2e_post_relook import parent_for_validation as post_parent
         return require_current(post_parent(bundle),root)
+    if bundle['execution_bundle_id'] in ('e2e18-v314','e2e18-v315'):
+        from harness.e2e_vote_ref import parent_for_validation as vote_parent
+        return require_current(vote_parent(bundle),root)
+    if bundle['execution_bundle_id'] in ('e2e18-v312','e2e18-v313'):
+        from harness.e2e_clip_hysteresis import parent_for_validation as hyst_parent
+        return require_current(hyst_parent(bundle),root)
+    if bundle['execution_bundle_id'] in ('e2e18-v310','e2e18-v311'):
+        from harness.e2e_approach_floor import parent_for_validation as floor_parent
+        return require_current(floor_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v302','e2e18-v303','e2e18-v304','e2e18-v305'):
         from harness.e2e_relook_giveup import parent_for_validation as giveup_parent
         return require_current(giveup_parent(bundle),root)

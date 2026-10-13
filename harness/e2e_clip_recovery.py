@@ -35,11 +35,22 @@ def step(tr, rid, now, state, diag):
     if attempt and not attempt['gate'].ready(now, r.last_obs):
         diag['status'] = 'clip_recovery_settle'
         return False, [dict(kind='hold')]
+    hyst = getattr(tr, 'clip_hysteresis', 'off') != 'off'
+    if hyst:
+        from harness import e2e_clip_hysteresis as hy
     if b.get('end_visible'):
+        if hyst:
+            if hy.end_visible_seen(tr, rid, now, state, obs, attempt) and attempt:
+                tr.event(now, 'own_clip_recovered', robot_id=rid, pulses=attempt['count'],
+                         rgb=obs['rgb'], aligned_receipt=False, stable_frames=hy.PARAMS['reset_frames'])
+                state.pop('clip_recovery_attempt')
+            return None
         if attempt:
             tr.event(now, 'own_clip_recovered', robot_id=rid, pulses=attempt['count'],
                      rgb=obs['rgb'], aligned_receipt=False)
             state.pop('clip_recovery_attempt')
+        return None
+    if hyst and not hy.clipped_seen(tr, rid, now, state, obs):
         return None
     from harness.owncam_pair_beam_v2 import pose_of
     inspect = pose_of('inspect')
@@ -81,6 +92,8 @@ def step(tr, rid, now, state, diag):
         if not tr.dev_light:
             return False, [dict(kind='hold')]
     attempt['count'] += 1
+    if hyst:
+        hy.pulsed(state, now)
     attempt['gate'].issued(now, profile, r.last_obs)
     state['motion_until'] = now+command['duration_s']
     state.pop('progress_watch', None)
