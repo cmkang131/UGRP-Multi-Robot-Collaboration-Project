@@ -143,6 +143,9 @@ class CodeBodyGate(SkillsBodyGate):
         return menu, plabel, facts
 
     def prepare_decision(self, rid, now, kind, menu, proposal, facts):
+        planner = getattr(self.tr, 'task_planner', None)
+        if planner is not None:
+            menu = planner.restrict(rid, now, kind, menu, proposal, facts)
         facts = copy.deepcopy(facts)
         self.annotate_outcomes(rid, facts)
         history = facts['recent_decisions']

@@ -71,6 +71,7 @@ def bundle(config, sha):
 
 
 def execute(config, out, *, sha, relay_url, horizon_s, wall_cap_s):
+    raise RuntimeError('RETIRED_COLLIDING_ZONE_V357: use registered native E2E18 v373/v374; historical source remains archived')
     if platform.system() == 'Darwin': raise RuntimeError('MAC_PHYSICS_AND_RENDER_FORBIDDEN')
     if planner_option(config.get('e2e_options', {})) != MODE: raise ValueError('PLANNER_OPT_IN_REQUIRED')
     if not 0 < horizon_s <= 120 or not 0 < wall_cap_s <= 1800: raise ValueError('SHORT_SCENE_BUDGET_REQUIRED')

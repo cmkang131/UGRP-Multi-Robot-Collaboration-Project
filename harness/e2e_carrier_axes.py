@@ -37,6 +37,7 @@ def from_axes(points,b):return transform(points,[0.,0.,b['yaw_rad']]).tolist()
 
 
 def station(beam,target,rid):
+    rid={'end_neg':'r1','end_pos':'r2'}.get(rid,rid)
     if rid not in ('r1','r2'):raise ValueError('PAIR_ROLE_REQUIRED')
     from harness.zone_s3_coarse_fine import arm,PARAMS
     b=basis(beam,target);yaw=b['yaw_rad']+(math.pi if rid=='r2' else 0.)

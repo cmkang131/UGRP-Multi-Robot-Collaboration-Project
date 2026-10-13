@@ -5,6 +5,7 @@ This opt-in wire extends the structured schema; it is not a historical baseline.
 Only the scheduler's committed deliveries and released responses change state.
 """
 import copy
+from harness import e2e_task_planner_wire as planner_wire
 from dataclasses import dataclass, replace
 
 from harness import e2e_own_inputs as own
@@ -138,10 +139,11 @@ class Dialogue:
     def view(self, actor, now):
         visible = actor == 'r1' or (actor == 'r2' and self.proposal is not None)
         peer = next((v for r, v in self.votes.items() if r != actor and 'GO' in v
-                     and v['GO']['at'] + SIGNAL_DELAY_S <= now), None)
+                     and v['GO']['at'] + SIGNAL_DELAY_S <= now
+                     and (not getattr(self.trial,'task_planner',None) or planner_wire.delivered(self,actor,v['GO']['call_id']))), None)
         return dict(schema=SCHEMA, proposal_message_id=self.proposal['message_id'] if visible and self.proposal else None,
             route_hash=self.proposal['route']['route_hash'] if visible and self.proposal else None,
-            approved=bool(visible and self.approved), own_claim=actor in self.claims,
+            approved=bool(visible and self.approved and planner_wire.approval_visible(self,actor)), own_claim=actor in self.claims,
             key=list(self.key) if visible and self.key else None,
             own_go_sent='GO' in self.votes.get(actor, {}), own_ack_sent='ACK' in self.votes.get(actor, {}),
             peer_go_ref=peer['GO']['call_id'] if visible and peer else None,
@@ -184,13 +186,19 @@ class Dialogue:
         for message in value['messages']:
             contract = message.get('contract')
             policy = self.trial.call_events if getattr(self.trial, 'dialogue_call_policy', 'off') != 'off' else None
-            if policy is not None and not policy.allow_message(actor, at_sim_s, value['action'], message):
+            if policy is not None and not (getattr(self.trial,'task_planner',None) and message.get('text','').startswith('Route fragment ')) and not policy.allow_message(actor, at_sim_s, value['action'], message):
                 # Keep one rejection receipt per generated utterance: wire and
                 # SIM/provider billing remain intact, no silent response edit.
                 receipts.append(zp.Receipt(False, rejection='EVENT_OBSERVATION_SUPPRESSED'))
                 continue
-            receipt = transport.send(actor, recipients=message['recipients'], text=message.get('text'),
-                structured=message.get('message'), reply_to=message['reply_to'], at_sim_s=at_sim_s, contract=contract)
+            text=message.get('text');wire_contract=contract
+            if getattr(self.trial,'task_planner',None):
+                from harness.e2e_task_planner_wire import route_text,vote_text
+                if contract is not None:text=message['text']
+                else:text=(text or '')+vote_text(value['action'],call_id)+planner_wire.status_text(value['action'])
+                wire_contract=None
+            receipt = transport.send(actor, recipients=message['recipients'], text=text,
+                structured=message.get('message'), reply_to=message['reply_to'], at_sim_s=at_sim_s, contract=wire_contract)
             receipts.append(receipt)
             if receipt.accepted and policy is not None:
                 policy.message_sent(actor, at_sim_s, message)
@@ -214,6 +222,21 @@ class Dialogue:
                 raise ContractViolation('ACTUAL_COMMITTED_ROUTE_DELIVERY_REQUIRED')
             memory.receive(actor, envelope, now, self.view(actor, now)['key'])
         contract = envelope['body'].get('contract')
+        if getattr(self.trial,'task_planner',None):
+            from harness.e2e_task_planner_wire import read_route,read_vote
+            if envelope not in self.trial.channel.inbox(actor,now_sim_s=now):raise ContractViolation('ACTUAL_PLANNER_CHANNEL_DELIVERY_REQUIRED')
+            text=envelope['body'].get('text','')
+            contract=planner_wire.receive_route(self,actor,envelope)
+            vote=read_vote(text)
+            status=planner_wire.read_status(text)
+            if status:
+                if not hasattr(self,'task_received_status'):self.task_received_status={}
+                self.task_received_status.setdefault(actor,[]).append(dict(sender=envelope['sender'],status=status))
+            if vote:
+                if not hasattr(self,'task_received_votes'):self.task_received_votes={}
+                own_vote=self.votes.get(envelope['sender'],{}).get(vote['choice'])
+                if own_vote and own_vote['call_id']==vote['call_id']:
+                    self.task_received_votes[actor,vote['call_id']]=vote
         if contract is None:
             return
         # Callback is downstream of commit_delivery; exact delivered bytes required.
@@ -261,7 +284,7 @@ class Dialogue:
         elif kind == 'claim':
             if (not self.approved or not context['view']['approved'] or actor in self.claims
                     or action['order_id'] != 'order-5' or action['destination_zone'] != 'B'
-                    or action['role'] != own.TASK['fixed_roles'][actor]
+                    or action['role'] != (context.get('planner_role') if getattr(self.trial,'task_planner',None) else own.TASK['fixed_roles'][actor])
                     or context['view']['route_hash'] != self.proposal['route']['route_hash']):
                 raise ContractViolation('CURRENT_APPROVED_OWN_ROLE_CLAIM_REQUIRED')
         elif kind == 'route_vote':
@@ -306,7 +329,8 @@ class Dialogue:
     def allowed(self, key, now):
         return bool(key is not None and tuple(key) == self.key and self.approved and self.claims == set(PAIR)
             and all(set(self.votes.get(r, {})) == {'GO', 'ACK'} for r in PAIR)
-            and all(votes['ACK']['at'] <= now < votes['ACK']['frame_t'] + WINDOW_S for votes in self.votes.values()))
+            and all(votes['ACK']['at'] <= now < votes['ACK']['frame_t'] + WINDOW_S for votes in self.votes.values())
+            and planner_wire.allowed(self,key))
 
     def finish_call(self, trial, call, prepared, raw, **kwargs):
         context = self.captures[call.call_id]

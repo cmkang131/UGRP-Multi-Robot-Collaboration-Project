@@ -328,7 +328,8 @@ class MainStudySendLedger(SendLedger):
                 if 'ugrp_upstream_forwarded' in response:
                     row.update(upstream_forwarded=response['ugrp_upstream_forwarded'],
                         quota_wait=response.get('quota_wait'),actual_count_tokens=response.get('ugrp_count_tokens'))
-            row['completion'] = assess_completion(response, study_json=True)
+            row['completion'] = assess_completion(response, study_json='task_planner_v1' if getattr(self,'task_planner_contract',False) else True)
+            if getattr(self,'task_planner_contract',False):row['reply_contract']='task_planner_v1'
 
     def _preflight_live(self):
         if self.runtime is None or self.proxy is None:
@@ -584,6 +585,9 @@ def check_trial_health(trial, *, final=False):
     cohort = ledger.budget.run(ledger.run_key)['cohort_id']
     ledger.budget.check_available(cohort)
     if final or trial.transport.resolved:
+        native=getattr(trial,'task_planner',None)
+        if native is not None and any(r.get('event')=='task_decision' and r.get('result',{}).get('fallback') for r in native.rows):
+            return  # audited rule fallback; provider/storage/budget failures above remain recorded and enforced
         rows = call_rows(ledger)
         if not any(r['status'] == 'sent' and r['failure_class'] is None
                    and r.get('completion') and normal_completion(r['completion']) for r in rows):

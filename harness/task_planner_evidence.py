@@ -4,6 +4,7 @@ The optional fact records come only from the owning robot's perception history.
 Unknown means unknown: absent own evidence cannot certify a fresh report.
 """
 import copy
+import re
 
 PARAMETERS = dict(stale_after_s=30., fresh_report_weight=.95,
                   tentative_report_weight=.35, stale_report_weight=0.)
@@ -19,7 +20,7 @@ def enrich(context):
         # A channel payload may explicitly identify its fact, but an NL body is
         # not secretly replaced by a ground-truth proposition.
         body = m['body']
-        claim = body.get('fact') if isinstance(body, dict) else None
+        claim = body.get('fact') if isinstance(body, dict) else reported_fact(body, facts)
         matches = [f for f in facts if claim and f.get('subject') == claim.get('subject')
                    and f.get('predicate') == claim.get('predicate') and f.get('observed_at', now+1) <= now]
         latest = max(matches, key=lambda f:f['observed_at']) if matches else None
@@ -50,3 +51,25 @@ def cost_previews(ctx, view):
             estimate_source='public algebra; bounded-age heuristic belief, not hidden state')
     ctx['evidence_assessment']['cost_belief'] = estimate['posterior']
     return ctx
+
+
+def reported_fact(text, own_facts):
+    """Conservative explicit-subject extraction, never a task-vote decoder.
+
+    Do not compare a peer's private view with this robot's absence observation.
+    A match must name the same public subject and property as own perception.
+    """
+    if not isinstance(text,str):return None
+    t=text.lower()
+    for f in own_facts:
+        subject=f.get('subject','');predicate=f.get('predicate')
+        if not subject or not re.search(r'(?<![\w])'+re.escape(subject.lower())+r'(?![\w])',t):continue
+        value=None
+        if predicate=='passage_state':
+            if re.search(r'not blocked|is clear|is open|passable',t):value='clear'
+            elif re.search(r'is blocked|is obstructed|cannot pass',t):value='blocked'
+        elif predicate=='grip':
+            if re.search(r'grip is slipping|gripper is slipping',t):value='slipping'
+            elif re.search(r'grip is holding|gripper is holding',t):value='holding'
+        if value is not None:return dict(subject=subject,predicate=predicate,value=value)
+    return None

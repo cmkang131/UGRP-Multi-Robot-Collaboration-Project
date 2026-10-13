@@ -18,7 +18,7 @@ from harness.s4_relay_journal import Journal
 
 def accepted_call_id(value):
     # Explicit 2026-10-13 paired F16 cohort extension; historical cells unchanged.
-    if re.fullmatch(r'e2e18-v(?:346|347|348|350|352|353|354|355|356|357|358|359|360|361|362|363|364|365|366|367|368|369|370|371|372)-s61013-r[1-9][0-9]*:call-\d+-r[123]:\d+',value):return True
+    if re.fullmatch(r'e2e18-v(?:346|347|348|350|352|353|354|355|356|357|358|359|360|361|362|363|364|365|366|367|368|369|370|371|372|373|374)-s61013-r[1-9][0-9]*:call-\d+-r[123]:\d+',value):return True
     if re.fullmatch(r'e2e18-v[0-9]+-s610(?:0[1-9]|1[0-2])-r[1-9][0-9]*:call-\d+-r[123]:\d+',value):return True
     if value.startswith('speed-gate-'):
         return accepted_call_id(value[len('speed-gate-'):])
@@ -62,6 +62,7 @@ def main():
     p.add_argument('--driver-profile',choices=('main_study_gemini_v1','study_gemma4_31b_v1'),
                    default='main_study_gemini_v1')
     p.add_argument('--decider',choices=('off','jev_v1'),default='off')
+    p.add_argument('--task-planner-v1',action='store_true',help='Allow the registered E2E task JSON directly to Gemma, or zero-provider rule comparison.')
     p.add_argument('--dialogue-decider',choices=('gemma_v0','d1_v1','code_v1'),default='gemma_v0')
     p.add_argument('--gemma-state', type=Path,
         default=Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback'))
@@ -102,6 +103,11 @@ def main():
     receipt = dict(schema='ugrp.s4_ssh_proxy.v1', remote_url=f'http://127.0.0.1:{a.remote_port}/v1/chat/completions', proxy=proxy,
         runtime=runtime, checked_unix=time.time(), valid_for_s=a.seconds, audit_per_post=True,
         authentication='existing_mac_proxy_no_credentials_transferred')
+    if a.task_planner_v1:
+        if not openrouter or a.decider!='off':raise ValueError('TASK_PLANNER_PINNED_GEMMA_REQUIRED')
+        receipt['task_planner_v1']=True
+        from harness.e2e_task_planner_relay import source_hashes
+        receipt['task_planner_source_sha256']=source_hashes(Path(__file__).resolve().parents[1])
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
 
     jev = None
@@ -143,6 +149,11 @@ def main():
             if fallback.key_pool is not None:
                 receipt['gemma_fallback']['attempts_per_request'] = len(fallback._keys)
                 receipt['global_quota'] = dict(per_key=fallback.key_pool.LIMITS)
+    if a.task_planner_v1:
+        if not openrouter or a.decider!='off':raise ValueError('TASK_PLANNER_PINNED_GEMMA_REQUIRED')
+        receipt['task_planner_v1']=True
+        from harness.e2e_task_planner_relay import source_hashes
+        receipt['task_planner_source_sha256']=source_hashes(Path(__file__).resolve().parents[1])
     (a.output/'identity.json').write_text(json.dumps(receipt, indent=2)+'\n')
 
     class Handler(BaseHTTPRequestHandler):
@@ -178,10 +189,17 @@ def main():
                         except HTTPError as exc:
                             return exc.code, exc.read(8_000_000), exc.headers.get('Retry-After')
                     if single:
+                        from harness.e2e_task_planner_relay import task_request, rule_response
+                        task=task_request(json.loads(body)) if a.task_planner_v1 else None
                         request_mode=request_dialogue_mode(json.loads(body))
-                        if request_mode!=a.dialogue_decider:
+                        if task is None and request_mode!=a.dialogue_decider:
                             raise ValueError('DIALOGUE_DECIDER_REQUEST_RELAY_MISMATCH')
-                        if d1 is not None:
+                        if task is not None:
+                            if source_hashes(Path(__file__).resolve().parents[1])!=receipt['task_planner_source_sha256']:raise ValueError('TASK_PLANNER_SOURCE_CHANGED')
+                            if task['planner_backend']=='rule_v1':
+                                status,raw,retry_after=200,json.dumps(rule_response(task)).encode(),None
+                            else:status,raw,retry_after=fallback.complete(body,call_id,idempotency_key=key)
+                        elif d1 is not None:
                             for p,digest in receipt['d1_dialogue_source_sha256'].items():
                                 if hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest()!=digest:
                                     raise ValueError('D1_DIALOGUE_SOURCE_CHANGED')

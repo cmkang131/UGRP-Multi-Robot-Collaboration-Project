@@ -238,7 +238,7 @@ class BodyGate:
         recent_text = ' '.join(m['text'].lower() for m in messages
                               if isinstance(m['delivered_at_sim_s'],(int,float)) and now-m['delivered_at_sim_s']<10)
         holding = r.servo.get(1)==1500 and tr.state in (
-            'grasp_lift','grasp_go_ack','wait_go_ack','carry','final_rgb_wait','final_route_approval','final_lower_go_ack','lower_open')
+            'grasp_lift','grasp_go_ack','wait_go_ack','carry','final_rgb_wait','final_route_approval','final_lower_go_ack','lower_open','planner_regrip_wait')
         visual_grip = self.grip_state(rid, frame_id, holding)
         return dict(visual_category=visual, visual_age_s=None if not rgb else now-rgb['t_sim'],
                     own_map=geo,target_distance_m=distance, target_bearing_deg=bearing,

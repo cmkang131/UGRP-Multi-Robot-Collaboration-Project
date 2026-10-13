@@ -33,7 +33,7 @@ def advance(transport,rid,now):
     seeking=seek_goal(transport,rid,now,target)
     if seeking is not None:return seeking
     if fresh and target:
-        end,grip,basis=station(b,target['center_m'],rid)
+        end,grip,basis=station(b,target['center_m'],getattr(transport,'task_roles',{}).get(rid,rid))
         state.update(station=end,grip=grip,basis=basis,last_seen=now)
         state.pop('search_started',None);state.pop('search_step',None)
     from harness.e2e_mapping_cadence import expire

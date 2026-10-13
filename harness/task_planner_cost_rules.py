@@ -77,7 +77,16 @@ def rule(view):
    if view['now_s']-m['observation_time_s']>30:trust=0.0
    elif m['confidence']=='low':trust=0.35
    posterior={w:(1-trust)/len(ws)+trust*(w in matches)/len(matches) for w in ws}
+ verification=False
+ own_facts=view['self_state'].get('observed_facts',[])
+ if d=='route':
+  direct=[f for f in own_facts if f.get('subject')=='door_narrow' and f.get('predicate')=='passage_state' and f.get('value') in ws and 0<=f.get('observed_at',float('inf'))<=view['now_s']]
+  if direct:
+   latest=max(direct,key=lambda f:f['observed_at'])
+   if not messages or latest['observed_at']>=messages[-1]['observation_time_s']:
+    verification=bool(parsed and latest['value'] not in parsed)
+    posterior={w:float(w==latest['value']) for w in ws}
  expected={a:sum(posterior[w]*costs(d,view['self_state']['travel_estimates'],w)[a] for w in ws) for a in view['candidates']}
  # Full candidate enumeration is exact for this small stage, stronger than greedy local choice.
- action=min(expected,key=lambda a:(expected[a],a))
+ action='inspect' if verification and 'inspect' in expected else min(expected,key=lambda a:(expected[a],a))
  return action,{'posterior':posterior,'estimated_costs':expected,'parsed_worlds':parsed}

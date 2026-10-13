@@ -112,6 +112,14 @@ class Transport:
                     B_rgb_sources=packet['route']['B_rgb_sources'],length_m=packet['compiled']['length_m'],
                     observed_coverage_complete=packet.get('observed_coverage_complete',True))
         if r1.packet is not None and self.dialogue.approved and self.dialogue.claims==set(PAIR):
+            if hasattr(self,'task_roles') and {self.task_roles.get(r) for r in PAIR}!={'end_neg','end_pos'}:
+                reason='two different ends required'
+                if self.last_route_error!=reason:
+                    self.last_route_error=reason;self.event(now,'planner_joint_role_refused',reason=reason)
+                    for rid in PAIR:
+                        value=self.task_planner.active.get(rid)
+                        if value:self.task_planner.planners[rid].feedback(value,'refused',reason,now)
+                return
             self.plan=provider_plan(r1.packet,agreement=AgreementView(self.dialogue),now=now,
                 observed=r1.goal.e2e_observed,profiles=self.profiles)
             self.set('align',now)
@@ -170,7 +178,8 @@ class Transport:
             raise own.ContractViolation('OWN_ISSUED_GRIP_LOST')
         self.permit=tuple(self.dialogue.key)
         for rid in PAIR:
-            ctl=SimpleNamespace(rid=rid,seg=self.seg,v3_plan=self.plan,claims={},log=lambda *a,**k:None)
+            role_id={'end_neg':'r1','end_pos':'r2'}.get(getattr(self,'task_roles',{}).get(rid),rid)
+            ctl=SimpleNamespace(rid=role_id,seg=self.seg,v3_plan=self.plan,claims={},log=lambda *a,**k:None)
             schedule,duration=pulse_schedule(ctl,now,self.profiles,option=self.pulse_budget)
             for i,(start,end,action) in enumerate(schedule):
                 if not any(action.values()):continue
@@ -273,7 +282,7 @@ class Transport:
         elif self.state=='relook':
             if all(self.robots[r].goal.e2e_relook.receipt is not None for r in PAIR):
                 self.event(now,'e2e_pose_corrections_applied',receipts={r:self.robots[r].goal.e2e_relook.receipt for r in PAIR})
-                if self.seg==len(self.plan['own_route']['legs'])-1:
+                if self.seg==len(self.plan['own_route']['legs'])-1 and not getattr(self,'task_interrupted',False):
                     self.done=True;self.set('done',now)
                 else:
                     # A corrected endpoint requires a newly computed, delivered,
@@ -285,6 +294,7 @@ class Transport:
                     self.dialogue.approved=False;self.dialogue.proposal=None
                     self.dialogue.claims=set();self.dialogue.key=None;self.dialogue.votes={}
                     self.aligned={};self.approach={};self.seg=0;self.first_seg=0;self.plan=None
+                    if hasattr(self,'task_interrupted'):self.task_interrupted=False
                     self.set('mapping',now)
             elif now-self.stage_t>15:out+=self.observation_timeout('OWN_RGB_METRIC_CORRECTION_TIMEOUT',now)
         return out

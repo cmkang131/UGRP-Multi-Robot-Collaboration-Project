@@ -113,7 +113,8 @@ def assess_completion(body, *, study_json=False):
         try:
             _, json_fence_removed = unwrap_json_fence(text)
             value = parse(text)  # same strict parser as condition schema validation
-            if not isinstance(value, dict) or set(value) != REPLY_FIELDS:
+            fields = frozenset(('act','args','message','reason')) if study_json == 'task_planner_v1' else REPLY_FIELDS
+            if not isinstance(value, dict) or set(value) != fields:
                 reasons.append('study_reply_fields_missing_or_extra')
         except (ValueError, TypeError):
             reasons.append('study_reply_incomplete_or_non_json')

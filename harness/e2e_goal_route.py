@@ -41,7 +41,7 @@ def provider_plan(packet, *, agreement, now, observed, profiles):
     return {**plan_from_route(None, compiled), 'agreement_route_hash':wire['route_hash']}
 
 
-def cardinal_path(points, clear):
+def cardinal_path(points, clear, *, y_first=False):
     """Rectilinearize an own-grid path, checking every connector's swept envelope."""
     result = [list(points[0])]
     index = 0
@@ -49,7 +49,8 @@ def cardinal_path(points, clear):
         selected = None
         for j in range(len(points)-1, index, -1):
             a, b = result[-1], list(points[j])
-            for corner in ([b[0], a[1]], [a[0], b[1]]):
+            corners=([a[0], b[1]], [b[0], a[1]]) if y_first else ([b[0], a[1]], [a[0], b[1]])
+            for corner in corners:
                 path = [a]
                 for p in (corner, b):
                     if math.dist(path[-1], p) > 1e-8: path.append(p)
@@ -160,6 +161,12 @@ class IntegratedGoalRoute(GoalRoute):
             points=from_axes(cardinal_path(to_axes(path,carrier_basis),
                 lambda a,b:clear(*from_axes([a,b],carrier_basis))),carrier_basis)
         else:points = cardinal_path(path, clear)
+        task_paths={'observed_x_first':points}
+        if getattr(self,'task_planner_enabled',False):
+            try:
+                task_paths['observed_y_first']=(from_axes(cardinal_path(to_axes(path,carrier_basis),
+                    lambda a,b:clear(*from_axes([a,b],carrier_basis)),y_first=True),carrier_basis) if carrier_axes else cardinal_path(path,clear,y_first=True))
+            except ContractViolation:pass  # infeasible candidate is never offered
         # Occupied cell edges retain the actual wall RGB references. Empty or
         # unknown cells are not fabricated as observations of free space.
         refs = {r['frame_id']: r for r in sources}; walls = []
@@ -185,10 +192,14 @@ class IntegratedGoalRoute(GoalRoute):
         compiled = compile_route(route, now=now, observed=sources, profiles=profiles, option='on_v1',
                                  source='own_map', pulse_budget=pulse_budget,
                                  setdown_only_when_relook=self.e2e_options['setdown_only_when_relook'])
-        return dict(source='own_map', observed_coverage_complete=not getattr(self,'e2e_route_diagnostics',{}).get('would_stop_unknown',False), route=route, compiled=compiled,
+        packet=dict(source='own_map', observed_coverage_complete=not getattr(self,'e2e_route_diagnostics',{}).get('would_stop_unknown',False), route=route, compiled=compiled,
                     inputs=own.s3_inputs(route, rid='r1', now=now, observed=sources),
                     proposal=dict(kind='OwnRoute', route=wire_route(route), source_message_id=None),
                     s3_plan={**plan_from_route(None, compiled), 'agreement_route_hash':wire_route(route)['route_hash']})
+        if getattr(self,'task_planner_enabled',False):
+            from harness.e2e_task_planner_routes import alternatives
+            self.task_route_candidates=alternatives(packet,task_paths,now=now,observed=sources,profiles=profiles)
+        return packet
 
     def reobserve_setdown(self, current_packet, beam, *, now, profiles, agreement, pulse_budget='off'):
         if self.e2e_options['setdown_reobserve'] == 'off': return None

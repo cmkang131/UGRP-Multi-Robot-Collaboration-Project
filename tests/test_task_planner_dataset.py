@@ -54,3 +54,16 @@ def test_age_cost_preview_uses_channel_only_and_no_gold():
     _,none,_=adapt(r,'no_comm')
     assert none['evidence_assessment']['reports']==[]
     assert [c['preview']['estimated_cost'] for c in ctx['candidates']]==[c['preview']['estimated_cost'] for c in none['candidates']]
+
+
+def test_new_own_observation_conflict_is_not_a_hidden_wrong_label():
+    from harness.task_planner_evidence import enrich
+    r=row();r['input']['self_state']['observed_facts']=[dict(subject='door_narrow',predicate='passage_state',value='blocked',observed_at=99,source='own RGB')]
+    r['input']['messages'][0].update(body='Door_narrow is clear.',observation_time_s=40)
+    _,ctx,_=adapt(r,'peer_en')
+    evidence=ctx['evidence_assessment']['reports'][0]
+    assert evidence['conflicts_with_own_observation'] is True and evidence['last_directly_observed_at']==99
+    assert evidence['age_s']==60
+    r['input']['self_state'].pop('observed_facts')
+    _,ctx,_=adapt(r,'peer_en')
+    assert ctx['evidence_assessment']['reports'][0]['conflicts_with_own_observation'] is None

@@ -27,7 +27,7 @@ def acquire(tr,rid,now,state,target):
     r=tr.robots[rid];last=getattr(r,'last_beam',None)
     age=now-last['rgb']['t_sim'] if last else math.inf
     if last and target and 0<=age<=8.:
-        end,grip,basis=station(last,target['center_m'],rid)
+        end,grip,basis=station(last,target['center_m'],getattr(tr,'task_roles',{}).get(rid,rid))
         state.update(station=end,grip=grip,basis=basis,last_seen=last['rgb']['t_sim'])
         tr.event(now,'own_recent_beam_station_hypothesis',robot_id=rid,rgb=last['rgb'],age_s=age)
         return None
