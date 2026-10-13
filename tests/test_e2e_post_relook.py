@@ -126,3 +126,10 @@ def test_sdk_stack_registered_combinations_keep_current_contract(monkeypatch):
         bad=copy.deepcopy(b);bad['e2e_options']['post_relook']='map_fast_v1'
         with pytest.raises(ValueError):require_current(bad,ROOT)
     with pytest.raises(ValueError):bundle(*args,**kw,vote_ref='v1')
+    kw['post_relook']='retain_route_v1'
+    b=bundle(*args,**kw,perception_fast='shadow_axes_v1',controller_timing='phase_v1',vote_ref='v1')
+    assert b['execution_bundle_id']=='e2e18-v329'
+    require_current(b,ROOT)
+    assert b['e2e_options']['post_relook']=='retain_route_v1'
+    bad=copy.deepcopy(b);bad['post_relook_stack_parent']='e2e18-v323'
+    with pytest.raises(ValueError):require_current(bad,ROOT)
