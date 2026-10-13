@@ -54,6 +54,7 @@ def fact(report):
 class Policy:
     def __init__(self):
         self.last = {}
+        self.interval_clock = 'off'
         self.events = []
         self.last_message = {}
         self.sink = None
@@ -82,18 +83,20 @@ class Policy:
         urgent = any(v[1] in ('protocol', 'danger') for v in changed_facts)
         urgent = urgent or any(v[0] == 'danger' and (old is None or old['latest'].get(k) != v)
                                for k, v in latest.items())
+        from harness.e2e_admission_clock import pending
+        waiting, retry_due = pending(now, old['at'], PARAMETERS['observation_interval_sim_s'], self.interval_clock) if old else (False, None)
         if old is None:
             reason = 'initial_state'
         elif protocol_hash != old['protocol_hash'] or urgent:
             reason = 'protocol_or_safety_event'
         elif own_hash == old['own_hash'] and not changed_facts:
             reason = 'same_state_no_new_fact'
-        elif now - old['at'] < PARAMETERS['observation_interval_sim_s']:
+        elif waiting:
             reason = 'observation_min_interval'
         else:
             reason = 'own_state_changed' if own_hash != old['own_hash'] else 'partner_new_fact'
         admitted = reason not in ('same_state_no_new_fact', 'observation_min_interval')
-        due = old['at'] + PARAMETERS['observation_interval_sim_s'] if reason == 'observation_min_interval' else None
+        due = retry_due if reason == 'observation_min_interval' else None
         row = dict(actor=actor, sim_s=now, trigger=trigger, admitted=admitted, reason=reason,
                    own_summary_sha256=own_hash, protocol_sha256=protocol_hash, retry_at_sim_s=due)
         self.record(row)
