@@ -31,6 +31,11 @@ def decision(row):
     return next((a['decision'] for a in reversed(row['audit']) if a.get('decision') and not a.get('fallback')),None)
 
 
+def same_decision(row, reference):
+    a,b=decision(row),decision(reference)
+    return not row['fallback'] and a is not None and b is not None and signature(a)==signature(b)
+
+
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--out',type=Path,required=True)
     ap.add_argument('--upstream-root',type=Path,required=True);ap.add_argument('--relay-url',default='http://127.0.0.1:18426')
@@ -81,7 +86,7 @@ def main():
         if len(rows)%20==0:print(json.dumps(dict(N=len(rows),calls=budget.calls,cost=shared.actual,stop=shared.stopped)),flush=True)
     http=core.read_ledger(a.upstream_root/'http_responses.jsonl')
     metrics=core.metrics(rows)
-    matches=sum(not r['fallback'] and decision(r) is not None and signature(decision(r))==signature(decision(ref[r['case_id'],r['condition']])) for r in rows)
+    matches=sum(same_decision(r,ref[r['case_id'],r['condition']]) for r in rows)
     gate=manifest['adoption'];adopt=not shared.stopped and matches>=gate['agreement_at_least'] and metrics['fallback']<=gate['fallback_max'] and metrics['format_errors']<=gate['format_max']
     summary=dict(source_sha=sha,status='stopped' if shared.stopped else 'complete',stop=shared.stopped,
                  manifest=manifest,metrics=metrics,baseline=core.metrics(baseline),agreement=dict(n=matches,N=400),

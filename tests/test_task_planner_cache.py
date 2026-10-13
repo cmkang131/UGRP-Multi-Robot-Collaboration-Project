@@ -31,3 +31,24 @@ def test_frozen_400_preserves_all_information():
     for r in rows:
         ctx=r['audit'][0]['request']['input']
         assert ordered_context(ctx,'static_first_v2')==ctx
+
+def test_r80_replay_uses_actual_provider_requests_if_available():
+    from scripts.replay_task_planner_cache import load,SOURCE,ENVELOPE
+    import pytest
+    if not SOURCE.exists() or not ENVELOPE.exists():pytest.skip('local r80 archive')
+    rows=load()
+    assert len(rows)==27 and {r['robot'] for r in rows}=={'r1','r2'}
+    assert [r['sim_s'] for r in rows]==sorted(r['sim_s'] for r in rows)
+    assert any(a['robot']!=b['robot'] for a,b in zip(rows,rows[1:]))
+    for r in rows:
+        user=r['request']['messages'][1]['content'];ctx=json.loads(user)
+        assert ordered_context(ctx,'static_first_v2')==ctx
+        assert 'immutable protocol action' in r['request']['messages'][0]['content']
+
+def test_historical_fallback_is_a_nonmatch_not_a_scoring_crash():
+    from scripts.check_task_planner_cache import same_decision
+    good={'fallback':False,'audit':[{'decision':{'act':'wait','args':{'until':'x','max_s':1}}}]}
+    failed={'fallback':True,'audit':[{'fallback':'previous error'}]}
+    assert same_decision(good,good)
+    assert not same_decision(good,failed)
+    assert not same_decision(failed,good)
