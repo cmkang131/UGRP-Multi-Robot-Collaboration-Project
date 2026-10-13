@@ -6,6 +6,7 @@ The existing workflow command and its source/profile flags are reused verbatim.
 from __future__ import annotations
 
 import argparse
+import collections
 import hashlib
 import json
 import math
@@ -21,6 +22,9 @@ import time
 
 PROBE_SIM_S = 30.
 WARNING_SECONDS = 600.
+PHASE_MIN_SIM_S = 20.
+PHASE_MIN_WALL_S = 120.
+PHASE_REPEAT_S = 600.
 
 
 def write(path, value):
@@ -137,6 +141,115 @@ class SpeedWarning:
         return None
 
 
+class RollingSpeedWarning:
+    """Trailing-window wall/SIM warning; replaces the interval-reset rule.
+
+    Progress sim_s advances in whole SIM seconds, so 30 s sub-windows jump
+    between 4.3 and 7.5 near the limit and a single fast window reset the old
+    10-minute counter (v273 r52: 4.7-5.6 wall/SIM, limit 4.5, never warned).
+    Here the ratio over the whole trailing `duration_s` must exceed the limit.
+    """
+    def __init__(self, limit, duration_s=WARNING_SECONDS):
+        self.limit = positive(limit) * 1.5
+        self.duration_s = duration_s
+        self.points = collections.deque()
+
+    def observe(self, now, sim_s):
+        if not math.isfinite(sim_s) or sim_s < 0:
+            sim_s = self.points[-1][1] if self.points else 0.
+        if self.points:
+            sim_s = max(sim_s, self.points[-1][1])
+        self.points.append((now, sim_s))
+        # Keep one point at or before the window start as its anchor.
+        while len(self.points) > 2 and self.points[1][0] <= now - self.duration_s:
+            self.points.popleft()
+        start_wall, start_sim = self.points[0]
+        wall = now - start_wall
+        if wall < self.duration_s:
+            return None
+        delta = sim_s - start_sim
+        ratio = wall / delta if delta > 0 else math.inf
+        if ratio <= self.limit:
+            return None
+        return dict(status='SPEED_GATE_WARNING', rule='rolling_window_v1', limit_wall_per_sim=self.limit,
+                    wall_per_sim=ratio if math.isfinite(ratio) else None, stalled=delta <= 0,
+                    continuous_slow_s=wall, sim_s=sim_s, recorded_unix=time.time())
+
+
+class PhaseSpeedWarning:
+    """Per-phase wall/SIM from e2e-progress phase; warns, never stops (dev_light).
+
+    Limits default to the gate limit x1.5 for every phase; `limits` overrides
+    individual phases. A phase is judged on its cumulative wall/SIM since entry
+    (>= PHASE_MIN_SIM_S and >= PHASE_MIN_WALL_S), re-warned every PHASE_REPEAT_S,
+    and always summarised when it ends.
+    """
+    def __init__(self, limit, limits=None, min_sim_s=PHASE_MIN_SIM_S, min_wall_s=PHASE_MIN_WALL_S,
+                 repeat_s=PHASE_REPEAT_S):
+        self.default = positive(limit) * 1.5
+        self.limits = {k: positive(v) for k, v in (limits or {}).items()}
+        self.min_sim_s, self.min_wall_s, self.repeat_s = min_sim_s, min_wall_s, repeat_s
+        self.phase = None
+        self.entry = None
+        self.last = None
+        self.last_warned = None
+        self.segments = []
+        self.events = []
+
+    def limit_for(self, phase):
+        return self.limits.get(phase, self.default)
+
+    def _close(self, now, sim_s):
+        wall, sim = now - self.entry[0], sim_s - self.entry[1]
+        row = dict(phase=self.phase, wall_s=wall, sim_s=sim, wall_per_sim=wall / sim if sim > 0 else None,
+                   limit_wall_per_sim=self.limit_for(self.phase), entry_sim_s=self.entry[1], closed=True)
+        self.segments.append(row)
+        if sim >= self.min_sim_s and wall / sim > row['limit_wall_per_sim']:
+            self.events.append(dict(row, status='SPEED_PHASE_WARNING', kind='phase_end', recorded_unix=time.time()))
+            return True
+        return False
+
+    def observe(self, now, sim_s, phase):
+        """Return True when events/segments changed (caller rewrites the file)."""
+        if not phase or not math.isfinite(sim_s):
+            return False
+        changed = False
+        if self.phase is None:
+            self.phase, self.entry = phase, (now, sim_s)
+        elif phase != self.phase:
+            self._close(now, sim_s)
+            changed = True
+            self.phase, self.entry, self.last_warned = phase, (now, sim_s), None
+        wall, sim = now - self.entry[0], sim_s - self.entry[1]
+        if sim >= self.min_sim_s and wall >= self.min_wall_s:
+            limit = self.limit_for(phase)
+            if wall / sim > limit and (self.last_warned is None or now - self.last_warned >= self.repeat_s):
+                self.last_warned = now
+                self.events.append(dict(status='SPEED_PHASE_WARNING', kind='phase_running', phase=phase,
+                                        wall_s=wall, sim_s=sim, wall_per_sim=wall / sim,
+                                        limit_wall_per_sim=limit, entry_sim_s=self.entry[1],
+                                        recorded_unix=time.time()))
+                changed = True
+        return changed
+
+    def snapshot(self, now=None, sim_s=None):
+        current = None
+        if self.phase is not None and now is not None and sim_s is not None:
+            wall, sim = now - self.entry[0], sim_s - self.entry[1]
+            current = dict(phase=self.phase, wall_s=wall, sim_s=sim, wall_per_sim=wall / sim if sim > 0 else None,
+                           limit_wall_per_sim=self.limit_for(self.phase), closed=False)
+        return dict(rule='phase_cumulative_v1', default_limit_wall_per_sim=self.default,
+                    limits=self.limits, events=self.events, segments=self.segments, current=current)
+
+
+def progress_state(target):
+    try:
+        row = json.loads((Path(target) / 'raw/e2e-progress.json').read_text())
+        return float(row['sim_s']), row.get('phase')
+    except (OSError, ValueError, TypeError, KeyError):
+        return 0., None
+
+
 def progress_sim(target):
     try:
         return float(json.loads((Path(target) / 'raw/e2e-progress.json').read_text())['sim_s'])
@@ -250,9 +363,10 @@ def finish_record(root, record, specs):
     (root / 'EXIT').write_text(('0' if record['admitted'] else '1') + '\n')
 
 
-def watch(target, command, limit):
+def watch(target, command, limit, phase_limits=None):
     require_azure(target)
-    warning = SpeedWarning(limit)
+    warning = RollingSpeedWarning(limit)
+    phases = PhaseSpeedWarning(limit, phase_limits)
     child = subprocess.Popen(command, start_new_session=True)
     previous = {}
     def stop(signum, frame):
@@ -261,9 +375,13 @@ def watch(target, command, limit):
         previous[sig] = signal.signal(sig, stop)
     try:
         while child.poll() is None:
-            row = warning.observe(time.monotonic(), progress_sim(target))
+            now = time.monotonic()
+            sim_s, phase = progress_state(target)
+            row = warning.observe(now, sim_s)
             if row:
                 write(Path(target) / 'SPEED_GATE_WARNING.json', row)
+            if phases.observe(now, sim_s, phase):
+                write(Path(target) / 'SPEED_PHASE_WARNING.json', phases.snapshot(now, sim_s))
             time.sleep(2)
         return child.returncode
     finally:
@@ -287,6 +405,8 @@ def main(argv=None):
     monitor = commands.add_parser('watch')
     monitor.add_argument('--run', type=Path, required=True)
     monitor.add_argument('--speed-gate-limit', type=positive, default=2.5)
+    monitor.add_argument('--phase-limits', type=json.loads, default=None,
+                         help='JSON {phase: wall/SIM warning limit}; default is the gate limit x1.5')
     monitor.add_argument('command', nargs=argparse.REMAINDER)
     start = commands.add_parser('start')
     start.add_argument('--plan', type=Path, required=True)
@@ -301,7 +421,7 @@ def main(argv=None):
         write(a.plan, [*specs, dict(name=a.name, target=str(a.target), command=command)])
         return 0
     if a.action == 'watch':
-        return watch(a.run, a.command[1:] if a.command[:1] == ['--'] else a.command, a.speed_gate_limit)
+        return watch(a.run, a.command[1:] if a.command[:1] == ['--'] else a.command, a.speed_gate_limit, a.phase_limits)
     specs = json.loads(a.plan.read_text())
     root = a.root if a.action == 'preflight' else a.gate_root
     record = preflight(specs, root, a.speed_gate_limit, a.speed_gate_override)
