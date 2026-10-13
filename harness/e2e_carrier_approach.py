@@ -69,7 +69,8 @@ def advance(transport,rid,now):
         measured=transform([b['grip_base_m']],pose)[0]
         correct_end=float(np.linalg.norm(measured-grip))<.09
         diag['correct_end']=correct_end
-        if correct_end and abs(b['axis_heading_rad'])<.20 and .10<b['grip_base_m'][0]<.40 and abs(b['grip_base_m'][1])<.10:
+        from harness.e2e_fine_entry import heading_limit
+        if correct_end and abs(b['axis_heading_rad'])<heading_limit(transport) and .10<b['grip_base_m'][0]<.40 and abs(b['grip_base_m'][1])<.10:
             if now-state.get('motion_until',-math.inf)<.45:
                 diag['status']='base_settle';return False,[dict(kind='hold')]
             state['fine']=True;diag['status']='visual_servo'

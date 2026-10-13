@@ -1,9 +1,9 @@
 {
   "schema": "ugrp.e2e18.takeover.v1",
-  "checked_unix": 1791835625.980779,
-  "status": "RUNNING",
+  "checked_unix": 1791849712.941588,
+  "status": "THIRD_TAKEOVER_TUNNEL_RESTORED",
   "PR": 461,
-  "deadline_utc": "2026-10-13T01:00:00Z",
+  "deadline_utc": "2026-10-13T07:00:00Z",
   "scope": "DEV; VM3/VM4; no Mac physics",
   "predecessor_records": "run-summary.json",
   "inherited_current": {
@@ -17,19 +17,19 @@
   "completion": {
     "LLM_operated": {
       "observed": 49,
-      "total": 49
+      "total": 52
     },
     "own_map_completed": {
       "observed": 23,
-      "total": 49
+      "total": 52
     },
     "start_to_finish_transport": {
       "observed": 0,
-      "total": 49
+      "total": 52
     },
     "all_three": {
       "confirmed": 0,
-      "total": 49
+      "total": 52
     }
   },
   "tilt_prior_analysis": {
@@ -40,8 +40,8 @@
     "takeover_new_stops": 2
   },
   "vm": {
-    "azure3": 6,
-    "azure4": 6
+    "azure3": "running,0 active",
+    "azure4": "running,0 active"
   },
   "new_candidates": {
     "versions": [
@@ -977,169 +977,226 @@
       "host": "ugrp-sim-azure3",
       "name": "e2e18-v258-s61006-r46",
       "sha": "a72b364100975d796b59a6fd64afd2de29897947",
-      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61006-r46",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 231.0,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61006-r46/raw",
+      "exit": 130,
+      "status": "EARLY_STOP",
+      "sim_s": 560.8000000000001,
       "phase": "align",
       "LLM": true,
       "own_map": true,
       "transport": false,
-      "failure": null
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure3",
       "name": "e2e18-v259-s61006-r46",
       "sha": "a72b364100975d796b59a6fd64afd2de29897947",
-      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61006-r46",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 232.0,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61006-r46/raw",
+      "exit": 130,
+      "status": "EARLY_STOP",
+      "sim_s": 551.2,
       "phase": "align",
       "LLM": true,
       "own_map": true,
       "transport": false,
-      "failure": null
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure3",
       "name": "e2e18-v260-s61006-r46",
       "sha": "a72b364100975d796b59a6fd64afd2de29897947",
-      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61006-r46",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 231.0,
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61006-r46/raw",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "sim_s": 810.45,
       "phase": "align",
       "LLM": true,
       "own_map": true,
       "transport": false,
-      "failure": null
+      "failure": "E2E_WALL_CAP",
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure4",
       "name": "e2e18-v259-s61012-r46",
       "sha": "a72b364100975d796b59a6fd64afd2de29897947",
-      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61012-r46",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 320.0,
-      "phase": "mapping",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61012-r46/raw",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "sim_s": 878.2,
+      "phase": "align",
       "LLM": true,
       "own_map": true,
       "transport": false,
-      "failure": null
+      "failure": "E2E_WALL_CAP",
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure4",
       "name": "e2e18-v258-s61012-r46",
       "sha": "a72b364100975d796b59a6fd64afd2de29897947",
-      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61012-r46",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 320.0,
-      "phase": "mapping",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61012-r46/raw",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "sim_s": 884.0500000000001,
+      "phase": "align",
       "LLM": true,
       "own_map": true,
       "transport": false,
-      "failure": null
+      "failure": "E2E_WALL_CAP",
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure4",
       "name": "e2e18-v260-s61012-r46",
       "sha": "a72b364100975d796b59a6fd64afd2de29897947",
-      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61012-r46",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 320.0,
-      "phase": "mapping",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61012-r46/raw",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "sim_s": 924.25,
+      "phase": "align",
       "LLM": true,
       "own_map": true,
       "transport": false,
-      "failure": null
+      "failure": "E2E_WALL_CAP",
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure3",
       "name": "e2e18-v259-s61007-r44",
       "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
-      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61007-r44",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 104.0,
-      "phase": "mapping",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61007-r44/raw",
+      "exit": 1,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "sim_s": 1800.0,
+      "phase": "align",
       "LLM": true,
       "own_map": false,
       "transport": false,
-      "failure": null
+      "failure": null,
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure3",
       "name": "e2e18-v260-s61007-r44",
       "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
-      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61007-r44",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 104.0,
-      "phase": "mapping",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61007-r44/raw",
+      "exit": 1,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "sim_s": 1800.0,
+      "phase": "align",
       "LLM": true,
       "own_map": false,
       "transport": false,
-      "failure": null
+      "failure": null,
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure3",
       "name": "e2e18-v258-s61007-r44",
       "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
-      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61007-r44",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 104.0,
-      "phase": "mapping",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61007-r44/raw",
+      "exit": 130,
+      "status": "EARLY_STOP",
+      "sim_s": 480.0,
+      "phase": "align",
       "LLM": true,
       "own_map": false,
       "transport": false,
-      "failure": null
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure4",
       "name": "e2e18-v260-s61009-r44",
       "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
-      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61009-r44",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 108.0,
-      "phase": "mapping",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61009-r44/raw",
+      "exit": 1,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "sim_s": 1800.0,
+      "phase": "align",
       "LLM": true,
       "own_map": false,
       "transport": false,
-      "failure": null
+      "failure": null,
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure4",
       "name": "e2e18-v258-s61009-r44",
       "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
-      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61009-r44",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 108.0,
-      "phase": "mapping",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v258-s61009-r44/raw",
+      "exit": 1,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "sim_s": 1800.0,
+      "phase": "align",
       "LLM": true,
       "own_map": false,
       "transport": false,
-      "failure": null
+      "failure": null,
+      "paired_grasp": false
     },
     {
       "host": "ugrp-sim-azure4",
       "name": "e2e18-v259-s61009-r44",
       "sha": "7b3dc0124a14e09893022fc225b4f936c4eb9918",
-      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61009-r44",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 109.0,
-      "phase": "mapping",
+      "raw": "azure4:/home/ugrp/ugrp-sim/runs/e2e18-v259-s61009-r44/raw",
+      "exit": 1,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "sim_s": 1800.0,
+      "phase": "align",
       "LLM": true,
       "own_map": false,
       "transport": false,
-      "failure": null
+      "failure": null,
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v260-s61006-r47",
+      "sha": "ae6ebc8d8926219f39a1d500a94679ed0da3f0a8",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v260-s61006-r47/raw",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "sim_s": 0.0,
+      "phase": "mapping",
+      "LLM": false,
+      "own_map": false,
+      "transport": false,
+      "failure": "S4_TUNNEL_RECOVERY_EXHAUSTED",
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v261-s61006-r47",
+      "sha": "ae6ebc8d8926219f39a1d500a94679ed0da3f0a8",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v261-s61006-r47/raw",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "sim_s": 0.0,
+      "phase": "mapping",
+      "LLM": false,
+      "own_map": false,
+      "transport": false,
+      "failure": "S4_TUNNEL_RECOVERY_EXHAUSTED",
+      "paired_grasp": false
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v262-s61006-r47",
+      "sha": "ae6ebc8d8926219f39a1d500a94679ed0da3f0a8",
+      "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v262-s61006-r47/raw",
+      "exit": 1,
+      "status": "HOST_ERROR",
+      "sim_s": 0.0,
+      "phase": "mapping",
+      "LLM": false,
+      "own_map": false,
+      "transport": false,
+      "failure": "S4_TUNNEL_RECOVERY_EXHAUSTED",
+      "paired_grasp": false
     }
   ],
   "next_batch": {
@@ -1182,11 +1239,12 @@
     "verified": 72
   },
   "counts": {
-    "actual_started": 49,
-    "terminal": 37,
+    "cohort_attempted": 52,
+    "positive_sim": 49,
+    "zero_sim_host_error": 3,
+    "terminal": 52,
     "cohort_not_started": 12,
-    "active": 12,
-    "physical_stop": 2
+    "active": 0
   },
   "session_transition": {
     "status": "BOTH_RESTARTED_GUARDS_ACTIVE_RELAY_IDENTITIES_VERIFIED",
@@ -1238,6 +1296,25 @@
       "initial-health-r46.json": "d22aa376e441db316d8a818c47d883f36ba37d2903f54155e69d2149813ace92",
       "prepose-candidates.json": "15d75b288d835961e80a34e05d1f676e3e6787b7d38f273322ca8e98b1faccc0",
       "native-build-race.json": "c7f523a983ad2ed144b4ebab227c40118865e2f646a761d0ce30bf9a7a0084bb"
+    }
+  },
+  "third_takeover": {
+    "record": "cohorts-finished-r44-r47.json",
+    "sha256": "4e0771b3c72a46803f3ebd754bc646c67aded8a499a98e043cd7d7d74a1a2e3b",
+    "runs": 15,
+    "LLM": 12,
+    "own_map": 6,
+    "joint_grasp": 0,
+    "transport": 0,
+    "furthest": "single_robot_ready; pair alignment barrier not passed",
+    "arm_verified": 15,
+    "initial_health_r47": "initial-health-r47.json",
+    "deadline_utc": "2026-10-13T07:00:00Z",
+    "live_arm_rehash": {
+      "record": "arm-rehash-third.json",
+      "sha256": "aa97c7e5f4c95b9d882f1e9190e6c9b2be63851d7ddf403bf86d72cb2023cca1",
+      "files": 97977,
+      "runs": 15
     }
   }
 }
