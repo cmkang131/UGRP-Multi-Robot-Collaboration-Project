@@ -1,5 +1,5 @@
 {
-  "status": "cohort4_running",
+  "status": "stage_comparison_finished_not_ready",
   "same_end": 7,
   "opposite_end": 5,
   "both_reached": 12,
@@ -11,7 +11,7 @@
   },
   "stance_offset_m": 0.4732,
   "threshold_m": 0.25,
-  "vm3": "running",
+  "vm3": "deallocated_verified",
   "reserved_bundles": [
     407,
     408,
@@ -29,7 +29,9 @@
   "raw": "outputs/azure3-runs/stage-*-cohort*-*-grasp-*; oracle-codex:/home/ubuntu/ugrp-archive/runs/native-*",
   "notes": [
     "nearest approach over full run, not simultaneous occupancy",
-    "saved-frame replay cannot establish counterfactual physical separation"
+    "saved-frame replay cannot establish counterfactual physical separation",
+    "cohort4 baseline repeats were truncated by observed100SIM stall policy; contrast cohort3/4 rates with this difference explicit",
+    "cohort4 v417 ready158.8SIM, waiting141.2SIM; stale carrier status during this interval is aligned waiting, not a pending model call"
   ],
   "module_tests_passed": 46,
   "offline": {
@@ -42,15 +44,16 @@
   "budget": {
     "attempt_cap": 600,
     "cost_cap_usd": 0.3,
-    "model_calls": 38,
-    "charged_or_unknown_reserved_usd": 0.00594102,
-    "pending_reserved_usd": -1.3877787807814457e-17
+    "attempts": 50,
+    "cost_usd": 0.00780638,
+    "model": "google/gemma-4-31b-it",
+    "reason": "Ling429 correction not verified; Gemma and fixed-rule comparison"
   },
   "remaining": [
-    "Historical seven: local-rule first opposite choices 4/7; counterfactual arrival is not observable in saved trajectories",
-    "Cohort4 opposite stance and ready waiting metrics pending",
-    "Other communication conditions model/channel runtime not connected; current stage is no_comm only",
-    "Full carrying and physical robot performance untested"
+    "First-attempt grasp not achieved; alignment/beam reacquisition and persistent pose uncertainty remain",
+    "Other communication conditions model/channel runtime not connected; current stage only no_comm",
+    "Historical saved replay has4/7 opposite first choices, not counterfactual physical completion; current RGB occupancy sparse",
+    "Small staged checkpoint comparison, unequal known-stall durations; do not claim E2E or confirmatory improvement"
   ],
   "registered_bundles": [
     407,
@@ -76,7 +79,7 @@
     "valid_speed_gate": false,
     "reason": "restore load 14.74 >12.8 and no common physics start"
   },
-  "completed_main_runs": 12,
+  "completed_main_runs": 24,
   "false_occupancy_replay": {
     "rejected": 3,
     "N": 3
@@ -85,7 +88,7 @@
     "rgb_ground_v2",
     "gemma_ground_v2"
   ],
-  "current_active": 12,
+  "current_active": 0,
   "local_fallback_first_choices_opposite": {
     "n": 4,
     "N": 7,
@@ -158,5 +161,90 @@
       }
     },
     "archive_manifest": "experiments/2026-10-12-e2e18/end-cohort3-archive.json"
+  },
+  "related_tests_passed": 46,
+  "cohort4": {
+    "submitted": 12,
+    "eligible_N": 12,
+    "both_held": 0,
+    "first_attempt_success": 0,
+    "known_stall_stops": 7,
+    "cap300_exits": 5,
+    "groups": {
+      "v415": {
+        "N": 3,
+        "excluded": 0,
+        "both_reached": 2,
+        "relations": {
+          "unreached": 1,
+          "same": 2
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 1,
+        "ready_wait_sim_s": []
+      },
+      "v416": {
+        "N": 3,
+        "excluded": 0,
+        "both_reached": 1,
+        "relations": {
+          "unreached": 2,
+          "opposite": 1
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 1,
+        "ready_wait_sim_s": []
+      },
+      "v417": {
+        "N": 3,
+        "excluded": 0,
+        "both_reached": 2,
+        "relations": {
+          "unreached": 1,
+          "opposite": 2
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 1,
+        "ready_wait_sim_s": [
+          141.2
+        ]
+      },
+      "v418": {
+        "N": 3,
+        "excluded": 0,
+        "both_reached": 1,
+        "relations": {
+          "unreached": 2,
+          "opposite": 1
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 1,
+        "ready_wait_sim_s": []
+      }
+    },
+    "raw": "azure3:~/ugrp-sim/runs/stage-end-cohort4-*",
+    "archive_manifest": "experiments/2026-10-12-e2e18/end-cohort4-archive.json"
+  },
+  "all_failure_inclusive_first_attempt": {
+    "n": 0,
+    "N": 32,
+    "definition": "24 cohort3/4 comparisons +8 known occupancy-defect stops; exclude60 gates,8 matched-control censorings,4 resource censorings"
+  },
+  "archive": {
+    "runs": 104,
+    "verified": 104,
+    "manifest": "final-archive-check.json",
+    "model_text": "mac-model-text-archive.json",
+    "milestone": "first-stage-held-milestone.json"
+  },
+  "vm_state_record": "final-vm-state.json",
+  "cause_zero_findings": {
+    "near_end_override_observed": 0,
+    "recovery_explicit_opposite_end_reroute_observed": 0,
+    "N": 7
   }
 }
