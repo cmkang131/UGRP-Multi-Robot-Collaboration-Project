@@ -35,6 +35,19 @@
 - Use native TensorBoard only—no custom HTML summaries or additional dashboard servers. Use short run names, relevant HParams columns, and pinned Time Series cards. Reapply configured HParams columns when opening or refreshing the dashboard. Pin available key metrics: success, runtime, command count, model calls, and model response time. Open saved pinned links and verify the displayed values and configuration against the source data and view settings.
 - Report results, verification scope, the dashboard link, and any unfinished retrieval, conversion, or display checks. Perform this workflow when reporting results; skip reconversion and reopening for simple questions with no new results. Do not create recurring checks, scheduled automation, or continuous monitoring without an explicit request.
 
+## 결정 모델 역할과 실행 점검 (2026-10-13 사용자 요청)
+
+사용자 요청: "Jev가 몸 움직임을 맡고 Gemma는 대화만", "그럼 d1으로 바꿔", "GO/ACK를 gemma가 아니라 d1이 해야 하는 거 아닌가", "실패 원인을 봤으면 멈추고 고쳐야 할 거 아니야", "이런 것들 다 규칙으로 남겨서 반복되게 하지 말란 말이야". 상세 설계 규칙은 [결정 모델 제어](docs/decision_model_control.md)를 따른다.
+
+- **역할:** 로봇 자기 판단(몸 스킬 선택, GO/ACK/WAIT 같은 프로토콜 행동)은 결정 모델이 한다. 기본은 Liquid d1(자기 카메라 이미지 포함)이고 Jev는 비교 옵션이다. Gemma는 결정 모델이 고른 행동을 파트너에게 전하는 자연어 메시지만 쓰며 행동을 바꿀 수 없다. 파트너 메시지 원문은 결정 모델 맥락에 그대로 들어간다. 사용자가 말한 구조를 축소하거나 "나중에"로 미루지 않는다.
+- **결정 단위:** 결정 모델은 스킬(경로 따라가기, 좌/우 우회, 둘러보기, 물러나 다시 보기, 대기, 준비 완료 등)만 고르고 산술·미세 동작·안전 정지는 코드가 한다. 매 단계 10 cm·15° 미세 동작을 고르게 하지 않는다.
+- **후보 필터:** 안전 필터가 후보를 지우면 반드시 진행 가능한 대안(우회·물러나 재계획)이 남아야 한다. 코드 제안은 필터 뒤 남은 후보 안에서 다시 계산한다. 변화 없는 같은 선택 3회 연속이면 그 후보를 제거한다.
+- **실행 점검:** 새 구조·버전을 올리면 첫 30 SIM초 원본(결정 기록·선택 분포·멈춤 구간·오류)을 직접 열어 실제로 작동하는지 확인한 뒤 보고한다. 상태만 전달하지 않는다. 보고 직전에 숫자를 다시 읽어 오래된 상태를 보고하지 않는다.
+- **원인 확인 = 즉시 정지:** 원본에서 실제 물리 실패나 제어 결함(예: GO/ACK 시한 실패, 결정 후보 결함으로 인한 장시간 정지)의 원인이 확인되면, 자기 작업의 실행 또는 소유자·PID·명령을 확인한 실행 중 같은 결함을 가진 진행·대기 실행을 묻지 않고 바로 멈춘다(실행 디렉터리에 `SUPERVISOR_STOP.json`과 SIGINT, 기록은 `outputs/e2e18-admin/stop-*.json` 형식). 그리고 고친 번들만 다시 제출한다. dev_light의 로그 전용 보수적 정지(충돌 가드·σ 예산 등)는 이 규칙의 대상이 아니다. 알려진 실패 실행이 VM 자리를 차지하게 두지 않으며 milestone 원본은 보존한다.
+- **지표 보고:** 전체 n/N과 함께 실제 실패 원인에 해당하는 핵심 부분집합(예: GO가 필요한 장면 9/30)을 따로 보고한다. 쉬운 사례로 전체 비율이 좋아 보이는 것을 개선으로 보고하지 않는다.
+- **공정 비교:** 결정 모델은 강한 규칙 기준선(복구 순서·막힘 기억 포함)과 비교한다. 정답 위치는 별도 평가 출력(성공 판정·채점 라벨)에만 쓰고, 결정 모델·규칙 기준선의 입력과 진척 계산에는 쓰지 않는다. 약한 기준선을 이긴 것은 개선이 아니다.
+- **비용:** 응답에 비용 칸이 없다고 무료로 보고하지 않는다. 공식 가격을 확인하고 토큰 수로 환산하며 확인 못 한 청구액은 미확인으로 적는다.
+
 ## 여러 에이전트 동시 작업
 
 2026-09-24 사용자 요청(2026-09-26 Kiro 추가)에 따라 Claude·Codex·Kiro가 같은 Mac·저장소에서 동시에 작업할 때 다음을 지킨다. 브랜치 접두사(`claude/`, `codex/`, `kiro/`)로 작업 주체를 구분한다.
