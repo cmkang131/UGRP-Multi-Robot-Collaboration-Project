@@ -77,7 +77,7 @@ class Gemma:
         self.budget.reserve(); started = time.monotonic()
         try:
             data = self._json('/v1/chat/completions', body=body, timeout=timeout_s,
-                              headers={'X-UGRP-Call-ID': call_id, 'X-UGRP-Idempotency-Key': call_id+'-'+key})
+                              headers={'X-UGRP-Call-ID': call_id, 'X-UGRP-Idempotency-Key': hashlib.sha256((call_id+'-'+key).encode()).hexdigest()})
         except Exception:
             self.budget.reconcile(None)
             raise

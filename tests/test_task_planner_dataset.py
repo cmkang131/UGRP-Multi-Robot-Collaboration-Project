@@ -26,3 +26,17 @@ def test_legacy_fixed_contract_preserved_without_side_channel():
     r=row();r['input']['messages'][0]['body']={'act':'inform','passage':'door_narrow','state':'blocked','confidence':'high','observed_at_sim_s':98}
     _,ctx,_=adapt(r,'structured')
     assert ctx['received_messages'][0]['body']==r['input']['messages'][0]['body']
+
+
+def test_relay_idempotency_header_is_64_hex_and_unique():
+    import re
+    from harness.task_planner_gemma import Gemma,Budget
+    m=Gemma.__new__(Gemma);m.budget=Budget();m.run_id='test';seen=[]
+    def post(path,**kwargs):
+        seen.append(kwargs['headers'])
+        return {'model':'google/gemma-4-31b-it','provider':'DeepInfra','usage':{'cost':0},
+                'choices':[{'message':{'content':'{}'},'finish_reason':'stop'}]}
+    m._json=post
+    for _ in range(2):m({'system':'test','input':{}},timeout_s=1)
+    assert all(re.fullmatch('[a-f0-9]{64}',h['X-UGRP-Idempotency-Key']) for h in seen)
+    assert seen[0]['X-UGRP-Idempotency-Key']!=seen[1]['X-UGRP-Idempotency-Key']
