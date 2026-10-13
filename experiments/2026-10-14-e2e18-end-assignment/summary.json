@@ -1,5 +1,5 @@
 {
-  "status": "gate1_invalid_replacing_barrier",
+  "status": "gate3_running_after_false_occupancy_fix",
   "same_end": 7,
   "opposite_end": 5,
   "both_reached": 12,
@@ -39,8 +39,8 @@
     "model_calls": 0
   },
   "remaining": [
-    "Sparse saved RGB did not establish counterfactual separation",
-    "v411-v414 synchronized gate then main stage pending",
+    "Counterfactual separation of historical seven still unverified",
+    "No completed end-assignment grasp stage yet; cohort2 stopped on identified occupancy defect",
     "Other communication conditions model/channel runtime not connected"
   ],
   "registered_bundles": [
@@ -51,18 +51,29 @@
     411,
     412,
     413,
-    414
+    414,
+    415,
+    416
   ],
   "source_stage": "grasp checkpoint only; no_comm; no full E2E",
   "related_tests_passed": 41,
-  "latest_related_tests_passed": 35,
-  "live_gate_runs": 16,
-  "live_main_runs": 0,
+  "latest_related_tests_passed": 37,
+  "live_gate_runs": 48,
+  "live_main_runs": 16,
   "gate1": {
     "completed_30_sim_s": 4,
     "administratively_interrupted": 12,
     "valid_speed_gate": false,
     "reason": "restore load 14.74 >12.8 and no common physics start"
   },
-  "model_cost_usd": 0.00110159
+  "model_cost_usd": 0.00110159,
+  "completed_main_runs": 0,
+  "false_occupancy_replay": {
+    "rejected": 3,
+    "N": 3
+  },
+  "ground_options": [
+    "rgb_ground_v2",
+    "gemma_ground_v2"
+  ]
 }

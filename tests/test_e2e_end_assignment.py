@@ -85,3 +85,20 @@ def test_ground_range_disambiguates_same_bearing_and_rejects_clipped_feet():
  hits=occupied(c,[0.,0.,0.],servo,[dict(bbox_px=bbox)])
  assert len(hits['near'])==1 and not hits['far']
  assert foot_point(servo,[0,100,30,200]) is None
+
+def test_private_beam_ends_do_not_depend_on_missing_or_wrong_B():
+ s=Selector('r2','rgb_local_v3');a=s.candidates(B,None,[1,1,0])
+ t=Selector('r2','rgb_local_v3');b=t.candidates(B,[-200,0],[1,1,0])
+ assert a==b and a[0]['grip_own_m']==[-.27,0.] and a[1]['grip_own_m']==[.27,0.]
+ assert a[0]['basis']['rule']=='private_observed_beam_axis_v3'
+
+def test_local_seed_preserves_off_and_does_not_invent_B():
+ from types import SimpleNamespace as NS
+ from harness.e2e_end_assignment import seed_local_station
+ tr=NS(end_assignment='off');state={}
+ assert seed_local_station(tr,'r2',1.,state) is False and state=={}
+ r=NS(beam=B,goal=NS(explorer=NS(local_pose=[1.,1.,0.])))
+ tr=NS(end_assignment='gemma_local_v3',robots={'r2':r},end_selectors={'r2':Selector('r2','gemma_local_v3')})
+ assert seed_local_station(tr,'r2',1.,state) and 'station' in state
+ assert 'entities' not in vars(r.goal) # no virtual B injected
+ assert tr.end_selectors['r2'].selected is None # decision is still pending

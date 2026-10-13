@@ -11,7 +11,7 @@ import numpy as np
 from harness.active_wall_mapping import wrap
 from harness.self_odom_grid import transform
 
-OPTIONS=('lock_v1','rgb_rule_v1','gemma_v1','rgb_ground_v2','gemma_ground_v2')
+OPTIONS=('lock_v1','rgb_rule_v1','gemma_v1','rgb_ground_v2','gemma_ground_v2','rgb_local_v3','gemma_local_v3')
 PARAMS=dict(grip_offset_m=.27,reach_m=.2032,occupancy_radius_m=.25,
             rgb_max_age_s=.45,lock_match_max_m=.45,decision_period_s=10.)
 SYSTEM='''Two robots must grasp DISTINCT OPPOSITE ends of the same beam; both at
@@ -88,7 +88,8 @@ class Selector:
 
     def candidates(self,beam,target,pose,path_cost=None):
         from harness.e2e_carrier_axes import basis
-        b=basis(beam,target);axis=float(b['yaw_rad'])
+        b=local_basis(beam) if self.option in ('rgb_local_v3','gemma_local_v3') else basis(beam,target)
+        axis=float(b['yaw_rad'])
         if self.axis is not None and math.cos(axis-self.axis)<0:axis=wrap(axis+math.pi)
         self.axis=axis;center=np.asarray(b['center_m']);u=np.array([math.cos(axis),math.sin(axis)])
         out=[]
@@ -104,12 +105,12 @@ class Selector:
         return out
 
     def observe_occupancy(self,candidates,pose,servo,jpeg,frame,now,frame_t):
-        if self.option not in ('rgb_rule_v1','gemma_v1','rgb_ground_v2','gemma_ground_v2'):return {}
+        if self.option not in ('rgb_rule_v1','gemma_v1','rgb_ground_v2','gemma_ground_v2','rgb_local_v3','gemma_local_v3'):return {}
         if frame==self.last_frame or not 0<=now-frame_t<=PARAMS['rgb_max_age_s']:return {}
         self.last_frame=frame
         if self.last_occupancy_t is not None and now-self.last_occupancy_t>1.:self.streak.clear()
         self.last_occupancy_t=now
-        if self.option in ('rgb_ground_v2','gemma_ground_v2'):
+        if self.option in ('rgb_ground_v2','gemma_ground_v2','rgb_local_v3','gemma_local_v3'):
             if any(c['source_rgb'].get('frame_id')!=frame or not 0<=now-c['source_rgb'].get('t_sim',-math.inf)<=PARAMS['rgb_max_age_s'] for c in candidates):
                 self.streak.clear()
                 return dict(frame_id=frame,blocked=sorted(self.blocked),status='unknown_no_current_beam_RGB',absence_means='unknown')
@@ -155,10 +156,38 @@ def install(tr,option='off',*,relay_url=None):
     if option not in OPTIONS:raise ValueError('UNKNOWN_END_ASSIGNMENT')
     tr.end_assignment=option;tr.end_selectors={rid:Selector(rid,option) for rid in ('r1','r2')}
     tr.end_clients={}
-    if option in ('gemma_v1','gemma_ground_v2'):
+    if option in ('gemma_v1','gemma_ground_v2','gemma_local_v3'):
         from harness.e2e_end_model import Client
         if relay_url is None:raise ValueError('END_MODEL_RELAY_REQUIRED')
         tr.end_clients={rid:Client(relay_url) for rid in ('r1','r2')}
+
+
+def local_basis(beam):
+    """Two unordered ends need the own-observed object axis, not a B estimate."""
+    return dict(center_m=list(beam['pose_own_m'][:2]),yaw_rad=wrap(float(beam['pose_own_m'][2])),
+                rgb=copy.deepcopy(beam['rgb']),rule='private_observed_beam_axis_v3')
+
+
+def seed_local_station(tr,rid,now,state):
+    """Stage-only opt-in: create candidates even when own B is unavailable.
+
+    This seeds geometry, not the final choice: update_station still asks the
+    judgment model or the admitted fixed fallback before issuing an approach.
+    """
+    if getattr(tr,'end_assignment','off') not in ('rgb_local_v3','gemma_local_v3'):return False
+    from harness import e2e_grasp_once as once
+    r=tr.robots[rid];beam=r.beam
+    fresh=beam is not None and 0<=now-beam['rgb']['t_sim']<=.45
+    if not fresh:
+        if 'station' in state:return True
+        beam=r.grasp_track['beam'] if once.valid(r,now) else None
+    if beam is None:return True
+    selector=tr.end_selectors[rid]
+    candidates=selector.candidates(beam,None,r.goal.explorer.local_pose)
+    candidate=next(c for c in candidates if c['id']==(selector.selected or ('end0' if rid=='r1' else 'end1')))
+    state.update(station=np.asarray(candidate['station_own_m']),grip=np.asarray(candidate['grip_own_m']),
+                 basis=candidate['basis'],last_seen=beam['rgb']['t_sim'])
+    return True
 
 
 def update_station(tr,rid,now,state,target):
@@ -221,7 +250,7 @@ def update_station(tr,rid,now,state,target):
         state['fine']=False
     # Before entering the stance, use the existing SEARCH camera posture and
     # a finite three-pan inspection. Camera/FOV/model geometry is unchanged.
-    if s.option in ('rgb_rule_v1','gemma_v1','rgb_ground_v2','gemma_ground_v2') and choice['distance_m']<=.65:
+    if s.option in ('rgb_rule_v1','gemma_v1','rgb_ground_v2','gemma_ground_v2','rgb_local_v3','gemma_local_v3') and choice['distance_m']<=.65:
         from harness.owncam_pair_beam_v2 import pose_of
         look=state.setdefault('end_look',dict(index=0,frame=None,until=now,done=False))
         if not look['done']:

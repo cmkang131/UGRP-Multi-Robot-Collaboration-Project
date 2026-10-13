@@ -12,3 +12,5 @@
 - [Python fcntl/flock](https://docs.python.org/3/library/fcntl.html): 프로세스별 파일 잠금으로 복원 8슬롯을 제한하고, 사전 등록한 16개 준비 후 같은 monotonic 시작 시각을 사용한다. 로봇 관측·선택·메시지는 공유하지 않는다.
 
 - [OpenCV fisheye calibration and undistortPoints](https://docs.opencv.org/4.13.0/db/d58/group__calib3d__fisheye.html) / [Virtual IPM (2023)](https://arxiv.org/abs/2303.05192): 픽셀 광선을 고정 카메라 보정으로 복원하고 바닥 평면과 교차시킨다. 구현은 기존 owncam_view와 같은 fisheye 보정·발행 서보 외부 보정만 재사용한다. 우리 추가 제한은 현재 봉 RGB가 없는 경우 점유를 unknown으로 두고 영상 가장자리에서 잘린 발은 거리 판정에서 제외하는 것이다.
+
+- v417/v418은 MRTA/ConPoSe의 후보 생성과 배정 분리를 적용: 봉의 두 기하 끝은 자기 관측의 물체 축으로 열거하고 LLM/동일 관측 대체 규칙이 선택한다. 운반 목적지 B는 이 두 후보를 정의하는 데 필요하지 않아 파지 후보 생성의 선행 조건에서만 제거한다. 운반·경로 승인 조건은 변경하지 않으며 가짜 B를 주입하지 않는다.
