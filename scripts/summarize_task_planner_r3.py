@@ -54,12 +54,12 @@ if __name__=='__main__':
         ids=r.pop('call_ids');(exp/(label+'-call-ids.json')).write_text(json.dumps(ids)+'\n')
         (exp/(label+'-recount.json')).write_text(json.dumps(r,indent=2)+'\n');all_results[label]=r
     ledger=ROOT/'outputs/task-planner-r3-upstream-20261013/openrouter/ledger.jsonl'
-    entries=[json.loads(x) for x in ledger.read_text().splitlines()]
+    entries=[json.loads(x) for x in read(ledger).splitlines()]
     accounting=dict(http_requests=len(entries),upstream_attempts=sum(len((r.get('openrouter') or {}).get('attempts',[])) for r in entries),
         http_statuses=dict(collections.Counter(r['status'] for r in entries)),
         known_usd=sum((r.get('openrouter') or {}).get('cost',0) or 0 for r in entries),
         unknown_cost_calls=sum((r.get('openrouter') or {}).get('cost') is None for r in entries),
-        path=str(ledger),sha256=hashlib.sha256(ledger.read_bytes()).hexdigest())
+        path=str(ledger),sha256=hashlib.sha256(read(ledger)).hexdigest())
     result=dict(schema='ugrp.task_planner.evidence_gate.r3',gate='on_v1',default='off',source_sha='961a4947',confirmation_seed=2026101303,
         tuning_set_reused=True,confirmation_independent_physical_data=False,bundles=[387,388],vm='not_submitted; after PR475/476',conditions={},accounting=accounting,
         tests=dict(passed=27,physics=False),limitations=['No own observations in coordinator synthetic source; fresh wrong reports cannot be disproved.','Confirmation uses new seed/new phrases but same synthetic algebra and latent-state cycle.','Native execution is unverified.'])
