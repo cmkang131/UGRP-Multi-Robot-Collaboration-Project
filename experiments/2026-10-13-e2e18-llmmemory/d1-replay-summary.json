@@ -1,0 +1,823 @@
+{
+  "schema": "ugrp.d1_dialogue_replay.v1",
+  "class_": "dev",
+  "research_result": false,
+  "source_sha": "6ec1ab8e",
+  "bundle": "e2e18-v338",
+  "historical_gemma": {
+    "llmmemory-replay-v0/memory": {
+      "correct": 50,
+      "total": 100,
+      "completion_tokens_median": 53.0,
+      "wall_median_s": 3.9885,
+      "http_errors": 0
+    },
+    "llmmemory-replay-v0/memory_vote_ref": {
+      "correct": 60,
+      "total": 100,
+      "completion_tokens_median": 47.0,
+      "wall_median_s": 2.9305,
+      "http_errors": 0
+    },
+    "llmmemory-replay-v0/old": {
+      "correct": 15,
+      "total": 100,
+      "completion_tokens_median": 139.0,
+      "wall_median_s": 6.5105,
+      "http_errors": 0
+    },
+    "llmmemory-replay-v0/vote_ref": {
+      "correct": 40,
+      "total": 100,
+      "completion_tokens_median": 66.0,
+      "wall_median_s": 3.471,
+      "http_errors": 0
+    },
+    "llmmemory-replay-v1/memory": {
+      "correct": 68,
+      "total": 100,
+      "completion_tokens_median": 44.0,
+      "wall_median_s": 3.0890000000000004,
+      "http_errors": 0
+    },
+    "llmmemory-replay-v1/memory_vote_ref": {
+      "correct": 79,
+      "total": 100,
+      "completion_tokens_median": 42.0,
+      "wall_median_s": 2.9364999999999997,
+      "http_errors": 0
+    }
+  },
+  "first_d1": {
+    "all": {
+      "n": 100,
+      "correct": 79,
+      "pipeline_correct": 0,
+      "errors": 100,
+      "decisions": {
+        "WAIT": 14,
+        "WAIT_UNCERTAIN": 77,
+        "GO": 9,
+        "ACK": 0,
+        "claim": 0,
+        "approve_route": 0,
+        "propose_route": 0,
+        "forward_route": 0
+      },
+      "d1_latency_median_s": 0.5279425414628349,
+      "speech_latency_median_s": 0.0009912705281749368,
+      "pipeline_latency_median_s": 0.5320984165300615
+    },
+    "go": {
+      "n": 30,
+      "correct": 9,
+      "pipeline_correct": 0,
+      "errors": 30,
+      "decisions": {
+        "WAIT": 1,
+        "WAIT_UNCERTAIN": 20,
+        "GO": 9,
+        "ACK": 0,
+        "claim": 0,
+        "approve_route": 0,
+        "propose_route": 0,
+        "forward_route": 0
+      },
+      "d1_latency_median_s": 0.5353899790206924,
+      "speech_latency_median_s": 0.0009790834737941623,
+      "pipeline_latency_median_s": 0.5405961669748649
+    },
+    "call0021": {
+      "n": 10,
+      "correct": 0,
+      "pipeline_correct": 0,
+      "errors": 10,
+      "decisions": {
+        "WAIT": 0,
+        "WAIT_UNCERTAIN": 10,
+        "GO": 0,
+        "ACK": 0,
+        "claim": 0,
+        "approve_route": 0,
+        "propose_route": 0,
+        "forward_route": 0
+      },
+      "d1_latency_median_s": 0.5426192290033214,
+      "speech_latency_median_s": 0.0010823119664564729,
+      "pipeline_latency_median_s": 0.5460801874869503
+    },
+    "cases": [
+      {
+        "run": "e2e18-v304-s61006-r64",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 0,
+        "errors": 10,
+        "decisions": {
+          "WAIT": 3,
+          "WAIT_UNCERTAIN": 7,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 0.5182248955243267,
+        "speech_latency_median_s": 0.0012055415427312255,
+        "pipeline_latency_median_s": 0.5241704165237024
+      },
+      {
+        "run": "e2e18-v320-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 0,
+        "errors": 10,
+        "decisions": {
+          "WAIT": 6,
+          "WAIT_UNCERTAIN": 4,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 0.5124096040381119,
+        "speech_latency_median_s": 0.0010519585339352489,
+        "pipeline_latency_median_s": 0.514519541466143
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0020-r2",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 0,
+        "errors": 10,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 10,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 0.5165947084897198,
+        "speech_latency_median_s": 0.0010062920046038926,
+        "pipeline_latency_median_s": 0.5196243955288082
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0021-r1",
+        "expected": "GO",
+        "n": 10,
+        "correct": 0,
+        "pipeline_correct": 0,
+        "errors": 10,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 10,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 0.5426192290033214,
+        "speech_latency_median_s": 0.0010823119664564729,
+        "pipeline_latency_median_s": 0.5460801874869503
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0023-r1",
+        "expected": "GO",
+        "n": 10,
+        "correct": 9,
+        "pipeline_correct": 0,
+        "errors": 10,
+        "decisions": {
+          "WAIT": 1,
+          "WAIT_UNCERTAIN": 0,
+          "GO": 9,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 0.5353899790206924,
+        "speech_latency_median_s": 0.0011465420247986913,
+        "pipeline_latency_median_s": 0.5463514169678092
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0024-r2",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 0,
+        "errors": 10,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 10,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 0.5234591669868678,
+        "speech_latency_median_s": 0.0009416669490747154,
+        "pipeline_latency_median_s": 0.5269582085893489
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0025-r1",
+        "expected": "GO",
+        "n": 10,
+        "correct": 0,
+        "pipeline_correct": 0,
+        "errors": 10,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 10,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 0.5192967295297422,
+        "speech_latency_median_s": 0.0008784994715824723,
+        "pipeline_latency_median_s": 0.5232209374662489
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0026-r2",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 0,
+        "errors": 10,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 10,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 0.5562156671076082,
+        "speech_latency_median_s": 0.0008940000552684069,
+        "pipeline_latency_median_s": 0.5585692294989713
+      },
+      {
+        "run": "e2e18-v322-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 0,
+        "errors": 10,
+        "decisions": {
+          "WAIT": 4,
+          "WAIT_UNCERTAIN": 6,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 0.5140387499704957,
+        "speech_latency_median_s": 0.0013115835026837885,
+        "pipeline_latency_median_s": 0.5173269790248014
+      },
+      {
+        "run": "e2e18-v323-s61006-r65",
+        "call_id": "call-0018-r1",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 0,
+        "errors": 10,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 10,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 0.5027490420034155,
+        "speech_latency_median_s": 0.0009063539910130203,
+        "pipeline_latency_median_s": 0.5066266040084884
+      }
+    ],
+    "cost": {
+      "d1": 0.0248596,
+      "d1_cost_reported": 100,
+      "gemma": 0,
+      "gemma_cost_reported": 0
+    },
+    "scope": "Protocol expectation agreement; NOT image grip truth, ACK-positive cohort, live deadline or physics validation."
+  },
+  "final_d1": {
+    "all": {
+      "n": 100,
+      "correct": 82,
+      "pipeline_correct": 82,
+      "errors": 0,
+      "decisions": {
+        "WAIT": 41,
+        "WAIT_UNCERTAIN": 47,
+        "GO": 12,
+        "ACK": 0,
+        "claim": 0,
+        "approve_route": 0,
+        "propose_route": 0,
+        "forward_route": 0
+      },
+      "d1_latency_median_s": 1.101722624967806,
+      "speech_latency_median_s": 0.8963869789149612,
+      "pipeline_latency_median_s": 2.077658353955485
+    },
+    "go": {
+      "n": 30,
+      "correct": 12,
+      "pipeline_correct": 12,
+      "errors": 0,
+      "decisions": {
+        "WAIT": 0,
+        "WAIT_UNCERTAIN": 18,
+        "GO": 12,
+        "ACK": 0,
+        "claim": 0,
+        "approve_route": 0,
+        "propose_route": 0,
+        "forward_route": 0
+      },
+      "d1_latency_median_s": 1.121734313084744,
+      "speech_latency_median_s": 1.0573187289992347,
+      "pipeline_latency_median_s": 2.313151291979011
+    },
+    "call0021": {
+      "n": 10,
+      "correct": 0,
+      "pipeline_correct": 0,
+      "errors": 0,
+      "decisions": {
+        "WAIT": 0,
+        "WAIT_UNCERTAIN": 10,
+        "GO": 0,
+        "ACK": 0,
+        "claim": 0,
+        "approve_route": 0,
+        "propose_route": 0,
+        "forward_route": 0
+      },
+      "d1_latency_median_s": 1.1546473545022309,
+      "speech_latency_median_s": 1.2025449374341406,
+      "pipeline_latency_median_s": 2.4991329585318454
+    },
+    "cases": [
+      {
+        "run": "e2e18-v304-s61006-r64",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 10,
+        "errors": 0,
+        "decisions": {
+          "WAIT": 10,
+          "WAIT_UNCERTAIN": 0,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 1.1933002290315926,
+        "speech_latency_median_s": 0.8473516669473611,
+        "pipeline_latency_median_s": 2.044710000511259
+      },
+      {
+        "run": "e2e18-v320-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 10,
+        "errors": 0,
+        "decisions": {
+          "WAIT": 10,
+          "WAIT_UNCERTAIN": 0,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 1.144453375483863,
+        "speech_latency_median_s": 0.8712581874569878,
+        "pipeline_latency_median_s": 2.013333479000721
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0020-r2",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 10,
+        "errors": 0,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 10,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 1.0487810624181293,
+        "speech_latency_median_s": 0.8083809789968655,
+        "pipeline_latency_median_s": 1.8898694585077465
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0021-r1",
+        "expected": "GO",
+        "n": 10,
+        "correct": 0,
+        "pipeline_correct": 0,
+        "errors": 0,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 10,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 1.1546473545022309,
+        "speech_latency_median_s": 1.2025449374341406,
+        "pipeline_latency_median_s": 2.4991329585318454
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0023-r1",
+        "expected": "GO",
+        "n": 10,
+        "correct": 2,
+        "pipeline_correct": 2,
+        "errors": 0,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 8,
+          "GO": 2,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 1.0857677705353126,
+        "speech_latency_median_s": 1.0179956670035608,
+        "pipeline_latency_median_s": 2.1824079584912397
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0024-r2",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 10,
+        "errors": 0,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 10,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 1.134546083456371,
+        "speech_latency_median_s": 1.1561329790274613,
+        "pipeline_latency_median_s": 2.4783483335049823
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0025-r1",
+        "expected": "GO",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 10,
+        "errors": 0,
+        "decisions": {
+          "WAIT": 0,
+          "WAIT_UNCERTAIN": 0,
+          "GO": 10,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 1.1215214159456082,
+        "speech_latency_median_s": 0.9047836459358223,
+        "pipeline_latency_median_s": 2.0735049375216477
+      },
+      {
+        "run": "e2e18-v321-s61006-r65",
+        "call_id": "call-0026-r2",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 10,
+        "errors": 0,
+        "decisions": {
+          "WAIT": 1,
+          "WAIT_UNCERTAIN": 9,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 1.0887432915042154,
+        "speech_latency_median_s": 0.8702333749970421,
+        "pipeline_latency_median_s": 2.0145726875052787
+      },
+      {
+        "run": "e2e18-v322-s61006-r65",
+        "call_id": "call-0014-r1",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 10,
+        "errors": 0,
+        "decisions": {
+          "WAIT": 10,
+          "WAIT_UNCERTAIN": 0,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 1.1479405215359293,
+        "speech_latency_median_s": 0.8138350420049392,
+        "pipeline_latency_median_s": 2.042308145435527
+      },
+      {
+        "run": "e2e18-v323-s61006-r65",
+        "call_id": "call-0018-r1",
+        "expected": "continue",
+        "n": 10,
+        "correct": 10,
+        "pipeline_correct": 10,
+        "errors": 0,
+        "decisions": {
+          "WAIT": 10,
+          "WAIT_UNCERTAIN": 0,
+          "GO": 0,
+          "ACK": 0,
+          "claim": 0,
+          "approve_route": 0,
+          "propose_route": 0,
+          "forward_route": 0
+        },
+        "d1_latency_median_s": 1.0475779580883682,
+        "speech_latency_median_s": 0.6006513120373711,
+        "pipeline_latency_median_s": 1.6757821665378287
+      }
+    ],
+    "cost": {
+      "d1": 0.02567884,
+      "d1_cost_reported": 200,
+      "gemma": 0.01124542,
+      "gemma_cost_reported": 100
+    },
+    "scope": "Protocol expectation agreement; NOT image grip truth, ACK-positive cohort, live deadline or physics validation."
+  },
+  "per_case": [
+    {
+      "run": "e2e18-v304-s61006-r64",
+      "call_id": "call-0014-r1",
+      "expected": "continue",
+      "n": 10,
+      "gemma_old": 5,
+      "gemma_memory": 10,
+      "gemma_memory_vote_ref": 10,
+      "d1_first": 10,
+      "d1_final": 10,
+      "speech_consistent": 10,
+      "grip": {
+        "holding": 6,
+        "unknown": 4
+      }
+    },
+    {
+      "run": "e2e18-v320-s61006-r65",
+      "call_id": "call-0014-r1",
+      "expected": "continue",
+      "n": 10,
+      "gemma_old": 4,
+      "gemma_memory": 10,
+      "gemma_memory_vote_ref": 10,
+      "d1_first": 10,
+      "d1_final": 10,
+      "speech_consistent": 10,
+      "grip": {
+        "holding": 6,
+        "unknown": 4
+      }
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0020-r2",
+      "expected": "continue",
+      "n": 10,
+      "gemma_old": 0,
+      "gemma_memory": 10,
+      "gemma_memory_vote_ref": 10,
+      "d1_first": 10,
+      "d1_final": 10,
+      "speech_consistent": 10,
+      "grip": {
+        "unknown": 10
+      }
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0021-r1",
+      "expected": "GO",
+      "n": 10,
+      "gemma_old": 0,
+      "gemma_memory": 0,
+      "gemma_memory_vote_ref": 0,
+      "d1_first": 0,
+      "d1_final": 0,
+      "speech_consistent": 10,
+      "grip": {
+        "unknown": 10
+      }
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0023-r1",
+      "expected": "GO",
+      "n": 10,
+      "gemma_old": 0,
+      "gemma_memory": 0,
+      "gemma_memory_vote_ref": 0,
+      "d1_first": 9,
+      "d1_final": 2,
+      "speech_consistent": 10,
+      "grip": {
+        "holding": 2,
+        "unknown": 8
+      }
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0024-r2",
+      "expected": "continue",
+      "n": 10,
+      "gemma_old": 0,
+      "gemma_memory": 8,
+      "gemma_memory_vote_ref": 10,
+      "d1_first": 10,
+      "d1_final": 10,
+      "speech_consistent": 10,
+      "grip": {
+        "unknown": 10
+      }
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0025-r1",
+      "expected": "GO",
+      "n": 10,
+      "gemma_old": 0,
+      "gemma_memory": 0,
+      "gemma_memory_vote_ref": 9,
+      "d1_first": 0,
+      "d1_final": 10,
+      "speech_consistent": 10,
+      "grip": {
+        "holding": 10
+      }
+    },
+    {
+      "run": "e2e18-v321-s61006-r65",
+      "call_id": "call-0026-r2",
+      "expected": "continue",
+      "n": 10,
+      "gemma_old": 0,
+      "gemma_memory": 10,
+      "gemma_memory_vote_ref": 10,
+      "d1_first": 10,
+      "d1_final": 10,
+      "speech_consistent": 10,
+      "grip": {
+        "unknown": 10
+      }
+    },
+    {
+      "run": "e2e18-v322-s61006-r65",
+      "call_id": "call-0014-r1",
+      "expected": "continue",
+      "n": 10,
+      "gemma_old": 6,
+      "gemma_memory": 10,
+      "gemma_memory_vote_ref": 10,
+      "d1_first": 10,
+      "d1_final": 10,
+      "speech_consistent": 10,
+      "grip": {
+        "unknown": 6,
+        "holding": 4
+      }
+    },
+    {
+      "run": "e2e18-v323-s61006-r65",
+      "call_id": "call-0018-r1",
+      "expected": "continue",
+      "n": 10,
+      "gemma_old": 0,
+      "gemma_memory": 10,
+      "gemma_memory_vote_ref": 10,
+      "d1_first": 10,
+      "d1_final": 10,
+      "speech_consistent": 10,
+      "grip": {
+        "unknown": 1,
+        "holding": 9
+      }
+    }
+  ],
+  "pilots": [
+    {
+      "path": "outputs/llmmemory-d1-pilot-v1",
+      "d1_requests": 2,
+      "d1_ok": 1,
+      "d1_cost": 0.00025576,
+      "gemma_cost": 0
+    },
+    {
+      "path": "outputs/llmmemory-d1-pilot-v2",
+      "d1_requests": 1,
+      "d1_ok": 1,
+      "d1_cost": 0.00019516,
+      "gemma_cost": 0
+    },
+    {
+      "path": "outputs/llmmemory-d1-pilot-v3",
+      "d1_requests": 2,
+      "d1_ok": 2,
+      "d1_cost": 0.00015575999999999999,
+      "gemma_cost": 0.00018413
+    }
+  ],
+  "final_message_consistency": {
+    "n": 100,
+    "consistent": 100,
+    "method": "Codex exhaustive text audit"
+  },
+  "final_completion_tokens_median": 22.5,
+  "final_prompt_tokens_median": 1965.0,
+  "final_total_cost": 0.03692426,
+  "all_new_calls_total_cost": 0.06257467,
+  "acceptance": "NOT_READY: GO 12/30 and call-0021 0/10; not a GO/ACK resolution or physical success.",
+  "limits": [
+    "No ACK-positive case",
+    "Historical receipt times/issued commands unavailable remain null/empty",
+    "No live relay+host timing or VM execution",
+    "Same scenes used during design: exploratory, not confirmation"
+  ]
+}

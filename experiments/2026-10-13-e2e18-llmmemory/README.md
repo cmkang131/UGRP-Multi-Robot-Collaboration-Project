@@ -1,70 +1,89 @@
-# E2E18 LLM 기억 보강 — 기본 OFF, DEV draft
+# E2E18: d1 프로토콜 결정과 Gemma 대화 분리
 
-Refs #461. 기준 `495b606fe99e6ced0fa1659a9db89324f51e4c4e`, 작업 브랜치 `claude/e2e18-llmmemory`.
-Claude의 미커밋 초안·완료된 재생을 Codex가 이어받았다. 기존 실행·원자료를 재실행하거나 덮어쓰지 않았다.
+Refs #461, #463. 브랜치 `claude/e2e18-llmmemory`, 재생 실행 소스 `6ec1ab8e`.
 
-## 원인과 수정
+**판정: GO/ACK 문제 해결로 채택 불가.** 같은 저장 10사례×10회에서 d1 최종 82/100, GO 필요 사례 **12/30**, call-0021 **0/10**이다. Gemma 메시지의 확정 행동 일치는 100/100이지만 영상 파지 정답·ACK 양성 사례·라이브 창 통과·물리 완주는 검증하지 않았다. 개발에 사용한 장면이므로 확증 자료가 아니다.
 
-- v321/s61006/r65의 call-0021(555.8 SIM초)은 `own_claim=true`, 새 구간 1, `own_go_sent=false`인데 과거 구간 0의 자연어 GO/ACK가 남아 있었다. memory 초안은 승인된 claim도 기록했지만, 후보에 claim을 계속 제공하고 거절 힌트도 “승인 후 claim”이라고 써서 claim을 다시 고르게 했다. 최종 후보는 현재 dialogue 상태로 이미 완료한 claim·중복 GO/ACK·불가능한 ACK 후보를 제거하고 거절 설명을 구체화한다. 영상 근거가 불충분하면 continue를 선택할 수 있다.
-- 자기 결정 최근 8개(sim_s, kind, choice, seg, epoch, accepted/rejected, why)를 다음 요청에 넣는다. 성공의 뜻은 **프로토콜 수락**이다. 원래 호스트 검증과 응답 지연·유효기간 검사는 유지한다. 짧은 vote_ref 거절도 캡처된 구간을 기록한다. 상속된 재생 v0/v1의 `t`/`did` 필드는 원형대로 보존했다.
-- `peer_reports[].window`는 실제 수신 시점 구간, `sent_window`는 발신 요청의 구간이다. `received_at_sim_s`와 `previous_segment`를 덧붙인다. 늦게 도착한 이전 구간 메시지는 현재 수신 구간이어도 이전 내용임을 표시한다. 수신 증거가 없는 과거 재생에서는 null로 남긴다. 자연어 본문·통신 경로·상대방 정보는 바꾸지 않는다.
-- `own_command_history=[]` 원인은 `harness/s4_llm_host.py`의 대화 전용 `_on_action`이 dispatch 기록 뒤 return하여 기존 `_remember_command`를 건너뛰고, 실제 발행 루프도 이력을 채우지 않았기 때문이다. `compute_budget=lean_v1`은 영상/입자 작업량 옵션으로 이 원인과 무관하다. 별도 `v1_commands`에서 `backend.issue` 이후 자기 발행 방향·속도·요청 지속시간·servo/pan 명령 인자를 기록한다. 동일 인자 반복만 합치며 좌우 반전은 유지한다. 발행 명령을 실제 이동·관절 측정·성공으로 해석하지 않는다.
-- 조정자 `cmp/run_complex.py`의 FIXED 우선순위 절을 재사용했다. 실험용 15도/10cm 동작 크기와 고정 카메라 방향 가정은 복사하지 않았다. 이 Gemma 인터페이스는 continue/claim/approve_route/route_vote만 제공한다. 몸 움직임의 충돌·좌우 반복·탐색 방향 후보 필터와 실행 연결은 병행 중인 jevmotion 작업이며, 여기서 구현·검증했다고 합산하지 않는다. [범위 공유](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/461#issuecomment-6140569253).
-- 네 통신 조건에 동일 토글을 적용한다. off는 기존 요청을 유지하고 명령·거절·수신 이력을 수집하지 않는다. 자기 RGB·자기 명령·자기 지도·실제 수신 메시지·호스트가 이미 아는 자기 검증 결과만 사용한다.
+## 구현
 
-## 예약 번들
+- `dialogue_decider=gemma_v0`가 기존 기본값이며 `d1_v1`만 새 경로다. **d1 자기 RGB 범주 판정 → d1 프로토콜 행동 선택 → Gemma 문장 작성** 순서다. 장면당 d1 HTTP 2회이며, Gemma는 영상 해석/행동 선택을 하지 않는다.
+- d1은 과제·역할·현재 프로토콜 단계, 자기 grip/alignment 범주, 자기 결정 최근 8개와 accepted/rejected/why, 자기 발행 명령, 실제 파트너 메시지 원문과 수신 시각/나이/이전 구간 표시, 현재 peer GO 참조를 받는다. 두 d1 단계 모두 동일한 자기 카메라를 받는다. unknown/not_held/slipping이면 코드가 GO/ACK 후보를 제거한다.
+- 현재 계약으로 이미 승인된 claim, 중복 GO/ACK, 자기 GO/현재 peer 참조 없는 ACK, 오래된 영상/epoch 후보를 제거한다. d1은 남은 후보를 선택한다. 새 구간은 투표만 초기화하며 claim은 유지한다. GO는 자기 준비 투표이므로 파트너 GO나 양쪽 ACK를 선행 조건으로 요구하지 않는다. 최종 호스트 계약·유효기간 검증은 그대로다.
+- Gemma는 고정 행동과 자기 상태를 받아 `{text: ...}`만 작성한다. 행동·구간·참조·허용 수신자·경로 계약은 캡처된 값으로 구성하고 Gemma가 추가 행동 필드를 내면 거절한다. 자유 메시지 본문은 수정하지 않고 다음 d1 맥락에 전달한다. no_comm에서도 d1을 호출하고 송수신 메시지는 빈칸이며, 정형 조건은 기존 enum 스키마를 유지한다. 자유/리더 조건의 언어·통신 토폴로지도 기존 계약을 따른다.
+- d1 Choice는 최소 2개 라벨이 필요하다. 프로토콜 대기 `WAIT`와 시각/안전 불확실 대기 `WAIT_UNCERTAIN`은 모두 기존 `continue`로 실행된다. 후보 수를 맞추려고 불가능한 투표를 넣지 않는다.
+- live 실행은 기존 `scripts/s4_proxy_relay.py --dialogue-decider d1_v1` 경로만 허용한다. d1 키는 Mac Keychain을 Python subprocess 안에서 읽고 전송 헤더 외에 기록하지 않는다. 릴레이 identity/소스 해시/멱등 응답 기록을 유지한다. 실제 VM/터널/기존 릴레이 프로세스는 이번 변경에서 조작하지 않았다.
+
+## 기억 보강과 원인
+
+call-0021은 이미 claim이 승인됐지만 과거 seg0 GO/ACK와 반복 claim 거절이 새 seg1 요청에 함께 노출됐다. 초안의 모호한 거절 힌트·과도한 후보를 현재 상태와 명시적인 거절 사유로 고쳤다. `own_decision_log`의 accepted는 프로토콜 수락이며 물리 성공이 아니다. `peer_reports[].window`는 실제 수신 구간, `sent_window`는 발신 구간이고 본문은 그대로다. 과거 저장 자료에서 수신 시각이 없으면 null로 남기며 만들어 넣지 않는다.
+
+`own_command_history=[]`는 대화 전용 `s4_llm_host.Trial._on_action`이 dispatch 기록 후 return하여 기존 `_remember_command`를 건너뛰고 실제 발행 루프도 이력을 채우지 않았기 때문이다. compute_budget/lean과 무관하다. `v1_commands`가 `backend.issue` 뒤 자기 발행 방향·속도·요청 시간·servo/pan 명령을 기록한다. 같은 명령만 합치며 좌우 반전은 보존한다. 측정 관절·접촉·실제 이동 성공은 넣지 않는다.
+
+## 실행 번들
 
 | ID | workflow | 구성 |
 |---|---|---|
-| e2e18-v330 | 7.223.0 | v324 + `--llm-memory v1`, vote_ref off |
-| e2e18-v331 | 7.224.0 | v324 + `--llm-memory v1 --vote-ref v1` |
-| e2e18-v332 | 7.225.0 | v324 + `--llm-memory v1_commands`, vote_ref off |
+| e2e18-v330 | 7.223.0 | v324 + llm_memory v1 |
+| e2e18-v331 | 7.224.0 | 같은 v324 + llm_memory v1 + vote_ref v1 |
+| e2e18-v332 | 7.225.0 | v324 + llm_memory v1_commands |
+| **e2e18-v338** | **7.231.0** | v332 + dialogue_decider d1_v1 |
 
-v330과 v331의 모션 설정은 같다. 초안의 v331=v327 조합에는 approach_floor와 clip_hysteresis까지 섞여 있어 제거했다. v333–v334는 미사용 예약이다. 기존 v324–v327 코드/등록 파일은 수정하지 않았다.
+v338은 원격 main·열린 PR의 최대 v337 확인 후 예약했다. 부모 브랜치의 `version-reservation-340.json`도 338/339를 다른 작업 예약으로 보존한다. v338의 몸 제어는 v332 그대로다. 몸 스킬 선택/안전 후보 필터는 #462 범위이며 여기의 프로토콜 재생을 몸 제어 검증으로 합산하지 않는다. #463은 감독자가 07:56 UTC에 병합했으므로 이 후속 변경은 별도 draft PR로 연결한다. 작업자는 PR 병합·VM3 제출을 하지 않는다.
 
-## 상속된 실제 모델 재생
+## 사례별 비교
 
-10개 실제 실패 시점 × 변형별 10회. old와 vote_ref 요청은 v0·v1 간 각각 **10/10 SHA-256 동일**하여 기존 대조군을 그대로 사용했다. v0 400회, v1 200회, 앞선 1회 pilot 40회를 구분해 보존했다. 이 작업의 추가 모델 호출은 0이다.
+기존 label은 저장 dialogue의 다음 프로토콜 행동이다. **현재 RGB가 실제로 파지를 증명한다는 정답은 아니다.** 같은 원 요청·이미지를 사용했고 예전 old/vote_ref 대조군은 재호출하지 않았다. 숫자는 각 10회 중 일치 수이며 실패를 제외하지 않았다.
 
-| 맥락 | 다음 프로토콜 행동 일치 | GO 필요 사례 | 출력 토큰 중앙값 | 지연 중앙값 |
-|---|---:|---:|---:|---:|
-| old (v0) | 15/100 | 0/30 | 139 | 6.511 s |
-| vote_ref (v0) | 40/100 | 30/30 | 66 | 3.471 s |
-| memory 초기 (v0) | 50/100 | 0/30 | 53 | 3.989 s |
-| memory+vote_ref 초기 (v0) | 60/100 | 0/30 | 47 | 2.931 s |
-| memory 수정 (v1) | 68/100 | 0/30 | 44 | 3.089 s |
-| memory+vote_ref 수정 (v1) | 79/100 | 9/30 | 42 | 2.936 s |
+| 사례 | 기준 행동 | Gemma 옛 맥락 | Gemma 기억 | Gemma 기억+ref | d1 수정 전 | d1 최종 | 문장 일치 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| e2e18-v304 / call-0014-r1 | continue | 5/10 | 10/10 | 10/10 | 10/10 | 10/10 | 10/10 |
+| e2e18-v320 / call-0014-r1 | continue | 4/10 | 10/10 | 10/10 | 10/10 | 10/10 | 10/10 |
+| e2e18-v321 / call-0020-r2 | continue | 0/10 | 10/10 | 10/10 | 10/10 | 10/10 | 10/10 |
+| e2e18-v321 / call-0021-r1 | GO | 0/10 | 0/10 | 0/10 | 0/10 | 0/10 | 10/10 |
+| e2e18-v321 / call-0023-r1 | GO | 0/10 | 0/10 | 0/10 | 9/10 | 2/10 | 10/10 |
+| e2e18-v321 / call-0024-r2 | continue | 0/10 | 8/10 | 10/10 | 10/10 | 10/10 | 10/10 |
+| e2e18-v321 / call-0025-r1 | GO | 0/10 | 0/10 | 9/10 | 0/10 | 10/10 | 10/10 |
+| e2e18-v321 / call-0026-r2 | continue | 0/10 | 10/10 | 10/10 | 10/10 | 10/10 | 10/10 |
+| e2e18-v322 / call-0014-r1 | continue | 6/10 | 10/10 | 10/10 | 10/10 | 10/10 | 10/10 |
+| e2e18-v323 / call-0018-r1 | continue | 0/10 | 10/10 | 10/10 | 10/10 | 10/10 | 10/10 |
 
-판정은 저장 요청의 dialogue 상태에서 가능한 다음 GO/ACK/continue와 출력의 일치 여부다. 실제 RGB 그립 정답, 전체 메시지 계약, 정상 finish_reason, 라이브 응답 시점의 게이트 수락, 물리 성공까지 검사한 수치가 아니다. 모든 600개 비교 행은 HTTP 200으로 기록되어 있으나 상속 도구가 finish_reason/원 usage/cost를 저장하지 않았다. call-0021은 v1 memory와 결합형 모두 claim 10/10, 정답 0/10이다. 이를 고친 **최종 Codex 후보의 새 모델 일치율은 아직 미측정**이다. 서로 다른 프롬프트 버전의 수치를 합산하지 않는다.
+| 전체 | | 15/100 | 68/100 | 79/100 | 79/100 | **82/100** | **100/100** |
+| GO 사례만 | | 0/30 | 0/30 | 9/30 | 9/30 | **12/30** | 30/30 |
 
-상속 도구는 `openrouter_v1`, `google/gemma-4-31b-it`, DeepInfra 유료 경로였다. 무료 AI Studio 재생으로 표시할 수 없고 정확한 비용도 남아 있지 않다. 최종 재생 도구는 기존 Mac 릴레이만 사용하고 유료/미확인 provider는 별도 명시적 허가 없이는 POST 전에 거부한다. 현재 확인된 릴레이도 유료 경로여서 추가 호출하지 않았다.
+이전 Gemma-only vote_ref 40/100(GO 30/30), 초기 memory 50/100(GO 0/30), 초기 결합 60/100(GO 0/30)도 `saved-replay-summary.json`에 별도 보존했다. 이 결과는 모두 Gemma가 행동을 결정하던 구조의 기록이다.
 
-## 검증과 남은 실행
+## 지연·비용·전체 실패 기록
+
+- 최종 100회: d1 영상 100/100 + d1 결정 100/100 + Gemma 문장 100/100 정상 응답. Gemma 모델 `google/gemma-4-31b-it`, provider DeepInfra, finish_reason=stop 각각 100/100이다. d1 두 단계 합산 지연 중앙값 **1.102 s**, Gemma **0.896 s**, 전체 **2.078 s**. Gemma 출력 토큰 중앙값 **22.5**. 옛 Gemma는 6.511 s/139 tokens, 기억+ref는 2.936 s/42 tokens였으나 동일 시각 부하 비교는 아니다.
+- 최종 응답 usage.cost 합: d1 **$0.02567884**(200 HTTP), Gemma **$0.01124542**(100 HTTP), 합 **$0.03692426**. 청구 콘솔 대조는 하지 않았다. 기존 Gemma 재생 비용은 저장되지 않아 미확인이다.
+- 첫 d1 100회는 79/100(GO 9/30)이었고 후속 Gemma 요청 100회가 잘못된 멱등 키 때문에 **릴레이 HTTP 400**으로 거절됐다. 이 단계 upstream Gemma 호출은 0이다. 실제 Journal 통과/캐시 시험과 SHA-256 키로 고쳤다. 이 실패도 `d1-replay-summary.json`과 원문에 전부 남겼다.
+- 첫 d1은 독립 질문을 한 번에 줘 GO와 grip=unknown이 함께 나온 경우가 있었다(0023의 6/10). 영상 범주를 먼저 판단해 다음 결정 후보에 반영하는 두 단계로 고쳤다. 최종 GO 12회는 모두 해당 시점 d1 파지 범주 holding이었다.
+- 별도 개발 pilot은 d1 5회(4 정상, 1 HTTP 422: 단일 후보), Gemma 1회 정상이다. **첫 실패 배치·pilot까지 이번 작업에서 응답으로 확인된 전체 비용은 $0.06257467**이다. pilot과 최종 100회를 성공률 분모로 섞지 않는다.
+
+## 남은 문제
+
+call-0021은 최종 10/10 모두 grip=unknown으로 판정되어 GO 후보가 제거됐다. 저장 자기 영상에서 빔이 화면 대부분을 차지하고 집게가 명확하지 않음을 직접 확인했다. call-0023은 holding 2/10·unknown 8/10, call-0025는 holding 10/10이었다. 따라서 남은 정체는 단순 JSON/참조 오류만이 아니라 **허용 영상으로 현재 파지를 판정할 수 있는지**에 걸려 있다. 여기서 실제로 잡고 있다는 평가 정답·접촉·명령 성공을 입력해 GO를 강제하지 않는다.
+
+Gemma 문장 100개를 Codex가 전수 판독했다. 현재 WAIT 중 과거 승인 GO를 설명하는 문장은 현재 새 GO 선언과 구분했다. **행동/현재 프로토콜과 무모순 100/100**이며, 파지 표현의 물리적 진실성이나 독립 사람 평가가 아니다. ACK를 선택해야 하는 사례는 이 코호트에 없으므로 ACK 실호출 정확도는 미검증이다. 네 통신 조건은 단위 시험으로 연결을 확인했고 실제 provider 100회는 저장 peer_en 사례다. 라이브 응답 유효기간·GO/ACK 통과·물리 성공은 감독자 실행에서 별도 검증해야 한다.
+
+## 검증·재현·보존
+
+관련 시험은 아래 3개 파일만 한 pytest로 실행했다: **63 passed, 1 skipped (30.65 s)**. 건너뛴 기존 native RGB 시험은 외부 작업 금지 fixture의 mujoco import 차단 때문이다.
 
 ```sh
-python3 -m pytest -q -rs tests/test_e2e_llm_memory.py tests/test_e2e_vote_ref.py tests/test_e2e_s4_live.py
+python3 -m pytest -q -rs tests/test_e2e_dialogue_decider.py tests/test_e2e_llm_memory.py tests/test_e2e_s4_live.py
+python3 experiments/2026-10-13-e2e18-llmmemory/replay_d1.py prepare outputs/NEW_REPLAY
+python3 experiments/2026-10-13-e2e18-llmmemory/replay_d1.py run outputs/NEW_REPLAY --proxy-url http://127.0.0.1:PORT/v1/chat/completions
+python3 experiments/2026-10-13-e2e18-llmmemory/replay_d1.py report outputs/NEW_REPLAY
 ```
 
-62 passed, 1 skipped (29.96 s). 건너뛴 것은 기존 `test_native_rgb_mapping_and_model_snapshot_no_scene_input`: 외부 작업 금지 fixture의 `sys.modules['mujoco']=None` 때문에 import 불가였다. 실제 물리/렌더 실행은 없다. 실제 call-0021 텍스트 fixture에서 일반·vote_ref 두 형태 모두 claim과 ACK가 후보에서 제거되는 것을 확인했다. 네 통신 조건, 자기 이력 격리, 지연 수신, 실제 명령 인자·좌우 반전, 세 번들 등록 검사를 포함한다.
+재생은 승인된 유료 Mac OpenRouter 릴레이를 확인한 뒤 사용한다. 저장 장면 재생의 d1 호출만 Mac에서 Keychain을 읽어 직접 API를 사용하며 live 로봇은 Mac 릴레이만 사용한다. 기존 완료 배치를 다시 실행할 이유는 없다.
 
-최종 후보용 입력 20개는 `outputs/llmmemory-candidate-v3/`에 준비했다. 아직 POST하지 않았다. 재생을 실행할 수 있는 적합한 Mac 릴레이가 제공되면 다음과 같이 **새 후보만** 검증한다(대조군 재실행 없음).
-
-```sh
-python3 experiments/2026-10-13-e2e18-llmmemory/replay_memory.py run outputs/llmmemory-candidate-v3 \
-  --reps 10 --threads 4 --variants memory,memory_vote_ref \
-  --proxy-url http://127.0.0.1:PORT/v1/chat/completions
-```
-
-VM3 읽기 점검은 `vm3-admission.json`에 있다. 실행 폴더 0개, 디스크 78,156,304,384 bytes 여유지만 uptime 27,785.88 s로, 기존 실행기의 최소 cap 900 s + 종료 여유 1,200 s를 더하면 8시간(28,800 s)을 넘는다. 따라서 새 실행 0개, 속도 게이트/GO·ACK 통과/완주 모두 미검증이다. VM 재시작·정지·할당 해제는 감독자 소유이며 이 작업에서 수행하지 않았다.
-
-감독자가 실행 수명·릴레이를 갱신하고 최종 재생 효과를 확인한 뒤 seed 61006의 v330·v331 두 개만, 총 12개 미만/자기 몫 최대 2개로 제출한다. 기존 `scripts.azure_speed_gate start`(30 SIM초, 한도 3.0), `remote_run_finish.py`, 기존 fetch-lite/보관 절차를 사용한다. 이 draft는 병합하지 않는다.
-
-## 기록과 재현
-
-- `saved-replay-summary.json`: 버전·사례별 n/N, 지연/토큰, 원본 경로와 SHA-256. `summarize_saved.py`는 네트워크 없이 재집계한다.
-- `replay-text-evidence.json.zst`: 상속 요청 80개 텍스트+이미지 SHA-256, 모델 응답 640개(pilot 40 포함). 원 요청의 이미지 data URL만 이미지 바이트 해시로 치환했다. 압축 해제 바이트 일치·전체 SHA-256은 `evidence-manifest.json`에서 확인했다. 기존 Mac 원본은 보존했다.
-- `call-0021-fixture.json`: 실제 원 요청 텍스트/이미지 해시/기존 결정 로그. 시험에 쓰며 새 의미 라벨이나 가짜 물리 성공을 추가하지 않았다.
-- 원 실행: VM3 `~/ugrp-sim/runs/{e2e18-v304-s61006-r64,e2e18-v320-s61006-r65,e2e18-v321-s61006-r65,e2e18-v322-s61006-r65,e2e18-v323-s61006-r65}/raw/`. 이번 작업은 상속 저장본만 재집계했고 원 실행 전체의 원격 보관 상태를 재확인하지 않았다.
+- `d1-replay-summary.json`: 두 배치·pilot·사례별 분모·비용·지연 및 채택 불가 판정.
+- `d1-message-audit.json`: 문장 100개·선택 행동·판독 이유·텍스트 해시.
+- `d1-replay-evidence.json.zst`, `d1-evidence-manifest.json`: 원문 요청·응답·실패, 이미지 SHA-256, 원본 566파일의 위치/크기/해시. 압축 해제 바이트·전체 해시 검증 완료. 원 이미지와 Mac 원자료는 보존했다.
+- `d1-verification.json`, `d1-validation.txt`: 시험 범위·실행 소스/프롬프트 해시. 상속 기록 `saved-replay-summary.json`, `replay-text-evidence.json.zst`, `call-0021-fixture.json`도 유지한다.
+- 원 실행은 VM3 `~/ugrp-sim/runs/{e2e18-v304-s61006-r64,e2e18-v320-s61006-r65,e2e18-v321-s61006-r65,e2e18-v322-s61006-r65,e2e18-v323-s61006-r65}/raw/`. 현재 원격 보관 상태는 재조회하지 않았다.
 
 ## 참고 자료
 
@@ -76,25 +95,7 @@ VM3 읽기 점검은 `vm3-admission.json`에 있다. 실행 폴더 0개, 디스�
 - [Inner Monologue, Huang et al.](https://arxiv.org/abs/2207.05608): 닫힌 루프 언어 피드백을 계획에 반영. 논문의 성공 검출기와 달리 여기서는 물리 성공·접촉 정답을 제어 입력에 주지 않는다.
 - [Lamport, Time, Clocks, and the Ordering of Events in a Distributed System](https://lamport.azurewebsites.net/pubs/time-clocks.pdf): 발신·수신 사건과 인과 순서 구별의 표준 근거. LLM 다중 에이전트의 별도 성능 검증으로 인용하지 않는다.
 
-## 17:10 설계 변경 — d1 결정 / Gemma 메시지
-
-사용자 지시에 따라 `dialogue_decider=gemma_v0`(기본) / `d1_v1`로 분리한다. 기존 Gemma 행동 선택 재생은 종전 구조의 탐색 기록이다. 새 v338 / 7.231.0은 v332(자기 명령 포함 기억)에 d1 프로토콜 결정을 추가한다. 번호는 2026-10-13 원격 main·전체 열린 PR 최대 v337을 확인한 뒤 예약했다. 감독자가 작업 도중 #463을 병합했으므로 후속 draft PR로 변경을 연결하며 작업자는 병합·VM3 조작을 하지 않는다.
-
-`d1_v1`은 같은 Mac S4 릴레이에 `--dialogue-decider d1_v1`을 추가해 사용한다. d1이 자기 RGB와 과제·역할·프로토콜 단계·자기 결정 8개·발행 명령·수신 메시지 원문/시각/나이·현재 GO 참조를 받아 먼저 선택한다. 코드가 이미 claim한 역할, 이미 한 투표, 참조가 없는 ACK, 오래된 영상/epoch 후보를 제거한다. d1은 현재 자기 RGB의 grip/alignment도 범주로 평가한다. 사전 범주가 없으면 입력은 미분류로 명시하며 다른 모델의 해석이나 정답으로 채우지 않는다.
-
-Gemma에는 확정된 행동과 자기 상태를 전달하고 `{text: ...}`만 받는다. 행동·구간·참조·허용 수신자·경로 계약은 호스트가 캡처에서 고정하며 추가 행동 필드가 나오면 거절한다. no_comm에서도 d1이 돌고 메시지는 빈칸이다. 정형 조건은 기존 enum 스키마만 쓰며 자유 문장을 섞지 않는다. 자유/리더 대화의 원문은 다음 d1 요청으로 그대로 전달한다. 기본 경로 및 몸 제어는 유지한다.
-
-주의: 10사례의 기존 정답은 **현재 프로토콜 상태에서 다음 투표가 무엇인가**를 나타낸다. 파지의 영상 정답은 없다. ACK가 정답인 사례도 없다. call-0021 저장 자기 영상은 빔이 화면 대부분을 차지해 집게가 명확하지 않다. 초기 d1 1회는 grip=unknown, WAIT를 골랐다. 이를 실패 분모에서 빼거나 프롬프트에 잡았다는 정답을 넣지 않는다.
-
-### 추가 참고 자료 (2026-10-13 원문/공식 문서 확인)
-
 - [RoCo](https://arxiv.org/abs/2307.04738): 로봇 간 대화와 실행 가능성 피드백으로 협업 계획을 수정한다. 여기서는 원문 대화와 호스트 프로토콜 거절만 사용하며 논문의 환경 피드백 전체를 허용 관측으로 간주하지 않는다.
 - [CoELA](https://arxiv.org/abs/2307.02485): 분산 관측·유료 통신에서 지각/기억/실행을 모듈로 연결한다. d1/Gemma 분리의 성능을 입증한 논문은 아니다.
 - [Liquid 공식 decision model 문서](https://docs.liquid.ai/lfm/models/decision-models): 고정 선택지의 결정과 자유 텍스트 생성을 구분한다. [공식 d1 vision 예제](https://www.liquid.ai/blog/d1-decision-model)는 `images` data URL 입력을 확인한다. 실호출에서 Choice는 최소 2개 라벨을 요구해, 둘 다 기존 continue인 프로토콜 대기/시각 불확실 대기로 표현한다. 불가능한 투표를 후보로 넣지 않는다.
 - [Google Gemma 대화 문서](https://ai.google.dev/gemma/docs/gemma_chat): 매 호출에 관련 과거 맥락을 명시적으로 공급한다. [Google 공식 프롬프트 지침](https://ai.google.dev/gemini-api/docs/prompting-strategies): 역할·제약·출력 형식을 구체적으로 지정한다. 후자는 Gemini 지침이며 Gemma 성능 보장은 아니다.
-
-### 첫 d1 재생의 실패와 수정
-
-`outputs/llmmemory-d1-replay-v1`의 결정 100/100은 정상 응답이었으나 프로토콜 일치는 79/100, GO 9/30, call-0021 0/10이었다. 이어진 Gemma 요청 100/100은 멱등 키가 64자리 hex가 아니어서 릴레이 HTTP 400으로 거절되었으며 upstream Gemma 호출은 없었다. 초기 실험과 실패 원문을 보존한다. 멱등 키를 SHA-256으로 고치고 실제 Journal 통과/캐시 시험을 추가했다.
-
-한 d1 요청의 독립 질문들이 GO와 grip=unknown을 함께 선택한 사례(0023의 6/10)가 있었다. 수정은 **d1 자기 RGB 범주 판정 → 해당 범주와 같은 RGB·기억을 넣은 d1 프로토콜 선택 → Gemma 문장 작성** 순서다. unknown/not_held/slipping이면 코드가 GO/ACK 후보를 없앤다. 영상 질문에도 같은 과제·역할·이전 행동 맥락을 주지만 과거 명령/투표를 현재 파지 증명으로 쓰지 않도록 명시한다. 장면당 d1 HTTP 2회이며 두 지연과 비용을 합산한다. 후보를 맞히기 위해 파지 정답이나 상대 상태를 주입하지 않는다. 수정한 Gemma 경로의 별도 pilot 1회 정상 응답을 확인했다.
