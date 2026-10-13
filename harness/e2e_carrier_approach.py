@@ -40,6 +40,9 @@ def advance(transport,rid,now):
     from harness import e2e_approach_commit as committed
     from harness import e2e_grasp_once as once
     once.seed_station(transport,rid,now,state,target)
+    from harness.e2e_end_assignment import update_station
+    assignment=update_station(transport,rid,now,state,target)
+    if assignment is not None:return assignment
     tracked=once.retained(transport,rid,now,state)
     if not tracked and not committed.retained(transport,now,state):expire(transport,rid,now,state,fresh)
     if 'station' not in state and getattr(transport,'pregrasp_acquire','off')!='off':

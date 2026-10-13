@@ -38,3 +38,29 @@ def test_sparse_images_cannot_supply_two_consecutive_occupancy_votes(monkeypatch
  assert s.blocked==set()
  s.observe_occupancy(a,[0,0,0],{},b'jpeg',3,25.4,25.4)
  assert s.blocked=={'end1'}
+
+def test_relay_reserves_full_context_and_retains_ambiguous_cost(tmp_path):
+ from scripts.e2e_end_model_relay import Budget
+ b=Budget(tmp_path/'budget',attempts=2,usd=.30)
+ one=b.admit();two=b.admit();assert (one,two)==(1,2)
+ assert b.admit() is None
+ b.finish(one,None,{'error':'timeout'})
+ b.finish(two,.0001,{'usage':'known'})
+ assert b.charged==pytest.approx(b.reserve_usd+.0001)
+ assert b.pending==pytest.approx(0.)
+
+def test_relay_never_admits_beyond_reserved_dollar_limit(tmp_path):
+ from scripts.e2e_end_model_relay import Budget
+ b=Budget(tmp_path/'budget',attempts=600,usd=.10)
+ assert b.admit()==1
+ assert b.admit() is None
+ b.finish(1,None,{})
+ assert b.admit() is None
+
+def test_runtime_off_is_exact_noop():
+ from types import SimpleNamespace
+ from harness.e2e_end_assignment import install,update_station,PARAMS
+ from harness.zone_s3_coarse_fine import arm,PARAMS as physical
+ tr=SimpleNamespace();install(tr)
+ assert vars(tr)=={} and update_station(tr,'r1',1.,{},None) is None
+ assert PARAMS['reach_m']==pytest.approx(arm.MOUNT_X_M+physical['pair_radius_m'])

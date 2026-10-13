@@ -24,7 +24,7 @@
     "nearest approach over full run, not simultaneous occupancy",
     "saved-frame replay cannot establish counterfactual physical separation"
   ],
-  "module_tests_passed": 6,
+  "module_tests_passed": 9,
   "offline": {
     "evaluated_saved_rgb_frames": 90,
     "uniform_samples_per_robot": 13,
@@ -38,8 +38,15 @@
     "model_calls": 0
   },
   "remaining": [
-    "Replay all decision history, only selected RGB currently sampled",
-    "Active view check and model/channel runtime wiring not implemented",
-    "VM stage cohort not submitted"
-  ]
+    "Saved-input occupancy insufficient; active prearrival views require new stage observations",
+    "Gemma relay provider and stage hook not yet exercised",
+    "Other communication conditions model/channel runtime not connected"
+  ],
+  "registered_bundles": [
+    403,
+    404,
+    405
+  ],
+  "source_stage": "grasp checkpoint only; no_comm; no full E2E",
+  "related_tests_passed": 41
 }

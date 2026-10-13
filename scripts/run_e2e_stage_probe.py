@@ -17,7 +17,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 ROOT=Path(__file__).resolve().parents[1]
 BASELINE_DIGEST='038b4b838c9e56335c42d0739de82e33d18c9a4affe0ed9ab9bc559da09e0fe9'
-MODES={'v375':'off','v384':'regulated_v1','v385':'gaze_v1','v386':'track_gaze_v1','v395':'track_gaze_v1','v396':'track_gaze_v1','v399':'track_gaze_v1','v400':'track_gaze_v1'}
+MODES={'v375':'off','v384':'regulated_v1','v385':'gaze_v1','v386':'track_gaze_v1','v395':'track_gaze_v1','v396':'track_gaze_v1','v399':'track_gaze_v1','v400':'track_gaze_v1','v403':'track_gaze_v1','v404':'track_gaze_v1','v405':'track_gaze_v1'}
 
 
 def read_json(path):
@@ -101,27 +101,30 @@ def run(args):
     route_recovery=getattr(args,'route_recovery','off');route_record=getattr(args,'route_input_record','off')
     if wrapper=='v387' and (route_recovery!='off' or route_record!='off'):
         raise ValueError('ROUTE_STAGE_REQUIRES_V393')
-    if wrapper in ('v393','v394','v395','v396','v397','v398','v399','v400'):
+    if wrapper in ('v393','v394','v395','v396','v397','v398','v399','v400','v403','v404','v405'):
         b.update(execution_bundle_id='e2e18-'+wrapper,schema='ugrp.e2e_stage_probe.'+wrapper,workflow_version='7.'+str(int(wrapper[1:])-107)+'.0')
         b['e2e_options'].update(route_recovery=route_recovery,route_input_record=route_record)
         b['route_parent_controller']={'off':'e2e18-v391','frontier_v1':'e2e18-v392','footprint_v2':'e2e18-v390'}[route_recovery] if route_record!='off' else {'off':'e2e18-v375','frontier_v1':'e2e18-v381','footprint_v2':'e2e18-v389'}[route_recovery]
         if recipe['stage']!='mapping' and (route_recovery!='off' or route_record!='off'):
             raise ValueError('ROUTE_OPTIONS_REQUIRE_MAPPING_STAGE')
     policy=getattr(args,'stage_policy_handoff','off')
-    if (policy!='off') != (wrapper in ('v394','v395','v396','v399','v400')):raise ValueError('BASELINE_HANDOFF_REQUIRES_V394')
+    if (policy!='off') != (wrapper in ('v394','v395','v396','v399','v400','v403','v404','v405')):raise ValueError('BASELINE_HANDOFF_REQUIRES_V394')
     b['e2e_options']['stage_policy_handoff']=policy
     fov={'v395':'turn60_v1','v396':'turn45_v1','v399':'near_once60_v1','v400':'near_once45_v1'}.get(wrapper,'off')
     if fov!='off' and args.condition!=wrapper:raise ValueError('FOV_CONDITION_WRAPPER_MISMATCH')
     b['e2e_options']['grasp_fov']=fov
-    b['e2e_options']['stage_cadence']='canonical_v1' if wrapper in ('v397','v398','v399','v400') else 'off'
+    b['e2e_options']['end_assignment']={'v403':'lock_v1','v404':'rgb_rule_v1','v405':'gemma_v1'}.get(wrapper,'off')
+    b['end_assignment_condition']='no_comm'
+    if wrapper in ('v403','v404','v405') and args.condition!=wrapper:raise ValueError('END_CONDITION_WRAPPER_MISMATCH')
+    b['e2e_options']['stage_cadence']='canonical_v1' if wrapper in ('v397','v398','v399','v400','v403','v404','v405') else 'off'
     b['e2e_options']['stage_rgb_boundary']='strict_after_v1' if wrapper=='v398' else 'off'
     tracked=subprocess.check_output(['git','ls-files','harness','sim','scripts','configs'],cwd=ROOT,text=True).splitlines()
     b['original_source_sha256']=b.pop('source_sha256',{})
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in tracked if (ROOT/p).is_file()}
     out=args.output;out.mkdir(parents=True,exist_ok=False)
     write(out/'bundle.json',b)
-    write(out/'RUN_META.json',dict(schema='ugrp.run_meta.v1',**{'class':'dev'},pr=475,
-        branch='claude/e2e18-grasp1',sha=sha,batch=args.batch))
+    write(out/'RUN_META.json',dict(schema='ugrp.run_meta.v1',**{'class':'dev'},pr=483 if wrapper in ('v403','v404','v405') else 475,
+        branch='codex/e2e18-end-assignment' if wrapper in ('v403','v404','v405') else 'claude/e2e18-grasp1',sha=sha,batch=args.batch))
     result=dict(source_sha=sha,status='HOST_ERROR',E2E_success_eligible=False,physical_hardware=False,
         checkpoint_sha256=recipe['checkpoint_sha256'],condition=args.condition,seed=args.seed,
         stage=recipe['stage'],source_run=recipe['source_run'],first_attempt_success=False,both_held=False)
@@ -148,6 +151,8 @@ def run(args):
         for rid,r in robots.items():
             if digest(own_map_record(r))!=receipt[rid]['map_sha256']:raise ValueError('OWN_MAP_HANDOFF_MISMATCH:'+rid)
         tr.grasp_fov=fov
+        from harness.e2e_end_assignment import install as end_install
+        end_install(tr,{'v403':'lock_v1','v404':'rgb_rule_v1','v405':'gemma_v1'}.get(wrapper,'off'),relay_url=getattr(args,'end_model_relay',None))
         cutoff=recipe['cutoff_s'];tr.set(recipe['stage'],cutoff)
         tr.event(cutoff,'stage_probe_entry',setup='TEST_SETUP_GT',prior_protocol_omitted=True,
                  controller_feedback=False,checkpoint_sha256=recipe['checkpoint_sha256'])
@@ -217,6 +222,10 @@ def run(args):
         finalizer.finalizing=True
         result.update(scan_cycles=cycle_counts,commands=command_count,model_calls=0,provider_cost_usd=0,wall_s=time.monotonic()-started,sim_s=elapsed,
             physics_wall_s=None if physics_started is None else time.monotonic()-physics_started)
+        if tr is not None and getattr(tr,'end_clients',None):
+            for client in tr.end_clients.values():client.close()
+            result['model_calls']=sum(client.calls for client in tr.end_clients.values())
+            result['provider_cost_usd']=None # authoritative global Mac relay ledger
         if tr is not None:finalizer.attempt('transport-trace',lambda:write(out/'transport-trace.json',tr.events))
         if backend is not None:finalizer.attempt('backend-close',backend.close)
         if tr is not None:result.update(stage_metrics(tr.events,held.first,result['status']=='BOTH_HELD',elapsed))
@@ -234,10 +243,11 @@ def main():
     r.add_argument('--baseline-bundle',type=Path,required=True);r.add_argument('--condition',choices=MODES,required=True)
     r.add_argument('--seed',type=int,required=True);r.add_argument('--expected-source-sha',required=True)
     r.add_argument('--cap-s',type=float,default=300.);r.add_argument('--wall-cap-s',type=float,default=1800.)
-    r.add_argument('--stage-wrapper',choices=('v387','v393','v394','v395','v396','v397','v398','v399','v400'),default='v387')
+    r.add_argument('--stage-wrapper',choices=('v387','v393','v394','v395','v396','v397','v398','v399','v400','v403','v404','v405'),default='v387')
     r.add_argument('--stage-policy-handoff',choices=('off','baseline_v1'),default='off')
     r.add_argument('--route-recovery',choices=('off','frontier_v1','footprint_v2'),default='off')
     r.add_argument('--route-input-record',choices=('off','on_v1'),default='off')
+    r.add_argument('--end-model-relay',choices=('http://127.0.0.1:18093/end',))
     r.add_argument('--batch',required=True);r.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
     if a.command=='prepare':

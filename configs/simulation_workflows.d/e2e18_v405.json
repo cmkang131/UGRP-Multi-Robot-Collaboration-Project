@@ -1,0 +1,36 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e18-v405",
+      "version": "7.298.0",
+      "purpose": "Default-off end assignment: Gemma private end judgment + own RGB inspection",
+      "entry": "scripts/run_e2e_stage_probe.py",
+      "runner": "scripts.run_e2e_stage_probe",
+      "docs": "experiments/2026-10-14-e2e18-end-assignment/README.md",
+      "requires": "Linux; explicit stage toggle; committed source; source own JPEGs; supervisor VM3 speed/storage admission",
+      "output_flag": "--output",
+      "output_kind": {
+        "prepare": "file",
+        "run": "directory"
+      },
+      "required_inputs": {
+        "prepare": [
+          "--raw"
+        ],
+        "run": [
+          "--checkpoint",
+          "--raw",
+          "--baseline-bundle",
+          "--condition",
+          "--seed",
+          "--expected-source-sha",
+          "--batch"
+        ]
+      },
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "shutdown_grace_s": 60
+    }
+  ]
+}
