@@ -62,7 +62,7 @@ def test_actual_bundle_registration(monkeypatch):
         assert 'harness/e2e_body_skills.py' in skill['source_sha256']
     code=bundle(*args,**kw,body_controller='jev_v1')
     require_current(code,ROOT)
-    assert code['execution_bundle_id']=='e2e18-v346'
+    assert code['execution_bundle_id']=='e2e18-v349'
     assert code['e2e_options']['body_backend']=='code_v1'
     assert 'harness/e2e_body_code.py' in code['source_sha256']
 

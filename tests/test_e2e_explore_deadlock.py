@@ -55,6 +55,23 @@ def test_expiry_reselects_real_native_path_and_preserves_obstacles_and_pose():
     np.testing.assert_array_equal(pose, before)
 
 
+@pytest.mark.parametrize('seconds', [5., 10.])
+def test_short_idle_is_per_instance_and_preserves_actual_map(seconds):
+    g, n, c, pose = restored(fixture(), 'replan_v1')
+    baseline, _, _, _ = restored(fixture(), 'replan_v1')
+    g.explore_deadlock.idle_threshold_s = seconds
+    costs, before = c.costs.copy(), pose.copy()
+    idle_commands(g, end=seconds)
+    g.explore_deadlock.before_receive(seconds-.1)
+    assert g.explore_deadlock.cycles == 0
+    action, trace = g.receive(robot_id=g.robot_id, t=seconds)
+    assert g.explore_deadlock.cycles == 1
+    assert action['turn'] > 0
+    assert baseline.explore_deadlock.idle_threshold_s == PARAMS['idle_s'] == 30.
+    np.testing.assert_array_equal(c.costs, costs)
+    np.testing.assert_array_equal(pose, before)
+
+
 @pytest.mark.parametrize('guard', ['rotation', 'ownership_gap', 'done', 'approach', 'failed', 'view', 'recovery', 'r3'])
 def test_no_recovery_for_motion_handoff_or_protected_state(guard):
     g, n, c, pose = restored(fixture(), 'replan_v1')

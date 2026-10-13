@@ -1,4 +1,4 @@
-"""v346 strong-rule body skills; same own-input filters, zero model requests.
+"""v349 strong-rule body skills; same own-input filters, zero model requests.
 
 Nav2-style replan/recovery ordering is adapted to the existing bounded skills.
 Maps and pose estimates are never cleared or replaced by evaluator state.
@@ -24,14 +24,14 @@ def compose(bundle, enabled=False):
     if bundle['execution_bundle_id'] != 'e2e18-v344':
         raise ValueError('CODE_BODY_REQUIRES_BOUNDED_V344_PARENT')
     bundle.update(body_code_parent='e2e18-v344', body_code_parameters=copy.deepcopy(PARAMS),
-                  execution_bundle_id='e2e18-v346', workflow_version='7.239.0', schema='ugrp.e2e_ownmap_live.v346')
+                  execution_bundle_id='e2e18-v349', workflow_version='7.242.0', schema='ugrp.e2e_ownmap_live.v349')
     bundle['e2e_options']['body_backend'] = BACKEND
-    return ('harness/e2e_body_code.py', 'configs/simulation_workflows.d/e2e18_v346.json')
+    return ('harness/e2e_body_code.py', 'configs/simulation_workflows.d/e2e18_v349.json')
 
 
 def parent_for_validation(bundle):
     if (bundle.get('body_code_parent') != 'e2e18-v344' or bundle.get('body_code_parameters') != PARAMS
-            or bundle['e2e_options'].get('body_backend') != BACKEND or bundle['execution_bundle_id'] != 'e2e18-v346'):
+            or bundle['e2e_options'].get('body_backend') != BACKEND or bundle['execution_bundle_id'] != 'e2e18-v349'):
         raise ValueError('REGISTERED_CODE_BODY_REQUIRED')
     parent = copy.deepcopy(bundle)
     parent['execution_bundle_id'] = parent.pop('body_code_parent')
