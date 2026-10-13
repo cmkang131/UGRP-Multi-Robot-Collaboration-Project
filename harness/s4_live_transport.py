@@ -35,6 +35,12 @@ def validate_receipt(receipt, now=None, *, remote_url=URL):
         hashes={p:hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest() for p in paths}
         if not openrouter or receipt.get('decider')!='jev_v1' or receipt.get('jev_source_sha256')!=hashes:
             raise HostError('pinned Jev relay source required')
+    if receipt.get('dialogue_decider','gemma_v0')!='gemma_v0':
+        paths=('scripts/d1_dialogue_upstream.py','harness/e2e_dialogue_decider.py','harness/e2e_llm_memory.py')
+        hashes={p:hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest() for p in paths}
+        if (not openrouter or receipt.get('dialogue_decider')!='d1_v1' or receipt.get('decider','off')!='off'
+                or receipt.get('d1_dialogue_source_sha256')!=hashes):
+            raise HostError('pinned d1 dialogue relay source required')
     if single and not openrouter and (receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
                    or receipt.get('gemma_model_pin')!={'model_id':'gemma-4-31b-it','version':'001'}
                    or receipt.get('gemma_fallback',{}).get('image_input_confirmed') is not True):

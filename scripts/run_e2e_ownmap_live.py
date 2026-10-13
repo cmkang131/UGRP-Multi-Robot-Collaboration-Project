@@ -22,7 +22,15 @@ PROFILES=('study_gemma4_31b_v1','main_study_gemini_v1')
 PORTS=dict(zip(PROFILES,(18393,18391)))
 
 
-def relay_url(profile, decider='off'):
+def relay_url(profile, decider='off', *, dialogue_decider='gemma_v0', receipt=None):
+    if dialogue_decider=='d1_v1':
+        url=(receipt or {}).get('remote_url')
+        if (profile!='study_gemma4_31b_v1' or decider!='off'
+                or (receipt or {}).get('dialogue_decider')!='d1_v1'
+                or url not in ('http://127.0.0.1:18391/v1/chat/completions',
+                               'http://127.0.0.1:18393/v1/chat/completions')):
+            raise ValueError('D1_REGISTERED_RELAY_RECEIPT_REQUIRED')
+        return url
     # Paired Gemma/Jev uses the existing second loopback relay independently.
     port = 18391 if decider == 'jev_v1' else PORTS[profile]
     return f'http://127.0.0.1:{port}/v1/chat/completions'
@@ -481,7 +489,8 @@ def run(b,out,receipt,*,backend_factory=None,body_receipt=None):
         from harness.e2e_route_tokens import profile_override
         profile=profile_override(profile,b['e2e_options'].get('route_tokens','off'))
         write(out/'effective-model-settings.json',profile['model'])
-        profile.update(profile_id=b['driver_profile'],proxy_url=relay_url(b['driver_profile'],b['e2e_options'].get('decider','off')))
+        profile.update(profile_id=b['driver_profile'],proxy_url=relay_url(b['driver_profile'],b['e2e_options'].get('decider','off'),
+            dialogue_decider=b['e2e_options'].get('dialogue_decider','gemma_v0'),receipt=offered))
         profile['sha256']=digest(profile)
         budget=MainStudyBudget.create(out/'budget.sqlite');key=out.parent.name
         budget.register_cohort(key,token_cap=800000,unknown_usage_charge_tokens=16000,

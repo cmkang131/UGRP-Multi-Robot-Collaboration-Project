@@ -11,7 +11,7 @@ Refs #461, #463. 브랜치 `claude/e2e18-llmmemory`, 재생 실행 소스 `6ec1a
 - 현재 계약으로 이미 승인된 claim, 중복 GO/ACK, 자기 GO/현재 peer 참조 없는 ACK, 오래된 영상/epoch 후보를 제거한다. d1은 남은 후보를 선택한다. 새 구간은 투표만 초기화하며 claim은 유지한다. GO는 자기 준비 투표이므로 파트너 GO나 양쪽 ACK를 선행 조건으로 요구하지 않는다. 최종 호스트 계약·유효기간 검증은 그대로다.
 - Gemma는 고정 행동과 자기 상태를 받아 `{text: ...}`만 작성한다. 행동·구간·참조·허용 수신자·경로 계약은 캡처된 값으로 구성하고 Gemma가 추가 행동 필드를 내면 거절한다. 자유 메시지 본문은 수정하지 않고 다음 d1 맥락에 전달한다. no_comm에서도 d1을 호출하고 송수신 메시지는 빈칸이며, 정형 조건은 기존 enum 스키마를 유지한다. 자유/리더 조건의 언어·통신 토폴로지도 기존 계약을 따른다.
 - d1 Choice는 최소 2개 라벨이 필요하다. 프로토콜 대기 `WAIT`와 시각/안전 불확실 대기 `WAIT_UNCERTAIN`은 모두 기존 `continue`로 실행된다. 후보 수를 맞추려고 불가능한 투표를 넣지 않는다.
-- live 실행은 기존 `scripts/s4_proxy_relay.py --dialogue-decider d1_v1` 경로만 허용한다. d1 키는 Mac Keychain을 Python subprocess 안에서 읽고 전송 헤더 외에 기록하지 않는다. 릴레이 identity/소스 해시/멱등 응답 기록을 유지한다. 실제 VM/터널/기존 릴레이 프로세스는 이번 변경에서 조작하지 않았다.
+- live 실행은 기존 `scripts/s4_proxy_relay.py --dialogue-decider d1_v1` 경로만 허용한다. d1 키는 Mac Keychain을 Python subprocess 안에서 읽고 전송 헤더 외에 기록하지 않는다. 릴레이 identity/소스 해시/멱등 응답 기록을 유지한다. 서버도 d1 소스 해시를 검사하고 receipt에 지정된 기존 등록 loopback 포트 18391/18393 중 하나만 사용한다. 실제 VM/터널/기존 릴레이 프로세스는 이번 변경에서 조작하지 않았다.
 
 ## 기억 보강과 원인
 
@@ -68,7 +68,7 @@ Gemma 문장 100개를 Codex가 전수 판독했다. 현재 WAIT 중 과거 승�
 
 ## 검증·재현·보존
 
-부모 `99900904`의 기존 몸 제어/조합 변경과 연결부를 통합했다. 보호 대상 두 파일은 부모와 동일하며, 재생의 영상 요청·결정 요청·Gemma 요청·최종 응답 재구성이 각각 100/100 동일함을 확인했다. 관련 시험은 아래 3개 파일만 한 pytest로 실행했다: **67 passed, 1 skipped (31.25 s)**. 건너뛴 기존 native RGB 시험은 외부 작업 금지 fixture의 mujoco import 차단 때문이다.
+부모 `99900904`의 기존 몸 제어/조합 변경과 연결부를 통합했다. 보호 대상 파일의 부모 대비 차이는 없으며(`e2e18_v32x.json`은 양쪽 모두 없음),, 재생의 영상 요청·결정 요청·Gemma 요청·최종 응답 재구성이 각각 100/100 동일함을 확인했다. 관련 시험은 아래 3개 파일만 한 pytest로 실행했다: **69 passed, 1 skipped (31.87 s)**. 건너뛴 기존 native RGB 시험은 외부 작업 금지 fixture의 mujoco import 차단 때문이다.
 
 ```sh
 python3 -m pytest -q -rs tests/test_e2e_dialogue_decider.py tests/test_e2e_llm_memory.py tests/test_e2e_s4_live.py

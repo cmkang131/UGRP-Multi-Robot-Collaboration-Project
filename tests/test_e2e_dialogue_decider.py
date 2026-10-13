@@ -173,3 +173,29 @@ def test_visual_uncertainty_removes_go_and_real_journal_accepts_speech_key(tmp_p
     assert disposition=='cached'
     assert request_dialogue_mode(dict(messages=[{},dict(content='ordinary chat')]))=='gemma_v0'
     assert request_dialogue_mode(request(user()))==dd.MODE
+
+
+@pytest.mark.parametrize('port',(18391,18393))
+def test_live_receipt_pins_d1_source_and_selects_its_registered_port(port):
+    import hashlib
+    from scripts.run_e2e_ownmap_live import relay_url
+    from scripts.openrouter_upstream import config
+    from harness.s4_live_transport import validate_receipt
+    from harness.zone_study_llm_driver import HostError
+    h=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+    url=f'http://127.0.0.1:{port}/v1/chat/completions'
+    upstream=h('scripts/openrouter_upstream.py')
+    r=dict(schema='ugrp.s4_ssh_proxy.v1',remote_url=url,proxy=dict(source_sha256=upstream),
+        checked_unix=100.,valid_for_s=3600,audit_per_post=True,
+        authentication='existing_mac_proxy_no_credentials_transferred',driver_profile='study_gemma4_31b_v1',
+        upstream='openrouter_v1',single_model=True,fallback_enabled=False,
+        openrouter_v1=dict(config(),source_sha256=upstream),dialogue_decider=dd.MODE,
+        d1_dialogue_source_sha256={p:h(p) for p in ('scripts/d1_dialogue_upstream.py','harness/e2e_dialogue_decider.py','harness/e2e_llm_memory.py')})
+    assert validate_receipt(r,now=101.,remote_url=url)==r
+    assert relay_url('study_gemma4_31b_v1',dialogue_decider=dd.MODE,receipt=r)==url
+    assert relay_url('study_gemma4_31b_v1')=='http://127.0.0.1:18393/v1/chat/completions'
+    bad=copy.deepcopy(r);bad['d1_dialogue_source_sha256']['harness/e2e_dialogue_decider.py']='0'*64
+    with pytest.raises(HostError,match='pinned d1'):
+        validate_receipt(bad,now=101.,remote_url=url)
+    with pytest.raises(ValueError,match='REGISTERED_RELAY'):
+        relay_url('study_gemma4_31b_v1',dialogue_decider=dd.MODE,receipt={**r,'remote_url':'https://example.com/api'})

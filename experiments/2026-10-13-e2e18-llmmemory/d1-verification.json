@@ -1,10 +1,9 @@
 {
-  "source_sha": "6ec1ab8e6310e9c522134652bb8f4c4472abfb01",
   "tests": {
     "command": "python3 -m pytest -q -rs tests/test_e2e_dialogue_decider.py tests/test_e2e_llm_memory.py tests/test_e2e_s4_live.py",
-    "passed": 67,
+    "passed": 69,
     "skipped": 1,
-    "seconds": 31.25
+    "seconds": 31.87
   },
   "replay_sources_match_current": true,
   "source_sha256": {
@@ -27,8 +26,15 @@
   "post_integration_sources": {
     "harness/e2e_s4_live.py": "e41fa913c4ec009100bcac1988c67ba0086033aca7510bf389ca060df35551ef",
     "harness/e2e_runtime_registration.py": "ca7aecac33835feadaaf93601fd66713d17f8ec543c4b4434fac803e2474a3d5",
-    "scripts/run_e2e_ownmap_live.py": "92f3534f22b59951a9a895decaf22254cdb72b6586d72a11d799b92ef17957a6",
+    "scripts/run_e2e_ownmap_live.py": "597e138a3e8d8f444497b3c59fefb3a8de184745b05b83d06c0c7cfad2d684ba",
     "scripts/s4_proxy_relay.py": "4c97ac74f4f0ec0b3747cf8499811e0a13314cc50f654cf98391a90a748269dc",
-    "tests/test_e2e_dialogue_decider.py": "1a48805a9934e20f8d1b8c16ba2eea922a3931b99a48ddd86ca0fd3ac62d11bf"
+    "tests/test_e2e_dialogue_decider.py": "2cc1926c1d50c1890809c94f070485842ee3ef6fad140052e78b6336177db2d5",
+    "harness/s4_live_transport.py": "adcf145ab32411f7d8b2ff71abd0a3be45e1529b552186c47d23cf9ad83333db"
+  },
+  "replay_source_sha": "6ec1ab8e6310e9c522134652bb8f4c4472abfb01",
+  "validated_tree_parent_sha": "a578c188565e982636288aba3c20977b33bccf8c",
+  "protected_file_state": {
+    "harness/e2e_post_relook_stack.py": "identical to origin/codex/e2e18",
+    "configs/simulation_workflows.d/e2e18_v32x.json": "absent in both tree and origin/codex/e2e18"
   }
 }
