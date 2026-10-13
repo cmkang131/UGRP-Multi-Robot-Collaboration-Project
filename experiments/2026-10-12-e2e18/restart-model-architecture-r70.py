@@ -40,6 +40,11 @@ for version,parent,mode in ((340,335,'fast_v1'),(341,336,'fast_v1'),(342,335,'me
  EXTRA[version]=EXTRA[parent]+[('--architecture-stack',mode)]
 for version,parent in ((344,336),(345,335)):
  EXTRA[version]=EXTRA[parent]+[('--body-skills','bounded_v1')]
+EXTRA[346]=EXTRA[332]+[('--dialogue-decider','code_v1')]
+for version,mode in ((347,'idle5_v1'),(348,'idle10_v1')):
+ EXTRA[version]=EXTRA[346]+[('--explore-idle',mode)]
+EXTRA[349]=EXTRA[344]+[('--body-backend','code_v1')]
+EXTRA[350]=EXTRA[349]+[('--body-protocol-stack','code_v1')]
 EXTRA[304]=[('--relook-giveup','dev_light_rest_v1')]
 EXTRA[305]=EXTRA[304]
 MODE={304:'view5_pan_v1',305:'view5_pan_v1',303:'view5_pan_v1',295:None,296:None,297:'view5_pan_v1',298:'view5_pan_v1',300:'view5_pan_v1',301:'view5_pan_v1',302:'view5_pan_v1'}
@@ -68,9 +73,9 @@ cap=int(min(7200,body_expiry-time.time()-660,receipt['checked_unix']+receipt['va
 assert cap>=900,'INSUFFICIENT_RELAY_LIFETIME_FOR_BATCH'
 assert float(Path('/proc/uptime').read_text().split()[0])+cap+1200<28800,'FINITE_VM_LIFETIME_REQUIRED'
 import urllib.request
-with urllib.request.urlopen('http://127.0.0.1:18393/identity',timeout=5) as response:live=json.load(response)
+with urllib.request.urlopen(receipt['remote_url'].replace('/v1/chat/completions','/identity'),timeout=5) as response:live=json.load(response)
 assert live==receipt,'LIVE_MAC_RELAY_IDENTITY_REQUIRED'
-validate_receipt(receipt,now=time.time()+cap+600,remote_url=relay_url('study_gemma4_31b_v1'))
+validate_receipt(receipt,now=time.time()+cap+600,remote_url=relay_url('study_gemma4_31b_v1',dialogue_decider=receipt.get('dialogue_decider','gemma_v0'),receipt=receipt))
 old_plan=json.loads(next((b/'runs').glob('speed-gate-e2e18-*-r33-*-plan.json')).read_text())
 from harness.public_navigation.native import PublicCore
 from harness.public_navigation_unknown import UnknownCore

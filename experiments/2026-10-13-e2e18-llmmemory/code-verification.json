@@ -1,0 +1,37 @@
+{
+  "schema": "ugrp.code_verification.v1",
+  "source_parent": "39c6a4ba442fb75fc2a9c500a3be4c1f991b6300",
+  "source_sha256": {
+    "harness/e2e_dialogue_decider.py": "216be0028c66ebd564303155d2d64a2b2a9275eaa9820c42715a911a3fdfb6a5",
+    "harness/e2e_llm_memory.py": "133c1a993559e649301e36926bd138a073b0fb8f21ec29a1c562dae22d77eacf",
+    "harness/e2e_dialogue.py": "02e0d4bec3258c306d6713f29059776947816070a8b69d8f7277a57070f9dba9",
+    "scripts/d1_dialogue_upstream.py": "6a09327c1ef3fa5814465c5229b543b5a49e3fbbbc6026c238580d636eec9c20",
+    "experiments/2026-10-13-e2e18-llmmemory/replay_code.py": "c2bc9b7d335e09c08ad0b003a8d48cbde727de3154d00d6a81af589a06221902"
+  },
+  "tests": {
+    "command": "python3 -m pytest -q -rs tests/test_e2e_dialogue_decider.py tests/test_e2e_llm_memory.py tests/test_e2e_s4_live.py",
+    "passed": 78,
+    "skipped": 1,
+    "failed": 0,
+    "seconds": 38.26,
+    "skip": "fixture blocks mujoco import"
+  },
+  "replay": {
+    "correct": 100,
+    "n": 100,
+    "go_correct": 30,
+    "go_n": 30,
+    "labels_used_only_after_selection": true,
+    "missing_own_observation": 100,
+    "decision_model_calls": 0,
+    "gemma_calls": 0
+  },
+  "four_conditions": "mocked message/provider tests; current schema blocked report tested",
+  "actual_host": "GO and ACK accepted, repeated ACK rejected; stale-window regression retained",
+  "protected_diff_empty": true,
+  "vm_operations": 0,
+  "live_deadline_verified": false,
+  "physical_verified": false,
+  "code_source_commit": "269dacff0fbd6ead68841c136a1b0d4749682550",
+  "pr": 470
+}

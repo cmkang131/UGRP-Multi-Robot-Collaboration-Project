@@ -1,0 +1,40 @@
+{
+  "class_": "dev",
+  "pr": 461,
+  "seed": 61006,
+  "candidates": [
+    {
+      "version": 346,
+      "body": "existing v324 rules",
+      "protocol": "code_v1",
+      "idle_s": 30
+    },
+    {
+      "version": 347,
+      "body": "existing v324 rules",
+      "protocol": "code_v1",
+      "idle_s": 5
+    },
+    {
+      "version": 348,
+      "body": "existing v324 rules",
+      "protocol": "code_v1",
+      "idle_s": 10
+    },
+    {
+      "version": 350,
+      "body": "bounded code skills with immediate terminal recovery",
+      "protocol": "code_v1",
+      "idle_s": 30,
+      "post_relook": "carry_through_v1"
+    }
+  ],
+  "criteria": [
+    "planned4 concurrency 30SIM gate <=3.0 wall/SIM",
+    "direct first30-60SIM own decisions / actual movement / errors",
+    "stationary>=20SIM or actual GOACK failure: stop and diagnose",
+    "alignment entry to grasp_lift and actual paired-held separately",
+    "first/second carrying segment, setdown, actual B transport"
+  ],
+  "note": "v350 also differs in post_relook carry-through policy; not a single-factor causal estimate. Same seed comparisons, no model decisions, Gemma immutable-action speech. All GT remains evaluation-only."
+}

@@ -38,7 +38,7 @@ def validate_receipt(receipt, now=None, *, remote_url=URL):
     if receipt.get('dialogue_decider','gemma_v0')!='gemma_v0':
         paths=('scripts/d1_dialogue_upstream.py','harness/e2e_dialogue_decider.py','harness/e2e_llm_memory.py')
         hashes={p:hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest() for p in paths}
-        if (not openrouter or receipt.get('dialogue_decider')!='d1_v1' or receipt.get('decider','off')!='off'
+        if (not openrouter or receipt.get('dialogue_decider') not in ('d1_v1','code_v1') or receipt.get('decider','off')!='off'
                 or receipt.get('d1_dialogue_source_sha256')!=hashes):
             raise HostError('pinned d1 dialogue relay source required')
     if single and not openrouter and (receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False

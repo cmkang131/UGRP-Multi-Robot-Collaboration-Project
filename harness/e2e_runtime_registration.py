@@ -33,7 +33,13 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
-    if bundle['execution_bundle_id']=='e2e18-v338':
+    if bundle['execution_bundle_id']=='e2e18-v350':
+        from harness.e2e_code_stack import parent_for_validation as code_stack_parent
+        return require_current(code_stack_parent(bundle),root)
+    if bundle['execution_bundle_id'] in ('e2e18-v347','e2e18-v348'):
+        from harness.e2e_explore_idle import parent_for_validation as idle_parent
+        return require_current(idle_parent(bundle),root)
+    if bundle['execution_bundle_id'] in ('e2e18-v338','e2e18-v346'):
         from harness.e2e_dialogue_decider import parent_for_validation as dialogue_parent
         return require_current(dialogue_parent(bundle),root)
     if bundle['execution_bundle_id']=='e2e18-v349':
