@@ -39,11 +39,17 @@ def acquire(tr,rid,now,state,target):
         tr.event(now,'own_pregrasp_acquisition_begin',robot_id=rid,
                  source='last_own_rgb_search_hypothesis' if point is not None else 'own_camera_scan',age_s=age if math.isfinite(age) else None,
                  rgb=last['rgb'] if point is not None else None,execution_phase=tr.state)
+    if target is not None and getattr(tr,'beam_lost_standoff','off')!='off':
+        from harness.e2e_acquire_standoff import advance as standoff_advance
+        stood=standoff_advance(tr,rid,now,state['acquisition'],last,age,pose)
+        if stood is not None:return stood
     a=state['acquisition'];phase=a['phase'];elapsed=now-a['started']
+    from harness.e2e_acquire_standoff import scan_timing
+    view_period,turn_cap=scan_timing(tr)
     r.carrier_approach=dict(t=now,status='acquire_'+phase,own_beam_age_s=age if math.isfinite(age) else None,B_candidate_available=target is not None,cycle=a['cycles'])
     if phase=='turn':
         command,_=rpp_command(dict(coordinate_frame=rid+'/own_odom',path_m=[pose[:2].tolist()],status='goal_approach',heading_rad=a['yaw']),pose,tr.profiles,robot_id=rid)
-        if command['kind']=='hold' or elapsed>=3.:
+        if command['kind']=='hold' or elapsed>=turn_cap:
             a.update(phase='scan',started=now,view=-1)
             return False,[dict(kind='hold')]
         return False,[command]
@@ -54,7 +60,7 @@ def acquire(tr,rid,now,state,target):
         if elapsed<5.:return False,[{k:v for k,v in r.nav_command.items() if k!='t'}]
         a.update(phase='turn',started=now,yaw=float(pose[2]+math.pi/3))
         return False,[dict(kind='hold')]
-    index=int(elapsed//2.)
+    index=int(elapsed//view_period)
     if index>=len(VIEWS):
         a['cycles']+=1
         a.update(phase='explore' if a['cycles']%2==0 else 'turn',started=now,yaw=float(pose[2]+math.pi/3))
