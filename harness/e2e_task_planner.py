@@ -131,6 +131,16 @@ class Executive:
         ctx=self.planners[rid].context(now=now,orders=[dict(order_id='order-5',cargo='beam_1',required_robots=2,destination_zone='B')],
             static_map=dict(source='none: this E2E18 scenario maps its own camera views'),own=own,candidates=menu(rid,own),
             task='Deliver beam_1 to the blue B area. Choose your end, joint work, approach, route/recovery, waiting or regripping. The beam requires two robots. r3 can observe and report. Use only actual received text for partner information.')
+        robot=self.tr.robots[rid];beam=getattr(robot,'beam',None)
+        target=getattr(robot.goal,'entities',{}).get('B')
+        if rid in ('r1','r2') and beam and target and target.get('source')=='own':
+            from harness.e2e_carrier_axes import station
+            for c in ctx['candidates']:
+                if c['args'].get('side'):
+                    endpoint,_,_=station(beam,target['center_m'],c['args']['side'])
+                    distance=math.dist(own['pose']['mean'][:2],endpoint[:2])
+                    c['preview'].update(distance_m=distance,approach_distance_m=distance,
+                        expected_s=40.+distance/.1,source='own RGB beam/B map and own command pose; uncertain travel estimate')
         routes=getattr(self.tr.robots[rid].goal,'task_route_candidates',{}) if rid=='r1' else {}
         if routes:
             from harness.e2e_task_planner_routes import preview
@@ -142,6 +152,7 @@ class Executive:
             ctx['candidates']=expanded
         if self.interrupted:
             ctx['candidates']=[c for c in ctx['candidates'] if c['act'] not in ('carry','help')]
+        ctx['candidates']=[c for c in ctx['candidates'] if self.check(rid,c) is None]
         for row in ctx['candidates']:
             row['preview']['evidence_refs']=[e['message_id'] for e in row['preview'].pop('evidence')]
         return ctx
@@ -313,7 +324,10 @@ def rule(context):
         last=recent[-1].get('args',{}).get('area') if recent else None
         desired=[c for c in desired if c['args']['area']!=last] or desired
     if not desired:return strong_rule(context)
-    chosen=min(desired,key=signature)
+    failed={signature(r) for r in context['own_act_results'] if r.get('status') in ('failure','refused') and 'act' in r}
+    def cost(c):
+        p=c['preview'];return ((p.get('expected_s') or 30.)+(100 if signature(c) in failed else 0),signature(c))
+    chosen=min(desired,key=cost)
     a=chosen['args']
     message=(f"I will carry beam_1 at {a['side']} toward B via {a['via']} with a {a['approach']} approach." if chosen['act']=='carry' else f"I will {chosen['act']} using {next(iter(a.values()), 'my own observation')}.")
     return dict(act=chosen['act'],args=copy.deepcopy(chosen['args']),message=message[:240],reason='Own observation, recent received text and bounded failure memory.')
