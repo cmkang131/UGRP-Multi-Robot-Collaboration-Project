@@ -118,8 +118,23 @@ def signature(row):
     return json.dumps([row['act'], row['args']], sort_keys=True, separators=(',', ':'))
 
 
-def parse(raw, menu):
-    value = json.loads(raw) if isinstance(raw, str) else copy.deepcopy(raw)
+def parse(raw, menu, wrapper='off'):
+    if wrapper not in ('off','first_object_v1'):raise ValueError('UNKNOWN_JSON_WRAPPER_POLICY')
+    if isinstance(raw,str) and wrapper=='first_object_v1':
+        text=raw.strip()
+        if text.startswith('```'):
+            lines=text.splitlines()
+            if lines[0].strip().lower() not in ('```','```json'):raise ValueError('JSON_FENCE_REQUIRED')
+            text='\n'.join(lines[1:]).strip()
+            if text.endswith('```'):text=text[:-3].rstrip()
+        # Decode the first object, respecting escaped braces/strings. Never
+        # skip an invalid first object to select a later, more convenient act.
+        if text.startswith('['):value=json.loads(text)
+        else:
+            start=text.find('{')
+            if start<0:raise ValueError('JSON_OBJECT_REQUIRED')
+            value,_=json.JSONDecoder().raw_decode(text[start:])
+    else:value = json.loads(raw) if isinstance(raw, str) else copy.deepcopy(raw)
     if not isinstance(value, dict) or set(value) != {'act', 'args', 'message', 'reason'}:
         raise ValueError('Output exactly act,args,message,reason; remove all other keys (including reasoning and condition).')
     _fields(value, 'act args message reason')
@@ -149,7 +164,8 @@ class ModelReply:
 
 
 class Planner:
-    def __init__(self, robot_id, arm, *, leader='r1', deadline_s=30., fallback=None, planner_evidence_gate='off'):
+    def __init__(self, robot_id, arm, *, leader='r1', deadline_s=30., fallback=None, planner_evidence_gate='off', response_parser='off'):
+        self.response_parser=response_parser
         self.robot_id, self.arm, self.leader = robot_id, condition(arm), leader
         from harness.task_planner_evidence_gate import option
         self.evidence_gate = option(planner_evidence_gate)
@@ -250,7 +266,10 @@ class Planner:
                 self.audit.append(record)
                 return self._fallback(ctx, executor, record['failure'])
             try:
-                value = parse(reply.raw, ctx['candidates'])
+                if self.response_parser=='first_object_v1':
+                    try:json.loads(reply.raw);record['strict_json_error']=False
+                    except (ValueError,TypeError):record['strict_json_error']=True
+                value = parse(reply.raw, ctx['candidates'], self.response_parser)
                 if executor is not None:
                     rejection = executor.check(value)
                     if rejection: raise ValueError(rejection)

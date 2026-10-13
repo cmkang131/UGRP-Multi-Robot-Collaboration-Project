@@ -26,6 +26,8 @@ from scripts.evaluate_task_planner_observed import key_remaining, summarize
 
 SOURCE = ROOT/'outputs/task-planner-r4-source-20261013'
 BASELINE = ROOT/'outputs/task-planner-r4-dev-20261013'
+MIN_RATE_DECISIONS = 1
+RESPONSE_PARSER = 'off'
 PRICE_KEY = 'ling'
 COHORT = 'ling_vl'
 RATE_POLICY = "ling_rate_limit_v1"
@@ -61,7 +63,7 @@ def frozen():
         gold_sha256=hashlib.sha256(read(SOURCE/'eval_only.json')).hexdigest(),
         max_calls_per_model=MAX_CALLS,max_repairs_per_model=MAX_REPAIRS,max_usd=MAX_USD,
         temperature=0,max_tokens=MAX_TOKENS,reasoning=MODEL.reasoning,
-        model=vars(MODEL),prices=PRICES,
+        model=vars(MODEL),prices=PRICES,response_parser=RESPONSE_PARSER,minimum_rate_decisions=MIN_RATE_DECISIONS,
         dataset='r4 DEV tuning only; historical Gemma; no new confirmation seed')
     for r, req in zip(rows, requests):
         ctx=req['input'];labels={signature(c):c['preview']['public_cost_label'] for c in ctx['candidates']}
@@ -124,6 +126,7 @@ def metrics(rows):
     prompts=[u['prompt_tokens'] for u in usages if isinstance(u.get('prompt_tokens'),int)]
     cached=[u.get('prompt_tokens_details',{}).get('cached_tokens') for u in usages]
     return dict(conditions=summarize(rows),
+        format_errors_before=sum(a.get('strict_json_error',False) or 'rejection' in a for a in attempts),
         format_errors=sum('rejection' in a for a in attempts),repair_attempts=sum(a.get('attempt',0)>0 for a in attempts),
         fallback=sum(r['fallback'] for r in rows),
         latency_s=dict(median=statistics.median(times) if times else None,p90=times[math.ceil(.9*len(times))-1] if times else None,N=len(times)),
@@ -138,10 +141,14 @@ def metrics(rows):
 def guard(rows):
     """Checked after every returned result; stop submitting new requests."""
     attempts=[a for r in rows for a in r['audit'] if 'request' in a]
-    if attempts and sum('rejection' in a for a in attempts)/len(attempts)>.05:
+    called=[r for r in rows if r.get('called')]
+    recent=called[-5:]
+    if len(recent)==5 and all(any(a.get('failure')=='HTTPError' for a in r['audit']) for r in recent):
+        return 'FIVE_CONSECUTIVE_HTTP_ERRORS'
+    if len(called)>=MIN_RATE_DECISIONS and attempts and sum('rejection' in a for a in attempts)/len(attempts)>.05:
         return 'FORMAT_ERROR_RATE_OVER_5_PERCENT'
     called=[r for r in rows if r.get('called')]
-    if called and sum(r.get('fallback',False) for r in called)/len(called)>.05:
+    if len(called)>=MIN_RATE_DECISIONS and sum(r.get('fallback',False) for r in called)/len(called)>.05:
         return 'FALLBACK_RATE_OVER_5_PERCENT'
     times=[r['wall_s'] for r in called]
     if times and statistics.median(times)>8:return 'MEDIAN_LATENCY_OVER_8_SECONDS'
@@ -212,7 +219,7 @@ def main():
             import base64
             ctx['own']['rgb'].update(image_b64=base64.b64encode(image).decode(),sha256=a.image_sha256)
         client.planner_prompt_order='static_first_v1' if phase=='static_first_v1' else 'off'
-        p=Planner(ctx['robot_id'],ctx['condition'],planner_evidence_gate='on_v1')
+        p=Planner(ctx['robot_id'],ctx['condition'],planner_evidence_gate='on_v1',response_parser=RESPONSE_PARSER)
         p.inbox.extend(copy.deepcopy(previous['audit'][0].get('channel_evidence_before_gate',[])))
         called=False;t0=time.monotonic()
         def call(req,*,timeout_s):
@@ -241,6 +248,8 @@ def main():
         if called:
             all_called.append(row)
             shared.stopped=shared.stopped or guard(all_called)
+            http=read_ledger(a.upstream_root/'http_responses.jsonl')
+            if len(http)>=5 and all(r['status']>=400 for r in http[-5:]):shared.stopped='FIVE_CONSECUTIVE_HTTP_ERRORS'
         return row
     # Sequential execution makes the user stop thresholds immediate, with no
     # queued requests after a failing observation and no hidden retries.

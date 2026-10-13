@@ -297,6 +297,8 @@ def install(trial,transport,body,option='off',append=lambda row:None,planner_evi
         recovery_install(body,PARAMETERS['recovery_menu'])
     executive=Executive(trial,transport,body,option,append,planner_evidence_gate)
     executive.selection=planner_selection;executive.prompt_order=planner_prompt_order
+    if planner_selection and planner_selection.response_format!='off':
+        for planner in executive.planners.values():planner.response_parser='first_object_v1'
     trial.task_planner=executive;transport.task_planner=executive
     for robot in transport.robots.values():robot.goal.task_planner_enabled=True
     prepare=trial.prepare_call;finish=trial.finish_call

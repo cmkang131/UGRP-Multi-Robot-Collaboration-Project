@@ -53,10 +53,11 @@ def config(provider_order=PROVIDER_ORDER, *, selection=None, max_attempts=MAX_AT
                 key_location='macOS Keychain: ' + SERVICE)
     if rate_limit_policy != 'off':
         from scripts.openrouter_ling_policy import POLICY,PARAMETERS
-        from harness.task_planner_model import LING, GEMMA_FP4
-        if (rate_limit_policy,choice) not in ((POLICY,LING),('planner_rate_limit_v1',GEMMA_FP4)):raise ValueError('REGISTERED_RATE_POLICY_REQUIRED')
+        from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON
+        if (rate_limit_policy,choice) not in ((POLICY,LING),('planner_rate_limit_v1',GEMMA_FP4),('planner_rate_limit_v1',GEMMA_JSON)):raise ValueError('REGISTERED_RATE_POLICY_REQUIRED')
         value.update(rate_limit_policy=rate_limit_policy,rate_limit_parameters=PARAMETERS,max_usd=max_usd,
             rate_limit_source_sha256=hashlib.sha256(Path(__file__).with_name('openrouter_ling_policy.py').read_bytes()).hexdigest())
+    if choice.response_format!='off':value.update(response_format=choice.response_format,require_parameters=True)
     return value
 
 
@@ -72,6 +73,7 @@ def upstream_body(request, provider_order=PROVIDER_ORDER, *, selection=None):
     body.update(choice.request_options())
     body['usage'] = {'include': True}
     body['provider'] = {'order': list(provider_order), 'allow_fallbacks': False}
+    if choice.response_format!='off':body['provider']['require_parameters']=True
     return body
 
 
@@ -121,6 +123,11 @@ class OpenRouter:
             for line in self.attempt_file.read_text().splitlines():
                 entry=json.loads(line)
                 if entry['call'] not in settled:self.accounted+=entry.get('reserve_usd',.01);self.unknown_cost+=1
+        self.http_error_streak=0
+        if self.evidence_file.exists():
+            for line in reversed(self.evidence_file.read_text().splitlines()):
+                if json.loads(line)['status']<400:break
+                self.http_error_streak+=1
         self.journal = Journal(self.root / 'responses', retry_rate_limits=True, cache_errors=False)
 
     def require_image_probe(self): pass  # the real E2E wire request is the image check
@@ -155,6 +162,8 @@ class OpenRouter:
             if pacing:self.sleep(pacing)
             t0 = self.monotonic()
             with self.call_lock:
+                if limited and self.selection and self.selection.response_format!='off' and self.http_error_streak>=5:
+                    raise ModelBudgetExceeded('FIVE_CONSECUTIVE_HTTP_ERRORS')
                 if self.max_calls is not None and self.calls >= self.max_calls:
                     raise ModelBudgetExceeded('UPSTREAM_CALL_LIMIT')
                 if limited and self.max_usd is not None and self.accounted+reserve>self.max_usd:
@@ -194,7 +203,10 @@ class OpenRouter:
                 prompt_tokens=usage_now.get('prompt_tokens'),completion_tokens=usage_now.get('completion_tokens'),
                 cached_tokens=(usage_now.get('prompt_tokens_details') or {}).get('cached_tokens'))
             if status>=400:entry['error_body']=error_body(response,self._key)
+            self.http_error_streak=self.http_error_streak+1 if status>=400 else 0
+            entry['consecutive_http_errors']=self.http_error_streak
             should_retry=(status==429 or 500<=status<600 if limited else status in RETRY_STATUSES) and n<self.max_attempts
+            if limited and self.selection and self.selection.response_format!='off' and self.http_error_streak>=5:should_retry=False
             delay,source=retry_delay(n,headers,self.random_fn(),time.time()) if limited and should_retry else (RETRY_DELAY_S,'legacy_fixed')
             if should_retry:
                 entry.update(retry_wait_s=delay,retry_wait_source=source)

@@ -15,10 +15,12 @@ class ModelSelection:
     model: str = DEFAULT_MODEL
     provider: str = DEFAULT_PROVIDER
     reasoning: str = 'default'
+    response_format: str = 'off'
 
     def __post_init__(self):
         if not self.model or '/' not in self.model or not self.provider or ',' in self.provider:
             raise ValueError('SINGLE_MODEL_PROVIDER_REQUIRED')
+        if self.response_format not in ('off','json_object'):raise ValueError('UNSUPPORTED_RESPONSE_FORMAT')
         if self.reasoning not in ('default', 'off'):
             raise ValueError('UNSUPPORTED_REASONING_SETTING')
 
@@ -31,10 +33,13 @@ class ModelSelection:
         return "DeepInfra" if self.provider == "deepinfra/turbo" else self.provider
 
     def request_options(self):
-        return {'reasoning': {'enabled': False}} if self.reasoning == 'off' else {}
+        value={'reasoning': {'enabled': False}} if self.reasoning == 'off' else {}
+        if self.response_format!='off':value['response_format']={'type':self.response_format}
+        return value
 
 
 def add_model_options(parser):
+    parser.add_argument('--planner-response-format',choices=('off','json_object'),default='off')
     parser.add_argument('--planner-prompt-order', choices=('off', 'static_first_v1'), default='off')
     parser.add_argument('--planner-model', default=DEFAULT_MODEL)
     parser.add_argument('--planner-provider', default=DEFAULT_PROVIDER)
@@ -42,10 +47,11 @@ def add_model_options(parser):
 
 
 def selected(args):
-    return ModelSelection(args.planner_model, args.planner_provider, args.planner_reasoning)
+    return ModelSelection(args.planner_model, args.planner_provider, args.planner_reasoning, args.planner_response_format)
 
 
 GEMMA_FP4 = ModelSelection(DEFAULT_MODEL, 'deepinfra/turbo', 'default')
+GEMMA_JSON = ModelSelection(DEFAULT_MODEL,'deepinfra/turbo','default','json_object')
 LING = ModelSelection('inclusionai/ling-3.0-flash-vl', 'Novita', 'off')
 STATIC_KEYS = ('schema', 'robot_id', 'condition', 'task', 'order_sheet', 'static_map', 'public_rules', 'can_send_to')
 DYNAMIC_KEYS = ('now_s', 'own', 'own_act_results', 'received_messages', 'events', 'candidates')

@@ -213,3 +213,50 @@ def test_gemma_fp4_tag_and_returned_provider_are_separate(tmp_path):
 def test_zero_http_start_failure_can_be_reported(tmp_path):
     from scripts.check_task_planner_ling import read_ledger
     assert read_ledger(tmp_path/'http_responses.jsonl')==[]
+
+
+
+def test_json_wrapper_preserves_strict_candidate_validation():
+    from harness.task_planner import parse,candidate
+    menu=[candidate('search',{'area':'bay'})]
+    value=dict(act='search',args={'area':'bay'},message='',reason='See a } brace.')
+    raw=json.dumps(value)
+    for wrapped in ('```json\n'+raw+'\n```','Here is the decision: '+raw+' Done.'):
+        with pytest.raises(ValueError):parse(wrapped,menu)
+        assert parse(wrapped,menu,'first_object_v1')==value
+    for invalid in (dict(value,args={'area':'other'}),dict(value,extra=1),dict(value,args={'area':'bay','x':1})):
+        with pytest.raises(ValueError):parse('```json\n'+json.dumps(invalid)+'\n```',menu,'first_object_v1')
+    with pytest.raises(ValueError):parse('{broken} '+raw,menu,'first_object_v1')
+    with pytest.raises(ValueError):parse('['+raw+']',menu,'first_object_v1')
+
+
+def test_json_minimum_sample_and_consecutive_http_stop(monkeypatch):
+    from scripts import check_task_planner_ling as c
+    monkeypatch.setattr(c,'MIN_RATE_DECISIONS',20)
+    good={'called':True,'fallback':False,'wall_s':1,'audit':[{'request':{}}]}
+    bad={**good,'fallback':True,'audit':[{'request':{},'rejection':'format'}]}
+    assert c.guard([bad]) is None
+    assert c.guard([good]*18+[bad]) is None
+    assert c.guard([good]*18+[bad]*2)=='FORMAT_ERROR_RATE_OVER_5_PERCENT'
+    http={**good,'fallback':True,'audit':[{'request':{},'failure':'HTTPError'}]}
+    assert c.guard([http]*5)=='FIVE_CONSECUTIVE_HTTP_ERRORS'
+    assert c.guard([good]*19+[bad]) is None
+
+
+def test_json_endpoint_option_and_five_actual_http_errors(tmp_path):
+    from harness.task_planner_model import GEMMA_JSON
+    clock=[0.];sent=[]
+    def send(body,key):
+        assert body['response_format']=={'type':'json_object'}
+        assert body['provider']=={'order':['deepinfra/turbo'],'allow_fallbacks':False,'require_parameters':True}
+        sent.append(1);return 429,b'{"error":"rate limit"}',None,{}
+    m=OpenRouter(tmp_path,key='fake',selection=GEMMA_JSON,send=send,rate_limit_policy='planner_rate_limit_v1',max_calls=600,max_usd=.3,
+        sleep=lambda s:clock.__setitem__(0,clock[0]+s),monotonic=lambda:clock[0],random_fn=lambda:.5)
+    raw=json.dumps({'model':GEMMA_JSON.wire_model}).encode()
+    assert m.complete(raw,'one')[0]==429 and len(sent)==3
+    assert m.complete(raw,'two')[0]==429 and len(sent)==5
+    with pytest.raises(ModelBudgetExceeded):m.complete(raw,'three')
+    assert len(sent)==5
+    restarted=OpenRouter(tmp_path,key='fake',selection=GEMMA_JSON,send=send,rate_limit_policy='planner_rate_limit_v1',max_calls=600,max_usd=.3)
+    with pytest.raises(ModelBudgetExceeded):restarted.complete(raw,'restart')
+    assert len(sent)==5

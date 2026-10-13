@@ -55,6 +55,7 @@ class Gemma:
         if (cfg.get('model') != self.selection.model or cfg.get('allow_fallbacks') is not False
                 or cfg.get('provider_order') != [self.selection.provider]
                 or cfg.get('reasoning', 'default') != self.selection.reasoning
+                or cfg.get('response_format','off') != self.selection.response_format
                 or self.identity.get('jev_source_sha256') or self.identity.get('dialogue_decider') in ('d1_v1', 'code_v1')):
             raise ValueError('DIRECT_OPENROUTER_GEMMA_IDENTITY_REQUIRED')
 
