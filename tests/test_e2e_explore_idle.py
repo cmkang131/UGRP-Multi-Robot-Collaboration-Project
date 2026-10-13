@@ -46,12 +46,21 @@ def test_actual_code_protocol_idle_and_combined_body_registration(monkeypatch):
         b = bundle(*args, **kw, **protocol, explore_idle=option)
         assert b['execution_bundle_id'] == f'e2e18-v{version}'
         require_current(b, ROOT)
+        last_seed = list(args); last_seed[1] = 61013
+        expanded = bundle(*last_seed, **kw, **protocol, explore_idle=option)
+        require_current(expanded, ROOT)
+        assert expanded['seed'] == 61013
     body = dict(post_relook='carry_through_v1', body_controller='jev_v1', body_backend='code_v1')
     old = bundle(*args, **kw, **body)
     b = bundle(*args, **kw, **body, body_protocol_stack='code_v1')
     assert old['execution_bundle_id'] == 'e2e18-v349'
     assert b['execution_bundle_id'] == 'e2e18-v350'
     require_current(b, ROOT)
+    expanded = bundle(*last_seed, **kw, **body, body_protocol_stack='code_v1')
+    require_current(expanded, ROOT)
+    assert expanded['seed'] == 61013
+    with pytest.raises(ValueError, match='REGISTERED_MODEL_SEED_REQUIRED'):
+        bundle(*last_seed, **kw, **body)
     assert parent_for_validation(b)['e2e_options'] == old['e2e_options']
     bad = copy.deepcopy(b); bad['e2e_options']['dialogue_decider'] = 'd1_v1'
     with pytest.raises(ValueError): require_current(bad, ROOT)

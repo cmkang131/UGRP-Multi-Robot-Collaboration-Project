@@ -1,7 +1,6 @@
 {
   "class_": "dev",
   "pr": 461,
-  "seed": 61006,
   "candidates": [
     {
       "version": 346,
@@ -30,11 +29,38 @@
     }
   ],
   "criteria": [
-    "planned4 concurrency 30SIM gate <=3.0 wall/SIM",
+    "planned16 per VM,30SIM gate <=3.5 wall/SIM",
     "direct first30-60SIM own decisions / actual movement / errors",
     "stationary>=20SIM or actual GOACK failure: stop and diagnose",
     "alignment entry to grasp_lift and actual paired-held separately",
     "first/second carrying segment, setdown, actual B transport"
   ],
-  "note": "v350 also differs in post_relook carry-through policy; not a single-factor causal estimate. Same seed comparisons, no model decisions, Gemma immutable-action speech. All GT remains evaluation-only."
+  "note": "v350 also differs in post_relook carry-through policy; not a single-factor causal estimate. Same seed comparisons, no model decisions, Gemma immutable-action speech. All GT remains evaluation-only.",
+  "host_seeds": {
+    "azure3": [
+      61006,
+      61007,
+      61008,
+      61009
+    ],
+    "azure4": [
+      61010,
+      61011,
+      61012,
+      61013
+    ]
+  },
+  "vm_size": "Standard_F16als_v6",
+  "planned_concurrency_per_vm": 16,
+  "speed_gate_limit": 3.5,
+  "expected_runs": 32,
+  "storage_budget": {
+    "x86_per_vm_runs": 16,
+    "x86_per_run_mib": 1024,
+    "arm_runs": 32,
+    "arm_per_run_mib": 768,
+    "mac_runs": 32,
+    "mac_per_run_mib": 80,
+    "evidence": "archived r73 16MiB/172SIM; paired r69 174MiB/560SIM; 1800SIM case cap projects560MiB plus37percent margin; uncompressed x86 1GiB/run"
+  }
 }

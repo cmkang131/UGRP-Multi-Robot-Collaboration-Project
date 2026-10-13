@@ -44,7 +44,7 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
     requested_stage_physics=stage_physics
     if stage_physics=='release_dt1_v1':stage_physics='pregrasp_dt1_v1'
-    registered_seeds = range(61001,61013) if b_partial_accept != 'off' else range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
+    registered_seeds = range(61001,61014) if dialogue_decider=='code_v1' or body_protocol_stack=='code_v1' else range(61001,61013) if b_partial_accept != 'off' else range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
     if profile not in PROFILES or seed not in registered_seeds:raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
     if decider not in ('off','jev_v1'):raise ValueError('UNKNOWN_DECIDER')

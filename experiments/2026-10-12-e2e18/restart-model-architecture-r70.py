@@ -8,7 +8,7 @@ from harness.s4_live_transport import validate_receipt
 # Explicit render/CPU environment, shared with the r45 retry.
 for key,value in {'MUJOCO_GL':'osmesa','PYOPENGL_PLATFORM':'osmesa','OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MKL_NUM_THREADS':'1','LP_NUM_THREADS':'1'}.items():os.environ[key]=value
 b=Path.home()/'ugrp-sim';sha=sys.argv[1];host=os.uname().nodename
-assert host=='ugrp-sim-azure3'
+assert host in ('ugrp-sim-azure3','ugrp-sim-azure4')
 seeds=[int(x) for x in (sys.argv[4] if len(sys.argv)>4 else '61006').split(',')]
 VERS=[int(x) for x in sys.argv[2].split(',')]
 BATCH=sys.argv[3]
@@ -53,13 +53,13 @@ assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sh
 assert not subprocess.check_output(['git','status','--porcelain'])
 assert os.getpriority(os.PRIO_PROCESS,0)==0 and os.getloadavg()[0]<12.8
 assert int(next(l.split()[1] for l in Path('/proc/meminfo').read_text().splitlines() if l.startswith('MemAvailable:')))>6*1024**2
-for h,minimum in [('x86',1*1024*2**20),('arm',1*1024*2**20),('mac',1*80*2**20)]:
+for h,minimum in [('x86',16*1024*2**20),('arm',32*768*2**20),('mac',32*80*2**20)]:
  p=b/f'e2e18-{BATCH}-budget-{h}.json';x=json.loads(p.read_text());assert time.time()-p.stat().st_mtime<300 and x['ok']
  assert x['checks'][0]['expected_bytes']>=minimum
 active=[r for r in (b/'runs').glob('e2e18-v*-s*-r*') if r.is_dir() and not (r/'EXIT').exists()]
 existing={(json.loads((r/'RUN_META.json').read_text())['execution_bundle_id'],json.loads((r/'RUN_META.json').read_text())['seed']) for r in active}
 selected=[x for x in selected if (f'e2e18-v{x[1]}',x[0]) not in existing]
-assert selected and len(active)<=12-len(selected),[(r.name) for r in active]
+assert selected and len(active)<=16-len(selected),[(r.name) for r in active]
 receipt=json.loads((b/'relays/e2e18'/(os.environ.get('E2E18_RELAY','a-r4')+'.json')).read_text())
 from datetime import datetime
 deadline=datetime.fromisoformat('2026-10-13T13:00:00+00:00').timestamp()
@@ -98,5 +98,5 @@ for seed,version,mode in selected:
   command=replace_option(command,flag,value)
  specs.append(dict(name=name,target=str(target),command=command))
 plan=b/'runs'/f'speed-gate-e2e18-{host}-{BATCH}-plan.json';assert not plan.exists();plan.write_text(json.dumps(specs,indent=2)+'\n')
-print(f'NEW {len(selected)} + CONTINUING {len(active)} = {len(selected)+len(active)}; 30 SIM gate; limit3.0',flush=True)
-raise SystemExit(gate_main(['start','--plan',str(plan),'--gate-root',str(b/'runs'/f'speed-gate-e2e18-{host}-{BATCH}-{sha[:12]}'),'--speed-gate-limit','3.0']))
+print(f'NEW {len(selected)} + CONTINUING {len(active)} = {len(selected)+len(active)}; 30 SIM gate; limit3.5',flush=True)
+raise SystemExit(gate_main(['start','--plan',str(plan),'--gate-root',str(b/'runs'/f'speed-gate-e2e18-{host}-{BATCH}-{sha[:12]}'),'--speed-gate-limit','3.5']))
