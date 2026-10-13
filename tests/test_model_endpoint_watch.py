@@ -98,3 +98,11 @@ def test_malformed_response_is_check_failure():
                     dict(data=dict(endpoints=[dict(provider_name='Novita', pricing=[1])]))):
         with pytest.raises(w.CheckFailed):
             w.check(CONFIG, get=lambda m, p=payload: p)
+
+
+def test_tag_pins_one_of_several_provider_endpoints():
+    cfg = dict(CONFIG, endpoints=[dict(CONFIG['endpoints'][0], tag='novita/turbo')])
+    turbo = dict(endpoint(), tag='novita/turbo')
+    other = dict(endpoint(prompt='0.0000002'), tag='novita/fp8')
+    assert w.check(cfg, get=lambda m: dict(data=dict(endpoints=[turbo, other]))) == []
+    assert w.check(cfg, get=lambda m: dict(data=dict(endpoints=[other])))[0]['kind'] == 'provider_stopped'
