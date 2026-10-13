@@ -148,8 +148,10 @@ class ModelReply:
 
 
 class Planner:
-    def __init__(self, robot_id, arm, *, leader='r1', deadline_s=30., fallback=None):
+    def __init__(self, robot_id, arm, *, leader='r1', deadline_s=30., fallback=None, planner_evidence_gate='off'):
         self.robot_id, self.arm, self.leader = robot_id, condition(arm), leader
+        from harness.task_planner_evidence_gate import option
+        self.evidence_gate = option(planner_evidence_gate)
         self.deadline_s = deadline_s
         self.memory = deque(maxlen=8)
         self.inbox = deque(maxlen=16)
@@ -223,13 +225,16 @@ class Planner:
         cannot mutate/start work. A runtime start refusal is also fed to the one
         repair. A provider failure immediately uses the explicit fallback.
         """
-        ctx = copy.deepcopy(context); clean(ctx)
+        from harness.task_planner_evidence_gate import apply, INSTRUCTION
+        ctx = apply(copy.deepcopy(context), self.evidence_gate); clean(ctx)
         rejection = None
         for attempt in range(repair_budget+1):
             # Later refusal context must not mutate the already-sent audit.
-            request = dict(system=SYSTEM, input=copy.deepcopy(ctx))
+            request = dict(system=SYSTEM + ('\n' + INSTRUCTION if ctx.get('planner_evidence_gate') == 'on_v1' else ''), input=copy.deepcopy(ctx))
             record = dict(robot_id=self.robot_id, request=request, attempt=attempt,
                           fallback=False, response=None)
+            if ctx.get('planner_evidence_gate') == 'on_v1':
+                record['channel_evidence_before_gate'] = copy.deepcopy(list(self.inbox))
             try:
                 reply = model(request, timeout_s=self.deadline_s)
                 if reply.elapsed_s > self.deadline_s: raise TimeoutError('PLANNER_DEADLINE')
@@ -288,6 +293,11 @@ def strong_rule(ctx):
     safety refusal. Latest delivered correction takes precedence. Dataset-
     specific expected-cost enumeration lives in the offline adapter.
     """
+    if ctx.get('planner_evidence_gate') == 'on_v1' and any(e['status']=='conflict' for e in ctx['evidence_gate']['archived_reports']):
+        verify=[c for c in ctx['candidates'] if c['preview']['candidate_evidence']['verification_action']]
+        if verify:
+            chosen=max(verify,key=lambda c:c['preview']['priority_score'])
+            return dict(act=chosen['act'],args=copy.deepcopy(chosen['args']),message='',reason='Verify newer own observation conflicting with a received report.')
     if 'public_rules' in ctx and 'cost_rule' in ctx['public_rules']:
         from harness.task_planner_cost_rules import rule
         messages = []

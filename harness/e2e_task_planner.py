@@ -12,30 +12,44 @@ from dataclasses import replace
 from harness.task_planner import Planner, candidate, parse, signature, strong_rule, ModelReply, SYSTEM
 
 VERSIONS = {'gemma_v1':373, 'rule_v1':374}
+GATED_VERSIONS = {'gemma_v1':387, 'rule_v1':388}
 PARAMETERS = dict(parent='e2e18-v372', call_policy='event_v1', snapshot='prepared_v1',
                   body='code_v1', max_output_tokens=768, repair_calls=1,
                   peer_input='delivered_channel_text_only', solo_beam_forbidden=True,
                   admission_clock='tick_v1', recovery_menu='skip_rejected_v1')
 
 
-def compose(bundle, option='off'):
+def compose(bundle, option='off', planner_evidence_gate='off'):
+    from harness.task_planner_evidence_gate import option as gate_option
+    gate_option(planner_evidence_gate)
+    if option == 'off' and planner_evidence_gate != 'off': raise ValueError('EVIDENCE_GATE_REQUIRES_PLANNER')
     if option=='off': return ()
     if option not in VERSIONS or bundle['execution_bundle_id']!=PARAMETERS['parent']:
         raise ValueError('TASK_PLANNER_REQUIRES_FIXED_V372_PARENT')
     o=bundle['e2e_options']
     if o.get('body_backend')!='code_v1' or o.get('dialogue_call_policy')!='event_v1' or o.get('call_snapshot')!='prepared_v1':
         raise ValueError('TASK_PLANNER_CODE_BODY_EVENT_SNAPSHOT_REQUIRED')
-    version=VERSIONS[option]
+    version=(GATED_VERSIONS if planner_evidence_gate=='on_v1' else VERSIONS)[option]
     bundle.update(task_planner_parent=PARAMETERS['parent'],task_planner_parameters=copy.deepcopy(PARAMETERS),
         execution_bundle_id=f'e2e18-v{version}',workflow_version=f'7.{version-107}.0',schema=f'ugrp.e2e_ownmap_live.v{version}')
     o['planner']=option
-    return ('harness/e2e_task_planner.py','harness/task_planner.py','harness/task_planner_evidence.py',
+    if planner_evidence_gate=='on_v1':
+        from harness.task_planner_evidence_gate import PARAMETERS as gate_parameters
+        o['planner_evidence_gate']=planner_evidence_gate
+        bundle['planner_evidence_gate_parameters']=copy.deepcopy(gate_parameters)
+    return (('harness/task_planner_evidence_gate.py',) if planner_evidence_gate=='on_v1' else ()) + ('harness/e2e_task_planner.py','harness/task_planner.py','harness/task_planner_evidence.py',
             'configs/e2e_task_planner_options.json',f'configs/simulation_workflows.d/e2e18_v{version}.json')
 
 
 def parent_for_validation(bundle):
     b=copy.deepcopy(bundle);mode=b['e2e_options'].get('planner')
-    if (mode not in VERSIONS or b['execution_bundle_id']!=f'e2e18-v{VERSIONS[mode]}'
+    versions=VERSIONS
+    if b['e2e_options'].get('planner_evidence_gate','off')!='off':
+        from harness.task_planner_evidence_gate import PARAMETERS as gate_parameters
+        if b['e2e_options'].pop('planner_evidence_gate')!='on_v1' or b.pop('planner_evidence_gate_parameters',None)!=gate_parameters:
+            raise ValueError('REGISTERED_EVIDENCE_GATE_REQUIRED')
+        versions=GATED_VERSIONS
+    if (mode not in VERSIONS or b['execution_bundle_id']!=f'e2e18-v{versions[mode]}'
         or b.get('task_planner_parent')!=PARAMETERS['parent'] or b.get('task_planner_parameters')!=PARAMETERS):
         raise ValueError('REGISTERED_TASK_PLANNER_REQUIRED')
     b['execution_bundle_id']=b.pop('task_planner_parent');b.pop('task_planner_parameters');b['e2e_options'].pop('planner')
@@ -98,9 +112,11 @@ def own_projection(robot, body, rid, now, selected):
 
 
 class Executive:
-    def __init__(self,trial,transport,body,mode,append):
+    def __init__(self,trial,transport,body,mode,append,planner_evidence_gate='off'):
+        from harness.task_planner_evidence_gate import option
+        self.evidence_gate=option(planner_evidence_gate)
         self.trial,self.tr,self.body,self.mode,self.append=trial,transport,body,mode,append
-        self.planners={r:Planner(r,'peer_en',leader='r1') for r in trial.actors}
+        self.planners={r:Planner(r,'peer_en',leader='r1',planner_evidence_gate=planner_evidence_gate) for r in trial.actors}
         self.active={};self.started={};self.ends={};self.pending={};self.rows=[];self.last_edges={}
         self.request_context={};self.original_prepared={};self.route_snapshots={};self.selected_routes={};self.nudged=set();self.sequence=0;self.delayed=set()
         self.tr.task_roles={}
@@ -153,6 +169,8 @@ class Executive:
         if self.interrupted:
             ctx['candidates']=[c for c in ctx['candidates'] if c['act'] not in ('carry','help')]
         ctx['candidates']=[c for c in ctx['candidates'] if self.check(rid,c) is None]
+        from harness.task_planner_evidence_gate import apply
+        ctx=apply(ctx,self.evidence_gate)
         for row in ctx['candidates']:
             row['preview']['evidence_refs']=[e['message_id'] for e in row['preview'].pop('evidence')]
         return ctx
@@ -268,7 +286,7 @@ class Executive:
         allowed={k:v for k,v in choices.items() if k in wanted};return {**hold,**allowed}
 
 
-def install(trial,transport,body,option='off',append=lambda row:None):
+def install(trial,transport,body,option='off',append=lambda row:None,planner_evidence_gate='off'):
     if option=='off':return None
     if option not in VERSIONS or trial.dialogue_call_policy!='event_v1' or body is None:
         raise ValueError('TASK_PLANNER_RUNTIME_REQUIREMENTS')
@@ -277,7 +295,7 @@ def install(trial,transport,body,option='off',append=lambda row:None):
     if hasattr(body,'safe_menu'):
         from harness.e2e_recovery_menu import install as recovery_install
         recovery_install(body,PARAMETERS['recovery_menu'])
-    executive=Executive(trial,transport,body,option,append)
+    executive=Executive(trial,transport,body,option,append,planner_evidence_gate)
     trial.task_planner=executive;transport.task_planner=executive
     for robot in transport.robots.values():robot.goal.task_planner_enabled=True
     prepare=trial.prepare_call;finish=trial.finish_call
@@ -306,6 +324,8 @@ def rule(context):
     own=context['own'];rows=context['candidates'];reports=context['received_messages']
     text=' '.join(m['body'] for m in reports if context['now_s']-m['sent_at']<=30).lower()
     conflicts=[e for e in context.get('evidence_assessment',{}).get('reports',[]) if e.get('conflicts_with_own_observation') and e.get('last_directly_observed_at') is not None]
+    if context.get('planner_evidence_gate')=='on_v1':
+        conflicts=[e for e in context['evidence_gate']['archived_reports'] if e['status']=='conflict']
     if conflicts:
         desired=[c for c in rows if c['act']=='search']
     elif own.get('interrupted_segment_requires_regrip') or 'slipping' in str(own.get('own_grip')):

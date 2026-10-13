@@ -15,7 +15,8 @@ def summarize(source,output):
     rows=json.loads(read(output/'scored.json'));calls=[json.loads(x) for x in read(output/'calls.jsonl').splitlines()]
     raw={(r['case_id'],r['condition']):r for r in calls};rules=[];different=[]
     for row in rows:
-        _,ctx,labels=adapt(public[row['case_id'],ARMS[row['condition']]],row['condition'])
+        mode=json.loads(read(output/'RUN_META.json')).get('planner_evidence_gate','off')
+        _,ctx,labels=adapt(public[row['case_id'],ARMS[row['condition']]],row['condition'],mode)
         sent=next((a['request']['input'] for a in raw[row['case_id'],row['condition']]['audit'] if 'request' in a),None)
         if sent is not None and sent!=ctx:different.append([row['case_id'],row['condition']])
         chosen=labels[signature(strong_rule(ctx))]

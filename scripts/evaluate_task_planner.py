@@ -58,8 +58,8 @@ def action(label, view):
     raise ValueError('UNKNOWN_PUBLIC_TASK')
 
 
-def adapt(row, arm):
-    view = row['input']; p = Planner(view['self_state']['robot_id'], arm, leader='r1')
+def adapt(row, arm, planner_evidence_gate='off'):
+    view = row['input']; p = Planner(view['self_state']['robot_id'], arm, leader='r1', planner_evidence_gate=planner_evidence_gate)
     for i, m in enumerate(view.get('messages', [])):
         if arm == 'no_comm': break
         body = copy.deepcopy(m['body'])
@@ -82,17 +82,19 @@ def adapt(row, arm):
                     task=view['task'], public_rules=public_rules)
     from harness.task_planner_evidence import cost_previews
     cost_previews(ctx, view)
+    from harness.task_planner_evidence_gate import apply
+    ctx = apply(ctx, planner_evidence_gate)
     return p, ctx, labels
 
 
-def supplements():
+def supplements(planner_evidence_gate='off'):
     """Authored 24 solo choices. Held-out from original dataset; not physical evidence.
 
     Independent destination/route/approach differences, no incoming reports.
     Ground truth is lowest finite preview time among safe empty slots.
     """
     for i in range(24):
-        p = Planner('r1', 'no_comm')
+        p = Planner('r1', 'no_comm', planner_evidence_gate=planner_evidence_gate)
         menu = []
         for slot in ('A1', 'A2'):
             for route in ('west_corridor', 'east_corridor'):
@@ -120,6 +122,8 @@ def main():
     ap.add_argument('--source', type=Path, required=True); ap.add_argument('--out', type=Path, required=True)
     ap.add_argument('--execute', action='store_true'); ap.add_argument('--workers', type=int, default=4)
     ap.add_argument('--limit', type=int); ap.add_argument('--relay-url', default='http://127.0.0.1:18424')
+    ap.add_argument('--planner-evidence-gate', choices=('off','on_v1'), default='off')
+    ap.add_argument('--max-usd', type=float, default=2.)
     a = ap.parse_args()
     if a.out.exists(): raise SystemExit('new output directory required')
     a.out.mkdir(parents=True)
@@ -131,17 +135,17 @@ def main():
     main_count = sum(not r['ambiguous'] for r in gold.values())
     jobs = [(row, arm) for arm, source_arm in ARMS.items() for row in source if row['condition'] == source_arm]
     if a.limit is not None: jobs = jobs[:a.limit]
-    dump(a.out/'RUN_META.json', dict(**{'class':'dev'}, pr=None, branch=subprocess.check_output(['git','branch','--show-current'],text=True).strip(),
+    dump(a.out/'RUN_META.json', dict(**{'class':'dev'}, pr=473, planner_evidence_gate=a.planner_evidence_gate, branch=subprocess.check_output(['git','branch','--show-current'],text=True).strip(),
          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(), batch='planner-offline-v357'))
     manifest = {str(a.source/n): hashlib.sha256((a.source/n).read_bytes()).hexdigest()
                 for n in ('README.md', 'cases_public.json', 'results_scored.json', 'benchmark.py')}
     dump(a.out/'source_manifest.json', manifest)
-    budget = Budget(max_calls=2*(len(jobs)+24), max_usd=2.)
+    budget = Budget(max_calls=2*(len(jobs)+24), max_usd=a.max_usd)
     model = Gemma(url=a.relay_url, budget=budget) if a.execute else None
     lock = threading.Lock()
     def run(job):
         row, arm = job
-        p, ctx, labels = adapt(row, arm)
+        p, ctx, labels = adapt(row, arm, a.planner_evidence_gate)
         if model is None:
             return dict(case_id=row['case_id'], condition=arm, status='not_called', correct=False,
                         ambiguous=gold[row['case_id']]['ambiguous'])
@@ -159,7 +163,7 @@ def main():
     with concurrent.futures.ThreadPoolExecutor(max_workers=a.workers) as pool:
         rows = list(pool.map(run, jobs))
     extra = []
-    for i, (p, ctx, best) in enumerate(supplements()):
+    for i, (p, ctx, best) in enumerate(supplements(a.planner_evidence_gate)):
         result = p.decide(ctx, model) if model else None
         extra.append(dict(id=f'authored-solo-{i}', source='new synthetic planner destination/route/approach cases',
                           correct=bool(result and not result['fallback'] and signature(result['decision']) == best),

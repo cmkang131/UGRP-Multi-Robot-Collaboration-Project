@@ -27,6 +27,10 @@ def test_default_off_and_registration(monkeypatch):
         b=bundle(*args,**kw,planner=mode);require_current(b,ROOT)
         assert b['execution_bundle_id']==f'e2e18-v{v}'
         assert m.parent_for_validation(b)['e2e_options']==parent['e2e_options']
+    for mode,v in m.GATED_VERSIONS.items():
+        b=bundle(*args,**kw,planner=mode,planner_evidence_gate='on_v1');require_current(b,ROOT)
+        assert b['execution_bundle_id']==f'e2e18-v{v}'
+        assert m.parent_for_validation(b)['e2e_options']==parent['e2e_options']
     assert m.compose({})==()
 
 
@@ -57,7 +61,8 @@ def test_end_choice_changes_actual_station_geometry():
     assert not any(c['act']=='carry' for c in m.menu('r3',{}))
 
 
-def test_prepared_task_request_excludes_protocol_and_future_owner(tmp_path,setup_data):
+@pytest.mark.parametrize('evidence_gate',['off','on_v1'])
+def test_prepared_task_request_excludes_protocol_and_future_owner(tmp_path,setup_data,evidence_gate):
     from harness.e2e_call_snapshot import install
     host,robots,wire=make_event_host(tmp_path,setup_data)
     advance(host,robots,1,6)
@@ -66,7 +71,7 @@ def test_prepared_task_request_excludes_protocol_and_future_owner(tmp_path,setup
     trial=host.trial;trial.event_projection='route_hash_v1'
     for r in robots.values():
         r.packet=None;r.now=6.;r.goal=NS(stage='explore');r.servo={1:2000}
-    ex=m.install(trial,tr,body,'gemma_v1')
+    ex=m.install(trial,tr,body,'gemma_v1',planner_evidence_gate=evidence_gate)
     install(trial,'prepared_v1')
     call=NS(actor='r1',started_sim_s=6.,call_id='planner-frozen')
     trial.snapshot(call)
@@ -74,6 +79,7 @@ def test_prepared_task_request_excludes_protocol_and_future_owner(tmp_path,setup
     request=trial.prepare_call(call).request
     text=request['messages'][1]['content'];ctx=json.loads(text)
     assert ctx['now_s']==6 and ctx['own']['own_stage']=='explore'
+    assert ctx.get('planner_evidence_gate','off')==evidence_gate
     assert 'peer_go_ref' not in text and 'peer_reports' not in text and 'dialogue' not in ctx
     assert ctx['own']['rgb']['t_sim']<=6
     assert request['request_sha256']
