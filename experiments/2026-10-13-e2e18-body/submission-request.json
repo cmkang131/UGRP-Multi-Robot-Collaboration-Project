@@ -1,0 +1,50 @@
+{
+  "pr": 465,
+  "source_sha": "01b7a75b0dcf8d960fea826daef3eeb5df4bd0e6",
+  "execute": false,
+  "submission_owner": "coordinator",
+  "host": "azure3",
+  "seed": 61006,
+  "direct_submission_forbidden": true,
+  "default_candidate": {
+    "bundle": "e2e18-v344",
+    "parent": "e2e18-v336",
+    "add_options": {
+      "--body-skills": "bounded_v1",
+      "--body-controller": "jev_v1",
+      "--body-backend": "liquid_d1",
+      "--body-visual-check": "off"
+    }
+  },
+  "comparison": {
+    "bundle": "e2e18-v345",
+    "parent": "e2e18-v335",
+    "add_options": {
+      "--body-skills": "bounded_v1",
+      "--body-backend": "jev"
+    }
+  },
+  "required_admission": [
+    "fresh disk budgets and current VM lifetime",
+    "current Gemma/protocol and body relay identity; expiry covers run and teardown",
+    "existing azure_speed_gate 30 SIM seconds at planned load, median <=3.0",
+    "normal remote_run_finish supervisor and archive",
+    "new r-number run_key accepted by Gemma relay"
+  ],
+  "protocol_decider": "separate PR; integration must receive a new bundle if it changes v344 options",
+  "metrics": [
+    "alignment entry to actual paired grasp SIM seconds",
+    "alignment entry to grasp stage SIM seconds separately",
+    "reacquisition and oscillation counts",
+    "body calls, latency, errors, cost known/unknown",
+    "full E2E result, all failures retained"
+  ],
+  "relay": {
+    "state": "stopped after own offline task",
+    "mac_command": "python3 scripts/ugrp_session.py run body-relay-NAME -- python3 -m scripts.body_decider_relay --output outputs/body-relay-NAME --seconds FINITE_SECONDS --backends liquid_d1,jev",
+    "remote_port": 18433,
+    "local_port": 18434,
+    "key_location": "Mac Keychain only",
+    "receipt_rule": "fresh body.json beside the Gemma receipt; explicit --body-relay-receipt for full run"
+  }
+}

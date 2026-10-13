@@ -1,8 +1,8 @@
 """body_controller=jev_v1: own-body motion chosen by a categorical decider.
 
 Structure (user 2026-10-13): Gemma only talks (messages, route/claim/GO/ACK);
-every own-body motion is chosen by a decider (Jev by default, paid Liquid d1 as
-the optional backend) from 2-6 executable short-motion candidates built by
+every own-body motion is chosen by a decider (paid Liquid d1 by default, Jev as
+the comparison backend) from 2-6 executable short-motion candidates built by
 code from the robot's own RGB, own map estimate, own issued commands and the
 received dialogue state.  Code executes the chosen candidate numerically
 through the unchanged ports, authorizations and safety guards.
@@ -48,7 +48,7 @@ INSTRUCTIONS = ('You choose the next single short body motion for one small meca
 DT = .05
 
 
-def compose(bundle, body_controller='off', body_backend='jev', body_visual_check='off'):
+def compose(bundle, body_controller='off', body_backend='liquid_d1', body_visual_check='off'):
     if body_controller == 'off':
         if body_visual_check != 'off':raise ValueError('VISUAL_CHECK_REQUIRES_BODY_CONTROLLER')
         return ()
@@ -162,6 +162,7 @@ class BodyGate:
         self.dispatch_key = None
         self.visual_check = 'off'
         self.visual_checks = {}
+        self.visual_rows = []
         self.recovery_started = {}
         self.suppressed = 0
         orig = transport._carry
@@ -406,6 +407,7 @@ class BodyGate:
         entry=dict(t=now,category=out.get('choice'),status=out.get('status'),latency_s=out.get('wall_s'),
                    image_sha256=out.get('image_sha256'),usage=out.get('usage'),call_id=out.get('call_id'))
         self.visual_checks[rid]=entry
+        self.visual_rows.append(entry)
         facts['d1_visual_crosscheck']=entry
         self.record(dict(decision='visual_crosscheck',robot_id=rid,phase=self.tr.state,**entry))
 
@@ -713,7 +715,10 @@ class BodyGate:
         rows = self.rows
         ok = [r for r in rows if r['status'] == 'ok']
         lat = [r['latency_s'] for r in ok if r['latency_s']]
-        cost = sum(float((r.get('usage') or {}).get('cost') or 0.) for r in ok)
+        accounting=[*rows,*self.visual_rows]
+        cost_values=[(r.get('usage') or {}).get('cost') for r in accounting]
+        known_cost=[float(x) for x in cost_values if isinstance(x,(int,float)) and math.isfinite(x)]
+        cost = sum(known_cost) if len(known_cost)==len(accounting) else None
         tokens = sum(int((r.get('usage') or {}).get('input_tokens') or 0) for r in ok)
         by = {}
         for r in rows:
@@ -726,7 +731,9 @@ class BodyGate:
         return dict(stage_times=self.stage_times, memory={r:m.context(getattr(self,'last_now',0.)) for r,m in self.memory.items()}, calls=len(rows), ok=len(ok), failed=len(rows) - len(ok), tiers=tiers,
                     latency_median_s=statistics.median(lat) if lat else None,
                     latency_max_s=max(lat) if lat else None, sim_hold_total_s=sum(r['sim_hold_s'] for r in ok),
-                    input_tokens=tokens, cost_usd=cost,
+                    input_tokens=tokens, cost_usd=cost, reported_cost_usd=sum(known_cost),
+                    cost_known_calls=len(known_cost),cost_unknown_calls=len(accounting)-len(known_cost),
+                    visual_crosscheck_calls=len(self.visual_rows),
                     agreed_with_code_proposal=sum(1 for r in ok if r['choice'] == r['code_proposal']),
                     choices=by, suppressed_controller_commands=self.suppressed)
 
@@ -752,7 +759,11 @@ def install(transport, robots, bundle, out, receipt_path, root, *, send=None, ap
             return
         with path.open('a') as f:
             f.write(json.dumps(row, ensure_ascii=False) + '\n')
-    gate = BodyGate(transport, robots, client, profiles=profiles, record=record)
+    gate_class=BodyGate
+    if o.get('body_skills','off')!='off':
+        from harness.e2e_body_skills import SkillsBodyGate
+        gate_class=SkillsBodyGate
+    gate = gate_class(transport, robots, client, profiles=profiles, record=record)
     gate.visual_check=o.get('body_visual_check','off')
     transport.body_gate = gate
     transport.body_controller = OPTION

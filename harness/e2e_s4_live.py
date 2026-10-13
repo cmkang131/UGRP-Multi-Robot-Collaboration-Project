@@ -101,7 +101,7 @@ def project(request, *, options, decider='off', epoch_age_s=None, protocol_recov
         b['dialogue_epoch_age_s']=epoch_age_s
     if body_controller != 'off':
         if body_controller != 'jev_v1':raise ValueError('UNKNOWN_BODY_CONTROLLER')
-        system += ' Body-controller separation: you choose communication acts only (continue, route proposal/approval, claim, current GO/ACK). Jev selects every body, gripper and camera motion. Do not select look_around, release or any motor action. Continue means no dialogue act; it does not control motion. Describe only your own visual evidence when deciding GO/ACK, including before lifting.'
+        system += ' Body-controller separation: you choose communication acts only (continue, route proposal/approval, claim, current GO/ACK). The body decision backend selects every body, gripper and camera motion. Do not select look_around, release or any motor action. Continue means no dialogue act; it does not control motion. Describe only your own visual evidence when deciding GO/ACK, including before lifting.'
         b['body_controller']=body_controller
     b['prompt_lang'] = options.prompt_lang
     own.scan(b)

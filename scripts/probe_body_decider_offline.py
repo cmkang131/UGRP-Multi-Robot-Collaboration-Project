@@ -36,16 +36,22 @@ class Dialogue:
         return bool(self.complete)
 
 
-def gate_for(scene):
+def gate_for(scene,skills=False):
     servo = {int(k): v for k, v in (scene['servo'] or {}).items()}
-    robot = SimpleNamespace(beam_observation=scene['beam_observation'], servo=servo,
+    robot = SimpleNamespace(beam_observation=scene['beam_observation'], servo=servo, nav_command=strip(scene['next'][0]),
                             frame=SimpleNamespace(jpeg=base64.b64decode(scene['jpeg_b64'])),
                             goal=SimpleNamespace(explorer=SimpleNamespace(local_pose=scene['pose'])), packet=None)
     r1 = SimpleNamespace(packet=True if scene['t'] >= 66 else None)
     tr = SimpleNamespace(state=scene['phase'], robots={scene['rid']: robot}, queue=[], approach={}, dialogue=Dialogue(
         True if scene['phase'] == 'carry' else None), _carry=lambda now: False)
     profiles = json.loads((ROOT / 'configs/s2_v133_full_template.json').read_text())['pulse_calibration']['profiles']
-    g = BodyGate(tr, {scene['rid']: robot}, None, profiles=profiles)
+    if skills:
+        from harness.e2e_body_skills import SkillsBodyGate
+    g = (SkillsBodyGate if skills else BodyGate)(tr, {scene['rid']: robot}, None, profiles=profiles)
+    if scene.get('prior_decision'):
+        reading=scene['prior_decision']['facts']['front_ultrasonic']
+        robot.range_provider=SimpleNamespace(report=lambda now:SimpleNamespace(as_dict=lambda:reading))
+        g.rows=scene.get('prior_decisions',[])
     approach=scene.get('carrier_approach') or {}
     tr.approach[scene['rid']]={k:approach[v] for k,v in [('station','station_own_m'),('grip','grip_own_m')] if v in approach}
     if approach.get('own_beam_age_s') is not None:tr.approach[scene['rid']]['last_seen']=scene['t']-approach['own_beam_age_s']
@@ -57,6 +63,12 @@ def gate_for(scene):
         g.history[scene['rid']].append(c)
     for t, p in scene['poses']:
         g.poses[scene['rid']].append((t, p))
+    for old,nxt in zip(g.rows,g.rows[1:]+[scene.get('prior_decision')]):
+        if not nxt:continue
+        before,after=old['facts'].get('target_distance_m'),nxt['facts'].get('target_distance_m')
+        mem.history.append(dict(t=old['t'],choice=old['choice'],status=old['status'],visual_before=old['facts']['visual_category'],
+             visual_after=nxt['facts']['visual_category'],distance_after_m=after,
+             distance_change_m=None if before is None or after is None else after-before,outcome_t=nxt['t']))
     return g
 
 
@@ -64,9 +76,9 @@ def strip(c):
     return {k: v for k, v in c.items() if k != 't'}
 
 
-def menu_for(scene):
-    g = gate_for(scene)
-    rid, t = scene['rid'], scene['t']
+def menu_for(scene,skills=False):
+    g = gate_for(scene,skills)
+    rid, t = scene['rid'], scene.get('decision_t',scene['t'])
     facts, _, _ = g.facts(rid, t)
     if scene['phase'] == 'grasp_lift':
         m = g.batch_menu('grasp_lift')
@@ -95,6 +107,8 @@ def valid_set(scene, facts, cands, plabel, g):
     if facts.get('strategy_switch_required'):
         return {k for k in cands if k.startswith('recover_')}
     if scene['phase'] == 'mapping':
+        if facts.get('blocked_persistently'):
+            return {k for k in cands if k.startswith(('follow_own','detour_','back_off','scan_'))}
         if facts['own_progress_last_5s'] == 'not moving':
             v |= {k for k in cands if k.startswith('back') or k.startswith('turn')}
         return v
@@ -131,13 +145,14 @@ def main():
     ap.add_argument('--reps', type=int, default=3)
     ap.add_argument('--relay-url',default='http://127.0.0.1:18434/v1/body/decide')
     ap.add_argument('--backends',default='jev')
+    ap.add_argument('--body-skills',action='store_true')
     a = ap.parse_args()
     tiers=a.backends.split(',')
     if not set(tiers)<= {'jev','liquid_d1'}:raise ValueError('PAID_BACKENDS_ONLY')
     scenes = json.loads(a.scenes.read_text())
     jobs, cases = [], []
     for i, s in enumerate(scenes):
-        m = menu_for(s)
+        m = menu_for(s,a.body_skills)
         if m is None:
             continue
         facts, cands, plabel, g = m
@@ -172,8 +187,10 @@ def main():
             d['valid'] += r['status'] == 'ok' and r['choice'] in cases[r['case']]['valid']
         lat = [r.get('latency_s',r.get('wall_s')) for r in ok]
         summary[tier] = dict(N=len(rs), ok=len(ok), valid=len(val), agree_code=len(agree),
+                             non_wait_choices=sum(not any(w in str(r.get('choice')) for w in ('wait','hold','stop_and_look')) for r in ok),
                              latency_median_s=statistics.median(lat) if lat else None, by_phase=per,
-                             cost_usd=sum(float((r.get('usage') or {}).get('cost') or 0) for r in ok),
+                             cost_usd=(sum(float(r['usage']['cost']) for r in rs) if all(isinstance((r.get('usage') or {}).get('cost'),(int,float)) for r in rs) else None),
+                             cost_unknown_calls=sum(not isinstance((r.get('usage') or {}).get('cost'),(int,float)) for r in rs),
                              input_tokens=sum(int((r.get('usage') or {}).get('input_tokens') or 0) for r in ok))
     a.out.write_text(json.dumps(dict(cases=cases, rows=rows, summary=summary), indent=1, ensure_ascii=False))
     print(json.dumps(summary, indent=1))

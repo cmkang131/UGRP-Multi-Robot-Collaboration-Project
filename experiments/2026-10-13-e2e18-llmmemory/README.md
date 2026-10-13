@@ -68,7 +68,7 @@ Gemma 문장 100개를 Codex가 전수 판독했다. 현재 WAIT 중 과거 승�
 
 ## 검증·재현·보존
 
-부모 `99900904`의 기존 몸 제어/조합 변경과 연결부를 통합했다. 보호 대상 파일의 부모 대비 차이는 없으며(`e2e18_v32x.json`은 양쪽 모두 없음),, 재생의 영상 요청·결정 요청·Gemma 요청·최종 응답 재구성이 각각 100/100 동일함을 확인했다. 관련 시험은 아래 3개 파일만 한 pytest로 실행했다: **69 passed, 1 skipped (31.87 s)**. 건너뛴 기존 native RGB 시험은 외부 작업 금지 fixture의 mujoco import 차단 때문이다.
+부모 `067ef151`의 기존 몸 제어/조합 변경과 연결부를 통합했다. 보호 대상 파일의 부모 대비 차이는 없으며(`e2e18_v32x.json`은 양쪽 모두 없음),, 재생의 영상 요청·결정 요청·Gemma 요청·최종 응답 재구성이 각각 100/100 동일함을 확인했다. 관련 시험은 아래 3개 파일만 한 pytest로 실행했다: **69 passed, 1 skipped (31.41 s)**. 건너뛴 기존 native RGB 시험은 외부 작업 금지 fixture의 mujoco import 차단 때문이다.
 
 ```sh
 python3 -m pytest -q -rs tests/test_e2e_dialogue_decider.py tests/test_e2e_llm_memory.py tests/test_e2e_s4_live.py

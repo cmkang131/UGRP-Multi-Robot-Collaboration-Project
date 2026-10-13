@@ -33,7 +33,7 @@ def test_default_backend_and_off_do_not_mutate():
     assert m.compose(b)==() and b==original
     b={'execution_bundle_id':m.PARENT,'e2e_options':{'dev_light':True}}
     m.compose(b,'jev_v1')
-    assert b['execution_bundle_id']=='e2e18-v335' and b['e2e_options']['body_backend']=='jev'
+    assert b['execution_bundle_id']=='e2e18-v336' and b['e2e_options']['body_backend']=='liquid_d1'
     assert m.parent_for_validation(b)['execution_bundle_id']==m.PARENT
     b['body_controller_parameters']['phase_budget_s']=61
     with pytest.raises(ValueError):m.parent_for_validation(b)
@@ -50,11 +50,16 @@ def test_actual_bundle_registration(monkeypatch):
     p.test_registered_wheel_wait_candidate('zero_wheel_v1',276,'range_wall_v1')
     kw.update(stage_physics='release_dt1_v1',relook_giveup='dev_light_rest_v1',post_relook='carry_through_v1')
     old=bundle(*args,**kw)
-    new=bundle(*args,**kw,body_controller='jev_v1')
+    new=bundle(*args,**kw,body_controller='jev_v1',body_backend='jev')
     assert old['execution_bundle_id']=='e2e18-v321'
     assert new['execution_bundle_id']=='e2e18-v335'
     require_current(new,ROOT)
     assert 'harness/e2e_body_controller.py' in new['source_sha256']
+    for backend,version in [('liquid_d1',344),('jev',345)]:
+        skill=bundle(*args,**kw,body_controller='jev_v1',body_backend=backend,body_skills='bounded_v1')
+        require_current(skill,ROOT)
+        assert skill['execution_bundle_id']==f'e2e18-v{version}'
+        assert 'harness/e2e_body_skills.py' in skill['source_sha256']
 
 
 @pytest.mark.parametrize('phase',['mapping','align','relook'])
@@ -193,3 +198,78 @@ def test_lift_queue_never_offered_without_current_go_ack():
     g.pre_step(0.)
     assert len(g.rows)==2 and all('grasp_and_lift' not in r['candidates'] for r in g.rows)
     assert not g.approved
+
+
+def skill_fixture(phase='mapping',send=None):
+    from harness.e2e_body_skills import SkillsBodyGate
+    gate,tr,robots,events=fixture(phase,send=send)
+    g=SkillsBodyGate(tr,robots,gate.client,profiles={})
+    for r in robots.values():r.nav_command=sem.pulse('forward_short')
+    return g,tr,robots,events
+
+
+def test_skills_default_d1_and_jev_comparison_registration():
+    from harness import e2e_body_skills as sk
+    for backend,version,parent in [('liquid_d1',344,336),('jev',345,335)]:
+        b={'execution_bundle_id':m.PARENT,'e2e_options':{'dev_light':True}}
+        m.compose(b,'jev_v1',backend);sk.compose(b,'bounded_v1')
+        assert b['execution_bundle_id']==f'e2e18-v{version}'
+        assert sk.parent_for_validation(b)['execution_bundle_id']==f'e2e18-v{parent}'
+
+
+def test_peer_path_uses_candidate_direction_not_image_center():
+    peer=dict(visible=True,distance='near',direction='left',bearing_deg=80.,half_width_deg=10.)
+    assert not sem.peer_for_path(peer,sem.pulse('forward_short'))['in_path']
+    assert sem.peer_for_path(peer,sem.pulse('strafe_left_small'))['in_path']
+    assert not sem.peer_for_path(peer,sem.pulse('strafe_right_small'))['in_path']
+    assert not sem.peer_for_path(peer,sem.pulse('turn_left_small'))['in_path']
+
+
+def test_thin_orange_strip_is_not_near_peer():
+    import cv2
+    rgb=np.zeros((480,640,3),np.uint8);rgb[50:60,180:430]=[0,140,255]
+    jpeg=cv2.imencode('.jpg',rgb)[1].tobytes()
+    assert sem.peer_appearance(jpeg)['distance']=='near'
+    assert sem.peer_appearance_v2(jpeg,{1:2000,3:740,4:2320,5:1320,6:1500})['visible'] is False
+
+
+def test_blocked_menu_has_detours_and_filtered_proposal(monkeypatch):
+    g,tr,robots,_=skill_fixture()
+    monkeypatch.setattr(sem,'peer_appearance_v2',lambda *a:dict(visible=True,distance='near',direction='ahead',bearing_deg=0.,half_width_deg=12.,in_path=True))
+    menu,proposal,facts=g.menu_direct('r1',0.,[sem.pulse('forward_short')])
+    assert 'follow_own_path' not in menu
+    assert {'detour_left','detour_right','back_off_and_replan'}<=set(menu)
+    assert proposal in menu
+    assert 'ahead, near' in facts['blocking_observation']
+
+
+def test_three_unchanged_waits_removed_without_removing_safe_alternatives():
+    g,tr,robots,_=skill_fixture()
+    facts=g.facts('r1',0.)[0]
+    for t in (0.,1.,2.):g.rows.append(dict(t=t,robot_id='r1',phase='mapping',choice='stop_and_look',facts=copy.deepcopy(facts)))
+    menu,proposal,facts=g.menu_direct('r1',3.,[sem.pulse('forward_short')])
+    assert facts['blocked_persistently']
+    assert 'hold_and_reobserve' not in menu and proposal in menu
+    assert 'follow_own_path' in menu
+
+
+def test_bounded_feedback_skill_runs_multiple_commands_with_one_decision():
+    g,tr,robots,_=skill_fixture(send=lambda p:dict(status='ok',choice='follow_own_path',wall_s=.2))
+    proposed=sem.pulse('forward_short');g.filter(0.,[('r1',proposed)])
+    for t in (.2,.4,.6):
+        robots['r1'].beam_observation['rgb']['t_sim']=t
+        out=g.filter(t,[('r1',copy.deepcopy(proposed))])
+        assert any(c.get('forward',0)>0 for _,c in out)
+    assert len(g.rows)==1
+    robots['r1'].range_provider=NS(report=lambda now:NS(as_dict=lambda:dict(valid=True,status='ok',range_m=.1,age_s=0.)))
+    assert all(m.stop_like(c) for _,c in g.filter(.8,[('r1',proposed)]))
+    assert 'r1' not in g.units
+
+
+def test_cost_absent_is_unknown_and_visual_calls_are_counted():
+    g,tr,robots,_=fixture()
+    g.filter(0.,[('r1',sem.pulse('forward_short'))])
+    g.visual_rows.append(dict(usage={'cost':.1}))
+    x=g.summary()
+    assert x['cost_usd'] is None and x['reported_cost_usd']==.1
+    assert x['visual_crosscheck_calls']==1 and x['cost_unknown_calls']==1

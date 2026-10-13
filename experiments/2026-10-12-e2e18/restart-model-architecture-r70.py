@@ -38,6 +38,8 @@ for version in (335,336,337):
   ('--body-visual-check','d1_v1' if version==337 else 'off'),('--body-relay-receipt',str(b/'relays/e2e18/body.json'))]
 for version,parent,mode in ((340,335,'fast_v1'),(341,336,'fast_v1'),(342,335,'memory_v1'),(343,336,'memory_v1')):
  EXTRA[version]=EXTRA[parent]+[('--architecture-stack',mode)]
+for version,parent in ((344,336),(345,335)):
+ EXTRA[version]=EXTRA[parent]+[('--body-skills','bounded_v1')]
 EXTRA[304]=[('--relook-giveup','dev_light_rest_v1')]
 EXTRA[305]=EXTRA[304]
 MODE={304:'view5_pan_v1',305:'view5_pan_v1',303:'view5_pan_v1',295:None,296:None,297:'view5_pan_v1',298:'view5_pan_v1',300:'view5_pan_v1',301:'view5_pan_v1',302:'view5_pan_v1'}
@@ -57,10 +59,10 @@ receipt=json.loads((b/'relays/e2e18'/(os.environ.get('E2E18_RELAY','a-r4')+'.jso
 from datetime import datetime
 deadline=datetime.fromisoformat('2026-10-13T13:00:00+00:00').timestamp()
 body_expiry=deadline
-if any(v in (335,336,337,340,341,342,343) for v in VERS):
+if any(v in (335,336,337,340,341,342,343,344,345) for v in VERS):
  body_receipt=json.loads((b/'relays/e2e18/body.json').read_text())
  from harness.e2e_body_controller import validate_receipt as validate_body
- for backend in {('liquid_d1' if v in (336,337,341,343) else 'jev') for v in VERS if v in (335,336,337,340,341,342,343)}:validate_body(body_receipt,Path.cwd(),backend)
+ for backend in {('liquid_d1' if v in (336,337,341,343,344) else 'jev') for v in VERS if v in (335,336,337,340,341,342,343,344,345)}:validate_body(body_receipt,Path.cwd(),backend)
  body_expiry=body_receipt['checked_unix']+body_receipt['valid_for_s']
 cap=int(min(7200,body_expiry-time.time()-660,receipt['checked_unix']+receipt['valid_for_s']-time.time()-660,deadline-time.time()-900))
 assert cap>=900,'INSUFFICIENT_RELAY_LIFETIME_FOR_BATCH'
