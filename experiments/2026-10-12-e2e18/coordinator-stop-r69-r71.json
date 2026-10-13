@@ -1,0 +1,69 @@
+{
+  "records": [
+    {
+      "run": "e2e18-v324-s61006-r69",
+      "pid": 5175,
+      "signal": "SIGINT",
+      "checked_unix": 1791879167.83858,
+      "phase": "wait_go_ack",
+      "sim_s": 560.0,
+      "reason": "USER_1713_STOP_KNOWN_FAILURES: r69 old structure 0/6 joint grasp at SIM~390 (known approach failure); r71 v335/v336 body decider freeze (no detour candidate), v330/v331 Gemma-decides-GO design replaced by d1 (#463). Stop, fix, resubmit fixed bundles."
+    },
+    {
+      "run": "e2e18-v325-s61006-r69",
+      "pid": 5176,
+      "signal": "SIGINT",
+      "checked_unix": 1791879167.8389282,
+      "phase": "wait_go_ack",
+      "sim_s": 557.0,
+      "reason": "USER_1713_STOP_KNOWN_FAILURES: r69 old structure 0/6 joint grasp at SIM~390 (known approach failure); r71 v335/v336 body decider freeze (no detour candidate), v330/v331 Gemma-decides-GO design replaced by d1 (#463). Stop, fix, resubmit fixed bundles."
+    },
+    {
+      "run": "e2e18-v328-s61006-r69",
+      "pid": 5179,
+      "signal": "SIGINT",
+      "checked_unix": 1791879167.839254,
+      "phase": "wait_go_ack",
+      "sim_s": 560.0,
+      "reason": "USER_1713_STOP_KNOWN_FAILURES: r69 old structure 0/6 joint grasp at SIM~390 (known approach failure); r71 v335/v336 body decider freeze (no detour candidate), v330/v331 Gemma-decides-GO design replaced by d1 (#463). Stop, fix, resubmit fixed bundles."
+    },
+    {
+      "run": "e2e18-v329-s61006-r69",
+      "pid": 5180,
+      "signal": "SIGINT",
+      "checked_unix": 1791879167.8395197,
+      "phase": "lower_open",
+      "sim_s": 567.0,
+      "reason": "USER_1713_STOP_KNOWN_FAILURES: r69 old structure 0/6 joint grasp at SIM~390 (known approach failure); r71 v335/v336 body decider freeze (no detour candidate), v330/v331 Gemma-decides-GO design replaced by d1 (#463). Stop, fix, resubmit fixed bundles."
+    },
+    {
+      "run": "e2e18-v330-s61006-r71",
+      "pid": 16357,
+      "signal": "SIGINT",
+      "checked_unix": 1791879167.8398023,
+      "phase": "align",
+      "sim_s": 182.0,
+      "reason": "USER_1713_STOP_KNOWN_FAILURES: r69 old structure 0/6 joint grasp at SIM~390 (known approach failure); r71 v335/v336 body decider freeze (no detour candidate), v330/v331 Gemma-decides-GO design replaced by d1 (#463). Stop, fix, resubmit fixed bundles."
+    },
+    {
+      "run": "e2e18-v331-s61006-r71",
+      "pid": 16358,
+      "signal": "SIGINT",
+      "checked_unix": 1791879167.8400393,
+      "phase": "align",
+      "sim_s": 194.0,
+      "reason": "USER_1713_STOP_KNOWN_FAILURES: r69 old structure 0/6 joint grasp at SIM~390 (known approach failure); r71 v335/v336 body decider freeze (no detour candidate), v330/v331 Gemma-decides-GO design replaced by d1 (#463). Stop, fix, resubmit fixed bundles."
+    }
+  ],
+  "correction": "The coordinator reason contains an earlier 0/6 snapshot. Final raw evaluation confirms r69 paired grasp 4/6 at 517.5 SIM s; preserve this distinction.",
+  "superseded_candidates": [
+    340,
+    341,
+    342,
+    343
+  ],
+  "replacement": [
+    344,
+    345
+  ]
+}
