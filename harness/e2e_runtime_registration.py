@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] in ('e2e18-v316','e2e18-v317','e2e18-v318'):
+        from harness.e2e_perception_fast import parent_for_validation as perception_parent
+        return require_current(perception_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v320','e2e18-v321','e2e18-v322','e2e18-v323'):
         from harness.e2e_post_relook import parent_for_validation as post_parent
         return require_current(post_parent(bundle),root)
