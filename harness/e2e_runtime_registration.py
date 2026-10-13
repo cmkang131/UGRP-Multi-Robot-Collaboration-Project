@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id']=='e2e18-v381':
+        from harness.e2e_route_recovery import parent_for_validation as route_parent
+        return require_current(route_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v379','e2e18-v380'):
         from harness.e2e_recovery_menu import parent_for_validation as menu_parent
         return require_current(menu_parent(bundle),root)

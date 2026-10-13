@@ -1,0 +1,34 @@
+{
+  "schema": "ugrp.route_stage_submission.v1",
+  "status": "WAITING_SAVED_STATE",
+  "parent": "e2e18-v375",
+  "candidate": "e2e18-v381",
+  "route_recovery": "frontier_v1",
+  "seeds": [
+    61006,
+    61007,
+    61008,
+    61009
+  ],
+  "checkpoints_per_seed": 2,
+  "paired_runs": 16,
+  "host": "VM3",
+  "concurrency": 16,
+  "speed_gate": 3.5,
+  "stage_sim_s": 45,
+  "extra_sim_s": 15,
+  "whole_e2e": false,
+  "weld": false,
+  "source_sha": "SEE_GIT_COMMIT",
+  "requires": [
+    "r80 completed and lightweight private snapshots copied with sha256",
+    "separate evaluation geometry and own-to-world transform",
+    "physical/controller checkpoint restore adapter verified by supervisor",
+    "OpenRouter balance checked by coordinator",
+    "same frozen source state and seed for both arms",
+    "supervisor disk budget for physical image/log writes"
+  ],
+  "local_replay_disk_budget_bytes": 16777216,
+  "physical_disk_estimate": null,
+  "model_calls_local": 0
+}

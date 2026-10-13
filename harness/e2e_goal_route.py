@@ -108,7 +108,7 @@ class IntegratedGoalRoute(GoalRoute):
         own.scan(beam); own.rgb_ref(beam['rgb'], 'r1', now, self.e2e_observed)
         own.numbers(beam['pose_own_m'], 3, 'OWN_BEAM_POSE')
         if now-beam['rgb']['t_sim'] > .25: raise ContractViolation('FRESH_OWN_BEAM_REQUIRED')
-        diagnostic=getattr(self,'e2e_route_guard','off')!='off'
+        diagnostic=(getattr(self,'e2e_route_guard','off')!='off' or getattr(self,'e2e_route_recovery','off')!='off')
         if diagnostic:
             self.e2e_route_diagnostics=dict(t=now,beam_pose_own_m=copy.deepcopy(beam['pose_own_m']),beam_rgb=copy.deepcopy(beam['rgb']),sigma_xy_m=math.sqrt(float(np.linalg.eigvalsh(np.asarray(self.pose_covariance())[:2,:2]).max())),stage='beam_axes')
         from harness.e2e_beam_axis import error as axis_error
@@ -133,16 +133,30 @@ class IntegratedGoalRoute(GoalRoute):
         if grid.robot_id != 'r1': raise ContractViolation('PEER_GRID_FORBIDDEN')
         covariance = np.asarray(self.pose_covariance())
         margin = .02 + 3*math.sqrt(float(np.linalg.eigvalsh(covariance[:2, :2]).max()))
-        _, allowed, clearance, lo = footprint_clearance(grid, PAIR_FOOTPRINT, margin,
-                                                       yaw=float(tf[2])+beam['pose_own_m'][2])
         start = beam['pose_own_m'][:2]
         first, last = transform([start, target], tf)
-        cells = astar(allowed, np.asarray(grid.cell(first))-lo, np.asarray(grid.cell(last))-lo,
-                      grid.resolution, clearance)
-        if diagnostic:
-            from harness.e2e_route_guard import search as dev_search
-            self.e2e_route_diagnostics.update(stage='grid_route',strict_margin_m=margin,B_own_m=list(target))
-            allowed,clearance,lo,cells=dev_search(self,grid,tf,beam,first,last,margin,(allowed,clearance,lo,cells))
+        recovery = getattr(self, 'e2e_route_recovery', 'off') != 'off'
+        if recovery:
+            from harness.e2e_route_recovery import search
+            result, details, focus = search(grid, first, last,
+                float(tf[2])+beam['pose_own_m'][2], margin, dev_light=self.dev_light,
+                tolerance=0. if endpoint is not None else None)
+            allowed, clearance, lo, cells, selected = result
+            self.e2e_route_diagnostics.update(details, t=now, stage='grid_route',
+                strict_margin_m=margin, B_own_m=list(target), map_to_odom=np.asarray(tf).tolist())
+            self.e2e_route_focus = (dict(t=now, own_points=transform(focus,inverse(tf)).tolist())
+                                    if focus else None)
+            if cells:
+                target = transform([selected],inverse(tf))[0].tolist()
+        else:
+            _, allowed, clearance, lo = footprint_clearance(grid, PAIR_FOOTPRINT, margin,
+                                                           yaw=float(tf[2])+beam['pose_own_m'][2])
+            cells = astar(allowed, np.asarray(grid.cell(first))-lo, np.asarray(grid.cell(last))-lo,
+                          grid.resolution, clearance)
+            if diagnostic:
+                from harness.e2e_route_guard import search as dev_search
+                self.e2e_route_diagnostics.update(stage='grid_route',strict_margin_m=margin,B_own_m=list(target))
+                allowed,clearance,lo,cells=dev_search(self,grid,tf,beam,first,last,margin,(allowed,clearance,lo,cells))
         if not cells: raise ContractViolation('OWN_GRID_ROUTE_UNAVAILABLE')
         path = [start] + transform([grid.point(np.asarray(c)+lo) for c in cells], inverse(tf)).tolist() + [list(target)]
 
