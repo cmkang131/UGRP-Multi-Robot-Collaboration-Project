@@ -6,3 +6,5 @@
 - [ConPoSe (2025)](https://arxiv.org/html/2510.08705v1): 기하 후보 생성, LLM과 국소 탐색의 접촉점 선택, 재선택을 분리한다. 물체·로봇 상태가 제공되는 pushing 설정이므로 우리 자기 RGB 제약에 그대로 성능을 승계할 수 없다. 논문은 코드 공개 예정이라고 명시하며 실제 공개 저장소는 미확인.
 
 적용: 코드는 자기 관측의 끝 후보·비용·점유 근거만 만들고, 판단과 메시지는 같은 LLM 호출에서 나온다. 무통신/모델 실패는 고정 규칙과 자기 RGB 점유 검사로 처리하고 결과를 LLM 결과와 분리한다. 한 번 선택한 물리 끝은 후속 B 방향 변화만으로 뒤집지 않으며, 점유 때문에 바꿀 때도 새 자기 관측과 선택 기록을 남긴다.
+
+- [OpenRouter structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs): 실제 Gemma 2호출 중1개가 Markdown fence를 반환하여 엄격 파싱 실패. 공식 response_format=json_schema, strict, provider.require_parameters를 적용한다. 이는 로컬 판단 반환 형식이며 로봇 사이 별도 통신 경로를 만들지 않는다.

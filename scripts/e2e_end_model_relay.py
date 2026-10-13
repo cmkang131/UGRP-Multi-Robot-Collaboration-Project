@@ -55,7 +55,8 @@ def serve(args):
                 return self.reply(429,dict(error='END_MODEL_BUDGET_EXHAUSTED'))
             record=dict(context=ctx,image_sha256=request['image_sha256'],model=MODEL,provider='DeepInfra',attempt=index);cost=None;started=time.monotonic()
             try:
-                payload=dict(model=MODEL,provider=dict(order=['DeepInfra'],allow_fallbacks=False),max_tokens=384,temperature=0,
+                payload=dict(model=MODEL,provider=dict(order=['DeepInfra'],allow_fallbacks=False,require_parameters=True),max_tokens=384,temperature=0,
+                    response_format=dict(type='json_schema',json_schema=dict(name='end_assignment',strict=True,schema=dict(type='object',additionalProperties=False,required=['choice','message','reason'],properties=dict(choice=dict(type='string',enum=['end0','end1','wait']),message=dict(type='string'),reason=dict(type='string'))))),
                     reasoning=dict(enabled=False),usage=dict(include=True),messages=[dict(role='system',content=SYSTEM),dict(role='user',content=[dict(type='text',text=user),dict(type='image_url',image_url=dict(url='data:image/jpeg;base64,'+request['image']))])])
                 status,raw,_=http_send(payload,key,timeout=25);response=json.loads(raw);record.update(status=status,response=response)
                 usage=response.get('usage',{});v=usage.get('cost')
