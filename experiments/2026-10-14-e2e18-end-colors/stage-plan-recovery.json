@@ -1,0 +1,207 @@
+{
+  "vm": "azure3",
+  "concurrency": 12,
+  "speed_gate_limit": 3.5,
+  "gate_sim_s": 30,
+  "runs": [
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v419",
+      "wrapper": "v419",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v419",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v423",
+      "wrapper": "v423",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v423",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v424",
+      "wrapper": "v424",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v424",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v425",
+      "wrapper": "v425",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v425",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v419",
+      "wrapper": "v419",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v419",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v423",
+      "wrapper": "v423",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v423",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v424",
+      "wrapper": "v424",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v424",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v425",
+      "wrapper": "v425",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v425",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v419",
+      "wrapper": "v419",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v419",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v423",
+      "wrapper": "v423",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v423",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v424",
+      "wrapper": "v424",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v424",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v425",
+      "wrapper": "v425",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v425",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    }
+  ],
+  "metrics": [
+    "opposite_end",
+    "first_attempt_success",
+    "both_held",
+    "ready_wait_sim_s"
+  ],
+  "pooling": "never pool black vs colored; primary 12 and repeat 4 separately",
+  "cost": {
+    "new_model_calls": 0,
+    "new_model_usd": 0,
+    "reason": "user static order assignment; isolated stage omits prior dialogue as before"
+  },
+  "stop": "identified control failure immediately; unchanged stage >100 SIM s; max300 SIM s; wallcap1800",
+  "reason": "initial16 passed speed gate but sustained load17 exceeded earlier12.8 cap; next batch uses12",
+  "hypotheses": [
+    "retain own observed center as search direction only",
+    "existing bounded full sector sweep vs2s spin slice",
+    "shorter inward visual support"
+  ]
+}

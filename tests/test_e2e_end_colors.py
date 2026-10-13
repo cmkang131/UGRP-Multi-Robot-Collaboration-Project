@@ -92,3 +92,21 @@ def test_station_uses_color_observation_not_robot_id_or_B():
         s={};active,action=c.step(t,rid,5.,s);assert active and action is None;states.append(s)
     assert np.array_equal(states[0]['station'],states[1]['station'])
     assert states[0]['basis']['rule']!=states[1]['basis']['rule']
+
+
+def test_anchor_preserves_only_center_for_search_never_restored_end(monkeypatch):
+    old=dict(pose_own_m=[1,2,2.4],grip_base_m=[.2,0],rgb=dict(t_sim=4,frame_id=1))
+    robots={rid:SimpleNamespace(beam=copy.deepcopy(old),last_beam=None,grasp_track=None) for rid in c.ORDER}
+    tr=SimpleNamespace(robots=robots,approach={},event=lambda *a,**k:None)
+    c.install(tr,'anchor_v2')
+    for r in robots.values():
+        assert r.beam is None and r.last_beam is None
+        assert set(r.color_search_anchor)=={'pose_own_m','rgb'}
+        assert r.color_search_anchor['pose_own_m']==[1,2,0.]
+    def acquire(t,rid,now,state,target):
+        assert target is None
+        assert 'grip_base_m' not in t.robots[rid].last_beam
+        return False,[dict(kind='hold')]
+    monkeypatch.setattr('harness.e2e_pregrasp_acquire.acquire',acquire)
+    assert c.step(tr,'r1',5.,{})==(True,(False,[dict(kind='hold')]))
+    assert robots['r1'].last_beam is None

@@ -12,7 +12,7 @@ import numpy as np
 from harness import owncam_pair_beam as v1
 
 PROFILE='teal_blue_v1'
-OPTIONS=('scan_v1','remember_v1','short_side_v1')
+OPTIONS=('scan_v1','remember_v1','short_side_v1','anchor_v2','anchor_short_v2','sweep_v2')
 COLORS={'teal':dict(rgba=[.02,.95,.60,1.],hsv_lo=[74,185,45],hsv_hi=[83,255,255]),
         'blue':dict(rgba=[.02,.02,.95,1.],hsv_lo=[116,185,45],hsv_hi=[124,255,255])}
 ORDER={'r1':'teal','r2':'blue'}
@@ -67,7 +67,7 @@ def observe(image,servo,color,rays,option='scan_v1'):
         offsets=(pts[lime]-center)@u
         if len(offsets)<25:continue
         low,high=np.quantile(offsets,[.02,.98])
-        required=.06 if option=='short_side_v1' else .12
+        required=.06 if option in ('short_side_v1','anchor_short_v2') else .12
         neg=low < -required and high < .10
         pos=high > required and low > -.10
         if neg==pos:continue
@@ -98,6 +98,10 @@ def install(tr,option='off'):
     for rid in ('r1','r2'):
         r=tr.robots[rid]
         r.observe_beam=lambda image,servo,color=ORDER[rid]:observe(image,servo,color,rays,option)
+        previous=r.beam or getattr(r,'last_beam',None) or (getattr(r,'grasp_track',None) or {}).get('beam')
+        r.color_search_anchor=(dict(pose_own_m=[*previous['pose_own_m'][:2],0.],rgb=copy.deepcopy(previous['rgb']))
+            if previous and option in ('anchor_v2','anchor_short_v2') else None)
+        # Only the old center may guide search, never a grip/axis/end assignment.
         # The restored black-band history cannot establish a colored end identity.
         r.beam=None;r.last_beam=None;r.beam_observation=None;r.grasp_track=None
         tr.approach.pop(rid,None)
@@ -121,12 +125,22 @@ def step(tr,rid,now,state):
         reach=arm.MOUNT_X_M+PARAMS['pair_radius_m']
         state.update(station=np.r_[grip-reach*inward,yaw],grip=grip,last_seen=now,
             basis=dict(yaw_rad=yaw,center_m=b['pose_own_m'][:2],rgb=copy.deepcopy(b['rgb']),rule='static_own_color_'+ORDER[rid]))
-        state.pop('color_scan',None)
+        state.pop('color_scan',None);state.pop('acquisition',None)
         return True,None
     age=now-state.get('last_seen',-math.inf)
     retention=2. if mode=='scan_v1' else 30.
     if 'station' in state and age<=retention:return True,None
     state.pop('station',None);state.pop('grip',None)
+    if mode in ('anchor_v2','anchor_short_v2','sweep_v2'):
+        # Reuse the settled-image/goal-angle bounded search already used by the baseline.
+        # Explicit target=None prevents its legacy remembered-end station shortcut.
+        from harness.e2e_pregrasp_acquire import acquire
+        previous=r.last_beam
+        if previous is None:r.last_beam=getattr(r,'color_search_anchor',None)
+        try:action=acquire(tr,rid,now,state,None)
+        finally:r.last_beam=previous
+        if action is None:raise ValueError('COLOR_SEARCH_REQUIRES_EXISTING_ACQUISITION_SKILL')
+        return True,action
     scan=state.setdefault('color_scan',dict(started=now,index=-1))
     from harness.owncam_pair_beam_v2 import pose_of
     index=int((now-scan['started'])/2.)%8
