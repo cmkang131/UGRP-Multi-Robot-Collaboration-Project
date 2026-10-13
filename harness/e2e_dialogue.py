@@ -186,6 +186,9 @@ class Dialogue:
             receipt = transport.send(actor, recipients=message['recipients'], text=message.get('text'),
                 structured=message.get('message'), reply_to=message['reply_to'], at_sim_s=at_sim_s, contract=contract)
             receipts.append(receipt)
+            memory = getattr(self.trial, 'memory', None)
+            if receipt.accepted and memory is not None and getattr(self.trial, 'llm_memory', 'off') != 'off':
+                memory.sent_keys[receipt.envelope.message_id] = copy.deepcopy(self.captures[call_id]['view']['key'])
             if receipt.accepted and contract is not None:
                 source = contract['source_message_id']
                 origin = self.origins[source] if source else receipt.envelope.message_id
@@ -197,6 +200,11 @@ class Dialogue:
         return tuple(receipts)
 
     def receive(self, actor, envelope, now):
+        memory = getattr(self.trial, 'memory', None)
+        if memory is not None and getattr(self.trial, 'llm_memory', 'off') != 'off':
+            if envelope not in self.trial.channel.inbox(actor, now_sim_s=now):
+                raise ContractViolation('ACTUAL_COMMITTED_ROUTE_DELIVERY_REQUIRED')
+            memory.receive(actor, envelope, now, self.view(actor, now)['key'])
         contract = envelope['body'].get('contract')
         if contract is None:
             return
@@ -321,7 +329,10 @@ class Dialogue:
                 if checked['action']['kind'] == 'route_vote' and 'own_rgb' not in checked['decision_sources']:
                     raise ContractViolation('GO_ACK_OWN_RGB_SOURCE_REQUIRED')
                 return checked
-            except (ContractViolation, KeyError, TypeError, ValueError) as exc:
+            except (ContractViolation, zp.ProtocolError, KeyError, TypeError, ValueError) as exc:
+                memory = getattr(trial, 'memory', None)
+                if memory is not None and getattr(trial, 'llm_memory', 'off') != 'off':
+                    memory.reject(call.call_id, call.actor, value, exc, context)   # own validation only
                 raise zp.ProtocolError(str(exc)) from exc
         private_zp = type('Protocol', (), {'relay': lambda transport, actor, value, **kw:
             self.relay(transport, actor, value, call_id=call.call_id, **kw), 'ProtocolError': zp.ProtocolError})

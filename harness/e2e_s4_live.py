@@ -11,6 +11,7 @@ from harness.s4_event_policy import Options, ProjectedInputs
 from harness import s4_compact_prompt as prompt
 from harness.s4_call_recovery import RetryTransport
 from harness.zone_final_pair_binding import bind
+from harness.e2e_llm_memory import collect as mem_collect
 
 
 EN = '''You are {rid}. r1=end_neg, r2=end_pos carry one long beam; r3 is idle.
@@ -19,7 +20,7 @@ Until a route exists, continue while the own-camera mapper explores. r1 must sen
 GO/ACK use the exact current dialogue.key [order_id,route_hash,grip_epoch,seg]. GO requires own RGB supporting the grip; ACK requires your GO and the current peer_go_ref. Never reuse a previous epoch or segment. When unsure, continue holds transport. Only channel.can_send_to may receive messages. reply_to must be a received ID or null. All prose is English. Examples describe syntax, not evidence.'''
 
 
-def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off',route_handle='off',vote_ref='off'):
+def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off',route_handle='off',vote_ref='off',llm_memory='off',memory=None):
     """Validate before projection; retain the typed E2E action/message contract."""
     r = copy.deepcopy(request)
     b = json.loads(r['messages'][1]['content'])
@@ -28,6 +29,7 @@ def project(request, *, options, decider='off', epoch_age_s=None, protocol_recov
         raise base.ContractViolation('E2E_DIALOGUE_INPUT_REQUIRED')
     if not options.compact_prompt_v1 and options.prompt_lang == 'ko' and decider=='off':
         if vote_ref!='off':raise ValueError('VOTE_REF_REQUIRES_PROJECTED_PROMPT')
+        if llm_memory!='off':raise ValueError('LLM_MEMORY_REQUIRES_PROJECTED_PROMPT')
         return r
     b['condition'] = prompt.external_condition(b['condition'], options.prompt_lang)
     b['channel']['condition'] = b['condition']
@@ -87,6 +89,10 @@ def project(request, *, options, decider='off', epoch_age_s=None, protocol_recov
         from harness.e2e_vote_ref import OPTIONS as VOTE_OPTIONS,prompt as vote_prompt
         if vote_ref not in VOTE_OPTIONS or options.prompt_lang!='en':raise ValueError('UNKNOWN_VOTE_REF')
         system=vote_prompt(b,system)
+    if llm_memory!='off':
+        from harness import e2e_llm_memory as mem
+        if llm_memory not in mem.OPTIONS or memory is None or options.prompt_lang!='en':raise ValueError('UNKNOWN_LLM_MEMORY')
+        system=mem.apply(b,system,memory,commands=llm_memory=='v1_commands')
     b['prompt_lang'] = options.prompt_lang
     own.scan(b)
     if len(r['images']) != 1 or len(r['image_refs']) != 1:
@@ -116,6 +122,8 @@ class Trial(base.Trial):
         self.event_projection=getattr(self.links['r1'].inner,'event_projection','off')
         from harness.e2e_protocol_progress import Reminders
         self.protocol_reminders=Reminders()
+        from harness.e2e_llm_memory import Memory
+        self.memory=Memory();self.llm_memory='off'
         if not self.own_input_mode or self.dialogue is None:
             raise base.ContractViolation('E2E_OWN_INPUTS_AND_DIALOGUE_REQUIRED')
         self.transport = RetryTransport(self, send_ledger=self.send_ledger, client_factory=self.client_factory)
@@ -131,7 +139,8 @@ class Trial(base.Trial):
         p = super().prepare_call(call)
         view=self.dialogue.view(call.actor,call.started_sim_s)
         age=None if view['key'] is None else call.started_sim_s-self.dialogue.opened
-        request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age,protocol_recovery=self.protocol_recovery,protocol_progress=self.protocol_progress,route_handle=getattr(self.dialogue,'route_handle','off'),vote_ref=getattr(self.dialogue,'vote_ref','off'))
+        request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age,protocol_recovery=self.protocol_recovery,protocol_progress=self.protocol_progress,route_handle=getattr(self.dialogue,'route_handle','off'),vote_ref=getattr(self.dialogue,'vote_ref','off'),llm_memory=self.llm_memory,
+            memory=None if self.llm_memory=='off' else mem_collect(self,self.memory,call,commands=self.llm_memory=='v1_commands'))
         return type(p)(ProjectedInputs(p.bundled,json.loads(request['messages'][1]['content'])),request,p.request_id)
 
     def finish_call(self,call,prepared,raw,*,provider_usage=None):

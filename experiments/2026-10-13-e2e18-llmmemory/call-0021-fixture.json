@@ -1,0 +1,333 @@
+{
+  "source_request_sha256": "a5ce23e79fa05556d4acb14c206ea3e7658de115b307b925fe44d86323b2b459",
+  "system": "You are r1. r1=end_neg, r2=end_pos carry one long beam; r3 is idle.\nUse only your wrist RGB, issued commands, private own map, fixed task and actually delivered peer_reports. An estimate or issued command is not success. Never invent coordinates or a route. Return JSON only with exactly request_id, action, decision_sources, messages. action is an object with kind. messages is an array (empty [] is valid). Copy request_id exactly. Follow reply_format_example for the JSON structure and choose your action from current evidence.\nUntil a route exists, continue while the own-camera mapper explores. r1 may select the exact OwnRouteRef contract shown below to propose the captured own route to r2. r2 must receive that exact proposal before approve_route. Both claim only after approval. No_comm cannot deliver B or approve a route.\nGO/ACK use the exact current dialogue.key [order_id,route_hash,grip_epoch,seg]. GO requires own RGB supporting the grip; ACK requires your GO and the current peer_go_ref. Never reuse a previous epoch or segment. When unsure, continue holds transport. Only channel.can_send_to may receive messages. reply_to must be a received ID or null. All prose is English. Examples describe syntax, not evidence. Return compact one-line JSON. When proposing, contract is the exact route_contract_example OwnRouteRef object; the host resolves only the named captured route. decision_sources may contain only order_sheet, own_rgb, own_commands, own_belief, message; own_map_summary is represented by own_belief. An invalid response is rejected and causes no action or message. For this interface, propose by exact OwnRouteRef rather than copying route geometry. This is a typed command argument. No proposal, approval or action occurs unless you explicitly select it in your response.",
+  "body": {
+    "action_message_contract": {
+      "actions": [
+        {
+          "kind": "continue"
+        },
+        {
+          "destination_zone": "B",
+          "kind": "claim",
+          "order_id": "order-5",
+          "role": "end_neg"
+        },
+        {
+          "kind": "approve_route",
+          "proposal_message_id": "<dialogue.proposal_message_id>",
+          "route_hash": "<dialogue.route_hash>"
+        },
+        {
+          "choice": [
+            "GO",
+            "ACK"
+          ],
+          "grip_epoch": "<dialogue.key[2]>",
+          "kind": "route_vote",
+          "order_id": "order-5",
+          "peer_go_ref": "<dialogue.peer_go_ref for ACK; null for GO>",
+          "route_hash": "<dialogue.key[1]>",
+          "seg": "<dialogue.key[3]>"
+        }
+      ],
+      "decision_sources": [
+        "order_sheet",
+        "own_rgb",
+        "own_commands",
+        "own_belief",
+        "message"
+      ],
+      "message_element": {
+        "contract": {
+          "kind": "OwnRouteRef",
+          "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c"
+        },
+        "recipients": [
+          "<channel.can_send_to>"
+        ],
+        "reply_to": null,
+        "text": "<English own observation>"
+      }
+    },
+    "channel": {
+      "can_receive_from": [
+        "r2",
+        "r3"
+      ],
+      "can_send_to": [
+        "r2",
+        "r3"
+      ],
+      "condition": "peer_en",
+      "encoding": "free_en",
+      "free_text_allowed": true,
+      "role": "peer",
+      "topology": "mesh"
+    },
+    "condition": "peer_en",
+    "dialogue": {
+      "approved": true,
+      "key": [
+        "order-5",
+        "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+        1,
+        1
+      ],
+      "motion_connected": true,
+      "own_ack_sent": false,
+      "own_claim": true,
+      "own_go_sent": false,
+      "peer_go_ref": null,
+      "proposal_message_id": "w1-r1-1",
+      "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+      "schema": "ugrp.e2e_dialogue.v1",
+      "transport_admitted": false
+    },
+    "dialogue_window": {
+      "max_utterances": 160,
+      "max_your_utterances": 80,
+      "sent": [
+        "w1-r1-1"
+      ],
+      "window_id": "w1",
+      "your_utterances_left": 79
+    },
+    "own_command_history": [],
+    "own_map_summary": {
+      "frame": "r1/own_start",
+      "goal": {
+        "label": "B",
+        "sources": [
+          {
+            "frame_id": 6,
+            "robot_id": "r1",
+            "sha256": "5e4ec46cf314ec11e6031cf706f207cd530f13413e167c55cc483cda19384239",
+            "t_sim": 3.0
+          }
+        ]
+      },
+      "map_version": 1,
+      "own_map_sha256": "ea0dcb6cf0760d3b04a6e4b6b06904ee83e4fd28f9e31c7ad4c07ef06e3e0ed4",
+      "pose": {
+        "covariance": [
+          [
+            0.04072511884374985,
+            -0.008435791921244669,
+            0.00927220634488657
+          ],
+          [
+            -0.008435791921244669,
+            0.1009340358115591,
+            -0.03785373875172661
+          ],
+          [
+            0.00927220634488657,
+            -0.03785373875172661,
+            0.030564008087240302
+          ]
+        ],
+        "mean": [
+          -0.3610357596853457,
+          -0.0622454358585263,
+          -2.682609137195664
+        ],
+        "sources": [
+          {
+            "frame_id": 110,
+            "robot_id": "r1",
+            "sha256": "f2856e42fc41f4c0103bb25dc1483e177c79afff748db6976e37d6607b4245a0",
+            "t_sim": 65.4
+          }
+        ]
+      },
+      "robot_id": "r1",
+      "source_count": 102,
+      "walls_count": 1732
+    },
+    "own_rgb": {
+      "frame_id": 1327,
+      "robot_id": "r1",
+      "sha256": "1df4463cd787a4e7a5363f01f32bed3a8a79d08e79820937ec0995d5049f3349",
+      "t_sim": 555.6
+    },
+    "own_route_proposal": {
+      "kind": "OwnRoute",
+      "route": {
+        "B_rgb_sources": [
+          {
+            "frame_id": 6,
+            "robot_id": "r1",
+            "sha256": "5e4ec46cf314ec11e6031cf706f207cd530f13413e167c55cc483cda19384239",
+            "t_sim": 3.0
+          }
+        ],
+        "carrier_basis": {
+          "center_m": [
+            -1.2652657570869366,
+            -1.070697102533655
+          ],
+          "rgb": {
+            "frame_id": 110,
+            "robot_id": "r1",
+            "sha256": "f2856e42fc41f4c0103bb25dc1483e177c79afff748db6976e37d6607b4245a0",
+            "t_sim": 65.4
+          },
+          "rule": "toward_B_projection_v1",
+          "yaw_rad": 0.7978605598509425
+        },
+        "frame_id": 110,
+        "map_version": 1,
+        "robot_id": "r1",
+        "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+        "schema": "ugrp.e2e_route_message.v2",
+        "waypoints": [
+          [
+            -1.2652657570869366,
+            -1.0706971025336547
+          ],
+          [
+            0.3014984839332992,
+            0.5356133000147144
+          ],
+          [
+            0.825,
+            0.02499999999999996
+          ],
+          [
+            0.9506136012410041,
+            0.15378417128259037
+          ],
+          [
+            1.0491530415611245,
+            0.057670698333165626
+          ]
+        ]
+      },
+      "source_message_id": null
+    },
+    "peer_reports": [
+      {
+        "body": {
+          "text": "I have a grip on the beam; GO."
+        },
+        "created_at_sim_s": 538.7,
+        "encoding": "free_ko",
+        "message_id": "w1-r2-2",
+        "recipients": [
+          "r1"
+        ],
+        "reply_to": null,
+        "schema": "ugrp.zone_study_message.v1",
+        "sender": "r2"
+      },
+      {
+        "body": {
+          "text": "ACK: Grip confirmed, proceeding with transport."
+        },
+        "created_at_sim_s": 543.5,
+        "encoding": "free_ko",
+        "message_id": "w1-r2-3",
+        "recipients": [
+          "r1"
+        ],
+        "reply_to": null,
+        "schema": "ugrp.zone_study_message.v1",
+        "sender": "r2"
+      }
+    ],
+    "prompt_lang": "en",
+    "reply_format_example": {
+      "action": {
+        "kind": "continue"
+      },
+      "decision_sources": [
+        "order_sheet"
+      ],
+      "messages": [],
+      "request_id": "req_call_0021_r1"
+    },
+    "request_id": "req_call_0021_r1",
+    "robot_id": "r1",
+    "route_contract_example": {
+      "kind": "OwnRouteRef",
+      "route_hash": "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c"
+    },
+    "schema": "ugrp.e2e_own_inputs.v1",
+    "sim_time_s": 555.8,
+    "task": {
+      "destination_visual_description": "Blue floor destination B with three white rectangular marks.",
+      "fixed_roles": {
+        "r1": "end_neg",
+        "r2": "end_pos",
+        "r3": "idle"
+      },
+      "orders": [
+        {
+          "count": 1,
+          "destination_zone": "B",
+          "kind": "long_beam",
+          "order_id": "order-5",
+          "required_robots": 2,
+          "roles": [
+            "end_neg",
+            "end_pos"
+          ]
+        }
+      ]
+    }
+  },
+  "saved_memory": [
+    {
+      "did": "continue",
+      "result": "accepted",
+      "t": 72.2
+    },
+    {
+      "did": "claim",
+      "result": "accepted",
+      "t": 75.7
+    },
+    {
+      "did": "continue",
+      "result": "accepted",
+      "t": 78.25
+    },
+    {
+      "did": "GO",
+      "epoch": 1,
+      "result": "accepted",
+      "seg": 0,
+      "t": 537.5,
+      "window": "earlier"
+    },
+    {
+      "did": "continue",
+      "result": "accepted",
+      "t": 540.25
+    },
+    {
+      "did": "ACK",
+      "epoch": 1,
+      "result": "accepted",
+      "seg": 0,
+      "t": 543.85,
+      "window": "earlier"
+    },
+    {
+      "did": "claim",
+      "result": "rejected",
+      "t": 547.05,
+      "why": "CURRENT_APPROVED_OWN_ROLE_CLAIM_REQUIRED"
+    },
+    {
+      "did": "claim",
+      "result": "rejected",
+      "t": 547.2,
+      "why": "CURRENT_APPROVED_OWN_ROLE_CLAIM_REQUIRED"
+    }
+  ],
+  "image_sha256": [
+    "1df4463cd787a4e7a5363f01f32bed3a8a79d08e79820937ec0995d5049f3349"
+  ]
+}
