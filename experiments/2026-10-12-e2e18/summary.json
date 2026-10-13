@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.e2e18.takeover.v1",
-  "checked_unix": 1791860050.434408,
+  "checked_unix": 1791861619.8527381,
   "status": "THIRD_TAKEOVER_RUNNING",
   "PR": 461,
   "deadline_utc": "2026-10-13T07:00:00Z",
@@ -46,7 +46,7 @@
   "vm": {
     "ugrp-sim-azure3": {
       "state": "running",
-      "active": 6,
+      "active": 4,
       "pending_gate": 0
     },
     "ugrp-sim-azure4": {
@@ -1817,9 +1817,9 @@
       "name": "e2e18-v272-s61006-r52",
       "sha": "cf894f7c03366e961d9c3371e401f1b889592949",
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v272-s61006-r52/raw",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 1443.0,
+      "exit": "1",
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "sim_s": 1800.0,
       "phase": "align",
       "LLM": true,
       "own_map": true,
@@ -1835,7 +1835,7 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v273-s61006-r52/raw",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 1063.0,
+      "sim_s": 1275.0,
       "phase": "relook",
       "LLM": true,
       "own_map": true,
@@ -1849,9 +1849,9 @@
       "name": "e2e18-v274-s61006-r52",
       "sha": "cf894f7c03366e961d9c3371e401f1b889592949",
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v274-s61006-r52/raw",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 1463.0,
+      "exit": "1",
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "sim_s": 1800.0,
       "phase": "align",
       "LLM": true,
       "own_map": true,
@@ -1867,8 +1867,8 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v275-s61006-r53/raw",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 545.0,
-      "phase": "carry",
+      "sim_s": 848.0,
+      "phase": "relook",
       "LLM": true,
       "own_map": true,
       "transport": false,
@@ -1883,8 +1883,8 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v277-s61006-r53/raw",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 544.0,
-      "phase": "carry",
+      "sim_s": 916.0,
+      "phase": "relook",
       "LLM": true,
       "own_map": true,
       "transport": false,
@@ -1899,7 +1899,7 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v278-s61006-r55/raw",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 218.0,
+      "sim_s": 737.0,
       "phase": "align",
       "LLM": true,
       "own_map": true,
@@ -1954,10 +1954,10 @@
     "cohort_attempted": 87,
     "positive_sim": 84,
     "zero_sim_host_error": 3,
-    "terminal": 81,
+    "terminal": 83,
     "cohort_not_started": 12,
     "pending_gate": 0,
-    "active": 6
+    "active": 4
   },
   "session_transition": {
     "status": "BOTH_RESTARTED_GUARDS_ACTIVE_RELAY_IDENTITIES_VERIFIED",
@@ -2039,31 +2039,31 @@
   "third_current_records": [
     {
       "file": "cohort-r48.json",
-      "sha256": "0557a0351c178e00f6e22a47dc4aae56a3d24310c6099b04d3c1cae67aa0fda9"
+      "sha256": "31f286be995114da4f58ae92152b115a0c0a492d83b6a498994b6b75c26891d0"
     },
     {
       "file": "cohort-r49.json",
-      "sha256": "fad670d4766e27155df750d8b1110dc7e82e03228441bb6912758fedea008775"
+      "sha256": "efdab1516516e8d88aa5bff5d341bc2a256c0d85800c485398af84b2be155ea8"
     },
     {
       "file": "cohort-r50.json",
-      "sha256": "e140b961e4cb9f21647587db9cf3877b2f5034656d6ab80804eb5e6307bbe0d5"
+      "sha256": "ed8dee1a41abcb091c1e1f60670e9688817459388b0069920793e32dfd0c457d"
     },
     {
       "file": "cohort-r51.json",
-      "sha256": "27a4231288fd3022b327e751af48080c3a5dc503b31973a83dd05475c9d21d2e"
+      "sha256": "d91a4b1e044deb78c593263b9ab1bfe99ebba9b1de3aa9c06d2d0f15e23ae1c8"
     },
     {
       "file": "cohort-r52.json",
-      "sha256": "9cefe32ed46227ade21cd69e97ee3f2f7e72d26ff42860d69df825a0e9219507"
+      "sha256": "e3e47e1f306f190ad4691d1b0603d08c86ef26c86b812167f1913414c7fb811c"
     },
     {
       "file": "cohort-r53.json",
-      "sha256": "2855221a00f7699b61ced249b2bb8e8a64e7e32790e8ff2949f46735a1a460cc"
+      "sha256": "8e9982bff9b5f01d7fae9895f9f79d3f34c5f78faaf1dbce0b32d9434f570161"
     },
     {
       "file": "cohort-r55.json",
-      "sha256": "ddd05e7158c20f7e2790797ae19e5b4f466c828641dc5845d4a29afbda9895da"
+      "sha256": "24c2e49c0bd754168459d831763c6d6fc19b693694d68b6dfb890a75b595bd14"
     }
   ],
   "third_additional_records": {
