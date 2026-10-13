@@ -63,6 +63,9 @@ for version,parent in zip(range(369,373),range(365,369)):
 for version,parent,clock in ((375,369,'tick_v1'),(376,371,'tick_v1'),(377,369,'deadline_v1'),(378,371,'deadline_v1')):
  EXTRA[version]=EXTRA[parent]+[('--admission-clock',clock)]
 
+for version,mode in ((379,'alternatives_v1'),(380,'skip_rejected_v1')):
+ EXTRA[version]=EXTRA[376]+[('--recovery-menu',mode)]
+
 selected=[(seed,version,'view5_pan_v1') for seed in seeds for version in VERS]
 assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sha
 assert not subprocess.check_output(['git','status','--porcelain'])

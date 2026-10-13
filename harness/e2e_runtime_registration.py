@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] in ('e2e18-v379','e2e18-v380'):
+        from harness.e2e_recovery_menu import parent_for_validation as menu_parent
+        return require_current(menu_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v375','e2e18-v376','e2e18-v377','e2e18-v378'):
         from harness.e2e_admission_clock import parent_for_validation as clock_parent
         return require_current(clock_parent(bundle),root)
