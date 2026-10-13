@@ -1,0 +1,26 @@
+{
+  "schema": "ugrp.dev_candidates.v1",
+  "pr": 461,
+  "registered_utc": "2026-10-13T06:14:27.070452+00:00",
+  "seed": [
+    61006
+  ],
+  "parent": "e2e18-v323",
+  "criteria": {
+    "primary": "actual cargo start-to-B, stable supported setdown, no physical failure; independent evaluation only",
+    "secondary": "first paired grasp, second carry entry, final RGB/GO_ACK gate; wall/SIM",
+    "admission": "planned total concurrency <=12; loadavg <12.8; available memory >=6GiB; 30SIM gate median <=3.0"
+  },
+  "candidates": {
+    "324": "v323 + shadow_axes_v1 + controller_timing phase_v1",
+    "325": "v324 + clip_hysteresis v1",
+    "326": "v325 + approach_floor v1",
+    "327": "v326 + vote_ref v1"
+  },
+  "default": "off",
+  "research_scope": "DEV exploratory; Gemma conversation and own-RGB classification retained",
+  "sources": [
+    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/waypoint_follower/"
+  ],
+  "source_scope": "post-relook continuation source verified earlier; SDK own-RGB hooks have focused offline tests, live outcomes pending"
+}

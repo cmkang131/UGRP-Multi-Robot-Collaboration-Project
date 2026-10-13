@@ -103,3 +103,26 @@ def test_nominal_dev_margin_keeps_fresh_rgb_agreement_and_whole_outline(monkeypa
     assert not ready(footprint,**dict(kwargs,agreement=NS(ready=True,key=('wrong','b'*64,2,0))))
     outside=copy.deepcopy(footprint);outside['polygon_own_m'][0][0]=-.5
     assert not ready(outside,**kwargs)
+
+
+def test_sdk_stack_registered_combinations_keep_current_contract(monkeypatch):
+    from tests import test_e2e_camera_hold as p
+    from scripts.run_e2e_ownmap_live import bundle,ROOT
+    from harness.e2e_runtime_registration import require_current
+    from harness.e2e_post_relook_stack import VERSIONS,KEYS
+    args=[];kw={}
+    def captured(*a,**k):args.extend(a);kw.update(k);return bundle(*a,**k)
+    monkeypatch.setattr(p,'bundle',captured)
+    p.test_registered_wheel_wait_candidate('zero_wheel_v1',276,'range_wall_v1')
+    kw.update(stage_physics='release_dt1_v1',relook_giveup='dev_light_rest_v1',post_relook='carry_nominal_v1')
+    for key,version in VERSIONS.items():
+        b=bundle(*args,**kw,**dict(zip(KEYS,key)))
+        assert b['execution_bundle_id']==f'e2e18-v{version}'
+        assert b['e2e_options']['pulse_authorization']=='current_go_v1'
+        assert b['drop_guard_rest_parameters']['rest_s']==1.
+        require_current(b,ROOT)
+        bad=copy.deepcopy(b);bad['perception_fast_parameters']['exact_to_original']=False
+        with pytest.raises(ValueError):require_current(bad,ROOT)
+        bad=copy.deepcopy(b);bad['e2e_options']['post_relook']='map_fast_v1'
+        with pytest.raises(ValueError):require_current(bad,ROOT)
+    with pytest.raises(ValueError):bundle(*args,**kw,vote_ref='v1')

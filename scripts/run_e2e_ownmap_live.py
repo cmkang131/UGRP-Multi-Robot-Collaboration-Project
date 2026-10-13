@@ -305,14 +305,20 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     paths.update(relook_giveup_compose(b,relook_giveup))
     from harness.e2e_post_relook import compose as post_relook_compose
     paths.update(post_relook_compose(b,post_relook))
-    from harness.e2e_approach_floor import compose as approach_floor_compose
-    paths.update(approach_floor_compose(b,approach_floor))
-    from harness.e2e_clip_hysteresis import compose as clip_hysteresis_compose
-    paths.update(clip_hysteresis_compose(b,clip_hysteresis))
-    from harness.e2e_vote_ref import compose as vote_ref_compose
-    paths.update(vote_ref_compose(b,vote_ref))
-    from harness.e2e_perception_fast import compose as perception_fast_compose
-    paths.update(perception_fast_compose(b,perception_fast,controller_timing))
+    sdk_options=dict(approach_floor=approach_floor,clip_hysteresis=clip_hysteresis,
+                     vote_ref=vote_ref,perception_fast=perception_fast,controller_timing=controller_timing)
+    if post_relook!='off':
+        from harness.e2e_post_relook_stack import compose as stack_compose
+        paths.update(stack_compose(b,**sdk_options))
+    else:
+        from harness.e2e_approach_floor import compose as approach_floor_compose
+        paths.update(approach_floor_compose(b,approach_floor))
+        from harness.e2e_clip_hysteresis import compose as clip_hysteresis_compose
+        paths.update(clip_hysteresis_compose(b,clip_hysteresis))
+        from harness.e2e_vote_ref import compose as vote_ref_compose
+        paths.update(vote_ref_compose(b,vote_ref))
+        from harness.e2e_perception_fast import compose as perception_fast_compose
+        paths.update(perception_fast_compose(b,perception_fast,controller_timing))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
