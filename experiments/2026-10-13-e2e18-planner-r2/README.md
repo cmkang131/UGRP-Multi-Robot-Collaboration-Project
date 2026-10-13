@@ -1,6 +1,6 @@
 # Gemma 작업 판단 재평가와 E2E18 연결 (2026-10-13)
 
-PR #473, draft. 기반 `origin/codex/e2e18` cd456936을 merge했다. v356 접근 개선, PR #474 event_v1 및 r77 `CONFIRMED_SHARED_EVENT_PREPARE_FUTURE_EVENT_OWNER_STATE`의 prepared_v1 수정(v372)을 포함한다. 기본 경로는 그대로이며 `e2e_options.planner=gemma_v1`일 때 v373, 같은 입력의 규칙은 `rule_v1` v374이다. main/열린 PR 최대 v372 확인 뒤 #461 코멘트로 v373/v374를 예약했다. 옛 zone v357 등록은 충돌하므로 `retired/planner_v357.json`에 바이트를 보존하고 옛 실행기는 차단했다. 과거 raw/점수는 그대로 보존했다.
+PR #473, draft. 기반 `origin/codex/e2e18` cd456936 및 최신 f4d79b77까지 merge했다. v356 접근 개선, PR #474 event_v1 및 r77 `CONFIRMED_SHARED_EVENT_PREPARE_FUTURE_EVENT_OWNER_STATE`의 prepared_v1 수정(v372)을 포함한다. 새 계획기에는 최신 수정의 tick_v1 유한 호출 시계와 skip_rejected_v1 안전 복구 후보도 명시적으로 적용했다. 기본 경로는 그대로이며 `e2e_options.planner=gemma_v1`일 때 v373, 같은 입력의 규칙은 `rule_v1` v374이다. main/열린 PR 최대 v372 확인 뒤 #461 코멘트로 v373/v374를 예약했다. 옛 zone v357 등록은 충돌하므로 `retired/planner_v357.json`에 바이트를 보존하고 옛 실행기는 차단했다. 과거 raw/점수는 그대로 보존했다.
 
 ## 구현과 입력 경계
 
@@ -36,7 +36,7 @@ peer wait은 **18/38→25/38**, help·uncertain은 **1/7→6/7**. 기존 wait은
 
 ## 새 seed·문장 세트: 실행했으나 인프라 실패
 
-생성 seed2026101302와 새 영어 템플릿을 코드 `31b08666`에 먼저 동결했다. 데이터/문장 생성 해시와 원본은 `outputs/task-planner-r2-confirmation-source-20261013/`에 있다. 모델 요청 후 문장을 바꾸지 않았다. 331+53과 단독24를 모두 시도했지만 기존 OpenRouter 중계가 HTTP402를 반환했다. 오류 969회와 예산 거부227회(단독24 포함)를 보존했다. 결제 상태를 바꾸거나 다른 모델로 대체하지 않았다.
+생성 seed2026101302와 새 영어 템플릿을 코드 `31b08666`에 먼저 동결했다. 데이터/문장 생성 해시와 원본은 `outputs/task-planner-r2-confirmation-source-20261013/`에 있다. 모델 요청 후 문장을 바꾸지 않았다. 331+53과 단독24를 모두 시도했지만 기존 OpenRouter 중계가 HTTP402를 반환했다. HTTPError 969회(개별 상태 코드는 미보존, 별도 probe에서402 확인)와 예산 거부227회(단독24 포함)를 보존했다. 결제 상태를 바꾸거나 다른 모델로 대체하지 않았다.
 
 | 조건 | 모델 /331 | fallback 포함 실행선택 /331 | 애매 모델 /53 | fallback /384 |
 |---|---:|---:|---:|---:|

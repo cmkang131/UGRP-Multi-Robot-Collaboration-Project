@@ -29,10 +29,10 @@ def prepare(sha):
         for mode in ('gemma_v1','rule_v1'):
             b=bundle(sha,seed,'study_gemma4_31b_v1',**options,options=Options(True,True,'en'),planner=mode)
             require_current(b,ROOT)
-            rid=f"{b['execution_bundle_id']}-s{seed}-planner-r2"
+            rid=f"{b['execution_bundle_id']}-s{seed}-r4732"
             result['cells'].append(dict(run_id=rid,seed=seed,planner=mode,bundle_id=b['execution_bundle_id'],bundle_sha256=digest(b),
                 argv=['scripts/run_e2e_ownmap_live.py','--expected-source-sha',sha,'--seed',str(seed),'--driver-profile','study_gemma4_31b_v1',
-                    '--output',f'<persistent-runs>/{rid}','--relay-receipt','<same-sha-task-relay-identity.json>',*flags,'--planner',mode,
+                    '--output',f'<persistent-runs>/{rid}/raw','--relay-receipt','<same-sha-task-relay-identity.json>',*flags,'--planner',mode,
                     '--expected-workflow-id',b['execution_bundle_id'],'--execute']))
     return result
 

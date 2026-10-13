@@ -18,7 +18,7 @@ from harness.s4_relay_journal import Journal
 
 def accepted_call_id(value):
     # Explicit 2026-10-13 paired F16 cohort extension; historical cells unchanged.
-    if re.fullmatch(r'e2e18-v(?:346|347|348|350|352|353|354|355|356|357|358|359|360|361|362|363|364|365|366|367|368|369|370|371|372|373|374)-s61013-r[1-9][0-9]*:call-\d+-r[123]:\d+',value):return True
+    if re.fullmatch(r'e2e18-v(?:346|347|348|350|352|353|354|355|356|357|358|359|360|361|362|363|364|365|366|367|368|369|370|371|372|375|376|377|378|373|374|379|380)-s61013-r[1-9][0-9]*:call-\d+-r[123]:\d+',value):return True
     if re.fullmatch(r'e2e18-v[0-9]+-s610(?:0[1-9]|1[0-2])-r[1-9][0-9]*:call-\d+-r[123]:\d+',value):return True
     if value.startswith('speed-gate-'):
         return accepted_call_id(value[len('speed-gate-'):])
@@ -32,6 +32,26 @@ def accepted_call_id(value):
 
 def speech_idempotency_key(key):
     return hashlib.sha256((key+':speech').encode()).hexdigest()
+
+
+def complete_dialogue(decider, fallback, body, call_id, key):
+    """Keep provider status across speech assembly; never turn 402 into 502."""
+    class UpstreamFailure(Exception):
+        def __init__(self, response):
+            self.response = response
+
+    def speak(request):
+        response = fallback.complete(json.dumps(request).encode(), call_id,
+            idempotency_key=speech_idempotency_key(key))
+        if response[0] != 200:
+            raise UpstreamFailure(response)
+        return json.loads(response[1])
+
+    try:
+        raw = decider.complete(json.loads(body), call_id, speak)
+    except UpstreamFailure as exc:
+        return exc.response
+    return 200, json.dumps(raw).encode(), None
 
 
 def request_dialogue_mode(request):
@@ -203,13 +223,7 @@ def main():
                             for p,digest in receipt['d1_dialogue_source_sha256'].items():
                                 if hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest()!=digest:
                                     raise ValueError('D1_DIALOGUE_SOURCE_CHANGED')
-                            def speak(request):
-                                speech_key=speech_idempotency_key(key)
-                                s,r,_=fallback.complete(json.dumps(request).encode(),call_id,idempotency_key=speech_key)
-                                if s!=200:raise ValueError('GEMMA_SPEECH_UPSTREAM_FAILURE')
-                                return json.loads(r)
-                            raw=json.dumps(d1.complete(json.loads(body),call_id,speak)).encode()
-                            status,retry_after=200,None
+                            status,raw,retry_after=complete_dialogue(d1,fallback,body,call_id,key)
                         else:
                             status,raw,retry_after=fallback.complete(body,call_id,idempotency_key=key)
                         if jev is not None and status==200:

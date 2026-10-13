@@ -14,7 +14,8 @@ from harness.task_planner import Planner, candidate, parse, signature, strong_ru
 VERSIONS = {'gemma_v1':373, 'rule_v1':374}
 PARAMETERS = dict(parent='e2e18-v372', call_policy='event_v1', snapshot='prepared_v1',
                   body='code_v1', max_output_tokens=768, repair_calls=1,
-                  peer_input='delivered_channel_text_only', solo_beam_forbidden=True)
+                  peer_input='delivered_channel_text_only', solo_beam_forbidden=True,
+                  admission_clock='tick_v1', recovery_menu='skip_rejected_v1')
 
 
 def compose(bundle, option='off'):
@@ -147,6 +148,7 @@ class Executive:
 
     def check(self,rid,value):
         a=value['args'];robot=self.tr.robots[rid]
+        if len(value.get('message',''))>240:return 'TASK_MESSAGE_MAX_240_CHARS'
         if self.interrupted and value['act'] in ('carry','help'):return 'INTERRUPTED_SEGMENT_REQUIRES_REGRIP_AND_NEW_OWN_ROUTE'
         if value['act']=='carry' and a['mode']!='joint':return 'BEAM_REQUIRES_TWO_ROBOTS'
         current=self.active.get(rid,{})
@@ -259,6 +261,11 @@ def install(trial,transport,body,option='off',append=lambda row:None):
     if option=='off':return None
     if option not in VERSIONS or trial.dialogue_call_policy!='event_v1' or body is None:
         raise ValueError('TASK_PLANNER_RUNTIME_REQUIREMENTS')
+    from harness.e2e_admission_clock import install as clock_install
+    clock_install(trial,PARAMETERS['admission_clock'])
+    if hasattr(body,'safe_menu'):
+        from harness.e2e_recovery_menu import install as recovery_install
+        recovery_install(body,PARAMETERS['recovery_menu'])
     executive=Executive(trial,transport,body,option,append)
     trial.task_planner=executive;transport.task_planner=executive
     for robot in transport.robots.values():robot.goal.task_planner_enabled=True
@@ -395,6 +402,11 @@ def connect(executive):
             effective=type(prepared)(prepared.bundled,prepared.request,prepared.request_id)
             usage=client.last_usage
             reply=finish(call,effective,json.dumps(assembled),provider_usage=usage)
+            if reply.action is None and value:
+                rejected=trial.memory.rejections.get(call.call_id,{}) if hasattr(trial,'memory') else {}
+                planner.feedback(value,'refused',rejected.get('reason','COMPILED_SAFETY_ACTION_REFUSED'),call.started_sim_s)
+                executive.record(event='compiled_act_refused',call_id=call.call_id,robot_id=call.actor,reason=rejected.get('reason'))
+                value=None
             if executive.mode=='rule_v1':
                 from harness.zone_sim_cost import Attempt
                 reply=replace(reply,attempts=(Attempt(outcome='ok',input_tokens=0,output_tokens=0,utterances=len(assembled['messages'])),))

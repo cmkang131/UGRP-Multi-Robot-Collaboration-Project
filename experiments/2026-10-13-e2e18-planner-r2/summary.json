@@ -6,7 +6,7 @@
     "e2e18-v373",
     "e2e18-v374"
   ],
-  "status": "implementation_verified; latest_base_integration_pending",
+  "status": "implementation_verified; supervisor_submission_pending; confirmation_blocked_HTTP402",
   "research_result": false,
   "tuning": {
     "adapter_changed_inputs": [],
@@ -451,9 +451,13 @@
     {
       "path": "/private/tmp/planner-r2-native-final.txt",
       "sha256": "6437a9e9e7c116f902c148deff30e9a582063593ba2faca29378e4a5f5d2edb9"
+    },
+    {
+      "path": "experiments/2026-10-13-e2e18-planner-r2/tests-final.txt",
+      "sha256": "755c60f9f125e93840098697eb802cdcce45cd8f286a0f22cf37cc27ef24c7a3"
     }
   ],
-  "validation": "23 tests across 3 files, then 12 native tests including 2 added; no physics/provider",
+  "validation": "Latest base/native/clock/provider-status 23 tests passed. Earlier dataset/snapshot 13 tests passed, and native route compilation/channel fragments checked; no physics/provider.",
   "source_runs": {
     "task-planner-r2-probe-20261013": {
       "schema": "ugrp.task_planner.offline.v1",
@@ -1130,5 +1134,7 @@
         "unknown_cost_calls": 969
       }
     }
-  }
+  },
+  "latest_base": "f4d79b7772d9e7f115424241f741b44a4ab60094",
+  "raw_storage": "Large JSON/JSONL zstd lossless, decompressed SHA verified; see each raw directory COMPRESSED.jsonl and ALL-hashes.tsv. Uncompressed source hash references are preserved."
 }

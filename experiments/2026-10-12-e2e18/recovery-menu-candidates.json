@@ -1,0 +1,42 @@
+{
+  "pr": 461,
+  "class_": "dev",
+  "seed": [
+    61006,
+    61007,
+    61008,
+    61009
+  ],
+  "source_failure": "r79 v376 s61008 hold 21 times, unchanged own input and evaluation-only no movement for 24.2 SIM s",
+  "candidates": {
+    "v379": "v376 + original safe motion alternatives after rejected recovery",
+    "v380": "v376 + bounded next safe recovery, then original safe alternatives"
+  },
+  "default": "off",
+  "safety": "Existing own-observation motion/map filters unchanged; partner/grip/agreement hold preserved",
+  "criteria": [
+    "no same-choice no-motion 20 SIM s",
+    "align to paired grasp time",
+    "GO/ACK then carry start",
+    "start to B"
+  ],
+  "references": [
+    "https://docs.nav2.org/rolling/getting_started/nav2_behavior_trees/nav2_specific_nodes/nav2_specific_nodes/"
+  ],
+  "method": "Nav2 RoundRobin tries the next recovery after failure; rejected candidates are not executed recovery history",
+  "validation": {
+    "passed": 49,
+    "files": [
+      "tests/test_e2e_recovery_menu.py",
+      "tests/test_e2e_body_code.py",
+      "tests/test_e2e_body_controller.py"
+    ],
+    "scope": "saved own facts plus explicit synthetic rejected standoff and safe alternatives; no physical replay or provider call",
+    "log": "outputs/e2e18-admin/r80-tests-fixed-path.txt",
+    "sha256": "a39fa7953257551f9c30756d2d183208c10803882d24339aa63f6ea60bb44091"
+  },
+  "submission": "r80 submitted after account replenishment; source65c89934; v375,v377,v379,v380 x seed61006-61009",
+  "host": "VM3 only",
+  "concurrency": 16,
+  "speed_gate": 3.5
+}
