@@ -51,13 +51,19 @@ def advance(transport,rid,now):
         distance_m=distance,heading_error_rad=heading_error,own_beam_age_s=now-state['last_seen'],camera=tag,
         basis_yaw_rad=state['basis']['yaw_rad'])
     r.carrier_approach=diag
+    from harness.e2e_station_heading import control as station_control
+    station_control_mode=station_control(transport,rid,now,state,diag)
+    if station_control_mode=='settle':
+        diag['status']='station_heading_settle'
+        return False,[dict(kind='hold')]
+    rotate_station=station_control_mode=='rotate'
     recovery=getattr(transport,'pregrasp_recovery','off')=='bounded_search_v1'
     from harness.e2e_pregrasp_progress import step as progress_step
-    progressed=progress_step(transport,rid,now,state,distance)
+    progressed=None if rotate_station else progress_step(transport,rid,now,state,distance)
     if progressed is not None:return progressed
     cached_navigation=getattr(transport,'pregrasp_progress','off')=='backup_replan_v1' and now<=state.get('lost_nav_until',-math.inf)
     cached_navigation=cached_navigation or committed.navigating(transport,rid,now,state,distance)
-    if recovery and not fresh and now-state['last_seen']>2. and not cached_navigation:
+    if recovery and not fresh and now-state['last_seen']>2. and not cached_navigation and not rotate_station:
         from harness.e2e_align_progress import lost_search
         return lost_search(transport,rid,now,state)
     if any(r.servo.get(sid)!=pwm[sid] for sid in (3,4,5)):
@@ -84,7 +90,7 @@ def advance(transport,rid,now):
         beam_yaw=state['basis']['yaw_rad']+tf[2]
         costmap=add(costmap,beam_center,beam_yaw)
         diag['beam_obstacle_source']='own_rgb_center_axis_known_size'
-    path=g.explorer.navigator.plan_to(costmap,mp,mt[:2])
+    path=[mp[:2]] if rotate_station else g.explorer.navigator.plan_to(costmap,mp,mt[:2])
     diag['path_points']=len(path)
     if not path and recovery and (fresh or cached_navigation) and transport.dev_light:
         if avoidance:
@@ -110,7 +116,7 @@ def advance(transport,rid,now):
     if not clear:
         transport.event(now,'would_stop_pregrasp_collision_guard',robot_id=rid,dev_light=transport.dev_light)
         if not transport.dev_light:command=dict(kind='hold');twist=np.zeros(3)
-    diag.update(projected_clear=bool(clear),status='navigate_pregrasp')
+    diag.update(projected_clear=bool(clear),status='rotate_station_heading' if rotate_station else 'navigate_pregrasp')
     if np.linalg.norm(twist)>1e-10:state['motion_until']=now+command['duration_s']
     from harness.e2e_pregrasp_gaze import fresh_gaze
     target=committed.gaze_target(transport,rid,fresh,grip)
