@@ -14,7 +14,7 @@ from harness.zone_study_llm_driver import live_proxy, load_registry
 from harness.zone_study_llm_transport import no_redirect_opener
 from harness.s4_live_transport import URL, MAX_RELAY_SECONDS
 from harness.s4_relay_journal import Journal
-from harness.task_planner_model import add_model_options, selected, DEFAULT_MODEL
+from harness.task_planner_model import add_model_options, selected, DEFAULT_MODEL, ModelSelection
 
 
 def accepted_call_id(value):
@@ -90,7 +90,7 @@ def main():
     add_model_options(p)
     p.add_argument('--openrouter-max-attempts', type=int, choices=(1, 2, 3))
     p.add_argument('--openrouter-max-calls', type=int)
-    p.add_argument('--openrouter-rate-policy',choices=('off','ling_rate_limit_v1'),default='off')
+    p.add_argument('--openrouter-rate-policy',choices=('off','ling_rate_limit_v1','planner_rate_limit_v1'),default='off')
     p.add_argument('--openrouter-max-usd',type=float)
     a = p.parse_args()
     if not 0 < a.seconds <= MAX_RELAY_SECONDS: raise ValueError('finite <=8h relay required')
@@ -124,7 +124,7 @@ def main():
                 raise ValueError('USE_PLANNER_PROVIDER_WITH_PLANNER_MODEL')
             kwargs.update(selection=None, provider_order=tuple(x.strip() for x in a.openrouter_providers.split(',') if x.strip()))
         orp_cfg = orp.config(**kwargs)
-        if choice.model != DEFAULT_MODEL:orp_cfg['selection_source_sha256'] = hashlib.sha256((Path(__file__).resolve().parents[1]/'harness/task_planner_model.py').read_bytes()).hexdigest()
+        if choice != ModelSelection():orp_cfg['selection_source_sha256'] = hashlib.sha256((Path(__file__).resolve().parents[1]/'harness/task_planner_model.py').read_bytes()).hexdigest()
         fallback = orp.OpenRouter(a.gemma_state/'openrouter', **kwargs)
     elif a.gemma_fallback or single:
         from scripts.gemma_fallback_proxy import Gemma

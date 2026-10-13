@@ -53,9 +53,9 @@ def config(provider_order=PROVIDER_ORDER, *, selection=None, max_attempts=MAX_AT
                 key_location='macOS Keychain: ' + SERVICE)
     if rate_limit_policy != 'off':
         from scripts.openrouter_ling_policy import POLICY,PARAMETERS
-        from harness.task_planner_model import LING
-        if rate_limit_policy!=POLICY or choice!=LING:raise ValueError('LING_ONLY_RATE_POLICY')
-        value.update(rate_limit_policy=POLICY,rate_limit_parameters=PARAMETERS,max_usd=max_usd,
+        from harness.task_planner_model import LING, GEMMA_FP4
+        if (rate_limit_policy,choice) not in ((POLICY,LING),('planner_rate_limit_v1',GEMMA_FP4)):raise ValueError('REGISTERED_RATE_POLICY_REQUIRED')
+        value.update(rate_limit_policy=rate_limit_policy,rate_limit_parameters=PARAMETERS,max_usd=max_usd,
             rate_limit_source_sha256=hashlib.sha256(Path(__file__).with_name('openrouter_ling_policy.py').read_bytes()).hexdigest())
     return value
 
@@ -145,7 +145,7 @@ class OpenRouter:
         from scripts.openrouter_ling_policy import safe_headers,error_body,retry_delay,reserve_cost,redact
         limited=self.rate_limit_policy!='off'
         attempts, started = [], self.monotonic()
-        reserve=reserve_cost(body) if limited else 0.
+        reserve=reserve_cost(body, self.selection) if limited else 0.
         retry_wait=0.
         status, response, retry_after = 502, b'', None
         for n in range(1, self.max_attempts + 1):
@@ -216,7 +216,7 @@ class OpenRouter:
         ok = status == 200 and bool(data.get('choices'))
         if status == 200 and not ok: status = 502
         provider = data.get('provider')
-        if ok and provider not in self.provider_order:
+        if ok and provider not in ((self.selection.response_provider,) if self.selection else self.provider_order):
             status, ok = 502, False
             data = {'error': 'provider_not_pinned', 'provider': provider}
         if ok and data.get('model') != self.model_id:

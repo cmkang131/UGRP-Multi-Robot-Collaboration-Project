@@ -26,6 +26,9 @@ from scripts.evaluate_task_planner_observed import key_remaining, summarize
 
 SOURCE = ROOT/'outputs/task-planner-r4-source-20261013'
 BASELINE = ROOT/'outputs/task-planner-r4-dev-20261013'
+PRICE_KEY = 'ling'
+COHORT = 'ling_vl'
+RATE_POLICY = "ling_rate_limit_v1"
 MODEL = LING
 PRICES = {'ling': (0.000000021, 0.0000000616)}
 MAX_CALLS, MAX_REPAIRS, MAX_USD, MIN_REMAINING = 600, 0, .08, 1.5
@@ -49,11 +52,11 @@ def frozen():
     assert all(sum(r['quality']==q and r['condition']=='peer_en' for r in rows)==n for q,n in [('stale',54),('wrong',56)])
     requests = [r['audit'][0]['request'] for r in rows]
     # Freeze the actual initial model inputs, not a later reconstruction.
-    manifest = dict(schema='planner.ling_vl.check.v1', N=200, decisions_per_model=400,
+    manifest = dict(schema=f'planner.{COHORT}.check.v1', N=200, decisions_per_model=400,
         case_ids=sorted(ids), requests_sha256=digest(requests), baseline_calls_sha256=hashlib.sha256(raw).hexdigest(),
         gold_sha256=hashlib.sha256(read(SOURCE/'eval_only.json')).hexdigest(),
         max_calls_per_model=MAX_CALLS,max_repairs_per_model=MAX_REPAIRS,max_usd=MAX_USD,
-        temperature=0,max_tokens=MAX_TOKENS,reasoning='disabled',
+        temperature=0,max_tokens=MAX_TOKENS,reasoning=MODEL.reasoning,
         model=vars(MODEL),prices=PRICES,
         dataset='r4 DEV tuning only; historical Gemma; no new confirmation seed')
     for r, req in zip(rows, requests):
@@ -168,7 +171,7 @@ def main():
     dump(a.out/'preflight.json',dict(manifest=manifest,key=safe,projected_remaining=safe['limit_remaining']-MAX_USD))
     if safe['limit_remaining']-MAX_USD<MIN_REMAINING:raise ModelBudgetExceeded('KEY_REMAINING_FLOOR')
     sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
-    dump(a.out/'RUN_META.json',dict(**{'class':'dev'},pr=473,sha=sha,branch='claude/e2e18-gemma-planner',batch='ling-vl-r4-dev'))
+    dump(a.out/'RUN_META.json',dict(**{'class':'dev'},pr=473,sha=sha,branch='claude/e2e18-gemma-planner',batch=COHORT+'-r4-dev'))
     gold={g['case_id']:g for g in json.loads(read(SOURCE/'eval_only.json'))}
     shared=SharedBudget()
     # The upstream owns the HTTP-attempt cap and paid ledger, including the
@@ -182,7 +185,7 @@ def main():
     # Uncached UTF-8 upper bound plus wrapper margin; image probes separately
     # reserve a full 16k image-token allowance (the saved r80 RGB is small).
     max_bytes=max(len(json.dumps(r['audit'][0]['request'],ensure_ascii=True).encode()) for r in old)+4096
-    price,completion=PRICES['ling'];budget=ModelBudget(shared,3*(max_bytes*price+MAX_TOKENS*completion))
+    price,completion=PRICES[PRICE_KEY];budget=ModelBudget(shared,3*(max_bytes*price+MAX_TOKENS*completion))
     if a.continue_from:
         if a.main_only:raise ValueError('MAIN_ALREADY_EXECUTED')
         previous=json.loads((a.continue_from/'summary.json').read_text())
@@ -192,7 +195,7 @@ def main():
         shared.unknown=previous['unknown_cost_calls'];shared.calls=budget.calls=previous['calls']
     client=Gemma(url=a.relay_url,selection=MODEL,budget=budget)
     cfg=client.identity['openrouter_v1']
-    if cfg.get('max_calls')!=600 or cfg.get('max_attempts')!=3 or cfg.get('max_usd')!=.08 or cfg.get('rate_limit_policy')!='ling_rate_limit_v1':raise ValueError('ACTUAL_UPSTREAM_CAP_REQUIRED')
+    if cfg.get('max_calls')!=600 or cfg.get('max_attempts')!=3 or cfg.get('max_usd')!=MAX_USD or cfg.get('rate_limit_policy')!=RATE_POLICY:raise ValueError('ACTUAL_UPSTREAM_CAP_REQUIRED')
     dump(a.out/'identity.json',client.identity)
     results={'off':[],'static_first_v1':[],'image':[]};all_called=[];started=time.monotonic()
     if a.continue_from:
@@ -253,7 +256,7 @@ def main():
         http_statuses={str(status):sum(r['status']==status for r in http_rows) for status in sorted({r['status'] for r in http_rows})},
         total_retry_wait_s=sum(r.get('retry_wait_before_s',0) for r in http_rows),
         total_pacing_wait_s=sum(r.get('pacing_wait_s',0) for r in http_rows),
-        schema='planner.ling_vl.r4dev.v1',source_sha=sha,manifest=manifest,
+        schema=f'planner.{COHORT}.r4dev.v1',source_sha=sha,manifest=manifest,
         status='stopped' if shared.stopped else 'main_complete_probes_pending' if a.main_only else 'complete',stop_reason=shared.stopped,wall_s=time.monotonic()-started,
         total_actual_cost_usd=shared.actual,conservative_accounted_usd=shared.charged,unknown_cost_calls=shared.unknown,
         calls=budget.calls,repairs_dispatched=0,key_checks=shared.key_checks,

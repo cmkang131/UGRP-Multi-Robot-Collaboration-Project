@@ -44,7 +44,9 @@ def retry_delay(attempt,headers,random_value,now):
     return cap*random_value,'exponential_full_jitter'
 
 
-def reserve_cost(body):
+def reserve_cost(body, selection=None):
     # UTF-8 bytes conservatively bound text tokenizer output. Image URI bytes
     # overestimate images, intentionally; never assume cache hits or zero cost.
-    return (len(json.dumps(body,ensure_ascii=True).encode())+4096)*.000000021 + body.get('max_tokens',768)*.0000000616
+    from harness.task_planner_model import GEMMA_FP4
+    prompt,completion=(.00000009,.00000034) if selection==GEMMA_FP4 else (.000000021,.0000000616)
+    return (len(json.dumps(body,ensure_ascii=True).encode())+4096)*prompt + body.get('max_tokens',768)*completion

@@ -188,3 +188,23 @@ def test_fallback_stop_counts_actual_called_decisions():
     bad={**good,'fallback':True}
     assert guard([good]*19+[bad]) is None
     assert guard([good]*18+[bad])=='FALLBACK_RATE_OVER_5_PERCENT'
+
+
+def test_gemma_fp4_tag_and_returned_provider_are_separate(tmp_path):
+    from harness.task_planner_model import GEMMA_FP4
+    from scripts.openrouter_ling_policy import reserve_cost
+    from scripts.openrouter_upstream import config
+    request=dict(model=GEMMA_FP4.wire_model,messages=[],temperature=0,max_tokens=768)
+    body=upstream_body(request,selection=GEMMA_FP4)
+    assert body['provider']=={'order':['deepinfra/turbo'],'allow_fallbacks':False}
+    assert GEMMA_FP4.response_provider=='DeepInfra'
+    assert reserve_cost(body,GEMMA_FP4)>reserve_cost(body)
+    assert config(selection=GEMMA_FP4,rate_limit_policy='planner_rate_limit_v1')['rate_limit_parameters']['max_concurrent']==1
+    def send(body,key):
+        return 200,json.dumps(dict(model=GEMMA_FP4.model,provider='DeepInfra',choices=[{}],usage={'cost':.0004})).encode(),None
+    m=OpenRouter(tmp_path,key='fake',send=send,selection=GEMMA_FP4,max_calls=600,max_usd=.3,rate_limit_policy='planner_rate_limit_v1')
+    assert m.complete(json.dumps(request).encode(),'fp4')[0]==200
+    assert m.calls==1 and m.actual_cost==pytest.approx(.0004)
+    def wrong(body,key):return 200,json.dumps(dict(model=GEMMA_FP4.model,provider='Novita',choices=[{}])).encode(),None
+    m=OpenRouter(tmp_path/'wrong',key='fake',send=wrong,selection=GEMMA_FP4,max_attempts=1)
+    assert m.complete(json.dumps(request).encode(),'wrong')[0]==502

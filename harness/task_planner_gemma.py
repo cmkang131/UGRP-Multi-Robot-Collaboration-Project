@@ -95,7 +95,7 @@ class Gemma:
         routing=data.get('ugrp_openrouter') or {}
         self.budget.reconcile(None if routing.get('unknown_cost_attempts',0) else routing.get('total_cost',cost))
         usage['transport']=routing
-        if data.get('model') != selection.model or data.get('provider') != selection.provider:
+        if data.get('model') != selection.model or data.get('provider') != selection.response_provider:
             raise ValueError('PROVIDER_IDENTITY_MISMATCH')
         usage.update(cost=cost, call_id=call_id, request_sha256=key, model=data['model'], provider=data['provider'])
         choice = data['choices'][0]

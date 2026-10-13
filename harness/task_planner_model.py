@@ -26,6 +26,10 @@ class ModelSelection:
     def wire_model(self):
         return 'gemma-4-31b-it' if self.model == DEFAULT_MODEL else self.model
 
+    @property
+    def response_provider(self):
+        return "DeepInfra" if self.provider == "deepinfra/turbo" else self.provider
+
     def request_options(self):
         return {'reasoning': {'enabled': False}} if self.reasoning == 'off' else {}
 
@@ -41,6 +45,7 @@ def selected(args):
     return ModelSelection(args.planner_model, args.planner_provider, args.planner_reasoning)
 
 
+GEMMA_FP4 = ModelSelection(DEFAULT_MODEL, 'deepinfra/turbo', 'default')
 LING = ModelSelection('inclusionai/ling-3.0-flash-vl', 'Novita', 'off')
 STATIC_KEYS = ('schema', 'robot_id', 'condition', 'task', 'order_sheet', 'static_map', 'public_rules', 'can_send_to')
 DYNAMIC_KEYS = ('now_s', 'own', 'own_act_results', 'received_messages', 'events', 'candidates')
