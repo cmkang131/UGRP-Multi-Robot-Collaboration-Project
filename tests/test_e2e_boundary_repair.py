@@ -176,7 +176,8 @@ def test_unstable_association_is_preserved_in_actual_ownmap_record():
         receive(association, boundary, i, i*.2)
     assert not g.e2e_gate.references
     g.explorer = SimpleNamespace(local_pose=np.zeros(3)); g.stage = 'explore'
-    robot = SimpleNamespace(goal=g, nav_command={'kind':'hold'})
+    g.e2e_relook = SimpleNamespace(pending=None)
+    robot = SimpleNamespace(goal=g, nav_command={'kind':'hold'}, beam=None)
     obs = {'frame_id':2, 'sha256':'own-frame'}
     record = ownmap_record(robot, obs, {'boundary_association':association.last}, .4)
     saved = json.loads(json.dumps(record))['boundary_association']
@@ -256,12 +257,20 @@ def test_native_artifact_correction_preserves_original_manifest_and_verifies_ent
     manifest = Path(correction['original_manifest']).read_bytes()
     assert hashlib.sha256(manifest).hexdigest() == correction['original_manifest_sha256']
     entries = json.loads(manifest)
+    resolution = json.loads(Path('experiments/2026-10-12-e2e18/historical-artifact-resolution.json').read_text())
+    assert hashlib.sha256(Path(resolution['correction_file']).read_bytes()).hexdigest() == resolution['correction_sha256']
+    preserved = {row['original_path']: row for row in resolution['preserved']}
     assert len(entries) == correction['unchanged_entries_verified'] + len(correction['corrections'])
     for name, recorded in entries.items():
         if name in correction['corrections']:
             item = correction['corrections'][name]
             assert recorded == item['recorded']
             recorded = item['corrected']
-        data = Path(name).read_bytes()
+        if name in preserved:
+            snapshot = preserved[name]
+            assert {k:snapshot[k] for k in ('bytes','sha256')} == recorded
+            data = Path(snapshot['preserved_path']).read_bytes()
+        else:
+            data = Path(name).read_bytes()
         assert len(data) == recorded['bytes']
         assert hashlib.sha256(data).hexdigest() == recorded['sha256']
