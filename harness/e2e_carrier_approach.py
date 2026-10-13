@@ -51,6 +51,9 @@ def advance(transport,rid,now):
         distance_m=distance,heading_error_rad=heading_error,own_beam_age_s=now-state['last_seen'],camera=tag,
         basis_yaw_rad=state['basis']['yaw_rad'])
     r.carrier_approach=diag
+    from harness.e2e_clip_recovery import step as clip_step
+    clipped=clip_step(transport,rid,now,state,diag)
+    if clipped is not None:return clipped
     from harness.e2e_station_heading import control as station_control
     station_control_mode=station_control(transport,rid,now,state,diag)
     if station_control_mode=='settle':

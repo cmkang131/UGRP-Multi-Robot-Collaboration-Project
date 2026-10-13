@@ -104,7 +104,7 @@ class Robot:
             self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
                                 exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect,b_partial_accept=b_partial_accept,vo_floor_mask=vo_floor_mask,vo_rotation_policy=vo_rotation_policy,explore_deadlock=explore_deadlock,boundary_association=boundary_association,boundary_retry=boundary_retry,boundary_coverage=boundary_coverage,boundary_frame=boundary_frame)
         self.observe_beam=beam_observer(beam_end_model,beam_decode)
-        self.last_beam=None;self.pregrasp_acquire="off"
+        self.last_beam=None;self.beam_observation=None;self.pregrasp_acquire="off"
         self.servo=dict(SEARCH);self.now=0.;self.frame=None;self.last_obs=None
         self.nav_command=dict(kind='hold');self.packet=None;self.beam=None;self.events=[]
         self.call_ref=None;self.trace=None;self.revision=0
@@ -135,6 +135,8 @@ class Robot:
         self.nav_command={k:v for k,v in command.items() if k!='t'};self.trace=trace
         self.revision+=1
         b=self.observe_beam(obs['image'],self.servo)
+        self.beam_observation=dict(result=copy.deepcopy(b),rgb=dict(robot_id=self.robot_id,
+            frame_id=obs['frame_id'],t_sim=self.now,sha256=obs['sha256']))
         self.beam=None
         if b.get('visible') and b.get('end_visible'):
             pose=np.asarray(self.goal.explorer.local_pose,float)
