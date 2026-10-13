@@ -21,6 +21,7 @@ FAST = 'v1'
 # (standoff, align_skip, scan_fast) -> bundle number. Parent must be e2e18-v273.
 VERSIONS = {(STANDOFF, 'off', 'off'): 295, (STANDOFF, SKIP, FAST): 296}
 PARENT = 'e2e18-v273'
+PAN_VERSIONS = {(STANDOFF, SKIP, FAST): 297, (STANDOFF, 'off', 'off'): 300}
 RELOOK_PARENT = 'e2e18-v276'   # relook_search=view5_pan_v1 on v273
 BEAM_HALF_M = .30            # known beam size, as in the existing station model
 STANDOFF_PARAMS = dict(near_m=.35, front_rad=math.pi/2, backup_m=.30, reverse_u=-.35,
@@ -152,10 +153,10 @@ def compose(bundle, standoff='off', skip='off', fast='off'):
     if (standoff, skip, fast) == ('off', 'off', 'off'):
         return ()
     key = (standoff, skip, fast)
-    if bundle['execution_bundle_id'] == RELOOK_PARENT and key == (STANDOFF, SKIP, FAST) \
+    if bundle['execution_bundle_id'] == RELOOK_PARENT and key in PAN_VERSIONS \
             and bundle['e2e_options'].get('relook_search') == 'view5_pan_v1':
-        # v297 = v296 toggles on top of the v276 own-view pan relook search.
-        version = 297
+        # v297/v300 = v296/v295 toggles on top of the v276 own-view pan relook search.
+        version = PAN_VERSIONS[key]
         bundle['standoff_relook_parent'] = RELOOK_PARENT
     elif key not in VERSIONS or bundle['execution_bundle_id'] != PARENT:
         raise ValueError('ACQUIRE_STANDOFF_REQUIRES_V273_AND_REGISTERED_COMBINATION')

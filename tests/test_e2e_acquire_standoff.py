@@ -153,3 +153,49 @@ def test_v297_v298_stack_standoff_on_pan_relook_and_release(monkeypatch):
         require_current(bad, ROOT)
     # parts alone keep their old identities
     assert bundle(*args, **kw)['execution_bundle_id'] == 'e2e18-v276'
+
+
+def test_v302_relook_giveup_bundle_and_dev_light_only_behavior(monkeypatch):
+    import copy
+    from types import SimpleNamespace as NS
+    from harness.e2e_runtime_registration import require_current
+    from harness.e2e_relook_giveup import install, GIVEUP_S
+    from scripts.run_e2e_ownmap_live import ROOT, bundle
+    args, kw = _pan_parent(monkeypatch)
+    on = dict(beam_lost_standoff='v1', stage_physics='release_dt1_v1')
+    assert bundle(*args, **dict(kw, beam_lost_standoff='v1'))['execution_bundle_id'] == 'e2e18-v300'
+    b = bundle(*args, **dict(kw, **on, relook_giveup='dev_light_v1'))
+    assert b['execution_bundle_id'] == 'e2e18-v302' and b['e2e_options']['relook_giveup'] == 'dev_light_v1'
+    require_current(b, ROOT)
+    bad = copy.deepcopy(b); bad['relook_giveup_parameters']['giveup_after_relook_s'] = 10
+    with pytest.raises(ValueError):
+        require_current(bad, ROOT)
+    assert bundle(*args, **dict(kw, **on))['execution_bundle_id'] == 'e2e18-v301'
+    with pytest.raises(ValueError):
+        bundle(*args, **dict(kw, relook_giveup='dev_light_v1'))   # needs the v301 parent
+
+    class RL:
+        def __init__(s): s.pending = dict(node=3, matches=[]); s.receipt = None; s.events = []
+        def emit(s, row): s.events.append(row)
+    def transport(dev_light):
+        events = []
+        tr = NS(state='relook', stage_t=100., dev_light=dev_light, failure=None, seg=2, epoch=1, plan='p', aligned={1: 1},
+                approach={1: 1}, first_seg=1, events=events, queue=[],
+                dialogue=NS(approved=True, proposal=1, claims={1}, key=1, votes={1: 1}),
+                robots={r: NS(goal=NS(e2e_relook=RL()), packet='old' if r == 'r1' else None) for r in ('r1', 'r2')})
+        tr.event = lambda t, kind, **d: events.append(dict(t=t, event=kind, **d))
+        tr.set = lambda state, t: (setattr(tr, 'state', state), setattr(tr, 'stage_t', t))
+        tr.step = lambda now: []
+        return tr
+    tr = install(transport(True), 'dev_light_v1')
+    assert tr.step(100 + GIVEUP_S - 1) == [] and tr.state == 'relook'
+    out = tr.step(100 + GIVEUP_S + 1)
+    assert tr.state == 'mapping' and tr.plan is None and tr.seg == 0 and tr.robots['r1'].packet is None
+    assert all(r.goal.e2e_relook.pending is None and r.goal.e2e_relook.receipt is None for r in tr.robots.values())
+    assert {e['event'] for e in tr.events} >= {'would_stop', 'e2e_relook_giveup'}
+    assert [e for e in tr.events if e['event'] == 'e2e_relook_giveup'][0]['correction_applied'] is False
+    assert len(out) == 2
+    tr = install(transport(False), 'dev_light_v1')       # formal runs keep the stop semantics
+    tr.step(100 + GIVEUP_S + 50); assert tr.state == 'relook'
+    tr = install(transport(True), 'off')
+    tr.step(100 + GIVEUP_S + 50); assert tr.state == 'relook'
