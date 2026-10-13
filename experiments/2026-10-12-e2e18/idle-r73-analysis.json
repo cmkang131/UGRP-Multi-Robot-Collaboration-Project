@@ -19,5 +19,17 @@
     "mechanism": "Own navigator exhausts frontiers; issues hold until existing deadlock recovery resets action suppression after 30 SIM s. No new body decision during hold."
   },
   "classification": "supervisor stationary budget exceeded; not provider error or repeated model WAIT",
-  "next": "bounded exploration retry candidate; body and protocol implementation remain separate"
+  "next": "bounded exploration retry candidate; body and protocol implementation remain separate",
+  "source": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml",
+  "standard_method": "Nav2 periodically replans and uses bounded spin/wait/back-up recovery, with a five-second Wait. Here reuse existing action-suppression expiry without clearing map or pose; compare issued-hold thresholds 5/10 seconds.",
+  "candidates": [
+    {
+      "idle_s": 5
+    },
+    {
+      "idle_s": 10
+    }
+  ],
+  "seed": 61006,
+  "criteria": "No stationary gap >=20 SIM s; own-map completion and actual alignment/grasp/transport assessed separately"
 }

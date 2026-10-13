@@ -1,0 +1,141 @@
+[
+  {
+    "name": "e2e18-v344-s61006-r73",
+    "checked_unix": 1791882075.8650274,
+    "cut_sim_s": 171.768,
+    "current_sim_s": 171.768,
+    "phase": "mapping",
+    "frames": 286,
+    "exit": "130",
+    "model_calls": 3,
+    "body_sha256": "041b03f82ad233f86a375a291a50260b321d98505f5a0cdc9c4255d525e0f5b6",
+    "robots": {
+      "r1": {
+        "calls": 77,
+        "choices": {
+          "follow_own_path": 30,
+          "move_camera_to_planned_view": 9,
+          "wait_and_reobserve": 16,
+          "hold_and_reobserve": 17,
+          "back_off_and_replan": 5
+        },
+        "statuses": {
+          "ok": 77
+        },
+        "max_stationary_s": 10.45,
+        "tail_stationary_s": 0.05,
+        "max_same_choice_without_motion_s": 6.45,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 11.35,
+        "last_interval": {
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "start": 171.65,
+          "end": 171.768,
+          "n": 1,
+          "all_stationary": true,
+          "duration_s": 0.118
+        },
+        "eval_trajectory_sha256": "d0870f509f9f887d4128e0262a341462393e0a0f94fe86340250b2f170143d5a"
+      },
+      "r2": {
+        "calls": 50,
+        "choices": {
+          "follow_own_path": 23,
+          "back_off_and_replan": 15,
+          "scan_right": 10,
+          "scan_left": 2
+        },
+        "statuses": {
+          "ok": 50
+        },
+        "max_stationary_s": 36.1,
+        "tail_stationary_s": 13.75,
+        "max_same_choice_without_motion_s": 2.45,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 0.0,
+        "last_interval": {
+          "choice": "scan_right",
+          "status": "ok",
+          "start": 155.0,
+          "end": 158.75,
+          "n": 1,
+          "all_stationary": false,
+          "duration_s": 3.75
+        },
+        "eval_trajectory_sha256": "72a534c7a5f76c45cfd898698dfbf2a9dfc3972d93a4dc81c918b634489f0a6f"
+      }
+    },
+    "failure": "SIGNAL_SIGINT"
+  },
+  {
+    "name": "e2e18-v345-s61006-r73",
+    "checked_unix": 1791882075.9283862,
+    "cut_sim_s": 156.0,
+    "current_sim_s": 156.0,
+    "phase": "align",
+    "frames": 265,
+    "exit": "130",
+    "model_calls": 11,
+    "body_sha256": "ea4957d740f87ab58f1c919db8f01cb86c31db0e3b221843188b750518f2dacf",
+    "robots": {
+      "r1": {
+        "calls": 61,
+        "choices": {
+          "follow_own_path": 33,
+          "move_camera_to_planned_view": 11,
+          "back_off_and_replan": 7,
+          "hold_and_reobserve": 4,
+          "wait_and_reobserve": 3,
+          "re_observe": 3
+        },
+        "statuses": {
+          "ok": 61
+        },
+        "max_stationary_s": 7.3,
+        "tail_stationary_s": 7.3,
+        "max_same_choice_without_motion_s": 4.1,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 4.0,
+        "last_interval": {
+          "choice": "re_observe",
+          "status": "ok",
+          "start": 155.6,
+          "end": 156.0,
+          "n": 1,
+          "all_stationary": true,
+          "duration_s": 0.4
+        },
+        "eval_trajectory_sha256": "9d3bdbb2d884b4a33be4ae6b5ea0bebf3cb138de126f3fd5ab3b8235fd431e14"
+      },
+      "r2": {
+        "calls": 64,
+        "choices": {
+          "follow_own_path": 22,
+          "back_off_and_replan": 24,
+          "scan_right": 13,
+          "scan_left": 5
+        },
+        "statuses": {
+          "ok": 64
+        },
+        "max_stationary_s": 31.15,
+        "tail_stationary_s": 0.0,
+        "max_same_choice_without_motion_s": 1.75,
+        "tail_same_choice_without_motion_s": 0.0,
+        "max_wait_choice_interval_s": 0.0,
+        "last_interval": {
+          "choice": "scan_left",
+          "status": "ok",
+          "start": 155.6,
+          "end": 156.0,
+          "n": 1,
+          "all_stationary": false,
+          "duration_s": 0.4
+        },
+        "eval_trajectory_sha256": "da981cb87783572b4ca322a0dd4af4d760b19ea3f77950a646e6395a7b02147e"
+      }
+    },
+    "failure": "SIGNAL_SIGINT"
+  }
+]

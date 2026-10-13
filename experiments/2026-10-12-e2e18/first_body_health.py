@@ -37,10 +37,14 @@ def inspect(run,cut=None):
    stationary_spans.append((anchor['t'],tr[-1]['t']))
   intervals=[]
   for r in ds:
-   if not intervals or intervals[-1]['choice']!=r.get('choice') or intervals[-1]['status']!=r.get('status'):
-    if intervals:intervals[-1]['end']=r['t']
-    intervals.append(dict(choice=r.get('choice'),status=r.get('status'),start=r['t'],end=end,n=1))
-   else:intervals[-1]['n']+=1
+   # A skill lasts at most 3 SIM s plus its measured decision hold.
+   # Longer silence is a navigator/no-call interval, not a repeated choice.
+   valid_end=min(end,r['t']+3.+float(r.get('sim_hold_s',0)))
+   if not intervals or intervals[-1]['choice']!=r.get('choice') or intervals[-1]['status']!=r.get('status') or r['t']>intervals[-1]['end']:
+    if intervals:intervals[-1]['end']=min(intervals[-1]['end'],r['t'])
+    intervals.append(dict(choice=r.get('choice'),status=r.get('status'),start=r['t'],end=valid_end,n=1))
+   else:
+    intervals[-1]['n']+=1;intervals[-1]['end']=valid_end
   longest_same_still=0.;latest_same_still=0.
   for it in intervals:
    samples=[r for r in tr if it['start']<=r['t']<=it['end']]
@@ -49,7 +53,7 @@ def inspect(run,cut=None):
    if it['n']>=2:
     overlap=max((max(0.,min(it['end'],b)-max(it['start'],a)) for a,b in stationary_spans),default=0.)
     longest_same_still=max(longest_same_still,round(overlap,3))
-    if it is intervals[-1]:latest_same_still=round(min(last_stationary,it['duration_s']),3)
+    if it is intervals[-1] and it['end']>=end-.05:latest_same_still=round(min(last_stationary,it['duration_s']),3)
   waits={'stop_and_look','hold_and_reobserve','wait_and_reobserve','hold_and_wait','wait','hold','relook_wait'}
   waitmax=max((it['duration_s'] for it in intervals if it['choice'] in waits),default=0.)
   robots[rid]=dict(calls=len(ds),choices=dict(collections.Counter(r.get('choice') or '<none>' for r in ds)),statuses=dict(collections.Counter(r.get('status') for r in ds)),max_stationary_s=round(stationary,3),tail_stationary_s=round(last_stationary,3),max_same_choice_without_motion_s=longest_same_still,tail_same_choice_without_motion_s=latest_same_still,max_wait_choice_interval_s=waitmax,last_interval=intervals[-1] if intervals else None,eval_trajectory_sha256=th)
