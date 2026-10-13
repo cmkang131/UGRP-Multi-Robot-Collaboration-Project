@@ -5,6 +5,23 @@
   "endpoints": [
     {
       "role": "planner",
+      "model": "google/gemma-4-31b-it",
+      "provider": "DeepInfra",
+      "tag": "deepinfra/turbo",
+      "quantization": "fp4",
+      "baseline_usd_per_million": {
+        "prompt": 0.09,
+        "completion": 0.34,
+        "input_cache_read": 0.05
+      },
+      "recorded": "2026-10-14",
+      "source": "https://openrouter.ai/api/v1/models/google/gemma-4-31b-it/endpoints",
+      "why": "Ling-3.0-Flash-VL hit upstream 429 at ~40 calls/min (Novita 27/40, DeepInfra 2/40); Gemma 4 31B @DeepInfra 40/40 (user choice 2026-10-14)"
+    }
+  ],
+  "retired_endpoints": [
+    {
+      "role": "planner",
       "model": "inclusionai/ling-3.0-flash-vl",
       "provider": "Novita",
       "baseline_usd_per_million": {
@@ -13,7 +30,9 @@
         "input_cache_read": 0.0042
       },
       "recorded": "2026-10-13",
-      "source": "https://openrouter.ai/api/v1/models/inclusionai/ling-3.0-flash-vl/endpoints"
+      "source": "https://openrouter.ai/api/v1/models/inclusionai/ling-3.0-flash-vl/endpoints",
+      "retired": "2026-10-14",
+      "reason": "upstream 429 shared-pool rate limit at study load"
     }
   ]
 }
