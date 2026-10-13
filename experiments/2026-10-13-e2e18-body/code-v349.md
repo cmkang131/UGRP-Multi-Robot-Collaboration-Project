@@ -15,9 +15,9 @@
 
 감독자 #465 코멘트와 VM3 r73 원본을 대조했다. v344 r2의 67.2/76.2/85.2 SIM초 ownmap은 `exploration_finished`, `hold`, finished=true였다. 93.6초 기록에서야 idle_s=30.05의 기존 재시도가 발동했다. `PersistentNavigator.update`의 완료 조기 반환과 `BodyGate`의 이동 제안 없는 결정 생략이 결합한 정지였다. 전역 탐색기 구현을 바꾸지 않고 새 번들 gate에서 연결했다.
 
-저장 장면은 r70 r2 8개, v321 16개, v344 r73 5개를 모두 보존한다. 재생 대상23개와 제외6개를 분리한다. 제외는 직접 이동 제안이 없는 정렬2개, 현재 GO/ACK·실행 배치가 보존되지 않은 파지/운반4개다. 가짜 합의를 만들어 질의하지 않는다. 진행/복구 스킬 선택률은 물리적 이동 성공률이나 정확한 스킬 정답률이 아니다. 현재까지 코드 재생 23/23(8/8, 10/10, 5/5), 핵심 terminal mapping 3/3 즉시 재계획, 몸 provider0이다. 최종 SHA 재생과 원본 해시는 code-v349-summary.json에 남긴다.
+저장 장면은 r70 r2 8개, v321 16개, v344 r73 5개를 모두 보존한다. 재생 대상23개와 제외6개를 분리한다. 제외는 직접 이동 제안이 없는 정렬2개, 현재 GO/ACK·실행 배치가 보존되지 않은 파지/운반4개다. 가짜 합의를 만들어 질의하지 않는다. 진행/복구 스킬 선택률은 물리적 이동 성공률이나 정확한 스킬 정답률이 아니다. 현재까지 코드 재생 23/23(8/8, 10/10, 5/5), 핵심 terminal mapping 3/3 즉시 재계획, 몸 provider0이다. 기반39c6a4ba 통합 후 코드72f4f563에서 같은23/23 선택을 확인했다. 최종 SHA와 원본 해시는 code-v349-summary.json에 남긴다.
 
-관련 시험은 body_code/body_controller/body_upstream 3파일이다. 새 코드의 실제 dispatch·무호출·필터/반대 우회·반복 제거·합의·기본/등록·receipt 불필요·terminal 소유권을 검사한다. 실제 native 탐색기에 과거 종료 플래그와 명시적인 **합성 known-free/no-frontier costmap**을 넣은 단위 시험에서 30초 대기 없이 다음 수신에 스캔 명령이 나왔다. 이 시험은 저장 costmap 또는 물리 재생이 아니다.
+통합 전 body_code/body_controller/body_upstream 3파일48개, 통합 뒤 body_code/body_controller/dialogue_decider 3파일56개 통과다. 중복 시험을 합산하지 않는다. 새 코드의 실제 dispatch·무호출·필터/반대 우회·반복 제거·합의·기본/등록·receipt 불필요·terminal 소유권을 검사한다. 실제 native 탐색기에 과거 종료 플래그와 명시적인 **합성 known-free/no-frontier costmap**을 넣은 단위 시험에서 30초 대기 없이 다음 수신에 스캔 명령이 나왔다. 이 시험은 저장 costmap 또는 물리 재생이 아니다.
 
 미확인: v349의 첫30 SIM초 raw, 전체 seed61006, 정렬 시작≈76→공동 파지 시간(v321 기준435 SIM초), 재획득·진동·물리 성공, CI 완료. VM 제출은 #461에서 감독자에게만 요청한다. 새 source/bundle을 기존 관리 실행기에 등록해 감독자가 속도 게이트와 동시 수를 정해야 한다. code_v1에는 body relay가 없으므로 body receipt 수명 검사는 필요 없고 Gemma receipt의 유효 기간은 유지해야 한다.
 
