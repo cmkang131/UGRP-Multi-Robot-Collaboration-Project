@@ -26,7 +26,14 @@ def option(value):
 def _claim(body, facts):
     from harness.task_planner_evidence import reported_fact
     if isinstance(body, str):
-        return reported_fact(body, facts)
+        # Keep properties attached to their named subject. A clear door_wide
+        # must not corroborate a blocked door_narrow in the same report.
+        claims=[]
+        for clause in re.split(r'[.;\n]|\b(?:but|while|whereas|and)\b',body.lower()):
+            for fact in facts:
+                found=reported_fact(clause,[fact])
+                if found is not None and found not in claims:claims.append(found)
+        return claims[0] if len(claims)==1 else None
     if isinstance(body, dict):
         if isinstance(body.get('fact'), dict): return body['fact']
         if body.get('passage') and body.get('state') in ('clear', 'blocked'):
@@ -57,6 +64,14 @@ def apply(context, mode='off'):
                         own_observed_at=latest['observed_at'] if latest else None,
                         status=status, own_corroborated=corroborated)
         reports.append((m, evidence, claim))
+        # Keep legacy evidence previews consistent with the gate's subject and
+        # time comparison; otherwise the prompt would retain an obsolete flag.
+        if facts:
+            for prior in ctx.get('evidence_assessment',{}).get('reports',[]):
+                if prior['message_id']==m['id']:
+                    prior.update(conflicts_with_own_observation=conflict if latest else None,
+                        last_directly_observed_at=latest['observed_at'] if latest else None,
+                        own_evidence=copy.deepcopy(latest))
         if stale or conflict:
             archived.append(dict(**evidence, body_sha256=hashlib.sha256(json.dumps(m['body'],sort_keys=True).encode()).hexdigest()))
         else: retained.append(m)
@@ -67,6 +82,8 @@ def apply(context, mode='off'):
         limitation='Fresh incorrect claims without newer own evidence cannot be detected.')
     for c in ctx['candidates']:
         p=c['preview']; args=c['args']; algebra=p.get('hypothetical_costs')
+        if facts and 'evidence' in p:
+            p['evidence']=copy.deepcopy(ctx.get('evidence_assessment',{}).get('reports',[]))
         verification = c['act'] == 'search' or (c['act']=='report' and any(t in args.get('fact','').lower() for t in ('confirm','request','?')))
         dependencies=[]
         for m,e,claim in reports:
@@ -87,12 +104,12 @@ def apply(context, mode='off'):
         for e in dependencies:
             m=next(m for m,_,_ in reports if m['id']==e['message_id'])
             claim=_claim(m['body'],facts)
-            key=(m['sender'],) if algebra is not None else (m['sender'], (claim or {}).get('subject'), (claim or {}).get('predicate'))
+            key=(m['sender'],) if algebra is not None else (m['sender'], claim['subject'], claim['predicate']) if claim else (m['sender'],m['id'])
             if key not in current or e['age_s']<current[key]['age_s']:current[key]=e
         used=list(current.values())
         bad=[e for e in used if e['status'] in ('stale','conflict') and not e['own_corroborated']]
         supported=any(e['status']=='unverified_current' or e['own_corroborated'] for e in used)
-        status='conflict' if any(e['status']=='conflict' for e in bad) else 'stale' if bad and not supported else 'independent' if not used else 'current'
+        status='conflict' if any(e['status']=='conflict' for e in bad) else 'stale' if bad and (algebra is None or not supported) else 'independent' if not used else 'current'
         # Costs already marginalize unsupported reports using the public prior.
         # Physical menus have no algebra; use a conservative affordance weight.
         weight=PARAMETERS['unsupported_weight'] if status in ('stale','conflict') and not verification else 1.
@@ -106,5 +123,8 @@ def apply(context, mode='off'):
         p['candidate_evidence']=dict(reports=dependencies, own_observed_at=max(relevant_times,default=None),
             status=status, evidence_weight=weight, verification_action=verification,
             treatment='lower_priority_and_refresh' if status in ('stale','conflict') else 'retain')
+        frame_at=(own.get('rgb') or {}).get('t_sim')
+        if frame_at is not None and 0 <= frame_at <= now:
+            p['candidate_evidence']['own_rgb_observed_at']=frame_at
         p['priority_score']=score
     return ctx
