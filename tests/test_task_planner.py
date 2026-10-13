@@ -119,3 +119,12 @@ def test_candidate_enumeration_keeps_all_solo_choices():
     menu=build_candidates(orders,static,dict(robot_id='r1',pose={'xy':[0,0]}),port)
     assert len(menu)==8
     assert all(c['preview']['distance_m']>0 and c['preview']['unloading_empty']=='unknown' for c in menu)
+
+
+def test_non_object_args_get_one_repair_not_crash():
+    p=Planner('r1','no_comm');count=[]
+    def model(*a,**kw):
+        count.append(1)
+        return ModelReply('{"act":"carry","args":[],"message":"","reason":"x"}') if len(count)==1 else reply(wait())
+    out=p.decide(context(p),model)
+    assert len(count)==2 and not out['fallback']

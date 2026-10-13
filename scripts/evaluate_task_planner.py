@@ -128,7 +128,7 @@ def main():
     assert len(gold) == 384 and sum(not r['ambiguous'] for r in gold.values()) == 331
     jobs = [(row, arm) for arm, source_arm in ARMS.items() for row in source if row['condition'] == source_arm]
     if a.limit is not None: jobs = jobs[:a.limit]
-    dump(a.out/'RUN_META.json', dict(class_='dev', pr=None, branch=subprocess.check_output(['git','branch','--show-current'],text=True).strip(),
+    dump(a.out/'RUN_META.json', dict(**{'class':'dev'}, pr=None, branch=subprocess.check_output(['git','branch','--show-current'],text=True).strip(),
          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(), batch='planner-offline-v357'))
     manifest = {str(a.source/n): hashlib.sha256((a.source/n).read_bytes()).hexdigest()
                 for n in ('README.md', 'cases_public.json', 'results_scored.json', 'benchmark.py')}

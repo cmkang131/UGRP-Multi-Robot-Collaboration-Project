@@ -109,8 +109,8 @@ def execute(config, out, *, sha, relay_url, horizon_s, wall_cap_s):
                 if ev['kind'] in EVENT_MAP: runtime.event(rid,ev,now)
                 if ev['kind']=='job_failed' and any(k in ev['reason'].lower() for k in ('not_found','missing','no_target')):
                     runtime.event(rid,dict(kind='item_missing',reason=ev['reason']),now)
-                if ev['kind']=='blockage_seen' and event.get('passage_id'):
-                    runtime.event(rid,dict(kind='corridor_occupied',reason='Own camera blockage at '+event['passage_id']),now)
+                if ev['kind']=='blockage_seen' and event.get('detail', {}).get('passage_id'):
+                    runtime.event(rid,dict(kind='corridor_occupied',reason='Own camera blockage at '+event['detail']['passage_id']),now)
             time.sleep(.001)  # yield to independent HTTP workers; never a physical speed claim
         result['status']='SCENE_BUDGET_COMPLETE'
     except Exception as exc:

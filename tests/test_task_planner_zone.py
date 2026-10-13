@@ -33,3 +33,12 @@ def test_search_sequences_selected_area_then_own_sweep():
 def test_default_planner_off():
     assert planner_option({})=='off'
     assert planner_option({'planner':'gemma_v1'})=='gemma_v1'
+
+
+def test_real_native_event_envelope_and_report_do_not_finish_carry():
+    p,calls=port();c=candidate('carry',dict(cargo='cyan',to='A2',via='door',approach='west',mode='solo'))
+    p.start(c);p.start(candidate('report',{'fact':'I am carrying cyan.'}))
+    assert p.active==c and p.immediate is None
+    event={'event':'job_done','detail':{'confirmation':'own_camera_confirmed','outcome':'done'}}
+    assert p.event(event)['kind']=='job_done' and p.completed_orders==['cyan']
+    assert p.event({'event':'job_failed','detail':{'reason':'TARGET_NOT_FOUND'}})['reason']=='TARGET_NOT_FOUND'

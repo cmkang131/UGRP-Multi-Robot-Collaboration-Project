@@ -97,7 +97,6 @@ class ZonePort(ActPort):
     def yield_to(self, where): return self.call('goto', where)
     def reroute(self, via): return self.call('goto', via)
     def report(self, fact):
-        self.immediate = 'report_recorded'
         return dict(accepted=True, reason='report_recorded')
 
     def snapshot(self, now):
@@ -118,6 +117,7 @@ class ZonePort(ActPort):
 
     def event(self, event):
         """Convert own native completion; search's goto is not search completion."""
+        detail = event.get('detail', event)
         kind = event.get('kind', event.get('event'))
         if kind == 'job_done' and getattr(self, 'search_next', False):
             self.search_next = False
@@ -126,7 +126,7 @@ class ZonePort(ActPort):
             return dict(kind='job_failed', reason=ack.get('reason', 'SEARCH_SWEEP_REFUSED'))
         if kind == 'job_done' and self.active and self.active['act'] == 'carry':
             # Only an own-camera-confirmed completion can remove an order.
-            if event.get('confirmation') == 'own_camera_confirmed':
+            if detail.get('confirmation') == 'own_camera_confirmed':
                 self.completed_orders.append(self.active['args']['cargo'])
         if kind == 'job_failed': self.search_next = False
-        return dict(kind=kind, reason=str(event.get('reason', event.get('confirmation', ''))))
+        return dict(kind=kind, reason=str(detail.get('reason', detail.get('confirmation', ''))))

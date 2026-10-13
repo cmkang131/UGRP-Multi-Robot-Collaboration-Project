@@ -73,6 +73,7 @@ def recipients(arm, actor, robots=('r1', 'r2', 'r3'), leader='r1'):
 
 def validate_act(act, args):
     if act not in ARGS: raise ValueError('UNKNOWN_ACT')
+    if not isinstance(args, dict): raise ValueError('ACT_ARGS_OBJECT_REQUIRED')
     required = ARGS[act]
     extra = ('partner', 'side') if act == 'carry' and args.get('mode') == 'joint' else ()
     _fields(args, ' '.join(required + extra))
