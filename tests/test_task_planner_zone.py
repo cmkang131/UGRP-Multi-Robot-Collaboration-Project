@@ -163,3 +163,14 @@ def test_native_driver_closes_and_records_commands_with_fake_host(tmp_path,monke
     result=runner.execute(cfg,out,sha='fixture',relay_url='http://127.0.0.1:18424',horizon_s=.02,wall_cap_s=90)
     assert result['status']=='SCENE_BUDGET_COMPLETE' and closed==[True]
     assert set(json.loads((out/'issued-commands.json').read_text()))=={'r1','r2','r3'}
+
+
+def test_native_input_has_fixed_geometry_and_own_heading_without_world():
+    p,calls=port();p.ex.last_report=SimpleNamespace(initialized=True,x_m=.2,y_m=.3,yaw_rad=.4,std_xy_m=.1)
+    p.ex.last_obs=None;p.ex.holding=lambda:{'answer':'no'}
+    p.ex.map['bounds_m']=[-1,5,-3,2]
+    ctx=p.snapshot(0)
+    assert ctx['static_map']['geometry']==p.ex.map
+    assert ctx['own']['pose']['xy']==[.2,.3] and ctx['own']['pose']['yaw_rad']==.4
+    ctx['static_map']['geometry']['bounds_m'][0]=999
+    assert p.ex.map['bounds_m'][0]==-1

@@ -123,6 +123,7 @@ class ZonePort(ActPort):
     def snapshot(self, now):
         rep = self.ex.last_report
         pose = dict(xy=[rep.x_m, rep.y_m] if rep is not None and rep.initialized else None,
+                    yaw_rad=rep.yaw_rad if rep is not None and rep.initialized else None,
                     source='own_rgb_and_issued_commands', uncertainty='unknown' if rep is None else str(rep.std_xy_m))
         obs = self.ex.last_obs
         own = dict(robot_id=self.ex.robot_id, pose=pose,
@@ -131,7 +132,7 @@ class ZonePort(ActPort):
                    holding=self.ex.holding(), completed_orders=list(self.completed_orders),
                    active_act=None if self.active is None else dict(act=self.active['act'], args=self.active['args']))
         orders = self.orders()
-        return dict(orders=orders, static_map=self.catalog, own=own,
+        return dict(orders=orders, static_map={**copy.deepcopy(self.catalog), 'geometry':copy.deepcopy(self.ex.map)}, own=own,
                     candidates=build_candidates(orders, self.catalog, own, self),
                     task='Complete your fixed orders. You choose the next cargo, destination slot, route, approach and timing. '
                          'Native skills may have only one supported route/approach; do not invent another.')
