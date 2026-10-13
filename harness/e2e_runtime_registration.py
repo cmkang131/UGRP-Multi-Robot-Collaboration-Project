@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] in ('e2e18-v369','e2e18-v370','e2e18-v371','e2e18-v372'):
+        from harness.e2e_call_snapshot import parent_for_validation as snapshot_parent
+        return require_current(snapshot_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v361','e2e18-v362','e2e18-v363','e2e18-v364','e2e18-v365','e2e18-v366','e2e18-v367','e2e18-v368'):
         from harness.e2e_dialogue_call_policy import parent_for_validation as call_parent
         return require_current(call_parent(bundle),root)
