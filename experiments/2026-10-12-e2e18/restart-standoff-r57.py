@@ -9,7 +9,7 @@ from harness.s4_live_transport import validate_receipt
 for key,value in {'MUJOCO_GL':'osmesa','PYOPENGL_PLATFORM':'osmesa','OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MKL_NUM_THREADS':'1','LP_NUM_THREADS':'1'}.items():os.environ[key]=value
 b=Path.home()/'ugrp-sim';sha=sys.argv[1];host=os.uname().nodename
 assert host=='ugrp-sim-azure3'
-seeds=[61006]
+seeds=[int(x) for x in (sys.argv[4] if len(sys.argv)>4 else '61006').split(',')]
 VERS=[int(x) for x in sys.argv[2].split(',')]
 BATCH=sys.argv[3]
 EXTRA={295:[('--beam-lost-standoff','v1')],296:[('--beam-lost-standoff','v1'),('--arm-clearance-align-skip','v1'),('--acquire-scan-fast','v1')]}
