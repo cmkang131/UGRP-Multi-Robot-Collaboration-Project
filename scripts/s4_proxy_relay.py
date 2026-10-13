@@ -14,6 +14,7 @@ from harness.zone_study_llm_driver import live_proxy, load_registry
 from harness.zone_study_llm_transport import no_redirect_opener
 from harness.s4_live_transport import URL, MAX_RELAY_SECONDS
 from harness.s4_relay_journal import Journal
+from harness.task_planner_model import add_model_options, selected, DEFAULT_MODEL
 
 
 def accepted_call_id(value):
@@ -77,7 +78,7 @@ def main():
     p.add_argument('--multi-key-v1', action='store_true', help='multi_key_v1; default off, Mac keys only')
     p.add_argument('--upstream', choices=('default', 'openrouter_v1'), default='default',
                    help='openrouter_v1: paid OpenRouter Gemma 4 31B (Keychain ugrp-openrouter); default off')
-    p.add_argument('--openrouter-providers', default='DeepInfra',
+    p.add_argument('--openrouter-providers', default=None,
                    help='comma-separated pinned provider order (recorded in identity.json)')
     p.add_argument('--driver-profile',choices=('main_study_gemini_v1','study_gemma4_31b_v1'),
                    default='main_study_gemini_v1')
@@ -86,6 +87,9 @@ def main():
     p.add_argument('--dialogue-decider',choices=('gemma_v0','d1_v1','code_v1'),default='gemma_v0')
     p.add_argument('--gemma-state', type=Path,
         default=Path('/Users/changmin/projects/ugrp/outputs/gemma-fallback'))
+    add_model_options(p)
+    p.add_argument('--openrouter-max-attempts', type=int, choices=(1, 2, 3))
+    p.add_argument('--openrouter-max-calls', type=int)
     a = p.parse_args()
     if not 0 < a.seconds <= MAX_RELAY_SECONDS: raise ValueError('finite <=8h relay required')
     a.output.mkdir(parents=True, exist_ok=False)
@@ -111,8 +115,15 @@ def main():
     fallback = None
     if openrouter:
         from scripts import openrouter_upstream as orp
-        orp_cfg = orp.config(tuple(x.strip() for x in a.openrouter_providers.split(',') if x.strip()))
-        fallback = orp.OpenRouter(a.gemma_state/'openrouter', provider_order=orp_cfg['provider_order'])
+        choice = selected(a)
+        kwargs = dict(selection=choice, max_attempts=a.openrouter_max_attempts or (3 if choice.model == DEFAULT_MODEL else 1), max_calls=a.openrouter_max_calls)
+        if a.openrouter_providers is not None:
+            if choice.model != DEFAULT_MODEL or choice.provider != 'DeepInfra' or choice.reasoning != 'default':
+                raise ValueError('USE_PLANNER_PROVIDER_WITH_PLANNER_MODEL')
+            kwargs.update(selection=None, provider_order=tuple(x.strip() for x in a.openrouter_providers.split(',') if x.strip()))
+        orp_cfg = orp.config(**kwargs)
+        if choice.model != DEFAULT_MODEL:orp_cfg['selection_source_sha256'] = hashlib.sha256((Path(__file__).resolve().parents[1]/'harness/task_planner_model.py').read_bytes()).hexdigest()
+        fallback = orp.OpenRouter(a.gemma_state/'openrouter', **kwargs)
     elif a.gemma_fallback or single:
         from scripts.gemma_fallback_proxy import Gemma
         registered = profile['model']['model'] if single else load_registry()['driver_profiles']['dev_gemini_gemma_fallback_v1']['fallback']['model_id']

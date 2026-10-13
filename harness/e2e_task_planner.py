@@ -286,7 +286,7 @@ class Executive:
         allowed={k:v for k,v in choices.items() if k in wanted};return {**hold,**allowed}
 
 
-def install(trial,transport,body,option='off',append=lambda row:None,planner_evidence_gate='off'):
+def install(trial,transport,body,option='off',append=lambda row:None,planner_evidence_gate='off',planner_selection=None,planner_prompt_order='off'):
     if option=='off':return None
     if option not in VERSIONS or trial.dialogue_call_policy!='event_v1' or body is None:
         raise ValueError('TASK_PLANNER_RUNTIME_REQUIREMENTS')
@@ -296,6 +296,7 @@ def install(trial,transport,body,option='off',append=lambda row:None,planner_evi
         from harness.e2e_recovery_menu import install as recovery_install
         recovery_install(body,PARAMETERS['recovery_menu'])
     executive=Executive(trial,transport,body,option,append,planner_evidence_gate)
+    executive.selection=planner_selection;executive.prompt_order=planner_prompt_order
     trial.task_planner=executive;transport.task_planner=executive
     for robot in transport.robots.values():robot.goal.task_planner_enabled=True
     prepare=trial.prepare_call;finish=trial.finish_call
@@ -304,7 +305,8 @@ def install(trial,transport,body,option='off',append=lambda row:None,planner_evi
         ctx['planner_backend']=option
         request=copy.deepcopy(original.request)
         from harness import zone_study_prompts_ko as pk, pair_llm_billing as billing
-        user=json.dumps(ctx,ensure_ascii=True,sort_keys=True)
+        from harness.task_planner_model import ordered_context
+        user=json.dumps(ordered_context(ctx,planner_prompt_order),ensure_ascii=True,sort_keys=planner_prompt_order=='off')
         request['messages']=[dict(role='system',content=SYSTEM),dict(role='user',content=user)]
         request['schema']='ugrp.task_planner.v1'
         tokens=pk.request_tokens(SYSTEM,user,request['images'])
@@ -360,6 +362,7 @@ def connect(executive):
     import time
     trial=executive.trial
     trial.send_ledger.task_planner_contract=True
+    from harness.task_planner_model import ordered_context
     finish=trial.finish_call
     class Transport(RetryTransport):
         def _reply(self,call):
@@ -376,16 +379,24 @@ def connect(executive):
             before=len(planner.audit)
             def model(request,*,timeout_s):
                 started=time.monotonic()
+                if getattr(executive,'selection',None) is not None:
+                    import base64,hashlib
+                    images=prepared.request['images'];refs=prepared.request['image_refs']
+                    if len(images)!=len(refs):raise ValueError('OWN_IMAGE_REF_COUNT')
+                    for image,ref in zip(images,refs):
+                        raw_image=base64.b64decode(image['image'].split(',',1)[1],validate=True)
+                        if hashlib.sha256(raw_image).hexdigest()!=ref.get('bytes_sha256',ref.get('sha256')):
+                            raise ValueError('OWN_RGB_HASH_MISMATCH')
                 try:
                     raw=client.complete([dict(role='system',content=request['system']),
-                        dict(role='user',content=json.dumps(request['input'],sort_keys=True))],images=prepared.request['images'])
+                        dict(role='user',content=json.dumps(ordered_context(request['input'],getattr(executive,'prompt_order','off')),sort_keys=getattr(executive,'prompt_order','off')=='off'))],images=prepared.request['images'])
                 except Exception:
                     reasons=(client.last_completion or {}).get('rejection_reasons',[])
                     if client.last_text and reasons and set(reasons)<= {'study_reply_fields_missing_or_extra','study_reply_incomplete_or_non_json'}:
-                        return ModelReply(client.last_text,'stop',time.monotonic()-started,client.last_usage)
+                        return ModelReply(client.last_text,'stop',time.monotonic()-started,{**(client.last_usage or {}),**getattr(client,'last_provider_metadata',{})})
                     raise
                 return ModelReply(raw,'stop' if normal_completion(client.last_completion) else 'abnormal',
-                    time.monotonic()-started,client.last_usage)
+                    time.monotonic()-started,{**(client.last_usage or {}),**getattr(client,'last_provider_metadata',{})})
             class Port:
                 def check(self,value):return executive.check(call.actor,value)
                 def start(self,value):return dict(accepted=True,deferred_until='scheduler_release')

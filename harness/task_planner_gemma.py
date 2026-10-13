@@ -9,9 +9,10 @@ import urllib.request
 from urllib.parse import urlsplit
 from uuid import uuid4
 from harness.task_planner import ModelReply
+from harness.task_planner_model import ModelSelection, DEFAULT_MODEL, MAX_TOKENS, ordered_context
 
 PROFILE = 'study_gemma4_31b_v1'
-MODEL = 'google/gemma-4-31b-it'
+MODEL = DEFAULT_MODEL
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -38,7 +39,10 @@ class Budget:
 
 
 class Gemma:
-    def __init__(self, *, url='http://127.0.0.1:18424', profile=PROFILE, budget=None, run_id=None):
+    def __init__(self, *, url='http://127.0.0.1:18424', profile=PROFILE, budget=None, run_id=None,
+                 selection=None, planner_prompt_order='off'):
+        self.selection = selection or ModelSelection()
+        self.planner_prompt_order = planner_prompt_order
         p = urlsplit(url)
         if (profile != PROFILE or p.scheme != 'http' or p.hostname not in ('127.0.0.1', 'localhost')
                 or p.username or p.password or p.query or p.fragment or p.path not in ('', '/')):
@@ -48,7 +52,9 @@ class Gemma:
         self.opener = urllib.request.build_opener(NoRedirect)
         self.identity = self._json('/identity', timeout=5)
         cfg = self.identity.get('openrouter_v1', {})
-        if (cfg.get('model') != MODEL or cfg.get('allow_fallbacks') is not False
+        if (cfg.get('model') != self.selection.model or cfg.get('allow_fallbacks') is not False
+                or cfg.get('provider_order') != [self.selection.provider]
+                or cfg.get('reasoning', 'default') != self.selection.reasoning
                 or self.identity.get('jev_source_sha256') or self.identity.get('dialogue_decider') in ('d1_v1', 'code_v1')):
             raise ValueError('DIRECT_OPENROUTER_GEMMA_IDENTITY_REQUIRED')
 
@@ -63,15 +69,17 @@ class Gemma:
         context = copy.deepcopy(request['input'])
         rgb = (context.get('own') or {}).get('rgb') or {}
         image = rgb.pop('image_b64', None)
-        content = json.dumps(context, ensure_ascii=True)
+        content = json.dumps(ordered_context(context, getattr(self, 'planner_prompt_order', 'off')), ensure_ascii=True)
         if image:
             import base64
             if hashlib.sha256(base64.b64decode(image, validate=True)).hexdigest() != rgb['sha256']:
                 raise ValueError('OWN_RGB_HASH_MISMATCH')
             content = [dict(type='text', text=content),
                        dict(type='image_url', image_url=dict(url='data:image/jpeg;base64,'+image))]
-        body = dict(model='gemma-4-31b-it', temperature=0, max_tokens=768,
+        selection = getattr(self, 'selection', ModelSelection())
+        body = dict(model=selection.wire_model, temperature=0, max_tokens=MAX_TOKENS,
                     messages=[dict(role='system', content=request['system']), dict(role='user', content=content)])
+        body.update(selection.request_options())
         key = hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()
         call_id = 's4live1-taskplanner-' + self.run_id + '-' + uuid4().hex
         self.budget.reserve(); started = time.monotonic()
@@ -85,7 +93,7 @@ class Gemma:
         usage = dict(data.get('usage') or {})
         cost = usage.get('cost', (data.get('ugrp_openrouter') or {}).get('cost'))
         self.budget.reconcile(cost)
-        if data.get('model') != MODEL or data.get('provider') != 'DeepInfra':
+        if data.get('model') != selection.model or data.get('provider') != selection.provider:
             raise ValueError('PROVIDER_IDENTITY_MISMATCH')
         usage.update(cost=cost, call_id=call_id, request_sha256=key, model=data['model'], provider=data['provider'])
         choice = data['choices'][0]

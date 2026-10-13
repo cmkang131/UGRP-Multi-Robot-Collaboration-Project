@@ -31,6 +31,15 @@ def test_default_off_and_registration(monkeypatch):
         b=bundle(*args,**kw,planner=mode,planner_evidence_gate='on_v1');require_current(b,ROOT)
         assert b['execution_bundle_id']==f'e2e18-v{v}'
         assert m.parent_for_validation(b)['e2e_options']==parent['e2e_options']
+    from harness.task_planner_model import LING
+    from harness.e2e_planner_model import parent_for_validation
+    old=bundle(*args,**kw,planner='gemma_v1',planner_evidence_gate='on_v1')
+    for order,version in [('off',401),('static_first_v1',402)]:
+        new=bundle(*args,**kw,planner='gemma_v1',planner_evidence_gate='on_v1',
+            planner_model=LING.model,planner_provider=LING.provider,planner_reasoning=LING.reasoning,planner_prompt_order=order)
+        require_current(new,ROOT)
+        assert new['execution_bundle_id']==f'e2e18-v{version}'
+        assert parent_for_validation(new)['e2e_options']==old['e2e_options']
     assert m.compose({})==()
 
 

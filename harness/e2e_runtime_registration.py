@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] in ('e2e18-v401','e2e18-v402'):
+        from harness.e2e_planner_model import parent_for_validation
+        return require_current(parent_for_validation(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v373','e2e18-v374','e2e18-v387','e2e18-v388'):
         from harness.e2e_task_planner import parent_for_validation as task_parent
         return require_current(task_parent(bundle),root)

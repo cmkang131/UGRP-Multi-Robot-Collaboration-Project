@@ -14,6 +14,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from scripts.evaluate_task_planner import ARMS, adapt, dump
 from harness.task_planner import signature, strong_rule
 from harness.task_planner_cost_rules import domain_of, extract_english, extract_fixed
+from harness.task_planner_model import add_model_options, selected
 from harness.task_planner_gemma import Budget, Gemma
 
 
@@ -50,7 +51,7 @@ def main():
     ap=argparse.ArgumentParser();ap.add_argument('--source',type=Path,required=True);ap.add_argument('--out',type=Path,required=True)
     ap.add_argument('--dev',action='store_true');ap.add_argument('--execute',action='store_true')
     ap.add_argument('--max-usd',type=float,default=.3);ap.add_argument('--workers',type=int,default=4)
-    ap.add_argument('--relay-url',default='http://127.0.0.1:18424');a=ap.parse_args()
+    ap.add_argument('--relay-url',default='http://127.0.0.1:18424');add_model_options(ap);a=ap.parse_args()
     if a.out.exists():raise SystemExit('new output directory required')
     a.out.mkdir(parents=True)
     source=json.loads((a.source/'cases_public.json').read_text())
@@ -74,7 +75,7 @@ def main():
             dump(a.out/'summary.json',dict(status='budget_stop',preflight=preflight));return
     else:dump(a.out/'preflight.json',preflight)
     budget=Budget(max_calls=len(jobs)*2,max_usd=a.max_usd)
-    model=Gemma(url=a.relay_url,budget=budget) if a.execute else None
+    model=Gemma(url=a.relay_url,budget=budget,selection=selected(a),planner_prompt_order=a.planner_prompt_order) if a.execute else None
     lock=threading.Lock()
     def run(job):
         r,arm=job;cid=r['case_id'];g=gold[cid]

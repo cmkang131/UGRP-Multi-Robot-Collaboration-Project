@@ -20,6 +20,7 @@ import threading
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from harness.task_planner import Planner, candidate, signature
+from harness.task_planner_model import add_model_options, selected
 from harness.task_planner_gemma import Gemma, Budget
 
 ARMS = {'no_comm': 'none', 'structured': 'fixed', 'peer_en': 'english', 'leader_en': 'english'}
@@ -124,6 +125,7 @@ def main():
     ap.add_argument('--limit', type=int); ap.add_argument('--relay-url', default='http://127.0.0.1:18424')
     ap.add_argument('--planner-evidence-gate', choices=('off','on_v1'), default='off')
     ap.add_argument('--max-usd', type=float, default=2.)
+    add_model_options(ap)
     a = ap.parse_args()
     if a.out.exists(): raise SystemExit('new output directory required')
     a.out.mkdir(parents=True)
@@ -141,7 +143,7 @@ def main():
                 for n in ('README.md', 'cases_public.json', 'results_scored.json', 'benchmark.py')}
     dump(a.out/'source_manifest.json', manifest)
     budget = Budget(max_calls=2*(len(jobs)+24), max_usd=a.max_usd)
-    model = Gemma(url=a.relay_url, budget=budget) if a.execute else None
+    model = Gemma(url=a.relay_url, budget=budget, selection=selected(a),planner_prompt_order=a.planner_prompt_order) if a.execute else None
     lock = threading.Lock()
     def run(job):
         row, arm = job

@@ -17,7 +17,7 @@ URL = 'http://127.0.0.1:18391/v1/chat/completions'
 MAX_RELAY_SECONDS = 28800  # 7 h E2E plus setup/flush, bounded by the VM's 8 h guard.
 
 
-def validate_receipt(receipt, now=None, *, remote_url=URL):
+def validate_receipt(receipt, now=None, *, remote_url=URL, planner_selection=None):
     now = time.time() if now is None else now
     if remote_url not in (URL,'http://127.0.0.1:18393/v1/chat/completions'):
         raise HostError('unregistered loopback relay URL')
@@ -27,8 +27,15 @@ def validate_receipt(receipt, now=None, *, remote_url=URL):
     expected=hashlib.sha256((Path(__file__).resolve().parents[1]/source).read_bytes()).hexdigest() if single else PROXY_SHA256
     if openrouter:
         from scripts.openrouter_upstream import config
+        expected_cfg=dict(config(),source_sha256=expected)
+        if planner_selection is not None:
+            from harness.task_planner_model import LING
+            if planner_selection!=LING or receipt.get('task_planner_v1') is not True:
+                raise HostError('registered Ling planner identity required')
+            expected_cfg=dict(config(selection=planner_selection,max_attempts=1),source_sha256=expected,
+                selection_source_sha256=hashlib.sha256((Path(__file__).resolve().parents[1]/'harness/task_planner_model.py').read_bytes()).hexdigest())
         if (not single or receipt.get('single_model') is not True or receipt.get('fallback_enabled') is not False
-                or receipt.get('openrouter_v1') != dict(config(),source_sha256=expected)):
+                or receipt.get('openrouter_v1') != expected_cfg):
             raise HostError('pinned OpenRouter identity required')
     if receipt.get('decider','off')!='off':
         paths=('scripts/jev_relay_upstream.py','harness/e2e_jev_decider.py','harness/jev_decider_eval.py')
@@ -57,12 +64,13 @@ def validate_receipt(receipt, now=None, *, remote_url=URL):
 
 
 class TunnelLedger(PairLiveLedger):
-    def __init__(self, *, receipt, remote_url=URL, **kwargs):
+    def __init__(self, *, receipt, remote_url=URL, planner_selection=None, **kwargs):
+        self.planner_selection=planner_selection
         self.remote_url=remote_url
         self.receipt_path = Path(receipt)
         raw = self.receipt_path.read_bytes()
         self.receipt_sha256 = hashlib.sha256(raw).hexdigest()
-        self.receipt = validate_receipt(json.loads(raw),remote_url=remote_url)
+        self.receipt = validate_receipt(json.loads(raw),remote_url=remote_url,planner_selection=planner_selection)
         fallback_profile = 'dev_gemini_gemma_fallback_v1'
         requested = kwargs['profile'].get('profile_id', 'main_study_gemini_v1')
         offered = self.receipt.get('driver_profile', 'main_study_gemini_v1')
@@ -81,4 +89,4 @@ class TunnelLedger(PairLiveLedger):
         # The receiving Mac relay performs live PID/listener/source validation.
         if hashlib.sha256(self.receipt_path.read_bytes()).hexdigest() != self.receipt_sha256:
             raise HostError('S4 relay receipt changed during run')
-        validate_receipt(self.receipt,remote_url=self.remote_url)
+        validate_receipt(self.receipt,remote_url=self.remote_url,planner_selection=self.planner_selection)

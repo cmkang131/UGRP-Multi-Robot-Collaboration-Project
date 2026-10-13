@@ -3,6 +3,7 @@ import argparse,hashlib,json,random,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from harness.task_planner import Planner,candidate,signature,strong_rule
+from harness.task_planner_model import add_model_options, selected
 from harness.task_planner_gemma import Gemma,Budget
 from harness.task_planner_evidence_gate import apply
 SEED=2026101303
@@ -28,9 +29,9 @@ def cases():
 
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--out',type=Path,required=True);ap.add_argument('--execute',action='store_true');a=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--out',type=Path,required=True);ap.add_argument('--execute',action='store_true');add_model_options(ap);a=ap.parse_args()
     a.out.mkdir(parents=True,exist_ok=False)
-    budget=Budget(max_calls=48,max_usd=.03);model=Gemma(budget=budget) if a.execute else None
+    budget=Budget(max_calls=48,max_usd=.03);model=Gemma(budget=budget,selection=selected(a),planner_prompt_order=a.planner_prompt_order) if a.execute else None
     rows=[]
     for i,(p,ctx,best) in enumerate(cases()):
         result=p.decide(ctx,model) if model else None

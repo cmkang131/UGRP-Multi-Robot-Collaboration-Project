@@ -12,6 +12,7 @@ import math
 from collections import deque
 from dataclasses import dataclass
 
+from harness.task_planner_model import ModelBudgetExceeded
 from harness.multi_object_plan import _fields
 from harness.s4_compact_prompt import external_condition
 
@@ -241,6 +242,8 @@ class Planner:
                 record.update(response=reply.raw, finish_reason=reply.finish_reason, usage=reply.usage,
                               elapsed_s=reply.elapsed_s)
                 if reply.finish_reason != 'stop': raise RuntimeError('NON_NORMAL_FINISH')
+            except ModelBudgetExceeded:
+                raise
             except Exception as exc:
                 # Do not copy provider exception messages: may contain credentials/URLs.
                 record['failure'] = type(exc).__name__
