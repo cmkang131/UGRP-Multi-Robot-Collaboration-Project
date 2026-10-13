@@ -12,7 +12,16 @@ VERSIONS = {
     ('off', 'v1', 'off', 'shadow_axes_v1', 'phase_v1'): 325,
     ('v1', 'v1', 'off', 'shadow_axes_v1', 'phase_v1'): 326,
     ('v1', 'v1', 'v1', 'shadow_axes_v1', 'phase_v1'): 327,
+    ('off', 'off', 'v1', 'shadow_axes_v1', 'phase_v1'): 328,
 }
+
+
+def registered_version(parent, key):
+    if parent == PARENT:
+        return VERSIONS.get(key)
+    if parent == 'e2e18-v320' and key == ('off','off','v1','shadow_axes_v1','phase_v1'):
+        return 329
+    return None
 
 
 def parameters(options):
@@ -35,10 +44,11 @@ def compose(bundle, **options):
     key = tuple(options.get(k, 'off') for k in KEYS)
     if all(value == 'off' for value in key):
         return ()
-    if bundle['execution_bundle_id'] != PARENT or key not in VERSIONS:
+    parent = bundle['execution_bundle_id']
+    version = registered_version(parent, key)
+    if version is None:
         raise ValueError('REGISTERED_POST_RELOOK_SDK_COMBINATION_REQUIRED')
-    version = VERSIONS[key]
-    bundle['post_relook_stack_parent'] = PARENT
+    bundle['post_relook_stack_parent'] = parent
     bundle['e2e_options'].update(zip(KEYS, key))
     bundle.update(parameters(key))
     bundle.update(schema=f'ugrp.e2e_ownmap_live.v{version}',
@@ -51,16 +61,17 @@ def compose(bundle, **options):
 
 def parent_for_validation(bundle):
     key = tuple(bundle['e2e_options'].get(k, 'off') for k in KEYS)
-    version = VERSIONS.get(key)
+    parent = bundle.get('post_relook_stack_parent')
+    version = registered_version(parent, key)
     expected = parameters(key)
-    if (bundle.get('post_relook_stack_parent') != PARENT or version is None
+    if (version is None
             or bundle['execution_bundle_id'] != f'e2e18-v{version}'
             or any(bundle.get(k) != value for k, value in expected.items())
             or any(k + '_parameters' in bundle for k in KEYS
                    if key[KEYS.index(k)] == 'off')):
         raise ValueError('REGISTERED_POST_RELOOK_SDK_COMBINATION_REQUIRED')
     old = copy.deepcopy(bundle)
-    old['execution_bundle_id'] = PARENT
+    old['execution_bundle_id'] = parent
     old.pop('post_relook_stack_parent')
     for k in KEYS:
         old['e2e_options'].pop(k, None)

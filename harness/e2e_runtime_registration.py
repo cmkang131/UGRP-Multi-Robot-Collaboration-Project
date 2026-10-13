@@ -33,7 +33,7 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
-    if bundle['execution_bundle_id'] in ('e2e18-v324','e2e18-v325','e2e18-v326','e2e18-v327'):
+    if bundle['execution_bundle_id'] in ('e2e18-v324','e2e18-v325','e2e18-v326','e2e18-v327','e2e18-v328','e2e18-v329'):
         from harness.e2e_post_relook_stack import parent_for_validation as stack_parent
         return require_current(stack_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v316','e2e18-v317','e2e18-v318'):

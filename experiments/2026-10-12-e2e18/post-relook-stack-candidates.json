@@ -15,12 +15,19 @@
     "324": "v323 + shadow_axes_v1 + controller_timing phase_v1",
     "325": "v324 + clip_hysteresis v1",
     "326": "v325 + approach_floor v1",
-    "327": "v326 + vote_ref v1"
+    "327": "v326 + vote_ref v1",
+    "328": "v324 + vote_ref v1; original alignment retained",
+    "329": "v320 + shadow_axes_v1 + phase_v1 + vote_ref v1; original alignment and remaining route regrasp retained"
   },
   "default": "off",
   "research_scope": "DEV exploratory; Gemma conversation and own-RGB classification retained",
   "sources": [
     "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/waypoint_follower/"
   ],
-  "source_scope": "post-relook continuation source verified earlier; SDK own-RGB hooks have focused offline tests, live outcomes pending"
+  "source_scope": "post-relook continuation source verified earlier; SDK own-RGB hooks have focused offline tests, live outcomes pending",
+  "followup_evidence": {
+    "v320_r65": "second grasp_lift 831.2 SIM; cap845.3, no second paired hold confirmed",
+    "v321_r65": "seg1 CURRENT_GO_ACK_TIMEOUT 570.8 SIM",
+    "v323_r65": "seg0 CURRENT_GO_ACK_TIMEOUT 549.0 SIM"
+  }
 }
