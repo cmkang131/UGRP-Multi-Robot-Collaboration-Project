@@ -41,8 +41,12 @@ def view(tr,rid,state,fresh,grip_distance):
     # The visible band guides viewing even when the assigned grasp is the far
     # end. This does not change the carrier's assigned end or grasp condition.
     if fresh:distance=float(np.linalg.norm(r.beam['grip_base_m']))
-    elif previous:return previous,pose_of(previous)
-    else:distance=grip_distance
+    else:
+        from harness.e2e_grasp_once import gaze_target as remembered_gaze
+        point=remembered_gaze(tr,rid,(r.last_obs or {}).get('sim_time',-math.inf))
+        if point is not None:distance=float(np.linalg.norm(point-r.goal.explorer.local_pose[:2]))
+        elif previous:return previous,pose_of(previous)
+        else:distance=grip_distance
     tag,_=look_posture(distance)
     boundaries={frozenset(('search','p45')):.34,frozenset(('p45','inspect')):.255}
     boundary=boundaries.get(frozenset((previous,tag)))
@@ -55,7 +59,9 @@ def gaze_target(tr,rid,fresh,assigned):
     from harness.e2e_fine_view import active
     if active(tr,rid,tr.approach.get(rid,{})):return assigned
     if getattr(tr,'approach_commit','off')!='memory60_view_v1':return assigned
-    if not fresh:return None
+    if not fresh:
+        from harness.e2e_grasp_once import gaze_target as remembered_gaze
+        return remembered_gaze(tr,rid,(tr.robots[rid].last_obs or {}).get('sim_time', -math.inf))
     r=tr.robots[rid]
     return transform([r.beam['grip_base_m']],r.goal.explorer.local_pose)[0]
 

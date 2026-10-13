@@ -1,0 +1,267 @@
+{
+  "schema": "ugrp.e2e18.grasp_once.summary.v1",
+  "classification": "dev",
+  "parent_source_sha": "f4d79b7772d9e7f115424241f741b44a4ab60094",
+  "branch": "claude/e2e18-grasp1",
+  "candidate_bundles": [
+    "e2e18-v384",
+    "e2e18-v385",
+    "e2e18-v386"
+  ],
+  "offline_diagnostic": {
+    "path": "diagnostic.json.zst",
+    "source_bytes": 98124,
+    "decoded_sha256": "aa12d98868cd3a640c4bcf125f774867841e6cde57691e5bee9fca231f99db0a",
+    "zstd_sha256": "72fa3cdeb3a1f7bf92f0bc9759918d794caf8b899f59ea38900902ba2ce3f52e",
+    "verified_roundtrip": true
+  },
+  "r69": {
+    "logs": 2,
+    "distinct_alignment_trajectories": 1,
+    "seed": 61006,
+    "alignment_s": 435,
+    "r1": {
+      "navigate_s": 182,
+      "acquire_s": 121,
+      "visual_servo_s": 70,
+      "reacquisition_begins": 2
+    },
+    "r2": {
+      "navigate_s": 196,
+      "acquire_s": 177,
+      "visual_servo_s": 5,
+      "acquisition_begins": 2,
+      "initial_acquisition_begins": 1,
+      "reacquisition_begins": 1
+    },
+    "held_sim_time": null,
+    "scope": "sampled controller alignment, not evaluator held; events from v324"
+  },
+  "r76": {
+    "total_runs": 32,
+    "align_subset": 18,
+    "completed_align_n": 0,
+    "censored_alignment_durations_s": {
+      "n": 18,
+      "median": 130.10000000000002,
+      "max": 197.45,
+      "values": [
+        172.85,
+        182.15,
+        197.45,
+        172.85,
+        151.1,
+        89.15,
+        85.35,
+        88.15,
+        93.2,
+        191.45,
+        45.9,
+        84.85,
+        149.8,
+        17.2,
+        125.65,
+        146.8,
+        15.2,
+        134.55
+      ]
+    },
+    "robots": {
+      "r1": {
+        "acquire_time_s": {
+          "n": 18,
+          "median": 2.825,
+          "max": 136.95,
+          "values": [
+            25.25,
+            136.95,
+            0.45,
+            25.25,
+            2.4,
+            0,
+            0.15,
+            0,
+            0.4,
+            57.25,
+            45.9,
+            3.05,
+            14.4,
+            2.6,
+            0.65,
+            14.4,
+            2.6,
+            3.75
+          ]
+        },
+        "acquisition_begins": {
+          "n": 18,
+          "median": 1.0,
+          "max": 2,
+          "values": [
+            2,
+            1,
+            0,
+            2,
+            1,
+            0,
+            0,
+            0,
+            0,
+            2,
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "max_cycle": {
+          "n": 18,
+          "median": 1.0,
+          "max": 7,
+          "values": [
+            2,
+            7,
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            1,
+            2,
+            2,
+            3,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "r2": {
+        "acquire_time_s": {
+          "n": 18,
+          "median": 6.8,
+          "max": 138.8,
+          "values": [
+            57.6,
+            138.8,
+            11.2,
+            57.6,
+            71.0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            45.6,
+            23.2,
+            19.6,
+            0,
+            2.4,
+            19.6,
+            0,
+            0
+          ]
+        },
+        "acquisition_begins": {
+          "n": 18,
+          "median": 1.0,
+          "max": 2,
+          "values": [
+            2,
+            1,
+            1,
+            2,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            0,
+            0
+          ]
+        },
+        "max_cycle": {
+          "n": 18,
+          "median": 1.0,
+          "max": 6,
+          "values": [
+            3,
+            6,
+            3,
+            3,
+            2,
+            1,
+            0,
+            1,
+            0,
+            0,
+            2,
+            1,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      }
+    }
+  },
+  "candidate_physics": {
+    "planned_N": 16,
+    "submitted_N": 0,
+    "completed_N": 0,
+    "first_attempt_grasp_n": null,
+    "first_attempt_grasp_N": 0,
+    "core_subset": "seed61008: v375/v384/v385/v386",
+    "core_submitted_N": 0,
+    "core_success_n": null,
+    "held_time_median_s": null,
+    "held_time_max_s": null,
+    "robot_held_gap_s": null
+  },
+  "blockers": [
+    "r80 pre-align checkpoint not received",
+    "E2E18 own-map/controller/backend resume adapter missing; old pair probe is incompatible"
+  ],
+  "not_executed": [
+    "Mac physics/render",
+    "Azure resource operations",
+    "model requests"
+  ],
+  "research_result": false,
+  "verification": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_e2e_grasp_once.py tests/test_e2e_approach_commit.py tests/test_e2e_approach_efficiency.py",
+    "status": "passed",
+    "passed": 30,
+    "failed": 0,
+    "duration_s": 44.87,
+    "physics": false,
+    "render": false,
+    "model_calls": 0
+  },
+  "candidate_source_sha": "e8407cffbdbc3c0f99b474d832e8abf605ac98be",
+  "latest_staging_revision": {
+    "record": "stage-summary.json",
+    "request": "stage-request-v2.json",
+    "documentation": "staging.md",
+    "execution_wrapper": "e2e18-v387",
+    "old_request_superseded": true
+  }
+}
