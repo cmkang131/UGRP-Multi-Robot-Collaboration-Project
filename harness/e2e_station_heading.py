@@ -24,7 +24,8 @@ def control(tr, rid, now, state, diag):
     if mode not in OPTIONS:
         raise ValueError('UNKNOWN_STATION_HEADING')
     from harness.e2e_approach_commit import retained
-    radius = RADII[mode]
+    from harness.e2e_capture_pose import radius as capture_radius
+    radius = capture_radius(tr, RADII[mode])
     attempt = state.get('station_heading_attempt')
     if not retained(tr, now, state) or diag['distance_m'] > radius*(PARAMS['exit_multiplier'] if attempt or state.get('station_handoff') else 1.):
         state.pop('station_heading_attempt', None)
