@@ -29,6 +29,15 @@ def test_default_off_no_changes():
     m.install({})
 
 
+def test_new_seed_relay_namespace_is_narrow_and_gate_compatible():
+    from scripts.s4_proxy_relay import accepted_call_id
+    for version in (346, 347, 348, 350):
+        value = f'e2e18-v{version}-s61013-r75:call-0001-r1:1'
+        assert accepted_call_id(value) and accepted_call_id('speed-gate-'+value)
+    assert not accepted_call_id('e2e18-v344-s61013-r75:call-0001-r1:1')
+    assert not accepted_call_id('e2e18-v346-s61014-r75:call-0001-r1:1')
+
+
 def test_actual_code_protocol_idle_and_combined_body_registration(monkeypatch):
     from tests import test_e2e_camera_hold as p
     from scripts.run_e2e_ownmap_live import bundle, ROOT

@@ -17,6 +17,8 @@ from harness.s4_relay_journal import Journal
 
 
 def accepted_call_id(value):
+    # Explicit 2026-10-13 paired F16 cohort extension; historical cells unchanged.
+    if re.fullmatch(r'e2e18-v(?:346|347|348|350)-s61013-r[1-9][0-9]*:call-\d+-r[123]:\d+',value):return True
     if re.fullmatch(r'e2e18-v[0-9]+-s610(?:0[1-9]|1[0-2])-r[1-9][0-9]*:call-\d+-r[123]:\d+',value):return True
     if value.startswith('speed-gate-'):
         return accepted_call_id(value[len('speed-gate-'):])
