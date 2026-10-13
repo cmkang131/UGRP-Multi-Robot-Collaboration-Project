@@ -1,7 +1,9 @@
 {
   "known_failure_runs": [
     "stage-color-cohort2-09-v423",
-    "stage-color-cohort2-10-v424"
+    "stage-color-cohort2-10-v424",
+    "stage-color-cohort2-03-v425",
+    "stage-color-cohort2-11-v425"
   ],
   "source_sha": "69f71de434c38f1bd38b8d0ffacda722b6ac9244",
   "cause": "Acquisition records requested view_pose/index before arm-clearance accepts it. Clearance abandons the pending scan; acquisition requires exact issued servo match to advance, never reissues same index, so waits indefinitely.",
@@ -22,5 +24,14 @@
     "latest_progress_sim": 110.0
   },
   "action": "Scoped SIGINT, counted as failure, raw ARM verified. No same-source resubmission.",
-  "scope": "Cause supported by final trace, issued-command/frame history and source. Does not explain all unsuccessful color trials."
+  "scope": "Cause supported by final trace, issued-command/frame history and source. Does not explain all unsuccessful color trials.",
+  "followup_evidence": "cohort2-scan-deadlock-followup.json",
+  "followup_note": "Same requested-pose/issued-pose mismatch after clearance abandonment; 03 pan requested1750/issued1250, 11 p45 arm pose requested/search pose issued (pan both1500).",
+  "stop_check": {
+    "position_tolerance_m": 0.002,
+    "yaw_tolerance_rad": 0.004,
+    "minimum_stationary_s": 20,
+    "method": "backward contiguous window relative to latest evaluation-only body pose; source symptoms checked separately",
+    "control_feedback": false
+  }
 }
