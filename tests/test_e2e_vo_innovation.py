@@ -34,3 +34,9 @@ def test_invalid_inputs_fail_explicitly():
     with pytest.raises(ValueError):select_increment(record(),option='invented')
     r=record();r['nis']=float('nan')
     with pytest.raises(ValueError):select_increment(r,option='nis_reject_v1')
+
+
+def test_static_localizer_off_needs_no_map_or_state():
+    from harness.e2e_static_rgb_localizer import create
+    assert create(None) is None
+    with pytest.raises(ValueError):create(None,option='truth_initial_pose')
