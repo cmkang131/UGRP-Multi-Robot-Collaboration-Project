@@ -40,7 +40,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off',speed5='off',observation_cadence='off',route_guard='off',beam_axis='off',route_coverage='off',carrier_axes='off',carrier_approach='off',route_extent='off',record_scalars='off',pose_guard='off',protocol_recovery='off',camera_load='off',route_tokens='off',protocol_progress='off',route_cost='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pulse_admission='off',event_projection='off',pregrasp_progress='off',gaze_cadence='off',stage_physics='off',protocol_idempotency='off',route_handle='off',boundary_frame='off',beam_end_model='off',beam_avoidance='off',pregrasp_acquire='off',align_queues='off',beam_decode='off',mapping_acquire='off',compute_budget='off',mapping_cadence='off',stale_station='off',carrier_goal='off',blocked_path_recovery='off',perception_settle='off',landmark_cache='off',camera_motion='off',camera_hold='off',arm_clearance='off',sonar_frame='off',acquisition_mobility='off',approach_commit='off',scan_guard='off',fine_view='off',approach_heading='off',fine_entry='off',station_heading='off',clip_recovery='off',station_handoff='off',capture_pose='off',relook_search='off',beam_lost_standoff='off',arm_clearance_align_skip='off',acquire_scan_fast='off',relook_giveup='off',post_relook='off',approach_floor='off',clip_hysteresis='off',vote_ref='off',perception_fast='off',controller_timing='off',llm_memory='off',body_controller='off',body_backend='liquid_d1',body_visual_check='off',architecture_stack='off',body_skills='off',dialogue_decider='gemma_v0'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off',speed5='off',observation_cadence='off',route_guard='off',beam_axis='off',route_coverage='off',carrier_axes='off',carrier_approach='off',route_extent='off',record_scalars='off',pose_guard='off',protocol_recovery='off',camera_load='off',route_tokens='off',protocol_progress='off',route_cost='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pulse_admission='off',event_projection='off',pregrasp_progress='off',gaze_cadence='off',stage_physics='off',protocol_idempotency='off',route_handle='off',boundary_frame='off',beam_end_model='off',beam_avoidance='off',pregrasp_acquire='off',align_queues='off',beam_decode='off',mapping_acquire='off',compute_budget='off',mapping_cadence='off',stale_station='off',carrier_goal='off',blocked_path_recovery='off',perception_settle='off',landmark_cache='off',camera_motion='off',camera_hold='off',arm_clearance='off',sonar_frame='off',acquisition_mobility='off',approach_commit='off',scan_guard='off',fine_view='off',approach_heading='off',fine_entry='off',station_heading='off',clip_recovery='off',station_handoff='off',capture_pose='off',relook_search='off',beam_lost_standoff='off',arm_clearance_align_skip='off',acquire_scan_fast='off',relook_giveup='off',post_relook='off',approach_floor='off',clip_hysteresis='off',vote_ref='off',perception_fast='off',controller_timing='off',llm_memory='off',body_controller='off',body_backend='code_v1',body_visual_check='off',architecture_stack='off',body_skills='off',dialogue_decider='gemma_v0'):
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
     requested_stage_physics=stage_physics
     if stage_physics=='release_dt1_v1':stage_physics='pregrasp_dt1_v1'
@@ -331,9 +331,13 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     from harness.e2e_llm_memory import compose as llm_memory_compose
     paths.update(llm_memory_compose(b,llm_memory,vote_ref))
     from harness.e2e_body_controller import compose as body_compose
-    paths.update(body_compose(b,body_controller,body_backend,body_visual_check))
+    code_body=body_controller!='off' and body_backend=='code_v1'
+    if code_body and body_visual_check!='off':raise ValueError('CODE_BODY_HAS_NO_MODEL_VISUAL_CHECK')
+    paths.update(body_compose(b,body_controller,'liquid_d1' if code_body else body_backend,body_visual_check))
     from harness.e2e_body_skills import compose as skill_compose
-    paths.update(skill_compose(b,body_skills))
+    paths.update(skill_compose(b,'bounded_v1' if code_body else body_skills))
+    from harness.e2e_body_code import compose as code_compose
+    paths.update(code_compose(b,code_body))
     from harness.e2e_architecture_stack import compose as architecture_compose
     paths.update(architecture_compose(b,architecture_stack))
     from harness.e2e_dialogue_decider import compose as dialogue_decider_compose
@@ -800,7 +804,7 @@ def main(argv=None):
     p.add_argument('--speed4',type=json.loads,default=None,help='DEV compute budget JSON; all fields default off')
     p.add_argument('--runtime-registration',choices=('off','reviewed_v1'),default='off')
     p.add_argument('--body-controller',choices=('off','jev_v1'),default='off')
-    p.add_argument('--body-backend',choices=('jev','liquid_d1'),default='liquid_d1')
+    p.add_argument('--body-backend',choices=('code_v1','jev','liquid_d1'),default='code_v1')
     p.add_argument('--body-visual-check',choices=('off','d1_v1'),default='off')
     p.add_argument('--body-skills',choices=('off','bounded_v1'),default='off')
     p.add_argument('--body-relay-receipt',type=Path)

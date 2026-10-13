@@ -38,6 +38,7 @@ def main():
             out.append(dict(rid=rid,t=t,phase=phase,phase_start=start,servo=servo,pose=row['pose_own_m'],
                 beam_observation=row.get('own_beam_observation'),carrier_approach=row.get('carrier_approach'),
                 sigma_xy_m=row.get('sigma_xy_m'),prev=prev[-30:],next=[row['command']],
+                navigation_status=row.get('navigation_status'),explore_deadlock=row.get('explore_deadlock'),goal_stage=row.get('stage'),
                 poses=[[r['t'],r['pose_own_m']] for r in history],
                 context_history=[{k:r.get(k) for k in ('t','frame_id','own_beam_observation','carrier_approach')} for r in history],
                 jpeg_b64=base64.b64encode(jpeg).decode(),frame_sha256=row['sha256'],

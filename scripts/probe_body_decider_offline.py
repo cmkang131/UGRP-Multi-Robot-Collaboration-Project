@@ -36,7 +36,7 @@ class Dialogue:
         return bool(self.complete)
 
 
-def gate_for(scene,skills=False):
+def gate_for(scene,skills=False,code=False):
     servo = {int(k): v for k, v in (scene['servo'] or {}).items()}
     robot = SimpleNamespace(beam_observation=scene['beam_observation'], servo=servo, nav_command=strip(scene['next'][0]),
                             frame=SimpleNamespace(jpeg=base64.b64decode(scene['jpeg_b64'])),
@@ -47,7 +47,11 @@ def gate_for(scene,skills=False):
     profiles = json.loads((ROOT / 'configs/s2_v133_full_template.json').read_text())['pulse_calibration']['profiles']
     if skills:
         from harness.e2e_body_skills import SkillsBodyGate
-    g = (SkillsBodyGate if skills else BodyGate)(tr, {scene['rid']: robot}, None, profiles=profiles)
+    gate_class = SkillsBodyGate if skills else BodyGate
+    if code:
+        from harness.e2e_body_code import CodeBodyGate
+        gate_class = CodeBodyGate
+    g = gate_class(tr, {scene['rid']: robot}, None, profiles=profiles)
     if scene.get('prior_decision'):
         reading=scene['prior_decision']['facts']['front_ultrasonic']
         robot.range_provider=SimpleNamespace(report=lambda now:SimpleNamespace(as_dict=lambda:reading))
