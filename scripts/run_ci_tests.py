@@ -27,6 +27,7 @@ TEST_PATTERNS = (
     "tests/test_e2e18.py",
     "tests/test_e2e_body_controller.py",
     "tests/test_e2e_body_code.py",
+    "tests/test_e2e_approach_efficiency.py",
     "tests/test_e2e_architecture_stack.py",
     "tests/test_e2e_body_upstream.py",
     "tests/test_e2e_b_partial.py",

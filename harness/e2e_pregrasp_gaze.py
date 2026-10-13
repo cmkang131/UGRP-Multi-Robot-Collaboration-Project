@@ -24,6 +24,8 @@ def pan(pose,grip,current):
 
 def fresh_gaze(transport,rid,grip):
     if getattr(transport,'pregrasp_gaze','off')!=GAZE:return []
+    from harness.e2e_approach_efficiency import gaze_needed
+    if not gaze_needed(transport,rid,grip):return []
     r=transport.robots[rid];current=r.servo[6]
     target=pan(r.goal.explorer.local_pose,grip,current)
     return [dict(kind='look',pan_pulse=target)] if abs(target-current)>=10 else []

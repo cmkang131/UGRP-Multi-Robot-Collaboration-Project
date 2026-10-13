@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id']=='e2e18-v351':
+        from harness.e2e_approach_efficiency import parent_for_validation as efficient_parent
+        return require_current(efficient_parent(bundle),root)
     if bundle['execution_bundle_id']=='e2e18-v350':
         from harness.e2e_code_stack import parent_for_validation as code_stack_parent
         return require_current(code_stack_parent(bundle),root)
