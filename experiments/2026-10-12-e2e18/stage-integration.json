@@ -1,0 +1,20 @@
+{
+  "grasp_source": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+  "route_source": "06aec8ffbe038d89a4379f0d3f70a338a521d8bd",
+  "reserved_ids": {
+    "route_record_baseline": 391,
+    "route_record_frontier": 392,
+    "stage_route_adapter": 393
+  },
+  "tests": {
+    "passed": 48,
+    "files": [
+      "test_e2e_route_input_record.py",
+      "test_e2e_route_recovery.py",
+      "test_e2e_stage_checkpoint.py"
+    ]
+  },
+  "execution": "stage only; no model calls; no carry",
+  "collision": "Unexecuted route v387/v388 definitions retained byte-for-byte under configs/retired_execution_bundles/e2e18-route1-number-collision",
+  "status": "integration ready; stage physical validation pending"
+}

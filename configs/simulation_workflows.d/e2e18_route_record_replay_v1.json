@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e18-route-record-replay-v1",
+      "version": "0.1.0",
+      "purpose": "Offline paired private route-input recording replay",
+      "entry": "scripts/run_e2e_route_stage_probe.py",
+      "runner": "scripts.run_e2e_route_stage_probe",
+      "docs": "experiments/2026-10-13-e2e18-route1/README.md",
+      "requires": "Explicit snapshot manifest and hashes; no simulator/model calls",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--recordings"
+      ],
+      "side_effect": "offline_evaluation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

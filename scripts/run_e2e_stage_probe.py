@@ -83,6 +83,16 @@ def run(args):
     baseline=read_json(args.baseline_bundle)
     if digest(baseline)!=BASELINE_DIGEST:raise ValueError('PINNED_R80_BASELINE_REQUIRED')
     b=stage_bundle(recipe,baseline,args.condition,args.seed,sha)
+    wrapper=getattr(args,'stage_wrapper','v387')
+    route_recovery=getattr(args,'route_recovery','off');route_record=getattr(args,'route_input_record','off')
+    if wrapper=='v387' and (route_recovery!='off' or route_record!='off'):
+        raise ValueError('ROUTE_STAGE_REQUIRES_V393')
+    if wrapper=='v393':
+        b.update(execution_bundle_id='e2e18-v393',schema='ugrp.e2e_stage_probe.v393',workflow_version='7.286.0')
+        b['e2e_options'].update(route_recovery=route_recovery,route_input_record=route_record)
+        b['route_parent_controller']={'off':'e2e18-v391','frontier_v1':'e2e18-v392','footprint_v2':'e2e18-v390'}[route_recovery] if route_record!='off' else {'off':'e2e18-v375','frontier_v1':'e2e18-v381','footprint_v2':'e2e18-v389'}[route_recovery]
+        if recipe['stage']!='mapping' and (route_recovery!='off' or route_record!='off'):
+            raise ValueError('ROUTE_OPTIONS_REQUIRE_MAPPING_STAGE')
     tracked=subprocess.check_output(['git','ls-files','harness','sim','scripts','configs'],cwd=ROOT,text=True).splitlines()
     b['original_source_sha256']=b.pop('source_sha256',{})
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in tracked if (ROOT/p).is_file()}
@@ -104,6 +114,11 @@ def run(args):
         result['own_map_sha256']={rid:r['map_sha256'] for rid,r in receipt.items()}
         for rid,r in robots.items():write(out/f'{rid}-ownmap-entry.json',own_map_record(r))
         from scripts.run_e2e_ownmap_live import make_transport,ownmap_record
+        from harness.e2e_route_recovery import install as route_install
+        from harness.e2e_route_input_record import install as record_install
+        route_install(robots['r1'].goal,route_recovery)
+        record_install(robots['r1'].goal,route_record,root=out/'route-inputs',
+            metadata=dict(source_sha=sha,bundle_id=b['execution_bundle_id'],seed=args.seed,checkpoint_sha256=recipe['checkpoint_sha256']))
         tr=make_transport(b,robots,SimpleNamespace(approved=False,claims=set(),proposal=None))
         for rid,r in robots.items():
             if digest(own_map_record(r))!=receipt[rid]['map_sha256']:raise ValueError('OWN_MAP_HANDOFF_MISMATCH:'+rid)
@@ -190,6 +205,9 @@ def main():
     r.add_argument('--baseline-bundle',type=Path,required=True);r.add_argument('--condition',choices=MODES,required=True)
     r.add_argument('--seed',type=int,required=True);r.add_argument('--expected-source-sha',required=True)
     r.add_argument('--cap-s',type=float,default=300.);r.add_argument('--wall-cap-s',type=float,default=1800.)
+    r.add_argument('--stage-wrapper',choices=('v387','v393'),default='v387')
+    r.add_argument('--route-recovery',choices=('off','frontier_v1','footprint_v2'),default='off')
+    r.add_argument('--route-input-record',choices=('off','on_v1'),default='off')
     r.add_argument('--batch',required=True);r.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
     if a.command=='prepare':

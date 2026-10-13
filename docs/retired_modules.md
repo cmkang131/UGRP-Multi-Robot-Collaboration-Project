@@ -259,3 +259,5 @@ TERM/HUP 실패 기록과 현재 lease 신원 확인을 추가했다. SIGTERM으
 2026-10-12: #453 경계 보정 v211 / 7.104.0은 먼저 병합하는 S3 v211과의 번호 충돌로 퇴역하고 v212 / 7.105.0으로 다시 등록한다. 원래 750bc10e의 카탈로그·실행기·등록·예약 기록 4파일을 experiments/2026-10-12-merge-train/pr453/retired-bundles.json에 바이트 그대로 보존한다. 기존 실행 소스와 결과는 변경·승계하지 않으며 현재 실행은 v210 검토 어댑터를 명시한다.
 
 - 2026-10-12: E2E speed3 v214 dt1/dt2는 접촉 probe 실패로 진단용 보존. 후속 v215는 팔 조작 발행 시 0.25ms로 낮추며 기존 성공을 승계하지 않는다. Refs #454.
+
+- 2026-10-13 E2E18 단계 통합: route1의 미실행 v387/v388은 사용자 지정 grasp v387/planner v388과 충돌하여 v391/v392로 재등록했다. 원정의는 `configs/retired_execution_bundles/e2e18-route1-number-collision/`에 바이트 그대로 보존한다. v393은 공용 경로 단계 어댑터이며 전체 E2E 실행이 아니다.

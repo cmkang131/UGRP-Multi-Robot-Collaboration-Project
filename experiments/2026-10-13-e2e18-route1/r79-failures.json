@@ -1,0 +1,1088 @@
+[
+  {
+    "run": "e2e18-v375-s61006-r79",
+    "total_attempts": 17,
+    "failed_grid_attempts": 16,
+    "native_failed_start": 10,
+    "native_failed_goal": 0,
+    "native_clear_endpoints_disconnected": 6,
+    "last_failure": {
+      "t": 64.8,
+      "beam_pose_own_m": [
+        -1.2553019037753361,
+        -1.1166678298201096,
+        -2.3113689550024303
+      ],
+      "beam_rgb": {
+        "robot_id": "r1",
+        "frame_id": 109,
+        "t_sim": 64.8,
+        "sha256": "4e663c229c2221fdcf7d70685fc30b65fd3ecf0bc8b3352bf54da4fed18bdd9f"
+      },
+      "sigma_xy_m": 0.31053965627663405,
+      "stage": "grid_route",
+      "beam_axis_error_rad": 0.8302236985873629,
+      "strict_margin_m": 0.9516189688299022,
+      "B_own_m": [
+        1.0491530415611248,
+        0.05767069833316565
+      ],
+      "nominal_footprint_cells": {
+        "start": {
+          "free": 279,
+          "unknown": 0,
+          "occupied": 0,
+          "outside": 0
+        },
+        "target": {
+          "free": 279,
+          "unknown": 0,
+          "occupied": 0,
+          "outside": 0
+        }
+      },
+      "planning_extent": {
+        "old_lo": [
+          -85,
+          -88
+        ],
+        "old_hi": [
+          57,
+          65
+        ],
+        "new_lo": [
+          -85,
+          -88
+        ],
+        "new_hi": [
+          57,
+          65
+        ],
+        "added_unknown_cells": 0,
+        "endpoint_pad_cells": 16
+      },
+      "would_stop_unknown": false,
+      "attempts": [
+        {
+          "margin_m": 0.9516189688299022,
+          "allowed_cells": 0,
+          "total_cells": 21726,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "allowed_cells": 1265,
+          "total_cells": 21726,
+          "start_clear": true,
+          "target_clear": true,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "coverage": "native_allow_unknown",
+          "allowed_cells": 6056,
+          "total_cells": 21726,
+          "start_clear": true,
+          "target_clear": true,
+          "path_cells": 0
+        }
+      ],
+      "would_stop_sigma": false,
+      "applied_margin_m": 0.02,
+      "pair_dimensions_m": [
+        1.25,
+        0.4
+      ],
+      "observed_coverage_complete": true,
+      "sigma_contribution_unresolved": false
+    },
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v375-s61006-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "5cd5e159d924c3d37f7310bfbcd81626b3521c6fff424f75dd7df9f2f116ac99"
+  },
+  {
+    "run": "e2e18-v375-s61007-r79",
+    "total_attempts": 8,
+    "failed_grid_attempts": 7,
+    "native_failed_start": 7,
+    "native_failed_goal": 7,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": {
+      "t": 55.8,
+      "beam_pose_own_m": [
+        -1.7938351483351531,
+        -1.330250788730751,
+        -2.3360834969837763
+      ],
+      "beam_rgb": {
+        "robot_id": "r1",
+        "frame_id": 94,
+        "t_sim": 55.8,
+        "sha256": "b1da17b72bd1101d0d75cd4f9199370b4981f5667fe7ac386b618b4a6b629aad"
+      },
+      "sigma_xy_m": 0.1598768426355551,
+      "stage": "grid_route",
+      "beam_axis_error_rad": 0.805509156606017,
+      "strict_margin_m": 0.4996305279066653,
+      "B_own_m": [
+        1.0493003188489627,
+        0.05871625543697778
+      ],
+      "nominal_footprint_cells": {
+        "start": {
+          "free": 279,
+          "unknown": 4,
+          "occupied": 2,
+          "outside": 0
+        },
+        "target": {
+          "free": 258,
+          "unknown": 21,
+          "occupied": 6,
+          "outside": 0
+        }
+      },
+      "planning_extent": {
+        "old_lo": [
+          -93,
+          -70
+        ],
+        "old_hi": [
+          56,
+          50
+        ],
+        "new_lo": [
+          -93,
+          -70
+        ],
+        "new_hi": [
+          56,
+          50
+        ],
+        "added_unknown_cells": 0,
+        "endpoint_pad_cells": 16
+      },
+      "would_stop_unknown": false,
+      "attempts": [
+        {
+          "margin_m": 0.4996305279066653,
+          "allowed_cells": 0,
+          "total_cells": 17880,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "allowed_cells": 838,
+          "total_cells": 17880,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "coverage": "native_allow_unknown",
+          "allowed_cells": 6200,
+          "total_cells": 17880,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        }
+      ],
+      "would_stop_sigma": false,
+      "applied_margin_m": 0.02,
+      "pair_dimensions_m": [
+        1.25,
+        0.4
+      ],
+      "observed_coverage_complete": true,
+      "sigma_contribution_unresolved": false
+    },
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v375-s61007-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "f74ee33686d19c4ff5c4b37be4d868cfa2015f415cd941dadaf6ec5cce32a309"
+  },
+  {
+    "run": "e2e18-v375-s61008-r79",
+    "total_attempts": 1,
+    "failed_grid_attempts": 0,
+    "native_failed_start": 0,
+    "native_failed_goal": 0,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": null,
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v375-s61008-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "61265d63fefb8d362bfce30a81c42d718fc94da6b5d6862e3bbbec10d6ad0b48"
+  },
+  {
+    "run": "e2e18-v375-s61009-r79",
+    "total_attempts": 86,
+    "failed_grid_attempts": 85,
+    "native_failed_start": 13,
+    "native_failed_goal": 85,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": {
+      "t": 277.2,
+      "beam_pose_own_m": [
+        -3.1121384351870542,
+        1.7576290347296786,
+        1.356821663295801
+      ],
+      "beam_rgb": {
+        "robot_id": "r1",
+        "frame_id": 463,
+        "t_sim": 277.2,
+        "sha256": "e046b1864e68c2383d023911342822c4733f98fe8b5e04576a3c735e9cad4f49"
+      },
+      "sigma_xy_m": 1.3498987243689904,
+      "stage": "grid_route",
+      "beam_axis_error_rad": 1.356821663295801,
+      "strict_margin_m": 4.069696173106971,
+      "B_own_m": [
+        1.0484614900472446,
+        0.055861167463841434
+      ],
+      "nominal_footprint_cells": {
+        "start": {
+          "free": 277,
+          "unknown": 0,
+          "occupied": 2,
+          "outside": 0
+        },
+        "target": {
+          "free": 237,
+          "unknown": 8,
+          "occupied": 34,
+          "outside": 0
+        }
+      },
+      "planning_extent": {
+        "old_lo": [
+          -130,
+          -70
+        ],
+        "old_hi": [
+          56,
+          113
+        ],
+        "new_lo": [
+          -130,
+          -70
+        ],
+        "new_hi": [
+          56,
+          113
+        ],
+        "added_unknown_cells": 0,
+        "endpoint_pad_cells": 16
+      },
+      "would_stop_unknown": false,
+      "attempts": [
+        {
+          "margin_m": 4.069696173106971,
+          "allowed_cells": 0,
+          "total_cells": 34038,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "allowed_cells": 2443,
+          "total_cells": 34038,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "coverage": "native_allow_unknown",
+          "allowed_cells": 13267,
+          "total_cells": 34038,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        }
+      ],
+      "would_stop_sigma": false,
+      "applied_margin_m": 0.02,
+      "pair_dimensions_m": [
+        1.25,
+        0.4
+      ],
+      "observed_coverage_complete": true,
+      "sigma_contribution_unresolved": false
+    },
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v375-s61009-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "a2dfa92223f9462e5e1a58f6463ae337e283d4c3dba605596688158ec2c788ec"
+  },
+  {
+    "run": "e2e18-v376-s61006-r79",
+    "total_attempts": 0,
+    "failed_grid_attempts": 0,
+    "native_failed_start": 0,
+    "native_failed_goal": 0,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": null,
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v376-s61006-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "dc8f42da8a1c6f801c61ee2b3db4844e76765787450f207672d06f4ac5f5ef43"
+  },
+  {
+    "run": "e2e18-v376-s61007-r79",
+    "total_attempts": 6,
+    "failed_grid_attempts": 5,
+    "native_failed_start": 5,
+    "native_failed_goal": 0,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": {
+      "t": 117.0,
+      "beam_pose_own_m": [
+        -0.018533096661450643,
+        -1.9244610921189247,
+        -1.9169490966383929
+      ],
+      "beam_rgb": {
+        "robot_id": "r1",
+        "frame_id": 196,
+        "t_sim": 117.0,
+        "sha256": "976d6b2bbdf4e58f06a2e271f5e97042e32a3f5d4d57bed711ae762078db4f0d"
+      },
+      "sigma_xy_m": 0.3802984449675464,
+      "stage": "grid_route",
+      "beam_axis_error_rad": 1.2246435569514005,
+      "strict_margin_m": 1.1608953349026392,
+      "B_own_m": [
+        1.0515235455267893,
+        0.0565451915879588
+      ],
+      "nominal_footprint_cells": {
+        "start": {
+          "free": 273,
+          "unknown": 5,
+          "occupied": 1,
+          "outside": 0
+        },
+        "target": {
+          "free": 279,
+          "unknown": 0,
+          "occupied": 0,
+          "outside": 0
+        }
+      },
+      "planning_extent": {
+        "old_lo": [
+          -75,
+          -97
+        ],
+        "old_hi": [
+          87,
+          71
+        ],
+        "new_lo": [
+          -75,
+          -97
+        ],
+        "new_hi": [
+          87,
+          71
+        ],
+        "added_unknown_cells": 0,
+        "endpoint_pad_cells": 16
+      },
+      "would_stop_unknown": false,
+      "attempts": [
+        {
+          "margin_m": 1.1608953349026392,
+          "allowed_cells": 0,
+          "total_cells": 27216,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "allowed_cells": 1172,
+          "total_cells": 27216,
+          "start_clear": false,
+          "target_clear": true,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "coverage": "native_allow_unknown",
+          "allowed_cells": 8962,
+          "total_cells": 27216,
+          "start_clear": false,
+          "target_clear": true,
+          "path_cells": 0
+        }
+      ],
+      "would_stop_sigma": false,
+      "applied_margin_m": 0.02,
+      "pair_dimensions_m": [
+        1.25,
+        0.4
+      ],
+      "observed_coverage_complete": true,
+      "sigma_contribution_unresolved": false
+    },
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v376-s61007-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "d32e30ce581523e124094d7deb28685f408fbcc7ac327fc56301e92fde763409"
+  },
+  {
+    "run": "e2e18-v376-s61008-r79",
+    "total_attempts": 12,
+    "failed_grid_attempts": 11,
+    "native_failed_start": 8,
+    "native_failed_goal": 11,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": {
+      "t": 80.4,
+      "beam_pose_own_m": [
+        -1.5124249702734742,
+        -0.26254845469494725,
+        -2.609327069766795
+      ],
+      "beam_rgb": {
+        "robot_id": "r1",
+        "frame_id": 135,
+        "t_sim": 80.4,
+        "sha256": "8538ebf33d7decdee5a4a036a26242e1d121cf67232d30277d74d48b1c2afe24"
+      },
+      "sigma_xy_m": 0.16006371387074303,
+      "stage": "grid_route",
+      "beam_axis_error_rad": 0.5322655838229983,
+      "strict_margin_m": 0.5001911416122291,
+      "B_own_m": [
+        1.0494632674440247,
+        0.05806260097362326
+      ],
+      "nominal_footprint_cells": {
+        "start": {
+          "free": 279,
+          "unknown": 0,
+          "occupied": 0,
+          "outside": 0
+        },
+        "target": {
+          "free": 253,
+          "unknown": 0,
+          "occupied": 26,
+          "outside": 0
+        }
+      },
+      "planning_extent": {
+        "old_lo": [
+          -97,
+          -61
+        ],
+        "old_hi": [
+          56,
+          73
+        ],
+        "new_lo": [
+          -97,
+          -61
+        ],
+        "new_hi": [
+          56,
+          73
+        ],
+        "added_unknown_cells": 0,
+        "endpoint_pad_cells": 16
+      },
+      "would_stop_unknown": false,
+      "attempts": [
+        {
+          "margin_m": 0.5001911416122291,
+          "allowed_cells": 70,
+          "total_cells": 20502,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "allowed_cells": 1504,
+          "total_cells": 20502,
+          "start_clear": true,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "coverage": "native_allow_unknown",
+          "allowed_cells": 5163,
+          "total_cells": 20502,
+          "start_clear": true,
+          "target_clear": false,
+          "path_cells": 0
+        }
+      ],
+      "would_stop_sigma": false,
+      "applied_margin_m": 0.02,
+      "pair_dimensions_m": [
+        1.25,
+        0.4
+      ],
+      "observed_coverage_complete": true,
+      "sigma_contribution_unresolved": false
+    },
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v376-s61008-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "78ed4dd8850cdccaa00cf1ea1ab19f98305ab8daa79ecea175285c20f1dfb3c4"
+  },
+  {
+    "run": "e2e18-v376-s61009-r79",
+    "total_attempts": 1,
+    "failed_grid_attempts": 0,
+    "native_failed_start": 0,
+    "native_failed_goal": 0,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": null,
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v376-s61009-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "979ffe8a2d2fc73098c14377bdd558d218d8ad7ea8cc0eeb0697d29af3bd884b"
+  },
+  {
+    "run": "e2e18-v377-s61006-r79",
+    "total_attempts": 17,
+    "failed_grid_attempts": 16,
+    "native_failed_start": 10,
+    "native_failed_goal": 0,
+    "native_clear_endpoints_disconnected": 6,
+    "last_failure": {
+      "t": 64.8,
+      "beam_pose_own_m": [
+        -1.2553019037753361,
+        -1.1166678298201096,
+        -2.3113689550024303
+      ],
+      "beam_rgb": {
+        "robot_id": "r1",
+        "frame_id": 109,
+        "t_sim": 64.8,
+        "sha256": "4e663c229c2221fdcf7d70685fc30b65fd3ecf0bc8b3352bf54da4fed18bdd9f"
+      },
+      "sigma_xy_m": 0.31053965627663405,
+      "stage": "grid_route",
+      "beam_axis_error_rad": 0.8302236985873629,
+      "strict_margin_m": 0.9516189688299022,
+      "B_own_m": [
+        1.0491530415611248,
+        0.05767069833316565
+      ],
+      "nominal_footprint_cells": {
+        "start": {
+          "free": 279,
+          "unknown": 0,
+          "occupied": 0,
+          "outside": 0
+        },
+        "target": {
+          "free": 279,
+          "unknown": 0,
+          "occupied": 0,
+          "outside": 0
+        }
+      },
+      "planning_extent": {
+        "old_lo": [
+          -85,
+          -88
+        ],
+        "old_hi": [
+          57,
+          65
+        ],
+        "new_lo": [
+          -85,
+          -88
+        ],
+        "new_hi": [
+          57,
+          65
+        ],
+        "added_unknown_cells": 0,
+        "endpoint_pad_cells": 16
+      },
+      "would_stop_unknown": false,
+      "attempts": [
+        {
+          "margin_m": 0.9516189688299022,
+          "allowed_cells": 0,
+          "total_cells": 21726,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "allowed_cells": 1265,
+          "total_cells": 21726,
+          "start_clear": true,
+          "target_clear": true,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "coverage": "native_allow_unknown",
+          "allowed_cells": 6056,
+          "total_cells": 21726,
+          "start_clear": true,
+          "target_clear": true,
+          "path_cells": 0
+        }
+      ],
+      "would_stop_sigma": false,
+      "applied_margin_m": 0.02,
+      "pair_dimensions_m": [
+        1.25,
+        0.4
+      ],
+      "observed_coverage_complete": true,
+      "sigma_contribution_unresolved": false
+    },
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v377-s61006-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "c746e1f44ab75c523c0455fc2cefd9d60428e6582ac3bcf6a4b74d5fe1c4e355"
+  },
+  {
+    "run": "e2e18-v377-s61007-r79",
+    "total_attempts": 8,
+    "failed_grid_attempts": 7,
+    "native_failed_start": 7,
+    "native_failed_goal": 7,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": {
+      "t": 55.8,
+      "beam_pose_own_m": [
+        -1.7938351483351531,
+        -1.330250788730751,
+        -2.3360834969837763
+      ],
+      "beam_rgb": {
+        "robot_id": "r1",
+        "frame_id": 94,
+        "t_sim": 55.8,
+        "sha256": "b1da17b72bd1101d0d75cd4f9199370b4981f5667fe7ac386b618b4a6b629aad"
+      },
+      "sigma_xy_m": 0.1598768426355551,
+      "stage": "grid_route",
+      "beam_axis_error_rad": 0.805509156606017,
+      "strict_margin_m": 0.4996305279066653,
+      "B_own_m": [
+        1.0493003188489627,
+        0.05871625543697778
+      ],
+      "nominal_footprint_cells": {
+        "start": {
+          "free": 279,
+          "unknown": 4,
+          "occupied": 2,
+          "outside": 0
+        },
+        "target": {
+          "free": 258,
+          "unknown": 21,
+          "occupied": 6,
+          "outside": 0
+        }
+      },
+      "planning_extent": {
+        "old_lo": [
+          -93,
+          -70
+        ],
+        "old_hi": [
+          56,
+          50
+        ],
+        "new_lo": [
+          -93,
+          -70
+        ],
+        "new_hi": [
+          56,
+          50
+        ],
+        "added_unknown_cells": 0,
+        "endpoint_pad_cells": 16
+      },
+      "would_stop_unknown": false,
+      "attempts": [
+        {
+          "margin_m": 0.4996305279066653,
+          "allowed_cells": 0,
+          "total_cells": 17880,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "allowed_cells": 838,
+          "total_cells": 17880,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "coverage": "native_allow_unknown",
+          "allowed_cells": 6200,
+          "total_cells": 17880,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        }
+      ],
+      "would_stop_sigma": false,
+      "applied_margin_m": 0.02,
+      "pair_dimensions_m": [
+        1.25,
+        0.4
+      ],
+      "observed_coverage_complete": true,
+      "sigma_contribution_unresolved": false
+    },
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v377-s61007-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "2b7bb2d8fc5b3c5dd82ebb1ae0931624d0035ed565ea6e96ff18ebaf8e2ea839"
+  },
+  {
+    "run": "e2e18-v377-s61008-r79",
+    "total_attempts": 1,
+    "failed_grid_attempts": 0,
+    "native_failed_start": 0,
+    "native_failed_goal": 0,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": null,
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v377-s61008-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "37dfc192f48baf4b293a9d9069c4beac83d359313af4b8c4fe07858dd3b47894"
+  },
+  {
+    "run": "e2e18-v377-s61009-r79",
+    "total_attempts": 86,
+    "failed_grid_attempts": 85,
+    "native_failed_start": 13,
+    "native_failed_goal": 85,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": {
+      "t": 277.2,
+      "beam_pose_own_m": [
+        -3.1121384351870542,
+        1.7576290347296786,
+        1.356821663295801
+      ],
+      "beam_rgb": {
+        "robot_id": "r1",
+        "frame_id": 463,
+        "t_sim": 277.2,
+        "sha256": "e046b1864e68c2383d023911342822c4733f98fe8b5e04576a3c735e9cad4f49"
+      },
+      "sigma_xy_m": 1.3498987243689904,
+      "stage": "grid_route",
+      "beam_axis_error_rad": 1.356821663295801,
+      "strict_margin_m": 4.069696173106971,
+      "B_own_m": [
+        1.0484614900472446,
+        0.055861167463841434
+      ],
+      "nominal_footprint_cells": {
+        "start": {
+          "free": 277,
+          "unknown": 0,
+          "occupied": 2,
+          "outside": 0
+        },
+        "target": {
+          "free": 237,
+          "unknown": 8,
+          "occupied": 34,
+          "outside": 0
+        }
+      },
+      "planning_extent": {
+        "old_lo": [
+          -130,
+          -70
+        ],
+        "old_hi": [
+          56,
+          113
+        ],
+        "new_lo": [
+          -130,
+          -70
+        ],
+        "new_hi": [
+          56,
+          113
+        ],
+        "added_unknown_cells": 0,
+        "endpoint_pad_cells": 16
+      },
+      "would_stop_unknown": false,
+      "attempts": [
+        {
+          "margin_m": 4.069696173106971,
+          "allowed_cells": 0,
+          "total_cells": 34038,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "allowed_cells": 2443,
+          "total_cells": 34038,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "coverage": "native_allow_unknown",
+          "allowed_cells": 13267,
+          "total_cells": 34038,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        }
+      ],
+      "would_stop_sigma": false,
+      "applied_margin_m": 0.02,
+      "pair_dimensions_m": [
+        1.25,
+        0.4
+      ],
+      "observed_coverage_complete": true,
+      "sigma_contribution_unresolved": false
+    },
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v377-s61009-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "9ed3c6f2093cfc323365db3f9d6838f3d9004d48a5a4641df8b97a1bd1411c15"
+  },
+  {
+    "run": "e2e18-v378-s61006-r79",
+    "total_attempts": 0,
+    "failed_grid_attempts": 0,
+    "native_failed_start": 0,
+    "native_failed_goal": 0,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": null,
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v378-s61006-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "96ad25329452f5f04061e2995ca17ce8f8721725f9baaad61fffab7121084156"
+  },
+  {
+    "run": "e2e18-v378-s61007-r79",
+    "total_attempts": 6,
+    "failed_grid_attempts": 5,
+    "native_failed_start": 5,
+    "native_failed_goal": 0,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": {
+      "t": 117.0,
+      "beam_pose_own_m": [
+        -0.018533096661450643,
+        -1.9244610921189247,
+        -1.9169490966383929
+      ],
+      "beam_rgb": {
+        "robot_id": "r1",
+        "frame_id": 196,
+        "t_sim": 117.0,
+        "sha256": "976d6b2bbdf4e58f06a2e271f5e97042e32a3f5d4d57bed711ae762078db4f0d"
+      },
+      "sigma_xy_m": 0.3802984449675464,
+      "stage": "grid_route",
+      "beam_axis_error_rad": 1.2246435569514005,
+      "strict_margin_m": 1.1608953349026392,
+      "B_own_m": [
+        1.0515235455267893,
+        0.0565451915879588
+      ],
+      "nominal_footprint_cells": {
+        "start": {
+          "free": 273,
+          "unknown": 5,
+          "occupied": 1,
+          "outside": 0
+        },
+        "target": {
+          "free": 279,
+          "unknown": 0,
+          "occupied": 0,
+          "outside": 0
+        }
+      },
+      "planning_extent": {
+        "old_lo": [
+          -75,
+          -97
+        ],
+        "old_hi": [
+          87,
+          71
+        ],
+        "new_lo": [
+          -75,
+          -97
+        ],
+        "new_hi": [
+          87,
+          71
+        ],
+        "added_unknown_cells": 0,
+        "endpoint_pad_cells": 16
+      },
+      "would_stop_unknown": false,
+      "attempts": [
+        {
+          "margin_m": 1.1608953349026392,
+          "allowed_cells": 0,
+          "total_cells": 27216,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "allowed_cells": 1172,
+          "total_cells": 27216,
+          "start_clear": false,
+          "target_clear": true,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "coverage": "native_allow_unknown",
+          "allowed_cells": 8962,
+          "total_cells": 27216,
+          "start_clear": false,
+          "target_clear": true,
+          "path_cells": 0
+        }
+      ],
+      "would_stop_sigma": false,
+      "applied_margin_m": 0.02,
+      "pair_dimensions_m": [
+        1.25,
+        0.4
+      ],
+      "observed_coverage_complete": true,
+      "sigma_contribution_unresolved": false
+    },
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v378-s61007-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "8ea75d25050db1f9f69e566d926b1046fc2680096c421ecfe4e87487b3091d7c"
+  },
+  {
+    "run": "e2e18-v378-s61008-r79",
+    "total_attempts": 12,
+    "failed_grid_attempts": 11,
+    "native_failed_start": 8,
+    "native_failed_goal": 11,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": {
+      "t": 80.4,
+      "beam_pose_own_m": [
+        -1.5124249702734742,
+        -0.26254845469494725,
+        -2.609327069766795
+      ],
+      "beam_rgb": {
+        "robot_id": "r1",
+        "frame_id": 135,
+        "t_sim": 80.4,
+        "sha256": "8538ebf33d7decdee5a4a036a26242e1d121cf67232d30277d74d48b1c2afe24"
+      },
+      "sigma_xy_m": 0.16006371387074303,
+      "stage": "grid_route",
+      "beam_axis_error_rad": 0.5322655838229983,
+      "strict_margin_m": 0.5001911416122291,
+      "B_own_m": [
+        1.0494632674440247,
+        0.05806260097362326
+      ],
+      "nominal_footprint_cells": {
+        "start": {
+          "free": 279,
+          "unknown": 0,
+          "occupied": 0,
+          "outside": 0
+        },
+        "target": {
+          "free": 253,
+          "unknown": 0,
+          "occupied": 26,
+          "outside": 0
+        }
+      },
+      "planning_extent": {
+        "old_lo": [
+          -97,
+          -61
+        ],
+        "old_hi": [
+          56,
+          73
+        ],
+        "new_lo": [
+          -97,
+          -61
+        ],
+        "new_hi": [
+          56,
+          73
+        ],
+        "added_unknown_cells": 0,
+        "endpoint_pad_cells": 16
+      },
+      "would_stop_unknown": false,
+      "attempts": [
+        {
+          "margin_m": 0.5001911416122291,
+          "allowed_cells": 70,
+          "total_cells": 20502,
+          "start_clear": false,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "allowed_cells": 1504,
+          "total_cells": 20502,
+          "start_clear": true,
+          "target_clear": false,
+          "path_cells": 0
+        },
+        {
+          "margin_m": 0.02,
+          "coverage": "native_allow_unknown",
+          "allowed_cells": 5163,
+          "total_cells": 20502,
+          "start_clear": true,
+          "target_clear": false,
+          "path_cells": 0
+        }
+      ],
+      "would_stop_sigma": false,
+      "applied_margin_m": 0.02,
+      "pair_dimensions_m": [
+        1.25,
+        0.4
+      ],
+      "observed_coverage_complete": true,
+      "sigma_contribution_unresolved": false
+    },
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v378-s61008-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "425351773fe5acfc92202f2f104c51030a3f3cbb247f10cc6cdf9605129585fc"
+  },
+  {
+    "run": "e2e18-v378-s61009-r79",
+    "total_attempts": 1,
+    "failed_grid_attempts": 0,
+    "native_failed_start": 0,
+    "native_failed_goal": 0,
+    "native_clear_endpoints_disconnected": 0,
+    "last_failure": null,
+    "source": "/Users/changmin/projects/ugrp-wt/e2e18/outputs/azure3-runs/e2e18-v378-s61009-r79/raw/robots/r1/ownmap.jsonl.zst",
+    "sha256": "aaff08206d16c64628fea0163f94252d972113b7e10718ba01cdc435add6edfe"
+  }
+]

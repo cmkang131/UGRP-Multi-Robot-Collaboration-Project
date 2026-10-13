@@ -1,0 +1,394 @@
+{
+  "scope": "selected r80 diagnostics, not complete 16-run cohort; no candidate run",
+  "rows": [
+    {
+      "run": "e2e18-v375-s61008-r80",
+      "source": "/Users/changmin/projects/ugrp-wt/e2e18-route1/outputs/e2e18-route1/r80/e2e18-v375-s61008-r80/raw",
+      "files": {
+        "robots/r1/ownmap.jsonl": {
+          "sha256": "949bdbf08efa154fa8f2e2a753bb607bf058f8a2cf8eb395ede8006cb1be3a31",
+          "expected": "949bdbf08efa154fa8f2e2a753bb607bf058f8a2cf8eb395ede8006cb1be3a31",
+          "match": true
+        },
+        "r1-ownmap-final.json": {
+          "sha256": "8fa819116097eb058ec4b00344b223626cba33312e7372f9c9632c63a33d56b9",
+          "expected": "8fa819116097eb058ec4b00344b223626cba33312e7372f9c9632c63a33d56b9",
+          "match": true
+        },
+        "transport-trace.json": {
+          "sha256": "bbdebb6ebc8d07ff866d706e7c312a98e2c5823c5ad92bf6444ca316a6f3be9e",
+          "expected": "bbdebb6ebc8d07ff866d706e7c312a98e2c5823c5ad92bf6444ca316a6f3be9e",
+          "match": true
+        },
+        "result.json": {
+          "sha256": "5f01500ffa218946678f616022b1b9dc6d7af9c2ef7e7a8ac6aa001e0674562a",
+          "expected": "5f01500ffa218946678f616022b1b9dc6d7af9c2ef7e7a8ac6aa001e0674562a",
+          "match": true
+        }
+      },
+      "route_events": [
+        {
+          "t": 38.4,
+          "event": "own_map_B_route_generated",
+          "route_hash": "67e7a1b1ce1f3ec37f441e2f1d4f4a25446154f157d0a0e8355ff90249868f7b",
+          "B_rgb_sources": [
+            {
+              "robot_id": "r1",
+              "frame_id": 6,
+              "t_sim": 3.0,
+              "sha256": "40508e295e319ac116ced391ea272fec6ac96373132c30c8511587848ffc85b0"
+            }
+          ],
+          "length_m": 5.467789269769839,
+          "observed_coverage_complete": false
+        }
+      ],
+      "route_attempts": 1,
+      "failed_grid_attempts": 0,
+      "failed_start": 0,
+      "failed_goal": 0,
+      "disconnected_clear_endpoints": 0,
+      "last_failure": null,
+      "saved_grid_fields_present": false,
+      "restore_ready": false
+    },
+    {
+      "run": "e2e18-v375-s61009-r80",
+      "source": "/Users/changmin/projects/ugrp-wt/e2e18-route1/outputs/e2e18-route1/r80/e2e18-v375-s61009-r80/raw",
+      "files": {
+        "robots/r1/ownmap.jsonl": {
+          "sha256": "efcc9410179a622003c6228ea0b02cd5c86eefe8e1a04a8e3734d9a622af9ca6",
+          "expected": "efcc9410179a622003c6228ea0b02cd5c86eefe8e1a04a8e3734d9a622af9ca6",
+          "match": true
+        },
+        "r1-ownmap-final.json": {
+          "sha256": "9c778cfdab0ce0d96f9550b8aa54b90708d7f0962153233c46ffd02a01b56c96",
+          "expected": "9c778cfdab0ce0d96f9550b8aa54b90708d7f0962153233c46ffd02a01b56c96",
+          "match": true
+        },
+        "transport-trace.json": {
+          "sha256": "cb91a5d66efbed91b284661bc4f5be5f7db0c0d54eab8f6df4ae140f9c7409b1",
+          "expected": "cb91a5d66efbed91b284661bc4f5be5f7db0c0d54eab8f6df4ae140f9c7409b1",
+          "match": true
+        },
+        "result.json": {
+          "sha256": "409abc09cfce8cd399f9674ad9463d6b89b17fab38f4408b8063d6b1b0b7a0ac",
+          "expected": "409abc09cfce8cd399f9674ad9463d6b89b17fab38f4408b8063d6b1b0b7a0ac",
+          "match": true
+        }
+      },
+      "route_events": [
+        {
+          "t": 277.8,
+          "event": "own_map_B_route_generated",
+          "route_hash": "bb41a81815f3dc1e1f42f10618be1bc6e328d4c48d4c7b5bad12918a12df2b92",
+          "B_rgb_sources": [
+            {
+              "robot_id": "r1",
+              "frame_id": 6,
+              "t_sim": 3.0,
+              "sha256": "4e2c85b2bf73137ee2f8caadf53b3b5cf12acb8b52a58c741024dfddf6277e38"
+            }
+          ],
+          "length_m": 5.202498194179709,
+          "observed_coverage_complete": false
+        }
+      ],
+      "route_attempts": 86,
+      "failed_grid_attempts": 85,
+      "failed_start": 13,
+      "failed_goal": 85,
+      "disconnected_clear_endpoints": 0,
+      "last_failure": {
+        "t": 277.2,
+        "beam_pose_own_m": [
+          -3.1121384351870542,
+          1.7576290347296786,
+          1.356821663295801
+        ],
+        "beam_rgb": {
+          "robot_id": "r1",
+          "frame_id": 463,
+          "t_sim": 277.2,
+          "sha256": "e046b1864e68c2383d023911342822c4733f98fe8b5e04576a3c735e9cad4f49"
+        },
+        "sigma_xy_m": 1.3498987243689904,
+        "stage": "grid_route",
+        "beam_axis_error_rad": 1.356821663295801,
+        "strict_margin_m": 4.069696173106971,
+        "B_own_m": [
+          1.0484614900472446,
+          0.055861167463841434
+        ],
+        "nominal_footprint_cells": {
+          "start": {
+            "free": 277,
+            "unknown": 0,
+            "occupied": 2,
+            "outside": 0
+          },
+          "target": {
+            "free": 237,
+            "unknown": 8,
+            "occupied": 34,
+            "outside": 0
+          }
+        },
+        "planning_extent": {
+          "old_lo": [
+            -130,
+            -70
+          ],
+          "old_hi": [
+            56,
+            113
+          ],
+          "new_lo": [
+            -130,
+            -70
+          ],
+          "new_hi": [
+            56,
+            113
+          ],
+          "added_unknown_cells": 0,
+          "endpoint_pad_cells": 16
+        },
+        "would_stop_unknown": false,
+        "attempts": [
+          {
+            "margin_m": 4.069696173106971,
+            "allowed_cells": 0,
+            "total_cells": 34038,
+            "start_clear": false,
+            "target_clear": false,
+            "path_cells": 0
+          },
+          {
+            "margin_m": 0.02,
+            "allowed_cells": 2443,
+            "total_cells": 34038,
+            "start_clear": false,
+            "target_clear": false,
+            "path_cells": 0
+          },
+          {
+            "margin_m": 0.02,
+            "coverage": "native_allow_unknown",
+            "allowed_cells": 13267,
+            "total_cells": 34038,
+            "start_clear": false,
+            "target_clear": false,
+            "path_cells": 0
+          }
+        ],
+        "would_stop_sigma": false,
+        "applied_margin_m": 0.02,
+        "pair_dimensions_m": [
+          1.25,
+          0.4
+        ],
+        "observed_coverage_complete": true,
+        "sigma_contribution_unresolved": false
+      },
+      "saved_grid_fields_present": false,
+      "restore_ready": false
+    },
+    {
+      "run": "e2e18-v379-s61006-r80",
+      "source": "/Users/changmin/projects/ugrp-wt/e2e18-route1/outputs/e2e18-route1/r80/e2e18-v379-s61006-r80/raw",
+      "files": {
+        "robots/r1/ownmap.jsonl": {
+          "sha256": "3449c762ca3810e91ea11cec0069fe8f966cb8955bea9450caf2dcbfab9f14ba",
+          "expected": "3449c762ca3810e91ea11cec0069fe8f966cb8955bea9450caf2dcbfab9f14ba",
+          "match": true
+        },
+        "r1-ownmap-final.json": {
+          "sha256": "9cb3d1429f7dea0e7953c6c5babea9041cb59272b006c16ead86bc08eb51db8d",
+          "expected": "9cb3d1429f7dea0e7953c6c5babea9041cb59272b006c16ead86bc08eb51db8d",
+          "match": true
+        },
+        "transport-trace.json": {
+          "sha256": "87d52a305bee6d003c69baef4da1e2c62d8d0680e5ee7ac357b37c772f641e7a",
+          "expected": "87d52a305bee6d003c69baef4da1e2c62d8d0680e5ee7ac357b37c772f641e7a",
+          "match": true
+        },
+        "result.json": {
+          "sha256": "5eb664e13bb927eb5f732423a62384c3185dbe2a81594254bd104425cf64c5ac",
+          "expected": "5eb664e13bb927eb5f732423a62384c3185dbe2a81594254bd104425cf64c5ac",
+          "match": true
+        }
+      },
+      "route_events": [
+        {
+          "t": 292.2,
+          "event": "own_map_B_route_generated",
+          "route_hash": "a5e68698b2db534abfb40ed268863041852212236fe7794aec734e312d2a1352",
+          "B_rgb_sources": [
+            {
+              "robot_id": "r1",
+              "frame_id": 6,
+              "t_sim": 3.0,
+              "sha256": "bf0fff43a05db19bb37f2357181dc2ff62881c1af3c7a3f47df8081e09d9c2ab"
+            }
+          ],
+          "length_m": 1.387667983654823,
+          "observed_coverage_complete": false
+        }
+      ],
+      "route_attempts": 4,
+      "failed_grid_attempts": 3,
+      "failed_start": 3,
+      "failed_goal": 0,
+      "disconnected_clear_endpoints": 0,
+      "last_failure": {
+        "t": 271.8,
+        "beam_pose_own_m": [
+          -0.8361980504165647,
+          0.20723051022467756,
+          2.9241743962848274
+        ],
+        "beam_rgb": {
+          "robot_id": "r1",
+          "frame_id": 454,
+          "t_sim": 271.8,
+          "sha256": "e716c9aba6c3290a49c737e04217de3acc2dc566b5977aa78ef60c919a5996d1"
+        },
+        "sigma_xy_m": 1.4121189772905864,
+        "stage": "grid_route",
+        "beam_axis_error_rad": 0.2174182573049658,
+        "strict_margin_m": 4.256356931871759,
+        "B_own_m": [
+          1.0496260280663496,
+          0.054290507106624114
+        ],
+        "nominal_footprint_cells": {
+          "start": {
+            "free": 273,
+            "unknown": 1,
+            "occupied": 7,
+            "outside": 0
+          },
+          "target": {
+            "free": 281,
+            "unknown": 0,
+            "occupied": 0,
+            "outside": 0
+          }
+        },
+        "planning_extent": {
+          "old_lo": [
+            -75,
+            -66
+          ],
+          "old_hi": [
+            78,
+            64
+          ],
+          "new_lo": [
+            -75,
+            -66
+          ],
+          "new_hi": [
+            78,
+            64
+          ],
+          "added_unknown_cells": 0,
+          "endpoint_pad_cells": 16
+        },
+        "would_stop_unknown": false,
+        "attempts": [
+          {
+            "margin_m": 4.256356931871759,
+            "allowed_cells": 0,
+            "total_cells": 19890,
+            "start_clear": false,
+            "target_clear": false,
+            "path_cells": 0
+          },
+          {
+            "margin_m": 0.02,
+            "allowed_cells": 679,
+            "total_cells": 19890,
+            "start_clear": false,
+            "target_clear": true,
+            "path_cells": 0
+          },
+          {
+            "margin_m": 0.02,
+            "coverage": "native_allow_unknown",
+            "allowed_cells": 3832,
+            "total_cells": 19890,
+            "start_clear": false,
+            "target_clear": true,
+            "path_cells": 0
+          }
+        ],
+        "would_stop_sigma": false,
+        "applied_margin_m": 0.02,
+        "pair_dimensions_m": [
+          1.25,
+          0.4
+        ],
+        "observed_coverage_complete": true,
+        "sigma_contribution_unresolved": false
+      },
+      "saved_grid_fields_present": false,
+      "restore_ready": false
+    },
+    {
+      "run": "e2e18-v379-s61009-r80",
+      "source": "/Users/changmin/projects/ugrp-wt/e2e18-route1/outputs/e2e18-route1/r80/e2e18-v379-s61009-r80/raw",
+      "files": {
+        "robots/r1/ownmap.jsonl": {
+          "sha256": "b1244b60fa41554eb705602f34a83571cc0ea6c4b5881fa5adb44e4000770409",
+          "expected": "b1244b60fa41554eb705602f34a83571cc0ea6c4b5881fa5adb44e4000770409",
+          "match": true
+        },
+        "r1-ownmap-final.json": {
+          "sha256": "ef5c6223372e72c711c23092f660c2125c055cb3ae32a601c241d9e9d596c82c",
+          "expected": "ef5c6223372e72c711c23092f660c2125c055cb3ae32a601c241d9e9d596c82c",
+          "match": true
+        },
+        "transport-trace.json": {
+          "sha256": "c4b94f3a8e6fca3eb86ef1b304891d6030586fedff549b763c8078164bea2c8d",
+          "expected": "c4b94f3a8e6fca3eb86ef1b304891d6030586fedff549b763c8078164bea2c8d",
+          "match": true
+        },
+        "result.json": {
+          "sha256": "61b44408a97fd5ad821a35210d134415187cae378c552ef1ebc779fa19919d90",
+          "expected": "61b44408a97fd5ad821a35210d134415187cae378c552ef1ebc779fa19919d90",
+          "match": true
+        }
+      },
+      "route_events": [
+        {
+          "t": 165.0,
+          "event": "own_map_B_route_generated",
+          "route_hash": "58e087eeb5bd0a980a8746df526d62a5317c38e2b5b669711ac224bc18744862",
+          "B_rgb_sources": [
+            {
+              "robot_id": "r1",
+              "frame_id": 6,
+              "t_sim": 3.0,
+              "sha256": "b8439c471617c5e4b7dbd4646496a0edc01b32d49e7b6121d31a574a6f56095c"
+            }
+          ],
+          "length_m": 3.2611270948843334,
+          "observed_coverage_complete": false
+        }
+      ],
+      "route_attempts": 1,
+      "failed_grid_attempts": 0,
+      "failed_start": 0,
+      "failed_goal": 0,
+      "disconnected_clear_endpoints": 0,
+      "last_failure": null,
+      "saved_grid_fields_present": false,
+      "restore_ready": false
+    }
+  ],
+  "representative_runs_read": 4,
+  "cohort_N": 16,
+  "restorable_grids": 0
+}
