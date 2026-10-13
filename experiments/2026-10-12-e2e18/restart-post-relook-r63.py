@@ -32,7 +32,9 @@ for h,minimum in [('x86',1*1024*2**20),('arm',1*1024*2**20),('mac',1*80*2**20)]:
  p=b/f'e2e18-{BATCH}-budget-{h}.json';x=json.loads(p.read_text());assert time.time()-p.stat().st_mtime<300 and x['ok']
  assert x['checks'][0]['expected_bytes']>=minimum
 active=[r for r in (b/'runs').glob('e2e18-v*-s*-r*') if r.is_dir() and not (r/'EXIT').exists()]
-assert len(active)<=12-len(selected),[(r.name) for r in active]
+existing={(json.loads((r/'RUN_META.json').read_text())['execution_bundle_id'],json.loads((r/'RUN_META.json').read_text())['seed']) for r in active}
+selected=[x for x in selected if (f'e2e18-v{x[1]}',x[0]) not in existing]
+assert selected and len(active)<=12-len(selected),[(r.name) for r in active]
 receipt=json.loads((b/'relays/e2e18/a-r4.json').read_text())
 from datetime import datetime
 deadline=datetime.fromisoformat('2026-10-13T13:00:00+00:00').timestamp()
