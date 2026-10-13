@@ -32,6 +32,16 @@ def speech_idempotency_key(key):
     return hashlib.sha256((key+':speech').encode()).hexdigest()
 
 
+def request_dialogue_mode(request):
+    """Legacy relay also serves plain-text requests; keep that default path."""
+    from harness.e2e_dialogue_decider import unpack
+    try:
+        user, _ = unpack(request)
+    except (ValueError, KeyError, TypeError, IndexError):
+        return 'gemma_v0'
+    return user.get('dialogue_decider','gemma_v0') if isinstance(user,dict) else 'gemma_v0'
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--proxy-pid', type=int)
@@ -166,8 +176,7 @@ def main():
                         except HTTPError as exc:
                             return exc.code, exc.read(8_000_000), exc.headers.get('Retry-After')
                     if single:
-                        from harness.e2e_dialogue_decider import unpack
-                        request_mode=unpack(json.loads(body))[0].get('dialogue_decider','gemma_v0')
+                        request_mode=request_dialogue_mode(json.loads(body))
                         if request_mode!=a.dialogue_decider:
                             raise ValueError('DIALOGUE_DECIDER_REQUEST_RELAY_MISMATCH')
                         if d1 is not None:

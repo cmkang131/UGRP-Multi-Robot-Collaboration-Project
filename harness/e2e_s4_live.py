@@ -20,14 +20,14 @@ Until a route exists, continue while the own-camera mapper explores. r1 must sen
 GO/ACK use the exact current dialogue.key [order_id,route_hash,grip_epoch,seg]. GO requires own RGB supporting the grip; ACK requires your GO and the current peer_go_ref. Never reuse a previous epoch or segment. When unsure, continue holds transport. Only channel.can_send_to may receive messages. reply_to must be a received ID or null. All prose is English. Examples describe syntax, not evidence.'''
 
 
-def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off',route_handle='off',vote_ref='off',llm_memory='off',memory=None,dialogue_decider='gemma_v0'):
+def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off',route_handle='off',vote_ref='off',llm_memory='off',memory=None,body_controller='off',dialogue_decider='gemma_v0'):
     """Validate before projection; retain the typed E2E action/message contract."""
     r = copy.deepcopy(request)
     b = json.loads(r['messages'][1]['content'])
     own.scan(b)
     if b.get('schema') != own.SCHEMA or 'dialogue' not in b:
         raise base.ContractViolation('E2E_DIALOGUE_INPUT_REQUIRED')
-    if not options.compact_prompt_v1 and options.prompt_lang == 'ko' and decider=='off':
+    if not options.compact_prompt_v1 and options.prompt_lang == 'ko' and decider=='off' and body_controller=='off':
         if vote_ref!='off':raise ValueError('VOTE_REF_REQUIRES_PROJECTED_PROMPT')
         if llm_memory!='off':raise ValueError('LLM_MEMORY_REQUIRES_PROJECTED_PROMPT')
         return r
@@ -99,6 +99,10 @@ def project(request, *, options, decider='off', epoch_age_s=None, protocol_recov
         if decider!='off' or llm_memory=='off':raise ValueError('D1_MEMORY_AND_NO_LEGACY_DECIDER_REQUIRED')
         b['dialogue_decider']=dialogue_decider
         b['dialogue_epoch_age_s']=epoch_age_s
+    if body_controller != 'off':
+        if body_controller != 'jev_v1':raise ValueError('UNKNOWN_BODY_CONTROLLER')
+        system += ' Body-controller separation: you choose communication acts only (continue, route proposal/approval, claim, current GO/ACK). Jev selects every body, gripper and camera motion. Do not select look_around, release or any motor action. Continue means no dialogue act; it does not control motion. Describe only your own visual evidence when deciding GO/ACK, including before lifting.'
+        b['body_controller']=body_controller
     b['prompt_lang'] = options.prompt_lang
     own.scan(b)
     if len(r['images']) != 1 or len(r['image_refs']) != 1:
@@ -120,6 +124,7 @@ class Trial(base.Trial):
         super().__init__(*args, **kwargs)
         self.options = getattr(self.links['r1'].inner, 'study_options', Options())
         self.decider=getattr(self.links['r1'].inner,'decider','off')
+        self.body_controller=getattr(self.links['r1'].inner,'body_controller','off')
         self.jev_guard_events=[]
         self.protocol_recovery=getattr(self.links['r1'].inner,'protocol_recovery','off')
         from harness.e2e_protocol_recovery import Recovery
@@ -145,7 +150,7 @@ class Trial(base.Trial):
         p = super().prepare_call(call)
         view=self.dialogue.view(call.actor,call.started_sim_s)
         age=None if view['key'] is None else call.started_sim_s-self.dialogue.opened
-        request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age,protocol_recovery=self.protocol_recovery,protocol_progress=self.protocol_progress,route_handle=getattr(self.dialogue,'route_handle','off'),vote_ref=getattr(self.dialogue,'vote_ref','off'),llm_memory=self.llm_memory,
+        request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age,protocol_recovery=self.protocol_recovery,protocol_progress=self.protocol_progress,route_handle=getattr(self.dialogue,'route_handle','off'),vote_ref=getattr(self.dialogue,'vote_ref','off'),llm_memory=self.llm_memory,body_controller=self.body_controller,
             dialogue_decider=self.dialogue_decider,memory=None if self.llm_memory=='off' else mem_collect(self,self.memory,call,commands=self.llm_memory=='v1_commands'))
         return type(p)(ProjectedInputs(p.bundled,json.loads(request['messages'][1]['content'])),request,p.request_id)
 

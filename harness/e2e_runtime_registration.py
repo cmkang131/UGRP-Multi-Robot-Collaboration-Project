@@ -36,10 +36,16 @@ def require_current(bundle, root):
     if bundle['execution_bundle_id']=='e2e18-v338':
         from harness.e2e_dialogue_decider import parent_for_validation as dialogue_parent
         return require_current(dialogue_parent(bundle),root)
+    if bundle['execution_bundle_id'] in ('e2e18-v340','e2e18-v341','e2e18-v342','e2e18-v343'):
+        from harness.e2e_architecture_stack import parent_for_validation as architecture_parent
+        return require_current(architecture_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v330','e2e18-v331','e2e18-v332'):
         from harness.e2e_llm_memory import parent_for_validation as memory_parent
         return require_current(memory_parent(bundle),root)
-    if bundle['execution_bundle_id'] in ('e2e18-v324','e2e18-v325','e2e18-v326','e2e18-v327'):
+    if bundle['execution_bundle_id'] in ('e2e18-v335','e2e18-v336','e2e18-v337'):
+        from harness.e2e_body_controller import parent_for_validation as body_parent
+        return require_current(body_parent(bundle),root)
+    if bundle['execution_bundle_id'] in ('e2e18-v324','e2e18-v325','e2e18-v326','e2e18-v327','e2e18-v328','e2e18-v329'):
         from harness.e2e_post_relook_stack import parent_for_validation as stack_parent
         return require_current(stack_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v316','e2e18-v317','e2e18-v318'):

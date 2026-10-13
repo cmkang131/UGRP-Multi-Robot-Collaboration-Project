@@ -1,0 +1,32 @@
+{
+  "source_sha": "200fc07aa53ec61cd179fc2dd4e37e9ba61b0eac",
+  "merged_feature_prs": [
+    462,
+    463
+  ],
+  "tests": {
+    "test_e2e_llm_memory.py": {
+      "passed": 18
+    },
+    "test_e2e_body_controller.py+test_e2e_s4_live.py": {
+      "passed": 58,
+      "skipped": 1
+    }
+  },
+  "default_off": true,
+  "scope": "feature branch comparison; not main merge",
+  "body_relay": {
+    "local_port": 18434,
+    "remote_port": 18433,
+    "receipt": "azure3:~/ugrp-sim/relays/e2e18/body.json",
+    "identity_match": true,
+    "key_location": "Mac Keychain only"
+  },
+  "next": [
+    "v330,v331 dialogue memory",
+    "v335 Jev",
+    "v336 Liquid d1",
+    "v337 Jev+d1 visual check"
+  ],
+  "seed": 61006
+}

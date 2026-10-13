@@ -32,7 +32,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 12600
 
-def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off',speed5='off',observation_cadence='off',route_guard='off',beam_axis='off',route_coverage='off',carrier_axes='off',carrier_approach='off',route_extent='off',record_scalars='off',pose_guard='off',protocol_recovery='off',camera_load='off',route_tokens='off',protocol_progress='off',route_cost='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pulse_admission='off',event_projection='off',pregrasp_progress='off',gaze_cadence='off',stage_physics='off',protocol_idempotency='off',route_handle='off',boundary_frame='off',beam_end_model='off',beam_avoidance='off',pregrasp_acquire='off',align_queues='off',beam_decode='off',mapping_acquire='off',compute_budget='off',mapping_cadence='off',stale_station='off',carrier_goal='off',blocked_path_recovery='off',perception_settle='off',landmark_cache='off',camera_motion='off',camera_hold='off',arm_clearance='off',sonar_frame='off',acquisition_mobility='off',approach_commit='off',scan_guard='off',fine_view='off',approach_heading='off',fine_entry='off',station_heading='off',clip_recovery='off',station_handoff='off',capture_pose='off',relook_search='off',beam_lost_standoff='off',arm_clearance_align_skip='off',acquire_scan_fast='off',relook_giveup='off',post_relook='off',approach_floor='off',clip_hysteresis='off',vote_ref='off',perception_fast='off',controller_timing='off',llm_memory='off',dialogue_decider='gemma_v0'):
+def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off',speed5='off',observation_cadence='off',route_guard='off',beam_axis='off',route_coverage='off',carrier_axes='off',carrier_approach='off',route_extent='off',record_scalars='off',pose_guard='off',protocol_recovery='off',camera_load='off',route_tokens='off',protocol_progress='off',route_cost='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pulse_admission='off',event_projection='off',pregrasp_progress='off',gaze_cadence='off',stage_physics='off',protocol_idempotency='off',route_handle='off',boundary_frame='off',beam_end_model='off',beam_avoidance='off',pregrasp_acquire='off',align_queues='off',beam_decode='off',mapping_acquire='off',compute_budget='off',mapping_cadence='off',stale_station='off',carrier_goal='off',blocked_path_recovery='off',perception_settle='off',landmark_cache='off',camera_motion='off',camera_hold='off',arm_clearance='off',sonar_frame='off',acquisition_mobility='off',approach_commit='off',scan_guard='off',fine_view='off',approach_heading='off',fine_entry='off',station_heading='off',clip_recovery='off',station_handoff='off',capture_pose='off',relook_search='off',beam_lost_standoff='off',arm_clearance_align_skip='off',acquire_scan_fast='off',relook_giveup='off',post_relook='off',approach_floor='off',clip_hysteresis='off',vote_ref='off',perception_fast='off',controller_timing='off',llm_memory='off',body_controller='off',body_backend='jev',body_visual_check='off',architecture_stack='off',dialogue_decider='gemma_v0'):
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
     requested_stage_physics=stage_physics
     if stage_physics=='release_dt1_v1':stage_physics='pregrasp_dt1_v1'
@@ -322,6 +322,10 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
         paths.update(perception_fast_compose(b,perception_fast,controller_timing))
     from harness.e2e_llm_memory import compose as llm_memory_compose
     paths.update(llm_memory_compose(b,llm_memory,vote_ref))
+    from harness.e2e_body_controller import compose as body_compose
+    paths.update(body_compose(b,body_controller,body_backend,body_visual_check))
+    from harness.e2e_architecture_stack import compose as architecture_compose
+    paths.update(architecture_compose(b,architecture_stack))
     from harness.e2e_dialogue_decider import compose as dialogue_decider_compose
     paths.update(dialogue_decider_compose(b,dialogue_decider))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
@@ -377,7 +381,7 @@ def startup_decision(progress, b):
                 stop=bool(failed and not b['e2e_options'].get('dev_light',False)))
 
 
-def run(b,out,receipt,*,backend_factory=None):
+def run(b,out,receipt,*,backend_factory=None,body_receipt=None):
     if not b['e2e_options']['enabled']:raise ValueError('E2E_LIVE_TOGGLE_OFF')
     from harness.e2e_runtime_registration import require_current
     require_current(b,ROOT)
@@ -455,6 +459,7 @@ def run(b,out,receipt,*,backend_factory=None):
         for robot in robots.values():robot.camera_load=b['e2e_options'].get('camera_load','off')
         for robot in robots.values():robot.protocol_progress=b['e2e_options'].get('protocol_progress','off')
         for robot in robots.values():robot.protocol_recovery=b['e2e_options'].get('protocol_recovery','off')
+        for robot in robots.values():robot.body_controller=b['e2e_options'].get('body_controller','off')
         for robot in robots.values():robot.decider=b['e2e_options'].get('decider','off')
         offered=json.loads(receipt.read_text())
         if offered.get('decider','off')!=b['e2e_options'].get('decider','off'):
@@ -542,6 +547,9 @@ def run(b,out,receipt,*,backend_factory=None):
         observation_ticks=round(b.get('speed3_profile',{}).get('observation_period_s',.2)/.05)
         from harness.e2e_speed_phase import install as timing_install
         timer=timing_install(b['e2e_options'].get('controller_timing','off'),robots,transport,host,backend,globals())
+        from harness.e2e_body_controller import install as body_install
+        body_gate=body_install(transport,robots,b,out,body_receipt or receipt.with_name('body.json'),ROOT,
+            append=lambda row:backend._append('body-decisions.jsonl',row))
         cadence_phase=None
         for tick in range(round(b['case_cap_s']/.05)):
             now=round(backend.now-origin,8)
@@ -577,7 +585,8 @@ def run(b,out,receipt,*,backend_factory=None):
                 write(out/'e2e-progress.json',health(robots,host,transport,now,time.monotonic()-started,frames_seen))
                 backend.flush()
             host.step_to(now)
-            commands=transport.step(now)
+            body_extra=body_gate.pre_step(now) if body_gate else []
+            commands=body_extra+transport.step(now)
             from sim.e2e_stage_physics import update as update_stage_physics
             update_stage_physics(backend,transport.state)
             if tick%4==0 and transport.state=='mapping':
@@ -586,6 +595,7 @@ def run(b,out,receipt,*,backend_factory=None):
             from harness.e2e_camera_hold import actions as wheel_wait_actions
             commands=wheel_wait_actions(commands,robots,transport.state,b['e2e_options'].get('camera_hold','off'))
             commands=transport.arm_clearance.filter(transport,now,commands)
+            if body_gate is not None:commands=body_gate.filter(now,commands)
             commands=pulse_dispatch.step(now,commands)
             for rid,action in commands:
                 backend.issue(rid,action);robots[rid].commanded(action,now)
@@ -620,6 +630,8 @@ def run(b,out,receipt,*,backend_factory=None):
         result.update(wall_s=time.monotonic()-started,frames=frames_seen,stage_milestones=milestones)
         if backend is not None:result['sim_s']=backend.now-origin
         finalizer.checkpoint()
+        if locals().get('body_gate') is not None:
+            result['body_decider']=body_gate.summary()
         if transport is not None:
             from harness.e2e_route_coverage import map_completed
             result.update(setdowns=transport.setdowns,controller_failure=transport.failure,
@@ -776,7 +788,12 @@ def main(argv=None):
     p.add_argument('--speed5',choices=('off','cache_v1','lean_v1','lean_v2','lean_v3'),default='off')
     p.add_argument('--speed4',type=json.loads,default=None,help='DEV compute budget JSON; all fields default off')
     p.add_argument('--runtime-registration',choices=('off','reviewed_v1'),default='off')
+    p.add_argument('--body-controller',choices=('off','jev_v1'),default='off')
+    p.add_argument('--body-backend',choices=('jev','liquid_d1'),default='jev')
+    p.add_argument('--body-visual-check',choices=('off','d1_v1'),default='off')
+    p.add_argument('--body-relay-receipt',type=Path)
     p.add_argument('--expected-workflow-id')
+    p.add_argument('--architecture-stack',choices=('off','fast_v1','memory_v1'),default='off')
     p.add_argument('--execute',action='store_true');a=p.parse_args(argv)
     b=bundle(a.expected_source_sha,a.seed,a.driver_profile,enabled=a.e2e_live,relook=a.setdown_only_when_relook,
              options=Options(a.event_driven_llm,a.compact_prompt,'en'),decider=a.decider,
@@ -786,7 +803,7 @@ def main(argv=None):
              exact_speedups=dict(provenance_index=a.exact_provenance_index,sha_validation_cache=a.exact_sha_cache,omit_discarded_copy=a.exact_omit_copy,scalar_cells=a.exact_scalar_cells,geometry_cache=a.exact_geometry_cache,
                  vector_rays=a.exact_vector_rays,shared_wall_frontend=a.exact_shared_wall_frontend,lazy_scan_path=a.exact_lazy_scan_path,
                  vector_costmap_writes=a.exact_vector_costmap_writes,track_cell_tuples=a.exact_track_cell_tuples),
-             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3,speed4=a.speed4,b_partial_accept=a.b_partial_accept,speed5=a.speed5,observation_cadence=a.observation_cadence,route_guard=a.route_guard,beam_axis=a.beam_axis,route_coverage=a.route_coverage,carrier_axes=a.carrier_axes,carrier_approach=a.carrier_approach,route_extent=a.route_extent,record_scalars=a.record_scalars,pose_guard=a.pose_guard,protocol_recovery=a.protocol_recovery,camera_load=a.camera_load,route_tokens=a.route_tokens,protocol_progress=a.protocol_progress,route_cost=a.route_cost,align_progress=a.align_progress,pregrasp_recovery=a.pregrasp_recovery,pregrasp_gaze=a.pregrasp_gaze,search_bearing=a.search_bearing,pulse_admission=a.pulse_admission,event_projection=a.event_projection,pregrasp_progress=a.pregrasp_progress,gaze_cadence=a.gaze_cadence,stage_physics=a.stage_physics,protocol_idempotency=a.protocol_idempotency,route_handle=a.route_handle,boundary_frame=a.boundary_frame,beam_end_model=a.beam_end_model,beam_avoidance=a.beam_avoidance,pregrasp_acquire=a.pregrasp_acquire,align_queues=a.align_queues,beam_decode=a.beam_decode,mapping_acquire=a.mapping_acquire,compute_budget=a.compute_budget,mapping_cadence=a.mapping_cadence,stale_station=a.stale_station,carrier_goal=a.carrier_goal,blocked_path_recovery=a.blocked_path_recovery,perception_settle=a.perception_settle,landmark_cache=a.landmark_cache,camera_motion=a.camera_motion,camera_hold=a.camera_hold,arm_clearance=a.arm_clearance,sonar_frame=a.sonar_frame,acquisition_mobility=a.acquisition_mobility,approach_commit=a.approach_commit,scan_guard=a.scan_guard,fine_view=a.fine_view,approach_heading=a.approach_heading,fine_entry=a.fine_entry,station_heading=a.station_heading,clip_recovery=a.clip_recovery,station_handoff=a.station_handoff,capture_pose=a.capture_pose,relook_search=a.relook_search,beam_lost_standoff=a.beam_lost_standoff,arm_clearance_align_skip=a.arm_clearance_align_skip,acquire_scan_fast=a.acquire_scan_fast,relook_giveup=a.relook_giveup,post_relook=a.post_relook,approach_floor=a.approach_floor,clip_hysteresis=a.clip_hysteresis,vote_ref=a.vote_ref,perception_fast=a.perception_fast,controller_timing=a.controller_timing,llm_memory=a.llm_memory,dialogue_decider=a.dialogue_decider)
+             speed_bundle=a.exact_speed_bundle,speed2_bundle=a.exact_speed2_bundle,boundary_views=a.boundary_views,b_marker_detect=a.b_marker_detect,runtime_registration=a.runtime_registration,ultrasonic_front=a.ultrasonic_front,vo_floor_mask=a.vo_floor_mask,vo_rotation_policy=a.vo_rotation_policy,explore_deadlock=a.explore_deadlock,boundary_association=a.boundary_association,boundary_retry=a.boundary_retry,boundary_coverage=a.boundary_coverage,speed3=a.speed3,speed4=a.speed4,b_partial_accept=a.b_partial_accept,speed5=a.speed5,observation_cadence=a.observation_cadence,route_guard=a.route_guard,beam_axis=a.beam_axis,route_coverage=a.route_coverage,carrier_axes=a.carrier_axes,carrier_approach=a.carrier_approach,route_extent=a.route_extent,record_scalars=a.record_scalars,pose_guard=a.pose_guard,protocol_recovery=a.protocol_recovery,camera_load=a.camera_load,route_tokens=a.route_tokens,protocol_progress=a.protocol_progress,route_cost=a.route_cost,align_progress=a.align_progress,pregrasp_recovery=a.pregrasp_recovery,pregrasp_gaze=a.pregrasp_gaze,search_bearing=a.search_bearing,pulse_admission=a.pulse_admission,event_projection=a.event_projection,pregrasp_progress=a.pregrasp_progress,gaze_cadence=a.gaze_cadence,stage_physics=a.stage_physics,protocol_idempotency=a.protocol_idempotency,route_handle=a.route_handle,boundary_frame=a.boundary_frame,beam_end_model=a.beam_end_model,beam_avoidance=a.beam_avoidance,pregrasp_acquire=a.pregrasp_acquire,align_queues=a.align_queues,beam_decode=a.beam_decode,mapping_acquire=a.mapping_acquire,compute_budget=a.compute_budget,mapping_cadence=a.mapping_cadence,stale_station=a.stale_station,carrier_goal=a.carrier_goal,blocked_path_recovery=a.blocked_path_recovery,perception_settle=a.perception_settle,landmark_cache=a.landmark_cache,camera_motion=a.camera_motion,camera_hold=a.camera_hold,arm_clearance=a.arm_clearance,sonar_frame=a.sonar_frame,acquisition_mobility=a.acquisition_mobility,approach_commit=a.approach_commit,scan_guard=a.scan_guard,fine_view=a.fine_view,approach_heading=a.approach_heading,fine_entry=a.fine_entry,station_heading=a.station_heading,clip_recovery=a.clip_recovery,station_handoff=a.station_handoff,capture_pose=a.capture_pose,relook_search=a.relook_search,beam_lost_standoff=a.beam_lost_standoff,arm_clearance_align_skip=a.arm_clearance_align_skip,acquire_scan_fast=a.acquire_scan_fast,relook_giveup=a.relook_giveup,post_relook=a.post_relook,approach_floor=a.approach_floor,clip_hysteresis=a.clip_hysteresis,vote_ref=a.vote_ref,perception_fast=a.perception_fast,controller_timing=a.controller_timing,llm_memory=a.llm_memory,body_controller=a.body_controller,body_backend=a.body_backend,body_visual_check=a.body_visual_check,architecture_stack=a.architecture_stack,dialogue_decider=a.dialogue_decider)
     if a.rbpf_audit_hash!='off' and not a.measure_sim_s:raise ValueError('RBPF_AUDIT_HASH_REQUIRES_MEASUREMENT')
     if a.expected_workflow_id is not None and a.expected_workflow_id!=b['execution_bundle_id']:
         raise ValueError('WORKFLOW_BUNDLE_ID_MISMATCH')
@@ -802,7 +819,7 @@ def main(argv=None):
             from scripts.e2e_speed_measure import measured_run
             r=measured_run(run,b,a.output,a.relay_receipt,a.measure_sim_s,a.measure_profile,
                 'final_v1' if a.speed3!='off' and a.rbpf_audit_hash=='off' else a.rbpf_audit_hash)
-        else:r=run(b,a.output,a.relay_receipt)
+        else:r=run(b,a.output,a.relay_receipt,body_receipt=a.body_relay_receipt)
     finally:undo()
     print(json.dumps(r));return int(r['status']!='FINISHED')
 

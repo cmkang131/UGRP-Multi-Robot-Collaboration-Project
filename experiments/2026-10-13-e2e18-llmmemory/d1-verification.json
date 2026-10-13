@@ -2,9 +2,9 @@
   "source_sha": "6ec1ab8e6310e9c522134652bb8f4c4472abfb01",
   "tests": {
     "command": "python3 -m pytest -q -rs tests/test_e2e_dialogue_decider.py tests/test_e2e_llm_memory.py tests/test_e2e_s4_live.py",
-    "passed": 63,
+    "passed": 67,
     "skipped": 1,
-    "seconds": 30.65
+    "seconds": 31.25
   },
   "replay_sources_match_current": true,
   "source_sha256": {
@@ -15,5 +15,20 @@
   "local_or_vm_simulation_calls": 0,
   "approved_paid_relay": "Mac localhost18424, study_gemma4_31b_v1, OpenRouter DeepInfra",
   "forbidden_files_edited": false,
-  "merge_by_this_worker": false
+  "merge_by_this_worker": false,
+  "integrated_base_sha": "99900904c344d822e323a5bf88e64afcad4f1c22",
+  "post_integration_reconstruction": {
+    "vision": 100,
+    "decision": 100,
+    "speech": 100,
+    "assembled_action_message": 100
+  },
+  "protected_files_identical_to_base": true,
+  "post_integration_sources": {
+    "harness/e2e_s4_live.py": "e41fa913c4ec009100bcac1988c67ba0086033aca7510bf389ca060df35551ef",
+    "harness/e2e_runtime_registration.py": "ca7aecac33835feadaaf93601fd66713d17f8ec543c4b4434fac803e2474a3d5",
+    "scripts/run_e2e_ownmap_live.py": "92f3534f22b59951a9a895decaf22254cdb72b6586d72a11d799b92ef17957a6",
+    "scripts/s4_proxy_relay.py": "4c97ac74f4f0ec0b3747cf8499811e0a13314cc50f654cf98391a90a748269dc",
+    "tests/test_e2e_dialogue_decider.py": "1a48805a9934e20f8d1b8c16ba2eea922a3931b99a48ddd86ca0fd3ac62d11bf"
+  }
 }

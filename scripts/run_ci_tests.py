@@ -25,6 +25,9 @@ from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
     "tests/test_e2e18.py",
+    "tests/test_e2e_body_controller.py",
+    "tests/test_e2e_architecture_stack.py",
+    "tests/test_e2e_body_upstream.py",
     "tests/test_e2e_b_partial.py",
     "tests/test_e2e_boundary_views.py",
     "tests/test_e2e_boundary_repair.py",

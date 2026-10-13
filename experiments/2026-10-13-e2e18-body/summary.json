@@ -1,0 +1,192 @@
+{
+  "status": "implementation_verified_physics_pending",
+  "base_sha": "495b606fe99e6ced0fa1659a9db89324f51e4c4e",
+  "bundle_ids": [
+    "e2e18-v335",
+    "e2e18-v336",
+    "e2e18-v337"
+  ],
+  "offline_rounds": [
+    {
+      "file": "outputs/e2e18-body/offline-r2.json",
+      "sha256": "405fb89efca5d5e9c16dc8f4db106358aadcc36a76ea263779d81c1cccd77b3e",
+      "summary": {
+        "jev": {
+          "N": 42,
+          "ok": 42,
+          "valid": 30,
+          "agree_code": 6,
+          "latency_median_s": 0.26733816700289026,
+          "by_phase": {
+            "mapping": {
+              "N": 6,
+              "valid": 0,
+              "failed": 0
+            },
+            "align": {
+              "N": 24,
+              "valid": 24,
+              "failed": 0
+            },
+            "grasp_lift": {
+              "N": 6,
+              "valid": 0,
+              "failed": 0
+            },
+            "carry": {
+              "N": 6,
+              "valid": 6,
+              "failed": 0
+            }
+          },
+          "cost_usd": 0.0,
+          "input_tokens": 65709
+        }
+      }
+    },
+    {
+      "file": "outputs/e2e18-body/offline-r3.json",
+      "sha256": "2abb5cc18c65ddf422a29fb122c86e5e36016e2d970b1f64fd97587c385d29ed",
+      "summary": {
+        "jev": {
+          "N": 42,
+          "ok": 42,
+          "valid": 42,
+          "agree_code": 13,
+          "latency_median_s": 0.23915818700334057,
+          "by_phase": {
+            "mapping": {
+              "N": 6,
+              "valid": 6,
+              "failed": 0
+            },
+            "align": {
+              "N": 24,
+              "valid": 24,
+              "failed": 0
+            },
+            "grasp_lift": {
+              "N": 6,
+              "valid": 6,
+              "failed": 0
+            },
+            "carry": {
+              "N": 6,
+              "valid": 6,
+              "failed": 0
+            }
+          },
+          "cost_usd": 0.0,
+          "input_tokens": 66009
+        },
+        "liquid_d1": {
+          "N": 42,
+          "ok": 36,
+          "valid": 24,
+          "agree_code": 15,
+          "latency_median_s": 0.46322349994443357,
+          "by_phase": {
+            "mapping": {
+              "N": 6,
+              "valid": 6,
+              "failed": 0
+            },
+            "align": {
+              "N": 24,
+              "valid": 12,
+              "failed": 0
+            },
+            "grasp_lift": {
+              "N": 6,
+              "valid": 0,
+              "failed": 6
+            },
+            "carry": {
+              "N": 6,
+              "valid": 6,
+              "failed": 0
+            }
+          },
+          "cost_usd": 0.00245616,
+          "input_tokens": 61404
+        }
+      }
+    },
+    {
+      "file": "outputs/e2e18-body/offline-r4.json",
+      "sha256": "f5a36673048b647608308a430ecc6d5aa9e15752549f0bc82e677f8c3f9c5e69",
+      "summary": {
+        "jev": {
+          "N": 42,
+          "ok": 42,
+          "valid": 39,
+          "agree_code": 12,
+          "latency_median_s": 0.23428891703952104,
+          "by_phase": {
+            "mapping": {
+              "N": 6,
+              "valid": 6,
+              "failed": 0
+            },
+            "align": {
+              "N": 24,
+              "valid": 21,
+              "failed": 0
+            },
+            "grasp_lift": {
+              "N": 6,
+              "valid": 6,
+              "failed": 0
+            },
+            "carry": {
+              "N": 6,
+              "valid": 6,
+              "failed": 0
+            }
+          },
+          "cost_usd": 0.0,
+          "input_tokens": 68268
+        }
+      }
+    }
+  ],
+  "failed_probe_attempts": [
+    {
+      "round": "offline-r1",
+      "failure": "probe reporting TypeError duplicate tier after provider response",
+      "raw": "outputs/e2e18-body/relay-r1/calls.jsonl",
+      "preserved": true
+    }
+  ],
+  "baseline": {
+    "raw": "azure3:~/ugrp-sim/runs/e2e18-v321-s61006-r65/raw",
+    "align_sim_s": 76,
+    "grasp_stage_sim_s": 511,
+    "align_to_grasp_stage_s": 435,
+    "carry_sim_s": 544
+  },
+  "physics_runs": [],
+  "ci": "pending",
+  "ready_for_review": false,
+  "research_result": false,
+  "relay_raw": {
+    "path": "outputs/e2e18-body/relay-r1/calls.jsonl",
+    "sha256": "edd7a2bc03f37ae1616bc7613938031f2327c53548dd10ce0185669cff198808",
+    "snapshot": true
+  },
+  "scenes": {
+    "path": "outputs/e2e18-body/scenes-v321.json",
+    "sha256": "0df0726929f4dcf5995b3e285d0ea1fb13a9ee7407d5cb58dd2b427999a87e7f",
+    "snapshot": true
+  },
+  "tests": {
+    "passed": 63,
+    "skipped": 1,
+    "files": [
+      "tests/test_e2e_body_controller.py",
+      "tests/test_e2e_body_upstream.py",
+      "tests/test_e2e_s4_live.py"
+    ],
+    "raw": "outputs/e2e18-body/pytest-6.txt"
+  }
+}

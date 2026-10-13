@@ -1,9 +1,9 @@
 # E2E18 DEV
-- 진행 중: 후속 PR #461 (기존 #458은 조정자가 일부 SHA를 #460으로 병합 후 닫음).
-- v216–v266: 통합·속도·VO·자기 경로/정렬·모델 통신 수정; 모든 실패/재제출은 run-summary.json 및 additional_run_records.
-- v233: 모델이 선택한 경로 hash 참조를 검증된 계약으로 확장; B 관측 위치는 자기 RGB 좌표에서 계산.
-- v240→v241: 카메라 목표를 취소하던 접근 hold를 바퀴 영속도 명령으로 분리; v240의 wait 오도메트리 미지원도 수정, 물리 임무 성공 미확인.
-- 게이트 30 SIM초·VM별 총 6개, 2.5 초과 최적화 후 사용자 승인 fallback 3.0 적용; 초과 실행은 시작하지 않음.
-- 기존 묶음 40분·r44 완주 창 최대 2시간(중계·VM 수명·작업 종료 여유로 단축), 인계 후 전체 작업 종료 2026-10-13 07:00 UTC; 종료조건 세 개를 같은 실행에서 확인해야 성공.
-- 원본: Azure ~/ugrp-sim/runs → ARM /home/ubuntu/ugrp-archive/runs 해시 검증; Mac은 fetch-lite만.
-- r44/r46/r47: LLM12/15·자기 지도6/15·공동 파지/운반0/15; r47 터널오류3개 포함. 인계·새 후보 상태: summary.json; 기울기 분석: tilt-analysis.md; 인계 v241 12개와 종료·대체 기록 포함.
+- PR #461, codex/e2e18; 현재 판정·전체 실행 색인과 해시는 summary.json / run-summary.json.
+- 2026-10-13 07:29 UTC: 114시도, 공동 파지13(동일 seed 재현 포함), 시작→끝 운반0; VM4 사용자 중단6개 분모 제외.
+- 최원: v320/r65 seg1 grasp_lift831.2 SIM초. 두 번째 실제 공동 파지·최종 B 내려놓기는 미확인.
+- v324–v327: 인식 가속·정렬 후보·짧은 GO/ACK; v328–v329: 기존 정렬을 유지한 짧은 GO/ACK 비교.
+- VM3만, 최대12개·부하<12.8·메모리≥6GiB·계획 동시 부하30SIM 속도 게이트≤3.0.
+- 마감2026-10-13 13:00 UTC(22:00 KST), 원본 보관 해시 확인 뒤 VM3 deallocate·확인.
+- 원본: Azure ~/ugrp-sim/runs → ARM /home/ubuntu/ugrp-archive/runs; Mac은 fetch-lite만.
+- 결정 모델·Gemma 대화 구조와 기억 보강(v330–v339)은 별도 작업 결과를 통합 비교 예정.

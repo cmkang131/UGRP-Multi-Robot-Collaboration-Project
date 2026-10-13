@@ -161,7 +161,7 @@ def test_default_unchanged_and_new_bundle_admitted(monkeypatch):
 
 
 def test_visual_uncertainty_removes_go_and_real_journal_accepts_speech_key(tmp_path):
-    from scripts.s4_proxy_relay import speech_idempotency_key
+    from scripts.s4_proxy_relay import speech_idempotency_key, request_dialogue_mode
     from harness.s4_relay_journal import Journal
     for grip in ('unknown','slipping','not_held'):
         q=dd.decision_request(request(user()),dict(own_grip=grip,own_alignment='unknown'))
@@ -171,3 +171,5 @@ def test_visual_uncertainty_removes_go_and_real_journal_accepts_speech_key(tmp_p
     assert value[0]==200 and disposition=='forwarded'
     value,disposition=journal.call(key,b'request',lambda:pytest.fail('must reuse'))
     assert disposition=='cached'
+    assert request_dialogue_mode(dict(messages=[{},dict(content='ordinary chat')]))=='gemma_v0'
+    assert request_dialogue_mode(request(user()))==dd.MODE
