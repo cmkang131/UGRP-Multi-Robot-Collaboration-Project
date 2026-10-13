@@ -40,7 +40,7 @@ class ModelSelection:
 
 def add_model_options(parser):
     parser.add_argument('--planner-response-format',choices=('off','json_object'),default='off')
-    parser.add_argument('--planner-prompt-order', choices=('off', 'static_first_v1'), default='off')
+    parser.add_argument('--planner-prompt-order', choices=('off', 'static_first_v1', 'static_first_v2'), default='off')
     parser.add_argument('--planner-model', default=DEFAULT_MODEL)
     parser.add_argument('--planner-provider', default=DEFAULT_PROVIDER)
     parser.add_argument('--planner-reasoning', choices=('default', 'off'), default='default')
@@ -60,6 +60,22 @@ DYNAMIC_KEYS = ('now_s', 'own', 'own_act_results', 'received_messages', 'events'
 def ordered_context(context, order='off'):
     """Only insertion order changes; every key/value is preserved exactly."""
     if order == 'off': return context
+    if order == 'static_first_v2':
+        # Unknown fields stay in the dynamic suffix. No values, array order,
+        # numeric precision, or candidate arguments are changed. In particular
+        # evidence_gate contains changing archived_reports and is NOT static.
+        keys = ('schema', 'public_rules', 'task', 'static_map', 'order_sheet',
+                'condition', 'can_send_to', 'robot_id', 'now_s', 'own',
+                'own_act_results', 'received_messages', 'events',
+                'evidence_gate', 'evidence_assessment', 'candidates')
+        def canonical(value):
+            if isinstance(value, dict):
+                return {k: canonical(value[k]) for k in sorted(value)}
+            if isinstance(value, list): return [canonical(v) for v in value]
+            return value
+        # Extensions precede the changing observations, never the shared prefix.
+        keys = keys[:8] + tuple(k for k in sorted(context) if k not in keys) + keys[8:]
+        return {k: canonical(context[k]) for k in keys if k in context}
     if order != 'static_first_v1': raise ValueError('UNKNOWN_PLANNER_PROMPT_ORDER')
     keys = STATIC_KEYS + DYNAMIC_KEYS
     return {k: context[k] for k in keys if k in context} | {k: context[k] for k in sorted(context) if k not in keys}
