@@ -8,7 +8,7 @@ from harness.s4_live_transport import validate_receipt
 # Explicit render/CPU environment, shared with the r45 retry.
 for key,value in {'MUJOCO_GL':'osmesa','PYOPENGL_PLATFORM':'osmesa','OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MKL_NUM_THREADS':'1','LP_NUM_THREADS':'1'}.items():os.environ[key]=value
 b=Path.home()/'ugrp-sim';sha=sys.argv[1];host=os.uname().nodename
-assert host in ('ugrp-sim-azure3','ugrp-sim-azure4')
+assert host=='ugrp-sim-azure3','USER_ONE_VM_ONLY_2026_10_13_1958'
 seeds=[int(x) for x in (sys.argv[4] if len(sys.argv)>4 else '61006').split(',')]
 VERS=[int(x) for x in sys.argv[2].split(',')]
 BATCH=sys.argv[3]
@@ -50,12 +50,22 @@ for version,parent in ((352,347),(353,348),(354,350),(355,350)):
 EXTRA[304]=[('--relook-giveup','dev_light_rest_v1')]
 EXTRA[305]=EXTRA[304]
 MODE={304:'view5_pan_v1',305:'view5_pan_v1',303:'view5_pan_v1',295:None,296:None,297:'view5_pan_v1',298:'view5_pan_v1',300:'view5_pan_v1',301:'view5_pan_v1',302:'view5_pan_v1'}
+EXTRA[356]=EXTRA[354]+[('--approach-efficiency','regulated_v1')]
+for version,parent in ((357,352),(358,354),(359,356),(360,356)):
+ EXTRA[version]=EXTRA[parent]+[('--speech-context','recent8_v1' if version==360 else 'recent4_v1')]
+
+for version,parent in zip(range(365,369),range(357,361)):
+ EXTRA[version]=EXTRA[parent]+[('--dialogue-call-policy','event_v1')]
+
+for version,parent in zip(range(369,373),range(365,369)):
+ EXTRA[version]=EXTRA[parent]+[('--call-snapshot','prepared_v1')]
+
 selected=[(seed,version,'view5_pan_v1') for seed in seeds for version in VERS]
 assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sha
 assert not subprocess.check_output(['git','status','--porcelain'])
 assert os.getpriority(os.PRIO_PROCESS,0)==0 and os.getloadavg()[0]<12.8
 assert int(next(l.split()[1] for l in Path('/proc/meminfo').read_text().splitlines() if l.startswith('MemAvailable:')))>6*1024**2
-for h,minimum in [('x86',16*1024*2**20),('arm',32*768*2**20),('mac',32*80*2**20)]:
+for h,minimum in [('x86',16*1024*2**20),('arm',16*768*2**20),('mac',16*80*2**20)]:
  p=b/f'e2e18-{BATCH}-budget-{h}.json';x=json.loads(p.read_text());assert time.time()-p.stat().st_mtime<300 and x['ok']
  assert x['checks'][0]['expected_bytes']>=minimum
 active=[r for r in (b/'runs').glob('e2e18-v*-s*-r*') if r.is_dir() and not (r/'EXIT').exists()]

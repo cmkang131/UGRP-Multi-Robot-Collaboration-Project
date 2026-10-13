@@ -44,7 +44,15 @@ All prose is English. Reply one JSON object, no markdown:
 "approach":"west","mode":"solo"},"message":"I will take the box.",
 "reason":"This leaves the paired task to the available carriers."}
 This is syntax only. Never choose an unoffered action. Failures and refusals
-in memory are feedback; choose another feasible method when appropriate.'''
+in memory are feedback; choose another feasible method when appropriate.
+Newest own observations outrank older peer reports. If observations conflict,
+choose an offered verification action. Freshness alone does not prove truth.
+Use preview expected costs, including delay and opportunity costs. Tentative
+help is not automatically worth accepting; compare verification and solo work.
+An old near-arrival report does not justify waiting indefinitely.
+Output EXACTLY four keys: act, args, message, reason. Never add reasoning,
+condition, analysis, or any other key. reason is ONE sentence, at most 40 words.
+In no_comm still output all four keys and set message to the empty string.'''
 
 
 def clean(value):
@@ -111,6 +119,8 @@ def signature(row):
 
 def parse(raw, menu):
     value = json.loads(raw) if isinstance(raw, str) else copy.deepcopy(raw)
+    if not isinstance(value, dict) or set(value) != {'act', 'args', 'message', 'reason'}:
+        raise ValueError('Output exactly act,args,message,reason; remove all other keys (including reasoning and condition).')
     _fields(value, 'act args message reason')
     validate_act(value['act'], value['args'])
     for k in ('message', 'reason'):
@@ -203,7 +213,8 @@ class Planner:
         if public_rules is not None: value['public_rules'] = copy.deepcopy(public_rules)
         clean(value)
         for row in candidates: validate_act(row['act'], row['args'])
-        return value
+        from harness.task_planner_evidence import enrich
+        return enrich(value)
 
     def decide(self, context, model, executor=None, *, repair_budget=1):
         """One combined call; one repair only for rejection. Same model for repair.

@@ -70,7 +70,7 @@ class Gemma:
                 raise ValueError('OWN_RGB_HASH_MISMATCH')
             content = [dict(type='text', text=content),
                        dict(type='image_url', image_url=dict(url='data:image/jpeg;base64,'+image))]
-        body = dict(model='gemma-4-31b-it', temperature=0, max_tokens=320,
+        body = dict(model='gemma-4-31b-it', temperature=0, max_tokens=768,
                     messages=[dict(role='system', content=request['system']), dict(role='user', content=content)])
         key = hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()
         call_id = 's4live1-taskplanner-' + self.run_id + '-' + uuid4().hex

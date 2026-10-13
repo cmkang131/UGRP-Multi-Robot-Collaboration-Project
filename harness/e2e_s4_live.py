@@ -20,14 +20,14 @@ Until a route exists, continue while the own-camera mapper explores. r1 must sen
 GO/ACK use the exact current dialogue.key [order_id,route_hash,grip_epoch,seg]. GO requires own RGB supporting the grip; ACK requires your GO and the current peer_go_ref. Never reuse a previous epoch or segment. When unsure, continue holds transport. Only channel.can_send_to may receive messages. reply_to must be a received ID or null. All prose is English. Examples describe syntax, not evidence.'''
 
 
-def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off',route_handle='off',vote_ref='off',llm_memory='off',memory=None,body_controller='off',dialogue_decider='gemma_v0',own_protocol_observation=None):
+def project(request, *, options, decider='off', epoch_age_s=None, protocol_recovery='off',protocol_progress='off',route_handle='off',vote_ref='off',llm_memory='off',memory=None,body_controller='off',dialogue_decider='gemma_v0',own_protocol_observation=None,dialogue_call_policy='off',own_state_summary=None,speech_context='off'):
     """Validate before projection; retain the typed E2E action/message contract."""
     r = copy.deepcopy(request)
     b = json.loads(r['messages'][1]['content'])
     own.scan(b)
     if b.get('schema') != own.SCHEMA or 'dialogue' not in b:
         raise base.ContractViolation('E2E_DIALOGUE_INPUT_REQUIRED')
-    if not options.compact_prompt_v1 and options.prompt_lang == 'ko' and decider=='off' and body_controller=='off':
+    if not options.compact_prompt_v1 and options.prompt_lang == 'ko' and decider=='off' and body_controller=='off' and dialogue_call_policy=='off':
         if vote_ref!='off':raise ValueError('VOTE_REF_REQUIRES_PROJECTED_PROMPT')
         if llm_memory!='off':raise ValueError('LLM_MEMORY_REQUIRES_PROJECTED_PROMPT')
         return r
@@ -101,11 +101,19 @@ def project(request, *, options, decider='off', epoch_age_s=None, protocol_recov
         b['dialogue_epoch_age_s']=epoch_age_s
         if dialogue_decider=='code_v1' and own_protocol_observation is not None:
             b['own_protocol_observation']=copy.deepcopy(own_protocol_observation)
+    if speech_context!='off':
+        if speech_context not in ('recent4_v1','recent8_v1') or dialogue_decider!='code_v1':raise ValueError('UNKNOWN_SPEECH_CONTEXT')
+        b['speech_context']=speech_context
     if body_controller != 'off':
         if body_controller != 'jev_v1':raise ValueError('UNKNOWN_BODY_CONTROLLER')
         system += ' Body-controller separation: you choose communication acts only (continue, route proposal/approval, claim, current GO/ACK). The body decision backend selects every body, gripper and camera motion. Do not select look_around, release or any motor action. Continue means no dialogue act; it does not control motion. Describe only your own visual evidence when deciding GO/ACK, including before lifting.'
         b['body_controller']=body_controller
     b['prompt_lang'] = options.prompt_lang
+    if dialogue_call_policy != 'off':
+        from harness.e2e_dialogue_call_policy import compact, OPTION
+        if dialogue_call_policy != OPTION: raise ValueError('UNKNOWN_DIALOGUE_CALL_POLICY')
+        b['own_state_summary'] = own_state_summary
+        b, system = compact(b, system)
     own.scan(b)
     if len(r['images']) != 1 or len(r['image_refs']) != 1:
         raise base.ContractViolation('ONE_OWN_RGB_ONLY')
@@ -137,6 +145,10 @@ class Trial(base.Trial):
         self.protocol_reminders=Reminders()
         from harness.e2e_llm_memory import Memory
         self.memory=Memory();self.llm_memory='off';self.dialogue_decider='gemma_v0'
+        self.dialogue_call_policy='off'
+        from harness.e2e_dialogue_call_policy import Policy
+        self.call_events=Policy()
+        self.scheduler.call_admission=self.admit_dialogue_call
         if not self.own_input_mode or self.dialogue is None:
             raise base.ContractViolation('E2E_OWN_INPUTS_AND_DIALOGUE_REQUIRED')
         self.transport = RetryTransport(self, send_ledger=self.send_ledger, client_factory=self.client_factory)
@@ -153,7 +165,8 @@ class Trial(base.Trial):
         view=self.dialogue.view(call.actor,call.started_sim_s)
         age=None if view['key'] is None else call.started_sim_s-self.dialogue.opened
         request = project(p.request, options=self.options,decider=self.decider,epoch_age_s=age,protocol_recovery=self.protocol_recovery,protocol_progress=self.protocol_progress,route_handle=getattr(self.dialogue,'route_handle','off'),vote_ref=getattr(self.dialogue,'vote_ref','off'),llm_memory=self.llm_memory,body_controller=self.body_controller,
-            dialogue_decider=self.dialogue_decider,own_protocol_observation=(self.protocol_observer(call.actor) if self.dialogue_decider=='code_v1' and hasattr(self,'protocol_observer') else None),memory=None if self.llm_memory=='off' else mem_collect(self,self.memory,call,commands=self.llm_memory=='v1_commands'))
+            dialogue_call_policy=self.dialogue_call_policy,own_state_summary=(self.call_state(call.actor,call.started_sim_s)[0] if self.dialogue_call_policy!='off' else None),
+            speech_context=getattr(self,'speech_context','off'),dialogue_decider=self.dialogue_decider,own_protocol_observation=(self.protocol_observer(call.actor) if self.dialogue_decider=='code_v1' and hasattr(self,'protocol_observer') else None),memory=None if self.llm_memory=='off' else mem_collect(self,self.memory,call,commands=self.llm_memory=='v1_commands'))
         return type(p)(ProjectedInputs(p.bundled,json.loads(request['messages'][1]['content'])),request,p.request_id)
 
     def finish_call(self,call,prepared,raw,*,provider_usage=None):
@@ -172,7 +185,51 @@ class Trial(base.Trial):
                 raw=json.dumps(value,ensure_ascii=False)
         return super().finish_call(call,prepared,raw,provider_usage=provider_usage)
 
+    def call_state(self, actor, now):
+        from harness.e2e_event_projection import route_for_events
+        robot = self.links[actor].inner
+        view = self.dialogue.view(actor, now)
+        route = route_for_events(self, actor, now)
+        observed = {}
+        if hasattr(self, 'protocol_observer'):
+            frame = getattr(robot, 'frame', None)
+            stamp = (getattr(frame, 'sha256', None), tuple(sorted(getattr(robot, 'servo', {}).items())),
+                     tuple(view['key'] or ()))
+            cache = getattr(self, '_policy_observations', {})
+            if actor not in cache or cache[actor][0] != stamp:
+                cache[actor] = (stamp, self.protocol_observer(actor))
+            self._policy_observations = cache
+            observed = cache[actor][1]
+        own_summary = dict(stage=getattr(getattr(robot, 'goal', None), 'stage', None),
+            approach=(getattr(robot, 'carrier_approach', None) or {}).get('status'),
+            grip=observed.get('own_grip'), alignment=observed.get('own_alignment'))
+        protocol = {k: view.get(k) for k in ('route_hash','proposal_message_id','approved',
+                    'own_claim','key','own_go_sent','peer_go_ref','own_ack_sent')}
+        protocol['proposable_route'] = (route.get('route_hash') if route and actor == 'r1'
+            and not view['approved'] and view['proposal_message_id'] is None else None)
+        # Grip changes in an open vote window, and a slip at any time, bypass
+        # observation throttling. They remain own-RGB hypotheses only.
+        protocol['grip_alert'] = observed.get('own_grip') if view['key'] or observed.get('own_grip') == 'slipping' else None
+        inbox = list(self.channel.inbox(actor, now_sim_s=now)) if self.spec.channel_open else []
+        return own_summary, protocol, inbox
+
+    def admit_dialogue_call(self, actor, trigger, now):
+        if self.dialogue_call_policy == 'off': return True
+        row = self.call_events.decide(actor, now, *self.call_state(actor, now), trigger=trigger)
+        self.scheduler.decision_events.append(dict(row, event='dialogue_call_policy'))
+        if row['retry_at_sim_s'] is not None:
+            self.scheduler.trigger(actor, 'report', at=row['retry_at_sim_s'])
+        return row['admitted']
+
     def observe_events(self, now):
+        if self.dialogue_call_policy != 'off':
+            for rid in ('r1','r2','r3'):
+                state = self.call_state(rid, now)
+                key = own.digest(state[:2])
+                if getattr(self, '_call_state_edges', {}).get(rid) != key:
+                    if not hasattr(self, '_call_state_edges'): self._call_state_edges = {}
+                    self._call_state_edges[rid] = key
+                    self.scheduler.trigger(rid, 'report', at=now)
         if not self.options.event_driven_llm: return
         if self.protocol_recovery=='envelope_retry_v1':self.protocol_reasks.poll(self,now)
         if self.protocol_progress=='stage_retry_v1':self.protocol_reminders.poll(self,now)

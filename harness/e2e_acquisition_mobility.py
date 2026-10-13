@@ -63,10 +63,13 @@ def explore(tr,rid,now,a):
         return False,[dict(kind='hold')]
     if np.linalg.norm(pose[:2]-a['progress_xy'])>=PARAMS['progress_m']:
         a.update(progress_t=now,progress_xy=pose[:2].copy())
-    if now-a['mobile_started']>=PARAMS['explore_s'] or now-a['progress_t']>=PARAMS['progress_s']:
+    from harness import e2e_approach_efficiency as efficient
+    duration=efficient.PARAMS['search_explore_s'] if efficient.enabled(tr) else PARAMS['explore_s']
+    progress=efficient.PARAMS['search_no_progress_s'] if efficient.enabled(tr) else PARAMS['progress_s']
+    if now-a['mobile_started']>=duration or now-a['progress_t']>=progress:
         tr.event(now,'own_acquisition_navigation_window_end',robot_id=rid,cycle=key,
             elapsed_s=now-a['mobile_started'],no_translation_s=now-a['progress_t'])
-        a.update(phase='turn',started=now,yaw=float(pose[2]+math.pi/3))
+        a.update(phase='turn',started=now,yaw=efficient.next_yaw(tr,rid,a,pose))
         return False,[dict(kind='hold')]
     action=remembered_command(tr,rid,now,a) if option=='remembered_view_v1' else None
     return False,[action if action is not None else {k:v for k,v in r.nav_command.items() if k!='t'}]

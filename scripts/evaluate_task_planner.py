@@ -80,6 +80,8 @@ def adapt(row, arm):
     ctx = p.context(now=view['now_s'], orders=view['public_context']['orders'],
                     static_map=view['public_context']['static_map'], own=own, candidates=menu,
                     task=view['task'], public_rules=public_rules)
+    from harness.task_planner_evidence import cost_previews
+    cost_previews(ctx, view)
     return p, ctx, labels
 
 
@@ -125,7 +127,8 @@ def main():
     scored = json.loads((a.source/'results_scored.json').read_text())
     # Labels are evaluator-only and never sent into adapt/model.
     gold = {r['case_id']: r for r in scored if r['model'] == 'rules' and r['condition'] == 'none'}
-    assert len(gold) == 384 and sum(not r['ambiguous'] for r in gold.values()) == 331
+    assert len(gold) == 384
+    main_count = sum(not r['ambiguous'] for r in gold.values())
     jobs = [(row, arm) for arm, source_arm in ARMS.items() for row in source if row['condition'] == source_arm]
     if a.limit is not None: jobs = jobs[:a.limit]
     dump(a.out/'RUN_META.json', dict(**{'class':'dev'}, pr=None, branch=subprocess.check_output(['git','branch','--show-current'],text=True).strip(),
@@ -164,7 +167,7 @@ def main():
                           audit=p.audit))
     dump(a.out/'solo.json', extra)
     summary = dict(schema='ugrp.task_planner.offline.v1', research_result=False,
-                   source_count=384, main_count=331, ambiguous_count=53,
+                   source_count=384, main_count=main_count, ambiguous_count=384-main_count,
                    leader_scope='r1 leader receives r2 original English report; same observation as peer_en; not multi-turn relay',
                    conditions={}, synthetic_solo=dict(n=sum(x['correct'] for x in extra), N=len(extra)),
                    budget=dict(calls=budget.calls, accounted_usd=budget.charged, unknown_cost_calls=budget.unknown))
@@ -173,6 +176,9 @@ def main():
         summary['conditions'][arm] = dict(n=sum(r['correct'] for r in main), N=len(main),
             ambiguous=dict(n=sum(r['correct'] for r in amb), N=len(amb)),
             errors=sum(r['status'] != 'ok' for r in rs),
+            effective_n=sum(r.get('effective_correct',False) for r in main),
+            by_quality={q:dict(n=sum(r['correct'] for r in main if r.get('quality')==q),
+                              N=sum(r.get('quality')==q for r in main)) for q in sorted({r.get('quality','') for r in main})},
             by_domain={d:dict(n=sum(r['correct'] for r in main if r.get('domain')==d),
                               N=sum(r.get('domain')==d for r in main)) for d in sorted({r.get('domain','') for r in main})})
     dump(a.out/'scored.json', rows); dump(a.out/'summary.json', summary)

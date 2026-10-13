@@ -1,0 +1,167 @@
+{
+  "scope": "saved own observations/issued commands; no simulator and no future-frame prediction",
+  "robots": {
+    "r1": {
+      "status_sampled_sim_s": {
+        "navigate_pregrasp": 182.0,
+        "camera_settle": 5.0,
+        "acquire_turn": 19.0,
+        "acquire_scan": 50.0,
+        "approach_path_unavailable": 2.0,
+        "recover_backup": 8.0,
+        "recover_turn": 9.0,
+        "approach": 1.0,
+        "rotate_station_heading": 16.0,
+        "station_perception_pan_v1": 14.0,
+        "acquire_explore": 52.0,
+        "base_settle": 1.0,
+        "clip_recovery_settle": 4.0,
+        "clip_recovery_backup": 2.0,
+        "visual_servo": 70.0
+      },
+      "navigate_substate_sampled_sim_s": {
+        "rotate_path": 37.0,
+        "forward_path": 145.0
+      },
+      "unique_navigation_evaluations": 387,
+      "navigation_evaluations_per_resident_sim_s": 2.1263736263736264,
+      "goal_revisions_over_5cm": 4,
+      "gaze_events": 62,
+      "gaze_reserved_sim_s": 49.6,
+      "replayed_inspect_gazes": 61,
+      "small_gazes_suppressed": 32,
+      "nominal_gaze_budget_reduction_s": 25.6,
+      "actual_forward_at_navigation_evaluation": 260,
+      "rate_opportunities": 101,
+      "nominal_same_pulse_count_rate_reduction_s": 20.2,
+      "completed_exploration_windows": 2,
+      "exploration_window_durations_s": [
+        25.19999999999999,
+        25.19999999999999
+      ],
+      "nominal_same_window_count_budget_reduction_s": 34.4,
+      "observed_reacquisitions": 7,
+      "own_end_missing_intervals_s": [
+        65.4,
+        59.6,
+        5.2,
+        176.8,
+        37.6,
+        6.4,
+        4.8
+      ],
+      "pulse_forward_delta_m": 0.012917157771402163,
+      "baseline_nominal_forward_m_s": 0.03229289442850541,
+      "candidate_max_nominal_forward_m_s": 0.06458578885701081,
+      "projection_rejected_navigation_evaluations": 157
+    },
+    "r2": {
+      "status_sampled_sim_s": {
+        "acquire_turn": 29.0,
+        "acquire_scan": 77.0,
+        "acquire_explore": 71.0,
+        "navigate_pregrasp": 196.0,
+        "arm_clearance_backup": 18.0,
+        "arm_clearance_turn": 7.0,
+        "arm_clearance_verify": 7.0,
+        "rotate_station_heading": 15.0,
+        "approach_path_unavailable": 1.0,
+        "recover_backup": 4.0,
+        "approach": 1.0,
+        "recover_turn": 4.0,
+        "visual_servo": 5.0
+      },
+      "navigate_substate_sampled_sim_s": {
+        "forward_path": 162.0,
+        "rotate_path": 34.0
+      },
+      "unique_navigation_evaluations": 404,
+      "navigation_evaluations_per_resident_sim_s": 2.061224489795918,
+      "goal_revisions_over_5cm": 9,
+      "gaze_events": 68,
+      "gaze_reserved_sim_s": 54.4,
+      "replayed_inspect_gazes": 53,
+      "small_gazes_suppressed": 27,
+      "nominal_gaze_budget_reduction_s": 21.6,
+      "actual_forward_at_navigation_evaluation": 277,
+      "rate_opportunities": 114,
+      "nominal_same_pulse_count_rate_reduction_s": 22.8,
+      "completed_exploration_windows": 3,
+      "exploration_window_durations_s": [
+        25.19999999999999,
+        25.19999999999999,
+        10.0
+      ],
+      "nominal_same_window_count_budget_reduction_s": 36.4,
+      "observed_reacquisitions": 8,
+      "own_end_missing_intervals_s": [
+        3.2,
+        49.6,
+        9.6,
+        3.6,
+        4.0,
+        4.0,
+        227.6,
+        35.6
+      ],
+      "pulse_forward_delta_m": 0.012917157771402163,
+      "baseline_nominal_forward_m_s": 0.03229289442850541,
+      "candidate_max_nominal_forward_m_s": 0.06458578885701081,
+      "projection_rejected_navigation_evaluations": 226
+    }
+  },
+  "limitations": [
+    "1 s status samples can retain a preceding status during camera/queue holds; gaze budgets overlap navigation residence.",
+    "Counterfactual component budgets assume the same pulses/views/windows. They must not be added or subtracted from paired 435 s.",
+    "No full historical costmap/path or changed-trajectory camera frames: second-pulse clearance, replanning savings and scan success not inferred.",
+    "v324 and v329 align trajectories are identical: not independent evidence. New parent v350 changes body/protocol.",
+    "Reacquisition count uses >2 s gaps between accepted own visible-end frames; no physical grasp/contact labels."
+  ],
+  "input_path": "experiments/2026-10-13-e2e18-body/approach-v351-own-inputs.json.zst",
+  "input_uncompressed_sha256": "79eb6ca22730579e894ffcf69e4db5ff2d514e5c08b19c6549d6f549c86a0855",
+  "raw_files": {
+    "robots/r1/ownmap.jsonl": "0ad5202be1c0d3236c1ecbdf120a704c7c7f2991a12b6f1f61bc5c2655ea1f56",
+    "robots/r1/commands.jsonl": "d42808f3fa38a1c9da1f1aaefcdc3a2743d047ac903631a017321d656a3d64fc",
+    "robots/r2/ownmap.jsonl": "3382cc7f1de1df9ad562db6094f0dbe3bb5e749d6e5ca307c9917d088e31ed79",
+    "robots/r2/commands.jsonl": "ebf99e44b50c173f70d9b1fedb144974cd13ca9833fd715988b499a7a0c82ee5",
+    "transport-trace.json": "5dba25645fdcac253deb8b3e30d838978d2e770a8c2f3c63550f4eaf08087a04"
+  },
+  "source_sha": "c11b4a9474b65a013c11c319efd6266b91851cdb",
+  "log_path": "outputs/e2e18-body/r69-logs/e2e18-v324-s61006-r69-log.txt",
+  "log_sha256": "b90cd5171d4c89262166853aa6554e77454a7ea18128fe8d8dfdb7ec678fe309",
+  "bundle": "e2e18-v351",
+  "workflow_version": "7.244.0",
+  "parent": "e2e18-v350",
+  "option": "--approach-efficiency regulated_v1",
+  "default": "off",
+  "test_command": "python3 -m pytest -q tests/test_e2e_approach_efficiency.py tests/test_e2e_pregrasp_acquire.py tests/test_e2e_body_code.py",
+  "tests": {
+    "passed": 39,
+    "failed": 0,
+    "files": 3
+  },
+  "physics_runs": 0,
+  "provider_calls": 0,
+  "v329_same_align_digest": "b00bf83014cbb2c6c3673d3efe895eeb77e54c4790ca4a51e37be6073875c603",
+  "v329_log_sha256": "1c496339cf2ed8684e289c19f027dbd2829622820e85c1989fb0013c0e7f78c0",
+  "evidence": {
+    "approach-v351-own-inputs.json.zst": {
+      "bytes": 376858,
+      "sha256": "c0d2451352ee90b4a28923000d9f75df3dbc39f5587345eea800371626310614",
+      "uncompressed_sha256": "79eb6ca22730579e894ffcf69e4db5ff2d514e5c08b19c6549d6f549c86a0855",
+      "uncompressed_bytes": 2899648
+    },
+    "approach-v351-replay.json.zst": {
+      "bytes": 18648,
+      "sha256": "ebf5c9ba1f1376d45ba7b49952ef685661b28e0b688b41eb8d92db0db376b90a",
+      "uncompressed_sha256": "df8b6219569efb05e12d2338131e26e2a536dc40148b7c01c381c66a6c6d4dc3",
+      "uncompressed_bytes": 297747
+    },
+    "approach-v351-pytest.txt": {
+      "bytes": 100,
+      "sha256": "74a32c3ea6f90b3f90a585c734f9872ef4e01650abd554ac8885b0710ba006a8"
+    }
+  },
+  "candidate_source_sha": "343bce426217c4cca75b0518764f5378b2417cfb",
+  "post_commit_replay_rows_identical": true
+}

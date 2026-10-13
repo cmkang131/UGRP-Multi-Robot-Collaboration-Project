@@ -40,3 +40,17 @@ def test_relay_idempotency_header_is_64_hex_and_unique():
     for _ in range(2):m({'system':'test','input':{}},timeout_s=1)
     assert all(re.fullmatch('[a-f0-9]{64}',h['X-UGRP-Idempotency-Key']) for h in seen)
     assert seen[0]['X-UGRP-Idempotency-Key']!=seen[1]['X-UGRP-Idempotency-Key']
+
+
+def test_age_cost_preview_uses_channel_only_and_no_gold():
+    from harness.task_planner_cost_rules import SPECS
+    r=row();v=r['input'];v['task']=SPECS['route']['task']
+    v['self_state']['travel_estimates']=dict(c_narrow=5,c_wide=20,c_inspect=25,failed_trip=34)
+    v['messages'][0].update(observation_time_s=40,body='Door_narrow is not blocked; the opening is clear.')
+    _,ctx,_=adapt(r,'peer_en')
+    assert ctx['evidence_assessment']['reports'][0]['age_s']==60
+    assert ctx['evidence_assessment']['reports'][0]['last_directly_observed_at'] is None
+    assert ctx['candidates'][0]['preview']['estimated_cost']==22
+    _,none,_=adapt(r,'no_comm')
+    assert none['evidence_assessment']['reports']==[]
+    assert [c['preview']['estimated_cost'] for c in ctx['candidates']]==[c['preview']['estimated_cost'] for c in none['candidates']]
