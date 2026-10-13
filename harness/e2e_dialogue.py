@@ -298,6 +298,8 @@ class Dialogue:
             try:
                 value = zp.parse(value) if isinstance(value, str) else copy.deepcopy(value)
                 value['action'] = vote_ref.expand(self, value['action'], context)   # off: unchanged
+                if getattr(trial,'body_controller','off')=='jev_v1' and value['action']['kind'] not in ('continue','claim','approve_route','route_vote'):
+                    raise ContractViolation('GEMMA_DIALOGUE_ONLY')
                 clean = copy.deepcopy(value)
                 contracts = [m.pop('contract', None) for m in clean['messages']]
                 if sum(c is not None for c in contracts) > 1:
