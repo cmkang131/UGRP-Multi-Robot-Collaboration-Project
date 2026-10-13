@@ -50,6 +50,7 @@ RUNTIME_MODULES = ('harness.ultrasonic_input', 'harness.range_provider', 'harnes
 HISTORY_FILE = 'range.jsonl'
 # Explicitly authorized consumers; the legacy zone adapter remains recording-only.
 REGISTERED_RANGE_CONSUMERS = {
+    'jev_body_v1': ('harness/e2e_body_controller.py',),
     'rgb_vo_us_v1': ('harness/e2e_us_stall.py', 'harness/e2e_live_mapping.py'),
 }
 REGISTERED_RANGE_WIRING = (

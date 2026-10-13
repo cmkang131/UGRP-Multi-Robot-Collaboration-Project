@@ -211,3 +211,19 @@ def test_dedicated_cpu_admission_rejects_overlap_busy_and_concurrency():
     with pytest.raises(ValueError,match='OVERLAP'):dedicated_verdict(cpus,idle,[dict(pid=1,cpus=[12])])
     with pytest.raises(ValueError,match='BUSY'):dedicated_verdict(cpus,{**idle,12:.79},[])
     with pytest.raises(ValueError,match='CONCURRENT'):dedicated_verdict(cpus,idle,[dict(pid=i,cpus=[0]) for i in range(15)])
+
+
+@pytest.mark.parametrize('condition',['no_comm','structured','peer_ko','leader_ko'])
+def test_body_dialogue_projection_keeps_channel_and_message_contract(tmp_path,setup_data,condition):
+    host,inner,_=build(tmp_path,setup_data,arm=condition)
+    call=SimpleNamespace(call_id='body-projection-r1',actor='r1',started_sim_s=1.)
+    host.trial.snapshot(call)
+    request=host.trial.prepare_call(call).request
+    baseline=live.project(request,options=Options(True,True,'en'))
+    body=live.project(request,options=Options(True,True,'en'),body_controller='jev_v1')
+    a=json.loads(baseline['messages'][1]['content']);b=json.loads(body['messages'][1]['content'])
+    assert b['channel']==a['channel'] and b['peer_reports']==a['peer_reports']
+    assert b['action_message_contract']['message_element']==a['action_message_contract']['message_element']
+    assert {x['kind'] for x in b['action_message_contract']['actions']}<={'continue','claim','approve_route','route_vote'}
+    assert body['image_refs']==baseline['image_refs']
+    assert 'communication acts only' in body['messages'][0]['content']

@@ -36,6 +36,9 @@ def require_current(bundle, root):
     if bundle['execution_bundle_id'] in ('e2e18-v330','e2e18-v331','e2e18-v332'):
         from harness.e2e_llm_memory import parent_for_validation as memory_parent
         return require_current(memory_parent(bundle),root)
+    if bundle['execution_bundle_id'] in ('e2e18-v335','e2e18-v336','e2e18-v337'):
+        from harness.e2e_body_controller import parent_for_validation as body_parent
+        return require_current(body_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v324','e2e18-v325','e2e18-v326','e2e18-v327','e2e18-v328','e2e18-v329'):
         from harness.e2e_post_relook_stack import parent_for_validation as stack_parent
         return require_current(stack_parent(bundle),root)

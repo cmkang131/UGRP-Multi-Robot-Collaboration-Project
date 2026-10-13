@@ -146,11 +146,13 @@ class Transport:
             self.epoch+=1
             for rid in PAIR:
                 hover,descent=postures(self.aligned[rid])
-                self._poses(rid,now,[(dict(hover)|{1:2000},.8,.6),
-                    *[(dict(p)|{1:2000},.25,.1) for p in descent],({1:1500},.5,.4),
+                path=[(dict(hover)|{1:2000},.8,.6),
+                    *[(dict(p)|{1:2000},.25,.1) for p in descent],({1:1500},.5,.4)]
+                if getattr(self,'body_controller','off')=='off':path += [
                     (dict(hover)|{1:1500},.8,.4),
-                    *[(dict(p)|{1:1500},d,s) for p,d,s in raise_path()]])
-            self.set('grasp_lift',now)
+                    *[(dict(p)|{1:1500},d,s) for p,d,s in raise_path()]]
+                self._poses(rid,now,path)
+            self.set('grasp_close' if getattr(self,'body_controller','off')!='off' else 'grasp_lift',now)
         elif now-self.stage_t>75:
             stopped=self.observation_timeout('OWN_RGB_ALIGNMENT_TIMEOUT',now)
             if not (self.dev_light and self.align_progress=='dev_continue_v1'):return stopped
@@ -223,6 +225,17 @@ class Transport:
         if (self.queue or now<self.queue_until-1e-8) and not (self.state=='align' and self.align_queues=='per_robot_v1'):return out
         if self.state=='mapping':self._route(now)
         elif self.state=='align':out+=self._align(now)
+        elif self.state=='grasp_close':
+            self._open_epoch(now)
+            self.set('grasp_go_ack',now)
+        elif self.state=='grasp_go_ack':
+            if self.dialogue.allowed(self.dialogue.key,now):
+                for rid in PAIR:
+                    hover,_=postures(self.aligned[rid])
+                    self._poses(rid,now,[(dict(hover)|{1:1500},.8,.4),
+                        *[(dict(p)|{1:1500},d,s) for p,d,s in raise_path()]])
+                self.set('grasp_lift',now)
+            elif now-self.stage_t>15:out+=self.fail('LIFT_GO_ACK_TIMEOUT',now)
         elif self.state=='grasp_lift':self._open_epoch(now)
         elif self.state=='wait_go_ack':
             if not self._carry(now) and now-self.stage_t>15:out+=self.fail('CURRENT_GO_ACK_TIMEOUT',now)
