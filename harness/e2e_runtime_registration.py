@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] in ('e2e18-v352','e2e18-v353','e2e18-v354','e2e18-v355'):
+        from harness.e2e_boundary_lifecycle import parent_for_validation as lifecycle_parent
+        return require_current(lifecycle_parent(bundle),root)
     if bundle['execution_bundle_id']=='e2e18-v350':
         from harness.e2e_code_stack import parent_for_validation as code_stack_parent
         return require_current(code_stack_parent(bundle),root)
