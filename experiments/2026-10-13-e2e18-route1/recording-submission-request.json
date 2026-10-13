@@ -1,0 +1,49 @@
+{
+  "schema": "ugrp.route_stage_submission.v2",
+  "status": "WAITING_SHARED_STAGING_INTEGRATION",
+  "pr": 476,
+  "supervisor_pr": 461,
+  "supervisor_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/461#issuecomment-6146078744",
+  "source_sha": "8f1324271617187cc72e37fd724d49f31704dfe7",
+  "shared_adapter_pr": 475,
+  "shared_adapter_sha": null,
+  "shared_adapter": "scripts/run_e2e_stage_probe.py",
+  "seeds": [
+    61006,
+    61007,
+    61008,
+    61009
+  ],
+  "source_run_preference": "r80 v375 for every seed; identical source/checkpoint per pair",
+  "stage": "mapping",
+  "cutoff_policy": "before first route, preferably first route SIM time minus 30s; nearest verified reproducible cutoff if unavailable",
+  "cap_sim_s": 60,
+  "stop_at": "first route packet",
+  "arms": [
+    {
+      "bundle": "e2e18-v387",
+      "route_recovery": "off",
+      "route_input_record": "on_v1"
+    },
+    {
+      "bundle": "e2e18-v390",
+      "route_recovery": "footprint_v2",
+      "route_input_record": "on_v1"
+    }
+  ],
+  "requested_N": 8,
+  "executed_N": 0,
+  "host": "VM3",
+  "total_concurrency": 16,
+  "speed_gate_max_wall_per_sim": 3.5,
+  "weld": false,
+  "recorder_max_compressed_bytes": 536870912,
+  "additional_storage_budget": "bounded recorder index/summary plus shared adapter RGB/raw budget; coordinator checks all host floors",
+  "provider_balance_check": "coordinator",
+  "evaluation": "separate snapshot digest keyed rectangles and initial own-to-world transform; physical passage unmeasured",
+  "blocked_by": [
+    "shared adapter not yet committed on PR475",
+    "staging v387 reservation collides with route1 prior reserved and committed v387-v390; move staging to next available number",
+    "mapping CLI hooks and integration SHA must be verified before execution"
+  ]
+}

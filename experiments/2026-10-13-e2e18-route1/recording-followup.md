@@ -39,3 +39,18 @@ PR #475 공용 `e2e_stage_checkpoint.py` / `run_e2e_stage_probe.py`를 재사용
 - [Nav2 footprint checker](https://api.nav2.org/nav2-rolling/html/footprint__collision__checker_8cpp_source.html): pose의 yaw로 footprint를 회전해 costmap에서 충돌 검사한다. 이번 셀 전체 SAT 및 연속 sweep는 perimeter raster보다 보수적인 적용이다. Nav2 구현과 바이트 동일하다는 주장이 아니다.
 - [Smac 2D 설정](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/smac/smac_2d/configuring_smac_2d/): tolerance, allow_unknown. 미지는 정보획득 힌트에만 허용한다.
 - 최신 논문/공개 frontier 코드의 확인 범위와 미확인 문헌은 기존 [README 참고 자료](README.md#참고-자료)에 보존했다. 이번 성능 개선의 증거로 인용하지 않는다.
+
+## 커밋 뒤 순수 계산 결과
+
+소스 `8f132427`에서 synthetic 실제 제어 호출 10/10을 기록했고 원래 결과 10/10을 재현했다. 압축/해시 누락 0/10. 동일 입력 30개 계산을 비교했다. 기존 8상태 + 셀 여유 오거부/실제 접촉 2상태이며 새 확증 코호트가 아니다.
+
+| 지표 | 기준 off | v381 | v389 |
+|---|---:|---:|---:|
+| 전체 경로 생성 | 5/10 | 3/10 | 4/10 |
+| 전체 관측 완료 경로 | 2/10 | 3/10 | 4/10 |
+| 기존 8상태 생성 | 5/8 | 3/8 | 3/8 |
+| 핵심 셀 경계 2상태 생성 | 0/2 | 0/2 | 1/2 |
+| 고정 정답 기하 충돌 없음 / 생성 경로 | 3/5 | 3/3 | 4/4 |
+| 계산 중앙/최대 (ms, 단일 Mac replay) | 10.25/34.65 | 4.26/25.58 | 7.98/18.92 |
+
+구체적 실패 이유 분포와 raw 해시는 `recording-summary.json`. 실제 입력 0개, 온라인 경로 생성 시간 미측정, 실제 통과 0/0, 요청 단계 시험 0/8이다. 준비 중 PYTHONPATH 누락 HOST_ERROR와 최초 평가 bounds가 과거 world와 달랐던 진단도 보존했고, 최종 표는 기존 fixture bounds를 그대로 적용한 재생이다. 소스 수정 없이 평가 labels만 바로잡았으며 초기 수치를 최종 증거에 합산하지 않는다.
