@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] in ('e2e18-v340','e2e18-v341','e2e18-v342','e2e18-v343'):
+        from harness.e2e_architecture_stack import parent_for_validation as architecture_parent
+        return require_current(architecture_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v330','e2e18-v331','e2e18-v332'):
         from harness.e2e_llm_memory import parent_for_validation as memory_parent
         return require_current(memory_parent(bundle),root)

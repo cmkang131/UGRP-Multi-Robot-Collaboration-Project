@@ -1,0 +1,51 @@
+{
+  "class_": "dev",
+  "pr": 461,
+  "seed": 61006,
+  "candidates": {
+    "v340": "v335+existing exact shadow_axes + phase timing",
+    "v341": "v336+same",
+    "v342": "v340+memory v1+short current vote reference",
+    "v343": "v341+same"
+  },
+  "criterion": [
+    "30 SIM speed gate <=3.0 under planned total load",
+    "own-map and alignment progress",
+    "current GO/ACK then real paired grasp and transport"
+  ],
+  "raw_reason": {
+    "r70_body_cpu_s_per_30_sim": [
+      68.835,
+      65.039,
+      66.986
+    ],
+    "r70_memory_cpu_s_per_30_sim": [
+      54.905,
+      54.563
+    ],
+    "r70_body_wall_per_sim": [
+      3.315,
+      3.52,
+      3.406
+    ]
+  },
+  "standard": {
+    "url": "https://numpy.org/doc/stable/user/basics.broadcasting.html",
+    "checked": "2026-10-13",
+    "application": "Reuse existing verified axis-wise array evaluation instead of adding a new motion or timing rule."
+  },
+  "scope": "Off by default; new registered combinations only. Reserved body and memory modules unchanged.",
+  "tests": {
+    "test_e2e_architecture_stack.py": {
+      "passed": 2
+    },
+    "test_e2e_perception_fast.py": {
+      "passed": 3
+    },
+    "fixed_test_fixture_import": "initial test-only import error corrected; full integration file passed"
+  },
+  "next_subset": [
+    340,
+    342
+  ]
+}
