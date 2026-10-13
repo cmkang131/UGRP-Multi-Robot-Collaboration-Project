@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] in ('e2e18-v279','e2e18-v280','e2e18-v281','e2e18-v282'):
+        from harness.e2e_release_physics import parent_for_validation
+        return require_current(parent_for_validation(bundle),root)
     if bundle['execution_bundle_id'] == 'e2e18-v278':
         from harness.e2e_jev_current_route import parent_for_validation
         return require_current(parent_for_validation(bundle), root)

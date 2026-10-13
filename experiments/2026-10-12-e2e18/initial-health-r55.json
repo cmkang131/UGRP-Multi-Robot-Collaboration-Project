@@ -1,0 +1,75 @@
+[
+  {
+    "host": "ugrp-sim-azure3",
+    "checks": [
+      {
+        "commands": {
+          "r1": {
+            "total": 311,
+            "translation": 116,
+            "turn_only": 141
+          },
+          "r2": {
+            "total": 311,
+            "translation": 161,
+            "turn_only": 135
+          }
+        },
+        "name": "e2e18-v278-s61006-r55",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v278-s61006-r55/raw",
+        "checked_unix": 1791859598.8540454,
+        "submission_elapsed_s": 196.6474256515503,
+        "progress": {
+          "wall_s": 118.33525805299905,
+          "sim_s": 62.0,
+          "frames": 104,
+          "model_attempts": 3,
+          "first_model_response": true,
+          "own_map_B_generated": true,
+          "own_B_boundary_remembered": true,
+          "own_route_generated": false,
+          "own_route_observed_complete": false,
+          "phase": "mapping",
+          "setdowns": 0
+        },
+        "eval_only_motion": {
+          "r1": {
+            "first_xyz": [
+              3.9000114706402056,
+              -1.4000185095647022,
+              0.03201340365174322
+            ],
+            "last_xyz": [
+              3.1844615177988334,
+              -0.10471285237478016,
+              0.03233704783648813
+            ],
+            "max_displacement_m": 1.4798069419032551,
+            "last_sim_s": 63.3,
+            "rows": 1241,
+            "sha256_at_check": "b3c8120fc490c011b4086d1dd2ba19cb975910d92f73cf76bda9d4fd423367eb"
+          },
+          "r2": {
+            "first_xyz": [
+              0.6000242899651017,
+              0.049993050439549706,
+              0.0320133414632005
+            ],
+            "last_xyz": [
+              1.129358738066709,
+              -0.5813423114438763,
+              0.031985141431622656
+            ],
+            "max_displacement_m": 0.8238806332878272,
+            "last_sim_s": 63.3,
+            "rows": 1241,
+            "sha256_at_check": "fdb49e4a11f214cf23518917344cf405b63cb3fddf71a3f74d713c950c808e41"
+          }
+        },
+        "traceback_seen": false,
+        "expected_measurement_stop": false,
+        "initial_ok": true
+      }
+    ]
+  }
+]

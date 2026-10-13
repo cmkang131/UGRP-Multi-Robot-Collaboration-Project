@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.e2e18.takeover.v1",
-  "checked_unix": 1791858676.6602921,
+  "checked_unix": 1791860050.434408,
   "status": "THIRD_TAKEOVER_RUNNING",
   "PR": 461,
   "deadline_utc": "2026-10-13T07:00:00Z",
@@ -16,24 +16,24 @@
   },
   "completion": {
     "LLM_operated": {
-      "observed": 83,
-      "total": 86
+      "observed": 84,
+      "total": 87
     },
     "own_map_completed": {
-      "observed": 44,
-      "total": 86
+      "observed": 45,
+      "total": 87
     },
     "start_to_finish_transport": {
       "observed": 0,
-      "total": 86
+      "total": 87
     },
     "all_three": {
       "confirmed": 0,
-      "total": 86
+      "total": 87
     },
     "paired_grasp": {
-      "confirmed": 3,
-      "total": 86
+      "confirmed": 5,
+      "total": 87
     }
   },
   "tilt_prior_analysis": {
@@ -46,7 +46,7 @@
   "vm": {
     "ugrp-sim-azure3": {
       "state": "running",
-      "active": 5,
+      "active": 6,
       "pending_gate": 0
     },
     "ugrp-sim-azure4": {
@@ -1819,7 +1819,7 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v272-s61006-r52/raw",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 1087.0,
+      "sim_s": 1443.0,
       "phase": "align",
       "LLM": true,
       "own_map": true,
@@ -1835,7 +1835,7 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v273-s61006-r52/raw",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 855.0,
+      "sim_s": 1063.0,
       "phase": "relook",
       "LLM": true,
       "own_map": true,
@@ -1851,7 +1851,7 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v274-s61006-r52/raw",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 1086.0,
+      "sim_s": 1463.0,
       "phase": "align",
       "LLM": true,
       "own_map": true,
@@ -1867,14 +1867,14 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v275-s61006-r53/raw",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 92.0,
-      "phase": "align",
+      "sim_s": 545.0,
+      "phase": "carry",
       "LLM": true,
       "own_map": true,
       "transport": false,
       "failure": null,
-      "paired_grasp": false,
-      "class_": "dev"
+      "paired_grasp": true,
+      "class_": "milestone"
     },
     {
       "host": "ugrp-sim-azure3",
@@ -1883,7 +1883,23 @@
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v277-s61006-r53/raw",
       "exit": null,
       "status": "RUNNING",
-      "sim_s": 92.0,
+      "sim_s": 544.0,
+      "phase": "carry",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": true,
+      "class_": "milestone"
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v278-s61006-r55",
+      "sha": "2c756a5d05913fdf0dbdb347b70426dc9ba54e92",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v278-s61006-r55/raw",
+      "exit": null,
+      "status": "RUNNING",
+      "sim_s": 218.0,
       "phase": "align",
       "LLM": true,
       "own_map": true,
@@ -1933,15 +1949,15 @@
     "verified": 72
   },
   "counts": {
-    "submitted_including_user_interruptions": 92,
+    "submitted_including_user_interruptions": 93,
     "excluded_user_interruptions": 6,
-    "cohort_attempted": 86,
-    "positive_sim": 83,
+    "cohort_attempted": 87,
+    "positive_sim": 84,
     "zero_sim_host_error": 3,
     "terminal": 81,
     "cohort_not_started": 12,
     "pending_gate": 0,
-    "active": 5
+    "active": 6
   },
   "session_transition": {
     "status": "BOTH_RESTARTED_GUARDS_ACTIVE_RELAY_IDENTITIES_VERIFIED",
@@ -2023,27 +2039,31 @@
   "third_current_records": [
     {
       "file": "cohort-r48.json",
-      "sha256": "af71aefa76b0a59b66128d0916d924631f1a89acc053a6c3a045ca0088591ecf"
+      "sha256": "0557a0351c178e00f6e22a47dc4aae56a3d24310c6099b04d3c1cae67aa0fda9"
     },
     {
       "file": "cohort-r49.json",
-      "sha256": "81610596d9087b2e6b5ba97193cbdff2f6ca3a9b2ede9397d12b14d2833f494a"
+      "sha256": "fad670d4766e27155df750d8b1110dc7e82e03228441bb6912758fedea008775"
     },
     {
       "file": "cohort-r50.json",
-      "sha256": "66cf909d72f73669c91827c854f49d597eb41cfcd0916ca22538f1d93a4a4f77"
+      "sha256": "e140b961e4cb9f21647587db9cf3877b2f5034656d6ab80804eb5e6307bbe0d5"
     },
     {
       "file": "cohort-r51.json",
-      "sha256": "6ae0e467b9765d68e0cebca590277f1d3256b5b8fb228a0811f03272e1b682b1"
+      "sha256": "27a4231288fd3022b327e751af48080c3a5dc503b31973a83dd05475c9d21d2e"
     },
     {
       "file": "cohort-r52.json",
-      "sha256": "3cd43c77979bdbde62db89251b3e74a5d64c43c18f529acfe41891d456ff6b78"
+      "sha256": "9cefe32ed46227ade21cd69e97ee3f2f7e72d26ff42860d69df825a0e9219507"
     },
     {
       "file": "cohort-r53.json",
-      "sha256": "1aa8be4f4a5aef3f8294f8a6120781504db8292734b16d7276464ed5441c16a4"
+      "sha256": "2855221a00f7699b61ced249b2bb8e8a64e7e32790e8ff2949f46735a1a460cc"
+    },
+    {
+      "file": "cohort-r55.json",
+      "sha256": "ddd05e7158c20f7e2790797ae19e5b4f466c828641dc5845d4a29afbda9895da"
     }
   ],
   "third_additional_records": {
@@ -2058,6 +2078,10 @@
     "vm4-user-scale-down.json": "6dd7e320984642bb1bb2e2b9e624316724ac660425e886ceb302126e1dd4f031",
     "finished-r51-v271-milestone.json": "d30745204800378b7a559e041e2d3d07603c54903858a16e4c47d350501942d3",
     "finished-r50-v269-replaced.json": "fc2744203a6c993709140cb64f13f4d903010b41174f1f830e7ef8a6cdcaaddb",
-    "archives-r53-gates.json": "bdddd636f4dc03b19c816f856140cdad6453c2d4b2dec39b41f8524b7a48c338"
+    "archives-r53-gates.json": "bdddd636f4dc03b19c816f856140cdad6453c2d4b2dec39b41f8524b7a48c338",
+    "archives-r55-gates.json": "e11f332441caa142e5fd2225033dfe8cc1393d46373be730ae2d23af57408802",
+    "r52-v271-milestone.json": "02bde198b11c7b15d3eca2494fdb77c571cf21e1521fd341e7574336c3415b28",
+    "r52-v271-final-grasp.json": "9e9c01575ac2ef2f59f003b4b0a370996d4c12b882c9f1dbe959cf24e67da1b1",
+    "jev-r55-initial-receipts.json": "67e5d9a8aac43c43d2cda190566521bb372aa9b734d6b0ce97b0f6f41fb7d4b5"
   }
 }

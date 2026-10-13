@@ -34,6 +34,8 @@ WALL_CAP_MAX_S = 25200.  # 7 h finite ceiling; default --wall-cap-s remains 1260
 
 def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decider='off',exploration_progress='off',pose_fix='off',path_follow='off',dev_light=False,wall_cap_s=12600.,stall_odometry='off',stall_recovery='off',stall_noise='off',stall_bundle=False,mapping_budget='off',exact_speedups=None,speed_bundle=False,boundary_views='off',b_marker_detect='off',runtime_registration='off',speed2_bundle=False,ultrasonic_front='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',speed3='off',speed4=None,b_partial_accept='off',speed5='off',observation_cadence='off',route_guard='off',beam_axis='off',route_coverage='off',carrier_axes='off',carrier_approach='off',route_extent='off',record_scalars='off',pose_guard='off',protocol_recovery='off',camera_load='off',route_tokens='off',protocol_progress='off',route_cost='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pulse_admission='off',event_projection='off',pregrasp_progress='off',gaze_cadence='off',stage_physics='off',protocol_idempotency='off',route_handle='off',boundary_frame='off',beam_end_model='off',beam_avoidance='off',pregrasp_acquire='off',align_queues='off',beam_decode='off',mapping_acquire='off',compute_budget='off',mapping_cadence='off',stale_station='off',carrier_goal='off',blocked_path_recovery='off',perception_settle='off',landmark_cache='off',camera_motion='off',camera_hold='off',arm_clearance='off',sonar_frame='off',acquisition_mobility='off',approach_commit='off',scan_guard='off',fine_view='off',approach_heading='off',fine_entry='off',station_heading='off',clip_recovery='off',station_handoff='off',capture_pose='off',relook_search='off'):
     # E2E17 broad is candidate-only; preserve every older bundle's seed scope.
+    requested_stage_physics=stage_physics
+    if stage_physics=='release_dt1_v1':stage_physics='pregrasp_dt1_v1'
     registered_seeds = range(61001,61013) if b_partial_accept != 'off' else range(61001, 61010) if explore_deadlock == 'replan_v1' else range(61001, 61005)
     if profile not in PROFILES or seed not in registered_seeds:raise ValueError('REGISTERED_MODEL_SEED_REQUIRED')
     if relook not in ('off','on_v1'):raise ValueError('UNKNOWN_RELOOK_TOGGLE')
@@ -295,6 +297,8 @@ def bundle(sha,seed,profile,*,enabled=False,relook='off',options=Options(),decid
     paths.update(relook_search_compose(b,relook_search))
     from harness.e2e_jev_current_route import compose as current_jev_compose
     paths.update(current_jev_compose(b))
+    from harness.e2e_release_physics import compose as release_physics_compose
+    paths.update(release_physics_compose(b,requested_stage_physics))
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(paths)}
     return b
 
@@ -669,7 +673,7 @@ def main(argv=None):
     p.add_argument('--event-projection',choices=('off','route_hash_v1'),default='off')
     p.add_argument('--pregrasp-progress',choices=('off','backup_replan_v1'),default='off')
     p.add_argument('--gaze-cadence',choices=('off','settled_frames_v1'),default='off')
-    p.add_argument('--stage-physics',choices=('off','pregrasp_dt1_v1'),default='off')
+    p.add_argument('--stage-physics',choices=('off','pregrasp_dt1_v1','release_dt1_v1'),default='off')
     p.add_argument('--protocol-idempotency',choices=('off','same_route_v1'),default='off')
     p.add_argument('--mapping-acquire',choices=('off','interleaved_v1'),default='off')
     p.add_argument('--perception-settle',choices=('off','command0p6_v1'),default='off')
