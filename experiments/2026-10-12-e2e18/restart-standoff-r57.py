@@ -18,7 +18,9 @@ EXTRA[297]=S3;EXTRA[298]=S3
 S1=[('--beam-lost-standoff','v1')]
 EXTRA[300]=S1;EXTRA[301]=S1;EXTRA[302]=S1+[('--relook-giveup','dev_light_v1')]
 EXTRA[303]=[('--relook-giveup','dev_light_v1')]
-MODE={303:'view5_pan_v1',295:None,296:None,297:'view5_pan_v1',298:'view5_pan_v1',300:'view5_pan_v1',301:'view5_pan_v1',302:'view5_pan_v1'}
+EXTRA[304]=[('--relook-giveup','dev_light_rest_v1')]
+EXTRA[305]=EXTRA[304]
+MODE={304:'view5_pan_v1',305:'view5_pan_v1',303:'view5_pan_v1',295:None,296:None,297:'view5_pan_v1',298:'view5_pan_v1',300:'view5_pan_v1',301:'view5_pan_v1',302:'view5_pan_v1'}
 selected=[(seed,version,MODE.get(version)) for seed in seeds for version in VERS]
 assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sha
 assert not subprocess.check_output(['git','status','--porcelain'])
@@ -57,7 +59,7 @@ for seed,version,mode in selected:
  (target/'resource-admission.json').write_text(json.dumps({'loadavg':os.getloadavg(),'continuing':[r.name for r in active]})+'\n')
  command=list(old_plan[0]['command'])
  command=[f'e2e18-v{version}' if x=='e2e18-v241' else x for x in command]
- for flag,value in [('--timeout',cap+300),('--wall-cap-s',cap),('--expected-source-sha',sha),('--output',str(target/'raw')),('--arm-clearance','range_wall_v1'),('--acquisition-mobility','resume_v1'),('--approach-commit','memory60_view_v1'),('--scan-guard','map_v1'),('--fine-view','inspect60_v1'),('--approach-heading','path20_v1'),('--fine-entry','capture60_mpc_v1'),('--station-heading','station20_v1'),('--clip-recovery','back3_v1'),('--station-handoff','pan_v1'),('--capture-pose','pose08_track_v1'),*([('--relook-search',mode)] if mode else []),*EXTRA[version],('--stage-physics','release_dt1_v1' if version in (298,301,302,303) else 'pregrasp_dt1_v1'),('--sonar-frame','site_z_v1'),('--relay-receipt',str(b/'relays/e2e18/a-r4.json')),('--seed',seed)]:
+ for flag,value in [('--timeout',cap+300),('--wall-cap-s',cap),('--expected-source-sha',sha),('--output',str(target/'raw')),('--arm-clearance','range_wall_v1'),('--acquisition-mobility','resume_v1'),('--approach-commit','memory60_view_v1'),('--scan-guard','map_v1'),('--fine-view','inspect60_v1'),('--approach-heading','path20_v1'),('--fine-entry','capture60_mpc_v1'),('--station-heading','station20_v1'),('--clip-recovery','back3_v1'),('--station-handoff','pan_v1'),('--capture-pose','pose08_track_v1'),*([('--relook-search',mode)] if mode else []),*EXTRA[version],('--stage-physics','release_dt1_v1' if version in (298,301,302,303,304,305) else 'pregrasp_dt1_v1'),('--sonar-frame','site_z_v1'),('--relay-receipt',str(b/'relays/e2e18/a-r4.json')),('--seed',seed)]:
   command=replace_option(command,flag,value)
  specs.append(dict(name=name,target=str(target),command=command))
 plan=b/'runs'/f'speed-gate-e2e18-{host}-{BATCH}-plan.json';assert not plan.exists();plan.write_text(json.dumps(specs,indent=2)+'\n')

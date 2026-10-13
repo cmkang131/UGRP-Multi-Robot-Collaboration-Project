@@ -690,7 +690,7 @@ def main(argv=None):
     p.add_argument('--clip-recovery',choices=('off','back3_v1','back6_v1'),default='off')
     p.add_argument('--station-handoff',choices=('off','hold_v1','pan_v1'),default='off')
     p.add_argument('--beam-lost-standoff',choices=('off','v1'),default='off')
-    p.add_argument('--relook-giveup',choices=('off','dev_light_v1'),default='off')
+    p.add_argument('--relook-giveup',choices=('off','dev_light_v1','dev_light_rest_v1'),default='off')
     p.add_argument('--arm-clearance-align-skip',choices=('off','v1'),default='off')
     p.add_argument('--acquire-scan-fast',choices=('off','v1'),default='off')
     p.add_argument('--relook-search',choices=('off','view5_v1','view5_pan_v1','view5_restore_v1'),default='off')

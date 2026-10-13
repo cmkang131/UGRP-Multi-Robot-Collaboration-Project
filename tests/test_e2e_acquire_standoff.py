@@ -213,3 +213,39 @@ def test_v303_giveup_on_release_pan_without_standoff(monkeypatch):
     bad = copy.deepcopy(b); bad['e2e_options']['stage_physics'] = 'pregrasp_dt1_v1'
     with pytest.raises(ValueError):
         require_current(bad, ROOT)
+
+
+def test_rest_drop_guard_ignores_resting_beam_flicker_but_not_a_real_fall():
+    from sim.s4_beam_drop_guard import DropGuard
+    def run(rest, flicker_after):
+        g = DropGuard(rest_clear=rest); t = 0.; drops = []
+        for z in (.12, .12, .10):                       # lifted and held
+            drops.append(g.observe(t=t, com_z=z, origin_z=z, finger_contact=True, floor_contact=False)['drop']); t += .05
+        for i in range(30):                              # set down and resting on the floor
+            drops.append(g.observe(t=t, com_z=.016, origin_z=0., finger_contact=False, floor_contact=True)['drop']); t += .05
+        for i in range(flicker_after):                   # one-sample contact flicker
+            drops.append(g.observe(t=t, com_z=.016, origin_z=0., finger_contact=False, floor_contact=False)['drop']); t += .05
+        return drops
+    assert any(run(False, 1))          # old guard: false positive after lifting once
+    assert not any(run(True, 1))       # rest guard: resting beam is not a drop
+    g = DropGuard(rest_clear=True)     # a real unsupported fall is still flagged
+    out = [g.observe(t=i*.05, com_z=z, origin_z=z, finger_contact=False, floor_contact=False)['drop']
+           for i, z in enumerate((.12, .10, .05, .03))]
+    assert out[-1] is True
+
+
+def test_v304_v305_rest_guard_variants(monkeypatch):
+    import copy
+    from harness.e2e_runtime_registration import require_current
+    from scripts.run_e2e_ownmap_live import ROOT, bundle
+    args, kw = _pan_parent(monkeypatch)
+    b = bundle(*args, **dict(kw, stage_physics='release_dt1_v1', relook_giveup='dev_light_rest_v1'))
+    assert b['execution_bundle_id'] == 'e2e18-v304' and 'drop_guard_rest_parameters' in b and b['pair_drop_guard'] == 'contact_com_v1'
+    require_current(b, ROOT)
+    bad = copy.deepcopy(b); bad.pop('drop_guard_rest_parameters')
+    with pytest.raises(ValueError):
+        require_current(bad, ROOT)
+    c = bundle(*args, **dict(kw, stage_physics='release_dt1_v1', relook_giveup='dev_light_v1'))
+    assert c['execution_bundle_id'] == 'e2e18-v303' and 'drop_guard_rest_parameters' not in c
+    on = dict(beam_lost_standoff='v1', stage_physics='release_dt1_v1', relook_giveup='dev_light_rest_v1')
+    assert bundle(*args, **dict(kw, **on))['execution_bundle_id'] == 'e2e18-v305'
