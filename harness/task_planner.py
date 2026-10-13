@@ -164,15 +164,19 @@ class Planner:
         if envelope['id'] in self.seen_messages: return False
         body = envelope['body']
         if self.arm == 'structured':
-            if 'code' not in body:
+            if not isinstance(body, dict): raise ValueError('FIXED_SIGNAL_OBJECT_REQUIRED')
+            if body.get('code') == 'PAIR_STATUS':
+                from harness.task_planner_pair import decode
+                decode(body)
+            elif 'code' not in body:
                 from harness.zone_study_contract import structured_violations
                 errors = structured_violations(body)
                 if errors: raise ValueError('INVALID_EXISTING_FIXED_SIGNAL')
             else:
                 _fields(body, 'code cargo destination route partner')
-            if 'code' in body and body['code'] not in {fixed_signal(dict(act=a, args={}))['code'] for a in ARGS}:
+            if 'code' in body and body['code'] != 'PAIR_STATUS' and body['code'] not in {fixed_signal(dict(act=a, args={}))['code'] for a in ARGS}:
                 raise ValueError('UNKNOWN_SIGNAL')
-            if 'code' in body and any(v is not None and (not isinstance(v, str) or len(v) > 64) for v in body.values()):
+            if 'code' in body and body['code'] != 'PAIR_STATUS' and any(v is not None and (not isinstance(v, str) or len(v) > 64) for v in body.values()):
                 raise ValueError('BAD_FIXED_SIGNAL')
         elif not isinstance(body, str) or len(body) > 1024: raise ValueError('NL_TEXT_REQUIRED')
         clean(envelope)
@@ -201,7 +205,7 @@ class Planner:
         for row in candidates: validate_act(row['act'], row['args'])
         return value
 
-    def decide(self, context, model, executor=None):
+    def decide(self, context, model, executor=None, *, repair_budget=1):
         """One combined call; one repair only for rejection. Same model for repair.
 
         executor exposes check(value)->reason|None and start(value)->ack. check
@@ -210,8 +214,9 @@ class Planner:
         """
         ctx = copy.deepcopy(context); clean(ctx)
         rejection = None
-        for attempt in range(2):
-            request = dict(system=SYSTEM, input=ctx)
+        for attempt in range(repair_budget+1):
+            # Later refusal context must not mutate the already-sent audit.
+            request = dict(system=SYSTEM, input=copy.deepcopy(ctx))
             record = dict(robot_id=self.robot_id, request=request, attempt=attempt,
                           fallback=False, response=None)
             try:

@@ -44,17 +44,30 @@ def strip_images(value):
 
 def bundle(config, sha):
     from harness.python_source_closure import source_closure
-    files = source_closure(ROOT, ('scripts/run_task_planner.py',))
     static = ['configs/simulation_workflows.d/e2e18_v357.json', config['prereg']]
     prereg = json.loads((ROOT/config['prereg']).read_text())
     episode = prereg['episodes'][config.get('episode_index', 0)]
+    from harness.zone_study_scenarios import bundle_for
+    from harness.zone_study_integration import PROVIDER_CONFIG, pose_provider_spec
+    scenario = json.loads((ROOT/episode['scenario']).read_text())
+    map_record = bundle_for(scenario)
+    provider = pose_provider_spec(prereg['pose_provider'], map_id=episode['map'])
+    provider['calibration'] = prereg['student']['calibration']
+    files = source_closure(ROOT, ('scripts/run_task_planner.py', *provider['source_files']),
+                           modules=(prereg['student']['skill_module'],))
     static += [episode['scenario'], prereg['student']['calibration']]
+    static += [str(Path(map_record['map_file']).resolve().relative_to(ROOT)),
+               str(Path(PROVIDER_CONFIG).resolve().relative_to(ROOT))]
+    if episode.get('pair_order_sheets'):
+        from scripts.run_m2_pair import CALIBRATION
+        static.append(str(Path(CALIBRATION).resolve().relative_to(ROOT)))
     hashes = {str(p): hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(set(files) | set(static))}
     return dict(schema='ugrp.task_planner.run.v1', execution_bundle_id=BUNDLE_ID,
                 workflow_version=WORKFLOW_VERSION, e2e_options=dict(planner=planner_option(config.get('e2e_options', {}))),
                 source_sha=sha, source_sha256=hashes, config=copy.deepcopy(config),
                 research_result=False, physical_profile='existing_zone_owncam; separate from e2e18 ownmap beam scene',
-                driver_profile='study_gemma4_31b_v1', weld=False)
+                driver_profile='study_gemma4_31b_v1', model='google/gemma-4-31b-it',
+                map_record=map_record, pose_provider=provider, weld=False)
 
 
 def execute(config, out, *, sha, relay_url, horizon_s, wall_cap_s):
@@ -69,23 +82,32 @@ def execute(config, out, *, sha, relay_url, horizon_s, wall_cap_s):
     spec = runner.host_spec(scenario, episode, bundle_for(scenario))
     provider = runner.zi.pose_provider_spec(prereg['pose_provider'], map_id=episode['map'])
     budget = Budget(max_calls=90, max_usd=.5)
-    models = {rid: Gemma(url=relay_url, budget=budget) for rid in ('r1','r2','r3')}
     host = runtime = None; started = time.monotonic(); result = dict(status='RUNNING', research_result=False)
     out.mkdir(parents=True, exist_ok=False)
-    write(out/'RUN_META.json', {'class':'dev','pr':None,'branch':subprocess.check_output(['git','branch','--show-current'],text=True).strip(),
+    write(out/'RUN_META.json', {'class':'dev','pr':473,'branch':subprocess.check_output(['git','branch','--show-current'],text=True).strip(),
                               'sha':sha,'batch':BUNDLE_ID})
     write(out/'runtime-bundle.json', bundle(config, sha))
     try:
+        models = {rid: Gemma(url=relay_url, budget=budget) for rid in ('r1','r2','r3')}
         host = runner.StudyTeamHost(spec, prereg['student'], root=ROOT, provider_spec=provider, frames_dir=out/'own_frames')
+        # advance_to returns events to this planner; episode-close only logs them.
+        host.study_layer = lambda *_args: None
         now = host.settle(float(prereg['t0_s'])); end = now+horizon_s
         roles = {'r1':'end_neg','r2':'end_pos'} if host.pairs is not None else {}
-        ports = {r: ZonePort(s.executor, lambda api,*args,_r=r:host.call(_r,api,*args), pair_roles=roles)
+        ports = {r: ZonePort(s.executor, lambda api,*args,_r=r:host.call(_r,api,*args), pair_roles=roles,
+                     stop_scheduled=lambda _r=r:host._drop_scheduled(_r,host.robots[_r].executor.now,'task_planner_hold'))
                  for r,s in host.robots.items()}
         runtime = Runtime(arm=config['condition'], models=models, ports=ports,
                           snapshots={r:p.snapshot for r,p in ports.items()}, leader=config.get('leader','r1'))
+        if host.pairs is not None:
+            from harness.task_planner_pair import install
+            install(host.pairs,runtime.channel)
         seen = set(); wait_since = {}
         while now < end:
             if time.monotonic()-started > wall_cap_s: raise TimeoutError('SCENE_WALL_CAP')
+            for rid,port in ports.items():
+                event=port.poll(now)
+                if event is not None:runtime.event(rid,event,now)
             runtime.step(now)
             for rid, port in ports.items():
                 if port.immediate and port.active:
@@ -94,15 +116,15 @@ def execute(config, out, *, sha, relay_url, horizon_s, wall_cap_s):
                 if job is not None and job.phase == 'waiting_partner':
                     since = wait_since.setdefault(rid, now)
                     key = (rid,job.job_id,'s3')
-                    if now-since >= 10 and key not in seen:
-                        runtime.event(rid,dict(kind='partner_delayed',reason='Own rendezvous timer exceeded 10 s'),now);seen.add(key)
+                    if now-since >= 2 and key not in seen:
+                        runtime.event(rid,dict(kind='partner_delayed',reason='Own rendezvous timer exceeded 2 s'),now);seen.add(key)
                 else: wait_since.pop(rid,None)
                 holding = ex.holding()
                 if port.active and port.active['act']=='carry' and holding['answer']=='no' and ex.loaded:
                     key=(rid, getattr(job,'job_id',None),'grip')
                     if key not in seen:
                         runtime.event(rid,dict(kind='grip_anomaly',reason='Own RGB/command hold mismatch'),now);seen.add(key)
-            events = host.advance_to(min(end,now+.1)); now = float(host.world.data.time)
+            events = host.advance_to(min(end,now+.01)); now = float(host.world.data.time)
             for event in events:
                 rid=event['robot_id']; ev=ports[rid].event(event)
                 if ev is None: continue
@@ -121,14 +143,19 @@ def execute(config, out, *, sha, relay_url, horizon_s, wall_cap_s):
             runtime.close()
             write(out/'planner-actors.json',strip_images({r:p.audit for r,p in runtime.planners.items()}))
             write(out/'planner-actions.json',runtime.audit);write(out/'planner-channel.json',runtime.channel.ledger)
+            result['channel_messages']=len(runtime.channel.ledger)
         if host is not None:
             host.close_episode('task_planner_budget')
             write(out/'own-act-events.json',host.event_log)
+            write(out/'issued-commands.json',{r:s.commands for r,s in host.robots.items()})
+            write(out/'act-api-calls.json',host.api_calls)
+            write(out/'pair-eval-only.json',[] if host.pairs is None else host.pairs.records())
             write(out/'eval_only.json',host.eval_only)
             host.close()
         result.update(wall_s=time.monotonic()-started,model_calls=budget.calls,
                       accounted_usd=budget.charged,unknown_cost_calls=budget.unknown)
         write(out/'summary.json',result)
+        write(out/'EXIT',0 if result['status']=='SCENE_BUDGET_COMPLETE' else 1)
         write(out/'sha256.json',{str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest()
                                  for p in out.rglob('*') if p.is_file()})
     return result

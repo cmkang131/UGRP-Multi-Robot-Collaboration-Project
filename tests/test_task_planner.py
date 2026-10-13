@@ -128,3 +128,43 @@ def test_non_object_args_get_one_repair_not_crash():
         return ModelReply('{"act":"carry","args":[],"message":"","reason":"x"}') if len(count)==1 else reply(wait())
     out=p.decide(context(p),model)
     assert len(count)==2 and not out['fallback']
+
+
+def test_runtime_format_and_motor_refusals_share_one_repair_budget():
+    calls=[];starts=[]
+    def model(req,**kw):
+        calls.append(req)
+        return ModelReply('bad') if len(calls)==1 else reply(wait())
+    def start(**args):
+        starts.append(args)
+        return dict(accepted=len(starts)>1,reason='STATE_CHANGED')
+    port=ActPort({'wait':start},lambda v:None)
+    rt=Runtime(arm='no_comm',models={'r1':model},ports={'r1':port},
+        snapshots={'r1':lambda now:dict(orders=[],static_map={},own={'robot_id':'r1'},candidates=[wait()])})
+    try:
+        rt.step(0)
+        for i in range(100):
+            time.sleep(.002);rt.step(.01)
+            if len(starts)>=2:break
+        assert len(calls)==2 and len(starts)==2
+        assert rt.audit[-1]['fallback'] and rt.audit[-1]['ack']['accepted']
+        assert any(r.get('status')=='refused' for r in rt.planners['r1'].memory)
+    finally:rt.close()
+
+
+def test_stopped_robot_empty_menu_records_refusal_without_model():
+    port=ActPort({},lambda v:'ROBOT_STOPPED')
+    rt=Runtime(arm='no_comm',models={'r1':lambda *a,**k:pytest.fail('must not call')},ports={'r1':port},
+        snapshots={'r1':lambda now:dict(orders=[],static_map={},own={'robot_id':'r1'},candidates=[])})
+    try:
+        rt.step(0);assert rt.audit[-1]['status']=='no_safe_candidate' and not rt.pending
+    finally:rt.close()
+
+
+def test_audit_preserves_exact_sent_context_before_repair():
+    p=Planner('r1','no_comm');sent=[]
+    def model(request,**kw):
+        sent.append(copy.deepcopy(request));return ModelReply('bad')
+    p.decide(context(p),model)
+    assert p.audit[0]['request']==sent[0] and 'refusals' not in sent[0]['input']
+    assert p.audit[1]['request']==sent[1] and len(sent[1]['input']['refusals'])==1

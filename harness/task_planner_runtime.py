@@ -87,15 +87,16 @@ class Channel:
     def __init__(self, arm, *, leader='r1', delay_s=.1):
         from harness.task_planner import condition
         self.arm, self.leader, self.delay_s = condition(arm), leader, delay_s
-        self.pending, self.ledger = [], []
+        self.pending, self.ledger, self.subscribers = [], [], []
         self.counter = 0
 
-    def send(self, sender, messages, now):
+    def send(self, sender, messages, now, *, safety=False):
         for message in messages:
             if message['recipient'] not in recipients(self.arm, sender, leader=self.leader):
                 raise ValueError('CHANNEL_TOPOLOGY_REFUSAL')
             self.counter += 1
-            self.pending.append(dict(id=f'planner-msg-{self.counter}', sender=sender,
+            prefix='planner-safety' if safety else 'planner-msg'
+            self.pending.append(dict(id=f'{prefix}-{self.counter}', sender=sender,
                 recipient=message['recipient'], sent_at=now, delivered_at=now+self.delay_s,
                 body=copy.deepcopy(message['body'])))
 
@@ -103,6 +104,7 @@ class Channel:
         ready = [e for e in self.pending if e['delivered_at'] <= now]
         self.pending = [e for e in self.pending if e['delivered_at'] > now]
         for e in ready:
+            for callback in self.subscribers: callback(e, now)
             planners[e['recipient']].receive(e, now); self.ledger.append(copy.deepcopy(e))
 
 
@@ -125,6 +127,7 @@ class Runtime:
         self.pool = ThreadPoolExecutor(max_workers=len(ports), thread_name_prefix='task-planner')
         self.pending, self.repairs, self.audit, self.started_at = {}, {}, [], {}
         self.closed = False
+        self.model_attempts = {}; self.next_decision = {}
 
     def event(self, rid, event, now):
         kind = EVENT_MAP.get(event['kind'], event['kind'])
@@ -142,38 +145,60 @@ class Runtime:
         self.channel.deliver(self.planners, now)
         for rid, planner in self.planners.items():
             if rid in self.pending:
-                future, context = self.pending[rid]
+                future, context, audit_start = self.pending[rid]
                 if not future.done(): continue
                 result = future.result(); del self.pending[rid]
+                self.model_attempts[rid] = self.model_attempts.get(rid,0) + sum('request' in x for x in planner.audit[audit_start:])
                 decision = result['decision']
-                if decision is None: continue
+                if decision is None:
+                    self.model_attempts[rid] = 0
+                    self.next_decision[rid] = now + .5
+                    continue
                 refusal = self.ports[rid].check(decision)
                 ack = dict(accepted=False, reason=refusal) if refusal else self.ports[rid].start(decision)
                 if not ack['accepted']:
                     planner.feedback(decision, 'refused', ack.get('reason', 'ACT_REFUSED'), now)
                     self.repairs[rid] = self.repairs.get(rid, 0) + 1
                     self.audit.append(dict(robot_id=rid, at=now, status='refused', decision=decision, ack=ack))
-                    if self.repairs[rid] > 1:
+                    if result['fallback'] or self.model_attempts[rid] >= 2:
                         fresh = self.snapshots[rid](now)
+                        if not fresh['candidates']:
+                            self.model_attempts[rid] = 0
+                            self.audit.append(dict(robot_id=rid, at=now, status='no_safe_candidate'))
+                            planner.events.clear()
+                            continue
                         ctx = planner.context(now=now, **fresh)
                         result = planner._fallback(ctx, self.ports[rid], 'RUNTIME_REPAIR_EXHAUSTED')
                         self.repairs[rid] = 0
+                        self.model_attempts[rid] = 0
+                        self.next_decision[rid] = now + .5
                         if result['decision'] is None: continue
+                        ack = planner.audit[-1]['ack']
                     else: continue
                 if result['decision']['act'] == 'report':
                     planner.feedback(result['decision'], 'success', 'report_recorded', now)
                 else:
                     self.started_at[rid] = now
-                self.repairs[rid] = 0
+                self.repairs[rid] = 0; self.model_attempts[rid] = 0
+                self.next_decision[rid] = now + .5
                 self.channel.send(rid, result['messages'], now)
                 self.audit.append(dict(robot_id=rid, at=now, decision=result['decision'],
                                        fallback=result['fallback'], ack=ack))
-            if planner.events and rid not in self.pending:
-                context = planner.context(now=now, **self.snapshots[rid](now))
+            if planner.events and rid not in self.pending and now >= self.next_decision.get(rid,0.):
+                while len(planner.events) > 32: planner.events.popleft()
+                snapshot = self.snapshots[rid](now)
+                if not snapshot['candidates']:
+                    self.audit.append(dict(robot_id=rid, at=now, status='no_safe_candidate'))
+                    planner.events.clear()
+                    self.model_attempts[rid] = 0
+                    continue
+                context = planner.context(now=now, **snapshot)
                 planner.events.clear()
-                self.pending[rid] = (self.pool.submit(planner.decide, context, self.models[rid]), context)
+                audit_start = len(planner.audit)
+                self.pending[rid] = (self.pool.submit(planner.decide, context, self.models[rid],
+                    repair_budget=max(0,1-self.model_attempts.get(rid,0))), context, audit_start)
 
     def close(self):
         self.closed = True
-        for future, _ in self.pending.values(): future.cancel()
+        for future, _, _ in self.pending.values(): future.cancel()
         self.pool.shutdown(wait=True, cancel_futures=True)

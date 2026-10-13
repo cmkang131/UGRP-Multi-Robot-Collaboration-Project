@@ -12,18 +12,24 @@ from harness.task_planner_runtime import ActPort, build_candidates
 
 
 class ZonePort(ActPort):
-    def __init__(self, executor, call, *, pair_roles=None, regrip=None):
+    def __init__(self, executor, call, *, pair_roles=None, regrip=None, stop_scheduled=None):
         self.ex, self.call = executor, call
         self.pair_roles = pair_roles or {}
         self.regrip = regrip
+        self.recovery = None
+        if stop_scheduled is not None:
+            from harness.task_planner_recovery import OwnRecovery
+            self.recovery = OwnRecovery(self, stop_scheduled)
+            self.regrip = lambda: self.recovery.start('set_down_and_regrip', self.ex.now)
         self.last_ack = None
         self.completed_orders = []
+        self.completed_counts = {}
         self.immediate = None
         self.catalog = self._catalog()
         handlers = dict(carry=self.carry, help=self.help, go_to=self.go_to, search=self.search,
                         wait=self.wait, yield_=self.yield_to, reroute=self.reroute, report=self.report)
         handlers['yield'] = handlers.pop('yield_')
-        if regrip is not None: handlers['set_down_and_regrip'] = regrip
+        if self.regrip is not None: handlers['set_down_and_regrip'] = self.regrip
         super().__init__(handlers, self.validate)
 
     def _catalog(self):
@@ -44,7 +50,8 @@ class ZonePort(ActPort):
             n = order['required_robots']
             destinations = [s['slot_id'] for s in self.ex.map['zone_slots'][order['destination_zone']]]
             if n == 2: destinations = [order['destination_zone']]
-            result.append(dict(order_id=oid, kind=order['kind'], required_robots=n,
+            result.append(dict(order_id=oid, kind=order['kind'], count=order.get('count',1),
+                own_confirmed_count=self.completed_counts.get(oid,0), required_robots=n,
                 destinations=destinations, approaches=['west'] if n == 1 else ['end_neg', 'end_pos'],
                 pickup_xy=self.catalog['stations'].get((order.get('initial_location') or {}).get('slot'))))
         return result
@@ -53,10 +60,15 @@ class ZonePort(ActPort):
         act, a = value['act'], value['args']
         if self.ex.stopped is not None: return 'ROBOT_STOPPED'
         if act == 'report': return None
+        if self.recovery is not None:
+            if act == 'carry' and self.ex.job is not None and self.recovery.can_resume(value): return None
+            if act in ('wait','set_down_and_regrip') and self.ex.job is not None:
+                return self.recovery.check(act)
         if act == 'set_down_and_regrip':
-            return None if self.regrip else 'SAFE_REGRIP_SKILL_UNAVAILABLE'
+            return 'OWN_STABLE_CARRY_PHASE_REQUIRED'
         if self.ex.job is not None: return 'ACT_STILL_RUNNING'
         if act in ('carry', 'help'):
+            if a['cargo'] in self.completed_orders: return 'OWN_ORDER_ALREADY_COMPLETED'
             order = self.ex.orders.get(a['cargo'])
             if order is None: return 'UNKNOWN_ORDER'
             if act == 'help' or a['mode'] == 'joint':
@@ -78,6 +90,9 @@ class ZonePort(ActPort):
         return None
 
     def carry(self, cargo, to, via, approach, mode, partner=None, side=None):
+        value = dict(act='carry', args=dict(cargo=cargo,to=to,via=via,approach=approach,mode=mode))
+        if mode=='joint': value['args'].update(partner=partner,side=side)
+        if self.recovery is not None and self.recovery.can_resume(value): return self.recovery.resume(value)
         # Validated route/approach exactly match the existing frozen skill.
         ack = self.call('deliver', cargo, to) if mode == 'solo' else self.call('pair_carry', cargo, to, partner)
         if ack.get('accepted') and self.ex.job is not None:
@@ -93,7 +108,13 @@ class ZonePort(ActPort):
         ack = self.call('goto', area)
         if ack.get('accepted'): self.search_next = True
         return ack
-    def wait(self, until, max_s): return self.call('wait', max_s)
+    def wait(self, until, max_s):
+        if self.ex.job is not None and self.recovery is not None:
+            return self.recovery.start('wait', self.ex.now, max_s)
+        return self.call('wait', max_s)
+
+    def poll(self, now):
+        return None if self.recovery is None else self.recovery.poll(now)
     def yield_to(self, where): return self.call('goto', where)
     def reroute(self, via): return self.call('goto', via)
     def report(self, fact):
@@ -127,6 +148,10 @@ class ZonePort(ActPort):
         if kind == 'job_done' and self.active and self.active['act'] == 'carry':
             # Only an own-camera-confirmed completion can remove an order.
             if detail.get('confirmation') == 'own_camera_confirmed':
-                self.completed_orders.append(self.active['args']['cargo'])
+                oid = self.active['args']['cargo']
+                self.completed_counts[oid] = self.completed_counts.get(oid,0) + 1
+                if self.completed_counts[oid] >= self.ex.orders[oid].get('count',1):
+                    self.completed_orders.append(oid)
         if kind == 'job_failed': self.search_next = False
+        if kind in ('job_done','job_failed') and self.recovery is not None: self.recovery.close()
         return dict(kind=kind, reason=str(detail.get('reason', detail.get('confirmation', ''))))
