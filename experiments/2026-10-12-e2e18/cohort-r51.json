@@ -1,6 +1,6 @@
 {
-  "checked_unix": 1791856963.158525,
-  "status": "RUNNING",
+  "checked_unix": 1791858676.657814,
+  "status": "TERMINAL",
   "runs": [
     {
       "host": "ugrp-sim-azure4",
@@ -94,16 +94,16 @@
       "name": "e2e18-v271-s61006-r51",
       "sha": "aaab0e85d9114e9f6620beca253db17a22aaba8c",
       "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v271-s61006-r51/raw",
-      "exit": null,
-      "status": "RUNNING",
-      "sim_s": 1033.0,
-      "phase": "align",
+      "exit": "1",
+      "status": "CONTROLLER_STOP",
+      "sim_s": 1083.4,
+      "phase": "wait_go_ack",
       "LLM": true,
       "own_map": true,
       "transport": false,
-      "failure": null,
-      "paired_grasp": false,
-      "class_": "dev"
+      "failure": "CURRENT_GO_ACK_TIMEOUT",
+      "paired_grasp": true,
+      "class_": "milestone"
     }
   ],
   "gate": {
