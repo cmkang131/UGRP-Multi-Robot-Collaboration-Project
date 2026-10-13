@@ -227,3 +227,13 @@ def test_mapping_stage_cadence_reaches_real_estimator_configuration():
     assert goal.e2e_vo.max_pair_gap_s==.65
     with pytest.raises(ValueError,match='UNREGISTERED'):configure(goal,'on_v1',stage_schedule('0p6_v1','mapping')[1])
     assert stage_schedule('0p6_v1','align','canonical_v1')==(8,.4)
+
+
+def test_mapping_replay_boundary_preserves_monotonic_observation_state():
+    from scripts.run_e2e_stage_probe import stage_rgb_is_new
+    r=SimpleNamespace(last_obs=dict(sim_time=30.,frame_id=100))
+    assert not stage_rgb_is_new(r,30.,101,'strict_after_v1')
+    assert not stage_rgb_is_new(r,30.6,100,'strict_after_v1')
+    assert stage_rgb_is_new(r,30.6,101,'strict_after_v1')
+    assert r.last_obs==dict(sim_time=30.,frame_id=100)
+    assert stage_rgb_is_new(r,30.,101)

@@ -1,0 +1,14 @@
+{
+  "old_wrapper": "v397",
+  "new_wrapper": "v398",
+  "failure": "FRESH_MONOTONIC_OWN_RGB_REQUIRED",
+  "route_N": 8,
+  "sim_s": 0,
+  "raw_last_replayed_t": 30.0,
+  "first_new_capture_t": 30.0,
+  "controller_guard": "t > last.t and frame_id > last.frame_id",
+  "fix": "Default-off strict_after_v1 stage boundary skips already-consumed timestamp/frame. Original estimator state and strict monotonic guard unchanged. Later captured RGB only is delivered.",
+  "reference": "https://raw.githubusercontent.com/ros2/message_filters/rolling/include/message_filters/time_sequencer.hpp",
+  "reference_scope": "Standard reject-already-processed time ordering; existing UGRP VO additionally requires strictly increasing time, so equal-time replay boundary is skipped.",
+  "gate3": "HOST_ERROR, no route comparison; full gate repeat required"
+}
