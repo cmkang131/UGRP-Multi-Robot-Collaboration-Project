@@ -45,6 +45,8 @@ for version,mode in ((347,'idle5_v1'),(348,'idle10_v1')):
  EXTRA[version]=EXTRA[346]+[('--explore-idle',mode)]
 EXTRA[349]=EXTRA[344]+[('--body-backend','code_v1')]
 EXTRA[350]=EXTRA[349]+[('--body-protocol-stack','code_v1')]
+for version,parent in ((352,347),(353,348),(354,350),(355,350)):
+ EXTRA[version]=EXTRA[parent]+[('--boundary-lifecycle','restore_v1' if version==355 else 'abort_v1')]
 EXTRA[304]=[('--relook-giveup','dev_light_rest_v1')]
 EXTRA[305]=EXTRA[304]
 MODE={304:'view5_pan_v1',305:'view5_pan_v1',303:'view5_pan_v1',295:None,296:None,297:'view5_pan_v1',298:'view5_pan_v1',300:'view5_pan_v1',301:'view5_pan_v1',302:'view5_pan_v1'}

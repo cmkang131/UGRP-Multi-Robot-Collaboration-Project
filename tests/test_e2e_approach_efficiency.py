@@ -127,7 +127,8 @@ def test_scan_waits_for_commanded_posture_and_accepted_settled_image():
     acquire(tr,'r1',12.4,state,None);assert a['view']==1 and r.beam is None
 
 
-def test_v351_parent_registration_default_off_and_tamper(monkeypatch):
+@pytest.mark.parametrize('lifecycle,parent,version',[('off',350,351),('abort_v1',354,356)])
+def test_registered_parent_default_off_and_tamper(monkeypatch,lifecycle,parent,version):
     from tests import test_e2e_camera_hold as fixture
     from scripts.run_e2e_ownmap_live import bundle,ROOT
     from harness.e2e_runtime_registration import require_current
@@ -136,9 +137,9 @@ def test_v351_parent_registration_default_off_and_tamper(monkeypatch):
     monkeypatch.setattr(fixture,'bundle',capture)
     fixture.test_registered_wheel_wait_candidate('zero_wheel_v1',276,'range_wall_v1')
     kw.update(stage_physics='release_dt1_v1',relook_giveup='dev_light_rest_v1',post_relook='carry_through_v1',
-              body_controller='jev_v1',body_backend='code_v1',body_protocol_stack='code_v1')
+              body_controller='jev_v1',body_backend='code_v1',body_protocol_stack='code_v1',boundary_lifecycle=lifecycle)
     old=bundle(*args,**kw);new=bundle(*args,**kw,approach_efficiency=m.OPTION)
-    assert old['execution_bundle_id']=='e2e18-v350' and new['execution_bundle_id']=='e2e18-v351'
+    assert old['execution_bundle_id']==f'e2e18-v{parent}' and new['execution_bundle_id']==f'e2e18-v{version}'
     assert m.parent_for_validation(new)['e2e_options']==old['e2e_options'];require_current(new,ROOT)
     new['approach_efficiency_parameters']['max_extra_per_frame']=2
     with pytest.raises(ValueError,match='APPROACH_EFFICIENCY'):require_current(new,ROOT)

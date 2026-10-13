@@ -13,8 +13,7 @@ from harness.self_odom_grid import transform
 from harness.zone_solo_cyan_pulse_cal import profile_key
 
 OPTION = 'regulated_v1'
-PARENT = 'e2e18-v350'
-VERSION = 351
+VERSIONS = {'e2e18-v350':351, 'e2e18-v354':356}
 PARAMS = dict(replan_s=1., goal_change_m=.05, approach_scaling_m=.6,
               curvature_min_radius_m=.9, cruise_period_s=.2, slow_period_s=.4,
               max_rgb_age_s=.4, max_extra_per_frame=1, gaze_deadband_deg=12.,
@@ -28,20 +27,21 @@ def enabled(tr):
 
 def compose(bundle, option='off'):
     if option == 'off': return ()
-    if option != OPTION or bundle['execution_bundle_id'] != PARENT:
-        raise ValueError('APPROACH_EFFICIENCY_REQUIRES_V350')
-    bundle.update(approach_efficiency_parent=PARENT,
+    parent=bundle['execution_bundle_id'];version=VERSIONS.get(parent)
+    if option != OPTION or version is None:
+        raise ValueError('APPROACH_EFFICIENCY_REQUIRES_REGISTERED_RULE_PARENT')
+    bundle.update(approach_efficiency_parent=parent,
                   approach_efficiency_parameters=copy.deepcopy(PARAMS),
-                  execution_bundle_id=f'e2e18-v{VERSION}', schema=f'ugrp.e2e_ownmap_live.v{VERSION}',
-                  workflow_version=f'7.{VERSION-107}.0')
+                  execution_bundle_id=f'e2e18-v{version}', schema=f'ugrp.e2e_ownmap_live.v{version}',
+                  workflow_version=f'7.{version-107}.0')
     bundle['e2e_options']['approach_efficiency'] = option
     return ('harness/e2e_approach_efficiency.py',
-            f'configs/simulation_workflows.d/e2e18_v{VERSION}.json')
+            f'configs/simulation_workflows.d/e2e18_v{version}.json')
 
 
 def parent_for_validation(bundle):
-    if (bundle['execution_bundle_id'] != f'e2e18-v{VERSION}'
-            or bundle.get('approach_efficiency_parent') != PARENT
+    version=VERSIONS.get(bundle.get('approach_efficiency_parent'))
+    if (version is None or bundle['execution_bundle_id'] != f'e2e18-v{version}'
             or bundle['e2e_options'].get('approach_efficiency') != OPTION
             or bundle.get('approach_efficiency_parameters') != PARAMS):
         raise ValueError('REGISTERED_APPROACH_EFFICIENCY_REQUIRED')
