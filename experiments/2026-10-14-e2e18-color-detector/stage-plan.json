@@ -192,7 +192,9 @@
     "opposite ends n/N",
     "both_held n/N",
     "first attempt n/N",
-    "ready wait SIM s"
+    "ready wait SIM s",
+    "own RGB peer near assigned color band: visual sample n/N and automatic screen-space count, kept separate",
+    "online occupancy checked/blocked/action event counts"
   ],
   "pooling": "never pool black and colored scenes",
   "cost": {
@@ -207,10 +209,11 @@
     "v430": "component masks and presence, legacy 12 cm grasp support",
     "v431": "same mask, 4.5 cm asymmetric support beyond fixed 3 cm band inset"
   },
-  "status": "not_submitted",
+  "status": "authorized_pending_storage_gate",
   "preconditions": [
-    "human label confirmation or explicit acceptance of Codex visual labels",
+    "coordinator explicitly authorized stage with sample review 36/90, disagreements 0",
     "VM3/ARM/Mac storage budget before start",
     "30 SIM s speed gate at planned concurrency, limit 3.5"
-  ]
+  ],
+  "occupancy_audit": "Read-only evaluation: colored path bypasses end_assignment.update_station; do not alter tested v430/v431 behavior. Count near-band peer scenes and actual occupancy events; absence of check is a finding."
 }
