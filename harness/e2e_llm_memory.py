@@ -20,6 +20,7 @@ request can be rebuilt offline with the same code (`apply`). Combines with vote_
 """
 import copy
 from collections import deque
+from harness.e2e_dialogue_call_policy import reports as call_reports
 
 OPTIONS = ('v1', 'v1_commands')
 LOG_N = 8
@@ -173,7 +174,7 @@ def filter_actions(body):
             kept.append(item)
         elif (kind == 'approve_route' and body['robot_id'] == 'r2' and not view['approved']
               and view.get('proposal_message_id') is not None
-              and any(r['message_id'] == view['proposal_message_id'] for r in body.get('peer_reports') or ())):
+              and any(r['message_id'] == view['proposal_message_id'] for r in call_reports(body))):
             kept.append(item)
         elif kind == 'route_vote' and view['key'] is not None:
             choices = (['GO'] if not view['own_go_sent'] else

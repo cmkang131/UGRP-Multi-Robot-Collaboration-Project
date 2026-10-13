@@ -11,6 +11,7 @@ import re
 
 from harness import e2e_llm_memory as memory
 from harness.e2e_own_inputs import scan
+from harness.e2e_dialogue_call_policy import reports as call_reports
 
 DEFAULT = 'gemma_v0'
 MODE = 'd1_v1'
@@ -147,9 +148,12 @@ def route_message(user):
         target = 'r2' if 'r2' in allowed else 'r3' if 'r3' in allowed else None
         if target:
             return 'propose_route', dict(recipients=[target], reply_to=None,
-                contract=copy.deepcopy(user.get('route_contract_example') or user['own_route_proposal']))
+                contract=copy.deepcopy(user.get('route_contract_example') or
+                    (user.get('action_message_contract', {}).get('message_element', {}).get('contract')
+                     if isinstance(user.get('action_message_contract', {}).get('message_element', {}).get('contract'), dict) else None)
+                    or user['own_route_proposal']))
     if rid == 'r3' and 'r2' in allowed:
-        for report in reversed(user.get('peer_reports') or []):
+        for report in reversed(call_reports(user)):
             contract = report.get('body', {}).get('contract')
             if report['sender'] == 'r1' and contract and contract.get('kind') == 'OwnRoute':
                 contract = copy.deepcopy(contract); contract['source_message_id'] = report['message_id']
@@ -193,7 +197,7 @@ def candidates(user, observation=None):
 def state(user, observation=None):
     scan(user)
     now = user['sim_time_s']; d = user['dialogue']
-    reports = copy.deepcopy(user.get('peer_reports') or [])
+    reports = copy.deepcopy(call_reports(user))
     if user['condition'] == 'no_comm':
         if reports:
             raise ValueError('NO_COMM_PEER_REPORTS_FORBIDDEN')
@@ -298,6 +302,9 @@ def speech_request(original, selected):
     new = {k: copy.deepcopy(v) for k, v in original.items() if k not in ('messages',)}
     new['messages'] = [dict(role='system', content=system),
                        dict(role='user', content=json.dumps(speech, ensure_ascii=False, sort_keys=True))]
+    if user.get('dialogue_call_policy') == 'event_v1':
+        from harness.e2e_dialogue_call_policy import check_prompt
+        check_prompt(system, new['messages'][1]['content'])
     return new
 
 

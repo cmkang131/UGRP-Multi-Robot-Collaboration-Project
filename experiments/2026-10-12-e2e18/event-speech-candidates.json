@@ -1,0 +1,59 @@
+{
+  "class_": "dev",
+  "pr": 461,
+  "batch": "r77",
+  "submitted": false,
+  "criterion": "Actual paired grasp, current GO/ACK and post-grasp carry; full start-to-B transport remains primary. First 30-60 SIM choices, still intervals and provider tokens; planned 16-concurrent gate median <=3.5 per VM.",
+  "seeds": {
+    "azure3": [
+      61006,
+      61007,
+      61008,
+      61009
+    ],
+    "azure4": [
+      61010,
+      61011,
+      61012,
+      61013
+    ]
+  },
+  "candidates": {
+    "365": {
+      "parent": "e2e18-v357",
+      "dialogue_call_policy": "event_v1"
+    },
+    "366": {
+      "parent": "e2e18-v358",
+      "dialogue_call_policy": "event_v1"
+    },
+    "367": {
+      "parent": "e2e18-v359",
+      "dialogue_call_policy": "event_v1"
+    },
+    "368": {
+      "parent": "e2e18-v360",
+      "dialogue_call_policy": "event_v1"
+    }
+  },
+  "role": "Strong code execution/protocol comparison; Gemma speech only. Not evidence of the new Gemma task-planner architecture.",
+  "integration": {
+    "callrate": "d4fe57d5906f657fc3215cd4d366bc23b8ff9be7",
+    "safety_fix": "Pin fresh actual safety messages outside recent6; never trim under cap pressure, fail explicitly if required evidence exceeds cap. Preserve original text/timestamps; no new channel."
+  },
+  "hypothesis": "Event admission and bounded speech avoid token exhaustion while preserving protocol transitions; regulated approach variant may shorten align-to-grasp.",
+  "reference": "https://github.com/UMass-Embodied-AGI/CoELA/blob/master/tdw_mat/LLM/LLM.py",
+  "related_tests": [
+    "tests/test_e2e_dialogue_call_policy.py",
+    "tests/test_e2e_speech_context.py",
+    "tests/test_e2e_approach_efficiency.py"
+  ],
+  "checked_unix": 1791888133.7448251,
+  "validation": {
+    "passed": 39,
+    "files": 3,
+    "elapsed_s": 115.63,
+    "log": "outputs/e2e18-admin/combined-r77-tests.txt",
+    "sha256": "abbb5ac9dc48ceb042c16a0a44823e4f727d6b605f5709b302dc4c265008ca7b"
+  }
+}

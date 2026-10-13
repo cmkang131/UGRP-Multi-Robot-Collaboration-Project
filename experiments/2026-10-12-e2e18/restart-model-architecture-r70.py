@@ -54,6 +54,9 @@ EXTRA[356]=EXTRA[354]+[('--approach-efficiency','regulated_v1')]
 for version,parent in ((357,352),(358,354),(359,356),(360,356)):
  EXTRA[version]=EXTRA[parent]+[('--speech-context','recent8_v1' if version==360 else 'recent4_v1')]
 
+for version,parent in zip(range(365,369),range(357,361)):
+ EXTRA[version]=EXTRA[parent]+[('--dialogue-call-policy','event_v1')]
+
 selected=[(seed,version,'view5_pan_v1') for seed in seeds for version in VERS]
 assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sha
 assert not subprocess.check_output(['git','status','--porcelain'])
