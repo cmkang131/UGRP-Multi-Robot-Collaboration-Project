@@ -1,0 +1,54 @@
+{
+  "status": "cohort_running",
+  "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+  "bundles": [
+    "v426",
+    "v427",
+    "v428",
+    "v429"
+  ],
+  "diagnosis": {
+    "unreached_N": 10,
+    "search_without_reacquisition": 7,
+    "cancelled_scan_deadlock": 3,
+    "black_same_N": 2,
+    "video_frames_viewed": 72
+  },
+  "offline_predicate": {
+    "n": 3,
+    "N": 3,
+    "physical": false
+  },
+  "tests": {
+    "passed": 18,
+    "files": 3
+  },
+  "gate": {
+    "batch": "stage-approach-gate1",
+    "planned_N": 12,
+    "complete_N": 12,
+    "median_wall_per_sim": 2.3968829684333333,
+    "max_wall_per_sim": 2.652319933199999,
+    "limit": 3.5,
+    "staging_passed": true,
+    "ok": true,
+    "model_calls": 0,
+    "request_files": 0,
+    "tokens_per_sim": 0.0,
+    "api_cost_usd": 0,
+    "synchronized": true,
+    "actual_start_spread_s": 0.09172638000001143,
+    "provider_receipts": 0,
+    "provider_attempt_ids": [],
+    "receipt_reconciled": true
+  },
+  "cohort": {
+    "submitted": 12,
+    "completed": 0,
+    "raw": "azure3:~/ugrp-sim/runs/stage-approach-cohort1-*"
+  },
+  "VM3": "running; other VMs not started",
+  "model_calls": 0,
+  "api_cost_usd": 0,
+  "remaining": "physical comparison, archive/hash verification, representative video review and VM3 deallocation pending"
+}

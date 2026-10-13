@@ -1,0 +1,825 @@
+{
+  "batch": "stage-approach-gate1",
+  "window_sim_s": 30,
+  "N": 12,
+  "errors": [],
+  "max_no_motion_s": 3.3500000000000014,
+  "model_calls": 0,
+  "tokens_per_sim": 0,
+  "api_cost_usd": 0,
+  "records": [
+    {
+      "name": "stage-approach-gate1-00-v426",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 5,
+            "mecanum": 118
+          },
+          "frames": 70,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 69
+          },
+          "max_no_motion_s": 0.6500000000000004,
+          "position_delta_max_m": 1.1686188334346952,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.662492392927639,
+              -0.7314863401099007,
+              0.4242149302498963
+            ],
+            "grip_own_m": [
+              -1.4773036034905507,
+              -0.6478481175867875
+            ],
+            "distance_m": 0.6014048993732874,
+            "heading_error_rad": 2.694053748254687,
+            "own_beam_age_s": 36.0,
+            "camera": "search",
+            "basis_yaw_rad": 0.4242149302498963,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 36,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.7977088928222658,
+                -0.684073257446289
+              ],
+              "carrot_distance_m": 0.6065422693651208,
+              "phase": "rotate_path",
+              "heading_error_rad": 0.2073589827816045,
+              "goal_distance_m": 0.6014048993732874,
+              "before": 0.042997747740221755,
+              "after": 0.01291628873021558
+            },
+            "projected_clear": true,
+            "gaze_bearing_deg": 102.35687412258534,
+            "gaze_pan_reachable": false,
+            "gaze_source": "own_rgb_track",
+            "track_sigma_m": 0.14208571523026467
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 43,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 45,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 19,
+            "acquire_scan": 14,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 2.0500000000000007,
+          "position_delta_max_m": 0.0158587181420159,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "acquire_turn",
+            "own_beam_age_s": 79.8,
+            "B_candidate_available": true,
+            "cycle": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-01-v427",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 93,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 45,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 9,
+            "acquire_scan": 13,
+            "arm_clearance_backup": 9,
+            "arm_clearance_turn": 3,
+            "arm_clearance_verify": 2,
+            "acquire_explore": 8
+          },
+          "max_no_motion_s": 2.3499999999999996,
+          "position_delta_max_m": 0.3513814705601763,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "acquire_explore",
+            "own_beam_age_s": 36.0,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 43,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 45,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 19,
+            "acquire_scan": 14,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 2.0500000000000007,
+          "position_delta_max_m": 0.0158587181420159,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "acquire_turn",
+            "own_beam_age_s": 79.8,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-02-v428",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 20,
+            "mecanum": 116,
+            "arm": 60
+          },
+          "frames": 69,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 68
+          },
+          "max_no_motion_s": 0.6500000000000004,
+          "position_delta_max_m": 1.157091553591387,
+          "latest_approach": {
+            "t": 108.2,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.662492392927639,
+              -0.7314863401099007,
+              0.4242149302498963
+            ],
+            "grip_own_m": [
+              -1.4773036034905507,
+              -0.6478481175867875
+            ],
+            "distance_m": 0.6033128330755181,
+            "heading_error_rad": 2.6588412081576642,
+            "own_beam_age_s": 35.60000000000001,
+            "camera": "search",
+            "basis_yaw_rad": 0.4242149302498963,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 34,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.7913486480712895,
+                -0.6852119445800785
+              ],
+              "carrot_distance_m": 0.6086845245956432,
+              "before": 0.37049685048222414,
+              "after": 0.35523886976470453,
+              "body_error_m": [
+                0.6002221792975603,
+                0.10114438175950037
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.16694317966447234,
+              "goal_distance_m": 0.6033128330755181
+            },
+            "projected_clear": true,
+            "gaze_bearing_deg": 99.94210316354548,
+            "gaze_pan_reachable": false,
+            "gaze_source": "own_rgb_track",
+            "track_sigma_m": 0.14055225369556018,
+            "regulated_pulse_period_s": 0.2
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 43,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 45,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 17,
+            "acquire_scan": 14,
+            "acquire_explore": 13
+          },
+          "max_no_motion_s": 3.3500000000000014,
+          "position_delta_max_m": 0.0158587181420159,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "acquire_explore",
+            "own_beam_age_s": 79.8,
+            "B_candidate_available": true,
+            "cycle": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-03-v429",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 93,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 45,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 9,
+            "acquire_scan": 13,
+            "arm_clearance_backup": 9,
+            "arm_clearance_turn": 3,
+            "arm_clearance_verify": 2,
+            "acquire_explore": 8
+          },
+          "max_no_motion_s": 2.3499999999999996,
+          "position_delta_max_m": 0.3513814705601763,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "acquire_explore",
+            "own_beam_age_s": 36.0,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 43,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 45,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 17,
+            "acquire_scan": 14,
+            "acquire_explore": 13
+          },
+          "max_no_motion_s": 3.3500000000000014,
+          "position_delta_max_m": 0.0158587181420159,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "acquire_explore",
+            "own_beam_age_s": 79.8,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-04-v426",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 23,
+            "mecanum": 99,
+            "arm": 64
+          },
+          "frames": 65,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 63,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 0.6999999999999993,
+          "position_delta_max_m": 0.8433383686028703,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -0.9676568591392405,
+              -0.5083413347291761,
+              0.8170504337723297
+            ],
+            "grip_own_m": [
+              -0.8285918998671178,
+              -0.36018203835313745
+            ],
+            "distance_m": 0.391695095118882,
+            "heading_error_rad": 2.3432143616654226,
+            "own_beam_age_s": 9.200000000000003,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.8170504337723297,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 27,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -0.9676568591392405,
+                -0.5083413347291761
+              ],
+              "carrot_distance_m": 0.391695095118882,
+              "before": 0.15342504754019,
+              "after": 0.1435972769868237,
+              "body_error_m": [
+                0.38844705912737637,
+                0.05033815447036749
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.12887002469502543,
+              "goal_distance_m": 0.391695095118882
+            },
+            "projected_clear": false
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 75
+          },
+          "frames": 75,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 74
+          },
+          "max_no_motion_s": 0.2999999999999998,
+          "position_delta_max_m": 0.12675116738580813,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "seek_own_B",
+            "source": "own_frontier_navigation"
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-05-v427",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 95,
+            "look": 22,
+            "arm": 64
+          },
+          "frames": 66,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 3,
+            "navigate_pregrasp": 61,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 0.7000000000000028,
+          "position_delta_max_m": 0.825681386812005,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.2535569791116048,
+              -0.45852473864910614,
+              0.595000716288185
+            ],
+            "grip_own_m": [
+              -1.0852772857293576,
+              -0.34462923919817595
+            ],
+            "distance_m": 0.3705869635925954,
+            "heading_error_rad": 2.450632024761454,
+            "own_beam_age_s": 11.200000000000003,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.595000716288185,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": false,
+            "path_points": 25,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.2535569791116048,
+                -0.45852473864910614
+              ],
+              "carrot_distance_m": 0.3705869635925954,
+              "before": 0.13733469758477962,
+              "after": 0.12814113721248088,
+              "body_error_m": [
+                0.36442572445850047,
+                0.06729479131163646
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.1826028305853368,
+              "goal_distance_m": 0.3705869635925954
+            },
+            "projected_clear": false
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 42,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 42,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 18,
+            "acquire_scan": 12,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 1.75,
+          "position_delta_max_m": 0.015461492991191999,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "acquire_turn",
+            "own_beam_age_s": 43.8,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-06-v428",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 23,
+            "mecanum": 99,
+            "arm": 64
+          },
+          "frames": 65,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 63,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 0.6999999999999993,
+          "position_delta_max_m": 0.8433383686028703,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -0.9676568591392405,
+              -0.5083413347291761,
+              0.8170504337723297
+            ],
+            "grip_own_m": [
+              -0.8285918998671178,
+              -0.36018203835313745
+            ],
+            "distance_m": 0.391695095118882,
+            "heading_error_rad": 2.3432143616654226,
+            "own_beam_age_s": 9.200000000000003,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.8170504337723297,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 27,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -0.9676568591392405,
+                -0.5083413347291761
+              ],
+              "carrot_distance_m": 0.391695095118882,
+              "before": 0.15342504754019,
+              "after": 0.1435972769868237,
+              "body_error_m": [
+                0.38844705912737637,
+                0.05033815447036749
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.12887002469502543,
+              "goal_distance_m": 0.391695095118882
+            },
+            "projected_clear": false
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 75
+          },
+          "frames": 75,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 74
+          },
+          "max_no_motion_s": 0.2999999999999998,
+          "position_delta_max_m": 0.12675116738580813,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "seek_own_B",
+            "source": "own_frontier_navigation"
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-07-v429",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 95,
+            "look": 22,
+            "arm": 64
+          },
+          "frames": 66,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 3,
+            "navigate_pregrasp": 61,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 0.7000000000000028,
+          "position_delta_max_m": 0.825681386812005,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.2535569791116048,
+              -0.45852473864910614,
+              0.595000716288185
+            ],
+            "grip_own_m": [
+              -1.0852772857293576,
+              -0.34462923919817595
+            ],
+            "distance_m": 0.3705869635925954,
+            "heading_error_rad": 2.450632024761454,
+            "own_beam_age_s": 11.200000000000003,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.595000716288185,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": false,
+            "path_points": 25,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.2535569791116048,
+                -0.45852473864910614
+              ],
+              "carrot_distance_m": 0.3705869635925954,
+              "before": 0.13733469758477962,
+              "after": 0.12814113721248088,
+              "body_error_m": [
+                0.36442572445850047,
+                0.06729479131163646
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.1826028305853368,
+              "goal_distance_m": 0.3705869635925954
+            },
+            "projected_clear": false
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 42,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 42,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 17,
+            "acquire_scan": 12,
+            "acquire_explore": 12
+          },
+          "max_no_motion_s": 1.75,
+          "position_delta_max_m": 0.033980898124997126,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "acquire_explore",
+            "own_beam_age_s": 43.8,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-08-v426",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 22,
+            "mecanum": 102,
+            "arm": 64
+          },
+          "frames": 66,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 60,
+            "gaze_settle": 4,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 1.1000000000000014,
+          "position_delta_max_m": 0.9973645154253546,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "gaze_settle"
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 75
+          },
+          "frames": 75,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 74
+          },
+          "max_no_motion_s": 0.25,
+          "position_delta_max_m": 0.746617252446379,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "seek_own_B",
+            "source": "own_frontier_navigation"
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-09-v427",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 196,
+            "arm": 384,
+            "look": 96
+          },
+          "frames": 60,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 10,
+            "acquire_scan": 9,
+            "arm_clearance_backup": 22,
+            "arm_clearance_turn": 15,
+            "arm_clearance_verify": 3
+          },
+          "max_no_motion_s": 2.05,
+          "position_delta_max_m": 0.9635768158213615,
+          "latest_approach": {
+            "t": 165.05,
+            "status": "arm_clearance_backup",
+            "cycle": 3
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 42,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 42,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 18,
+            "acquire_scan": 12,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 1.8500000000000014,
+          "position_delta_max_m": 0.033559053242767395,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "acquire_turn",
+            "own_beam_age_s": 69.29999999999998,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-10-v428",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 22,
+            "mecanum": 102,
+            "arm": 64
+          },
+          "frames": 66,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 60,
+            "gaze_settle": 4,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 1.1000000000000014,
+          "position_delta_max_m": 0.9973645154253546,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "gaze_settle"
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 75
+          },
+          "frames": 75,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 74
+          },
+          "max_no_motion_s": 0.25,
+          "position_delta_max_m": 0.746617252446379,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "seek_own_B",
+            "source": "own_frontier_navigation"
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-approach-gate1-11-v429",
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 196,
+            "arm": 384,
+            "look": 96
+          },
+          "frames": 60,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 10,
+            "acquire_scan": 9,
+            "arm_clearance_backup": 22,
+            "arm_clearance_turn": 15,
+            "arm_clearance_verify": 3
+          },
+          "max_no_motion_s": 2.05,
+          "position_delta_max_m": 0.9635768158213615,
+          "latest_approach": {
+            "t": 165.05,
+            "status": "arm_clearance_backup",
+            "cycle": 3
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 42,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 42,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 17,
+            "acquire_scan": 12,
+            "acquire_explore": 12
+          },
+          "max_no_motion_s": 1.8500000000000014,
+          "position_delta_max_m": 0.033559053242767395,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "acquire_explore",
+            "own_beam_age_s": 69.29999999999998,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        }
+      }
+    }
+  ]
+}
