@@ -66,7 +66,7 @@ class Clearance:
         if scan_guard!='off' and option!='range_wall_v1':raise ValueError('SCAN_GUARD_REQUIRES_RANGE_WALL')
         self.scan_guard=scan_guard;self.retreat_grants={}
         if option not in ('off',*OPTIONS):raise ValueError('UNKNOWN_ARM_CLEARANCE')
-        self.option=option;self.pending={};self.excluded={};self.cooldown={}
+        self.option=option;self.pending={};self.excluded={};self.cooldown={};self.align_skip='off';self.skip_logged={}
 
     def evidence(self,robot,now):
         ev=evidence(robot,now,self.option)
@@ -89,8 +89,16 @@ class Clearance:
         r=tr.robots[rid]
         if not scan_path(r,path):return False
         if rid in self.pending:return True
-        if now<self.cooldown.get(rid,0.):return True
         pose=np.asarray(r.goal.explorer.local_pose,float)
+        if self.align_skip!='off':
+            from harness.e2e_acquire_standoff import skip_reason,SKIP_PARAMS
+            why=skip_reason(tr,rid,pose,self.excluded.get(rid,[]),self.align_skip)
+            if why:
+                if now-self.skip_logged.get(rid,-1e9)>=SKIP_PARAMS['log_period_s']:
+                    self.skip_logged[rid]=now
+                    tr.event(now,'own_arm_clearance_align_skipped',robot_id=rid,reason=why,**self.evidence(r,now))
+                return False
+        if now<self.cooldown.get(rid,0.):return True
         ev=self.evidence(r,now)
         from harness.e2e_scan_guard import forced
         retreat=forced(self,rid,now,pose)
