@@ -40,11 +40,16 @@ class D1:
 
     def complete(self, request, call_id, speak):
         """d1 first, then message-only Gemma. No failed stage is silently retried."""
-        dreq = protocol.decision_request(request)
-        result = self.select(dreq, call_id)
+        oreq = protocol.observation_request(request)
+        observed = self.select(oreq, call_id+':vision')
+        if observed.get('status') != 'ok':
+            raise ValueError('D1_VISUAL_UPSTREAM_FAILURE')
+        observation = protocol.parse_decision(observed['body'], oreq)
+        dreq = protocol.decision_request(request, observation)
+        result = self.select(dreq, call_id+':action')
         if result.get('status') != 'ok':
             raise ValueError('D1_UPSTREAM_FAILURE')
-        selected = protocol.parse_decision(result['body'], dreq)
+        selected = {**observation, **protocol.parse_decision(result['body'], dreq)}
         user, _ = protocol.unpack(request)
         speech = protocol.speech_request(request, selected)
         # Even without a channel the exact same d1 choice is made; no invented peer.
@@ -68,8 +73,11 @@ class D1:
             model=request.get('model'), choices=[dict(index=0, finish_reason='stop', message=dict(role='assistant', content=''))],
             usage=dict(prompt_tokens=0, completion_tokens=0, total_tokens=0))
         response['choices'][0]['message']['content'] = json.dumps(assembled, ensure_ascii=False)
-        response['ugrp_d1_dialogue'] = dict(mode=protocol.MODE, selected=selected, latency_s=result['latency_s'],
+        response['ugrp_d1_dialogue'] = dict(mode=protocol.MODE, selected=selected,
+            latency_s=observed['latency_s']+result['latency_s'],
+            vision_latency_s=observed['latency_s'],action_latency_s=result['latency_s'],
             usage=result['body'].get('usage'), response=result['body'],
+            vision_usage=observed['body'].get('usage'),vision_response=observed['body'],
             request_sha256=hashlib.sha256(json.dumps(dreq, sort_keys=True).encode()).hexdigest(),
             gemma_message=text, gemma_called=bool(gemma), action_immutable=True)
         return response

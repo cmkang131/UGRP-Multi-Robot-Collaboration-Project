@@ -92,3 +92,9 @@ Gemma에는 확정된 행동과 자기 상태를 전달하고 `{text: ...}`만 �
 - [CoELA](https://arxiv.org/abs/2307.02485): 분산 관측·유료 통신에서 지각/기억/실행을 모듈로 연결한다. d1/Gemma 분리의 성능을 입증한 논문은 아니다.
 - [Liquid 공식 decision model 문서](https://docs.liquid.ai/lfm/models/decision-models): 고정 선택지의 결정과 자유 텍스트 생성을 구분한다. [공식 d1 vision 예제](https://www.liquid.ai/blog/d1-decision-model)는 `images` data URL 입력을 확인한다. 실호출에서 Choice는 최소 2개 라벨을 요구해, 둘 다 기존 continue인 프로토콜 대기/시각 불확실 대기로 표현한다. 불가능한 투표를 후보로 넣지 않는다.
 - [Google Gemma 대화 문서](https://ai.google.dev/gemma/docs/gemma_chat): 매 호출에 관련 과거 맥락을 명시적으로 공급한다. [Google 공식 프롬프트 지침](https://ai.google.dev/gemini-api/docs/prompting-strategies): 역할·제약·출력 형식을 구체적으로 지정한다. 후자는 Gemini 지침이며 Gemma 성능 보장은 아니다.
+
+### 첫 d1 재생의 실패와 수정
+
+`outputs/llmmemory-d1-replay-v1`의 결정 100/100은 정상 응답이었으나 프로토콜 일치는 79/100, GO 9/30, call-0021 0/10이었다. 이어진 Gemma 요청 100/100은 멱등 키가 64자리 hex가 아니어서 릴레이 HTTP 400으로 거절되었으며 upstream Gemma 호출은 없었다. 초기 실험과 실패 원문을 보존한다. 멱등 키를 SHA-256으로 고치고 실제 Journal 통과/캐시 시험을 추가했다.
+
+한 d1 요청의 독립 질문들이 GO와 grip=unknown을 함께 선택한 사례(0023의 6/10)가 있었다. 수정은 **d1 자기 RGB 범주 판정 → 해당 범주와 같은 RGB·기억을 넣은 d1 프로토콜 선택 → Gemma 문장 작성** 순서다. unknown/not_held/slipping이면 코드가 GO/ACK 후보를 없앤다. 영상 질문에도 같은 과제·역할·이전 행동 맥락을 주지만 과거 명령/투표를 현재 파지 증명으로 쓰지 않도록 명시한다. 장면당 d1 HTTP 2회이며 두 지연과 비용을 합산한다. 후보를 맞히기 위해 파지 정답이나 상대 상태를 주입하지 않는다. 수정한 Gemma 경로의 별도 pilot 1회 정상 응답을 확인했다.

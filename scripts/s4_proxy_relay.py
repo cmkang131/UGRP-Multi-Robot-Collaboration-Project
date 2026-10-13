@@ -28,6 +28,10 @@ def accepted_call_id(value):
         r'(?:e2eaz1-(?:gemma|gemini)-s6100[1-4]-(?:on|off)(?:-r[1-3])?|e2e[89]-[ab]-s6100[1-4](?:-r[12])?|e2e10-(?:a-s6100[1-4]|[bc]-s6100[12])(?:-r2)?|e2e1[12]-[ab]-s6100[12](?:-r2)?):call-\d+-r[123]:\d+',value) is not None
 
 
+def speech_idempotency_key(key):
+    return hashlib.sha256((key+':speech').encode()).hexdigest()
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--proxy-pid', type=int)
@@ -171,7 +175,8 @@ def main():
                                 if hashlib.sha256((Path(__file__).resolve().parents[1]/p).read_bytes()).hexdigest()!=digest:
                                     raise ValueError('D1_DIALOGUE_SOURCE_CHANGED')
                             def speak(request):
-                                s,r,_=fallback.complete(json.dumps(request).encode(),call_id,idempotency_key=key+':speech')
+                                speech_key=speech_idempotency_key(key)
+                                s,r,_=fallback.complete(json.dumps(request).encode(),call_id,idempotency_key=speech_key)
                                 if s!=200:raise ValueError('GEMMA_SPEECH_UPSTREAM_FAILURE')
                                 return json.loads(r)
                             raw=json.dumps(d1.complete(json.loads(body),call_id,speak)).encode()

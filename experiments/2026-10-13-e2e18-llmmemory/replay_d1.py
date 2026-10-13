@@ -42,7 +42,7 @@ def prepare(source, out):
                 part['text'] = json.dumps(user, ensure_ascii=False, sort_keys=True)
         path = out/(entry['run']+'__'+entry['call_id']+'__d1.json')
         path.write_text(json.dumps(req, ensure_ascii=False)+'\n')
-        dreq = dd.decision_request(req)
+        dreq = dd.observation_request(req)
         # Exact outgoing d1 bytes, same attached camera; no expected label in input.
         dpath = path.with_name(path.stem+'-decision.json');dpath.write_text(json.dumps(dreq)+'\n')
         manifest.append({k: copy.deepcopy(entry[k]) for k in ('run','call_id','expected','view')} |
@@ -81,7 +81,7 @@ def run(out, url, threads=4):
         if (entry['run'],entry['call_id'],rep) in done:return
         path=out/entry['file']
         if digest(path)!=entry['sha256']:raise ValueError('INPUT_CHANGED')
-        req=json.loads(path.read_text());dq=dd.decision_request(req)
+        req=json.loads(path.read_text());dq=dd.observation_request(req)
         if dq!=json.loads((out/entry['decision_file']).read_text()):raise ValueError('D1_INPUT_CHANGED')
         call_id=f's4live1-{out.name}-{entry["run"]}-{entry["call_id"]}-{rep}'
         row=dict(run=entry['run'],call_id=entry['call_id'],rep=rep,expected=entry['expected'],
@@ -90,7 +90,7 @@ def run(out, url, threads=4):
             (out/(call_id+'-speech-request.json')).write_text(json.dumps(body,ensure_ascii=False)+'\n')
             start=time.perf_counter()
             post=Request(url,data=json.dumps(body).encode(),headers={'Content-Type':'application/json',
-                'X-UGRP-Call-ID':call_id,'X-UGRP-Idempotency-Key':call_id})
+                'X-UGRP-Call-ID':call_id,'X-UGRP-Idempotency-Key':hashlib.sha256(call_id.encode()).hexdigest()})
             try:
                 with opener.open(post,timeout=120) as resp:status,raw=resp.status,resp.read(8_000_000)
             except HTTPError as exc:status,raw=exc.code,exc.read(8_000_000)
@@ -122,9 +122,20 @@ def run(out, url, threads=4):
 
 def report(out):
     rows=list(map(json.loads,(out/'results.jsonl').read_text().splitlines()))
+    d1rows=list(map(json.loads,(out/'provider/calls.jsonl').read_text().splitlines()))
+    index={r['call_id']:r for r in d1rows}
+    for r in rows:
+        base=f"s4live1-{out.name}-{r['run']}-{r['call_id']}-{r['rep']}"
+        rec=index.get(base+':action',index.get(base,{})).get('result',{})
+        body=rec.get('body',{})
+        choice=body.get('answers',{}).get('action',{}).get('choice')
+        r['decision_choice']=choice
+        r['decision_correct']=choice==r['expected'] or (r['expected']=='continue' and choice in ('WAIT','WAIT_UNCERTAIN'))
+        if 'd1_wall_s' not in r and rec.get('latency_s') is not None:
+            r['d1_wall_s']=rec['latency_s']+index.get(base+':vision',{}).get('result',{}).get('latency_s',0)
     def stats(rs):
-        return dict(n=len(rs),correct=sum(r['correct'] for r in rs),errors=sum(r['status']!='ok' for r in rs),
-            decisions={v:sum(r.get('selected',{}).get('action')==v for r in rs) for v in dd.CRITERIA},
+        return dict(n=len(rs),correct=sum(r['decision_correct'] for r in rs),pipeline_correct=sum(r['correct'] for r in rs),errors=sum(r['status']!='ok' for r in rs),
+            decisions={v:sum(r.get('decision_choice')==v for r in rs) for v in dd.CRITERIA},
             d1_latency_median_s=statistics.median([r['d1_wall_s'] for r in rs if 'd1_wall_s' in r] or [0]),
             speech_latency_median_s=statistics.median([r['speech_wall_s'] for r in rs if 'speech_wall_s' in r] or [0]),
             pipeline_latency_median_s=statistics.median([r['wall_s'] for r in rs] or [0]))

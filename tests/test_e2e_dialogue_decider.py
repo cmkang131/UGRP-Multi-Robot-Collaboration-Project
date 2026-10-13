@@ -69,7 +69,7 @@ def test_state_keeps_peer_original_and_age_without_map_geometry():
     assert s['peer_reports'][0]['body'] == original['peer_reports'][0]['body']
     assert s['peer_reports'][0]['received_age_s'] == pytest.approx(b['sim_time_s'] - 539.)
     assert 'own_map_summary' not in s and 'waypoints' not in json.dumps(s)
-    assert s['self_observation']['source'] == 'attached own wrist RGB only'
+    assert s['self_observation']['source'] == 'd1 estimate from attached own wrist RGB only'
     b['truth'] = [1, 2]
     with pytest.raises(ContractViolation, match='PRIVILEGED'):
         dd.state(b)
@@ -90,7 +90,7 @@ def test_same_d1_before_speech_all_conditions(tmp_path, condition, encoding, rec
     if condition == 'no_comm': b['peer_reports'] = []
     calls = []
     def select(body, url, key, timeout):
-        calls.append('d1'); assert body['images'] == ['data:image/jpeg;base64,AA==']
+        calls.append('vision' if 'own_grip' in body['questions'] else 'd1'); assert body['images'] == ['data:image/jpeg;base64,AA==']
         return dict(status='ok', latency_s=.3, body=answer(body))
     def speak(req):
         calls.append('gemma'); data=json.loads(req['messages'][1]['content'])
@@ -101,13 +101,13 @@ def test_same_d1_before_speech_all_conditions(tmp_path, condition, encoding, rec
     payload = json.loads(out['choices'][0]['message']['content'])
     assert payload['action'] == dd.candidates(b)['GO']
     if condition == 'no_comm':
-        assert calls == ['d1'] and payload['messages'] == []
+        assert calls == ['vision','d1'] and payload['messages'] == []
     elif encoding == 'schema':
         from harness.zone_study_contract import structured_violations
-        assert calls == ['d1'] and 'text' not in payload['messages'][0]
+        assert calls == ['vision','d1'] and 'text' not in payload['messages'][0]
         assert not structured_violations(payload['messages'][0]['message'])
     else:
-        assert calls == ['d1','gemma']
+        assert calls == ['vision','d1','gemma']
         assert payload['messages'][0]['text'] == 'Ready for this segment; awaiting mutual agreement.'
         assert set(payload['messages'][0]['recipients']) <= set(recipients)
 
@@ -121,7 +121,7 @@ def test_speech_cannot_override_action_and_invalid_d1_fails_before_speech(tmp_pa
     with pytest.raises(ValueError, match='CANDIDATE_MISMATCH'):
         client.complete(req,'impossible',lambda r:pytest.fail('Gemma must not run'))
     client.send=lambda *a:dict(status='http_error',latency_s=.1,http_status=429)
-    with pytest.raises(ValueError, match='D1_UPSTREAM_FAILURE'):
+    with pytest.raises(ValueError, match='D1_VISUAL_UPSTREAM_FAILURE'):
         client.complete(req,'failure',lambda r:pytest.fail('Gemma must not run'))
 
 
@@ -158,3 +158,16 @@ def test_default_unchanged_and_new_bundle_admitted(monkeypatch):
     require_current(new,ROOT)
     bad=copy.deepcopy(new);bad['e2e_options']['dialogue_decider']='gemma_v0'
     with pytest.raises(ValueError):require_current(bad,ROOT)
+
+
+def test_visual_uncertainty_removes_go_and_real_journal_accepts_speech_key(tmp_path):
+    from scripts.s4_proxy_relay import speech_idempotency_key
+    from harness.s4_relay_journal import Journal
+    for grip in ('unknown','slipping','not_held'):
+        q=dd.decision_request(request(user()),dict(own_grip=grip,own_alignment='unknown'))
+        assert set(q['questions']['action']['criteria'])=={'WAIT','WAIT_UNCERTAIN'}
+    journal=Journal(tmp_path/'journal');key=speech_idempotency_key('a'*64)
+    value,disposition=journal.call(key,b'request',lambda:(200,b'ok',None))
+    assert value[0]==200 and disposition=='forwarded'
+    value,disposition=journal.call(key,b'request',lambda:pytest.fail('must reuse'))
+    assert disposition=='cached'
