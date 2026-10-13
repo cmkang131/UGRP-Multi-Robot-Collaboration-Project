@@ -1,0 +1,30 @@
+{
+  "checks": [
+    {
+      "host": "x86",
+      "free_bytes": 67372081152,
+      "expected_bytes": 23622320128,
+      "projected_free_bytes": 43749761024,
+      "floor_bytes": 8589934592,
+      "ok": true
+    },
+    {
+      "host": "arm",
+      "free_bytes": 54666686464,
+      "expected_bytes": 23622320128,
+      "projected_free_bytes": 31044366336,
+      "floor_bytes": 26843545600,
+      "ok": true
+    },
+    {
+      "host": "mac",
+      "free_bytes": 111771430912,
+      "expected_bytes": 939524096,
+      "projected_free_bytes": 110831906816,
+      "floor_bytes": 21474836480,
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "scope": "Gate final max28.1MiB/30SIMs; linear281MiB/300SIMs; 512MiB per run x40 plus2GiB reserve; no unapproved remaining writes"
+}
