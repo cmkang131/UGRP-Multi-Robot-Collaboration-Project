@@ -1,0 +1,357 @@
+{
+  "checked_unix": 1791894435.719477,
+  "runs": [
+    {
+      "run": "e2e18-v379-s61006-r80",
+      "path": "/home/ugrp/ugrp-sim/runs/e2e18-v379-s61006-r80/raw/body-decisions.jsonl",
+      "sha256": "45bc2b397010cc84f4a3c5460007cff4b5735986afde14ada73432806bc36006",
+      "last_t": 332.0,
+      "decisions": 440,
+      "recovery_cases": 0,
+      "choices": {},
+      "samples": []
+    },
+    {
+      "run": "e2e18-v379-s61007-r80",
+      "path": "/home/ugrp/ugrp-sim/runs/e2e18-v379-s61007-r80/raw/body-decisions.jsonl",
+      "sha256": "25f3139ccf6d506a24e61807037bcfc9cc0f909ae286e8e8ea7e1aaf09d3b51c",
+      "last_t": 317.2,
+      "decisions": 410,
+      "recovery_cases": 0,
+      "choices": {},
+      "samples": []
+    },
+    {
+      "run": "e2e18-v379-s61008-r80",
+      "path": "/home/ugrp/ugrp-sim/runs/e2e18-v379-s61008-r80/raw/body-decisions.jsonl",
+      "sha256": "3b7e7ab47ef36518c15b8a2b30f290ef69e2b86377ce805cc10fda06967b58c3",
+      "last_t": 349.65,
+      "decisions": 425,
+      "recovery_cases": 4,
+      "choices": {
+        "scan_right": 1,
+        "back_off_and_replan": 2,
+        "scan_left": 1
+      },
+      "samples": [
+        {
+          "t": 136.8,
+          "robot": "r1",
+          "phase": "align",
+          "choice": "scan_right",
+          "candidates": [
+            "hold_and_reobserve",
+            "approach_own_standoff",
+            "detour_left",
+            "detour_right",
+            "back_off_and_replan",
+            "scan_right"
+          ],
+          "facts": {
+            "recovery_menu_fallback": "alternatives_v1",
+            "safety_rejected_recovery_candidates": null,
+            "target_distance_m": 1.5251,
+            "target_distance_change_20s_m": 0.2248,
+            "own_progress_last_5s": "moving",
+            "recovery_strategies_tried": [
+              "recover_wide_view"
+            ],
+            "partner_stop": false,
+            "holding_command": false,
+            "go_ack_complete": false
+          }
+        },
+        {
+          "t": 138.4,
+          "robot": "r1",
+          "phase": "align",
+          "choice": "back_off_and_replan",
+          "candidates": [
+            "hold_and_reobserve",
+            "approach_own_standoff",
+            "detour_left",
+            "detour_right",
+            "back_off_and_replan",
+            "scan_left"
+          ],
+          "facts": {
+            "recovery_menu_fallback": "alternatives_v1",
+            "safety_rejected_recovery_candidates": null,
+            "target_distance_m": 1.5222,
+            "target_distance_change_20s_m": 0.1565,
+            "own_progress_last_5s": "moving",
+            "recovery_strategies_tried": [
+              "recover_wide_view"
+            ],
+            "partner_stop": false,
+            "holding_command": false,
+            "go_ack_complete": false
+          }
+        },
+        {
+          "t": 140.0,
+          "robot": "r1",
+          "phase": "align",
+          "choice": "back_off_and_replan",
+          "candidates": [
+            "hold_and_reobserve",
+            "approach_own_standoff",
+            "detour_left",
+            "detour_right",
+            "back_off_and_replan",
+            "scan_left"
+          ],
+          "facts": {
+            "recovery_menu_fallback": "alternatives_v1",
+            "safety_rejected_recovery_candidates": null,
+            "target_distance_m": 1.5963,
+            "target_distance_change_20s_m": 0.2155,
+            "own_progress_last_5s": "moving",
+            "recovery_strategies_tried": [
+              "recover_wide_view"
+            ],
+            "partner_stop": false,
+            "holding_command": false,
+            "go_ack_complete": false
+          }
+        },
+        {
+          "t": 142.0,
+          "robot": "r1",
+          "phase": "align",
+          "choice": "scan_left",
+          "candidates": [
+            "hold_and_reobserve",
+            "approach_own_standoff",
+            "detour_left",
+            "detour_right",
+            "back_off_and_replan",
+            "scan_left"
+          ],
+          "facts": {
+            "recovery_menu_fallback": "alternatives_v1",
+            "safety_rejected_recovery_candidates": null,
+            "target_distance_m": 1.6444,
+            "target_distance_change_20s_m": 0.2637,
+            "own_progress_last_5s": "moving",
+            "recovery_strategies_tried": [
+              "recover_wide_view"
+            ],
+            "partner_stop": false,
+            "holding_command": false,
+            "go_ack_complete": false
+          }
+        }
+      ]
+    },
+    {
+      "run": "e2e18-v379-s61009-r80",
+      "path": "/home/ugrp/ugrp-sim/runs/e2e18-v379-s61009-r80/raw/body-decisions.jsonl",
+      "sha256": "f83287bbdbfbc78e240f75c63e55b0cef86ab1df08602d7dd4364ee2c284f80b",
+      "last_t": 366.8,
+      "decisions": 430,
+      "recovery_cases": 1,
+      "choices": {
+        "scan_left": 1
+      },
+      "samples": [
+        {
+          "t": 210.4,
+          "robot": "r2",
+          "phase": "align",
+          "choice": "scan_left",
+          "candidates": [
+            "hold_and_reobserve",
+            "detour_left",
+            "detour_right",
+            "scan_left"
+          ],
+          "facts": {
+            "recovery_menu_fallback": "alternatives_v1",
+            "safety_rejected_recovery_candidates": null,
+            "target_distance_m": 0.4631254756883226,
+            "target_distance_change_20s_m": 0.0037,
+            "own_progress_last_5s": "moving",
+            "recovery_strategies_tried": [],
+            "partner_stop": false,
+            "holding_command": false,
+            "go_ack_complete": false
+          }
+        }
+      ]
+    },
+    {
+      "run": "e2e18-v380-s61006-r80",
+      "path": "/home/ugrp/ugrp-sim/runs/e2e18-v380-s61006-r80/raw/body-decisions.jsonl",
+      "sha256": "c4698c6d077a80e53564f630974762ac5717d4c913c15f394bff40d23e7b7e80",
+      "last_t": 330.45,
+      "decisions": 444,
+      "recovery_cases": 0,
+      "choices": {},
+      "samples": []
+    },
+    {
+      "run": "e2e18-v380-s61007-r80",
+      "path": "/home/ugrp/ugrp-sim/runs/e2e18-v380-s61007-r80/raw/body-decisions.jsonl",
+      "sha256": "a6d23a105dc386604f7d13e28f6c29f95db54c1c0e43178fff686f21f81ac073",
+      "last_t": 315.6,
+      "decisions": 409,
+      "recovery_cases": 0,
+      "choices": {},
+      "samples": []
+    },
+    {
+      "run": "e2e18-v380-s61008-r80",
+      "path": "/home/ugrp/ugrp-sim/runs/e2e18-v380-s61008-r80/raw/body-decisions.jsonl",
+      "sha256": "05b380692432196c5d2521a275d140d1ecf96be82dfc8493ba72b9bb67631747",
+      "last_t": 334.0,
+      "decisions": 385,
+      "recovery_cases": 1,
+      "choices": {
+        "recover_standoff": 1
+      },
+      "samples": [
+        {
+          "t": 150.8,
+          "robot": "r2",
+          "phase": "align",
+          "choice": "recover_standoff",
+          "candidates": [
+            "hold_and_reobserve",
+            "recover_standoff"
+          ],
+          "facts": {
+            "recovery_menu_fallback": null,
+            "safety_rejected_recovery_candidates": [
+              "recover_wide_view"
+            ],
+            "target_distance_m": 0.7114,
+            "target_distance_change_20s_m": 0.3479,
+            "own_progress_last_5s": "moving",
+            "recovery_strategies_tried": [],
+            "partner_stop": false,
+            "holding_command": false,
+            "go_ack_complete": false
+          }
+        }
+      ]
+    },
+    {
+      "run": "e2e18-v380-s61009-r80",
+      "path": "/home/ugrp/ugrp-sim/runs/e2e18-v380-s61009-r80/raw/body-decisions.jsonl",
+      "sha256": "3e0126bd7e160a3f1e95bd5db80d6359af17b32f7e24b1ab9b03f4cd265aed18",
+      "last_t": 334.0,
+      "decisions": 430,
+      "recovery_cases": 6,
+      "choices": {
+        "recover_standoff": 1,
+        "recover_camera_pan": 1,
+        "recover_detour_left": 1,
+        "recover_detour_right": 3
+      },
+      "samples": [
+        {
+          "t": 200.0,
+          "robot": "r1",
+          "phase": "align",
+          "choice": "recover_standoff",
+          "candidates": [
+            "hold_and_reobserve",
+            "recover_standoff"
+          ],
+          "facts": {
+            "recovery_menu_fallback": null,
+            "safety_rejected_recovery_candidates": [
+              "recover_wide_view"
+            ],
+            "target_distance_m": 1.6142,
+            "target_distance_change_20s_m": 0.0245,
+            "own_progress_last_5s": "moving",
+            "recovery_strategies_tried": [],
+            "partner_stop": false,
+            "holding_command": false,
+            "go_ack_complete": false
+          }
+        },
+        {
+          "t": 209.2,
+          "robot": "r2",
+          "phase": "align",
+          "choice": "recover_camera_pan",
+          "candidates": [
+            "hold_and_reobserve",
+            "recover_camera_pan"
+          ],
+          "facts": {
+            "recovery_menu_fallback": null,
+            "safety_rejected_recovery_candidates": [
+              "recover_wide_view"
+            ],
+            "target_distance_m": 0.5498171218673317,
+            "target_distance_change_20s_m": 0.1078,
+            "own_progress_last_5s": "turning in place",
+            "recovery_strategies_tried": [],
+            "partner_stop": false,
+            "holding_command": false,
+            "go_ack_complete": false
+          }
+        },
+        {
+          "t": 300.8,
+          "robot": "r2",
+          "phase": "align",
+          "choice": "recover_detour_right",
+          "candidates": [
+            "hold_and_reobserve",
+            "recover_detour_right"
+          ],
+          "facts": {
+            "recovery_menu_fallback": null,
+            "safety_rejected_recovery_candidates": [
+              "recover_wide_view"
+            ],
+            "target_distance_m": 0.44749256789055875,
+            "target_distance_change_20s_m": 0.047,
+            "own_progress_last_5s": "turning in place",
+            "recovery_strategies_tried": [
+              "recover_camera_pan",
+              "recover_detour_left",
+              "recover_detour_right"
+            ],
+            "partner_stop": false,
+            "holding_command": false,
+            "go_ack_complete": false
+          }
+        },
+        {
+          "t": 321.6,
+          "robot": "r2",
+          "phase": "align",
+          "choice": "recover_detour_right",
+          "candidates": [
+            "hold_and_reobserve",
+            "recover_detour_right"
+          ],
+          "facts": {
+            "recovery_menu_fallback": null,
+            "safety_rejected_recovery_candidates": [
+              "recover_wide_view"
+            ],
+            "target_distance_m": 0.4874086710962702,
+            "target_distance_change_20s_m": 0.0399,
+            "own_progress_last_5s": "moving",
+            "recovery_strategies_tried": [
+              "recover_camera_pan",
+              "recover_detour_left",
+              "recover_detour_right"
+            ],
+            "partner_stop": false,
+            "holding_command": false,
+            "go_ack_complete": false
+          }
+        }
+      ]
+    }
+  ],
+  "interpretation": "Safe alternatives were selected and previous stationary hold avoided, but all runs still failed to achieve paired grasp before coordinator stop for reacquisition loops. Do not claim overall alignment or transport improvement."
+}

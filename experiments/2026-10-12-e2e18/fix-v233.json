@@ -1,0 +1,65 @@
+{
+  "schema": "e2e18.fix.v233",
+  "parent": "e2e18-v232",
+  "toggles": {
+    "route_handle": "typed_ref_v1",
+    "boundary_frame": "observed_own_v1",
+    "defaults": "off"
+  },
+  "raw_evidence": {
+    "malformed_run": "azure4:e2e18-v231-s61009-r19",
+    "normal_stop_calls": [
+      4,
+      5,
+      6
+    ],
+    "completion_tokens": [
+      626,
+      616,
+      621
+    ],
+    "cause": "missing closing brace around full OwnRoute contract; 3 normal-stop JSON responses rejected; no model action invented",
+    "frame_review_commit": "719555e22829b5c6b66613698d17f8e6c029bdd7",
+    "coordinate_bug": "static map poses passed through self-map->odom transform, with no static-map->own registration; static geometry is allowed but transform was not valid"
+  },
+  "implementation": {
+    "protocol": "Exact r1 captured route hash reference chosen by model; expands to full validated envelope before existing provenance/channel/continue-only checks; actual approval/claims/GO-ACK remain required",
+    "view": "own RGB B center plus fixed .8x1.4 board circumscribed disk, fixed camera projection and own costmap; no static position/map/initial pose; candidates already in navigator frame",
+    "gate": "framing hypothesis never confirms B; existing fresh partial/full boundary checks unchanged"
+  },
+  "references": [
+    "https://ai.google.dev/gemma/docs/capabilities/text/function-calling-gemma4",
+    "https://raw.githubusercontent.com/ros2/geometry2/rolling/tf2_ros_py/tf2_ros/buffer_interface.py",
+    "https://arxiv.org/html/2506.13367v1"
+  ],
+  "research": "Typed fixed-argument interface reduces nested JSON copying; tf2 requires source-to-target transform; active perception plans views from current observations. No provider native function calling or RGB-D/known-pose assumptions imported.",
+  "prereg": {
+    "seeds": {
+      "azure3": [
+        61001,
+        61002,
+        61003,
+        61005
+      ],
+      "azure4": [
+        61009,
+        61011
+      ]
+    },
+    "gate_limit": 3.0,
+    "probe_sim_s": 30,
+    "total_concurrency_per_vm": 6,
+    "wall_cap_s": 7200,
+    "criterion": "all3 in one run; prior outcomes not inherited"
+  },
+  "tests": {
+    "files": [
+      "test_e2e_boundary_frame.py",
+      "test_e2e_boundary_views.py",
+      "test_e2e_route_handle.py"
+    ],
+    "passed": 22,
+    "seconds": 32.83,
+    "scope": "offline controller/projection/real scheduler fake wire; no Mac simulation"
+  }
+}

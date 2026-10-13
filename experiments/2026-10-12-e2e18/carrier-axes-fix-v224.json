@@ -1,0 +1,28 @@
+{
+  "bundle": "e2e18-v224",
+  "toggles": {
+    "carrier_axes": "beam_v1",
+    "carrier_approach": "standoff_v1"
+  },
+  "cause": "route_to_B rejects arbitrary beam yaw in private own-start frame; Transport._align demands r1 yaw0/r2 yawpi without relative frame registration or commands to approach those carrier stations; SEARCH camera remains fixed while near grip leaves its view",
+  "raw_evidence": [
+    "beam-axis-replay.json",
+    "v221 route diagnostics: seed61004 t136.8 beam yaw-169.73deg, seed61005 t137.2 +8.19deg; both rejected against own-start x axis"
+  ],
+  "method": "SE(2) rotate own route to the observed beam axis oriented by own remembered B projection. v2 route and actual wire carry causal RGB basis and digest; synchronized commands retain opposite carrier body signs. Independent robot own-map station planning and commanded SEARCH/p45/inspect camera poses precede existing settled visual servo. No live truth input.",
+  "limits": "DEV native-only coverage remains excluded from map completion; actual grasp/carry not yet tested at this source",
+  "tests": "test_e2e_carrier_axes.py + test_e2e_s3_route.py + test_e2e_s4_live.py:76 passed,1 skipped; offline contracts/coordinate invariance/real calibrated RPP dispatch, no provider/physics",
+  "references": [
+    "https://modernrobotics.northwestern.edu/nu-gm-book-resource/3-3-1-homogeneous-transformation-matrices/",
+    "https://moveit.picknik.ai/main/doc/tutorials/pick_and_place_with_moveit_task_constructor/pick_and_place_with_moveit_task_constructor.html",
+    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/controller_plugins/configuring_rotation_shim_controller/"
+  ],
+  "replacement_seeds": [
+    61004,
+    61005,
+    61009,
+    61010
+  ],
+  "wall_cap_s": 18000,
+  "wall_cap_reason": "5h within requested7h maximum; existing relay lease remains finite without interrupting eight running cohorts"
+}

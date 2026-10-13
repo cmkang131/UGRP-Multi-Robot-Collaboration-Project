@@ -1,0 +1,63 @@
+{
+  "schema": "e2e18.fix.v237",
+  "parent": "e2e18-v236",
+  "toggles": {
+    "mapping_cadence": "0p6_v1",
+    "stale_station": "expire12_v1",
+    "defaults": "off"
+  },
+  "causes": [
+    {
+      "gate": "r26 azure4",
+      "median_wall_per_sim": 3.011164236650014,
+      "limit": 3.0,
+      "cohort_started": false
+    },
+    {
+      "run": "azure4:e2e18-v234-s61009-r24",
+      "sim_s": 449.0,
+      "robot": "r1",
+      "own_beam_age_s": 186.8,
+      "status": "approach_path_unavailable",
+      "station_distance_m": 0.23788590396592169,
+      "scope": "own-RGB station remained latched through unbounded view/turn retry; observed before SIGINT"
+    }
+  ],
+  "changes": {
+    "mapping_rgb_period_s": 0.6,
+    "alignment_and_contact_rgb_period_s": 0.4,
+    "VO_gap": "mapping .65; all other stages .45; current ultrasonic measurement age .12 unchanged",
+    "stale_station": "after12SIM without current own beam discard station/path/search state then bounded own-camera acquisition; recent last_beam is search hypothesis only"
+  },
+  "prereg": {
+    "seeds": {
+      "azure4": [
+        61007,
+        61008,
+        61009,
+        61010,
+        61011,
+        61012
+      ]
+    },
+    "concurrency": 6,
+    "probe_sim_s": 30,
+    "gate_limit": 3.0,
+    "wall_cap_s": 5400
+  },
+  "tests": {
+    "passed": 13,
+    "seconds": 13.56,
+    "files": [
+      "test_e2e_mapping_cadence.py",
+      "test_e2e_compute_budget.py",
+      "test_e2e_pregrasp_acquire.py"
+    ],
+    "scope": "offline clocks, stale retirement to actual acquisition and registration; no Mac physics"
+  },
+  "references": [
+    "https://github.com/ros-navigation/docs.nav2.org/blob/rolling/docs/tutorials/general_tutorials/navigation2_dynamic_point_following/navigation2_dynamic_point_following.md",
+    "https://openaccess.thecvf.com/content/ICCV2025/html/Qin_Active_Perception_Meets_Rule-Guided_RL_A_Two-Phase_Approach_for_Precise_ICCV_2025_paper.html"
+  ],
+  "research": "Classical target-loss timeout returns to active search; current RGB controls precise approach. ICCV2025 last-mile active-perception architecture is contextual; no trained RL policy or privileged inputs imported."
+}

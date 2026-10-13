@@ -1,0 +1,29 @@
+{
+  "source_sha": "cd456936eaae9c073b8b71fdb365cecf85d2038a",
+  "failure": "same-timestamp event retry livelock",
+  "first_confirmed_runs": [
+    "e2e18-v370-s61006-r78",
+    "e2e18-v372-s61006-r78"
+  ],
+  "sim_s": 64.1,
+  "last_admitted_sim_s": 49.1,
+  "interval_arithmetic": "14.999999999999993",
+  "limit": 15,
+  "tail_repeated_reason": "observation_min_interval",
+  "tail_retry_sim_s": 64.1,
+  "observed_policy_ledger_bytes": [
+    1161028227,
+    1295023146
+  ],
+  "stack_files": [
+    {
+      "file": "r78-v370-livelock-stack.txt",
+      "sha256": "6a8aa78e66993e8dd71ac39738e280cf89b9dcf4ecf71a3a632fd120232cf466"
+    },
+    {
+      "file": "r78-v372-livelock-stack.txt",
+      "sha256": "c95543a23a7955ff241821ff926fa6339d51b65b2bf851b3a7c650694d525908"
+    }
+  ],
+  "all_16_stopped": "stop-r78-event-snapshot.json"
+}

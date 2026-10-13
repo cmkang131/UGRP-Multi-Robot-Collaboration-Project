@@ -1,0 +1,153 @@
+{
+  "batch": "grasp1-stage-a1",
+  "N": 16,
+  "comparison_valid_N": 8,
+  "staging_invalid_N": 8,
+  "first_attempt_n": 0,
+  "both_held_n": 0,
+  "align_to_held_s": null,
+  "invalid_reason": "SOURCE_POLICY_HANDOFF_MISMATCH",
+  "conditions": {
+    "v375": {
+      "n": 0,
+      "N": 2,
+      "reacquisition_entries": [
+        {
+          "r1": 1,
+          "r2": 3
+        },
+        {
+          "r1": 1,
+          "r2": 2
+        }
+      ],
+      "scan_cycles": [
+        {
+          "r1": 2,
+          "r2": 12
+        },
+        {
+          "r1": 2,
+          "r2": 10
+        }
+      ],
+      "stopped_at_sim_s": [
+        300.0,
+        300.0
+      ]
+    },
+    "v384": {
+      "n": 0,
+      "N": 2,
+      "reacquisition_entries": [
+        {
+          "r1": 1,
+          "r2": 3
+        },
+        {
+          "r1": 1,
+          "r2": 2
+        }
+      ],
+      "scan_cycles": [
+        {
+          "r1": 9,
+          "r2": 14
+        },
+        {
+          "r1": 11,
+          "r2": 13
+        }
+      ],
+      "stopped_at_sim_s": [
+        269.2,
+        300.0
+      ]
+    },
+    "v385": {
+      "n": 0,
+      "N": 2,
+      "reacquisition_entries": [
+        {
+          "r1": 1,
+          "r2": 0
+        },
+        {
+          "r1": 1,
+          "r2": 1
+        }
+      ],
+      "scan_cycles": [
+        {
+          "r1": 17,
+          "r2": 0
+        },
+        {
+          "r1": 2,
+          "r2": 10
+        }
+      ],
+      "stopped_at_sim_s": [
+        285.15,
+        300.0
+      ]
+    },
+    "v386": {
+      "n": 0,
+      "N": 2,
+      "reacquisition_entries": [
+        {
+          "r1": 1,
+          "r2": 0
+        },
+        {
+          "r1": 2,
+          "r2": 1
+        }
+      ],
+      "scan_cycles": [
+        {
+          "r1": 17,
+          "r2": 0
+        },
+        {
+          "r1": 4,
+          "r2": 18
+        }
+      ],
+      "stopped_at_sim_s": [
+        285.6,
+        287.2
+      ]
+    }
+  },
+  "baseline_reacquisition": [
+    {
+      "source": "e2e18-v375-s61008-r80",
+      "entries": {
+        "r1": 1,
+        "r2": 3
+      },
+      "scan_cycles": {
+        "r1": 2,
+        "r2": 12
+      }
+    },
+    {
+      "source": "e2e18-v377-s61006-r80",
+      "entries": {
+        "r1": 1,
+        "r2": 2
+      },
+      "scan_cycles": {
+        "r1": 2,
+        "r2": 10
+      }
+    }
+  ],
+  "model_calls": 0,
+  "tokens_per_sim": 0,
+  "provider_cost_usd": 0,
+  "archive": "stage-a1-archive.json",
+  "all_16_arm_verified": true
+}

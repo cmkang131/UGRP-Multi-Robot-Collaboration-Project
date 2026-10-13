@@ -1,0 +1,113 @@
+{
+  "schema": "e2e18.fix.v232",
+  "parent": "e2e18-v231",
+  "raw_evidence": {
+    "host": "azure4",
+    "run": "e2e18-v231-s61012-r18",
+    "sim_s": 101.0,
+    "r1_vo_counts": {
+      "measured": 131,
+      "fused": 114,
+      "vo_replaced": 17,
+      "unknown": 121,
+      "unapplied": 35,
+      "substep_mismatch": 0,
+      "gate_zero": 0,
+      "us_zero": 0
+    },
+    "r1_vo_status": "unknown_servo_change",
+    "own_sigma_xy_m": 3.8248680115872675,
+    "diagnostic": "253 frames: 121 unknown, current unknown_servo_change; own-command pose is not measured motion"
+  },
+  "protocol_evidence": {
+    "host": "azure3",
+    "run": "e2e18-v230-s61005-r16",
+    "steps": {
+      "propose": 21,
+      "approve": 20,
+      "claim": 16
+    },
+    "same_route_hash": "4ce7953edf403faa28b04f3287ecad676f11daaaa1ba285ac307d4ea84595013",
+    "last_proposals": [
+      "w1-r1-20",
+      "w1-r1-22",
+      "w1-r1-24",
+      "w1-r1-25",
+      "w1-r1-26",
+      "w1-r1-27"
+    ],
+    "cause": "Dialogue.apply resets approved/claims for repeated identical route-origin messages"
+  },
+  "toggles": {
+    "gaze_cadence": "settled_frames_v1",
+    "stage_physics": "pregrasp_dt1_v1",
+    "protocol_idempotency": "same_route_v1",
+    "defaults": "off"
+  },
+  "gaze": {
+    "period_s": 2.4,
+    "settle_s": 0.8,
+    "unchanged_pwm_step": 80,
+    "remaining": "map pipeline still receives transitional camera frames; pregrasp target updates wait; VO keeps existing unknown handling"
+  },
+  "physics": {
+    "mapping_dt": 0.002,
+    "align_dt": 0.001,
+    "all_other_phases_dt": 0.00025,
+    "close_command_latches_fine": true,
+    "no_measured_state": true,
+    "scope": "new approximate physics cohort, contact/grasp success unverified; prior tilt cause unresolved"
+  },
+  "protocol": {
+    "same_full_validated_wire_route_only": true,
+    "old_actual_proposal_receipt_preserved": true,
+    "new_content_resets": true,
+    "model_claim_and_GO_ACK_still_required": true
+  },
+  "references": [
+    "https://faculty.cc.gatech.edu/~seth/ResPages/pdfs/HutHagCor96.pdf",
+    "https://mujoco.readthedocs.io/en/3.6.0/computation/",
+    "https://docs.aws.amazon.com/wellarchitected/latest/framework/rel_prevent_interaction_failure_idempotent.html"
+  ],
+  "research": "Use move-settle-look timing from the existing S3 controller; stage dt is model-dependent and must be physically checked; same logical request idempotency retains prior actual agreement",
+  "prereg": {
+    "seeds": {
+      "azure3": [
+        61004,
+        61005,
+        61006
+      ],
+      "azure4": [
+        61007,
+        61008,
+        61012
+      ]
+    },
+    "gate_limit": 3.0,
+    "probe_sim_s": 30,
+    "total_concurrency_per_vm": 6,
+    "wall_cap_s": 10800,
+    "criterion": "all3 in a single run; never infer map completion from unknown-cell route or issued grasp"
+  },
+  "tests": [
+    {
+      "files": [
+        "test_e2e_stage_cadence.py",
+        "test_e2e_route_idempotency.py",
+        "test_e2e_dialogue.py"
+      ],
+      "passed": 32,
+      "seconds": 6.55
+    },
+    {
+      "files": [
+        "test_e2e_stage_cadence.py",
+        "test_e2e_speed3.py",
+        "test_e2e_pregrasp_progress.py"
+      ],
+      "passed": 18,
+      "seconds": 15.82,
+      "scope": "before protocol-idempotency addition; stage physics unchanged"
+    }
+  ]
+}

@@ -108,7 +108,14 @@ class IntegratedGoalRoute(GoalRoute):
         own.scan(beam); own.rgb_ref(beam['rgb'], 'r1', now, self.e2e_observed)
         own.numbers(beam['pose_own_m'], 3, 'OWN_BEAM_POSE')
         if now-beam['rgb']['t_sim'] > .25: raise ContractViolation('FRESH_OWN_BEAM_REQUIRED')
-        if abs(beam['pose_own_m'][2]) > math.radians(5):
+        diagnostic=(getattr(self,'e2e_route_guard','off')!='off' or getattr(self,'e2e_route_recovery','off')!='off')
+        if diagnostic:
+            self.e2e_route_diagnostics=dict(t=now,beam_pose_own_m=copy.deepcopy(beam['pose_own_m']),beam_rgb=copy.deepcopy(beam['rgb']),sigma_xy_m=math.sqrt(float(np.linalg.eigvalsh(np.asarray(self.pose_covariance())[:2,:2]).max())),stage='beam_axes')
+        from harness.e2e_beam_axis import error as axis_error
+        beam_axis_error=axis_error(beam['pose_own_m'][2],getattr(self,'e2e_beam_axis','off'))
+        if diagnostic:self.e2e_route_diagnostics['beam_axis_error_rad']=beam_axis_error
+        carrier_axes=getattr(self,'e2e_carrier_axes','off')=='beam_v1'
+        if beam_axis_error > math.radians(5) and not carrier_axes:
             raise ContractViolation('S3_OWN_AXES_BEAM_ALIGNMENT_REQUIRED')
         entity, reference = self.entities.get('B'), self.e2e_gate.references.get('B')
         if entity is None or entity['source'] != 'own' or reference is None:
@@ -122,26 +129,72 @@ class IntegratedGoalRoute(GoalRoute):
         for ref in goal_sources: own.rgb_ref(ref, 'r1', now, self.e2e_observed)
         sources = copy.deepcopy(self.e2e_observed)
         grid, tf = self.explorer.grid, self.explorer.map_to_odom
+        if getattr(self,'e2e_route_cost','off')=='bounded_morphology_v1':grid._clearance_bounds_v1=True
         if grid.robot_id != 'r1': raise ContractViolation('PEER_GRID_FORBIDDEN')
         covariance = np.asarray(self.pose_covariance())
         margin = .02 + 3*math.sqrt(float(np.linalg.eigvalsh(covariance[:2, :2]).max()))
-        _, allowed, clearance, lo = footprint_clearance(grid, PAIR_FOOTPRINT, margin,
-                                                       yaw=float(tf[2])+beam['pose_own_m'][2])
         start = beam['pose_own_m'][:2]
         first, last = transform([start, target], tf)
-        cells = astar(allowed, np.asarray(grid.cell(first))-lo, np.asarray(grid.cell(last))-lo,
-                      grid.resolution, clearance)
+        recovery = getattr(self, 'e2e_route_recovery', 'off') != 'off'
+        if recovery:
+            from harness.e2e_route_recovery import search
+            extra={}
+            if self.e2e_route_recovery=='footprint_v2':
+                from harness.e2e_route_footprint import search
+                boundary=copy.deepcopy(reference.get('boundary'))
+                if boundary and 'polygon' in boundary:
+                    boundary['polygon']=transform(boundary['polygon'],tf).tolist()
+                    boundary['center']=transform([boundary['center']],tf)[0].tolist()
+                extra['boundary']=boundary
+            result, details, focus = search(grid, first, last,
+                float(tf[2])+beam['pose_own_m'][2], margin, dev_light=self.dev_light,
+                tolerance=0. if endpoint is not None else None, **extra)
+            allowed, clearance, lo, cells, selected = result
+            self.e2e_route_diagnostics.update(details, t=now, stage='grid_route',
+                strict_margin_m=margin, B_own_m=list(target), map_to_odom=np.asarray(tf).tolist())
+            self.e2e_route_focus = (dict(t=now, own_points=transform(focus,inverse(tf)).tolist())
+                                    if focus else None)
+            if cells:
+                target = transform([selected],inverse(tf))[0].tolist()
+        else:
+            _, allowed, clearance, lo = footprint_clearance(grid, PAIR_FOOTPRINT, margin,
+                                                           yaw=float(tf[2])+beam['pose_own_m'][2])
+            cells = astar(allowed, np.asarray(grid.cell(first))-lo, np.asarray(grid.cell(last))-lo,
+                          grid.resolution, clearance)
+            if diagnostic:
+                from harness.e2e_route_guard import search as dev_search
+                self.e2e_route_diagnostics.update(stage='grid_route',strict_margin_m=margin,B_own_m=list(target))
+                allowed,clearance,lo,cells=dev_search(self,grid,tf,beam,first,last,margin,(allowed,clearance,lo,cells))
         if not cells: raise ContractViolation('OWN_GRID_ROUTE_UNAVAILABLE')
         path = [start] + transform([grid.point(np.asarray(c)+lo) for c in cells], inverse(tf)).tolist() + [list(target)]
 
+        exact_clear=None
+        if getattr(self,'e2e_route_recovery','off')=='footprint_v2':
+            from harness.e2e_route_footprint import sweep_checker
+            state,dense_lo=grid.dense()
+            exact_clear=sweep_checker(state,dense_lo,grid.resolution,float(tf[2])+beam['pose_own_m'][2],
+                self.e2e_route_diagnostics['applied_margin_m'])
+
         def clear(a, b):
+            if exact_clear is not None:
+                return exact_clear(*transform([a,b],tf))
             n = max(1, math.ceil(math.dist(a, b)/(grid.resolution/2)))
             for point in transform(np.linspace(a, b, n+1), tf):
                 x, y = np.asarray(grid.cell(point))-lo
                 if not (0 <= y < allowed.shape[0] and 0 <= x < allowed.shape[1] and allowed[y, x]): return False
             return True
 
-        points = cardinal_path(path, clear)
+        carrier_basis=None
+        if carrier_axes:
+            from harness.e2e_carrier_axes import basis,to_axes,from_axes
+            carrier_basis=basis(beam,target)
+            points=from_axes(cardinal_path(to_axes(path,carrier_basis),
+                lambda a,b:clear(*from_axes([a,b],carrier_basis))),carrier_basis)
+        else:points = cardinal_path(path, clear)
+        if exact_clear is not None:
+            if not all(clear(a,b) for a,b in zip(points,points[1:])):
+                raise ContractViolation('FOOTPRINT_SWEEP_COLLISION')
+            self.e2e_route_diagnostics['sweep_validated']=True
         # Occupied cell edges retain the actual wall RGB references. Empty or
         # unknown cells are not fabricated as observations of free space.
         refs = {r['frame_id']: r for r in sources}; walls = []
@@ -160,11 +213,14 @@ class IntegratedGoalRoute(GoalRoute):
                       walls=walls, goal=dict(label='B', sources=copy.deepcopy(goal_sources)), sources=sources)
         route = dict(schema=own.ROUTE_SCHEMA, robot_id='r1', frame_id=sources[-1]['frame_id'],
                      map_version=self.e2e_version, own_map=mapped, B_rgb_sources=copy.deepcopy(goal_sources), waypoints=points)
+        if carrier_basis is not None:
+            from harness.e2e_carrier_axes import ROUTE_SCHEMA
+            route.update(schema=ROUTE_SCHEMA,carrier_basis=carrier_basis)
         route['route_hash'] = digest(route)
         compiled = compile_route(route, now=now, observed=sources, profiles=profiles, option='on_v1',
                                  source='own_map', pulse_budget=pulse_budget,
                                  setdown_only_when_relook=self.e2e_options['setdown_only_when_relook'])
-        return dict(source='own_map', route=route, compiled=compiled,
+        return dict(source='own_map', observed_coverage_complete=not getattr(self,'e2e_route_diagnostics',{}).get('would_stop_unknown',False), route=route, compiled=compiled,
                     inputs=own.s3_inputs(route, rid='r1', now=now, observed=sources),
                     proposal=dict(kind='OwnRoute', route=wire_route(route), source_message_id=None),
                     s3_plan={**plan_from_route(None, compiled), 'agreement_route_hash':wire_route(route)['route_hash']})
@@ -251,7 +307,14 @@ class IntegratedGoalRoute(GoalRoute):
         sigma = math.sqrt(float(np.linalg.eigvalsh(np.asarray(self.pose_covariance())[:2,:2]).max()))
         import cv2
         contour = np.asarray(boundary['polygon'], np.float32)
-        return all(cv2.pointPolygonTest(contour, tuple(map(float, p)), True) >= .01+3*sigma for p in polygon)
+        distances=[cv2.pointPolygonTest(contour,tuple(map(float,p)),True) for p in polygon]
+        strict=all(d>=.01+3*sigma for d in distances)
+        if getattr(self,'e2e_dev_nominal_setdown',False):
+            if not strict:self.event(now,'would_stop_setdown_covariance',sigma_xy_m=sigma,
+                strict_margin_m=.01+3*sigma,nominal_margin_m=.01,corner_distances_m=distances,
+                covariance_reset=False,dev_light=True)
+            return all(d>=.01 for d in distances)
+        return strict
 
 
 def attach(controller, *, own_route='off', arrival_gate='off', covariance_inflation='off',

@@ -1,0 +1,614 @@
+[
+  {
+    "host": "ugrp-sim-azure3",
+    "checked_unix": 1791813538.8418684,
+    "name": "e2e18-v227-s61004-r13",
+    "meta": {
+      "class": "dev",
+      "pr": 458,
+      "branch": "codex/e2e18",
+      "sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
+      "batch": "e2e18-r13",
+      "speed_gate_policy": "user_2026-10-12_fallback_3.0_after_four_probes",
+      "variant": "integrated_v1",
+      "seed": 61004,
+      "vm": "ugrp-sim-azure3",
+      "submitted_unix": 1791813422.4455566,
+      "wall_cap_s": 18000,
+      "gate_new_samples": 2,
+      "ongoing_other_bundles": 4,
+      "total_planned_concurrency": 6,
+      "storage_budget_bytes": 2147483648,
+      "execution_bundle_id": "e2e18-v227",
+      "cohort": "new adaptive physics; no inherited outcomes"
+    },
+    "progress": {
+      "wall_s": 16.11034184500022,
+      "sim_s": 1.0,
+      "frames": 3,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": false,
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "own_route_observed_complete": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            0.07869058525596448,
+            0.06686795503648299,
+            0.012379768912838873
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 6,
+          "carrier_approach": null
+        },
+        "r2": {
+          "pose_own_m": [
+            0.07868034080742776,
+            0.06696617367135141,
+            0.013084836348944417
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 6,
+          "carrier_approach": null
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.06783464668349964,
+            -0.027892767475121653,
+            0.013129863871008673
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 0,
+          "carrier_approach": null
+        }
+      },
+      "latest_route_wait": null,
+      "route_diagnostics": null
+    },
+    "wall_per_sim": 16.11034184500022,
+    "seconds_since_progress": 1.4307172298431396,
+    "eval_only_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06506170675654568,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06506170675654568,
+        "tail_max_tilt_deg": 0.12499562436092441
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06495269435131894,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06495269435131894,
+        "tail_max_tilt_deg": 0.1210158742579937
+      }
+    },
+    "initial_physical_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06506170675654568,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06506170675654568,
+        "tail_max_tilt_deg": 0.12499562436092441
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06495269435131894,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06495269435131894,
+        "tail_max_tilt_deg": 0.1210158742579937
+      }
+    },
+    "initial_physical_ok": true,
+    "stalls": {
+      "r1": {
+        "translation_commands_120sim": 5,
+        "stationary_sim_s": 1.0
+      },
+      "r2": {
+        "translation_commands_120sim": 5,
+        "stationary_sim_s": 1.0
+      }
+    },
+    "result": {
+      "status": "HOST_ERROR",
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": false,
+      "finalization_errors": []
+    }
+  },
+  {
+    "host": "ugrp-sim-azure3",
+    "checked_unix": 1791813538.8418684,
+    "name": "e2e18-v227-s61005-r13",
+    "meta": {
+      "class": "dev",
+      "pr": 458,
+      "branch": "codex/e2e18",
+      "sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
+      "batch": "e2e18-r13",
+      "speed_gate_policy": "user_2026-10-12_fallback_3.0_after_four_probes",
+      "variant": "integrated_v1",
+      "seed": 61005,
+      "vm": "ugrp-sim-azure3",
+      "submitted_unix": 1791813422.5146573,
+      "wall_cap_s": 18000,
+      "gate_new_samples": 2,
+      "ongoing_other_bundles": 4,
+      "total_planned_concurrency": 6,
+      "storage_budget_bytes": 2147483648,
+      "execution_bundle_id": "e2e18-v227",
+      "cohort": "new adaptive physics; no inherited outcomes"
+    },
+    "progress": {
+      "wall_s": 16.33304938099991,
+      "sim_s": 1.0,
+      "frames": 3,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": false,
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "own_route_observed_complete": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            0.07868076718499857,
+            0.06690132043672237,
+            0.012260101046688288
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 6,
+          "carrier_approach": null
+        },
+        "r2": {
+          "pose_own_m": [
+            0.07868070624000853,
+            0.0669655655634863,
+            0.013141706847980661
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 6,
+          "carrier_approach": null
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.06783464668349964,
+            -0.027892767475121653,
+            0.013129863871008673
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 0,
+          "carrier_approach": null
+        }
+      },
+      "latest_route_wait": null,
+      "route_diagnostics": null
+    },
+    "wall_per_sim": 16.33304938099991,
+    "seconds_since_progress": 1.4085438251495361,
+    "eval_only_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.0649554719203001,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.0649554719203001,
+        "tail_max_tilt_deg": 0.12294452341427363
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06484045318204046,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06484045318204046,
+        "tail_max_tilt_deg": 0.12069001347851019
+      }
+    },
+    "initial_physical_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.0649554719203001,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.0649554719203001,
+        "tail_max_tilt_deg": 0.12294452341427363
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06484045318204046,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06484045318204046,
+        "tail_max_tilt_deg": 0.12069001347851019
+      }
+    },
+    "initial_physical_ok": true,
+    "stalls": {
+      "r1": {
+        "translation_commands_120sim": 5,
+        "stationary_sim_s": 1.0
+      },
+      "r2": {
+        "translation_commands_120sim": 5,
+        "stationary_sim_s": 1.0
+      }
+    },
+    "result": {
+      "status": "HOST_ERROR",
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": false,
+      "finalization_errors": []
+    }
+  },
+  {
+    "host": "ugrp-sim-azure4",
+    "checked_unix": 1791813538.7555306,
+    "name": "e2e18-v227-s61007-r13",
+    "meta": {
+      "class": "dev",
+      "pr": 458,
+      "branch": "codex/e2e18",
+      "sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
+      "batch": "e2e18-r13",
+      "speed_gate_policy": "user_2026-10-12_fallback_3.0_after_four_probes",
+      "variant": "integrated_v1",
+      "seed": 61007,
+      "vm": "ugrp-sim-azure4",
+      "submitted_unix": 1791813422.253957,
+      "wall_cap_s": 18000,
+      "gate_new_samples": 2,
+      "ongoing_other_bundles": 4,
+      "total_planned_concurrency": 6,
+      "storage_budget_bytes": 2147483648,
+      "execution_bundle_id": "e2e18-v227",
+      "cohort": "new adaptive physics; no inherited outcomes"
+    },
+    "progress": {
+      "wall_s": 20.709248306000518,
+      "sim_s": 1.0,
+      "frames": 3,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": false,
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "own_route_observed_complete": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            0.0787032009531575,
+            0.06707563077537063,
+            0.013893712572318417
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 6,
+          "carrier_approach": null
+        },
+        "r2": {
+          "pose_own_m": [
+            0.07869683846301304,
+            0.06696416587090342,
+            0.013770722198936713
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 6,
+          "carrier_approach": null
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.06783464668349964,
+            -0.027892767475121653,
+            0.013129863871008673
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 0,
+          "carrier_approach": null
+        }
+      },
+      "latest_route_wait": null,
+      "route_diagnostics": null
+    },
+    "wall_per_sim": 20.709248306000518,
+    "seconds_since_progress": 1.170280933380127,
+    "eval_only_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06497184082122881,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06497184082122881,
+        "tail_max_tilt_deg": 0.12406282717346269
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06493209935426784,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06493209935426784,
+        "tail_max_tilt_deg": 0.1248937853424279
+      }
+    },
+    "initial_physical_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06497184082122881,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06497184082122881,
+        "tail_max_tilt_deg": 0.12406282717346269
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06493209935426784,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06493209935426784,
+        "tail_max_tilt_deg": 0.1248937853424279
+      }
+    },
+    "initial_physical_ok": true,
+    "stalls": {
+      "r1": {
+        "translation_commands_120sim": 5,
+        "stationary_sim_s": 1.0
+      },
+      "r2": {
+        "translation_commands_120sim": 5,
+        "stationary_sim_s": 1.0
+      }
+    },
+    "result": {
+      "status": "HOST_ERROR",
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": false,
+      "finalization_errors": []
+    }
+  },
+  {
+    "host": "ugrp-sim-azure4",
+    "checked_unix": 1791813538.7555306,
+    "name": "e2e18-v227-s61009-r13",
+    "meta": {
+      "class": "dev",
+      "pr": 458,
+      "branch": "codex/e2e18",
+      "sha": "440aae19ff9d63ed272892a11897b0b1df74ec18",
+      "batch": "e2e18-r13",
+      "speed_gate_policy": "user_2026-10-12_fallback_3.0_after_four_probes",
+      "variant": "integrated_v1",
+      "seed": 61009,
+      "vm": "ugrp-sim-azure4",
+      "submitted_unix": 1791813422.3155644,
+      "wall_cap_s": 18000,
+      "gate_new_samples": 2,
+      "ongoing_other_bundles": 4,
+      "total_planned_concurrency": 6,
+      "storage_budget_bytes": 2147483648,
+      "execution_bundle_id": "e2e18-v227",
+      "cohort": "new adaptive physics; no inherited outcomes"
+    },
+    "progress": {
+      "wall_s": 19.22547880699949,
+      "sim_s": 1.0,
+      "frames": 3,
+      "model_attempts": 3,
+      "first_model_response": true,
+      "own_map_B_generated": false,
+      "own_B_boundary_remembered": false,
+      "own_route_generated": false,
+      "own_route_observed_complete": false,
+      "phase": "mapping",
+      "setdowns": 0,
+      "robots": {
+        "r1": {
+          "pose_own_m": [
+            0.07869058525596448,
+            0.06686795503648299,
+            0.012379768912838873
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 6,
+          "carrier_approach": null
+        },
+        "r2": {
+          "pose_own_m": [
+            0.07868034080742776,
+            0.06696617367135141,
+            0.013084836348944417
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 6,
+          "carrier_approach": null
+        },
+        "r3": {
+          "pose_own_m": [
+            -0.06783464668349964,
+            -0.027892767475121653,
+            0.013129863871008673
+          ],
+          "stage": "explore",
+          "map_frames": 3,
+          "command": {
+            "kind": "mecanum",
+            "forward": 0.35,
+            "left": 0.0,
+            "turn": 0.0,
+            "duration_s": 0.1
+          },
+          "translation_commands": 0,
+          "carrier_approach": null
+        }
+      },
+      "latest_route_wait": null,
+      "route_diagnostics": null
+    },
+    "wall_per_sim": 19.22547880699949,
+    "seconds_since_progress": 2.6529462337493896,
+    "eval_only_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06506170675654568,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06506170675654568,
+        "tail_max_tilt_deg": 0.12499562436092441
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06495269435131894,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06495269435131894,
+        "tail_max_tilt_deg": 0.1210158742579937
+      }
+    },
+    "initial_physical_motion": {
+      "r1": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06506170675654568,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06506170675654568,
+        "tail_max_tilt_deg": 0.12499562436092441
+      },
+      "r2": {
+        "first_t": 1.3,
+        "last_t": 2.3,
+        "displacement_m": 0.06495269435131894,
+        "stationary_sim_s": 0.34999999999999987,
+        "shift_last30sim_m": 0.06495269435131894,
+        "tail_max_tilt_deg": 0.1210158742579937
+      }
+    },
+    "initial_physical_ok": true,
+    "stalls": {
+      "r1": {
+        "translation_commands_120sim": 5,
+        "stationary_sim_s": 1.0
+      },
+      "r2": {
+        "translation_commands_120sim": 5,
+        "stationary_sim_s": 1.0
+      }
+    },
+    "result": {
+      "status": "HOST_ERROR",
+      "LLM_operated": false,
+      "own_map_completed": false,
+      "start_to_finish_transport": false,
+      "E2E_success": false,
+      "finalization_complete": false,
+      "finalization_errors": []
+    }
+  }
+]

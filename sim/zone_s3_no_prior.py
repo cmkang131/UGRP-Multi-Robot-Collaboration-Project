@@ -62,9 +62,12 @@ class PhysicsBackend(OldBackend):
         self.scene, self.eval_rows = make_scene(bundle, seed), []
         self.lifted = set()
         try:
+            from sim.e2e_speed4 import dimensions, install as install_pixel_budget
+            width, height = dimensions(bundle)
             self.world = build_world(self.scene, drive_profile=PROFILE, idle_robot_contacts='off',
-                roller_collision='mesh', seed=seed, width=640, height=480, render=True,
+                roller_collision='mesh', seed=seed, width=width, height=height, render=True,
                 warehouse_layout=self.scene.engine_layout, warehouse_cargo_ids=None)
+            install_pixel_budget(self.world, bundle)
             from sim.s3_camera_binding import attach
             attach(self.world, camera_binding=bundle.get('s3_camera_binding', 'off'),
                 audit=(lambda rid, row: self._append(f'eval_only/{rid}/render_camera.jsonl', row))

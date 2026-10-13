@@ -1,0 +1,32 @@
+{
+  "default": "off",
+  "bundles": {
+    "v395": "turn60_v1",
+    "v396": "turn45_v1"
+  },
+  "cause": {
+    "own_bearing_deg": -105.47,
+    "pan_limit_deg": 60,
+    "reachable": false,
+    "lost_track_sim_s_range": [
+      197,
+      301
+    ],
+    "original_valid_first_attempt_success": "0/8",
+    "invalid_staging_excluded": 8
+  },
+  "change": "Own RGB track bearing outside pan range suspends translation for calibrated rotation. Fifteen-degree hysteresis plus 0.07 rad controller tolerance margin. Existing own-map projected collision guard and dispatch clearance retained. No simulator evaluation enters controller.",
+  "references": [
+    "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/controller_plugins/configuring_rotation_shim_controller/",
+    "https://docs.nav2.org/jazzy/tutorials/general_tutorials/using_docking/"
+  ],
+  "verification": {
+    "tests": [
+      "tests/test_e2e_grasp_fov.py",
+      "tests/test_e2e_grasp_once.py",
+      "tests/test_e2e_stage_checkpoint.py"
+    ],
+    "passed": 36,
+    "physics": "not yet executed"
+  }
+}

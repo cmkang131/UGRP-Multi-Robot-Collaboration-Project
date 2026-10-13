@@ -1,0 +1,49 @@
+{
+  "metrics": {
+    "name": "e2e18-v271-s61006-r51",
+    "status": "CONTROLLER_STOP",
+    "failure": null,
+    "robots": {
+      "r1": {
+        "max_tilt_deg": 0.985681308683787,
+        "sim_s": 1084.7,
+        "sha256_uncompressed": "d9772d7bb06e9f1bc8bde13f8776f240eed462d63298093aefa360d765298375",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v271-s61006-r51/raw/eval_only/r1/trajectory.jsonl"
+      },
+      "r2": {
+        "max_tilt_deg": 0.30346522560592615,
+        "sim_s": 1084.7,
+        "sha256_uncompressed": "a8e091ba3fb91e7133b07fe615b8b5193bdfb28858b5611105caf560fa289c45",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v271-s61006-r51/raw/eval_only/r2/trajectory.jsonl"
+      }
+    },
+    "paired_held_samples": 657,
+    "first_held_t": 1051.9,
+    "maximum_cargo_z_m": 0.09352160933317986,
+    "ready": [
+      {
+        "t": 492.4,
+        "event": "s3_coarse_fine",
+        "robot_id": "r1",
+        "phase": "ready"
+      },
+      {
+        "t": 1045.2,
+        "event": "s3_coarse_fine",
+        "robot_id": "r2",
+        "phase": "ready"
+      }
+    ],
+    "first_fine": {
+      "t": 202.4,
+      "event": "s3_coarse_fine",
+      "robot_id": "r1",
+      "phase": "base"
+    }
+  },
+  "source_sha": "aaab0e85d9114e9f6620beca253db17a22aaba8c",
+  "class_": "milestone",
+  "controller_failure": "CURRENT_GO_ACK_TIMEOUT",
+  "late_final_trace_detection": true,
+  "verified_scope": "paired grasp; no carry completed"
+}

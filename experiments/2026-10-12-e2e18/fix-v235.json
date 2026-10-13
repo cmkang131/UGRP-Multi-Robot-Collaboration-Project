@@ -1,0 +1,68 @@
+{
+  "schema": "e2e18.fix.v235",
+  "parent": "e2e18-v234",
+  "toggles": {
+    "pregrasp_acquire": "remember_scan_v1",
+    "align_queues": "per_robot_v1",
+    "beam_decode": "once_v1",
+    "mapping_acquire": "interleaved_v1",
+    "defaults": "off"
+  },
+  "raw_evidence_file": "acquisition-failure-evidence.json",
+  "raw_evidence_sha256": "3e5f13ce09be1934827833cb62507bcb9894d42d1da1d8e33bd4d50a639f2b9c",
+  "causes": [
+    "No station branch in e2e_carrier_approach.advance only returns nav_command; it never executes bounded camera search. r2 remains search_own_beam while r1 reaches visual_servo.",
+    "Transport.step global queue_until prevents both robots align work when either camera posture is queued.",
+    "v233 seed61001 r1 never accepted a beam endpoint after >500SIM; scan interleaved into mapping after own B boundary is remembered.",
+    "Known-size endpoint wrapper decoded JPEG twice per frame."
+  ],
+  "changes": {
+    "memory": "latest accepted own RGB beam only; <=8SIM can seed station hypothesis, <=120SIM search bearing only; current RGB still required for fine alignment",
+    "acquire": "five registered camera postures/pans, 2SIM each, bounded 3SIM body turn then repeated scan; 5SIM own frontier navigation after each two scans",
+    "queues": "During align only, a robots camera queue blocks that robot; shared grasp/carry queue barriers remain.",
+    "mapping": "r1 only after remembered B+15SIM with no current beam; 12SIM scan then30SIM normal exploration; peer continues mapping; busy own camera holds body.",
+    "speed": "Explicit once_v1 reuses decoded pixels, offline output identical; no new physics profile"
+  },
+  "speed_failure": {
+    "gate": "gate-azure3-v234-r24.json",
+    "wall_per_sim": 3.0510155254333466,
+    "cpu_per_sim": 2.4040740121,
+    "cohort_started": false,
+    "cause_scope": "CPU vs wall gap; exact provider wait analysis separate, no override"
+  },
+  "prereg": {
+    "seeds": {
+      "azure3": [
+        61001,
+        61002,
+        61003
+      ],
+      "azure4": [
+        61007,
+        61010,
+        61012
+      ]
+    },
+    "total_concurrency_per_vm": 6,
+    "probe_sim_s": 30,
+    "gate_limit": 3.0,
+    "wall_cap_s": 7200,
+    "criterion": "all3 in one completed run; no inheritance"
+  },
+  "tests": {
+    "files": [
+      "test_e2e_pregrasp_acquire.py",
+      "test_e2e_beam_end_model.py",
+      "test_e2e_stage_cadence.py"
+    ],
+    "passed": 17,
+    "seconds": 11.09,
+    "scope": "offline controller queues, finite acquisition, registered bundle, actual recorded JPEG replay; no Mac physics"
+  },
+  "references": [
+    "https://github.com/ros2/ros2_documentation/blob/rolling/source/ROS-Framework/nodes/Working-with-nodes/Using-callback-groups.rst",
+    "https://arxiv.org/html/2506.13367v1",
+    "https://faculty.cc.gatech.edu/~seth/ResPages/pdfs/HutHagCor96.pdf"
+  ],
+  "research": "Use separate execution exclusion per independent robot resource while preserving shared grasp barrier; classical move/settle/look and bounded last-visible search. Recent active perception reference supplies observation-driven exploration structure; no depth or known world pose assumptions imported."
+}

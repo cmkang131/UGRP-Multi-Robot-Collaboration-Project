@@ -15,12 +15,14 @@ from harness.e2e_goal_route import GoalRoute, attach
 from harness.e2e_setdown_relook import OwnRGBRelook
 from harness.self_odom_grid import transform
 from harness.e2e_exact_speedups import OFF, using
+from harness.e2e_speed5 import using as speed5_using
+from harness.e2e_speed4 import OFF as SPEED4_OFF, using as speed4_using
 
 
-def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off'):
+def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',b_partial_accept='off',vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',boundary_frame='off'):
     if goal_geometry not in ('off','e2e_b80_v1'):raise ValueError('UNKNOWN_GOAL_GEOMETRY')
-    from harness.e2e_rgb_gate import MARKER_OPTION
-    if b_marker_detect not in ('off',MARKER_OPTION):raise ValueError('UNKNOWN_B_MARKER_DETECT')
+    from harness.e2e_rgb_gate import MARKER_OPTIONS
+    if b_marker_detect not in ('off',*MARKER_OPTIONS):raise ValueError('UNKNOWN_B_MARKER_DETECT')
     from harness.active_navfn_start import make_mapper
     from harness.grid_acceleration import install
     from harness.self_graph_cache import install as graph_cache
@@ -44,6 +46,8 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
         setdown_only_when_relook=relook)
     install(goal,map_acceleration='scalar_rays_v1')
     goal.e2e_gate.marker_detect=b_marker_detect
+    if b_partial_accept not in ('off','on_v1'):raise ValueError('UNKNOWN_B_PARTIAL_ACCEPT')
+    goal.e2e_gate.partial_accept=b_partial_accept
     # This mission maps a beam route, not the old B+cyan+return benchmark.
     # Keep the same receive/localization/GoalRoute memory, but frontier exploration
     # owns locomotion until a fresh own beam and a fully observed corridor exist.
@@ -57,7 +61,7 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
     from harness.e2e_exploration import install as exploration_install
     exploration_install(goal,exploration_progress)
     from harness.e2e_boundary_views import install as views_install
-    views_install(goal,boundary_views,retry=boundary_retry,coverage=boundary_coverage)
+    views_install(goal,boundary_views,retry=boundary_retry,coverage=boundary_coverage,frame=boundary_frame)
     from harness.e2e_boundary_association import install as association_install
     association_install(goal,boundary_association)
     from harness.e2e_rpp_path import install as path_install
@@ -70,7 +74,7 @@ def make_goal(rid, seed, covariance_profile, *, relook='off',goal_geometry='off'
     return goal
 
 
-def beam_observer():
+def beam_observer(option='off',decode='off'):
     from harness import owncam_pair_beam as v1, owncam_pair_beam_v2 as v2
     from harness.owncam_view import _pixel_rays
     def rays(servo,step=8):
@@ -80,24 +84,39 @@ def beam_observer():
         directions/=np.linalg.norm(directions,axis=1,keepdims=True)
         return origin,directions,xs,ys,valid
     first=bind(v1.observe_beam,base_rays=rays)
-    return bind(v2.observe_beam,v1=SimpleNamespace(**{**vars(v1),'observe_beam':first}),base_rays=rays)
+    observer=bind(v2.observe_beam,v1=SimpleNamespace(**{**vars(v1),'observe_beam':first}),base_rays=rays)
+    from harness.e2e_beam_end_model import refine,OPTION
+    if option not in ('off',OPTION):raise ValueError('UNKNOWN_BEAM_END_MODEL')
+    if decode not in ('off','once_v1'):raise ValueError('UNKNOWN_BEAM_DECODE')
+    def observe(image,servo):
+        if decode=='once_v1':image=v1.decode(image)
+        return refine(observer(image,servo),image,servo,rays,option)
+    return observe
 
 
 class Robot:
-    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',exact_speedups=OFF,vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off'):
+    def __init__(self,rid,seed,covariance_profile,options,*,relook='off',goal_geometry='off',exploration_progress='off',pose_fix='off',path_follow='off',stall_options=None,mapping_budget_s=None,boundary_views='off',b_marker_detect='off',b_partial_accept='off',exact_speedups=OFF,vo_floor_mask='off',vo_rotation_policy='off',explore_deadlock='off',boundary_association='off',boundary_retry='off',boundary_coverage='off',boundary_frame='off',speed4=SPEED4_OFF,speed5='off',beam_end_model='off',beam_decode='off'):
         self.exact_speedups=exact_speedups
+        self.speed4=speed4
+        self.speed5=speed5
         self.robot_id=rid;self.study_options=options
-        self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
-                            exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect,vo_floor_mask=vo_floor_mask,vo_rotation_policy=vo_rotation_policy,explore_deadlock=explore_deadlock,boundary_association=boundary_association,boundary_retry=boundary_retry,boundary_coverage=boundary_coverage)
-        self.observe_beam=beam_observer()
+        with speed4_using(speed4), speed5_using(speed5):
+            self.goal=make_goal(rid,seed,covariance_profile,relook=relook,goal_geometry=goal_geometry,
+                                exploration_progress=exploration_progress,pose_fix=pose_fix,path_follow=path_follow,stall_options=stall_options,mapping_budget_s=mapping_budget_s,boundary_views=boundary_views,b_marker_detect=b_marker_detect,b_partial_accept=b_partial_accept,vo_floor_mask=vo_floor_mask,vo_rotation_policy=vo_rotation_policy,explore_deadlock=explore_deadlock,boundary_association=boundary_association,boundary_retry=boundary_retry,boundary_coverage=boundary_coverage,boundary_frame=boundary_frame)
+        self.observe_beam=beam_observer(beam_end_model,beam_decode)
+        self.last_beam=None;self.beam_observation=None;self.pregrasp_acquire="off"
         self.servo=dict(SEARCH);self.now=0.;self.frame=None;self.last_obs=None
         self.nav_command=dict(kind='hold');self.packet=None;self.beam=None;self.events=[]
         self.call_ref=None;self.trace=None;self.revision=0
         self.wall_segments=[]
         self.translation_commands=0
+        self.camera_load='off'
+        self.perception_settle='off';self.camera_settle_until=0.;self.landmark_cache='off'
 
     def receive(self,obs,rgb):
-        with using(self.exact_speedups):
+        from harness.e2e_camera_load import using as load_using
+        from harness.e2e_camera_settle import using as cache_using
+        with using(self.exact_speedups), speed4_using(self.speed4), speed5_using(self.speed5), load_using(self.camera_load), cache_using(self.landmark_cache):
             return self._receive(obs,rgb)
 
     def _receive(self,obs,rgb):
@@ -116,6 +135,8 @@ class Robot:
         self.nav_command={k:v for k,v in command.items() if k!='t'};self.trace=trace
         self.revision+=1
         b=self.observe_beam(obs['image'],self.servo)
+        self.beam_observation=dict(result=copy.deepcopy(b),rgb=dict(robot_id=self.robot_id,
+            frame_id=obs['frame_id'],t_sim=self.now,sha256=obs['sha256']))
         self.beam=None
         if b.get('visible') and b.get('end_visible'):
             pose=np.asarray(self.goal.explorer.local_pose,float)
@@ -127,9 +148,23 @@ class Robot:
             yaw=math.atan2(math.sin(pose[2]+b['axis_heading_rad']),math.cos(pose[2]+b['axis_heading_rad']))
             self.beam=dict(rgb=copy.deepcopy(self.goal.e2e_observed[-1]),pose_own_m=[*xy.tolist(),yaw],
                            grip_base_m=b['grip_base_m'],axis_heading_rad=b['axis_heading_rad'])
+            if beam_end_model := b.get('endpoint_model'):
+                self.beam.update(endpoint_model=beam_end_model,observed_band_side=b.get('observed_band_side'),endpoint_side_evidence=b.get('endpoint_side_evidence'))
+            if self.pregrasp_acquire=='remember_scan_v1':self.last_beam=copy.deepcopy(self.beam)
+        from harness.e2e_grasp_once import observe as grasp_observe
+        grasp_observe(self, self.now)
+        if self.camera_load!='off':
+            from harness.e2e_camera_load import qualification
+            trace['camera_geometry']=qualification(self.servo)
         return trace
 
     def commanded(self,action,now):
+        from harness.e2e_camera_settle import commanded as camera_commanded
+        camera_commanded(self,action,now)
+        if self.speed4.enabled and action['kind'] in ('mecanum','drive','hold','wait'):
+            self._speed4_last_motion = dict(action)
+        if self.speed4.enabled and action['kind'] in ('arm','look'):
+            self._speed4_servo_changed = True
         if action['kind']=='mecanum' and abs(action.get('forward',0))+abs(action.get('left',0))>0:
             self.translation_commands+=1
         if action['kind']=='arm':self.servo[action['servo_id']]=action['pulse']
@@ -138,6 +173,10 @@ class Robot:
 
     def route(self,profiles,pulse_budget):
         if self.robot_id!='r1' or self.beam is None:return None
+        if getattr(self.goal,'e2e_route_guard','off')!='off':
+            frame=self.beam['rgb']['frame_id']
+            if getattr(self,'_route_attempt_frame',None)==frame:return None
+            self._route_attempt_frame=frame
         beam={k:self.beam[k] for k in ('rgb','pose_own_m')}
         return self.goal.route_to_B(beam,now=self.now,profiles=profiles,pulse_budget=pulse_budget)
 

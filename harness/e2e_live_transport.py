@@ -31,7 +31,9 @@ class AgreementView:
 
 
 class Transport:
-    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False):
+    def __init__(self,robots,dialogue,profiles,*,pulse_budget='off',setdown_only_when_relook='off',dev_light=False,carrier_approach='off',align_progress='off',pregrasp_recovery='off',pregrasp_gaze='off',search_bearing='off',pregrasp_progress='off',gaze_cadence='off',pregrasp_acquire='off',align_queues='off'):
+        from harness.e2e_arm_clearance import Clearance
+        self.arm_clearance=Clearance()
         self.robots,self.dialogue,self.profiles=robots,dialogue,profiles
         self.pulse_budget=pulse_budget;self.relook_option=setdown_only_when_relook
         self.state='mapping';self.stage_t=0.;self.seg=0;self.first_seg=0;self.epoch=0
@@ -41,6 +43,18 @@ class Transport:
         self.authorizations={};self.used=set();self.last_route_error=None
         self.final_correction=False
         self.dev_light=dev_light;self.would_stops=set()
+        if carrier_approach not in ('off','standoff_v1'):raise ValueError('UNKNOWN_CARRIER_APPROACH')
+        self.carrier_approach=carrier_approach;self.approach={}
+        if align_progress not in ('off','dev_continue_v1') or pregrasp_recovery not in ('off','bounded_search_v1'):raise ValueError('UNKNOWN_ALIGN_RECOVERY')
+        self.align_progress=align_progress;self.pregrasp_recovery=pregrasp_recovery
+        if pregrasp_gaze not in ('off','own_bearing_v1') or search_bearing not in ('off','last_seen_v1'):raise ValueError('UNKNOWN_PREGRASP_GAZE')
+        self.pregrasp_gaze=pregrasp_gaze;self.search_bearing=search_bearing
+        if pregrasp_progress not in ('off','backup_replan_v1'):raise ValueError('UNKNOWN_PREGRASP_PROGRESS')
+        self.pregrasp_progress=pregrasp_progress
+        if gaze_cadence not in ('off','settled_frames_v1'):raise ValueError('UNKNOWN_GAZE_CADENCE')
+        self.gaze_cadence=gaze_cadence
+        if pregrasp_acquire not in ('off','remember_scan_v1') or align_queues not in ('off','per_robot_v1'):raise ValueError('UNKNOWN_PREGRASP_ACQUISITION')
+        self.pregrasp_acquire=pregrasp_acquire;self.align_queues=align_queues;self.robot_queue_until={}
 
     def event(self,t,kind,**data):self.events.append(dict(t=t,event=kind,**data))
     def set(self,state,t):self.state=state;self.stage_t=t;self.event(t,'phase',state=state,seg=self.seg,epoch=self.epoch)
@@ -57,10 +71,13 @@ class Transport:
             self.would_stops.add(key)
         return []
 
-    def _poses(self,rid,now,path):
+    def _poses(self,rid,now,path,*,_clearance_checked=False):
+        if not _clearance_checked and self.arm_clearance.defer(self,rid,now,path):return
         # Fixed command-space trajectory, one common start, no servo measurements.
         start=now
         for pose,duration,settle in path:
+            from harness.e2e_camera_settle import duration as camera_duration
+            duration=camera_duration(self,pose,duration)
             original=self.robots[rid].servo if start==now else previous
             n=max(1,round(duration/.05))
             for i in range(1,n+1):
@@ -71,6 +88,7 @@ class Transport:
                     self.queue.append((round(at,8),rid,command))
             previous={**original,**pose};start+=duration+settle
         self.queue_until=max(self.queue_until,start)
+        self.robot_queue_until[rid]=max(self.robot_queue_until.get(rid,0.),start)
         self.queue.sort(key=lambda row:(row[0],row[1]))
 
     def _drain(self,now):
@@ -91,7 +109,8 @@ class Transport:
             if packet is not None:
                 r1.packet=packet
                 self.event(now,'own_map_B_route_generated',route_hash=packet['route']['route_hash'],
-                    B_rgb_sources=packet['route']['B_rgb_sources'],length_m=packet['compiled']['length_m'])
+                    B_rgb_sources=packet['route']['B_rgb_sources'],length_m=packet['compiled']['length_m'],
+                    observed_coverage_complete=packet.get('observed_coverage_complete',True))
         if r1.packet is not None and self.dialogue.approved and self.dialogue.claims==set(PAIR):
             self.plan=provider_plan(r1.packet,agreement=AgreementView(self.dialogue),now=now,
                 observed=r1.goal.e2e_observed,profiles=self.profiles)
@@ -102,13 +121,20 @@ class Transport:
         for rid in PAIR:
             r=self.robots[rid];b=r.beam
             if rid in self.aligned:continue
+            from harness.e2e_pregrasp_acquire import busy
+            if busy(self,rid,now):continue
+            if self.carrier_approach!='off':
+                from harness.e2e_carrier_approach import advance
+                fine,actions=advance(self,rid,now)
+                out.extend((rid,a) for a in actions)
+                if not fine:continue
             if b is None or now-b['rgb']['t_sim']>.25:continue
             # Require the actual common carrier orientation. A same-facing pair
             # cannot be sent opposite body commands simply because roles differ.
             from harness.active_wall_mapping import wrap
             yaw=r.goal.explorer.local_pose[2]
             required=0. if rid=='r1' else math.pi
-            if abs(wrap(yaw-required))>math.radians(5):
+            if self.carrier_approach=='off' and abs(wrap(yaw-required))>math.radians(5):
                 self.event(now,'own_carrier_axes_unavailable',robot_id=rid)
                 continue
             phase,value=self.align[rid].observe(now,r.last_obs,r.servo,b['grip_base_m'],b['axis_heading_rad'])
@@ -120,12 +146,17 @@ class Transport:
             self.epoch+=1
             for rid in PAIR:
                 hover,descent=postures(self.aligned[rid])
-                self._poses(rid,now,[(dict(hover)|{1:2000},.8,.6),
-                    *[(dict(p)|{1:2000},.25,.1) for p in descent],({1:1500},.5,.4),
+                path=[(dict(hover)|{1:2000},.8,.6),
+                    *[(dict(p)|{1:2000},.25,.1) for p in descent],({1:1500},.5,.4)]
+                if getattr(self,'body_controller','off')=='off':path += [
                     (dict(hover)|{1:1500},.8,.4),
-                    *[(dict(p)|{1:1500},d,s) for p,d,s in raise_path()]])
-            self.set('grasp_lift',now)
-        elif now-self.stage_t>75:return self.observation_timeout('OWN_RGB_ALIGNMENT_TIMEOUT',now)
+                    *[(dict(p)|{1:1500},d,s) for p,d,s in raise_path()]]
+                self._poses(rid,now,path)
+            self.set('grasp_close' if getattr(self,'body_controller','off')!='off' else 'grasp_lift',now)
+        elif now-self.stage_t>75:
+            stopped=self.observation_timeout('OWN_RGB_ALIGNMENT_TIMEOUT',now)
+            if not (self.dev_light and self.align_progress=='dev_continue_v1'):return stopped
+            out+=stopped
         return out
 
     def _open_epoch(self,now):
@@ -191,9 +222,20 @@ class Transport:
     def step(self,now):
         if self.failure or self.done:return []
         out=self._drain(now)
-        if self.queue or now<self.queue_until-1e-8:return out
+        if (self.queue or now<self.queue_until-1e-8) and not (self.state=='align' and self.align_queues=='per_robot_v1'):return out
         if self.state=='mapping':self._route(now)
         elif self.state=='align':out+=self._align(now)
+        elif self.state=='grasp_close':
+            self._open_epoch(now)
+            self.set('grasp_go_ack',now)
+        elif self.state=='grasp_go_ack':
+            if self.dialogue.allowed(self.dialogue.key,now):
+                for rid in PAIR:
+                    hover,_=postures(self.aligned[rid])
+                    self._poses(rid,now,[(dict(hover)|{1:1500},.8,.4),
+                        *[(dict(p)|{1:1500},d,s) for p,d,s in raise_path()]])
+                self.set('grasp_lift',now)
+            elif now-self.stage_t>15:out+=self.fail('LIFT_GO_ACK_TIMEOUT',now)
         elif self.state=='grasp_lift':self._open_epoch(now)
         elif self.state=='wait_go_ack':
             if not self._carry(now) and now-self.stage_t>15:out+=self.fail('CURRENT_GO_ACK_TIMEOUT',now)
@@ -242,7 +284,7 @@ class Transport:
                             now=now,profiles=self.profiles,agreement=self.dialogue,pulse_budget=self.pulse_budget)
                     self.dialogue.approved=False;self.dialogue.proposal=None
                     self.dialogue.claims=set();self.dialogue.key=None;self.dialogue.votes={}
-                    self.aligned={};self.seg=0;self.first_seg=0;self.plan=None
+                    self.aligned={};self.approach={};self.seg=0;self.first_seg=0;self.plan=None
                     self.set('mapping',now)
             elif now-self.stage_t>15:out+=self.observation_timeout('OWN_RGB_METRIC_CORRECTION_TIMEOUT',now)
         return out

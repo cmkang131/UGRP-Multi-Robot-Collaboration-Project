@@ -1,0 +1,124 @@
+{
+  "checked_unix": 1791893092.314034,
+  "status": "TERMINAL",
+  "runs": [
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v268-s61007-r51",
+      "sha": "aaab0e85d9114e9f6620beca253db17a22aaba8c",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v268-s61007-r51/raw",
+      "exit": "130",
+      "status": "EARLY_STOP",
+      "sim_s": 500.70099999999996,
+      "phase": "align",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": false,
+      "class_": "dev"
+    },
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v270-s61007-r51",
+      "sha": "aaab0e85d9114e9f6620beca253db17a22aaba8c",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v270-s61007-r51/raw",
+      "exit": "130",
+      "status": "EARLY_STOP",
+      "sim_s": 498.0,
+      "phase": "align",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": false,
+      "class_": "dev"
+    },
+    {
+      "host": "ugrp-sim-azure4",
+      "name": "e2e18-v271-s61007-r51",
+      "sha": "aaab0e85d9114e9f6620beca253db17a22aaba8c",
+      "raw": "ugrp-sim-azure4:/home/ugrp/ugrp-sim/runs/e2e18-v271-s61007-r51/raw",
+      "exit": 1,
+      "status": "USER_REQUEST_INTERRUPTED",
+      "sim_s": 670.76,
+      "phase": "align",
+      "LLM": true,
+      "own_map": false,
+      "transport": false,
+      "failure": null,
+      "paired_grasp": false,
+      "class_": "dev",
+      "exclusion_reason": "사용자 요청 VM 축소로 중단",
+      "excluded_from_success_failure": true,
+      "archive": {
+        "verified": true,
+        "path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v271-s61007-r51",
+        "manifest_sha256": "2881189864fe61fdbd3126b14214b7ed1177b8fc604df2f3d0df33f7875f8d8b"
+      }
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v268-s61006-r51",
+      "sha": "aaab0e85d9114e9f6620beca253db17a22aaba8c",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v268-s61006-r51/raw",
+      "exit": "130",
+      "status": "EARLY_STOP",
+      "sim_s": 462.4,
+      "phase": "align",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": false,
+      "class_": "dev"
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v270-s61006-r51",
+      "sha": "aaab0e85d9114e9f6620beca253db17a22aaba8c",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v270-s61006-r51/raw",
+      "exit": "130",
+      "status": "EARLY_STOP",
+      "sim_s": 445.2,
+      "phase": "align",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": false,
+      "class_": "dev"
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v271-s61006-r51",
+      "sha": "aaab0e85d9114e9f6620beca253db17a22aaba8c",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v271-s61006-r51/raw",
+      "exit": "1",
+      "status": "CONTROLLER_STOP",
+      "sim_s": 1083.4,
+      "phase": "wait_go_ack",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": "CURRENT_GO_ACK_TIMEOUT",
+      "paired_grasp": true,
+      "class_": "milestone"
+    }
+  ],
+  "gate": {
+    "file": "speed-gate-r51.json",
+    "sha256": "447734144f93f25415e655baa85a836355eede169d82b5891c5ba4e0595c4450"
+  },
+  "initial_health": {
+    "file": "initial-health-r51.json",
+    "sha256": "76dafbdb54114283c25d0c0803c885d66df0ff34b230ecd843ce44a151d07de9",
+    "passed": 6,
+    "total": 6,
+    "submission_elapsed_s": [
+      196.5754201412201,
+      196.64812016487122
+    ]
+  },
+  "excluded_user_interruptions": 1
+}

@@ -1,0 +1,30 @@
+{
+  "checks": [
+    {
+      "host": "x86",
+      "free_bytes": 67807842304,
+      "expected_bytes": 5905580032,
+      "projected_free_bytes": 61902262272,
+      "floor_bytes": 8589934592,
+      "ok": true
+    },
+    {
+      "host": "arm",
+      "free_bytes": 54667243520,
+      "expected_bytes": 5905580032,
+      "projected_free_bytes": 48761663488,
+      "floor_bytes": 26843545600,
+      "ok": true
+    },
+    {
+      "host": "mac",
+      "free_bytes": 111843414016,
+      "expected_bytes": 201326592,
+      "projected_free_bytes": 111642087424,
+      "floor_bytes": 21474836480,
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "scope": "30 SIM s gate only; rest not admitted; resize estimates after measured raw bytes"
+}

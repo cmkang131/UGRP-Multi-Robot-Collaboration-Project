@@ -1,0 +1,986 @@
+{
+  "checked_unix": 1791856802.6003468,
+  "reason": "사용자 요청 VM 축소로 중단",
+  "excluded_from_success_failure": true,
+  "vm_state": "deallocated",
+  "runs": [
+    {
+      "name": "e2e18-v268-s61007-r50",
+      "host": "ugrp-sim-azure4",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v268-s61007-r50",
+      "verified": true,
+      "files": 7324,
+      "bytes": 323508295,
+      "mismatches": [],
+      "manifest_sha256": "991e67a2cfd1d72fd7f150f47572dc1ca35cec55bb765bf63adee0a470a7fa14",
+      "checked_unix": 1791856789.254198,
+      "exit": 1,
+      "meta": {
+        "class": "dev",
+        "pr": 461,
+        "branch": "codex/e2e18",
+        "sha": "63fb1551d749e1a529f14f238713bfd061fb1172",
+        "batch": "e2e18-r50",
+        "seed": 61007,
+        "execution_bundle_id": "e2e18-v268",
+        "variant": "back3_v1",
+        "sonar_frame": "site_z_v1",
+        "wall_cap_s": 7200,
+        "storage_budget_bytes": 1073741824,
+        "submitted_unix": 1791852782.4877822,
+        "gate_new_samples": 4,
+        "continuing": 2,
+        "planned_concurrency": 6,
+        "research_result": false
+      },
+      "raw_result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 1042.8,
+        "wall_s": 2839.355479841,
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "last_phase": "align",
+      "progress": {
+        "wall_s": 2834.045114815,
+        "sim_s": 1042.0,
+        "frames": 2398,
+        "model_attempts": 12,
+        "first_model_response": true,
+        "own_map_B_generated": true,
+        "own_B_boundary_remembered": true,
+        "own_route_generated": true,
+        "own_route_observed_complete": false,
+        "phase": "align",
+        "setdowns": 0,
+        "robots": {
+          "r1": {
+            "pose_own_m": [
+              -3.3279503515152657,
+              -0.6888394869344142,
+              0.4682307214171111
+            ],
+            "stage": "explore",
+            "map_frames": 2148,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 1417,
+            "carrier_approach": {
+              "t": 722.8,
+              "status": "visual_servo",
+              "station_own_m": [
+                -3.3123266141577172,
+                -0.6871172979923909,
+                0.25316120658455216
+              ],
+              "grip_own_m": [
+                -3.115603515257976,
+                -0.6362226778515284
+              ],
+              "distance_m": 0.015718368355834032,
+              "heading_error_rad": -0.21506951483255898,
+              "own_beam_age_s": 0.0,
+              "camera": "inspect",
+              "basis_yaw_rad": 0.25316120658455216,
+              "correct_end": true
+            }
+          },
+          "r2": {
+            "pose_own_m": [
+              3.1371428160421995,
+              -0.9919064039266231,
+              -0.7468444184058232
+            ],
+            "stage": "explore",
+            "map_frames": 2104,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 1753,
+            "carrier_approach": {
+              "t": 1042.0,
+              "status": "rotate_station_heading",
+              "station_own_m": [
+                3.3395124967780476,
+                -0.9772438721185025,
+                -2.337467960930431
+              ],
+              "grip_own_m": [
+                3.198544139085884,
+                -1.1235933242171496
+              ],
+              "distance_m": 0.2029001663876924,
+              "heading_error_rad": -1.5906235425246078,
+              "own_beam_age_s": 56.0,
+              "camera": "inspect",
+              "basis_yaw_rad": 0.8041246926593626,
+              "beam_obstacle_source": "own_rgb_center_axis_known_size",
+              "path_points": 1,
+              "rpp": {
+                "path_follow": "rpp_v1",
+                "lookahead_m": 0.6,
+                "carrot_m": [
+                  3.1371428160421995,
+                  -0.9919064039266231
+                ],
+                "carrot_distance_m": 0.0,
+                "phase": "rotate_goal",
+                "heading_error_rad": -1.5906235425246078,
+                "goal_distance_m": 0.0,
+                "before": 2.5300832540335327,
+                "after": 2.2112944184722503
+              },
+              "projected_clear": false
+            }
+          },
+          "r3": {
+            "pose_own_m": [
+              -0.08355696604910048,
+              0.03195319480310648,
+              0.01532945307617295
+            ],
+            "stage": "explore",
+            "map_frames": 2398,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 0,
+            "carrier_approach": null
+          }
+        },
+        "latest_route_wait": null,
+        "route_diagnostics": {
+          "t": 239.4,
+          "beam_pose_own_m": [
+            -2.874748723169918,
+            -0.7390952281120716,
+            -2.9654176561356578
+          ],
+          "beam_rgb": {
+            "robot_id": "r1",
+            "frame_id": 400,
+            "t_sim": 239.4,
+            "sha256": "922c5f6a58aff012cf1864043f9582684e4949bb5563f37a9e59f8fcd09d82d6"
+          },
+          "sigma_xy_m": 0.2919319119476983,
+          "stage": "grid_route",
+          "beam_axis_error_rad": 0.17617499745413545,
+          "strict_margin_m": 0.8957957358430949,
+          "B_own_m": [
+            1.0493003188489627,
+            0.05871625543697778
+          ],
+          "nominal_footprint_cells": {
+            "start": {
+              "free": 279,
+              "unknown": 0,
+              "occupied": 0,
+              "outside": 0
+            },
+            "target": {
+              "free": 0,
+              "unknown": 41,
+              "occupied": 0,
+              "outside": 238
+            }
+          },
+          "planning_extent": {
+            "old_lo": [
+              -126,
+              -70
+            ],
+            "old_hi": [
+              11,
+              28
+            ],
+            "new_lo": [
+              -126,
+              -70
+            ],
+            "new_hi": [
+              37,
+              28
+            ],
+            "added_unknown_cells": 2548,
+            "endpoint_pad_cells": 16
+          },
+          "would_stop_unknown": true,
+          "attempts": [
+            {
+              "margin_m": 0.8957957358430949,
+              "allowed_cells": 0,
+              "total_cells": 13426,
+              "start_clear": false,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "allowed_cells": 388,
+              "total_cells": 13426,
+              "start_clear": true,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "coverage": "native_allow_unknown",
+              "allowed_cells": 7545,
+              "total_cells": 15974,
+              "start_clear": true,
+              "target_clear": true,
+              "path_cells": 79
+            }
+          ],
+          "would_stop_sigma": false,
+          "applied_margin_m": 0.02,
+          "pair_dimensions_m": [
+            1.25,
+            0.4
+          ],
+          "observed_coverage_complete": false,
+          "sigma_contribution_unresolved": true
+        }
+      },
+      "status": "USER_REQUEST_INTERRUPTED",
+      "exclusion_reason": "사용자 요청 VM 축소로 중단",
+      "excluded_from_success_failure": true
+    },
+    {
+      "name": "e2e18-v271-s61007-r51",
+      "host": "ugrp-sim-azure4",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v271-s61007-r51",
+      "verified": true,
+      "files": 4528,
+      "bytes": 201155693,
+      "mismatches": [],
+      "manifest_sha256": "2881189864fe61fdbd3126b14214b7ed1177b8fc604df2f3d0df33f7875f8d8b",
+      "checked_unix": 1791856796.6620646,
+      "exit": 1,
+      "meta": {
+        "class": "dev",
+        "pr": 461,
+        "branch": "codex/e2e18",
+        "sha": "aaab0e85d9114e9f6620beca253db17a22aaba8c",
+        "batch": "e2e18-r51",
+        "seed": 61007,
+        "execution_bundle_id": "e2e18-v271",
+        "variant": "pan_v1",
+        "sonar_frame": "site_z_v1",
+        "wall_cap_s": 7200,
+        "storage_budget_bytes": 1073741824,
+        "submitted_unix": 1791853868.4828577,
+        "gate_new_samples": 3,
+        "continuing": 3,
+        "planned_concurrency": 6,
+        "research_result": false
+      },
+      "raw_result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 670.76,
+        "wall_s": 1764.3595861439999,
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "last_phase": "align",
+      "progress": {
+        "wall_s": 1763.0123274239995,
+        "sim_s": 670.0,
+        "frames": 1468,
+        "model_attempts": 11,
+        "first_model_response": true,
+        "own_map_B_generated": true,
+        "own_B_boundary_remembered": true,
+        "own_route_generated": true,
+        "own_route_observed_complete": false,
+        "phase": "align",
+        "setdowns": 0,
+        "robots": {
+          "r1": {
+            "pose_own_m": [
+              -3.5626662437294563,
+              -0.7455825623744947,
+              0.9389063659731356
+            ],
+            "stage": "explore",
+            "map_frames": 1209,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 1268,
+            "carrier_approach": {
+              "t": 669.6,
+              "status": "rotate_station_heading",
+              "station_own_m": [
+                -3.60539319043062,
+                -0.5191632073205918,
+                0.39031434202133264
+              ],
+              "grip_own_m": [
+                -3.4174759630209532,
+                -0.4418498472677295
+              ],
+              "distance_m": 0.23041552967938037,
+              "heading_error_rad": -0.548592023951803,
+              "own_beam_age_s": 2.800000000000068,
+              "camera": "inspect",
+              "basis_yaw_rad": 0.39031434202133264,
+              "beam_obstacle_source": "own_rgb_center_axis_known_size",
+              "path_points": 1,
+              "rpp": {
+                "path_follow": "rpp_v1",
+                "lookahead_m": 0.6,
+                "carrot_m": [
+                  -3.5626662437294563,
+                  -0.7455825623744947
+                ],
+                "carrot_distance_m": 0.0,
+                "phase": "rotate_goal",
+                "heading_error_rad": -0.548592023951803,
+                "goal_distance_m": 0.0,
+                "before": 0.30095320874353554,
+                "after": 0.1980344808155313
+              },
+              "projected_clear": true
+            }
+          },
+          "r2": {
+            "pose_own_m": [
+              3.4041607875037276,
+              -1.1997279136579706,
+              -0.8698464954481286
+            ],
+            "stage": "explore",
+            "map_frames": 1292,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 1298,
+            "carrier_approach": {
+              "t": 670.0,
+              "status": "navigate_pregrasp",
+              "station_own_m": [
+                3.4883647454004096,
+                -1.2356070548343725,
+                -2.4455309337127966
+              ],
+              "grip_own_m": [
+                3.3324344788361997,
+                -1.3658990038151688
+              ],
+              "distance_m": 0.09152933571824048,
+              "heading_error_rad": -1.575684438264668,
+              "own_beam_age_s": 54.799999999999955,
+              "camera": "inspect",
+              "basis_yaw_rad": 0.6960617198769969,
+              "beam_obstacle_source": "own_rgb_center_axis_known_size",
+              "path_points": 4,
+              "rpp": {
+                "path_follow": "rpp_v1",
+                "lookahead_m": 0.6,
+                "carrot_m": [
+                  3.4883647454004096,
+                  -1.2356070548343725
+                ],
+                "carrot_distance_m": 0.09152933571824048,
+                "phase": "rotate_path",
+                "heading_error_rad": 0.46704616843892993,
+                "goal_distance_m": 0.09152933571824048,
+                "before": 0.21813212345348532,
+                "after": 0.13938054326165056
+              },
+              "projected_clear": false
+            }
+          },
+          "r3": {
+            "pose_own_m": [
+              -0.08133720412419061,
+              0.03873388067833525,
+              -0.0019489925132587516
+            ],
+            "stage": "explore",
+            "map_frames": 1468,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 0,
+            "carrier_approach": null
+          }
+        },
+        "latest_route_wait": null,
+        "route_diagnostics": {
+          "t": 239.4,
+          "beam_pose_own_m": [
+            -2.874748723169918,
+            -0.7390952281120716,
+            -2.9654176561356578
+          ],
+          "beam_rgb": {
+            "robot_id": "r1",
+            "frame_id": 400,
+            "t_sim": 239.4,
+            "sha256": "922c5f6a58aff012cf1864043f9582684e4949bb5563f37a9e59f8fcd09d82d6"
+          },
+          "sigma_xy_m": 0.2919319119476983,
+          "stage": "grid_route",
+          "beam_axis_error_rad": 0.17617499745413545,
+          "strict_margin_m": 0.8957957358430949,
+          "B_own_m": [
+            1.0493003188489627,
+            0.05871625543697778
+          ],
+          "nominal_footprint_cells": {
+            "start": {
+              "free": 279,
+              "unknown": 0,
+              "occupied": 0,
+              "outside": 0
+            },
+            "target": {
+              "free": 0,
+              "unknown": 41,
+              "occupied": 0,
+              "outside": 238
+            }
+          },
+          "planning_extent": {
+            "old_lo": [
+              -126,
+              -70
+            ],
+            "old_hi": [
+              11,
+              28
+            ],
+            "new_lo": [
+              -126,
+              -70
+            ],
+            "new_hi": [
+              37,
+              28
+            ],
+            "added_unknown_cells": 2548,
+            "endpoint_pad_cells": 16
+          },
+          "would_stop_unknown": true,
+          "attempts": [
+            {
+              "margin_m": 0.8957957358430949,
+              "allowed_cells": 0,
+              "total_cells": 13426,
+              "start_clear": false,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "allowed_cells": 388,
+              "total_cells": 13426,
+              "start_clear": true,
+              "target_clear": false,
+              "path_cells": 0
+            },
+            {
+              "margin_m": 0.02,
+              "coverage": "native_allow_unknown",
+              "allowed_cells": 7545,
+              "total_cells": 15974,
+              "start_clear": true,
+              "target_clear": true,
+              "path_cells": 79
+            }
+          ],
+          "would_stop_sigma": false,
+          "applied_margin_m": 0.02,
+          "pair_dimensions_m": [
+            1.25,
+            0.4
+          ],
+          "observed_coverage_complete": false,
+          "sigma_contribution_unresolved": true
+        }
+      },
+      "status": "USER_REQUEST_INTERRUPTED",
+      "exclusion_reason": "사용자 요청 VM 축소로 중단",
+      "excluded_from_success_failure": true
+    },
+    {
+      "name": "e2e18-v271-s61007-r52",
+      "host": "ugrp-sim-azure4",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v271-s61007-r52",
+      "verified": true,
+      "files": 1080,
+      "bytes": 48926157,
+      "mismatches": [],
+      "manifest_sha256": "b67e37b3effc295487d908b776c18506f56991ca381643e9cd9f9545fa7ba856",
+      "checked_unix": 1791856798.2502801,
+      "exit": 1,
+      "meta": {
+        "class": "dev",
+        "pr": 461,
+        "branch": "codex/e2e18",
+        "sha": "cf894f7c03366e961d9c3371e401f1b889592949",
+        "batch": "e2e18-r52",
+        "seed": 61007,
+        "execution_bundle_id": "e2e18-v271",
+        "variant": "off",
+        "sonar_frame": "site_z_v1",
+        "wall_cap_s": 7200,
+        "storage_budget_bytes": 1073741824,
+        "submitted_unix": 1791855303.4553502,
+        "gate_new_samples": 4,
+        "continuing": 2,
+        "planned_concurrency": 6,
+        "research_result": false
+      },
+      "raw_result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 196.2,
+        "wall_s": 331.47858634600016,
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "last_phase": "mapping",
+      "progress": {
+        "wall_s": 331.0690472059996,
+        "sim_s": 196.0,
+        "frames": 327,
+        "model_attempts": 3,
+        "first_model_response": true,
+        "own_map_B_generated": true,
+        "own_B_boundary_remembered": true,
+        "own_route_generated": false,
+        "own_route_observed_complete": false,
+        "phase": "mapping",
+        "setdowns": 0,
+        "aligned_robots": [],
+        "robots": {
+          "r1": {
+            "pose_own_m": [
+              -0.3733981330662443,
+              -1.315435240864318,
+              2.538896185674038
+            ],
+            "stage": "explore",
+            "map_frames": 299,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 703,
+            "carrier_approach": {
+              "t": 196.0,
+              "status": "acquire_scan",
+              "own_beam_age_s": null,
+              "B_candidate_available": false,
+              "cycle": 0
+            }
+          },
+          "r2": {
+            "pose_own_m": [
+              3.755259534009063,
+              -0.2190604326486544,
+              -0.01761809033295325
+            ],
+            "stage": "explore",
+            "map_frames": 327,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 654,
+            "carrier_approach": null
+          },
+          "r3": {
+            "pose_own_m": [
+              -0.07912344059413845,
+              -0.027088916834649604,
+              0.018519818985860415
+            ],
+            "stage": "explore",
+            "map_frames": 327,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 0,
+            "carrier_approach": null
+          }
+        },
+        "latest_route_wait": null,
+        "route_diagnostics": null
+      },
+      "status": "USER_REQUEST_INTERRUPTED",
+      "exclusion_reason": "사용자 요청 VM 축소로 중단",
+      "excluded_from_success_failure": true
+    },
+    {
+      "name": "e2e18-v272-s61007-r52",
+      "host": "ugrp-sim-azure4",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v272-s61007-r52",
+      "verified": true,
+      "files": 1059,
+      "bytes": 47932398,
+      "mismatches": [],
+      "manifest_sha256": "86ff8f750e623b079ee29c9753bb22287bc7d683326ecef216725c630337c14d",
+      "checked_unix": 1791856799.661621,
+      "exit": 1,
+      "meta": {
+        "class": "dev",
+        "pr": 461,
+        "branch": "codex/e2e18",
+        "sha": "cf894f7c03366e961d9c3371e401f1b889592949",
+        "batch": "e2e18-r52",
+        "seed": 61007,
+        "execution_bundle_id": "e2e18-v272",
+        "variant": "pose08_v1",
+        "sonar_frame": "site_z_v1",
+        "wall_cap_s": 7200,
+        "storage_budget_bytes": 1073741824,
+        "submitted_unix": 1791855303.4557116,
+        "gate_new_samples": 4,
+        "continuing": 2,
+        "planned_concurrency": 6,
+        "research_result": false
+      },
+      "raw_result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 192.0,
+        "wall_s": 331.62522623600034,
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "last_phase": "mapping",
+      "progress": {
+        "wall_s": 329.95111329300016,
+        "sim_s": 191.0,
+        "frames": 319,
+        "model_attempts": 3,
+        "first_model_response": true,
+        "own_map_B_generated": true,
+        "own_B_boundary_remembered": true,
+        "own_route_generated": false,
+        "own_route_observed_complete": false,
+        "phase": "mapping",
+        "setdowns": 0,
+        "aligned_robots": [],
+        "robots": {
+          "r1": {
+            "pose_own_m": [
+              -0.3108707583846059,
+              -1.3612921089398116,
+              2.5406589228878653
+            ],
+            "stage": "explore",
+            "map_frames": 293,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 699,
+            "carrier_approach": {
+              "t": 160.55,
+              "status": "arm_clearance_verify",
+              "cycle": 2
+            }
+          },
+          "r2": {
+            "pose_own_m": [
+              3.6940669326876545,
+              -0.2617860424179572,
+              0.4114531357201603
+            ],
+            "stage": "explore",
+            "map_frames": 319,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 629,
+            "carrier_approach": null
+          },
+          "r3": {
+            "pose_own_m": [
+              -0.07912344059413845,
+              -0.027088916834649604,
+              0.018519818985860415
+            ],
+            "stage": "explore",
+            "map_frames": 319,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 0,
+            "carrier_approach": null
+          }
+        },
+        "latest_route_wait": null,
+        "route_diagnostics": null
+      },
+      "status": "USER_REQUEST_INTERRUPTED",
+      "exclusion_reason": "사용자 요청 VM 축소로 중단",
+      "excluded_from_success_failure": true
+    },
+    {
+      "name": "e2e18-v273-s61007-r52",
+      "host": "ugrp-sim-azure4",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v273-s61007-r52",
+      "verified": true,
+      "files": 1061,
+      "bytes": 48031733,
+      "mismatches": [],
+      "manifest_sha256": "98cca938db33088dd85bc198928f1b2029e5b6a13e46579b3e747f399c3e4172",
+      "checked_unix": 1791856801.1073372,
+      "exit": 1,
+      "meta": {
+        "class": "dev",
+        "pr": 461,
+        "branch": "codex/e2e18",
+        "sha": "cf894f7c03366e961d9c3371e401f1b889592949",
+        "batch": "e2e18-r52",
+        "seed": 61007,
+        "execution_bundle_id": "e2e18-v273",
+        "variant": "pose08_track_v1",
+        "sonar_frame": "site_z_v1",
+        "wall_cap_s": 7200,
+        "storage_budget_bytes": 1073741824,
+        "submitted_unix": 1791855303.4559658,
+        "gate_new_samples": 4,
+        "continuing": 2,
+        "planned_concurrency": 6,
+        "research_result": false
+      },
+      "raw_result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 192.6,
+        "wall_s": 331.5008772359997,
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "last_phase": "mapping",
+      "progress": {
+        "wall_s": 331.07658442699994,
+        "sim_s": 192.0,
+        "frames": 321,
+        "model_attempts": 3,
+        "first_model_response": true,
+        "own_map_B_generated": true,
+        "own_B_boundary_remembered": true,
+        "own_route_generated": false,
+        "own_route_observed_complete": false,
+        "phase": "mapping",
+        "setdowns": 0,
+        "aligned_robots": [],
+        "robots": {
+          "r1": {
+            "pose_own_m": [
+              -0.3733981330662443,
+              -1.315435240864318,
+              2.538896185674038
+            ],
+            "stage": "explore",
+            "map_frames": 295,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 703,
+            "carrier_approach": {
+              "t": 192.0,
+              "status": "acquire_turn",
+              "own_beam_age_s": null,
+              "B_candidate_available": false,
+              "cycle": 0
+            }
+          },
+          "r2": {
+            "pose_own_m": [
+              3.708056050503708,
+              -0.24456830545381703,
+              0.2517645124283714
+            ],
+            "stage": "explore",
+            "map_frames": 321,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 634,
+            "carrier_approach": null
+          },
+          "r3": {
+            "pose_own_m": [
+              -0.07912344059413845,
+              -0.027088916834649604,
+              0.018519818985860415
+            ],
+            "stage": "explore",
+            "map_frames": 321,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 0,
+            "carrier_approach": null
+          }
+        },
+        "latest_route_wait": null,
+        "route_diagnostics": null
+      },
+      "status": "USER_REQUEST_INTERRUPTED",
+      "exclusion_reason": "사용자 요청 VM 축소로 중단",
+      "excluded_from_success_failure": true
+    },
+    {
+      "name": "e2e18-v274-s61007-r52",
+      "host": "ugrp-sim-azure4",
+      "archive_path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v274-s61007-r52",
+      "verified": true,
+      "files": 1083,
+      "bytes": 49077971,
+      "mismatches": [],
+      "manifest_sha256": "6d477bc78bcd129d507778f9abd22472fd7d4c19cee06eed8606bdb8233bfa2b",
+      "checked_unix": 1791856802.5620723,
+      "exit": 1,
+      "meta": {
+        "class": "dev",
+        "pr": 461,
+        "branch": "codex/e2e18",
+        "sha": "cf894f7c03366e961d9c3371e401f1b889592949",
+        "batch": "e2e18-r52",
+        "seed": 61007,
+        "execution_bundle_id": "e2e18-v274",
+        "variant": "pose12_track_v1",
+        "sonar_frame": "site_z_v1",
+        "wall_cap_s": 7200,
+        "storage_budget_bytes": 1073741824,
+        "submitted_unix": 1791855303.456213,
+        "gate_new_samples": 4,
+        "continuing": 2,
+        "planned_concurrency": 6,
+        "research_result": false
+      },
+      "raw_result": {
+        "status": "EARLY_STOP",
+        "failure": "SIGNAL_SIGINT",
+        "sim_s": 196.79999999999998,
+        "wall_s": 331.53925222,
+        "LLM_operated": true,
+        "own_map_completed": false,
+        "start_to_finish_transport": false,
+        "E2E_success": false
+      },
+      "last_phase": "mapping",
+      "progress": {
+        "wall_s": 330.27863244500077,
+        "sim_s": 196.0,
+        "frames": 327,
+        "model_attempts": 3,
+        "first_model_response": true,
+        "own_map_B_generated": true,
+        "own_B_boundary_remembered": true,
+        "own_route_generated": false,
+        "own_route_observed_complete": false,
+        "phase": "mapping",
+        "setdowns": 0,
+        "aligned_robots": [],
+        "robots": {
+          "r1": {
+            "pose_own_m": [
+              -0.3733981330662443,
+              -1.315435240864318,
+              2.538896185674038
+            ],
+            "stage": "explore",
+            "map_frames": 299,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 703,
+            "carrier_approach": {
+              "t": 196.0,
+              "status": "acquire_scan",
+              "own_beam_age_s": null,
+              "B_candidate_available": false,
+              "cycle": 0
+            }
+          },
+          "r2": {
+            "pose_own_m": [
+              3.755259534009063,
+              -0.2190604326486544,
+              -0.01761809033295325
+            ],
+            "stage": "explore",
+            "map_frames": 327,
+            "command": {
+              "kind": "mecanum",
+              "forward": 0.35,
+              "left": 0.0,
+              "turn": 0.0,
+              "duration_s": 0.1
+            },
+            "translation_commands": 654,
+            "carrier_approach": null
+          },
+          "r3": {
+            "pose_own_m": [
+              -0.07912344059413845,
+              -0.027088916834649604,
+              0.018519818985860415
+            ],
+            "stage": "explore",
+            "map_frames": 327,
+            "command": {
+              "kind": "hold"
+            },
+            "translation_commands": 0,
+            "carrier_approach": null
+          }
+        },
+        "latest_route_wait": null,
+        "route_diagnostics": null
+      },
+      "status": "USER_REQUEST_INTERRUPTED",
+      "exclusion_reason": "사용자 요청 VM 축소로 중단",
+      "excluded_from_success_failure": true
+    }
+  ]
+}

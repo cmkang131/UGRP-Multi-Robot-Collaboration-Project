@@ -1,0 +1,53 @@
+{
+  "checked_unix": 1791893092.31503,
+  "status": "TERMINAL",
+  "runs": [
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v275-s61006-r53",
+      "sha": "6633de8129cb0eaf2694dd5a7c6e3a3aeb44ef4e",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v275-s61006-r53/raw",
+      "exit": "130",
+      "status": "EARLY_STOP",
+      "sim_s": 1083.7915,
+      "phase": "relook",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": true,
+      "class_": "milestone"
+    },
+    {
+      "host": "ugrp-sim-azure3",
+      "name": "e2e18-v277-s61006-r53",
+      "sha": "6633de8129cb0eaf2694dd5a7c6e3a3aeb44ef4e",
+      "raw": "ugrp-sim-azure3:/home/ugrp/ugrp-sim/runs/e2e18-v277-s61006-r53/raw",
+      "exit": "130",
+      "status": "EARLY_STOP",
+      "sim_s": 1260.8,
+      "phase": "relook",
+      "LLM": true,
+      "own_map": true,
+      "transport": false,
+      "failure": "SIGNAL_SIGINT",
+      "paired_grasp": true,
+      "class_": "milestone"
+    }
+  ],
+  "gate": {
+    "file": "speed-gate-r53.json",
+    "sha256": "36a85356fd21906118400fe5373a29b9c6bc116fed800f7c1a70cc36130f669f"
+  },
+  "initial_health": {
+    "file": "initial-health-r53.json",
+    "sha256": "2af553c9ad6484228c47eb654316879acbefdee27ca5d146aabcea3a10318b84",
+    "passed": 2,
+    "total": 2,
+    "submission_elapsed_s": [
+      196.8410840034485,
+      196.86070895195007
+    ]
+  },
+  "excluded_user_interruptions": 0
+}

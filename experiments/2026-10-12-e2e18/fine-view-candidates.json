@@ -1,0 +1,189 @@
+{
+  "status": "CANDIDATES_TESTED_NOT_YET_RUN",
+  "problem": "At 0.0222m station error and 0.0328rad yaw error, visible far band at0.758m keeps SEARCH while assigned band is about0.218m away; no fine/grasp.",
+  "source": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v253-s61006-r39/raw/robots/r2/ownmap.jsonl",
+  "examples": [
+    {
+      "t": 261.2,
+      "distance": 0.02218533961159776,
+      "heading": -0.03277795937721972,
+      "status": "navigate_pregrasp",
+      "correct": false,
+      "grip": [
+        0.7575747666786612,
+        -0.005775340579382252
+      ],
+      "axis": 3.108633838109232,
+      "camera": "search",
+      "pose": [
+        1.0320081357009223,
+        0.0034172709342057943,
+        -3.0900094791742916
+      ],
+      "beam": {
+        "rgb": {
+          "robot_id": "r2",
+          "frame_id": 591,
+          "t_sim": 261.2,
+          "sha256": "f71e0693acd6647dfd90dfa62c11ec5080a2eaae5926b101d728d1c42c30eca1"
+        },
+        "pose_own_m": [
+          0.5450964281135222,
+          -0.02484756778763189,
+          0.01862435893494041
+        ],
+        "grip_base_m": [
+          0.7575747666786612,
+          -0.005775340579382252
+        ],
+        "axis_heading_rad": 3.108633838109232,
+        "endpoint_model": "long_side_v1",
+        "observed_band_side": "far",
+        "endpoint_side_evidence": {
+          "points": 3961,
+          "q02_m": -0.39951699511996547,
+          "q98_m": -0.030224138467454992,
+          "long_before": 3533,
+          "long_after": 0
+        }
+      }
+    },
+    {
+      "t": 210.8,
+      "distance": 0.02222363768296743,
+      "heading": -0.03280186767189841,
+      "status": "navigate_pregrasp",
+      "correct": false,
+      "grip": [
+        0.7576153559075306,
+        -0.005688612478845157
+      ],
+      "axis": 3.108790785917895,
+      "camera": "search",
+      "pose": [
+        1.0320081357009223,
+        0.0034172709342057943,
+        -3.0900094791742916
+      ],
+      "beam": {
+        "rgb": {
+          "robot_id": "r2",
+          "frame_id": 465,
+          "t_sim": 210.8,
+          "sha256": "0f37731a2956e0a1f3b96fc3b8cc1a1180b2cd0bb2d1bc7e78800a038f90bfef"
+        },
+        "pose_own_m": [
+          0.5450595720967912,
+          -0.024893904825491676,
+          0.018781306743603565
+        ],
+        "grip_base_m": [
+          0.7576153559075306,
+          -0.005688612478845157
+        ],
+        "axis_heading_rad": 3.108790785917895,
+        "endpoint_model": "long_side_v1",
+        "observed_band_side": "far",
+        "endpoint_side_evidence": {
+          "points": 3964,
+          "q02_m": -0.3995484957400656,
+          "q98_m": -0.030268466163273434,
+          "long_before": 3534,
+          "long_after": 0
+        }
+      }
+    },
+    {
+      "t": 240.0,
+      "distance": 0.022297786940797523,
+      "heading": -0.03297337726786331,
+      "status": "navigate_pregrasp",
+      "correct": false,
+      "grip": [
+        0.757509963502015,
+        -0.007747535908191573
+      ],
+      "axis": 3.1086192763219302,
+      "camera": "search",
+      "pose": [
+        1.0320081357009223,
+        0.0034172709342057943,
+        -3.0900094791742916
+      ],
+      "beam": {
+        "rgb": {
+          "robot_id": "r2",
+          "frame_id": 538,
+          "t_sim": 240.0,
+          "sha256": "e25f95b31b88b87c7aa8408bd9283af427f3112232f0bbdce50303b14c9542b5"
+        },
+        "pose_own_m": [
+          0.5450595313001458,
+          -0.022878585439185528,
+          0.018609797147638663
+        ],
+        "grip_base_m": [
+          0.757509963502015,
+          -0.007747535908191573
+        ],
+        "axis_heading_rad": 3.1086192763219302,
+        "endpoint_model": "long_side_v1",
+        "observed_band_side": "far",
+        "endpoint_side_evidence": {
+          "points": 3962,
+          "q02_m": -0.39951611878622245,
+          "q98_m": -0.0302254855748284,
+          "long_before": 3534,
+          "long_after": 0
+        }
+      }
+    }
+  ],
+  "candidates": {
+    "e2e18-v257": "map clearance plus assigned view within0.08m; release+0.08m",
+    "e2e18-v258": "map clearance plus assigned view within0.20m; release+0.08m"
+  },
+  "baseline": "e2e18-v254",
+  "scope": "own RGB geometry and own station distance; fresh measured assigned band remains required for fine/grasp",
+  "tests": {
+    "related_files": 3,
+    "passed": 32,
+    "additional_new_bundle_registration": 2
+  },
+  "references": [
+    {
+      "url": "https://docs.nav2.org/jazzy/tutorials/general_tutorials/using_docking/",
+      "verified": true,
+      "application": "Navigate to staging, then acquire/refine the final target; used only as phase-separation mechanism."
+    }
+  ],
+  "seed_plan": [
+    61006,
+    61007,
+    61011,
+    61012
+  ],
+  "criterion": "fresh correct assigned-band fine alignment and actual grasp/transport; all physical failures retained",
+  "next_batch": {
+    "id": "r42",
+    "hosts": {
+      "azure3": [
+        61006,
+        61007
+      ],
+      "azure4": [
+        61011,
+        61012
+      ]
+    },
+    "versions": [
+      254,
+      257,
+      258
+    ],
+    "planned_runs": 12,
+    "per_vm": 6,
+    "wall_cap_s": 2400,
+    "must_start_on_fresh_vm_session": true
+  }
+}

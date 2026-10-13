@@ -166,23 +166,28 @@ def test_registered_sensor_bundle_and_baseline_and_relay_admission():
     assert not accepted_call_id('e2e-usstall-a-s61004:call-0001-r1:1')
 
 
-def test_sensor_adapter_clock_ownership_history_and_close_without_physics(monkeypatch,tmp_path):
+@pytest.mark.parametrize('site_frame',('off','site_z_v1'))
+def test_sensor_adapter_clock_ownership_history_and_close_without_physics(monkeypatch,tmp_path,site_frame):
     pytest.importorskip('mujoco', exc_type=ModuleNotFoundError)
     from sim import e2e_us_input as adapter
     events=[]
     class Rig:
-        def __init__(self, model, data, robots, *, episode_seed, range_input):self.input=range_input
+        def __init__(self, model, data, robots, *, episode_seed, range_input, site_frame):
+            self.input=range_input
+            events.append(('site_frame',site_frame))
         def provider(self,rid):return self.input.provider(rid)
         def tick(self,t):
             events.append(('tick',t))
             for i,rid in enumerate(('r1','r2')):self.input.feed(rid,RangeReading(t,.1+i,True,'ok'))
         def close(self):self.input.close();events.append(('close',))
     monkeypatch.setattr(adapter,'OwnUltrasonicRig',Rig)
-    backend=SimpleNamespace(now=1.3,world=SimpleNamespace(model=None,data=None))
+    backend=SimpleNamespace(now=1.3,world=SimpleNamespace(model=None,data=None),
+                            bundle={'e2e_options':{'sonar_frame':site_frame}})
     def advance(t):backend.now=t;events.append(('advance',t))
     backend.advance_to=advance;backend.close=lambda:events.append(('backend_close',))
     robots={r:SimpleNamespace() for r in ('r1','r2')}
     adapter.attach(backend,robots,seed=61001,out=tmp_path)
+    assert events[0]==('site_frame',site_frame)
     backend.advance_to(1.5)
     assert events[-2:]==[('advance',1.5),('tick',.2)]
     assert robots['r1'].range_provider.report(.2).range_m==.1

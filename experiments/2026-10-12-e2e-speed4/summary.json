@@ -1,0 +1,1140 @@
+{
+  "schema": "ugrp.e2e-speed4.summary.v1",
+  "date": "2026-10-12",
+  "pr": 455,
+  "refs": [
+    448,
+    453
+  ],
+  "branch": "codex/e2e-speed4",
+  "base": "codex/e2e-idle",
+  "implementation_sha": "030d77b0bd6ea35d0ef1266ebee328f53d6ca30b",
+  "verdict": "DRAFT: offline functionality accepted for map/vector combination; live speed and closed-loop operation unverified",
+  "results": {
+    "live_60_sim_profiles_completed": 0,
+    "remote_attempts": 4,
+    "remote_host_errors": 4,
+    "live_speedup_verified": false,
+    "recommended_replay_receives_ok": 180,
+    "recommended_replay_receives_total": 180,
+    "replay_sim_window_s": 12.0,
+    "unit_tests_passed": 76
+  },
+  "scope": {
+    "new_bundle_registered": false,
+    "new_cohort_required": true,
+    "physics_dt_changed": false,
+    "audit_hash_changed": false,
+    "duplicate_render_changed": false,
+    "existing_speed_option_defaults_changed": false,
+    "speed_gate_changed": false,
+    "dialogue_policy_changed": false,
+    "mac_simulation": false,
+    "vm_lifecycle_changes": false
+  },
+  "recommended_toggles": {
+    "render_half": false,
+    "rbpf_particles": 50,
+    "floor_ray_stride": 2,
+    "moving_observation_stride": 1,
+    "vector_envelopes": true,
+    "vector_door_pairs": true
+  },
+  "defaults": "All options off: render/vector false; particles 0; strides 1. --speed4 JSON is DEV-only.",
+  "measurements": {
+    "method": "Original 60 SIM s cProfile fallback plus offline saved-input functionality. No completed after-profile.",
+    "saved_profile": {
+      "source": "/Users/changmin/projects/ugrp/outputs/e2e-speed/fetch-lite/e2e13-profile-s61001",
+      "sha256": "7c49d34a2dc72d81a2367a6add883969bfd38c693ee7c8f9ef113b164dc5daff",
+      "profile_total_s": 1361.2851292870023,
+      "result_wall_s": 1355.367312882,
+      "sim_s": 60.0,
+      "functions": [
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method mujoco._render.mjr_readPixels>",
+          "primitive_calls": 900,
+          "calls": 900,
+          "self_s": 56.961554575,
+          "cumulative_s": 56.961554575,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method mujoco._render.mjr_render>",
+          "primitive_calls": 900,
+          "calls": 900,
+          "self_s": 60.518275812000006,
+          "cumulative_s": 60.518275812000006,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/floor_goal_self_mask.py",
+          "line": 70,
+          "name": "project_envelopes",
+          "primitive_calls": 1801,
+          "calls": 1801,
+          "self_s": 55.939165161000005,
+          "cumulative_s": 86.813191648,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/floor_goal.py",
+          "line": 85,
+          "name": "floor_intersections",
+          "primitive_calls": 1788,
+          "calls": 1788,
+          "self_s": 36.660854969,
+          "cumulative_s": 74.337194904,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/public_navigation_unknown.py",
+          "line": 102,
+          "name": "from_observed_grid",
+          "primitive_calls": 1800,
+          "calls": 1800,
+          "self_s": 19.792290768,
+          "cumulative_s": 69.54887792400001,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/own_map_navigation.py",
+          "line": 135,
+          "name": "dense",
+          "primitive_calls": 2700,
+          "calls": 2700,
+          "self_s": 35.703085212000005,
+          "cumulative_s": 61.337014325000005,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/own_map_navigation.py",
+          "line": 274,
+          "name": "update",
+          "primitive_calls": 900,
+          "calls": 900,
+          "self_s": 18.595259024,
+          "cumulative_s": 57.984987974000006,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/public_navigation_raytrace.py",
+          "line": 23,
+          "name": "receive_rays",
+          "primitive_calls": 2258,
+          "calls": 2258,
+          "self_s": 10.578860156000001,
+          "cumulative_s": 148.686921872,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/rbpf_manhattan.py",
+          "line": 16,
+          "name": "axis_observation",
+          "primitive_calls": 37,
+          "calls": 37,
+          "self_s": 0.002075616,
+          "cumulative_s": 0.003955242,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/rbpf_rejection.py",
+          "line": 73,
+          "name": "_proposals",
+          "primitive_calls": 37,
+          "calls": 37,
+          "self_s": 0.135933952,
+          "cumulative_s": 16.017247577000003,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/self_map_rbpf.py",
+          "line": 217,
+          "name": "observe_contacts_confident",
+          "primitive_calls": 900,
+          "calls": 900,
+          "self_s": 0.00412353,
+          "cumulative_s": 29.716653320000002,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/own_teach_capture.py",
+          "line": 38,
+          "name": "dense",
+          "primitive_calls": 1067,
+          "calls": 1067,
+          "self_s": 0.016589699,
+          "cumulative_s": 0.132354258,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        },
+        {
+          "file": "harness/zone_event_scheduler.py",
+          "line": 730,
+          "name": "arm_observations",
+          "primitive_calls": 1,
+          "calls": 1,
+          "self_s": 6.732e-06,
+          "cumulative_s": 2.0218000000000002e-05,
+          "after_self_s": null,
+          "after_cumulative_s": null
+        }
+      ]
+    },
+    "normalization_sim_s": 60.0,
+    "units": "wall/profile seconds per original 60 SIM-second run",
+    "estimate_warning": "Analytic sensitivity/optimistic work-budget estimates, not measured reductions or guaranteed bounds. Old profile predates currently enabled exact caches/vector rays; marginal benefit can be much smaller or negative. Do not add overlapping cumulative costs.",
+    "items": [
+      {
+        "item": "a_render_half",
+        "measured_savings_s": null,
+        "old_self_cost_s": 117.479830387,
+        "pixel_linear_optimistic_savings_s": 88.10987279025001,
+        "recommended_savings_s": 0,
+        "decision": "reject",
+        "reason": "B contrast_v1 positives 10/10 -> 2/10; keep full resolution"
+      },
+      {
+        "item": "b_particles_100_to_50",
+        "measured_savings_s": null,
+        "old_cumulative_cost_s": 29.71665332,
+        "linear_optimistic_savings_s": 14.85832666,
+        "decision": "offline_candidate",
+        "assumption": "All observe_contacts_confident cost scales with particle count; fixed overhead makes this optimistic"
+      },
+      {
+        "item": "b_floor_ray_stride_2",
+        "measured_savings_s": null,
+        "old_cumulative_cost_s": 148.686921872,
+        "linear_optimistic_savings_s": 74.343460936,
+        "decision": "offline_candidate",
+        "assumption": "At most half of all old ray work; wall rays/fixed work retained and current vector_rays already reduces cost"
+      },
+      {
+        "item": "b_map_and_costmap_frequency",
+        "measured_savings_s": null,
+        "implemented": false,
+        "decision": "defer",
+        "reason": "Avoid additional stale navigation decisions after cadence sensitivity failed; existing exact costmap work belongs to speed3"
+      },
+      {
+        "item": "c_moving_receive_stride_2",
+        "measured_savings_s": null,
+        "receives_skipped": 52,
+        "original_receives": 180,
+        "recommended_savings_s": 0,
+        "decision": "reject_for_recommendation",
+        "reason": "r2 replay XY RMSE .07937 -> .14867 m; VO/turn/hold/servo/transport retain 5 Hz"
+      },
+      {
+        "item": "d_model_wait",
+        "measured_savings_s": null,
+        "old_model_calls": 3,
+        "old_response_latency_sum_s": 5.908174,
+        "old_max_response_latency_s": 2.441831,
+        "old_wall_fraction": 0.00435909435312933,
+        "implemented": false,
+        "recommended_savings_s": 0,
+        "decision": "keep_dialogue_semantics",
+        "reason": "Response wait is only 0.44% of original wall time; async/cache/call reduction not justified by this sample"
+      },
+      {
+        "item": "e_vector_envelopes_and_door_pairs",
+        "measured_savings_s": null,
+        "old_self_cost_s": 74.534424185,
+        "removable_python_self_cost_ceiling_s": 74.534424185,
+        "old_self_breakdown_s": {
+          "envelopes": 55.939165161,
+          "door_pairs": 18.595259024
+        },
+        "decision": "offline_candidate",
+        "assumption": "Only an old Python-self cost ceiling; not all self work is removed, NumPy has nonzero cost, geometry cache already reduces calls"
+      }
+    ]
+  },
+  "functionality": {
+    "scope": "12 SIM seconds from saved own RGB plus original issued commands; evaluation truth loaded only after all controller outputs; no new physics or provider",
+    "candidates": [
+      {
+        "candidate": "baseline",
+        "options": {
+          "render_half": false,
+          "rbpf_particles": 0,
+          "floor_ray_stride": 1,
+          "moving_observation_stride": 1,
+          "vector_envelopes": false,
+          "vector_door_pairs": false
+        },
+        "receives": 180,
+        "skips": 0,
+        "sim_window_s": 12.0,
+        "receive_s": null,
+        "wall_s": null,
+        "loadavg": [
+          6.7109375,
+          7.99267578125,
+          8.69140625
+        ],
+        "errors": 0,
+        "source": "outputs/e2e-speed4/replay-input",
+        "scope": "fixed recorded commands and RGB, no physics/model",
+        "evaluation": {
+          "r1": {
+            "n": 60,
+            "xy_rmse_m": 0.07588427457972313,
+            "yaw_rmse_rad": 0.12269829360225852
+          },
+          "r2": {
+            "n": 60,
+            "xy_rmse_m": 0.07937392406256237,
+            "yaw_rmse_rad": 0.010173388944043568
+          },
+          "r3": {
+            "n": 60,
+            "xy_rmse_m": 0.07672726415096626,
+            "yaw_rmse_rad": 0.01548001701786822
+          }
+        }
+      },
+      {
+        "candidate": "map_budget",
+        "options": {
+          "render_half": false,
+          "rbpf_particles": 50,
+          "floor_ray_stride": 2,
+          "moving_observation_stride": 1,
+          "vector_envelopes": false,
+          "vector_door_pairs": false
+        },
+        "receives": 180,
+        "skips": 0,
+        "sim_window_s": 12.0,
+        "receive_s": null,
+        "wall_s": null,
+        "loadavg": [
+          5.89404296875,
+          7.74755859375,
+          8.59130859375
+        ],
+        "errors": 0,
+        "source": "outputs/e2e-speed4/replay-input",
+        "scope": "fixed recorded commands and RGB, no physics/model",
+        "evaluation": {
+          "r1": {
+            "n": 60,
+            "xy_rmse_m": 0.07029784406239678,
+            "yaw_rmse_rad": 0.09243166390839933
+          },
+          "r2": {
+            "n": 60,
+            "xy_rmse_m": 0.07733680478518014,
+            "yaw_rmse_rad": 0.009070260963713767
+          },
+          "r3": {
+            "n": 60,
+            "xy_rmse_m": 0.07522682672184935,
+            "yaw_rmse_rad": 0.013974181191054785
+          }
+        }
+      },
+      {
+        "candidate": "vector",
+        "options": {
+          "render_half": false,
+          "rbpf_particles": 0,
+          "floor_ray_stride": 1,
+          "moving_observation_stride": 1,
+          "vector_envelopes": true,
+          "vector_door_pairs": true
+        },
+        "receives": 180,
+        "skips": 0,
+        "sim_window_s": 12.0,
+        "receive_s": null,
+        "wall_s": null,
+        "loadavg": [
+          5.17822265625,
+          7.49755859375,
+          8.48681640625
+        ],
+        "errors": 0,
+        "source": "outputs/e2e-speed4/replay-input",
+        "scope": "fixed recorded commands and RGB, no physics/model",
+        "evaluation": {
+          "r1": {
+            "n": 60,
+            "xy_rmse_m": 0.07588427457972313,
+            "yaw_rmse_rad": 0.12269829360225852
+          },
+          "r2": {
+            "n": 60,
+            "xy_rmse_m": 0.07937392406256237,
+            "yaw_rmse_rad": 0.010173388944043568
+          },
+          "r3": {
+            "n": 60,
+            "xy_rmse_m": 0.07672726415096626,
+            "yaw_rmse_rad": 0.01548001701786822
+          }
+        }
+      },
+      {
+        "candidate": "recommended",
+        "options": {
+          "render_half": false,
+          "rbpf_particles": 50,
+          "floor_ray_stride": 2,
+          "moving_observation_stride": 1,
+          "vector_envelopes": true,
+          "vector_door_pairs": true
+        },
+        "receives": 180,
+        "skips": 0,
+        "sim_window_s": 12.0,
+        "receive_s": null,
+        "wall_s": null,
+        "loadavg": [
+          5.875,
+          6.6416015625,
+          7.31884765625
+        ],
+        "errors": 0,
+        "source": "outputs/e2e-speed4/replay-input",
+        "scope": "fixed recorded commands and RGB, no physics/model",
+        "evaluation": {
+          "r1": {
+            "n": 60,
+            "xy_rmse_m": 0.07029784406239678,
+            "yaw_rmse_rad": 0.09243166390839933
+          },
+          "r2": {
+            "n": 60,
+            "xy_rmse_m": 0.07733680478518014,
+            "yaw_rmse_rad": 0.009070260963713767
+          },
+          "r3": {
+            "n": 60,
+            "xy_rmse_m": 0.07522682672184935,
+            "yaw_rmse_rad": 0.013974181191054785
+          }
+        }
+      },
+      {
+        "candidate": "moving",
+        "options": {
+          "render_half": false,
+          "rbpf_particles": 0,
+          "floor_ray_stride": 1,
+          "moving_observation_stride": 2,
+          "vector_envelopes": false,
+          "vector_door_pairs": false
+        },
+        "receives": 128,
+        "skips": 52,
+        "sim_window_s": 12.0,
+        "receive_s": null,
+        "wall_s": null,
+        "loadavg": [
+          5.61279296875,
+          6.54443359375,
+          7.27197265625
+        ],
+        "errors": 0,
+        "source": "outputs/e2e-speed4/replay-input",
+        "scope": "fixed recorded commands and RGB, no physics/model",
+        "evaluation": {
+          "r1": {
+            "n": 37,
+            "xy_rmse_m": 0.07343733297840231,
+            "yaw_rmse_rad": 0.08437226727839471
+          },
+          "r2": {
+            "n": 31,
+            "xy_rmse_m": 0.1486697098283006,
+            "yaw_rmse_rad": 0.008649221758652391
+          },
+          "r3": {
+            "n": 60,
+            "xy_rmse_m": 0.07672726415096626,
+            "yaw_rmse_rad": 0.01548001701786822
+          }
+        }
+      }
+    ],
+    "equivalence": {
+      "baseline_vs_vector": {
+        "equal": 180,
+        "total": 180
+      },
+      "map_vs_recommended": {
+        "equal": 180,
+        "total": 180
+      }
+    },
+    "low_resolution": {
+      "evidence": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/frame-check.json",
+        "sha256": "5f5da6d95f140e5aed186350bb90d32684ae0faf9334aff4cece31ae3fc94ec8",
+        "compressed_path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/frame-check.json.zst",
+        "compressed_sha256": "16c65cbe08d58a786cc9d8b312eb6123090b2264ef068808e635cad937b1e63a",
+        "sha256_scope": "original decompressed bytes"
+      },
+      "scope": "saved JPEG downsample+linear upscale; not new native render",
+      "images": 70,
+      "b_marker": {
+        "positive_N": 10,
+        "original_n": 10,
+        "half_n": 2,
+        "negative_N": 3,
+        "original_false_positive": 0,
+        "half_false_positive": 0
+      },
+      "wall_detection": {
+        "N": 57,
+        "original_visible": 57,
+        "half_visible": 57,
+        "endpoint_chamfer_median_m": 0.03470043307518691,
+        "endpoint_chamfer_max_m": 0.4205938906038201
+      },
+      "rgb_vo": {
+        "N": 30,
+        "original_measured": 27,
+        "half_measured": 27,
+        "both_measured": 25,
+        "status_changed": 4,
+        "max_xy_delta_disagreement_m": 0.003999475146744299,
+        "max_yaw_delta_disagreement_rad": 0.0021509990180335024
+      },
+      "scale_sweep": [
+        {
+          "scale": 0.5,
+          "upsample": "linear",
+          "n": 2,
+          "N": 10,
+          "reasons": {
+            "accepted": 2,
+            "white_islands_not_three": 15,
+            "not_convex_quad": 17
+          }
+        },
+        {
+          "scale": 0.5,
+          "upsample": "nearest",
+          "n": 5,
+          "N": 10,
+          "reasons": {
+            "accepted": 5,
+            "not_convex_quad": 14,
+            "white_islands_not_three": 13
+          }
+        },
+        {
+          "scale": 0.75,
+          "upsample": "linear",
+          "n": 8,
+          "N": 10,
+          "reasons": {
+            "accepted": 8,
+            "white_islands_not_three": 10,
+            "not_convex_quad": 16
+          }
+        },
+        {
+          "scale": 0.75,
+          "upsample": "nearest",
+          "n": 7,
+          "N": 10,
+          "reasons": {
+            "accepted": 7,
+            "white_islands_not_three": 10,
+            "not_convex_quad": 15
+          }
+        },
+        {
+          "scale": 0.875,
+          "upsample": "linear",
+          "n": 9,
+          "N": 10,
+          "reasons": {
+            "accepted": 9,
+            "white_islands_not_three": 5,
+            "not_convex_quad": 12
+          }
+        },
+        {
+          "scale": 0.875,
+          "upsample": "nearest",
+          "n": 9,
+          "N": 10,
+          "reasons": {
+            "accepted": 9,
+            "white_islands_not_three": 5,
+            "not_convex_quad": 12
+          }
+        },
+        {
+          "scale": 1.0,
+          "upsample": "linear",
+          "n": 10,
+          "N": 10,
+          "reasons": {
+            "accepted": 10,
+            "white_islands_not_three": 6,
+            "not_convex_quad": 16
+          }
+        },
+        {
+          "scale": 1.0,
+          "upsample": "nearest",
+          "n": 10,
+          "N": 10,
+          "reasons": {
+            "accepted": 10,
+            "white_islands_not_three": 6,
+            "not_convex_quad": 16
+          }
+        }
+      ]
+    },
+    "limitations": [
+      "Single seed and short fixed-command replay; no closed-loop transport or E2E claim.",
+      "Downsampling saved JPEGs approximates resolution loss; native 320x240 raster was not validated on VM.",
+      "No final candidate cProfile self-time comparison or speedup factor; VM3 deallocated.",
+      "Mapping profiler duplicate-install fix is syntax-checked but not rerun remotely."
+    ]
+  },
+  "runs": [
+    {
+      "id": "speed4-baseline-s61001",
+      "source_sha": "731dd0af028fb744a8f73bd61bedeed036408ad6",
+      "status": "HOST_ERROR",
+      "exit": 2,
+      "raw_vm3": "/home/ugrp/ugrp-sim/runs/speed4-baseline-s61001",
+      "archive_arm": "/home/ubuntu/ugrp-archive/runs/native-speed4-baseline-s61001",
+      "local_fetch_lite": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001",
+      "sim_s": 0,
+      "frames": 0,
+      "model_calls": 0,
+      "reason": "CLI validation: missing --decider",
+      "initial_check": {
+        "status": "FAILED_BEFORE_10_SIM_SECONDS",
+        "exception_free": false,
+        "sim_progress": false,
+        "physical_movement_verified": false,
+        "normal_command_sequence_verified": false,
+        "mapping_entered": false
+      },
+      "archive_manifest": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001/SHA256SUMS",
+        "sha256": "fd07a1bd52ab12948fb33cd082de06a6a45434bbe62d04567bcdbb8db1fce4b2"
+      },
+      "run_meta": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001/RUN_META.json",
+        "sha256": "8015f58ac9dace4435a33acd5b89e72825ae453843225e0eff0d8ec6dc1e0090"
+      }
+    },
+    {
+      "id": "speed4-baseline-s61001-r2",
+      "source_sha": "731dd0af028fb744a8f73bd61bedeed036408ad6",
+      "status": "HOST_ERROR",
+      "exit": 1,
+      "raw_vm3": "/home/ugrp/ugrp-sim/runs/speed4-baseline-s61001-r2",
+      "archive_arm": "/home/ubuntu/ugrp-archive/runs/native-speed4-baseline-s61001-r2",
+      "local_fetch_lite": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001-r2",
+      "sim_s": 0.0,
+      "frames": 0,
+      "model_calls": 0,
+      "reason": "S4 SSH relay identity expired or mismatched",
+      "initial_check": {
+        "status": "FAILED_BEFORE_10_SIM_SECONDS",
+        "exception_free": false,
+        "sim_progress": false,
+        "physical_movement_verified": false,
+        "normal_command_sequence_verified": false,
+        "mapping_entered": false
+      },
+      "archive_manifest": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001-r2/SHA256SUMS",
+        "sha256": "d0a70c3ff3b6ecfa0265ce86bd615fc8454c81894a851485f6979662a19d7ba5"
+      },
+      "run_meta": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001-r2/RUN_META.json",
+        "sha256": "9558581e5ba09c9ac80d274a1f8e37d4ee4ef429d3971d35e0cda7ad14f29c77"
+      },
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001-r2/raw/result.json",
+        "sha256": "433b4d26575525eb5c382438296d7f70aef8981e716c5b444078a89d83cc5061"
+      }
+    },
+    {
+      "id": "speed4-baseline-s61001-r3",
+      "source_sha": "9436965c4dc7795123bd2c4431276152ac3673be",
+      "status": "HOST_ERROR",
+      "exit": 1,
+      "raw_vm3": "/home/ugrp/ugrp-sim/runs/speed4-baseline-s61001-r3",
+      "archive_arm": "/home/ubuntu/ugrp-archive/runs/native-speed4-baseline-s61001-r3",
+      "local_fetch_lite": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001-r3",
+      "sim_s": 0.0,
+      "frames": 1,
+      "model_calls": 3,
+      "reason": "no successful model response",
+      "initial_check": {
+        "status": "FAILED_BEFORE_10_SIM_SECONDS",
+        "exception_free": false,
+        "sim_progress": false,
+        "physical_movement_verified": false,
+        "normal_command_sequence_verified": false,
+        "mapping_entered": false
+      },
+      "archive_manifest": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001-r3/SHA256SUMS",
+        "sha256": "37ad74b3b568ec8ae91bccdc290ae2d12b99a04828a825c24aacbb2707522bd5"
+      },
+      "run_meta": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001-r3/RUN_META.json",
+        "sha256": "0988e8303dbba3f0896f30a5e223a412ad0a6f4020046f2aef2bbe0eb7276cd8"
+      },
+      "result": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/fetch-lite/speed4-baseline-s61001-r3/raw/result.json",
+        "sha256": "f35a23d0693500d1331195c96375cda97cd6055dd792fd8297f7ffae56f2c4fa"
+      }
+    },
+    {
+      "id": "speed4-map-baseline-s61001",
+      "source_sha": "5238bdc93a3e8c33c81d8e638ace2dbc06ec0f92",
+      "status": "HOST_ERROR",
+      "sim_s": 0,
+      "frames": 0,
+      "model_calls": 0,
+      "reason": "TypeError involving ShadowDepthMemo after duplicate controller-speedup installation; fixed in bd758ebc",
+      "raw_vm3": "/home/ugrp/ugrp-sim/runs/speed4-map-baseline-s61001",
+      "archive_arm": null,
+      "initial_check": {
+        "status": "FAILED_DURING_INITIALIZATION",
+        "exception_free": false,
+        "sim_progress": false,
+        "physical_movement_verified": false
+      },
+      "retrieval": "UNRETRIEVED: VM deallocated; no matching ARM archive found; raw sha256 not verified",
+      "evidence_scope": "Observed remote console failure; original persistent-disk artifacts unavailable after shutdown"
+    }
+  ],
+  "offline_rounds": [
+    {
+      "id": "functional-accepted",
+      "summary": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/functional-accepted/summary.json",
+        "sha256": "bcdb8973f25d8d46de3d56d754e9f52af0449571898c133f8541ff75bf7f2c60"
+      },
+      "source_sha": "030d77b0bd6ea35d0ef1266ebee328f53d6ca30b",
+      "candidates": [
+        {
+          "candidate": "recommended",
+          "status": null,
+          "receives": 180,
+          "skips": 0,
+          "errors": 0,
+          "error": null
+        },
+        {
+          "candidate": "moving",
+          "status": null,
+          "receives": 128,
+          "skips": 52,
+          "errors": 0,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "functional-final",
+      "summary": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/functional-final/summary.json",
+        "sha256": "a061328cbbf858fba96bd7445c0682002e6fa5fba4eb30ccbbb3866002bea060"
+      },
+      "source_sha": "9436965c4dc7795123bd2c4431276152ac3673be",
+      "candidates": [
+        {
+          "candidate": "baseline",
+          "status": null,
+          "receives": 180,
+          "skips": 0,
+          "errors": 0,
+          "error": null
+        },
+        {
+          "candidate": "map_budget",
+          "status": null,
+          "receives": 180,
+          "skips": 0,
+          "errors": 0,
+          "error": null
+        },
+        {
+          "candidate": "vector",
+          "status": null,
+          "receives": 180,
+          "skips": 0,
+          "errors": 0,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "functional-replay",
+      "summary": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/functional-replay/summary.json",
+        "sha256": "ed2d523317af77cfbc1f6d03af7bb3acc13c1f8cfd0d7c1346e0ef54b786ff43"
+      },
+      "source_sha": null,
+      "candidates": [
+        {
+          "candidate": "baseline",
+          "status": null,
+          "receives": 180,
+          "skips": 0,
+          "errors": 0,
+          "error": null
+        },
+        {
+          "candidate": "pixels",
+          "status": "HOST_ERROR",
+          "receives": null,
+          "skips": null,
+          "errors": null,
+          "error": "TypeError:module, class, method, function, traceback, frame, or code object was expected, got ShadowDepthMemo"
+        },
+        {
+          "candidate": "map_budget",
+          "status": "HOST_ERROR",
+          "receives": null,
+          "skips": null,
+          "errors": null,
+          "error": "TypeError:module, class, method, function, traceback, frame, or code object was expected, got ShadowDepthMemo"
+        },
+        {
+          "candidate": "moving",
+          "status": "HOST_ERROR",
+          "receives": null,
+          "skips": null,
+          "errors": null,
+          "error": "TypeError:module, class, method, function, traceback, frame, or code object was expected, got ShadowDepthMemo"
+        },
+        {
+          "candidate": "vector",
+          "status": "HOST_ERROR",
+          "receives": null,
+          "skips": null,
+          "errors": null,
+          "error": "TypeError:module, class, method, function, traceback, frame, or code object was expected, got ShadowDepthMemo"
+        },
+        {
+          "candidate": "combined",
+          "status": "HOST_ERROR",
+          "receives": null,
+          "skips": null,
+          "errors": null,
+          "error": "TypeError:module, class, method, function, traceback, frame, or code object was expected, got ShadowDepthMemo"
+        }
+      ]
+    },
+    {
+      "id": "functional-replay-r2",
+      "summary": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/functional-replay-r2/summary.json",
+        "sha256": "bb3f9d6b418e5ced24cb7d0b31e91679bbda7cb0127dfc9f76e70a2590d5a7f9"
+      },
+      "source_sha": null,
+      "candidates": [
+        {
+          "candidate": "baseline",
+          "status": null,
+          "receives": 180,
+          "skips": 0,
+          "errors": 0,
+          "error": null
+        },
+        {
+          "candidate": "pixels",
+          "status": null,
+          "receives": 180,
+          "skips": 0,
+          "errors": 0,
+          "error": null
+        },
+        {
+          "candidate": "map_budget",
+          "status": null,
+          "receives": 180,
+          "skips": 0,
+          "errors": 0,
+          "error": null
+        },
+        {
+          "candidate": "moving",
+          "status": null,
+          "receives": 99,
+          "skips": 81,
+          "errors": 0,
+          "error": null
+        },
+        {
+          "candidate": "vector",
+          "status": null,
+          "receives": 180,
+          "skips": 0,
+          "errors": 0,
+          "error": null
+        },
+        {
+          "candidate": "combined",
+          "status": null,
+          "receives": 94,
+          "skips": 86,
+          "errors": 0,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "functional-replay-r3",
+      "summary": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/functional-replay-r3/summary.json",
+        "sha256": "d7e04789ede8d62f1416ec4afac62376826e47d9264b89b7fdec1a9fb1b23f25"
+      },
+      "source_sha": null,
+      "candidates": [
+        {
+          "candidate": "moving",
+          "status": null,
+          "receives": 128,
+          "skips": 52,
+          "errors": 0,
+          "error": null
+        },
+        {
+          "candidate": "combined",
+          "status": null,
+          "receives": 127,
+          "skips": 53,
+          "errors": 0,
+          "error": null
+        }
+      ]
+    },
+    {
+      "id": "functional-vector-r4",
+      "summary": {
+        "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/functional-vector-r4/summary.json",
+        "sha256": "07b739901e1a44f806ace756d67eab393f06b00d376b3b1a7fec9fa1b3dc8e6c"
+      },
+      "source_sha": "9436965c4dc7795123bd2c4431276152ac3673be",
+      "candidates": [
+        {
+          "candidate": "vector",
+          "status": null,
+          "receives": 180,
+          "skips": 0,
+          "errors": 0,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "not_started": [
+    {
+      "id": "speed4-map-baseline-s61001-r2",
+      "status": "NOT_STARTED_VM_DEALLOCATED",
+      "source_sha": "bd758ebc5a6d01459c996364d9868e66b6adff0d"
+    },
+    {
+      "id": "speed4-map-recommended",
+      "status": "NOT_STARTED_VM_DEALLOCATED"
+    },
+    {
+      "id": "functional-accepted-launch-1",
+      "status": "NOT_STARTED",
+      "exit": 127,
+      "reason": "worktree .venv path absent; retried using shared Mac environment; no physics"
+    }
+  ],
+  "vm3": {
+    "observed_state": "deallocated",
+    "evidence": {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/vm3-state.json",
+      "sha256": "ad82a30a2c7639597f55de14a6ba134d9371041ae16a7194fb1d977441ba620c"
+    },
+    "measurement_fallback": "user-authorized original saved profile",
+    "restarted": false
+  },
+  "storage": {
+    "budgets": {
+      "budget-azure3": {
+        "schema": "ugrp.storage-budget.v1",
+        "ok": true,
+        "checks": [
+          {
+            "host": "x86",
+            "free_bytes": 78337130496,
+            "expected_bytes": 1342177280,
+            "projected_free_bytes": 76994953216,
+            "floor_bytes": 8589934592,
+            "ok": true
+          }
+        ]
+      },
+      "budget-arm": {
+        "schema": "ugrp.storage-budget.v1",
+        "ok": true,
+        "checks": [
+          {
+            "host": "arm",
+            "free_bytes": 80443977728,
+            "expected_bytes": 1342177280,
+            "projected_free_bytes": 79101800448,
+            "floor_bytes": 26843545600,
+            "ok": true
+          }
+        ]
+      },
+      "budget-mac": {
+        "schema": "ugrp.storage-budget.v1",
+        "ok": true,
+        "checks": [
+          {
+            "host": "mac",
+            "free_bytes": 123370524672,
+            "expected_bytes": 16777216,
+            "projected_free_bytes": 123353747456,
+            "floor_bytes": 21474836480,
+            "ok": true
+          }
+        ]
+      }
+    },
+    "archive_full_hash_checks": [
+      {
+        "run": "native-speed4-baseline-s61001",
+        "files": 8,
+        "ok": 8,
+        "bad": [],
+        "manifest_sha256": "fd07a1bd52ab12948fb33cd082de06a6a45434bbe62d04567bcdbb8db1fce4b2"
+      },
+      {
+        "run": "native-speed4-baseline-s61001-r2",
+        "files": 39,
+        "ok": 39,
+        "bad": [],
+        "manifest_sha256": "d0a70c3ff3b6ecfa0265ce86bd615fc8454c81894a851485f6979662a19d7ba5"
+      },
+      {
+        "run": "native-speed4-baseline-s61001-r3",
+        "files": 90,
+        "ok": 90,
+        "bad": [],
+        "manifest_sha256": "37ad74b3b568ec8ae91bccdc290ae2d12b99a04828a825c24aacbb2707522bd5"
+      }
+    ],
+    "fetch_lite_checks": [
+      {
+        "run": "speed4-baseline-s61001",
+        "fetched_verified": 8,
+        "excluded_media": 0,
+        "bad": []
+      },
+      {
+        "run": "speed4-baseline-s61001-r2",
+        "fetched_verified": 39,
+        "excluded_media": 0,
+        "bad": []
+      },
+      {
+        "run": "speed4-baseline-s61001-r3",
+        "fetched_verified": 84,
+        "excluded_media": 6,
+        "bad": []
+      }
+    ],
+    "selected_frames": "Only 57 profile samples, 13 B-marker samples, and first 60 frames/robot for fixed replay; original full recordings not fetched",
+    "old_profile_raw_arm": "/home/ubuntu/ugrp-archive/runs/native-e2e13-profile-s61001/raw",
+    "b_marker_raw_vm3": "/home/ugrp/ugrp-sim/runs/e2e-idle-a-s61001-r2/raw",
+    "raw_retention": "DEV PR still open: no media pruning. Large local JSON/JSONL compressed losslessly with hashes; 1 failed remote run remains unretrieved.",
+    "compression": [
+      {
+        "run": "outputs/e2e-speed4",
+        "files": 5,
+        "saved_bytes": 1670100,
+        "sha256_verified": true
+      }
+    ],
+    "compression_manifest": {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/COMPRESSED.jsonl",
+      "sha256": "e2cc500df58e7b24b29bf01bdd9c0a119fa7eeb13a21838cc2ce773327db29a7"
+    },
+    "b_marker_raw_arm": "/home/ubuntu/ugrp-archive/runs/native-e2e-idle-a-s61001-r2/raw"
+  },
+  "tests": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest tests/test_e2e_speed4.py tests/test_e2e_exact_speedups2.py tests/test_e2e_explore_deadlock.py -q",
+    "passed": 76,
+    "failed": 0,
+    "evidence": {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4/final-tests.txt",
+      "sha256": "ee7093edf01fdec2a41dc45cecc2f97e36e5ccfb102f851dd19dc7b40fd5a331"
+    },
+    "source_sha": "bd758ebc5a6d01459c996364d9868e66b6adff0d",
+    "later_code_change": "030d77b0 only adds recommended replay candidate, which was run successfully",
+    "static_bundle_check": {
+      "source_sha": "030d77b0bd6ea35d0ef1266ebee328f53d6ca30b",
+      "dev_bundle_constructed": true,
+      "new_modules_in_source_closure": true,
+      "non_dev_rejected": true,
+      "physics_executed": false
+    }
+  },
+  "remaining": [
+    "Run final SHA baseline and recommended 60 SIM s profiles when VM3 is independently available, respecting paired-job scheduling.",
+    "Fetch and verify speed4-map-baseline-s61001 original on persistent VM3 disk.",
+    "Coordinator composes these toggles with speed3 into a new registered bundle and validates closed-loop operation.",
+    "Legacy raw result pr=433 is inherited from v210; each RUN_META and this record attribute these runs to PR455. Raw results preserved."
+  ],
+  "references": [
+    {
+      "url": "https://docs.opencv.org/4.13.0/da/d54/group__imgproc__transform.html",
+      "use": "standard resize interpolation; no detector accuracy guarantee"
+    },
+    {
+      "url": "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/",
+      "use": "particle and observation budgets; adapted only to own-RGB input boundary"
+    },
+    {
+      "url": "https://numpy.org/doc/stable/user/basics.broadcasting.html",
+      "use": "batch geometry and pair filtering"
+    },
+    {
+      "url": "https://docs.python.org/3.12/library/profile.html",
+      "use": "self versus cumulative time; no double-counted sum"
+    }
+  ],
+  "evidence_inventory": {
+    "local_root": "/Users/changmin/projects/ugrp-wt/e2e-speed4/outputs/e2e-speed4",
+    "file": "experiments/2026-10-12-e2e-speed4/artifact-sha256.tsv",
+    "sha256": "da7d493377ee8bb135b5a1147a7a2762cbb7505ff717bed64d8c27f62e065c83",
+    "files": 518,
+    "bytes": 8589117,
+    "scope": "All local outputs at record seal; originals or lossless compressed copies; ARM whole-run checks separate"
+  }
+}

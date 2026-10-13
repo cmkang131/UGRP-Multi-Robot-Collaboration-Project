@@ -236,6 +236,7 @@ class VOFusion:
         validate(vo_floor_mask)
         if rotation_policy not in ROTATION_OPTIONS:
             raise ValueError('UNKNOWN_VO_ROTATION_POLICY')
+        self.max_pair_gap_s = PARAMS['max_pair_gap_s']
         self.rotation_policy = rotation_policy
         self.interval_axes = set()
         self.vo_floor_mask = vo_floor_mask
@@ -314,7 +315,7 @@ class VOFusion:
                    command_delta=command_delta.tolist(), command_substeps=len(steps), status='no_previous_frame')
         loaded = int(int(servo.get(1, 2000)) <= 1600)
         if self.last is not None:
-            if t-self.last['t'] > PARAMS['max_pair_gap_s']+1e-8:
+            if t-self.last['t'] > self.max_pair_gap_s+1e-8:
                 row['status'] = 'unknown_frame_gap'
             elif _servo_key(self.last['servo']) != _servo_key(servo):
                 row['status'] = 'unknown_servo_change'

@@ -1,0 +1,21 @@
+{
+  "reason": "SUPERVISOR_STALE_OBSERVATION_STOP",
+  "excluded_from_definitive_success_failure_denominator": true,
+  "raw_stop_reason_preserved": true,
+  "explanation": "The stop decision used an earlier >100 SIM target-loss snapshot. Before SIGINT both runs had recovered to navigate_pregrasp; therefore the recorded earlier blockage cannot justify a definitive terminal failure classification. Preserve the original raw stop receipt, and censor these two observations.",
+  "runs": [
+    {
+      "name": "stage-c-cohort4-06-grasp-v399",
+      "stop_sim_s": 174.0,
+      "r2_navigate_frames": 110,
+      "r2_position_delta_max_m": 1.7507654522756018
+    },
+    {
+      "name": "stage-c-cohort4-07-grasp-v400",
+      "stop_sim_s": 173.2,
+      "r2_navigate_frames": 108,
+      "r2_position_delta_max_m": 1.7409060741349978
+    }
+  ],
+  "prevention": "Immediately re-read current raw choice and progress before SIGINT. The subsequent stage-c 03/05 stop helper did this and did not signal a recovered/completed run."
+}

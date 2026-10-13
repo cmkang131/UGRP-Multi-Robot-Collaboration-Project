@@ -1,0 +1,36 @@
+{
+  "name": "e2e18-v274-s61006-r52",
+  "status": "SIM_BUDGET_EXHAUSTED",
+  "failure": null,
+  "robots": {
+    "r1": {
+      "max_tilt_deg": 0.985681308683787,
+      "sim_s": 1801.25,
+      "sha256_uncompressed": "37106529c43a87f1bf7b4583f88000416b50690709988ad5ac353f6068260e40",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v274-s61006-r52/raw/eval_only/r1/trajectory.jsonl"
+    },
+    "r2": {
+      "max_tilt_deg": 0.2764186147569669,
+      "sim_s": 1801.25,
+      "sha256_uncompressed": "19b7a7f66ae778d8ecdbc229c3cce1d7f07988a347d31c146cdae2d47ad26d00",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v274-s61006-r52/raw/eval_only/r2/trajectory.jsonl"
+    }
+  },
+  "paired_held_samples": 0,
+  "first_held_t": null,
+  "maximum_cargo_z_m": 0.0165,
+  "ready": [
+    {
+      "t": 1181.2,
+      "event": "s3_coarse_fine",
+      "robot_id": "r1",
+      "phase": "ready"
+    }
+  ],
+  "first_fine": {
+    "t": 242.8,
+    "event": "s3_coarse_fine",
+    "robot_id": "r1",
+    "phase": "pan"
+  }
+}

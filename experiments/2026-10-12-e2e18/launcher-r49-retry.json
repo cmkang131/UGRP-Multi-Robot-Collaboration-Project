@@ -1,0 +1,24 @@
+{
+  "status": "HOST_ERROR_BEFORE_COHORT",
+  "batch": "r49",
+  "cohort_attempts": 0,
+  "hosts": [
+    "azure3",
+    "azure4"
+  ],
+  "failure": "ModuleNotFoundError: No module named scripts",
+  "code": "restart-station-r49.py:4",
+  "cause": "file-path Python entry point omits source cwd from sys.path",
+  "fix": "explicit PYTHONPATH=source checkout in finite CLI launch; source SHA unchanged",
+  "source_sha": "5d2270ce1cf2bec95b6ffcb8150dc8fa59c29c6f",
+  "checked_unix": 1791851101.7726731,
+  "original_remote_logs": [
+    "azure3:~/ugrp-sim/e2e18-r49-launch.log",
+    "azure4:~/ugrp-sim/e2e18-r49-launch.log"
+  ],
+  "error_log_sha256": {
+    "azure3": "8e8bb602bc9a6f9913834d0f32662fd0779e48ab02a76a10a19baf8e593266ad",
+    "azure4": "8e8bb602bc9a6f9913834d0f32662fd0779e48ab02a76a10a19baf8e593266ad"
+  },
+  "retry_state": "SPEED_GATE_PASS_AND_COHORT_STARTED"
+}

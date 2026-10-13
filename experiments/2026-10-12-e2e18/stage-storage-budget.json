@@ -1,0 +1,29 @@
+{
+  "checks": [
+    {
+      "host": "x86",
+      "free_bytes": 67820154880,
+      "expected_bytes": 59055800320,
+      "projected_free_bytes": 8764354560,
+      "floor_bytes": 8589934592,
+      "ok": true
+    },
+    {
+      "host": "arm",
+      "free_bytes": 54667296768,
+      "expected_bytes": 59055800320,
+      "projected_free_bytes": -4388503552,
+      "floor_bytes": 26843545600,
+      "ok": false
+    },
+    {
+      "host": "mac",
+      "free_bytes": 111842836480,
+      "expected_bytes": 939524096,
+      "projected_free_bytes": 110903312384,
+      "floor_bytes": 21474836480,
+      "ok": true
+    }
+  ],
+  "ok": false
+}

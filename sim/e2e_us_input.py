@@ -7,13 +7,14 @@ from sim.ultrasonic_input import OwnUltrasonicRig
 def attach(backend, robots, *, seed, out):
     """After reset: timestamps and noise ticks use the E2E episode clock."""
     origin = backend.now
+    site_frame=backend.bundle['e2e_options'].get('sonar_frame','off')
     ranges = OwnRangeInput(tuple(robots), 'on_v1',
         noise_seeds={r: sensor_seed(seed, r) for r in robots}, out_dir=out,
         run_meta={'clock': 'episode_since_reset', 'raw_time_origin': origin,
-                  'poll_interval_s': .05, 'effective_period_s': .10})
+                  'poll_interval_s': .05, 'effective_period_s': .10, 'site_frame': site_frame})
     try:
         rig = OwnUltrasonicRig(backend.world.model, backend.world.data, tuple(robots),
-                              episode_seed=seed, range_input=ranges)
+                              episode_seed=seed, range_input=ranges, site_frame=site_frame)
     except Exception:
         ranges.close()
         raise

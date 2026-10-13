@@ -14,11 +14,12 @@ PARAMS = dict(min_overlap_fraction=.20, stable_center_m=.10, frames=3,
               max_gap_s=.5, min_span_s=.2)
 
 
-def overlap(candidate, boundary):
+def overlap(candidate, boundary, *, partial_accept='off'):
     if (candidate.get('kind') != 'B' or candidate.get('source') != 'own' or
             not candidate.get('observation', {}).get('partial_extent')):
         return 0.
-    if not boundary or not boundary.get('complete') or boundary.get('white_markers') != 3:
+    from harness.e2e_b_partial_accept import usable
+    if not usable(boundary, partial_accept) or (boundary.get('complete') and boundary.get('white_markers') != 3):
         return 0.
     bounds = np.asarray(candidate['observation'].get('bounds_m', []), float)
     polygon = np.asarray(boundary.get('polygon', []), np.float32)
@@ -51,7 +52,7 @@ class Association:
             candidate['center_m'] = list(reference['boundary']['center'])
             return
         boundary = row['boundary']
-        fraction = overlap(candidate, boundary)
+        fraction = overlap(candidate, boundary, partial_accept=getattr(g.e2e_gate,'partial_accept','off'))
         self.last = dict(overlap_fraction=fraction, accepted=False, frames=0)
         if fraction < PARAMS['min_overlap_fraction']:
             self.rows.clear(); return

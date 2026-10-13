@@ -1,0 +1,53 @@
+{
+  "schema": "ugrp.route_goal_geometry.v1",
+  "source": "/Users/changmin/projects/ugrp-wt/e2e18-route1/outputs/e2e18-route1/r80/e2e18-v375-s61009-r80/raw/robots/r1/ownmap.jsonl",
+  "sha256": "efcc9410179a622003c6228ea0b02cd5c86eefe8e1a04a8e3734d9a622af9ca6",
+  "route_attempt_t": 277.2,
+  "own_goal": [
+    1.0484614900472446,
+    0.055861167463841434
+  ],
+  "own_yaw_rad": 1.356821663295801,
+  "sigma_xy_m": 1.3498987243689904,
+  "strict_margin_m": 4.069696173106971,
+  "applied_margin_m": 0.02,
+  "nominal_footprint_cells": {
+    "start": {
+      "free": 277,
+      "unknown": 0,
+      "occupied": 2,
+      "outside": 0
+    },
+    "target": {
+      "free": 237,
+      "unknown": 8,
+      "occupied": 34,
+      "outside": 0
+    }
+  },
+  "carrier_dimensions_m": [
+    1.25,
+    0.4
+  ],
+  "nominal_projected_full_extents_own_m": [
+    0.7038914456832435,
+    1.3540131354191338
+  ],
+  "partial_detector_bounds": [
+    [
+      0.45,
+      -0.55
+    ],
+    [
+      1.85,
+      0.55
+    ]
+  ],
+  "detector_partial_extent": true,
+  "limitations": [
+    "detector bounds are historical partial observations, not a complete current B polygon",
+    "map_to_odom/yaw map transform and occupied positions absent from raw log; exact collision geometry unverified",
+    "sigma relaxation already reached 0.02m; unknown alone cannot remove 34 occupied goal-footprint cells",
+    "1.25m carrier need not fit entirely within B; 0.60 x 0.04m fixed beam footprint is checked for shifted goal"
+  ]
+}

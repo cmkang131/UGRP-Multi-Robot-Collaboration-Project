@@ -142,3 +142,62 @@ def test_zero_supervisor_exit_does_not_hide_incomplete_finalization(monkeypatch,
     assert not result['admitted'] and result['completed'] == 0
     assert result['samples'][0]['exit'] == 0
     assert result['samples'][0]['expected_stop'] and not result['samples'][0]['finalization_complete']
+
+
+R52 = Path(__file__).resolve().parents[1] / 'experiments/2026-10-12-e2e18/r52-wall-sim-phase.tsv'
+
+
+def r52_rows():
+    return [(float(a), float(b), c) for a, b, c in (l.split() for l in R52.read_text().splitlines()[1:])]
+
+
+def replay_r52(make, offset, poll=2.):
+    """Feed e2e-progress as the 2 s watch loop would see it (integer SIM seconds)."""
+    import bisect
+    rows = r52_rows()
+    walls = [r[0] for r in rows]
+    t, fired = offset, None
+    while t < walls[-1] and fired is None:
+        i = bisect.bisect_right(walls, t) - 1
+        sim, phase = (rows[i][1], rows[i][2]) if i >= 0 else (0., None)
+        fired = make(t, sim, phase)
+        t += poll
+    return fired
+
+
+def test_r52_regression_old_rule_missed_warning_rolling_rule_fires_at_every_offset():
+    # 4.7-5.6 wall/SIM for >1400 s against limit 3.0*1.5=4.5; old rule never fired for 15 of 30 offsets.
+    def old(offset):
+        w = gate.SpeedWarning(3.0)
+        return replay_r52(lambda t, sim, phase: w.observe(t, sim), offset)
+    assert [old(o) for o in (15, 18, 21, 24, 27)] == [None] * 5
+    for offset in range(0, 30, 3):
+        w = gate.RollingSpeedWarning(3.0)
+        fired = replay_r52(lambda t, sim, phase: w.observe(t, sim), offset)
+        assert fired and fired['rule'] == 'rolling_window_v1' and fired['wall_per_sim'] > 4.5
+        assert fired['sim_s'] < 910  # before the run reached SIM 910 (wall ~3600 s)
+
+
+def test_rolling_rule_ignores_a_fast_burst_and_recovers_and_flags_stall():
+    w = gate.RollingSpeedWarning(4)  # limit 6
+    assert w.observe(0, 0) is None
+    for t in range(30, 600, 30):
+        assert w.observe(t, t / 7) is None
+    assert w.observe(600, 600 / 7)['wall_per_sim'] == pytest.approx(7)
+    assert w.observe(630, 600 / 7 + 30) is None  # the window now averages below the limit
+    w = gate.RollingSpeedWarning(4)
+    w.observe(0, 5)
+    assert w.observe(600, 5)['stalled']
+
+
+def test_phase_warning_uses_progress_phase_and_never_stops_the_run():
+    ph = gate.PhaseSpeedWarning(3.0, limits={'align': 3.5})
+    changed = [ph.observe(t, sim, p) for t, sim, p in
+               ((w, s, p) for w, s, p in r52_rows())]
+    kinds = [(e['kind'], e['phase']) for e in ph.events]
+    assert ('phase_running', 'relook') in kinds and ('phase_end', 'grasp_lift') in kinds
+    assert not any(e['phase'] in ('mapping',) for e in ph.events)  # 2.25 < 4.5
+    relook = [e for e in ph.events if e['phase'] == 'relook'][0]
+    assert relook['wall_per_sim'] > 4.5 and relook['limit_wall_per_sim'] == 4.5
+    assert ph.snapshot(1e9, 1e9)['limits'] == {'align': 3.5} and any(changed)
+    assert [s['phase'] for s in ph.segments][:3] == ['mapping', 'align', 'grasp_lift']

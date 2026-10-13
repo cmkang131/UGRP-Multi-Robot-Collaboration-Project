@@ -1,0 +1,38 @@
+{
+  "candidates": {
+    "352": "v347 + abort invalidated own viewpoint",
+    "353": "v348 + abort invalidated own viewpoint",
+    "354": "v350 + abort invalidated own viewpoint",
+    "355": "v350 + restore stored own-map viewpoint and revalidate coverage/path"
+  },
+  "seeds": [
+    61006,
+    61007,
+    61008,
+    61009,
+    61010,
+    61011,
+    61012,
+    61013
+  ],
+  "default": "off",
+  "evidence": {
+    "run": "azure3:e2e18-v348-s61007-r74",
+    "sim_s": 130.8,
+    "error": "TypeError: Value after * must be an iterable, not NoneType",
+    "location": "harness/e2e_boundary_views.py:212",
+    "cause": "view_active while shared navigation target was cleared; exact external clearer not established"
+  },
+  "criteria": [
+    "no missing-target exception",
+    "no stationary identical-choice segment >=20 SIM s",
+    "paired-held and post-grasp GO/ACK -> carry n/N",
+    "alignment to actual held elapsed SIM s"
+  ],
+  "standard": {
+    "source": "https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_bt_navigator/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml",
+    "use": "Bounded recovery and path replanning; preserve observation map, revalidate path before reuse"
+  },
+  "originals": "~/ugrp-sim/runs/{run}",
+  "pr": 461
+}

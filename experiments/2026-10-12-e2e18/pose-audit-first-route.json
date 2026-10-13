@@ -1,0 +1,864 @@
+{
+  "scope": "post-run evaluation-only; never runtime/control input",
+  "run": "e2e18-v224-s61010-r10",
+  "rows": [
+    {
+      "robot_id": "r1",
+      "t": 0.0,
+      "eval_only_true_own": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pose_own_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "odom_pose": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "map_to_odom": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "control_pose": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "update": {
+          "reason": "initialized"
+        },
+        "cluster": null,
+        "measurements": 0,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 0.0,
+        "yaw_deg": 0.0
+      },
+      "odom_error": {
+        "xy_m": 0.0,
+        "yaw_deg": 0.0
+      }
+    },
+    {
+      "robot_id": "r1",
+      "t": 10.0,
+      "eval_only_true_own": [
+        0.568131657470472,
+        -0.02810244991226185,
+        -0.6676844472953083
+      ],
+      "pose_own_m": [
+        0.5302533437736374,
+        0.05921072267182667,
+        -0.529759187029208
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          0.5302533437736374,
+          0.05921072267182667,
+          -0.529759187029208
+        ],
+        "odom_pose": [
+          0.5697361544087208,
+          -0.055162880579915495,
+          -0.6459963365671939
+        ],
+        "map_to_odom": [
+          -0.04203581525074884,
+          0.04792588782710622,
+          0.11623714953798592
+        ],
+        "control_pose": [
+          0.5697361544087208,
+          -0.055162880579915495,
+          -0.6459963365671939
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          0.59723856789151,
+          0.18093028781308382,
+          -0.28117304963568746
+        ],
+        "update": {
+          "innovation": [
+            0.08089065822030872,
+            0.20089343228979667,
+            0.3084111097588167
+          ],
+          "mahalanobis_xy": 6.102889883865813,
+          "threshold": 9.210340371976184,
+          "accepted": true,
+          "reason": "measurement",
+          "correction_xy_m": 0.08038570977998379
+        },
+        "cluster": null,
+        "measurements": 3,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 0.09517539994775244,
+        "yaw_deg": 7.902535301490977
+      },
+      "odom_error": {
+        "xy_m": 0.027107956734946655,
+        "yaw_deg": 1.2426372103333572
+      }
+    },
+    {
+      "robot_id": "r1",
+      "t": 30.0,
+      "eval_only_true_own": [
+        0.7089219478743085,
+        0.053704922038728564,
+        1.2186364067289839
+      ],
+      "pose_own_m": [
+        0.8705609937338538,
+        0.1883153159010378,
+        2.15486333899773
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          0.8705609937338538,
+          0.1883153159010378,
+          2.15486333899773
+        ],
+        "odom_pose": [
+          0.7248506632595938,
+          -0.012789308256531278,
+          1.261493528318379
+        ],
+        "map_to_odom": [
+          0.4062666586848012,
+          -0.3684636535966541,
+          0.8933698106793511
+        ],
+        "control_pose": [
+          0.7248506632595938,
+          -0.012789308256531278,
+          1.261493528318379
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          0.8853128615379793,
+          0.19360130694726324,
+          2.1443472457214146
+        ],
+        "update": {
+          "innovation": [
+            0.032337234732113807,
+            0.014159579739102722,
+            -0.13935822825049904
+          ],
+          "mahalanobis_xy": 0.6548188548112801,
+          "threshold": 9.210340371976184,
+          "accepted": true,
+          "reason": "measurement",
+          "correction_xy_m": 0.021320919049684594
+        },
+        "cluster": null,
+        "measurements": 15,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 0.21035003989101167,
+        "yaw_deg": 53.64185188547954
+      },
+      "odom_error": {
+        "xy_m": 0.06837548271408748,
+        "yaw_deg": 2.455532189151344
+      }
+    },
+    {
+      "robot_id": "r1",
+      "t": 60.0,
+      "eval_only_true_own": [
+        -0.23173636704620915,
+        1.3728927122899521,
+        2.747335342652317
+      ],
+      "pose_own_m": [
+        -0.651230266951257,
+        0.7943217428547479,
+        -2.9161641502541613
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          -0.651230266951257,
+          0.7943217428547479,
+          -2.9161641502541613
+        ],
+        "odom_pose": [
+          -0.16465742070718944,
+          1.3270620253532728,
+          2.7463836375440653
+        ],
+        "map_to_odom": [
+          0.2544779446404394,
+          -0.18949649278842484,
+          0.6206375193813596
+        ],
+        "control_pose": [
+          -0.16465742070718944,
+          1.3270620253532728,
+          2.7463836375440653
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          -0.5786022848962831,
+          0.9738756477645617,
+          -3.0055989508055894
+        ],
+        "update": {
+          "innovation": [
+            0.10177210167940273,
+            0.23671255572816408,
+            -0.1960115607646582
+          ],
+          "mahalanobis_xy": 7.611143245870871,
+          "threshold": 9.210340371976184,
+          "accepted": true,
+          "reason": "measurement",
+          "correction_xy_m": 0.101237041930069
+        },
+        "cluster": null,
+        "measurements": 18,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 0.714646415180779,
+        "yaw_deg": 35.5053817819769
+      },
+      "odom_error": {
+        "xy_m": 0.08124061119317724,
+        "yaw_deg": -0.054528686043851415
+      }
+    },
+    {
+      "robot_id": "r1",
+      "t": 90.0,
+      "eval_only_true_own": [
+        -1.9505341131503278,
+        1.8747263061119435,
+        -2.991165771513279
+      ],
+      "pose_own_m": [
+        -2.26081112714388,
+        0.03825312644417198,
+        -2.163806206401349
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          -2.26081112714388,
+          0.03825312644417198,
+          -2.163806206401349
+        ],
+        "odom_pose": [
+          -1.8557382762862962,
+          1.8039792428588253,
+          -2.8546480504151868
+        ],
+        "map_to_odom": [
+          0.3188954155666899,
+          -0.16964062583282716,
+          0.6908418440138377
+        ],
+        "control_pose": [
+          -1.8557382762862962,
+          1.8039792428588253,
+          -2.8546480504151868
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          -2.2632240852184147,
+          0.0700080656011386,
+          -2.1675437872632832
+        ],
+        "update": {
+          "innovation": [
+            -0.004283540634996363,
+            0.042678848930129104,
+            -0.006251986120255015
+          ],
+          "mahalanobis_xy": 0.16622627689577815,
+          "threshold": 9.210340371976184,
+          "accepted": true,
+          "reason": "measurement",
+          "correction_xy_m": 0.012095249981110856
+        },
+        "cluster": null,
+        "measurements": 21,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 1.8624998161212822,
+        "yaw_deg": 47.40421122069282
+      },
+      "odom_error": {
+        "xy_m": 0.1182852384944664,
+        "yaw_deg": 7.821889247664765
+      }
+    },
+    {
+      "robot_id": "r1",
+      "t": 126.0,
+      "eval_only_true_own": [
+        -2.3037404310054357,
+        0.22900464056353442,
+        -1.805472263376395
+      ],
+      "pose_own_m": [
+        -0.7051058068517484,
+        0.47914383360355,
+        0.3073886699649564
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          -0.7051058068517484,
+          0.47914383360355,
+          0.3073886699649564
+        ],
+        "odom_pose": [
+          -1.71984052365279,
+          0.22450447746130034,
+          -1.4605527237569418
+        ],
+        "map_to_odom": [
+          -0.8218160567070539,
+          2.2096444561914725,
+          1.7679413937218982
+        ],
+        "control_pose": [
+          -1.71984052365279,
+          0.22450447746130034,
+          -1.4605527237569418
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          -0.7005282431836729,
+          0.4730272685767746,
+          0.30800120223995675
+        ],
+        "update": {
+          "innovation": [
+            0.022595365400402523,
+            -0.003468809314319421,
+            0.013198864673672261
+          ],
+          "mahalanobis_xy": 2.016863068068953,
+          "threshold": 9.210340371976184,
+          "accepted": true,
+          "reason": "measurement",
+          "correction_xy_m": 0.01816350387396582
+        },
+        "cluster": null,
+        "measurements": 25,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 1.6180859919787054,
+        "yaw_deg": 121.0580141785314
+      },
+      "odom_error": {
+        "xy_m": 0.5839172486529018,
+        "yaw_deg": 19.76243389179006
+      }
+    },
+    {
+      "robot_id": "r2",
+      "t": 0.0,
+      "eval_only_true_own": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pose_own_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "odom_pose": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "map_to_odom": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "control_pose": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "update": {
+          "reason": "initialized"
+        },
+        "cluster": null,
+        "measurements": 0,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 0.0,
+        "yaw_deg": 0.0
+      },
+      "odom_error": {
+        "xy_m": 0.0,
+        "yaw_deg": 0.0
+      }
+    },
+    {
+      "robot_id": "r2",
+      "t": 10.0,
+      "eval_only_true_own": [
+        0.2884409192702595,
+        0.0014597797288939964,
+        0.0025346561949584744
+      ],
+      "pose_own_m": [
+        0.3149698324159652,
+        0.06141805692174747,
+        0.017713275945926643
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          0.3149698324159652,
+          0.06141805692174747,
+          0.017713275945926643
+        ],
+        "odom_pose": [
+          0.28784925472214506,
+          -0.01025360646551202,
+          0.0042604825942529345
+        ],
+        "map_to_odom": [
+          0.027008688953418958,
+          0.06779847582545658,
+          0.013452793351673709
+        ],
+        "control_pose": [
+          0.28784925472214506,
+          -0.01025360646551202,
+          0.0042604825942529345
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          0.3397731328995002,
+          0.1203955848087725,
+          0.030931020415565058
+        ],
+        "update": {
+          "innovation": [
+            0.05176516922980231,
+            0.12365857795361462,
+            0.026670537821312568
+          ],
+          "mahalanobis_xy": 0.9625367107040409,
+          "threshold": 9.210340371976184,
+          "accepted": true,
+          "reason": "measurement",
+          "correction_xy_m": 0.0733063330559574
+        },
+        "cluster": null,
+        "measurements": 1,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 0.06556506872281498,
+        "yaw_deg": 0.8696708505643888
+      },
+      "odom_error": {
+        "xy_m": 0.011728319703896076,
+        "yaw_deg": 0.09888256885183216
+      }
+    },
+    {
+      "robot_id": "r2",
+      "t": 30.0,
+      "eval_only_true_own": [
+        0.3074753812043189,
+        0.013915905379787291,
+        -0.075550715982696
+      ],
+      "pose_own_m": [
+        0.37886022644570083,
+        0.10533301857647694,
+        -0.05162795099289097
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          0.37886022644570083,
+          0.10533301857647694,
+          -0.05162795099289097
+        ],
+        "odom_pose": [
+          0.3911445311996925,
+          0.0006942697131875788,
+          -0.07186973953838693
+        ],
+        "map_to_odom": [
+          -0.012190123363842176,
+          0.09672196685813769,
+          0.020241788545495965
+        ],
+        "control_pose": [
+          0.3911445311996925,
+          0.0006942697131875788,
+          -0.07186973953838693
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          0.2950059040679743,
+          0.13532547619238672,
+          -0.049268663564424386
+        ],
+        "update": {
+          "innovation": [
+            -0.11378017412610508,
+            0.04033572786009086,
+            0.004009047847900682
+          ],
+          "mahalanobis_xy": 1.2841545957610494,
+          "threshold": 9.210340371976184,
+          "accepted": true,
+          "reason": "measurement",
+          "correction_xy_m": 0.031662909566401054
+        },
+        "cluster": null,
+        "measurements": 3,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 0.11598657127164515,
+        "yaw_deg": 1.370673468199154
+      },
+      "odom_error": {
+        "xy_m": 0.08470736869156444,
+        "yaw_deg": 0.2109044147459819
+      }
+    },
+    {
+      "robot_id": "r2",
+      "t": 60.0,
+      "eval_only_true_own": [
+        0.1499516467867912,
+        0.3173660806285433,
+        0.5750059746819256
+      ],
+      "pose_own_m": [
+        -0.05158877815768789,
+        0.27523598103553687,
+        0.9941995370199832
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          -0.05158877815768789,
+          0.27523598103553687,
+          0.9941995370199832
+        ],
+        "odom_pose": [
+          0.20504588251191144,
+          0.2602037601797116,
+          0.8325017420127541
+        ],
+        "map_to_odom": [
+          -0.21206864672804004,
+          -0.01458469202004753,
+          0.16169779500722914
+        ],
+        "control_pose": [
+          0.20504588251191144,
+          0.2602037601797116,
+          0.8325017420127541
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          -0.028558483012503258,
+          0.24229369638996018,
+          1.0254640653407767
+        ],
+        "update": {
+          "innovation": [
+            0.04227189002399186,
+            -0.05103370447335348,
+            0.053400404249537736
+          ],
+          "mahalanobis_xy": 2.082859949495403,
+          "threshold": 9.210340371976184,
+          "accepted": true,
+          "reason": "measurement",
+          "correction_xy_m": 0.026410953122994543
+        },
+        "cluster": null,
+        "measurements": 22,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 0.20589679011222553,
+        "yaw_deg": 24.01802192102488
+      },
+      "odom_error": {
+        "xy_m": 0.07939084134350789,
+        "yaw_deg": 14.753420710539094
+      }
+    },
+    {
+      "robot_id": "r2",
+      "t": 90.0,
+      "eval_only_true_own": [
+        1.4220572379321115,
+        0.2583422218284416,
+        -0.11354130241868952
+      ],
+      "pose_own_m": [
+        1.2964085355657444,
+        0.3724897726792694,
+        0.041631384787127246
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          1.2964085355657444,
+          0.3724897726792694,
+          0.041631384787127246
+        ],
+        "odom_pose": [
+          1.5385636474584166,
+          0.526214113709944,
+          0.13118644633816157
+        ],
+        "map_to_odom": [
+          -0.28305168130345293,
+          -0.014013544351253515,
+          -0.08955506155103432
+        ],
+        "control_pose": [
+          1.5385636474584166,
+          0.526214113709944,
+          0.13118644633816157
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          1.299362752549161,
+          0.1422079263896781,
+          -0.2629874338696445
+        ],
+        "update": {
+          "innovation": [
+            0.05864435436777049,
+            -0.16173485012856742,
+            -0.37714115644628565
+          ],
+          "mahalanobis_xy": 6.880482023606421,
+          "threshold": 9.210340371976184,
+          "accepted": true,
+          "reason": "measurement",
+          "correction_xy_m": 0.04726327147455239
+        },
+        "cluster": null,
+        "measurements": 24,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 0.16975647195790275,
+        "yaw_deg": 8.89074007259697
+      },
+      "odom_error": {
+        "xy_m": 0.2921114409277501,
+        "yaw_deg": 14.021867133505548
+      }
+    },
+    {
+      "robot_id": "r2",
+      "t": 126.0,
+      "eval_only_true_own": [
+        1.6952257891029738,
+        0.20048522461040788,
+        0.4360744150808717
+      ],
+      "pose_own_m": [
+        2.320620282072831,
+        0.3711988694700806,
+        0.1805828993107541
+      ],
+      "pose_continuity": {
+        "options": {
+          "pose_continuity": "rep105_offset_v1",
+          "stationary_update": "off",
+          "pose_reporting": "off",
+          "correction_gate": "mahalanobis_v1",
+          "correction_limit": "off"
+        },
+        "map_pose": [
+          2.320620282072831,
+          0.3711988694700806,
+          0.1805828993107541
+        ],
+        "odom_pose": [
+          2.516285889211644,
+          0.7987066660061833,
+          0.37528985603007037
+        ],
+        "map_to_odom": [
+          -0.30265189591930186,
+          0.07443280884191777,
+          -0.19470695671931626
+        ],
+        "control_pose": [
+          2.516285889211644,
+          0.7987066660061833,
+          0.37528985603007037
+        ],
+        "control_frame": "command_odom",
+        "raw_selected_pose": [
+          2.3235254040173703,
+          -0.09279197070257084,
+          -0.10395916762482127
+        ],
+        "update": {
+          "innovation": [
+            0.007245804819778989,
+            -0.4759055169891465,
+            -0.3428983386069637
+          ],
+          "mahalanobis_xy": 6.16272008718793,
+          "threshold": 9.210340371976184,
+          "accepted": true,
+          "reason": "measurement",
+          "correction_xy_m": 0.08666566357495932
+        },
+        "cluster": null,
+        "measurements": 26,
+        "stationary_skips": 0,
+        "covariance_scope": "correlated_posterior_DEV_not_calibrated_EKF"
+      },
+      "map_error": {
+        "xy_m": 0.648275728666668,
+        "yaw_deg": -14.638585555027849
+      },
+      "odom_error": {
+        "xy_m": 1.015878231352606,
+        "yaw_deg": -3.482698693174645
+      }
+    }
+  ]
+}

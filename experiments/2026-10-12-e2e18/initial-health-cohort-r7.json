@@ -1,0 +1,448 @@
+[
+  {
+    "host": "ugrp-sim-azure3",
+    "checks": [
+      {
+        "name": "e2e18-v221-s61004-r7",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v221-s61004-r7/raw",
+        "checked_unix": 1791808027.4281895,
+        "progress": {
+          "wall_s": 54.79931363800006,
+          "sim_s": 11.0,
+          "frames": 28,
+          "model_attempts": 3,
+          "first_model_response": true,
+          "own_map_B_generated": true,
+          "own_B_boundary_remembered": true,
+          "own_route_generated": false,
+          "phase": "mapping",
+          "setdowns": 0,
+          "robots": {
+            "r1": {
+              "pose_own_m": [
+                0.63214609334725,
+                -0.002361170258493958,
+                -0.9112616440796892
+              ],
+              "stage": "explore",
+              "map_frames": 28,
+              "command": {
+                "kind": "mecanum",
+                "duration_s": 0.1,
+                "forward": 0.0,
+                "left": 0.0,
+                "turn": 0.35
+              },
+              "translation_commands": 48
+            },
+            "r2": {
+              "pose_own_m": [
+                0.3197782681023112,
+                0.06550262113938636,
+                -0.007765076824532979
+              ],
+              "stage": "explore",
+              "map_frames": 28,
+              "command": {
+                "kind": "mecanum",
+                "forward": 0.35,
+                "left": 0.0,
+                "turn": 0.0,
+                "duration_s": 0.1
+              },
+              "translation_commands": 56
+            },
+            "r3": {
+              "pose_own_m": [
+                -0.06783464668349964,
+                -0.027892767475121653,
+                0.013129863871008673
+              ],
+              "stage": "explore",
+              "map_frames": 28,
+              "command": {
+                "kind": "mecanum",
+                "forward": 0.35,
+                "left": 0.0,
+                "turn": 0.0,
+                "duration_s": 0.1
+              },
+              "translation_commands": 0
+            }
+          },
+          "latest_route_wait": null,
+          "route_diagnostics": null
+        },
+        "eval_only_motion": {
+          "r1": {
+            "first_xyz": [
+              3.9000132310507474,
+              -1.4000203683524177,
+              0.03201350064927537
+            ],
+            "last_xyz": [
+              4.296873593189365,
+              -1.8735337124370215,
+              0.03199974275327872
+            ],
+            "max_displacement_m": 0.6184345520836209,
+            "last_sim_s": 12.3,
+            "rows": 221,
+            "sha256_at_check": "8e9dbbe492d75ed8215e284050acc143ad7333d3cbff72049f204a131ab87f4b"
+          },
+          "r2": {
+            "first_xyz": [
+              0.6000222750694372,
+              0.04999531480024467,
+              0.03201347752806082
+            ],
+            "last_xyz": [
+              0.8905455027123074,
+              0.04881208220826909,
+              0.031975895919775614
+            ],
+            "max_displacement_m": 0.291211948075948,
+            "last_sim_s": 12.3,
+            "rows": 221,
+            "sha256_at_check": "ab72732eeffb0ea7174c2d02eeca95c3b15a35c2deadf8996cc8b89a39ec59d2"
+          }
+        },
+        "traceback_seen": false,
+        "expected_measurement_stop": false,
+        "initial_ok": true
+      },
+      {
+        "name": "e2e18-v221-s61005-r7",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v221-s61005-r7/raw",
+        "checked_unix": 1791808027.4315267,
+        "progress": {
+          "wall_s": 55.9451223799997,
+          "sim_s": 18.0,
+          "frames": 46,
+          "model_attempts": 3,
+          "first_model_response": true,
+          "own_map_B_generated": true,
+          "own_B_boundary_remembered": true,
+          "own_route_generated": false,
+          "phase": "mapping",
+          "setdowns": 0,
+          "robots": {
+            "r1": {
+              "pose_own_m": [
+                0.574209652503757,
+                -0.15586709879963778,
+                2.1953205270670386
+              ],
+              "stage": "explore",
+              "map_frames": 46,
+              "command": {
+                "kind": "mecanum",
+                "duration_s": 0.1,
+                "forward": 0.0,
+                "left": 0.0,
+                "turn": 0.35
+              },
+              "translation_commands": 48
+            },
+            "r2": {
+              "pose_own_m": [
+                0.3293421996498185,
+                0.05121716875084154,
+                0.020431759125782545
+              ],
+              "stage": "explore",
+              "map_frames": 46,
+              "command": {
+                "kind": "mecanum",
+                "forward": 0.35,
+                "left": 0.0,
+                "turn": 0.0,
+                "duration_s": 0.1
+              },
+              "translation_commands": 91
+            },
+            "r3": {
+              "pose_own_m": [
+                -0.06783464668349964,
+                -0.027892767475121653,
+                0.013129863871008673
+              ],
+              "stage": "explore",
+              "map_frames": 46,
+              "command": {
+                "kind": "mecanum",
+                "forward": 0.35,
+                "left": 0.0,
+                "turn": 0.0,
+                "duration_s": 0.1
+              },
+              "translation_commands": 0
+            }
+          },
+          "latest_route_wait": null,
+          "route_diagnostics": null
+        },
+        "eval_only_motion": {
+          "r1": {
+            "first_xyz": [
+              3.9000130652286136,
+              -1.4000191899026613,
+              0.03201337641437419
+            ],
+            "last_xyz": [
+              4.297838589724867,
+              -1.8794737939490445,
+              0.032015662293440036
+            ],
+            "max_displacement_m": 0.6235424009607013,
+            "last_sim_s": 19.3,
+            "rows": 361,
+            "sha256_at_check": "6df91b853612851283e1ad8eab776de5a802739693a5d4c993579b5eb94c1172"
+          },
+          "r2": {
+            "first_xyz": [
+              0.6000227473140495,
+              0.04999287588478529,
+              0.03201342267766206
+            ],
+            "last_xyz": [
+              0.898419739114652,
+              0.038411122871005884,
+              0.03191254634065489
+            ],
+            "max_displacement_m": 0.2993741121881032,
+            "last_sim_s": 19.3,
+            "rows": 361,
+            "sha256_at_check": "999f62aadad4b35c9610e1a1ddc1b3e4aa95a4f319ffdcd5fdbf5377c709d727"
+          }
+        },
+        "traceback_seen": false,
+        "expected_measurement_stop": false,
+        "initial_ok": true
+      }
+    ]
+  },
+  {
+    "host": "ugrp-sim-azure4",
+    "checks": [
+      {
+        "name": "e2e18-v221-s61009-r7",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v221-s61009-r7/raw",
+        "checked_unix": 1791808027.4277055,
+        "progress": {
+          "wall_s": 48.31099236900036,
+          "sim_s": 11.0,
+          "frames": 28,
+          "model_attempts": 3,
+          "first_model_response": true,
+          "own_map_B_generated": true,
+          "own_B_boundary_remembered": true,
+          "own_route_generated": false,
+          "phase": "mapping",
+          "setdowns": 0,
+          "robots": {
+            "r1": {
+              "pose_own_m": [
+                0.6320041548318059,
+                -0.0027265054066002124,
+                -0.9170431285636491
+              ],
+              "stage": "explore",
+              "map_frames": 28,
+              "command": {
+                "kind": "mecanum",
+                "duration_s": 0.1,
+                "forward": 0.0,
+                "left": 0.0,
+                "turn": 0.35
+              },
+              "translation_commands": 48
+            },
+            "r2": {
+              "pose_own_m": [
+                0.32094847870570486,
+                0.06838536964627562,
+                -0.005984717564745612
+              ],
+              "stage": "explore",
+              "map_frames": 28,
+              "command": {
+                "kind": "mecanum",
+                "forward": 0.35,
+                "left": 0.0,
+                "turn": 0.0,
+                "duration_s": 0.1
+              },
+              "translation_commands": 56
+            },
+            "r3": {
+              "pose_own_m": [
+                -0.0797301291469837,
+                -0.014845867126204828,
+                0.012792859961453296
+              ],
+              "stage": "explore",
+              "map_frames": 28,
+              "command": {
+                "kind": "mecanum",
+                "forward": 0.35,
+                "left": 0.0,
+                "turn": 0.0,
+                "duration_s": 0.1
+              },
+              "translation_commands": 0
+            }
+          },
+          "latest_route_wait": null,
+          "route_diagnostics": null
+        },
+        "eval_only_motion": {
+          "r1": {
+            "first_xyz": [
+              3.9000132310507474,
+              -1.4000203683524177,
+              0.03201350064927537
+            ],
+            "last_xyz": [
+              4.296188470708288,
+              -1.8738643475183068,
+              0.03202242747450848
+            ],
+            "max_displacement_m": 0.6181194992944145,
+            "last_sim_s": 12.3,
+            "rows": 221,
+            "sha256_at_check": "d2ab0cdaae7a12faf95856bf1b9545cb5b55b49dd3a83a7b90e5137a75bc8be9"
+          },
+          "r2": {
+            "first_xyz": [
+              0.6000222750694372,
+              0.04999531480024467,
+              0.03201347752806082
+            ],
+            "last_xyz": [
+              0.8901772224660263,
+              0.04825071179843218,
+              0.031973510493425894
+            ],
+            "max_displacement_m": 0.29086197892097826,
+            "last_sim_s": 12.3,
+            "rows": 221,
+            "sha256_at_check": "7fa312b0c2612975739a7409e296938ec737cd82a5e6a84484c7257182a99443"
+          }
+        },
+        "traceback_seen": false,
+        "expected_measurement_stop": false,
+        "initial_ok": true
+      },
+      {
+        "name": "e2e18-v221-s61010-r7",
+        "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v221-s61010-r7/raw",
+        "checked_unix": 1791808027.4301422,
+        "progress": {
+          "wall_s": 48.59715184700008,
+          "sim_s": 13.0,
+          "frames": 33,
+          "model_attempts": 3,
+          "first_model_response": true,
+          "own_map_B_generated": true,
+          "own_B_boundary_remembered": true,
+          "own_route_generated": false,
+          "phase": "mapping",
+          "setdowns": 0,
+          "robots": {
+            "r1": {
+              "pose_own_m": [
+                0.6443509385443519,
+                0.034342131142646365,
+                0.11239178417672635
+              ],
+              "stage": "explore",
+              "map_frames": 33,
+              "command": {
+                "kind": "mecanum",
+                "duration_s": 0.1,
+                "forward": 0.0,
+                "left": 0.0,
+                "turn": 0.35
+              },
+              "translation_commands": 52
+            },
+            "r2": {
+              "pose_own_m": [
+                0.34394125111529134,
+                0.06421478173059901,
+                0.03497112837221694
+              ],
+              "stage": "explore",
+              "map_frames": 33,
+              "command": {
+                "kind": "mecanum",
+                "forward": 0.35,
+                "left": 0.0,
+                "turn": 0.0,
+                "duration_s": 0.1
+              },
+              "translation_commands": 66
+            },
+            "r3": {
+              "pose_own_m": [
+                -0.06783464668349964,
+                -0.027892767475121653,
+                0.013129863871008673
+              ],
+              "stage": "explore",
+              "map_frames": 33,
+              "command": {
+                "kind": "mecanum",
+                "forward": 0.35,
+                "left": 0.0,
+                "turn": 0.0,
+                "duration_s": 0.1
+              },
+              "translation_commands": 0
+            }
+          },
+          "latest_route_wait": null,
+          "route_diagnostics": null
+        },
+        "eval_only_motion": {
+          "r1": {
+            "first_xyz": [
+              3.9000130652286136,
+              -1.4000191899026613,
+              0.03201337641437419
+            ],
+            "last_xyz": [
+              4.291222861940052,
+              -1.9271992964780025,
+              0.03199746760671297
+            ],
+            "max_displacement_m": 0.6573852745478168,
+            "last_sim_s": 14.3,
+            "rows": 261,
+            "sha256_at_check": "e53191d8fa39f4bbaa054e6d9ee1986371d03da0cff9086e619d90ab2e0f4162"
+          },
+          "r2": {
+            "first_xyz": [
+              0.6000229021143443,
+              0.04999367732601161,
+              0.03201349515111716
+            ],
+            "last_xyz": [
+              0.8914504495605549,
+              0.05170582709511504,
+              0.031971601272115985
+            ],
+            "max_displacement_m": 0.2920989970214897,
+            "last_sim_s": 14.3,
+            "rows": 261,
+            "sha256_at_check": "cb24d1208364a52c938cd5ec9b0c54be5fba30ee327486c89046a7d195ca16f0"
+          }
+        },
+        "traceback_seen": false,
+        "expected_measurement_stop": false,
+        "initial_ok": true
+      }
+    ]
+  }
+]

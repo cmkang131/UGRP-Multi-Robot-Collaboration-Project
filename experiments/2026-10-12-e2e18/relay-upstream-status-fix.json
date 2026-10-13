@@ -1,0 +1,16 @@
+{
+  "cause": "r79 Mac speech helper changed OpenRouter402 to generic502, triggering seven tunnel retries",
+  "change": "Return upstream status/body/Retry-After through speech assembly; no action/message assembled on upstream failure",
+  "validation": {
+    "passed": 19,
+    "files": [
+      "tests/test_s4_speech_upstream_status.py",
+      "tests/test_s4_live12.py"
+    ],
+    "scope": "offline actual Code speech path and TunnelRecoveryMixin fault injection; no API/physics",
+    "log": "outputs/e2e18-admin/relay-status-tests.txt",
+    "sha256": "7d31108c0708729b43f238ff64cc732a21f8e2b9fe0e32652561c45a6847083c"
+  },
+  "reference": "https://docs.python.org/3/library/urllib.error.html",
+  "deployment": "Current r80 relay remains loaded from previous65c89934; fix applies at next relay restart"
+}

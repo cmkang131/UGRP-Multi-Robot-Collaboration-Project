@@ -1,0 +1,413 @@
+{
+  "source_path": "/home/ugrp/ugrp-sim/runs/e2e18-v376-s61008-r79/raw/body-decisions.jsonl",
+  "source_sha256": "ec915584663946f39c1d16208d1f1017dc9b4608b3b7bfd1906fdecc35ddfb26",
+  "saved_own_input": {
+    "t": 160.8,
+    "robot_id": "r1",
+    "phase": "align",
+    "decision": "motion",
+    "facts": {
+      "beam": "fully visible, fresh",
+      "beam_direction": "ahead",
+      "beam_distance": "far",
+      "grasp_distance": "far too far",
+      "grasp_side_offset": "within",
+      "beam_angle": "slightly beam rotated right",
+      "grasp_pose": "outside grasp tolerance",
+      "recent_own_motion": "steady",
+      "own_progress_last_5s": "not moving",
+      "gripper": "open (issued command)",
+      "own_route": "route generated or received",
+      "agreement_route": "approved",
+      "agreement_claims": "both claimed",
+      "agreement_go_ack": "not open",
+      "visual_category": "visible",
+      "visual_age_s": 0.0,
+      "own_map": {
+        "grasp": {
+          "distance_m": 1.525,
+          "bearing_deg": -10.87,
+          "heading_error_deg": null
+        },
+        "standoff": {
+          "distance_m": 1.7257,
+          "bearing_deg": -12.0,
+          "heading_error_deg": 159.50847186860895
+        },
+        "estimate_age_s": 0.0,
+        "position_sigma_m": null,
+        "heading_sigma_deg": null
+      },
+      "target_distance_m": 1.525,
+      "target_bearing_deg": -5.674838578158064,
+      "own_grip": "open command; no holding claim",
+      "holding_command": false,
+      "front_ultrasonic": {
+        "t_meas": 160.8,
+        "age_s": 0.0,
+        "valid": true,
+        "range_m": 3.804,
+        "sigma_m": 0.04104,
+        "min_range_m": 0.02,
+        "max_range_m": 4.0,
+        "last_valid_t": 160.8,
+        "source": "own_ultrasonic_v2:72369013",
+        "status": "ok",
+        "last_valid_range_m": 3.8040000000000003
+      },
+      "peer_in_own_rgb": {
+        "visible": true,
+        "distance": "far",
+        "direction": "ahead",
+        "in_path": true,
+        "source": "own_rgb_shape_and_commanded_camera_v2",
+        "bbox_px": [
+          454,
+          109,
+          26,
+          33
+        ],
+        "bearing_deg": -17.390903314220417,
+        "half_width_deg": 0.43349396582064387,
+        "path_direction": "0.0 degrees to the FRONT"
+      },
+      "dialogue": {
+        "schema": "ugrp.e2e_dialogue.v1",
+        "proposal_message_id": "w1-r1-8",
+        "route_hash": "059573c0da519b03b9cbadfdf7677025c03865c31e68075fff6f83bac7b99a29",
+        "approved": true,
+        "own_claim": true,
+        "key": null,
+        "own_go_sent": false,
+        "own_ack_sent": false,
+        "peer_go_ref": null,
+        "transport_admitted": false,
+        "motion_connected": true
+      },
+      "go_ack_complete": false,
+      "joint_operation": "align",
+      "partner_recent_messages": [
+        {
+          "id": "w1-r2-2",
+          "sender": "r2",
+          "text": "Holding current state; waiting for further synchronization.",
+          "delivered_at_sim_s": null,
+          "age_s": null
+        },
+        {
+          "id": "w1-r3-3",
+          "sender": "r3",
+          "text": "Holding for now. I am waiting before casting a vote.",
+          "delivered_at_sim_s": null,
+          "age_s": null
+        },
+        {
+          "id": "w1-r2-5",
+          "sender": "r2",
+          "text": "I am holding and waiting without casting a vote at this time.",
+          "delivered_at_sim_s": null,
+          "age_s": null
+        },
+        {
+          "id": "w1-r2-7",
+          "sender": "r2",
+          "text": "I am holding and waiting without casting a vote.",
+          "delivered_at_sim_s": null,
+          "age_s": null
+        },
+        {
+          "id": "w1-r2-9",
+          "sender": "r2",
+          "text": "I acknowledge your vote to proceed with this segment.",
+          "delivered_at_sim_s": null,
+          "age_s": null
+        },
+        {
+          "id": "w1-r2-11",
+          "sender": "r2",
+          "text": "I am claiming the role of end_pos.",
+          "delivered_at_sim_s": null,
+          "age_s": null
+        },
+        {
+          "id": "w1-r2-13",
+          "sender": "r2",
+          "text": "I am holding and waiting without casting a vote.",
+          "delivered_at_sim_s": null,
+          "age_s": null
+        }
+      ],
+      "partner_stop": false,
+      "left_right_loop": false,
+      "recent_decisions": [
+        {
+          "t": 148.8,
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "visual_before": "visible",
+          "pose_before": [
+            0.055522803531777104,
+            1.2010061672427086,
+            -2.111467964237211
+          ],
+          "visual_after": "visible",
+          "distance_after_m": 1.5254,
+          "distance_change_m": 0.0003,
+          "outcome_t": 150.0,
+          "outcome": "observed_after_motion",
+          "own_translation_m": 0.0,
+          "own_rotation_deg": 0.0
+        },
+        {
+          "t": 150.0,
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "visual_before": "visible",
+          "pose_before": [
+            0.055522803531777104,
+            1.2010061672427086,
+            -2.111467964237211
+          ],
+          "visual_after": "visible",
+          "distance_after_m": 1.5254,
+          "distance_change_m": 0.0,
+          "outcome_t": 151.2,
+          "outcome": "observed_after_motion",
+          "own_translation_m": 0.0,
+          "own_rotation_deg": 0.0
+        },
+        {
+          "t": 151.2,
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "visual_before": "visible",
+          "pose_before": [
+            0.055522803531777104,
+            1.2010061672427086,
+            -2.111467964237211
+          ],
+          "visual_after": "visible",
+          "distance_after_m": 1.525,
+          "distance_change_m": -0.0004,
+          "outcome_t": 152.4,
+          "outcome": "observed_after_motion",
+          "own_translation_m": 0.0,
+          "own_rotation_deg": 0.0
+        },
+        {
+          "t": 152.4,
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "visual_before": "visible",
+          "pose_before": [
+            0.055522803531777104,
+            1.2010061672427086,
+            -2.111467964237211
+          ],
+          "visual_after": "visible",
+          "distance_after_m": 1.5251,
+          "distance_change_m": 0.0001,
+          "outcome_t": 153.6,
+          "outcome": "observed_after_motion",
+          "own_translation_m": 0.0,
+          "own_rotation_deg": 0.0
+        },
+        {
+          "t": 153.6,
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "visual_before": "visible",
+          "pose_before": [
+            0.055522803531777104,
+            1.2010061672427086,
+            -2.111467964237211
+          ],
+          "visual_after": "visible",
+          "distance_after_m": 1.5251,
+          "distance_change_m": 0.0,
+          "outcome_t": 154.8,
+          "outcome": "observed_after_motion",
+          "own_translation_m": 0.0,
+          "own_rotation_deg": 0.0
+        },
+        {
+          "t": 154.8,
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "visual_before": "visible",
+          "pose_before": [
+            0.055522803531777104,
+            1.2010061672427086,
+            -2.111467964237211
+          ],
+          "visual_after": "visible",
+          "distance_after_m": 1.5246,
+          "distance_change_m": -0.0005,
+          "outcome_t": 156.0,
+          "outcome": "observed_after_motion",
+          "own_translation_m": 0.0,
+          "own_rotation_deg": 0.0
+        },
+        {
+          "t": 156.0,
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "visual_before": "visible",
+          "pose_before": [
+            0.055522803531777104,
+            1.2010061672427086,
+            -2.111467964237211
+          ],
+          "visual_after": "visible",
+          "distance_after_m": 1.5246,
+          "distance_change_m": 0.0,
+          "outcome_t": 157.2,
+          "outcome": "observed_after_motion",
+          "own_translation_m": 0.0,
+          "own_rotation_deg": 0.0
+        },
+        {
+          "t": 157.2,
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "visual_before": "visible",
+          "pose_before": [
+            0.055522803531777104,
+            1.2010061672427086,
+            -2.111467964237211
+          ],
+          "visual_after": "visible",
+          "distance_after_m": 1.5246,
+          "distance_change_m": 0.0,
+          "outcome_t": 158.4,
+          "outcome": "observed_after_motion",
+          "own_translation_m": 0.0,
+          "own_rotation_deg": 0.0
+        },
+        {
+          "t": 158.4,
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "visual_before": "visible",
+          "pose_before": [
+            0.055522803531777104,
+            1.2010061672427086,
+            -2.111467964237211
+          ],
+          "visual_after": "visible",
+          "distance_after_m": 1.5246,
+          "distance_change_m": 0.0,
+          "outcome_t": 159.6,
+          "outcome": "observed_after_motion",
+          "own_translation_m": 0.0,
+          "own_rotation_deg": 0.0
+        },
+        {
+          "t": 159.6,
+          "choice": "hold_and_reobserve",
+          "status": "ok",
+          "visual_before": "visible",
+          "pose_before": [
+            0.055522803531777104,
+            1.2010061672427086,
+            -2.111467964237211
+          ],
+          "visual_after": "visible",
+          "distance_after_m": 1.525,
+          "distance_change_m": 0.0004,
+          "outcome_t": 160.8,
+          "outcome": "observed_after_motion",
+          "own_translation_m": 0.0,
+          "own_rotation_deg": 0.0
+        }
+      ],
+      "phase_elapsed_s": 65.8,
+      "phase_budget_s": 60.0,
+      "budget_exceeded": true,
+      "target_progress_20s": "unchanged",
+      "target_distance_change_20s_m": -0.0006,
+      "no_progress_20s": true,
+      "loss_count": 5,
+      "reacquisition_count": 5,
+      "oscillation_count": 1,
+      "last_seen_bearing_deg": -5.674838578158064,
+      "last_seen_age_s": 0.0,
+      "recovery_strategies_tried": [
+        "recover_wide_view"
+      ],
+      "own_pose_estimate": [
+        0.055522803531777104,
+        1.2010061672427086,
+        -2.111467964237211
+      ],
+      "camera_commanded_posture": {
+        "servo": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        },
+        "optical_axis_bearing_deg": 0.0,
+        "source": "fixed camera calibration plus own issued commands; not measured joints",
+        "convention": "Image centre follows the commanded camera optical axis; it need not equal body heading when panned."
+      },
+      "blocking_observation": "Own RGB orange robot-like region: ahead, far; planned path 0.0 degrees to the FRONT; overlap True. Appearance is not peer identity or metric range. Blockage persists: the same wait choice three times changed neither the visual category nor the estimated target/pose. Select an available detour or back-off strategy.",
+      "blocked_persistently": true,
+      "own_navigation": {
+        "finished": false,
+        "failed": false,
+        "phase": null,
+        "goal_stage": "explore",
+        "goal_done": false
+      },
+      "decision_unit": "Select one bounded feedback skill, not individual motor pulses. Candidate durations and effects below are authoritative. A safety event ends the skill.",
+      "strategy_switch_required": true,
+      "strategies_exhausted": false,
+      "same_stage_failure_memory": [
+        "t=148.80 hold_and_reobserve: observed_after_motion; view visible -> visible; target change 0.0003 m; own translation 0.0 m. No confirmed progress.",
+        "t=150.00 hold_and_reobserve: observed_after_motion; view visible -> visible; target change 0.0 m; own translation 0.0 m. No confirmed progress.",
+        "t=151.20 hold_and_reobserve: observed_after_motion; view visible -> visible; target change -0.0004 m; own translation 0.0 m. No confirmed progress.",
+        "t=152.40 hold_and_reobserve: observed_after_motion; view visible -> visible; target change 0.0001 m; own translation 0.0 m. No confirmed progress.",
+        "t=153.60 hold_and_reobserve: observed_after_motion; view visible -> visible; target change 0.0 m; own translation 0.0 m. No confirmed progress.",
+        "t=154.80 hold_and_reobserve: observed_after_motion; view visible -> visible; target change -0.0005 m; own translation 0.0 m. No confirmed progress.",
+        "t=156.00 hold_and_reobserve: observed_after_motion; view visible -> visible; target change 0.0 m; own translation 0.0 m. No confirmed progress.",
+        "t=157.20 hold_and_reobserve: observed_after_motion; view visible -> visible; target change 0.0 m; own translation 0.0 m. No confirmed progress.",
+        "t=158.40 hold_and_reobserve: observed_after_motion; view visible -> visible; target change 0.0 m; own translation 0.0 m. No confirmed progress.",
+        "t=159.60 hold_and_reobserve: observed_after_motion; view visible -> visible; target change 0.0004 m; own translation 0.0 m. No confirmed progress."
+      ],
+      "code_proposal": "hold_and_reobserve",
+      "code_rule": "ordered_no_progress_recovery",
+      "removed_repeated_choice": "hold_and_reobserve",
+      "decision_backend": "code_v1",
+      "selection_policy": "strong rules after shared safety filtering; no provider"
+    },
+    "candidates": {
+      "hold_and_reobserve": "Hold still for a fresh own image before choosing a skill.; calibrated numerical prediction unavailable; take a new image afterwards"
+    },
+    "code_proposal": "hold_and_reobserve",
+    "status": "ok",
+    "choice": "hold_and_reobserve",
+    "probabilities": null,
+    "confidence": null,
+    "tier": "code_v1",
+    "model": null,
+    "latency_s": 0.0,
+    "wall_s": 0.0,
+    "usage": {
+      "cost": 0.0,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    "attempts": null,
+    "call_id": null,
+    "image_sha256": "bf3d44c420d3c47877d57a00eee60734a9613387c045d6ecab9b444c434f5f1c",
+    "sim_hold_s": 0.0,
+    "selection": {
+      "rule": "ordered_no_progress_recovery",
+      "backend": "code_v1"
+    },
+    "model_choice": null,
+    "provider_called": false
+  }
+}

@@ -1,0 +1,1125 @@
+{
+  "checked_unix": 1791899740.303759,
+  "runs": [
+    {
+      "name": "grasp1-stage-a1-00-v375",
+      "exit": 0,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-00-v375/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 908.7907584589999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 3
+        },
+        "scan_cycles": {
+          "r1": 2,
+          "r2": 12
+        },
+        "condition": "v375",
+        "source_run": "e2e18-v375-s61008-r80",
+        "checkpoint_sha256": "beedc32a05f3cc12b7dbcd930eaa22c9ba425f9c16f63830eb5d4200d65e0acb",
+        "own_map_sha256": {
+          "r1": "8765a8e08761ef1665ad2f3415f8bcb2340cd29159c9402df57f2f94fbd3c906",
+          "r2": "6837deb10ff2339f706becadc00f0657b720afda846eeaf37d8fed5f1769f05a",
+          "r3": "97374554ddd6bc9d0d2bfd475e2595c63925d9ad23c1943cf21018adcba16a70"
+        },
+        "initial_physics_sha256": "9d4ca0afd96915e4a43cb1487611b75701c548c5b658e1b39e2593b43a863666",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-00-v375",
+        "files": 2311,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-00-v375",
+          "files": 2311,
+          "hash_matches": 2311,
+          "inventory_sha256": "7cc0d6719859698c2e44b0ed2713a7b351dfbaa80fe9fd840f6a458c589490f3",
+          "reused": false,
+          "receiver_seconds": 8.387
+        },
+        "inventory_sha256": "d8c640ef5a641f4b9870b8c67917d979b2894f131a01746fd4f6ae071a04c8ac",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-00-v375.json",
+        "proof_sha256": "f265c0a3aff7136fc1f43820c1bb5c5eb7762bbbb8f2bc2abd6a5d14aeefc3d2"
+      },
+      "sha256": {
+        "result.json": "8b03cab22d58864ead71efd0ed4bb15f13197a952ae53c6cb51530348207947e",
+        "progress.json": "67a1f22f88a0bd953ebc6f5e161fab1a6dcf3851c088c9ee29fc787980f6d387",
+        "transport-trace.json": "6f3ee0bf41d54fb879d93ddf8dab0868616ffefa10d1ed20cd2e0109250f5965"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-00-v375",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-01-v384",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-01-v384/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 269.2,
+        "wall_s": 767.106337798,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 3
+        },
+        "scan_cycles": {
+          "r1": 9,
+          "r2": 14
+        },
+        "condition": "v384",
+        "source_run": "e2e18-v375-s61008-r80",
+        "checkpoint_sha256": "beedc32a05f3cc12b7dbcd930eaa22c9ba425f9c16f63830eb5d4200d65e0acb",
+        "own_map_sha256": {
+          "r1": "8765a8e08761ef1665ad2f3415f8bcb2340cd29159c9402df57f2f94fbd3c906",
+          "r2": "6837deb10ff2339f706becadc00f0657b720afda846eeaf37d8fed5f1769f05a",
+          "r3": "97374554ddd6bc9d0d2bfd475e2595c63925d9ad23c1943cf21018adcba16a70"
+        },
+        "initial_physics_sha256": "9d4ca0afd96915e4a43cb1487611b75701c548c5b658e1b39e2593b43a863666",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-01-v384",
+        "files": 2085,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-01-v384",
+          "files": 2085,
+          "hash_matches": 2085,
+          "inventory_sha256": "c5160a95b9564eda11ecf577d5b6fbdfd3e0c35fd90091b7f43d420f1a267c4c",
+          "reused": false,
+          "receiver_seconds": 9.604
+        },
+        "inventory_sha256": "7b2a8efafee3dd805eda5e95cd40bfe2a7c5c4fc82b16a7a833bf3eb02f62720",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-01-v384.json",
+        "proof_sha256": "81e04149c3a374708170979efe7faa0ea2c16788f5acec707132435d0f05237d"
+      },
+      "sha256": {
+        "result.json": "3dc694973182487d455330f05b559ae1594e791b6ad92016c76d6975c47c1393",
+        "progress.json": "1f57a7b4eed09c99db270cae85a0e4bd025e1a4b0a5d17bd9630c31b0f7fc7b7",
+        "transport-trace.json": "9883cf9cf3e30c8b2a92a29f77fd5ae17521ebc951400b8f65f7a5cb049bf87a"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-01-v384",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-02-v385",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-02-v385/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 285.15,
+        "wall_s": 767.106278087,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 17,
+          "r2": 0
+        },
+        "condition": "v385",
+        "source_run": "e2e18-v375-s61008-r80",
+        "checkpoint_sha256": "beedc32a05f3cc12b7dbcd930eaa22c9ba425f9c16f63830eb5d4200d65e0acb",
+        "own_map_sha256": {
+          "r1": "8765a8e08761ef1665ad2f3415f8bcb2340cd29159c9402df57f2f94fbd3c906",
+          "r2": "6837deb10ff2339f706becadc00f0657b720afda846eeaf37d8fed5f1769f05a",
+          "r3": "97374554ddd6bc9d0d2bfd475e2595c63925d9ad23c1943cf21018adcba16a70"
+        },
+        "initial_physics_sha256": "9d4ca0afd96915e4a43cb1487611b75701c548c5b658e1b39e2593b43a863666",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-02-v385",
+        "files": 2202,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-02-v385",
+          "files": 2202,
+          "hash_matches": 2202,
+          "inventory_sha256": "3bbf15a6f3d108a235e4ffb93e859571070384ded12afa40f9dafb95fec113a8",
+          "reused": false,
+          "receiver_seconds": 9.803
+        },
+        "inventory_sha256": "1922a5575d1d9301909c92bc28c2200e2f1fc0ccf70338e1e61d3bcc1e4832c4",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-02-v385.json",
+        "proof_sha256": "1ab086ef963d79670304a392768dd6fe0ae45a49c60b4c9b0051d947857080a8"
+      },
+      "sha256": {
+        "result.json": "96131e4db13da168f11289050ff5724b41e08c2f27d1582c0905757c4fa6c477",
+        "progress.json": "7191bc56e87b5e07a807d47e4c9b243663eeaa95f0cf623a6db024d4829d7e4b",
+        "transport-trace.json": "12f2b4d286869d4d918fc48138f9080d2a7ced81156575e50bfc4d91106d888b"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-02-v385",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-03-v386",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-03-v386/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 285.6,
+        "wall_s": 767.0500556369999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 17,
+          "r2": 0
+        },
+        "condition": "v386",
+        "source_run": "e2e18-v375-s61008-r80",
+        "checkpoint_sha256": "beedc32a05f3cc12b7dbcd930eaa22c9ba425f9c16f63830eb5d4200d65e0acb",
+        "own_map_sha256": {
+          "r1": "8765a8e08761ef1665ad2f3415f8bcb2340cd29159c9402df57f2f94fbd3c906",
+          "r2": "6837deb10ff2339f706becadc00f0657b720afda846eeaf37d8fed5f1769f05a",
+          "r3": "97374554ddd6bc9d0d2bfd475e2595c63925d9ad23c1943cf21018adcba16a70"
+        },
+        "initial_physics_sha256": "9d4ca0afd96915e4a43cb1487611b75701c548c5b658e1b39e2593b43a863666",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-03-v386",
+        "files": 2208,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-03-v386",
+          "files": 2208,
+          "hash_matches": 2208,
+          "inventory_sha256": "cf35e0a15fd8ad12af604ff092fa2843d6ced7ca4d0dd7dc26464a50120266ea",
+          "reused": false,
+          "receiver_seconds": 9.368
+        },
+        "inventory_sha256": "e1a19d85ca59d4c348b4eba556ce771f682bb44f35002d5bc7e3739e44817c67",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-03-v386.json",
+        "proof_sha256": "5db2a481815dfde4bdb63431ba3a90f25193d2f144756c2c4fc03b5e86018e26"
+      },
+      "sha256": {
+        "result.json": "272ddea6f118323ab305991925c1192267ea2c9ef2e6bf22ec20ec59995fd76f",
+        "progress.json": "c705bcada71283b99782e16c517c71b6a9ca79198be9da9aa176d390b792b6cb",
+        "transport-trace.json": "2cf7327a8f02f8d2261bb606f51c1ea213a8b5be299243ea43e8593ba694da52"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-03-v386",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-04-v375",
+      "exit": 0,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-04-v375/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 838.4667249969999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 2
+        },
+        "scan_cycles": {
+          "r1": 2,
+          "r2": 10
+        },
+        "condition": "v375",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "6f7ef9db7a9318b7003e34ede96118d3c626c75a2c29d37be82bf1d012845b1e",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-04-v375",
+        "files": 2311,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-04-v375",
+          "files": 2311,
+          "hash_matches": 2311,
+          "inventory_sha256": "93566a5fcb2be31d60dc26e497017285434c1ee3ba76d1c537e62ae1d70229c7",
+          "reused": false,
+          "receiver_seconds": 8.177
+        },
+        "inventory_sha256": "954c79f3c68690deff7c7433fd2f04fa6e3fc4e3aea2eacdd5d2029051ccc1f6",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-04-v375.json",
+        "proof_sha256": "8521f9bba6924061aac6187b4ff3c17f321038e5cf6ad28965dec4bbffc5fcdb"
+      },
+      "sha256": {
+        "result.json": "3a131aa61b2bcc1c4e08be8c148ddda8719401e4c484bf1a93eb791cd37dd595",
+        "progress.json": "f1aefd33fe45bf1d4ef32ebe0060cba19ac68b0800a0ee5767d9b5309247f162",
+        "transport-trace.json": "c9cccbb71b6dc1212f24a3d2684af945afdba93f603ea854d998653269c23501"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-04-v375",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-05-v384",
+      "exit": 0,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-05-v384/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 807.060459409,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 2
+        },
+        "scan_cycles": {
+          "r1": 11,
+          "r2": 13
+        },
+        "condition": "v384",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "6f7ef9db7a9318b7003e34ede96118d3c626c75a2c29d37be82bf1d012845b1e",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-05-v384",
+        "files": 2311,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-05-v384",
+          "files": 2311,
+          "hash_matches": 2311,
+          "inventory_sha256": "256178d7d984fdc434b72ea1261e49bce8136a0b88a01281e266bef5edcf5688",
+          "reused": false,
+          "receiver_seconds": 8.091
+        },
+        "inventory_sha256": "3c6398d804477bd8d2b68f8114ddf462988475e13fd53d0e38bb6e00e6fdc419",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-05-v384.json",
+        "proof_sha256": "aea2967e5b50c4a407285a9c95565b4973fdad095bf52220345696e5d6c64b1f"
+      },
+      "sha256": {
+        "result.json": "b6b501982d0f4a0418f16f725bb6a0cc68ae46f1ee42e8f87192c31c3b8b8e2b",
+        "progress.json": "d648790af747f92d603254c87a3803b6492900f3050e5912589c174a99b4e1eb",
+        "transport-trace.json": "eed5dc9b62a6292acf0cf89a0330ded53be4a240d2fd018ab25ea9efe708790a"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-05-v384",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-06-v385",
+      "exit": 0,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-06-v385/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 850.223624703,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 2,
+          "r2": 10
+        },
+        "condition": "v385",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "6f7ef9db7a9318b7003e34ede96118d3c626c75a2c29d37be82bf1d012845b1e",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-06-v385",
+        "files": 2311,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-06-v385",
+          "files": 2311,
+          "hash_matches": 2311,
+          "inventory_sha256": "39c666795325300666e9f51a2bdee9656c45aabac25fc4ef6b5dde7cfcb0b1dd",
+          "reused": false,
+          "receiver_seconds": 2.403
+        },
+        "inventory_sha256": "c9e0e91b679c83de6edd8d9ef67e5dd61ce473d90f26ee36e1c878def9667784",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-06-v385.json",
+        "proof_sha256": "b81964c649029f1ee0905a393fcc4f53b5b82880dad054b8836c22b9a5f357fb"
+      },
+      "sha256": {
+        "result.json": "38c6db214a7b58315ccf6dbbee60ea1403f78a66d13e0455a2c1ee3346f31882",
+        "progress.json": "23da3f0796149a493d568131e45a32bc47f67bc4aadc80a5e09826a23d21d3b4",
+        "transport-trace.json": "343f2f3f6b2493644797da7eabb2c6124cfa758d48b3428549341cff27989c43"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-06-v385",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-07-v386",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-07-v386/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 287.2,
+        "wall_s": 767.092708661,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 4,
+          "r2": 18
+        },
+        "condition": "v386",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "6f7ef9db7a9318b7003e34ede96118d3c626c75a2c29d37be82bf1d012845b1e",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-07-v386",
+        "files": 2220,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-07-v386",
+          "files": 2220,
+          "hash_matches": 2220,
+          "inventory_sha256": "7b1c42bb17880a64a1712374ab2fe5414ca9124cf06d6002c0a2a60645a4247b",
+          "reused": false,
+          "receiver_seconds": 9.198
+        },
+        "inventory_sha256": "7632100e2ac33c3eefce7299b37217cf91bfb4ff0075df0b5f0d0b7c5d291482",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-07-v386.json",
+        "proof_sha256": "fdcfeb709a2b346a1622e6faec148380b134094441d1ce49704d11145425558b"
+      },
+      "sha256": {
+        "result.json": "e5525fd2def0f6b9cef7a3f37079113f8ad3037c1e69b469eccd0a57f54b0fcd",
+        "progress.json": "09127558d1b9eabd3aafd003e10bf081726b257a2268af1b3ddaf1771a143e34",
+        "transport-trace.json": "224941cc98a99f8a3ddd41b3aaf34501fac433b8ce0e25dce98a1c0e9a02f6a7"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-07-v386",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-08-v375",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-08-v375/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 132.0,
+        "wall_s": 470.502330409,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v375",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "ccec28997342ba6c09163e17dbb39cc49411dcd1aa58c1f0e4d997145de7541f",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-08-v375",
+        "files": 1055,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-08-v375",
+          "files": 1055,
+          "hash_matches": 1055,
+          "inventory_sha256": "9da08fcb8b36b4cd6dfaff0dbbe137ddda78ffcbc6cf0c7952d9af171ddcc49b",
+          "reused": false,
+          "receiver_seconds": 3.948
+        },
+        "inventory_sha256": "b97bebb0079e76dbc8096e812b4a26d052cefead8540bcfaa836aab06efaec1d",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-08-v375.json",
+        "proof_sha256": "49e1335bf98b4cf809fc978cfca01273183ee2f8daa8f1560b6beb1ffa1edbd9"
+      },
+      "sha256": {
+        "result.json": "24ee8a2eafaffdf70e4f44d6a019d347721640834cabe4bf54f44211f033407b",
+        "progress.json": "207edab455e34dabb9c22141acc95ceb9bb9e662242493c569dbabf4d7f184dc",
+        "transport-trace.json": "6f6f6aefb4452a99f32165e5a68960ea4ddb0691798e589e42a44f9039525925"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-08-v375",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-09-v384",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-09-v384/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 89.2,
+        "wall_s": 332.20497339199994,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 2,
+          "r2": 0
+        },
+        "condition": "v384",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "ccec28997342ba6c09163e17dbb39cc49411dcd1aa58c1f0e4d997145de7541f",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-09-v384",
+        "files": 735,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-09-v384",
+          "files": 735,
+          "hash_matches": 735,
+          "inventory_sha256": "bb958b13c4f1833a1e7a6686e2fc58b1bcc4eea636fa22bdc75481822b2379f8",
+          "reused": false,
+          "receiver_seconds": 2.7
+        },
+        "inventory_sha256": "9b468dd4fd33039ef5acfd3f16cda02be913685f4d365faecef1b6371b956b92",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-09-v384.json",
+        "proof_sha256": "9164bebfb31f367868b13cda7b89626b56195651798008e1e1019df4f5d57d66"
+      },
+      "sha256": {
+        "result.json": "cf799a0ca926139f4df73c6cb4ad83ebb858fae33e806d30fbdb227e1337430b",
+        "progress.json": "1afe32b6af6df00c1f714e80d331745e64af0268c2c58a8e36bd46bfc5c3f76b",
+        "transport-trace.json": "bdfc3a043dfcfd1141d3fd8152bfb3271a4697b923911a0cf8719638c87b05f7"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-09-v384",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-10-v385",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-10-v385/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 87.2,
+        "wall_s": 332.197085936,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 1,
+          "r2": 0
+        },
+        "condition": "v385",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "ccec28997342ba6c09163e17dbb39cc49411dcd1aa58c1f0e4d997145de7541f",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-10-v385",
+        "files": 720,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-10-v385",
+          "files": 720,
+          "hash_matches": 720,
+          "inventory_sha256": "0f5457983a8db349df67a7754a4ea62b7a09b9820e18cad841b988912860bc69",
+          "reused": false,
+          "receiver_seconds": 2.609
+        },
+        "inventory_sha256": "bcb3ea3c54d03f44c06d483f12e182fe374ae8ee32aab3ae94a38515bf1a5687",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-10-v385.json",
+        "proof_sha256": "279f6ef385504e7a03f2192ab7aa2d4cc2f2f55f68fdb96750937928bb9e749e"
+      },
+      "sha256": {
+        "result.json": "adb7ecd2764c4976ecb0a237ea64c6f2db01337e5202c69dee6a2e04cb3869bd",
+        "progress.json": "599b28658f4dd70d87ca4b5bbeee8bd9e7fdcac38a9a0eb1cb1012c33f193d05",
+        "transport-trace.json": "49491f434745714a4edf586230a75b996384816f418cb3fa854d41e780a71d8d"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-10-v385",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-11-v386",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-11-v386/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 163.2,
+        "wall_s": 507.2055981610001,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 2,
+          "r2": 1
+        },
+        "condition": "v386",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "ccec28997342ba6c09163e17dbb39cc49411dcd1aa58c1f0e4d997145de7541f",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-11-v386",
+        "files": 1290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-11-v386",
+          "files": 1290,
+          "hash_matches": 1290,
+          "inventory_sha256": "72f10e83b822666280ad30057f19f9a8f33eb1635c7b8987d4ed57720669541f",
+          "reused": false,
+          "receiver_seconds": 5.684
+        },
+        "inventory_sha256": "a76122a5dd5ca3f00a3c237ed7caeeade078667c8f6393877f0bb58c268584d7",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-11-v386.json",
+        "proof_sha256": "1668cd6c1943b05d80bfedc3ad64906c58332dcd0f00e3790e5a6315e712ef63"
+      },
+      "sha256": {
+        "result.json": "c0c4f2048e1c0e4fbef606848db2a043e0750a5e786456d70fef6daa9704b4d8",
+        "progress.json": "ea5e08a91d601096ba097db54d6ebccba8d2cff071734311b005d64f99ea3756",
+        "transport-trace.json": "028e78267cea4c60f86fdf871431754204d8e0cba520a78e1f623b1274e15a5b"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-11-v386",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-12-v375",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-12-v375/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 129.6,
+        "wall_s": 507.271742851,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 6,
+          "r2": 1
+        },
+        "condition": "v375",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "7a82c395996d5f5e3930590490bb5b1cbd951b483a58bfb2ab0d12797f70035a",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-12-v375",
+        "files": 1038,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-12-v375",
+          "files": 1038,
+          "hash_matches": 1038,
+          "inventory_sha256": "b84cdba6b683d2dc608f9b070c1207d46143e3c15f271f299683153456feddb0",
+          "reused": false,
+          "receiver_seconds": 4.981
+        },
+        "inventory_sha256": "2a1191404250527070b3a1f9f47e37536d0b5af3eaec240c604090226ae5aa82",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-12-v375.json",
+        "proof_sha256": "011fae2e5168c0edc4b9580a38ef30363a8cdb3d1bfc8a3a565c8e936b6e6d4e"
+      },
+      "sha256": {
+        "result.json": "c28837175f845b7b7fee60be31e91121fc0c842c8c5609c6d404c52f795e6436",
+        "progress.json": "b1026920a0d69d1e8594b990cf1d2bd9bda71e7833c2241bc9aeefeb7edd4163",
+        "transport-trace.json": "ab1d6d952c9c208a1ebf017381820bb6e3cd8864aba9fcc0c9d2d43af76fac42"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-12-v375",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-13-v384",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-13-v384/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 147.2,
+        "wall_s": 507.2723183689999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 3,
+          "r2": 0
+        },
+        "condition": "v384",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "7a82c395996d5f5e3930590490bb5b1cbd951b483a58bfb2ab0d12797f70035a",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-13-v384",
+        "files": 1169,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-13-v384",
+          "files": 1169,
+          "hash_matches": 1169,
+          "inventory_sha256": "66e84ce321c6e565cef01715c81704b9403c2054f1e2ec88e6c3ba532680655e",
+          "reused": false,
+          "receiver_seconds": 4.444
+        },
+        "inventory_sha256": "d7af218c8bec6183b11a09a60d0d84a6dc88f47ecf8e39f9f558a16787f1abc8",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-13-v384.json",
+        "proof_sha256": "87655a475365a941b8acb6e27fa0fb24ad0479b1d726227c0ac5213a4f0d1079"
+      },
+      "sha256": {
+        "result.json": "7f69ea41fade841709166d4b8a7fe35fc7ecf033ef881b611707c2a956646bf1",
+        "progress.json": "f601f014858264a6fe2d9cc1a72717fa682ceacc1bf3d7719a4188ab625990bc",
+        "transport-trace.json": "4891fb5045e775523a6862b7d3c78189080e52c12f4998ff224ed643ae8f254d"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-13-v384",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-14-v385",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-14-v385/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 131.6,
+        "wall_s": 507.2081607419999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 3,
+          "r2": 1
+        },
+        "condition": "v385",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "7a82c395996d5f5e3930590490bb5b1cbd951b483a58bfb2ab0d12797f70035a",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-14-v385",
+        "files": 1052,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-14-v385",
+          "files": 1052,
+          "hash_matches": 1052,
+          "inventory_sha256": "35e5960dc2eb56e76b4409618b98993dc8a22c87e5ecf516d6663b5a26df32a5",
+          "reused": false,
+          "receiver_seconds": 4.236
+        },
+        "inventory_sha256": "7785110a96af7b243ad9fdbef498b92d571556d73b9a22b041160441c4e165cb",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-14-v385.json",
+        "proof_sha256": "9225837ebff4127e164f3c0d1a55133d290ef2c3743ef548a2728e2c3edbcdff"
+      },
+      "sha256": {
+        "result.json": "d41be7ed20c4d57d2a71b6aceb65d656acee20dc38b9cb67b7ad0233dd8c0a19",
+        "progress.json": "c3371d4b7cadfa8aa03a26916a108ebe9c8786a2a05b1990006ee51935d94f00",
+        "transport-trace.json": "4b74c9236bc0d15c6b644bb14066ab11e1059928ba5a6024fd853b85dc7432b2"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-14-v385",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "grasp1-stage-a1-15-v386",
+      "exit": 130,
+      "source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/grasp1-stage-a1-15-v386/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 130.8,
+        "wall_s": 507.21779359000004,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 3,
+          "r2": 1
+        },
+        "condition": "v386",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "7a82c395996d5f5e3930590490bb5b1cbd951b483a58bfb2ab0d12797f70035a",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-grasp1-stage-a1-15-v386",
+        "files": 1047,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp1-stage-a1-15-v386",
+          "files": 1047,
+          "hash_matches": 1047,
+          "inventory_sha256": "64c8da37f2e3ef8b2c50a79ea5f4308d92cb50c12210208e7afc12a288dd6e83",
+          "reused": false,
+          "receiver_seconds": 4.592
+        },
+        "inventory_sha256": "6a07e56cfa1651e688d5be8531bc957590a4f16228e0635217e190ef628d3178",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/grasp1-stage-a1-15-v386.json",
+        "proof_sha256": "4694a00c70711815e157e9f8472cdac07e02f809a071af3c0b31478702fca688"
+      },
+      "sha256": {
+        "result.json": "34e731af5a932a976360cd0054f610f7221ee2b8e29e2d53622022487a44de9f",
+        "progress.json": "41712109891db7a93e8173ec155b9dd2517223edf589c4e9acd619e00979d9b3",
+        "transport-trace.json": "3e46da719db111d0f2436a7a8e1a242e99b254be5364feac0ffc0afe07d677e7"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/grasp1-stage-a1-15-v386",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    }
+  ]
+}

@@ -1259,6 +1259,14 @@ class EventScheduler:
             self._refuse_event_inputs(actor, trigger, merged, sources, lane=lane,
                                       retry_of=payload.get('retry_of', ''))
             return
+        # Optional task-local admission, after timing/budget eligibility but
+        # before a call, snapshot, hold or HTTP send exists. Baseline is unchanged.
+        admission = getattr(self, 'call_admission', None)
+        if admission is not None and not admission(actor, trigger, self.clock):
+            self.budget.release(actor, 1)
+            for source in sources:
+                source.active = False
+            return
         sources = tuple(e for e in self.event_inputs if e.actor == actor and e.active
                         and (not lane or e.cause == lane))
         if sources:

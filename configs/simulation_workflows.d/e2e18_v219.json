@@ -1,0 +1,47 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "e2e18-v219",
+      "version": "7.112.0",
+      "purpose": "E2E18 float32 coarse search; float64 robust fit and acceptance unchanged",
+      "entry": "scripts/run_e2e_ownmap_live.py",
+      "runner": "scripts.run_e2e_ownmap_live",
+      "docs": "experiments/2026-10-12-e2e18/README.md",
+      "requires": "Committed Azure x86 OSMesa source; current lease/admission; persistent runs",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--expected-source-sha",
+        "--seed",
+        "--driver-profile",
+        "--relay-receipt",
+        "--decider",
+        "--exploration-progress",
+        "--pose-fix",
+        "--path-follow",
+        "--wall-cap-s",
+        "--stall-odometry",
+        "--stall-recovery",
+        "--stall-noise",
+        "--mapping-budget",
+        "--boundary-views",
+        "--b-marker-detect",
+        "--ultrasonic-front",
+        "--vo-floor-mask",
+        "--vo-rotation-policy",
+        "--explore-deadlock",
+        "--boundary-association",
+        "--boundary-retry",
+        "--boundary-coverage",
+        "--speed3",
+        "--b-partial-accept",
+        "--speed4",
+        "--speed5"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "shutdown_grace_s": 60
+    }
+  ]
+}

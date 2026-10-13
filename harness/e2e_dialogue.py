@@ -8,6 +8,7 @@ import copy
 from dataclasses import dataclass, replace
 
 from harness import e2e_own_inputs as own
+from harness import e2e_vote_ref as vote_ref
 from harness import pair_llm_dispatch as pair
 from harness import zone_study_protocol as zp
 from harness.zone_final_pair_binding import bind
@@ -23,7 +24,7 @@ PROMPT = '''e2e_dialogue_v1: 경로·claim·운반 허가만 검사하며 실제
 r1은 자기 지도 어댑터의 own_route_proposal을 그대로 메시지 contract로 복사하여 제안합니다:
 {"kind":"OwnRoute","route":OwnRoute,"source_message_id":null}.
 OwnRoute는 schema=ugrp.e2e_route_message.v1, robot_id=r1, frame_id, map_version,
-B_rgb_sources, waypoints, route_hash를 가집니다. 해시는 어댑터가 만들며 모델이 계산하거나 경로를 고치지 않습니다.
+B_rgb_sources, waypoints, route_hash를 가집니다. v2는 자기 RGB 근거의 carrier_basis도 가지며 그대로 복사합니다. 해시는 어댑터가 만들며 모델이 계산하거나 경로를 고치지 않습니다.
 peer_ko는 한국어 설명+contract, structured는 기존 정형 message+contract(자유문장 금지)를 씁니다.
 leader_ko는 기존 지휘자 경유만 허용합니다. 지휘자는 실제 수신 contract의 route를 그대로 전달하고
 source_message_id에 받은 message_id를 씁니다. r2만 승인합니다. r3는 운반 idle이나 지휘자이면 중계합니다.
@@ -43,8 +44,10 @@ def route_contract(value):
             and not zp.is_message_id(value['source_message_id'])):
         raise ContractViolation('OWN_ROUTE_MESSAGE_ID_REQUIRED')
     route = value['route']
-    own.closed(route, ('schema','robot_id','frame_id','map_version','B_rgb_sources','waypoints','route_hash'), 'WIRE_OWN_ROUTE')
-    if (route['schema'] != 'ugrp.e2e_route_message.v1' or route['robot_id'] != 'r1'
+    from harness.e2e_carrier_axes import WIRE_SCHEMA,validate as validate_basis
+    axis_schema=route.get('schema')==WIRE_SCHEMA
+    own.closed(route, ('schema','robot_id','frame_id','map_version','B_rgb_sources','waypoints','route_hash')+(('carrier_basis',) if axis_schema else ()), 'WIRE_OWN_ROUTE')
+    if (route['schema'] not in ('ugrp.e2e_route_message.v1',WIRE_SCHEMA) or route['robot_id'] != 'r1'
             or type(route['map_version']) is not int or route['map_version'] < 0
             or type(route['frame_id']) is not int or route['frame_id'] < 0
             or not isinstance(route['B_rgb_sources'],list) or not route['B_rgb_sources']
@@ -54,6 +57,8 @@ def route_contract(value):
         own.rgb_ref(ref, 'r1', ref['t_sim'], route['B_rgb_sources'])
     for xy in route['waypoints']:
         own.numbers(xy,2,'WAYPOINT')
+    if axis_schema:
+        ref=route['carrier_basis']['rgb'];validate_basis(route['carrier_basis'],'r1',ref['t_sim'],[ref],route['waypoints'][0])
     if route['route_hash'] != digest({k:v for k,v in route.items() if k != 'route_hash'}):
         raise ContractViolation('ROUTE_HASH_MISMATCH')
     own.scan(route)
@@ -66,6 +71,9 @@ def wire_route(route):
     """Small wire projection; the sender's entire own map is not retransmitted."""
     value = {k:copy.deepcopy(route[k]) for k in ('robot_id','frame_id','map_version','B_rgb_sources','waypoints')}
     value['schema'] = 'ugrp.e2e_route_message.v1'
+    if 'carrier_basis' in route:
+        from harness.e2e_carrier_axes import WIRE_SCHEMA
+        value['schema']=WIRE_SCHEMA;value['carrier_basis']=copy.deepcopy(route['carrier_basis'])
     value['route_hash'] = digest(value)
     return value
 
@@ -138,13 +146,15 @@ class Dialogue:
             own_go_sent='GO' in self.votes.get(actor, {}), own_ack_sent='ACK' in self.votes.get(actor, {}),
             peer_go_ref=peer['GO']['call_id'] if visible and peer else None,
             transport_admitted=bool(visible and self.allowed(self.key, now)),
-            motion_connected=bool(getattr(self,'motion_connected',False)))
+            motion_connected=bool(getattr(self,'motion_connected',False)),
+            **vote_ref.view_field(self, list(self.key) if visible and self.key else None))
 
     def fresh(self, context, now):
         return context['frame_t'] <= context['requested_at'] <= now < context['frame_t'] + WINDOW_S
 
     def outgoing(self, contract, context):
-        contract = route_contract(contract)
+        from harness.e2e_route_handle import expand
+        contract = route_contract(expand(self,contract,context))
         actor, source = context['actor'], contract['source_message_id']
         if source is None:
             mapped = context['state']['own_map'];route = contract['route']
@@ -173,18 +183,36 @@ class Dialogue:
         receipts = []
         for message in value['messages']:
             contract = message.get('contract')
+            policy = self.trial.call_events if getattr(self.trial, 'dialogue_call_policy', 'off') != 'off' else None
+            if policy is not None and not policy.allow_message(actor, at_sim_s, value['action'], message):
+                # Keep one rejection receipt per generated utterance: wire and
+                # SIM/provider billing remain intact, no silent response edit.
+                receipts.append(zp.Receipt(False, rejection='EVENT_OBSERVATION_SUPPRESSED'))
+                continue
             receipt = transport.send(actor, recipients=message['recipients'], text=message.get('text'),
                 structured=message.get('message'), reply_to=message['reply_to'], at_sim_s=at_sim_s, contract=contract)
             receipts.append(receipt)
+            if receipt.accepted and policy is not None:
+                policy.message_sent(actor, at_sim_s, message)
+            memory = getattr(self.trial, 'memory', None)
+            if receipt.accepted and memory is not None and getattr(self.trial, 'llm_memory', 'off') != 'off':
+                memory.sent_keys[receipt.envelope.message_id] = copy.deepcopy(self.captures[call_id]['view']['key'])
             if receipt.accepted and contract is not None:
                 source = contract['source_message_id']
                 origin = self.origins[source] if source else receipt.envelope.message_id
+                from harness.e2e_route_idempotency import origin as idempotent_origin
+                origin = idempotent_origin(self,contract,origin)
                 self.origins[receipt.envelope.message_id] = origin
                 if source is None:
                     self.outgoing_by_call[call_id] = origin
         return tuple(receipts)
 
     def receive(self, actor, envelope, now):
+        memory = getattr(self.trial, 'memory', None)
+        if memory is not None and getattr(self.trial, 'llm_memory', 'off') != 'off':
+            if envelope not in self.trial.channel.inbox(actor, now_sim_s=now):
+                raise ContractViolation('ACTUAL_COMMITTED_ROUTE_DELIVERY_REQUIRED')
+            memory.receive(actor, envelope, now, self.view(actor, now)['key'])
         contract = envelope['body'].get('contract')
         if contract is None:
             return
@@ -262,7 +290,8 @@ class Dialogue:
             raise ContractViolation('MODEL_RESPONSE_ALREADY_RELEASED')
         self.used_responses.add(call_id)
         actor, kind = context['actor'], action['kind']
-        if call_id in self.outgoing_by_call:
+        from harness.e2e_route_idempotency import resets
+        if call_id in self.outgoing_by_call and resets(self,self.outgoing_by_call[call_id]):
             self.latest_origin = self.outgoing_by_call[call_id]
             self.proposal, self.approved, self.key = None, False, None
             self.claims, self.votes = set(), {}
@@ -284,6 +313,9 @@ class Dialogue:
         def validate(value, **checks):
             try:
                 value = zp.parse(value) if isinstance(value, str) else copy.deepcopy(value)
+                value['action'] = vote_ref.expand(self, value['action'], context)   # off: unchanged
+                if getattr(trial,'body_controller','off')=='jev_v1' and value['action']['kind'] not in ('continue','claim','approve_route','route_vote'):
+                    raise ContractViolation('GEMMA_DIALOGUE_ONLY')
                 clean = copy.deepcopy(value)
                 contracts = [m.pop('contract', None) for m in clean['messages']]
                 if sum(c is not None for c in contracts) > 1:
@@ -307,7 +339,10 @@ class Dialogue:
                 if checked['action']['kind'] == 'route_vote' and 'own_rgb' not in checked['decision_sources']:
                     raise ContractViolation('GO_ACK_OWN_RGB_SOURCE_REQUIRED')
                 return checked
-            except (ContractViolation, KeyError, TypeError, ValueError) as exc:
+            except (ContractViolation, zp.ProtocolError, KeyError, TypeError, ValueError) as exc:
+                memory = getattr(trial, 'memory', None)
+                if memory is not None and getattr(trial, 'llm_memory', 'off') != 'off':
+                    memory.reject(call.call_id, call.actor, value, exc, context)   # own validation only
                 raise zp.ProtocolError(str(exc)) from exc
         private_zp = type('Protocol', (), {'relay': lambda transport, actor, value, **kw:
             self.relay(transport, actor, value, call_id=call.call_id, **kw), 'ProtocolError': zp.ProtocolError})

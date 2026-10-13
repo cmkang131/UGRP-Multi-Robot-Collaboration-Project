@@ -1,0 +1,241 @@
+{
+  "stage_only": true,
+  "concurrency": 16,
+  "route_N": 8,
+  "grasp_N": 8,
+  "source_checkpoint_scope": "same mapping30 own RGB state for all route repeats; seed changes new physics initialization only, independent trajectories not assumed",
+  "runs": [
+    {
+      "kind": "grasp",
+      "sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v375",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v387",
+      "extra": []
+    },
+    {
+      "kind": "grasp",
+      "sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v384",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v387",
+      "extra": []
+    },
+    {
+      "kind": "grasp",
+      "sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v385",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v387",
+      "extra": []
+    },
+    {
+      "kind": "grasp",
+      "sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v386",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v387",
+      "extra": []
+    },
+    {
+      "kind": "grasp",
+      "sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "source_run": "e2e18-v377-s61006-r80",
+      "condition": "v375",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v387",
+      "extra": []
+    },
+    {
+      "kind": "grasp",
+      "sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "source_run": "e2e18-v377-s61006-r80",
+      "condition": "v384",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v387",
+      "extra": []
+    },
+    {
+      "kind": "grasp",
+      "sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "source_run": "e2e18-v377-s61006-r80",
+      "condition": "v385",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v387",
+      "extra": []
+    },
+    {
+      "kind": "grasp",
+      "sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+      "source_run": "e2e18-v377-s61006-r80",
+      "condition": "v386",
+      "seed": 62002,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v387",
+      "extra": []
+    },
+    {
+      "kind": "route",
+      "sha": "23f8de8736bc36457067cef8faa8c4a2e350e8e9",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v391",
+      "seed": 61006,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v393",
+      "extra": [
+        "--stage-wrapper",
+        "v393",
+        "--route-recovery",
+        "off",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "23f8de8736bc36457067cef8faa8c4a2e350e8e9",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v390",
+      "seed": 61006,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v393",
+      "extra": [
+        "--stage-wrapper",
+        "v393",
+        "--route-recovery",
+        "footprint_v2",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "23f8de8736bc36457067cef8faa8c4a2e350e8e9",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v391",
+      "seed": 61007,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v393",
+      "extra": [
+        "--stage-wrapper",
+        "v393",
+        "--route-recovery",
+        "off",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "23f8de8736bc36457067cef8faa8c4a2e350e8e9",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v390",
+      "seed": 61007,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v393",
+      "extra": [
+        "--stage-wrapper",
+        "v393",
+        "--route-recovery",
+        "footprint_v2",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "23f8de8736bc36457067cef8faa8c4a2e350e8e9",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v391",
+      "seed": 61008,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v393",
+      "extra": [
+        "--stage-wrapper",
+        "v393",
+        "--route-recovery",
+        "off",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "23f8de8736bc36457067cef8faa8c4a2e350e8e9",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v390",
+      "seed": 61008,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v393",
+      "extra": [
+        "--stage-wrapper",
+        "v393",
+        "--route-recovery",
+        "footprint_v2",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "23f8de8736bc36457067cef8faa8c4a2e350e8e9",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v391",
+      "seed": 61009,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v393",
+      "extra": [
+        "--stage-wrapper",
+        "v393",
+        "--route-recovery",
+        "off",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "23f8de8736bc36457067cef8faa8c4a2e350e8e9",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v390",
+      "seed": 61009,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v393",
+      "extra": [
+        "--stage-wrapper",
+        "v393",
+        "--route-recovery",
+        "footprint_v2",
+        "--route-input-record",
+        "on_v1"
+      ]
+    }
+  ]
+}

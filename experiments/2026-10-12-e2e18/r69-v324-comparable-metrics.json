@@ -1,0 +1,68 @@
+{
+  "metrics": {
+    "first_phase_sim_s": {
+      "align": 75.7,
+      "grasp_lift": 510.8,
+      "wait_go_ack": 533.95,
+      "carry": 544.75
+    },
+    "first_paired_held_sim_s": 517.5,
+    "align_to_grasp_lift_sim_s": 435.1,
+    "align_to_actual_paired_held_sim_s": 441.8,
+    "post_grasp_carry_go_ack_pass": true,
+    "first_sync_segment": {
+      "t": 544.75,
+      "event": "s3_synchronized_segment",
+      "key": [
+        "order-5",
+        "83ead6a8c353aea7090724fdfb529914265446cb0ecbe2286794c7a45f1c293c",
+        1,
+        0
+      ],
+      "source": "received_own_route",
+      "pulse_budget": "off",
+      "planned_m": 0.747958948388867
+    },
+    "trace_sha256_uncompressed": "5dba25645fdcac253deb8b3e30d838978d2e770a8c2f3c63550f4eaf08087a04"
+  },
+  "name": "e2e18-v324-s61006-r69",
+  "status": "EARLY_STOP",
+  "failure": "SIGNAL_SIGINT",
+  "robots": {
+    "r1": {
+      "max_tilt_deg": 0.985681308683787,
+      "sim_s": 561.55,
+      "sha256_uncompressed": "25ae7ec5a2c1cfa1ff4ea2642b137689702a0fb447015d40b123ddc7fa7a45e9",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v324-s61006-r69/raw/eval_only/r1/trajectory.jsonl"
+    },
+    "r2": {
+      "max_tilt_deg": 0.3641459827149411,
+      "sim_s": 561.55,
+      "sha256_uncompressed": "251ac86dd2fcc5880b443b7246bd7e1dc659b80b1f76051ede3fbfc4fe61baea",
+      "raw": "/home/ugrp/ugrp-sim/runs/e2e18-v324-s61006-r69/raw/eval_only/r2/trajectory.jsonl"
+    }
+  },
+  "paired_held_samples": 882,
+  "first_held_t": 517.5,
+  "maximum_cargo_z_m": 0.09784860219166563,
+  "ready": [
+    {
+      "t": 446.8,
+      "event": "s3_coarse_fine",
+      "robot_id": "r1",
+      "phase": "ready"
+    },
+    {
+      "t": 510.8,
+      "event": "s3_coarse_fine",
+      "robot_id": "r2",
+      "phase": "ready"
+    }
+  ],
+  "first_fine": {
+    "t": 440.8,
+    "event": "s3_coarse_fine",
+    "robot_id": "r1",
+    "phase": "pan"
+  }
+}

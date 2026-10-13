@@ -1,0 +1,186 @@
+{
+  "schema": "e2e18.fix.v236",
+  "parent": "e2e18-v235",
+  "toggle": {
+    "compute_budget": "lean_v1",
+    "default": "off"
+  },
+  "cause": "r25 full load gate medians 3.142917/3.144110 exceed3.0; CPU/SIM2.48-2.64; provider calls2.63-12.06s, wall includes provider and finalization",
+  "changes": {
+    "raster": "320x240 then640x480 linear resize, actual JPEG retained; mount/FOV unchanged",
+    "rbpf_particles": 30,
+    "floor_ray_stride": 4,
+    "unchanged": "physics, observation cadence, acceptance/protocol gates"
+  },
+  "historical_profile": {
+    "profile-route-cost-v226.raw": {
+      "sha256": "2717ef6346db429543a39fcfcbf2770fbed62a024d7aaff7940ca5b134f914ab",
+      "total_samples": 338,
+      "top_leaf_samples": [
+        [
+          "render (classic/renderer.py:184)",
+          27
+        ],
+        [
+          "_physics_step_for (sim/masterpi_drive_friction_v7.py:231)",
+          19
+        ],
+        [
+          "cells (harness/e2e_exact_speedups2.py:50)",
+          15
+        ],
+        [
+          "receive_rays (harness/public_navigation_raytrace.py:62)",
+          11
+        ],
+        [
+          "_rays (harness/active_wall_mapping.py:125)",
+          8
+        ],
+        [
+          "match_loop (harness/self_pose_graph.py:158)",
+          7
+        ],
+        [
+          "bresenham_cells (harness/e2e_exact_speedups2.py:88)",
+          7
+        ],
+        [
+          "observe (harness/own_map_navigation.py:132)",
+          6
+        ],
+        [
+          "dense (harness/own_map_navigation.py:148)",
+          5
+        ],
+        [
+          "_wrapit (numpy/_core/fromnumeric.py:45)",
+          5
+        ],
+        [
+          "features (harness/e2e_rgb_gate.py:82)",
+          5
+        ],
+        [
+          "ground_pair (harness/e2e_rgb_vo.py:163)",
+          5
+        ],
+        [
+          "receive_rays (harness/public_navigation_raytrace.py:74)",
+          5
+        ],
+        [
+          "floor_features (harness/own_map_amcl_vendor/landmarks.py:75)",
+          5
+        ],
+        [
+          "receive_rays (harness/public_navigation_raytrace.py:67)",
+          5
+        ]
+      ],
+      "scope": "historical same pipeline before v235; not current gate cProfile"
+    },
+    "profile-align-v230.raw": {
+      "sha256": "cfbe97f71967ebb30ca8275c0063ef22f654d3deaa0bafce5b30bd927e9257a0",
+      "total_samples": 339,
+      "top_leaf_samples": [
+        [
+          "_physics_step_for (sim/masterpi_drive_friction_v7.py:231)",
+          68
+        ],
+        [
+          "cells (harness/e2e_exact_speedups2.py:50)",
+          20
+        ],
+        [
+          "rgb_ref (harness/e2e_own_inputs.py:79)",
+          11
+        ],
+        [
+          "observe (harness/own_map_navigation.py:132)",
+          11
+        ],
+        [
+          "_scan (harness/e2e_own_inputs.py:61)",
+          9
+        ],
+        [
+          "render (classic/renderer.py:184)",
+          9
+        ],
+        [
+          "",
+          8
+        ],
+        [
+          "_scan (harness/e2e_own_inputs.py:60)",
+          7
+        ],
+        [
+          "receive_rays (harness/public_navigation_raytrace.py:74)",
+          7
+        ],
+        [
+          "_deepcopy_dict (copy.py:221)",
+          6
+        ],
+        [
+          "receive_rays (harness/public_navigation_raytrace.py:62)",
+          6
+        ],
+        [
+          "_scan (harness/e2e_own_inputs.py:58)",
+          5
+        ],
+        [
+          "receive_rays (harness/public_navigation_raytrace.py:66)",
+          5
+        ],
+        [
+          "_rays (harness/active_wall_mapping.py:125)",
+          5
+        ],
+        [
+          "receive_rays (harness/public_navigation_raytrace.py:68)",
+          5
+        ]
+      ],
+      "scope": "historical same pipeline before v235; not current gate cProfile"
+    }
+  },
+  "prereg": {
+    "seeds": [
+      61001,
+      61002,
+      61003,
+      61004,
+      61005,
+      61006,
+      61007,
+      61008,
+      61009,
+      61010,
+      61011,
+      61012
+    ],
+    "concurrency_per_vm": 6,
+    "gate_sim_s": 30,
+    "gate_limit": 3.0,
+    "wall_cap_s": 5400
+  },
+  "tests": {
+    "passed": 20,
+    "seconds": 10.81,
+    "files": [
+      "test_e2e_compute_budget.py",
+      "test_e2e_pregrasp_acquire.py",
+      "test_e2e_speed4.py"
+    ],
+    "scope": "offline; recorded JPEG lower resolution still yields same far-band classification, not rendered physics/perception acceptance"
+  },
+  "references": [
+    "https://mujoco.readthedocs.io/en/latest/programming/rendering.html",
+    "https://playground.mujoco.org/assets/playground_technical_report.pdf"
+  ],
+  "research": "Standard pixel/particle/ray workload reduction. Modern GPU-native throughput reference is contextual only; no GPU renderer, RGB-D or external state imported."
+}

@@ -1,0 +1,38 @@
+{
+  "issue": "source v379/v380 leaves idle30 and robot body_controller while stage bundle declares baseline idle5 and body off",
+  "evidence": {
+    "run": "grasp1-stage-a1-09-v384",
+    "own_times": [
+      127.4,
+      157.4
+    ],
+    "idle_before_replan_s": 30.0,
+    "max_no_motion_s": 29.7,
+    "command": "zero mecanum",
+    "navigation_status": "exploration_finished",
+    "invalid_stage_runs": 8
+  },
+  "source_files": [
+    "harness/e2e_stage_checkpoint.py",
+    "scripts/run_e2e_stage_probe.py"
+  ],
+  "fix": {
+    "wrapper": "v394",
+    "toggle": "stage_policy_handoff=baseline_v1",
+    "default": "off",
+    "preserves": "replay source policy and own estimates before cutoff; map/odometry/idle history unchanged; apply declared baseline policy only after cutoff"
+  },
+  "reference": "https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/controller_server/controller_server_plugins/pose_progress_checker/",
+  "reference_scope": "standard bounded progress measurement; no new navigation algorithm or evaluation pose supplied to control",
+  "reserved_ids": [
+    394
+  ],
+  "validation": {
+    "passed": 36,
+    "files": [
+      "tests/test_e2e_stage_checkpoint.py",
+      "tests/test_e2e_explore_idle.py",
+      "tests/test_e2e_grasp_once.py"
+    ]
+  }
+}

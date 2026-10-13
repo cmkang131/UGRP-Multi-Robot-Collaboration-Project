@@ -1,0 +1,282 @@
+{
+  "stage_only": true,
+  "concurrency": 16,
+  "route_N": 8,
+  "grasp_N": 8,
+  "source_checkpoint_scope": "same mapping30 own RGB state for all route repeats; seed changes new physics initialization only, independent trajectories not assumed",
+  "runs": [
+    {
+      "kind": "grasp",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v379-s61008-r80",
+      "condition": "v375",
+      "seed": 62001,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v394",
+      "extra": [
+        "--stage-wrapper",
+        "v394",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v379-s61008-r80",
+      "condition": "v384",
+      "seed": 62001,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v394",
+      "extra": [
+        "--stage-wrapper",
+        "v394",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v379-s61008-r80",
+      "condition": "v395",
+      "seed": 62001,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v395",
+      "extra": [
+        "--stage-wrapper",
+        "v395",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v379-s61008-r80",
+      "condition": "v396",
+      "seed": 62001,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v396",
+      "extra": [
+        "--stage-wrapper",
+        "v396",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v380-s61007-r80",
+      "condition": "v375",
+      "seed": 62001,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v394",
+      "extra": [
+        "--stage-wrapper",
+        "v394",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v380-s61007-r80",
+      "condition": "v384",
+      "seed": 62001,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v394",
+      "extra": [
+        "--stage-wrapper",
+        "v394",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v380-s61007-r80",
+      "condition": "v395",
+      "seed": 62001,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v395",
+      "extra": [
+        "--stage-wrapper",
+        "v395",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "grasp",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v380-s61007-r80",
+      "condition": "v396",
+      "seed": 62001,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "cap_s": 300,
+      "wrapper": "v396",
+      "extra": [
+        "--stage-wrapper",
+        "v396",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v391",
+      "seed": 61006,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v398",
+      "extra": [
+        "--stage-wrapper",
+        "v398",
+        "--route-recovery",
+        "off",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v390",
+      "seed": 61006,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v398",
+      "extra": [
+        "--stage-wrapper",
+        "v398",
+        "--route-recovery",
+        "footprint_v2",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v391",
+      "seed": 61007,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v398",
+      "extra": [
+        "--stage-wrapper",
+        "v398",
+        "--route-recovery",
+        "off",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v390",
+      "seed": 61007,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v398",
+      "extra": [
+        "--stage-wrapper",
+        "v398",
+        "--route-recovery",
+        "footprint_v2",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v391",
+      "seed": 61008,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v398",
+      "extra": [
+        "--stage-wrapper",
+        "v398",
+        "--route-recovery",
+        "off",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v390",
+      "seed": 61008,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v398",
+      "extra": [
+        "--stage-wrapper",
+        "v398",
+        "--route-recovery",
+        "footprint_v2",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v391",
+      "seed": 61009,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v398",
+      "extra": [
+        "--stage-wrapper",
+        "v398",
+        "--route-recovery",
+        "off",
+        "--route-input-record",
+        "on_v1"
+      ]
+    },
+    {
+      "kind": "route",
+      "sha": "e654ae01dc07014b960acf0b9c5de292f9f0436f",
+      "source_run": "e2e18-v375-s61008-r80",
+      "condition": "v390",
+      "seed": 61009,
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v375-s61008-r80-mapping30.json.zst",
+      "cap_s": 60,
+      "wrapper": "v398",
+      "extra": [
+        "--stage-wrapper",
+        "v398",
+        "--route-recovery",
+        "footprint_v2",
+        "--route-input-record",
+        "on_v1"
+      ]
+    }
+  ],
+  "reason": "Replace eight invalid first-seed stage runs with policy handoff fixed; replace repeat-loss gaze candidates with FOV rotation fixes. Retain eight route stage slots."
+}
