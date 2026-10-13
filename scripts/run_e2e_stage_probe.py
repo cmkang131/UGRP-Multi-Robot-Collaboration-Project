@@ -70,6 +70,13 @@ def stage_metrics(events, first, success, elapsed):
         held_gap_s=abs(first['r1']-first['r2']) if len(first)==2 else None)
 
 
+def stage_schedule(option, phase, canonical='off'):
+    from harness.e2e_mapping_cadence import period
+    if canonical not in ('off','canonical_v1'):raise ValueError('UNKNOWN_STAGE_CADENCE')
+    seconds=period(option,phase);ticks=round(seconds/.05)
+    return ticks,seconds if canonical=='canonical_v1' else ticks*.05
+
+
 def run(args):
     if not args.enable_stage:raise ValueError('STAGE_TOGGLE_OFF')
     if platform.system()!='Linux':raise ValueError('NO_MAC_PHYSICS_OR_RENDER')
@@ -87,7 +94,7 @@ def run(args):
     route_recovery=getattr(args,'route_recovery','off');route_record=getattr(args,'route_input_record','off')
     if wrapper=='v387' and (route_recovery!='off' or route_record!='off'):
         raise ValueError('ROUTE_STAGE_REQUIRES_V393')
-    if wrapper in ('v393','v394','v395','v396'):
+    if wrapper in ('v393','v394','v395','v396','v397'):
         b.update(execution_bundle_id='e2e18-'+wrapper,schema='ugrp.e2e_stage_probe.'+wrapper,workflow_version='7.'+str(int(wrapper[1:])-107)+'.0')
         b['e2e_options'].update(route_recovery=route_recovery,route_input_record=route_record)
         b['route_parent_controller']={'off':'e2e18-v391','frontier_v1':'e2e18-v392','footprint_v2':'e2e18-v390'}[route_recovery] if route_record!='off' else {'off':'e2e18-v375','frontier_v1':'e2e18-v381','footprint_v2':'e2e18-v389'}[route_recovery]
@@ -99,6 +106,7 @@ def run(args):
     fov={'v395':'turn60_v1','v396':'turn45_v1'}.get(wrapper,'off')
     if fov!='off' and args.condition!=wrapper:raise ValueError('FOV_CONDITION_WRAPPER_MISMATCH')
     b['e2e_options']['grasp_fov']=fov
+    b['e2e_options']['stage_cadence']='canonical_v1' if wrapper=='v397' else 'off'
     tracked=subprocess.check_output(['git','ls-files','harness','sim','scripts','configs'],cwd=ROOT,text=True).splitlines()
     b['original_source_sha256']=b.pop('source_sha256',{})
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in tracked if (ROOT/p).is_file()}
@@ -148,8 +156,8 @@ def run(args):
         dispatch=Admission(b['e2e_options'].get('pulse_admission','off'))
         from harness.e2e_mapping_cadence import period
         from harness.e2e_observation_cadence import configure
-        observation_ticks=round(period(b['e2e_options'].get('mapping_cadence','off'),tr.state)/.05)
-        for r in robots.values():configure(r.goal,'on_v1',observation_ticks*.05)
+        observation_ticks,estimator_period=stage_schedule(b['e2e_options'].get('mapping_cadence','off'),tr.state,b['e2e_options']['stage_cadence'])
+        for r in robots.values():configure(r.goal,'on_v1',estimator_period)
         from harness.e2e_speed4 import processing_due
         from harness.e2e_camera_settle import receive
         from sim.e2e_stage_physics import update
@@ -215,7 +223,7 @@ def main():
     r.add_argument('--baseline-bundle',type=Path,required=True);r.add_argument('--condition',choices=MODES,required=True)
     r.add_argument('--seed',type=int,required=True);r.add_argument('--expected-source-sha',required=True)
     r.add_argument('--cap-s',type=float,default=300.);r.add_argument('--wall-cap-s',type=float,default=1800.)
-    r.add_argument('--stage-wrapper',choices=('v387','v393','v394','v395','v396'),default='v387')
+    r.add_argument('--stage-wrapper',choices=('v387','v393','v394','v395','v396','v397'),default='v387')
     r.add_argument('--stage-policy-handoff',choices=('off','baseline_v1'),default='off')
     r.add_argument('--route-recovery',choices=('off','frontier_v1','footprint_v2'),default='off')
     r.add_argument('--route-input-record',choices=('off','on_v1'),default='off')

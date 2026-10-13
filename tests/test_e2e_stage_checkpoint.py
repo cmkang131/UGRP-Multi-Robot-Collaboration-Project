@@ -215,3 +215,15 @@ def test_source_policy_handoff_keeps_map_and_recovery_history():
     assert robots['r2'].body_controller=='off'
     with pytest.raises(ValueError,match='STATE_MIGRATION'):
         install(robots,dict(pose_fix='old'),dict(pose_fix='new'),'baseline_v1')
+
+
+def test_mapping_stage_cadence_reaches_real_estimator_configuration():
+    from scripts.run_e2e_stage_probe import stage_schedule
+    from harness.e2e_observation_cadence import configure
+    goal=SimpleNamespace(e2e_vo=SimpleNamespace(range_stall=SimpleNamespace()))
+    ticks,seconds=stage_schedule('0p6_v1','mapping','canonical_v1')
+    assert ticks==12 and seconds==.6
+    configure(goal,'on_v1',seconds)
+    assert goal.e2e_vo.max_pair_gap_s==.65
+    with pytest.raises(ValueError,match='UNREGISTERED'):configure(goal,'on_v1',stage_schedule('0p6_v1','mapping')[1])
+    assert stage_schedule('0p6_v1','align','canonical_v1')==(8,.4)

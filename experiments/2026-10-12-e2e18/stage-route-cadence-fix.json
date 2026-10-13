@@ -1,0 +1,13 @@
+{
+  "failure": "UNREGISTERED_RGB_CADENCE",
+  "affected_N": 8,
+  "sim_s": 0,
+  "classification": "HOST_ERROR, not route performance",
+  "old_wrapper": "v393",
+  "new_wrapper": "v397",
+  "float_raw": 0.6000000000000001,
+  "declared_period_s": 0.6,
+  "fix": "Pass original registered schedule constant to estimator; derive integer tick count only for capture. New wrapper enables canonical_v1, legacy wrappers preserve old bytes/behavior.",
+  "reference": "https://docs.python.org/3/tutorial/floatingpoint.html",
+  "gate": "gate2 invalid, repeat all sixteen after repair"
+}
