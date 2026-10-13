@@ -1,0 +1,195 @@
+{
+  "verified": true,
+  "scope": "actual same-seed checkpoint scene XML; all element counts/tags/attributes except two RGBA identical",
+  "changes": [
+    {
+      "element": "geom",
+      "name": "cargo_beam_1__band_neg",
+      "attribute": "rgba",
+      "before": ".06 .06 .06 1",
+      "after": "0.02 0.95 0.6 1.0"
+    },
+    {
+      "element": "geom",
+      "name": "cargo_beam_1__band_pos",
+      "attribute": "rgba",
+      "before": ".06 .06 .06 1",
+      "after": "0.02 0.02 0.95 1.0"
+    }
+  ],
+  "sha256": {
+    "stage-color-gate1-04-v419": "53de1fedc5e1091170be27696ea1212bd85e7f7acd8cd8db65033b1c7744c80b",
+    "stage-color-gate1-05-v420": "dd3ee351e94cc02de7ec68d8a3a920ee1578b718d5800501020b96c2bb709741"
+  },
+  "scene": {
+    "scene_xml_sha256": "cec8294eb45dfe4a762b1bca3b37483a4b72be6af4cd68b4c5d08fff4f443fb8",
+    "robot_xml_sha256": {
+      "r1__robot": "e47c51fc1dc9f321cf2d7c5710457783eff4212d3446cd8316a223d0bf249160",
+      "r2__robot": "f4388fe9a66e31e174bf43623cd220ff10d0dbb414ade9ce93e165de629d08d2",
+      "r3__robot": "a9d13c3caec9da28bc7d50b012f956046db566fd48c0b75d7ff0078ce709cd05"
+    },
+    "static_map_sha256": "4f8cfb36c2705e6d79e1349002b40878733fdde8f3baae0edbdc804ebf8f895b",
+    "box_prototype_signature": "6806dd458235f884035d05b8e46d79f11a74932a1ae966c5878b3f431fa3c03c",
+    "box_replicas": {},
+    "weld": "off",
+    "appearance_change": "box paint colour only (kinds); shape, mass, friction unchanged",
+    "cargo_contact_profile": {
+      "name": "cargo_noslip_v1",
+      "version": 1,
+      "base": "local_contact_fine",
+      "option": {
+        "noslip_iterations": "10"
+      },
+      "scope": "global solver option (all contacts)",
+      "evidence": "experiments/2026-09-25-zone-cargo-catalogue (section: slip removal)",
+      "sha256": "2e003d85011354676866f0d73b32604c9b5105e919ba3d979687714d62e90ff4"
+    },
+    "contact_solver_profile": "cargo_noslip_v1",
+    "replica_finger_contact_pairs": 0,
+    "cargo": {
+      "items": [
+        {
+          "item_id": "beam_1",
+          "kind": "long_beam",
+          "body": "cargo_beam_1",
+          "mass_kg": 0.3
+        }
+      ],
+      "finger_contact_pairs": 6,
+      "weld": "off",
+      "catalogue_sha256": "b8327acff0b5ba8ebd07a7eb0244557890115714578637189f6d40bf37307ea5"
+    },
+    "geometry_map_id": "zone_wide_door_e2e_b80_v1",
+    "wall_profile": {
+      "id": "walls_v3",
+      "version": 3,
+      "height_m": 0.4,
+      "rule": "smallest 0.05 m step >= max(kinematic max wrist-camera z + 0.05 m, highest robot geom z + 0.03 m)",
+      "kinematic_max_camera_z_m": 0.321,
+      "max_work_posture_camera_z_m": 0.239,
+      "robot_top_max_z_m": 0.367,
+      "evidence": "experiments/2026-09-26-zone-env-v3/camera_height.json",
+      "sha256": "27300b0067d2d46d68498b8fddeaf7c19f8c489ed9bdaa3f5d47f5aacb6e833d"
+    },
+    "scenario_setup": {
+      "scenario_id": "e2e_one_beam_ownmap",
+      "config_sha256": "3d121f3bd68c0aef625af7ebd9408a303f6ac3e29e284f322e1e0356f5fca08d",
+      "map_file_sha256": "2da6cd61a9a8289e1f46ca105a23d16a828eb610b17ede22890211c5f9461032"
+    },
+    "render_profile": {
+      "schema": "ugrp.render_profile.v1",
+      "name": "floor_light_v1",
+      "sha256": "e3ea8aebc473f99def92fa368f8aaa11e5872dc5b2a8ec8ba9a308641d2b6ec5",
+      "xml_ops": [
+        {
+          "op": "light_castshadow",
+          "value": "false"
+        },
+        {
+          "op": "material_reflectance",
+          "value": "0"
+        },
+        {
+          "op": "light_cutoff",
+          "value": "180"
+        },
+        {
+          "op": "light_color_scale",
+          "value": "0.3"
+        },
+        {
+          "op": "texture_rgb",
+          "texture": "ground",
+          "rgb1": ".36 .35 .34",
+          "rgb2": ".62 .61 .59"
+        }
+      ],
+      "summary": "noshadow_bright_v1 plus a lighter floor: texture \"ground\" (the checker under material groundmat) changes from rgb1 .20 .22 .24 / rgb2 .27 .29 .31 to a neutral mid-tone grey checker rgb1 .36 .35 .34 / rgb2 .62 .61 .59 (checker contrast kept and raised). User statement 2026-09-29: the real floor is lighter than the simulated dark blue-grey one; the real colour was not measured.",
+      "changes_images": true,
+      "changes_physics": false,
+      "scene_xml_sha256_before_profile": "1d1e20f75e366d3a80dda7e62490f6db207bddfcbd0eb677b5ff34cecf5fd6aa",
+      "scene_xml_sha256_after_profile": "9aa9c918b675a51356efe8ef199d82c5984c31aebf86a01c83945a82356d20fe"
+    },
+    "render_nearclip": {
+      "schema": "ugrp.highpose_render_nearclip.v1",
+      "id": "floor_light_nearclip_v1",
+      "sha256": "1b1edce2f4cf2b97c9e7dd5c0ca4b613812342a766f97e5684b5e2761cab8089",
+      "base_profile": "floor_light_v1",
+      "xml_ops": [
+        {
+          "op": "visual_map_znear",
+          "value": "0.0004"
+        }
+      ],
+      "near_max_m": 0.005,
+      "previous": {
+        "znear_rel": 0.002,
+        "near_m_at_extent_11_112": 0.02222
+      },
+      "changes_images": true,
+      "changes_physics": false,
+      "reason": "near plane 22.2 mm clipped the beam 13 mm under the HIGH camera (floor seen through cargo)",
+      "pooling": "new render condition: never pooled with earlier runs",
+      "check": "outputs/v105-nearclip-check-20261005",
+      "scene_xml_sha256_before_nearclip": "9aa9c918b675a51356efe8ef199d82c5984c31aebf86a01c83945a82356d20fe",
+      "scene_xml_sha256_after_nearclip": "1d4b2b13f86632be515e3fb4e4ca26bf754e3c2c1fc22d409331858701f7ecd1"
+    },
+    "end_colors": {
+      "schema": "ugrp.beam_end_colors.v1",
+      "profile": "teal_blue_v1",
+      "colors": {
+        "teal": {
+          "rgba": [
+            0.02,
+            0.95,
+            0.6,
+            1.0
+          ],
+          "hsv_lo": [
+            74,
+            185,
+            45
+          ],
+          "hsv_hi": [
+            83,
+            255,
+            255
+          ]
+        },
+        "blue": {
+          "rgba": [
+            0.02,
+            0.02,
+            0.95,
+            1.0
+          ],
+          "hsv_lo": [
+            116,
+            185,
+            45
+          ],
+          "hsv_hi": [
+            124,
+            255,
+            255
+          ]
+        }
+      },
+      "order": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "scene_version": "e2e_one_beam_ownmap_end_colors_v1",
+      "map_version": "zone_wide_door_e2e_b80_end_colors_v1",
+      "exception": "\uc0ac\uc6a9\uc790 \uba85\uc2dc \uc608\uc678(\ubb3c\uccb4 \uc678\uad00 \ubcc0\uacbd)",
+      "changes_physics": false,
+      "sha256": "f24d0f1328a765edc5b3a995278ab180e7ac2d9df0aba8f9c32c048f8b090728",
+      "parent_scene_xml_sha256": "1d4b2b13f86632be515e3fb4e4ca26bf754e3c2c1fc22d409331858701f7ecd1",
+      "scene_xml_sha256": "457f791bb61d68662a04cc5e1e713f4be10668739a5493c2a0741faef4080d3d",
+      "parent_static_map_sha256": "2da6cd61a9a8289e1f46ca105a23d16a828eb610b17ede22890211c5f9461032",
+      "map_sha256": "4a0cfb20df83add5eafeb1114de0805151b818aa8912ef73c77e6b6b90ebd9a8"
+    },
+    "robot_model": "masterpi_v3",
+    "scene_version": "zones/zone_wide_door_e2e_b80_v1"
+  }
+}

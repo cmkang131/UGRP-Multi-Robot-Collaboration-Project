@@ -1,5 +1,5 @@
 {
-  "status": "offline_validation_before_vm",
+  "status": "main_16_running",
   "exception": "사용자 명시 예외(물체 외관 변경)",
   "unit_tests": {
     "passed": 44,
@@ -24,5 +24,28 @@
     "false_positive": 0,
     "synthetic_positive": 2,
     "not_physical": true
-  }
+  },
+  "execution_source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+  "gate": {
+    "batch": "stage-color-gate1",
+    "planned_N": 16,
+    "complete_N": 16,
+    "median_wall_per_sim": 2.3848971630499998,
+    "max_wall_per_sim": 2.7873438761999996,
+    "limit": 3.5,
+    "staging_passed": true,
+    "ok": true,
+    "model_calls": 0,
+    "request_files": 0,
+    "tokens_per_sim": 0.0,
+    "api_cost_usd": 0,
+    "synchronized": true,
+    "actual_start_spread_s": 0.09567022999999608,
+    "provider_receipts": 0,
+    "provider_attempt_ids": [],
+    "receipt_reconciled": true
+  },
+  "scene_invariance": "scene-invariance.json",
+  "model_cost_usd": 0,
+  "vm": "azure3 only; others deallocated at start"
 }
