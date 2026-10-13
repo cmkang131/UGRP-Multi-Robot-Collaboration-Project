@@ -1,0 +1,31 @@
+{
+  "pr": 461,
+  "source_head": "495b606f",
+  "scope": "r64-r68 results evaluated on VM3; full ARM archive verification in progress",
+  "results": "outputs/e2e18-admin/final-metrics-sdk2-r64-r68.jsonl",
+  "initial_health": {
+    "r67": [
+      4,
+      4
+    ],
+    "r68": [
+      0,
+      0
+    ]
+  },
+  "retention": "paired grasp runs class=milestone; all full originals remain on VM and ARM",
+  "new_direction": "body_controller model (user default d1, Jev alternative), interrobot conversation Gemma; reserved v330-v339 separate workers",
+  "reserved_next": [
+    328,
+    329,
+    340
+  ],
+  "deadline_utc": "2026-10-13T13:00:00Z",
+  "r68": "NOT_SUBMITTED: INSUFFICIENT_RELAY_LIFETIME_FOR_BATCH before run creation",
+  "furthest": {
+    "v320_r65": "seg1 grasp_lift at831.2 SIM; wall cap845.3, second paired grasp not confirmed",
+    "v321_r65": "first carry543.85; seg1 GO/ACK555.75→timeout570.8",
+    "v323_r65": "seg0 GO/ACK533.95→timeout549.0"
+  },
+  "r67": "4/4 initial checks; capped before first paired grasp by old relay lifetime"
+}
