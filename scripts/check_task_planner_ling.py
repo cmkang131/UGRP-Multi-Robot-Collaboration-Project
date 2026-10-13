@@ -38,6 +38,10 @@ def read(path):
     return path.read_bytes() if path.exists() else subprocess.check_output(['zstd', '-qdc', str(path)+'.zst'])
 
 
+def read_ledger(path):
+    return [json.loads(line) for line in path.read_text().splitlines()] if path.exists() else []
+
+
 def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=True).encode()).hexdigest()
 
@@ -247,8 +251,8 @@ def main():
             results[phase].append(run(previous,phase))
             if budget.calls and budget.calls%20==0:print(json.dumps(dict(phase=phase,decisions=len(results[phase]),calls=budget.calls,cost=shared.actual,stop=shared.stopped)),flush=True)
         if shared.stopped:print(json.dumps(dict(stopped=shared.stopped,phase=phase)),flush=True)
-    http_rows=[json.loads(line) for line in (a.upstream_root/'http_responses.jsonl').read_text().splitlines()]
-    attempt_rows=[json.loads(line) for line in (a.upstream_root/'http_attempts.jsonl').read_text().splitlines()]
+    http_rows=read_ledger(a.upstream_root/'http_responses.jsonl')
+    attempt_rows=read_ledger(a.upstream_root/'http_attempts.jsonl')
     shared.actual=sum(r.get('cost') or 0 for r in http_rows)
     shared.charged=sum(r['accounted_cost'] for r in http_rows)
     shared.unknown=sum(r.get('cost') is None for r in http_rows)

@@ -208,3 +208,8 @@ def test_gemma_fp4_tag_and_returned_provider_are_separate(tmp_path):
     def wrong(body,key):return 200,json.dumps(dict(model=GEMMA_FP4.model,provider='Novita',choices=[{}])).encode(),None
     m=OpenRouter(tmp_path/'wrong',key='fake',send=wrong,selection=GEMMA_FP4,max_attempts=1)
     assert m.complete(json.dumps(request).encode(),'wrong')[0]==502
+
+
+def test_zero_http_start_failure_can_be_reported(tmp_path):
+    from scripts.check_task_planner_ling import read_ledger
+    assert read_ledger(tmp_path/'http_responses.jsonl')==[]
