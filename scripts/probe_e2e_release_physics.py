@@ -76,7 +76,8 @@ def main():
     a.output.mkdir(exist_ok=False)
     (a.output/'RUN_META.json').write_text(json.dumps(dict(**{'class':'dev'},pr=461,sha=sha,branch='codex/e2e18',batch='release-physics-probe'))+'\n')
     (a.output/'fixture.json').write_bytes(a.fixture.read_bytes())
-    rows=[run(json.loads(a.bundle.read_text()),json.loads(a.fixture.read_text()),option,a.output/option)
+    from scripts.probe_e2e_arm_clearance import load
+    rows=[run(load(a.bundle),json.loads(a.fixture.read_text()),option,a.output/option)
           for option in ['pregrasp_dt1_v1','release_dt1_v1']]
     result=dict(source_sha=sha,qualification='staged unloaded setdown only; no E2E/paired grasp/transport evidence',
                 n=sum(r['plausible'] for r in rows),N=2,results=rows,loadavg=os.getloadavg())
