@@ -19,5 +19,100 @@
   "collision_free": null,
   "physical_pass": null,
   "r80": "unretrieved",
-  "r79_scope": "HOST_ERROR diagnostic only; not control cohort"
+  "r79_scope": "HOST_ERROR diagnostic only; not control cohort",
+  "implementation_sha": "926b84c3c2661610c97b3eb1569d313a01bdbee7",
+  "synthetic": {
+    "metrics": {
+      "all": {
+        "off": {
+          "generated_n": 5,
+          "attempted_N": 8,
+          "expected_N": 8,
+          "observed_complete_n": 2,
+          "ready_at_saved_sim_s_median": 1.3,
+          "ready_at_saved_sim_s_max": 1.3,
+          "collision_free_n": 3,
+          "collision_evaluated_N": 5,
+          "physical_pass_n": 0,
+          "physical_evaluated_N": 0,
+          "online_generation_sim_s": null
+        },
+        "frontier_v1": {
+          "generated_n": 3,
+          "attempted_N": 8,
+          "expected_N": 8,
+          "observed_complete_n": 3,
+          "ready_at_saved_sim_s_median": 1.3,
+          "ready_at_saved_sim_s_max": 1.3,
+          "collision_free_n": 3,
+          "collision_evaluated_N": 3,
+          "physical_pass_n": 0,
+          "physical_evaluated_N": 0,
+          "online_generation_sim_s": null
+        }
+      },
+      "blocked_goal": {
+        "off": {
+          "generated_n": 0,
+          "attempted_N": 2,
+          "expected_N": 2,
+          "observed_complete_n": 0,
+          "ready_at_saved_sim_s_median": null,
+          "ready_at_saved_sim_s_max": null,
+          "collision_free_n": 0,
+          "collision_evaluated_N": 0,
+          "physical_pass_n": 0,
+          "physical_evaluated_N": 0,
+          "online_generation_sim_s": null
+        },
+        "frontier_v1": {
+          "generated_n": 1,
+          "attempted_N": 2,
+          "expected_N": 2,
+          "observed_complete_n": 1,
+          "ready_at_saved_sim_s_median": 1.3,
+          "ready_at_saved_sim_s_max": 1.3,
+          "collision_free_n": 1,
+          "collision_evaluated_N": 1,
+          "physical_pass_n": 0,
+          "physical_evaluated_N": 0,
+          "online_generation_sim_s": null
+        }
+      },
+      "other": {
+        "off": {
+          "generated_n": 5,
+          "attempted_N": 6,
+          "expected_N": 6,
+          "observed_complete_n": 2,
+          "ready_at_saved_sim_s_median": 1.3,
+          "ready_at_saved_sim_s_max": 1.3,
+          "collision_free_n": 3,
+          "collision_evaluated_N": 5,
+          "physical_pass_n": 0,
+          "physical_evaluated_N": 0,
+          "online_generation_sim_s": null
+        },
+        "frontier_v1": {
+          "generated_n": 2,
+          "attempted_N": 6,
+          "expected_N": 6,
+          "observed_complete_n": 2,
+          "ready_at_saved_sim_s_median": 1.3,
+          "ready_at_saved_sim_s_max": 1.3,
+          "collision_free_n": 2,
+          "collision_evaluated_N": 2,
+          "physical_pass_n": 0,
+          "physical_evaluated_N": 0,
+          "online_generation_sim_s": null
+        }
+      }
+    },
+    "scope": "paired offline saved snapshots; ready-at times are NOT online candidate latency",
+    "raw": "outputs/e2e18-route1/synthetic-replay/results.json.zst",
+    "sha256": "215793cf012a6e2bf35f1871ff43eb08df58a3f485c5ee17232c875f1862de69",
+    "host_errors": 0,
+    "source_sha": "926b84c3c2661610c97b3eb1569d313a01bdbee7",
+    "provenance": "synthetic offline compiler test, not r80, no physics/render/API"
+  }
 }

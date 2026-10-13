@@ -55,3 +55,17 @@ r80 실제 저장 지도·평가 파일 0/8 상태 회수, 온라인 단계 시�
 - [explore_lite ROS2 공개 구현](https://github.com/robo-friends/m-explore-ros2/blob/main/explore/src/frontier_search.cpp): free–unknown 경계, 거리/정보이득 비용. 기존 탐색기 위에 경로와 관련된 미지 셀 이득을 추가했다.
 - [Kim 등, 2024-12, Enhancing Exploration Efficiency using Uncertainty-Aware Information Prediction](https://arxiv.org/abs/2412.12825): 초록 확인. 예측 지도 불확실성을 탐색 정보량에 반영하는 접근이며, 이 작업에서는 학습된 미관측 지도 예측을 제어에 넣지 않는다. 논문 전체 재현·수치 검증은 미확인.
 - [2025, A Hierarchical Approach for Autonomous Robotic Exploration with Frontier Search and DRL-based Path Planner](https://www.sciencedirect.com/science/article/pii/S2405896325016337): 검색 초록만 확인, 본문 403으로 **미확인**. 구현 근거로 쓰지 않았다.
+
+## 커밋 뒤 저장 파일 단계 재생
+
+실행 소스 `926b84c3c2661610c97b3eb1569d313a01bdbee7`. synthetic 8개 상태를 JSON.zst로 저장하고 압축 해제 바이트를 확인한 뒤 실제 CLI로 off/on 16회 재생했다. `synthetic-summary.json`에 raw 위치·SHA를 연결했다.
+
+| 지표 | 기준 off | 후보 frontier_v1 |
+|---|---:|---:|
+| 경로 생성 / 전체 상태 | 5/8 | 3/8 |
+| 관측 완료 경로 / 전체 상태 | 2/8 | 3/8 |
+| 평가 지도의 충돌 없음 / 생성된 경로 | 3/5 | 3/3 |
+| 핵심: 막힌 목표 상태의 경로 생성 | 0/2 | 1/2 |
+| 핵심: 막힌 목표 생성 경로의 충돌 없음 | 0/0 | 1/1 |
+
+총 충돌 없는 경로는 양쪽 3/8로 같으며, 후보가 실제 seed에서 더 빨라졌다는 증거는 없다. 후보는 미지 가설 경로를 실행 경로로 세지 않는다. 모든 synthetic 저장 시각은 1.3 SIM초(중앙/최대 모두 1.3)로 고정한 fixture라서 속도 비교에는 의미가 없다. 온라인 생성 SIM 시간과 실제 통과는 미측정이다. 표준 `sim_cli workflow plan`의 등록·입력 해시 해석도 확인했다.
