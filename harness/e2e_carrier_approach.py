@@ -119,6 +119,8 @@ def advance(transport,rid,now):
     command,rpp=rpp_command(dict(coordinate_frame=rid+'/own_odom',path_m=transform(path,inverse(tf)).tolist(),
         status='goal_approach',heading_rad=float(end[2])),pose,transport.profiles,robot_id=rid,**heading_kwargs(transport))
     diag['rpp']=rpp
+    from harness.e2e_approach_floor import apply as floor_apply
+    command=floor_apply(transport,rid,now,state,command,diag)
     twist=issued_twist(command) if command['kind']=='mecanum' else np.zeros(3)
     clear=projected_clear(costmap,mp,twist)
     if not clear:

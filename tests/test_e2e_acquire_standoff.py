@@ -213,3 +213,60 @@ def test_v303_giveup_on_release_pan_without_standoff(monkeypatch):
     bad = copy.deepcopy(b); bad['e2e_options']['stage_physics'] = 'pregrasp_dt1_v1'
     with pytest.raises(ValueError):
         require_current(bad, ROOT)
+
+
+def test_v310_v311_approach_floor_bundle(monkeypatch):
+    import copy
+    from harness.e2e_runtime_registration import require_current
+    from scripts.run_e2e_ownmap_live import ROOT, bundle
+    args, kw = _pan_parent(monkeypatch)
+    base = dict(kw, stage_physics='release_dt1_v1', relook_giveup='dev_light_v1')
+    assert bundle(*args, **base)['execution_bundle_id'] == 'e2e18-v303'
+    for opt, num, floor in (('v1', 310, .30), ('v2', 311, .22)):
+        b = bundle(*args, **dict(base, approach_floor=opt))
+        assert b['execution_bundle_id'] == f'e2e18-v{num}' and b['approach_floor_parameters']['floor_m'] == floor
+        assert b['relook_giveup_parent'] == 'e2e18-v280'
+        require_current(b, ROOT)
+        bad = copy.deepcopy(b); bad['approach_floor_parameters']['floor_m'] = .1
+        with pytest.raises(ValueError):
+            require_current(bad, ROOT)
+    with pytest.raises(ValueError):
+        bundle(*args, **dict(kw, approach_floor='v1'))        # needs the v303 parent
+
+
+def test_approach_floor_filter(monkeypatch):
+    from types import SimpleNamespace as NS
+    from harness import e2e_approach_floor as f
+
+    class Gate:
+        def __init__(s): s.ok = True
+        def ready(s, now, obs): return s.ok
+        def issued(s, now, profile, obs): s.ok = False
+    import harness.zone_s3_settled_servo as gate_mod
+    import harness.zone_solo_cyan_pulse_cal as cal
+    monkeypatch.setattr(gate_mod, 'SettleGate', Gate)
+    monkeypatch.setattr(cal, 'action_of', lambda p: dict(kind='mecanum', forward=p['u'], left=0., turn=0., duration_s=.1))
+    prof = dict(loaded=False, axis='forward', u=-.35, duration_s=.1)
+
+    def tr(mode, x, end_visible=False, t=10.):
+        res = dict(visible=True, reason='BAND_CLIPPED', end_visible=end_visible, near_end_base_m=[x, .1], band=dict(touches_invalid_border=True))
+        r = NS(beam_observation=dict(rgb=dict(t_sim=t, frame_id=1), result=res), last_obs=None)
+        t_ = NS(approach_floor=mode, robots={'r2': r}, profiles={'a': prof}, dev_light=True, events=[])
+        t_.event = lambda now, kind, **d: t_.events.append(kind)
+        return t_
+    go = dict(kind='mecanum', forward=.35, left=0., turn=0., duration_s=.5)
+    assert f.apply(tr('off', .1), 'r2', 10., {}, go, {}) is go                     # off: unchanged
+    assert f.apply(tr('v1', .5), 'r2', 10., {}, go, {}) is go                      # far: unchanged
+    assert f.apply(tr('v1', .1, end_visible=True), 'r2', 10., {}, go, {}) is go     # end visible: unchanged
+    assert f.apply(tr('v1', .1), 'r2', 10.7, {}, go, {}) is go                     # stale observation
+    t = tr('v1', .28); st = {}
+    assert f.apply(t, 'r2', 10., st, go, {})['kind'] == 'hold'                     # at the floor: no forward
+    t = tr('v1', .15); st = {}
+    out = f.apply(t, 'r2', 10., st, go, {})
+    assert out['forward'] < 0 and st['approach_floor']['pulses'] == 1              # close: one reverse pulse
+    assert f.apply(t, 'r2', 10.1, st, go, {})['kind'] == 'hold'                    # gate not settled: no 2nd pulse
+    st['approach_floor']['gate'].ok = True
+    assert f.apply(t, 'r2', 10.2, st, go, {})['forward'] < 0 and st['approach_floor']['pulses'] == 2
+    st['approach_floor']['gate'].ok = True
+    t.robots['r2'].beam_observation['rgb']['t_sim'] = 31.
+    assert f.apply(t, 'r2', 31., st, go, {}) is go and 'approach_floor_released' in t.events   # released after 20 s
