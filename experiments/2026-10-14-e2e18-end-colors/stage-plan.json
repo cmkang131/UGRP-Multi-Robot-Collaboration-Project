@@ -1,0 +1,261 @@
+{
+  "vm": "azure3",
+  "concurrency": 16,
+  "speed_gate_limit": 3.5,
+  "gate_sim_s": 30,
+  "runs": [
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v419",
+      "wrapper": "v419",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v419",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v420",
+      "wrapper": "v420",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v420",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v421",
+      "wrapper": "v421",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v421",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v422",
+      "wrapper": "v422",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v422",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v419",
+      "wrapper": "v419",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v419",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v420",
+      "wrapper": "v420",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v420",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v421",
+      "wrapper": "v421",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v421",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v379-s61008-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v379-s61008-r80.json.zst",
+      "condition": "v422",
+      "wrapper": "v422",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v422",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v419",
+      "wrapper": "v419",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v419",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v420",
+      "wrapper": "v420",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v420",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v421",
+      "wrapper": "v421",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v421",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v380-s61007-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v380-s61007-r80.json.zst",
+      "condition": "v422",
+      "wrapper": "v422",
+      "seed": 62002,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v422",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "primary_3_checkpoints"
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v419",
+      "wrapper": "v419",
+      "seed": 62003,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v419",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "separate_seed_repeat_checkpoint377"
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v420",
+      "wrapper": "v420",
+      "seed": 62003,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v420",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "separate_seed_repeat_checkpoint377"
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v421",
+      "wrapper": "v421",
+      "seed": 62003,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v421",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "separate_seed_repeat_checkpoint377"
+    },
+    {
+      "source_run": "e2e18-v377-s61006-r80",
+      "checkpoint": "experiments/2026-10-13-e2e18-grasp1/checkpoints/e2e18-v377-s61006-r80.json.zst",
+      "condition": "v422",
+      "wrapper": "v422",
+      "seed": 62003,
+      "cap_s": 300,
+      "extra": [
+        "--stage-wrapper",
+        "v422",
+        "--stage-policy-handoff",
+        "baseline_v1"
+      ],
+      "analysis_set": "separate_seed_repeat_checkpoint377"
+    }
+  ],
+  "metrics": [
+    "opposite_end",
+    "first_attempt_success",
+    "both_held",
+    "ready_wait_sim_s"
+  ],
+  "pooling": "never pool black vs colored; primary 12 and repeat 4 separately",
+  "cost": {
+    "new_model_calls": 0,
+    "new_model_usd": 0,
+    "reason": "user static order assignment; isolated stage omits prior dialogue as before"
+  },
+  "stop": "identified control failure immediately; unchanged stage >100 SIM s; max300 SIM s; wallcap1800"
+}

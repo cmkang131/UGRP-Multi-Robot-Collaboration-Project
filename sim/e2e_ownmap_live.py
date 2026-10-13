@@ -15,6 +15,8 @@ def make_scene(bundle,seed):
     from sim import masterpi_camera_review_v3 as camera
     from sim.s2_servo_stiffness import transform_xml
     scene=wrap(install(ScenarioFinalV3Scene.from_scenario(load_scenario('e2e_one_beam_ownmap'),seed),'floor_light_v1'))
+    from sim.e2e_end_colors import install as color_install
+    scene=color_install(scene,bundle['e2e_options'].get('end_color_scene','off'))
     original=scene.robot_transform
     def transform(xml,**kwargs):
         xml=camera.transform_xml(original(xml,**kwargs),profile_id=camera.PROFILE_ID)

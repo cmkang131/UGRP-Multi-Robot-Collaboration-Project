@@ -31,7 +31,10 @@ def advance(transport,rid,now):
     target=g.entities.get('B')
     from harness.e2e_approach_recovery import seek_goal
     from harness.e2e_end_assignment import seed_local_station
-    local_ends=seed_local_station(transport,rid,now,state)
+    from harness.e2e_end_colors import step as color_step
+    color_ends,color_action=color_step(transport,rid,now,state)
+    if color_action is not None:return color_action
+    local_ends=color_ends or seed_local_station(transport,rid,now,state)
     seeking=None if local_ends else seek_goal(transport,rid,now,target)
     if seeking is not None:return seeking
     if fresh and target and not local_ends:
@@ -43,7 +46,7 @@ def advance(transport,rid,now):
     from harness import e2e_grasp_once as once
     if not local_ends:once.seed_station(transport,rid,now,state,target)
     from harness.e2e_end_assignment import update_station
-    assignment=update_station(transport,rid,now,state,target)
+    assignment=None if color_ends else update_station(transport,rid,now,state,target)
     if assignment is not None:return assignment
     tracked=once.retained(transport,rid,now,state)
     if not tracked and not committed.retained(transport,now,state):expire(transport,rid,now,state,fresh)
