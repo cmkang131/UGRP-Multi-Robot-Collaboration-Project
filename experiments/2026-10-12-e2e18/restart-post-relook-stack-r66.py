@@ -41,7 +41,7 @@ active=[r for r in (b/'runs').glob('e2e18-v*-s*-r*') if r.is_dir() and not (r/'E
 existing={(json.loads((r/'RUN_META.json').read_text())['execution_bundle_id'],json.loads((r/'RUN_META.json').read_text())['seed']) for r in active}
 selected=[x for x in selected if (f'e2e18-v{x[1]}',x[0]) not in existing]
 assert selected and len(active)<=12-len(selected),[(r.name) for r in active]
-receipt=json.loads((b/'relays/e2e18/a-r4.json').read_text())
+receipt=json.loads((b/'relays/e2e18'/(os.environ.get('E2E18_RELAY','a-r4')+'.json')).read_text())
 from datetime import datetime
 deadline=datetime.fromisoformat('2026-10-13T13:00:00+00:00').timestamp()
 cap=int(min(7200,receipt['checked_unix']+receipt['valid_for_s']-time.time()-660,deadline-time.time()-900))
@@ -69,7 +69,7 @@ for seed,version,mode in selected:
  (target/'resource-admission.json').write_text(json.dumps({'loadavg':os.getloadavg(),'continuing':[r.name for r in active]})+'\n')
  command=list(old_plan[0]['command'])
  command=[f'e2e18-v{version}' if x=='e2e18-v241' else x for x in command]
- for flag,value in [('--timeout',cap+300),('--wall-cap-s',cap),('--expected-source-sha',sha),('--output',str(target/'raw')),('--arm-clearance','range_wall_v1'),('--acquisition-mobility','resume_v1'),('--approach-commit','memory60_view_v1'),('--scan-guard','map_v1'),('--fine-view','inspect60_v1'),('--approach-heading','path20_v1'),('--fine-entry','capture60_mpc_v1'),('--station-heading','station20_v1'),('--clip-recovery','back3_v1'),('--station-handoff','pan_v1'),('--capture-pose','pose08_track_v1'),*([('--relook-search',mode)] if mode else []),*EXTRA[version],('--stage-physics','release_dt1_v1'),('--sonar-frame','site_z_v1'),('--relay-receipt',str(b/'relays/e2e18/a-r4.json')),('--seed',seed)]:
+ for flag,value in [('--timeout',cap+300),('--wall-cap-s',cap),('--expected-source-sha',sha),('--output',str(target/'raw')),('--arm-clearance','range_wall_v1'),('--acquisition-mobility','resume_v1'),('--approach-commit','memory60_view_v1'),('--scan-guard','map_v1'),('--fine-view','inspect60_v1'),('--approach-heading','path20_v1'),('--fine-entry','capture60_mpc_v1'),('--station-heading','station20_v1'),('--clip-recovery','back3_v1'),('--station-handoff','pan_v1'),('--capture-pose','pose08_track_v1'),*([('--relook-search',mode)] if mode else []),*EXTRA[version],('--stage-physics','release_dt1_v1'),('--sonar-frame','site_z_v1'),('--relay-receipt',str(b/'relays/e2e18'/(os.environ.get('E2E18_RELAY','a-r4')+'.json'))),('--seed',seed)]:
   command=replace_option(command,flag,value)
  specs.append(dict(name=name,target=str(target),command=command))
 plan=b/'runs'/f'speed-gate-e2e18-{host}-{BATCH}-plan.json';assert not plan.exists();plan.write_text(json.dumps(specs,indent=2)+'\n')
