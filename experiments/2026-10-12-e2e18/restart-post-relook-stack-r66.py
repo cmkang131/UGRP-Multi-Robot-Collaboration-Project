@@ -22,10 +22,10 @@ EXTRA[304]=[('--relook-giveup','dev_light_rest_v1')]
 for v,mode in [(320,'retain_route_v1'),(321,'carry_through_v1'),(322,'map_fast_v1'),(323,'carry_nominal_v1')]:EXTRA[v]=[('--relook-giveup','dev_light_rest_v1'),('--post-relook',mode)]
 for version in (324,325,326,327):
  EXTRA[version]=[('--relook-giveup','dev_light_rest_v1'),('--post-relook','carry_nominal_v1'),
-                 ('--perception-fast','shadow_axes_v1'),('--controller-timing','phase_v1')]
- if version>=325:EXTRA[version]+=[('--clip-hysteresis','v1')]
- if version>=326:EXTRA[version]+=[('--approach-floor','v1')]
- if version>=327:EXTRA[version]+=[('--vote-ref','v1')]
+                 ('--perception-fast','shadow_axes_v1'),('--controller-timing','phase_v1'),
+                 ('--approach-floor','v1' if version>=326 else 'off'),
+                 ('--clip-hysteresis','v1' if version>=325 else 'off'),
+                 ('--vote-ref','v1' if version>=327 else 'off')]
 EXTRA[304]=[('--relook-giveup','dev_light_rest_v1')]
 EXTRA[305]=EXTRA[304]
 MODE={304:'view5_pan_v1',305:'view5_pan_v1',303:'view5_pan_v1',295:None,296:None,297:'view5_pan_v1',298:'view5_pan_v1',300:'view5_pan_v1',301:'view5_pan_v1',302:'view5_pan_v1'}
