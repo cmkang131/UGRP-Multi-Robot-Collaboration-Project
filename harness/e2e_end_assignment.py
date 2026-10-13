@@ -11,7 +11,7 @@ import numpy as np
 from harness.active_wall_mapping import wrap
 from harness.self_odom_grid import transform
 
-OPTIONS=('lock_v1','rgb_rule_v1','gemma_v1')
+OPTIONS=('lock_v1','rgb_rule_v1','gemma_v1','rgb_ground_v2','gemma_ground_v2')
 PARAMS=dict(grip_offset_m=.27,reach_m=.2032,occupancy_radius_m=.25,
             rgb_max_age_s=.45,lock_match_max_m=.45,decision_period_s=10.)
 SYSTEM='''Two robots must grasp DISTINCT OPPOSITE ends of the same beam; both at
@@ -104,12 +104,18 @@ class Selector:
         return out
 
     def observe_occupancy(self,candidates,pose,servo,jpeg,frame,now,frame_t):
-        if self.option not in ('rgb_rule_v1','gemma_v1'):return {}
+        if self.option not in ('rgb_rule_v1','gemma_v1','rgb_ground_v2','gemma_ground_v2'):return {}
         if frame==self.last_frame or not 0<=now-frame_t<=PARAMS['rgb_max_age_s']:return {}
         self.last_frame=frame
         if self.last_occupancy_t is not None and now-self.last_occupancy_t>1.:self.streak.clear()
         self.last_occupancy_t=now
-        regions=rgb_peer_regions(jpeg);hits=occupied_candidates(candidates,pose,servo,regions)
+        if self.option in ('rgb_ground_v2','gemma_ground_v2'):
+            if any(c['source_rgb'].get('frame_id')!=frame or not 0<=now-c['source_rgb'].get('t_sim',-math.inf)<=PARAMS['rgb_max_age_s'] for c in candidates):
+                self.streak.clear()
+                return dict(frame_id=frame,blocked=sorted(self.blocked),status='unknown_no_current_beam_RGB',absence_means='unknown')
+            from harness.e2e_end_ground import occupied
+        else:occupied=occupied_candidates
+        regions=rgb_peer_regions(jpeg);hits=occupied(candidates,pose,servo,regions)
         for c in candidates:
             cid=c['id'];self.streak[cid]=self.streak.get(cid,0)+1 if hits[cid] else 0
             if self.streak[cid]>=2:self.blocked.add(cid)
@@ -149,7 +155,7 @@ def install(tr,option='off',*,relay_url=None):
     if option not in OPTIONS:raise ValueError('UNKNOWN_END_ASSIGNMENT')
     tr.end_assignment=option;tr.end_selectors={rid:Selector(rid,option) for rid in ('r1','r2')}
     tr.end_clients={}
-    if option=='gemma_v1':
+    if option in ('gemma_v1','gemma_ground_v2'):
         from harness.e2e_end_model import Client
         if relay_url is None:raise ValueError('END_MODEL_RELAY_REQUIRED')
         tr.end_clients={rid:Client(relay_url) for rid in ('r1','r2')}
@@ -215,7 +221,7 @@ def update_station(tr,rid,now,state,target):
         state['fine']=False
     # Before entering the stance, use the existing SEARCH camera posture and
     # a finite three-pan inspection. Camera/FOV/model geometry is unchanged.
-    if s.option in ('rgb_rule_v1','gemma_v1') and choice['distance_m']<=.65:
+    if s.option in ('rgb_rule_v1','gemma_v1','rgb_ground_v2','gemma_ground_v2') and choice['distance_m']<=.65:
         from harness.owncam_pair_beam_v2 import pose_of
         look=state.setdefault('end_look',dict(index=0,frame=None,until=now,done=False))
         if not look['done']:

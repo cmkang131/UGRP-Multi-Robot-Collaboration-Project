@@ -10,3 +10,5 @@
 - [OpenRouter structured outputs](https://openrouter.ai/docs/guides/features/structured-outputs): 실제 Gemma 2호출 중1개가 Markdown fence를 반환하여 엄격 파싱 실패. 공식 response_format=json_schema, strict, provider.require_parameters를 적용한다. 이는 로컬 판단 반환 형식이며 로봇 사이 별도 통신 경로를 만들지 않는다.
 
 - [Python fcntl/flock](https://docs.python.org/3/library/fcntl.html): 프로세스별 파일 잠금으로 복원 8슬롯을 제한하고, 사전 등록한 16개 준비 후 같은 monotonic 시작 시각을 사용한다. 로봇 관측·선택·메시지는 공유하지 않는다.
+
+- [OpenCV fisheye calibration and undistortPoints](https://docs.opencv.org/4.13.0/db/d58/group__calib3d__fisheye.html) / [Virtual IPM (2023)](https://arxiv.org/abs/2303.05192): 픽셀 광선을 고정 카메라 보정으로 복원하고 바닥 평면과 교차시킨다. 구현은 기존 owncam_view와 같은 fisheye 보정·발행 서보 외부 보정만 재사용한다. 우리 추가 제한은 현재 봉 RGB가 없는 경우 점유를 unknown으로 두고 영상 가장자리에서 잘린 발은 거리 판정에서 제외하는 것이다.

@@ -64,3 +64,24 @@ def test_runtime_off_is_exact_noop():
  tr=SimpleNamespace();install(tr)
  assert vars(tr)=={} and update_station(tr,'r1',1.,{},None) is None
  assert PARAMS['reach_m']==pytest.approx(arm.MOUNT_X_M+physical['pair_radius_m'])
+
+def test_ground_guard_requires_current_beam_not_just_current_rgb(monkeypatch):
+ import harness.e2e_end_ground as ground
+ monkeypatch.setattr(ground,'occupied',lambda *args:pytest.fail('stale beam used for occupancy'))
+ s=Selector('r1','rgb_ground_v2');a=s.candidates(B,[2,0],[1,1,0])
+ for frame,now in [(2,1.4),(3,1.8)]:
+  row=s.observe_occupancy(a,[0,0,0],{},b'jpeg',frame,now,now)
+  assert row['status']=='unknown_no_current_beam_RGB' and not s.blocked
+
+def test_ground_range_disambiguates_same_bearing_and_rejects_clipped_feet():
+ import numpy as np
+ from harness.e2e_end_ground import foot_point,occupied
+ from harness.owncam_view import project_base_points
+ from harness.owncam_pair_beam_v2 import pose_of
+ servo=pose_of('search');xy=[1.,.05];uv=project_base_points(servo,np.array([[*xy,0.]]))[0]
+ bbox=[uv[0]-12,uv[1]-25,uv[0]+12,uv[1]]
+ assert foot_point(servo,bbox)==pytest.approx(xy,abs=1e-6)
+ c=[dict(id='near',station_own_m=[1.,.05,0.]),dict(id='far',station_own_m=[2.,.1,0.])]
+ hits=occupied(c,[0.,0.,0.],servo,[dict(bbox_px=bbox)])
+ assert len(hits['near'])==1 and not hits['far']
+ assert foot_point(servo,[0,100,30,200]) is None
