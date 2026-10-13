@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.model_endpoints.v1",
+  "note": "Pinned LLM endpoints watched by scripts/model_endpoint_watch.py. User 2026-10-13: \"할인이 멈추거나/ 서빙이 끝나면 알려줘\", \"지금 세션이 아니라; 규칙에 넣어야지\". Prices are USD per 1M tokens read from the OpenRouter endpoints API.",
+  "price_increase_tolerance": 0.05,
+  "endpoints": [
+    {
+      "role": "planner",
+      "model": "inclusionai/ling-3.0-flash-vl",
+      "provider": "Novita",
+      "baseline_usd_per_million": {
+        "prompt": 0.021,
+        "completion": 0.0616,
+        "input_cache_read": 0.0042
+      },
+      "recorded": "2026-10-13",
+      "source": "https://openrouter.ai/api/v1/models/inclusionai/ling-3.0-flash-vl/endpoints"
+    }
+  ]
+}
