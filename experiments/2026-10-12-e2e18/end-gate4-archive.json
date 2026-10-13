@@ -1,0 +1,845 @@
+{
+  "checked_unix": 1791912723.345707,
+  "runs": [
+    {
+      "name": "stage-end-gate4-00-v415",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-00-v415/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 252.67981166300024,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 2
+        },
+        "condition": "v415",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-00-v415",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-00-v415",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "7cadaad43fdf86aa48e195a9b4d8f04dfa781e5e7a3bf10bf0c0044415d84fea",
+          "reused": false,
+          "receiver_seconds": 1.59
+        },
+        "inventory_sha256": "34135522da143c6c8e4c263fe8108fe7bf6acad2b66fd762c19f1489bbc6f6de",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-00-v415.json",
+        "proof_sha256": "6088a147f30cdbfdfc40f09f951005302546ab2533963aeec3c67710a20a1b5c"
+      },
+      "sha256": {
+        "result.json": "7d4e88d17989e1ccb2356a25233b7907b16a550689b61cf0e5cd5de97f5e3d41",
+        "progress.json": "5f422df6a669f1141f2c30d2d79699508b70cabe79e164ac9285923903cdfd31",
+        "transport-trace.json": "9a7dd86192487d7683c2cc1e6859cb8ae4c99e4fa50aad87154ac4620170a3e1"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-00-v415",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-01-v416",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-01-v416/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 245.16670977099966,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 1,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 2
+        },
+        "condition": "v416",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-01-v416",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-01-v416",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "fedd22e5b853d9fbaa8ce141160b248382c860ea43983ddf1d80442490cb7944",
+          "reused": false,
+          "receiver_seconds": 1.436
+        },
+        "inventory_sha256": "88adfd893b68d890e4fd356f39a946d694ed64351aee31ed871163342228f249",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-01-v416.json",
+        "proof_sha256": "c2f70e9667b4fd1a546e621cd8f1039c8348a83a75cb38776618562f7cef1780"
+      },
+      "sha256": {
+        "result.json": "faca486da237fed07e5002514924ff43ed8ab57a239d8cc09e60d04ba7d4219c",
+        "progress.json": "402cae74be1b2e1889879a557474894b575b4d9240149a39881c27f193f3f4c5",
+        "transport-trace.json": "af35f7e32be783f58458f2fc249dfd39322b2070ba5619e228f286f4aa87eb21"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-01-v416",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-02-v417",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-02-v417/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 243.97517656499986,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 2
+        },
+        "condition": "v417",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-02-v417",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-02-v417",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "86e475ceb57ebbbfe690e892d3de6cb33fec4a622c495749a787d62274347906",
+          "reused": false,
+          "receiver_seconds": 2.014
+        },
+        "inventory_sha256": "1441ff0f1ba12177c734f8f7739718f63ec08116e0d9c7ae5abaa7b94644a2aa",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-02-v417.json",
+        "proof_sha256": "9b29244255c254c8f2387c8f9cb6acf1c4bdaf6f27a433a5f4892cc5af266e55"
+      },
+      "sha256": {
+        "result.json": "cb70a7411b99dcfc7a5c1b572f27dc7cfa6c61a723bb1c0585868eafa337675a",
+        "progress.json": "c10ec48f37f70fa45804ed21067a5f02bf84d849175c7cdde4e41d842582ba5a",
+        "transport-trace.json": "1a770c657e291b7917ee48a1425aa67e082929248fef7c60bb8f4a89b73670d8"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-02-v417",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-03-v418",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-03-v418/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 244.6014116010001,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 1,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 2
+        },
+        "condition": "v418",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-03-v418",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-03-v418",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "f06a1082bbbca9d28d3553b37f9e73f60cba404776e19d1447523321cb909527",
+          "reused": false,
+          "receiver_seconds": 1.376
+        },
+        "inventory_sha256": "8b79b7422791cdbff88df66afd5a40159cc7f1f29dd7a4d41e732d7a9b7b1bb6",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-03-v418.json",
+        "proof_sha256": "ed7ada379a32232520f5f50d11ba8055c8f63f810e0d5e895b7a94bc5adb1dec"
+      },
+      "sha256": {
+        "result.json": "07a756659aaa917fc649d3511058e9f31d7a2350ebce870143853646d4a5c131",
+        "progress.json": "6e330db518327c4782c04d7318a4155fbde8f11313d5b5027527e82c955c5751",
+        "transport-trace.json": "ff0956416db87f10e2968360ef0d0078209c9e0abbb5cb1837fbaaef8bea225d"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-03-v418",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-04-v415",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-04-v415/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 260.4489693640003,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v415",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-04-v415",
+        "files": 289,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-04-v415",
+          "files": 289,
+          "hash_matches": 289,
+          "inventory_sha256": "7d64bc0bfa2fdd333e2bed6fea002a68a1e23998a71bf0a43c24979f2ec27346",
+          "reused": false,
+          "receiver_seconds": 1.921
+        },
+        "inventory_sha256": "62d96417cdf79ab0e6583cd3520ffe68edc1a2e01b074b23d56c18d4df53384b",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-04-v415.json",
+        "proof_sha256": "34a6594f82ec39b42d7843329ba7372e4047ee6ca401bce31bcca5f3f173856a"
+      },
+      "sha256": {
+        "result.json": "9d3ac9dd0d58afc264323d4bab130315469f5d9ec0accce76736da4ce4ef4383",
+        "progress.json": "5bf45b302827980ad8dd55e98b3a17896cd9b967a53b2c588e31798ec72837c8",
+        "transport-trace.json": "9e9e3e6e57ab03aa510ab9e68aef8822708aaceeeabebbaf9b500ed26ed7e03d"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-04-v415",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-05-v416",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-05-v416/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 255.1033955859998,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 1,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v416",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-05-v416",
+        "files": 289,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-05-v416",
+          "files": 289,
+          "hash_matches": 289,
+          "inventory_sha256": "a79c712a66a4b65e06ac53cb86aaef85caf33870a9f7f6bf820dee0188c5a6b7",
+          "reused": false,
+          "receiver_seconds": 1.483
+        },
+        "inventory_sha256": "772348ce189d2ddf84a5ebe5d4306d5c3c8578421bd2ea3eeb2c0e9ab75606b2",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-05-v416.json",
+        "proof_sha256": "8799ed0d55ca196d54fe6c56e71e7e1f2c2c62f9eff179121f96ca5525ead2fd"
+      },
+      "sha256": {
+        "result.json": "0b753c696217b5febdb96c5da053c512a3efc2e9bbbd2926f2cab350700e655e",
+        "progress.json": "9169bdecb31a86cf82306654741e7340c75e982417ab3a68f9f439bcd6e088be",
+        "transport-trace.json": "68f764b49a8c92cf36b011b3a82b27e76454c019e4e46f1d3fabb937cb8b3eec"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-05-v416",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-06-v417",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-06-v417/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 249.47527065399936,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v417",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-06-v417",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-06-v417",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "cf2e07a68364a0f4d1013d95e7d0906542848f3f7f3911c2df7d6ce58ed8c00e",
+          "reused": false,
+          "receiver_seconds": 1.315
+        },
+        "inventory_sha256": "be2b4cee62e8ee68e9756422ee509007e7ab948897728990cb9dc7e930d17fa5",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-06-v417.json",
+        "proof_sha256": "dd050247380b7e5f451b83a1984d2d4ebf03c6d34e91a33ece0669301f6b0245"
+      },
+      "sha256": {
+        "result.json": "fe86cdfafdd9196efd20be32f6cfeafd8e644f6037ea474ac78ad62419135b48",
+        "progress.json": "b04c4f859a9258d7585c94f1007065332d2cf56aa5a47e373779832dcabafc52",
+        "transport-trace.json": "49a7783bca0b144d487952c865524f78494bbf675fd171c4e420fef9bd76b8d9"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-06-v417",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-07-v418",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-07-v418/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 250.1483120009998,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 2,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v418",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-07-v418",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-07-v418",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "ec349722c5a38cac52076abcd10c5709eb004b2924fee2acdc101aa1723747d5",
+          "reused": false,
+          "receiver_seconds": 1.809
+        },
+        "inventory_sha256": "51d2d6a055627068379d6f4372e83e20840d5c063e706edd1100494c3b4610c1",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-07-v418.json",
+        "proof_sha256": "25df2a002c3cf3f4b6ba19ec646f58a94dab245a30484824daba396e79ba7e3e"
+      },
+      "sha256": {
+        "result.json": "7bcca699f9d87392b55662183996b78f5a9e0c0db24f2b410ef180c03da993b4",
+        "progress.json": "fdeebd84b4f68ec303b6fdecdf3967fa33fd101acbdc18a982bb3c55314fc9ef",
+        "transport-trace.json": "a37f8e3040916c1397bd19a065b6fbec91c56cbe63d60ee22e6188ef114323b0"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-07-v418",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-08-v415",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-08-v415/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 263.02107067399993,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v415",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-08-v415",
+        "files": 289,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-08-v415",
+          "files": 289,
+          "hash_matches": 289,
+          "inventory_sha256": "5aa6e2cfea42fbdcecc6e840fba079d95a9ac148c735278c11d5f7edf74f4434",
+          "reused": false,
+          "receiver_seconds": 1.766
+        },
+        "inventory_sha256": "cfeb3dc6367a691ab20c967c83fb776e386e3c8e4e84d3c4e22d28accc760867",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-08-v415.json",
+        "proof_sha256": "8824d460d5b2f8d4be638cd4dcf2f511a7c25e0f7b4305fb5cc312285819b416"
+      },
+      "sha256": {
+        "result.json": "094ef83087b117fac5b6ae0818410fb3e8acc6c7512e6d0911edb52f470370cd",
+        "progress.json": "78de641d2b6d361546105cd77024ba2bc8fabc0ab2fbc6bf6954c9a1a55e072d",
+        "transport-trace.json": "1c4769056743a2302ac6cb1cf5806c21237614dff9871e7c8871a4d18c452169"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-08-v415",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-09-v416",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-09-v416/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 262.296845331,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 1,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v416",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-09-v416",
+        "files": 289,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-09-v416",
+          "files": 289,
+          "hash_matches": 289,
+          "inventory_sha256": "5cf0de9ccc425857316ae3723582113f640aa8063f407e5d44cf32cb1ff4526f",
+          "reused": false,
+          "receiver_seconds": 1.611
+        },
+        "inventory_sha256": "069a2989214d5e3f23be596aae7fb54c23dd93cb421173a0401501f7d9e90f77",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-09-v416.json",
+        "proof_sha256": "403496e1e6d8c1a65efb2a92abe3a752a989ffdedbe4ea2854585ff2aae925a2"
+      },
+      "sha256": {
+        "result.json": "1409290acc98604b34aa449ebbb8c924d64efc4cb875e31d0a898b35321729f2",
+        "progress.json": "26fc3074041e6d9f45380ee60c11065fa0ca395d5f9f3b96b3452d76e45261ba",
+        "transport-trace.json": "f7943fdbaf6c67f8bace078ef7ec6f693a8661d7cd20ef99fec7e50abe692415"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-09-v416",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-10-v417",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-10-v417/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 256.86843985999985,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 2
+        },
+        "condition": "v417",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-10-v417",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-10-v417",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "b52bbf7138b54e129d0092cb56f621b0caad83f7971ebe610c9b68b93e9b0ce9",
+          "reused": false,
+          "receiver_seconds": 2.164
+        },
+        "inventory_sha256": "48facf914c194c9d0442c1cbc7f1dee1a54b4f21ababb388e5d6b7f1c84cc983",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-10-v417.json",
+        "proof_sha256": "32529bcf6af347780f16854bd7bf32446f7a73fc97667da388482a8d64566b81"
+      },
+      "sha256": {
+        "result.json": "198808dd5d47e57a956848cf820d733ec73b619e4959e425f691ba1c24ccf80e",
+        "progress.json": "48989d2b1bfc287f9b0faf313bc379060ab41654d814481492cf278a7afa3fec",
+        "transport-trace.json": "55d62d7041535f5718dadfefe74dab26bf7f4668bf4e78fec26bc98015e729d1"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-10-v417",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-end-gate4-11-v418",
+      "exit": 0,
+      "source_sha": "0aaebff814c1c4f36a5e74382f85b631a519f604",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-end-gate4-11-v418/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 257.784335544,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 1,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 2
+        },
+        "condition": "v418",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-end-gate4-11-v418",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-end-gate4-11-v418",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "1b6a6fe6fcf25be97fc8fc26e95e411fadfe714b3e25b3a1b614f77c6fe64f61",
+          "reused": false,
+          "receiver_seconds": 1.304
+        },
+        "inventory_sha256": "db07e85c5e60f460a8814bc0fcdfb0456499b8bb197cde1058c5aa856f8255cd",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-end-gate4-11-v418.json",
+        "proof_sha256": "320980a99dab6c9e10cbe3196ccaa731932091bbafc05d017eb611eedbc5b477"
+      },
+      "sha256": {
+        "result.json": "0a4a45d5d1f99184562ed37027b44a2375b0326e669d559d05ea3e54e2a733d8",
+        "progress.json": "62e6c7d272802b4b365a1bd7ea0e2646c997ad9bb5ccd351f2e741244a2099f9",
+        "transport-trace.json": "21c1f02d94ef2631632d917c3db07e823c506b531b464687f4949c2642313be5"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-end-gate4-11-v418",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    }
+  ]
+}

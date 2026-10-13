@@ -1,5 +1,5 @@
 {
-  "status": "cohort3_running_11_after_resource_and_B_stall_stops",
+  "status": "cohort4_running",
   "same_end": 7,
   "opposite_end": 5,
   "both_reached": 12,
@@ -11,21 +11,27 @@
   },
   "stance_offset_m": 0.4732,
   "threshold_m": 0.25,
-  "live_runs": 0,
-  "model_calls": 7,
   "vm3": "running",
   "reserved_bundles": [
     407,
     408,
     409,
-    410
+    410,
+    411,
+    412,
+    413,
+    414,
+    415,
+    416,
+    417,
+    418
   ],
   "raw": "outputs/azure3-runs/stage-*-cohort*-*-grasp-*; oracle-codex:/home/ubuntu/ugrp-archive/runs/native-*",
   "notes": [
     "nearest approach over full run, not simultaneous occupancy",
     "saved-frame replay cannot establish counterfactual physical separation"
   ],
-  "module_tests_passed": 9,
+  "module_tests_passed": 46,
   "offline": {
     "evaluated_saved_rgb_frames": 90,
     "uniform_samples_per_robot": 13,
@@ -36,12 +42,15 @@
   "budget": {
     "attempt_cap": 600,
     "cost_cap_usd": 0.3,
-    "model_calls": 0
+    "model_calls": 38,
+    "charged_or_unknown_reserved_usd": 0.00594102,
+    "pending_reserved_usd": -1.3877787807814457e-17
   },
   "remaining": [
-    "Counterfactual separation of historical seven still unverified",
-    "No completed end-assignment grasp stage yet; cohort2 stopped on identified occupancy defect",
-    "Other communication conditions model/channel runtime not connected"
+    "Historical seven: local-rule first opposite choices 4/7; counterfactual arrival is not observable in saved trajectories",
+    "Cohort4 opposite stance and ready waiting metrics pending",
+    "Other communication conditions model/channel runtime not connected; current stage is no_comm only",
+    "Full carrying and physical robot performance untested"
   ],
   "registered_bundles": [
     407,
@@ -58,18 +67,16 @@
     418
   ],
   "source_stage": "grasp checkpoint only; no_comm; no full E2E",
-  "related_tests_passed": 41,
   "latest_related_tests_passed": 46,
-  "live_gate_runs": 48,
-  "live_main_runs": 16,
+  "live_gate_runs": 60,
+  "live_main_runs": 44,
   "gate1": {
     "completed_30_sim_s": 4,
     "administratively_interrupted": 12,
     "valid_speed_gate": false,
     "reason": "restore load 14.74 >12.8 and no common physics start"
   },
-  "model_cost_usd": 0.00110159,
-  "completed_main_runs": 0,
+  "completed_main_runs": 12,
   "false_occupancy_replay": {
     "rejected": 3,
     "N": 3
@@ -78,10 +85,78 @@
     "rgb_ground_v2",
     "gemma_ground_v2"
   ],
-  "current_active": 11,
+  "current_active": 12,
   "local_fallback_first_choices_opposite": {
     "n": 4,
     "N": 7,
     "physical_separation_verified": false
+  },
+  "cohort3": {
+    "submitted": 16,
+    "resource_censored": 4,
+    "eligible_N": 12,
+    "both_held": 1,
+    "first_attempt_success": 0,
+    "held_condition": "v411 baseline; not a new-candidate success",
+    "milestone": "first-stage-held-milestone.json",
+    "groups": {
+      "v411": {
+        "N": 3,
+        "excluded": 1,
+        "both_reached": 3,
+        "relations": {
+          "opposite": 1,
+          "same": 2
+        },
+        "both_held": 1,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 1,
+        "ready_wait_sim_s": [
+          33.60000000000002,
+          0,
+          188.0
+        ]
+      },
+      "v412": {
+        "N": 3,
+        "excluded": 1,
+        "both_reached": 3,
+        "relations": {
+          "same": 3
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 0,
+        "ready_wait_sim_s": [
+          188.0
+        ]
+      },
+      "v415": {
+        "N": 3,
+        "excluded": 1,
+        "both_reached": 3,
+        "relations": {
+          "opposite": 2,
+          "same": 1
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 3,
+        "ready_wait_sim_s": []
+      },
+      "v416": {
+        "N": 3,
+        "excluded": 1,
+        "both_reached": 3,
+        "relations": {
+          "opposite": 3
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 3,
+        "ready_wait_sim_s": []
+      }
+    },
+    "archive_manifest": "experiments/2026-10-12-e2e18/end-cohort3-archive.json"
   }
 }

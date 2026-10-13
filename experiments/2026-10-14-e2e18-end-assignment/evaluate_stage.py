@@ -29,12 +29,15 @@ def evaluate(p):
         a=trajectories['r1'];b=trajectories['r2'];ta=np.array([x['t'] for x in a]);tb=np.array([x['t'] for x in b]);pa=np.array([x['robot_xyz_m'][:2] for x in a]);pb=np.array([x['robot_xyz_m'][:2] for x in b]);ib=np.column_stack([np.interp(ta,tb,pb[:,k]) for k in range(2)])
         da=np.linalg.norm(pa[:,None,:]-stations[None,:,:],axis=2);db=np.linalg.norm(ib[:,None,:]-stations[None,:,:],axis=2)
         simultaneous=bool(np.any(((da[:,0]<.25)&(db[:,1]<.25))|((da[:,1]<.25)&(db[:,0]<.25))))
-    return dict(name=p.name,condition=result['condition'],source_run=result['source_run'],sim_s=result.get('sim_s'),status=result['status'],first_attempt_success=result.get('first_attempt_success',False),relation=relation,simultaneous_opposite=simultaneous,robots=robots)
+    stop_path=p/'SUPERVISOR_STOP.json'
+    stop=read(stop_path) if stop_path.exists() or stop_path.with_suffix('.json.zst').exists() else {};reason=stop.get('reason','')
+    eligible='-gate' not in p.name and not reason.startswith('MAIN_LOAD_')
+    return dict(eligible_for_denominator=eligible,supervisor_stop=stop,name=p.name,condition=result['condition'],source_run=result['source_run'],sim_s=result.get('sim_s'),status=result['status'],both_held=result.get('both_held',False),both_held_s=result.get('both_held_s'),first_attempt_success=result.get('first_attempt_success',False),relation=relation,simultaneous_opposite=simultaneous,robots=robots)
 
 if __name__=='__main__':
     rows=[evaluate(p) for p in sorted((ROOT/'outputs/azure3-runs').glob(sys.argv[1]))]
     groups={}
     for c in sorted({r['condition'] for r in rows}):
-        rs=[r for r in rows if r['condition']==c];groups[c]=dict(N=len(rs),relations=dict(collections.Counter(r['relation'] for r in rs)),first_attempt_success=sum(r['first_attempt_success'] for r in rs),simultaneous_opposite=sum(r['simultaneous_opposite'] for r in rs),ready_wait_sim_s=[v['ready_wait_sim_s'] for r in rs for v in r['robots'].values() if v.get('ready_wait_sim_s') is not None])
-    out=dict(evaluation_only=True,stance_offset_m=.4732,threshold_m=.25,metric='nearest over entire run for comparison to historical 5/12; simultaneous reported separately',groups=groups,runs=rows)
+        rs=[r for r in rows if r['condition']==c and r['eligible_for_denominator']];groups[c]=dict(N=len(rs),excluded=sum(r['condition']==c and not r['eligible_for_denominator'] for r in rows),both_reached=sum(r['relation']!='unreached' for r in rs),relations=dict(collections.Counter(r['relation'] for r in rs)),both_held=sum(r['both_held'] for r in rs),first_attempt_success=sum(r['first_attempt_success'] for r in rs),simultaneous_opposite=sum(r['simultaneous_opposite'] for r in rs),ready_wait_sim_s=[v['ready_wait_sim_s'] for r in rs for v in r['robots'].values() if v.get('ready_wait_sim_s') is not None])
+    out=dict(evaluation_only=True,stance_offset_m=.4732,threshold_m=.25,metric='nearest over entire run for comparison to historical 5/12; simultaneous separately; resource-censored excluded, known stall stops included as failures',groups=groups,runs=rows)
     Path(sys.argv[2]).write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(groups))
