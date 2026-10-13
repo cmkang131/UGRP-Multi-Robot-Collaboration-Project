@@ -31,11 +31,15 @@ Dataset/request/candidate content is unchanged from r4 DEV. Cached ratio is
 sum(cached_tokens)/sum(prompt_tokens), with missing reporting marked unknown.
 Image probes use r80's previously verified own RGB. No VM submission.
 
+Diagnostic 3/3 returned HTTP 200 at two-second spacing. No 429 body or numeric
+rate-limit headers were returned, so the old throttle source remains unconfirmed
+at diagnostic stage; do not infer Novita solely from provider pinning.
+
 ## References checked 2026-10-14
 
 - [OpenRouter limits](https://openrouter.ai/docs/api_reference/limits): distinguishes platform vs upstream 429; platform rate headers and provider error metadata are diagnostic evidence. Paid variants do not have the documented free-model RPM cap. Actual provider quota requires response evidence.
 - [OpenRouter errors](https://openrouter.ai/docs/api_reference/errors-and-debugging): standard error envelope, provider_code, and Retry-After handling; preserve response body as well as status.
-- [AWS exponential backoff and jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/): full jitter spreads retries instead of synchronizing bursts (verification below before final report).
+- [AWS exponential backoff and jitter](https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/): full jitter spreads retries instead of synchronizing bursts (verified).
 
 A numeric quota is reported only if returned by the provider/platform. The
 configured 30/min client limit and observed throughput are separate quantities.

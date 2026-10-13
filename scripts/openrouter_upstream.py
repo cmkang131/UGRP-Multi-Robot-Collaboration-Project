@@ -55,7 +55,8 @@ def config(provider_order=PROVIDER_ORDER, *, selection=None, max_attempts=MAX_AT
         from scripts.openrouter_ling_policy import POLICY,PARAMETERS
         from harness.task_planner_model import LING
         if rate_limit_policy!=POLICY or choice!=LING:raise ValueError('LING_ONLY_RATE_POLICY')
-        value.update(rate_limit_policy=POLICY,rate_limit_parameters=PARAMETERS,max_usd=max_usd)
+        value.update(rate_limit_policy=POLICY,rate_limit_parameters=PARAMETERS,max_usd=max_usd,
+            rate_limit_source_sha256=hashlib.sha256(Path(__file__).with_name('openrouter_ling_policy.py').read_bytes()).hexdigest())
     return value
 
 

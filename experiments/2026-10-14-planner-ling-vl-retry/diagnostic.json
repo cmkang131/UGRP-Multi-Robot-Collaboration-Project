@@ -1,0 +1,76 @@
+{
+  "source_sha": "f81bced0",
+  "attempts": 3,
+  "statuses": [
+    200,
+    200,
+    200
+  ],
+  "cost_usd": 0.000217308,
+  "throttle_source": "unconfirmed: no 429 in three permitted probes",
+  "raw_path": "outputs/planner-ling-vl-r2-state/openrouter/http_responses.jsonl",
+  "sha256": "261c4dae776f429aa16e2aeaa63b6edae83a348649f0bb93b14ed5a3d5ba2be2",
+  "included_in_new_600_attempt_limit": true,
+  "responses": [
+    {
+      "call": 1,
+      "request_id": "s4live1-ling-r2-diagnostic-0",
+      "attempt": 1,
+      "status": 200,
+      "wall_s": 1.2184460000135005,
+      "pacing_wait_s": 0.0,
+      "retry_wait_before_s": 0.0,
+      "headers": {
+        "date": "Tue, 13 Oct 2026 15:06:56 GMT",
+        "cf-ray": "a49f40407c83aa6c-ICN"
+      },
+      "cost": 5.8905e-05,
+      "accounted_cost": 5.8905e-05,
+      "model": "inclusionai/ling-3.0-flash-vl",
+      "provider": "Novita",
+      "prompt_tokens": 3533,
+      "completion_tokens": 66,
+      "cached_tokens": 1152
+    },
+    {
+      "call": 2,
+      "request_id": "s4live1-ling-r2-diagnostic-1",
+      "attempt": 1,
+      "status": 200,
+      "wall_s": 1.3266015000408515,
+      "pacing_wait_s": 0.779809125000611,
+      "retry_wait_before_s": 0.0,
+      "headers": {
+        "date": "Tue, 13 Oct 2026 15:06:58 GMT",
+        "cf-ray": "a49f404cb8a35787-ICN"
+      },
+      "cost": 9.8924e-05,
+      "accounted_cost": 9.8924e-05,
+      "model": "inclusionai/ling-3.0-flash-vl",
+      "provider": "Novita",
+      "prompt_tokens": 4868,
+      "completion_tokens": 86,
+      "cached_tokens": 512
+    },
+    {
+      "call": 3,
+      "request_id": "s4live1-ling-r2-diagnostic-2",
+      "attempt": 1,
+      "status": 200,
+      "wall_s": 1.079912667046301,
+      "pacing_wait_s": 0.6654077089624479,
+      "retry_wait_before_s": 0.0,
+      "headers": {
+        "date": "Tue, 13 Oct 2026 15:07:00 GMT",
+        "cf-ray": "a49f40593b94490f-ICN"
+      },
+      "cost": 5.9479e-05,
+      "accounted_cost": 5.9479e-05,
+      "model": "inclusionai/ling-3.0-flash-vl",
+      "provider": "Novita",
+      "prompt_tokens": 3499,
+      "completion_tokens": 52,
+      "cached_tokens": 1024
+    }
+  ]
+}
