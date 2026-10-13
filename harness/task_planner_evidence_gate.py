@@ -23,8 +23,16 @@ def option(value):
     return value
 
 
-def _claim(body, facts):
+def _claim(body, facts, task=None):
     from harness.task_planner_evidence import reported_fact
+    if task:
+        from harness.task_planner_cost_rules import SPECS, FACT_KEYS, extract_english, extract_fixed
+        domain=next((d for d,s in SPECS.items() if s['task']==task),None)
+        if domain:
+            values=extract_english(domain,body) if isinstance(body,str) else extract_fixed(domain,body)
+            if len(values)==1:
+                subject,predicate=FACT_KEYS[domain]
+                return dict(subject=subject,predicate=predicate,value=values[0])
     if isinstance(body, str):
         # Keep properties attached to their named subject. A clear door_wide
         # must not corroborate a blocked door_narrow in the same report.
@@ -52,13 +60,14 @@ def apply(context, mode='off'):
     reports = []; retained = []; archived = []
     messages = ctx['received_messages'] if ctx['condition'] != 'no_comm' else []
     for m in messages:
-        claim = _claim(m['body'], facts)
+        claim = _claim(m['body'], facts, ctx.get('task'))
         same = [f for f in facts if claim and all(f.get(k) == claim.get(k) for k in ('subject','predicate'))]
         latest = max(same, key=lambda f:f['observed_at']) if same else None
-        conflict = bool(latest and latest['observed_at'] >= m['sent_at'] and latest['value'] != claim.get('value'))
+        fresh_own=bool(latest and now-latest['observed_at']<=PARAMETERS['stale_after_s'])
+        conflict = bool(fresh_own and latest['observed_at'] >= m['sent_at'] and latest['value'] != claim.get('value'))
         stale = now-m['sent_at'] > PARAMETERS['stale_after_s']
         # A newer direct observation can corroborate even an expired report.
-        corroborated = bool(latest and latest['observed_at'] >= m['sent_at'] and latest['value'] == claim.get('value'))
+        corroborated = bool(fresh_own and latest['observed_at'] >= m['sent_at'] and latest['value'] == claim.get('value'))
         status = 'conflict' if conflict else 'stale' if stale else 'unverified_current'
         evidence = dict(message_id=m['id'], age_s=now-m['sent_at'],
                         own_observed_at=latest['observed_at'] if latest else None,
@@ -103,7 +112,7 @@ def apply(context, mode='off'):
         current={}
         for e in dependencies:
             m=next(m for m,_,_ in reports if m['id']==e['message_id'])
-            claim=_claim(m['body'],facts)
+            claim=_claim(m['body'],facts,ctx.get('task'))
             key=(m['sender'],) if algebra is not None else (m['sender'], claim['subject'], claim['predicate']) if claim else (m['sender'],m['id'])
             if key not in current or e['age_s']<current[key]['age_s']:current[key]=e
         used=list(current.values())

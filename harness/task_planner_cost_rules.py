@@ -26,6 +26,13 @@ def costs(domain,p,w):
 
 def domain_of(view):return next(d for d,s in SPECS.items() if s['task']==view['task'])
 
+# Public perception hypotheses, not privileged task labels. RGB estimates can
+# be absent, old, or mistaken. These keys also identify explicit report claims.
+FACT_KEYS={'next':('orders','claimed_order'), 'pair':('r2','availability'),
+ 'help':('beam_1','help_request'), 'wait':('r2','rendezvous_proximity'),
+ 'yield':('corridor_1','partner_intention'), 'route':('door_narrow','passage_state'),
+ 'correct':('target','last_seen_location'), 'relation':('can_1','west_approach')}
+
 def extract_fixed(d,b):
  if d=='next':return ['cyan_claimed' if b.get('item')=='cyan' else 'red_claimed']
  if d=='pair':return ['available' if b['act']=='accept' else 'unavailable']
@@ -37,25 +44,34 @@ def extract_fixed(d,b):
  return ['clear'] if b['state']=='clear' else ['beam_blocks','robot_blocks']
 
 def extract_english(d,text):
- t=text.lower()
+ # Normalization and compositional variants are based only on the original
+ # tuning vocabulary. No confirmation templates/results are parser fixtures.
+ t=re.sub(r'\s+',' ',text.lower().replace('’',"'"))
+ for short,long in {"i'm":"i am", "can't":"cannot", "isn't":"is not",
+                    "i've":"i have", "don't":"do not"}.items():t=t.replace(short,long)
  if d=='next':
-  m=re.search(r'(?:claimed the|handling) (cyan|red)|the (cyan|red) job is mine',t)
+  m=re.search(r'(?:claim(?:ed|ing)?(?: the)?|handling) (cyan|red)|(?:the )?(cyan|red) (?:job|order) is mine',t)
   return [(next(g for g in m.groups() if g))+'_claimed'] if m else []
  if d=='pair':
-  if re.search(r'unavailable|cannot join|cannot be your',t):return ['unavailable']
-  if re.search(r'available|can join|can be your',t):return ['available']
+  if re.search(r'\bunavailable\b|not available|cannot (?:join|be your)|gripper is occupied|carrying my solo load',t):return ['unavailable']
+  if re.search(r'\bavailable\b|can (?:join|be your)|gripper is empty|not tied up',t):return ['available']
  if d=='help':
-  if re.search(r'withdraw|no longer need|cancel my',t):return ['withdrawn']
-  if re.search(r'still active|still need|nobody at the other',t):return ['needs_help']
+  if re.search(r'withdraw|no longer need|cancel (?:my |the )?(?:earlier )?request|second end is covered',t):return ['withdrawn']
+  if re.search(r'still active|still need|nobody at the other|need a second carrier',t):return ['needs_help']
  if d=='wait':
-  if re.search(r'delayed|stuck|not arrive shortly|still far away',t):return ['late']
-  if re.search(r'near the beam|around the corner|almost at the beam',t):return ['near']
+  if re.search(r'delayed|stuck|(?:cannot|not) arrive (?:shortly|soon)|(?:still )?far away',t):return ['late']
+  if re.search(r'near (?:the )?(?:beam|rendezvous)|around the corner|almost at the beam|short trip away|not be late',t):return ['near']
  if d=='yield':
-  if re.search(r'not yielding|already inside|have entered',t):return ['committed']
+  if re.search(r'not yielding|already inside|have entered|committed to crossing|crossing is underway',t):return ['committed']
   if re.search(r'yielding in|pulled into|not entering|giving you the turn',t):return ['yielding']
  if d=='route':
-  if re.search(r'not blocked|nothing is obstructing|door_narrow clear',t):return ['clear']
-  if re.search(r'blocked|no way through|not clear',t):return ['blocked']
+  # Evaluate only clauses naming the target; a clear wide door is unrelated.
+  values=set()
+  for clause in re.split(r'[.;]|\b(?:but|while|whereas|and)\b',t):
+   if 'door_narrow' not in clause:continue
+   if re.search(r'not blocked|nothing is obstructing|door_narrow (?:is )?(?:clear|open|passable)',clause):values.add('clear')
+   elif re.search(r'blocked|blocking|no way through|not clear',clause):values.add('blocked')
+  return sorted(values) if len(values)==1 else []
  if d=='correct':
   if re.search(r'fell|dropped|down on.*floor',t):return ['dropped']
   if 'p1-3' in t:return ['new']
@@ -79,13 +95,15 @@ def rule(view):
    posterior={w:(1-trust)/len(ws)+trust*(w in matches)/len(matches) for w in ws}
  verification=False
  own_facts=view['self_state'].get('observed_facts',[])
- if d=='route':
-  direct=[f for f in own_facts if f.get('subject')=='door_narrow' and f.get('predicate')=='passage_state' and f.get('value') in ws and 0<=f.get('observed_at',float('inf'))<=view['now_s']]
-  if direct:
-   latest=max(direct,key=lambda f:f['observed_at'])
-   if not messages or latest['observed_at']>=messages[-1]['observation_time_s']:
-    verification=bool(parsed and latest['value'] not in parsed)
-    posterior={w:float(w==latest['value']) for w in ws}
+ subject,predicate=FACT_KEYS[d]
+ direct=[f for f in own_facts if f.get('subject')==subject and f.get('predicate')==predicate and f.get('value') in ws and 0<=f.get('observed_at',float('inf'))<=view['now_s']]
+ if direct:
+  latest=max(direct,key=lambda f:f['observed_at'])
+  if view['now_s']-latest['observed_at']<=30 and (not messages or latest['observed_at']>=messages[-1]['observation_time_s']):
+   verification=bool(parsed and latest['value'] not in parsed)
+   # Own visual inference is also fallible; never turn it into certainty.
+   trust=.8
+   posterior={w:(1-trust)/len(ws)+trust*(w==latest['value']) for w in ws}
  expected={a:sum(posterior[w]*costs(d,view['self_state']['travel_estimates'],w)[a] for w in ws) for a in view['candidates']}
  # Full candidate enumeration is exact for this small stage, stronger than greedy local choice.
  action='inspect' if verification and 'inspect' in expected else min(expected,key=lambda a:(expected[a],a))

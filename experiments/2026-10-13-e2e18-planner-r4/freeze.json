@@ -1,0 +1,25 @@
+{
+  "dev_worlds": 200,
+  "arms": [
+    "no_comm",
+    "peer_en"
+  ],
+  "stale": 54,
+  "wrong": 56,
+  "other_stratified": 90,
+  "expected_calls": 400,
+  "expected_usd": 0.18,
+  "hard_cap_usd": 0.3,
+  "stop_if_remaining_below_usd": 1.5,
+  "full_gate": "peer_en wrong model-only n > 0/56; descriptive versus r3, changed observation distribution; no retuning after DEV",
+  "unused_confirmation_seed": 2026101405,
+  "parser_sha256": "2c13dbab6b1727e793b937ebf2b7fc86d3ab66307fc13ce35d73a0d4b4857aac",
+  "tests": {
+    "passed": 17,
+    "files": [
+      "test_task_planner_observed.py",
+      "test_task_planner_evidence_gate.py",
+      "test_task_planner_dataset.py"
+    ]
+  }
+}

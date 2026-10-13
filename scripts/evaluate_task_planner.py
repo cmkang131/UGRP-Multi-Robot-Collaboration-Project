@@ -65,7 +65,7 @@ def adapt(row, arm, planner_evidence_gate='off'):
         body = copy.deepcopy(m['body'])
         if isinstance(body, str): body = f"Observation confidence: {m['confidence']}. " + body
         p.receive(dict(id=f'source-{i}', sender=m['sender'], recipient=p.robot_id,
-                       sent_at=m['observation_time_s'], delivered_at=99., body=body), 100.)
+                       sent_at=m['observation_time_s'], delivered_at=view['now_s']-1, body=body), view['now_s'])
     menu, labels = [], {}
     for label, description in view['candidates'].items():
         act, args = action(label, view)
