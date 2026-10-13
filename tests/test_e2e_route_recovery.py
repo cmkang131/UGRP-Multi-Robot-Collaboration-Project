@@ -89,7 +89,8 @@ def test_eval_separate_swept_geometry_not_waypoint_only():
     assert sp.evaluate(r,s,e)['collision_free']
     e['obstacles_xyxy']=[[.94,-.03,.96,.03]]
     assert not sp.evaluate(r,s,e)['collision_free']
-    assert sp.replay(s,m.OPTION)==r  # labels cannot influence the planner
+    again=sp.replay(s,m.OPTION)
+    assert {k:v for k,v in again.items() if k!='planner_compute_s'}=={k:v for k,v in r.items() if k!='planner_compute_s'}  # labels cannot influence the planner
     with pytest.raises(ValueError):sp.evaluate(r,s,{**e,'input_sha256':'bad'})
     with pytest.raises(Exception):sp.restore({**s,'eval_only':e})
 

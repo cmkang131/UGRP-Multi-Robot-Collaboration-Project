@@ -73,7 +73,7 @@ def nearest_path(allowed, clearance, start, target, last, lo, resolution, tolera
     return None, np.asarray(last, float)
 
 
-def search(grid, first, last, yaw, strict_margin, *, dev_light, tolerance=None):
+def search(grid, first, last, yaw, strict_margin, *, dev_light, tolerance=None, clearance_fn=footprint_clearance, nearest_fn=nearest_path):
     """Return observed route, diagnostics and a non-executable unknown-space hint."""
     if grid.robot_id != 'r1':
         raise ValueError('R1_PRIVATE_GRID_REQUIRED')
@@ -95,8 +95,8 @@ def search(grid, first, last, yaw, strict_margin, *, dev_light, tolerance=None):
                 would_stop_unknown=False, observed_coverage_complete=False)
     result = None
     for margin in dict.fromkeys(margins):
-        _, allowed, clearance, _ = footprint_clearance(View(state,lo,grid.resolution), PAIR_FOOTPRINT, margin, yaw=yaw)
-        cells, endpoint = nearest_path(allowed,clearance,start,target,last,lo,grid.resolution,tolerance)
+        _, allowed, clearance, _ = clearance_fn(View(state,lo,grid.resolution), PAIR_FOOTPRINT, margin, yaw=yaw)
+        cells, endpoint = nearest_fn(allowed,clearance,start,target,last,lo,grid.resolution,tolerance)
         diag['attempts'].append(dict(margin_m=margin, start_clear=valid(allowed,start),
             target_clear=valid(allowed,target), allowed_cells=int(allowed.sum()), path_cells=len(cells or [])))
         result = allowed,clearance,lo,cells,endpoint
@@ -109,8 +109,8 @@ def search(grid, first, last, yaw, strict_margin, *, dev_light, tolerance=None):
     diag['carrier_blocks_observed_point_path'] = bool(diag['point_path_in_observed_free'] and not result[3])
     # Diagnostic-only allow_unknown with exactly the same physical envelope.
     optimistic = state.copy(); optimistic[optimistic==0] = -1
-    _, possible, clearance, _ = footprint_clearance(View(optimistic,lo,grid.resolution), PAIR_FOOTPRINT,.02,yaw=yaw)
-    hint, _ = nearest_path(possible,clearance,start,target,last,lo,grid.resolution,tolerance)
+    _, possible, clearance, _ = clearance_fn(View(optimistic,lo,grid.resolution), PAIR_FOOTPRINT,.02,yaw=yaw)
+    hint, _ = nearest_fn(possible,clearance,start,target,last,lo,grid.resolution,tolerance)
     diag.update(allow_unknown_path_cells=len(hint or []), applied_margin_m=.02 if dev_light else strict_margin,
                 would_stop_sigma=False)
     if state[start[1],start[0]] == 1:
@@ -143,7 +143,7 @@ def search(grid, first, last, yaw, strict_margin, *, dev_light, tolerance=None):
 
 def install(goal, option='off'):
     if option == 'off': return
-    if option != OPTION or goal.robot_id != 'r1': raise ValueError('INVALID_ROUTE_RECOVERY')
+    if option not in (OPTION,'footprint_v2') or goal.robot_id != 'r1': raise ValueError('INVALID_ROUTE_RECOVERY')
     goal.e2e_route_recovery = option
     goal.e2e_route_focus = None
     navigator=goal.explorer.navigator
@@ -180,6 +180,9 @@ def rank_frontiers(rows, focus, pose, grid):
 
 def compose(bundle,option='off'):
     if option=='off':return ()
+    if option=='footprint_v2':
+        from harness.e2e_route_footprint import compose as footprint_compose
+        return footprint_compose(bundle)
     if option!=OPTION or bundle['execution_bundle_id']!='e2e18-v375':
         raise ValueError('ROUTE_RECOVERY_REQUIRES_V375')
     bundle['route_recovery_parent']='e2e18-v375'

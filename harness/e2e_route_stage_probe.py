@@ -14,11 +14,12 @@ from harness.e2e_goal_route import IntegratedGoalRoute
 from harness.zone_study_contract import ContractViolation
 from harness import e2e_own_inputs as own
 
-SCHEMA='ugrp.e2e_route_stage_snapshot.v1'
-ATTRS=('route_guard','route_coverage','route_extent','route_cost','beam_axis','carrier_axes')
+SCHEMA='ugrp.e2e_route_stage_snapshot.v2'
+LEGACY_SCHEMA='ugrp.e2e_route_stage_snapshot.v1'
+ATTRS=('route_guard','route_coverage','route_extent','route_cost','beam_axis','carrier_axes','route_recovery')
 
 
-def capture(goal,beam,*,now,profiles,pulse_budget='off'):
+def capture(goal,beam,*,now,profiles,pulse_budget='off',endpoint=None,endpoint_sources=None):
     """Call at a mapping boundary on the execution host; never capture a world."""
     grid=goal.explorer.grid
     state=dict(schema=SCHEMA,robot_id=goal.robot_id,t_sim=now,
@@ -32,6 +33,9 @@ def capture(goal,beam,*,now,profiles,pulse_budget='off'):
         covariance=np.asarray(goal.pose_covariance()).tolist(),
         beam=copy.deepcopy(beam),entities=copy.deepcopy(goal.entities),
         B_reference=copy.deepcopy(goal.e2e_gate.references.get('B',{}).get('ref')),
+        B_boundary=copy.deepcopy(goal.e2e_gate.references.get('B',{}).get('boundary')),
+        route_call=dict(endpoint=copy.deepcopy(endpoint),endpoint_sources=copy.deepcopy(endpoint_sources)),
+        grid_flags={k:bool(getattr(grid,k,False)) for k in ('_clearance_bounds_v1','_polygon_clearance_v2')},
         observed=copy.deepcopy(goal.e2e_observed),options=copy.deepcopy(goal.e2e_options),
         attrs={k:getattr(goal,'e2e_'+k,'off') for k in ATTRS},
         version=goal.e2e_version,dev_light=goal.dev_light,
@@ -46,18 +50,22 @@ def restore(state):
     required={'schema','robot_id','t_sim','resolution_m','odds','floor_frames','wall_frames','support',
               'map_to_odom','local_pose','covariance','beam','entities','B_reference','observed','options',
               'attrs','version','dev_light','profiles','pulse_budget'}
-    if set(state)!=required or state['schema']!=SCHEMA or state['robot_id']!='r1':
+    if state.get('schema')==SCHEMA:required|={'B_boundary','route_call','grid_flags'}
+    if set(state)!=required or state['schema'] not in (SCHEMA,LEGACY_SCHEMA) or state['robot_id']!='r1':
         raise ValueError('PRIVATE_ROUTE_SNAPSHOT_REQUIRED')
     g=ObservedGrid('r1',state['resolution_m'])
     for key in ('odds','floor_frames','wall_frames'):
         setattr(g,key,{(x,y):v if key=='odds' else set(v) for x,y,v in state[key]})
     g.support={tuple(c) for c in state['support']}
+    for k,v in state.get('grid_flags',{}).items():
+        if k not in ('_clearance_bounds_v1','_polygon_clearance_v2'):raise ValueError('UNKNOWN_GRID_FLAG')
+        setattr(g,k,v)
     c=IntegratedGoalRoute.__new__(IntegratedGoalRoute)
     c.robot_id='r1';c.dev_light=state['dev_light'];c.e2e_version=state['version']
     c.explorer=SimpleNamespace(grid=g,map_to_odom=np.asarray(state['map_to_odom']),local_pose=np.asarray(state['local_pose']))
     c.pose_covariance=lambda:copy.deepcopy(state['covariance'])
     c.entities=copy.deepcopy(state['entities']);c.e2e_observed=copy.deepcopy(state['observed'])
-    c.e2e_gate=SimpleNamespace(references={'B':{'ref':state['B_reference']}} if state['B_reference'] else {})
+    c.e2e_gate=SimpleNamespace(references={'B':{'ref':state['B_reference'],'boundary':copy.deepcopy(state.get('B_boundary'))}} if state['B_reference'] else {},current={'boundary':copy.deepcopy(state.get('route_call',{}).get('endpoint'))})
     c.e2e_options=copy.deepcopy(state['options']);c.e2e_route_diagnostics={}
     for k,v in state['attrs'].items():setattr(c,'e2e_'+k,v)
     c.event=lambda *a,**kw:None
@@ -65,16 +73,19 @@ def restore(state):
 
 
 def replay(state,option='off'):
-    if option not in ('off','frontier_v1'):raise ValueError('UNKNOWN_ROUTE_RECOVERY')
+    if option not in ('off','frontier_v1','footprint_v2'):raise ValueError('UNKNOWN_ROUTE_RECOVERY')
     c=restore(state)
     # No navigator or motion is run by this one-call stage probe.
     c.e2e_route_recovery=option
-    packet=None;failure=None
+    import time
+    packet=None;failure=None;started=time.perf_counter()
     try:
-        packet=c.route_to_B(state['beam'],now=state['t_sim'],profiles=state['profiles'],pulse_budget=state['pulse_budget'])
+        call=dict(state.get('route_call',{}))
+        if call.get('endpoint') is not None:call['endpoint']=c.e2e_gate.current['boundary']
+        packet=c.route_to_B(state['beam'],now=state['t_sim'],profiles=state['profiles'],pulse_budget=state['pulse_budget'],**call)
     except (ContractViolation,ValueError) as exc:
         failure=str(exc)
-    return dict(option=option,generated=packet is not None,
+    return dict(option=option,generated=packet is not None,planner_compute_s=time.perf_counter()-started,
         observed_complete=bool(packet and packet.get('observed_coverage_complete',True)),
         failure=failure,diagnostics=c.e2e_route_diagnostics,
         route=None if packet is None else packet['route'],

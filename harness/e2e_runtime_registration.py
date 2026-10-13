@@ -33,6 +33,12 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] in ('e2e18-v387','e2e18-v388','e2e18-v390'):
+        from harness.e2e_route_input_record import parent_for_validation as record_parent
+        return require_current(record_parent(bundle),root)
+    if bundle['execution_bundle_id']=='e2e18-v389':
+        from harness.e2e_route_footprint import parent_for_validation as footprint_parent
+        return require_current(footprint_parent(bundle),root)
     if bundle['execution_bundle_id']=='e2e18-v381':
         from harness.e2e_route_recovery import parent_for_validation as route_parent
         return require_current(route_parent(bundle),root)

@@ -138,9 +138,17 @@ class IntegratedGoalRoute(GoalRoute):
         recovery = getattr(self, 'e2e_route_recovery', 'off') != 'off'
         if recovery:
             from harness.e2e_route_recovery import search
+            extra={}
+            if self.e2e_route_recovery=='footprint_v2':
+                from harness.e2e_route_footprint import search
+                boundary=copy.deepcopy(reference.get('boundary'))
+                if boundary and 'polygon' in boundary:
+                    boundary['polygon']=transform(boundary['polygon'],tf).tolist()
+                    boundary['center']=transform([boundary['center']],tf)[0].tolist()
+                extra['boundary']=boundary
             result, details, focus = search(grid, first, last,
                 float(tf[2])+beam['pose_own_m'][2], margin, dev_light=self.dev_light,
-                tolerance=0. if endpoint is not None else None)
+                tolerance=0. if endpoint is not None else None, **extra)
             allowed, clearance, lo, cells, selected = result
             self.e2e_route_diagnostics.update(details, t=now, stage='grid_route',
                 strict_margin_m=margin, B_own_m=list(target), map_to_odom=np.asarray(tf).tolist())
@@ -160,7 +168,16 @@ class IntegratedGoalRoute(GoalRoute):
         if not cells: raise ContractViolation('OWN_GRID_ROUTE_UNAVAILABLE')
         path = [start] + transform([grid.point(np.asarray(c)+lo) for c in cells], inverse(tf)).tolist() + [list(target)]
 
+        exact_clear=None
+        if getattr(self,'e2e_route_recovery','off')=='footprint_v2':
+            from harness.e2e_route_footprint import sweep_checker
+            state,dense_lo=grid.dense()
+            exact_clear=sweep_checker(state,dense_lo,grid.resolution,float(tf[2])+beam['pose_own_m'][2],
+                self.e2e_route_diagnostics['applied_margin_m'])
+
         def clear(a, b):
+            if exact_clear is not None:
+                return exact_clear(*transform([a,b],tf))
             n = max(1, math.ceil(math.dist(a, b)/(grid.resolution/2)))
             for point in transform(np.linspace(a, b, n+1), tf):
                 x, y = np.asarray(grid.cell(point))-lo
@@ -174,6 +191,10 @@ class IntegratedGoalRoute(GoalRoute):
             points=from_axes(cardinal_path(to_axes(path,carrier_basis),
                 lambda a,b:clear(*from_axes([a,b],carrier_basis))),carrier_basis)
         else:points = cardinal_path(path, clear)
+        if exact_clear is not None:
+            if not all(clear(a,b) for a,b in zip(points,points[1:])):
+                raise ContractViolation('FOOTPRINT_SWEEP_COLLISION')
+            self.e2e_route_diagnostics['sweep_validated']=True
         # Occupied cell edges retain the actual wall RGB references. Empty or
         # unknown cells are not fabricated as observations of free space.
         refs = {r['frame_id']: r for r in sources}; walls = []
