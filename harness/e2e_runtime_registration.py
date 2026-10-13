@@ -33,6 +33,9 @@ def register(bundle, option='off'):
 
 
 def require_current(bundle, root):
+    if bundle['execution_bundle_id'] in ('e2e18-v344','e2e18-v345'):
+        from harness.e2e_body_skills import parent_for_validation as skill_parent
+        return require_current(skill_parent(bundle),root)
     if bundle['execution_bundle_id'] in ('e2e18-v335','e2e18-v336','e2e18-v337'):
         from harness.e2e_body_controller import parent_for_validation as body_parent
         return require_current(body_parent(bundle),root)

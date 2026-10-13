@@ -1,10 +1,12 @@
 {
-  "status": "implementation_verified_physics_pending",
+  "status": "body_skills_offline_verified_vm_request_pending",
   "base_sha": "495b606fe99e6ced0fa1659a9db89324f51e4c4e",
   "bundle_ids": [
-    "e2e18-v335",
-    "e2e18-v336",
-    "e2e18-v337"
+    335,
+    336,
+    337,
+    344,
+    345
   ],
   "offline_rounds": [
     {
@@ -156,6 +158,12 @@
       "failure": "probe reporting TypeError duplicate tier after provider response",
       "raw": "outputs/e2e18-body/relay-r1/calls.jsonl",
       "preserved": true
+    },
+    {
+      "round": "r70-skills-d1-r3",
+      "failure": "pre-query TypeError integer servo dictionary key",
+      "provider_calls": 0,
+      "raw": "outputs/e2e18-body/offline-r70-skills-d1-r3.log"
     }
   ],
   "baseline": {
@@ -188,5 +196,129 @@
       "tests/test_e2e_s4_live.py"
     ],
     "raw": "outputs/e2e18-body/pytest-6.txt"
-  }
+  },
+  "default_backend": "liquid_d1",
+  "default_off": true,
+  "latest_tests": {
+    "passed": 70,
+    "skipped": 1,
+    "raw": "outputs/e2e18-body/pytest-skills-5.txt"
+  },
+  "r70_replay_rounds": [
+    {
+      "file": "outputs/e2e18-body/offline-r70-skills-d1-r1.json",
+      "sha256": "b5670540d0e5539f53fbeb4f497508c49ea93f6624812e3e93f76012dfa3d4b5",
+      "summary": {
+        "liquid_d1": {
+          "N": 24,
+          "ok": 0,
+          "valid": 0,
+          "agree_code": 0,
+          "non_wait_choices": 0,
+          "latency_median_s": null,
+          "by_phase": {
+            "mapping": {
+              "N": 24,
+              "valid": 0,
+              "failed": 24
+            }
+          },
+          "cost_usd": null,
+          "cost_unknown_calls": 24,
+          "input_tokens": 0
+        }
+      },
+      "scope": "counterfactual decisions on eight saved own-RGB scenes; not movement success"
+    },
+    {
+      "file": "outputs/e2e18-body/offline-r70-skills-d1-r2.json",
+      "sha256": "be5bbb29c7bf9324e2a3fa7a3bd3fb13b223bdeff9c61512310e2cdb45183321",
+      "summary": {
+        "liquid_d1": {
+          "N": 24,
+          "ok": 24,
+          "valid": 24,
+          "agree_code": 18,
+          "non_wait_choices": 24,
+          "latency_median_s": 0.4968097080127336,
+          "by_phase": {
+            "mapping": {
+              "N": 24,
+              "valid": 24,
+              "failed": 0
+            }
+          },
+          "cost_usd": 0.00258492,
+          "cost_unknown_calls": 0,
+          "input_tokens": 64623
+        }
+      },
+      "scope": "counterfactual decisions on eight saved own-RGB scenes; not movement success"
+    },
+    {
+      "file": "outputs/e2e18-body/offline-r70-skills-d1-r4.json",
+      "sha256": "d1ca22fc4f6013ceaafb1454389a108bec2a38c3fc51ca4615a835603cd22c35",
+      "summary": {
+        "liquid_d1": {
+          "N": 24,
+          "ok": 24,
+          "valid": 24,
+          "agree_code": 16,
+          "non_wait_choices": 24,
+          "latency_median_s": 0.5336007500300184,
+          "by_phase": {
+            "mapping": {
+              "N": 24,
+              "valid": 24,
+              "failed": 0
+            }
+          },
+          "cost_usd": 0.00268284,
+          "cost_unknown_calls": 0,
+          "input_tokens": 67071
+        }
+      },
+      "scope": "counterfactual decisions on eight saved own-RGB scenes; not movement success"
+    }
+  ],
+  "own_gate_r1": {
+    "status": "SPEED_GATE_FAIL",
+    "completed": 0,
+    "expected": 2,
+    "sim_s": 0,
+    "full_cohort_started": 0,
+    "reason": "HTTP400 run_key not admitted by existing Gemma relay",
+    "source_sha": "be02c5bd3d63b93375ef27947265dd1556fc08dc",
+    "raw": "azure3:~/ugrp-sim/runs/speed-gate-e2e18-body-r1-be02c5bd3d63",
+    "local": "outputs/e2e18-body/gate-r1",
+    "arm_archive_verified": true,
+    "archived_files": 185,
+    "unstarted_plan_archive_files": [
+      7,
+      7
+    ],
+    "own_leases_released": true
+  },
+  "supervisor_gate_r70": {
+    "owner": "coordinator",
+    "source_sha": "200fc07aa53ec61cd179fc2dd4e37e9ba61b0eac",
+    "completed": 5,
+    "status": "SPEED_GATE_FAIL",
+    "median_wall_per_sim": 3.314639158066666,
+    "scope": "read-only external run, not own success denominator"
+  },
+  "latest_source_files": {
+    "harness/e2e_body_skills.py": "325c7318d8cdee255423d57ca86bafc2b13ee96d2e313264f1b60b53b35c38db",
+    "harness/e2e_body_controller.py": "790ae5c571a0ce06586b7fe5e66d9e38af4c1dc01f821d4003e75bf77cb7c8f8",
+    "harness/e2e_body_semantics.py": "846cdd7e888d0c1fd3b1b281d12101993f9f30c165489a9e3c89151757edd6de",
+    "scripts/probe_body_decider_offline.py": "b6b964c3307f0b666c76efdf37e6c6d638b23d15477f4850d664fbc871a59492"
+  },
+  "cost_note": "Historical Jev cost_usd=0 in old summaries meant absent provider cost, not free usage. Latest accounting distinguishes unknown.",
+  "remaining": [
+    "new candidate speed gate",
+    "seed61006 alignment-to-joint-grasp time, reacquisitions, oscillation and model latency",
+    "full E2E",
+    "latest GitHub CI",
+    "independent coordinator review"
+  ]
 }
