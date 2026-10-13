@@ -1,5 +1,5 @@
 {
-  "status": "gate3_running_after_false_occupancy_fix",
+  "status": "cohort3_running_11_after_resource_and_B_stall_stops",
   "same_end": 7,
   "opposite_end": 5,
   "both_reached": 12,
@@ -53,11 +53,13 @@
     413,
     414,
     415,
-    416
+    416,
+    417,
+    418
   ],
   "source_stage": "grasp checkpoint only; no_comm; no full E2E",
   "related_tests_passed": 41,
-  "latest_related_tests_passed": 37,
+  "latest_related_tests_passed": 46,
   "live_gate_runs": 48,
   "live_main_runs": 16,
   "gate1": {
@@ -75,5 +77,11 @@
   "ground_options": [
     "rgb_ground_v2",
     "gemma_ground_v2"
-  ]
+  ],
+  "current_active": 11,
+  "local_fallback_first_choices_opposite": {
+    "n": 4,
+    "N": 7,
+    "physical_separation_verified": false
+  }
 }
