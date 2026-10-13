@@ -110,37 +110,81 @@
   },
   {
    "name": "e2e18-v280-s61006-r56",
-   "status": "RUNNING",
-   "note": "release_dt1 + pan relook; wall/SIM 3.2-3.8 in relook (v276: 3.3-3.45)",
+   "status": "SIGINT_RELOOK_STUCK",
+   "exit": 130,
+   "sim_s": 1300,
+   "note": "pan relook + release_dt1; matches=0 for ~700 SIM s; wall/SIM rose 3.2->3.9; paired grasp 517.5 reproduced",
    "paired_grasp": true,
-   "class_": "milestone"
+   "class_": "milestone",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v280-s61006-r56/raw"
   },
   {
    "name": "e2e18-v295-s61006-r58",
-   "status": "RUNNING",
-   "note": "standoff only; identical to v273 to SIM 100 s, align without aligned robots at 986 SIM s"
+   "status": "SIGINT_ALIGN_NO_PROGRESS",
+   "exit": 130,
+   "sim_s": 1150,
+   "note": "standoff only; identical to v273 to SIM 250 s then diverged; no robot aligned at 1150 SIM s",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v295-s61006-r58/raw"
   },
   {
    "name": "e2e18-v302-s61006-r59",
-   "status": "RUNNING",
-   "note": "standoff+pan+release_dt1+relook_giveup"
+   "status": "SIGINT_BY_OTHER_ACTOR",
+   "exit": 130,
+   "sim_s": 1420,
+   "note": "standoff+pan+release+giveup(v1); align never completed",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v302-s61006-r59/raw"
   },
   {
    "name": "e2e18-v302-s61007-r60",
-   "status": "RUNNING"
+   "status": "SIGINT_BY_OTHER_ACTOR",
+   "exit": 130,
+   "sim_s": 880,
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v302-s61007-r60/raw"
   },
   {
    "name": "e2e18-v302-s61008-r60",
-   "status": "RUNNING"
+   "status": "SIGINT_BY_OTHER_ACTOR",
+   "exit": 130,
+   "sim_s": 886,
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v302-s61008-r60/raw"
   },
   {
    "name": "e2e18-v302-s61009-r60",
-   "status": "RUNNING"
+   "status": "SIGINT_BY_OTHER_ACTOR",
+   "exit": 130,
+   "sim_s": 983,
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v302-s61009-r60/raw"
+  },
+  {
+   "name": "e2e18-v302-s61010-r61",
+   "status": "SIGINT_BY_OTHER_ACTOR",
+   "exit": 130,
+   "sim_s": 833,
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v302-s61010-r61/raw"
+  },
+  {
+   "name": "e2e18-v303-s61006-r62",
+   "status": "PHYSICAL_STOP_LOAD_DROP_EVAL_FALSE_POSITIVE",
+   "exit": 1,
+   "sim_s": 698.55,
+   "note": "paired grasp 517.5 bit-reproduced; relook 573; relook_giveup at ~693; drop guard flagged resting beam (floor_contact flicker, vz 0.0016 m/s) at 699.85",
+   "paired_grasp": true,
+   "class_": "milestone",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v303-s61006-r62/raw"
+  },
+  {
+   "name": "e2e18-v304-s61006-r64",
+   "status": "RUNNING_AT_HANDOFF",
+   "sim_s": 908,
+   "note": "v303 + contact_com_rest_v1: giveup at ~693, mapping->align again, no false LOAD_DROP through 908 SIM s; second grasp not yet",
+   "raw": "azure3:/home/ugrp/ugrp-sim/runs/e2e18-v304-s61006-r64/raw",
+   "sha": "3a31ac4f"
   }
  ],
  "counts": {
   "new_attempts_in_interval": 11,
-  "note": "87 (Codex last tally) + v276/v280 (r56, submitted after that tally) + 9 new by Claude interval (v296,v298,v295,v302x4 ... see runs); paired_grasp replicas of the same seed share first_held_t=517.5 (bit-identical prefix)"
+  "note": "87 (Codex last tally) + v276/v280 (r56, submitted after that tally) + 9 new by Claude interval (v296,v298,v295,v302x4 ... see runs); paired_grasp replicas of the same seed share first_held_t=517.5 (bit-identical prefix)",
+  "summary": "Claude interval new attempts: v296,v298,v295,v302x5,v303,v304 (+r56 v276,v280 tallied separately); of these 3 reproduced the first paired grasp (v276,v280,v303,v304 = same seed-61006 prefix); 0 start-to-end carry; terminal conditions 0."
  },
  "changes": {
   "merged": [
@@ -156,10 +200,16 @@
  "findings": [
   "acquire_scan_fast_v1 stalls mapping on seed 61006 (needs code diagnosis; single seed)",
   "relook never matched (matches=0) in any pan/restore variant; dev_light waited forever -> relook_giveup toggle",
-  "v302 early trajectory differs from v295 by SIM 150 s (release_dt1 stage physics changes dt before relook? unverified)"
+  "v302 early trajectory differs from v295 by SIM 150 s (release_dt1 stage physics changes dt before relook? unverified)",
+  "relook_giveup works live (v303/v304 left relook at ~693 SIM s); drop guard false positive fixed by contact_com_rest_v1 (eval-only, v304)",
+  "wall/SIM drifts up (2.1 -> 3.6-3.9) as runs lengthen under load avg ~10 on VM3"
  ],
  "pending_verification": [
   "relook_giveup behaviour in a live run",
   "standoff effect (v295 not yet aligned)"
+ ],
+ "unverified": [
+  "second grasp / second carry after giveup",
+  "whether other-actor SIGINT of v302 runs was intended"
  ]
 }
