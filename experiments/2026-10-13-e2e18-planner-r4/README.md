@@ -72,3 +72,9 @@ same-input rule scores, paired wins/losses, and parser failures by arm.
 - [Inner Monologue](https://arxiv.org/abs/2207.05608): environmental feedback in
   closed-loop language planning motivates explicit perception/result records.
   Our sensor-error transfer to categorical tasks remains unverified.
+
+## Completed results
+
+See [RESULTS.md](RESULTS.md) and [summary_short.json](summary_short.json).
+Detailed recount and call IDs are losslessly compressed with verified hashes.
+All source records remain local; no physical run was submitted.
