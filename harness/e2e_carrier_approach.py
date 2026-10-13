@@ -38,7 +38,10 @@ def advance(transport,rid,now):
         state.pop('search_started',None);state.pop('search_step',None)
     from harness.e2e_mapping_cadence import expire
     from harness import e2e_approach_commit as committed
-    if not committed.retained(transport,now,state):expire(transport,rid,now,state,fresh)
+    from harness import e2e_grasp_once as once
+    once.seed_station(transport,rid,now,state,target)
+    tracked=once.retained(transport,rid,now,state)
+    if not tracked and not committed.retained(transport,now,state):expire(transport,rid,now,state,fresh)
     if 'station' not in state and getattr(transport,'pregrasp_acquire','off')!='off':
         from harness.e2e_pregrasp_acquire import acquire
         result=acquire(transport,rid,now,state,target)
@@ -71,6 +74,7 @@ def advance(transport,rid,now):
     if progressed is not None:return progressed
     cached_navigation=getattr(transport,'pregrasp_progress','off')=='backup_replan_v1' and now<=state.get('lost_nav_until',-math.inf)
     cached_navigation=cached_navigation or committed.navigating(transport,rid,now,state,distance)
+    cached_navigation=cached_navigation or (tracked and distance>committed.PARAMS['staging_radius_m'])
     if recovery and not fresh and now-state['last_seen']>2. and not cached_navigation and not rotate_station and not observe_station:
         from harness.e2e_align_progress import lost_search
         return lost_search(transport,rid,now,state)

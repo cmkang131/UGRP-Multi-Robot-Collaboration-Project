@@ -151,6 +151,8 @@ class Robot:
             if beam_end_model := b.get('endpoint_model'):
                 self.beam.update(endpoint_model=beam_end_model,observed_band_side=b.get('observed_band_side'),endpoint_side_evidence=b.get('endpoint_side_evidence'))
             if self.pregrasp_acquire=='remember_scan_v1':self.last_beam=copy.deepcopy(self.beam)
+        from harness.e2e_grasp_once import observe as grasp_observe
+        grasp_observe(self, self.now)
         if self.camera_load!='off':
             from harness.e2e_camera_load import qualification
             trace['camera_geometry']=qualification(self.servo)

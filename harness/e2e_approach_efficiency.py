@@ -22,7 +22,8 @@ PARAMS = dict(replan_s=1., goal_change_m=.05, approach_scaling_m=.6,
 
 
 def enabled(tr):
-    return getattr(tr, 'approach_efficiency', 'off') == OPTION
+    return (getattr(tr, 'approach_efficiency', 'off') == OPTION
+            or getattr(tr, 'grasp_once', 'off') in ('regulated_v1', 'gaze_v1', 'track_gaze_v1'))
 
 
 def compose(bundle, option='off'):
