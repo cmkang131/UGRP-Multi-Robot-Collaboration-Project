@@ -106,3 +106,9 @@ def test_tag_pins_one_of_several_provider_endpoints():
     other = dict(endpoint(prompt='0.0000002'), tag='novita/fp8')
     assert w.check(cfg, get=lambda m: dict(data=dict(endpoints=[turbo, other]))) == []
     assert w.check(cfg, get=lambda m: dict(data=dict(endpoints=[other])))[0]['kind'] == 'provider_stopped'
+
+
+def test_tagless_endpoint_next_to_tagged_one_is_ignored():
+    cfg = dict(CONFIG, endpoints=[dict(CONFIG['endpoints'][0], tag='novita/turbo')])
+    turbo = dict(endpoint(), tag='novita/turbo')
+    assert w.check(cfg, get=lambda m: dict(data=dict(endpoints=[endpoint('Other'), turbo]))) == []

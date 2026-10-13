@@ -113,7 +113,7 @@
   }
  ],
  "total_cost_usd": 0.04857,
- "note": "gemma-4-26b-a4b-it@DeepInfra rejected by routing before any call (DeepInfra fp8 endpoint lacks image support). Gemma 4 31B @DeepInfra resolved to the fp4 deepinfra/turbo endpoint (cost matches /bin/zsh.09//bin/zsh.34).",
+ "note": "gemma-4-26b-a4b-it@DeepInfra rejected by routing before any call (DeepInfra fp8 endpoint lacks image support). Gemma 4 31B @DeepInfra resolved to the fp4 deepinfra/turbo endpoint (cost matches $0.09/$0.34 per M tokens). The planner code is not pinned by this probe; the follow-up bundle pins tag deepinfra/turbo (or quantizations fp4).",
  "decision": "User chose Gemma 4 31B @DeepInfra (2026-10-14).",
  "raw": {
   "location": "Mac:/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/planner-rate-probe-20261014",
@@ -122,5 +122,7 @@
    "calls2.jsonl": "247fdbb1b911be81eedd6aa6c689d903f587cbe0a3815857dffeecaf5f755261"
   }
  },
- "script_sha256": "8f20c1add04663c4850cdcb370a8defa18ec1299e468f85b441179009dd6c46c"
+ "script_sha256": "8f20c1add04663c4850cdcb370a8defa18ec1299e468f85b441179009dd6c46c",
+ "load_note": "Expected study load from r80: 4 planner calls per run in the first 30 SIM s, 16 concurrent runs at wall/SIM 3.5 = 36.6 calls/min; probe sent ~40/min from one client with 6 workers.",
+ "metric_note": "ok = HTTP 200; valid_json = parsed JSON with act field; cost per call averages successful calls only."
 }

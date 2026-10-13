@@ -57,7 +57,10 @@ def _judge(ep, data, tol):
     alerts = []
     # A provider can serve several endpoints (e.g. fp4 'deepinfra/turbo' and fp8); 'tag' pins one.
     key = 'tag' if ep.get('tag') else 'provider_name'
-    found = {e[key]: e for e in data.get('endpoints', [])}
+    eps = data.get('endpoints', [])
+    for e in eps:
+        e['provider_name']  # every endpoint must name its provider (else: unexpected shape)
+    found = {e.get(key): e for e in eps if e.get(key)}  # 'tag' may be absent on some endpoints
     e = found.get(ep.get('tag') or provider)
     if e is None:
         alerts.append(dict(kind='provider_stopped', model=model, provider=provider,
