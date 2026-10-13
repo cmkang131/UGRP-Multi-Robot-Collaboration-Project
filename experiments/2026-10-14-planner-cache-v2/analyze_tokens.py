@@ -5,7 +5,9 @@ ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(ROOT),str(ROOT/'outpu
 from tokenizers import Tokenizer
 from jinja2 import Environment
 from harness.task_planner_model import ordered_context
-T=ROOT/'outputs/planner-cache-tokenizer';tokenizer=Tokenizer.from_file(str(T/'tokenizer.json'))
+T=ROOT/'outputs/planner-cache-tokenizer'
+blob=(T/'tokenizer.json').read_bytes() if (T/'tokenizer.json').exists() else subprocess.check_output(['zstd','-qdc',str(T/'tokenizer.json.zst')])
+tokenizer=Tokenizer.from_str(blob.decode())
 config=json.loads((T/'tokenizer_config.json').read_text());template=Environment().from_string((T/'chat_template.jinja').read_text())
 def read(p):return p.read_bytes() if p.exists() else subprocess.check_output(['zstd','-qdc',str(p)+'.zst'])
 def lines(p):return [json.loads(x) for x in read(p).splitlines()]
@@ -57,7 +59,7 @@ for r in lines(Path('/Users/changmin/projects/ugrp-wt/e2e18/outputs/e2e18-admin/
     speech.append({**origin,'system':m[0]['content'],'input':c})
 speech.sort(key=lambda r:(r['run'],r['sim_s'],r['request_id']))
 result=dict(tokenizer='google/gemma-4-31B-it@842da3794eaa0b77d5f08bae87a17459d91ff475',
-    tokenizer_sha256=hashlib.sha256((T/'tokenizer.json').read_bytes()).hexdigest(),
+    tokenizer_sha256=hashlib.sha256(blob).hexdigest(),
     template_sha256=hashlib.sha256((T/'chat_template.jinja').read_bytes()).hexdigest(),
     validation=dict(N=len(errors),predicted_minus_billed_tokens=dict(collections.Counter(errors))),
     fixed400={o:analyze(records,o) for o in ('off','static_first_v2')},

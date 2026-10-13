@@ -1,0 +1,160 @@
+{
+  "schema": "planner.cache_v2.result.v1",
+  "source_sha": "b7da67109efe4b7c41b04a51fe4e5e7a93a39e28",
+  "settings": {
+    "model": "google/gemma-4-31b-it",
+    "provider": "deepinfra/turbo",
+    "reasoning": "default",
+    "response_format": "json_object"
+  },
+  "status": "complete",
+  "stop": null,
+  "baseline_v405": {
+    "N": 400,
+    "called": 400,
+    "fallback": 1,
+    "format_errors": 1,
+    "malformed_json": 0,
+    "nonnormal_finish": 0,
+    "latency_s": {
+      "N": 400,
+      "median": 2.3874397294712253,
+      "p90": 3.508870083023794
+    },
+    "prompt_tokens": 1693159,
+    "cached_tokens": 285888,
+    "cache_ratio": 0.1688488795204703,
+    "usage_N": 400,
+    "cost_usd": 0.14890003,
+    "input_cost_at_published_rates": 0.14094879,
+    "accuracy": {
+      "no_comm": {
+        "n": 55,
+        "N": 200
+      },
+      "peer_en": {
+        "n": 85,
+        "N": 200
+      }
+    }
+  },
+  "static_first_v2": {
+    "N": 400,
+    "called": 400,
+    "fallback": 3,
+    "format_errors": 3,
+    "malformed_json": 2,
+    "nonnormal_finish": 2,
+    "latency_s": {
+      "N": 400,
+      "median": 2.250004167086445,
+      "p90": 3.412302416982129
+    },
+    "prompt_tokens": 1690959,
+    "cached_tokens": 502784,
+    "cache_ratio": 0.2973366001186309,
+    "usage_N": 400,
+    "cost_usd": 0.14064533,
+    "input_cost_at_published_rates": 0.13207495,
+    "accuracy": {
+      "no_comm": {
+        "n": 50,
+        "N": 200
+      },
+      "peer_en": {
+        "n": 85,
+        "N": 200
+      }
+    }
+  },
+  "agreement": {
+    "n": 384,
+    "N": 400
+  },
+  "adoption_pass": false,
+  "upper_bound": {
+    "fixed400_ideal_prefix_ratio": 0.3509697088359531,
+    "achieved_fraction": 0.8471859326686484,
+    "before_ideal": 0.28132002251944904,
+    "tokenizer_vs_actual": {
+      "N": 400,
+      "predicted_minus_billed_tokens": {
+        "-1": 400
+      }
+    },
+    "interpretation": "No eviction, all earlier prompts available; cross-run external cache warmth not modelled"
+  },
+  "cost_change": {
+    "input_reduction_fraction": 0.06295790123490941,
+    "input_reduction_usd": 0.008873839999999994,
+    "actual_main_reduction_usd": 0.008254699999999976,
+    "cache_read_per_million": 0.05,
+    "uncached_input_per_million": 0.09
+  },
+  "r80_speech_replay": {
+    "results": {
+      "off": {
+        "N": 27,
+        "expected": 27,
+        "accepted": 27,
+        "prompt_tokens": 18210,
+        "cached_tokens": 8000,
+        "ratio": 0.43931905546403077,
+        "cost": 0.0014736,
+        "format_errors": 0,
+        "latency_s": {
+          "N": 27,
+          "median": 2.10885041707661,
+          "p90": 2.545398041023873
+        }
+      },
+      "static_first_v2": {
+        "N": 27,
+        "expected": 27,
+        "accepted": 27,
+        "prompt_tokens": 18210,
+        "cached_tokens": 8256,
+        "ratio": 0.4533772652388797,
+        "cost": 0.00146404,
+        "format_errors": 0,
+        "latency_s": {
+          "N": 27,
+          "median": 2.056850124965422,
+          "p90": 2.6547717499779537
+        }
+      }
+    },
+    "ideal_prefix_ratios": {
+      "off": 0.5149865258758181,
+      "static_first_v2": 0.5078369905956113
+    },
+    "unit": "Actual code-selected speech; not task-planner image decisions",
+    "order": "27 chronological carrier requests off, then same27 v2; wall gaps accelerated; later arm can benefit from warming"
+  },
+  "http": {
+    "N": 454,
+    "statuses": {
+      "200": 454
+    },
+    "attempts_distribution": {
+      "1": 454
+    },
+    "cost_usd": 0.14358297,
+    "unknown_cost": 0,
+    "cap": 600,
+    "budget": 0.25
+  },
+  "tests_unique": 35,
+  "raw": [
+    "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/planner-cache-v2-20261014",
+    "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/planner-cache-v2-r80-20261014",
+    "/Users/changmin/projects/ugrp-wt/e2e18-planner/outputs/planner-cache-v2-state-20261014/openrouter"
+  ],
+  "limitations": [
+    "DEV tuning set; no new confirmation or physical run.",
+    "r80 retrieved actual provider traffic is code-selected speech with no image; 196 image decision source remains unconfirmed.",
+    "A live new-planner per-robot sequential image cache ratio is not measured.",
+    "Historical v405 comparison and sequential replay do not control provider backend cache eviction/warmth.",
+    "Gemma cache minimum length/TTL/block contract and OpenRouter forwarding of DeepInfra prompt_cache_key remain unconfirmed."
+  ]
+}
