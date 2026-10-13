@@ -199,3 +199,17 @@ def test_v302_relook_giveup_bundle_and_dev_light_only_behavior(monkeypatch):
     tr.step(100 + GIVEUP_S + 50); assert tr.state == 'relook'
     tr = install(transport(True), 'off')
     tr.step(100 + GIVEUP_S + 50); assert tr.state == 'relook'
+
+
+def test_v303_giveup_on_release_pan_without_standoff(monkeypatch):
+    import copy
+    from harness.e2e_runtime_registration import require_current
+    from scripts.run_e2e_ownmap_live import ROOT, bundle
+    args, kw = _pan_parent(monkeypatch)
+    b = bundle(*args, **dict(kw, stage_physics='release_dt1_v1', relook_giveup='dev_light_v1'))
+    assert b['execution_bundle_id'] == 'e2e18-v303' and b['relook_giveup_parent'] == 'e2e18-v280'
+    assert b['e2e_options'].get('beam_lost_standoff', 'off') == 'off'
+    require_current(b, ROOT)
+    bad = copy.deepcopy(b); bad['e2e_options']['stage_physics'] = 'pregrasp_dt1_v1'
+    with pytest.raises(ValueError):
+        require_current(bad, ROOT)

@@ -14,7 +14,7 @@ import copy
 
 OPTION = 'dev_light_v1'
 GIVEUP_S = 120.
-VERSIONS = {'e2e18-v301': 302}
+VERSIONS = {'e2e18-v301': 302, 'e2e18-v280': 303}
 PARAMS = dict(giveup_after_relook_s=GIVEUP_S, correction_applied=False, dev_light_only=True,
               route_after_relook_called=False,
               source='own_execution_phase_timer_only')
@@ -25,7 +25,7 @@ def compose(bundle, option):
         return ()
     parent = bundle['execution_bundle_id']
     if option != OPTION or parent not in VERSIONS:
-        raise ValueError('RELOOK_GIVEUP_REQUIRES_V301')
+        raise ValueError('RELOOK_GIVEUP_REQUIRES_V301_OR_V280')
     version = VERSIONS[parent]
     bundle['relook_giveup_parent'] = parent
     bundle['e2e_options']['relook_giveup'] = option
