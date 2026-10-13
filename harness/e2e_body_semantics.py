@@ -174,6 +174,7 @@ def state_text(rid, phase, facts):
 
 def direction_words(value, key=''):
     """Keep signed arithmetic internal; explicit LEFT/RIGHT at the model boundary."""
+    key=str(key)
     if isinstance(value,dict):
         return {k:direction_words(v,k) for k,v in value.items()}
     if isinstance(value,list):
@@ -259,14 +260,15 @@ class DecisionMemory:
         self.last_loop = loop
         self.track.append((now, distance))
         if self.pending is not None and now >= self.pending['after_t']:
-            old = self.pending
-            before = old.pop('distance_before_m')
-            old.pop('after_t')
-            old.update(visual_after=visual, distance_after_m=distance,
-                       distance_change_m=None if before is None or distance is None else round(distance-before,4),
-                       outcome_t=now)
-            self.history.append(old)
-            self.pending = None
+            self.finish_pending(now,visual,distance,'observed_after_motion')
+
+    def finish_pending(self,now,visual,distance,reason):
+        if self.pending is None:return
+        old=self.pending;before=old.pop('distance_before_m');old.pop('after_t')
+        old.update(visual_after=visual,distance_after_m=distance,
+                   distance_change_m=None if before is None or distance is None else round(distance-before,4),
+                   outcome_t=now,outcome=reason)
+        self.history.append(old);self.pending=None
 
     def selected(self, now, choice, visual, distance, duration, status):
         if status != 'ok':
@@ -357,3 +359,58 @@ def peer_appearance(jpeg):
     s,c=max(regions,key=lambda x:x[0][4]);near=s[3]/h>.18 or s[2]/w>.20
     return dict(visible=True,distance='near' if near else 'far',in_path=bool(s[0]<w*.65 and s[0]+s[2]>w*.35),
                 direction='left' if c[0]<w*.4 else 'right' if c[0]>w*.6 else 'ahead',source='own_rgb_orange_appearance')
+
+
+def peer_appearance_v2(jpeg,servo):
+    """Appearance, not identity: reject thin distant colour strips; project the
+    remaining own RGB rays using fixed calibration and ISSUED camera posture.
+    Metric peer distance is intentionally unavailable. No simulator state.
+    """
+    import cv2
+    import numpy as np
+    from harness.opencv_wall_observation_robot_mask import ROBOT_MASK_CONFIG
+    from harness.owncam_view import base_rays
+    unknown=dict(visible=False,distance='unknown',direction='unknown',in_path=False,
+                 source='own_rgb_shape_and_commanded_camera_v2')
+    if not jpeg:return unknown
+    bgr=cv2.imdecode(np.frombuffer(jpeg,np.uint8),cv2.IMREAD_COLOR)
+    if bgr is None:return unknown
+    cfg=ROBOT_MASK_CONFIG;h,w=bgr.shape[:2]
+    mask=cv2.inRange(cv2.cvtColor(bgr,cv2.COLOR_BGR2HSV),tuple(cfg['hsv_lower']),tuple(cfg['hsv_upper']))
+    _,labels,stats,_=cv2.connectedComponentsWithStats(mask)
+    regions=[(i,s) for i,s in enumerate(stats[1:],1) if s[4]>=max(30,h*w*.001) and s[3]>=h*.05]
+    if not regions:
+        return dict(unknown,rejected_reason='no substantial robot-like orange region; thin stripes are not peers')
+    index,s=max(regions,key=lambda x:x[1][4])
+    near=s[3]/h>.18 or (s[4]/(h*w)>.025 and s[3]/h>.10)
+    out=dict(unknown,visible=True,distance='near' if near else 'far',bbox_px=[int(x) for x in s[:4]])
+    if (w,h)!=(640,480):return out
+    _,rays,xs,ys,valid=base_rays(servo,8)
+    hits=valid & (labels[ys.astype(int),xs.astype(int)]==index)
+    if not hits.any():return out
+    bearings=np.arctan2(rays[hits,1],rays[hits,0])
+    center=float(np.arctan2(np.sin(bearings).mean(),np.cos(bearings).mean()))
+    widths=np.abs(np.arctan2(np.sin(bearings-center),np.cos(bearings-center)))
+    bearing=math.degrees(center)
+    out.update(bearing_deg=bearing,half_width_deg=float(np.degrees(widths.max())),
+               direction='left' if bearing>20 else 'right' if bearing< -20 else 'ahead')
+    return out
+
+
+def peer_for_path(peer,command):
+    """Classify overlap with THIS candidate's translation, not the camera centre.
+    Rotating in place has no forward path; map/footprint checks remain separate.
+    """
+    out=dict(peer,in_path=False,path_direction='stationary')
+    f,l=command.get('forward',0.),command.get('left',0.)
+    if not (f or l):return out
+    heading=math.degrees(math.atan2(l,f))
+    out['path_direction']=direction_words(heading,'bearing_deg')
+    if not peer.get('visible'):return out
+    bearing=peer.get('bearing_deg')
+    if bearing is None:
+        out['in_path']=True  # unresolved camera geometry, do not invent clearance
+        return out
+    delta=abs((heading-bearing+180)%360-180)
+    out['in_path']=delta<=peer.get('half_width_deg',0)+20.
+    return out
