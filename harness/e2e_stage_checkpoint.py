@@ -17,8 +17,13 @@ SCHEMA = 'ugrp.e2e_stage_checkpoint.v1'
 
 
 def digest(value):
+    # Match the source ownmap writer's NumPy scalar normalization. This is a
+    # representation conversion, never a tolerance or a change to estimates.
+    def scalar(v):
+        if hasattr(v,'item'):return v.item()
+        raise TypeError('non-JSON checkpoint value: '+type(v).__name__)
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'),
-                                    allow_nan=False).encode()).hexdigest()
+                                    allow_nan=False,default=scalar).encode()).hexdigest()
 
 
 def rows(path):

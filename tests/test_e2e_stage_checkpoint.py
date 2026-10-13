@@ -191,3 +191,10 @@ def test_time_delta_requires_same_reconstructed_map_and_physics():
     s=summarize(matrix,[a,b])['paired']['v384'];assert s['verified_same_state_N']==0 and s['both_completed_delta_s']['n']==0
     b['own_map_sha256']=a['own_map_sha256']
     s=summarize(matrix,[a,b])['paired']['v384'];assert s['verified_same_state_N']==1 and s['both_completed_delta_s']['median']==-10
+
+
+def test_replay_hash_matches_source_numpy_scalar_writer():
+    import numpy as np
+    from harness.e2e_record_scalars import normalize
+    value=dict(observation=dict(confirmed=np.bool_(True),node=np.int64(4),area=np.float32(.25)))
+    assert cp.digest(value)==cp.digest(normalize(value))
