@@ -47,6 +47,7 @@ def retry_delay(attempt,headers,random_value,now):
 def reserve_cost(body, selection=None):
     # UTF-8 bytes conservatively bound text tokenizer output. Image URI bytes
     # overestimate images, intentionally; never assume cache hits or zero cost.
-    from harness.task_planner_model import GEMMA_FP4, GEMMA_JSON
+    from harness.task_planner_model import GEMMA_FP4, GEMMA_JSON, DEEPSEEK
     prompt,completion=(.00000009,.00000034) if selection in (GEMMA_FP4,GEMMA_JSON) else (.000000021,.0000000616)
+    if selection==DEEPSEEK:prompt,completion=.00000014,.00000042
     return (len(json.dumps(body,ensure_ascii=True).encode())+4096)*prompt + body.get('max_tokens',768)*completion

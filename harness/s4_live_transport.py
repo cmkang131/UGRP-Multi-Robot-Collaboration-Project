@@ -29,12 +29,12 @@ def validate_receipt(receipt, now=None, *, remote_url=URL, planner_selection=Non
         from scripts.openrouter_upstream import config
         expected_cfg=dict(config(),source_sha256=expected)
         if planner_selection is not None:
-            from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON
-            if planner_selection not in (LING,GEMMA_FP4,GEMMA_JSON) or receipt.get('task_planner_v1') is not True:
+            from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON, DEEPSEEK
+            if planner_selection not in (LING,GEMMA_FP4,GEMMA_JSON,DEEPSEEK) or receipt.get('task_planner_v1') is not True:
                 raise HostError('registered Ling planner identity required')
-            if planner_selection in (GEMMA_FP4,GEMMA_JSON) and receipt.get('openrouter_v1',{}).get('rate_limit_policy')!='planner_rate_limit_v1':
+            if planner_selection in (GEMMA_FP4,GEMMA_JSON,DEEPSEEK) and receipt.get('openrouter_v1',{}).get('rate_limit_policy')!='planner_rate_limit_v1':
                 raise HostError('Gemma fp4 requires bounded planner rate policy')
-            expected_cfg=dict(config(selection=planner_selection,max_attempts=3 if planner_selection in (GEMMA_FP4,GEMMA_JSON) else 1),source_sha256=expected,
+            expected_cfg=dict(config(selection=planner_selection,max_attempts=3 if planner_selection in (GEMMA_FP4,GEMMA_JSON,DEEPSEEK) else 1),source_sha256=expected,
                 selection_source_sha256=hashlib.sha256((Path(__file__).resolve().parents[1]/'harness/task_planner_model.py').read_bytes()).hexdigest())
         if planner_selection is not None and receipt.get('openrouter_v1',{}).get('rate_limit_policy') in ('ling_rate_limit_v1','planner_rate_limit_v1'):
             expected_cfg.update(config(selection=planner_selection,max_attempts=3,rate_limit_policy=receipt['openrouter_v1']['rate_limit_policy']))

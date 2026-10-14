@@ -53,8 +53,8 @@ def config(provider_order=PROVIDER_ORDER, *, selection=None, max_attempts=MAX_AT
                 key_location='macOS Keychain: ' + SERVICE)
     if rate_limit_policy != 'off':
         from scripts.openrouter_ling_policy import POLICY,PARAMETERS
-        from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON
-        if (rate_limit_policy,choice) not in ((POLICY,LING),('planner_rate_limit_v1',GEMMA_FP4),('planner_rate_limit_v1',GEMMA_JSON)):raise ValueError('REGISTERED_RATE_POLICY_REQUIRED')
+        from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON, DEEPSEEK
+        if (rate_limit_policy,choice) not in ((POLICY,LING),('planner_rate_limit_v1',GEMMA_FP4),('planner_rate_limit_v1',GEMMA_JSON),('planner_rate_limit_v1',DEEPSEEK)):raise ValueError('REGISTERED_RATE_POLICY_REQUIRED')
         value.update(rate_limit_policy=rate_limit_policy,rate_limit_parameters=PARAMETERS,max_usd=max_usd,
             rate_limit_source_sha256=hashlib.sha256(Path(__file__).with_name('openrouter_ling_policy.py').read_bytes()).hexdigest())
     if choice.response_format!='off':value.update(response_format=choice.response_format,require_parameters=True)

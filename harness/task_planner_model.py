@@ -30,7 +30,7 @@ class ModelSelection:
 
     @property
     def response_provider(self):
-        return "DeepInfra" if self.provider == "deepinfra/turbo" else self.provider
+        return "DeepInfra" if self.provider.startswith("deepinfra/") else self.provider
 
     def request_options(self):
         value={'reasoning': {'enabled': False}} if self.reasoning == 'off' else {}
@@ -52,6 +52,7 @@ def selected(args):
 
 GEMMA_FP4 = ModelSelection(DEFAULT_MODEL, 'deepinfra/turbo', 'default')
 GEMMA_JSON = ModelSelection(DEFAULT_MODEL,'deepinfra/turbo','default','json_object')
+DEEPSEEK = ModelSelection('deepseek/deepseek-v4.1-flash','deepinfra/fp8','off','json_object')
 LING = ModelSelection('inclusionai/ling-3.0-flash-vl', 'Novita', 'off')
 STATIC_KEYS = ('schema', 'robot_id', 'condition', 'task', 'order_sheet', 'static_map', 'public_rules', 'can_send_to')
 DYNAMIC_KEYS = ('now_s', 'own', 'own_act_results', 'received_messages', 'events', 'candidates')

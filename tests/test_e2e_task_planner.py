@@ -31,10 +31,10 @@ def test_default_off_and_registration(monkeypatch):
         b=bundle(*args,**kw,planner=mode,planner_evidence_gate='on_v1');require_current(b,ROOT)
         assert b['execution_bundle_id']==f'e2e18-v{v}'
         assert m.parent_for_validation(b)['e2e_options']==parent['e2e_options']
-    from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON
+    from harness.task_planner_model import LING, GEMMA_FP4, GEMMA_JSON, DEEPSEEK
     from harness.e2e_planner_model import parent_for_validation
     old=bundle(*args,**kw,planner='gemma_v1',planner_evidence_gate='on_v1')
-    for selected,order,version in [(LING,'off',401),(LING,'static_first_v1',402),(GEMMA_FP4,'off',403),(GEMMA_FP4,'static_first_v1',404),(GEMMA_JSON,'off',405),(GEMMA_JSON,'static_first_v1',406)]:
+    for selected,order,version in [(LING,'off',401),(LING,'static_first_v1',402),(GEMMA_FP4,'off',403),(GEMMA_FP4,'static_first_v1',404),(GEMMA_JSON,'off',405),(GEMMA_JSON,'static_first_v1',406),(DEEPSEEK,'off',432),(DEEPSEEK,'static_first_v2',433)]:
         new=bundle(*args,**kw,planner='gemma_v1',planner_evidence_gate='on_v1',
             planner_model=selected.model,planner_provider=selected.provider,planner_reasoning=selected.reasoning,planner_prompt_order=order,planner_response_format=selected.response_format)
         require_current(new,ROOT)

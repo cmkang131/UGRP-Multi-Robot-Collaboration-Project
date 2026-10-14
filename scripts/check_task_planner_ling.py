@@ -32,6 +32,8 @@ PRICE_KEY = 'ling'
 COHORT = 'ling_vl'
 RATE_POLICY = "ling_rate_limit_v1"
 MODEL = LING
+CACHE_ORDER = 'static_first_v1'
+COUNT_ABNORMAL_FORMAT = False
 PRICES = {'ling': (0.000000021, 0.0000000616)}
 MAX_CALLS, MAX_REPAIRS, MAX_USD, MIN_REMAINING = 600, 0, .08, 1.5
 
@@ -119,6 +121,15 @@ class ModelBudget:
             self.repairs+=1
 
 
+def format_error(a):
+    if 'rejection' in a:return True
+    if COUNT_ABNORMAL_FORMAT and 'response' in a:
+        from harness.task_planner import parse
+        try:parse(a['response'],a['request']['input']['candidates'],RESPONSE_PARSER)
+        except (ValueError,KeyError,TypeError):return True
+    return False
+
+
 def metrics(rows):
     attempts=[a for r in rows for a in r['audit'] if 'request' in a]
     usages=[a['usage'] for a in attempts if a.get('usage')]
@@ -127,7 +138,7 @@ def metrics(rows):
     cached=[u.get('prompt_tokens_details',{}).get('cached_tokens') for u in usages]
     return dict(conditions=summarize(rows),
         format_errors_before=sum(a.get('strict_json_error',False) or 'rejection' in a for a in attempts),
-        format_errors=sum('rejection' in a for a in attempts),repair_attempts=sum(a.get('attempt',0)>0 for a in attempts),
+        format_errors=sum(format_error(a) for a in attempts),repair_attempts=sum(a.get('attempt',0)>0 for a in attempts),
         fallback=sum(r['fallback'] for r in rows),
         latency_s=dict(median=statistics.median(times) if times else None,p90=times[math.ceil(.9*len(times))-1] if times else None,N=len(times)),
         cost_usd=sum(u['cost'] for u in usages if type(u.get('cost')) in (float,int)),
@@ -145,7 +156,7 @@ def guard(rows):
     recent=called[-5:]
     if len(recent)==5 and all(any(a.get('failure')=='HTTPError' for a in r['audit']) for r in recent):
         return 'FIVE_CONSECUTIVE_HTTP_ERRORS'
-    if len(called)>=MIN_RATE_DECISIONS and attempts and sum('rejection' in a for a in attempts)/len(attempts)>.05:
+    if len(called)>=MIN_RATE_DECISIONS and attempts and sum(format_error(a) for a in attempts)/len(attempts)>.05:
         return 'FORMAT_ERROR_RATE_OVER_5_PERCENT'
     called=[r for r in rows if r.get('called')]
     if len(called)>=MIN_RATE_DECISIONS and sum(r.get('fallback',False) for r in called)/len(called)>.05:
@@ -169,7 +180,7 @@ def main():
     image=a.image.read_bytes()
     if hashlib.sha256(image).hexdigest()!=a.image_sha256:raise ValueError('R80_IMAGE_HASH_MISMATCH')
     manifest.update(cache_decisions=a.cache_decisions,image_probes=5,image_sha256=a.image_sha256,
-        main_only=a.main_only,
+        main_only=a.main_only,cache_order=CACHE_ORDER,count_abnormal_format=COUNT_ABNORMAL_FORMAT,
         cache_case_keys=[(r['case_id'],r['condition']) for r in old[:a.cache_decisions]],
         image_case_keys=[(r['case_id'],r['condition']) for r in old[:5]],reask=0)
     if not a.execute:
@@ -208,7 +219,7 @@ def main():
     cfg=client.identity['openrouter_v1']
     if cfg.get('max_calls')!=600 or cfg.get('max_attempts')!=3 or cfg.get('max_usd')!=MAX_USD or cfg.get('rate_limit_policy')!=RATE_POLICY:raise ValueError('ACTUAL_UPSTREAM_CAP_REQUIRED')
     dump(a.out/'identity.json',client.identity)
-    results={'off':[],'static_first_v1':[],'image':[]};all_called=[];started=time.monotonic()
+    results={'off':[],CACHE_ORDER:[],'image':[]};all_called=[];started=time.monotonic()
     if a.continue_from:
         results['off']=[json.loads(line) for line in read(a.continue_from/'off-calls.jsonl').splitlines()]
         all_called=list(results['off'])
@@ -218,7 +229,7 @@ def main():
         if phase=='image':
             import base64
             ctx['own']['rgb'].update(image_b64=base64.b64encode(image).decode(),sha256=a.image_sha256)
-        client.planner_prompt_order='static_first_v1' if phase=='static_first_v1' else 'off'
+        client.planner_prompt_order=CACHE_ORDER if phase==CACHE_ORDER else 'off'
         p=Planner(ctx['robot_id'],ctx['condition'],planner_evidence_gate='on_v1',response_parser=RESPONSE_PARSER)
         p.inbox.extend(copy.deepcopy(previous['audit'][0].get('channel_evidence_before_gate',[])))
         called=False;t0=time.monotonic()
@@ -253,7 +264,7 @@ def main():
         return row
     # Sequential execution makes the user stop thresholds immediate, with no
     # queued requests after a failing observation and no hidden retries.
-    phases=([('off',old)] if a.main_only else [('static_first_v1',old[:a.cache_decisions]),('image',old[:5])] if a.continue_from else [('off',old),('static_first_v1',old[:a.cache_decisions]),('image',old[:5])])
+    phases=([('off',old)] if a.main_only else [(CACHE_ORDER,old[:a.cache_decisions]),('image',old[:5])] if a.continue_from else [('off',old),(CACHE_ORDER,old[:a.cache_decisions]),('image',old[:5])])
     for phase,cases in phases:
         if phase=='image':budget.reserve_usd+=3*16000*price
         for previous in cases:
