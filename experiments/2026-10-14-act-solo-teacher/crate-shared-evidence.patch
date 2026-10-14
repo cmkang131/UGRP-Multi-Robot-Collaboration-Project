@@ -1,9 +1,6 @@
 --- a/sim/crate_rgb_lift.py
 +++ b/sim/crate_rgb_lift.py
-@@ -72,76 +72,19 @@
-     return out
- 
- 
+@@ -75,31 +75,5 @@
 -# v2 is an opt-in, command-conditioned visual hypothesis, not a height sensor.
 -# A stalled actuator + perfectly rigid close view can be visually ambiguous.
 -V2_MIN_PART = .01
@@ -40,9 +37,7 @@
 +from sim.rgb_lift_evidence import (shape, lift_commands, confirm_parts_v2,
 +    MIN_PART as V2_MIN_PART, AREA_RATIO as V2_AREA_RATIO,
 +    CENTER_SHIFT as V2_CENTER_SHIFT, EXTENT_SHIFT as V2_EXTENT_SHIFT)
- 
- 
- def confirm_v2(before, after, end, *, commands, settled=None):
+@@ -109,9 +82,0 @@
 -    """Own lug AND pink body stay with the wrist through lift and settled hold.
 -
 -    No background is required. Area, centroid and extent must persist for each
@@ -52,8 +47,7 @@
 -    """
 -    out = {'rule': 'crate_rgb_lift_v2', 'thresholds': 'provisional; GCP validation pending',
 -           'command_evidence': lift_commands(commands), 'comparisons': []}
-     if end not in ('blue', 'teal'):
-         raise ValueError('assigned lug must be blue or teal')
+@@ -120,25 +85,3 @@
 -    if not out['command_evidence']['valid']:
 -        return {**out, 'verdict': 'undetermined', 'reason': out['command_evidence']['reason']}
 -    if before.shape != after.shape or (settled is not None and before.shape != settled.shape):
@@ -82,6 +76,3 @@
 +    return confirm_parts_v2(before, after, commands=commands,
 +                            masks=lambda rgb: masks(rgb, end), names=('lug', 'pink'),
 +                            settled=settled, rule='crate_rgb_lift_v2')
- 
- 
- class LiftObserver:
