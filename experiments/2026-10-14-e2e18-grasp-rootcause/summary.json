@@ -1674,5 +1674,45 @@
     ],
     "meaning": "not demonstrated because recording ended; do not relabel old success as failure",
     "evidence": "strict-rescore-078-3a.json"
+  },
+  "visible_only_c1_partial": {
+    "n": 12,
+    "N": 16,
+    "planned_N": 40,
+    "interrupted": 16,
+    "not_started": 8,
+    "HOST_ERROR": 0,
+    "qualified": false,
+    "source_sha": "c1f02ac0a81f50d0235823a845c31f1d4116c9e9",
+    "evidence": "visible-gate-c1f02ac0-partial.json",
+    "gate": "teacher-gate-c1f02ac0.json.zst",
+    "video_review": {
+      "indices": [
+        1,
+        3,
+        9,
+        11
+      ],
+      "sim_s": [
+        0,
+        12,
+        24,
+        36,
+        48,
+        59
+      ]
+    },
+    "failure_classification": {
+      "observed_goal_occupied": 2,
+      "peer_approach_interaction_cause_under_test": 1,
+      "inconsistent_ready_predicate": 1
+    },
+    "ready_counterexample_mm": {
+      "approach_error": 27.63,
+      "wait_error": 33.57,
+      "tolerance": 30.0,
+      "revocations": 81
+    },
+    "student_data_episodes": 0
   }
 }

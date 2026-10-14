@@ -52,3 +52,38 @@ def test_ready_is_revoked_on_drift_and_done_never_reads_contact_truth():
     t.phase='pick';t.arm.tick=lambda now:True
     a,done=t.step({'robots':{'r1':{'pose':[0,0,0]}},'objects':{},'walls':[]},2.)
     assert done and t.command_complete and t.outcome is None
+
+def test_readiness_uses_same_pose_frame_as_approach():
+    # Recorded 73011: body-axis error 33.57 mm, actual stance error 27.63 mm.
+    # Approach accepted it but the former wait predicate revoked it 81 times.
+    m=VisibleWorld('r1','teal')
+    b=band();b['xyz']=[.1955099284374026,-.03272090788920136,.03249224461642269]
+    b['yaw']=-.030077768540272665
+    w=m.observe([b],0.)
+    t=VisibleOnlyGraspTeacher('r1','teal',FOLDED,bounds=(-20,20,-20,20));t.phase='align'
+    assert t.ready_geometry(w)
+    for now in (0.,.1,.2,.4):value,ready=t._approach(w,now)
+    assert ready and not any(value['wheels'])
+    t.phase='ready';assert t.prepare_signal(w,.5) and not t.ready_revocations
+
+def test_route_does_not_skip_peer_corner_or_turn_away_from_target():
+    from sim.grasp_act_visible_route import segment_free,waypoint,drive
+    from scripts.zone_teacher import PeerDisc
+    peer=PeerDisc((0.,0.,.17));start=(-.301,0.)
+    path=[start,(-.301,.05),(-.301,.10),(-.25,.20),(-.10,.31)]
+    # Old pop(<12 cm) skips both first corner cells and cuts into the peer.
+    assert not segment_free(start,path[3],[peer],[],.13)
+    target=waypoint(start,path,[peer],[],.13)
+    assert target==path[2] and segment_free(start,target,[peer],[],.13)
+    action=drive((0.,0.,0.),(-.4,.1),(-.1,.1),(1.,0.))
+    assert action['turn']==0. and action['left']>0. and action['forward']<0.
+
+def test_observed_cargo_at_goal_does_not_launch_futile_astar(monkeypatch):
+    from sim.grasp_act_visible_route import constraints,free
+    m=VisibleWorld('r1','teal');w=m.observe([band(x=.8)],0.)
+    w['objects']['can_1']={'xy':[.597,0.], 'radius':.0314,'top_z_bound_m':.0563}
+    t=VisibleOnlyGraspTeacher('r1','teal',FOLDED,bounds=(-20,20,-20,20));t.folded_ready=True
+    import scripts.zone_teacher as zone
+    monkeypatch.setattr(zone,'plan_path',lambda *a,**k:pytest.fail('occupied goal sent to A*'))
+    value=t._route(w,(.597,0.),0.,0.)
+    assert not any(value['wheels']) and t.blocked_goal_calls==1

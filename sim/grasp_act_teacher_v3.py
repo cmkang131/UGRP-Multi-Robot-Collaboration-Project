@@ -30,6 +30,37 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.phase='approach';self.handoff=False;self.local_seen=None
         self.last_command=None;self.last_tick=None;self.command_complete=False
         self.ready_revocations=0;self.skill_started=None
+        self.path_goal=None;self.blocked_goal_calls=0
+
+    def _geometry(self,world):
+        pose=world['robots'][self.rid]['pose'];g=world['beam']['ends'][self.end]
+        heading=world['beam']['pose'][2]+(math.pi if self.end=='blue' else 0.)
+        goal=(g[0]-STATION_M*math.cos(heading),g[1]-STATION_M*math.sin(heading))
+        return pose,g,heading,goal
+
+    def _route(self,world,goal,heading,now):
+        from sim.grasp_act_visible_route import constraints,free,segment_free,waypoint,drive
+        from scripts.zone_teacher import plan_path
+        pose=world['robots'][self.rid]['pose']
+        radius,discs,rects=constraints(world,self.rid,self.folded_ready)
+        self.planning_radius=radius
+        # A newly observed target may disagree with dead reckoning. Cached
+        # odometry-frame waypoints must then be rebuilt from the new view.
+        changed=self.path_goal is None or math.dist(goal,self.path_goal)>.025
+        target=waypoint(pose[:2],self.path,discs,rects,radius) if self.path else None
+        if changed or now>=self.next_plan or (self.path and target is None):
+            self.planner_calls+=1;self.path_goal=tuple(goal);self.next_plan=now+1.
+            if not free(goal,discs,rects,radius):
+                self.blocked_goal_calls+=1;self.path=[]
+            else:
+                self.path=plan_path(pose[:2],goal,self.bounds,discs,rects=rects,radius=radius) or []
+            self.no_path_calls+=int(not self.path)
+            target=waypoint(pose[:2],self.path,discs,rects,radius) if self.path else None
+        if target is None:return self._hold(now)
+        # Mecanum translation and gaze yaw are independent. Keep the observed
+        # end in front while moving around a peer, until fine alignment starts.
+        end=world['beam']['ends'][self.end]
+        return self._continuous(now,**drive(pose,goal,target,end))
 
     def _hold(self,now):
         return command({'t':now,'wheels':[0.]*4,'duration_s':[0.]*4,
@@ -77,11 +108,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def ready_geometry(self,truth):
         if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:return False
-        pose=truth['robots'][self.rid]['pose'];g=truth['beam']['ends'][self.end]
-        x,y=local(pose,g);heading=truth['beam']['pose'][2]+(math.pi if self.end=='blue' else 0.)
+        pose,g,heading,goal=self._geometry(truth)
+        x,y=local(pose,g)
         try:grasp_poses((x,y,g[2]))
         except ValueError:return False
-        return math.hypot(x-STATION_M,y)<=XY_TOL_M and abs(wrap(heading-pose[2]))<=YAW_TOL_RAD
+        return math.dist(pose[:2],goal)<=XY_TOL_M and abs(wrap(heading-pose[2]))<=YAW_TOL_RAD
 
     def prepare_signal(self,truth,now):
         """Own teacher readiness; only a binary READY crosses the protocol."""
@@ -142,4 +173,5 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
     def diagnostic(self):
         return {**super().diagnostic(),'profile':'visible_only','command_complete':self.command_complete,
                 'ready_revocations':self.ready_revocations,'handoff':self.handoff,
+                'blocked_goal_calls':self.blocked_goal_calls,
                 'done_semantics':'own issued arm sequence complete; physical evaluation separate'}
