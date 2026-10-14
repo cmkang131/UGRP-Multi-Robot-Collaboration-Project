@@ -29,5 +29,9 @@ def test_local_handoff_plan_range_and_recorded_jitter():
     from scripts.make_grasp_act_handoff_plan import handoff_plan
     p=handoff_plan(count=3,seed=100000,split='train')
     for episode in p['episodes']:
+        import math
+        spawns=episode['spawns']
+        assert all(math.dist(spawns[a][:2],spawns[b][:2])>=.37
+                   for a in episode['roles'] for b in spawns if a!=b)
         for row in episode['handoff_distribution'].values():
             assert .3<=row['accepted_distance_m']<=.8 and len(row['xy_error_m'])==2

@@ -41,7 +41,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return command(value)
 
     def _observe(self,truth,now):
-        from sim.grasp_act_gaze import gaze_pose,slew
+        from sim.grasp_act_gaze import slew
+        from sim.grasp_act_visible_gaze import gaze_pose
         vis=truth['visibility'][self.rid];visible=vis['visible_probes']>=5
         self.visibility_counts['N']+=1;self.visibility_counts['visible']+=int(visible)
         self.blind_s=0. if visible else self.blind_s+.1;self.max_blind_s=max(self.max_blind_s,self.blind_s)
@@ -54,7 +55,14 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self.observed_peers[rid]=deepcopy(truth['robots'][rid]);self.observed_peers[rid]['seen_t']=now
         self.observed_peers={r:v for r,v in self.observed_peers.items() if now-v['seen_t']<=8.}
         if self.local_seen is not None and now-self.last_seen_t<=MEMORY_S:
-            target=gaze_pose(self.local_seen,self.sink.pwm)
+            pose=truth['robots'][self.rid]['pose']
+            occluders=[{'xy':local(pose,v['pose']),'radius':v.get('radius',.17),
+                        'top_z_bound_m':v.get('top_z_bound_m',.32)}
+                       for rid,v in truth['robots'].items() if rid!=self.rid]
+            occluders += [{'xy':local(pose,v['xy']),'radius':v['radius'],
+                          'top_z_bound_m':v['top_z_bound_m']}
+                         for key,v in truth['objects'].items() if key!='beam_1']
+            target=gaze_pose(self.local_seen,self.sink.pwm,occluders,visible=visible)
         else:
             # Clock starts at the issued local-skill instruction, not hidden
             # visibility events. Exactly the same elapsed scalar goes to ACT.

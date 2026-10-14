@@ -16,6 +16,7 @@ def handoff_plan(*,count,seed,split):
         scenario=json.loads((ROOT/'configs/zone_study_scenarios_v4'/f"{row['scenario_id']}.json").read_text())
         cargo=[p['pose_m'][:2] for p in scenario['eval']['setup']['placements'] if p['item_id']!='beam_1']
         bx,by,a=row['beam_pose'];selected=[];jitters={}
+        parked=[pose[:2] for rid,pose in row['spawns'].items() if rid not in row['roles']]
         for rid,end in row['roles'].items():
             d=-.27 if end=='teal' else .27;target=[bx+d*math.cos(a),by+d*math.sin(a)]
             for attempt in range(5000):
@@ -26,7 +27,7 @@ def handoff_plan(*,count,seed,split):
                 if not .3<=math.dist(xy,target)<=.8:rejects['range_after_jitter']+=1;continue
                 if not (bounds[0]+.18<=xy[0]<=bounds[1]-.18 and bounds[2]+.18<=xy[1]<=bounds[3]-.18) or any(rect_distance(xy,r)<.18 for r in rects):rejects['wall']+=1;continue
                 # Preserve the same physical non-overlap constraints as the wide plan.
-                if math.dist(xy,[bx,by])<.46 or any(math.dist(xy,p)<.24 for p in cargo) or any(math.dist(xy,p)<.37 for p in selected):rejects['cargo_or_peer']+=1;continue
+                if math.dist(xy,[bx,by])<.46 or any(math.dist(xy,p)<.24 for p in cargo) or any(math.dist(xy,p)<.37 for p in selected+parked):rejects['cargo_or_peer']+=1;continue
                 heading_error=max(-60.,min(60.,rng.gauss(0,30. if tail else 10.)))
                 heading=math.atan2(target[1]-nominal[1],target[0]-nominal[0])+math.radians(heading_error)
                 row['spawns'][rid]=[*xy,row['spawns'][rid][2],heading];selected.append(xy)
@@ -36,7 +37,7 @@ def handoff_plan(*,count,seed,split):
         row['handoff_distribution']=jitters;row['purpose']='local ACT training/development; not physical gate'
     plan['handoff_rejected_proposals']=dict(rejects)
     plan['distribution']={'assigned_end_distance_m':[.3,.8],'xy_jitter':'90% N(0,.055m)^2 + 10% N(0,.18m)^2; radial median about .07m before rejection',
-        'heading_jitter_deg':'90% N(0,10)^2 / tail N(0,30)^2, clipped +/-60 deg','render':'unchanged; separate DR toggle owned by release task',
+        'heading_jitter_deg':'90% N(0,10) / tail N(0,30), clipped +/-60 deg','render':'unchanged; separate DR toggle owned by release task',
         'accepted_range_and_nonoverlap_rejection_logged':True}
     return plan
 

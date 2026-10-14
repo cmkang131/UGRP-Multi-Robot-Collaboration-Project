@@ -1626,5 +1626,53 @@
     "passed": 47,
     "physics_scope": "visible_only not run yet",
     "data_episodes": 0
+  },
+  "visible_only_diagnostic": {
+    "source_sha": "9a08dd081cd5d30ab32549cec713657fa5e655fc",
+    "n": 0,
+    "N": 1,
+    "sim_s": 45.0,
+    "wall_per_sim": 2.4460546076817034,
+    "reason": "assigned blue band occluded by waiting teal peer; unnecessary centering loses observed clear posture",
+    "visible": {
+      "r1": [
+        13,
+        450
+      ],
+      "r2": [
+        440,
+        450
+      ]
+    },
+    "invisible_new_measurements": [
+      0,
+      1968
+    ],
+    "invalid_wheels": [
+      0,
+      3600
+    ],
+    "review_times_s": [
+      0,
+      9,
+      18,
+      27,
+      36,
+      44
+    ],
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/grasp-visible-diag-9a08dd08/raw",
+    "evidence": "visible-diag-9a08dd08.json",
+    "new_gate_started": false
+  },
+  "strict_retrospective_rescore": {
+    "demonstrated_n": 0,
+    "N": 72,
+    "old_success_n": 63,
+    "old_success_max_hold_range_s": [
+      2.2,
+      2.3
+    ],
+    "meaning": "not demonstrated because recording ended; do not relabel old success as failure",
+    "evidence": "strict-rescore-078-3a.json"
   }
 }

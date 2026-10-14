@@ -27,6 +27,14 @@ def test_lost_target_gaze_is_independent_of_hidden_current_self_pose():
         commands.append(t._observe(lost,.1))
     assert commands[0]==commands[1]
 
+def test_clear_partial_view_is_not_centered_behind_visible_peer():
+    from sim.grasp_act_visible_gaze import gaze_pose
+    target=[1.0810693133,-.2686130114,.0324922446]
+    peer={'xy':[.360730357,-.086971132],'radius':.104888054,'top_z_bound_m':.159222021}
+    # Saved 72009 at 9.7 s: five band probes visible around the peer. The
+    # former centering command changed 3/4/6 and lost all probes next tick.
+    assert gaze_pose(target,FOLDED,[peer],visible=True)==FOLDED
+
 def test_ready_is_revoked_on_drift_and_done_never_reads_contact_truth():
     m=VisibleWorld('r1','teal');t=VisibleOnlyGraspTeacher('r1','teal',FOLDED,bounds=(-20,20,-20,20))
     t.started=True;t.skill_started=0.;t.phase='ready'

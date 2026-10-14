@@ -54,3 +54,7 @@
 
 - 바퀴 제한: 저장소 `docs/decision_log.md` 2026-08-29 실물 결정(0 또는31–40, 미세 동작은 길이), `scripts/masterpi_control.py:board_signed_speed`의 signed -100..100 및 I2C 전송을 확인했다. 정규화1.0↔실물100 대응은 단위 정의이며 속도 m/s 보정이 아니다.
 - [TI SLVA980](https://www.ti.com/document-viewer/lit/html/SLVA980): 방향과 duty cycle로 DC 모터를 제어하는 표준 구조 확인. 이번 10Hz 동작은 이 원리를 상위 명령 펄스 길이에 적용한 것이며 실제 모터 전기 PWM 주파수/정밀 실물 응답을 검증한 것은 아니다.
+
+### 가림이 생기는 시선 변경 (2026-10-14)
+- Thuilot et al., ICRA 2002, [Position based visual servoing: keeping the object in the field of vision](https://www-sop.inria.fr/members/Philippe.Martinet/publis/2002/icra02lionel.pdf). 원문 도입/제어 절 확인. 물체를 중앙으로 옮기는 것만으로는 시야 유지가 보장되지 않아 영상 제약을 경로에 넣는다. 기존 FK 시선 후보에 시야 제약과 관절 이동 최소화를 적용하는 근거다. 원문의 자유 6축 제어를 그대로 구현한 것은 아니다.
+- Wei et al., RA-L 2024, [DiffOcclusion](https://ieeexplore.ieee.org/document/10430369/), DOI 10.1109/LRA.2024.3364468. 출판사 초록 확인: 대상/장애물 영상의 겹침 제약을 CBF로 제어하며 Franka 실험을 보고. 전체 본문·저자 코드는 미확인. 여기서는 보인 물체만 만든 보수적 원기둥과 유한 관절 후보를 쓰며, 논문의 보장을 승계하지 않는다.

@@ -50,7 +50,8 @@ class VisibleWorld:
             beam={'pose':[bx,by,a],'ends':ends,'source':'visible band + known rigid shape','seen_t':band['seen_t']}
         robots={self.rid:{'pose':list(self.pose)}};objects={};walls=[]
         for key,m in self.memory.items():
-            if m['kind']=='robot':robots[key]={'pose':[*m['xyz'][:2],m['yaw']]}
+            if m['kind']=='robot':robots[key]={'pose':[*m['xyz'][:2],m['yaw']],
+                'radius':m.get('radius',.17),'top_z_bound_m':m.get('top_z_bound_m',.32)}
             if m['kind']=='wall':walls.append((*m['xyz'][:2],*m['half_extents'],m['yaw']))
             if m['kind']=='cargo':
                 objects[key]={'xy':m['xyz'][:2],'radius':m['radius'],'top_z_bound_m':m['top_z_bound_m']}
