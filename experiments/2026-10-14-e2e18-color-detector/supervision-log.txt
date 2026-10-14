@@ -1,0 +1,36 @@
+{"index": 1, "unix": 1791929383.4596102, "load": [6.49072265625, 2.87109375, 1.7138671875], "completed": 0, "sim": [null, null, null, null, null, null, null, null, null, null, null, null]}
+{"index": 2, "unix": 1791929430.900269, "load": [7.369140625, 3.607421875, 2.01904296875], "completed": 0, "sim": [null, null, null, null, null, null, null, null, null, null, null, null]}
+{"index": 3, "unix": 1791929478.37483, "load": [6.6376953125, 4.0419921875, 2.2548828125], "completed": 0, "sim": [null, null, null, null, null, null, null, null, null, null, null, null]}
+{"index": 4, "unix": 1791929525.994369, "load": [10.03515625, 5.26220703125, 2.75146484375], "completed": 0, "sim": [15.0, 18.0, 18.0, 18.0, 15.0, 15.0, 15.0, 15.0, 14.0, 16.0, 17.0, 16.0]}
+{"index": 5, "unix": 1791929573.851558, "load": [11.5322265625, 6.4228515625, 3.2802734375], "completed": 0, "sim": [38.0, 42.0, 42.0, 42.0, 34.0, 36.0, 37.0, 36.0, 32.0, 35.0, 35.0, 35.0]}
+stage-detector-cohort1-04-v426 r2 seek_own_B 33.19999999999999 {'visible': 0, 'end_visible': 0, 'band_visible': 0}
+stage-detector-cohort1-08-v426 r2 seek_own_B 29.599999999999994 {'visible': 0, 'end_visible': 0, 'band_visible': 0}
+INITIAL_HEALTH 0 ire_scan': 12, 'acquire_explore': 11}, 'motion': 0.012660563268320588}}
+stage-detector-cohort1-07-v431 None RUNNING 37.0 25442885 {'r1': {'still': 0.6499999999999999, 'choice': {'none': 1, 'acquire_turn': 3, 'navigate_pregrasp': 73, 'camera_settle': 1, 'gaze_settle': 1}, 'motion': 0.6142261722664458}, 'r2': {'still': 1.1999999999999993, 'choice': {'none': 1, 'acquire_turn': 23, 'acquire_scan': 12, 'acquire_explore': 11}, 'motion': 0.012660563268320588}}
+stage-detector-cohort1-08-v426 None RUNNING 32.0 27842628 {'r1': {'still': 1.1000000000000014, 'choice': {'none': 1, 'navigate_pregrasp': 67, 'gaze_settle': 4, 'camera_settle': 1}, 'motion': 0.6611273477929093}, 'r2': {'still': 0.25, 'choice': {'none': 1, 'seek_own_B': 80}, 'motion': 0.4062459813861949}}
+stage-detector-cohort1-09-v427 None RUNNING 36.0 27786000 {'r1': {'still': 2.05, 'choice': {'none': 1, 'acquire_turn': 10, 'acquire_scan': 12, 'arm_clearance_backup': 24, 'arm_clearance_turn': 18, 'arm_clearance_verify': 4}, 'motion': 0.40050265773281296}, 'r2': {'still': 1.1500000000000004, 'choice': {'none': 1, 'acquire_turn': 25, 'acquire_scan': 13, 'acquire_explore': 11}, 'motion': 0.029069110699166057}}
+stage-detector-cohort1-10-v430 None RUNNING 36.0 27800328 {'r1': {'still': 2.05, 'choice': {'none': 1, 'acquire_turn': 10, 'acquire_scan': 12, 'arm_clearance_backup': 24, 'arm_clearance_turn': 18, 'arm_clearance_verify': 4}, 'motion': 0.40050265773281296}, 'r2': {'still': 1.1500000000000004, 'choice': {'none': 1, 'acquire_turn': 25, 'acquire_scan': 13, 'acquire_explore': 11}, 'motion': 0.029069110699166057}}
+stage-detector-cohort1-11-v431 None RUNNING 35.0 27676424 {'r1': {'still': 2.05, 'choice': {'none': 1, 'acquire_turn': 10, 'acquire_scan': 12, 'arm_clearance_backup': 24, 'arm_clearance_turn': 18, 'arm_clearance_verify': 4}, 'motion': 0.40050265773281296}, 'r2': {'still': 1.1500000000000004, 'choice': {'none': 1, 'acquire_turn': 25, 'acquire_scan': 13, 'acquire_explore': 11}, 'motion': 0.029069110699166057}}
+ 
+{"index": 6, "unix": 1791929623.891453, "load": [11.9521484375, 7.31787109375, 3.75], "completed": 0, "sim": [61.0, 65.0, 65.0, 64.0, 54.0, 56.0, 57.0, 57.0, 52.0, 54.0, 54.0, 53.0]}
+stage-detector-cohort1-08-v426 r1 navigate_pregrasp 20.400000000000006 {'visible': 3, 'end_visible': 0, 'band_visible': 0}
+stage-detector-cohort1-08-v426 r2 seek_own_B 51.19999999999999 {'visible': 9, 'end_visible': 1, 'band_visible': 0}
+{"index": 7, "unix": 1791929672.4525702, "load": [12.46337890625, 8.08740234375, 4.1796875], "completed": 0, "sim": [84.0, 85.0, 85.0, 85.0, 75.0, 76.0, 79.0, 76.0, 70.0, 75.0, 75.0, 73.0]}
+stage-detector-cohort1-08-v426 r2 seek_own_B 70.0 {'visible': 11, 'end_visible': 1, 'band_visible': 0}
+MONITOR_ERROR ast):
+  File "/Users/changmin/projects/ugrp-wt/e2e18/outputs/e2e18-admin/monitor_detector.py", line 31, in <module>
+    r=subprocess.run(['ssh','-o','ConnectTimeout=10','azure3','timeout 35 python3 -'],input=code,text=True,capture_output=True,timeout=45);r.check_returncode();d=json.loads(r.stdout)
+                                                                                                                                           ~~~~~~~~~~~~~~~~~~^^
+  File "/opt/anaconda3/lib/python3.13/subprocess.py", line 508, in check_returncode
+    raise CalledProcessError(self.returncode, self.args, self.stdout,
+                             self.stderr)
+subprocess.CalledProcessError: Command '['ssh', '-o', 'ConnectTimeout=10', 'azure3', 'timeout 35 python3 -']' returned non-zero exit status 255.
+
+{"index": 9, "unix": 1791930647.844518, "load": [1.27001953125, 3.82421875, 5.50537109375], "completed": 12, "sim": [293.1, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0]}
+stage-detector-cohort1-00-v426 r1 visual_servo 38.80000000000001 {'visible': 222, 'end_visible': 137, 'band_visible': 0}
+stage-detector-cohort1-03-v431 r1 visual_servo 144.0 {'visible': 473, 'end_visible': 408, 'band_visible': 461}
+stage-detector-cohort1-04-v426 r1 visual_servo 189.60000000000002 {'visible': 596, 'end_visible': 371, 'band_visible': 0}
+stage-detector-cohort1-05-v427 r2 visual_servo 142.40000000000003 {'visible': 537, 'end_visible': 409, 'band_visible': 0}
+stage-detector-cohort1-07-v431 r1 visual_servo 44.0 {'visible': 707, 'end_visible': 511, 'band_visible': 703}
+stage-detector-cohort1-08-v426 r2 seek_own_B 299.20000000000005 {'visible': 69, 'end_visible': 1, 'band_visible': 0}
+ALL_FINISHED

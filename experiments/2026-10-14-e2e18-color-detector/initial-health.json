@@ -1,0 +1,1861 @@
+{
+  "scope": "first snapshot at32-43 SIM s, capped60; actual raw commands/ownmap/evaluation-motion diagnostics inspected; GT not control",
+  "N": 12,
+  "source_sha": "8919b098d79f923742757e48148a6023c63af7db",
+  "max_no_motion_s": 2.3499999999999996,
+  "all_robots_moved": true,
+  "model_calls": 0,
+  "load": [
+    11.5322265625,
+    6.4228515625,
+    3.2802734375
+  ],
+  "runs": [
+    {
+      "name": "stage-detector-cohort1-00-v426",
+      "sim_s": 39.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 86,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 84,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 0.6999999999999957,
+          "position_delta_max_m": 1.2274950442275223,
+          "latest_approach": {
+            "t": 117.0,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.662492392927639,
+              -0.7314863401099007,
+              0.4242149302498963
+            ],
+            "grip_own_m": [
+              -1.4773036034905507,
+              -0.6478481175867875
+            ],
+            "distance_m": 0.49137212421502524,
+            "heading_error_rad": 2.2781999989945803,
+            "own_beam_age_s": 44.400000000000006,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.4242149302498963,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": false,
+            "path_points": 29,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.662492392927639,
+                -0.7314863401099008
+              ],
+              "carrot_distance_m": 0.49137212421502535,
+              "before": 0.24144656445558627,
+              "after": 0.22902300961969108,
+              "body_error_m": [
+                0.48889285093957097,
+                0.0492985269127253
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.10049737446379078,
+              "goal_distance_m": 0.49137212421502535
+            },
+            "projected_clear": false
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 46,
+            "arm": 772,
+            "look": 192
+          },
+          "frames": 53,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 21,
+            "acquire_scan": 20,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 2.0500000000000007,
+          "position_delta_max_m": 0.0158587181420159,
+          "latest_approach": {
+            "t": 117.8,
+            "status": "acquire_scan",
+            "own_beam_age_s": 89.0,
+            "B_candidate_available": true,
+            "cycle": 2,
+            "search_memory": {
+              "origin_yaw": 1.1722234795998396,
+              "direction": 1,
+              "index": 2,
+              "tried": [
+                0,
+                1
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                0.05056890041294987,
+                -1.579719452885525
+              ]
+            }
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "archive_sha256": "f74b0775ac7f856158ba35e573c375b973d84b7e1accad42db43a407cabff023",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 6.938893903907228e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 125,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "roundtrip_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1750
+          }
+        },
+        "r2": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "roundtrip_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "roundtrip_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-01-v427",
+      "sim_s": 43.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 97,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 59,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 15,
+            "acquire_scan": 18,
+            "arm_clearance_backup": 9,
+            "arm_clearance_turn": 3,
+            "arm_clearance_verify": 2,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 2.3499999999999996,
+          "position_delta_max_m": 0.3513814705601763,
+          "latest_approach": {
+            "t": 119.0,
+            "status": "acquire_scan",
+            "own_beam_age_s": 46.400000000000006,
+            "B_candidate_available": false,
+            "cycle": 2,
+            "search_memory": {
+              "origin_yaw": -2.6424101148849175,
+              "direction": 1,
+              "index": 2,
+              "tried": [
+                0,
+                1
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                -0.3610357596853457,
+                -0.0622454358585263
+              ]
+            }
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 46,
+            "arm": 772,
+            "look": 192
+          },
+          "frames": 59,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 27,
+            "acquire_scan": 20,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 2.0500000000000007,
+          "position_delta_max_m": 0.0158587181420159,
+          "latest_approach": {
+            "t": 120.2,
+            "status": "acquire_turn",
+            "own_beam_age_s": 91.4,
+            "B_candidate_available": false,
+            "cycle": 3
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "archive_sha256": "f74b0775ac7f856158ba35e573c375b973d84b7e1accad42db43a407cabff023",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 6.938893903907228e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 125,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "roundtrip_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1750
+          }
+        },
+        "r2": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "roundtrip_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "roundtrip_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-02-v430",
+      "sim_s": 43.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 97,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 59,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 15,
+            "acquire_scan": 18,
+            "arm_clearance_backup": 9,
+            "arm_clearance_turn": 3,
+            "arm_clearance_verify": 2,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 2.3499999999999996,
+          "position_delta_max_m": 0.3513814705601763,
+          "latest_approach": {
+            "t": 119.0,
+            "status": "acquire_scan",
+            "own_beam_age_s": 46.400000000000006,
+            "B_candidate_available": false,
+            "cycle": 2,
+            "search_memory": {
+              "origin_yaw": -2.6424101148849175,
+              "direction": 1,
+              "index": 2,
+              "tried": [
+                0,
+                1
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                -0.3610357596853457,
+                -0.0622454358585263
+              ]
+            }
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 46,
+            "arm": 772,
+            "look": 192
+          },
+          "frames": 59,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 27,
+            "acquire_scan": 20,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 2.0500000000000007,
+          "position_delta_max_m": 0.0158587181420159,
+          "latest_approach": {
+            "t": 120.2,
+            "status": "acquire_turn",
+            "own_beam_age_s": 91.4,
+            "B_candidate_available": false,
+            "cycle": 3
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "archive_sha256": "f74b0775ac7f856158ba35e573c375b973d84b7e1accad42db43a407cabff023",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 6.938893903907228e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 125,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "roundtrip_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1750
+          }
+        },
+        "r2": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "roundtrip_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "roundtrip_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-03-v431",
+      "sim_s": 43.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 97,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 59,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 15,
+            "acquire_scan": 18,
+            "arm_clearance_backup": 9,
+            "arm_clearance_turn": 3,
+            "arm_clearance_verify": 2,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 2.3499999999999996,
+          "position_delta_max_m": 0.3513814705601763,
+          "latest_approach": {
+            "t": 119.0,
+            "status": "acquire_scan",
+            "own_beam_age_s": 46.400000000000006,
+            "B_candidate_available": false,
+            "cycle": 2,
+            "search_memory": {
+              "origin_yaw": -2.6424101148849175,
+              "direction": 1,
+              "index": 2,
+              "tried": [
+                0,
+                1
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                -0.3610357596853457,
+                -0.0622454358585263
+              ]
+            }
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 46,
+            "arm": 772,
+            "look": 192
+          },
+          "frames": 59,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 27,
+            "acquire_scan": 20,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 2.0500000000000007,
+          "position_delta_max_m": 0.0158587181420159,
+          "latest_approach": {
+            "t": 120.2,
+            "status": "acquire_turn",
+            "own_beam_age_s": 91.4,
+            "B_candidate_available": false,
+            "cycle": 3
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "archive_sha256": "f74b0775ac7f856158ba35e573c375b973d84b7e1accad42db43a407cabff023",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 6.938893903907228e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 125,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "roundtrip_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1750
+          }
+        },
+        "r2": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "roundtrip_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "roundtrip_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-04-v426",
+      "sim_s": 35.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 74,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 71,
+            "camera_settle": 1,
+            "gaze_settle": 1
+          },
+          "max_no_motion_s": 0.6999999999999993,
+          "position_delta_max_m": 0.6349504514017852,
+          "latest_approach": {
+            "t": 128.6,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -0.9676568591392405,
+              -0.5083413347291761,
+              0.8170504337723297
+            ],
+            "grip_own_m": [
+              -0.8285918998671178,
+              -0.36018203835313745
+            ],
+            "distance_m": 0.2775199154655024,
+            "heading_error_rad": 2.3458584674861553,
+            "own_beam_age_s": 13.599999999999994,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.8170504337723297,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": false,
+            "path_points": 17,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -0.9676568591392405,
+                -0.5083413347291761
+              ],
+              "carrot_distance_m": 0.2775199154655024,
+              "before": 0.07701730347997962,
+              "after": 0.07020009143164127,
+              "body_error_m": [
+                0.2720530253858339,
+                0.054812907771750574
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.1988170447918822,
+              "goal_distance_m": 0.2775199154655024
+            },
+            "projected_clear": true,
+            "regulated_pulse_period_s": 0.4
+          }
+        },
+        "r2": {
+          "command_distribution": {},
+          "frames": 85,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 84
+          },
+          "max_no_motion_s": 0.2999999999999998,
+          "position_delta_max_m": 0.12282080437007702,
+          "latest_approach": {
+            "t": 128.2,
+            "status": "seek_own_B",
+            "source": "own_frontier_navigation"
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "archive_sha256": "a34a5373b10060f4098fe115388f48ca762481a505f1c6a4f4441ca64682f85b",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 3.469446951953614e-18,
+            "yaw_rad": 1.734723475976807e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 137,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "roundtrip_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r2": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "roundtrip_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "roundtrip_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-05-v427",
+      "sim_s": 37.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 82,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 3,
+            "navigate_pregrasp": 77,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 0.6499999999999999,
+          "position_delta_max_m": 0.6613598502562771,
+          "latest_approach": {
+            "t": 131.0,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.2535569791116048,
+              -0.45852473864910614,
+              0.595000716288185
+            ],
+            "grip_own_m": [
+              -1.0852772857293576,
+              -0.34462923919817595
+            ],
+            "distance_m": 0.24059400502167735,
+            "heading_error_rad": 2.173589570309992,
+            "own_beam_age_s": 18.0,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.595000716288185,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 12,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.2535569791116048,
+                -0.45852473864910614
+              ],
+              "carrot_distance_m": 0.24059400502167735,
+              "before": 0.057885475252370915,
+              "after": 0.05195268491184738,
+              "body_error_m": [
+                0.237340014174853,
+                0.039435934423460564
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.16465368633497332,
+              "goal_distance_m": 0.24059400502167735
+            },
+            "projected_clear": true,
+            "regulated_pulse_period_s": 0.4
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 49,
+            "arm": 768,
+            "look": 191
+          },
+          "frames": 47,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 23,
+            "acquire_scan": 12,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 1.1999999999999993,
+          "position_delta_max_m": 0.012660563268320588,
+          "latest_approach": {
+            "t": 126.2,
+            "status": "acquire_turn",
+            "own_beam_age_s": 45.8,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "archive_sha256": "a34a5373b10060f4098fe115388f48ca762481a505f1c6a4f4441ca64682f85b",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 3.469446951953614e-18,
+            "yaw_rad": 1.734723475976807e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 137,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "roundtrip_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r2": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "roundtrip_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "roundtrip_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-06-v430",
+      "sim_s": 37.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 81,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 3,
+            "navigate_pregrasp": 76,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 0.6499999999999999,
+          "position_delta_max_m": 0.6142261722664458,
+          "latest_approach": {
+            "t": 131.4,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.2236602920277349,
+              -0.4636660789572698,
+              0.6035152140506597
+            ],
+            "grip_own_m": [
+              -1.0563564497253581,
+              -0.3483419082433148
+            ],
+            "distance_m": 0.18948207703064351,
+            "heading_error_rad": 2.354759755095497,
+            "own_beam_age_s": 18.0,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.6035152140506597,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 8,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.2236602920277349,
+                -0.4636660789572698
+              ],
+              "carrot_distance_m": 0.18948207703064351,
+              "before": 0.03590345751584672,
+              "after": 0.031286736715026575,
+              "body_error_m": [
+                0.18625387682167657,
+                0.034827444418769095
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.1848543537097621,
+              "goal_distance_m": 0.18948207703064351
+            },
+            "projected_clear": false,
+            "gaze_bearing_deg": 76.53947632420767,
+            "gaze_pan_reachable": false,
+            "gaze_source": "own_rgb_track",
+            "track_sigma_m": 0.06915198649128089
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 49,
+            "arm": 768,
+            "look": 191
+          },
+          "frames": 47,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 23,
+            "acquire_scan": 12,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 1.1999999999999993,
+          "position_delta_max_m": 0.012660563268320588,
+          "latest_approach": {
+            "t": 126.2,
+            "status": "acquire_turn",
+            "own_beam_age_s": 45.8,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "archive_sha256": "a34a5373b10060f4098fe115388f48ca762481a505f1c6a4f4441ca64682f85b",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 3.469446951953614e-18,
+            "yaw_rad": 1.734723475976807e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 137,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "roundtrip_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r2": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "roundtrip_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "roundtrip_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-07-v431",
+      "sim_s": 37.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 79,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 3,
+            "navigate_pregrasp": 73,
+            "camera_settle": 1,
+            "gaze_settle": 1
+          },
+          "max_no_motion_s": 0.6499999999999999,
+          "position_delta_max_m": 0.6142261722664458,
+          "latest_approach": {
+            "t": 130.2,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.2311437112059185,
+              -0.39843385978134466,
+              0.36989438977385936
+            ],
+            "grip_own_m": [
+              -1.0416870353688685,
+              -0.32497361215873605
+            ],
+            "distance_m": 0.18899592775149548,
+            "heading_error_rad": 2.2221090057144295,
+            "own_beam_age_s": 1.1999999999999886,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.36989438977385936,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 5,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.2311437112059185,
+                -0.39843385978134466
+              ],
+              "carrot_distance_m": 0.18899592775149548,
+              "before": 0.035719460706648505,
+              "after": 0.031002093261779204,
+              "body_error_m": [
+                0.18897193900618764,
+                -0.0030111417917797786
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": -0.015932984550440107,
+              "goal_distance_m": 0.18899592775149548
+            },
+            "projected_clear": false,
+            "gaze_bearing_deg": 67.47069131154926,
+            "gaze_pan_reachable": false,
+            "gaze_source": "own_rgb_track",
+            "track_sigma_m": 0.03293502816523925
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 49,
+            "arm": 768,
+            "look": 191
+          },
+          "frames": 47,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 23,
+            "acquire_scan": 12,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 1.1999999999999993,
+          "position_delta_max_m": 0.012660563268320588,
+          "latest_approach": {
+            "t": 126.2,
+            "status": "acquire_turn",
+            "own_beam_age_s": 45.8,
+            "B_candidate_available": false,
+            "cycle": 2
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "archive_sha256": "a34a5373b10060f4098fe115388f48ca762481a505f1c6a4f4441ca64682f85b",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 3.469446951953614e-18,
+            "yaw_rad": 1.734723475976807e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 137,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "roundtrip_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r2": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "roundtrip_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "roundtrip_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-08-v426",
+      "sim_s": 32.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 73,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 67,
+            "gaze_settle": 4,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 1.1000000000000014,
+          "position_delta_max_m": 0.6611273477929093,
+          "latest_approach": {
+            "t": 167.5,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              0.8453937594476585,
+              -1.7448107086681466,
+              1.9349659682270706
+            ],
+            "grip_own_m": [
+              0.7730193014353458,
+              -1.5549365981964343
+            ],
+            "distance_m": 0.5854846648656317,
+            "heading_error_rad": 2.7258420308469002,
+            "own_beam_age_s": 38.5,
+            "camera": "inspect",
+            "basis_yaw_rad": 1.9349659682270706,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": false,
+            "path_points": 25,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                0.8453937594476585,
+                -1.7448107086681466
+              ],
+              "carrot_distance_m": 0.5854846648656317,
+              "before": 0.342792292792821,
+              "after": 0.3280029275670671,
+              "body_error_m": [
+                0.5811485000014943,
+                0.07112463524570181
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.1217807177704683,
+              "goal_distance_m": 0.5854846648656317
+            },
+            "projected_clear": false
+          }
+        },
+        "r2": {
+          "command_distribution": {},
+          "frames": 81,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 80
+          },
+          "max_no_motion_s": 0.25,
+          "position_delta_max_m": 0.4062459813861949,
+          "latest_approach": {
+            "t": 167.1,
+            "status": "seek_own_B",
+            "source": "own_frontier_navigation"
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "archive_sha256": "d33ecaf6d4975f633a93459ce6de81172d01772881732725b2c6fa0abcb1d072",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 3.469446951953614e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 196,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "roundtrip_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1250
+          }
+        },
+        "r2": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "roundtrip_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "roundtrip_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-09-v427",
+      "sim_s": 36.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 69,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 10,
+            "acquire_scan": 12,
+            "arm_clearance_backup": 24,
+            "arm_clearance_turn": 18,
+            "arm_clearance_verify": 4
+          },
+          "max_no_motion_s": 2.05,
+          "position_delta_max_m": 0.40050265773281296,
+          "latest_approach": {
+            "t": 168.3,
+            "status": "acquire_scan",
+            "own_beam_age_s": 13.200000000000017,
+            "B_candidate_available": false,
+            "cycle": 1,
+            "search_memory": {
+              "origin_yaw": -1.1198329831754976,
+              "direction": -1,
+              "index": 1,
+              "tried": [
+                0
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                0.2318490570514766,
+                -0.3836775476934516
+              ]
+            }
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 49,
+            "arm": 768,
+            "look": 191
+          },
+          "frames": 50,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 25,
+            "acquire_scan": 13,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 1.1500000000000004,
+          "position_delta_max_m": 0.029069110699166057,
+          "latest_approach": {
+            "t": 167.9,
+            "status": "acquire_scan",
+            "own_beam_age_s": 72.5,
+            "B_candidate_available": false,
+            "cycle": 2,
+            "search_memory": {
+              "origin_yaw": -1.3613217776333861,
+              "direction": 1,
+              "index": 2,
+              "tried": [
+                0,
+                1
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                0.4126815105463417,
+                -0.17939345147527064
+              ]
+            }
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "archive_sha256": "d33ecaf6d4975f633a93459ce6de81172d01772881732725b2c6fa0abcb1d072",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 3.469446951953614e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 196,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "roundtrip_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1250
+          }
+        },
+        "r2": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "roundtrip_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "roundtrip_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-10-v430",
+      "sim_s": 36.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 69,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 10,
+            "acquire_scan": 12,
+            "arm_clearance_backup": 24,
+            "arm_clearance_turn": 18,
+            "arm_clearance_verify": 4
+          },
+          "max_no_motion_s": 2.05,
+          "position_delta_max_m": 0.40050265773281296,
+          "latest_approach": {
+            "t": 168.3,
+            "status": "acquire_scan",
+            "own_beam_age_s": 11.600000000000023,
+            "B_candidate_available": false,
+            "cycle": 1,
+            "search_memory": {
+              "origin_yaw": -1.1198329831754976,
+              "direction": -1,
+              "index": 1,
+              "tried": [
+                0
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                0.2318490570514766,
+                -0.3836775476934516
+              ]
+            }
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 49,
+            "arm": 768,
+            "look": 191
+          },
+          "frames": 50,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 25,
+            "acquire_scan": 13,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 1.1500000000000004,
+          "position_delta_max_m": 0.029069110699166057,
+          "latest_approach": {
+            "t": 167.9,
+            "status": "acquire_scan",
+            "own_beam_age_s": 72.5,
+            "B_candidate_available": false,
+            "cycle": 2,
+            "search_memory": {
+              "origin_yaw": -1.3613217776333861,
+              "direction": 1,
+              "index": 2,
+              "tried": [
+                0,
+                1
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                0.4126815105463417,
+                -0.17939345147527064
+              ]
+            }
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "archive_sha256": "d33ecaf6d4975f633a93459ce6de81172d01772881732725b2c6fa0abcb1d072",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 3.469446951953614e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 196,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "roundtrip_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1250
+          }
+        },
+        "r2": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "roundtrip_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "roundtrip_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    },
+    {
+      "name": "stage-detector-cohort1-11-v431",
+      "sim_s": 35.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {},
+          "frames": 69,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 10,
+            "acquire_scan": 12,
+            "arm_clearance_backup": 24,
+            "arm_clearance_turn": 18,
+            "arm_clearance_verify": 4
+          },
+          "max_no_motion_s": 2.05,
+          "position_delta_max_m": 0.40050265773281296,
+          "latest_approach": {
+            "t": 168.3,
+            "status": "acquire_scan",
+            "own_beam_age_s": 11.600000000000023,
+            "B_candidate_available": false,
+            "cycle": 1,
+            "search_memory": {
+              "origin_yaw": -1.1198329831754976,
+              "direction": -1,
+              "index": 1,
+              "tried": [
+                0
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                0.2318490570514766,
+                -0.3836775476934516
+              ]
+            }
+          }
+        },
+        "r2": {
+          "command_distribution": {},
+          "frames": 50,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 25,
+            "acquire_scan": 13,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 1.1500000000000004,
+          "position_delta_max_m": 0.029069110699166057,
+          "latest_approach": {
+            "t": 167.9,
+            "status": "acquire_scan",
+            "own_beam_age_s": 72.5,
+            "B_candidate_available": false,
+            "cycle": 2,
+            "search_memory": {
+              "origin_yaw": -1.3613217776333861,
+              "direction": 1,
+              "index": 2,
+              "tried": [
+                0,
+                1
+              ],
+              "source": "last_own_rgb",
+              "pose": [
+                0.4126815105463417,
+                -0.17939345147527064
+              ]
+            }
+          }
+        }
+      },
+      "staging": {
+        "integration_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "archive_sha256": "d33ecaf6d4975f633a93459ce6de81172d01772881732725b2c6fa0abcb1d072",
+        "integration_roundtrip": true,
+        "label": "TEST_SETUP_GT",
+        "placement_errors": {
+          "r1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r2": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "r3": {
+            "xyz_m": 0.0,
+            "yaw_rad": 0.0
+          },
+          "beam_1": {
+            "xyz_m": 0.0,
+            "yaw_rad": 3.469446951953614e-18
+          }
+        },
+        "weld": false,
+        "approximation": "zero velocities and roll/pitch; arm initialized from issued pulses, not measured joints",
+        "controller_feedback": false,
+        "E2E_success_eligible": false
+      },
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 196,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "roundtrip_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1250
+          }
+        },
+        "r2": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "roundtrip_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "roundtrip_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,8 +1,7 @@
 {
   "schema": "ugrp.e2e18.color_detector.v1",
-  "status": "stage_authorized",
+  "status": "finite_stage_round_complete",
   "label_author": "Codex visual review, NOT a human annotator",
-  "human_confirmed": false,
   "counts": {
     "teal_visible": 30,
     "blue_visible": 30,
@@ -107,10 +106,13 @@
   },
   "limitations": [
     "Same deliberately selected DEV frames were used for tuning and regression; no independent holdout",
-    "No human-confirmed labels yet",
     "Presence is not a metric grasp pose and does not seed a grasp station",
     "Clipped/too-distant/insufficient-support views still rejected for metric grasp",
-    "New stage runs 0/12; no physical improvement claim"
+    "Coordinator verified 36/90 labels, discrepancies0; remaining54 not human-reviewed",
+    "Stage uses the same three saved checkpoints and seed62002; no independent confirmation cohort, full E2E, or historical pooling",
+    "RGB peer proximity is a screen-space candidate, not physical occupancy or peer identity; inspect visual review before interpreting counts",
+    "Current colored-end route bypasses end-assignment occupancy check; counting is evaluation-only and does not fix that path",
+    "Successful supervision checks had a975.392-second gap; SSH failure accompanied it, exact host/network cause unconfirmed; known B-search was not interrupted at100SIMs and full300SIM result is included."
   ],
   "bundles": [
     "v430",
@@ -130,7 +132,34 @@
     "calls": 0,
     "cost_usd": 0
   },
-  "vm": "all four deallocated; none started",
+  "vm": {
+    "verified_unix": 1791937914.4507961,
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "VM3_deallocated": true,
+    "all_four_deallocated": true,
+    "vms": [
+      {
+        "name": "ugrp-sim-azure",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_D16as_v5"
+      },
+      {
+        "name": "ugrp-sim-azure2",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_D16as_v5"
+      },
+      {
+        "name": "ugrp-sim-azure3",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_F16als_v6"
+      },
+      {
+        "name": "ugrp-sim-azure4",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_F16als_v6"
+      }
+    ]
+  },
   "source_files": {
     "harness/e2e_color_detection.py": "ccea2b977bacd91b95363eace88ad93f69300c2ff9850018d0bf5b3622609bfe",
     "harness/e2e_end_colors.py": "a67a7c1d251019edea2df3c7e16f1d385459cb5571295acd1ada41ab57c7ce28",
@@ -138,9 +167,147 @@
     "scripts/run_e2e_stage_probe.py": "524d797fbb194fa86780b66d1318b11a1a67ffeb115893f4b126f20ceb55f45b"
   },
   "representative_video_review": {
-    "success": "Existing v419: r1 beam at118, both beam at235, bilateral close beam at294; not a new v431 result",
-    "failure": "Existing v423: r1 wall from23 to111; r2 blue band at45/89/111 with final clipping; pair split between wall and beam",
-    "frames_per_video": 6
+    "videos": [
+      {
+        "label": "success-black-v426",
+        "original_run": "/home/ugrp/ugrp-sim/runs/stage-detector-cohort1-00-v426",
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-e2e18-detector-representative-success-black-v426",
+        "video_sha256": "be9a172ad49f87335d1d5661a1d580449054116391c7706becccc005089f3bea",
+        "frames": [
+          {
+            "index": 0,
+            "video_s": 0.0,
+            "raw_sim_s": 1.3,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-success-black-v426/review-video/view-0.jpg",
+            "sha256": "9a6a3af17cc2f79dd5d876f9ed4827c7b4cee0b2b84000a14d8267a005176cc2",
+            "local": "outputs/e2e18-detector-videos/success-black-v426/view-0.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "r1 sees a distant robot; r2 sees wall/floor; beam absent in both views"
+          },
+          {
+            "index": 1,
+            "video_s": 7.32,
+            "raw_sim_s": 59.86,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-success-black-v426/review-video/view-1.jpg",
+            "sha256": "007e11d36e63e13d933292ccc1c28392d71a9ff43cad83289c2b300abdc44ded",
+            "local": "outputs/e2e18-detector-videos/success-black-v426/view-1.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "both views face floor/wall, beam absent"
+          },
+          {
+            "index": 2,
+            "video_s": 14.64,
+            "raw_sim_s": 118.42,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-success-black-v426/review-video/view-2.jpg",
+            "sha256": "65ad4893602c2cd4aa513a4e34a84e2625f10dadf4721b01a95f6051cb29855e",
+            "local": "outputs/e2e18-detector-videos/success-black-v426/view-2.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "r1 sees black-banded beam end at right edge; r2 still floor"
+          },
+          {
+            "index": 3,
+            "video_s": 21.96,
+            "raw_sim_s": 176.98000000000002,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-success-black-v426/review-video/view-3.jpg",
+            "sha256": "a7c71d017abd520f4ba3aa23386f23e028a049eef6c2aa00b029c6f2f2b1d11e",
+            "local": "outputs/e2e18-detector-videos/success-black-v426/view-3.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "r1 faces wall; r2 floor, no paired grasp visible"
+          },
+          {
+            "index": 4,
+            "video_s": 29.28,
+            "raw_sim_s": 235.54000000000002,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-success-black-v426/review-video/view-4.jpg",
+            "sha256": "b0d5f26a703fe1560aedcb7816a36a2b716954e3d44f023edd893cc2b9b3ac23",
+            "local": "outputs/e2e18-detector-videos/success-black-v426/view-4.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "both own cameras see a black-banded beam end"
+          },
+          {
+            "index": 5,
+            "video_s": 36.6,
+            "raw_sim_s": 294.1,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-success-black-v426/review-video/view-5.jpg",
+            "sha256": "f867281a7ac8944f649fbc80879011a41f6c20a0f5c408abf3799f9579f97dd7",
+            "local": "outputs/e2e18-detector-videos/success-black-v426/view-5.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "both cameras show very close beam surface/band; bilateral grasp success is separately verified by evaluator"
+          }
+        ],
+        "relationship": "초반 둘 다 봉을 놓치다가 후반 각자 끝을 가까이 본다; 공동 파지는 평가 원장으로 별도 확인(293.1 SIM초)."
+      },
+      {
+        "label": "failure-color-v431",
+        "original_run": "/home/ugrp/ugrp-sim/runs/stage-detector-cohort1-07-v431",
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-e2e18-detector-representative-failure-color-v431",
+        "video_sha256": "815fe9ae4e2f6d1c662729fe72f16034739637cf5a8eed61d4318142c27c5842",
+        "frames": [
+          {
+            "index": 0,
+            "video_s": 0.0,
+            "raw_sim_s": 1.3,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-failure-color-v431/review-video/view-0.jpg",
+            "sha256": "26e601be440f32b6faf2586d32e53f60b5609ddf944f0ef156507939ef6ed738",
+            "local": "outputs/e2e18-detector-videos/failure-color-v431/view-0.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "r1 sees distant robot and partial near robot; r2 floor/doorway"
+          },
+          {
+            "index": 1,
+            "video_s": 7.489999999999999,
+            "raw_sim_s": 61.21999999999999,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-failure-color-v431/review-video/view-1.jpg",
+            "sha256": "ddc749820d9f37112a8447ffc3140294eb48a29601aff2b8ddb6de656b255039",
+            "local": "outputs/e2e18-detector-videos/failure-color-v431/view-1.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "r1 sees own teal band centered; r2 floor only"
+          },
+          {
+            "index": 2,
+            "video_s": 14.979999999999999,
+            "raw_sim_s": 121.13999999999999,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-failure-color-v431/review-video/view-2.jpg",
+            "sha256": "73d2579700030b9f8c73e188af5293584402cfeb552b7df4568cb0f895455166",
+            "local": "outputs/e2e18-detector-videos/failure-color-v431/view-2.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "r1 maintains teal band; r2 faces doorway"
+          },
+          {
+            "index": 3,
+            "video_s": 22.47,
+            "raw_sim_s": 181.06,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-failure-color-v431/review-video/view-3.jpg",
+            "sha256": "1fa6995a62d39d34a9b28cde38ff76bb1b500751682049c909f92546e8b9cf32",
+            "local": "outputs/e2e18-detector-videos/failure-color-v431/view-3.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "r1 maintains teal band; r2 looks along wall"
+          },
+          {
+            "index": 4,
+            "video_s": 29.959999999999997,
+            "raw_sim_s": 240.98,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-failure-color-v431/review-video/view-4.jpg",
+            "sha256": "0b603af1388b2939553a203f48dfc8287aa21a0106665d3ff545ec0eb5166b6f",
+            "local": "outputs/e2e18-detector-videos/failure-color-v431/view-4.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "r1 maintains teal band; r2 floor/wall"
+          },
+          {
+            "index": 5,
+            "video_s": 37.449999999999996,
+            "raw_sim_s": 300.9,
+            "path": "/home/ugrp/ugrp-sim/runs/e2e18-detector-representative-failure-color-v431/review-video/view-5.jpg",
+            "sha256": "f9b243aa615d08b658ecef5f6189a56a2da8bdc2fe7cd7e59a75e226a495eb1e",
+            "local": "outputs/e2e18-detector-videos/failure-color-v431/view-5.jpg",
+            "directly_viewed_by": "Codex",
+            "description": "r1 sees teal band plus another robot at left; r2 blue band clipped at lower edge; no joint grasp"
+          }
+        ],
+        "relationship": "r1은 청록 끝을 계속 보지만 r2는 바닥·문을 탐색하다 마지막에 파랑 끝을 화면 가장자리에서 본다; r1 화면에 다른 로봇도 근접하지만 그 로봇 ID는 RGB만으로 미확인."
+      }
+    ],
+    "scope": "direct visual inspection of six frames extracted from each actual own-RGB video; image appearance is not a contact/success label"
   },
   "candidate_source_sha": "4f06cfcee525a133b5d39f2a6f47a796249d1728",
   "human_sample_review": {
@@ -190,7 +357,172 @@
       "079",
       "080"
     ],
-    "statement": "\uc870\uc815\uc790 \ud45c\ubcf8 \ud655\uc778 36/90, \ubd88\uc77c\uce58 0",
+    "statement": "조정자 표본 확인 36/90, 불일치 0",
     "unreviewed": 54
-  }
+  },
+  "human_confirmation_scope": "조정자 표본 확인 36/90, 불일치 0; 나머지 54장은 조정자 미확인",
+  "stage_source_sha": "8919b098d79f923742757e48148a6023c63af7db",
+  "stage_gate": {
+    "batch": "stage-detector-gate1",
+    "planned_N": 12,
+    "complete_N": 12,
+    "median_wall_per_sim": 2.3729860658333335,
+    "max_wall_per_sim": 2.6228233509666667,
+    "limit": 3.5,
+    "staging_passed": true,
+    "ok": true,
+    "model_calls": 0,
+    "request_files": 0,
+    "tokens_per_sim": 0.0,
+    "api_cost_usd": 0,
+    "synchronized": true,
+    "actual_start_spread_s": 0.07741824100003214,
+    "provider_receipts": 0,
+    "provider_attempt_ids": [],
+    "receipt_reconciled": true
+  },
+  "decision": "v430/v431 remain default off; detector presence is improved on tuned replay, but no improvement in stage reach/opposite-end/joint grasp; not-ready",
+  "remaining": [
+    "First checkpoint r2 v430 has41 band-presence observations but0 metric grasp observations; v43122/0, all39 body-visible observations rejected as OWN_COLOR_NOT_VISIBLE in projected corridor.",
+    "Colored-end approach bypasses end-assignment occupancy checks; online occupancy events0 despite selected true band-near-robot frames.",
+    "Robot green chassis can be mistaken for teal presence: confirmed in new stage visual audit; automatic screen-near counts contain false bands and cannot be treated as physical pair occupancy.",
+    "v431 middle checkpoint r1 ready, r2 still searches; end of video sees own blue band clipped at image edge.",
+    "Supervision gap975.392 seconds with SSH failure; five-minute schedule not met and known B-search was not stopped at100 seconds."
+  ],
+  "new_negative_replay": {
+    "scope": "all black-control observed frames, all assigned-color presence is false because scene bands are black",
+    "false_presence": 58,
+    "N": 3750,
+    "rate": 0.015466666666666667,
+    "independent_frames": false,
+    "metric_admission_from_new_detector_not_tested_here": true
+  },
+  "occupancy_visual_review": "occupancy-visual-review.json:2/4 selected colored candidate frames verified,2/4 false;2 black negatives false; no full manual actual-occupancy count",
+  "supervision": "supervision.json",
+  "stage": {
+    "N": 12,
+    "groups": {
+      "v426": {
+        "N": 3,
+        "unreached": 0,
+        "opposite": 1,
+        "same": 2,
+        "simultaneous_opposite": 1,
+        "both_held": 1,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          33.60000000000002,
+          0,
+          188.0
+        ]
+      },
+      "v427": {
+        "N": 3,
+        "unreached": 2,
+        "opposite": 1,
+        "same": 0,
+        "simultaneous_opposite": 1,
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          5.199999999999989,
+          140.0
+        ]
+      },
+      "v430": {
+        "N": 3,
+        "unreached": 2,
+        "opposite": 1,
+        "same": 0,
+        "simultaneous_opposite": 1,
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      },
+      "v431": {
+        "N": 3,
+        "unreached": 2,
+        "opposite": 1,
+        "same": 0,
+        "simultaneous_opposite": 1,
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          140.79999999999998,
+          41.19999999999999
+        ]
+      }
+    },
+    "observations": {
+      "v426": {
+        "N": 3,
+        "frames": 3750,
+        "metric_grasp_admitted": 757,
+        "online_band_presence": 0,
+        "offline_common_band_presence": 58,
+        "peer_near_assigned_band_screen": 38,
+        "near_band_episodes": 13,
+        "online_occupancy_events": 0
+      },
+      "v427": {
+        "N": 3,
+        "frames": 3082,
+        "metric_grasp_admitted": 564,
+        "online_band_presence": 0,
+        "offline_common_band_presence": 949,
+        "peer_near_assigned_band_screen": 45,
+        "near_band_episodes": 22,
+        "online_occupancy_events": 0
+      },
+      "v430": {
+        "N": 3,
+        "frames": 3124,
+        "metric_grasp_admitted": 239,
+        "online_band_presence": 882,
+        "offline_common_band_presence": 882,
+        "peer_near_assigned_band_screen": 34,
+        "near_band_episodes": 14,
+        "online_occupancy_events": 0
+      },
+      "v431": {
+        "N": 3,
+        "frames": 3443,
+        "metric_grasp_admitted": 1306,
+        "online_band_presence": 1852,
+        "offline_common_band_presence": 1852,
+        "peer_near_assigned_band_screen": 71,
+        "near_band_episodes": 12,
+        "online_occupancy_events": 0
+      }
+    },
+    "gate": {
+      "batch": "stage-detector-gate1",
+      "planned_N": 12,
+      "complete_N": 12,
+      "median_wall_per_sim": 2.3729860658333335,
+      "max_wall_per_sim": 2.6228233509666667,
+      "limit": 3.5,
+      "staging_passed": true,
+      "ok": true,
+      "model_calls": 0,
+      "request_files": 0,
+      "tokens_per_sim": 0.0,
+      "api_cost_usd": 0,
+      "synchronized": true,
+      "actual_start_spread_s": 0.07741824100003214,
+      "provider_receipts": 0,
+      "provider_attempt_ids": [],
+      "receipt_reconciled": true
+    },
+    "model_calls": 0,
+    "api_cost_usd": 0,
+    "condition": "no_comm static work order; zero provider calls; no LLM effect claim"
+  },
+  "archive": {
+    "verified_runs": 24,
+    "files": 31182,
+    "full_milestone_representatives": 2,
+    "manifest": "run-summary.json.zst"
+  },
+  "all_labels_human_confirmed": false
 }
