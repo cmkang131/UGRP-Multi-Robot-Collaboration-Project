@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.e2e18.privileged_act.v1",
-  "status": "continuous_teacher_diagnostic_submitted",
+  "status": "continuous_teacher_diagnostic_2_of_2; speed16_then_gate40_pending",
   "classification": "dev",
   "research_result": false,
   "scope_changed": "2026-10-14 one multitask ACT for local grasp/release of s1-s8 cargo; map code navigation, Gemma skill decisions, private Kaggle GPU training authorized",
@@ -1248,15 +1248,17 @@
     },
     "measurement_recording": "no student RGB; 320x240 top review 1Hz; command/evaluation ledgers",
     "continuous_diagnostic": {
-      "source_sha": "b0cc9d775f57c2b8eca76144fe986b3c501ed35f",
-      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-continuous-b0cc9d77",
-      "status": "submitted_not_verified_complete",
-      "r1_distance_m": [
-        0.5086075822921837,
-        1.9250158193227715
+      "n": 2,
+      "N": 2,
+      "summary": "teacher-continuous-b0cc9d77.json",
+      "success_sim_s": [
+        29.6,
+        20.6
       ],
-      "cap_s": 30,
-      "N": 0
+      "wall_per_sim": [
+        2.2763992244,
+        2.4963984222
+      ]
     }
   },
   "data": {

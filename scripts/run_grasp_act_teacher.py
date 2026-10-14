@@ -97,6 +97,8 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False):
         'physical_success':False,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off'}
     write(out/'result.json',report)
     try:
+        os.environ['UGRP_SIM_OBSERVER_WIDTH']='320'
+        os.environ['UGRP_SIM_OBSERVER_HEIGHT']='240'
         world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=640 if record_training else 320,height=480 if record_training else 240,render=True,
             warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
         scene.setup(world)
@@ -106,7 +108,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False):
         place(world,[CargoInstance('beam_1','long_beam',tuple(plan['beam_pose']))])
         (out/'scene.xml').write_text(world.scene_xml);write(out/'scene.json',scene.manifest)
         report['observation_sampling']={'rgb_size':[640,480] if record_training else None,'rgb_hz':10 if record_training else 0,
-            'review_size':[320,240],'review_hz':1,'control_hz':10,
+            'review_tile_size':[320,240],'review_cameras':'four authored static top views','review_hz':1,'control_hz':10,
             'aspect_ratio_unchanged':True,'camera_fov_and_pose_unchanged':True}
         ports={rid:ContinuousActPort(world,rid,allow_reverse=True,allow_mecanum=True) for rid in plan['roles']}
         # Setup-only pan target: no model/camera changes. All later motion is issued commands.
@@ -141,7 +143,13 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False):
             timings['evaluation']+=time.monotonic()-at
             if i % 10 == 0:
                 # Reviewer evidence only; never referenced by a student observation.
-                at=time.monotonic();(out/'eval-overview'/f'{i:06d}.jpg').write_bytes(world.render_team_jpeg())
+                import io
+                from PIL import Image
+                at=time.monotonic();overview=Image.new('RGB',(640,480))
+                for k,camera in enumerate(scene.config['static_map']['top_cameras']):
+                    frame=Image.open(io.BytesIO(world.render_team_jpeg(camera=camera['name'])))
+                    overview.paste(frame.resize((320,240)),((k%2)*320,(k//2)*240))
+                overview.save(out/'eval-overview'/f'{i:06d}.jpg',quality=86)
                 timings['rgb']+=time.monotonic()-at
                 write(out/'progress.json',{'sim_s':now-origin,'wall_s':time.monotonic()-start,
                     'phases':{rid:t.phase for rid,t in teachers.items()},'sample':i,'timings_s':timings})
