@@ -20,7 +20,7 @@ def execution_tree(source):
     return {line.split('\t',1)[1]:line.split('\t',1)[0] for line in raw.splitlines()}
 
 
-def reuse_speed_gate(prior,plan,concurrency,limit,execution_host,teacher_stability="off"):
+def reuse_speed_gate(prior,plan,concurrency,limit,execution_host,teacher_stability="off",teacher_search="off"):
     """Reuse an observed gate only when all execution code is byte-identical.
 
     The batch driver may change for explicit start indices. No teacher,
@@ -38,6 +38,7 @@ def reuse_speed_gate(prior,plan,concurrency,limit,execution_host,teacher_stabili
     admission=read(prior/'resource-admission.json')
     same_machine(admission.get('execution_host'),execution_host)
     if admission.get('teacher_stability','off')!=teacher_stability:raise ValueError('speed gate stability mode mismatch')
+    if admission.get('teacher_search','off')!=teacher_search:raise ValueError('speed gate search mode mismatch')
     if admission.get('plan_sha256')!=hashlib.sha256(plan.read_bytes()).hexdigest():
         raise ValueError('same frozen plan required')
     gate=read(prior/'speed-gate.json')
@@ -69,7 +70,7 @@ def summarize(rows,planned):
         'interrupted':sum(r.get('status')=='interrupted' or r.get('exit') in (-2,130) for r in rows),'rows':rows}
 
 
-def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teacher_profile="legacy",execution_host='azure',teacher_stability='off'):
+def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teacher_profile="legacy",execution_host='azure',teacher_stability='off',teacher_search='off'):
     jobs=[];reason=None;rows=[];monitored=0.;started=time.monotonic()
     parent=read(root.parents[0]/'RUN_META.json')
     env={**os.environ,**{k:'1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','LP_NUM_THREADS')}}
@@ -80,7 +81,7 @@ def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teache
             command=[sys.executable,'-m','scripts.sim_cli','workflow','run','grasp-act-teacher','--',
                 '--plan',str(plan),'--episode',str(index),'--out',str(target/'raw'),'--cap-s',str(cap),
                 '--teacher-profile',teacher_profile,'--execution-host',execution_host,
-                '--teacher-stability',teacher_stability]
+                '--teacher-stability',teacher_stability,'--teacher-search',teacher_search]
             if probe:command.append('--probe')
             log=(target/'log.txt').open('x');at=time.monotonic()
             proc=subprocess.Popen(command,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,env=env)
@@ -147,9 +148,11 @@ def main():
     p.add_argument('--episode-indices',type=int,nargs='+',help='explicit unchanged frozen-plan indices; never resample')
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
     p.add_argument('--teacher-stability',choices=('off','align_relook_v1'),default='off')
+    p.add_argument('--teacher-search',choices=('off','search_body_scan_v1'),default='off')
     p.add_argument('--complete-frozen-cohort',action='store_true',help='record individual finite failures; operator still stops diagnosed shared defects')
     a=p.parse_args()
     if a.teacher_stability!='off' and a.teacher_profile!='visible_only':raise ValueError('stability mode requires visible_only')
+    if a.teacher_search!='off' and a.teacher_stability=='off':raise ValueError('search mode requires teacher stability')
     root=a.root.resolve();require_run_root(root);host=identity(a.execution_host)
     if a.speed_gate_limit is None:
         if a.execution_host=='gcp1':raise ValueError('GCP requires an explicit measured speed limit; Azure default cannot transfer')
@@ -171,20 +174,20 @@ def main():
     write(root/'resource-admission.json',{'loadavg':os.getloadavg(),'memory_available_kib':available,
         'plan_sha256':hashlib.sha256(plan.read_bytes()).hexdigest(),'concurrency':a.concurrency,
         'episode_indices':indices,'complete_frozen_cohort':a.complete_frozen_cohort,
-        'teacher_stability':a.teacher_stability,'execution_host':host,'load_limit':load_limit,'speed_limit':a.speed_gate_limit,'speed_baseline':baseline})
+        'teacher_stability':a.teacher_stability,'teacher_search':a.teacher_search,'execution_host':host,'load_limit':load_limit,'speed_limit':a.speed_gate_limit,'speed_baseline':baseline})
     if a.diagnostic_only:
         if len(indices)>a.concurrency or a.probe_only or a.speed_gate_from:
             raise ValueError('diagnostic is one finite wave, separate from speed and qualification')
         rows,reason=wave(root/'diagnostic',plan,indices,a.cap_s,probe=False,limit=a.speed_gate_limit,
-            teacher_profile=a.teacher_profile,complete_frozen_cohort=a.complete_frozen_cohort,execution_host=a.execution_host,teacher_stability=a.teacher_stability)
+            teacher_profile=a.teacher_profile,complete_frozen_cohort=a.complete_frozen_cohort,execution_host=a.execution_host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search)
         write(root/'diagnostic.json',{**summarize(rows,len(indices)),'qualified':False,
             'purpose':'seen regression replay; not a fresh teacher gate','stop_reason':reason,'execution_host':host})
         return
     if a.speed_gate_from:
-        gate,proof=reuse_speed_gate(a.speed_gate_from.resolve(),plan,a.concurrency,a.speed_gate_limit,host,a.teacher_stability)
+        gate,proof=reuse_speed_gate(a.speed_gate_from.resolve(),plan,a.concurrency,a.speed_gate_limit,host,a.teacher_stability,a.teacher_search)
         write(root/'execution-continuity.json',proof)
     else:
-        rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit,teacher_profile=a.teacher_profile,execution_host=a.execution_host,teacher_stability=a.teacher_stability)
+        rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit,teacher_profile=a.teacher_profile,execution_host=a.execution_host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search)
         samples=[{'sim_s':r.get('sim_s'),'wall_s':r.get('wall_s'),'exit':r['exit'],
             'expected_stop':r.get('status')=='complete' and r.get('sim_s',0)>=30-1e-6,
             'finalization_complete':any((Path(r['raw'])/name).is_file() for name in ('manifest.json','manifest.json.zst')),'finalization_errors':[],
@@ -197,11 +200,11 @@ def main():
     for offset in range(0,len(indices),a.concurrency):
         batch=indices[offset:offset+a.concurrency]
         rows,reason=wave(root/f'cohort-{batch[0]:03d}',plan,batch,a.cap_s,probe=False,limit=a.speed_gate_limit,
-            complete_frozen_cohort=a.complete_frozen_cohort,teacher_profile=a.teacher_profile,execution_host=a.execution_host,teacher_stability=a.teacher_stability)
+            complete_frozen_cohort=a.complete_frozen_cohort,teacher_profile=a.teacher_profile,execution_host=a.execution_host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search)
         all_rows.extend(rows)
         summary=summarize(all_rows,len(episodes))
         summary.update(source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
-            teacher_profile=a.teacher_profile,teacher_stability=a.teacher_stability,plan_sha256=hashlib.sha256(plan.read_bytes()).hexdigest(),execution_host=host,
+            teacher_profile=a.teacher_profile,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,plan_sha256=hashlib.sha256(plan.read_bytes()).hexdigest(),execution_host=host,
             self_pose_source='issued',criteria=({'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.} if a.teacher_profile=='visible_only' else {'min_z_m':.012,'hold_s':1.}),
             qualified=summary['N']>=40 and summary['n']/max(1,summary['N'])>=.95)
         write(root/'teacher-gate.json',summary)

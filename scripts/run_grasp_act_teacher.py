@@ -79,6 +79,10 @@ def compress_logs(out):
 
 
 
+# Measured actual/nominal wheel response of the real-wheel pulse driver (see report).
+ODOMETRY_RESPONSE_GAIN=.75
+
+
 def audit_visible_input(audit,rows):
     """Count delivered measurements, including rejected hidden rows; fail closed."""
     audit['measurement_rows']+=len(rows)
@@ -87,8 +91,9 @@ def audit_visible_input(audit,rows):
     if bad:raise ValueError('invisible measurement delivered to teacher')
 
 
-def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off"):
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off"):
     if teacher_stability!='off' and teacher_profile!='visible_only':raise ValueError('stability mode requires visible_only')
+    if teacher_search!='off' and teacher_stability=='off':raise ValueError('search mode requires teacher stability')
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use admitted execution host')
     if record_training:
         from scripts.grasp_act_host import same_machine
@@ -126,7 +131,9 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         'episode_plan_sha256':hashlib.sha256((out/'plan.json').read_bytes()).hexdigest(),
         'physical_success':False,'teacher_profile':teacher_profile,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off',
         'self_pose_source':self_pose_source,'recording_gate_proof':recording_proof,
-        'teacher_stability':teacher_stability,
+        'teacher_stability':teacher_stability,'teacher_search':teacher_search,
+        'search_map_anchor':({'source':'plan spawn pose = navigation-handoff stand-in (ground truth at t=0, used once); afterwards issued commands only',
+            'response_gain':ODOMETRY_RESPONSE_GAIN,'gain_basis':'actual/nominal 0.69-0.78 over 9 GCP gate episodes (evaluation-only comparison, not fed live)'} if teacher_search!='off' else None),
         'input_audit':{'scope':'delivered visual measurements only; evaluator reads excluded',
             'enabled':strict,'measurement_rows':0,'invisible_measurements':0,'gt_self_pose_comparison':self_pose_source!='issued'},
         'criteria':{'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.} if strict else {'min_z_m':.012,'hold_s':1.}}
@@ -178,9 +185,13 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             pwm={str(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
             initial=command({'t':origin,'pwm':pwm,**({'wheels':[0.]*4,'duration_s':[0.]*4} if strict else {'drive':[0.]*3,'duration_s':0.})})
             previous[rid]=initial;history[rid]=deque([initial]*HISTORY,maxlen=HISTORY)
-            teachers[rid]=(VisibleOnlyGraspTeacher(rid,end,pwm,bounds=(-20,20,-20,20),teacher_stability=teacher_stability) if strict else
+            search_kw=({'teacher_search':teacher_search,'odometry_gain':ODOMETRY_RESPONSE_GAIN,
+                'static_map':{'bounds':scene.config['static_map']['bounds_m'],'rects':keepout_rects(scene.config['static_map'])}} if teacher_search!='off' else {})
+            teachers[rid]=(VisibleOnlyGraspTeacher(rid,end,pwm,bounds=(-20,20,-20,20),teacher_stability=teacher_stability,**search_kw) if strict else
                 GraspTeacher(rid,end,pwm,bounds=scene.config['static_map']['bounds_m'],rects=keepout_rects(scene.config['static_map']),profile=teacher_profile))
-            if strict:models[rid]=VisibleWorld(rid,end,pose_source=self_pose_source);clocks[rid]=v5.IssuedClock()
+            if strict:
+                anchor=({'initial_pose':[plan['spawns'][rid][0],plan['spawns'][rid][1],plan['spawns'][rid][3]],'response_gain':ODOMETRY_RESPONSE_GAIN} if teacher_search!='off' else {})
+                models[rid]=VisibleWorld(rid,end,pose_source=self_pose_source,**anchor);clocks[rid]=v5.IssuedClock()
             student=None
             if record_training:
                 (out/'rgb'/rid).mkdir(parents=True)
@@ -330,6 +341,7 @@ def main():
     p.add_argument('--noise',action='store_true');p.add_argument('--probe',action='store_true')
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
     p.add_argument('--teacher-stability',choices=('off','align_relook_v1'),default='off')
+    p.add_argument('--teacher-search',choices=('off','search_body_scan_v1'),default='off')
     p.add_argument('--self-pose-source',choices=('issued','perfect_self_comparison'),default='issued')
     p.add_argument('--execution-host',choices=('azure','gcp1'),default='azure')
     p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path)
@@ -343,16 +355,16 @@ def main():
         gate=json.loads(a.teacher_gate.read_text())
         if a.gate_plan is None:raise ValueError('frozen measured gate plan required')
         source_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-        proof=recording_admission(gate,source_sha=source_sha,teacher_profile=a.teacher_profile,gate_plan=a.gate_plan,execution_host=host,teacher_stability=a.teacher_stability)
+        proof=recording_admission(gate,source_sha=source_sha,teacher_profile=a.teacher_profile,gate_plan=a.gate_plan,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search)
         proof['gate_sha256']=hashlib.sha256(a.teacher_gate.read_bytes()).hexdigest()
         if not a.recording_probe:
             if a.recording_check is None:raise ValueError('paired 640x480 recording-mode check required')
             check=json.loads(a.recording_check.read_text())
-            if check.get('qualified') is not True or check.get('N',0)<3 or check.get('n')!=check.get('N') or check.get('source_sha')!=source_sha or check.get('teacher_profile')!=a.teacher_profile or check.get('teacher_stability','off')!=a.teacher_stability:
+            if check.get('qualified') is not True or check.get('N',0)<3 or check.get('n')!=check.get('N') or check.get('source_sha')!=source_sha or check.get('teacher_profile')!=a.teacher_profile or check.get('teacher_stability','off')!=a.teacher_stability or check.get('teacher_search','off')!=a.teacher_search:
                 raise ValueError('unverified recording-mode equivalence')
             same_machine(check.get('execution_host'),host)
             proof['recording_check_sha256']=hashlib.sha256(a.recording_check.read_bytes()).hexdigest()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host,teacher_stability=a.teacher_stability),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search),ensure_ascii=False))
 if __name__=='__main__':main()
