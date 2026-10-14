@@ -1,0 +1,2655 @@
+{
+  "scope": "Offline issued-PWM gravity estimate from saved scene XML; no simulator calls.\n\nAssumes a level base, commanded angles reached, vertical load at the pad centre.\nEqual load sharing is an assumption, not a measured contact-force distribution.\nInertia, horizontal contact forces, servo tracking error and friction are omitted.\n",
+  "physics_steps": 0,
+  "render_calls": 0,
+  "payload_per_arm_kg": 0.125,
+  "crate_mass_kg": 0.25,
+  "saved_run_crate_mass_kg": 0.3,
+  "load_scope": "counterfactual static recalculation; saved outcomes/servo loads remain the original 0.30 kg observations",
+  "cargo_scene_version": "crate_mass_025_v1",
+  "replay_ready": false,
+  "reason": "visible_measurements absent from saved crate evaluation ledger",
+  "runs": [
+    {
+      "seed": 77208,
+      "sha": "b033e5f9",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/result.json",
+          "sha256": "05e8494fe2c950be3dca503bb3be5ce0140eab091a3c83b648db119e4203be40"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/eval-only.jsonl",
+          "sha256": "86de0637b1ed574911ba6d172630ca53c94d03a15413d4c69e62da1276ada2b3"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/scene.xml",
+          "sha256": "9641be31d007778c9059520bc88b6411b161ed20c72de2d22de8b6023f73078a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/teacher-r1.jsonl",
+          "sha256": "45cf9140f441e11662f7e0258cce75913b7198c6cd5bf460f02e11f14b4651f6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/teacher-r2.jsonl",
+          "sha256": "be047dabcbfad3d9b11ce813c024cf7967df79feb89d48b5f3c53af4841bdaa2"
+        }
+      ],
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 45,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": null,
+        "per_robot": {},
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {},
+        "r2": {}
+      }
+    },
+    {
+      "seed": 77208,
+      "sha": "6f312f74",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/result.json",
+          "sha256": "890201310f2f07469d940afbad334861d404492c90ecb1e1d0f86c8ed84634c2"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/eval-only.jsonl.zst",
+          "sha256": "93150a69371367388307450eabb295abe210030f1d429958d31a87c5d46bae2f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/scene.xml",
+          "sha256": "f1dc5a53c75e8b528f3647caf9f57a08ad3d565b0b41b73be9afacd449bc36a9"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/teacher-r1.jsonl.zst",
+          "sha256": "e7bdead50d62f0c7b236e3cc4f48daf4d20784ae095554da8cda49c38122e13c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/teacher-r2.jsonl.zst",
+          "sha256": "bff454d0c5d1db36359fcea0e3eb30e1465dee4dca2bbc04a36aa6eddacf4eac"
+        }
+      ],
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "phase_timeout",
+        "r2": "episode_timeout"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 601,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": null,
+        "per_robot": {},
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {},
+        "r2": {}
+      }
+    },
+    {
+      "seed": 77212,
+      "sha": "b033e5f9",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/result.json",
+          "sha256": "b3eb3bb7e6a29a25ec65fe752f3907694046573e6d7fdf8cb8ff833844bd9038"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/eval-only.jsonl.zst",
+          "sha256": "d38434e612cf9c5be26fd6e132cc90b452785dc66b0162e4dc36047e8c5404af"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/scene.xml",
+          "sha256": "2738d401487bb104d555c77ef7e61c2a3632c5e5fbe3523bba08fbb2a2369dfa"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/teacher-r1.jsonl.zst",
+          "sha256": "08e4eadc127ba0321846d7edac79d62e8b3ae42b140419f192cd87a1a4e49127"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/teacher-r2.jsonl.zst",
+          "sha256": "60e185f923ef72052ffb8561222f37305db3b828e65d77a197e4ca6895699fac"
+        }
+      ],
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "no_stable_joint_hold_3s",
+        "r2": "no_stable_joint_hold_3s"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 366,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": 25.800000000040587,
+        "per_robot": {
+          "r1": {
+            "shoulder": {
+              "max_abs_ratio": 0.243,
+              "t_at_max": 0.6000000000028649,
+              "saturated_samples": 0,
+              "samples": 108
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 9,
+              "samples": 108
+            },
+            "wrist": {
+              "max_abs_ratio": 0.604,
+              "t_at_max": 0.7000000000033424,
+              "saturated_samples": 0,
+              "samples": 108
+            }
+          },
+          "r2": {
+            "shoulder": {
+              "max_abs_ratio": 0.302,
+              "t_at_max": 0.5000000000023874,
+              "saturated_samples": 0,
+              "samples": 108
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 107,
+              "samples": 108
+            },
+            "wrist": {
+              "max_abs_ratio": 0.65,
+              "t_at_max": 0.20000000000095497,
+              "saturated_samples": 0,
+              "samples": 108
+            }
+          }
+        },
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {
+          "closed": {
+            "t": 26.90000000003743,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1257,
+              "4": 2137,
+              "5": 2442,
+              "6": 1486
+            },
+            "elbow_to_pad_horizontal_m": 0.08319949685869674,
+            "arm_gravity_nm": 0.03883295832099972,
+            "payload_equal_share_nm": 0.10202338302297688,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.1408563413439766,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.03566335865602341,
+            "margin_fraction": 0.20203613905996554,
+            "max_supported_crate_mass_share": 0.6747803179982357,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.023978762452693626,
+                "torque_nm": 0.009409266386436979
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06215981642370426,
+                "torque_nm": 0.01524469497791347
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.07981703449533464,
+                "torque_nm": 0.00783005108399233
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.06471912204543265,
+                "torque_nm": 0.0031744729363284716
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.06471912204543265,
+                "torque_nm": 0.0031744729363284716
+              }
+            ]
+          },
+          "complete": {
+            "t": 29.30000000004889,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 775,
+              "4": 1958,
+              "5": 2139,
+              "6": 1486
+            },
+            "elbow_to_pad_horizontal_m": 0.0970871453311182,
+            "arm_gravity_nm": 0.04768841736943928,
+            "payload_equal_share_nm": 0.1190531119622837,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.16674152933172298,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.00977817066827702,
+            "margin_fraction": 0.055394217576151705,
+            "max_supported_crate_mass_share": 0.5410664219822106,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.03092258668890437,
+                "torque_nm": 0.012134023016726076
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.07604746489612574,
+                "torque_nm": 0.01865064076577484
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.09370468296775611,
+                "torque_nm": 0.009192429399136875
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07860677051785411,
+                "torque_nm": 0.0038556620939007445
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07860677051785411,
+                "torque_nm": 0.0038556620939007445
+              }
+            ]
+          }
+        },
+        "r2": {
+          "closed": {
+            "t": 27.400000000039817,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1248,
+              "4": 2041,
+              "5": 2495,
+              "6": 1498
+            },
+            "elbow_to_pad_horizontal_m": 0.08992935998075123,
+            "arm_gravity_nm": 0.04158973518147885,
+            "payload_equal_share_nm": 0.1102758776763962,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.15186561285787503,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.02465408714212497,
+            "margin_fraction": 0.1396676243055306,
+            "max_supported_crate_mass_share": 0.6117836813526536,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.025250142539185793,
+                "torque_nm": 0.009908155932376506
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06638995256925573,
+                "torque_nm": 0.01628213586760997
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.08535570670657233,
+                "torque_nm": 0.008373394827914746
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07162129004666287,
+                "torque_nm": 0.003513024276788814
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07162129004666287,
+                "torque_nm": 0.003513024276788814
+              }
+            ]
+          },
+          "complete": {
+            "t": 29.30000000004889,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 778,
+              "4": 1865,
+              "5": 2200,
+              "6": 1498
+            },
+            "elbow_to_pad_horizontal_m": 0.10109762732614533,
+            "arm_gravity_nm": 0.048666706853326976,
+            "payload_equal_share_nm": 0.12397096550868572,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.1726376723620127,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.003882027637987312,
+            "margin_fraction": 0.021992036231578194,
+            "max_supported_crate_mass_share": 0.5156570033235537,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.030773523372712785,
+                "torque_nm": 0.012075530571452497
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.07748568025521477,
+                "torque_nm": 0.019003363082591422
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.09648911991257172,
+                "torque_nm": 0.009465582663423287
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.08279541830641968,
+                "torque_nm": 0.004061115267929885
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.08279541830641968,
+                "torque_nm": 0.004061115267929885
+              }
+            ]
+          }
+        }
+      },
+      "command_prefix_candidates": {
+        "r1": {
+          "mode": "crate_lift_pose_margin_v1",
+          "status": "selected",
+          "reason": null,
+          "threshold_nm": 0.15886773,
+          "payload_per_arm_kg": 0.125,
+          "required_margin_fraction": 0.1,
+          "checked_prefixes": 24,
+          "qualified_prefixes": 4,
+          "input_source": "own issued PWM and own planned lift PWM only",
+          "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+          "selected": {
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1158,
+              "4": 2100,
+              "5": 2380,
+              "6": 1486
+            },
+            "arm_axis_radius_m": 0.15023540954387093,
+            "z_m": 0.03788687938987998,
+            "rise_m": 0.013984041971744805,
+            "pitch_deg": -66.06,
+            "prefix_duration_s": 0.35000000000000003,
+            "peak_prefix_torque_nm": 0.1511215240059069,
+            "arm_gravity_nm": 0.04234473133692325,
+            "payload_equal_share_nm": 0.10877679266898366,
+            "payload_per_arm_kg": 0.125,
+            "elbow_to_pad_horizontal_m": 0.0887068645618623,
+            "total_equal_share_nm": 0.1511215240059069,
+            "limit_nm": 0.1765197,
+            "margin_fraction": 0.14388295467357526
+          }
+        },
+        "r2": {
+          "mode": "crate_lift_pose_margin_v1",
+          "status": "none",
+          "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+          "threshold_nm": 0.15886773,
+          "payload_per_arm_kg": 0.125,
+          "required_margin_fraction": 0.1,
+          "checked_prefixes": 24,
+          "qualified_prefixes": 0,
+          "input_source": "own issued PWM and own planned lift PWM only",
+          "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+          "selected": null
+        }
+      }
+    },
+    {
+      "seed": 77212,
+      "sha": "6f312f74",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/result.json",
+          "sha256": "58e682ea3881e72ac14f0cd3fa1ce8de6bed21e0d901b80cbae9b8f7291c0a86"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/eval-only.jsonl.zst",
+          "sha256": "7028750714327f55d051fe8538511bd6a948e1e7c25408f2e44f8fc0fb2068b5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/scene.xml",
+          "sha256": "d20c03de9143a76b304170388ab203b8dbdb55d7a2eef12bc0d310b842455df2"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/teacher-r1.jsonl.zst",
+          "sha256": "69260ceeaecd72755daab47980fb7d81c2dbc6a63e6591d0badd9770fa93cc19"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/teacher-r2.jsonl.zst",
+          "sha256": "f1778917fac2456504ac6cbd09cddb791b7494e51d91c714180509006d1f557c"
+        }
+      ],
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "episode_timeout",
+        "r2": "episode_timeout"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 800,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": null,
+        "per_robot": {},
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {},
+        "r2": {}
+      }
+    },
+    {
+      "seed": 77921,
+      "sha": "b033e5f9",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/result.json",
+          "sha256": "2d237f2d71b31dae05418dd888903b751f48401a321fcf7a9cb0ae4df97047d6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/eval-only.jsonl.zst",
+          "sha256": "013fdc7a93ffde257ed1c9f884753883ff43468df7a32fbf5c6c6514dda12fd0"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/scene.xml",
+          "sha256": "1a7b4e985d9757b2e64c23406fb6bab1d8db8ea9d258093d32b3b3f034df9b39"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/teacher-r1.jsonl.zst",
+          "sha256": "49ab31bb1b658a457e10c28675d22616e6f0035cc7da7acd9eecdc28fcc887ba"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/teacher-r2.jsonl.zst",
+          "sha256": "6fd819f66c0a5752ed5445b665c884a2fc54f68872c6b377e8e552da0a97f922"
+        }
+      ],
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "no_stable_joint_hold_3s",
+        "r2": "no_stable_joint_hold_3s"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 330,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": 22.200000000023397,
+        "per_robot": {
+          "r1": {
+            "shoulder": {
+              "max_abs_ratio": 0.191,
+              "t_at_max": 0.20000000000095497,
+              "saturated_samples": 0,
+              "samples": 108
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 9,
+              "samples": 108
+            },
+            "wrist": {
+              "max_abs_ratio": 0.639,
+              "t_at_max": 0.40000000000190994,
+              "saturated_samples": 0,
+              "samples": 108
+            }
+          },
+          "r2": {
+            "shoulder": {
+              "max_abs_ratio": 0.29,
+              "t_at_max": 0.5000000000023874,
+              "saturated_samples": 0,
+              "samples": 108
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 106,
+              "samples": 108
+            },
+            "wrist": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.30000000000143245,
+              "saturated_samples": 1,
+              "samples": 108
+            }
+          }
+        },
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {
+          "closed": {
+            "t": 22.90000000001833,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1217,
+              "4": 2066,
+              "5": 2473,
+              "6": 1471
+            },
+            "elbow_to_pad_horizontal_m": 0.0855722001489564,
+            "arm_gravity_nm": 0.040345912574033804,
+            "payload_equal_share_nm": 0.10493291043265779,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.1452788230066916,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.03124087699330841,
+            "margin_fraction": 0.17698238209847628,
+            "max_supported_crate_mass_share": 0.6488611955224367,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.025165114097823467,
+                "torque_nm": 0.00987479077198593
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06453251971396394,
+                "torque_nm": 0.015826600459849658
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.0821897377855943,
+                "torque_nm": 0.0080628132767668
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.0670918253356923,
+                "torque_nm": 0.0032908540327157075
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.0670918253356923,
+                "torque_nm": 0.0032908540327157075
+              }
+            ]
+          },
+          "complete": {
+            "t": 25.7000000000317,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 729,
+              "4": 1856,
+              "5": 2194,
+              "6": 1471
+            },
+            "elbow_to_pad_horizontal_m": 0.0967203350322493,
+            "arm_gravity_nm": 0.04740878735112511,
+            "payload_equal_share_nm": 0.11860331083329571,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.1660120981844208,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.010507601815579193,
+            "margin_fraction": 0.059526510727013426,
+            "max_supported_crate_mass_share": 0.5442972533471189,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.03067685967668218,
+                "torque_nm": 0.012037599737130087
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.07560624150374978,
+                "torque_nm": 0.018542430728794634
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.09330268325492615,
+                "torque_nm": 0.009152993227308255
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07824427785822766,
+                "torque_nm": 0.0038378818289460668
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07824427785822766,
+                "torque_nm": 0.0038378818289460668
+              }
+            ]
+          }
+        },
+        "r2": {
+          "closed": {
+            "t": 23.800000000022628,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1416,
+              "4": 2118,
+              "5": 2497,
+              "6": 1538
+            },
+            "elbow_to_pad_horizontal_m": 0.09548751624921648,
+            "arm_gravity_nm": 0.04134055945715399,
+            "payload_equal_share_nm": 0.1170915668006017,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.15843212625775568,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.018087573742244317,
+            "margin_fraction": 0.10246773443555768,
+            "max_supported_crate_mass_share": 0.5772368763885708,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.022829993326526975,
+                "torque_nm": 0.008958489381329185
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06574016553463931,
+                "torque_nm": 0.01612277559737029
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.08786605897618008,
+                "torque_nm": 0.008619660385563267
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07787598463701575,
+                "torque_nm": 0.003819817046445623
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07787598463701575,
+                "torque_nm": 0.003819817046445623
+              }
+            ]
+          },
+          "complete": {
+            "t": 25.7000000000317,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 996,
+              "4": 2074,
+              "5": 2121,
+              "6": 1538
+            },
+            "elbow_to_pad_horizontal_m": 0.11161279484469987,
+            "arm_gravity_nm": 0.05162284335356398,
+            "payload_equal_share_nm": 0.1368651896783132,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.1884880330318772,
+            "limit_nm": 0.1765197,
+            "margin_nm": -0.011968333031877193,
+            "margin_fraction": -0.06780168463846925,
+            "max_supported_crate_mass_share": 0.4562769281947898,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.03089263262426867,
+                "torque_nm": 0.012122269041763027
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.0818654441301227,
+                "torque_nm": 0.020077500172912596
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.10399133757166348,
+                "torque_nm": 0.010201550215780189
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.09400126323249916,
+                "torque_nm": 0.004610761961554084
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.09400126323249916,
+                "torque_nm": 0.004610761961554084
+              }
+            ]
+          }
+        }
+      },
+      "command_prefix_candidates": {
+        "r1": {
+          "mode": "crate_lift_pose_margin_v1",
+          "status": "selected",
+          "reason": null,
+          "threshold_nm": 0.15886773,
+          "payload_per_arm_kg": 0.125,
+          "required_margin_fraction": 0.1,
+          "checked_prefixes": 24,
+          "qualified_prefixes": 3,
+          "input_source": "own issued PWM and own planned lift PWM only",
+          "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+          "selected": {
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1117,
+              "4": 2023,
+              "5": 2416,
+              "6": 1471
+            },
+            "arm_axis_radius_m": 0.15323111479465382,
+            "z_m": 0.03788185820654061,
+            "rise_m": 0.013987768302841062,
+            "pitch_deg": -66.06,
+            "prefix_duration_s": 0.35000000000000003,
+            "peak_prefix_torque_nm": 0.15468071482426932,
+            "arm_gravity_nm": 0.04356234924846829,
+            "payload_equal_share_nm": 0.11111836557580104,
+            "payload_per_arm_kg": 0.125,
+            "elbow_to_pad_horizontal_m": 0.09061640413928729,
+            "total_equal_share_nm": 0.15468071482426932,
+            "limit_nm": 0.1765197,
+            "margin_fraction": 0.12371981810376231
+          }
+        },
+        "r2": {
+          "mode": "crate_lift_pose_margin_v1",
+          "status": "none",
+          "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+          "threshold_nm": 0.15886773,
+          "payload_per_arm_kg": 0.125,
+          "required_margin_fraction": 0.1,
+          "checked_prefixes": 24,
+          "qualified_prefixes": 0,
+          "input_source": "own issued PWM and own planned lift PWM only",
+          "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+          "selected": null
+        }
+      }
+    },
+    {
+      "seed": 77921,
+      "sha": "6f312f74",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/result.json",
+          "sha256": "36ec8ad19ef5c8ddf2896a1e3460427eb96445f81fd311ebda6066eddb46f2bd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/eval-only.jsonl.zst",
+          "sha256": "eacca2abe74a1582eb0af6761eee6168037b2934612264d1dd2a3639f68477d6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/scene.xml",
+          "sha256": "423843fa26290a6ea6efbf8febe7dcf96d8a73a6163ff244077b3247ce3f053b"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/teacher-r1.jsonl.zst",
+          "sha256": "6a72d900dce119d35062d11d6fc31d00bf81fc2a5bba9b77bda82dd2fe52f5a5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/teacher-r2.jsonl.zst",
+          "sha256": "d1d4e0d4d03072e8eecea4163063c7aec0736d3a0b42294c7c6fe3338d360bc6"
+        }
+      ],
+      "prefix_held": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 318,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": 27.000000000046317,
+        "per_robot": {
+          "r1": {
+            "shoulder": {
+              "max_abs_ratio": 0.274,
+              "t_at_max": 0.40000000000190994,
+              "saturated_samples": 0,
+              "samples": 48
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 46,
+              "samples": 48
+            },
+            "wrist": {
+              "max_abs_ratio": 0.632,
+              "t_at_max": 0.20000000000095497,
+              "saturated_samples": 0,
+              "samples": 48
+            }
+          },
+          "r2": {
+            "shoulder": {
+              "max_abs_ratio": 0.263,
+              "t_at_max": 0.5000000000023874,
+              "saturated_samples": 0,
+              "samples": 48
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 46,
+              "samples": 48
+            },
+            "wrist": {
+              "max_abs_ratio": 0.662,
+              "t_at_max": 0.20000000000095497,
+              "saturated_samples": 0,
+              "samples": 48
+            }
+          }
+        },
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {
+          "closed": {
+            "t": 27.70000000004125,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1246,
+              "4": 2117,
+              "5": 2451,
+              "6": 1448
+            },
+            "elbow_to_pad_horizontal_m": 0.08387126845318091,
+            "arm_gravity_nm": 0.03926131347822255,
+            "payload_equal_share_nm": 0.1028471429407131,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.14210845641893566,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.034411243581064344,
+            "margin_fraction": 0.19494279437968876,
+            "max_supported_crate_mass_share": 0.6672931429942636,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.024314648249935712,
+                "torque_nm": 0.009541067973274774
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06283158801818843,
+                "torque_nm": 0.015409446961460713
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.08048880608981882,
+                "torque_nm": 0.007895951877411227
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.06539089363991682,
+                "torque_nm": 0.00320742333303792
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.06539089363991682,
+                "torque_nm": 0.00320742333303792
+              }
+            ]
+          },
+          "complete": {
+            "t": 30.50000000005462,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 763,
+              "4": 1931,
+              "5": 2154,
+              "6": 1448
+            },
+            "elbow_to_pad_horizontal_m": 0.09699362375713973,
+            "arm_gravity_nm": 0.04762878333779189,
+            "payload_equal_share_nm": 0.1189384311321926,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.1665672144699845,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.009952485530015515,
+            "margin_fraction": 0.056381726968805834,
+            "max_supported_crate_mass_share": 0.5418388128852731,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.030875825901915118,
+                "torque_nm": 0.012115674083911494
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.07595394332214725,
+                "torque_nm": 0.018627704599756614
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.09361116139377762,
+                "torque_nm": 0.009183254932729585
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07851324894387562,
+                "torque_nm": 0.0038510748606970994
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07851324894387562,
+                "torque_nm": 0.0038510748606970994
+              }
+            ]
+          }
+        },
+        "r2": {
+          "closed": {
+            "t": 28.600000000045547,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1327,
+              "4": 2074,
+              "5": 2497,
+              "6": 1490
+            },
+            "elbow_to_pad_horizontal_m": 0.09312659103400302,
+            "arm_gravity_nm": 0.04170990772535596,
+            "payload_equal_share_nm": 0.11419648225544621,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.15590638998080217,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.020613310019197834,
+            "margin_fraction": 0.11677625794286894,
+            "max_supported_crate_mass_share": 0.5902536996414999,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.024223758762539592,
+                "torque_nm": 0.009505402938420537
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06645290120743191,
+                "torque_nm": 0.01629757402112268
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.08703124715803902,
+                "torque_nm": 0.008537765346203628
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07511891355360975,
+                "torque_nm": 0.0036845827098045585
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07511891355360975,
+                "torque_nm": 0.0036845827098045585
+              }
+            ]
+          },
+          "complete": {
+            "t": 30.50000000005462,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 886,
+              "4": 1970,
+              "5": 2160,
+              "6": 1490
+            },
+            "elbow_to_pad_horizontal_m": 0.106668059356534,
+            "arm_gravity_nm": 0.050344625001217835,
+            "payload_equal_share_nm": 0.13080170778594982,
+            "payload_per_arm_kg": 0.125,
+            "total_equal_share_nm": 0.18114633278716766,
+            "limit_nm": 0.1765197,
+            "margin_nm": -0.004626632787167656,
+            "margin_fraction": -0.02621029146983389,
+            "max_supported_crate_mass_share": 0.48231432576270755,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.030994492923805076,
+                "torque_nm": 0.012162239023301113
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.07999436952996289,
+                "torque_nm": 0.0196186191272234
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.10057271548057001,
+                "torque_nm": 0.009866183388643918
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.08866038187614074,
+                "torque_nm": 0.004348791731024704
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.08866038187614074,
+                "torque_nm": 0.004348791731024704
+              }
+            ]
+          }
+        }
+      },
+      "command_prefix_candidates": {
+        "r1": {
+          "mode": "crate_lift_pose_margin_v1",
+          "status": "selected",
+          "reason": null,
+          "threshold_nm": 0.15886773,
+          "payload_per_arm_kg": 0.125,
+          "required_margin_fraction": 0.1,
+          "checked_prefixes": 24,
+          "qualified_prefixes": 4,
+          "input_source": "own issued PWM and own planned lift PWM only",
+          "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+          "selected": {
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1147,
+              "4": 2079,
+              "5": 2390,
+              "6": 1448
+            },
+            "arm_axis_radius_m": 0.1510914330296,
+            "z_m": 0.037846292655616925,
+            "rise_m": 0.014004968064353241,
+            "pitch_deg": -66.06,
+            "prefix_duration_s": 0.35000000000000003,
+            "peak_prefix_torque_nm": 0.15211762945856497,
+            "arm_gravity_nm": 0.042685504254937855,
+            "payload_equal_share_nm": 0.10943212520362712,
+            "payload_per_arm_kg": 0.125,
+            "elbow_to_pad_horizontal_m": 0.08924128456972649,
+            "total_equal_share_nm": 0.15211762945856497,
+            "limit_nm": 0.1765197,
+            "margin_fraction": 0.13823992756295778
+          }
+        },
+        "r2": {
+          "mode": "crate_lift_pose_margin_v1",
+          "status": "none",
+          "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+          "threshold_nm": 0.15886773,
+          "payload_per_arm_kg": 0.125,
+          "required_margin_fraction": 0.1,
+          "checked_prefixes": 24,
+          "qualified_prefixes": 0,
+          "input_source": "own issued PWM and own planned lift PWM only",
+          "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+          "selected": null
+        }
+      }
+    }
+  ],
+  "pad_window_scan": {
+    "scope": "Exhaust all integer shoulder/elbow PWM pairs, with analytic wrist pruning.\n\n    This deliberately RELAXES the existing pick schedule: lift pitch can be\n    chosen independently, with +/-1 mm height error and no descent/collision\n    constraint. Optional z_bounds widens the search to all lifted pad heights.\n    Failure here also excludes the narrower fixed-pitch schedule.\n    For a fixed shoulder/elbow pair, radius and height increase with pitch in\n    [-90,-40] deg, as does torque (dT/dpitch = -B*sin(pitch)+C*cos(pitch)>0).\n    Therefore its steepest feasible integer wrist PWM is the torque minimum;\n    no feasible wrist command with a better margin is omitted.\n    ",
+    "pad_window_m": [
+      0.146,
+      0.158
+    ],
+    "z_bounds_m": [
+      0.094,
+      0.096
+    ],
+    "integer_pwm_range": [
+      500,
+      2500
+    ],
+    "shoulder_elbow_pairs_checked": 3389694,
+    "feasible_pair_minima": 48973,
+    "at_least_10pct_margin_pair_minima": 9314,
+    "required_margin_fraction": 0.1,
+    "threshold_nm": 0.15886773,
+    "best": {
+      "issued_pwm": {
+        "3": 500,
+        "4": 1516,
+        "5": 2358,
+        "6": 1500
+      },
+      "arm_axis_radius_m": 0.14600251780044443,
+      "z_m": 0.09411845691713755,
+      "pitch_deg": -70.74,
+      "elbow_to_pad_horizontal_m": 0.08523482119950854,
+      "arm_gravity_nm": 0.04255459776021955,
+      "payload_equal_share_nm": 0.10451919949589734,
+      "payload_per_arm_kg": 0.125,
+      "total_equal_share_nm": 0.14707379725611688,
+      "limit_nm": 0.1765197,
+      "margin_nm": 0.029445902743883118,
+      "margin_fraction": 0.16681369129838264,
+      "max_supported_crate_mass_share": 0.6408636063321501,
+      "terms": [
+        {
+          "body": "r2__elbow_link",
+          "mass_kg": 0.04,
+          "lever_m": 0.028293439209508584,
+          "torque_nm": 0.011102345545811168
+        },
+        {
+          "body": "r2__wrist_link",
+          "mass_kg": 0.025,
+          "lever_m": 0.06813181793907702,
+          "torque_nm": 0.01670932834955864
+        },
+        {
+          "body": "r2__gripper",
+          "mass_kg": 0.01,
+          "lever_m": 0.0836916691696889,
+          "torque_nm": 0.008210152745546482
+        },
+        {
+          "body": "r2__left_jaw",
+          "mass_kg": 0.005,
+          "lever_m": 0.06659297777067538,
+          "torque_nm": 0.0032663855596516277
+        },
+        {
+          "body": "r2__right_jaw",
+          "mass_kg": 0.005,
+          "lever_m": 0.06659297777067538,
+          "torque_nm": 0.0032663855596516277
+        }
+      ]
+    },
+    "best_margin_fraction": 0.16681369129838264,
+    "max_crate_mass_at_10pct_margin_kg": 0.27820996716575996,
+    "qualified": true,
+    "same_height_pair_load_split": "0.125 kg per robot",
+    "verdict": "candidate exists"
+  },
+  "all_lifted_heights_scan": {
+    "scope": "Exhaust all integer shoulder/elbow PWM pairs, with analytic wrist pruning.\n\n    This deliberately RELAXES the existing pick schedule: lift pitch can be\n    chosen independently, with +/-1 mm height error and no descent/collision\n    constraint. Optional z_bounds widens the search to all lifted pad heights.\n    Failure here also excludes the narrower fixed-pitch schedule.\n    For a fixed shoulder/elbow pair, radius and height increase with pitch in\n    [-90,-40] deg, as does torque (dT/dpitch = -B*sin(pitch)+C*cos(pitch)>0).\n    Therefore its steepest feasible integer wrist PWM is the torque minimum;\n    no feasible wrist command with a better margin is omitted.\n    ",
+    "pad_window_m": [
+      0.146,
+      0.158
+    ],
+    "z_bounds_m": [
+      0.036000000000000004,
+      1.0
+    ],
+    "integer_pwm_range": [
+      500,
+      2500
+    ],
+    "shoulder_elbow_pairs_checked": 3389694,
+    "feasible_pair_minima": 655584,
+    "at_least_10pct_margin_pair_minima": 277600,
+    "required_margin_fraction": 0.1,
+    "threshold_nm": 0.15886773,
+    "best": {
+      "issued_pwm": {
+        "3": 1665,
+        "4": 2500,
+        "5": 2305,
+        "6": 1500
+      },
+      "arm_axis_radius_m": 0.14614425452549312,
+      "z_m": 0.036012372630255585,
+      "pitch_deg": -49.679999999999986,
+      "elbow_to_pad_horizontal_m": 0.08750554716655995,
+      "arm_gravity_nm": 0.033942113849686414,
+      "payload_equal_share_nm": 0.10730367721299415,
+      "payload_per_arm_kg": 0.125,
+      "total_equal_share_nm": 0.14124579106268056,
+      "limit_nm": 0.1765197,
+      "margin_nm": 0.03527390893731944,
+      "margin_fraction": 0.19982987132495378,
+      "max_supported_crate_mass_share": 0.6643648654617023,
+      "terms": [
+        {
+          "body": "r2__elbow_link",
+          "mass_kg": 0.04,
+          "lever_m": 0.01565436845212685,
+          "torque_nm": 0.006142774180614577
+        },
+        {
+          "body": "r2__wrist_link",
+          "mass_kg": 0.025,
+          "lever_m": 0.053955695559184266,
+          "torque_nm": 0.013232634335889943
+        },
+        {
+          "body": "r2__gripper",
+          "mass_kg": 0.01,
+          "lever_m": 0.07794202947233628,
+          "torque_nm": 0.007646113091236189
+        },
+        {
+          "body": "r2__left_jaw",
+          "mass_kg": 0.005,
+          "lever_m": 0.07054630216050668,
+          "torque_nm": 0.003460296120972853
+        },
+        {
+          "body": "r2__right_jaw",
+          "mass_kg": 0.005,
+          "lever_m": 0.07054630216050668,
+          "torque_nm": 0.003460296120972853
+        }
+      ]
+    },
+    "best_margin_fraction": 0.19982987132495378,
+    "max_crate_mass_at_10pct_margin_kg": 0.29151015011586756,
+    "qualified": true,
+    "same_height_pair_load_split": "0.125 kg per robot",
+    "verdict": "candidate exists"
+  },
+  "constrained_lift_prefix_scan": {
+    "scope": "Sample the existing fixed-pitch pick + exact lift prefixes, no physics.\n\n    Radius 146..158 mm in 0.25 mm increments; yaw zero (planar statics are\n    yaw invariant). This is an existence witness, not a continuous/exhaustive\n    success guarantee. The original collision/route code is unchanged;\n    physical collisions are not evaluated by this offline calculation.\n    ",
+    "samples": 49,
+    "qualified_samples": 27,
+    "qualified": true,
+    "best": {
+      "issued_pwm": {
+        "1": 1500,
+        "3": 1165,
+        "4": 2114,
+        "5": 2373,
+        "6": 1500
+      },
+      "arm_axis_radius_m": 0.14965284295597875,
+      "z_m": 0.03797617288001897,
+      "rise_m": 0.014002588085292356,
+      "pitch_deg": -66.06,
+      "prefix_duration_s": 0.35000000000000003,
+      "peak_prefix_torque_nm": 0.15047212924440437,
+      "arm_gravity_nm": 0.042122569971146065,
+      "payload_equal_share_nm": 0.1083495592732583,
+      "payload_per_arm_kg": 0.125,
+      "elbow_to_pad_horizontal_m": 0.08835845812294255,
+      "total_equal_share_nm": 0.15047212924440437,
+      "limit_nm": 0.1765197,
+      "margin_fraction": 0.14756183448983673
+    },
+    "rows": [
+      {
+        "target_radius_m": 0.146,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 4,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1165,
+            "4": 2114,
+            "5": 2373,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.14965284295597875,
+          "z_m": 0.03797617288001897,
+          "rise_m": 0.014002588085292356,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15047212924440437,
+          "arm_gravity_nm": 0.042122569971146065,
+          "payload_equal_share_nm": 0.1083495592732583,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.08835845812294255,
+          "total_equal_share_nm": 0.15047212924440437,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.14756183448983673
+        }
+      },
+      {
+        "target_radius_m": 0.14625,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 4,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1162,
+            "4": 2108,
+            "5": 2376,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.1499042122640716,
+          "z_m": 0.03793775045163818,
+          "rise_m": 0.014037451999709117,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.1507519115743265,
+          "arm_gravity_nm": 0.042218284978751,
+          "payload_equal_share_nm": 0.10853362659557549,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.08850856399231435,
+          "total_equal_share_nm": 0.1507519115743265,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.145976842390246
+        }
+      },
+      {
+        "target_radius_m": 0.1465,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 4,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1159,
+            "4": 2102,
+            "5": 2379,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.1501530353172353,
+          "z_m": 0.03789955861355258,
+          "rise_m": 0.013972630684459583,
+          "pitch_deg": -66.06000000000002,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15102948915613362,
+          "arm_gravity_nm": 0.04231324573042187,
+          "payload_equal_share_nm": 0.10871624342571176,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.08865748699344486,
+          "total_equal_share_nm": 0.15102948915613362,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.14440434038731298
+        }
+      },
+      {
+        "target_radius_m": 0.14675,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 4,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1156,
+            "4": 2096,
+            "5": 2381,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15054023881579293,
+          "z_m": 0.03809795562872638,
+          "rise_m": 0.014012642579040373,
+          "pitch_deg": -65.97,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15158274235238703,
+          "arm_gravity_nm": 0.042472428777008284,
+          "payload_equal_share_nm": 0.10911031357537875,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.08897884899113455,
+          "total_equal_share_nm": 0.15158274235238703,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.14127011119786048
+        }
+      },
+      {
+        "target_radius_m": 0.147,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 4,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1153,
+            "4": 2090,
+            "5": 2384,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.1507840118017411,
+          "z_m": 0.03806061038190154,
+          "rise_m": 0.014046448192179293,
+          "pitch_deg": -65.97,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.1518551516355156,
+          "arm_gravity_nm": 0.042565621426499625,
+          "payload_equal_share_nm": 0.10928953020901597,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.08912499915108335,
+          "total_equal_share_nm": 0.1518551516355156,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.13972688807246103
+        }
+      },
+      {
+        "target_radius_m": 0.14725,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 4,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1150,
+            "4": 2084,
+            "5": 2387,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15102522176334068,
+          "z_m": 0.038023494228558934,
+          "rise_m": 0.01398031659567682,
+          "pitch_deg": -65.97,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15212533581487664,
+          "arm_gravity_nm": 0.04265805285628105,
+          "payload_equal_share_nm": 0.1094672829585956,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.0892699555217905,
+          "total_equal_share_nm": 0.15212533581487664,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.13819627036032445
+        }
+      },
+      {
+        "target_radius_m": 0.1475,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 3,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1146,
+            "4": 2078,
+            "5": 2390,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.1511392196185705,
+          "z_m": 0.037931152126471995,
+          "rise_m": 0.01401339339787153,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.1522066988817471,
+          "arm_gravity_nm": 0.042715975373394895,
+          "payload_equal_share_nm": 0.1094907235083522,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.089289071158697,
+          "total_equal_share_nm": 0.1522066988817471,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.13773534125796105
+        }
+      },
+      {
+        "target_radius_m": 0.14775,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 3,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1143,
+            "4": 2071,
+            "5": 2393,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15154718370617826,
+          "z_m": 0.03803511053992449,
+          "rise_m": 0.013954707463423428,
+          "pitch_deg": -65.97,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15274707877525057,
+          "arm_gravity_nm": 0.04287075439535634,
+          "payload_equal_share_nm": 0.10987632437989424,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.08960352650755901,
+          "total_equal_share_nm": 0.15274707877525057,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.13467404048811227
+        }
+      },
+      {
+        "target_radius_m": 0.148,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 3,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1139,
+            "4": 2066,
+            "5": 2396,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.1514840458156702,
+          "z_m": 0.03780281267144597,
+          "rise_m": 0.013923454413756253,
+          "pitch_deg": -66.15,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15254917096891818,
+          "arm_gravity_nm": 0.042863247742496204,
+          "payload_equal_share_nm": 0.10968592322642198,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.08944825543439101,
+          "total_equal_share_nm": 0.15254917096891818,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.13579520603695694
+        }
+      },
+      {
+        "target_radius_m": 0.14825,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 3,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1136,
+            "4": 2059,
+            "5": 2398,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.1520269874665522,
+          "z_m": 0.03814617354508529,
+          "rise_m": 0.014102256992010419,
+          "pitch_deg": -65.97,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.1533565995461451,
+          "arm_gravity_nm": 0.04307927465908342,
+          "payload_equal_share_nm": 0.11027732488706168,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.08993054017293511,
+          "total_equal_share_nm": 0.1533565995461451,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.13122105042017906
+        }
+      },
+      {
+        "target_radius_m": 0.1485,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 3,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1132,
+            "4": 2052,
+            "5": 2402,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15215994991736262,
+          "z_m": 0.0379576299456483,
+          "rise_m": 0.014036484617233603,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15342747292385603,
+          "arm_gravity_nm": 0.04313360859832689,
+          "payload_equal_share_nm": 0.11029386432552914,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.08994402799227656,
+          "total_equal_share_nm": 0.15342747292385603,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.13081954635173287
+        }
+      },
+      {
+        "target_radius_m": 0.14875,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 3,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1129,
+            "4": 2046,
+            "5": 2405,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15238486107835156,
+          "z_m": 0.037922336892315854,
+          "rise_m": 0.014067965071110859,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15368267214727457,
+          "arm_gravity_nm": 0.043220913595812184,
+          "payload_equal_share_nm": 0.11046175855146238,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09008094479222212,
+          "total_equal_share_nm": 0.15368267214727457,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.12937381976473694
+        }
+      },
+      {
+        "target_radius_m": 0.149,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 3,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1125,
+            "4": 2039,
+            "5": 2408,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15265213276195383,
+          "z_m": 0.03797366411490373,
+          "rise_m": 0.01400701296123355,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15401940595920072,
+          "arm_gravity_nm": 0.043336112005155344,
+          "payload_equal_share_nm": 0.11068329395404537,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09026160567098501,
+          "total_equal_share_nm": 0.15401940595920072,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.1274661923898538
+        }
+      },
+      {
+        "target_radius_m": 0.14925,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 3,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1122,
+            "4": 2033,
+            "5": 2411,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15287142870504178,
+          "z_m": 0.0379390446231397,
+          "rise_m": 0.01403771585546007,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15426930018368346,
+          "arm_gravity_nm": 0.043421602134583646,
+          "payload_equal_share_nm": 0.11084769804909982,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09039567628876641,
+          "total_equal_share_nm": 0.15426930018368346,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.1260505190996617
+        }
+      },
+      {
+        "target_radius_m": 0.1495,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 2,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1119,
+            "4": 2025,
+            "5": 2414,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15342519469631682,
+          "z_m": 0.03818958915482394,
+          "rise_m": 0.014218660307256908,
+          "pitch_deg": -65.88,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.1550537673886562,
+          "arm_gravity_nm": 0.04362982008288122,
+          "payload_equal_share_nm": 0.11142394730577498,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09086560432682975,
+          "total_equal_share_nm": 0.1550537673886562,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.12160644172488289
+        }
+      },
+      {
+        "target_radius_m": 0.14975,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 2,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1114,
+            "4": 2018,
+            "5": 2417,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15355721053641677,
+          "z_m": 0.03818741362207301,
+          "rise_m": 0.01410071708966332,
+          "pitch_deg": -65.97,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15519185377892986,
+          "arm_gravity_nm": 0.04370712479135187,
+          "payload_equal_share_nm": 0.11148472898757797,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09091517144756613,
+          "total_equal_share_nm": 0.15519185377892986,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.12082416988625144
+        }
+      },
+      {
+        "target_radius_m": 0.15,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 2,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1111,
+            "4": 2012,
+            "5": 2421,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.1536265741030575,
+          "z_m": 0.03791267290225471,
+          "rise_m": 0.013889050722209948,
+          "pitch_deg": -66.06000000000002,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15516600623935362,
+          "arm_gravity_nm": 0.043728369995733964,
+          "payload_equal_share_nm": 0.11143763624361964,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09087676757889471,
+          "total_equal_share_nm": 0.15516600623935362,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.12097059852609304
+        }
+      },
+      {
+        "target_radius_m": 0.15025,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 2,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1107,
+            "4": 2004,
+            "5": 2424,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.1540436134475186,
+          "z_m": 0.03811003424382374,
+          "rise_m": 0.014069047235944286,
+          "pitch_deg": -65.97000000000001,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15574997136293584,
+          "arm_gravity_nm": 0.04389805975430129,
+          "payload_equal_share_nm": 0.11185191160863454,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.0912146068164196,
+          "total_equal_share_nm": 0.15574997136293584,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.11766238350203495
+        }
+      },
+      {
+        "target_radius_m": 0.1505,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 2,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1103,
+            "4": 1997,
+            "5": 2428,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15414866378373746,
+          "z_m": 0.037922961302304596,
+          "rise_m": 0.013999159984637934,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15579872585955634,
+          "arm_gravity_nm": 0.04394482670790858,
+          "payload_equal_share_nm": 0.11185389915164776,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09121622764660367,
+          "total_equal_share_nm": 0.15579872585955634,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.11738618488725994
+        }
+      },
+      {
+        "target_radius_m": 0.15075,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 2,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1099,
+            "4": 1989,
+            "5": 2432,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15441602753573017,
+          "z_m": 0.03787944731361909,
+          "rise_m": 0.013880872329863,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15610891369457736,
+          "arm_gravity_nm": 0.04405094359883683,
+          "payload_equal_share_nm": 0.11205797009574053,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09138264635738269,
+          "total_equal_share_nm": 0.15610891369457736,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.11562894286259628
+        }
+      },
+      {
+        "target_radius_m": 0.151,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 2,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1095,
+            "4": 1981,
+            "5": 2435,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15481965311317694,
+          "z_m": 0.038079425041842335,
+          "rise_m": 0.014196693441665475,
+          "pitch_deg": -65.97,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.1566774278141772,
+          "arm_gravity_nm": 0.04421534748762071,
+          "payload_equal_share_nm": 0.1124620803265565,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09171219598495942,
+          "total_equal_share_nm": 0.1566774278141772,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.11240825916780273
+        }
+      },
+      {
+        "target_radius_m": 0.15125,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 2,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1090,
+            "4": 1973,
+            "5": 2439,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15495301993055605,
+          "z_m": 0.037981686596814904,
+          "rise_m": 0.01407769625360716,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15679171384671528,
+          "arm_gravity_nm": 0.04428453312456821,
+          "payload_equal_share_nm": 0.11250718072214708,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09174897510470709,
+          "total_equal_share_nm": 0.15679171384671528,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.11176081849949171
+        }
+      },
+      {
+        "target_radius_m": 0.1515,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 1,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1086,
+            "4": 1965,
+            "5": 2443,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15520630448631464,
+          "z_m": 0.037939812221425416,
+          "rise_m": 0.014013428772883234,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15708843190049826,
+          "arm_gravity_nm": 0.04438604193244135,
+          "payload_equal_share_nm": 0.11270238996805693,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09190816715030126,
+          "total_equal_share_nm": 0.15708843190049826,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.11007988399879298
+        }
+      },
+      {
+        "target_radius_m": 0.15175,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 1,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1082,
+            "4": 1957,
+            "5": 2447,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15545485305563667,
+          "z_m": 0.03789834770235345,
+          "rise_m": 0.013892987034765034,
+          "pitch_deg": -66.06,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.1573809802527458,
+          "arm_gravity_nm": 0.0444861242634734,
+          "payload_equal_share_nm": 0.1128948559892724,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09206512211153713,
+          "total_equal_share_nm": 0.1573809802527458,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.10842257123286636
+        }
+      },
+      {
+        "target_radius_m": 0.152,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 1,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1115,
+            "4": 1992,
+            "5": 2433,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15576435422200968,
+          "z_m": 0.038106552137453176,
+          "rise_m": 0.01402875433360665,
+          "pitch_deg": -64.98,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15802929298592933,
+          "arm_gravity_nm": 0.044348406652679445,
+          "payload_equal_share_nm": 0.11368088633324987,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09270612545015279,
+          "total_equal_share_nm": 0.15802929298592933,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.10474982120449261
+        }
+      },
+      {
+        "target_radius_m": 0.15225,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 1,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1111,
+            "4": 1985,
+            "5": 2436,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.15600438193053445,
+          "z_m": 0.038161443847240475,
+          "rise_m": 0.014064441424484798,
+          "pitch_deg": -64.98000000000002,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15833948082095034,
+          "arm_gravity_nm": 0.044454523543607696,
+          "payload_equal_share_nm": 0.11388495727734264,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09287254416093181,
+          "total_equal_share_nm": 0.15833948082095034,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.10299257917982896
+        }
+      },
+      {
+        "target_radius_m": 0.1525,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "selected",
+        "reason": null,
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 1,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": {
+          "issued_pwm": {
+            "1": 1500,
+            "3": 1107,
+            "4": 1977,
+            "5": 2440,
+            "6": 1500
+          },
+          "arm_axis_radius_m": 0.1562645485580153,
+          "z_m": 0.03811773130486586,
+          "rise_m": 0.01408130451534113,
+          "pitch_deg": -64.98000000000002,
+          "prefix_duration_s": 0.35000000000000003,
+          "peak_prefix_torque_nm": 0.15864553762413752,
+          "arm_gravity_nm": 0.04455922718680331,
+          "payload_equal_share_nm": 0.1140863104373342,
+          "payload_per_arm_kg": 0.125,
+          "elbow_to_pad_horizontal_m": 0.09303674653401361,
+          "total_equal_share_nm": 0.15864553762413752,
+          "limit_nm": 0.1765197,
+          "margin_fraction": 0.1012587398225947
+        }
+      },
+      {
+        "target_radius_m": 0.15275,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.153,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.15325,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.1535,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.15375,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.154,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.15425,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.1545,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.15475,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.155,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.15525,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.1555,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.15575,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.156,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.15625,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.1565,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.15675,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.157,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.15725,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.1575,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.15775,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      },
+      {
+        "target_radius_m": 0.158,
+        "target_z_m": 0.024,
+        "mode": "crate_lift_pose_margin_v1",
+        "status": "none",
+        "reason": "no original lift prefix satisfies pad/pitch/rise/joint/10% constraints",
+        "threshold_nm": 0.15886773,
+        "payload_per_arm_kg": 0.125,
+        "required_margin_fraction": 0.1,
+        "checked_prefixes": 24,
+        "qualified_prefixes": 0,
+        "input_source": "own issued PWM and own planned lift PWM only",
+        "collision_scope": "unchanged descent; exact subset of original lift command path; physical collision unverified",
+        "selected": null
+      }
+    ],
+    "physics_steps": 0,
+    "render_calls": 0
+  },
+  "success_counterexample": "77921/6f312f74 held 3 s despite commanded-pose overload; issued PWM is not measured pose. This estimate cannot invalidate the observed success or determine actual load sharing/contact moment/servo tracking. It does show no 10% command-pose margin."
+}

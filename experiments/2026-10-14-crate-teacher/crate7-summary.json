@@ -1,0 +1,124 @@
+{
+  "schema": "ugrp.crate_teacher.offline_summary.v1",
+  "date": "2026-10-14",
+  "base_sha": "8c2395d07f2e7426dc7b101c4869a021a00255b2",
+  "status": "offline_ready_diagnostic_only",
+  "cargo_scene_version": "crate_mass_025_v1",
+  "crate_mass_kg": 0.25,
+  "payload_per_arm_kg": 0.125,
+  "crate_lift_pose": "crate_lift_pose_margin_v1",
+  "default_toggle": "off",
+  "physics_steps": 0,
+  "render_calls": 0,
+  "new_remote_runs": 0,
+  "model_calls": 0,
+  "observed_outcomes_at_025kg": [],
+  "max_current_command_torque_nm": 0.1884880330318772,
+  "max_current_command_margin_fraction": -0.06780168463846925,
+  "torque_threshold_nm": 0.15886773,
+  "constrained_scan": {
+    "qualified": 27,
+    "N": 49,
+    "best": {
+      "issued_pwm": {
+        "1": 1500,
+        "3": 1165,
+        "4": 2114,
+        "5": 2373,
+        "6": 1500
+      },
+      "arm_axis_radius_m": 0.14965284295597875,
+      "z_m": 0.03797617288001897,
+      "rise_m": 0.014002588085292356,
+      "pitch_deg": -66.06,
+      "prefix_duration_s": 0.35000000000000003,
+      "peak_prefix_torque_nm": 0.15047212924440437,
+      "arm_gravity_nm": 0.042122569971146065,
+      "payload_equal_share_nm": 0.1083495592732583,
+      "payload_per_arm_kg": 0.125,
+      "elbow_to_pad_horizontal_m": 0.08835845812294255,
+      "total_equal_share_nm": 0.15047212924440437,
+      "limit_nm": 0.1765197,
+      "margin_fraction": 0.14756183448983673
+    },
+    "scope": "existence witness; exact prefixes, unchanged pick/descent/route constraints, static collisions unverified"
+  },
+  "new_diagnostic_seeds": [
+    77940,
+    77941,
+    77942,
+    77943,
+    77944,
+    77945,
+    77946,
+    77947,
+    77948,
+    77949
+  ],
+  "static_start_los": {
+    "N": 10,
+    "both_pass": 10,
+    "rejected": 0,
+    "rejection_rate": 0.0,
+    "per_robot": {
+      "r1": {
+        "pass": 10,
+        "rejected": 0,
+        "N": 10,
+        "rejection_rate": 0.0
+      },
+      "r2": {
+        "pass": 10,
+        "rejected": 0,
+        "N": 10,
+        "rejection_rate": 0.0
+      }
+    }
+  },
+  "local_tests": {
+    "passed": 36,
+    "failed": 0,
+    "skipped": 1,
+    "deselected": 1,
+    "files": [
+      "tests/test_crate6_torque.py",
+      "tests/test_crate_lift_pose.py",
+      "tests/test_grasp_act_crate_teacher.py"
+    ],
+    "scope": "offline, world-construction test deselected; optional sim.active_lookaround unavailable",
+    "junit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate7-tests.xml",
+      "sha256": "4d6e1e182202302ebdaa51700a4dae515ee482bb610d01dcfad41c508bb96d37"
+    }
+  },
+  "remaining_unverified": [
+    "No new physical/render/model run; static equal-share command-pose estimate assumes level base and tracking.",
+    "No full old-decision replay: saved visible_measurements missing; no evaluation truth substituted.",
+    "Only 27/49 sampled existing lift prefixes qualify; all three historical paired command traces have no r2 candidate and must stop with the toggle.",
+    "Actual 0.25 kg clearance, contact/collision, stable joint hold, servo loads and shorter-lift RGB confirmations unverified.",
+    "New seeds unused on remote host unverified; operations must verify before submission.",
+    "No gate40 authorization; diagnostics only, failures/HOST_ERROR retained; no student success claim."
+  ],
+  "artifacts": {
+    "torque": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate7-torque.json",
+      "sha256": "0a0a218877dd83787dde9a68c73381bedd03c03505f89be06df9a355b2aac9ea"
+    },
+    "diagnostic_plan": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/diag_plan_crate7_77940.json",
+      "sha256": "5309c76a16657051eb6ea90483029988dd3e43884e16094939f6163cec2a0d47"
+    },
+    "tests": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate7-tests.xml",
+      "sha256": "4d6e1e182202302ebdaa51700a4dae515ee482bb610d01dcfad41c508bb96d37"
+    }
+  },
+  "publication": {
+    "authoritative_delivery_manifest": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate7-delivery.json",
+    "queue_name_format": "20261014-crate-<published HEAD first 8>.json",
+    "queue_stages": [
+      "diagnostic"
+    ],
+    "gate_runs": 0
+  }
+}

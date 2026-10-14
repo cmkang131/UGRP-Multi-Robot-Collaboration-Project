@@ -282,7 +282,8 @@ def test_runner_refuses_inconsistent_plans(tmp_path):
         run({**base, 'roles': {'r1': 'teal', 'r2': 'blue'}}, tmp_path/'c', lookaround='nope')
 
 
-def test_cargo_scene_version_scales_only_crate_masses_default_unchanged():
+@pytest.mark.parametrize('version,mass', [('crate_mass_030_v1', .3), ('crate_mass_025_v1', .25)])
+def test_cargo_scene_version_scales_only_crate_masses_default_unchanged(version, mass):
     import xml.etree.ElementTree as ET
     from sim.cargo_scene_version import apply_version, check, DEFAULT
     xml = ('<mujoco><worldbody><body name="cargo_crate_1"><geom name="a" mass=".7"/><geom name="b" mass=".1"/>'
@@ -291,12 +292,13 @@ def test_cargo_scene_version_scales_only_crate_masses_default_unchanged():
     cargo = [('crate_1', 'heavy_crate'), ('beam_1', 'long_beam')]
     same, record = apply_version(xml, DEFAULT, cargo)
     assert same == xml and record['items'] == {}
-    out, record = apply_version(xml, 'crate_mass_030_v1', cargo)
+    out, record = apply_version(xml, version, cargo)
     assert record['items']['crate_1']['catalogue_mass_kg'] == pytest.approx(.9)
-    assert record['items']['crate_1']['scale'] == pytest.approx(1/3) and 'beam_1' not in record['items']
+    assert record['version'] == version
+    assert record['items']['crate_1']['scale'] == pytest.approx(mass/.9) and 'beam_1' not in record['items']
     root = ET.fromstring(out)
     masses = [float(g.get('mass')) for g in root.find(".//body[@name='cargo_crate_1']").iter('geom') if g.get('mass')]
-    assert sum(masses) == pytest.approx(.3)
+    assert sum(masses) == pytest.approx(mass)
     assert float(root.find(".//body[@name='cargo_beam_1']/geom").get('mass')) == .3
     assert float(root.find(".//body[@name='other']/geom").get('mass')) == 5.
     with pytest.raises(ValueError):
@@ -305,7 +307,8 @@ def test_cargo_scene_version_scales_only_crate_masses_default_unchanged():
         check('mass_nope')
 
 
-def test_v5_scenario_scene_takes_the_cargo_scene_version(monkeypatch):
+@pytest.mark.parametrize('version,mass', [('crate_mass_030_v1', .3), ('crate_mass_025_v1', .25)])
+def test_v5_scenario_scene_takes_the_cargo_scene_version(monkeypatch, version, mass):
     from sim.zone_scenario_scene import ScenarioFinalV3Scene
     from sim.zone_final_v3_scene import FinalV3Scene
     xml = '<mujoco><worldbody><body name="cargo_crate_1"><geom mass=".9"/></body></worldbody></mujoco>'
@@ -313,10 +316,12 @@ def test_v5_scenario_scene_takes_the_cargo_scene_version(monkeypatch):
     base = ScenarioFinalV3Scene.from_scenario('s2_unmapped_blockage_v5', 611)
     assert base.cargo_scene_version == 'catalogue_v1' and base.transform('') == xml
     assert 'cargo_scene_version' not in base.manifest                      # default adds nothing
-    light = ScenarioFinalV3Scene.from_scenario('s2_unmapped_blockage_v5', 611, cargo_scene_version='crate_mass_030_v1')
+    light = ScenarioFinalV3Scene.from_scenario('s2_unmapped_blockage_v5', 611, cargo_scene_version=version)
     out = light.transform('')
-    assert 'mass="0.3"' in out or "mass='0.3'" in out or 'mass="0.30' in out
-    assert light.manifest['cargo_scene_version']['items']['crate_1']['mass_kg'] == .3
+    import xml.etree.ElementTree as ET
+    assert float(ET.fromstring(out).find('.//geom').get('mass')) == pytest.approx(mass)
+    assert light.manifest['cargo_scene_version']['version'] == version
+    assert light.manifest['cargo_scene_version']['items']['crate_1']['mass_kg'] == mass
     with pytest.raises(ValueError):
         ScenarioFinalV3Scene.from_scenario('s2_unmapped_blockage_v5', 611, cargo_scene_version='x')
 
@@ -372,13 +377,15 @@ def test_crate_cli_forwards_modes_without_running_physics(monkeypatch, tmp_path)
     monkeypatch.setattr(runner, 'run', fake_run)
     monkeypatch.setattr(grasp_act_host, 'identity', lambda host: {'provider': host})
     monkeypatch.setattr(sys, 'argv', ['run_crate_teacher', '--plan', str(plan), '--out', str(tmp_path/'unused'),
-        '--crate-scene', 'crate_mass_030_v1', '--held-object', 'hidden_v1', '--rgb-lift', 'crate_rgb_lift_v3',
+        '--crate-scene', 'crate_mass_025_v1', '--crate-lift-pose', 'crate_lift_pose_margin_v1',
+        '--held-object', 'hidden_v1', '--rgb-lift', 'crate_rgb_lift_v3',
         '--teacher-stability', 'align_relook_v1', '--teacher-search', 'search_reacquire_v1', '--approach-goal-set', 'approach_goal_set_v1'])
     runner.main()
     assert received['teacher_stability'] == 'align_relook_v1'
     assert received['teacher_search'] == 'search_reacquire_v1'
     assert received['approach_goal_set'] == 'approach_goal_set_v1'
-    assert received['crate_scene'] == 'crate_mass_030_v1' and received['held_object'] == 'hidden_v1'
+    assert received['crate_scene'] == 'crate_mass_025_v1' and received['held_object'] == 'hidden_v1'
+    assert received['crate_lift_pose'] == 'crate_lift_pose_margin_v1'
     assert received['rgb_lift'] == 'crate_rgb_lift_v3'
 
 

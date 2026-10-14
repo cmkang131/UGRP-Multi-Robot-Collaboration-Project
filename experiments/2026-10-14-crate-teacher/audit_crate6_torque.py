@@ -4,6 +4,7 @@ Assumes a level base, commanded angles reached, vertical load at the pad centre.
 Equal load sharing is an assumption, not a measured contact-force distribution.
 Inertia, horizontal contact forces, servo tracking error and friction are omitted.
 """
+import argparse
 import hashlib
 import json
 import math
@@ -22,7 +23,7 @@ def read(path):
     return decoded, {'path': str(source), 'sha256': hashlib.sha256(raw).hexdigest()}
 
 
-def estimate(xml, rid, pwm):
+def estimate(xml, rid, pwm, payload_per_arm_kg=.15):
     bodies = {b.get('name'): b for b in xml.iter('body')}
     def joint(body, angle):
         lo, hi = map(float, body.find('joint').get('range').split())
@@ -56,15 +57,18 @@ def estimate(xml, rid, pwm):
     actuator = next(a for a in xml.find('actuator') if a.get('name') == rid+'__servo_elbow')
     limit = float(actuator.get('forcerange').split()[1])
     own = sum(t['torque_nm'] for t in terms)
-    payload = .30/2*9.81*lever
+    payload = payload_per_arm_kg*9.81*lever
     return {'elbow_to_pad_horizontal_m': lever, 'arm_gravity_nm': own,
-            'payload_030kg_equal_share_nm': payload, 'total_equal_share_nm': own+payload,
+            'payload_equal_share_nm': payload, 'payload_per_arm_kg': payload_per_arm_kg,
+            'total_equal_share_nm': own+payload,
             'limit_nm': limit, 'margin_nm': limit-abs(own+payload),
-            'max_supported_crate_mass_share': (limit-own)/(.30*9.81*lever),
+            'margin_fraction': 1-abs(own+payload)/limit,
+            **({'payload_030kg_equal_share_nm': payload} if payload_per_arm_kg == .15 else {}),
+            'max_supported_crate_mass_share': (limit-own)/(2*payload_per_arm_kg*9.81*lever),
             'terms': terms}
 
 
-def scan_pad_window(xml, rid='r2', z_tolerance_m=.001, z_bounds=None):
+def scan_pad_window(xml, rid='r2', z_tolerance_m=.001, z_bounds=None, payload_per_arm_kg=.15):
     """Exhaust all integer shoulder/elbow PWM pairs, with analytic wrist pruning.
 
     This deliberately RELAXES the existing pick schedule: lift pitch can be
@@ -126,7 +130,7 @@ def scan_pad_window(xml, rid='r2', z_tolerance_m=.001, z_bounds=None):
                 & (z >= zlo-1e-9) & (z <= zhi+1e-9))
         own = 9.81*(.00403*np.cos(forearm)+.0023435*np.cos(pitch)+.00012*np.sin(pitch))
         lever = .062*np.cos(forearm)+.08685*np.cos(pitch)
-        torque = own+.15*9.81*lever
+        torque = own+payload_per_arm_kg*9.81*lever
         pair_count += len(p4)
         feasible += int(mask.sum())
         qualified += int((mask & (torque <= threshold)).sum())
@@ -136,7 +140,7 @@ def scan_pad_window(xml, rid='r2', z_tolerance_m=.001, z_bounds=None):
         j = int(np.argmin(np.where(mask, torque, np.inf)))
         if best is None or torque[j] < best['total_equal_share_nm']:
             pwm = {3: int(p3[j]), 4: int(p4[j]), 5: p5, 6: 1500}
-            detail = estimate(xml, rid, pwm)
+            detail = estimate(xml, rid, pwm, payload_per_arm_kg)
             assert abs(detail['total_equal_share_nm']-torque[j]) < 1e-12
             best = {'issued_pwm': pwm, 'arm_axis_radius_m': float(radius[j]),
                     'z_m': float(z[j]), 'pitch_deg': float(np.rad2deg(pitch[j])), **detail}
@@ -147,13 +151,60 @@ def scan_pad_window(xml, rid='r2', z_tolerance_m=.001, z_bounds=None):
             'required_margin_fraction': .10, 'threshold_nm': threshold,
             'best': best, 'best_margin_fraction': 1-best['total_equal_share_nm']/limit,
             'max_crate_mass_at_10pct_margin_kg': max_mass,
-            'qualified': qualified > 0, 'same_height_pair_load_split': '0.15 kg per robot',
+            'qualified': qualified > 0, 'same_height_pair_load_split': f'{payload_per_arm_kg} kg per robot',
             'verdict': ('candidate exists' if qualified else
-                '0.30 kg is infeasible WITH the required 10% margin in this pad/lift window; not a universal lifting impossibility')}
+                f'{2*payload_per_arm_kg:.2f} kg is infeasible WITH the required 10% margin in this pad/lift window; not a universal lifting impossibility')}
 
 
-def main():
+def constrained_scan(xml):
+    """Sample the existing fixed-pitch pick + exact lift prefixes, no physics.
+
+    Radius 146..158 mm in 0.25 mm increments; yaw zero (planar statics are
+    yaw invariant). This is an existence witness, not a continuous/exhaustive
+    success guarantee. The original collision/route code is unchanged;
+    physical collisions are not evaluated by this offline calculation.
+    """
+    from harness.visual_arm_v3 import MOUNT_X_M
+    from sim.grasp_act_teacher import grasp_poses
+    from sim.crate_lift_pose import angles, select_lift_prefix
+    rows = []
+    for i in range(49):
+        radius = .146+i*.00025
+        row = {'target_radius_m': radius, 'target_z_m': .024}
+        try:
+            hover, descent = grasp_poses((MOUNT_X_M+radius, 0., .024))
+            for pwm in (hover, *descent):
+                shoulder, elbow, wrist = angles(pwm)
+                if not (-.15 <= shoulder <= 2.8 and abs(elbow) <= 1.8 and abs(wrist) <= 1.8):
+                    raise ValueError('existing pick violates static joint range')
+            best, report = select_lift_prefix({1: 1500, **descent[-1]}, hover)
+            row.update(report)
+            if best is not None:
+                detail = estimate(xml, 'r2', best['issued_pwm'], .125)
+                assert abs(detail['total_equal_share_nm']-best['total_equal_share_nm']) < 1e-12
+        except ValueError as e:
+            row.update(status='none', reason=str(e))
+        rows.append(row)
+    selected = [r['selected'] for r in rows if r['status'] == 'selected']
+    return {'scope': constrained_scan.__doc__, 'samples': len(rows),
+            'qualified_samples': len(selected), 'qualified': bool(selected),
+            'best': min(selected, key=lambda r: abs(r['total_equal_share_nm'])) if selected else None,
+            'rows': rows, 'physics_steps': 0, 'render_calls': 0}
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--payload-per-arm-kg', type=float, default=.15)
+    parser.add_argument('--out', type=Path, default=DEST)
+    args = parser.parse_args(argv)
+    if not math.isfinite(args.payload_per_arm_kg) or args.payload_per_arm_kg <= 0:
+        parser.error('positive finite payload required')
+    load = args.payload_per_arm_kg
     out = {'scope': __doc__, 'physics_steps': 0, 'render_calls': 0,
+           'payload_per_arm_kg': load, 'crate_mass_kg': 2*load,
+           'saved_run_crate_mass_kg': .30,
+           'load_scope': 'counterfactual static recalculation; saved outcomes/servo loads remain the original 0.30 kg observations',
+           'cargo_scene_version': 'crate_mass_025_v1' if load == .125 else 'crate_mass_030_v1' if load == .15 else 'audit_only',
            'replay_ready': False, 'reason': 'visible_measurements absent from saved crate evaluation ledger',
            'runs': []}
     for seed in (77208, 77212, 77921):
@@ -181,17 +232,23 @@ def main():
                     phase = label['teacher_phase']
                     if label['skill'] == 'grasp' and phase in ('closed', 'complete') and phase not in poses:
                         pwm = label['applied_command']['pwm']
-                        poses[phase] = {'t': label['t'], 'issued_pwm': pwm, **estimate(xml, rid, pwm)}
+                        poses[phase] = {'t': label['t'], 'issued_pwm': pwm, **estimate(xml, rid, pwm, load)}
                 row['robots'][rid] = poses
+                if load == .125 and 'closed' in poses and 'complete' in poses:
+                    from sim.crate_lift_pose import select_lift_prefix
+                    _, selection = select_lift_prefix(poses['closed']['issued_pwm'], poses['complete']['issued_pwm'])
+                    row.setdefault('command_prefix_candidates', {})[rid] = selection
             out['runs'].append(row)
-    out['pad_window_scan'] = scan_pad_window(xml)
+    out['pad_window_scan'] = scan_pad_window(xml, payload_per_arm_kg=load)
     # For a level crate the lug grasp point starts at 24 mm, and the required
     # bottom clearance is 12 mm. Allow ANY higher pad target, not just 95 mm.
-    out['all_lifted_heights_scan'] = scan_pad_window(xml, z_bounds=(.024+.012, 1.))
+    out['all_lifted_heights_scan'] = scan_pad_window(xml, z_bounds=(.024+.012, 1.), payload_per_arm_kg=load)
+    if load == .125:
+        out['constrained_lift_prefix_scan'] = constrained_scan(xml)
     out['success_counterexample'] = ('77921/6f312f74 held 3 s despite commanded-pose overload; '
         'issued PWM is not measured pose. This estimate cannot invalidate the observed success '
         'or determine actual load sharing/contact moment/servo tracking. It does show no 10% command-pose margin.')
-    DEST.write_text(json.dumps(out, indent=2)+'\n')
+    args.out.write_text(json.dumps(out, indent=2)+'\n')
     for r in out['runs']:
         print(r['seed'], r['sha'], {rid: {p: round(v['total_equal_share_nm'], 6)
               for p, v in poses.items()} for rid, poses in r['robots'].items()})

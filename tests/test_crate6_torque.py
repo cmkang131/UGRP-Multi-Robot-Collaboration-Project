@@ -61,3 +61,24 @@ def test_scan_refuses_changed_inertial_model():
     next(b for b in xml.iter('body') if b.get('name') == 'r2__elbow_link').find('inertial').set('mass', '.08')
     with pytest.raises(AssertionError):
         audit.scan_pad_window(xml)
+
+
+def test_025kg_torque_uses_arm_weight_and_equal_load_without_scaling_arm_weight():
+    from sim.crate_lift_pose import elbow_torque
+    pwm = {3: 996, 4: 2074, 5: 2121, 6: 1538}
+    old = audit.estimate(scene(), 'r2', pwm)
+    new = audit.estimate(scene(), 'r2', pwm, .125)
+    assert new['arm_gravity_nm'] == old['arm_gravity_nm']
+    assert new['payload_equal_share_nm'] == pytest.approx(old['payload_equal_share_nm']*5/6)
+    assert new['total_equal_share_nm'] == pytest.approx(.1884880330683341, abs=1e-9)
+    assert elbow_torque(pwm)['total_equal_share_nm'] == pytest.approx(new['total_equal_share_nm'], abs=1e-12)
+    assert new['margin_fraction'] < 0
+
+
+def test_fixed_pick_prefix_has_witness_but_not_at_every_radius():
+    report = audit.constrained_scan(scene())
+    assert report['qualified'] and 0 < report['qualified_samples'] < report['samples']
+    best = report['best']
+    assert best['rise_m'] >= .012
+    assert best['peak_prefix_torque_nm'] <= .15886773
+    assert best['margin_fraction'] >= .10

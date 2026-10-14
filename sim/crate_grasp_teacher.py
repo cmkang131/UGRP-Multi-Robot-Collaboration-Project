@@ -16,17 +16,23 @@ from harness.visual_arm_v3 import solve_grip_site_ik, tool_pose
 from sim.grasp_act_teacher_v3 import VisibleOnlyGraspTeacher
 from sim.grasp_act_teacher import local
 from sim.cargo_teacher_profile import CRATE
+from sim.crate_lift_pose import MODES as LIFT_POSE_MODES, select_lift_prefix
 
 LIFT_WAIT_LIMIT_S = 20.
 
 
 class CrateGraspTeacher(VisibleOnlyGraspTeacher):
-    def __init__(self, *args, profile=CRATE, **kwargs):
+    def __init__(self, *args, profile=CRATE, crate_lift_pose='off', **kwargs):
+        if crate_lift_pose not in LIFT_POSE_MODES:
+            raise ValueError(f'crate_lift_pose: {crate_lift_pose}')
         super().__init__(*args, **kwargs)
         self.cargo_profile = profile
         self.lift_done = False
         self.lift_pose = None
         self.closed_at = None
+        self.crate_lift_pose = crate_lift_pose
+        self.lift_selection = None
+        self.lift_prefix = None
 
     # --- phase bookkeeping ---
     def _set(self, phase, now):
@@ -35,11 +41,15 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         if phase == 'complete' and not self.lift_done:
             phase = 'closed'
             self.closed_at = now
+            if self.crate_lift_pose != 'off':
+                self.lift_prefix, self.lift_selection = select_lift_prefix(self.sink.pwm, self.lift_pose)
+                if self.lift_prefix is None:
+                    self.outcome = 'crate_lift_pose_no_candidate'
         super()._set(phase, now)
 
     def lift_ready(self):
         """Own READY-TO-LIFT: the issued close sequence has completed (own command history only)."""
-        return self.phase == 'closed'
+        return self.phase == 'closed' and self.outcome is None
 
     # --- picking: hover, descent, close (no lift yet) ---
     def _queue_pick(self, truth, now):
@@ -60,7 +70,18 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         self._set('pick', now)
 
     def _queue_lift(self, now):
-        self.arm.queue(self.lift_pose, now, duration=1.2, settle=.5)
+        if self.crate_lift_pose == 'off':
+            self.arm.queue(self.lift_pose, now, duration=1.2, settle=.5)
+        else:
+            if self.lift_prefix is None:
+                self.outcome = 'crate_lift_pose_no_candidate'
+                return
+            # Retain the exact interpolation samples/timing, truncating only
+            # the original lift's tail. A newly interpolated path is not used.
+            start = max(now, self.arm.until)
+            self.arm.events.extend((start+t, sid, pulse) for t, sid, pulse in self.lift_prefix['events'])
+            self.arm.commanded.update(self.lift_prefix['issued_pwm'])
+            self.arm.until = start+self.lift_prefix['prefix_duration_s']+.5
         self._set('lift', now)
 
     # --- stepping ---
@@ -76,6 +97,8 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return value, done
 
     def _step(self, truth, now, *, permit_pick, permit_lift=False):
+        if self.outcome is not None:
+            return self._hold(now), False
         if self.phase in ('closed', 'lift'):
             arms_done = self.arm.tick(now)
             if self.phase == 'closed':
@@ -100,4 +123,5 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def diagnostic(self):
         return {**super().diagnostic(), 'profile': 'visible_only_crate', 'lift_barrier': True,
                 'closed_at': self.closed_at, 'lift_done': self.lift_done,
+                'crate_lift_pose': self.crate_lift_pose, 'lift_pose_selection': self.lift_selection,
                 'done_semantics': 'own issued close+lift sequence complete after the lift barrier; physical evaluation separate'}

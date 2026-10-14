@@ -28,14 +28,23 @@ from sim.cargo_teacher_profile import CRATE
 LOOKAROUND_MODES = ('off', 'setdown_lookaround_v1')
 RGB_LIFT_MODES = ('off', 'crate_rgb_lift_v1', 'crate_rgb_lift_v2', 'crate_rgb_lift_v3')
 from sim.cargo_scene_version import VERSIONS as CARGO_SCENE_VERSIONS
+from sim.crate_lift_pose import MODES as LIFT_POSE_MODES
 HOLD_S = 3.
 LIFT_FORCE_N = .5
 
 
-def make_grasp_teacher(rid, end, pwm, *, teacher_stability='off', teacher_search='off', approach_goal_set='off'):
+def make_grasp_teacher(rid, end, pwm, *, teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off'):
     from sim.crate_grasp_teacher import CrateGraspTeacher
     return CrateGraspTeacher(rid, end, pwm, bounds=(-20, 20, -20, 20), profile=CRATE,
-                             teacher_stability=teacher_stability, teacher_search=teacher_search, approach_goal_set=approach_goal_set)
+                             teacher_stability=teacher_stability, teacher_search=teacher_search,
+                             approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose)
+
+
+def run_meta(plan, sha, pr, crate_lift_pose):
+    """Execution identity, also available to offline metadata tests."""
+    return {'class': 'dev', 'pr': pr, 'branch': 'claude/act-crate-teacher', 'sha': sha,
+            'batch': plan['batch'], 'cargo_scene_version': plan['cargo_scene_version'],
+            'crate_lift_pose': crate_lift_pose, 'lug_color_scene': plan.get('lug_color_scene', 'off')}
 
 
 def release_ready(command_complete, settled_s, verdicts):
@@ -140,7 +149,7 @@ def held_lugs(world, inst, roles, profile=CRATE):
 def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', observe_mode='gaze_v2', render_dr='off',
         zone_slots='floor', reach_mode='calibrated_mid_v1', held_object='visible_v0', lookaround='off',
         execution_host=None, pr=None, crate_scene='catalogue_v1', rgb_lift='off',
-        teacher_stability='off', teacher_search='off', approach_goal_set='off'):
+        teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off'):
     for name, value, allowed in (('observe_mode', observe_mode, OBSERVE_MODES), ('zone_slots', zone_slots, ZONE_SLOT_MODES),
                                  ('reach_mode', reach_mode, REACH_MODES), ('lookaround', lookaround, LOOKAROUND_MODES)):
         if value not in allowed:
@@ -149,7 +158,10 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         raise ValueError(f'rgb_lift: {rgb_lift}')
     # Validate modes before any physics or output creation.
     make_grasp_teacher('r1', 'teal', {1: 1500, 3: 820, 4: 2320, 5: 1320, 6: 1500},
-                       teacher_stability=teacher_stability, teacher_search=teacher_search, approach_goal_set=approach_goal_set)
+                       teacher_stability=teacher_stability, teacher_search=teacher_search,
+                       approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose)
+    if crate_lift_pose != 'off' and (crate_scene != 'crate_mass_025_v1' or reach_mode != 'pad_window_v2'):
+        raise ValueError('crate_lift_pose_margin_v1 requires crate_mass_025_v1 and pad_window_v2')
     if lookaround != 'off' and own_pose_source == 'commands':
         raise ValueError('lookaround requires a verified map localization; GT handoff anchors are forbidden')
     from sim.cargo_scene_version import check as check_cargo_scene
@@ -184,14 +196,14 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     if subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT):
         raise RuntimeError('committed source required')
-    write(out/'RUN_META.json', {'class': 'dev', 'pr': pr, 'branch': 'claude/act-crate-teacher', 'sha': sha,
-                                'batch': plan['batch']})
+    write(out/'RUN_META.json', run_meta(plan, sha, pr, crate_lift_pose))
     report = {'status': 'running', 'source_sha': sha, 'teacher': 'crate_visible_only_v1', 'object_kind': 'heavy_crate',
               'own_pose_source': own_pose_source, 'observe_mode': observe_mode, 'zone_slots': zone_slots,
               'reach_mode': reach_mode, 'held_object': held_object, 'lookaround': lookaround,
               'lug_color_scene': plan.get('lug_color_scene', 'off'), 'cargo_scene_version': plan['cargo_scene_version'],
               'rgb_lift': rgb_lift, 'assignment_source': plan['assignment_source'],
               'teacher_stability': teacher_stability, 'teacher_search': teacher_search, 'approach_goal_set': approach_goal_set,
+              'crate_lift_pose': crate_lift_pose,
               'lift_confirmation': 'own issued lift + own RGB; unconfirmed/unknown stops before release',
               'execution_host': execution_host, 'weld': 'off', 'recording_mode': 'success_measurement',
               'student_execution': False, 'success_rule': SUCCESS,
@@ -280,7 +292,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             pwm = {str(s): int(ports[rid]._servo_pulses[s]) for s in v5.SERVOS}
             previous[rid] = v5.command({'t': origin, 'wheels': [0.]*4, 'duration_s': [0.]*4, 'pwm': pwm})
             teachers[rid] = make_grasp_teacher(rid, end, pwm, teacher_stability=teacher_stability,
-                                               teacher_search=teacher_search, approach_goal_set=approach_goal_set)
+                                               teacher_search=teacher_search, approach_goal_set=approach_goal_set,
+                                               crate_lift_pose=crate_lift_pose)
             models[rid] = VisibleWorld(rid, end, pose_source='issued', profile=CRATE)
             clocks[rid] = v5.IssuedClock()
         i = 0
@@ -383,6 +396,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                         if abs(ratio) > cell['max_abs_ratio']:
                             cell['max_abs_ratio'], cell['t_at_max'] = abs(ratio), now-lift_window_t0
             ev.write(json.dumps({'stage': 'grasp', 't': now, 'crate': truth['beam'], 'contacts': truth['contacts'],
+                                 'cargo_scene_version': plan['cargo_scene_version'], 'crate_lift_pose': crate_lift_pose,
+                                 'lift_pose_selection': {r: t.lift_selection for r, t in teachers.items()},
                                  'robots': {r: truth['robots'][r] for r in roles}, 'held_s': held_s,
                                  'visible_probes': {r: truth['visibility'][r]['visible_probes'] for r in roles},
                                  # Exact inputs for offline decision replay. Keep these separate
@@ -745,6 +760,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                     t.belief.propagate(dx, dy, da)
             truth = snapshot_cargo(world, inst, roles, scene)
             ev.write(json.dumps({'stage': 'release', 't': float(world.data.time), 'phase': st['phase'], 'crate': truth['beam'],
+                                 'cargo_scene_version': plan['cargo_scene_version'], 'crate_lift_pose': crate_lift_pose,
                                  'contacts': truth['contacts'], 'robots': {r: truth['robots'][r] for r in roles}})+'\n')
         report['release_outcome'] = outcome or 'release_timeout'
 
@@ -920,6 +936,8 @@ def main():
     p.add_argument('--crate-scene', choices=tuple(CARGO_SCENE_VERSIONS), default='catalogue_v1',
                    help='cargo scene version: catalogue_v1 = crate 0.900 kg (old), crate_mass_030_v1 = 0.300 kg '
                         '(user 2026-10-14; real_v1 elbow limit). Versions are never pooled.')
+    p.add_argument('--crate-lift-pose', choices=LIFT_POSE_MODES, default='off',
+                   help='crate_lift_pose_margin_v1: retain >=10%% static elbow margin at 0.125 kg/arm; no candidate stops')
     p.add_argument('--rgb-lift', choices=RGB_LIFT_MODES, default='off',
                    help='authorize release only after own-RGB confirmation; v2 uses lug/body co-motion; provisional thresholds')
     p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')
@@ -937,7 +955,8 @@ def main():
                          observe_mode=a.observe_mode, render_dr=a.render_dr, zone_slots=a.zone_slots, reach_mode=a.reach_mode,
                          held_object=a.held_object, lookaround=a.setdown_lookaround, execution_host=host, pr=a.pr,
                          crate_scene=a.crate_scene, rgb_lift=a.rgb_lift,
-                         teacher_stability=a.teacher_stability, teacher_search=a.teacher_search, approach_goal_set=a.approach_goal_set),
+                         teacher_stability=a.teacher_stability, teacher_search=a.teacher_search,
+                         approach_goal_set=a.approach_goal_set, crate_lift_pose=a.crate_lift_pose),
                      ensure_ascii=False, default=str))
 
 

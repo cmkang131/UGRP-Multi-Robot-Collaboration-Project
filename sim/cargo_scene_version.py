@@ -6,6 +6,9 @@ weighs 0.300 kg instead of 0.900 kg. Reason: with the ``real_v1`` servo model (e
 elbow 0.39-0.43 N m) is out of reach for two robots; 0.30 kg is 0.15 kg per robot, the beam load
 that already passes, and still needs two robots.
 
+``crate_mass_025_v1`` is the later 2026-10-14 user selection: 0.250 kg;
+the best 0.30 kg command-pose margin was only 8%. Defaults and 0.30 kg stay.
+
 Only the mass attribute of the geoms of the named cargo body changes (inertia is recomputed by
 MuJoCo). Geometry, friction, contact, colours and cameras are untouched. Results under different
 versions are never pooled. Pure XML transform: no simulator import.
@@ -14,7 +17,8 @@ from __future__ import annotations
 import xml.etree.ElementTree as ET
 
 DEFAULT = 'catalogue_v1'
-VERSIONS = {DEFAULT: {}, 'crate_mass_030_v1': {'heavy_crate': .300}}
+VERSIONS = {DEFAULT: {}, 'crate_mass_030_v1': {'heavy_crate': .300},
+            'crate_mass_025_v1': {'heavy_crate': .250}}
 
 
 def check(version):
