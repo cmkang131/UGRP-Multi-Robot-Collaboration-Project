@@ -1,0 +1,381 @@
+{
+  "schema": "solo_inspect_pose_static_audit_v1",
+  "status": "infeasible_post_grasp_rigid_motion",
+  "requested_toggle": "solo_lift_inspect_pose_v1",
+  "implemented_motion": false,
+  "source_commands_sha": "b48ebdf1672554a24511dd853617408308061a95",
+  "proof": "inv(T_base_gripper * T_gripper_camera) * T_base_gripper * T_gripper_object = inv(T_gripper_camera) * T_gripper_object",
+  "allowed_joint_grid_N": 2058,
+  "grid_max_abs_transform_error": 5.551115123125783e-16,
+  "pwm_grid": [
+    600,
+    900,
+    1200,
+    1500,
+    1800,
+    2100,
+    2400
+  ],
+  "pwm_hardware_limits": [
+    500,
+    2500
+  ],
+  "camera_servo": "none; camera parent is gripper; servo 6 rotates both",
+  "edge_margin_px": 16,
+  "min_part_pixels": 3072,
+  "runs": [
+    {
+      "run": "solo-diag-0-b48ebdf1",
+      "kind": "cyan",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1216,
+        "4": 2037,
+        "5": 2489,
+        "6": 1491
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 730,
+        "4": 1827,
+        "5": 2214,
+        "6": 1491
+      },
+      "grasp_pitch_deg": -64.98,
+      "geometry": {
+        "raw_pixels": 1408,
+        "usable_pixels": 0,
+        "margin_pixels": 0,
+        "image_fraction": 0.0,
+        "usable_bbox_xyxy": null,
+        "surface_samples_inside_margin": 0,
+        "surface_samples_N": 2646,
+        "surface_sample_inside_ratio": 0.0,
+        "near_clip_m": 0.0,
+        "occlusion_model": "none; optimistic bound"
+      },
+      "lift_transform_max_abs_error": 2.220446049250313e-16,
+      "payload_bounds": {
+        "5": {
+          "lever_bound_m": 0.24941683848755747,
+          "payload_torque_bound_nm": 0.07337830917462015,
+          "configured_cap_nm": 2.2,
+          "remaining_payload_only_nm": 2.12662169082538
+        },
+        "4": {
+          "lever_bound_m": 0.18441683848755747,
+          "payload_torque_bound_nm": 0.05425534167462015,
+          "configured_cap_nm": 1.8,
+          "remaining_payload_only_nm": 1.74574465832538
+        },
+        "3": {
+          "lever_bound_m": 0.12241683848755747,
+          "payload_torque_bound_nm": 0.03601497267462016,
+          "configured_cap_nm": 1.0,
+          "remaining_payload_only_nm": 0.9639850273253798
+        }
+      }
+    },
+    {
+      "run": "solo-diag-1-b48ebdf1",
+      "kind": "can",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1201,
+        "4": 2035,
+        "5": 2487,
+        "6": 1508
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 706,
+        "4": 1806,
+        "5": 2221,
+        "6": 1508
+      },
+      "grasp_pitch_deg": -65.97000000000001,
+      "geometry": {
+        "raw_pixels": 78804,
+        "usable_pixels": 56782,
+        "margin_pixels": 45837,
+        "image_fraction": 0.18483723958333334,
+        "usable_bbox_xyxy": [
+          32,
+          335,
+          588,
+          460
+        ],
+        "surface_samples_inside_margin": 110,
+        "surface_samples_N": 4536,
+        "surface_sample_inside_ratio": 0.024250440917107582,
+        "near_clip_m": 0.0,
+        "occlusion_model": "none; optimistic bound"
+      },
+      "lift_transform_max_abs_error": 2.220446049250313e-16,
+      "payload_bounds": {
+        "5": {
+          "lever_bound_m": 0.25123983819167983,
+          "payload_torque_bound_nm": 0.19710569273619497,
+          "configured_cap_nm": 2.2,
+          "remaining_payload_only_nm": 2.002894307263805
+        },
+        "4": {
+          "lever_bound_m": 0.18623983819167983,
+          "payload_torque_bound_nm": 0.14611111273619495,
+          "configured_cap_nm": 1.8,
+          "remaining_payload_only_nm": 1.6538888872638051
+        },
+        "3": {
+          "lever_bound_m": 0.12423983819167983,
+          "payload_torque_bound_nm": 0.09747012873619496,
+          "configured_cap_nm": 1.0,
+          "remaining_payload_only_nm": 0.902529871263805
+        }
+      }
+    },
+    {
+      "run": "solo-diag-2-b48ebdf1",
+      "kind": "tile",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1417,
+        "4": 2321,
+        "5": 2450,
+        "6": 1512
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 847,
+        "4": 2241,
+        "5": 1961,
+        "6": 1512
+      },
+      "grasp_pitch_deg": -68.94000000000001,
+      "geometry": {
+        "raw_pixels": 96138,
+        "usable_pixels": 76824,
+        "margin_pixels": 65176,
+        "image_fraction": 0.250078125,
+        "usable_bbox_xyxy": [
+          27,
+          307,
+          579,
+          460
+        ],
+        "surface_samples_inside_margin": 624,
+        "surface_samples_N": 2646,
+        "surface_sample_inside_ratio": 0.23582766439909297,
+        "near_clip_m": 0.0,
+        "occlusion_model": "none; optimistic bound"
+      },
+      "lift_transform_max_abs_error": 1.1102230246251565e-16,
+      "payload_bounds": {
+        "5": {
+          "lever_bound_m": 0.2510118083521241,
+          "payload_torque_bound_nm": 0.06153962375940895,
+          "configured_cap_nm": 2.2,
+          "remaining_payload_only_nm": 2.1384603762405914
+        },
+        "4": {
+          "lever_bound_m": 0.18601180835212408,
+          "payload_torque_bound_nm": 0.04560381750940894,
+          "configured_cap_nm": 1.8,
+          "remaining_payload_only_nm": 1.7543961824905911
+        },
+        "3": {
+          "lever_bound_m": 0.12401180835212408,
+          "payload_torque_bound_nm": 0.03040351000940894,
+          "configured_cap_nm": 1.0,
+          "remaining_payload_only_nm": 0.9695964899905911
+        }
+      }
+    },
+    {
+      "run": "solo-diag-3-b48ebdf1",
+      "kind": "cyan",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1203,
+        "4": 2013,
+        "5": 2500,
+        "6": 1469
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 710,
+        "4": 1785,
+        "5": 2236,
+        "6": 1469
+      },
+      "grasp_pitch_deg": -64.98,
+      "geometry": {
+        "raw_pixels": 1408,
+        "usable_pixels": 0,
+        "margin_pixels": 0,
+        "image_fraction": 0.0,
+        "usable_bbox_xyxy": null,
+        "surface_samples_inside_margin": 0,
+        "surface_samples_N": 2646,
+        "surface_sample_inside_ratio": 0.0,
+        "near_clip_m": 0.0,
+        "occlusion_model": "none; optimistic bound"
+      },
+      "lift_transform_max_abs_error": 2.220446049250313e-16,
+      "payload_bounds": {
+        "5": {
+          "lever_bound_m": 0.24941683848755747,
+          "payload_torque_bound_nm": 0.07337830917462015,
+          "configured_cap_nm": 2.2,
+          "remaining_payload_only_nm": 2.12662169082538
+        },
+        "4": {
+          "lever_bound_m": 0.18441683848755747,
+          "payload_torque_bound_nm": 0.05425534167462015,
+          "configured_cap_nm": 1.8,
+          "remaining_payload_only_nm": 1.74574465832538
+        },
+        "3": {
+          "lever_bound_m": 0.12241683848755747,
+          "payload_torque_bound_nm": 0.03601497267462016,
+          "configured_cap_nm": 1.0,
+          "remaining_payload_only_nm": 0.9639850273253798
+        }
+      }
+    },
+    {
+      "run": "solo-diag-4-b48ebdf1",
+      "kind": "can",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1235,
+        "4": 2043,
+        "5": 2490,
+        "6": 1497
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 757,
+        "4": 1854,
+        "5": 2203,
+        "6": 1497
+      },
+      "grasp_pitch_deg": -63.900000000000006,
+      "geometry": {
+        "raw_pixels": 89926,
+        "usable_pixels": 66687,
+        "margin_pixels": 55209,
+        "image_fraction": 0.217080078125,
+        "usable_bbox_xyxy": [
+          31,
+          316,
+          589,
+          460
+        ],
+        "surface_samples_inside_margin": 129,
+        "surface_samples_N": 4536,
+        "surface_sample_inside_ratio": 0.028439153439153438,
+        "near_clip_m": 0.0,
+        "occlusion_model": "none; optimistic bound"
+      },
+      "lift_transform_max_abs_error": 3.3306690738754696e-16,
+      "payload_bounds": {
+        "5": {
+          "lever_bound_m": 0.25123983819167983,
+          "payload_torque_bound_nm": 0.19710569273619497,
+          "configured_cap_nm": 2.2,
+          "remaining_payload_only_nm": 2.002894307263805
+        },
+        "4": {
+          "lever_bound_m": 0.18623983819167983,
+          "payload_torque_bound_nm": 0.14611111273619495,
+          "configured_cap_nm": 1.8,
+          "remaining_payload_only_nm": 1.6538888872638051
+        },
+        "3": {
+          "lever_bound_m": 0.12423983819167983,
+          "payload_torque_bound_nm": 0.09747012873619496,
+          "configured_cap_nm": 1.0,
+          "remaining_payload_only_nm": 0.902529871263805
+        }
+      }
+    },
+    {
+      "run": "solo-diag-5-b48ebdf1",
+      "kind": "tile",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1393,
+        "4": 2307,
+        "5": 2452,
+        "6": 1485
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 824,
+        "4": 2219,
+        "5": 1972,
+        "6": 1485
+      },
+      "grasp_pitch_deg": -70.02,
+      "geometry": {
+        "raw_pixels": 98160,
+        "usable_pixels": 78442,
+        "margin_pixels": 66583,
+        "image_fraction": 0.25534505208333336,
+        "usable_bbox_xyxy": [
+          27,
+          304,
+          581,
+          460
+        ],
+        "surface_samples_inside_margin": 618,
+        "surface_samples_N": 2646,
+        "surface_sample_inside_ratio": 0.23356009070294784,
+        "near_clip_m": 0.0,
+        "occlusion_model": "none; optimistic bound"
+      },
+      "lift_transform_max_abs_error": 1.6653345369377348e-16,
+      "payload_bounds": {
+        "5": {
+          "lever_bound_m": 0.2510118083521241,
+          "payload_torque_bound_nm": 0.06153962375940895,
+          "configured_cap_nm": 2.2,
+          "remaining_payload_only_nm": 2.1384603762405914
+        },
+        "4": {
+          "lever_bound_m": 0.18601180835212408,
+          "payload_torque_bound_nm": 0.04560381750940894,
+          "configured_cap_nm": 1.8,
+          "remaining_payload_only_nm": 1.7543961824905911
+        },
+        "3": {
+          "lever_bound_m": 0.12401180835212408,
+          "payload_torque_bound_nm": 0.03040351000940894,
+          "configured_cap_nm": 1.0,
+          "remaining_payload_only_nm": 0.9695964899905911
+        }
+      }
+    }
+  ],
+  "physical_runs": 0,
+  "render_runs": 0,
+  "diagnostic_runs": 0,
+  "gate_runs": 0,
+  "source_sha256": {
+    "harness/servo_camera_fk.py": "0083e07af1a78b1da35cefb7f85011f65e1e2c61b5c21c03f337ceaff741a3b3",
+    "harness/data/servo_camera_v3_chain.json": "0cced72fd129556cb1e1ecbeef63155129426e669f77b6d5a70244d3d9b269be",
+    "harness/visual_arm_v3.py": "b6b1f9ebf3b6e6510e4068e264b9472b2d83bea24996590f678e69805dbb1100",
+    "sim/s2_realism_camera_binding.py": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+    "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+    "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+    "sim/masterpi_dynamics_v2.py": "100634bb32bfc1751549de2410e5eea9304fcb0ef99589d7a09822e6c557b53a",
+    "tests/fixtures/solo_rgb_lift_v3/manifest.json": "027122a6c258db03c94cf9a57315f52a3937acbd91d019c58c5c250aa1eab334",
+    "scripts/probe_solo_lift_inspect_pose.py": "b2c61cb5751ee9230de7765a6b162b7ecb5d016960a494584daa36b257e64a94"
+  },
+  "limitations": [
+    "Nominal rigid hold, not measured grip offset/slip.",
+    "No near clipping or occlusion: geometry overestimates available evidence.",
+    "Payload torque only, not total actuator or real hardware margin.",
+    "All original six runs are provenance inputs, not new successes."
+  ]
+}
