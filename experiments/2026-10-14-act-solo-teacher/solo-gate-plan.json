@@ -2,943 +2,103 @@
   "schema": "ugrp.grasp_act.solo_plan.v1",
   "episodes": [
     {
-      "episode_id": "solo_gate-76000",
-      "batch": "solo-teacher-solo_gate-76000",
-      "seed": 76000,
+      "episode_id": "solo_gate-78000",
+      "batch": "solo-teacher-solo_gate-78000",
+      "seed": 78000,
       "split": "solo_gate",
-      "scenario_id": "s1_normal_mixed_v4",
-      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
-      "map_id": "zone_wide_door_geometry_v3",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
       "kind": "cyan",
       "item_id": "cyan_2",
       "role": "west",
       "robot_id": "r1",
       "cargo_pose_m": [
         0.4,
-        -2.45,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.4050998790087563,
-          -1.7264432781942913,
-          0.032355118817659255,
-          -0.32428491686970656
-        ],
-        "r2": [
-          2.9846045626853313,
-          0.03229356750331602,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          0.6772987539639554,
-          -1.0938342536170855,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.06370841717810162,
-        0.013146150079357335,
-        -0.034354507728493515
-      ],
-      "start_to_cargo_m": 1.082460227837558,
-      "proposal_attempts": 2,
-      "rejects": {
-        "start_blocked": 1
-      }
-    },
-    {
-      "episode_id": "solo_gate-76001",
-      "batch": "solo-teacher-solo_gate-76001",
-      "seed": 76001,
-      "split": "solo_gate",
-      "scenario_id": "s3_late_rendezvous_v4",
-      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "red",
-      "item_id": "red_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        1.0,
-        -2.45,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          0.44140035295761537,
-          -1.947479507828767,
-          0.032355118817659255,
-          -1.098418569738595
-        ],
-        "r2": [
-          4.084158232076094,
-          -2.4285978330522213,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          0.20768341985021488,
-          1.0245025306146842,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        -0.03729329904094835,
-        0.006313710700908838,
-        0.042763055883068786
-      ],
-      "start_to_cargo_m": 0.7513723515860131,
-      "proposal_attempts": 2,
-      "rejects": {
-        "start_blocked": 1
-      }
-    },
-    {
-      "episode_id": "solo_gate-76002",
-      "batch": "solo-teacher-solo_gate-76002",
-      "seed": 76002,
-      "split": "solo_gate",
-      "scenario_id": "s2_unmapped_blockage_v4",
-      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "green",
-      "item_id": "green_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.4266424079985477,
-          -1.0498671199984602,
-          0.032355118817659255,
-          0.07204542928208468
-        ],
-        "r2": [
-          3.3711030000719133,
-          -0.9112585338643977,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          2.7278259373047034,
-          0.6186710054542877,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.027934974823210862,
-        -0.04733392167688865,
-        0.04365080003284132
-      ],
-      "start_to_cargo_m": 0.8504613667640148,
-      "proposal_attempts": 2,
-      "rejects": {
-        "start_blocked": 1
-      }
-    },
-    {
-      "episode_id": "solo_gate-76003",
-      "batch": "solo-teacher-solo_gate-76003",
-      "seed": 76003,
-      "split": "solo_gate",
-      "scenario_id": "s8_mixed_tiers_v4",
-      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "yellow",
-      "item_id": "yellow_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        -0.2,
         0.75,
         0.0
       ],
       "spawns": {
         "r1": [
-          -0.8186824117072182,
-          0.8889181380418756,
+          -0.1334480692806983,
+          0.323921634003297,
           0.032355118817659255,
-          0.16820987215612515
+          1.0257415065638507
         ],
         "r2": [
-          3.467395316655973,
-          -2.6482730155030603,
+          2.505179184525438,
+          0.2134734021608371,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          4.745569847637986,
-          -0.2866065867580785,
+          4.6447526329378785,
+          -1.7746722877023409,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        0.017535428700914662,
-        0.006469975342459283,
-        -0.0387703284924225
+        -0.02992700306546338,
+        0.04388147779821075,
+        0.021433903099654233
       ],
-      "start_to_cargo_m": 0.6340868833471336,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76004",
-      "batch": "solo-teacher-solo_gate-76004",
-      "seed": 76004,
-      "split": "solo_gate",
-      "scenario_id": "s1_normal_mixed_v4",
-      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "can",
-      "item_id": "can_1",
-      "role": "any",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.19985800337295645,
-          -0.5117577475139585,
-          0.032355118817659255,
-          -0.5198838099656775
-        ],
-        "r2": [
-          4.554808547020068,
-          -1.4778213229899764,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          3.0883827179478205,
-          1.111314235285223,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.08196975296130397,
-        -0.025907193802473527,
-        -0.031550427459485574
-      ],
-      "start_to_cargo_m": 0.6886490002733039,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76005",
-      "batch": "solo-teacher-solo_gate-76005",
-      "seed": 76005,
-      "split": "solo_gate",
-      "scenario_id": "s1_normal_mixed_v4",
-      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "tile",
-      "item_id": "tile_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        1.0,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          0.48950954709340977,
-          -0.46373408974820907,
-          0.032355118817659255,
-          -0.6252374535136698
-        ],
-        "r2": [
-          3.396348361964527,
-          0.5419579116735269,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          4.496886832994507,
-          0.22284753324838924,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.07839794102279068,
-        0.02498199409602459,
-        -0.032643451741453694
-      ],
-      "start_to_cargo_m": 0.6401576805220884,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76006",
-      "batch": "solo-teacher-solo_gate-76006",
-      "seed": 76006,
-      "split": "solo_gate",
-      "scenario_id": "s1_normal_mixed_v4",
-      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "cyan",
-      "item_id": "cyan_2",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        -2.45,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.21867017150463874,
-          -2.821242822691213,
-          0.032355118817659255,
-          0.5233007327207212
-        ],
-        "r2": [
-          2.7812400101519064,
-          0.18887065259144364,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          3.899336011549431,
-          -0.02456167791699526,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        -0.09945411329872171,
-        -0.005593567634682734,
-        0.0024222468197531034
-      ],
-      "start_to_cargo_m": 0.7215081527670486,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76007",
-      "batch": "solo-teacher-solo_gate-76007",
-      "seed": 76007,
-      "split": "solo_gate",
-      "scenario_id": "s3_late_rendezvous_v4",
-      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "red",
-      "item_id": "red_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        1.0,
-        -2.45,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          0.10241975653639568,
-          -1.9094156308552277,
-          0.032355118817659255,
-          -0.8079127729822914
-        ],
-        "r2": [
-          0.19124335194805298,
-          -0.756649170686281,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          1.5205976011652447,
-          1.1039047588893713,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.07020794723031665,
-        0.027059243533459627,
-        -0.004095743029592305
-      ],
-      "start_to_cargo_m": 1.0477985272082773,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76008",
-      "batch": "solo-teacher-solo_gate-76008",
-      "seed": 76008,
-      "split": "solo_gate",
-      "scenario_id": "s2_unmapped_blockage_v4",
-      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "green",
-      "item_id": "green_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.667548549675577,
-          -1.077894731707722,
-          0.032355118817659255,
-          -0.05724741790450458
-        ],
-        "r2": [
-          4.898492427124346,
-          0.9635250008379153,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          0.24085211664423078,
-          1.2298260580290816,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.03417613059367959,
-        -0.007318256421710013,
-        -0.05057619660055734
-      ],
-      "start_to_cargo_m": 1.0916024526605657,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76009",
-      "batch": "solo-teacher-solo_gate-76009",
-      "seed": 76009,
-      "split": "solo_gate",
-      "scenario_id": "s8_mixed_tiers_v4",
-      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "yellow",
-      "item_id": "yellow_2",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        0.75,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.48048800662524727,
-          0.2700853869419371,
-          0.032355118817659255,
-          0.34586752574391266
-        ],
-        "r2": [
-          2.4884238986365075,
-          -0.4214578172582022,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          3.953854037794709,
-          -0.9924880362560182,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.02853438806716027,
-        -0.0745354641690669,
-        -0.00435339966373604
-      ],
-      "start_to_cargo_m": 1.0027847055263517,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76010",
-      "batch": "solo-teacher-solo_gate-76010",
-      "seed": 76010,
-      "split": "solo_gate",
-      "scenario_id": "s5_moved_dropped_item_v4",
-      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "can",
-      "item_id": "can_1",
-      "role": "any",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.06432681158684317,
-          -1.2511980635582338,
-          0.032355118817659255,
-          0.3534960691845765
-        ],
-        "r2": [
-          0.6416112836794927,
-          -1.6342411762687374,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          3.257932288979028,
-          0.6486218663230798,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        -0.05236176322796851,
-        0.018003269603546503,
-        0.04923219392740274
-      ],
-      "start_to_cargo_m": 0.6136442570099393,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76011",
-      "batch": "solo-teacher-solo_gate-76011",
-      "seed": 76011,
-      "split": "solo_gate",
-      "scenario_id": "s3_late_rendezvous_v4",
-      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "tile",
-      "item_id": "tile_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        1.0,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          0.10482398001423465,
-          -1.3134096335174388,
-          0.032355118817659255,
-          0.1819674048674782
-        ],
-        "r2": [
-          5.1623183671724355,
-          0.9710492912844346,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          3.272255796345131,
-          0.2668343024966018,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        -0.020238013063549637,
-        0.06492794856393518,
-        -0.011049403504051746
-      ],
-      "start_to_cargo_m": 1.0080121999233553,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76012",
-      "batch": "solo-teacher-solo_gate-76012",
-      "seed": 76012,
-      "split": "solo_gate",
-      "scenario_id": "s2_unmapped_blockage_v4",
-      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "cyan",
-      "item_id": "cyan_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        -0.2,
-        0.75,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.8169734943849263,
-          0.0568476181681461,
-          0.032355118817659255,
-          0.4736504847528974
-        ],
-        "r2": [
-          1.6918276517386177,
-          -0.7633437640309801,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          4.394762534735895,
-          -1.5739712061851163,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        -0.009317580444856323,
-        -0.08053807648653391,
-        0.03310446336510209
-      ],
-      "start_to_cargo_m": 0.9279636400273013,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76013",
-      "batch": "solo-teacher-solo_gate-76013",
-      "seed": 76013,
-      "split": "solo_gate",
-      "scenario_id": "s5_moved_dropped_item_v4",
-      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "red",
-      "item_id": "red_2",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        1.6,
-        -2.45,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          0.7910921776872983,
-          -2.014793611565767,
-          0.032355118817659255,
-          -0.6420058220754472
-        ],
-        "r2": [
-          1.2618247883813556,
-          0.7030931938937308,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          -0.7483679851176536,
-          -1.4419990593653211,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.0159757014141225,
-        0.0566801932056383,
-        0.020565133581446498
-      ],
-      "start_to_cargo_m": 0.9185512862832679,
-      "proposal_attempts": 2,
-      "rejects": {
-        "start_blocked": 1
-      }
-    },
-    {
-      "episode_id": "solo_gate-76014",
-      "batch": "solo-teacher-solo_gate-76014",
-      "seed": 76014,
-      "split": "solo_gate",
-      "scenario_id": "s2_unmapped_blockage_v4",
-      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "green",
-      "item_id": "green_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.3911073787312619,
-          -0.5936048202775694,
-          0.032355118817659255,
-          -0.1192956134254986
-        ],
-        "r2": [
-          0.9982936913434737,
-          -2.6245490390913253,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          2.929039878332479,
-          0.34812927479588174,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.05666375062329905,
-        0.029438646839829514,
-        0.0046573876817685034
-      ],
-      "start_to_cargo_m": 0.8316185260490208,
-      "proposal_attempts": 2,
-      "rejects": {
-        "start_blocked": 1
-      }
-    },
-    {
-      "episode_id": "solo_gate-76015",
-      "batch": "solo-teacher-solo_gate-76015",
-      "seed": 76015,
-      "split": "solo_gate",
-      "scenario_id": "s8_mixed_tiers_v4",
-      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "yellow",
-      "item_id": "yellow_2",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        0.75,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.4544127917834725,
-          0.37519378084679506,
-          0.032355118817659255,
-          0.0984184775955384
-        ],
-        "r2": [
-          1.1330308202505115,
-          -1.0909859767886412,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          4.000130297019801,
-          -1.6327883863460757,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.05691296515050468,
-        -0.13118579953698137,
-        -0.010545113368548955
-      ],
-      "start_to_cargo_m": 0.9330063883378011,
+      "start_to_cargo_m": 0.6827222104119106,
       "proposal_attempts": 4,
       "rejects": {
         "start_blocked": 3
       }
     },
     {
-      "episode_id": "solo_gate-76016",
-      "batch": "solo-teacher-solo_gate-76016",
-      "seed": 76016,
+      "episode_id": "solo_gate-78001",
+      "batch": "solo-teacher-solo_gate-78001",
+      "seed": 78001,
       "split": "solo_gate",
-      "scenario_id": "s8_mixed_tiers_v4",
-      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "can",
-      "item_id": "can_1",
-      "role": "any",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        1.275,
-        0.45,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          0.6542004177724035,
-          0.2935638945566651,
-          0.032355118817659255,
-          0.07817752904817932
-        ],
-        "r2": [
-          3.0418068144987944,
-          -2.707974402049234,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          2.62311024851216,
-          0.33180756632606156,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        -0.009348893613115998,
-        -0.01758265485447026,
-        -0.016391147915782677
-      ],
-      "start_to_cargo_m": 0.64020651072934,
-      "proposal_attempts": 2,
-      "rejects": {
-        "station_blocked": 1
-      }
-    },
-    {
-      "episode_id": "solo_gate-76017",
-      "batch": "solo-teacher-solo_gate-76017",
-      "seed": 76017,
-      "split": "solo_gate",
-      "scenario_id": "s7_trio_rendezvous_v4",
-      "scenario_source_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "tile",
-      "item_id": "tile_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.125,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.33990305383566555,
-          -0.3200242366720003,
-          0.032355118817659255,
-          -0.5849321073351437
-        ],
-        "r2": [
-          2.257457722863619,
-          -2.9076797415016298,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          4.973927170868679,
-          -0.9268468441539994,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.10327121348693749,
-        0.026959872171235355,
-        0.03333379552229369
-      ],
-      "start_to_cargo_m": 0.7049887652869539,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76018",
-      "batch": "solo-teacher-solo_gate-76018",
-      "seed": 76018,
-      "split": "solo_gate",
-      "scenario_id": "s2_unmapped_blockage_v4",
-      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "cyan",
-      "item_id": "cyan_2",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        0.75,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.5566661755324177,
-          1.06164439606965,
-          0.032355118817659255,
-          -0.43586100609057454
-        ],
-        "r2": [
-          2.5226393362736728,
-          -2.482267174064037,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          2.953776336622226,
-          0.2642445752878495,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.014987288279092074,
-        0.03495186627303277,
-        0.032482701821263366
-      ],
-      "start_to_cargo_m": 1.0061473058202957,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76019",
-      "batch": "solo-teacher-solo_gate-76019",
-      "seed": 76019,
-      "split": "solo_gate",
-      "scenario_id": "s5_moved_dropped_item_v4",
-      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
       "map_id": "zone_wide_door_geometry_v3",
       "kind": "red",
-      "item_id": "red_2",
+      "item_id": "red_1",
       "role": "west",
       "robot_id": "r1",
       "cargo_pose_m": [
-        1.6,
+        1.0,
         -2.45,
         0.0
       ],
       "spawns": {
         "r1": [
-          0.9319715558370704,
-          -1.8867109895357381,
+          0.469387267553227,
+          -2.794812889523775,
           0.032355118817659255,
-          -0.9536875287482622
+          0.30962732439473883
         ],
         "r2": [
-          3.611111382956764,
-          0.6060880605128722,
+          3.7709977640330066,
+          0.12366367093509334,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          -0.5322847283057419,
-          -2.8052319240769807,
+          1.279312378139875,
+          -1.7952078980915822,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        -0.033271601655977145,
-        0.06061303817572788,
-        0.0304727778649036
+        -0.015960583186588394,
+        0.04922621568029053,
+        -0.05115105991399418
       ],
-      "start_to_cargo_m": 0.873817207155222,
+      "start_to_cargo_m": 0.6328078702231551,
       "proposal_attempts": 1,
       "rejects": {}
     },
     {
-      "episode_id": "solo_gate-76020",
-      "batch": "solo-teacher-solo_gate-76020",
-      "seed": 76020,
+      "episode_id": "solo_gate-78002",
+      "batch": "solo-teacher-solo_gate-78002",
+      "seed": 78002,
       "split": "solo_gate",
       "scenario_id": "s2_unmapped_blockage_v4",
       "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
@@ -954,86 +114,136 @@
       ],
       "spawns": {
         "r1": [
-          -0.055212602449096426,
-          -1.3531445387794792,
+          -0.33564945584463024,
+          -0.6521031102293859,
           0.032355118817659255,
-          0.9824334322383623
+          0.05496713425043298
         ],
         "r2": [
-          2.705870672691671,
-          0.7891458531953046,
+          4.966829531198121,
+          0.6944010285967148,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          1.7815433086262495,
-          -0.9534345609921091,
+          4.124443017415414,
+          1.001452112980164,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        -0.024817718583973476,
-        -0.0761989341016583,
-        -0.005807385981302169
+        -0.06989710910509427,
+        -0.033963712614083784,
+        -0.0035525856127754654
       ],
-      "start_to_cargo_m": 0.6785078778703266,
-      "proposal_attempts": 1,
-      "rejects": {}
+      "start_to_cargo_m": 0.7618026653047252,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      }
     },
     {
-      "episode_id": "solo_gate-76021",
-      "batch": "solo-teacher-solo_gate-76021",
-      "seed": 76021,
+      "episode_id": "solo_gate-78003",
+      "batch": "solo-teacher-solo_gate-78003",
+      "seed": 78003,
       "split": "solo_gate",
       "scenario_id": "s8_mixed_tiers_v4",
       "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
       "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.33322938251175493,
+          -0.033009421537198214,
+          0.032355118817659255,
+          0.6693078529777909
+        ],
+        "r2": [
+          -0.7252690855334541,
+          -0.8697128891784693,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.2044310384387948,
+          -2.5517541327702906,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.03387244347755813,
+        -0.016447742234444892,
+        -0.01777431614298585
+      ],
+      "start_to_cargo_m": 1.072720411661206,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      }
+    },
+    {
+      "episode_id": "solo_gate-78004",
+      "batch": "solo-teacher-solo_gate-78004",
+      "seed": 78004,
+      "split": "solo_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
       "kind": "can",
       "item_id": "can_1",
       "role": "any",
       "robot_id": "r1",
       "cargo_pose_m": [
-        1.275,
-        0.45,
+        0.4,
+        -0.85,
         0.0
       ],
       "spawns": {
         "r1": [
-          0.6832666783247644,
-          1.1251990764867847,
+          -0.12223053253752203,
+          -1.1556604604363196,
           0.032355118817659255,
-          -1.2244389076813342
+          0.7402357280400897
         ],
         "r2": [
-          0.9051056292594661,
-          -2.8982864807592716,
+          2.4089731548427262,
+          0.08310100249329411,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          -0.6995429339898247,
-          0.37588860571466265,
+          3.7375736762820986,
+          -1.2577246220024247,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        -0.013991877871644158,
-        -0.02607855216536478,
-        -0.009175626112787733
+        -0.09685490101488042,
+        -0.0016255011464272934,
+        0.03415416445986753
       ],
-      "start_to_cargo_m": 0.8977984834412536,
+      "start_to_cargo_m": 0.6051058140429381,
       "proposal_attempts": 1,
       "rejects": {}
     },
     {
-      "episode_id": "solo_gate-76022",
-      "batch": "solo-teacher-solo_gate-76022",
-      "seed": 76022,
+      "episode_id": "solo_gate-78005",
+      "batch": "solo-teacher-solo_gate-78005",
+      "seed": 78005,
       "split": "solo_gate",
-      "scenario_id": "s1_normal_mixed_v4",
-      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
       "map_id": "zone_wide_door_geometry_v3",
       "kind": "tile",
       "item_id": "tile_1",
@@ -1046,43 +256,45 @@
       ],
       "spawns": {
         "r1": [
-          0.5448306533900378,
-          -1.4337947135977864,
+          0.04987650468593041,
+          -1.1474694267436858,
           0.032355118817659255,
-          1.1368396325475543
+          0.18219069015194822
         ],
         "r2": [
-          4.152572050317524,
-          0.8256038251878564,
+          3.4225484870263805,
+          -2.685745064304108,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          0.6069315968681592,
-          0.7097380565462594,
+          5.079233906311092,
+          1.1654946249424518,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        0.07219866375482169,
-        -0.023630146882841162,
-        0.050286618083738924
+        -0.06885156944037987,
+        0.017973448378817477,
+        0.005124506460015917
       ],
-      "start_to_cargo_m": 0.7402671151132282,
-      "proposal_attempts": 1,
-      "rejects": {}
+      "start_to_cargo_m": 0.995601685512355,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      }
     },
     {
-      "episode_id": "solo_gate-76023",
-      "batch": "solo-teacher-solo_gate-76023",
-      "seed": 76023,
+      "episode_id": "solo_gate-78006",
+      "batch": "solo-teacher-solo_gate-78006",
+      "seed": 78006,
       "split": "solo_gate",
-      "scenario_id": "s3_late_rendezvous_v4",
-      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
       "map_id": "zone_wide_door_geometry_v3",
       "kind": "cyan",
-      "item_id": "cyan_1",
+      "item_id": "cyan_2",
       "role": "west",
       "robot_id": "r1",
       "cargo_pose_m": [
@@ -1092,37 +304,37 @@
       ],
       "spawns": {
         "r1": [
-          -0.2956322402178303,
-          -2.860343152045737,
+          -0.24087723326449417,
+          -1.9054841163307799,
           0.032355118817659255,
-          0.9176451560430743
+          -0.9643136088542854
         ],
         "r2": [
-          4.360141617314454,
-          1.1119180228418633,
+          2.43453915548896,
+          -2.3601968045447066,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          2.8740655133022295,
-          0.3538219625139569,
+          3.967271877188345,
+          1.0405525480449818,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        -0.014990976846825566,
-        0.05949458995165513,
-        0.007623581718427603
+        0.0033347851276709223,
+        0.06730272265115858,
+        -0.057825128566473045
       ],
-      "start_to_cargo_m": 0.8076420717504185,
+      "start_to_cargo_m": 0.8409644318785574,
       "proposal_attempts": 1,
       "rejects": {}
     },
     {
-      "episode_id": "solo_gate-76024",
-      "batch": "solo-teacher-solo_gate-76024",
-      "seed": 76024,
+      "episode_id": "solo_gate-78007",
+      "batch": "solo-teacher-solo_gate-78007",
+      "seed": 78007,
       "split": "solo_gate",
       "scenario_id": "s3_late_rendezvous_v4",
       "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
@@ -1138,39 +350,37 @@
       ],
       "spawns": {
         "r1": [
-          0.6316514235791488,
-          -1.953085282793469,
+          0.5577371367174611,
+          -2.8666205620023986,
           0.032355118817659255,
-          -0.5520750987468623
+          0.5653789930103683
         ],
         "r2": [
-          4.612127628077651,
-          0.7726979371494127,
+          0.20390474083788557,
+          -0.8952647670197345,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          3.3902296439584165,
-          -2.254526717170651,
+          2.704713545690273,
+          -2.3558628738929013,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        0.016023461180792013,
-        -0.09360252142279268,
-        0.022757409164220813
+        0.04410435474977161,
+        0.10851635714459491,
+        -0.027912151751181734
       ],
-      "start_to_cargo_m": 0.6185506526774621,
-      "proposal_attempts": 2,
-      "rejects": {
-        "start_blocked": 1
-      }
+      "start_to_cargo_m": 0.6075929006514673,
+      "proposal_attempts": 1,
+      "rejects": {}
     },
     {
-      "episode_id": "solo_gate-76025",
-      "batch": "solo-teacher-solo_gate-76025",
-      "seed": 76025,
+      "episode_id": "solo_gate-78008",
+      "batch": "solo-teacher-solo_gate-78008",
+      "seed": 78008,
       "split": "solo_gate",
       "scenario_id": "s2_unmapped_blockage_v4",
       "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
@@ -1186,179 +396,83 @@
       ],
       "spawns": {
         "r1": [
-          -0.1488954232475327,
-          -1.1707612682241735,
+          -0.19051976294685635,
+          -1.025759468235041,
           0.032355118817659255,
-          0.8194189893866519
+          0.5487285843268576
         ],
         "r2": [
-          3.4211827745756884,
-          0.9617149221912129,
+          4.857727771750753,
+          -0.8326369957715922,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          1.893463255342052,
-          -1.0152112977434866,
+          5.066755435867043,
+          -0.07454351255482283,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        0.013404543359887527,
-        -0.050339319163316014,
-        0.003937983041139806
+        -0.021634098895706107,
+        -0.03355114330907848,
+        -0.0021080885027253736
       ],
-      "start_to_cargo_m": 0.6357467867436439,
-      "proposal_attempts": 2,
-      "rejects": {
-        "start_blocked": 1
-      }
-    },
-    {
-      "episode_id": "solo_gate-76026",
-      "batch": "solo-teacher-solo_gate-76026",
-      "seed": 76026,
-      "split": "solo_gate",
-      "scenario_id": "s1_normal_mixed_v4",
-      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "can",
-      "item_id": "can_1",
-      "role": "any",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.25814925226288754,
-          -0.8571589425616459,
-          0.032355118817659255,
-          0.3624618171115899
-        ],
-        "r2": [
-          3.253993724073618,
-          -1.509921218847965,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          0.45407243394006214,
-          -2.9381106216398205,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        -0.11103165330848022,
-        -0.057307575703521185,
-        0.002152860377427963
-      ],
-      "start_to_cargo_m": 0.6581881863971724,
+      "start_to_cargo_m": 0.6161209143545412,
       "proposal_attempts": 1,
       "rejects": {}
     },
     {
-      "episode_id": "solo_gate-76027",
-      "batch": "solo-teacher-solo_gate-76027",
-      "seed": 76027,
+      "episode_id": "solo_gate-78009",
+      "batch": "solo-teacher-solo_gate-78009",
+      "seed": 78009,
       "split": "solo_gate",
-      "scenario_id": "s3_late_rendezvous_v4",
-      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "tile",
-      "item_id": "tile_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        1.0,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          0.21744145410820004,
-          -1.3426860572113568,
-          0.032355118817659255,
-          0.8088237963042126
-        ],
-        "r2": [
-          1.8579326300361187,
-          0.8618950428615024,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          4.771614618869783,
-          -1.1137170951177906,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        -0.019768340151630145,
-        -0.010648897200069975,
-        0.04405571794560177
-      ],
-      "start_to_cargo_m": 0.9247364103996126,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76028",
-      "batch": "solo-teacher-solo_gate-76028",
-      "seed": 76028,
-      "split": "solo_gate",
-      "scenario_id": "s6_novel_relation_v4",
-      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
       "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "cyan",
-      "item_id": "cyan_1",
+      "kind": "yellow",
+      "item_id": "yellow_2",
       "role": "west",
       "robot_id": "r1",
       "cargo_pose_m": [
         0.4,
-        -2.45,
+        0.75,
         0.0
       ],
       "spawns": {
         "r1": [
-          -0.17885638116200964,
-          -2.908590368176582,
+          -0.5825916158201011,
+          0.7786793582724634,
           0.032355118817659255,
-          0.83590028697397
+          -0.40464743796944164
         ],
         "r2": [
-          4.733171430693181,
-          1.1045221305713278,
+          1.1740776518950833,
+          -2.616423981970774,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          1.9468157165339948,
-          -2.381239009574931,
+          1.079615149458553,
+          -0.4981553796951421,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        -0.04034336973751965,
-        0.04154919808129996,
-        -0.014702956732048918
+        -0.09450281994641369,
+        -0.0031810301843887205,
+        0.000400256611736855
       ],
-      "start_to_cargo_m": 0.7384983654662417,
-      "proposal_attempts": 2,
-      "rejects": {
-        "start_blocked": 1
-      }
+      "start_to_cargo_m": 0.9830100655999803,
+      "proposal_attempts": 1,
+      "rejects": {}
     },
     {
-      "episode_id": "solo_gate-76029",
-      "batch": "solo-teacher-solo_gate-76029",
-      "seed": 76029,
+      "episode_id": "solo_gate-78010",
+      "batch": "solo-teacher-solo_gate-78010",
+      "seed": 78010,
       "split": "solo_gate",
       "scenario_id": "s5_moved_dropped_item_v4",
       "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
@@ -1374,129 +488,271 @@
       ],
       "spawns": {
         "r1": [
-          -0.3907777804189534,
-          -0.15838845078765595,
+          -0.3757042181113054,
+          -1.5572348082705787,
           0.032355118817659255,
-          -0.5660473071521501
+          1.0963798458541563
         ],
         "r2": [
-          4.397448507454206,
-          -0.023583160454566876,
+          1.8107268156516323,
+          0.8804023117653106,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          1.640101321158172,
-          -0.07524095179194701,
+          1.2743599350558208,
+          -0.12494450138026325,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        -0.0991558354832997,
-        -0.04359665790234359,
-        -0.007879372171796782
+        -0.0608601449547104,
+        -0.06630665901502697,
+        -0.04619779461243151
       ],
-      "start_to_cargo_m": 1.0505503476788844,
+      "start_to_cargo_m": 1.0497133456449879,
       "proposal_attempts": 1,
       "rejects": {}
     },
     {
-      "episode_id": "solo_gate-76030",
-      "batch": "solo-teacher-solo_gate-76030",
-      "seed": 76030,
+      "episode_id": "solo_gate-78011",
+      "batch": "solo-teacher-solo_gate-78011",
+      "seed": 78011,
       "split": "solo_gate",
-      "scenario_id": "s7_trio_rendezvous_v4",
-      "scenario_source_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
-      "map_id": "zone_wide_two_doors_final_v3",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
       "kind": "tile",
       "item_id": "tile_1",
       "role": "west",
       "robot_id": "r1",
       "cargo_pose_m": [
-        0.125,
+        1.0,
         -0.85,
         0.0
       ],
       "spawns": {
         "r1": [
-          -0.6405909734580746,
-          -0.8974242394251016,
+          0.6242049465059731,
+          -0.3707994468184435,
           0.032355118817659255,
-          -0.3325861731263725
+          -1.315133808821955
         ],
         "r2": [
-          -0.8139404459699674,
-          -1.9347857089254579,
+          4.718119526095817,
+          -0.03431651718282058,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          0.26873896390292806,
-          -2.2441303765153804,
+          4.005310500121119,
+          -1.8884625364830678,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        -0.0358685674853605,
-        -0.006168702148076971,
-        -0.050044309892794056
+        0.013245570623334382,
+        -0.06509915641523743,
+        -0.011376557372704316
       ],
-      "start_to_cargo_m": 0.76705840528967,
+      "start_to_cargo_m": 0.6089787290210458,
       "proposal_attempts": 1,
       "rejects": {}
     },
     {
-      "episode_id": "solo_gate-76031",
-      "batch": "solo-teacher-solo_gate-76031",
-      "seed": 76031,
+      "episode_id": "solo_gate-78012",
+      "batch": "solo-teacher-solo_gate-78012",
+      "seed": 78012,
       "split": "solo_gate",
-      "scenario_id": "s6_novel_relation_v4",
-      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
       "map_id": "zone_wide_two_doors_final_v3",
       "kind": "cyan",
       "item_id": "cyan_1",
       "role": "west",
       "robot_id": "r1",
       "cargo_pose_m": [
-        0.4,
-        -2.45,
+        -0.2,
+        0.75,
         0.0
       ],
       "spawns": {
         "r1": [
-          -0.33276244710719516,
-          -2.2178955311735638,
+          -0.7823589220147702,
+          0.6025642392663939,
           0.032355118817659255,
-          0.08525119629234318
+          0.31628941279694456
         ],
         "r2": [
-          1.88058438511014,
-          -1.647922581132459,
+          2.684961158054827,
+          -1.2227213069093346,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          -0.2017493515276496,
-          0.4087004536040837,
+          3.1614953664214,
+          0.5421728280137614,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        0.03609208140103428,
-        -0.030635132348227012,
-        -0.05467993152626346
+        0.025902512453852312,
+        0.082967131874256,
+        -0.027954473256885062
       ],
-      "start_to_cargo_m": 0.768643798088378,
+      "start_to_cargo_m": 0.6007322345215897,
       "proposal_attempts": 1,
       "rejects": {}
     },
     {
-      "episode_id": "solo_gate-76032",
-      "batch": "solo-teacher-solo_gate-76032",
-      "seed": 76032,
+      "episode_id": "solo_gate-78013",
+      "batch": "solo-teacher-solo_gate-78013",
+      "seed": 78013,
+      "split": "solo_gate",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.4129126194535384,
+          -2.045581456641825,
+          0.032355118817659255,
+          -0.32662585909460046
+        ],
+        "r2": [
+          4.809334202500429,
+          -2.9156563854362325,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          5.1044526945354995,
+          0.529766041380388,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.08917629829855564,
+        0.0019038504071759402,
+        -0.0008806057980438944
+      ],
+      "start_to_cargo_m": 0.7128996778010592,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78014",
+      "batch": "solo-teacher-solo_gate-78014",
+      "seed": 78014,
+      "split": "solo_gate",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5941453276052674,
+          -1.149070144379916,
+          0.032355118817659255,
+          0.5967090015359175
+        ],
+        "r2": [
+          1.3032571833296887,
+          1.1181635877986422,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.358789136132145,
+          -2.3866536936487757,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.02567807888875901,
+        0.0587270024049439,
+        -0.031376546671487
+      ],
+      "start_to_cargo_m": 1.0381560016003415,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      }
+    },
+    {
+      "episode_id": "solo_gate-78015",
+      "batch": "solo-teacher-solo_gate-78015",
+      "seed": 78015,
+      "split": "solo_gate",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3589292009401467,
+          0.35961973736145586,
+          0.032355118817659255,
+          0.81088738713714
+        ],
+        "r2": [
+          3.056193314688413,
+          -1.7403846772425433,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.5090059460113248,
+          -1.9376468645977207,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.05962310550136904,
+        -0.007920959409014662,
+        -0.013358288719738922
+      ],
+      "start_to_cargo_m": 0.8534461210277942,
+      "proposal_attempts": 4,
+      "rejects": {
+        "start_blocked": 3
+      }
+    },
+    {
+      "episode_id": "solo_gate-78016",
+      "batch": "solo-teacher-solo_gate-78016",
+      "seed": 78016,
       "split": "solo_gate",
       "scenario_id": "s8_mixed_tiers_v4",
       "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
@@ -1512,223 +768,39 @@
       ],
       "spawns": {
         "r1": [
-          0.8566415208297475,
-          0.9558807229174009,
+          0.5324263250823834,
+          0.18538140624817034,
           0.032355118817659255,
-          -0.6265673625109285
+          0.17577912880865265
         ],
         "r2": [
-          1.5346064270429958,
-          -0.46020217432258725,
+          1.9466562137654262,
+          -0.7814520895471184,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          3.5801379731845695,
-          -0.531077324717879,
+          4.984256050226659,
+          -0.8609319317793878,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        0.06463775918600571,
-        -0.010331885053770485,
-        0.01916089849085718
+        -0.007978777150426285,
+        0.05124241988013037,
+        0.03736088809330192
       ],
-      "start_to_cargo_m": 0.6564595363867286,
+      "start_to_cargo_m": 0.7883138098751346,
       "proposal_attempts": 2,
       "rejects": {
         "station_blocked": 1
       }
     },
     {
-      "episode_id": "solo_gate-76033",
-      "batch": "solo-teacher-solo_gate-76033",
-      "seed": 76033,
-      "split": "solo_gate",
-      "scenario_id": "s1_normal_mixed_v4",
-      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "tile",
-      "item_id": "tile_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        1.0,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          0.046276515997278556,
-          -0.3224579523217428,
-          0.032355118817659255,
-          -0.8642599879599151
-        ],
-        "r2": [
-          3.369044478810911,
-          0.9429698681072796,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          0.3606201880101969,
-          0.4355978775762521,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.07893010413733585,
-        -0.007108689930124493,
-        -0.022842189459783953
-      ],
-      "start_to_cargo_m": 1.0899032507552484,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76034",
-      "batch": "solo-teacher-solo_gate-76034",
-      "seed": 76034,
-      "split": "solo_gate",
-      "scenario_id": "s8_mixed_tiers_v4",
-      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
-      "map_id": "zone_wide_two_doors_final_v3",
-      "kind": "can",
-      "item_id": "can_1",
-      "role": "any",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        1.275,
-        0.45,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          0.6934075898019544,
-          0.15131320333748094,
-          0.032355118817659255,
-          0.26027310561194306
-        ],
-        "r2": [
-          -0.8058310543908924,
-          -0.5724356834249926,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          2.4616749597162397,
-          0.4450669241102321,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        -0.012140608072765855,
-        0.019646026590481324,
-        0.03800418372463367
-      ],
-      "start_to_cargo_m": 0.6538069547660752,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76035",
-      "batch": "solo-teacher-solo_gate-76035",
-      "seed": 76035,
-      "split": "solo_gate",
-      "scenario_id": "s3_late_rendezvous_v4",
-      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "tile",
-      "item_id": "tile_1",
-      "role": "west",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        1.0,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          0.35482326597852887,
-          -0.4063768673180747,
-          0.032355118817659255,
-          -0.9310015166378611
-        ],
-        "r2": [
-          3.098324867999728,
-          0.9503170960628835,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          3.1698099203142625,
-          -1.036921342742439,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        0.04625990156243287,
-        -0.011214475628462686,
-        -0.024951549761154827
-      ],
-      "start_to_cargo_m": 0.7829779702987416,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76036",
-      "batch": "solo-teacher-solo_gate-76036",
-      "seed": 76036,
-      "split": "solo_gate",
-      "scenario_id": "s1_normal_mixed_v4",
-      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
-      "map_id": "zone_wide_door_geometry_v3",
-      "kind": "can",
-      "item_id": "can_1",
-      "role": "any",
-      "robot_id": "r1",
-      "cargo_pose_m": [
-        0.4,
-        -0.85,
-        0.0
-      ],
-      "spawns": {
-        "r1": [
-          -0.28391142676377135,
-          -0.02227744995158809,
-          0.032355118817659255,
-          -1.2588274175697038
-        ],
-        "r2": [
-          3.440204716498229,
-          -1.9273546212456372,
-          0.032355118817659255,
-          0.0
-        ],
-        "r3": [
-          -0.4965402131143436,
-          -2.123555281176778,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "handoff_pose_error": [
-        -0.0722574489921342,
-        -0.02644931532082255,
-        0.010526158550550098
-      ],
-      "start_to_cargo_m": 1.0737129316147325,
-      "proposal_attempts": 1,
-      "rejects": {}
-    },
-    {
-      "episode_id": "solo_gate-76037",
-      "batch": "solo-teacher-solo_gate-76037",
-      "seed": 76037,
+      "episode_id": "solo_gate-78017",
+      "batch": "solo-teacher-solo_gate-78017",
+      "seed": 78017,
       "split": "solo_gate",
       "scenario_id": "s7_trio_rendezvous_v4",
       "scenario_source_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
@@ -1744,40 +816,180 @@
       ],
       "spawns": {
         "r1": [
-          -0.36799634750152593,
-          -0.40769564837489486,
+          -0.6686013538954563,
+          -0.14617273055600533,
           0.032355118817659255,
-          -0.49187417179731535
+          -0.5202677940107083
         ],
         "r2": [
-          1.1828267406342734,
-          -1.2904161663624625,
+          4.949333079406324,
+          -0.9779384713266166,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          1.8034265021945108,
-          0.7444507589229632,
+          0.9802060777592745,
+          -1.5966415295711034,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        0.04687178821417429,
-        -0.05137680210737416,
-        0.06152119774828821
+        0.0006385524385690728,
+        -0.003973477441996833,
+        -0.03511833195107041
       ],
-      "start_to_cargo_m": 0.6623281196781169,
+      "start_to_cargo_m": 1.0607431046760052,
       "proposal_attempts": 1,
       "rejects": {}
     },
     {
-      "episode_id": "solo_gate-76038",
-      "batch": "solo-teacher-solo_gate-76038",
-      "seed": 76038,
+      "episode_id": "solo_gate-78018",
+      "batch": "solo-teacher-solo_gate-78018",
+      "seed": 78018,
+      "split": "solo_gate",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "cyan",
+      "item_id": "cyan_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.28880219335963797,
+          1.1972811055201242,
+          0.032355118817659255,
+          -0.9643742772646353
+        ],
+        "r2": [
+          3.50685979681653,
+          -2.075738679685421,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.8221549122344505,
+          -0.9647186771039591,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.00035203785646902366,
+        0.0020530659461373275,
+        -0.003956657109177854
+      ],
+      "start_to_cargo_m": 0.8212848768438104,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78019",
+      "batch": "solo-teacher-solo_gate-78019",
+      "seed": 78019,
       "split": "solo_gate",
       "scenario_id": "s5_moved_dropped_item_v4",
       "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.0387807122445627,
+          -2.691131813871203,
+          0.032355118817659255,
+          0.6308951398055
+        ],
+        "r2": [
+          3.516056207612753,
+          0.25033142278176346,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.1457251303406749,
+          -0.4982136951876335,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.08490568233326756,
+        0.013671653633637832,
+        -0.03645295533270124
+      ],
+      "start_to_cargo_m": 1.066400450014973,
+      "proposal_attempts": 4,
+      "rejects": {
+        "start_blocked": 3
+      }
+    },
+    {
+      "episode_id": "solo_gate-78020",
+      "batch": "solo-teacher-solo_gate-78020",
+      "seed": 78020,
+      "split": "solo_gate",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5434227073809623,
+          -1.0172411874999938,
+          0.032355118817659255,
+          0.09417628807509063
+        ],
+        "r2": [
+          5.063094620346609,
+          -2.6300101929332267,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.6770913331539072,
+          -1.5918503505025905,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.03296061416660231,
+        -0.16430309310567562,
+        -0.004511021514644785
+      ],
+      "start_to_cargo_m": 0.9581315252085347,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78021",
+      "batch": "solo-teacher-solo_gate-78021",
+      "seed": 78021,
+      "split": "solo_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
       "map_id": "zone_wide_door_geometry_v3",
       "kind": "can",
       "item_id": "can_1",
@@ -1790,37 +1002,39 @@
       ],
       "spawns": {
         "r1": [
-          -0.15873825703718158,
-          -0.12406209139877811,
+          -0.3118437265511872,
+          -0.9721379633554359,
           0.032355118817659255,
-          -1.323068552182845
+          0.594059124576998
         ],
         "r2": [
-          2.831647982687582,
-          0.5215736376521631,
+          -0.7393131404845799,
+          -1.8557045692691534,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          1.0983835957554462,
-          -1.22298664247918,
+          3.18242965554793,
+          -2.4256340071441453,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        0.024432924764986555,
-        0.020339928125320893,
-        -0.00807177869347572
+        0.08505679099058676,
+        -0.08863225549681346,
+        0.005631306965785311
       ],
-      "start_to_cargo_m": 0.9160645648758955,
-      "proposal_attempts": 1,
-      "rejects": {}
+      "start_to_cargo_m": 0.7222459228842315,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      }
     },
     {
-      "episode_id": "solo_gate-76039",
-      "batch": "solo-teacher-solo_gate-76039",
-      "seed": 76039,
+      "episode_id": "solo_gate-78022",
+      "batch": "solo-teacher-solo_gate-78022",
+      "seed": 78022,
       "split": "solo_gate",
       "scenario_id": "s1_normal_mixed_v4",
       "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
@@ -1836,30 +1050,818 @@
       ],
       "spawns": {
         "r1": [
-          0.5497135858928228,
-          -0.275555837208719,
+          0.4627991762218656,
+          -0.25624432868319946,
           0.032355118817659255,
-          -1.1501659824813735
+          -1.2701089802059355
         ],
         "r2": [
-          2.4597065535755758,
-          -1.5526740770419742,
+          3.03178796662863,
+          -1.4327206168247917,
           0.032355118817659255,
           0.0
         ],
         "r3": [
-          -0.0035018777272251,
-          -0.9634892514918787,
+          4.384629615282119,
+          -2.2411897308068873,
           0.032355118817659255,
           0.0
         ]
       },
       "handoff_pose_error": [
-        -0.03465580833661144,
-        -0.017878980982440607,
-        -0.011919303469303609
+        0.04150552829281388,
+        -0.15690259520558436,
+        -0.021111241131497243
       ],
-      "start_to_cargo_m": 0.7298931092252317,
+      "start_to_cargo_m": 0.8007062646743627,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78023",
+      "batch": "solo-teacher-solo_gate-78023",
+      "seed": 78023,
+      "split": "solo_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.480034783633279,
+          -2.9209773938736423,
+          0.032355118817659255,
+          0.4161486673543494
+        ],
+        "r2": [
+          1.706334245562645,
+          -2.7028411155239045,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.2140434142993788,
+          -1.0725501958847494,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.01615139446496491,
+        0.11538349441478775,
+        0.027444555248852996
+      ],
+      "start_to_cargo_m": 0.9981387308107427,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78024",
+      "batch": "solo-teacher-solo_gate-78024",
+      "seed": 78024,
+      "split": "solo_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.5940056684362531,
+          -2.9196845573110806,
+          0.032355118817659255,
+          0.8022078767574997
+        ],
+        "r2": [
+          5.013824171413743,
+          -2.5427357651081137,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          5.135987094775638,
+          -1.53813796919657,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.03844530600985885,
+        0.013023722597955287,
+        -0.008275309413550183
+      ],
+      "start_to_cargo_m": 0.6208341007373864,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78025",
+      "batch": "solo-teacher-solo_gate-78025",
+      "seed": 78025,
+      "split": "solo_gate",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.48797585710428915,
+          -0.6902092267417209,
+          0.032355118817659255,
+          0.22047181183695236
+        ],
+        "r2": [
+          1.2148119996633961,
+          0.6501785526998023,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.237093624665093,
+          -0.9168531575629482,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.02386457345435765,
+        -0.06235588570860168,
+        -0.036010254768496466
+      ],
+      "start_to_cargo_m": 0.9022384463203592,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      }
+    },
+    {
+      "episode_id": "solo_gate-78026",
+      "batch": "solo-teacher-solo_gate-78026",
+      "seed": 78026,
+      "split": "solo_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "can",
+      "item_id": "can_1",
+      "role": "any",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5490808582609659,
+          -0.8860770333136955,
+          0.032355118817659255,
+          -0.15075810213233515
+        ],
+        "r2": [
+          3.2189810686914346,
+          0.9989003351267525,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.6437713844608003,
+          1.174178033468309,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.059466921559718444,
+        0.03387846218134081,
+        -0.00720598450485568
+      ],
+      "start_to_cargo_m": 0.9497663017027342,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78027",
+      "batch": "solo-teacher-solo_gate-78027",
+      "seed": 78027,
+      "split": "solo_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "tile",
+      "item_id": "tile_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.3709078030173002,
+          -0.6046409994456821,
+          0.032355118817659255,
+          -0.22865645430272874
+        ],
+        "r2": [
+          1.4847530475102588,
+          0.514099495812208,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.5539858464449963,
+          -2.821099698031015,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.02087113174570786,
+        0.037584210650753846,
+        -0.058175802543755366
+      ],
+      "start_to_cargo_m": 0.6752466449065362,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78028",
+      "batch": "solo-teacher-solo_gate-78028",
+      "seed": 78028,
+      "split": "solo_gate",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5194388553853437,
+          -2.4739997160982012,
+          0.032355118817659255,
+          -0.09576215533653494
+        ],
+        "r2": [
+          0.9590274018367342,
+          -1.1273038543827796,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.088791593268674,
+          -0.03219320101516132,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.05119537220784141,
+        0.005996684544111296,
+        0.062408846616346395
+      ],
+      "start_to_cargo_m": 0.9197520291715073,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78029",
+      "batch": "solo-teacher-solo_gate-78029",
+      "seed": 78029,
+      "split": "solo_gate",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "can",
+      "item_id": "can_1",
+      "role": "any",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.04085551658142167,
+          -1.2748972611296978,
+          0.032355118817659255,
+          0.6786915385309611
+        ],
+        "r2": [
+          1.3310318430946624,
+          -1.2333983966824456,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.7558370743971747,
+          -0.019728529344984036,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.014723234817848164,
+        -0.015937136055510233,
+        -0.019323435616366007
+      ],
+      "start_to_cargo_m": 0.6122836507826995,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78030",
+      "batch": "solo-teacher-solo_gate-78030",
+      "seed": 78030,
+      "split": "solo_gate",
+      "scenario_id": "s7_trio_rendezvous_v4",
+      "scenario_source_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "tile",
+      "item_id": "tile_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.125,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.6917150851536199,
+          -0.5655133947920802,
+          0.032355118817659255,
+          -0.2112115461377017
+        ],
+        "r2": [
+          4.243721025463811,
+          0.5353141734984517,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.403104456779736,
+          0.5124103473514023,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.026934148993469298,
+        0.09047957218049721,
+        0.004841909119567169
+      ],
+      "start_to_cargo_m": 0.864844586535761,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78031",
+      "batch": "solo-teacher-solo_gate-78031",
+      "seed": 78031,
+      "split": "solo_gate",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.25262344746898935,
+          -2.563160019596306,
+          0.032355118817659255,
+          0.5877923639014256
+        ],
+        "r2": [
+          0.815476103388693,
+          -0.4727200150242985,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.331819217481264,
+          -0.3390113408040878,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.054292917691463785,
+        -0.04007305462258912,
+        -0.033464447043770745
+      ],
+      "start_to_cargo_m": 0.6623613471673487,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78032",
+      "batch": "solo-teacher-solo_gate-78032",
+      "seed": 78032,
+      "split": "solo_gate",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "can",
+      "item_id": "can_1",
+      "role": "any",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.275,
+        0.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.7714426890917168,
+          0.07530586942116507,
+          0.032355118817659255,
+          0.4591707800874655
+        ],
+        "r2": [
+          4.663387297472422,
+          -0.7646890075545802,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.7104889400773498,
+          -0.19874229453073244,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.02389712974538223,
+        -0.017170350362549647,
+        -0.03167289125907091
+      ],
+      "start_to_cargo_m": 0.6276668358766538,
+      "proposal_attempts": 2,
+      "rejects": {
+        "station_blocked": 1
+      }
+    },
+    {
+      "episode_id": "solo_gate-78033",
+      "batch": "solo-teacher-solo_gate-78033",
+      "seed": 78033,
+      "split": "solo_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "tile",
+      "item_id": "tile_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.4870695732654938,
+          -0.37174492527955794,
+          0.032355118817659255,
+          -0.47452349097055607
+        ],
+        "r2": [
+          1.191073270258423,
+          -1.897278559679616,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.2572245457074467,
+          -1.5908909736553392,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.07373494206052525,
+        -0.007641240760429349,
+        0.014630638767740334
+      ],
+      "start_to_cargo_m": 0.7013027443022722,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78034",
+      "batch": "solo-teacher-solo_gate-78034",
+      "seed": 78034,
+      "split": "solo_gate",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "can",
+      "item_id": "can_1",
+      "role": "any",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.275,
+        0.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.6534670388832579,
+          0.349403870373941,
+          0.032355118817659255,
+          0.5069849769397096
+        ],
+        "r2": [
+          4.710382110066842,
+          0.31525480100795145,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.739854708200343,
+          -1.132039449410858,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.040879130432845995,
+        0.049428403507733476,
+        -0.01321470424453743
+      ],
+      "start_to_cargo_m": 0.6296211583565855,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78035",
+      "batch": "solo-teacher-solo_gate-78035",
+      "seed": 78035,
+      "split": "solo_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "tile",
+      "item_id": "tile_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.3382164539781912,
+          -0.9068489499212684,
+          0.032355118817659255,
+          -0.14261199406699349
+        ],
+        "r2": [
+          4.362015668354491,
+          -2.6002959593561528,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.7669058733225564,
+          -0.04208722871191606,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.01686884863694672,
+        -0.008304831801965997,
+        0.018391929689956465
+      ],
+      "start_to_cargo_m": 0.6642207952874936,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78036",
+      "batch": "solo-teacher-solo_gate-78036",
+      "seed": 78036,
+      "split": "solo_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "can",
+      "item_id": "can_1",
+      "role": "any",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.19275797655622184,
+          -1.5155353441866881,
+          0.032355118817659255,
+          0.6240972185105625
+        ],
+        "r2": [
+          4.750150049339426,
+          1.042017172200353,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.515731359524107,
+          -2.0728028682281687,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.05212574934490374,
+        0.017109708645089657,
+        -0.00889398721787472
+      ],
+      "start_to_cargo_m": 0.8912347127063218,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78037",
+      "batch": "solo-teacher-solo_gate-78037",
+      "seed": 78037,
+      "split": "solo_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "tile",
+      "item_id": "tile_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.03792475629099812,
+          -0.9130211250984663,
+          0.032355118817659255,
+          -0.20599403918001608
+        ],
+        "r2": [
+          0.25793744511503847,
+          1.0107062586413762,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.34876464491143233,
+          -2.820569696579505,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.05358734624881839,
+        -0.05033871353650529,
+        -0.02576563896705164
+      ],
+      "start_to_cargo_m": 1.0398362668855152,
+      "proposal_attempts": 3,
+      "rejects": {
+        "start_blocked": 2
+      }
+    },
+    {
+      "episode_id": "solo_gate-78038",
+      "batch": "solo-teacher-solo_gate-78038",
+      "seed": 78038,
+      "split": "solo_gate",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "can",
+      "item_id": "can_1",
+      "role": "any",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.17750495566408042,
+          -1.1051068038744545,
+          0.032355118817659255,
+          0.39117275020452463
+        ],
+        "r2": [
+          3.4587138480654773,
+          -0.6464530323708888,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.597716319630088,
+          -2.222016447284455,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.00876618777928234,
+        0.022830164358575517,
+        -0.031904318789898606
+      ],
+      "start_to_cargo_m": 0.6313409975596476,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_gate-78039",
+      "batch": "solo-teacher-solo_gate-78039",
+      "seed": 78039,
+      "split": "solo_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "tile",
+      "item_id": "tile_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.03918517415796019,
+          -0.48924549077988366,
+          0.032355118817659255,
+          0.041100245136020896
+        ],
+        "r2": [
+          1.5583240368437288,
+          0.009592075315512982,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.2912500787496,
+          0.6072789952719884,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.04199311083140425,
+        0.053934186088869,
+        0.004347215423035348
+      ],
+      "start_to_cargo_m": 1.026308406611052,
       "proposal_attempts": 1,
       "rejects": {}
     }

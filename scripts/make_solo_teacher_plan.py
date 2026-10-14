@@ -100,7 +100,7 @@ def prepare(*, split):
                 if left[k]:
                     kinds.append(k)
                     left[k] -= 1
-        seed0 = 76000
+        seed0 = 78000
     check_range(split, seed0, len(kinds))
     per_kind = Counter()
     episodes = []

@@ -103,7 +103,7 @@ Codex의 `MapLookaround`(검출기 연결 없음, 넓은 prior)를 버리고, Op
 
 ### 4. 실행 보조
 
-- `scripts/make_solo_teacher_plan.py`: 진단 3(cyan·can·tile, 시드 76900–76902)과 관문 40(시드 76000–76039, cyan 7·red 5·green 5·yellow 3·can 10·tile 10,
+- `scripts/make_solo_teacher_plan.py`: 진단 3(cyan·can·tile, 시드 76900–76902)과 관문 40(시드 78000–78039, cyan 7·red 5·green 5·yellow 3·can 10·tile 10,
   종류 순환 배치)의 계획. 홀드아웃 지도 시나리오 s4 제외. 시작은 화물 서쪽 0.6–1.1 m, 화물 쪽 ±25도.
   `configs/grasp_act_seed_splits.json`에 `solo_gate`·`solo_diagnostic` 등록(키만 추가, 학습 금지 목록에 포함).
   같은 파일을 #500(`crate_gate` 77000대)도 고치므로 병합 순서에 따라 키 합치기 충돌이 날 수 있다.
