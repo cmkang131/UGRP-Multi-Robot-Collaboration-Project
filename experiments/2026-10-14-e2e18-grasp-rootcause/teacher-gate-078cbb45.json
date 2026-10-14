@@ -1,0 +1,2290 @@
+{
+  "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+  "n": 16,
+  "N": 16,
+  "planned_N": 40,
+  "qualified": false,
+  "parent_exit": 130,
+  "individual_EXIT_missing": true,
+  "physical_results_scope": "16 raw complete results with manifests; parent stopped before wave aggregate/EXIT publication; not a 40-trial qualification",
+  "unstarted_N": 24,
+  "speed_gate": {
+    "status": "SPEED_GATE_PASS",
+    "admitted": true,
+    "measured_pass": true,
+    "override_reason": null,
+    "limit_wall_per_sim": 3.5,
+    "probe_sim_s": 30.0,
+    "planned_concurrency": 16,
+    "completed": 16,
+    "median_wall_per_sim": 2.6523328539446434,
+    "invalid_samples": []
+  },
+  "rows": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-000/raw/result.json",
+      "sha256": "4b895ecffab8c75eb7a61a32ea9763a2a7234d3e9cfde45728846a6787452fdc",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 19.30000000000955,
+        "wall_s": 56.00625017600032,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 13.099999999992145,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 14.299999999989348,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 14.399999999989115,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 20.10000000000496,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 21.100000000009736,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 11.29999999999196,
+              "align": 1.1999999999972033,
+              "ready": 0.09999999999976694,
+              "pick": 5.700000000015846,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 11,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 1.8000000000001848,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 2.100000000000196,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 14.399999999989115,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 20.10000000000496,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 21.100000000009736,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 0.0,
+              "align": 0.30000000000001115,
+              "ready": 12.29999999998892,
+              "pick": 5.700000000015846,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 0,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 194,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.39599609375,
+          7.3486328125,
+          5.041015625
+        ],
+        "timings_s": {
+          "physics": 43.86517406400162,
+          "rgb": 6.566317444006927,
+          "evaluation": 0.10058013199341076,
+          "teacher": 0.03606102800404187,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.9018782474597207
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-001/raw/result.json",
+      "sha256": "9b069f87b2507b9b561669795aa2e72799ea0c6f7058e2d1b6ab93f35216b1e2",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 21.70000000002101,
+        "wall_s": 56.083451668000635,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 12.299999999994009,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 13.499999999991212,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 16.799999999989204,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 22.50000000001642,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 23.500000000021195,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 10.499999999993824,
+              "align": 1.1999999999972033,
+              "ready": 3.2999999999979917,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 10,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 15.599999999986318,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 16.699999999988727,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 16.799999999989204,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 22.50000000001642,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 23.500000000021195,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 13.799999999986133,
+              "align": 1.1000000000024084,
+              "ready": 0.10000000000047748,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 13,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 218,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.39599609375,
+          7.3486328125,
+          5.041015625
+        ],
+        "timings_s": {
+          "physics": 46.585993158973,
+          "rgb": 5.537158374019782,
+          "evaluation": 0.09973287998764135,
+          "teacher": 0.08246947099542012,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.5844908602740246
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-002/raw/result.json",
+      "sha256": "b272d3c0442e8007f29faf2a4c605d03fcd7607d2d4ceb7b3559bb3b6f94c673",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 20.400000000014803,
+        "wall_s": 51.810065984000175,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 10.999999999997039,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 12.199999999994242,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 15.499999999986551,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 21.200000000010213,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 22.200000000014988,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 9.199999999996853,
+              "align": 1.1999999999972033,
+              "ready": 3.299999999992309,
+              "pick": 5.700000000023662,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 9,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 14.199999999989581,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 15.399999999986784,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 15.499999999986551,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 21.200000000010213,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 22.200000000014988,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 12.399999999989396,
+              "align": 1.1999999999972033,
+              "ready": 0.09999999999976694,
+              "pick": 5.700000000023662,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 12,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 205,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.39599609375,
+          7.3486328125,
+          5.041015625
+        ],
+        "timings_s": {
+          "physics": 42.5021381319948,
+          "rgb": 5.783807799993156,
+          "evaluation": 0.09144732799722988,
+          "teacher": 0.06314438000845257,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.539709116860911
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-003/raw/result.json",
+      "sha256": "236261ba7d0e4f6eea9193e208697c11e5e233eeb22f17dcb94abd4facea7c79",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 37.40000000009598,
+        "wall_s": 94.42062048799926,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 9.500000000000535,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 32.40000000006369,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 32.50000000006417,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 38.200000000091386,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 39.20000000009616,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 7.70000000000035,
+              "align": 22.90000000006316,
+              "ready": 0.10000000000047748,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 8,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 1.8000000000001848,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 2.100000000000196,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 32.50000000006417,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 38.200000000091386,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 39.20000000009616,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 0.0,
+              "align": 0.30000000000001115,
+              "ready": 30.400000000063972,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 0,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 375,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          8.5517578125,
+          6.76171875,
+          4.9423828125
+        ],
+        "timings_s": {
+          "physics": 79.61809659700702,
+          "rgb": 10.994067790983536,
+          "evaluation": 0.19480914202904387,
+          "teacher": 0.06557274100123323,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.52461552106302
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-004/raw/result.json",
+      "sha256": "602e56aecfda07d781adfc5050eadb0f1357f0d146c034fcf9c67a0474904c01",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 21.600000000020533,
+        "wall_s": 57.2057194959998,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 9.0000000000017,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 10.199999999998903,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 16.699999999988727,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 22.400000000015943,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 23.400000000020718,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 7.200000000001515,
+              "align": 1.1999999999972033,
+              "ready": 6.499999999989823,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 7,
+            "no_path_calls": 2,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 15.599999999986318,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 16.59999999998825,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 16.699999999988727,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 22.400000000015943,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 23.400000000020718,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 13.799999999986133,
+              "align": 1.000000000001931,
+              "ready": 0.10000000000047748,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 13,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 217,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          13.8037109375,
+          7.3427734375,
+          5.0517578125
+        ],
+        "timings_s": {
+          "physics": 46.032607601986456,
+          "rgb": 6.992185913002686,
+          "evaluation": 0.10317937299623736,
+          "teacher": 0.6531957530114596,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.648412939627103
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-005/raw/result.json",
+      "sha256": "27ebdea2ec77229353451927ee41da69f5da0dce154ea844ee2cde7e8cff886b",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 19.600000000010983,
+        "wall_s": 50.711923631999525,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 8.00000000000403,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 9.400000000000768,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 14.699999999988416,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 20.400000000006393,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 21.40000000001117,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 6.200000000003846,
+              "align": 1.3999999999967372,
+              "ready": 5.299999999987648,
+              "pick": 5.700000000017978,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 6,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 13.399999999991445,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 14.599999999988649,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 14.699999999988416,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 20.400000000006393,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 21.40000000001117,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 11.59999999999126,
+              "align": 1.1999999999972033,
+              "ready": 0.09999999999976694,
+              "pick": 5.700000000017978,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 11,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 197,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.86572265625,
+          7.3203125,
+          5.01953125
+        ],
+        "timings_s": {
+          "physics": 41.083583302010084,
+          "rgb": 5.901704050998887,
+          "evaluation": 0.0908480210146081,
+          "teacher": 0.047315842975876876,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.5873430424475057
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-006/raw/result.json",
+      "sha256": "31b57d0d77a8533a404a7f6d8c21896aea8b6a0b820d7e5bf5d15c93b308f8fd",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 16.49999999999618,
+        "wall_s": 48.15669778400115,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 10.399999999998437,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 11.499999999995874,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 11.59999999999564,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 17.29999999999159,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 18.299999999996366,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 8.599999999998252,
+              "align": 1.0999999999974364,
+              "ready": 0.09999999999976694,
+              "pick": 5.699999999995951,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 9,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 1.8000000000001848,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 2.100000000000196,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 11.59999999999564,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 17.29999999999159,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 18.299999999996366,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 0.0,
+              "align": 0.30000000000001115,
+              "ready": 9.499999999995445,
+              "pick": 5.699999999995951,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 0,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 166,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.86572265625,
+          7.3203125,
+          5.01953125
+        ],
+        "timings_s": {
+          "physics": 37.73884685100347,
+          "rgb": 6.178737114027172,
+          "evaluation": 0.08581772898833151,
+          "teacher": 0.02754848600125115,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.918587744485594
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-007/raw/result.json",
+      "sha256": "b0dc8ae02dd048d5af3f36d1a132eae41c6883df3625dc4382039883621e9e0e",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 16.799999999997613,
+        "wall_s": 44.50370426099835,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 9.400000000000768,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 10.599999999997971,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 11.899999999994941,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 17.599999999993024,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 18.5999999999978,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 7.600000000000583,
+              "align": 1.1999999999972033,
+              "ready": 1.2999999999969702,
+              "pick": 5.699999999998083,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 8,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 10.599999999997971,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 11.799999999995174,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 11.899999999994941,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 17.599999999993024,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 18.5999999999978,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 8.799999999997786,
+              "align": 1.1999999999972033,
+              "ready": 0.09999999999976694,
+              "pick": 5.699999999998083,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 9,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 169,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.94140625,
+          7.20751953125,
+          4.970703125
+        ],
+        "timings_s": {
+          "physics": 35.033812542991654,
+          "rgb": 5.85594812700765,
+          "evaluation": 0.07959006498094823,
+          "teacher": 0.04334237100192695,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.6490300155359923
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-008/raw/result.json",
+      "sha256": "3950a664a721583fd16dc3c4238fcc47be4efc4979bb053e07ca29075aeee207",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 23.800000000031037,
+        "wall_s": 61.75134826499925,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 17.099999999990636,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 18.19999999999589,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 18.89999999999923,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 24.600000000026448,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 25.600000000031223,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 15.299999999990451,
+              "align": 1.1000000000052523,
+              "ready": 0.7000000000033424,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 15,
+            "no_path_calls": 3,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 17.499999999992546,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 18.799999999998754,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 18.89999999999923,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 24.600000000026448,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 25.600000000031223,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 15.699999999992361,
+              "align": 1.3000000000062073,
+              "ready": 0.10000000000047748,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 15,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 239,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          13.1787109375,
+          7.3203125,
+          5.05712890625
+        ],
+        "timings_s": {
+          "physics": 49.36357293299261,
+          "rgb": 7.787766395009385,
+          "evaluation": 0.11260963198765239,
+          "teacher": 1.0435438200001954,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.5945944649125514
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-009/raw/result.json",
+      "sha256": "897b4c44f3ac1741cd87b5e34b714e9f40484d6a3107ce03ac8007cf8a41baa4",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 17.3,
+        "wall_s": 50.99044420399878,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 10.899999999997272,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 12.299999999994009,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 12.399999999993776,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 18.09999999999541,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 19.100000000000186,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 9.099999999997086,
+              "align": 1.3999999999967372,
+              "ready": 0.09999999999976694,
+              "pick": 5.700000000001635,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 9,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 1.8000000000001848,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 2.100000000000196,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 12.399999999993776,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 18.09999999999541,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 19.100000000000186,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 0.0,
+              "align": 0.30000000000001115,
+              "ready": 10.299999999993581,
+              "pick": 5.700000000001635,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 0,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 174,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.86572265625,
+          7.3203125,
+          5.01953125
+        ],
+        "timings_s": {
+          "physics": 41.15830649801501,
+          "rgb": 6.038761057001466,
+          "evaluation": 0.09490058099254384,
+          "teacher": 0.04544218700721103,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.947424520462357
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-010/raw/result.json",
+      "sha256": "21b4634363b5a37d0986aa4e9dc7deb8956932dfd4355257f4fae084738eeb9c",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 23.600000000030082,
+        "wall_s": 62.50985201799995,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 17.499999999992546,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 18.5999999999978,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 18.699999999998276,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 24.400000000025493,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 25.400000000030268,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 15.699999999992361,
+              "align": 1.1000000000052523,
+              "ready": 0.10000000000047748,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 15,
+            "no_path_calls": 3,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 14.89999999998795,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 15.999999999985386,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 18.699999999998276,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 24.400000000025493,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 25.400000000030268,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 13.099999999987764,
+              "align": 1.0999999999974364,
+              "ready": 2.7000000000128903,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 13,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 237,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          13.1787109375,
+          7.3203125,
+          5.05712890625
+        ],
+        "timings_s": {
+          "physics": 50.19353545499325,
+          "rgb": 7.375639245990897,
+          "evaluation": 0.11239807199672214,
+          "teacher": 0.9216381240021292,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.6487225431322146
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-011/raw/result.json",
+      "sha256": "7e88ae3efe360cdc39db6c27f6370c441d268b9c4c1986701693a38038208ab8",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 26.200000000042497,
+        "wall_s": 64.38001296400034,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 17.099999999990636,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 18.19999999999589,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 21.30000000001069,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 27.000000000037907,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 28.000000000042682,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 15.299999999990451,
+              "align": 1.1000000000052523,
+              "ready": 3.100000000014802,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 15,
+            "no_path_calls": 1,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 20.10000000000496,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 21.200000000010213,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 21.30000000001069,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 27.000000000037907,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 28.000000000042682,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 18.300000000004776,
+              "align": 1.1000000000052523,
+              "ready": 0.10000000000047748,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 18,
+            "no_path_calls": 3,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 263,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          13.1787109375,
+          7.3203125,
+          5.05712890625
+        ],
+        "timings_s": {
+          "physics": 51.650916815979144,
+          "rgb": 7.680681409969111,
+          "evaluation": 0.11907209898163273,
+          "teacher": 1.2107096260333492,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.4572524032021343
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-012/raw/result.json",
+      "sha256": "cab2482098cef33781a83861b9d4771c359bd730eff557b3bc215ed419b19bc3",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 16.19999999999475,
+        "wall_s": 45.90536915300072,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 9.99999999999937,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 11.199999999996573,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 11.29999999999634,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 16.99999999999016,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 17.999999999994934,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 8.199999999999184,
+              "align": 1.1999999999972033,
+              "ready": 0.09999999999976694,
+              "pick": 5.699999999993819,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 8,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 1.8000000000001848,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 2.100000000000196,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 11.29999999999634,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 16.99999999999016,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 17.999999999994934,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 0.0,
+              "align": 0.30000000000001115,
+              "ready": 9.199999999996145,
+              "pick": 5.699999999993819,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 0,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 163,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.94140625,
+          7.20751953125,
+          4.970703125
+        ],
+        "timings_s": {
+          "physics": 36.60256795798887,
+          "rgb": 5.388059130013062,
+          "evaluation": 0.08719047800877888,
+          "teacher": 0.03271529000630835,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.833664762531827
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-013/raw/result.json",
+      "sha256": "4b1cf9c47fe8105d1cb908132d5dee81dab83e275e4061a923e6ff3cc9605033",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 19.000000000008118,
+        "wall_s": 49.70815916999891,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 12.799999999992844,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 13.999999999990047,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 14.099999999989814,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 19.80000000000353,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 20.800000000008303,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 10.999999999992658,
+              "align": 1.1999999999972033,
+              "ready": 0.09999999999976694,
+              "pick": 5.7000000000137145,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 11,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 4.900000000000243,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 7.000000000002809,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 14.099999999989814,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 19.80000000000353,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 20.800000000008303,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 3.1000000000000583,
+              "align": 2.1000000000025665,
+              "ready": 7.099999999987005,
+              "pick": 5.7000000000137145,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 3,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 191,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.86572265625,
+          7.3203125,
+          5.01953125
+        ],
+        "timings_s": {
+          "physics": 39.986862822997864,
+          "rgb": 6.0478881330273,
+          "evaluation": 0.09533590798855585,
+          "teacher": 0.03556909396684205,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.6162189036830354
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-014/raw/result.json",
+      "sha256": "a8c6610956d42d0c37908ed330be293ba384aef3c88bb50c5b670f9514ffba71",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 19.100000000008595,
+        "wall_s": 49.712127424001665,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 11.59999999999564,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 12.799999999992844,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 14.199999999989581,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 19.900000000004006,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 20.90000000000878,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 9.799999999995455,
+              "align": 1.1999999999972033,
+              "ready": 1.3999999999967372,
+              "pick": 5.700000000014425,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 10,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 12.89999999999261,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 14.099999999989814,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 14.199999999989581,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 19.900000000004006,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 20.90000000000878,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 11.099999999992425,
+              "align": 1.1999999999972033,
+              "ready": 0.09999999999976694,
+              "pick": 5.700000000014425,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 11,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 192,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.86572265625,
+          7.3203125,
+          5.01953125
+        ],
+        "timings_s": {
+          "physics": 39.858317520003766,
+          "rgb": 6.2080454919923795,
+          "evaluation": 0.08759699299662316,
+          "teacher": 0.03739896700972167,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.6027291845015337
+      }
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-078cbb45/cohort-000/episode-015/raw/result.json",
+      "sha256": "3998d3ff1f53b6cb6b3cb952d05c63ea31d1ff2fb8e9c1c09f60972c434de222",
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          12.37646484375,
+          5.57666015625,
+          4.359375
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 18.700000000006685,
+        "wall_s": 51.236107472001095,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 12.499999999993543,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 13.699999999990746,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 13.799999999990513,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 19.500000000002096,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 20.50000000000687,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 10.699999999993357,
+              "align": 1.1999999999972033,
+              "ready": 0.09999999999976694,
+              "pick": 5.700000000011583,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 11,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 1.8000000000001848,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 2.100000000000196,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 13.799999999990513,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 19.500000000002096,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 20.50000000000687,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 0.0,
+              "align": 0.30000000000001115,
+              "ready": 11.699999999990318,
+              "pick": 5.700000000011583,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 0,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 188,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          14.86572265625,
+          7.3203125,
+          5.01953125
+        ],
+        "timings_s": {
+          "physics": 41.20179772999472,
+          "rgb": 6.347425649997604,
+          "evaluation": 0.09580229899620463,
+          "teacher": 0.03184225902077742,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.739898795293197
+      }
+    }
+  ],
+  "reviewed": {
+    "phase": "speed",
+    "seed": 71003,
+    "times_sim_s": [
+      0,
+      6,
+      12,
+      18,
+      24,
+      29
+    ],
+    "relations": "carriers at opposite beam ends; r1 remained in align while r2 waited",
+    "full_episode_end_view_pending": true
+  },
+  "ik_boundary": {
+    "local_grasp_xyz": [
+      0.2090742657216881,
+      -0.013928939845319989,
+      0.02389224461640726
+    ],
+    "original_ik": "no safe v3 physical-pad solution",
+    "closer_by_m": 0.0001,
+    "closer_solution_servo5": 2500
+  },
+  "correction": "The 30s probe stagnation was not an eventual physical failure: full episode seed71003 succeeded at37.4SIMs, align22.9s. All16 complete outcomes retained."
+}

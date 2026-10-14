@@ -1,0 +1,25 @@
+{
+  "at_unix": 1791962128.6182246,
+  "reason": "episode 011: incompatible approach/ready XY predicates cause 81 ready revocations with zero drive; full six-frame review verified opposite assigned ends waiting, not slow success",
+  "scope": "own c1f02ac0 batch only; preserve completed and interrupted denominators",
+  "process": {
+    "pid": 81022,
+    "command": [
+      ".venv-sim/bin/python",
+      "-m",
+      "scripts.run_grasp_act_batch",
+      "--root",
+      "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0",
+      "--plan",
+      "experiments/2026-10-14-e2e18-grasp-rootcause/teacher-visible-only-plan.json",
+      "--concurrency",
+      "16",
+      "--cap-s",
+      "60",
+      "--teacher-profile",
+      "visible_only",
+      "--complete-frozen-cohort"
+    ],
+    "cwd": "/home/ugrp/ugrp-sim/src/c1f02ac0a81f50d0235823a845c31f1d4116c9e9"
+  }
+}

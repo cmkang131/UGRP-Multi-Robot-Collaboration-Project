@@ -1,0 +1,744 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/grasp-observe-diag-3a451048/speed/episode-000/raw",
+  "camera": {
+    "scope": "evaluation-only; actual runtime values, not XML assumptions",
+    "binding": "v3",
+    "cameras": {
+      "r1": {
+        "pos": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "quat": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ],
+        "intrinsic": [
+          309.7597351074219,
+          311.0827331542969,
+          16.155447006225586,
+          10.651566505432129
+        ],
+        "resolution": [
+          320,
+          240
+        ]
+      },
+      "r2": {
+        "pos": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "quat": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ],
+        "intrinsic": [
+          309.7597351074219,
+          311.0827331542969,
+          16.155447006225586,
+          10.651566505432129
+        ],
+        "resolution": [
+          320,
+          240
+        ]
+      }
+    }
+  },
+  "actors": {
+    "r1": {
+      "first_seen_s": 8.099999999999417,
+      "max_unseen_s": 18.099999999999987,
+      "max_blind_motion_s": 4.200000000000001,
+      "max_unseen_after_first_seen_s": 18.099999999999987,
+      "max_pick_unseen_s": 5.999999999999995
+    },
+    "r2": {
+      "first_seen_s": 1.299999999999457,
+      "max_unseen_s": 17.999999999999986,
+      "max_blind_motion_s": 2.400000000000001,
+      "max_unseen_after_first_seen_s": 17.999999999999986,
+      "max_pick_unseen_s": 5.899999999999995
+    }
+  },
+  "stages": {
+    "all": {
+      "visible_n": 145,
+      "in_frame_n": 145,
+      "N": 600,
+      "moving_n": 201,
+      "blind_moving_n": 147
+    },
+    "approach": {
+      "visible_n": 16,
+      "in_frame_n": 16,
+      "N": 110,
+      "moving_n": 82,
+      "blind_moving_n": 66
+    },
+    "alignment": {
+      "visible_n": 19,
+      "in_frame_n": 19,
+      "N": 19,
+      "moving_n": 19,
+      "blind_moving_n": 0
+    },
+    "ready": {
+      "visible_n": 95,
+      "in_frame_n": 95,
+      "N": 95,
+      "moving_n": 5,
+      "blind_moving_n": 0
+    },
+    "hover": {
+      "visible_n": 15,
+      "in_frame_n": 15,
+      "N": 24,
+      "moving_n": 21,
+      "blind_moving_n": 7
+    },
+    "descent": {
+      "visible_n": 0,
+      "in_frame_n": 0,
+      "N": 30,
+      "moving_n": 30,
+      "blind_moving_n": 30
+    },
+    "grasp": {
+      "visible_n": 0,
+      "in_frame_n": 0,
+      "N": 26,
+      "moving_n": 18,
+      "blind_moving_n": 18
+    },
+    "lift": {
+      "visible_n": 0,
+      "in_frame_n": 0,
+      "N": 54,
+      "moving_n": 26,
+      "blind_moving_n": 26
+    },
+    "done": {
+      "visible_n": 0,
+      "in_frame_n": 0,
+      "N": 242,
+      "moving_n": 0,
+      "blind_moving_n": 0
+    }
+  },
+  "definition": "geometric availability of any assigned-band probe; commands are issued, not measured motion",
+  "result": {
+    "status": "complete",
+    "source_sha": "3a4510487dd8dcee76ae0d2014fa46ca71db9f28",
+    "teacher_success_n": 2,
+    "teacher_N": 2,
+    "joint_held": true,
+    "data_admitted": false,
+    "assignment_source": "demo_rule_color_balanced",
+    "student_execution": false,
+    "recording_mode": "success_measurement",
+    "physical_success": true,
+    "teacher_profile": "observable_v2",
+    "action_contract": "ugrp.grasp_act.student.v4",
+    "loadavg_at_start": [
+      1.11181640625,
+      1.31787109375,
+      1.0546875
+    ],
+    "noise": "off",
+    "observation_sampling": {
+      "rgb_size": null,
+      "rgb_hz": 0,
+      "review_tile_size": [
+        320,
+        240
+      ],
+      "review_cameras": "four authored static top views",
+      "review_hz": 1,
+      "control_hz": 10,
+      "aspect_ratio_unchanged": true,
+      "camera_fov_and_pose_unchanged": true,
+      "own_review_hz": 1,
+      "own_review_size": [
+        320,
+        240
+      ]
+    },
+    "sim_s": 30.00000000006064,
+    "wall_s": 89.12695893900013,
+    "teachers": {
+      "r1": {
+        "profile": "observable_v2",
+        "planning_radius_m": 0.13,
+        "visibility_counts": {
+          "visible": 32,
+          "N": 106
+        },
+        "max_unseen_before_pick_s": 7.39999999999999,
+        "ik_rejections": 11,
+        "last_ik_error": "target has no safe v3 physical-pad IK solution",
+        "alignment_integral": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "phase": "done",
+        "outcome": "success",
+        "events": [
+          {
+            "t": 11.399999999996107,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 12.89999999999261,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 12.999999999992378,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 18.699999999998276,
+            "from": "pick",
+            "to": "verify"
+          },
+          {
+            "t": 19.70000000000305,
+            "from": "verify",
+            "to": "done"
+          }
+        ],
+        "staging_distance_m": 0.203,
+        "phase_sim_s": {
+          "approach": 9.599999999995921,
+          "align": 1.4999999999965041,
+          "ready": 0.09999999999976694,
+          "pick": 5.700000000005899,
+          "verify": 1.0000000000047748
+        },
+        "planner_calls": 2,
+        "no_path_calls": 0,
+        "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+      },
+      "r2": {
+        "profile": "observable_v2",
+        "planning_radius_m": 0.17,
+        "visibility_counts": {
+          "visible": 99,
+          "N": 106
+        },
+        "max_unseen_before_pick_s": 0.7,
+        "ik_rejections": 0,
+        "last_ik_error": null,
+        "alignment_integral": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "phase": "done",
+        "outcome": "success",
+        "events": [
+          {
+            "t": 3.1999999999995863,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 3.5999999999993646,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 12.999999999992378,
+            "from": "ready",
+            "to": "pick"
+          },
+          {
+            "t": 18.699999999998276,
+            "from": "pick",
+            "to": "verify"
+          },
+          {
+            "t": 19.70000000000305,
+            "from": "verify",
+            "to": "done"
+          }
+        ],
+        "staging_distance_m": 0.203,
+        "phase_sim_s": {
+          "approach": 1.3999999999994015,
+          "align": 0.3999999999997783,
+          "ready": 9.399999999993014,
+          "pick": 5.700000000005899,
+          "verify": 1.0000000000047748
+        },
+        "planner_calls": 0,
+        "no_path_calls": 0,
+        "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+      }
+    },
+    "samples_per_robot": 300,
+    "first_attempt": true,
+    "weld": "off",
+    "loadavg_at_end": [
+      1.212890625,
+      1.30322265625,
+      1.0751953125
+    ],
+    "timings_s": {
+      "physics": 74.02452821599991,
+      "rgb": 10.66609763499855,
+      "evaluation": 0.41698105700061205,
+      "teacher": 0.07632838599965908,
+      "io": 0.0
+    },
+    "wall_per_sim": 2.9708986312939993
+  },
+  "teacher": {},
+  "review": {
+    "path": "visibility-diagnostic-3a451048.jpg",
+    "sha256": "cc8dfbe98ece319fdb8659a3cce8dd60a4550eaa82e36102796e00c845a416ed",
+    "own_frames_each_robot": 6,
+    "overview_frames": 6,
+    "sim_seconds": [
+      0,
+      6,
+      12,
+      18,
+      24,
+      29
+    ],
+    "observed_relationship": "opposite assigned ends; r2 waits with assigned band in view, both lift; post-lift band below frame, beam body visible"
+  },
+  "source_manifest": {
+    "raw": "/home/ugrp/ugrp-sim/runs/grasp-observe-diag-3a451048/speed/episode-000/raw/manifest.json",
+    "sha256": "0982c84c9b4c522a93f89e710977813d1a9bbd9386fa887e4eeb29e8cbd88fb4",
+    "files": {
+      "RUN_META.json": {
+        "sha256": "7ef610ac98fd1b5b394aec55aadbcd28b21c40588927b8e44f8855aa7452f191",
+        "bytes": 174
+      },
+      "camera-runtime.json": {
+        "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d",
+        "bytes": 1009
+      },
+      "eval-only.jsonl.zst": {
+        "sha256": "0ff69bbe15cf5b6933dad1b7c1d3d4d28c169a10297c5603785796f52add6983",
+        "bytes": 581876,
+        "decoded_sha256": "1010666bc1930e853006c3d1bf9b8036abc27725bf33ecf1530e34d9a41e9e49"
+      },
+      "eval-overview/000000.jpg": {
+        "sha256": "ecf131b458003345bf5b0d4df898a6c1776ef23dc76f97cf303980aa87344e3d",
+        "bytes": 30591
+      },
+      "eval-overview/000010.jpg": {
+        "sha256": "870617500665b91837c7ed26850e20e364d6c89a6f3c0fbe45e7d0370549d028",
+        "bytes": 30595
+      },
+      "eval-overview/000020.jpg": {
+        "sha256": "9a1a9d69cce8efaca05c54bf0b7ac229e8b949eeab06a5721f41e2130f1af1cd",
+        "bytes": 30633
+      },
+      "eval-overview/000030.jpg": {
+        "sha256": "a7cd85ba6af91fe434596c887c04d4a4b86bd75a89399f10319830cc8cb75f28",
+        "bytes": 30701
+      },
+      "eval-overview/000040.jpg": {
+        "sha256": "7da575c91671d2f1ff9956ea5c46bd390bef1317ed0533531969574faf439488",
+        "bytes": 30667
+      },
+      "eval-overview/000050.jpg": {
+        "sha256": "1a72e2d8e2c41d58422bdbaca6104255bc519a79dd2a0968fda1d8784d400180",
+        "bytes": 30722
+      },
+      "eval-overview/000060.jpg": {
+        "sha256": "a067da1b2d36e58077631d564b57024139ac2e5a3c3a56e0f33751d75b189478",
+        "bytes": 30667
+      },
+      "eval-overview/000070.jpg": {
+        "sha256": "ff56ed88935a466a487fe97e896ac2aa24bf9e9b1d4e94e6a211bb44c0e5b084",
+        "bytes": 30650
+      },
+      "eval-overview/000080.jpg": {
+        "sha256": "cc80a3f1e26e193df7d4c7b738644bd7358f3080b298a7dc7d6174a8b4f7c1ca",
+        "bytes": 30648
+      },
+      "eval-overview/000090.jpg": {
+        "sha256": "085e2464f47bdedfd47e09aaec1e43e0e42386291c0a05c82fe9239c1059d518",
+        "bytes": 30954
+      },
+      "eval-overview/000100.jpg": {
+        "sha256": "ce3fc0d10506d938dac912876b438364742ba99550df4a36cc6b3d84cef8c2ac",
+        "bytes": 30997
+      },
+      "eval-overview/000110.jpg": {
+        "sha256": "80bd1e68500d68c34cccc0e35505fd2de67a92523f3bd5cab824c610d2c52332",
+        "bytes": 30970
+      },
+      "eval-overview/000120.jpg": {
+        "sha256": "8843429872c6633120922e543c199b2d08f6cfb7155204c79eba89e2661c2ce3",
+        "bytes": 31058
+      },
+      "eval-overview/000130.jpg": {
+        "sha256": "31ac0c50d9294d01d33888f9f72f870bb425364eff1b8bca31241f1766660db2",
+        "bytes": 31010
+      },
+      "eval-overview/000140.jpg": {
+        "sha256": "84e5cac55b745f1dd6702e4ded501009af96a6da97b655ee03f21bd6d3034a03",
+        "bytes": 31015
+      },
+      "eval-overview/000150.jpg": {
+        "sha256": "2de8d7ac81e059bb8ca32352b77f4c612549e774f33af4c688b142bb8a0a35e5",
+        "bytes": 31001
+      },
+      "eval-overview/000160.jpg": {
+        "sha256": "8fb82fc25b66ad76ed8a85fdafdd43cedb833a4dfb3bac28e922f388c31cc402",
+        "bytes": 30997
+      },
+      "eval-overview/000170.jpg": {
+        "sha256": "fd021c2a868d41ed5e672b63a854fdcd7a101597dabd62c466ddc8bbe733b042",
+        "bytes": 31091
+      },
+      "eval-overview/000180.jpg": {
+        "sha256": "139d2e67d5630d2d3cfcaa4b05eb70a84a235bd213b4a059369ecc4f4e9bb23b",
+        "bytes": 31020
+      },
+      "eval-overview/000190.jpg": {
+        "sha256": "33e727e9240a8476a7871b8d372cdc07e467da8cf94607c9ba052a2d19c9842a",
+        "bytes": 31019
+      },
+      "eval-overview/000200.jpg": {
+        "sha256": "04b4373b55e7723a36607a243725e095617f18eff1a1fe207ea863caf9339e62",
+        "bytes": 30995
+      },
+      "eval-overview/000210.jpg": {
+        "sha256": "cc18718b7c74f2ee49a0b9e91cc76c634ee90ed08b79550f94b00568a9ccba75",
+        "bytes": 30993
+      },
+      "eval-overview/000220.jpg": {
+        "sha256": "5486a31292dbf78a281ea773defa5718328ec96b6af87c0b4e7198088d7db736",
+        "bytes": 31025
+      },
+      "eval-overview/000230.jpg": {
+        "sha256": "6bd7f56f1b7821dda85602682e4940762852bc55aa125adc578cd842adcac364",
+        "bytes": 31008
+      },
+      "eval-overview/000240.jpg": {
+        "sha256": "d2eed7fa11ebcb10ade6cf55a55315fc2188641c765b2d0213dba7f5a1694847",
+        "bytes": 31029
+      },
+      "eval-overview/000250.jpg": {
+        "sha256": "e4ca8ddf28597a078e8577be4f13f5b40c72fb004ec913af9e6059c6dc752ff8",
+        "bytes": 31019
+      },
+      "eval-overview/000260.jpg": {
+        "sha256": "e38a88b6650b76e6ffe4b1fa00db164af342f27c7d8eed667665382f7ead7e94",
+        "bytes": 30995
+      },
+      "eval-overview/000270.jpg": {
+        "sha256": "b4e7e87a14dd5a6169ab5a8887e84349d7887393d1065d770137ffb3b0d0d1f1",
+        "bytes": 31080
+      },
+      "eval-overview/000280.jpg": {
+        "sha256": "beef6ec3a9f5c71f73223c8d62873d5d6b8ad24a21aa1318171ab506e2d9fd31",
+        "bytes": 31012
+      },
+      "eval-overview/000290.jpg": {
+        "sha256": "ddad7cec1dce21deea205e68887676d43e30ab9f35dbf6452e8f347d728db5e8",
+        "bytes": 30997
+      },
+      "eval-own/r1/000000.jpg": {
+        "sha256": "6c46765d87b109d5c4a0a795e6869870d60546ee0c1335d6f64103b67abdc023",
+        "bytes": 6687
+      },
+      "eval-own/r1/000010.jpg": {
+        "sha256": "89a47051852e5c01814665e208c19d68d0696a0eb00c9847c72396bee799d0c9",
+        "bytes": 4731
+      },
+      "eval-own/r1/000020.jpg": {
+        "sha256": "c6bd70991b0d06621c96aae7737fc575a9ac7d1ecf2e718939a64f4600efbf48",
+        "bytes": 4988
+      },
+      "eval-own/r1/000030.jpg": {
+        "sha256": "9c223afefc3b3c0d058410dbf79596f79e1d32ba9fdd98549144e027aa1b7142",
+        "bytes": 5365
+      },
+      "eval-own/r1/000040.jpg": {
+        "sha256": "63f54baa021977d0a123e28149a8e4df0f496c6ab5d966d9728ba7abaf2e4905",
+        "bytes": 5514
+      },
+      "eval-own/r1/000050.jpg": {
+        "sha256": "42ffc2306a31316cc22dde9b291e3cbb4cefc5d1e3c651ddefd60ab3770d8804",
+        "bytes": 4174
+      },
+      "eval-own/r1/000060.jpg": {
+        "sha256": "e7540fe0e5628fd83b77e639274e87398c2f0a01798107da5441a1dfc4ac4099",
+        "bytes": 6741
+      },
+      "eval-own/r1/000070.jpg": {
+        "sha256": "acb305a42abbb248196aedd0d1070f81349d97992cb7940a5f11ed8b78e3b389",
+        "bytes": 5062
+      },
+      "eval-own/r1/000080.jpg": {
+        "sha256": "936044199d0a9107610cc42133b288833d7786827aed0212a339002d8ec9c7e3",
+        "bytes": 7287
+      },
+      "eval-own/r1/000090.jpg": {
+        "sha256": "e13ded5a196f66ebdd7f002a1b2badc1677f6cc499d3450fd73f31d2764e9167",
+        "bytes": 6578
+      },
+      "eval-own/r1/000100.jpg": {
+        "sha256": "c8fc0ffe900ba86051b3a7fcfd86d0f9fcdb8d1f380ec90541b2402e617ac60b",
+        "bytes": 6682
+      },
+      "eval-own/r1/000110.jpg": {
+        "sha256": "7da1c559190d276d1edce7c39e19fa03eed99fd2fc9e70ad600573dd8fb483e5",
+        "bytes": 6877
+      },
+      "eval-own/r1/000120.jpg": {
+        "sha256": "4e4a911ef53f88048366a9e9b87ee749fe23494326604337b7af3731a7e5de10",
+        "bytes": 6358
+      },
+      "eval-own/r1/000130.jpg": {
+        "sha256": "e7cf6965b7e2ebbacbf0fb8da31b903b53f05ebdd97eac5ac5e1f2aef72f9b2d",
+        "bytes": 6468
+      },
+      "eval-own/r1/000140.jpg": {
+        "sha256": "3f19efcf7ac059f87dd11c01ce715c4ec8c06680708b1aff54987c3e8d592a33",
+        "bytes": 6819
+      },
+      "eval-own/r1/000150.jpg": {
+        "sha256": "efddf67446f8604ae0786f0f8524d0c4c64caec5075b75050b16b6ab336ac6b5",
+        "bytes": 6851
+      },
+      "eval-own/r1/000160.jpg": {
+        "sha256": "6964dc8b89bee057a3b6bff14e31e2dfc1e157ed6a49b62c2e9569c6efdaaba9",
+        "bytes": 6700
+      },
+      "eval-own/r1/000170.jpg": {
+        "sha256": "5ee060b412ca395366500e7464896f49a5544c4ea0d30eaf5ef1435e4bf0f1e7",
+        "bytes": 6710
+      },
+      "eval-own/r1/000180.jpg": {
+        "sha256": "35801da3235262a320eec21b4cd2ec0af3ac6590b388b31c57b1098eaae1dfe1",
+        "bytes": 6709
+      },
+      "eval-own/r1/000190.jpg": {
+        "sha256": "8fc6cb58c51ac15d213f7739fa1814b808e70ca128c75d787b3319ee5d8a9770",
+        "bytes": 6704
+      },
+      "eval-own/r1/000200.jpg": {
+        "sha256": "9628e687f1ff8a555e5c3bc008616714561f76f57760a41589f8d2499f4c1809",
+        "bytes": 6674
+      },
+      "eval-own/r1/000210.jpg": {
+        "sha256": "f1822db3aca55b34287d254ddf6ec42ac10b35d14ccd145ada4b8cb8f1b8d3d7",
+        "bytes": 6655
+      },
+      "eval-own/r1/000220.jpg": {
+        "sha256": "7a0acc4d525369ad1739c7a595dbfb2bba45da6d1926fd743e9104c6557ae33a",
+        "bytes": 6677
+      },
+      "eval-own/r1/000230.jpg": {
+        "sha256": "5373f0ed92d97f97c455c6efce64cbc6fb48a7cb3c8faecd0950cb399c3674a0",
+        "bytes": 6641
+      },
+      "eval-own/r1/000240.jpg": {
+        "sha256": "f4f3e5a3212ae73e12f2d9b1b9c9348aa994c9eb135e83ce348ea4d4218a0307",
+        "bytes": 6650
+      },
+      "eval-own/r1/000250.jpg": {
+        "sha256": "9b83484e7792f051269ac914a1c3e8b809e98fcf242ea8e14a1c87f9e400c063",
+        "bytes": 6630
+      },
+      "eval-own/r1/000260.jpg": {
+        "sha256": "9a0feb39cf3be2a01a8f97cb670bb015591e500f7897ee5cd99b929a77cea4e3",
+        "bytes": 6628
+      },
+      "eval-own/r1/000270.jpg": {
+        "sha256": "e2e2ce006a64d4a322be52aafab23dbded1dd4691a063ae7db9881116b775787",
+        "bytes": 6639
+      },
+      "eval-own/r1/000280.jpg": {
+        "sha256": "8bd38d3efc796978956cceca74a3dafa6392894ac886459db4e78cd9d6721fb4",
+        "bytes": 6623
+      },
+      "eval-own/r1/000290.jpg": {
+        "sha256": "655ef56cbc327db36ae3cfa87e65d5ad7c0c37070cb308dca1162a90001c9292",
+        "bytes": 6604
+      },
+      "eval-own/r2/000000.jpg": {
+        "sha256": "302426cc5d12990a1959c375f6da1b4d1f0daef9302cd786d4c50de2fc7ef877",
+        "bytes": 6613
+      },
+      "eval-own/r2/000010.jpg": {
+        "sha256": "b06ffcad2bdcc7827f0d9d82b438e9658eea7b87969105d452deaaccc20c9e1f",
+        "bytes": 4871
+      },
+      "eval-own/r2/000020.jpg": {
+        "sha256": "e27cb215c454aa379ae23f88913844968375ba7732fa8fc97f01d79eef329900",
+        "bytes": 6275
+      },
+      "eval-own/r2/000030.jpg": {
+        "sha256": "2c8006652375f486e7ddd4e1eb5617dc529c60394d8f4b627d794d49451fe610",
+        "bytes": 6241
+      },
+      "eval-own/r2/000040.jpg": {
+        "sha256": "f7e1ff16576f6c789f68db341a6cfdf63aab93b8fe81c0b5a7b47a867ce18af7",
+        "bytes": 6245
+      },
+      "eval-own/r2/000050.jpg": {
+        "sha256": "0df39a963d107254d6964257bed03492b0b64d2d23bfd67e92cc3ebc428ee484",
+        "bytes": 6249
+      },
+      "eval-own/r2/000060.jpg": {
+        "sha256": "606a9d463acee478cdb1952f40ebf1e5efdaed1ea1ac59b3540d8b66de790da6",
+        "bytes": 6243
+      },
+      "eval-own/r2/000070.jpg": {
+        "sha256": "51ef7765b474c879cc1cb2db266517827832ad16043ce47e72ce14c9cf759806",
+        "bytes": 6239
+      },
+      "eval-own/r2/000080.jpg": {
+        "sha256": "2c3e19f48997d198a601386e10077df275d6cae214cb5dbff309c5bfbae5d93c",
+        "bytes": 6256
+      },
+      "eval-own/r2/000090.jpg": {
+        "sha256": "6ef33e458119dd8c46c964dfc8a8b9d38c39d3384ee328fa706e2b30afca91ed",
+        "bytes": 6245
+      },
+      "eval-own/r2/000100.jpg": {
+        "sha256": "5223e75e82ef9a2eb3a9dafd4249b5bb44df7fc3cb9c7cb36114f848e8cb8e0c",
+        "bytes": 6252
+      },
+      "eval-own/r2/000110.jpg": {
+        "sha256": "7d03b487e913a92c87fa5509203793ace52ce082c183603e49f4ed1a1074dc6a",
+        "bytes": 6248
+      },
+      "eval-own/r2/000120.jpg": {
+        "sha256": "78a509fef1f6c03980f4bc7eccf25e4bef0b97359851614749eeec832d2540bf",
+        "bytes": 5896
+      },
+      "eval-own/r2/000130.jpg": {
+        "sha256": "9a6b33d3097acddb736b4c9d4bd5db5089850b65c324dec76c2d6a5a6179b6a5",
+        "bytes": 6292
+      },
+      "eval-own/r2/000140.jpg": {
+        "sha256": "94f4425cb3063e6762b8a33d0866ba93c1ac19124ca6211a47bc126b9b021e1c",
+        "bytes": 6727
+      },
+      "eval-own/r2/000150.jpg": {
+        "sha256": "575fda2601bef1399e2e6f0f5be5a8fffc072399fd2e5202a723db464c27ef75",
+        "bytes": 6767
+      },
+      "eval-own/r2/000160.jpg": {
+        "sha256": "491b5c165001f8a41db064a54b2d0c1c9e19e62420e0ab7e2daeb04e55852273",
+        "bytes": 6334
+      },
+      "eval-own/r2/000170.jpg": {
+        "sha256": "a80403dde5c88ce2555c0f080e4eb96b70663c2b361f409589acd9d2fa968de3",
+        "bytes": 6331
+      },
+      "eval-own/r2/000180.jpg": {
+        "sha256": "8618f6d9a92af1e364fbc38ab3dc2880e6c705fcec8f77cc0cfc420bf4fe1555",
+        "bytes": 6370
+      },
+      "eval-own/r2/000190.jpg": {
+        "sha256": "1b54957022fe022993a8fc17b9c0d908575870e0bf75ae946a2408b3b66b5748",
+        "bytes": 6348
+      },
+      "eval-own/r2/000200.jpg": {
+        "sha256": "72982c918da281f5b1c25f957a9c9986715366bac7151fbf6c4aca4ea3af742d",
+        "bytes": 6378
+      },
+      "eval-own/r2/000210.jpg": {
+        "sha256": "d12face65b490e3c09122cacb77983d48ddafa725255665c892c226928604116",
+        "bytes": 6366
+      },
+      "eval-own/r2/000220.jpg": {
+        "sha256": "7c557ef6ba28e16f937083f22c7343567e6ba558d6251b288ea19c78da21f18a",
+        "bytes": 6354
+      },
+      "eval-own/r2/000230.jpg": {
+        "sha256": "363096aac422e0f9ded5a562136792cbceacb0ad8403d0eed35e1de8763855cc",
+        "bytes": 6358
+      },
+      "eval-own/r2/000240.jpg": {
+        "sha256": "2bd564921c199c039c608a21cd8c19455282d0cc2e49f95d9ecc02d559959967",
+        "bytes": 6358
+      },
+      "eval-own/r2/000250.jpg": {
+        "sha256": "cb20a3530cabf87f4a2e708342c5c54a075e731d681772b015f8910aa7446073",
+        "bytes": 6371
+      },
+      "eval-own/r2/000260.jpg": {
+        "sha256": "82f248101930d540b941434a7ec44abbbdc078f32f19dc145746a1e95a0bdb4f",
+        "bytes": 6374
+      },
+      "eval-own/r2/000270.jpg": {
+        "sha256": "5d200ad136fc704df3138898176fca38b808baafe04cc3072d24cc4fe326ef3d",
+        "bytes": 6379
+      },
+      "eval-own/r2/000280.jpg": {
+        "sha256": "67cc2cb9357e8ddd18624c1ff21fbbaa62bb5d00641d99c9fde58fbe9b531dd8",
+        "bytes": 6404
+      },
+      "eval-own/r2/000290.jpg": {
+        "sha256": "e839e8af0818ef18ddfc2442de77223342514e44b1111348b8937cde03e3ec54",
+        "bytes": 6412
+      },
+      "plan.json": {
+        "sha256": "a6f66297cbde2805b98d552d0fe12a425a292287af7e47e09357512a0004bfe9",
+        "bytes": 1212
+      },
+      "progress.json": {
+        "sha256": "6c6360161645d19ccd574dd3a5c49744118fde9fb55ca7e837e867a0e421df52",
+        "bytes": 312
+      },
+      "result.json": {
+        "sha256": "77f837d9e644ec2d253218874f80ce0f384c0e684eb71fd7a58d2051e3432907",
+        "bytes": 4065
+      },
+      "scene.json": {
+        "sha256": "fdb8c220143bec64e906a1afce045d09f67070504b2ce5caa8bac07ad88965f4",
+        "bytes": 5545
+      },
+      "scene.xml": {
+        "sha256": "031fdf1d5a9064058fd16f819c8f3cc0f0ab25401cec32c8f48aa60e79b16c03",
+        "bytes": 506428
+      },
+      "teacher-r1.jsonl.zst": {
+        "sha256": "2c3ce42eadd2993ada136d6ff2f7367d068bb9306c0fab390f5de0679e69d6e5",
+        "bytes": 7943,
+        "decoded_sha256": "0abfd15e062e8da673a8b7b9e926c571e2d969bccb8ad9615d7d5e5859e539f7"
+      },
+      "teacher-r2.jsonl.zst": {
+        "sha256": "0804eac77b50850ea18cb4104fee9006d07c2491a71e07e99b6e3ef437e07eb0",
+        "bytes": 5659,
+        "decoded_sha256": "9362fecef6f00dc80e983d5b25467b149d52d3e4e4d047c8bd2f0e7264452446"
+      }
+    }
+  },
+  "first_joint_teacher_done_elapsed_s": 17.9,
+  "scope": "old failure 71033 development replay; excluded from fresh 40 gate",
+  "memory_decision": "64 s rejected; .6 s provisional only, no training data admitted; decide after new cohort",
+  "ci": {
+    "sha": "3a4510487dd8dcee76ae0d2014fa46ca71db9f28",
+    "job": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/38517571197/job/115700236523",
+    "conclusion": "success",
+    "scope": "reference ACT plus grasp ACT CPU forward/backward, checkpoint reload, conditioning and done gradients; not physical student success",
+    "passed": 40,
+    "skipped": 1,
+    "log_sha256": "f1dccb4a8e5aadcbcda1eca9d4c357a485e10a7c090c235a6e40a29233844cf7"
+  }
+}

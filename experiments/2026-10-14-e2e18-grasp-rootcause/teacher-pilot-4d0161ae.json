@@ -1,0 +1,146 @@
+{
+  "scope": "30 SIM second diagnostic; excluded from formal >=20 episode success gate",
+  "result": {
+    "status": "complete",
+    "source_sha": "4d0161ae6b31d35f08ca04f86f738f1eea55f251",
+    "teacher_success_n": 0,
+    "teacher_N": 2,
+    "joint_held": false,
+    "data_admitted": false,
+    "assignment_source": "demo_rule_color_balanced",
+    "student_execution": false,
+    "loadavg_at_start": [
+      1.5615234375,
+      1.568359375,
+      2.3916015625
+    ],
+    "noise": "off",
+    "sim_s": 30.00000000006064,
+    "wall_s": 182.70075992400052,
+    "teachers": {
+      "r1": {
+        "phase": "approach",
+        "outcome": "episode_timeout",
+        "events": [],
+        "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+      },
+      "r2": {
+        "phase": "align",
+        "outcome": "episode_timeout",
+        "events": [
+          {
+            "t": 18.99999999999971,
+            "from": "approach",
+            "to": "align"
+          }
+        ],
+        "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+      }
+    },
+    "samples_per_robot": 301,
+    "first_attempt": true,
+    "weld": "off",
+    "loadavg_at_end": [
+      1.44091796875,
+      1.67431640625,
+      2.294921875
+    ],
+    "wall_per_sim": 6.090025330787707
+  },
+  "raw": "azure3:~/ugrp-sim/runs/grasp-teacher-pilot-4d0161ae/raw",
+  "archive": {
+    "verified": true,
+    "path": "/home/ugrp/ugrp-sim/arm/native-grasp-teacher-pilot-4d0161ae",
+    "source": "/home/ugrp/ugrp-sim/runs/grasp-teacher-pilot-4d0161ae",
+    "native_verification": {
+      "verified": true,
+      "schema": "ugrp.archive-native.v1",
+      "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-grasp-teacher-pilot-4d0161ae",
+      "files": 623,
+      "hash_matches": 623,
+      "inventory_sha256": "c2641d182ded52c188e69564bd4d09fd7d1b92a9c777b3d188c20dccfe907ab4",
+      "reused": false,
+      "receiver_seconds": 2.066
+    },
+    "preserved_local": true,
+    "transport": {
+      "mode": "tar-zstd-ssh-v1",
+      "seconds": 2.567
+    },
+    "elapsed_seconds": 2.783,
+    "full_receipt_local": "outputs/grasp-rootcause/pilot-archive.json",
+    "full_receipt_sha256": "6304025ff6dfff19181ef0c28e4ba555fa2878e89a59f5e9a5dd6e57b359b60f"
+  },
+  "raw_manifest_sha256": "f50be5e79914553ae1aa7ed82e06c507dabaeba8e3b75a5e8f71d98cf6874262",
+  "result_sha256": "b98b363216dba6ecb5d7d63f32de02de8d6f6ce77b8ccb152aaf81eaf26bf95b",
+  "review": {
+    "relative_sim_s": [
+      0,
+      6,
+      12,
+      17.9,
+      23.9,
+      29.9
+    ],
+    "relationship": "both start near blue side; opposite role labels; r1 stationary, r2 routes outward then aligns on blue; no joint ready",
+    "cause": "r1 fixed 0.5 m pregrasp x=-0.929595 lies outside configuration-space bound x>=-0.88. Map-only A* returns None; shorter feasible stance exists.",
+    "frames": [
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r1/000000.jpg",
+        "sha256": "0412219f768d0e0b26fac200a409d98a7173bf20e85ce581e11297e431c5131a"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r1/000060.jpg",
+        "sha256": "88c6e9c88496a496d9fa799f81335506ecfb65b50fd87e4d6cba5a9611a5e9a1"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r1/000120.jpg",
+        "sha256": "b23c5af061eda38f3cb34890a764ecc7f178c450faa455755a323b671b76119e"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r1/000179.jpg",
+        "sha256": "3c490f88caec7e7652583efeba3140ae80738857fddb4360e9089b7947172651"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r1/000239.jpg",
+        "sha256": "7e7431221ddf6a9345ba87d68df2ee77e95452423203d6b47e18e059676ab410"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r1/000299.jpg",
+        "sha256": "1954d7498779a147b3ab93ffab49a5b84decd5f48354607e13d22be999ce8a4a"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r2/000000.jpg",
+        "sha256": "6c07faecd77cf81f0e6f3e291880530d5541c421021b93a08d57898d66ef1008"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r2/000060.jpg",
+        "sha256": "a277d04caa0b4f06f8b117518e9125be836b108d4322179c9c0c3de8615b83f2"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r2/000120.jpg",
+        "sha256": "717b7f1a604932e440dce4dfcb5db7e7e72737bc346967546bad1e2d34b2a35d"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r2/000179.jpg",
+        "sha256": "da13af8c86388ce8b45cd0b18368a1229004514060d40f1bd09fd2452b00616b"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r2/000239.jpg",
+        "sha256": "5121c8f2742fad6485bbbe4f732310f716e43767d9c05fe99ee35338363197ea"
+      },
+      {
+        "path": "outputs/grasp-rootcause/teacher-pilot-frames/rgb/r2/000299.jpg",
+        "sha256": "3995f49bff6d2092c0b9151e80647a7fc95d9be4ce33264dac3aaaa71b654464"
+      }
+    ]
+  },
+  "next": "choose feasible pregrasp; measure cost; 16-way speed gate before formal cohort",
+  "representative_video": {
+    "path": "experiments/2026-10-14-e2e18-grasp-rootcause/teacher-pilot-4d0161ae.mp4",
+    "sha256": "ef7054de6815df11f0ca9683fa497b90ab0a4ac1c1cf92674d2f8309f1df9c46",
+    "bytes": 124399,
+    "source": "own RGB r1/r2 side-by-side, 10fps, all 300 saved frames, 30s",
+    "selection": "first teacher diagnostic seed71000, not a representative success-rate cohort"
+  }
+}

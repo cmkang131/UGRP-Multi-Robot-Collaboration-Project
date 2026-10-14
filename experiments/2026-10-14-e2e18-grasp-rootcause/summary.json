@@ -1,0 +1,2269 @@
+{
+  "schema": "ugrp.e2e18.privileged_act.v1",
+  "status": "visible_only_implementation_checks_passed_physics_pending",
+  "classification": "dev",
+  "research_result": false,
+  "scope_changed": "2026-10-14 one multitask ACT for local grasp/release of s1-s8 cargo; map code navigation, Gemma skill decisions, private Kaggle GPU training authorized",
+  "source_sha": "6a77d2da76be6b2d388113b0334e01816d983011",
+  "audit": {
+    "status": "short_saved_stage_audit_completed_with_limits",
+    "funnel": {
+      "stage-approach-cohort1": {
+        "runs_N": 12,
+        "by_robot": {
+          "r1": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 12,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 12,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 7,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 4,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 4,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "joint_held": 1,
+              "no_close_command": 3,
+              "no_fine_alignment": 3,
+              "no_estimated_station_arrival": 5
+            }
+          },
+          "r2": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 12,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 9,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 3,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 2,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 2,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "joint_held": 1,
+              "no_estimate": 3,
+              "no_fine_alignment": 1,
+              "no_estimated_station_arrival": 6,
+              "no_close_command": 1
+            }
+          }
+        },
+        "joint_held_runs": {
+          "n": 1,
+          "N": 12,
+          "unknown": 0
+        }
+      },
+      "stage-approach-gate1": {
+        "runs_N": 12,
+        "by_robot": {
+          "r1": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 8,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 6,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "no_current_detection": 4,
+              "no_estimated_station_arrival": 6,
+              "no_estimate": 2
+            }
+          },
+          "r2": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 4,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "no_current_detection": 8,
+              "no_estimate": 4
+            }
+          }
+        },
+        "joint_held_runs": {
+          "n": 0,
+          "N": 12,
+          "unknown": 0
+        }
+      },
+      "stage-detector-cohort1": {
+        "runs_N": 12,
+        "by_robot": {
+          "r1": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 12,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 12,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 8,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 6,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 5,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "joint_held": 1,
+              "no_close_command": 4,
+              "no_ready": 1,
+              "no_fine_alignment": 2,
+              "no_estimated_station_arrival": 4
+            }
+          },
+          "r2": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 12,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 9,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 4,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 3,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 2,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 1,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "joint_held": 1,
+              "no_estimate": 3,
+              "no_estimated_station_arrival": 5,
+              "no_close_command": 1,
+              "no_fine_alignment": 1,
+              "no_ready": 1
+            }
+          }
+        },
+        "joint_held_runs": {
+          "n": 1,
+          "N": 12,
+          "unknown": 0
+        }
+      },
+      "stage-detector-gate1": {
+        "runs_N": 12,
+        "by_robot": {
+          "r1": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 8,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 7,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "no_current_detection": 4,
+              "no_estimated_station_arrival": 7,
+              "no_estimate": 1
+            }
+          },
+          "r2": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 6,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "no_current_detection": 6,
+              "no_estimate": 6
+            }
+          }
+        },
+        "joint_held_runs": {
+          "n": 0,
+          "N": 12,
+          "unknown": 0
+        }
+      },
+      "stage-track-gate1": {
+        "runs_N": 12,
+        "by_robot": {
+          "r1": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 5,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 4,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "no_current_detection": 7,
+              "no_estimated_station_arrival": 4,
+              "no_estimate": 1
+            }
+          },
+          "r2": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "no_current_detection": 12
+            }
+          }
+        },
+        "joint_held_runs": {
+          "n": 0,
+          "N": 12,
+          "unknown": 0
+        }
+      },
+      "stage-track-gate2": {
+        "runs_N": 12,
+        "by_robot": {
+          "r1": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 11,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 8,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "no_current_detection": 1,
+              "no_estimate": 3,
+              "no_estimated_station_arrival": 8
+            }
+          },
+          "r2": {
+            "requested_N": 12,
+            "read_N": 12,
+            "stages": {
+              "seen_current_segment": {
+                "n": 9,
+                "N": 12,
+                "unknown": 0
+              },
+              "estimated": {
+                "n": 3,
+                "N": 12,
+                "unknown": 0
+              },
+              "station_estimated_8cm": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "fine_alignment_entered": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "alignment_ready": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "close_command": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "closed_measured": {
+                "n": 0,
+                "N": 0,
+                "unknown": 12
+              },
+              "held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              },
+              "joint_held": {
+                "n": 0,
+                "N": 12,
+                "unknown": 0
+              }
+            },
+            "failures": {
+              "no_current_detection": 3,
+              "no_estimated_station_arrival": 3,
+              "no_estimate": 6
+            }
+          }
+        },
+        "joint_held_runs": {
+          "n": 0,
+          "N": 12,
+          "unknown": 0
+        }
+      }
+    },
+    "errors": {
+      "stage-approach-cohort1/approach_or_search": {
+        "pose_xy_m": {
+          "n": 11097,
+          "median": 0.1477257059329023,
+          "p95": 0.4302636933338484,
+          "max": 0.7856759838483439
+        },
+        "pose_yaw_deg": {
+          "n": 11097,
+          "median": 15.438544709032417,
+          "p95": 74.5040881084299,
+          "max": 149.21125364195103
+        },
+        "nearest_end_position_m": {
+          "n": 3458,
+          "median": 0.0530305468614134,
+          "p95": 0.2568740176230924,
+          "max": 0.3001694804366182
+        },
+        "axis_undirected_deg": {
+          "n": 3458,
+          "median": 2.633679924199912,
+          "p95": 29.124397349289907,
+          "max": 89.47622120894427
+        },
+        "nearest_station_target_m": {
+          "n": 2454,
+          "median": 0.042047639075636974,
+          "p95": 0.3279777409660178,
+          "max": 1.000533534344194
+        }
+      },
+      "stage-approach-cohort1/far_ge_0.6m": {
+        "nearest_end_position_m": {
+          "n": 705,
+          "median": 0.06948536419775514,
+          "p95": 0.25066066151977306,
+          "max": 0.3001694804366182
+        },
+        "axis_undirected_deg": {
+          "n": 705,
+          "median": 2.4094379179143957,
+          "p95": 54.39532633250433,
+          "max": 89.21187517724279
+        }
+      },
+      "stage-approach-cohort1/mid_0.3_0.6m": {
+        "nearest_end_position_m": {
+          "n": 965,
+          "median": 0.02371516779471033,
+          "p95": 0.2404008036487521,
+          "max": 0.2718915309768995
+        },
+        "axis_undirected_deg": {
+          "n": 965,
+          "median": 3.4920676849447054,
+          "p95": 21.3803514800013,
+          "max": 89.22954932690278
+        }
+      },
+      "stage-approach-cohort1/near_lt_0.3m": {
+        "nearest_end_position_m": {
+          "n": 2953,
+          "median": 0.01069406935077466,
+          "p95": 0.2540074490818771,
+          "max": 0.2713530087499266
+        },
+        "axis_undirected_deg": {
+          "n": 2953,
+          "median": 0.6140613557817467,
+          "p95": 17.08504396960791,
+          "max": 89.47622120894427
+        }
+      },
+      "stage-approach-cohort1/fine": {
+        "pose_xy_m": {
+          "n": 1175,
+          "median": 0.032644746687535246,
+          "p95": 0.10659529061428492,
+          "max": 0.2659851967627979
+        },
+        "pose_yaw_deg": {
+          "n": 1175,
+          "median": 29.63454790558696,
+          "p95": 48.4797588755682,
+          "max": 48.506191215676544
+        },
+        "nearest_end_position_m": {
+          "n": 1165,
+          "median": 0.001285731253047872,
+          "p95": 0.011128467925271912,
+          "max": 0.20992296052317172
+        },
+        "axis_undirected_deg": {
+          "n": 1165,
+          "median": 0.17815143095677993,
+          "p95": 1.9425622384490246,
+          "max": 14.443192855071674
+        },
+        "nearest_station_target_m": {
+          "n": 1165,
+          "median": 0.0036493640905121837,
+          "p95": 0.03962801403375311,
+          "max": 0.24488430239182407
+        }
+      },
+      "stage-detector-cohort1/approach_or_search": {
+        "pose_xy_m": {
+          "n": 11568,
+          "median": 0.12469464210835327,
+          "p95": 0.7499597001392858,
+          "max": 1.5581264547571478
+        },
+        "pose_yaw_deg": {
+          "n": 11568,
+          "median": 14.520293929350103,
+          "p95": 79.68915470129913,
+          "max": 149.21125364195103
+        },
+        "nearest_end_position_m": {
+          "n": 3800,
+          "median": 0.01939159663176361,
+          "p95": 0.2383624337612673,
+          "max": 0.2780806636365114
+        },
+        "axis_undirected_deg": {
+          "n": 3800,
+          "median": 2.3034220494218287,
+          "p95": 55.073885226898426,
+          "max": 89.9997075923844
+        },
+        "nearest_station_target_m": {
+          "n": 2904,
+          "median": 0.019779091989033153,
+          "p95": 0.11476150282448967,
+          "max": 1.000533534344194
+        }
+      },
+      "stage-detector-cohort1/far_ge_0.6m": {
+        "nearest_end_position_m": {
+          "n": 508,
+          "median": 0.06471167089724406,
+          "p95": 0.22748675823737843,
+          "max": 0.2780806636365114
+        },
+        "axis_undirected_deg": {
+          "n": 508,
+          "median": 2.0105494699480113,
+          "p95": 50.027894054693974,
+          "max": 83.7712861360383
+        }
+      },
+      "stage-detector-cohort1/mid_0.3_0.6m": {
+        "nearest_end_position_m": {
+          "n": 711,
+          "median": 0.013166269535157435,
+          "p95": 0.22093058569845053,
+          "max": 0.2718915309768995
+        },
+        "axis_undirected_deg": {
+          "n": 711,
+          "median": 3.6164814414054494,
+          "p95": 17.860232038769496,
+          "max": 88.84444107413762
+        }
+      },
+      "stage-detector-cohort1/near_lt_0.3m": {
+        "nearest_end_position_m": {
+          "n": 4402,
+          "median": 0.0013123242450825247,
+          "p95": 0.2077077807731399,
+          "max": 0.2713530087499266
+        },
+        "axis_undirected_deg": {
+          "n": 4402,
+          "median": 0.48387649863444665,
+          "p95": 36.1791457143243,
+          "max": 89.9997075923844
+        }
+      },
+      "stage-detector-cohort1/fine": {
+        "pose_xy_m": {
+          "n": 1831,
+          "median": 0.06501047828985834,
+          "p95": 0.1980054690967351,
+          "max": 0.5074086723742974
+        },
+        "pose_yaw_deg": {
+          "n": 1831,
+          "median": 26.64167021388744,
+          "p95": 89.3426505144044,
+          "max": 110.6847072760374
+        },
+        "nearest_end_position_m": {
+          "n": 1821,
+          "median": 0.0012743360281482568,
+          "p95": 0.010742910579739933,
+          "max": 0.20992296052317172
+        },
+        "axis_undirected_deg": {
+          "n": 1821,
+          "median": 0.22552045283598296,
+          "p95": 1.1890253779550333,
+          "max": 14.443192855071674
+        },
+        "nearest_station_target_m": {
+          "n": 1821,
+          "median": 0.001738971864649683,
+          "p95": 0.038867444559505984,
+          "max": 0.24488430239182407
+        }
+      }
+    },
+    "definitions": {
+      "seen": "current segment detector visible/body_visible; inherited observations excluded",
+      "station": "controller estimated distance <=8cm, not ground-truth arrival",
+      "align": "fine visual_servo; global align phase includes search and is not this stage",
+      "ready": "s3_coarse_fine ready event",
+      "close": "issued servo1 <=1600; actual aperture unmeasured",
+      "held": "archived eval_only stage-held grasp_lift_labels, any sample; not 1s persistence",
+      "errors": "posthoc pose residual; base-relative RGB endpoint evaluated with same-time GT pose; nearest end/axis optimistic matching",
+      "station_target": "base-relative controller station vs nearest GT station, 0.203m v3 radius; not final physical station error"
+    },
+    "tolerances": {
+      "jaw_open_inner_m": 0.061,
+      "jaw_closed_inner_m": 0.029,
+      "beam_cross_section_m": [
+        0.04,
+        0.032
+      ],
+      "band_center_x_m": [
+        -0.27,
+        0.27
+      ],
+      "band_length_m": 0.036,
+      "finger_contact_length_m": 0.0143,
+      "station_radius_m": 0.203,
+      "one_error_at_a_time": {
+        "lateral_open_margin_m": 0.0105,
+        "lateral_closed_symmetric_contact_margin_m": 0.0055,
+        "longitudinal_full_band_overlap_margin_m": 0.01085,
+        "yaw_open_margin_deg": 2.964897847174821,
+        "yaw_closed_margin_deg": 1.552538689060704
+      },
+      "assumptions": [
+        "직사각형 치수와 대칭 정렬; 병진과 회전을 동시에 끝까지 허용할 수 없음",
+        "오차가 집게 가로축으로 향한 최악 경우의 비교. XY 크기를 가로축 오차로 단정하지 않음",
+        "접촉 힘·팔 강성·마찰·동적 끌림을 보장하는 성공 공차가 아님",
+        "±0.27m는 띠 중심 위치이고 폭이 아님",
+        "팔 v3 IK의 정확한 전 작업영역/카메라 가시 영역은 아직 수치 검증 전"
+      ]
+    },
+    "error_vs_tolerance": [
+      {
+        "group": "stage-approach-cohort1/approach_or_search",
+        "metric": "pose_xy_m",
+        "frames_n": 11097,
+        "median": 0.1477257059329023,
+        "p95": 0.4302636933338484,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 14.069114850752598
+      },
+      {
+        "group": "stage-approach-cohort1/approach_or_search",
+        "metric": "nearest_end_position_m",
+        "frames_n": 3458,
+        "median": 0.0530305468614134,
+        "p95": 0.2568740176230924,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 5.050528272515561
+      },
+      {
+        "group": "stage-approach-cohort1/approach_or_search",
+        "metric": "nearest_station_target_m",
+        "frames_n": 2454,
+        "median": 0.042047639075636974,
+        "p95": 0.3279777409660178,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 4.004537054822569
+      },
+      {
+        "group": "stage-approach-cohort1/approach_or_search",
+        "metric": "pose_yaw_deg",
+        "frames_n": 11097,
+        "median": 15.438544709032417,
+        "p95": 74.5040881084299,
+        "comparison_bound": 2.964897847174821,
+        "median_over_bound": 5.207108475505634
+      },
+      {
+        "group": "stage-approach-cohort1/far_ge_0.6m",
+        "metric": "nearest_end_position_m",
+        "frames_n": 705,
+        "median": 0.06948536419775514,
+        "p95": 0.25066066151977306,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 6.617653733119536
+      },
+      {
+        "group": "stage-approach-cohort1/mid_0.3_0.6m",
+        "metric": "nearest_end_position_m",
+        "frames_n": 965,
+        "median": 0.02371516779471033,
+        "p95": 0.2404008036487521,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 2.2585874090200315
+      },
+      {
+        "group": "stage-approach-cohort1/near_lt_0.3m",
+        "metric": "nearest_end_position_m",
+        "frames_n": 2953,
+        "median": 0.01069406935077466,
+        "p95": 0.2540074490818771,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 1.0184827953118722
+      },
+      {
+        "group": "stage-approach-cohort1/fine",
+        "metric": "pose_xy_m",
+        "frames_n": 1175,
+        "median": 0.032644746687535246,
+        "p95": 0.10659529061428492,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 3.1090234940509758
+      },
+      {
+        "group": "stage-approach-cohort1/fine",
+        "metric": "nearest_end_position_m",
+        "frames_n": 1165,
+        "median": 0.001285731253047872,
+        "p95": 0.011128467925271912,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 0.12245059552836875
+      },
+      {
+        "group": "stage-approach-cohort1/fine",
+        "metric": "nearest_station_target_m",
+        "frames_n": 1165,
+        "median": 0.0036493640905121837,
+        "p95": 0.03962801403375311,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 0.34755848481068413
+      },
+      {
+        "group": "stage-approach-cohort1/fine",
+        "metric": "pose_yaw_deg",
+        "frames_n": 1175,
+        "median": 29.63454790558696,
+        "p95": 48.4797588755682,
+        "comparison_bound": 2.964897847174821,
+        "median_over_bound": 9.995132862275508
+      },
+      {
+        "group": "stage-detector-cohort1/approach_or_search",
+        "metric": "pose_xy_m",
+        "frames_n": 11568,
+        "median": 0.12469464210835327,
+        "p95": 0.7499597001392858,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 11.875680200795548
+      },
+      {
+        "group": "stage-detector-cohort1/approach_or_search",
+        "metric": "nearest_end_position_m",
+        "frames_n": 3800,
+        "median": 0.01939159663176361,
+        "p95": 0.2383624337612673,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 1.8468187268346294
+      },
+      {
+        "group": "stage-detector-cohort1/approach_or_search",
+        "metric": "nearest_station_target_m",
+        "frames_n": 2904,
+        "median": 0.019779091989033153,
+        "p95": 0.11476150282448967,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 1.8837230465745858
+      },
+      {
+        "group": "stage-detector-cohort1/approach_or_search",
+        "metric": "pose_yaw_deg",
+        "frames_n": 11568,
+        "median": 14.520293929350103,
+        "p95": 79.68915470129913,
+        "comparison_bound": 2.964897847174821,
+        "median_over_bound": 4.897401083543616
+      },
+      {
+        "group": "stage-detector-cohort1/far_ge_0.6m",
+        "metric": "nearest_end_position_m",
+        "frames_n": 508,
+        "median": 0.06471167089724406,
+        "p95": 0.22748675823737843,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 6.163016275928005
+      },
+      {
+        "group": "stage-detector-cohort1/mid_0.3_0.6m",
+        "metric": "nearest_end_position_m",
+        "frames_n": 711,
+        "median": 0.013166269535157435,
+        "p95": 0.22093058569845053,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 1.2539304319197557
+      },
+      {
+        "group": "stage-detector-cohort1/near_lt_0.3m",
+        "metric": "nearest_end_position_m",
+        "frames_n": 4402,
+        "median": 0.0013123242450825247,
+        "p95": 0.2077077807731399,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 0.12498326143643092
+      },
+      {
+        "group": "stage-detector-cohort1/fine",
+        "metric": "pose_xy_m",
+        "frames_n": 1831,
+        "median": 0.06501047828985834,
+        "p95": 0.1980054690967351,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 6.191474122843651
+      },
+      {
+        "group": "stage-detector-cohort1/fine",
+        "metric": "nearest_end_position_m",
+        "frames_n": 1821,
+        "median": 0.0012743360281482568,
+        "p95": 0.010742910579739933,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 0.12136533601411968
+      },
+      {
+        "group": "stage-detector-cohort1/fine",
+        "metric": "nearest_station_target_m",
+        "frames_n": 1821,
+        "median": 0.001738971864649683,
+        "p95": 0.038867444559505984,
+        "comparison_bound": 0.0105,
+        "median_over_bound": 0.16561636806187455
+      },
+      {
+        "group": "stage-detector-cohort1/fine",
+        "metric": "pose_yaw_deg",
+        "frames_n": 1831,
+        "median": 26.64167021388744,
+        "p95": 89.3426505144044,
+        "comparison_bound": 2.964897847174821,
+        "median_over_bound": 8.985695827353256
+      }
+    ],
+    "limitations": [
+      "stage1 gate host failures/missing local ownmap remain unknown",
+      "frame counts are correlated, not independent success denominators",
+      "stage trajectories can enter fine alignment without a new detection in this segment",
+      "camera visibility geometry and arm reachable-set sweep not completed",
+      "historical54 raw logs recounted; r69 positive-force held remains unknown4/6, closed measured unknown54/54",
+      "prior40-run 10.65cm/11.15deg pose figure remains attributed, not independently recomputed"
+    ],
+    "historical_attributed_only": {
+      "r76_global_align": {
+        "n": 18,
+        "N": 32
+      },
+      "r76_joint_held": {
+        "n": 0,
+        "N": 32
+      },
+      "r80_global_align": {
+        "n": 16,
+        "N": 16
+      },
+      "r80_joint_held": {
+        "n": 0,
+        "N": 16
+      },
+      "pose_40run_80trajectory_median_of_medians": {
+        "xy_m": 0.10650818084245184,
+        "yaw_deg": 11.152439626367844,
+        "independently_recomputed": false
+      },
+      "source": "../2026-10-13-e2e18-grasp1 and ../2026-10-14-e2e18-pose in e2e18 worktree"
+    },
+    "independence_note": "approach and detector main share checkpoints; each 1/12 held is not two independent successful initial states. Gates are short/censored; stage-track gate1 includes HOST_ERROR.",
+    "historical_recount": {
+      "groups": {
+        "azure3/r69": {
+          "run_N": 6,
+          "global_align": {
+            "n": 6,
+            "N": 6
+          },
+          "distinct_seeds": [
+            61006
+          ],
+          "robots": {
+            "r1": {
+              "stages": {
+                "seen": {
+                  "n": 6,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 6,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 6
+                },
+                "held": {
+                  "n": 0,
+                  "N": 2,
+                  "unknown_N": 4
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 2,
+                  "unknown_N": 4
+                }
+              },
+              "first_unreached_observed_stage": {
+                "null": 4,
+                "estimated_stance_8cm": 2
+              }
+            },
+            "r2": {
+              "stages": {
+                "seen": {
+                  "n": 6,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 6,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 6,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 6
+                },
+                "held": {
+                  "n": 0,
+                  "N": 2,
+                  "unknown_N": 4
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 2,
+                  "unknown_N": 4
+                }
+              },
+              "first_unreached_observed_stage": {
+                "null": 4,
+                "fine_alignment_entered": 2
+              }
+            }
+          }
+        },
+        "azure3/r76": {
+          "run_N": 16,
+          "global_align": {
+            "n": 9,
+            "N": 16
+          },
+          "distinct_seeds": [
+            61006,
+            61007,
+            61008,
+            61009
+          ],
+          "robots": {
+            "r1": {
+              "stages": {
+                "seen": {
+                  "n": 13,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 13,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 3,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 1,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 1,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "fine_alignment_entered": 2,
+                "estimated_stance_8cm": 10,
+                "close_command": 1,
+                "seen": 3
+              }
+            },
+            "r2": {
+              "stages": {
+                "seen": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "estimated_stance_8cm": 16
+              }
+            }
+          }
+        },
+        "azure3/r80": {
+          "run_N": 16,
+          "global_align": {
+            "n": 16,
+            "N": 16
+          },
+          "distinct_seeds": [
+            61006,
+            61007,
+            61008,
+            61009
+          ],
+          "robots": {
+            "r1": {
+              "stages": {
+                "seen": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 5,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 2,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 2,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "estimated_stance_8cm": 11,
+                "fine_alignment_entered": 3,
+                "close_command": 2
+              }
+            },
+            "r2": {
+              "stages": {
+                "seen": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 5,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "fine_alignment_entered": 5,
+                "estimated_stance_8cm": 11
+              }
+            }
+          }
+        },
+        "azure4/r76": {
+          "run_N": 16,
+          "global_align": {
+            "n": 9,
+            "N": 16
+          },
+          "distinct_seeds": [
+            61010,
+            61011,
+            61012,
+            61013
+          ],
+          "robots": {
+            "r1": {
+              "stages": {
+                "seen": {
+                  "n": 10,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 10,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "estimated_stance_8cm": 10,
+                "seen": 6
+              }
+            },
+            "r2": {
+              "stages": {
+                "seen": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 3,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 1,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "alignment_ready": 1,
+                "estimated_stance_8cm": 13,
+                "fine_alignment_entered": 2
+              }
+            }
+          }
+        }
+      },
+      "integrity": "historical-recount-integrity.json",
+      "archived_runs_N": 54,
+      "source_files_N": 432,
+      "no_new_physics": true,
+      "r69_contact_geometry_proxy": {
+        "n": 4,
+        "N": 6,
+        "distinct_seeds_N": 1,
+        "definition": "bilateral contacts + COM rise30mm + tilt<=10deg; positive force unavailable, not full held certification"
+      },
+      "limits": [
+        "full jaw closure not logged",
+        "any finger contact is insufficient for held/joint held; those cases remain unknown",
+        "different hosts/cohorts are not pooled",
+        "no new failure-cause or video diagnosis from event counts",
+        "pose/geometry error not recomputed in this recount",
+        "contact_geometry_only_proxy requires bilateral contacts, COM rise30mm and tilt<=10deg but force was not logged, so it is not the positive-force held label or the new3s gate",
+        "same seed across bundles is not independent start-state evidence"
+      ]
+    }
+  },
+  "teacher": {
+    "started_N": 40,
+    "success_n": 27,
+    "target_rate": 0.95,
+    "gate_minimum_N": 40,
+    "gate_required_n": 38,
+    "gate_n": 27,
+    "gate_N": 32,
+    "interrupted_batch": {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-9d9b90b9",
+      "excluded_N": 16,
+      "reason": "coordinator whole-batch stop; raw auto 1/1 not admitted",
+      "audit": "interrupted-pulse-audit.json"
+    },
+    "measurement_recording": "no student RGB; four authored top views 320x240 tiles, 1 Hz; command/evaluation ledgers",
+    "continuous_diagnostic": {
+      "n": 2,
+      "N": 2,
+      "summary": "teacher-continuous-b0cc9d77.json",
+      "success_sim_s": [
+        29.6,
+        20.6
+      ],
+      "wall_per_sim": [
+        2.2763992244,
+        2.4963984222
+      ]
+    },
+    "gate_interrupted_N": 8,
+    "gate_qualified": false,
+    "latest_gate": "teacher-observe-v2-partial.json.zst",
+    "continuation": {
+      "baseline_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+      "n": 36,
+      "N": 40,
+      "planned_N": 40,
+      "interrupted_excluded": 2,
+      "unfinished_indices": [],
+      "current_run": "grasp-teacher-final10-6a77d2da",
+      "teacher_changes": "none; batch driver only",
+      "candidate_archived_sha": "87c4231d",
+      "data_episodes": 0,
+      "source_components": "teacher-continuation-components.json",
+      "analysis": "teacher-continuation-analysis.json",
+      "current_run_status": "complete",
+      "qualified": false
+    },
+    "fixed_078_gate": {
+      "n": 36,
+      "N": 40,
+      "qualified": false,
+      "teacher_stage_funnel": {
+        "r1": {
+          "align": {
+            "n": 40,
+            "N": 40
+          },
+          "ready": {
+            "n": 39,
+            "N": 40
+          },
+          "pick": {
+            "n": 36,
+            "N": 40
+          },
+          "verify": {
+            "n": 36,
+            "N": 40
+          },
+          "done": {
+            "n": 36,
+            "N": 40
+          }
+        },
+        "r2": {
+          "align": {
+            "n": 37,
+            "N": 40
+          },
+          "ready": {
+            "n": 37,
+            "N": 40
+          },
+          "pick": {
+            "n": 36,
+            "N": 40
+          },
+          "verify": {
+            "n": 36,
+            "N": 40
+          },
+          "done": {
+            "n": 36,
+            "N": 40
+          }
+        }
+      },
+      "episode_sim_s": {
+        "N": 40,
+        "min": 9.899999999995222,
+        "median": 21.600000000020533,
+        "p95": 60.00000000020389,
+        "max": 60.00000000020389
+      },
+      "success_sim_s": {
+        "N": 36,
+        "min": 9.899999999995222,
+        "median": 21.3000000000191,
+        "p95": 26.675000000044765,
+        "max": 37.40000000009598
+      },
+      "wall_per_sim": {
+        "N": 40,
+        "min": 2.328802624325422,
+        "median": 2.577870417578654,
+        "p95": 2.9200295832844323,
+        "max": 3.013885189799519
+      },
+      "excluded": [
+        {
+          "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-continue-7176b238/cohort-016/episode-017/raw",
+          "status": "interrupted"
+        },
+        {
+          "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-continue-7176b238/cohort-016/episode-020/raw",
+          "status": "interrupted"
+        }
+      ],
+      "plan_sha256": "f5d07562055edd77e6fedcb8c83a27bcf8d3e7de606d5906d4d1792f09a25f72",
+      "baseline_source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+      "student_rgb_frames": 0,
+      "data_episodes": 0,
+      "student_physical_trials": 0,
+      "failure_classes": {
+        "goal_without_path": {
+          "n": 3,
+          "N": 40,
+          "indices": [
+            17,
+            20,
+            25
+          ]
+        },
+        "alignment_unreachable_ground_ik": {
+          "n": 1,
+          "N": 40,
+          "indices": [
+            33
+          ]
+        }
+      },
+      "raw_and_sha256": "teacher-gate-078-verified.json.zst",
+      "verification": "teacher-gate-078-verification.json"
+    },
+    "stopped_observable_v2": {
+      "object_kind": "long_beam",
+      "n": 27,
+      "N": 32,
+      "planned_N": 40,
+      "started_N": 40,
+      "joint_held_n": 27,
+      "robots": {
+        "r1": {
+          "n": 27,
+          "N": 32
+        },
+        "r2": {
+          "n": 27,
+          "N": 32
+        }
+      },
+      "failure_reasons": {
+        "episode_timeout": 9,
+        "ik_unreachable": 1
+      },
+      "host_errors": 0,
+      "interrupted": 8,
+      "record": "teacher-observe-v2-partial.json.zst",
+      "source_sha": "3a4510487dd8dcee76ae0d2014fa46ca71db9f28",
+      "gate_qualified": false
+    }
+  },
+  "data": {
+    "new_episodes": 0,
+    "admitted_episodes": 0
+  },
+  "training": {
+    "steps": 0,
+    "checkpoint": null
+  },
+  "evaluation": {
+    "replay_n": null,
+    "replay_N": 0,
+    "independent_student_n": null,
+    "independent_student_N": 0,
+    "dagger_episodes": 0
+  },
+  "gpu": {
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "region": "koreacentral",
+    "queried_at_utc": "2026-10-14T02:01:30.221391+00:00",
+    "family_quota_all_zero": true,
+    "linux_consumption_usd_per_hour": {
+      "Standard_NC4as_T4_v3": 0.647,
+      "Standard_NC8as_T4_v3": 0.925,
+      "Standard_NV6ads_A10_v5": 0.613
+    },
+    "resources_changed": false,
+    "price_scope": "retail list, not actual invoice; disk and network excluded"
+  },
+  "vm3": {
+    "release_authorized": "2026-10-14 11:38 KST",
+    "host": "azure3",
+    "size": "Standard_F16als_v6",
+    "shutdown_verification": "pending_after_work"
+  },
+  "raw": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/gpu-quotas-koreacentral.json",
+      "sha256": "1427398941276e2ffcc427b0ae51be544c34a2d0ee7266943ba38ada647b1f03",
+      "bytes": 54772
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/gpu-retail-prices.json",
+      "sha256": "1075b125e789a5ae7e65754bbff24114e9c65fbcd5def685a9a933c3a02a55ad",
+      "bytes": 15287
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/vm-inventory.json",
+      "sha256": "e4b96d306eced071b610b9ac885fbd544ce4d6ae8020382bd480954e070da540",
+      "bytes": 704
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/scene.xml",
+      "sha256": "f2e6787b145967e2104efa46023b0ce28426ac230a7e86741fa7dc06b043cbe3",
+      "bytes": 496311
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/scene.json",
+      "sha256": "780762785ded5c62bf8146df46fd643f638c232ae82fea574854434b5f5dd48d",
+      "bytes": 4588
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/stage-held.jsonl.zst",
+      "sha256": "d61b6326ff2c66d60da810e692772a8fd8f75ff2572b0439d45d7282b3858440",
+      "bytes": 6261,
+      "decoded_sha256": "0752570842e4a5d019cbbd61078a64ffdf3e3b430d4a7d16c81ad9d70c1f7f8e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/saved-audit.json.zst",
+      "sha256": "44c14d970191508453b4a660443c1cd258b989e23d2c126f1deb84dd629a1c7b",
+      "decoded_sha256": "1cdaefb4a444b10e54376d2b97e57fdb19a48079d0e2b31747254e8c585e1092",
+      "bytes": 39522
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/selected-evaluation.tar.gz",
+      "sha256": "d1a688275c8285a7df9c821565e72059f4bb86b18c5aaf89935b8950d0250d16",
+      "bytes": 4373579
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/selected-pose-truth.tar.gz",
+      "sha256": "3a8e9df5ec9bcb6585c36e05a7e1705b5d9d7c886228520baf5453ad8c5b9d69",
+      "bytes": 3046110
+    }
+  ],
+  "verification": {
+    "json_parse": "passed",
+    "raw_sha256": "6/6",
+    "gpu_zero_quota": "28/28; Azure returns strings, converted to integers",
+    "initial_check_note": "First assertion compared string 0 to integer 0 and failed; corrected type conversion and rechecked. No software/physical tests were run for this document commit.",
+    "visual_frames": "12/12 sha256 matched, directly viewed",
+    "contract_tests": "23/23 offline contract, skill, teacher math, dataset and scene-only construction; no World or physics",
+    "act_tests": "2/2 CPU forward/backward, deployed done gradient, save/readback under exclusive lock",
+    "workflow_and_static": "44/44 including 23 grasp tests and catalog read-only planning; missing new catalog sample fixed before pass",
+    "continuous_contract_tests": {
+      "passed": 26,
+      "failed": 0,
+      "scope": "offline; no physical success implication"
+    }
+  },
+  "kaggle": {
+    "private_dataset_upload_authorized": true,
+    "gpu_remaining_hours": 30.0,
+    "refresh_at": "2026-10-17T00:00:00",
+    "uploaded": false,
+    "kernel_submitted": false,
+    "credentials_location": "Mac only"
+  },
+  "implementation": {
+    "student_schema": "ugrp.grasp_act.student.v3",
+    "skills": [
+      "grasp",
+      "wait",
+      "regrasp",
+      "release"
+    ],
+    "object_kinds": [
+      "cyan",
+      "green",
+      "red",
+      "yellow",
+      "can",
+      "tile",
+      "long_beam",
+      "heavy_crate",
+      "tri_frame"
+    ],
+    "roles": [
+      "teal",
+      "blue",
+      "west",
+      "east",
+      "any",
+      "v0",
+      "v1",
+      "v2"
+    ],
+    "robots": [
+      "r1",
+      "r2",
+      "r3"
+    ],
+    "act_forward_backward_checkpoint": "3/3 CPU offline tests",
+    "static_tests": "27/27",
+    "teacher_scene": "s1/s3/s6 v4, 40 randomized starts, qualification incomplete",
+    "workflow": "grasp-act-teacher@2.0.1",
+    "student_worker_and_visual_verifier": "not yet integrated",
+    "kaggle_submission": "not submitted",
+    "action_contract": "ugrp.grasp_act.student.v3; continuous normalized mecanum + fixed command-history motor feedforward"
+  },
+  "teacher_pilot_20261014": {
+    "diagnostic_joint": {
+      "n": 0,
+      "N": 1
+    },
+    "diagnostic_robots": {
+      "n": 0,
+      "N": 2
+    },
+    "formal_cohort_N": 0,
+    "wall_per_sim": 6.090025330787707,
+    "source_sha": "4d0161ae6b31d35f08ca04f86f738f1eea55f251",
+    "evidence": "teacher-pilot-4d0161ae.json",
+    "archive_verified": true,
+    "data_generated_for_training": 0
+  },
+  "physics_profile_check": {
+    "method": "unchanged source hashes vs interrupted v7 run; runtime XML manifest still pending",
+    "modules": {
+      "sim/masterpi_drive_friction_v7.py": "6adcfd8e2fae919df777cf7532ef2e757e3b734dfe980fb38a6b4ccb65c2c2fa",
+      "sim/zone_scenario_scene.py": "18408239cf13487e7f808eb9797337f3106ac1939892fb4ae8ec1f956b16c9e3",
+      "sim/grasp_act_scene.py": "c558fbb29ef49a07ef38ae0dedfcb50499dff3494e207ba50306abebfad7048a",
+      "sim/s2_servo_stiffness.py": "66dc724652d07edbe35ef185b4fa7d5f42cfc6ec535cec9e73353ee22a52bbea"
+    },
+    "profile": "native v7 / cargo_noslip_v1 / real_v1 / roller mesh / idle off / weld off"
+  },
+  "visibility_078": {
+    "record": "visibility-078-summary.json",
+    "record_sha256": "94c079ce8237653e6e70b4848bf8e8ce9ce5f40a0a4db78433a6a9c9e3232ffe",
+    "source_episodes": 40,
+    "student_samples": 19888,
+    "visible": 8367,
+    "approach": {
+      "n": 4508,
+      "N": 8819
+    },
+    "alignment": {
+      "n": 0,
+      "N": 1590
+    },
+    "max_blind_command_s": 57.6,
+    "review": {
+      "path": "visibility-078-own-review.jpg",
+      "sha256": "baeef70f1d4f3324d4a701dc48765e0351bbdf67d37b6e3762051ac8cda6f154",
+      "episode": 3,
+      "seconds": [
+        0,
+        5,
+        10,
+        20,
+        30,
+        37
+      ],
+      "own_robot_views": 12,
+      "saved_top_views": 6
+    },
+    "teacher_candidate": "observable_v2; not physically run",
+    "student_contract": "v4 scaffolding; 64 s rejected; window pending NEW teacher diagnostic",
+    "new_gate": "not started; v3 binding approved 14:25"
+  },
+  "current_offline_checks": {
+    "passed": 47,
+    "physics_scope": "visible_only not run yet",
+    "data_episodes": 0
+  },
+  "visible_only_diagnostic": {
+    "source_sha": "9a08dd081cd5d30ab32549cec713657fa5e655fc",
+    "n": 0,
+    "N": 1,
+    "sim_s": 45.0,
+    "wall_per_sim": 2.4460546076817034,
+    "reason": "assigned blue band occluded by waiting teal peer; unnecessary centering loses observed clear posture",
+    "visible": {
+      "r1": [
+        13,
+        450
+      ],
+      "r2": [
+        440,
+        450
+      ]
+    },
+    "invisible_new_measurements": [
+      0,
+      1968
+    ],
+    "invalid_wheels": [
+      0,
+      3600
+    ],
+    "review_times_s": [
+      0,
+      9,
+      18,
+      27,
+      36,
+      44
+    ],
+    "raw": "azure3:/home/ugrp/ugrp-sim/runs/grasp-visible-diag-9a08dd08/raw",
+    "evidence": "visible-diag-9a08dd08.json",
+    "new_gate_started": false
+  },
+  "strict_retrospective_rescore": {
+    "demonstrated_n": 0,
+    "N": 72,
+    "old_success_n": 63,
+    "old_success_max_hold_range_s": [
+      2.2,
+      2.3
+    ],
+    "meaning": "not demonstrated because recording ended; do not relabel old success as failure",
+    "evidence": "strict-rescore-078-3a.json"
+  },
+  "visible_only_c1_partial": {
+    "n": 12,
+    "N": 16,
+    "planned_N": 40,
+    "interrupted": 16,
+    "not_started": 8,
+    "HOST_ERROR": 0,
+    "qualified": false,
+    "source_sha": "c1f02ac0a81f50d0235823a845c31f1d4116c9e9",
+    "evidence": "visible-gate-c1f02ac0-partial.json",
+    "gate": "teacher-gate-c1f02ac0.json.zst",
+    "video_review": {
+      "indices": [
+        1,
+        3,
+        9,
+        11
+      ],
+      "sim_s": [
+        0,
+        12,
+        24,
+        36,
+        48,
+        59
+      ]
+    },
+    "failure_classification": {
+      "observed_goal_occupied": 2,
+      "peer_approach_interaction_cause_under_test": 1,
+      "inconsistent_ready_predicate": 1
+    },
+    "ready_counterexample_mm": {
+      "approach_error": 27.63,
+      "wait_error": 33.57,
+      "tolerance": 30.0,
+      "revocations": 81
+    },
+    "student_data_episodes": 0
+  },
+  "visible_only_abcc_replay": {
+    "n": 0,
+    "N": 1,
+    "source_sha": "abcc8929453ec6c8171ce1a80589adc326b1d657",
+    "sim_s": 60.0,
+    "wall_per_sim": 2.5410872032080283,
+    "seed": 73009,
+    "evidence": "replay09-abcc-metrics.json",
+    "review_sim_s": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      59
+    ],
+    "cause": "new segment check rejected outward retreat from 148mm visible-beam range inside 150mm inflated margin; paired robot remained ready",
+    "next": "reuse zone no-closer escape for observed disc margins; frozen observation checks outward wheel command"
+  },
+  "gcp_transition": {
+    "directive": "PR484 coordinator 17:00 KST; no more Azure VM3 submissions",
+    "rules_pr": 492,
+    "simulation_and_training_default": "GCP",
+    "host_ready": false,
+    "gcp_physical_started_N": 0,
+    "next": "known 73009/73011 replay -> measured concurrency16 speed baseline -> fresh40",
+    "azure_submission_error": {
+      "path": "admission-d032-host-error.json",
+      "sha256": "1b7b214fab585aef0a6547df04efd1afe715d2d52e417f62082a8954c9d89547"
+    },
+    "offline_host_admission_tests": {
+      "passed": 10,
+      "failed": 0
+    },
+    "teacher_controller_baseline_sha": "d0329eee1f7ce928c00a563edf8499b399864d69",
+    "teacher_physics_changed": false
+  },
+  "gcp_ep0_regression": {
+    "path": "gcp-ep0-regression.json",
+    "sha256": "4377bf6de712bb5d93eb8a3758636387c7781a1a5a290b378ee6cc06453c30c5",
+    "physical_fix_verified": false,
+    "old_n": 0,
+    "old_N": 1
+  }
+}

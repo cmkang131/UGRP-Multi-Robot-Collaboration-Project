@@ -666,7 +666,10 @@
       "description": "DRAFT memory_v3; coordinator registration required, no cohort launched",
       "runner": "scripts.run_m1_owncam_memory_v3",
       "adapter": "managed_legacy_cli",
-      "required_inputs": ["--prereg", "--condition"],
+      "required_inputs": [
+        "--prereg",
+        "--condition"
+      ],
       "output_kind": "directory"
     },
     {
@@ -768,6 +771,22 @@
         "--policy"
       ],
       "output_kind": "directory"
+    },
+    {
+      "id": "grasp-act-teacher",
+      "version": "2.3.0",
+      "purpose": "시연 전용 정답 교사: 현재 v3 장면의 근거리 봉 파지, weld OFF",
+      "entry": "scripts/run_grasp_act_teacher.py",
+      "runner": "scripts.run_grasp_act_teacher",
+      "docs": "experiments/2026-10-14-e2e18-grasp-rootcause/README.md",
+      "requires": "VM3 explicit release, committed source, storage budget and 16-way speed gate; no Mac physics",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--plan"
+      ]
     }
   ]
 }
