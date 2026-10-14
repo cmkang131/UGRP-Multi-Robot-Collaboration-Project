@@ -20,3 +20,6 @@
 확장 옵션은 파지 조건에 못 미치는 몸체 관측의 기억 갱신, 경로 회전·접근 시 기억 방위 팬 추종, 잃은 경우 기억 지점 재방문 및 순서 있는 주변 시야 훑기를 함께 포함한다. 탐지·기하·팬 제어·커버리지는 코드가 수행하고 LLM은 제안된 스킬만 고른다. 신선한 파지 관측의 승인 경로는 변경하지 않는다.
 
 - 실행 접속: Python socketserver 공식 문서 https://docs.python.org/3.11/library/socketserver.html — request_queue_size 기본 대기열 5와 subclass 확장. 게이트 동시 접속 3건 ConnectionReset은 대기열 포화 추정(직접 socket 계측 미확인); 64로 확대하고 유료 호출 동시 수 4는 유지. 종료 응답은 실행하지 않고 영수증만 저장.
+
+- v440 수정 근거: SemExp 공개 main.py는 물체 범주 관측의 존재로 object goal을 고르고, 파지 가능 판정을 물체 발견 조건으로 쓰지 않는다. https://raw.githubusercontent.com/devendrachaplot/Object-Goal-Navigation/master/main.py . 우리 코드는 유효한 몸체/부분 띠 기억을 마지막 2초 안에 갱신했으면 분실 스킬을 취소하되 파지 승인값은 바꾸지 않는다.
+- Nav2 RecoveryNode는 주 동작 성공 시 복구를 중단하고 재시도 상태를 리셋하며, 최대 복구 횟수 후 FAILURE를 돌려준다. https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_behavior_tree/plugins/control/recovery_node.cpp . 같은 원칙으로 재관측 시 탐색 실패 목록을 초기화하고, 실제 모든 대안 소진은 HOST_ERROR 대신 CONTROLLER_STOP으로 기록한다.

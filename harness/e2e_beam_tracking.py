@@ -160,6 +160,10 @@ def step(tr,rid,now,approach):
     r=tr.robots[rid];state=tr.beam_search[rid];m=memory(r,now);client=tr.beam_clients[rid]
     fresh=r.beam is not None and 0<=now-r.beam['rgb']['t_sim']<=.45
     response=client.poll()
+    observed_recently=bool(m and now-m['seen']<=PARAMS['lost_after_s'])
+    if response is not None and (fresh or observed_recently):
+        tr.event(now,'beam_tracking_model_receipt',robot_id=rid,response=response,executed=False,reason='object_observed')
+        response=None
     if response is not None:
         tr.event(now,'beam_tracking_model_receipt',robot_id=rid,response=response)
         if response.get('error')=='END_MODEL_BUDGET_EXHAUSTED':raise RuntimeError('BEAM_MODEL_BUDGET_EXHAUSTED')
@@ -172,9 +176,11 @@ def step(tr,rid,now,approach):
         state.update(choice=choice,selected=choices[choice],phase='return' if choice=='return_memory' else 'turn' if choice=='turn_memory' else choice,
                      started=now,phase_started=now,start_pose=list(r.goal.explorer.local_pose),start_visible=bool((r.beam_observation or {}).get('result',{}).get('visible')),view=-1,coverage=[])
         tr.event(now,'beam_tracking_skill',robot_id=rid,choice=choice,source='judgment_model' if valid else 'fixed_fallback',message=reply.get('message','') if valid else '')
-    if fresh:
+    if fresh or observed_recently:
+        if state.get('phase'):finish(tr,rid,now,state,'fresh_grasp_observation' if fresh else 'object_observed_without_grasp_permission')
+        if state.get('episode_active'):
+            state['blocked'].clear();state['failures'].clear()
         state['episode_active']=False
-        if state.get('phase'):finish(tr,rid,now,state,'fresh_grasp_observation')
         return None
     if 'station' in approach and now-approach.get('last_seen',-math.inf)<=PARAMS['lost_after_s']:return None
     from harness.e2e_pregrasp_acquire import busy
@@ -182,7 +188,9 @@ def step(tr,rid,now,approach):
     if not state.get('phase') and client.future is None:
         offered=candidates(tr,rid,now,state)
         if not offered:
-            raise RuntimeError('BEAM_ALL_SKILLS_EXHAUSTED_AFTER_NO_PROGRESS')
+            tr.failure='BEAM_SEARCH_EXHAUSTED_AFTER_NO_PROGRESS'
+            tr.event(now,'beam_tracking_search_exhausted',robot_id=rid,blocked=sorted(state['blocked']))
+            return False,[dict(kind='hold')]
         context=dict(schema='ugrp.beam_tracking_skill.v1',robot_id=rid,condition='no_comm',
             memory=copy.deepcopy(m),own_pose=list(r.goal.explorer.local_pose),candidates=offered,
             delivered_text=[],blocked=sorted(state['blocked']))

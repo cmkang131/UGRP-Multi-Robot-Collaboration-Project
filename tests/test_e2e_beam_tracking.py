@@ -76,7 +76,7 @@ def test_stale_model_reply_never_bypasses_fresh_grasp_gate():
     import pytest
     from unittest.mock import patch
     with patch.object(m,'path_to',return_value=(None,None,[],None)):
-        fine,actions=m.step(tr,'r1',3.,{})
+        fine,actions=m.step(tr,'r1',3.1,{})
     assert not fine and r.beam is None and actions==[{'kind':'hold'}]
     assert state['phase']=='turn'
 
@@ -148,3 +148,29 @@ def test_relay_accepts_simultaneous_robot_clients_without_paid_calls():
     try:
         with ThreadPoolExecutor(24) as pool:assert list(pool.map(call,range(24)))==[b'ok']*24
     finally:server.shutdown();server.server_close();thread.join(timeout=5)
+
+
+def test_body_detection_stops_reacquisition_without_approving_grasp():
+    r=robot();m.observe(r,1.)
+    class Client:
+        future=None
+        def poll(self):return {'attempt':1,'decision':{'choice':'scan','message':'','reason':'old'}}
+        def start(self,*a):raise AssertionError('visible object must not start another search')
+    events=[];state=dict(episode_active=True,phase='scan',choice='scan',coverage=[],blocked={'scan'},failures={'scan':3},start_visible=False)
+    tr=NS(beam_tracking='view_return_v1',robots={'r1':r},beam_search={'r1':state},beam_clients={'r1':Client()},event=lambda t,event,**kw:events.append(dict(t=t,event=event,**kw)))
+    assert m.step(tr,'r1',1.2,{}) is None
+    assert r.beam is None and r.grasp_track is None and not state['episode_active'] and not state['blocked']
+    assert events[0]['executed'] is False
+    assert not any(e['event']=='beam_tracking_skill' for e in events)
+
+
+def test_exhausted_search_is_controller_failure_not_host_exception(monkeypatch):
+    r=robot();r.beam_observation=None
+    class Client:
+        future=None
+        def poll(self):return None
+    state=dict(blocked={'return_memory','turn_memory','scan','explore','wait'},failures={},coverage=[])
+    tr=NS(beam_tracking='view_return_v1',robots={'r1':r},beam_search={'r1':state},beam_clients={'r1':Client()},event=lambda *a,**kw:None)
+    monkeypatch.setattr(m,'candidates',lambda *args:[])
+    assert m.step(tr,'r1',5.,{})==(False,[{'kind':'hold'}])
+    assert tr.failure=='BEAM_SEARCH_EXHAUSTED_AFTER_NO_PROGRESS'

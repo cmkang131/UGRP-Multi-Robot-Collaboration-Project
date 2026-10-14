@@ -1,7 +1,8 @@
 {
-  "status": "relay_receipt_fix_tested_pending",
+  "status": "cohort1_finished_v441_prepared",
   "pr": 483,
   "options": [
+    "v426",
     "v440"
   ],
   "diagnosis": {
@@ -20,18 +21,31 @@
       "tests/test_e2e_stage_checkpoint.py",
       "tests/test_e2e_grasp_once.py"
     ],
-    "passed": 45
+    "passed": 47
   },
-  "new_stage_runs": 0,
+  "new_stage_runs": 12,
   "vm_started": true,
   "unverified": [
-    "physical improvement",
-    "new checkpoint staging",
-    "actual Gemma skill receipts",
-    "pan tracking ratio",
+    "main physical results",
+    "representative videos for main cohort",
+    "final ARM archive and VM deallocation",
     "green chassis false positives and colored-end occupancy bypass remain"
   ],
-  "gate_runs": 24,
+  "gate_runs": 36,
   "gate_host_errors": 9,
-  "main_plan_runs": 12
+  "main_plan_runs": 12,
+  "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+  "communication_condition": "no_comm",
+  "passed_gate": "stage-track-gate3-summary.json",
+  "cohort1": {
+    "N": 12,
+    "baseline_both_held": "1/6",
+    "candidate_both_held": "0/6",
+    "candidate_model_scope": "transport failed from first request; fallback only",
+    "candidate_host_errors": 5,
+    "candidate_supervisor_stops": 1,
+    "arm_verified": "12/12",
+    "duplicate_confirmation_pair_excluded": true
+  },
+  "next_candidate": "v441"
 }

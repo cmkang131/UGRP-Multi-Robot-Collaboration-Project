@@ -1,0 +1,809 @@
+{
+  "checked_unix": 1791943687.915288,
+  "runs": [
+    {
+      "name": "stage-track-cohort1-00-v426",
+      "exit": 0,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-00-v426/raw",
+      "phase": "grasp_lift",
+      "result": {
+        "status": "BOTH_HELD",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 293.1,
+        "wall_s": 1057.366991197,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": true,
+        "both_held_s": 293.1,
+        "held_gap_s": 0.0,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 5,
+          "r2": 13
+        },
+        "condition": "v426",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-00-v426",
+        "files": 2264,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-00-v426",
+          "files": 2264,
+          "hash_matches": 2264,
+          "inventory_sha256": "d098d4ad0b525ca3c76f5eae01c58ca9b0836c72e8d2e08af1a1f6c3528c2e00",
+          "reused": false,
+          "receiver_seconds": 6.618
+        },
+        "inventory_sha256": "dd2ac34d811cc62bfa481dfcc07746a053ab20adff13fdba9598cffa6de531b5",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-00-v426.json",
+        "proof_sha256": "645d0a770bb27c3bb1e001fa98cbc0a90089f74e1f0cc8e82f251a8f2fc61e50"
+      },
+      "sha256": {
+        "result.json": "d2bbb99b804d9685acaf1ac0cc1507fa8b4490ae1ed149fc8e88fdb3d8ba86af",
+        "progress.json": "56e57815b8b6f7e745af165f93fd779a762b3d32531a3d92c60b37cc780dbed0",
+        "transport-trace.json": "9d2f4efe531d4507a8d6fa158cd25bc86562b1b34be627996f40a2c01027ec5a"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-01-v440",
+      "exit": 1,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-01-v440/raw",
+      "phase": "align",
+      "result": {
+        "status": "HOST_ERROR",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 202.4,
+        "wall_s": 869.9825903039998,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 35,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 10,
+          "r2": 8
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 4
+        },
+        "condition": "v440",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": "BEAM_ALL_SKILLS_EXHAUSTED_AFTER_NO_PROGRESS",
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-01-v440",
+        "files": 1586,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-01-v440",
+          "files": 1586,
+          "hash_matches": 1586,
+          "inventory_sha256": "e5c572adcec54fc37600dbca04091634b697c431ed839f9279721999609b7afc",
+          "reused": false,
+          "receiver_seconds": 4.727
+        },
+        "inventory_sha256": "4b426db167b0ce69722569fa3b402712e6ffe1a4358958aac1ccd25ebdedbcdb",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-01-v440.json",
+        "proof_sha256": "84f3b22034e6687a602394a9d8f1466c661ba18a092e5edef9b9bf277ff6a21e"
+      },
+      "sha256": {
+        "result.json": "7c16d2e5718be8e2c0bc9b2056d754463fd14cdb7daff0cf0a807d60221263e1",
+        "progress.json": "8f00dd10a039bf35fe31c48a7baedcb3f6076b2216d10bb879e3517f6d6a8c71",
+        "transport-trace.json": "c391d0992ebb9e7a2f064e2658ab829fc3c34b8a7f820979ba16bca3184fc561"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-02-v426",
+      "exit": 0,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-02-v426/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 1151.5093498240003,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 2
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 17
+        },
+        "condition": "v426",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-02-v426",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-02-v426",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "ac3db7088b88ac00d8a57ab1f2895fdf3dee887527a942ae210823bbb0fb0b98",
+          "reused": false,
+          "receiver_seconds": 7.136
+        },
+        "inventory_sha256": "71c4464a9fde81c6bb5c0e768da73369f0d237c3f50440f76fe9347b92f3ed07",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-02-v426.json",
+        "proof_sha256": "dd8d1a6a712217018b1d47f8a5a11d37bae5d53016bfcc0866b51f419b20a69d"
+      },
+      "sha256": {
+        "result.json": "1b80670b3190882914fccd28d0a5c2e41dd6d1b4f43c2fe5e8e1e0773b514a8e",
+        "progress.json": "c33ae09bb64208fe16e28c36ac22b773778d733dbb6ec10319abcf45ab8c3220",
+        "transport-trace.json": "dcb68c9b6034f6abe29db0453cc763426a72974d8f0fa666b76646a401c3c3b3"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-03-v440",
+      "exit": 1,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-03-v440/raw",
+      "phase": "align",
+      "result": {
+        "status": "HOST_ERROR",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 227.6,
+        "wall_s": 933.1579205410003,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 34,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 7,
+          "r2": 7
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v440",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": "BEAM_ALL_SKILLS_EXHAUSTED_AFTER_NO_PROGRESS",
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-03-v440",
+        "files": 1775,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-03-v440",
+          "files": 1775,
+          "hash_matches": 1775,
+          "inventory_sha256": "93d15b20ef4fdb882348e708b7f7287d2fd571111d50fceac7c99d796eb67bc8",
+          "reused": false,
+          "receiver_seconds": 5.22
+        },
+        "inventory_sha256": "2d40d480e131efbc9ee6f203ed6c96755a17b179e5b6619f945548320cfe8178",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-03-v440.json",
+        "proof_sha256": "891dc7448a3c974471723aed862abe7d694918bad31c244bd24130691ef2aee0"
+      },
+      "sha256": {
+        "result.json": "3a0961fa462e9ccf63555ed25be2d4e05eb8d7b85c46b1d2173fa67d63b028f3",
+        "progress.json": "6d727c6e12e0d9e2bd63c3f707440efab8e7125976c55f3d2aacb64a565f1c24",
+        "transport-trace.json": "081db6fe50c3b074ad2e1102dc0a9cb8d951e27e13f7bfeb0c9649ac22d867b7"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-04-v426",
+      "exit": 0,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-04-v426/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 1196.9075177599998,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 13,
+          "r2": 0
+        },
+        "condition": "v426",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-04-v426",
+        "files": 2314,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-04-v426",
+          "files": 2314,
+          "hash_matches": 2314,
+          "inventory_sha256": "46f094e2ac755e45d9c843e7bf0cf0bc21b3a410932ebca7a0f9d9307c465050",
+          "reused": false,
+          "receiver_seconds": 6.884
+        },
+        "inventory_sha256": "cdfa02d6915d57762a0d2f6577d8ad2986d8748c33af2286cedf150f1f856f0f",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-04-v426.json",
+        "proof_sha256": "307a99bec7f323d7a99172cd51fbc7959e45bd6df748aec31de68e34a01c2ab8"
+      },
+      "sha256": {
+        "result.json": "e41a66bf64e1cfbd480365c86018b2c7d80296a913a141248923e187a03c4018",
+        "progress.json": "1f08a3fd4867a5bde8e646872457fdb7483ace63a5e378e29ee500dda92206c0",
+        "transport-trace.json": "f66b5d8e5ff7fedfe21c20753221fb5c5ef2732b9fd69187b7ebc294a1dfc93d"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-05-v440",
+      "exit": 1,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-05-v440/raw",
+      "phase": "align",
+      "result": {
+        "status": "HOST_ERROR",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 157.2,
+        "wall_s": 774.7518706479998,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 32,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 11,
+          "r2": 12
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v440",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": "BEAM_ALL_SKILLS_EXHAUSTED_AFTER_NO_PROGRESS",
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-05-v440",
+        "files": 1247,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-05-v440",
+          "files": 1247,
+          "hash_matches": 1247,
+          "inventory_sha256": "6016026867cfbad17466061453acb64d4cd5b4ec6a92fe4194fd38ff6637103c",
+          "reused": false,
+          "receiver_seconds": 3.888
+        },
+        "inventory_sha256": "4f0a484f013da5c240ec7b65de2508437f57e3fae0d901f287a6929170e60084",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-05-v440.json",
+        "proof_sha256": "806e7d165eb7009e7e1056c85eb32e40f57e8de1ba3b4669ccf06eb74464dafa"
+      },
+      "sha256": {
+        "result.json": "1803a7dd838c15da2778506a88cc9edcb3748363b34cddac0e1be078d2efa5d9",
+        "progress.json": "cf504a3f84866dc7fb23f98067c68199baf91348ecded974f67532efc612f142",
+        "transport-trace.json": "c8ce5f0b95909e440606d4b507f8ca969158770e23c7206df562ba419608d835"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-06-v426",
+      "exit": 0,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-06-v426/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 1080.005850559,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 3,
+          "r2": 13
+        },
+        "condition": "v426",
+        "source_run": "e2e18-v375-s61006-r80",
+        "checkpoint_sha256": "11d7e9b4df0a10fe6268521f6c1cf20e907da191e8d29872613418cdfdf840eb",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "644a584e0c4c470314bdcdb32f6506a28816cf03ffcd8c091251c3f63b517c4c",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-06-v426",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-06-v426",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "42ad9e23a55ccb739ca116cc37ecd72405bacecda1dbd7337ae49091b0120b27",
+          "reused": false,
+          "receiver_seconds": 6.856
+        },
+        "inventory_sha256": "10b7d4dd217218df37beade4e3093e3cfeb69fff4d40f6a86f52d2ccd5a3c550",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-06-v426.json",
+        "proof_sha256": "62f9c660069c0fef0a44b3fd98516f86bef951591f7d29f0b8b517d61bff6dbe"
+      },
+      "sha256": {
+        "result.json": "8e9f66cee269e2bad762d1da33c11503020d70c53769638742ebcc6b1868061f",
+        "progress.json": "bf75e774a1911061e167679647aacac48fc8bb51265516fc72dcf4b1dbb0c118",
+        "transport-trace.json": "c73a757de56fa7efc9606e3e86c89e298bcbdcecff3acd5e6137cc6a7e41c1a4"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-07-v440",
+      "exit": 1,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-07-v440/raw",
+      "phase": "align",
+      "result": {
+        "status": "HOST_ERROR",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 126.0,
+        "wall_s": 721.2922916819998,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 17,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 10,
+          "r2": 2
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 6
+        },
+        "condition": "v440",
+        "source_run": "e2e18-v375-s61006-r80",
+        "checkpoint_sha256": "11d7e9b4df0a10fe6268521f6c1cf20e907da191e8d29872613418cdfdf840eb",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "644a584e0c4c470314bdcdb32f6506a28816cf03ffcd8c091251c3f63b517c4c",
+        "error": "BEAM_ALL_SKILLS_EXHAUSTED_AFTER_NO_PROGRESS",
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-07-v440",
+        "files": 1013,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-07-v440",
+          "files": 1013,
+          "hash_matches": 1013,
+          "inventory_sha256": "d2d53c778e3902086904f2df66627d2cce98aba5f13a7970a57566423b1b3f82",
+          "reused": false,
+          "receiver_seconds": 3.087
+        },
+        "inventory_sha256": "518b02ed8857732bed221d1dd25acf3cb454ff1a8a4fc0c17dc6ea763d1f3c85",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-07-v440.json",
+        "proof_sha256": "79be0e04215e25d37a4d0fea60869123e498f9dc68667833c8960631bb1810ce"
+      },
+      "sha256": {
+        "result.json": "b2fdade38f6b0143f4507e2a64a4e5a9cbedec24e74d837e25a18bf76a5d0ce7",
+        "progress.json": "9f3b0f8260428f22cd9c8dc071c047736d315989ca2622ecab55fd352502e163",
+        "transport-trace.json": "ef7171e44c99d9b788323345ea49b4d20e09ea880b943d18d601a46c46944cf0"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-08-v426",
+      "exit": 0,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-08-v426/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 1247.0887281970001,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 7,
+          "r2": 11
+        },
+        "condition": "v426",
+        "source_run": "e2e18-v375-s61007-r80",
+        "checkpoint_sha256": "06199d44f947602db2a96d75ad2330adf7d1c0c9948ed4aa6d2ab135c61eb8f2",
+        "own_map_sha256": {
+          "r1": "c5755a878a6126bd7a5e1bb12feb298de9df7b5817fafd8253c783580c8f9842",
+          "r2": "6301c8e5b960f2a0de32add8513425ac66207474a0811127ade4f0fc1ad1d80f",
+          "r3": "347d8f77cb8f93b40d722d8d716d984159360c925fa46086f7c6d61ce2fab7e8"
+        },
+        "initial_physics_sha256": "2d10d7e68d1e7f8043207d372c7331e77a718ca84ed9db7024b63c33327972be",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-08-v426",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-08-v426",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "dae0b92274baa0660e80e7fc3666eade81c9c7cdb37186fbd9dd28ae1b69d937",
+          "reused": false,
+          "receiver_seconds": 7.463
+        },
+        "inventory_sha256": "c2ebf0754395b81437496ad6617643d180b169fb5c23dbe6bc90ec8373b6a477",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-08-v426.json",
+        "proof_sha256": "cce277a609feb0bf4f22d9889b9da768b3776c3688fd3e2d0b258b5a881e7572"
+      },
+      "sha256": {
+        "result.json": "38c9ac540670a7a564c8da14632e3efa4a72fcb9034a180c0e4875c63bd67018",
+        "progress.json": "bcbb0de13ee97535663c327df23202b274aa6da9672633d93f8d49dd5234c689",
+        "transport-trace.json": "cc1e0f413e34cfb89269915e0cdd63000a5e297c3784f1dcef3e441bebf31f01"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-09-v440",
+      "exit": 1,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-09-v440/raw",
+      "phase": "align",
+      "result": {
+        "status": "HOST_ERROR",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 183.2,
+        "wall_s": 852.7112839870001,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 37,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 11,
+          "r2": 21
+        },
+        "scan_cycles": {
+          "r1": 2,
+          "r2": 2
+        },
+        "condition": "v440",
+        "source_run": "e2e18-v375-s61007-r80",
+        "checkpoint_sha256": "06199d44f947602db2a96d75ad2330adf7d1c0c9948ed4aa6d2ab135c61eb8f2",
+        "own_map_sha256": {
+          "r1": "c5755a878a6126bd7a5e1bb12feb298de9df7b5817fafd8253c783580c8f9842",
+          "r2": "6301c8e5b960f2a0de32add8513425ac66207474a0811127ade4f0fc1ad1d80f",
+          "r3": "347d8f77cb8f93b40d722d8d716d984159360c925fa46086f7c6d61ce2fab7e8"
+        },
+        "initial_physics_sha256": "2d10d7e68d1e7f8043207d372c7331e77a718ca84ed9db7024b63c33327972be",
+        "error": "BEAM_ALL_SKILLS_EXHAUSTED_AFTER_NO_PROGRESS",
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-09-v440",
+        "files": 1442,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-09-v440",
+          "files": 1442,
+          "hash_matches": 1442,
+          "inventory_sha256": "01f824792cb6762d9bbe6db27d0e8311792da31bf5c2169322f5dd4ca1617955",
+          "reused": false,
+          "receiver_seconds": 5.055
+        },
+        "inventory_sha256": "326deac4e3c394be376fb56e43b57463149557e92390863b2d279ca5d46a7954",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-09-v440.json",
+        "proof_sha256": "21bd67c29574ca4dd3bd60cbb70c183821591150da6f5fc86ec2c68483493c37"
+      },
+      "sha256": {
+        "result.json": "253e077696c09adb30bb31e3d8744ccaddf41590c0f01b14715394c8c5b71480",
+        "progress.json": "e5706b68844cfec8b1b2b4afb0e55dda960874e4c936a858a24c8eb2f74dbf82",
+        "transport-trace.json": "4a85814e7a25f24aa4d03f3b7396b56872cc801e59ca2063a3b9bd3eeffc59b6"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-10-v426",
+      "exit": 0,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-10-v426/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 1119.973518948,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 3
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 21
+        },
+        "condition": "v426",
+        "source_run": "e2e18-v375-s61009-r80",
+        "checkpoint_sha256": "4333b2fe0577c936b43cc71e2b536c11a5a21bd9fadf6217ba50f6f05038d7a0",
+        "own_map_sha256": {
+          "r1": "bed93c432ec32ce6aa152f8de563a5d4224a9a4ef09e44167684ba5afd90ad59",
+          "r2": "d8bdc2aa68d99460ce581e8723e1ed0b35ca908231c3b1ccb49cbb439f302e8e",
+          "r3": "2d2021ad76b8744d844be54e1bac784f123244290c363319bbb2ed157103112a"
+        },
+        "initial_physics_sha256": "d8f1dbac1b34cea1c73fa541c31d60583d3168e3c4ca6e06408a0341c712447e",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-10-v426",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-10-v426",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "5cbef4828a12278fa354e7af0a293fbc74c85da9a3713932b1a60b2d600ccf54",
+          "reused": false,
+          "receiver_seconds": 8.21
+        },
+        "inventory_sha256": "26a8db3f2298d118fe4914793833ea9845bc1fcec7900d248220d68c18d0a923",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-10-v426.json",
+        "proof_sha256": "0b7b713844706f93dd29fef386e041ba4a2327301d975d4dd5ece9a182af7a6f"
+      },
+      "sha256": {
+        "result.json": "588356808d321a56199e7454b09fca7075fbf057e333908213a271f499c56805",
+        "progress.json": "ac82575d0f50e53045ff658d12b3d86c0c34c656ddf31e7b4fd3f35c230f1ce3",
+        "transport-trace.json": "c396ddf4bdba37ffdce88dcb3550e7dcc522652c9e6ecac5d8647f3e91a675ca"
+      }
+    },
+    {
+      "name": "stage-track-cohort1-11-v440",
+      "exit": 130,
+      "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-cohort1-11-v440/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 249.6,
+        "wall_s": 1002.2344445419999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 34,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 23,
+          "r2": 5
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 8
+        },
+        "condition": "v440",
+        "source_run": "e2e18-v375-s61009-r80",
+        "checkpoint_sha256": "4333b2fe0577c936b43cc71e2b536c11a5a21bd9fadf6217ba50f6f05038d7a0",
+        "own_map_sha256": {
+          "r1": "bed93c432ec32ce6aa152f8de563a5d4224a9a4ef09e44167684ba5afd90ad59",
+          "r2": "d8bdc2aa68d99460ce581e8723e1ed0b35ca908231c3b1ccb49cbb439f302e8e",
+          "r3": "2d2021ad76b8744d844be54e1bac784f123244290c363319bbb2ed157103112a"
+        },
+        "initial_physics_sha256": "d8f1dbac1b34cea1c73fa541c31d60583d3168e3c4ca6e06408a0341c712447e",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-cohort1-11-v440",
+        "files": 1942,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-cohort1-11-v440",
+          "files": 1942,
+          "hash_matches": 1942,
+          "inventory_sha256": "dcc4cce8430b886421301aa0a77aaebfef7f611c70fc6e91e28f384bdbc650bb",
+          "reused": false,
+          "receiver_seconds": 6.336
+        },
+        "inventory_sha256": "fb1483b85e701086709ef1f743c59f1ab0da26790677cfd467ee5b364857a1de",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-cohort1-11-v440.json",
+        "proof_sha256": "fb921349014665db8e898d5688c8b6d9392823c34be0eb6ff4fba1e1a199d7de"
+      },
+      "sha256": {
+        "result.json": "1bf3814b5ee2d8ce1be2246da5e6ba5f8da4978c97dad2ca1481a98d83fc71c4",
+        "progress.json": "b7d0cde061e00a625d846a3945e86dc22324eba5931fd93ac80cff183bc2fb60",
+        "transport-trace.json": "18cde23ed3fef4bded23535ef894750edac0afaf20dbb088811bf7d2c8d9cd7e"
+      }
+    }
+  ]
+}
