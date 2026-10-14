@@ -11,6 +11,14 @@ def read(path):
     except (OSError,ValueError):return {}
 
 
+def execution_tree(source):
+    # Each remote source is intentionally a single shallow commit; compare
+    # the two existing trees, never assume the earlier commit is in this .git.
+    raw=subprocess.check_output(['git','ls-tree','-r','HEAD','--',
+        'harness','sim','scripts','configs','maps'],cwd=source,text=True)
+    return {line.split('\t',1)[1]:line.split('\t',1)[0] for line in raw.splitlines()}
+
+
 def reuse_speed_gate(prior,plan,concurrency,limit):
     """Reuse an observed gate only when all execution code is byte-identical.
 
@@ -19,8 +27,11 @@ def reuse_speed_gate(prior,plan,concurrency,limit):
     """
     source=Path(__file__).resolve().parents[1]
     meta=read(prior/'RUN_META.json');old=meta['sha']
-    changed=subprocess.check_output(['git','diff','--name-only',old,'HEAD','--',
-        'harness','sim','scripts','configs','maps'],cwd=source,text=True).splitlines()
+    baseline=prior.parents[1]/'src'/old
+    if subprocess.check_output(['git','rev-parse','HEAD'],cwd=baseline,text=True).strip()!=old:
+        raise ValueError('baseline source SHA mismatch')
+    before_tree,after_tree=execution_tree(baseline),execution_tree(source)
+    changed=sorted(n for n in before_tree.keys()|after_tree.keys() if before_tree.get(n)!=after_tree.get(n))
     if set(changed)-{'scripts/run_grasp_act_batch.py'}:
         raise ValueError('speed reuse requires byte-identical execution components')
     if read(prior/'resource-admission.json').get('plan_sha256')!=hashlib.sha256(plan.read_bytes()).hexdigest():
@@ -32,7 +43,7 @@ def reuse_speed_gate(prior,plan,concurrency,limit):
     for name in ('sim/grasp_act_teacher.py','sim/grasp_act_scene.py','sim/grasp_act_port.py',
                  'scripts/run_grasp_act_teacher.py','scripts/zone_teacher.py','harness/grasp_act_contract.py',
                  'harness/visual_arm_v3.py','sim/masterpi_drive_friction_v7.py','configs/simulation_workflows.json'):
-        before=subprocess.check_output(['git','show',old+':'+name],cwd=source)
+        before=(baseline/name).read_bytes()
         after=(source/name).read_bytes()
         if before!=after:raise ValueError('execution bytes differ: '+name)
         components[name]=hashlib.sha256(after).hexdigest()
