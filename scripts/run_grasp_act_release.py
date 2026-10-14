@@ -25,16 +25,48 @@ HELD_OBJECT_MODES=("visible_v0","hidden_v1")
 LOOKAROUND_MODES=("off","setdown_lookaround_v1","setdown_lookaround_v2")   # v2: folded look arm, association gate + joint acceptance tests, no body turn, arm restored
 LOOK_RES=(640,480)          # own camera size for the existing OpenCV localisation modules
 ARM_MOVE_BACK_S=1.0         # look arm pose -> gaze pose
+POSE_ANCHOR_MODES=('legacy_truth_v0','command_relative_v1')
+
+
+class CommandPose:
+    """Own issued-wheel odometry in an arbitrary start frame, never a map pose."""
+    def __init__(self):self.x=[0.,0.,0.]
+    def propagate(self,wheels,seconds):
+        from sim.visible_belief import odometry
+        dx,dy,da=odometry(wheels,seconds);c,s=math.cos(self.x[2]),math.sin(self.x[2])
+        self.x=[self.x[0]+c*dx-s*dy,self.x[1]+s*dx+c*dy,self.x[2]+da]
+
+
+def handoff_estimate(plan,rid,issued,*,pose_anchor,own_pose_source,truth_pose=None):
+    """Legacy comparison is explicit; command_relative_v1 never reads plan coordinates."""
+    if pose_anchor not in POSE_ANCHOR_MODES:raise ValueError(pose_anchor)
+    if pose_anchor=='command_relative_v1':
+        if own_pose_source!='commands':raise ValueError('command_relative_v1 requires own commands')
+        return list(issued.x)
+    err=plan['handoff_pose_error'][rid] if own_pose_source=='commands' else [0.,0.,0.]
+    return [float(v)+e for v,e in zip(truth_pose,err)]
 
 
 class HeldAudit:
     """Counts reads of the held cargo's world pose feeding decisions; hidden_v1 refuses them."""
     def __init__(self,mode):
         if mode not in HELD_OBJECT_MODES:raise ValueError(mode)
-        self.mode=mode;self.reads={};self.meas={};self.picks=[]
-    def measurement(self,phase,kind,visible):
+        self.mode=mode;self.reads={};self.meas={};self.picks=[];self.visibility={};self.blind={};self.longest={};self.last_phase={}
+    def measurement(self,phase,kind,visible,count=1):
         """Each truth-derived measurement handed to a teacher, with its own visibility gate re-checked."""
-        row=self.meas.setdefault(phase,{}).setdefault(kind,[0,0]);row[0]+=1;row[1]+=0 if visible else 1
+        if not count:return
+        row=self.meas.setdefault(phase,{}).setdefault(kind,[0,0]);row[0]+=count;row[1]+=0 if visible else count
+    def assigned_end(self,phase,rid,visible,dt=.1):
+        """Evaluation-only assigned-end samples, including every non-visible release phase."""
+        row=self.visibility.setdefault(rid,{}).setdefault(phase,{'N':0,'visible':0,'blind_s':0.,'max_blind_s':0.})
+        if self.last_phase.get(rid)!=phase:row['blind_s']=0.
+        self.last_phase[rid]=phase
+        row['N']+=1;row['visible']+=bool(visible)
+        row['blind_s']=0. if visible else row['blind_s']+dt
+        row['max_blind_s']=max(row['max_blind_s'],row['blind_s'])
+        # Across phase boundaries, keep the continuous streak as well.
+        self.blind[rid]=0. if visible else self.blind.get(rid,0.)+dt
+        self.longest[rid]=max(self.longest.get(rid,0.),self.blind[rid])
     def pick(self,phase,rid,now,teacher):
         item=teacher.belief.get('band',now) or teacher.belief.get('released_band',now)
         self.picks.append({'phase':phase,'robot':rid,'t':now,'source':item['source'],'age_s':now-item['seen_t']})
@@ -47,6 +79,9 @@ class HeldAudit:
                 'invisible_measurements':sum(v[1] for ph in self.meas.values() for v in ph.values()),
                 'measurements_by_phase':{ph:{k:{'n':v[0],'invisible':v[1]} for k,v in kinds.items()} for ph,kinds in self.meas.items()},
                 'pick_target_uses':self.picks,
+                'assigned_end_visibility_by_phase':{rid:{ph:{'N':v['N'],'visible':v['visible'],
+                    'visible_fraction':v['visible']/v['N'],'max_blind_s':v['max_blind_s']} for ph,v in phases.items()} for rid,phases in self.visibility.items()},
+                'max_assigned_end_blind_s':dict(self.longest),
                 'scope':'decision inputs from release start to release complete; truth stays in evaluation-only outputs; '
                         'prefix grasp teacher stops at the held check'}
 
@@ -122,11 +157,14 @@ def own_end_world(world,inst,end):
 
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
-        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off'):
+        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0'):
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
     if lookaround!='off' and observe_mode!='backoff_v3':raise ValueError('lookaround runs after the backoff_v3 step back')
     if zone_slots not in ZONE_SLOT_MODES:raise ValueError(zone_slots)
+    if pose_anchor not in POSE_ANCHOR_MODES:raise ValueError(pose_anchor)
+    relative_pose=pose_anchor=='command_relative_v1'
+    if relative_pose and own_pose_source!='commands':raise ValueError('command_relative_v1 requires own commands')
     audit=HeldAudit(held_object)
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
     import numpy as np
@@ -147,9 +185,12 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     out.mkdir(parents=True,exist_ok=False);write(out/'plan.json',plan)
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise RuntimeError('committed source required')
-    write(out/'RUN_META.json',{'class':'dev','pr':484,'branch':'claude/grasp-act-release','sha':sha,'batch':plan['batch']})
+    branch=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()
+    write(out/'RUN_META.json',{'class':'dev','pr':491,'branch':branch,'sha':sha,'batch':plan['batch']})
     report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,'held_object':held_object,
-        'lookaround':lookaround,'own_camera_px':list(LOOK_RES if lookaround!='off' else (320,240)),'weld':'off','recording_mode':'success_measurement','student_execution':False,'success_rule':SUCCESS,
+        'lookaround':lookaround,'pose_anchor':pose_anchor,'map_pose_known':not relative_pose,
+        'pose_estimate_source':'own issued wheels from arbitrary zero; map pose unknown' if relative_pose else 'legacy truth at release handoff plus frozen plan error',
+        'own_camera_px':list(LOOK_RES if lookaround!='off' else (320,240)),'weld':'off','recording_mode':'success_measurement','student_execution':False,'success_rule':SUCCESS,
         'loadavg_at_start':os.getloadavg(),'release_success':None,'prefix_held':None}
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.
     try:
@@ -168,13 +209,18 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         rect=(*zone['center_m'],*zone['half_extents_m'])
         roles=plan['roles'];ports={rid:ContinuousActPort(world,rid,allow_reverse=True,allow_mecanum=True) for rid in roles}
         wheels={rid:QuantizedWheels(port) for rid,port in ports.items()}
+        issued_pose={rid:CommandPose() for rid in roles}
+        # These frame origins are used only by look_truth(), never by the teachers/localizers.
+        eval_origin={rid:[*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])] for rid in roles} if relative_pose else {}
         for rid,port in ports.items():port.apply({'kind':'look','pan_pulse':plan['initial_pan'][rid]},float(world.data.time))
         def advance(target):
             while float(world.data.time)<target-1e-8:
                 now=float(world.data.time)
                 if world.data.eq_active.any():raise RuntimeError('WELD_ACTIVE')
                 for rid,port in ports.items():port.tick(now);wheels[rid].tick(now)
+                issued={rid:tuple(port._motor_commands) for rid,port in ports.items()} if relative_pose else {}
                 world._physics_step_for(world.robot('r1'))
+                for rid,levels in issued.items():issued_pose[rid].propagate(levels,float(world.data.time)-now)
         advance(float(world.data.time)+.5)
         origin=float(world.data.time);inst=next(x for x in scene.cargo if x.item_id=='beam_1')
         band=BandVisibility(world.model);region=plan['destination_region']
@@ -229,23 +275,25 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         for port in ports.values():port.stop()
         rel={}
         for rid,end in roles.items():
-            pose=world.robot(rid).base_xyz();yaw=float(world.robot(rid).base_rpy()[2])
-            err=plan['handoff_pose_error'][rid] if own_pose_source=='commands' else [0.,0.,0.]   # frozen map-code own-pose error
-            estimate=[float(pose[0])+err[0],float(pose[1])+err[1],yaw+err[2]]
+            truth_pose=None if relative_pose else [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
+            estimate=handoff_estimate(plan,rid,issued_pose[rid],pose_anchor=pose_anchor,own_pose_source=own_pose_source,truth_pose=truth_pose)
             pwm={int(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
-            rel[rid]=ReleaseTeacher(rid,end,pwm,handoff_pose_estimate=estimate,zone_rect=rect,own_pose_source=own_pose_source,reach_mode=reach_mode)
+            rel[rid]=ReleaseTeacher(rid,end,pwm,handoff_pose_estimate=None if relative_pose else estimate,zone_rect=rect,own_pose_source=own_pose_source,reach_mode=reach_mode)
+        report['handoff_estimates']={rid:list(issued_pose[rid].x) for rid in roles} if relative_pose else None
         loc={}
         if lookaround!='off':
             from sim.lookaround_localization import LookaroundLocalizer
-            for rid,t in rel.items():   # the map code's own pose estimate (same frozen error as the teacher's priors)
-                pose=world.robot(rid).base_xyz();yaw=float(world.robot(rid).base_rpy()[2])
-                err=plan['handoff_pose_error'][rid] if own_pose_source=='commands' else [0.,0.,0.]
-                loc[rid]=LookaroundLocalizer(static,[float(pose[0])+err[0],float(pose[1])+err[1],yaw+err[2]],mode=lookaround)
+            for rid,t in rel.items():
+                truth_pose=None if relative_pose else [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
+                estimate=handoff_estimate(plan,rid,issued_pose[rid],pose_anchor=pose_anchor,own_pose_source=own_pose_source,truth_pose=truth_pose)
+                loc[rid]=LookaroundLocalizer(static,estimate,mode=lookaround,map_pose_known=not relative_pose)
         look_eval={rid:{'views':[]} for rid in roles};look_run={}
         def look_truth(rid):
             # evaluation only: estimate error against truth and FK camera vs rendered camera (never fed back)
             g=pose_of(rid);x=loc[rid].own.x
-            out={'error_xy_m':float(math.hypot(x[0]-g[0],x[1]-g[1])),'error_yaw_deg':float(math.degrees((x[2]-g[2]+math.pi)%(2*math.pi)-math.pi)),'truth':g}
+            target=relative(eval_origin[rid],g[:2],g[2]) if relative_pose else g
+            out={'error_xy_m':float(math.hypot(x[0]-target[0],x[1]-target[1])),'error_yaw_deg':float(math.degrees((x[2]-target[2]+math.pi)%(2*math.pi)-math.pi)),
+                 'truth':g,'error_frame':'arbitrary_command_start' if relative_pose else 'map'}
             ctrl=world.controllers[rid];cid=ctrl.robot_cam_cid;c_,s_=math.cos(g[2]),math.sin(g[2])
             b_=world.robot(rid).base_xyz();cp=np.array([world.data.cam_xpos[cid][0]-b_[0],world.data.cam_xpos[cid][1]-b_[1],world.data.cam_xpos[cid][2]]);cz=world.data.cam_xmat[cid].reshape(3,3)@np.array([0.,0.,-1.])
             rot_b=np.array([[c_,s_,0.],[-s_,c_,0.],[0.,0.,1.]]);body_o,body_z=rot_b@cp,rot_b@cz
@@ -257,7 +305,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         def look_capture(rid,now):
             img=np.asarray(Image.open(io.BytesIO(base64.b64decode(ports[rid].capture()['image']))).convert('RGB'))
             servo={1:rel[rid].pwm[1],**{k:rel[rid].pwm[k] for k in (3,4,5,6)}}
-            rec=loc[rid].observe(now,img,servo);audit.measurement('lookaround','own_rgb_landmarks',rec.get('status')=='measured')
+            rec=loc[rid].observe(now,img,servo)
+            audit.measurement('lookaround','own_rgb_landmarks',True,count=sum(rec.get(k,0) for k in ('wall_points','floor_lines','doors')))
             row={'t':now,'pan_pulse':servo[6],'wall_points':rec.get('wall_points'),'floor_lines':rec.get('floor_lines'),'doors':rec.get('doors'),
                  'seen_groups':rec.get('seen_groups'),**look_truth(rid)}
             look_eval[rid]['views'].append(row);ev.write(json.dumps({'kind':'lookaround_view','rid':rid,**row})+'\n')
@@ -268,13 +317,16 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         def pose_of(rid):return [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
         def observe(rid,now,fine):
             at=time.monotonic();data=world.data;pose=pose_of(rid);t=rel[rid]
-            if t.holding and held_object=='hidden_v1':
+            m=band.measure(data,rid,roles[rid])
+            if relative_pose or (t.holding and held_object=='hidden_v1'):
                 # Own landing end from the grasp pose (fixed offset, commands FK); the true base pose only places
                 # the camera for image formation (which floor points the pixels show), as rendering does.
                 (ex,ey),(ox,oy),_=t.end_and_outward(now);c_,s_=math.cos(pose[2]),math.sin(pose[2])
                 e=np.array([pose[0]+c_*ex-s_*ey,pose[1]+s_*ex+c_*ey,0.]);out_dir=np.array([c_*ox-s_*oy,s_*ox+c_*oy,0.])
             else:
                 audit.read(t.holding,'scan_axis');audit.read(t.holding,'scan_end')
+                audit.measurement(st['phase'],'scan_axis',m['visible_probes']>=3)
+                audit.measurement(st['phase'],'scan_end',m['visible_probes']>=3)
                 b=data.body(inst.body);rot=b.xmat.reshape(3,3);axis=rot[:,0]
                 out_dir=-axis if roles[rid]=='teal' else axis
                 e=own_end_world(world,inst,roles[rid])
@@ -283,11 +335,14 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 for l_ in (-.05,.05):
                     p=e+s_*out_dir+l_*lat;p=(float(p[0]),float(p[1]),.0012)
                     c=eyes.classify(data,rid,p)
-                    if c is not None:scan.append([*relative(pose,p[:2])[:2],c]);audit.measurement(st['phase'],'scan_point',True)
-            m=band.measure(data,rid,roles[rid]);obs={'scan':scan,'own_band_visible':m['visible_probes']>=3,'band':None}
+                    if c is not None:
+                        scan.append([*relative(pose,p[:2])[:2],c])
+                        audit.measurement(st['phase'],'scan_point',eyes.classify(data,rid,p) is not None)
+            obs={'scan':scan,'own_band_visible':m['visible_probes']>=3,'band':None}
+            audit.assigned_end(st['phase'],rid,obs['own_band_visible'])
             if obs['own_band_visible'] and not (t.holding and held_object=='hidden_v1'):
                 audit.read(t.holding,'band_pose')
-                audit.measurement(st['phase'],'own_band_pose',m['visible_probes']>=3)
+                audit.measurement(st['phase'],'own_band_pose',band.measure(data,rid,roles[rid])['visible_probes']>=3)
                 gid=band.bands[roles[rid]];g=data.geom_xpos[gid];rot=data.body(inst.body).xmat.reshape(3,3)
                 obs['band']=relative(pose,(float(g[0]),float(g[1])),math.atan2(rot[1,0],rot[0,0]))
             obs['partner_visible']=any(band.body_visible(data,rid,p+'__robot') for p in roles if p!=rid)
@@ -388,7 +443,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                         dec=loc[rid].finalize()    # v2: one joint update with acceptance tests (None for v1)
                         look_eval[rid].update(after=look_truth(rid),sim_s=now-look_eval[rid]['t0'],script=look_run[rid].log,
                                               decision=None if dec is None else {k:dec.get(k) for k in ('accepted','reason','wall_inliers','features','views_with_evidence')})
-                        if lookaround=='setdown_lookaround_v1':   # the static-map priors now come from the looked-at estimate
+                        if lookaround=='setdown_lookaround_v1' and not relative_pose:   # only an actual map pose anchors map priors
                             t.reanchor_priors(list(loc[rid].own.x))
                         elif dec and dec['accepted']:              # v2: only an accepted correction moves the priors
                             t.reanchor_priors(list(loc[rid].own.x))
@@ -460,7 +515,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             if k%10==0:frames(k,'release-'+st['phase'])
             issued={rid:(list(wheels[rid].levels),max([max(0.,min(.1,u-tick_t)) if lv else 0. for lv,u in zip(wheels[rid].levels,wheels[rid].until)]))
                     for rid in rel}
-            before={rid:pose_of(rid) for rid in rel}
+            before={rid:pose_of(rid) for rid in rel} if own_pose_source!='commands' else {}
             k+=1;advance(tick_t+.1)
             for rid in loc:loc[rid].propagate(*issued[rid])
             for rid,t in rel.items():
@@ -529,6 +584,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=90.)
     p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands')
+    p.add_argument('--pose-anchor',choices=POSE_ANCHOR_MODES,default='legacy_truth_v0',help='command_relative_v1: no truth handoff anchor; map pose unknown, own-command sweep only')
     p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look')
     p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement')
     p.add_argument('--zone-slots',choices=ZONE_SLOT_MODES,default='floor',help='zone: white slot squares inside the destination (static map) count as zone')
@@ -537,5 +593,5 @@ def main():
     p.add_argument('--lookaround',choices=LOOKAROUND_MODES,default='off',help='setdown_lookaround_v1: after the backoff step, look toward static-map landmarks chosen from the own pose estimate (640x480 own camera)');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor),ensure_ascii=False,default=str))
 if __name__=='__main__':main()

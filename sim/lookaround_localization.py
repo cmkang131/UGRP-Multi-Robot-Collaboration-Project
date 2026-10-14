@@ -193,10 +193,11 @@ class LookaroundLocalizer:
     """One robot's own-pose estimate, look plan and image updates (no simulator input)."""
 
     def __init__(self, static, estimate, *, sigma_xy=.05, sigma_yaw=math.radians(2.), odometry_profile='off',
-                 mode='setdown_lookaround_v1'):
+                 mode='setdown_lookaround_v1', map_pose_known=True):
         if mode not in MODES:
             raise ValueError(mode)
         self.mode, self.arm = mode, LOOK_ARMS[mode]
+        self.map_pose_known = bool(map_pose_known)
         self.v2 = mode == 'setdown_lookaround_v2'
         from harness import vision_loc_protocol as vp
         from harness import zone_pair_highpose_contract as contract
@@ -222,6 +223,15 @@ class LookaroundLocalizer:
 
     # --- view plan ---
     def make_plan(self, start_pan_pulse=1500):
+        if not self.map_pose_known:
+            # No map-to-odometry transform is known. A local Gaussian map update would fabricate it.
+            # Fixed body-relative panorama; detections remain body-relative and cannot reanchor priors.
+            self.plan = {'expected_gain_nats': None, 'rotated': False, 'expected_landmarks': [],
+                         'views': [{'body_yaw_deg': 0., 'pan_deg': p, 'pan_pulse': pan_pulse(p), 'expected': []}
+                                   for p in (-60., 0., 60.)],
+                         'pose_estimate_at_plan': [float(z) for z in self.own.x],
+                         'pose_frame': 'arbitrary_command_start', 'map_pose_known': False}
+            return self.plan
         start = (start_pan_pulse-1500)*PAN_DEG_PER_PULSE
         # v2: no body rotation (free-robot yaw rate unmeasured; the one rotated run lost its re-grasp)
         plan = plan_views(tuple(self.own.x), self.own.P, self.landmarks, self.visible, start_pan=start,
@@ -286,6 +296,11 @@ class LookaroundLocalizer:
         doors = door_features(und, cm, obs, np.linalg.inv(mp.K_INV), clear)
         rec.update(status='measured', wall_points=int(len(walls)), floor_lines=len(floors), doors=len(doors),
                    features=copy.deepcopy(floors+doors))
+        if not self.map_pose_known:
+            rec.update(wall_points_body=np.asarray(walls).reshape(-1, 2).tolist(), seen_groups=[],
+                       map_pose_known=False, update_skipped='map_pose_unknown')
+            self.views.append(rec)
+            return rec
         if self.v2:
             self._gate(walls, floors, doors, servo, cam, rec)
             rec['seen_groups'] = self.seen_groups(walls, floors, doors)
@@ -348,6 +363,10 @@ class LookaroundLocalizer:
 
     def finalize(self):
         """v2: one joint update over every view's gated detections; keep the prior unless every test passes."""
+        if not self.map_pose_known:
+            self.decision = {'accepted': False, 'reason': 'map_pose_unknown', 'views_with_evidence':
+                             sum(bool(v.get('wall_points', 0)+v.get('floor_lines', 0)+v.get('doors', 0)) for v in self.views)}
+            return self.decision
         if not self.v2:
             return None
         walls = [p for v in self.pending for p in v['walls']]; sig = [x for v in self.pending for x in v['sigmas']]
@@ -437,6 +456,7 @@ class LookaroundLocalizer:
 
     def record(self):
         return {'option': self.mode, 'plan': self.plan, 'views': self.views, 'odometry_profile': self.profile, 'decision': self.decision,
+                'map_pose_known': self.map_pose_known, 'pose_frame': 'map' if self.map_pose_known else 'arbitrary_command_start',
                 'final_estimate': [float(z) for z in self.own.x],
                 'final_sigma': [float(math.sqrt(self.own.P[i, i])) for i in range(3)],
                 'constants': {'look_arm': self.arm, 'v2': V2 if self.v2 else None, 'view_settle_s': VIEW_SETTLE_S, 'arm_move_s': ARM_MOVE_S,

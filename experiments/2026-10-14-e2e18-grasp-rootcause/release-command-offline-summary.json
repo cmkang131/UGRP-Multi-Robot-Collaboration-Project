@@ -1,0 +1,69 @@
+{
+  "schema": "ugrp.release.command_anchor.offline.v1",
+  "base_source_sha": "05443299a1063ef335bb31b4c66cae64776f55b7",
+  "verification_scope": "offline source/own-RGB-detector tests and plan validation only; no simulator construction, physics steps, rendering, LLM calls or remote submissions",
+  "tests": {
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_release_teacher.py tests/test_lookaround_localization.py",
+    "files": 2,
+    "passed": 34,
+    "failed": 0
+  },
+  "source_sha256": {
+    "scripts/run_grasp_act_release.py": "4cbc9200749aab3bc90fcbcd4362712abaded867b382c4e5b448150e544a4cf5",
+    "sim/grasp_act_release_teacher.py": "b2e587b712920774488563acc1a664d7ad399c9bf22b285000d7686c646c78e1",
+    "sim/lookaround_localization.py": "fd9ccb4e597ac38d8eed5034c8ac35183658911bbae7c167caf9b2bb87fbf7ec"
+  },
+  "plans": {
+    "release-command-diagnostic-plan.json": {
+      "N": 3,
+      "seeds": [
+        74930,
+        74932
+      ],
+      "sha256": "0681e98b4ff35f84849ac0815172886a0f565eb002a82e09b6d77b721c53db8b"
+    },
+    "release-command-gate-plan.json": {
+      "N": 40,
+      "seeds": [
+        74100,
+        74139
+      ],
+      "sha256": "8e72678322993e962bcf02e7f69e995bed11f6ce9ca6eea94c97962ea4e8214e"
+    },
+    "release-command-record-plan.json": {
+      "N": 50,
+      "seeds": [
+        88000,
+        88049
+      ],
+      "sha256": "1c8e9174245c301990f21efc81a51bb9ec0bc7d6045edd4022906b2dd639cd49"
+    }
+  },
+  "seed_checks": {
+    "checked_refs": [
+      "origin/main",
+      "fe93047cc43a04126bf64a3209429141bb5c0caa",
+      "0d33c97a76aeecf2127797f20ed9b74a901bdf10",
+      "8137e3d1f65e671d3d030fa4db88a72fe0a012bf"
+    ],
+    "checked_open_prs": [
+      484,
+      500,
+      502
+    ],
+    "conflicts": []
+  },
+  "runs": [],
+  "new_profile_physical_results": {
+    "diagnostic_started": 0,
+    "gate_started": 0,
+    "recording_started": 0
+  },
+  "remaining": [
+    "Global own-RGB map initialization is not implemented; unknown map pose forbids map priors and map correction.",
+    "New command-relative release profile has not run; previous 40/40 release gate and 6/6 lookaround diagnostics cannot be pooled.",
+    "Release-specific student observation/target recording adapter is not implemented. Recording queue is a non-executable draft until adapter, gate proof and coordinator approval.",
+    "Existing observable_v2 prefix grasp remains unchanged and is outside the release input audit.",
+    "PR #491 head is claude/grasp-act-release; this continuation is pushed to the user-requested claude/grasp-act-probes branch and linked in its PR comment."
+  ]
+}

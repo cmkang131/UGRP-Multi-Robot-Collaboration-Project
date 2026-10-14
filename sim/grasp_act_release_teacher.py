@@ -168,11 +168,14 @@ class ReleaseTeacher:
         self.holding = True; self.phase = 'look'
         self.visible_counts = {}; self.blind_s = 0.; self.max_blind_s = {}
         self.last_report = None; self.last_scan = None; self.zone_rect = zone_rect; self.belief_time = 0.
-        for side, (point, normal) in zone_edges(zone_rect).items():
-            self.belief.observe('prior:'+side, relative(handoff_pose_estimate, point, normal), 0., source='map_prior')
+        self.map_pose_known = handoff_pose_estimate is not None
+        if self.map_pose_known:
+            for side, (point, normal) in zone_edges(zone_rect).items():
+                self.belief.observe('prior:'+side, relative(handoff_pose_estimate, point, normal), 0., source='map_prior')
 
     def reanchor_priors(self, pose_estimate):
         """setdown_lookaround_v1: re-place the static-map zone-edge priors from the looked-at own pose estimate."""
+        if not self.map_pose_known:raise ValueError('map pose unknown; relative odometry cannot anchor map priors')
         for side, (point, normal) in zone_edges(self.zone_rect).items():
             self.belief.observe('prior:'+side, relative(pose_estimate, point, normal), self.belief_time, source='map_prior')
 
@@ -253,7 +256,7 @@ class ReleaseTeacher:
                 px, py, a = item['pose']; nx, ny = math.cos(a), math.sin(a)
                 score = -(nx*ox+ny*oy)        # inward normal opposite to outward
                 if score > .7 and (best is None or score > best[0]): best = (score, (ex-px)*nx+(ey-py)*ny)
-            kind, m = ('prior', best[1]) if best else ('outside', None)
+            kind, m = ('prior', best[1]) if best else (('prior', None) if not self.map_pose_known else ('outside', None))
         self.last_report = {'phase': phase, 'kind': kind, 'margin_m': m}
         return self.last_report
 
@@ -319,6 +322,7 @@ class ReleaseTeacher:
     def diagnostic(self):
         return {'visible_counts_by_phase': self.visible_counts, 'max_destination_blind_s_by_phase': self.max_blind_s,
                 'memory_s': self.belief.memory_s, 'own_pose_source': self.own_pose_source,
+                'map_pose_known': self.map_pose_known,
                 'scope': 'visible_only teacher; truth only gates visibility of currently visible points'}
 
 

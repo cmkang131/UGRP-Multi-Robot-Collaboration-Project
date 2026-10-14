@@ -153,3 +153,25 @@ def test_v2_single_view_evidence_is_not_used(static):
     loc._gate(walls, [], [], servo, loc.camera.pose(servo)[0], {})
     dec = loc.finalize()
     assert not dec['accepted'] and dec['reason'] in ('single_view', 'insufficient_evidence') and list(loc.own.x) == est
+
+
+def test_unknown_map_pose_uses_own_relative_sweep_and_never_map_correction(static,monkeypatch):
+    loc=LookaroundLocalizer(static,[0.,0.,0.],mode='setdown_lookaround_v2',map_pose_known=False)
+    def forbidden(*args,**kwargs):raise AssertionError('map association or correction with unknown map pose')
+    monkeypatch.setattr(loc,'visible',forbidden)
+    monkeypatch.setattr(loc,'_grid_update',forbidden)
+    monkeypatch.setattr(loc,'_gate',forbidden)
+    monkeypatch.setattr(loc,'seen_groups',forbidden)
+    loc.propagate([.35]*4,.1)
+    plan=loc.make_plan(2500)
+    assert [v['pan_deg'] for v in plan['views']]==[-60.,0.,60.]
+    assert plan['expected_landmarks']==[] and plan['pose_frame']=='arbitrary_command_start'
+    before=list(loc.own.x)
+    # Native-size blank own RGB exercises the real detector without constructing/stepping a simulator.
+    rec=loc.observe(.1,np.zeros((480,640,3),dtype=np.uint8),look_servo(0,LOOK_ARM_V2))
+    assert rec['status']=='measured' and rec['seen_groups']==[] and rec['update_skipped']=='map_pose_unknown'
+    assert loc.finalize()['reason']=='map_pose_unknown' and list(loc.own.x)==before
+    assert not loc.record()['map_pose_known']
+    steps=loc.script(restore={3:700,4:2300,5:1500,6:1500})
+    assert len([s for s in steps if s.get('capture')])==3
+    assert not any('wheels' in s for s in steps)

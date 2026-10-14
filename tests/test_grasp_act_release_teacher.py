@@ -199,3 +199,46 @@ def test_position_error_and_measurement_audit():
     a.measurement('observe', 'scan_point', True); a.measurement('observe', 'own_band_pose', False)
     r = a.record()
     assert r['invisible_measurements'] == 1 and r['measurements_by_phase']['observe']['scan_point'] == {'n': 1, 'invisible': 0}
+
+
+def test_command_handoff_is_independent_of_truth_and_plan():
+    from scripts.run_grasp_act_release import CommandPose, handoff_estimate
+    class Forbidden(dict):
+        def __getitem__(self,key):raise AssertionError('plan truth was read')
+    p=CommandPose();p.propagate([.35]*4,1.)
+    p.propagate([-.35,.35,-.35,.35],1.)
+    p.propagate([.35]*4,1.)
+    expected=[.129+.129*math.cos(.35),.129*math.sin(.35),.35]
+    for truth in (None,[999.,-999.,2.]):
+        assert handoff_estimate(Forbidden(),'r1',p,pose_anchor='command_relative_v1',own_pose_source='commands',truth_pose=truth)==pytest.approx(expected)
+    with pytest.raises(ValueError,match='own commands'):
+        handoff_estimate({},'r1',p,pose_anchor='command_relative_v1',own_pose_source='truth_comparison')
+    assert handoff_estimate({'handoff_pose_error':{'r1':[.1,-.1,.2]}},'r1',p,
+        pose_anchor='legacy_truth_v0',own_pose_source='commands',truth_pose=[1.,2.,3.])==pytest.approx([1.1,1.9,3.2])
+
+
+def test_unknown_map_pose_never_seeds_zone_priors_and_keeps_visual_evidence():
+    from sim.grasp_act_release_teacher import ReleaseTeacher
+    t=ReleaseTeacher('r1','teal',{1:1500,3:700,4:2400,5:1320,6:1500},
+                     handoff_pose_estimate=None,zone_rect=(4.6,.4,.3,.7))
+    assert not t.belief.items and t.report(0.)['kind']=='prior' and t.report(0.)['margin_m'] is None
+    with pytest.raises(ValueError,match='map pose unknown'):t.reanchor_priors([0.,0.,0.])
+    (x,y),(ox,oy),_=t.end_and_outward(0.)
+    t.perceive({'scan':[[x+ox*s/100,y+oy*s/100,'zone'] for s in range(-5,8)],'band':None},0.)
+    assert t.report(0.)['kind']=='inside_lb' and t.report(0.)['margin_m']==pytest.approx(.07)
+
+
+def test_release_visibility_counts_phase_fractions_and_continuous_blind_intervals():
+    from scripts.run_grasp_act_release import HeldAudit
+    a=HeldAudit('hidden_v1')
+    for ph,seen in [('lower',False),('lower',False),('open',False),('open',True),('lower',False)]:
+        a.assigned_end(ph,'r1',seen)
+    a.assigned_end('look','r2',True)
+    a.measurement('lookaround','own_rgb_landmarks',True,count=0)
+    a.measurement('observe','scan_end',False,count=2)
+    r=a.record();v=r['assigned_end_visibility_by_phase']['r1']
+    assert v['lower']=={'N':3,'visible':0,'visible_fraction':0.,'max_blind_s':.2}
+    assert v['open']['visible_fraction']==.5 and v['open']['max_blind_s']==.1
+    assert r['max_assigned_end_blind_s']['r1']==pytest.approx(.3)
+    assert r['max_assigned_end_blind_s']['r2']==0.
+    assert r['invisible_measurements']==2 and 'lookaround' not in r['measurements_by_phase']
