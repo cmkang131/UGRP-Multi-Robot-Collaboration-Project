@@ -28,7 +28,7 @@
 
 단독 교사 `b48ebdf1`의 `sim/rgb_lift_evidence.py`는 이번 브랜치에 아직 병합되지 않았다. crate의 v2를 복사해 공용화한 코드 및 적용용 patch가 그 브랜치에 있다. 이번에는 **공용 코어와 crate v2를 수정하지 않고** crate 전용 v3를 추가했으므로 solo_rgb_lift_v2의 기준/판정은 바뀌지 않는다. 향후 병합 때 v3 body 정책을 solo에 기본 적용하지 않는다.
 
-## 검증·인계
+## 검증·인계 — 회수 전 기록 (아래 회수 후 결과로 갱신)
 
 - 관련 3파일만: `test_grasp_act_crate_teacher.py`, `test_grasp_act_search.py`, `test_crate_rgb_lift_v2.py`: **101 passed, 1 skipped, 1 deselected**. skip=선택 lookaround 모듈 부재, deselect=MuJoCo world 생성 시험. 명령 기반 재탐색 3회전·깜빡임·재획득, crate 형상 전달, CLI 토글, 합성 body 회전/소실/하향 이동/unknown 차단을 검사했다. 이는 GCP 성공 증거가 아니다.
 - 새 gate **77300–77339**, split `crate_gate_v4`, 시작 시선 **40/40(두 로봇 80/80)**. 원래 제안 26/40 통과·14/40 거부를 보존했다. `mj_step`, `mj_step1/2`, `mj_forward`, `Renderer`를 예외로 바꾼 정적 kinematics/ray 검사다. 실행·렌더 0회.
@@ -42,3 +42,49 @@ python -m scripts.replay_crate_lift --root /Users/changmin/projects/ugrp/outputs
 ```
 
 대기열은 push SHA 확인 뒤 `20261014-crate-<sha8>.json`, ready=true로 발행하되 위 회수/재판정과 영상 검토가 실행 전 필수다. A 재현 77208/77212, B 재현 77204/77231 + 기존 77920–77922/77930–77932의 **진단 10개**가 모두 성공/감사0이어야 새 관문40을 시작한다. 동시 최대16, 진단/관문 순차, ≥38/40, 알려진 결함 확인 즉시 정지. 구 6f312f74 대기열은 superseded/ready=false다. 첫 gate 동시16의 30 SIM초 속도를 새로 확인한다(목표 후보 계산 비용이 바뀌었으므로 과거 속도를 승계하지 않는다). 원격 실행·새 관문·실제 파지·입력 감사·CI는 미확인이다.
+
+## 회수 후 마무리 — 2026-10-14
+
+회수 요청의 원본 **492/492 SHA-256 일치**를 다시 확인했다. 목록 끝 운영자 완료 메모 1줄은 파일 행과 분리했다. [새 요약·전체 40건 원장](crate4-retrieved-summary.json)에 재판정 출력·수정 전 출력·검토 프레임 목록의 로컬 경로와 SHA-256, 판정 코드 해시를 보존했다. 기존 회수 전 요약은 덮어쓰지 않았다.
+
+먼저 `edd6ddbd`의 판정으로 B 8/8·기존 성공 24/24를 확인했지만, 모든 들기 전 프레임을 두 후속 표본으로 재사용한 음성 대조도 **오탐 32/32(로봇 64/64)**였다. 같은 `crate_rgb_lift_v3` 토글 안에서 들기 완료 또는 유지 영상이 들기 전 영상과 픽셀 단위로 완전히 같으면 **unknown**으로 막았다. 면적·중심·외곽 임계값과 기존 v2는 바꾸지 않았다. 재생기의 별도 결함도 고쳤다: 마지막 유지 시각에 이어 쓰인 `skill=release` 행에는 `applied_command`가 없으므로 관측기의 들기 명령 이력에서 제외한다. 이후 v2 재판정은 원래 저장된 **전체 판정 dict 64/64**와 정확히 일치했다(단순 verdict 비교보다 강한 대조).
+
+| 고정 판정 대상 | 공동 confirmed | 공동 unknown | 로봇 confirmed / unknown | 해석 |
+|---|---:|---:|---:|---|
+| B 실제 들기 8건 | **8/8** | **0/8** | 16/16 · 0/16 | 기존 미탐 해소 |
+| 기존 성공 24건 | **24/24** | **0/24** | 48/48 · 0/48 | 판정 유지 |
+| A 8건 | 0/8 | **8/8** | 0/16 · 16/16 | 들기 시퀀스 자체가 없음; 음성 적중으로 세지 않음 |
+| 들기 전 사진 재사용 대조 32건 | **오탐 0/32** | **32/32** | 오탐 0/64 · 64/64 | 원본 들기 명령은 그대로, 두 후속 영상만 자기 before로 교체 |
+| 과거 0.9 kg 실패 77900/77901 | **오탐 0/2** | **2/2** | confirmed **1/4** · unknown **3/4** | 별도 질량/실패 대조, 관문과 합산 안 함 |
+
+전체 원본 관문 40건은 confirmed 32/40, unknown 8/40이다. 모든 표의 not_confirmed는 0이며, unknown을 음성 적중으로 바꾸거나 분모에서 빼지 않았다. 과거 실패의 77901/r1은 여전히 confirmed다. 공동 해제에는 두 confirmed가 필요해 두 실패 모두 차단되지만, 로봇별 오탐 0을 주장할 수 없다. 동일 프레임 차단은 잡음·노출 변화가 있는 정지 영상의 검증이 아니며, 이 개발 자료는 새 물리 성공률이나 독립 확증이 아니다.
+
+추가 수정의 출처·경계: [NumPy `array_equal` 공식 문서](https://numpy.org/doc/stable/reference/generated/numpy.array_equal.html)의 모양·원소 전체 동일 비교를 그대로 사용한다. 이 자료에서 고른 새 수치 임계값은 없다. [QT-Opt 공식 논문 소개](https://proceedings.mlr.press/v87/kalashnikov18a.html)는 RGB 폐루프 학습 연구이며, 이번 동일 프레임 가드를 검증해 주는 근거로 인용하지 않는다. 위 선행 조사와 마찬가지로, 발행 명령만으로 실제 상승을 증명하지 않는 보수적 입력 검증이다.
+
+### 직접 본 범위
+
+A/B **16/16건 × 처음·중간·끝을 포함한 6시각 × overview/r1/r2 = 288장**을 원본 픽셀을 나란히 놓은 16개 비교판으로 열었다. 전 시각 목록과 해시는 새 요약의 `visual_review`에 있다. A는 1.8–25.8/61.8/62.8/80.8초(사례별 끝), B는 1.8–29.8~47.8초이며 최대 표본 간격은 16초다. 연속 영상 전체 재생으로 표현하지 않는다. 별도로 77204(19.2/20.9/23.9초), 77231(30.1/31.8/34.8초), 기존 성공 77200(24.0/25.7/28.7초), 실패 77900(22.8/25.8/28.8초), 77901(23.8/25.8/28.8초)의 두 로봇 원본 세 표본 **30장**도 열었다. 총 318장이다.
+
+- A: 77208은 r1이 벽 옆에서 청록 손잡이를 비스듬히 보며 정체하고 r2는 파랑 앞에 머문다. 77225는 서로 다른 손잡이에 접근했지만 말미 정렬에서 멈춘다. 나머지 6건은 r1의 손잡이 시야가 벽/바닥으로 바뀌거나 화면 밖으로 빠지는 동안 r2가 반대 손잡이를 계속 본다. 표본에서 같은 끝 공동 접근은 보이지 않았다. 접촉·벽 여유의 수치는 기존 원장/정적 분석의 근거이며 이 영상만으로 정밀 측정한 것은 아니다.
+- B: 두 로봇이 서로 다른 색 손잡이로 접근한 뒤 말미에는 각각 자기 손잡이와 분홍 몸체를 유지한다. 77231/r2의 pink 외곽 변화는 완료 **0.20417**, 유지 **0.22500**이지만 lug 중심 변화는 **0.01979/0.02386**, 상대 하향 변화는 **−0.00223/−0.00256**이다. 직접 본 분홍 윤곽/그림자 변화와 일치한다. 손목 근접 영상만으로 실제 높이·하중을 확인하지 않았다.
+- 과거 실패: 77900은 양쪽, 77901은 r2에서 손잡이가 영상을 거의 채우도록 크게 변한다. 77901/r1은 성공 근접 영상과 비슷하게 몸체·손잡이가 남아 단독 시각 판정의 모호성을 그대로 보여 준다.
+
+### rootcause와의 관계 — 병합 시 남길 구현 (3줄)
+
+1. 막힌 단일 축방향 목표는 rootcause `a3f3be78`의 `approach_goal_set_v1`과 **같은 결함**이며, 이미 `edd6ddbd`에 병합한 공용 목표 집합 구현 하나를 남긴다.
+2. 재상실 뒤 완전 탐색을 못 하는 `ever_seen` 결함은 목표 집합과 **별개**이므로 crate의 `search_reacquire_v1`·0.3초 연속 재획득·자기 화물 제외를 함께 남긴다.
+3. 후속 통합은 rootcause 목표 집합에 crate의 선택적 `cargo_profile` 전달만 보존하고 별도 경로기를 만들지 않는다; crate RGB v3는 상자 전용으로 유지한다.
+
+### 시험과 대기열
+
+관련 3파일 `test_crate_rgb_lift_v2.py`, `test_replay_crate_lift.py`, `test_grasp_act_crate_teacher.py`만 실행: **45 passed, 1 skipped, 1 deselected**. skip은 선택 lookaround 모듈 부재, 제외는 MuJoCo world 생성 시험이다. 새 시험은 동일 표본의 해제 차단, 최종 시각 release 행 분리, unknown 분모 보존과 회수 해시 검증을 포함한다. 아래 재판정 명령은 **exit 0**이다.
+
+```sh
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.replay_crate_lift \
+  --root /Users/changmin/projects/ugrp/outputs/gcp1-runs \
+  --negative-sequences experiments/2026-10-14-crate-teacher/crate4-negative-sequences.json \
+  --fetch-request /Users/changmin/projects/ugrp/outputs/e2e18-admin/fetch-requests/crate4.txt \
+  --out /Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-retrieved-replay.json --require-ready
+```
+
+새 코드 커밋·push 후 `make_crate4_queue.py`가 원격 HEAD·깨끗한 worktree·재판정/코드 해시를 확인해 `20261014-crate-<sha8>.json`을 `ready=true`, `offline_preflight.status=passed`로 발행하고 `edd6ddbd`는 superseded/ready=false로 바꾼다. 회수·재판정·표본 영상 검토 조건은 위 결과로 충족했다. 운영자는 **새 SHA 진단10 → 새 관문40**, 비용/저장/속도 관문을 그대로 지킨다. 이 세션은 Mac 시뮬레이션·렌더·모델 호출·원격 제출을 하지 않았다. 새 GCP 물리 성공·입력 감사·속도·CI는 여전히 미검증이다.

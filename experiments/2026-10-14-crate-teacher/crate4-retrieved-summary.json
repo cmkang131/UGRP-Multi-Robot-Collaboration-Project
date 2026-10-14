@@ -1,0 +1,1485 @@
+{
+  "schema": "crate4.retrieved-summary.v1",
+  "date": "2026-10-14",
+  "base_commit": "edd6ddbd3f6e0352ae00a2be326f2d75c987c8ff",
+  "baseline_run_commit": "6f312f74f25e284f9339a18de901e24667c17a31",
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/gcp1-runs",
+  "source_host": "gcp1 n4-highcpu-64",
+  "evaluation_scope": "offline own RGB and issued command replay; not a new teacher success gate",
+  "replay_artifact": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-retrieved-replay.json",
+    "sha256": "cefda12584cd341437675fcbb4f34ec409de514050bb2bf66e2850c738349043"
+  },
+  "before_fix_artifact": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-replay-edd6ddbd-before.json",
+    "sha256": "539dd62cd10aeb20fc7921948ea31d19588cb532dfc460fbb45f94acb0f9b758"
+  },
+  "analysis_source": {
+    "/Users/changmin/projects/ugrp-wt/crate-teacher/scripts/replay_crate_lift.py": "0ec73de87ea976b70f4f6b73bfe7da4250619a23083681bebf2225a3290ac48d",
+    "sim/crate_rgb_lift.py": "e07ea607eca1a5382fe52466e8537c62ab9ba77b55045d7c44f94778965d9654"
+  },
+  "fetch_verification": {
+    "request": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/fetch-requests/crate4.txt",
+    "request_sha256": "5feaceb8f6160212a5e64c78f990752d69c97ef84cb6e7a810f4c4bf2272e317",
+    "N": 492,
+    "matched": 492,
+    "operator_notes": [
+      "2026-10-14 22:02 crate4 회수 완료: 492/492 sha256 일치 (조정자 scp, outputs/gcp1-runs 같은 상대 경로)"
+    ]
+  },
+  "groups": {
+    "B": {
+      "N": 8,
+      "exact_rgb_replayed": 8,
+      "v3_confirmed": 8,
+      "pair_counts": {
+        "N": 8,
+        "confirmed": 8,
+        "not_confirmed": 0,
+        "undetermined": 0
+      },
+      "robot_counts": {
+        "N": 16,
+        "confirmed": 16,
+        "not_confirmed": 0,
+        "undetermined": 0
+      }
+    },
+    "success": {
+      "N": 24,
+      "exact_rgb_replayed": 24,
+      "v3_confirmed": 24,
+      "pair_counts": {
+        "N": 24,
+        "confirmed": 24,
+        "not_confirmed": 0,
+        "undetermined": 0
+      },
+      "robot_counts": {
+        "N": 48,
+        "confirmed": 48,
+        "not_confirmed": 0,
+        "undetermined": 0
+      }
+    },
+    "A": {
+      "N": 8,
+      "exact_rgb_replayed": 0,
+      "v3_confirmed": 0,
+      "pair_counts": {
+        "N": 8,
+        "confirmed": 0,
+        "not_confirmed": 0,
+        "undetermined": 8
+      },
+      "robot_counts": {
+        "N": 16,
+        "confirmed": 0,
+        "not_confirmed": 0,
+        "undetermined": 16
+      }
+    }
+  },
+  "prelift_controls_before_fix": {
+    "planned_N": 32,
+    "replayed_N": 32,
+    "pair_false_positives": 32,
+    "pair_unknown": 0,
+    "robot_false_positives": 64,
+    "robot_N": 64
+  },
+  "prelift_controls": {
+    "planned_N": 32,
+    "replayed_N": 32,
+    "false_positives": 0,
+    "pair_counts": {
+      "N": 32,
+      "confirmed": 0,
+      "not_confirmed": 0,
+      "undetermined": 32
+    },
+    "robot_counts": {
+      "N": 64,
+      "confirmed": 0,
+      "not_confirmed": 0,
+      "undetermined": 64
+    },
+    "scope": "all 32 attempted lifts; both post frames replaced by own before_lift; real commands unchanged; image controls, not physical runs"
+  },
+  "older_negative_controls": {
+    "planned_N": 2,
+    "replayed_N": 2,
+    "false_positives": 0,
+    "pair_counts": {
+      "N": 2,
+      "confirmed": 0,
+      "not_confirmed": 0,
+      "undetermined": 2
+    },
+    "robot_counts": {
+      "N": 4,
+      "confirmed": 1,
+      "not_confirmed": 0,
+      "undetermined": 3
+    },
+    "scope": "older 0.9 kg negative controls; never pool gate success rates; N=0 is unverified"
+  },
+  "per_run": [
+    {
+      "seed": 77200,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77200-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "584a44d52676f08ec7e22755bbb1b8239dea23ed4f09791bc1559f1047283b8d",
+        "teacher-r1.jsonl.zst": "61e2917c56fb039322de77173ea459aa53acc6071acf086b3f537cb6fe8d1602",
+        "teacher-r2.jsonl.zst": "fa526a7bdd75978c77e80cdc39f172e23d029a040ef0e51806f970bd4e0ce5e2",
+        "eval-only.jsonl.zst": "f6386694d4a7a43282069b2eb06d41c150b8929c57ef78baedff6018f0847a07"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77201,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77201-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "2a2c81344084455ed13321f087ec50204a6d29f7a31ebecb722ba22b394fd4d3",
+        "teacher-r1.jsonl.zst": "6fb8943ff37aebc7cbc813826f6bc0a103a78392018e6add258a2083ceeab339",
+        "teacher-r2.jsonl.zst": "f0b9bd29c524bbcb7c572911996f97e2d444c127b98d93e4a4b219c5c83fcd60",
+        "eval-only.jsonl.zst": "206def12859fb0a0e182820e3e101f47e24b667d60a7b013fe94d0e37596b1ca"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77202,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77202-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "efd7dc58dc773a71435c7d7397902e9503711aa1e92a7efc3cec213e9489a994",
+        "teacher-r1.jsonl.zst": "d554fe0ac6b2f971021419a2e0fde6afef583cddcf788337561e6e228ea59cf5",
+        "teacher-r2.jsonl.zst": "c0cbb013527833c1504b005a2e964bd2132c7a25509d77897ac733448a5e24f0",
+        "eval-only.jsonl.zst": "29e4c1bc8540262c82ae6f3169141da29f3b5d1995b98100637e9a4949e24200"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77203,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77203-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "9930a9099350867a4711d6c84abcfa7d6c7d4bc94a0ea4800137b5279ecf9fe0",
+        "teacher-r1.jsonl.zst": "0e7c675c6ed4f575265b00d73fcf01d362e3263999f5575290c04757aedc159a",
+        "teacher-r2.jsonl.zst": "c42a472df4132079ed3f7fa0cfef0c92d3f850677a494a1b97657c6e54cb2112",
+        "eval-only.jsonl.zst": "0fb5e07940ba8db0a4e6f3b38b5829e60db8156fc2f5d148817bb87690440503"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77204,
+      "family": "B",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77204-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "befd7ea437876358581b7020a88fc130adab0b60d119799d430275ae63941d54",
+        "teacher-r1.jsonl.zst": "909cecfb48c57cdca5e9539755bb780364f28d2821f8d788c42df34828ffb78c",
+        "teacher-r2.jsonl.zst": "a975807a821c1600e713ec18ada378b4d9e8cc747735fb11091c5b8dbb4bad1e",
+        "eval-only.jsonl.zst": "0ee3849e9bbd7f61f3c624e75c9d0ce894851c989d7ad64749c0358472984030"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77205,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77205-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "daf1fd8d2b6717258e9ea9fd7c0b48d352cbadfd6bdcfc5d67344d6174a3de96",
+        "teacher-r1.jsonl.zst": "42a8271cc190173ac78a8e8d3355c2685474dc513defad41bdb69c248be3698d",
+        "teacher-r2.jsonl.zst": "57f4b9a3785a4758905d7d0deb664a4742d28412c9594b67f6a9a3f0f94c9edc",
+        "eval-only.jsonl.zst": "83220b24907ba0eef97ef4cb157debdda275fdab9d46ea9a85ed0d98ceb41616"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77206,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77206-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "9429a4c887ae4ef41915dee3cc12337a5a226f6a97fbf1ac78096bb387e2c514",
+        "teacher-r1.jsonl.zst": "b8b0821b5a5f96c36050911163c1122727553831a4ab55ff693710d082019304",
+        "teacher-r2.jsonl.zst": "43271db39e8894bb9089c54eb687205432828d33fa295c0ce90d02af56ff1a07",
+        "eval-only.jsonl.zst": "a7afd489efc4cf7c149c7a71e0afd244f23310ed5f1cd7d5ebacd9c5869dd7bb"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77207,
+      "family": "B",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77207-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "24ae6771255bc7311c043d5b566b395aa4381c48af6f0f8f609002a91acbc1c8",
+        "teacher-r1.jsonl.zst": "403d4027e554be80b5bf76c6121099cb042b901c4b2880ca0e3dbf7941083030",
+        "teacher-r2.jsonl.zst": "60b4856419f5effa7a117a8fa6b44d1031173653b62a9c3df838954a07c2c090",
+        "eval-only.jsonl.zst": "5ddc4226d6a1f2d689af8ef921664d86481acffa0fec3bfcce4186da3860dd15"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77208,
+      "family": "A",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "890201310f2f07469d940afbad334861d404492c90ecb1e1d0f86c8ed84634c2",
+        "teacher-r1.jsonl.zst": "e7bdead50d62f0c7b236e3cc4f48daf4d20784ae095554da8cda49c38122e13c",
+        "teacher-r2.jsonl.zst": "bff454d0c5d1db36359fcea0e3eb30e1465dee4dca2bbc04a36aa6eddacf4eac",
+        "eval-only.jsonl.zst": "93150a69371367388307450eabb295abe210030f1d429958d31a87c5d46bae2f"
+      },
+      "evaluation_held": false,
+      "exact_rgb_replayed": false,
+      "pair_verdict": "undetermined",
+      "robots": {
+        "r1": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        },
+        "r2": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        }
+      }
+    },
+    {
+      "seed": 77209,
+      "family": "A",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77209-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "46c7a571410a3158a5613d9d77ec5791946cefc3bc432879d9c1a2ffb17f4f56",
+        "teacher-r1.jsonl.zst": "de8d65a970024f55664f7ceda8e33030ece4d4ea356b9cc39f686fbb66210216",
+        "teacher-r2.jsonl.zst": "aae5e7843a76bce07de249983aee39bd643b418bb739ada52d04481d407a697c",
+        "eval-only.jsonl.zst": "b2a98bca41cecd955dae68c9925dd954c267b3fda3a244910c3abac505c4ca0e"
+      },
+      "evaluation_held": false,
+      "exact_rgb_replayed": false,
+      "pair_verdict": "undetermined",
+      "robots": {
+        "r1": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        },
+        "r2": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        }
+      }
+    },
+    {
+      "seed": 77210,
+      "family": "B",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77210-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "091c008fac509b4a7781aada4c2acbe31d800869750f5669b43044d419f6d717",
+        "teacher-r1.jsonl.zst": "9dc1f5bd775f7142d0e208bcb787da135ecec423e0fd4a73cf87097d56e1751d",
+        "teacher-r2.jsonl.zst": "d4d3d5a404756942ae17ff838109efdca26fbae88174b37acf0979b195de69ad",
+        "eval-only.jsonl.zst": "58365dd7c7641fadf942e6dc7176c4ad54314986854c83d4b0b23d7558766905"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77211,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77211-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "4d2e9d393134b0b7e26d48e7b4d588dbe9f579324bbd7f621c458d9f421810d8",
+        "teacher-r1.jsonl.zst": "f68354f78fd28bdf95c131e25eac6ef6d97f239a711458bc3a2b74d502e4973c",
+        "teacher-r2.jsonl.zst": "9547703f7b0eb9b77af175348baa81996ab34abc0d43cd42499cd1147709ab19",
+        "eval-only.jsonl.zst": "380dcc5000e02259792e4e5dab03ce7046f8246953b30099dbe2b1ffb59340ab"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77212,
+      "family": "A",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "58e682ea3881e72ac14f0cd3fa1ce8de6bed21e0d901b80cbae9b8f7291c0a86",
+        "teacher-r1.jsonl.zst": "69260ceeaecd72755daab47980fb7d81c2dbc6a63e6591d0badd9770fa93cc19",
+        "teacher-r2.jsonl.zst": "f1778917fac2456504ac6cbd09cddb791b7494e51d91c714180509006d1f557c",
+        "eval-only.jsonl.zst": "7028750714327f55d051fe8538511bd6a948e1e7c25408f2e44f8fc0fb2068b5"
+      },
+      "evaluation_held": false,
+      "exact_rgb_replayed": false,
+      "pair_verdict": "undetermined",
+      "robots": {
+        "r1": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        },
+        "r2": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        }
+      }
+    },
+    {
+      "seed": 77213,
+      "family": "A",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77213-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "034d7e3b72ab9dc97489a4827c6b21397a0f81425d532bc48069c3d3b8ab0df5",
+        "teacher-r1.jsonl.zst": "39f5df6d9724de11cde2e61fab0797e1087a308b0e775af8b851a7c697a21dc9",
+        "teacher-r2.jsonl.zst": "3973b1e5a7c19d4ef46ebc914a260631c5d3d0c39ea64a7153ae06aa12dc726d",
+        "eval-only.jsonl.zst": "71fcf87dddc546c0bbdc058f34a307d8f5db9cce58a919508eb4d9213d33905e"
+      },
+      "evaluation_held": false,
+      "exact_rgb_replayed": false,
+      "pair_verdict": "undetermined",
+      "robots": {
+        "r1": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        },
+        "r2": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        }
+      }
+    },
+    {
+      "seed": 77214,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77214-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "14c0bc93fdacdae1b21c693d1939bd896e3f93a87616c82a16e9024556e4aa82",
+        "teacher-r1.jsonl.zst": "be4d391d179b89c5315893d700d5a05c87d5367877a4a3a26a8d0f23c7f6ab4a",
+        "teacher-r2.jsonl.zst": "39252346e99867ce316d82c057e50f2bc8c3866eb883090b24ee36c4b257457d",
+        "eval-only.jsonl.zst": "83e1de19eb123d782c76a0c278c381118524f6b14312d07ea1c40f93ab770264"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77215,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77215-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "b93ee852bde578f390dcdfca6d315d78406cbc79545e024242444c3568450736",
+        "teacher-r1.jsonl.zst": "d02df042cf828aaa0e0cac0eb6b5abdd2449dda8bfe1f6aa5f9fe120cb8bc26b",
+        "teacher-r2.jsonl.zst": "6ff70c845dd0358a48c15633481e02235fda00e4bcf7b4e2eee6b16202a32a61",
+        "eval-only.jsonl.zst": "bef3c8d4479a671305cdfc7568aa00c2af80c58d88cd167004abddf4a89de385"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77216,
+      "family": "B",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77216-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "be4d3bf9385244c173ad58ed1153e49e5be47ee2821f02718c94d334b61bccc4",
+        "teacher-r1.jsonl.zst": "47f377826502e7ab73d2f92617fc8a9e35d87309f78b77081a7d53148260ba33",
+        "teacher-r2.jsonl.zst": "395691c970de59599e06058d84529c58b6f84f6512743cf22627ba9d07bc8490",
+        "eval-only.jsonl.zst": "8b7c9b7e295c78930502e5ad940743907598633ecb7dbbb141e8640d8d71e012"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77217,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77217-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "802ca08346c531f26fa8cfd3e34c6d3be514f10dc1340dc6832c5bb8c7dc433b",
+        "teacher-r1.jsonl.zst": "b58f408fb09bc4fe67d626b7aa0409759d0f6e0583f19cd81ef1c00adbf8a5f9",
+        "teacher-r2.jsonl.zst": "8cd063df7aebc3d08bd4874e3b3bb1bb3deefae2392daf901f8ad38562caadad",
+        "eval-only.jsonl.zst": "ddc967c503006a0229a4a366ade72a29ba254527358c0185039baac27e0a62f3"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77218,
+      "family": "B",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77218-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "56354f93b2f77708b5c5ac96baa749a273426a8d3927babcaa8ed9ba3dc76abf",
+        "teacher-r1.jsonl.zst": "b8071171d1755554929ebde2005b9acf32787dbaf9fc39eed7dcf4b75328aa18",
+        "teacher-r2.jsonl.zst": "352f1223d5084b24014a6d366c82a0ee5f0e8dcc4958213e4bf47e2fc77b046d",
+        "eval-only.jsonl.zst": "f0358f14f7f86cd5872f247c1f22d0236788e21f802142aa798719a46f37bfae"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77219,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77219-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "2d703a7997711a1316ff7a3a877c2500f53a4fda982b52952a924e84d7d03dfa",
+        "teacher-r1.jsonl.zst": "7b16552965d923095ec1490e7167514d6b61720feb321d7a64ce36b9d8b53325",
+        "teacher-r2.jsonl.zst": "1e0d9f9429f3d50f4355349a89455f8cde2f3701dbb63156a8f65a9193311585",
+        "eval-only.jsonl.zst": "af7bbccffc14fe97fa63cc26e3567d450de5ae31121eda29ee47f03fe3cf075d"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77220,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77220-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "1fdcb8bbaf179f55a55f05684a9c31c49ae96e3f59233bd27a534115e20ef3a8",
+        "teacher-r1.jsonl.zst": "65ca199fc915f99362b6daff338422853ffafc20d2b583f2e6c86258f5c7c9ea",
+        "teacher-r2.jsonl.zst": "92cc4812131acf400045b808828cc47fac3e5b83fe3d1dd2a38d9b713308c4a8",
+        "eval-only.jsonl.zst": "d4d9ae61f3a333ad4a41e07d6c7fd1717699d30b0b30e08375e6ca902cdf7340"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77221,
+      "family": "B",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77221-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "9ea4cb0ac865286835fb15419b04abdda5189ce5047636212d745c08a036ba9c",
+        "teacher-r1.jsonl.zst": "95c77520551df1efb2e2c8669c3817ac0dbb504837d4041b9f647d1df8e5016a",
+        "teacher-r2.jsonl.zst": "ce3c1d68d72b66e93c1f0d4f0764e985f32e8362be5ee189ba2f8b8494bcd1ca",
+        "eval-only.jsonl.zst": "5c267be355c0caee5d57453a4b9a9ff2ea605f8802e89c4d4974f75f928fcd1a"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77222,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77222-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "b65333c9099d092fef614458f5f6307f66c7568dc798c9c49adee977ab39f1bc",
+        "teacher-r1.jsonl.zst": "dd40d0bf53bdaaa2c34224a6b3ba190ce6166ff45e31cf33505923e5d60f7efa",
+        "teacher-r2.jsonl.zst": "29b5f1515d36e785b9a269ec495c5dadc77e077afd511fe102ca06f3ebfdcfcb",
+        "eval-only.jsonl.zst": "9ebacb5c8599d44a1ab3a1e5625ef36ddd20e254cb79b2e7e303a187588dfc95"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77223,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77223-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "ccf9b67300a213a8d33068eb3717223c84f9f97910f07bad3485b7ee148a4302",
+        "teacher-r1.jsonl.zst": "02219f0544a597bd60cf2cae70ea62d71849b09b09049f00c2d3e34dc808f712",
+        "teacher-r2.jsonl.zst": "5b0651c68aed91dca47234e42cbedad0b5cb41ed42926e57a5f11348e382a1e6",
+        "eval-only.jsonl.zst": "2a6c164fc196776edefc3673670927f977e75c024e2f4956d0efe6aae5b74235"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77224,
+      "family": "A",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77224-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "7ece4012ec0293d3459a32f41bda067bec9c38e73bb7c3f633feaba7acb24fcd",
+        "teacher-r1.jsonl.zst": "d846e21fcec5dd47453722e4ec9a282de109b39a9959dfb209ca18c9d1b5e1b1",
+        "teacher-r2.jsonl.zst": "d2bb3dda829717f41457b7c14e6211c0daae95441f40d3990967c0a47deca739",
+        "eval-only.jsonl.zst": "ff4f5da7e7a1edc8adb6c6b0d9e0a72c51fb09ec7b2cc0732361073510bc11d9"
+      },
+      "evaluation_held": false,
+      "exact_rgb_replayed": false,
+      "pair_verdict": "undetermined",
+      "robots": {
+        "r1": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        },
+        "r2": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        }
+      }
+    },
+    {
+      "seed": 77225,
+      "family": "A",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77225-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "d3b2775c232d9768f9eed73ac4b09896d68989b1e5921e5504b97933bc61d041",
+        "teacher-r1.jsonl.zst": "770f44d88d1fb7764f4f700fb83cd03ca8100215b84188e69090c13d2a72c28f",
+        "teacher-r2.jsonl.zst": "1bd7cff548c49e79f557627a4a2e08be1f286e7ddfa0cdb435a09ef066a80d79",
+        "eval-only.jsonl.zst": "b293aeb9a9622b3fe18407424dc6ceab860355c749b63bfea87b61353ce20182"
+      },
+      "evaluation_held": false,
+      "exact_rgb_replayed": false,
+      "pair_verdict": "undetermined",
+      "robots": {
+        "r1": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        },
+        "r2": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        }
+      }
+    },
+    {
+      "seed": 77226,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77226-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "ed0473417878264fb465fed3a8279f48c3b4c9d96c2096c95aab6f2902bb19d9",
+        "teacher-r1.jsonl.zst": "9ccc6ef922160092c82a2026d92ac302389f3a5a94cb80cc043ba34bdf7dde66",
+        "teacher-r2.jsonl.zst": "a55bc5402ff9492c881974636ff4360950b64857f3cac6c1ad963e14b7323efb",
+        "eval-only.jsonl.zst": "ba52a64fb27065467d5143d3e1a8e4d5f082478e7f1f9e899192023665fba68a"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77227,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77227-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "245700114ea8eb40b347b96efbcf01aaa3d4596b071c5ea1db0a9c66b07e58c8",
+        "teacher-r1.jsonl.zst": "67b4b879166afcdb51b50fa48087f978923ca2090caa7f134d9f9cee46a9905e",
+        "teacher-r2.jsonl.zst": "baee7b0b12a459b7acde2747f09a9573fa8607528245c2958249b75cc48d907e",
+        "eval-only.jsonl.zst": "d4757d18f61d73048d7d29ff7c94eb4a75a749963b54b37aa15960aa03601ca5"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77228,
+      "family": "A",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77228-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "1b3567823c3b9507734a7b7e5daabbacddac04a94b2130b88d4ad799eebd747e",
+        "teacher-r1.jsonl.zst": "55ecbabfd1a9f19944a744177d0fb566d861f467dc8d2ae23950b820be33f430",
+        "teacher-r2.jsonl.zst": "fba7abd7f2bffa3c196b8e2108777790cafd40e473e5c1478470db9cbfe43f6d",
+        "eval-only.jsonl.zst": "9b38600dfc67ec5f24dba5fa0a17520d7fa02260d2455d3edfc16afb468c2834"
+      },
+      "evaluation_held": false,
+      "exact_rgb_replayed": false,
+      "pair_verdict": "undetermined",
+      "robots": {
+        "r1": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        },
+        "r2": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        }
+      }
+    },
+    {
+      "seed": 77229,
+      "family": "A",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77229-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "651033e8674262a3e3f3fe38d504f462785ccd2d4b084b82f53dcb2781a7f549",
+        "teacher-r1.jsonl.zst": "c9ec6c51fd44d2d0c9dc42ee6bee304df02cf8e02d484e238a6fd1d127c4adf0",
+        "teacher-r2.jsonl.zst": "115d37f833648b34c83eb865fe1a6850c5e3033166ca629fb3c0d5b434e5b7b3",
+        "eval-only.jsonl.zst": "0b71b253edb0b1f6951ac395830bbab83f1985f0f5f648363beb957183cd104f"
+      },
+      "evaluation_held": false,
+      "exact_rgb_replayed": false,
+      "pair_verdict": "undetermined",
+      "robots": {
+        "r1": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        },
+        "r2": {
+          "verdict": "undetermined",
+          "reason": "no_lift_frame_sequence",
+          "prelift_control": null
+        }
+      }
+    },
+    {
+      "seed": 77230,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77230-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "29a9c21467f4938d41fa2b59325918fca82f397c29cc47f3698e8fe93c5574e8",
+        "teacher-r1.jsonl.zst": "86bd7bb0b122cfee25c2f4349564c327739729f8bccb63a8afef8af669f7a0b1",
+        "teacher-r2.jsonl.zst": "55b9e30310593ba4ed8217af19220142c883fb6e8cdcdcb6007116088905f1cc",
+        "eval-only.jsonl.zst": "c66a17816295d82ed4e7d00a6fc7bafe4900576c93e05f0909dfab5d81c6fd81"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77231,
+      "family": "B",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77231-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "008d7d25857a785f365a1dd5c6c11c8876402305f1e89772deba23a224f02379",
+        "teacher-r1.jsonl.zst": "2c2193183bc678fabfc24d243bf91d6146bd4ffd5f1d5ac8e00b18d2df4d748d",
+        "teacher-r2.jsonl.zst": "0107d5e280de2e2b03fee79cb90cc9b2a2ce148ed400e2882ad5f371f808426f",
+        "eval-only.jsonl.zst": "06e7c75ea662a422ed996fd0920b30c19f781368af554c0e0605078fee0c3d94"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77232,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77232-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "da1582f855e0b959094f9ce111cb23b177757fa93b2000a76b5e22598a798a11",
+        "teacher-r1.jsonl.zst": "8bbf495bf7af2dec18d8ef69a5cf9ef02e9b91e4cb14313ecb026bd18649cbed",
+        "teacher-r2.jsonl.zst": "9eaf02decd636fc177c922a849ca2f7805d8c05742d210259bfca541a24563b1",
+        "eval-only.jsonl.zst": "c225ea9ce032360c37178fc9a6b29325587bd68a94aaee4098896f10a829d9be"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77233,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77233-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "9ac24858d4c53310d9901f9037d13955ea2fc887410b7357fc263f65e3d05cb0",
+        "teacher-r1.jsonl.zst": "a197ae3bcb4eea687c672594ea7761cd73546c26bb73741e9705bc54a3364414",
+        "teacher-r2.jsonl.zst": "6bad3c3b43073debc58220a2a13f85897b6ed9989d69359022f9494212182b1d",
+        "eval-only.jsonl.zst": "d1454ee3607e1846caa45e6a3e9dd5dbe29adbd2d958f8aac78c585607ec331f"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77234,
+      "family": "B",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77234-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "9a82ccb4b22d728b978f4cdd3e44afa82a3c8ccb8c1b9552478d447c9a6d38fa",
+        "teacher-r1.jsonl.zst": "6de9af579dc583e53e33241279f608ba05f9fa4084981c1f51c6e4c9233f0628",
+        "teacher-r2.jsonl.zst": "74a89ecf41386d3577ad2a413b115235a00fd666fb4586382ee6620251c15c83",
+        "eval-only.jsonl.zst": "8bcaaee9425a5f740e64af24ac266cea879b5355e492469ddcff6d55fb0d0fac"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77235,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77235-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "f2d146de00a24f5a4d4d51b1c582f77966f295220be66f0ecf665d87b900bab8",
+        "teacher-r1.jsonl.zst": "95e8d91a17499de029006ef4d36074279ce97d6d2a0d198c64009456cf6d36d4",
+        "teacher-r2.jsonl.zst": "0a061f425d837fd985c52d120b3326b08b5654240e5f11e72634314a47fce23f",
+        "eval-only.jsonl.zst": "3de2392e4af92005ac72c8e5df366633181e086b283c2edee61257a771a46cbc"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77236,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77236-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "dfddb8a7e951ead399583b710bbc909e1177fa7c1e4b0fe232b911210ce2b5a0",
+        "teacher-r1.jsonl.zst": "8e6c63f101f13103b1822b6e3f9bce7ff0ac0debd8386299585a4845b180921f",
+        "teacher-r2.jsonl.zst": "2860fd339739504297b9f34d7277266111b210019fc0cde4e485c825c941380f",
+        "eval-only.jsonl.zst": "a60992e497af0c2f63769cfa97c4a2bbc5b0167e1ae82f6208a5c890e1f81644"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77237,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77237-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "8e59fcd67efd9f6acbbaff808586a6b03a5feae856ff5485e2a721ec9dc35da7",
+        "teacher-r1.jsonl.zst": "ec8ec2cb401fba861208e8c91944018c8933f22cceeab6345f3587cbdc25506a",
+        "teacher-r2.jsonl.zst": "8b52f310d9c15c2b852fc21a021066dc41171b3c9f72399cf85f2c997942dd89",
+        "eval-only.jsonl.zst": "9c6a785e06f16fde48aeb125777448764572a225b86094614486c7210100d85d"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77238,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77238-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "8e8025ff565b138b28d7f2d9b3dd3c55b357dfc8d42064bc776879c753552ebc",
+        "teacher-r1.jsonl.zst": "d115d15bcca1eab434715de2af9ec55b2bd2037dce2eee6ad12fea24597c9277",
+        "teacher-r2.jsonl.zst": "f4067ff5ab8f061cf0748d6d880968fb55c44dc7419b85bb5256338016957372",
+        "eval-only.jsonl.zst": "7be4fe924f93f5135888a24de240d18805dc1491e04275cbda6c815058d8ec58"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    },
+    {
+      "seed": 77239,
+      "family": "success",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77239-6f312f74/raw",
+      "source_sha256": {
+        "result.json": "94bc1b4b2100c14a0802f5720f4c2cbe96019d12ccb456785faa53e6b7717ab5",
+        "teacher-r1.jsonl.zst": "2dfbaa25890b3f9d2439a1260edabb1af220176dd1208361d8173560861f9639",
+        "teacher-r2.jsonl.zst": "69abd6849d203fc26eb9e621a82d6ba2faad7f1d191ba142d97e5d97e3936b0c",
+        "eval-only.jsonl.zst": "0079cfc634be71cc43c3745a7e1ee76d7630d35a69b6f6875c896dbef19c43fe"
+      },
+      "evaluation_held": true,
+      "exact_rgb_replayed": true,
+      "pair_verdict": "confirmed",
+      "robots": {
+        "r1": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        },
+        "r2": {
+          "verdict": "confirmed",
+          "reason": "assigned lug co-moves; pink persists without downward relative drift",
+          "prelift_control": "undetermined"
+        }
+      }
+    }
+  ],
+  "older_negative_per_run": [
+    {
+      "seed": 77900,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77900-d43d17b1/raw",
+      "pair_verdict": "undetermined",
+      "robot_verdicts": {
+        "r1": "undetermined",
+        "r2": "undetermined"
+      },
+      "max_stable_hold_s": 0.5000000000023874
+    },
+    {
+      "seed": 77901,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77901-d43d17b1/raw",
+      "pair_verdict": "undetermined",
+      "robot_verdicts": {
+        "r1": "confirmed",
+        "r2": "undetermined"
+      },
+      "max_stable_hold_s": 0.0
+    }
+  ],
+  "visual_review": {
+    "status": "completed",
+    "ab_cases_reviewed": 16,
+    "ab_source_frames_reviewed": 288,
+    "lift_source_frames_reviewed": 30,
+    "total_source_frames_reviewed": 318,
+    "manifest": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/manifest.json",
+      "sha256": "2c0914b36ea9afcf4ef333c91d34a591c870d4f38fac67658aa6e629c51217d2"
+    },
+    "ab_windows": [
+      {
+        "seed": 77204,
+        "t_s": [
+          1.8,
+          7.8,
+          12.8,
+          18.8,
+          23.8,
+          29.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77204.jpg",
+        "sheet_sha256": "eee14092f4daaa25b92cf469bb636daa1b46c3b99156318cacc269f2b0c053e6"
+      },
+      {
+        "seed": 77207,
+        "t_s": [
+          1.8,
+          9.8,
+          17.8,
+          25.8,
+          33.8,
+          41.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77207.jpg",
+        "sheet_sha256": "1ef98fea7303e59c8c5bcc9e375de2260a1d81daed1531bce75925b97573f61d"
+      },
+      {
+        "seed": 77208,
+        "t_s": [
+          1.8,
+          13.8,
+          25.8,
+          37.8,
+          49.8,
+          61.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77208.jpg",
+        "sheet_sha256": "30725dca5defde5c0f8faa9e966f0bb49f59be72603d029468913a1721b547f8"
+      },
+      {
+        "seed": 77209,
+        "t_s": [
+          1.8,
+          17.8,
+          33.8,
+          48.8,
+          64.8,
+          80.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77209.jpg",
+        "sheet_sha256": "ca7f2518b3f57c849376d2192b0fdb63fdaeb2c5e3150b6527e7a591e41d6602"
+      },
+      {
+        "seed": 77210,
+        "t_s": [
+          1.8,
+          10.8,
+          19.8,
+          29.8,
+          38.8,
+          47.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77210.jpg",
+        "sheet_sha256": "64b424c3cee8c6bea96db8ba4538dac33a89d40ebc9a8f3e82b606343f4416b5"
+      },
+      {
+        "seed": 77212,
+        "t_s": [
+          1.8,
+          17.8,
+          33.8,
+          48.8,
+          64.8,
+          80.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77212.jpg",
+        "sheet_sha256": "92b9191b1197eeb99a0c187f54a1fe48fb94ecb9ee12e34ef8086120565c084f"
+      },
+      {
+        "seed": 77213,
+        "t_s": [
+          1.8,
+          17.8,
+          33.8,
+          48.8,
+          64.8,
+          80.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77213.jpg",
+        "sheet_sha256": "86d76d494905fc01ba7d6ba0b57ced10a4ff66875e082c4cab8d14d8c82777d5"
+      },
+      {
+        "seed": 77216,
+        "t_s": [
+          1.8,
+          8.8,
+          16.8,
+          23.8,
+          31.8,
+          38.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77216.jpg",
+        "sheet_sha256": "4f624ba9d47e36c1f263c0b523f38a08c3baa053b49548556304ef908068de02"
+      },
+      {
+        "seed": 77218,
+        "t_s": [
+          1.8,
+          7.8,
+          13.8,
+          19.8,
+          25.8,
+          31.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77218.jpg",
+        "sheet_sha256": "6089c4ed9043121a8ee60f55e579415c5d8b6245624ae46770bf5476ee9e2c70"
+      },
+      {
+        "seed": 77221,
+        "t_s": [
+          1.8,
+          7.8,
+          13.8,
+          18.8,
+          24.8,
+          30.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77221.jpg",
+        "sheet_sha256": "b872962e508c3c4d96af8d557299cb3f619d9e501d38fa38ba29661e0b2027f6"
+      },
+      {
+        "seed": 77224,
+        "t_s": [
+          1.8,
+          13.8,
+          25.8,
+          38.8,
+          50.8,
+          62.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77224.jpg",
+        "sheet_sha256": "d6eaa8029dfe585a4d4cfe787f7327b619a6e34906cdc28bc40a98cb2f3463ac"
+      },
+      {
+        "seed": 77225,
+        "t_s": [
+          1.8,
+          6.8,
+          11.8,
+          15.8,
+          20.8,
+          25.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77225.jpg",
+        "sheet_sha256": "edbb07e29cfc61089ab44282d061ca478c95123fe92373f0ba4665fa17217ea4"
+      },
+      {
+        "seed": 77228,
+        "t_s": [
+          1.8,
+          17.8,
+          33.8,
+          48.8,
+          64.8,
+          80.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77228.jpg",
+        "sheet_sha256": "476a4e4172a9c41e0a6f8c76820bab78e9ad960fcfcef29290f7c10d7a3c8314"
+      },
+      {
+        "seed": 77229,
+        "t_s": [
+          1.8,
+          17.8,
+          33.8,
+          48.8,
+          64.8,
+          80.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77229.jpg",
+        "sheet_sha256": "bd9fcb5b0a92af1b7b96682c165fe3d10b1dae283f279d675eeaf47a1a23055d"
+      },
+      {
+        "seed": 77231,
+        "t_s": [
+          1.8,
+          9.8,
+          17.8,
+          24.8,
+          32.8,
+          40.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77231.jpg",
+        "sheet_sha256": "04cf914beb22cecf03854d25613d91503ed268651321749c405f8a1239e95685"
+      },
+      {
+        "seed": 77234,
+        "t_s": [
+          1.8,
+          9.8,
+          17.8,
+          26.8,
+          34.8,
+          42.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/77234.jpg",
+        "sheet_sha256": "b9798d0e24219bef4671cd236c317661ebfef98a3209ae321c9510919970f3e3"
+      }
+    ],
+    "exact_lift_windows": [
+      {
+        "seed": 77204,
+        "t_s": [
+          19.2,
+          20.9,
+          23.9
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/lift-77204.png",
+        "sheet_sha256": "e1d9b5acc11f865b3a2cb3e32d79e75ba4a0410cc16a57c7aaa699cd0d1560cd"
+      },
+      {
+        "seed": 77231,
+        "t_s": [
+          30.1,
+          31.8,
+          34.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/lift-77231.png",
+        "sheet_sha256": "355adf16389402a2fc4a034fc0be1b042964aa17d72fc0756a4f6657bbb48a23"
+      },
+      {
+        "seed": 77200,
+        "t_s": [
+          24.0,
+          25.7,
+          28.7
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/lift-77200.png",
+        "sheet_sha256": "0b124c2fe0c1a57e61b1d31d5cb0dc32a59cd8f921ad5b1ae89ca2ed2e6c3440"
+      },
+      {
+        "seed": 77900,
+        "t_s": [
+          22.8,
+          25.8,
+          28.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/lift-77900.png",
+        "sheet_sha256": "b9edb06d13696bece43d2a4e6b05ce94a87bb9f579559367fe089f99146041b8"
+      },
+      {
+        "seed": 77901,
+        "t_s": [
+          23.8,
+          25.8,
+          28.8
+        ],
+        "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate4-visual-review/lift-77901.png",
+        "sheet_sha256": "a225abb0329581928d7bc3e08ba3b7622940af25aaff7d47a15a816ebbe794fa"
+      }
+    ],
+    "scope": "six sampled times per A/B case, overview/r1/r2; 5 exact lift triples x 2 robots; not continuous full video playback"
+  },
+  "local_tests": {
+    "passed": 45,
+    "skipped": 1,
+    "deselected": 1,
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest tests/test_crate_rgb_lift_v2.py tests/test_replay_crate_lift.py tests/test_grasp_act_crate_teacher.py -k 'not test_crate_scene_resolves_lug_geoms_and_probes' -q",
+    "skip_reason": "optional active_lookaround module absent",
+    "deselected_reason": "MuJoCo world creation; no local simulation"
+  },
+  "ready_for_remote_diagnostics": true,
+  "limitations": [
+    "A has no attempted-lift image sequence: 8/8 unverified/unknown; not true-negative successes",
+    "Repeated-prelift controls are counterfactual image controls, not 32 independent physical failed lifts; exact-equality guard does not detect noisy stationary images",
+    "Older 0.9 kg evaluation-failed lifts: pair confirmed 0/2, unknown 2/2; robot confirmed 1/4, unknown 3/4; no per-robot zero-FP claim or pooling with 0.30 kg",
+    "Reused archived frames are development data, not independent confirmation or new physical performance",
+    "Remote diagnostic10 and fresh gate40, new source runtime audit, speed and CI not verified"
+  ],
+  "new_gcp_runs": 0,
+  "simulation_steps": 0,
+  "render_calls": 0,
+  "model_calls": 0
+}

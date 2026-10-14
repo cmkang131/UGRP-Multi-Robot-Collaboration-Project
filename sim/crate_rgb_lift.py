@@ -150,7 +150,9 @@ def confirm_v3(before, after, end, *, commands, settled=None):
     The two-robot crate can rotate about its lug. Keep the v2 rigidity test on
     the assigned lug, but test the body for disappearance and downward image
     drift relative to that lug. This is a visual hypothesis, not load/height
-    measurement. See the crate4 reference/adaptation record. v2 is unchanged.
+    measurement. An exact repeated pre-lift image supplies no new visual
+    evidence, even with valid issued commands, and stays unknown. This does
+    not detect a stalled actuator in noisy images. v2 is unchanged.
     """
     if end not in ('blue', 'teal'):
         raise ValueError('assigned lug must be blue or teal')
@@ -167,6 +169,9 @@ def confirm_v3(before, after, end, *, commands, settled=None):
     for tag, frame in [('lift_complete', after), ('settled_hold', settled)]:
         if frame is None:
             return {**out, 'verdict': 'undetermined', 'reason': 'settled hold frame missing'}
+        if np.array_equal(before, frame):
+            return {**out, 'verdict': 'undetermined',
+                    'reason': f'{tag} identical to pre-lift frame; no new visual evidence'}
         parts = [shape(m) for m in masks(frame, end)]
         comparison = {'sample': tag, 'parts': {}}
         out['comparisons'].append(comparison)

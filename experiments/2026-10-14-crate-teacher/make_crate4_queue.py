@@ -19,10 +19,24 @@ def main():
     remote = subprocess.check_output(['git', 'ls-remote', 'origin', 'refs/heads/'+branch], cwd=ROOT, text=True).split()[0]
     assert remote == sha
     short = sha[:8]
-    oldpath = ADMIN/'vm3-queue/20261014-crate-6f312f74.json'
+    oldpath = ADMIN/'vm3-queue/20261014-crate-edd6ddbd.json'
     old = json.loads(oldpath.read_text())
     q = copy.deepcopy(old)
-    offline = json.loads((EXP/'crate4-offline-summary.json').read_text())
+    summary_path = EXP/'crate4-retrieved-summary.json'
+    summary = json.loads(summary_path.read_text())
+    replay_path = Path(summary['replay_artifact']['path'])
+    assert hashlib.sha256(replay_path.read_bytes()).hexdigest() == summary['replay_artifact']['sha256']
+    offline = json.loads(replay_path.read_text())
+    for path, expected in offline['analysis_source'].items():
+        assert hashlib.sha256(Path(path).read_bytes()).hexdigest() == expected
+    assert all(offline['groups'][g]['v3_confirmed'] == offline['groups'][g]['N'] for g in ('B', 'success'))
+    assert offline['prelift_controls']['replayed_N'] == offline['prelift_controls']['planned_N'] == 32
+    assert offline['prelift_controls']['false_positives'] == 0
+    assert offline['negative_controls']['replayed_N'] == offline['negative_controls']['planned_N'] == 2
+    assert offline['negative_controls']['false_positives'] == 0
+    assert offline['fetch_verification']['matched'] == offline['fetch_verification']['N'] == 492
+    assert summary['visual_review']['ab_cases_reviewed'] == 16
+    assert summary['visual_review']['ab_source_frames_reviewed'] == 288
     plans = [('diagnostic', 'diag_plan_crate4_reproductions.json'),
              ('diagnostic', 'diag_plan_v5_77920.json'), ('diagnostic', 'diag_plan_v6_77930.json'),
              ('gate', 'gate_plan_v7_77300.json')]
@@ -30,21 +44,28 @@ def main():
         status='ready', ready=True, runs_enabled=True, supersedes=[oldpath.name],
         profile='crate_mass_030_v1 / crate_lug_colors_v1 / hidden_v1 / align_relook_v1 / search_reacquire_v1 / approach_goal_set_v1 / crate_rgb_lift_v3 / backoff_v3 / pad_window_v2 / zone slots / own pose commands / weld OFF / training RGB OFF / lookaround OFF',
         purpose='A 77208/77212 + B 77204/77231 + original six diagnostics, then fresh 77300-77339 gate',
-        order='회수/정확 RGB 재판정/영상 검토 -> 진단10 -> 새 관문40. 단계 직렬, 전체 동시 최대16. 새 후보의 첫 동시16/30 SIM초 속도 확인 후 다음 wave. 원인 확인 시 즉시 정지.',
+        order='회수/정확 RGB 재판정/영상 검토 완료 -> 진단10 -> 새 관문40. 단계 직렬, 전체 동시 최대16. 새 후보의 첫 동시16/30 SIM초 속도 확인 후 다음 wave. 원인 확인 시 즉시 정지.',
         run_count=50, stage_counts={'diagnostic':10,'gate':40}, max_combined_concurrency=16,
         max_parallel_per_stage=16, stage_max_parallel={'diagnostic':10,'gate':16},
         storage_budget_mib={'diagnostic':640,'gate':2560,'total_new_raw_upper_estimate':3200,
                             'scope':'64 MiB per run; source/archive duplication also budgeted'},
         pooling='Only this SHA/profile on gcp1 n4-highcpu-64; diagnostics excluded; do not pool baseline/other-host/0.9 kg negatives',
-        candidate_record={'record':str(EXP/'crate4.md'), 'local_tests':'101 passed, 1 skipped, 1 deselected; 3 files',
-                          'offline_replay':offline['groups'], 'negative_controls_replayed':'0/2',
+        candidate_record={'record':str(EXP/'crate4.md'), 'local_tests':summary['local_tests'],
+                          'offline_replay':offline['groups'], 'negative_controls_replayed':'2/2',
+                          'prelift_controls':offline['prelift_controls'],
+                          'negative_pair_counts':offline['negative_controls']['pair_counts'],
+                          'negative_robot_counts':offline['negative_controls']['robot_counts'],
                           'new_gcp_runs':0, 'runtime_audit':'unverified'},
-        offline_preflight={'status':'awaiting_original_RGB_and_video_review',
+        offline_preflight={'status':'passed', 'summary':str(summary_path),
+            'summary_sha256':hashlib.sha256(summary_path.read_bytes()).hexdigest(),
+            'replay_artifact':summary['replay_artifact'], 'visual_review':summary['visual_review'],
+            'limitations':summary['limitations'],
             'fetch_request':str(ADMIN/'fetch-requests/crate4.txt'),
-            'required':'B confirmed 8/8; old-success unchanged 24/24; failed-lift negative controls replayed 2/2 with FP=0; unknown blocks',
+            'required':'B 8/8 and old-success 24/24 confirmed; prelift controls pair FP 0/32 (unknown 32/32); older failed lifts pair FP 0/2 (unknown 2/2), robot positive 1/4 disclosed; unknown blocks',
             'command':['/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python','-m','scripts.replay_crate_lift',
                        '--root','/Users/changmin/projects/ugrp/outputs/gcp1-runs',
                        '--negative-sequences',str(EXP/'crate4-negative-sequences.json'),
+                       '--fetch-request',str(ADMIN/'fetch-requests/crate4.txt'),
                        '--out',str(ADMIN/f'crate4-offline-{short}.json'),'--require-ready']},
         worktree_hold=f'Keep source_worktree at {sha} until operations snapshots it; no execution by this coding session',
         report_needed='All runs including failures/HOST_ERROR, raw hashes, exact input audit, per-robot RGB unknown/FP/FN, n/N, first30 speed, video range',
@@ -61,8 +82,8 @@ def main():
     q['speed_limit'].update(basis='Goal-set planning cost changed: previous speed is reference only; inspect first new gate wave at concurrency16 for 30 SIM seconds before further waves',
                            existing_record='reference only: crate-gate-6f312f74 median 3.16; not new-profile qualification')
     q['preconditions']=[
-        'DO NOT SUBMIT while offline_preflight command exits nonzero or original-video review is incomplete; ready=true means a reviewable queue, not evidence passed',
-        'Review six uniformly spaced timestamps per A/B case with overview/r1/r2; document actual seen range before claiming visual root cause',
+        'Offline replay exit0 and A/B six-time overview/r1/r2 review completed; evidence and source hashes are in offline_preflight. Rerun if either changes; do not submit on mismatch',
+        'Prelift controls are repeated-image counterfactuals, not independent physical no-lift trials; older 0.9 kg negatives retain one robot confirmed out of four, both pairs unknown; no general zero-FP claim',
         'Frozen clean source and remote SHA must match; preserve project cost stop, 8h VM cap, 20min idle stop; GCP only; no failover on cost stop',
         'Storage budget across GCP/ARM/Mac, all queued reserved writes, and total concurrency <=16 before each stage',
         'All ten diagnostics on this SHA must be full-chain success, distinct assigned lugs, both RGB confirmed and invisible_measurements=held_world_reads=0',
@@ -86,7 +107,7 @@ def main():
                      '--execution-host','gcp1','--pr','500','--out',f'/home/ugrp/ugrp-sim/runs/{name}/raw']
             row.update(stage=stage,seed=seed,scenario_id=episode['scenario_id'],name=name,ready=True,
                 max_parallel=10 if stage=='diagnostic' else 16,max_other_running=6 if stage=='diagnostic' else 0,
-                condition='offline_preflight exit0 + original-video review; '+('all 10 diagnostics pass before gate; first-wave30 speed check' if stage=='gate' else 'diagnostic stage only; stop on confirmed defect'),
+                condition='offline_preflight passed + original-frame review complete; '+('all 10 diagnostics pass before gate; first-wave30 speed check' if stage=='gate' else 'diagnostic stage only; stop on confirmed defect'),
                 payload=payload,command=['python3','scripts/remote_run.py','--host','gcp1','--detach','--class','dev',
                     '--pr','500','--per-run-mb','64',str(ROOT),name,'--',*payload],maximum_sim_s_per_episode=170)
             q['runs'].append(row)
@@ -100,7 +121,7 @@ def main():
     oldpath.write_text(json.dumps(old,ensure_ascii=False,indent=2)+'\n')
     assert json.loads(dest.read_text())['sha']==sha
     print(json.dumps({'path':str(dest),'sha':sha,'ready':True,'runs':len(q['runs']),
-                      'offline_preflight':'pending; must pass before submission'}))
+                      'offline_preflight':'passed; remote diagnostic/gate still pending'}))
 
 
 if __name__=='__main__':main()

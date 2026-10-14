@@ -97,3 +97,22 @@ def test_v3_opt_in_observer_does_not_change_v2_or_solo_core():
     assert LiftObserver('teal', mode='crate_rgb_lift_v3').confirm is confirm_v3
     with pytest.raises(ValueError):
         LiftObserver('teal', mode='unknown')
+
+
+@pytest.mark.parametrize('end', ['blue', 'teal'])
+@pytest.mark.parametrize('stale_sample', ['lift_complete', 'settled_hold', 'both'])
+def test_v3_repeated_pre_lift_image_cannot_authorize_release(end, stale_sample):
+    from sim.crate_rgb_lift import confirm_v3
+    from scripts.run_crate_teacher import release_ready
+    before = frame(end)
+    changed = before.copy()
+    changed[0, 0] = (250, 150, 180)
+    after = before.copy() if stale_sample in ('lift_complete', 'both') else changed
+    settled = before.copy() if stale_sample in ('settled_hold', 'both') else changed
+    out = confirm_v3(before, after, end, commands=history(), settled=settled)
+    assert out['verdict'] == 'undetermined'
+    assert 'identical to pre-lift' in out['reason']
+    assert not release_ready({'r1': True, 'r2': True}, 3,
+                             {'r1': out, 'r2': {'verdict': 'confirmed'}})
+    # The legacy opt-in retains its old semantics.
+    assert confirm_v2(before, before, end, commands=history(), settled=before)['verdict'] == 'confirmed'
