@@ -1,0 +1,313 @@
+{
+  "result": {
+    "status": "complete",
+    "source_sha": "abcc8929453ec6c8171ce1a80589adc326b1d657",
+    "teacher_success_n": 0,
+    "teacher_N": 2,
+    "joint_held": false,
+    "data_admitted": false,
+    "assignment_source": "demo_rule_color_balanced",
+    "student_execution": false,
+    "recording_mode": "success_measurement",
+    "episode_plan_sha256": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869",
+    "physical_success": false,
+    "teacher_profile": "visible_only",
+    "action_contract": "ugrp.grasp_act.student.v5",
+    "loadavg_at_start": [
+      3.5537109375,
+      3.2890625,
+      5.95751953125
+    ],
+    "noise": "off",
+    "self_pose_source": "issued",
+    "recording_gate_proof": null,
+    "criteria": {
+      "min_z_m": 0.012,
+      "max_tilt_deg": 10.0,
+      "hold_s": 3.0
+    },
+    "observation_sampling": {
+      "rgb_size": null,
+      "rgb_hz": 0,
+      "review_tile_size": [
+        320,
+        240
+      ],
+      "review_cameras": "four authored static top views",
+      "review_hz": 1,
+      "control_hz": 10,
+      "aspect_ratio_unchanged": true,
+      "camera_fov_and_pose_unchanged": true,
+      "own_review_hz": 1,
+      "own_review_size": [
+        320,
+        240
+      ]
+    },
+    "grasp_start_delays_s": {
+      "r1": 0.0,
+      "r2": 0.33394418101923196
+    },
+    "max_stable_hold_s": 0.0,
+    "sim_s": 60.00000000020389,
+    "wall_s": 152.4652321929998,
+    "teachers": {
+      "r1": {
+        "profile": "visible_only",
+        "planning_radius_m": 0.13,
+        "visibility_counts": {
+          "visible": 423,
+          "N": 593
+        },
+        "max_unseen_before_pick_s": 16.99999999999997,
+        "ik_rejections": 0,
+        "last_ik_error": null,
+        "alignment_integral": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "phase": "approach",
+        "outcome": "episode_timeout",
+        "events": [],
+        "staging_distance_m": 0.203,
+        "phase_sim_s": {},
+        "planner_calls": 308,
+        "no_path_calls": 0,
+        "scope": "privileged_teacher_only; single-end lift is not whole-beam lift",
+        "command_complete": false,
+        "ready_revocations": 0,
+        "handoff": true,
+        "blocked_goal_calls": 0,
+        "done_semantics": "own issued arm sequence complete; physical evaluation separate"
+      },
+      "r2": {
+        "profile": "visible_only",
+        "planning_radius_m": 0.17,
+        "visibility_counts": {
+          "visible": 583,
+          "N": 593
+        },
+        "max_unseen_before_pick_s": 0.9999999999999999,
+        "ik_rejections": 0,
+        "last_ik_error": null,
+        "alignment_integral": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "phase": "ready",
+        "outcome": "episode_timeout",
+        "events": [
+          {
+            "t": 3.49999999999942,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 3.8999999999991983,
+            "from": "align",
+            "to": "ready"
+          }
+        ],
+        "staging_distance_m": 0.203,
+        "phase_sim_s": {
+          "approach": 1.6999999999992352,
+          "align": 0.3999999999997783
+        },
+        "planner_calls": 0,
+        "no_path_calls": 0,
+        "scope": "privileged_teacher_only; single-end lift is not whole-beam lift",
+        "command_complete": false,
+        "ready_revocations": 0,
+        "handoff": true,
+        "blocked_goal_calls": 0,
+        "done_semantics": "own issued arm sequence complete; physical evaluation separate"
+      }
+    },
+    "samples_per_robot": 600,
+    "first_attempt": true,
+    "weld": "off",
+    "loadavg_at_end": [
+      3.23388671875,
+      3.22314453125,
+      5.51611328125
+    ],
+    "timings_s": {
+      "physics": 119.9745734309954,
+      "rgb": 18.684000660991842,
+      "evaluation": 6.970562508996409,
+      "teacher": 1.4399872049898477,
+      "io": 0.0
+    },
+    "wall_per_sim": 2.5410872032080283
+  },
+  "visibility": {
+    "raw": "/home/ugrp/ugrp-sim/runs/grasp-visible-replay09-abcc8929/raw",
+    "camera": {
+      "scope": "evaluation-only; actual runtime values, not XML assumptions",
+      "binding": "v3",
+      "cameras": {
+        "r1": {
+          "pos": [
+            0.052982009925558314,
+            0.0,
+            0.028152173913043477
+          ],
+          "quat": [
+            0.4545194776720437,
+            0.5416752204197018,
+            -0.5416752204197018,
+            -0.4545194776720437
+          ],
+          "intrinsic": [
+            309.7597351074219,
+            311.0827331542969,
+            16.155447006225586,
+            10.651566505432129
+          ],
+          "resolution": [
+            320,
+            240
+          ]
+        },
+        "r2": {
+          "pos": [
+            0.052982009925558314,
+            0.0,
+            0.028152173913043477
+          ],
+          "quat": [
+            0.4545194776720437,
+            0.5416752204197018,
+            -0.5416752204197018,
+            -0.4545194776720437
+          ],
+          "intrinsic": [
+            309.7597351074219,
+            311.0827331542969,
+            16.155447006225586,
+            10.651566505432129
+          ],
+          "resolution": [
+            320,
+            240
+          ]
+        }
+      }
+    },
+    "actors": {
+      "r1": {
+        "first_seen_s": 17.70000000000191,
+        "max_unseen_s": 17.69999999999998,
+        "max_blind_motion_s": 14.499999999999964,
+        "max_unseen_after_first_seen_s": 0.0,
+        "max_pick_unseen_s": 0.0
+      },
+      "r2": {
+        "first_seen_s": 1.6999999999992352,
+        "max_unseen_s": 1.7000000000000004,
+        "max_blind_motion_s": 0.9999999999999999,
+        "max_unseen_after_first_seen_s": 0.0,
+        "max_pick_unseen_s": 0.0
+      }
+    },
+    "stages": {
+      "all": {
+        "visible_n": 1006,
+        "in_frame_n": 1007,
+        "N": 1200,
+        "moving_n": 309,
+        "blind_moving_n": 165
+      },
+      "approach": {
+        "visible_n": 423,
+        "in_frame_n": 424,
+        "N": 617,
+        "moving_n": 306,
+        "blind_moving_n": 165
+      },
+      "alignment": {
+        "visible_n": 4,
+        "in_frame_n": 4,
+        "N": 4,
+        "moving_n": 3,
+        "blind_moving_n": 0
+      },
+      "ready": {
+        "visible_n": 579,
+        "in_frame_n": 579,
+        "N": 579,
+        "moving_n": 0,
+        "blind_moving_n": 0
+      }
+    },
+    "definition": "geometric availability of any assigned-band probe; commands are issued, not measured motion"
+  },
+  "visible_input_audit": {
+    "measurements": 2261,
+    "invisible_measurements": 0
+  },
+  "actors": {
+    "r1": {
+      "wheel_values": {
+        "0.0": 1301,
+        "-0.35": 357,
+        "0.35": 742
+      },
+      "invalid_wheel_n": 0,
+      "duration_min_max_s": [
+        0.0012784860914115041,
+        0.1
+      ],
+      "pregrasp_visible_n": 423,
+      "pregrasp_N": 600,
+      "pick_start_s": null,
+      "command_done_s": null,
+      "max_active_invisible_s": 17.69999999999998
+    },
+    "r2": {
+      "wheel_values": {
+        "0.0": 2400
+      },
+      "invalid_wheel_n": 0,
+      "duration_min_max_s": null,
+      "pregrasp_visible_n": 583,
+      "pregrasp_N": 600,
+      "pick_start_s": null,
+      "command_done_s": null,
+      "max_active_invisible_s": 1.7000000000000004
+    }
+  },
+  "sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-replay09-abcc8929/raw/result.json",
+      "sha256": "2479d4ddaa03180092686427df79ff3c05fb70a889f3f93b98dd2547d27e516a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-replay09-abcc8929/raw/plan.json",
+      "sha256": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-replay09-abcc8929/raw/eval-only.jsonl.zst",
+      "sha256": "c8e3ccad41ab18378794fac4c58e28afba73a0aa76b85daf7d8487ae040d28b0"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-replay09-abcc8929/raw/teacher-r1.jsonl.zst",
+      "sha256": "53b0b77aa9cf6cce65a6fd4b80acedae678777ffcf9703d097796bb815ef0b0c"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-replay09-abcc8929/raw/teacher-r2.jsonl.zst",
+      "sha256": "95e4be1ef96fef779805651d33d11a9f964e2d8841eee2eb97bc76e9f459cccf"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-replay09-abcc8929/raw/camera-runtime.json",
+      "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-replay09-abcc8929/raw/manifest.json",
+      "sha256": "01ee8e891d5ce3becc089703b62141625f94ce2cc19b9946653d773547a87abf"
+    }
+  ],
+  "scope": "perfect visible measurements only; actual frame visibility includes searching and final short open-loop pick, reported separately"
+}

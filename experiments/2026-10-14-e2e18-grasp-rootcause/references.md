@@ -58,3 +58,8 @@
 ### 가림이 생기는 시선 변경 (2026-10-14)
 - Thuilot et al., ICRA 2002, [Position based visual servoing: keeping the object in the field of vision](https://www-sop.inria.fr/members/Philippe.Martinet/publis/2002/icra02lionel.pdf). 원문 도입/제어 절 확인. 물체를 중앙으로 옮기는 것만으로는 시야 유지가 보장되지 않아 영상 제약을 경로에 넣는다. 기존 FK 시선 후보에 시야 제약과 관절 이동 최소화를 적용하는 근거다. 원문의 자유 6축 제어를 그대로 구현한 것은 아니다.
 - Wei et al., RA-L 2024, [DiffOcclusion](https://ieeexplore.ieee.org/document/10430369/), DOI 10.1109/LRA.2024.3364468. 출판사 초록 확인: 대상/장애물 영상의 겹침 제약을 CBF로 제어하며 Franka 실험을 보고. 전체 본문·저자 코드는 미확인. 여기서는 보인 물체만 만든 보수적 원기둥과 유한 관절 후보를 쓰며, 논문의 보장을 승계하지 않는다.
+
+- Vahrenkamp, Asfour, Dillmann (2013), [Robot Placement based on Reachability Inversion](https://h2t.iar.kit.edu/pdf/Vahrenkamp2013.pdf): 저자 소속 KIT PDF의 초록·1–3절 확인. 파지 목표에서 역으로 도달 가능하고 충돌 없는 차체 자세를 고르는 방식. 현재 고정 축상 접근 자리의 점유 문제를 해석하는 참고이며, 우리 교사가 논문의 전체 역도달 지도를 구현했다는 뜻은 아니다. 다른 화물을 먼저 옮기는 문제와 차체 경로 우회는 구분해야 한다.
+- [Visibility-Aware Mobile Grasping in Dynamic Environments](https://visibility-aware-mobile-grasping.github.io/): 저자 프로젝트 페이지에서 시야·충돌·IK 제약을 함께 다루는 문제 설정 확인. 현재 적용은 기존 A*의 선분 충돌 검사와 봉 끝을 향한 메카넘 주행이며 이 논문의 전체 방법 재현은 아니다. 세부 실험 수치는 인용하지 않는다.
+
+- GCP 공식 [View and query VM metadata](https://docs.cloud.google.com/compute/docs/metadata/querying-metadata): 인스턴스 내부 링크 로컬 조회와 `Metadata-Flavor: Google` 헤더 확인. 프로젝트/인스턴스/머신/지역 개별 항목만 읽고 토큰·전체 재귀 메타데이터는 읽지 않는다. 이는 결과의 실행 호스트를 묶는 근거이며 GCP 실행 성공 근거는 아니다.

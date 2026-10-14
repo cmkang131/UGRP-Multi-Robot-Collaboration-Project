@@ -1,0 +1,75 @@
+{
+  "world": {
+    "t": 13.799999999990513,
+    "robots": {
+      "r1": {
+        "pose": [
+          1.2825393438525872,
+          0.19756479894730422,
+          1.5169990512136755
+        ]
+      }
+    },
+    "objects": {
+      "beam_1": {
+        "xy": [
+          0.9433357445819057,
+          0.29627436364834603
+        ],
+        "radius": 0.30109134826711065,
+        "top_z_bound_m": 0.3169835928447248
+      }
+    },
+    "walls": [],
+    "beam": {
+      "pose": [
+        0.9482030938940771,
+        0.2852123232835464,
+        3.303495969552224
+      ],
+      "ends": {
+        "teal": [
+          1.2146721047698774,
+          0.3287354923188156,
+          0.023892244616403827
+        ],
+        "blue": [
+          0.6817340830182768,
+          0.24168915424827717,
+          0.023892244616403827
+        ]
+      },
+      "source": "visible band + known rigid shape",
+      "seen_t": 13.799999999990513
+    },
+    "visibility": {
+      "r1": {
+        "visible_probes": 9,
+        "objects": [],
+        "peers": []
+      }
+    },
+    "scope": "visible_only; remembered objects expire at student memory horizon"
+  },
+  "rid": "r1",
+  "end": "teal",
+  "pwm": {
+    "1": 2000,
+    "3": 500,
+    "4": 2500,
+    "5": 1320,
+    "6": 1982
+  },
+  "raw": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-ep0-regression-gcp-fdfca319/diagnostic/episode-000/raw",
+  "sample": 120,
+  "source_sha": "fdfca319f3663af157089cdd30ddd7505c3d3e33",
+  "sources": {
+    "eval-only.jsonl.zst": "3e5db41f6acc68196f4522b730070a56344cffc6d95b53335493ee5882f119ed",
+    "teacher-r1.jsonl.zst": "1abea24ebab8c2d065d985aa8ff78502e3255407d553c39d39c76702ca9b58f9",
+    "teacher-r2.jsonl.zst": "5cedc69428c1bbd82b3b449aa8e3530f68f1050ff474974724e8cd64e7782186",
+    "plan.json": "92dabede583f6739ad3a466604af749ee70101942ff8d273f6881f1b4ed7b2cd",
+    "result.json": "ca38de5979019c1cf4b3930941f9d37e0208312b86f530c6459723b8f97470b3",
+    "camera-runtime.json": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+  },
+  "reconstruction": "VisibleWorld.observe(visible_measurements[r1], t), then issue(applied_command), samples 0..120; no hidden objects or measured self pose"
+}

@@ -1,0 +1,79 @@
+{
+  "world": {
+    "t": 37.800000000089476,
+    "robots": {
+      "r1": {
+        "pose": [
+          0.5588617123427239,
+          -1.4043908954732514,
+          18.6975309174989
+        ]
+      }
+    },
+    "objects": {
+      "beam_1": {
+        "xy": [
+          0.5402499095032164,
+          -1.1262626513688485
+        ],
+        "radius": 0.30109134826711276,
+        "top_z_bound_m": 0.3169835928447248
+      }
+    },
+    "walls": [],
+    "beam": {
+      "pose": [
+        0.5342842446962331,
+        -1.1368116311247438,
+        17.927680931379957
+      ],
+      "ends": {
+        "teal": [
+          0.3711158608974572,
+          -0.9216928766459784,
+          0.02389224454315542
+        ],
+        "blue": [
+          0.6974526284950091,
+          -1.3519303856035092,
+          0.02389224454315542
+        ]
+      },
+      "source": "visible band + known rigid shape",
+      "seen_t": 37.800000000089476
+    },
+    "visibility": {
+      "r1": {
+        "visible_probes": 10,
+        "objects": [],
+        "peers": []
+      }
+    },
+    "scope": "visible_only; remembered objects expire at student memory horizon"
+  },
+  "pwm": {
+    "1": 2000,
+    "3": 500,
+    "4": 2500,
+    "5": 1320,
+    "6": 1967
+  },
+  "rid": "r1",
+  "end": "blue",
+  "raw": "/home/ugrp/ugrp-sim/runs/grasp-visible-replay09-abcc8929/raw",
+  "sample": 360,
+  "source_sha": "abcc8929453ec6c8171ce1a80589adc326b1d657",
+  "sources": {
+    "start-protocol.json": "24bcebdb42fd7317de5f5aae6f6653797895d20cad2d987ff0f292d90287f471",
+    "manifest.json": "01ee8e891d5ce3becc089703b62141625f94ce2cc19b9946653d773547a87abf",
+    "teacher-r2.jsonl.zst": "95e4be1ef96fef779805651d33d11a9f964e2d8841eee2eb97bc76e9f459cccf",
+    "RUN_META.json": "87307c8be6faafb1b86d283768a9b00e58d43b678935c372bb711ae0407f5891",
+    "plan.json": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869",
+    "eval-only.jsonl.zst": "c8e3ccad41ab18378794fac4c58e28afba73a0aa76b85daf7d8487ae040d28b0",
+    "result.json": "2479d4ddaa03180092686427df79ff3c05fb70a889f3f93b98dd2547d27e516a",
+    "teacher-r1.jsonl.zst": "53b0b77aa9cf6cce65a6fd4b80acedae678777ffcf9703d097796bb815ef0b0c",
+    "scene.json": "8ed365a6c096d34767bb941b00847255b163739929c4623043686e8c0c666ba3",
+    "progress.json": "34a02e2dc8bec790004570f5161a636dd02ee4f49ac4c24055115545bda96949",
+    "camera-runtime.json": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+  }
+}

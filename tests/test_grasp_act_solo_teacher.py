@@ -122,6 +122,104 @@ def test_pad_floor_guard_rejects_a_grip_the_pad_cannot_reach():
         t._pick_geometry({'xyz': [.172, 0., .004], 'yaw': 0.})
 
 
+def stable(kind='can', role='any', **kwargs):
+    return make(kind, role, teacher_stability='align_relook_v1', reach_mode='pad_window_v2', **kwargs)
+
+
+@pytest.mark.parametrize('kind,role', [('cyan', 'west'), ('can', 'any')])
+def test_pad_window_reuses_release_reach_and_excludes_old_ik_hole(kind, role):
+    from harness.visual_arm_v3 import MOUNT_X_M
+    from sim.grasp_act_release_teacher import PAD_MID_M, PAD_TOL_M
+    old, t = make(kind, role), stable(kind, role)
+    old_x = old.ops.station-old.spec.align_tol_m
+    with pytest.raises(ValueError, match='envelope'):
+        old._pick_geometry({'xyz': [old_x, 0., .024], 'yaw': 0.})
+    assert t.spec.station_m == pytest.approx(MOUNT_X_M+PAD_MID_M)
+    assert t.spec.align_tol_m == PAD_TOL_M
+    # Saved floor penetration is ~0.14 mm. The square covers the circular
+    # ready window and checks low + hover + every intermediate descent pose.
+    for dx in (-PAD_TOL_M, 0., PAD_TOL_M):
+        for dy in (-PAD_TOL_M, 0., PAD_TOL_M):
+            for z in (.0238, .024):
+                low, high, descent = t._pick_geometry(
+                    {'xyz': [t.spec.station_m+dx, dy, z], 'yaw': 0.})
+                assert len(descent) == 8 and low and high
+    assert stable('tile', 'west').spec == cargo('tile')
+
+
+def test_alignment_replaces_futile_route_pulse_and_reaches_canonical_hover():
+    # 76901 stopped ~21.5 cm from the can: no physical-pad IK there.
+    # A route callback returning only the old tiny strafe must not control align.
+    calls = []
+    def route(*args):
+        calls.append(args)
+        return 0., .003, 0.
+    t = stable(route=route)
+    far = {'xyz': [.6, 0., .024], 'yaw': 0.}
+    for i in range(10):
+        t.step(i*.1, measurement=deepcopy(far))
+    assert calls and t.ik_checks == 0
+    calls.clear()
+    near = {'xyz': [.215, 0., .02386], 'yaw': 0.}
+    value, _ = t.step(1., measurement=near)
+    assert t.phase == 'align' and not calls
+    assert value['wheels'] == [.35]*4 and all(.04 <= d <= .15 for d in value['duration_s'])
+    assert t.ik_rejections == 1 and t.ik_rejection_reasons
+    for i in range(11, 16):
+        t.step(i*.1, measurement={'xyz': [t.spec.station_m, 0., .02386], 'yaw': 0.})
+    assert t.phase == 'hover' and t.grasp_xyz is not None
+
+
+def test_alignment_deadbands_stop_lateral_chatter_and_four_flips_relook():
+    t = stable()
+    t.phase, t.phase_t, t.skill_started = 'align', 0., 0.
+    t._align_drive(0., (.012, .005, 0.), True)
+    t._align_drive(.1, (.012, .0015, 0.), True)
+    t._align_drive(.2, (.012, .0025, 0.), True)
+    assert not t.align_active[1]
+    t._reset_alignment()
+    for k in range(5):
+        value = t._align_drive(k*.1, ((-1)**k*.006, 0., 0.), False)
+    assert t.phase == 'relook' and not any(value['wheels'])
+    assert t.target is None and not any(t.align_integral)
+
+
+def test_alignment_no_progress_sweeps_stationary_and_requires_fresh_view():
+    t = stable()
+    t.phase, t.phase_t, t.skill_started = 'align', 0., 0.
+    target = {'xyz': [.215, 0., .024], 'yaw': 0.}
+    for i in range(31):
+        value, _ = t.step(i*.1, measurement=deepcopy(target))
+    assert t.phase == 'relook' and not any(value['wheels'])
+    pans = []
+    # A visible measurement cannot shortcut the stationary sweep.
+    for i in range(31, 66):
+        value, _ = t.step(i*.1, measurement=deepcopy(target))
+        assert t.phase == 'relook' and not any(value['wheels'])
+        pans.append(value['pwm']['6'])
+    assert len(set(pans)) > 3
+    value, _ = t.step(6.6)
+    assert t.phase == 'relook' and not any(value['wheels'])
+    value, _ = t.step(6.7, measurement=deepcopy(target))
+    assert t.phase == 'align' and not any(value['wheels'])
+    t._begin_relook(6.8, 'test')
+    t._begin_relook(6.9, 'test')
+    assert t.result == 'alignment_no_progress'
+
+
+def test_six_diagnostic_plan_preserves_replays_and_appends_fresh_seeds():
+    import json
+    from pathlib import Path
+    from scripts.make_solo_teacher_plan import prepare
+    old = json.loads((Path(__file__).parents[1]/'experiments/2026-10-14-act-solo-teacher/solo-diagnostic-plan.json').read_text())
+    new = prepare(split='solo_diagnostic', fresh_diagnostics=True)
+    assert new['episodes'][:3] == old['episodes']
+    assert [p['seed'] for p in new['episodes']] == list(range(76900, 76906))
+    assert [p['kind'] for p in new['episodes']] == ['cyan', 'can', 'tile']*2
+    assert all(p['split'] == 'solo_diagnostic' and p['scenario_id'] != 's4_narrow_door_standoff_v4'
+               for p in new['episodes'])
+
+
 def test_runner_deferred_imports_resolve():
     """The runner imports its dependencies inside run(); resolve every from-import name."""
     import ast, importlib

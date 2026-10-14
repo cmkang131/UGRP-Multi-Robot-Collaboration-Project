@@ -18,18 +18,20 @@ def test_resume_checks_plan_speed_and_every_changed_execution_path(tmp_path,monk
     plan=tmp_path/'plan.json';plan.write_text('{"episodes": []}')
     def write(name,value):(prior/name).write_text(json.dumps(value))
     write('RUN_META.json',{'sha':'fixed'})
-    write('resource-admission.json',{'plan_sha256':hashlib.sha256(plan.read_bytes()).hexdigest()})
+    host={'schema':'ugrp.grasp_act.host.v1','provider':'gcp','project_id':'ugrp-act-train-1014',
+          'instance':'test','machine_type':'test-16','zone':'test-zone','cpu_count':16}
+    write('resource-admission.json',{'plan_sha256':hashlib.sha256(plan.read_bytes()).hexdigest(),'execution_host':host})
     write('speed-gate.json',{'admitted':True,'completed':16,'median_wall_per_sim':2.65})
     before={n:'old' for n in (*names,'scripts/run_grasp_act_batch.py')}
     after={**before,'scripts/run_grasp_act_batch.py':'new'}
     monkeypatch.setattr(module,'execution_tree',lambda p:before if p==baseline else after)
     monkeypatch.setattr(module.subprocess,'check_output',lambda *a,**k:'fixed\n')
-    _,proof=reuse_speed_gate(prior,plan,16,3.5)
+    _,proof=reuse_speed_gate(prior,plan,16,3.5,host)
     assert len(proof['identical_components_sha256'])==9
     after['sim/grasp_act_teacher.py']='changed'
-    with pytest.raises(ValueError,match='byte-identical'):reuse_speed_gate(prior,plan,16,3.5)
+    with pytest.raises(ValueError,match='byte-identical'):reuse_speed_gate(prior,plan,16,3.5,host)
     after['sim/grasp_act_teacher.py']='old';plan.write_text('{}')
-    with pytest.raises(ValueError,match='same frozen plan'):reuse_speed_gate(prior,plan,16,3.5)
+    with pytest.raises(ValueError,match='same frozen plan'):reuse_speed_gate(prior,plan,16,3.5,host)
 
 
 def test_exact_unfinished_indices_preserve_frozen_plan():

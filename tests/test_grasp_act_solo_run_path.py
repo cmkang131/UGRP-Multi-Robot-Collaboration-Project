@@ -176,12 +176,17 @@ def test_run_loop_executes_every_per_tick_name_with_stubbed_backend(backend):
     runner, world, runs = backend
     out = runs/'stub-run'
     report = runner.run(plan(), out, execution_host='gcp1', profile='solo_visible_only_v1',
-                        hidden=True, look=True, cap_s=.3)
+                        hidden=True, look=True, cap_s=.3,
+                        teacher_stability='align_relook_v1', reach_mode='pad_window_v2')
     assert report['status'] == 'complete', report
     rows = [json.loads(line) for line in (out/'eval-only.jsonl').read_text().splitlines()]
     assert len(rows) >= 2 and all(len(r['base_xyz']) == 3 for r in rows)
     assert (out/'review-own/000000.jpg').exists() and (out/'progress.json').exists()
     assert json.loads((out/'result.json').read_text())['status'] == 'complete'
+    assert report['teacher_stability'] == report['teacher']['teacher_stability'] == 'align_relook_v1'
+    assert report['reach_mode'] == report['teacher']['reach_mode'] == 'pad_window_v2'
+    trace = [json.loads(line) for line in (out/'teacher-commands.jsonl').read_text().splitlines()]
+    assert all(r['visible_target'] is not None for r in trace)
     assert world.closed
 
 
@@ -194,3 +199,21 @@ def test_run_loop_survives_a_target_that_is_never_visible(backend):
     finally:
         FakeVisibility.visible = True
     assert report['status'] == 'complete' and report['input_audit']['invisible_measurements'] == 0
+
+
+def test_run_loop_enters_stationary_relook_when_fake_base_cannot_progress(backend):
+    runner, world, runs = backend
+    # No physics: the base stays fixed despite issued wheel commands. The
+    # real runner must exercise align -> relook and persist the new diagnostics.
+    world.data.bodies['cargo_body'].xpos[0] = .215
+    out = runs/'stalled-align'
+    report = runner.run(plan(), out, execution_host='gcp1', profile='solo_visible_only_v1',
+                        hidden=True, look=True, cap_s=4.2,
+                        teacher_stability='align_relook_v1', reach_mode='pad_window_v2')
+    assert report['status'] == 'complete' and report['teacher']['alignment_relooks'] == 1
+    assert report['input_audit']['invisible_measurements'] == report['input_audit']['held_world_reads'] == 0
+    trace = [json.loads(line) for line in (out/'teacher-commands.jsonl').read_text().splitlines()]
+    align = [r['command'] for r in trace if r['phase'] == 'align' and any(r['command']['wheels'])]
+    assert align and all(.04 <= d <= .15 for c in align for w, d in zip(c['wheels'], c['duration_s']) if w)
+    relook = [r['command'] for r in trace if r['phase'] == 'relook']
+    assert relook and all(not any(c['wheels']) for c in relook)

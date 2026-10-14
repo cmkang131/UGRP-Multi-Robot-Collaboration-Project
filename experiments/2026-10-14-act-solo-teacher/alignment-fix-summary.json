@@ -1,0 +1,127 @@
+{
+  "schema": "ugrp.solo_alignment_fix.v1",
+  "date": "2026-10-14",
+  "diagnosed_source_sha": "8137e3d1f65e671d3d030fa4db88a72fe0a012bf",
+  "imported_through_sha": "b16930dc165903ba9595766e5c17e46cd8916bcb",
+  "candidate_source": "commit containing this record; exact SHA pinned by the external vm3 queue",
+  "historical_runs": [
+    {
+      "run": "solo-diag-0-8137e3d1",
+      "kind": "cyan",
+      "seed": 76900,
+      "status": "complete",
+      "physical_success": false,
+      "ik_rejections": 102,
+      "align_ticks": 600,
+      "align_nonzero_pulse_range_s": [
+        0.004509027888294037,
+        0.0321980183061436
+      ],
+      "final_body_to_cargo_m": 0.19922633441138235,
+      "arm_radius_lower_bound_m": 0.15102633441138236,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-8137e3d1/raw",
+      "sha256": {
+        "result.json": "604501d04e6639a3c40b742ed37bec62fff148e9d0d2525f83f3ee647c4b4023",
+        "teacher-commands.jsonl.zst": "6fabaff56b100790037694b05c0277c079327b682e92341469b4d087845608c6",
+        "eval-only.jsonl.zst": "1ee588471f1d3116acd16fd33330308218cf23b5346e4aa187a06b627c3a13e3",
+        "plan.json": "daebdeb72e96f281d3b546e6766a307ac1f7b8b29ddc78625ad6607fc00352a8"
+      }
+    },
+    {
+      "run": "solo-diag-1-8137e3d1",
+      "kind": "can",
+      "seed": 76901,
+      "status": "complete",
+      "physical_success": false,
+      "ik_rejections": 654,
+      "align_ticks": 600,
+      "align_nonzero_pulse_range_s": [
+        0.0023906256560998975,
+        0.04819633958166609
+      ],
+      "final_body_to_cargo_m": 0.21501830623505166,
+      "arm_radius_lower_bound_m": 0.16681830623505167,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-8137e3d1/raw",
+      "sha256": {
+        "result.json": "ab351cd5f1e90a9c0ece00160b10f1052ac88a6a7ef866b2ea2455eaa2c68e88",
+        "teacher-commands.jsonl.zst": "1455fc8ccd6bfdaf3cd0981c70819d8fb3cc555f698a74482c0601dd88cbe1f1",
+        "eval-only.jsonl.zst": "9f7fedc24c1774e161046f6145f3594785efad65e4c37f12a84a228dc3ad918d",
+        "plan.json": "01ce6e98e312e119a7fecb0bc1e0e4782310b93e342510484f9d8f8af70cae50"
+      },
+      "optimistic_ik_radius_scan": {
+        "z_m": 0.023857847002299246,
+        "radius_min_m": 0.16681830623505167,
+        "radius_max_m": 0.17991830623505167,
+        "step_m": 0.0001,
+        "feasible_n": 0,
+        "N": 132,
+        "scope": "pure command-space IK; radial lower bound valid for every base yaw; no physical replay"
+      }
+    },
+    {
+      "run": "solo-diag-2-8137e3d1",
+      "kind": "tile",
+      "seed": 76902,
+      "status": "complete",
+      "physical_success": false,
+      "ik_rejections": 132,
+      "align_ticks": 601,
+      "align_nonzero_pulse_range_s": [
+        0.0012286535615197963,
+        0.03596378030392464
+      ],
+      "final_body_to_cargo_m": 0.17492869516244763,
+      "arm_radius_lower_bound_m": 0.12672869516244764,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-8137e3d1/raw",
+      "sha256": {
+        "result.json": "805579e6bc3158dbedc7be3eecb61f1cd5e11065762e4f3728e93a3f74a9be3d",
+        "teacher-commands.jsonl.zst": "7efc3285cb7050013aa517b1043f465dbc4e4e2c5922006c37e7ab181f6703e4",
+        "eval-only.jsonl.zst": "f62a8a4cf8d5bca7c4f2ad26022d93a11819390e255ffe7d2cb53b2601542c71",
+        "plan.json": "d539e2ed97d34694cdda9baf32935b725c7a07373e8030389e9197d1a9c420ca"
+      }
+    }
+  ],
+  "historical_n": 0,
+  "historical_N": 3,
+  "candidate_remote_runs": 0,
+  "candidate_physical_success": null,
+  "training_episodes": 0,
+  "validation": {
+    "test_files": [
+      "tests/test_grasp_act_solo_teacher.py",
+      "tests/test_grasp_act_solo_run_path.py",
+      "tests/test_grasp_act_visible_only.py"
+    ],
+    "passed": 42,
+    "failed": 0,
+    "seconds": 1.24,
+    "mac_physics_runs": 0,
+    "mac_render_runs": 0,
+    "scope": "unit tests, real shared command-space IK, and run() with fake backend only"
+  },
+  "visual_review": {
+    "frames_viewed_by_this_change": 0,
+    "supplied_report": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-diag-8137e3d1.json",
+    "supplied_report_sha256": "858b1a3947d6f8c3b80667355024540ae392e38f92154c751226f75dd073ef06",
+    "supplied_report_scope": "7 own + 7 top frames per kind, 0/5/11/24/39/54 s and last; not independently reviewed here",
+    "blocker": "ssh gcp1 ProxyCommand requires gcloud to write credentials.db outside the writable sandbox; no frames retrieved"
+  },
+  "next": {
+    "plan": "experiments/2026-10-14-act-solo-teacher/solo-align-diagnostic-plan.json",
+    "plan_sha256": "86b7f9e04b64fd03e77e3f2e2b51a5dde41054cbef43c848d09043f54422b7b9",
+    "replay_seeds": [
+      76900,
+      76901,
+      76902
+    ],
+    "fresh_diagnostic_seeds": [
+      76903,
+      76904,
+      76905
+    ],
+    "teacher_stability": "align_relook_v1",
+    "reach_mode": "pad_window_v2",
+    "search_body_scan_v1": "absent",
+    "qualification_gate": false
+  }
+}

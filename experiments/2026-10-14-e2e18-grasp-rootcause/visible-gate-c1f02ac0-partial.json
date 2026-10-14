@@ -1,0 +1,1850 @@
+{
+  "gate_path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/teacher-gate.json",
+  "gate_sha256": "4fbd0d28a4422b8cfe509d208b89bc1d492a9e0ab4cdcbab7e77123fd9caae75",
+  "gate": {
+    "object_kind": "long_beam",
+    "n": 12,
+    "N": 16,
+    "planned_N": 40,
+    "started_N": 32,
+    "joint_held_n": 12,
+    "robots": {
+      "r1": {
+        "n": 12,
+        "N": 16
+      },
+      "r2": {
+        "n": 12,
+        "N": 16
+      }
+    },
+    "failure_reasons": {
+      "episode_timeout": 8
+    },
+    "host_errors": 0,
+    "interrupted": 16,
+    "source_sha": "c1f02ac0a81f50d0235823a845c31f1d4116c9e9",
+    "teacher_profile": "visible_only",
+    "plan_sha256": "0f65e283f06ef144a0584f2caa3cc7e327c92986b55ed34c83c8d8c1d0f09cde",
+    "self_pose_source": "issued",
+    "criteria": {
+      "min_z_m": 0.012,
+      "max_tilt_deg": 10.0,
+      "hold_s": 3.0
+    },
+    "qualified": false
+  },
+  "stages": {
+    "all": {
+      "visible_n": 9578,
+      "in_frame_n": 10230,
+      "N": 12820,
+      "moving_n": 6874,
+      "blind_moving_n": 1961
+    },
+    "approach": {
+      "visible_n": 5537,
+      "in_frame_n": 5763,
+      "N": 6863,
+      "moving_n": 5303,
+      "blind_moving_n": 862
+    },
+    "alignment": {
+      "visible_n": 646,
+      "in_frame_n": 656,
+      "N": 806,
+      "moving_n": 442,
+      "blind_moving_n": 110
+    },
+    "ready": {
+      "visible_n": 3232,
+      "in_frame_n": 3232,
+      "N": 3232,
+      "moving_n": 1,
+      "blind_moving_n": 0
+    },
+    "hover": {
+      "visible_n": 163,
+      "in_frame_n": 188,
+      "N": 264,
+      "moving_n": 240,
+      "blind_moving_n": 101
+    },
+    "descent": {
+      "visible_n": 0,
+      "in_frame_n": 2,
+      "N": 384,
+      "moving_n": 360,
+      "blind_moving_n": 360
+    },
+    "grasp": {
+      "visible_n": 0,
+      "in_frame_n": 94,
+      "N": 312,
+      "moving_n": 216,
+      "blind_moving_n": 216
+    },
+    "lift": {
+      "visible_n": 0,
+      "in_frame_n": 119,
+      "N": 408,
+      "moving_n": 312,
+      "blind_moving_n": 312
+    },
+    "command_complete": {
+      "visible_n": 0,
+      "in_frame_n": 176,
+      "N": 551,
+      "moving_n": 0,
+      "blind_moving_n": 0
+    }
+  },
+  "episodes": [
+    {
+      "index": 0,
+      "physical_success": true,
+      "sim_s": 29.800000000059686,
+      "wall_per_sim": 2.800867907074913,
+      "actors": {
+        "r1": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 8.299999999999986,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 8.299999999999986,
+          "max_pick_unseen_s": 4.999999999999998
+        },
+        "r2": {
+          "first_seen_s": 1.3999999999994015,
+          "max_unseen_s": 6.8999999999999915,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.8999999999999915,
+          "max_pick_unseen_s": 4.999999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 408,
+          "in_frame_n": 473,
+          "N": 598,
+          "moving_n": 301,
+          "blind_moving_n": 104
+        },
+        "approach": {
+          "visible_n": 172,
+          "in_frame_n": 173,
+          "N": 210,
+          "moving_n": 194,
+          "blind_moving_n": 22
+        },
+        "alignment": {
+          "visible_n": 15,
+          "in_frame_n": 15,
+          "N": 15,
+          "moving_n": 13,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 207,
+          "in_frame_n": 207,
+          "N": 207,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 14,
+          "in_frame_n": 16,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 8
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 13,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 17,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 32,
+          "N": 52,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-000/raw/eval-only.jsonl.zst",
+          "sha256": "236821020653c1822be1dcfba58df4aad56cce7b0a31d829206a73bb80a84557"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-000/raw/teacher-r1.jsonl.zst",
+          "sha256": "8129d1cb3a83a0d1816f9bca357097360f4c1c87b890797e5a9515c7c0b89ed3"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-000/raw/teacher-r2.jsonl.zst",
+          "sha256": "bb3936515b65ba4e5ca5e395089602d69bc7ca4c74b38c6012abed8d23e9c2ff"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-000/raw/plan.json",
+          "sha256": "f405159254436cd5223e31bdcddc9c3bdfc625adfa17bd72c56725c586e104b0"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-000/raw/result.json",
+          "sha256": "b7e91fbb70e62bddd7c0a9dcb643046ae850c8f4467cf67cadad58005550f114"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-000/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-000/raw/manifest.json",
+          "sha256": "c70487042917e8948b94fa8b09530591700a1ab285b35058cb7463ceaf167327"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "physical_success": false,
+      "sim_s": 60.00000000020389,
+      "wall_per_sim": 3.5901548149544573,
+      "actors": {
+        "r1": {
+          "first_seen_s": 0.799999999999734,
+          "max_unseen_s": 0.7999999999999999,
+          "max_blind_motion_s": 0.1,
+          "max_unseen_after_first_seen_s": 0.0,
+          "max_pick_unseen_s": 0.0
+        },
+        "r2": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 2.400000000000001,
+          "max_blind_motion_s": 0.9999999999999999,
+          "max_unseen_after_first_seen_s": 0.2,
+          "max_pick_unseen_s": 0.0
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 1166,
+          "in_frame_n": 1168,
+          "N": 1200,
+          "moving_n": 255,
+          "blind_moving_n": 16
+        },
+        "approach": {
+          "visible_n": 753,
+          "in_frame_n": 755,
+          "N": 787,
+          "moving_n": 245,
+          "blind_moving_n": 16
+        },
+        "alignment": {
+          "visible_n": 12,
+          "in_frame_n": 12,
+          "N": 12,
+          "moving_n": 10,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 401,
+          "in_frame_n": 401,
+          "N": 401,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-001/raw/eval-only.jsonl.zst",
+          "sha256": "7c99809d6fed41ed986d4fe8eabe224e0e39fc0d23f2b11b75508fecf2c2d729"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-001/raw/teacher-r1.jsonl.zst",
+          "sha256": "d67cffb01ace15d30214158318ea5cfd6ea61041618304f90a896d804646bd2d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-001/raw/teacher-r2.jsonl.zst",
+          "sha256": "639b3aa0c5e645b65d4f6fa31029fbc7d43c54c7d2097fe09c77b32d51312a9e"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-001/raw/plan.json",
+          "sha256": "ab9597be6f7fc8eb8a95b7db4b260e232b6c017160a2fb48a49d3dc9f5fe869e"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-001/raw/result.json",
+          "sha256": "78d9a1efcd4499741cd5be60f1f6d86fee35ab73bb95aa335c7c292cc813b30a"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-001/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-001/raw/manifest.json",
+          "sha256": "0693732083946cc59276f2e7baf4aff8d2b58114656e92a7ade028cc5e3d96ce"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "physical_success": true,
+      "sim_s": 30.80000000006446,
+      "wall_per_sim": 2.7334777625592164,
+      "actors": {
+        "r1": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 7.999999999999988,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 7.999999999999988,
+          "max_pick_unseen_s": 4.999999999999998
+        },
+        "r2": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 6.8999999999999915,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.8999999999999915,
+          "max_pick_unseen_s": 4.999999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 421,
+          "in_frame_n": 423,
+          "N": 618,
+          "moving_n": 464,
+          "blind_moving_n": 110
+        },
+        "approach": {
+          "visible_n": 322,
+          "in_frame_n": 322,
+          "N": 370,
+          "moving_n": 350,
+          "blind_moving_n": 28
+        },
+        "alignment": {
+          "visible_n": 25,
+          "in_frame_n": 25,
+          "N": 25,
+          "moving_n": 20,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 60,
+          "in_frame_n": 60,
+          "N": 60,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 14,
+          "in_frame_n": 16,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 8
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 49,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-002/raw/eval-only.jsonl.zst",
+          "sha256": "57cdb001c04e4b4bc985ae0983cff7d20759e330986422ebc75056117ca8d682"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-002/raw/teacher-r1.jsonl.zst",
+          "sha256": "640b550db06753ba38486b6d54885e9a120472e5a648ee3c504c4c69ddf52ee7"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-002/raw/teacher-r2.jsonl.zst",
+          "sha256": "f6aad4de91ac3f51b6494a7b1f31f877aabef9005b88084a7f26d80a2a476e91"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-002/raw/plan.json",
+          "sha256": "25478a9ba802251eb25ddb93b4d44f2e851cc0be08b49cddec134f19fcda41ea"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-002/raw/result.json",
+          "sha256": "6019d96c1b1c961ba77f7792d5062e5b07d50b414e42935e145c4cd4c37bb87f"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-002/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-002/raw/manifest.json",
+          "sha256": "f3ef069842bfbc690ef3387db321a8e1aa90fd12f1c50268231a76d6a8f09be8"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "physical_success": false,
+      "sim_s": 60.00000000020389,
+      "wall_per_sim": 3.240080992005667,
+      "actors": {
+        "r1": {
+          "first_seen_s": 9.599999999995921,
+          "max_unseen_s": 9.599999999999982,
+          "max_blind_motion_s": 6.399999999999993,
+          "max_unseen_after_first_seen_s": 0.0,
+          "max_pick_unseen_s": 0.0
+        },
+        "r2": {
+          "first_seen_s": 0.9999999999996232,
+          "max_unseen_s": 0.9999999999999999,
+          "max_blind_motion_s": 0.30000000000000004,
+          "max_unseen_after_first_seen_s": 0.0,
+          "max_pick_unseen_s": 0.0
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 1094,
+          "in_frame_n": 1094,
+          "N": 1200,
+          "moving_n": 88,
+          "blind_moving_n": 87
+        },
+        "approach": {
+          "visible_n": 504,
+          "in_frame_n": 504,
+          "N": 610,
+          "moving_n": 87,
+          "blind_moving_n": 87
+        },
+        "alignment": {
+          "visible_n": 4,
+          "in_frame_n": 4,
+          "N": 4,
+          "moving_n": 1,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 586,
+          "in_frame_n": 586,
+          "N": 586,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-003/raw/eval-only.jsonl.zst",
+          "sha256": "9d32ce6e96bf0d938515f5557ff03e186c7f22916272dca3cf96a96efafd933d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-003/raw/teacher-r1.jsonl.zst",
+          "sha256": "82d6f7aca4e2d541763d33091f0b53485ebc4977f1e5558df912ede255084e2d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-003/raw/teacher-r2.jsonl.zst",
+          "sha256": "6b2b8c30cb3c2091ef68e730858c913acfa22d529c9d9661e147f9475b517cb8"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-003/raw/plan.json",
+          "sha256": "4e1f41a8eef18f79a1b6e99fbdf2fc831e3749d0a19b53c6a5ee700a383d99da"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-003/raw/result.json",
+          "sha256": "be6344a9f12881bd9576ea98823848f7fc23ae84a4e7e1bd589680d6c36b2704"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-003/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-003/raw/manifest.json",
+          "sha256": "a5429012ce95c5a10ba67e5b28bf59ae50e1d431cf96e72075063435289c588b"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "physical_success": true,
+      "sim_s": 23.400000000029127,
+      "wall_per_sim": 2.8729257522613842,
+      "actors": {
+        "r1": {
+          "first_seen_s": 0.799999999999734,
+          "max_unseen_s": 7.39999999999999,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 7.39999999999999,
+          "max_pick_unseen_s": 5.099999999999998
+        },
+        "r2": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 6.8999999999999915,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.8999999999999915,
+          "max_pick_unseen_s": 4.999999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 295,
+          "in_frame_n": 403,
+          "N": 470,
+          "moving_n": 361,
+          "blind_moving_n": 97
+        },
+        "approach": {
+          "visible_n": 234,
+          "in_frame_n": 242,
+          "N": 266,
+          "moving_n": 248,
+          "blind_moving_n": 14
+        },
+        "alignment": {
+          "visible_n": 25,
+          "in_frame_n": 25,
+          "N": 25,
+          "moving_n": 19,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 23,
+          "in_frame_n": 23,
+          "N": 23,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 13,
+          "in_frame_n": 15,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 9
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 22,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 34,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 42,
+          "N": 42,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-004/raw/eval-only.jsonl.zst",
+          "sha256": "0552b9a1ebd8ba1828d7021581ccf9488ac8cc31befe818d89e6f98648a4f241"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-004/raw/teacher-r1.jsonl.zst",
+          "sha256": "d5c4f1d9324a73216a85613e18acc18557d0cd82a59b8616c5a9783cb6f736c1"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-004/raw/teacher-r2.jsonl.zst",
+          "sha256": "50e43cec1eb02da6c420bab259fddff687cc67e72f2a1670c64f2d42cc5d1d33"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-004/raw/plan.json",
+          "sha256": "2d4ccdb42dfbfafdd3cfc5781fbc41e32058728f4ceb734aef0158ffda86dd70"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-004/raw/result.json",
+          "sha256": "41e0b897e96f0a3922b450c01419674ad223f800a6afb79d38da2d30f8996d56"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-004/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-004/raw/manifest.json",
+          "sha256": "1d76fe2e63fadeb2cf102e055ad5cba25e54bf5de4e2b0dfdccf2af24bd51cd7"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "physical_success": true,
+      "sim_s": 31.400000000067326,
+      "wall_per_sim": 2.8337852683697218,
+      "actors": {
+        "r1": {
+          "first_seen_s": 0.0,
+          "max_unseen_s": 7.099999999999991,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 7.099999999999991,
+          "max_pick_unseen_s": 5.099999999999998
+        },
+        "r2": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 6.8999999999999915,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.8999999999999915,
+          "max_pick_unseen_s": 4.999999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 466,
+          "in_frame_n": 517,
+          "N": 630,
+          "moving_n": 435,
+          "blind_moving_n": 100
+        },
+        "approach": {
+          "visible_n": 310,
+          "in_frame_n": 310,
+          "N": 334,
+          "moving_n": 320,
+          "blind_moving_n": 17
+        },
+        "alignment": {
+          "visible_n": 27,
+          "in_frame_n": 27,
+          "N": 27,
+          "moving_n": 21,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 116,
+          "in_frame_n": 116,
+          "N": 116,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 13,
+          "in_frame_n": 15,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 9
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 12,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 17,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 20,
+          "N": 39,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-005/raw/eval-only.jsonl.zst",
+          "sha256": "16bb312003ca8f76dc52f5b8694261855ce6c13319358d5ca5dcd2e459029b16"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-005/raw/teacher-r1.jsonl.zst",
+          "sha256": "4e0f027da4e3483b7e289bebdb6d283ea5fdbb939cc2dd51ad88e54932cc579d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-005/raw/teacher-r2.jsonl.zst",
+          "sha256": "0552792fd9a7b57aca8fc901116eed19914af17e20868523c81e8a4ed308c4ed"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-005/raw/plan.json",
+          "sha256": "0e65a7a6c4294b6baea0b9ed5b50bcd863dc2c6e09c87471cf9996d8f3dea2c8"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-005/raw/result.json",
+          "sha256": "a8a494b65be5d9fad73d830a83c1764592d0b14a1bc643a9b9748c9a935fa805"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-005/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-005/raw/manifest.json",
+          "sha256": "5c41fab6693ffdc8e37934a2a223c84b917166ea8db5f053d93f30330e99dbfd"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "physical_success": true,
+      "sim_s": 34.50000000008213,
+      "wall_per_sim": 2.778766483790475,
+      "actors": {
+        "r1": {
+          "first_seen_s": 4.700000000002014,
+          "max_unseen_s": 7.39999999999999,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 7.39999999999999,
+          "max_pick_unseen_s": 4.999999999999998
+        },
+        "r2": {
+          "first_seen_s": 1.1999999999995123,
+          "max_unseen_s": 6.8999999999999915,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.8999999999999915,
+          "max_pick_unseen_s": 4.999999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 490,
+          "in_frame_n": 498,
+          "N": 692,
+          "moving_n": 341,
+          "blind_moving_n": 112
+        },
+        "approach": {
+          "visible_n": 205,
+          "in_frame_n": 206,
+          "N": 264,
+          "moving_n": 235,
+          "blind_moving_n": 30
+        },
+        "alignment": {
+          "visible_n": 15,
+          "in_frame_n": 15,
+          "N": 15,
+          "moving_n": 12,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 256,
+          "in_frame_n": 256,
+          "N": 256,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 14,
+          "in_frame_n": 16,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 8
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 5,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 43,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-006/raw/eval-only.jsonl.zst",
+          "sha256": "8f4f4e5e39e8c1173e33493641b689c0a5dd04e48362b8e90e321b63348f5de1"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-006/raw/teacher-r1.jsonl.zst",
+          "sha256": "a54a060ba9b3c352b02bd6043b1a64418893e2787dffa95a43c3556ada15cbf0"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-006/raw/teacher-r2.jsonl.zst",
+          "sha256": "3dd62b10ba3f23052cfd7d3e85f561ee70900043c34cab58df4cd9a5f83190ea"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-006/raw/plan.json",
+          "sha256": "66dc2d54fc3546dfc05dd450519618aff627a6120c924ab07c6af33c03a162b0"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-006/raw/result.json",
+          "sha256": "a5ad06dd6fddcc462c07144d1c959943e189ddc01fac0548c37ed3b0778cdc2d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-006/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-006/raw/manifest.json",
+          "sha256": "8bc1aa79491bbef705a30df46fe54b7008cc5277fadbc0d8f22593cc1ef56dac"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "physical_success": true,
+      "sim_s": 41.20000000011412,
+      "wall_per_sim": 2.6924747531964117,
+      "actors": {
+        "r1": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 10.399999999999979,
+          "max_blind_motion_s": 5.299999999999997,
+          "max_unseen_after_first_seen_s": 10.399999999999979,
+          "max_pick_unseen_s": 4.999999999999998
+        },
+        "r2": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 6.8999999999999915,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.8999999999999915,
+          "max_pick_unseen_s": 4.999999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 523,
+          "in_frame_n": 590,
+          "N": 826,
+          "moving_n": 582,
+          "blind_moving_n": 173
+        },
+        "approach": {
+          "visible_n": 382,
+          "in_frame_n": 447,
+          "N": 547,
+          "moving_n": 468,
+          "blind_moving_n": 91
+        },
+        "alignment": {
+          "visible_n": 25,
+          "in_frame_n": 25,
+          "N": 25,
+          "moving_n": 20,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 102,
+          "in_frame_n": 102,
+          "N": 102,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 14,
+          "in_frame_n": 16,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 8
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 38,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-007/raw/eval-only.jsonl.zst",
+          "sha256": "8d0b6eabdaa589b4294218f06d2ba6b9043bd12b1ba2f06dd0538f0923f49f7f"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-007/raw/teacher-r1.jsonl.zst",
+          "sha256": "689a86123d6c0bc123407b393dd4cf783ec040babc4d8257cb4d64ba69193161"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-007/raw/teacher-r2.jsonl.zst",
+          "sha256": "8882dccd80224874557b83defa8930f979d89db12f80c6c52f635855dfc70a21"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-007/raw/plan.json",
+          "sha256": "cd43197c35c19e76a3709d528a2ba137daa5c9d38cee38291581b01fb20f1519"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-007/raw/result.json",
+          "sha256": "bbcfa47858141b58fc77e50f245404e517197a893807ab2951c5b71ad52581ba"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-007/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-007/raw/manifest.json",
+          "sha256": "a002037f6faa82b27d4fdb47f50b2275052b6f7f4d8577762b12503e0540f7d8"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "physical_success": true,
+      "sim_s": 31.500000000067804,
+      "wall_per_sim": 2.886752024152531,
+      "actors": {
+        "r1": {
+          "first_seen_s": 0.0,
+          "max_unseen_s": 8.299999999999986,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 8.299999999999986,
+          "max_pick_unseen_s": 4.999999999999998
+        },
+        "r2": {
+          "first_seen_s": 0.0,
+          "max_unseen_s": 6.8999999999999915,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.8999999999999915,
+          "max_pick_unseen_s": 4.999999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 466,
+          "in_frame_n": 484,
+          "N": 632,
+          "moving_n": 504,
+          "blind_moving_n": 89
+        },
+        "approach": {
+          "visible_n": 398,
+          "in_frame_n": 412,
+          "N": 412,
+          "moving_n": 391,
+          "blind_moving_n": 7
+        },
+        "alignment": {
+          "visible_n": 24,
+          "in_frame_n": 24,
+          "N": 24,
+          "moving_n": 18,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 30,
+          "in_frame_n": 30,
+          "N": 30,
+          "moving_n": 1,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 14,
+          "in_frame_n": 16,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 8
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 2,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 52,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-008/raw/eval-only.jsonl.zst",
+          "sha256": "bfa867e030cebc29d84d845717baa5c16fa2763165bce2797df96d4b3141c100"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-008/raw/teacher-r1.jsonl.zst",
+          "sha256": "b99ae06b92cc49f7e13eea6ca8e72ceeb633a2c47e865f3a43c3c1bedd91e42f"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-008/raw/teacher-r2.jsonl.zst",
+          "sha256": "8fc41a1fdfed5f65202d1475c7c6549e2da37ec61e6d2960404e0a189b9070cd"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-008/raw/plan.json",
+          "sha256": "61914354ab95b5288662d0d2c0353492fb97193638e543f5ea656e66b80f0f66"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-008/raw/result.json",
+          "sha256": "2aa7ef901ef1d89774f281186d4de5acb49f688aa4729947440238e785b3d114"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-008/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-008/raw/manifest.json",
+          "sha256": "a4d9302766a2a9d72ab7d731d953126784ab428eeed0a15b7a69dda60bf65bf2"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "physical_success": false,
+      "sim_s": 60.00000000020389,
+      "wall_per_sim": 2.928860908373378,
+      "actors": {
+        "r1": {
+          "first_seen_s": 17.70000000000191,
+          "max_unseen_s": 17.69999999999998,
+          "max_blind_motion_s": 14.499999999999964,
+          "max_unseen_after_first_seen_s": 11.599999999999975,
+          "max_pick_unseen_s": 0.0
+        },
+        "r2": {
+          "first_seen_s": 1.6999999999992352,
+          "max_unseen_s": 15.99999999999996,
+          "max_blind_motion_s": 10.899999999999977,
+          "max_unseen_after_first_seen_s": 15.99999999999996,
+          "max_pick_unseen_s": 0.0
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 720,
+          "in_frame_n": 795,
+          "N": 1200,
+          "moving_n": 730,
+          "blind_moving_n": 349
+        },
+        "approach": {
+          "visible_n": 297,
+          "in_frame_n": 362,
+          "N": 617,
+          "moving_n": 518,
+          "blind_moving_n": 239
+        },
+        "alignment": {
+          "visible_n": 103,
+          "in_frame_n": 113,
+          "N": 263,
+          "moving_n": 212,
+          "blind_moving_n": 110
+        },
+        "ready": {
+          "visible_n": 320,
+          "in_frame_n": 320,
+          "N": 320,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-009/raw/eval-only.jsonl.zst",
+          "sha256": "d04a36e85174b0da82fe202aac12076289b3b366bb2f952969718d8412a3b025"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-009/raw/teacher-r1.jsonl.zst",
+          "sha256": "722b52ad635662bd09f8319b96f548e0df7d9b203380caaa2c1431f4292b2642"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-009/raw/teacher-r2.jsonl.zst",
+          "sha256": "76c3945c0450fcaa543c7922684238f9feb6e60a8f91a1d84167554b2b5649b3"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-009/raw/plan.json",
+          "sha256": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-009/raw/result.json",
+          "sha256": "75a5a75417e82e7fcaa127578067877dfd10df9ea57b40eed740fc0d8828a2c6"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-009/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-009/raw/manifest.json",
+          "sha256": "9de6bab2c1dd4b4abffe6431e6a3640574d058d9c825ed9ec4c93b8b22dbc3d6"
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "physical_success": true,
+      "sim_s": 50.60000000015901,
+      "wall_per_sim": 2.7768395658213216,
+      "actors": {
+        "r1": {
+          "first_seen_s": 0.0,
+          "max_unseen_s": 7.699999999999989,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 7.699999999999989,
+          "max_pick_unseen_s": 4.999999999999998
+        },
+        "r2": {
+          "first_seen_s": 2.2999999999990806,
+          "max_unseen_s": 11.499999999999975,
+          "max_blind_motion_s": 6.399999999999993,
+          "max_unseen_after_first_seen_s": 11.499999999999975,
+          "max_pick_unseen_s": 4.999999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 724,
+          "in_frame_n": 784,
+          "N": 1014,
+          "moving_n": 776,
+          "blind_moving_n": 169
+        },
+        "approach": {
+          "visible_n": 579,
+          "in_frame_n": 637,
+          "N": 723,
+          "moving_n": 659,
+          "blind_moving_n": 87
+        },
+        "alignment": {
+          "visible_n": 27,
+          "in_frame_n": 27,
+          "N": 27,
+          "moving_n": 23,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 104,
+          "in_frame_n": 104,
+          "N": 104,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 14,
+          "in_frame_n": 16,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 8
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 46,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-010/raw/eval-only.jsonl.zst",
+          "sha256": "8d387bd28bc433c9d55baac6f5620e3c3d5f59aeaab1b9701512f56ff1100d73"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-010/raw/teacher-r1.jsonl.zst",
+          "sha256": "0d75d29fc3e23b92a766db367cfec7a3f1ab6d532e3952c662da650b50f441ba"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-010/raw/teacher-r2.jsonl.zst",
+          "sha256": "8cf5d5d5ec775e1eee622bd074f141a3ef12f274c449836b26909584cff0f124"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-010/raw/plan.json",
+          "sha256": "ab522cb655342113511c6f40cb3c54afff26a2da92cf91ad9de97a5a57580c29"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-010/raw/result.json",
+          "sha256": "7659e33283405395cd0ba6747e7743787b59bbec96262271726d393d1d0ff811"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-010/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-010/raw/manifest.json",
+          "sha256": "6582e5038d36ba15f4b87ae9bcbf345f305f00eb583dbede2adc5aa076e02953"
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "physical_success": false,
+      "sim_s": 60.00000000020389,
+      "wall_per_sim": 2.6093722762244704,
+      "actors": {
+        "r1": {
+          "first_seen_s": 0.0,
+          "max_unseen_s": 0.0,
+          "max_blind_motion_s": 0.0,
+          "max_unseen_after_first_seen_s": 0.0,
+          "max_pick_unseen_s": 0.0
+        },
+        "r2": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 2.400000000000001,
+          "max_blind_motion_s": 0.9999999999999999,
+          "max_unseen_after_first_seen_s": 0.7,
+          "max_pick_unseen_s": 0.0
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 1166,
+          "in_frame_n": 1176,
+          "N": 1200,
+          "moving_n": 428,
+          "blind_moving_n": 17
+        },
+        "approach": {
+          "visible_n": 410,
+          "in_frame_n": 420,
+          "N": 444,
+          "moving_n": 410,
+          "blind_moving_n": 17
+        },
+        "alignment": {
+          "visible_n": 265,
+          "in_frame_n": 265,
+          "N": 265,
+          "moving_n": 18,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 491,
+          "in_frame_n": 491,
+          "N": 491,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-011/raw/eval-only.jsonl.zst",
+          "sha256": "58ad0d499671c5b04e83b16ab34866d1480968b6463c1b01ab2e1a49fab49f5d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-011/raw/teacher-r1.jsonl.zst",
+          "sha256": "f3fe56f80bceb5b23fc0c6bcf668a1e1c44ad1fc55038f2558973d9c586c5972"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-011/raw/teacher-r2.jsonl.zst",
+          "sha256": "b4ebb3d96853d4d08603fa2ea5d9eab1da6fe95b0fb58ecd4bf0e5b9f29656e5"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-011/raw/plan.json",
+          "sha256": "3f9524a9542566a17b0a0f9bb882cb83393ff45a04411a55d84b78849b761c52"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-011/raw/result.json",
+          "sha256": "2939a5722f78fd7518d8cef69fed3a9f0060baad84cfd9b910c81be887aeadf6"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-011/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-011/raw/manifest.json",
+          "sha256": "1e84bcbeef2fed7367999b097455da6a8e55c34645da2d42f2c19ed63d929b83"
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "physical_success": true,
+      "sim_s": 32.20000000007115,
+      "wall_per_sim": 2.930088106981117,
+      "actors": {
+        "r1": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 7.999999999999988,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 7.999999999999988,
+          "max_pick_unseen_s": 4.999999999999998
+        },
+        "r2": {
+          "first_seen_s": 0.9999999999996232,
+          "max_unseen_s": 6.999999999999991,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.999999999999991,
+          "max_pick_unseen_s": 5.099999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 462,
+          "in_frame_n": 527,
+          "N": 646,
+          "moving_n": 315,
+          "blind_moving_n": 97
+        },
+        "approach": {
+          "visible_n": 198,
+          "in_frame_n": 199,
+          "N": 232,
+          "moving_n": 212,
+          "blind_moving_n": 14
+        },
+        "alignment": {
+          "visible_n": 16,
+          "in_frame_n": 16,
+          "N": 16,
+          "moving_n": 9,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 235,
+          "in_frame_n": 235,
+          "N": 235,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 13,
+          "in_frame_n": 15,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 9
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 2,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 13,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 17,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 30,
+          "N": 49,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-012/raw/eval-only.jsonl.zst",
+          "sha256": "910f380f37385ae0fd6806622f4a0106cadcbcf5dafee8d33c4497e65b9902f8"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-012/raw/teacher-r1.jsonl.zst",
+          "sha256": "810ad68026dd606bc832bbc9382aec9f28b237ea9151bc5f8798287453342087"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-012/raw/teacher-r2.jsonl.zst",
+          "sha256": "3c13c3ffd096358e9365d309af1cb16761f02e048facaf2d884b2e21af962d25"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-012/raw/plan.json",
+          "sha256": "10b4fc4520f868eb97dfaef99fac653c1cbf4a948cf373ce9d11d729026dda7e"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-012/raw/result.json",
+          "sha256": "8e356320e52dc722dedefd2b46da5d21d2c90ef29d7955fe1ae1c782c87c82ee"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-012/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-012/raw/manifest.json",
+          "sha256": "181c100adf7be8974b3bdec9ee94265e0d33ba15127cf6a0ef2e5a9eaa6f202d"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "physical_success": true,
+      "sim_s": 34.30000000008118,
+      "wall_per_sim": 2.765805939731048,
+      "actors": {
+        "r1": {
+          "first_seen_s": 9.599999999995921,
+          "max_unseen_s": 9.599999999999982,
+          "max_blind_motion_s": 6.399999999999993,
+          "max_unseen_after_first_seen_s": 8.399999999999986,
+          "max_pick_unseen_s": 5.099999999999998
+        },
+        "r2": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 6.8999999999999915,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.8999999999999915,
+          "max_pick_unseen_s": 4.999999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 415,
+          "in_frame_n": 482,
+          "N": 688,
+          "moving_n": 506,
+          "blind_moving_n": 174
+        },
+        "approach": {
+          "visible_n": 303,
+          "in_frame_n": 303,
+          "N": 423,
+          "moving_n": 394,
+          "blind_moving_n": 91
+        },
+        "alignment": {
+          "visible_n": 24,
+          "in_frame_n": 24,
+          "N": 24,
+          "moving_n": 18,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 75,
+          "in_frame_n": 75,
+          "N": 75,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 13,
+          "in_frame_n": 16,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 9
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 14,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 17,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 33,
+          "N": 52,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-013/raw/eval-only.jsonl.zst",
+          "sha256": "d7a1fd4770edb3f26fd49ae75f266347f65cf19aed4b7d307c7dc063194a81ad"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-013/raw/teacher-r1.jsonl.zst",
+          "sha256": "b20b539dcd0f6de303789bba693b8dc0bb0b89a1fa5943493ca5c9cf13a06043"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-013/raw/teacher-r2.jsonl.zst",
+          "sha256": "626b3dd2da3c67ab84200c3e26c808e707c7236e0a154327d99b47f4334fa119"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-013/raw/plan.json",
+          "sha256": "37f6acbcaf3c2e36e05934e18ca7f5e46026c250d3ba89ba5def621f40b25783"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-013/raw/result.json",
+          "sha256": "f81cfd0f2b737a3070d5829fc1408657a963a8047e93474ccdea9feba7c391cf"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-013/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-013/raw/manifest.json",
+          "sha256": "7d67c4fc5972a68e22217125a765a2fc18f7fcf91289c7a0cae20c6d4073aa7d"
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "physical_success": true,
+      "sim_s": 33.40000000007688,
+      "wall_per_sim": 2.6732664108321798,
+      "actors": {
+        "r1": {
+          "first_seen_s": 9.599999999995921,
+          "max_unseen_s": 9.599999999999982,
+          "max_blind_motion_s": 6.399999999999993,
+          "max_unseen_after_first_seen_s": 6.8999999999999915,
+          "max_pick_unseen_s": 4.999999999999998
+        },
+        "r2": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 6.799999999999992,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.799999999999992,
+          "max_pick_unseen_s": 4.999999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 413,
+          "in_frame_n": 464,
+          "N": 670,
+          "moving_n": 532,
+          "blind_moving_n": 172
+        },
+        "approach": {
+          "visible_n": 329,
+          "in_frame_n": 329,
+          "N": 449,
+          "moving_n": 419,
+          "blind_moving_n": 90
+        },
+        "alignment": {
+          "visible_n": 24,
+          "in_frame_n": 24,
+          "N": 24,
+          "moving_n": 19,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 46,
+          "in_frame_n": 46,
+          "N": 46,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 14,
+          "in_frame_n": 16,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 8
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 13,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 17,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 19,
+          "N": 37,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-014/raw/eval-only.jsonl.zst",
+          "sha256": "591dc1661146a760cbb499ce2fa86c5b6b73c465f0d65a14ed5bdd689a1beeb2"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-014/raw/teacher-r1.jsonl.zst",
+          "sha256": "372eb79532fffccd5d5158281589b8ff7cc0ca9216cf62c839bb8fe71c437873"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-014/raw/teacher-r2.jsonl.zst",
+          "sha256": "39e0d8aa1f083549da7f306bd3ca67c7d10963d17e1e78080457ed66f9a99ec9"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-014/raw/plan.json",
+          "sha256": "ae21f15d6bee95aacc5fbac6bb54f18faf5b92739b3fb3663ff0e630cf5da3a8"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-014/raw/result.json",
+          "sha256": "aa8208fa42b77230459a21633db308167103287bcb2099361f7bbddad6cc8f7d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-014/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-014/raw/manifest.json",
+          "sha256": "5c6828933332f2a924f88fa767c307824e9a07ffbc4a7d978a9a5a01cafbca1e"
+        }
+      ]
+    },
+    {
+      "index": 15,
+      "physical_success": true,
+      "sim_s": 26.700000000044884,
+      "wall_per_sim": 2.900987520070038,
+      "actors": {
+        "r1": {
+          "first_seen_s": 2.3999999999992028,
+          "max_unseen_s": 8.299999999999986,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 8.299999999999986,
+          "max_pick_unseen_s": 4.999999999999998
+        },
+        "r2": {
+          "first_seen_s": 0.9999999999996232,
+          "max_unseen_s": 6.999999999999991,
+          "max_blind_motion_s": 2.400000000000001,
+          "max_unseen_after_first_seen_s": 6.999999999999991,
+          "max_pick_unseen_s": 5.099999999999998
+        }
+      },
+      "stages": {
+        "all": {
+          "visible_n": 349,
+          "in_frame_n": 352,
+          "N": 536,
+          "moving_n": 256,
+          "blind_moving_n": 95
+        },
+        "approach": {
+          "visible_n": 141,
+          "in_frame_n": 142,
+          "N": 175,
+          "moving_n": 153,
+          "blind_moving_n": 12
+        },
+        "alignment": {
+          "visible_n": 15,
+          "in_frame_n": 15,
+          "N": 15,
+          "moving_n": 9,
+          "blind_moving_n": 0
+        },
+        "ready": {
+          "visible_n": 180,
+          "in_frame_n": 180,
+          "N": 180,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        },
+        "hover": {
+          "visible_n": 13,
+          "in_frame_n": 15,
+          "N": 22,
+          "moving_n": 20,
+          "blind_moving_n": 9
+        },
+        "descent": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 32,
+          "moving_n": 30,
+          "blind_moving_n": 30
+        },
+        "grasp": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 26,
+          "moving_n": 18,
+          "blind_moving_n": 18
+        },
+        "lift": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 34,
+          "moving_n": 26,
+          "blind_moving_n": 26
+        },
+        "command_complete": {
+          "visible_n": 0,
+          "in_frame_n": 0,
+          "N": 52,
+          "moving_n": 0,
+          "blind_moving_n": 0
+        }
+      },
+      "sources": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-015/raw/eval-only.jsonl.zst",
+          "sha256": "6e2ff4786a9f936e0b98e5700b73cb938c6259e9450449430870ab0ef599c44a"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-015/raw/teacher-r1.jsonl.zst",
+          "sha256": "0916564bf43c129b11f5428478753af1fcc691ab9d617004abda8a5a249d9212"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-015/raw/teacher-r2.jsonl.zst",
+          "sha256": "bc0159336f5090710ba4e08d01fce34825948f9bb39fce58a78f4ad4e220787a"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-015/raw/plan.json",
+          "sha256": "85174379fefe467efab361eaaca4d6c339968d42f2054286e786c04be2db269e"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-015/raw/result.json",
+          "sha256": "d29be63724892a3d6466bf468b4bbbb4efe2f23619b575e1098e14a600f230bb"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-015/raw/camera-runtime.json",
+          "sha256": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d"
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/cohort-000/episode-015/raw/manifest.json",
+          "sha256": "b57dc11034564fb164e13f853abc3d22427ece93402787174b0d4be902c818eb"
+        }
+      ]
+    }
+  ],
+  "sim_s_percentiles": [
+    23.400000000029127,
+    33.85000000007903,
+    60.00000000020389,
+    60.00000000020389
+  ],
+  "wall_per_sim_percentiles": [
+    2.6093722762244704,
+    2.8173265877223175,
+    3.3275994477428643,
+    3.5901548149544573
+  ],
+  "max_pick_unseen_s": 5.099999999999998,
+  "definition": "saved evaluation projection at approved v3 mount; no new simulation; initial search and post-done idle reported separately"
+}

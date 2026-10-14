@@ -23,11 +23,14 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 
-def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, cap_s=90.):
+def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, cap_s=90.,
+        teacher_stability='off', reach_mode='box_station_v1'):
     if platform.system() != 'Linux' or execution_host != 'gcp1':
         raise RuntimeError('Linux gcp1 only; Mac physics/render disabled')
     if not 0 < cap_s <= 180 or profile != 'solo_visible_only_v1' or not hidden or not look:
         raise ValueError('finite opt-in solo profile with both required toggles')
+    if teacher_stability not in ('off', 'align_relook_v1') or reach_mode not in ('box_station_v1', 'pad_window_v2'):
+        raise ValueError('unknown solo stability/reach mode')
     from scripts.grasp_act_host import identity, require_run_root
     host = identity(execution_host)
     require_run_root(out)
@@ -57,6 +60,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
     report = {'status': 'running', 'source_sha': sha, 'execution_host': host,
               'student_execution': False, 'recording_mode': 'success_measurement',
               'object_kind': plan['kind'], 'weld': 'off', 'training_rgb': False,
+              'teacher_stability': teacher_stability, 'reach_mode': reach_mode,
               'physical_success': None, 'placement_task': 'set down at own picked location',
               'plan_sha256': hashlib.sha256((out/'plan.json').read_bytes()).hexdigest()}
     write(out/'result.json', report)
@@ -153,7 +157,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
 
         teacher = SoloTeacher(plan['kind'], plan['role'], pwm, profile=profile,
                               held_object_hidden_v1=hidden, setdown_lookaround_v1=look,
-                              lookaround=relook, route=route, ops=ops)
+                              lookaround=relook, route=route, ops=ops,
+                              teacher_stability=teacher_stability, reach_mode=reach_mode)
         lift_evidence = {}
         look_state = {'last_view_n': 0}
         def refresh_obstacles():
@@ -259,6 +264,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             apply(port, value, now, previous)
             previous = value
             trace.write(json.dumps({'t': now, 'phase': teacher.phase, 'command': value,
+                                   'visible_target': measurement,
                 'student_context': teacher.context(now), 'rgb_confirmation': rgb_result})+'\n')
 
             # Full truth owner, written only to eval-only.jsonl / Score.
@@ -331,11 +337,14 @@ def main():
     p.add_argument('--teacher-profile', choices=('off', 'solo_visible_only_v1'), default='off')
     p.add_argument('--held-object-hidden-v1', action='store_true')
     p.add_argument('--setdown-lookaround-v1', action='store_true')
+    p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')
+    p.add_argument('--reach-mode', choices=('box_station_v1', 'pad_window_v2'), default='box_station_v1')
     p.add_argument('--cap-s', type=float, default=90.)
     a = p.parse_args()
     plan = json.loads(a.plan.read_text())['episodes'][a.episode]
     print(json.dumps(run(plan, a.out, execution_host=a.execution_host, profile=a.teacher_profile,
-              hidden=a.held_object_hidden_v1, look=a.setdown_lookaround_v1, cap_s=a.cap_s)))
+              hidden=a.held_object_hidden_v1, look=a.setdown_lookaround_v1, cap_s=a.cap_s,
+              teacher_stability=a.teacher_stability, reach_mode=a.reach_mode)))
 
 
 if __name__ == '__main__':

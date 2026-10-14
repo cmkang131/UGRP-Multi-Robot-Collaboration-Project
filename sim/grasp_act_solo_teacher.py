@@ -8,7 +8,7 @@ camera gaze and native wheel pulses; their legacy callers remain unchanged.
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 import math
 
 PROFILE = 'solo_visible_only_v1'
@@ -161,17 +161,31 @@ def primitives():
 
 class SoloTeacher:
     def __init__(self, kind, role, pwm, *, profile='off', held_object_hidden_v1=False,
-                 setdown_lookaround_v1=False, lookaround=None, route=None, ops=None):
+                 setdown_lookaround_v1=False, lookaround=None, route=None, ops=None,
+                 teacher_stability='off', reach_mode='box_station_v1'):
         if profile != PROFILE:
             raise ValueError('solo teacher is opt-in; legacy defaults are unchanged')
         if not held_object_hidden_v1:
             raise ValueError('solo_visible_only_v1 requires held_object_hidden_v1')
         if setdown_lookaround_v1 and lookaround is None:
             raise ValueError('active map look-around implementation required')
+        if teacher_stability not in ('off', 'align_relook_v1'):
+            raise ValueError('unknown teacher stability mode')
+        if reach_mode not in ('box_station_v1', 'pad_window_v2'):
+            raise ValueError('unknown solo reach mode')
+        self.teacher_stability, self.reach_mode = teacher_stability, reach_mode
         self.spec = cargo(kind)
         if role not in self.spec.roles:
             raise ValueError('explicit compatible seat token required')
         self.role, self.ops = role, ops or primitives()
+        if reach_mode == 'pad_window_v2' and kind != 'tile':
+            # Reuse the release teacher's physical-pad window, not the wider
+            # calibrated radius envelope. The old +/-8 mm box window reaches
+            # x=.1922 (radius .144), outside the calibrated minimum .145 m.
+            from harness.visual_arm_v3 import MOUNT_X_M
+            from sim.grasp_act_release_teacher import PAD_MID_M, PAD_TOL_M
+            self.spec = replace(self.spec, station_m=MOUNT_X_M+PAD_MID_M,
+                                align_tol_m=PAD_TOL_M)
         self.sink = self.ops.Sink(pwm)
         self.arm = self.ops.Arm(self.sink, self.sink.pwm)
         self.lookaround = lookaround if setdown_lookaround_v1 else None
@@ -190,12 +204,38 @@ class SoloTeacher:
         self.verify_t = None
         self.backoff_m = 0.
         self.ik_rejections = 0
+        self.ik_checks = 0
+        self.ik_rejection_reasons = {}
         self.aligned_ik_failures = 0
+        self.align_relooks = 0
+        self._reset_alignment()
+
+    def _reset_alignment(self):
+        self.align_integral = [0., 0., 0.]
+        self.align_active = [False]*3
+        self.align_sign = [0]*3
+        self.align_flips = [0]*3
+        self.align_t = self.align_best = self.align_progress_t = None
+
+    def _begin_relook(self, now, reason):
+        self.align_relooks += 1
+        self.events.append({'t': now, 'alignment_recovery': reason})
+        self._reset_alignment()
+        self.target = self.seen_t = None
+        self.aligned_ik_failures = 0
+        if self.align_relooks > 2:
+            self.result = 'alignment_no_progress'
+            self._set('failed', now)
+        else:
+            self._set('relook', now)
+        return self._hold(now)
 
     def _set(self, phase, now):
         self.events.append({'t': now, 'from': self.phase, 'to': phase})
         self.phase, self.phase_t = phase, now
         self.stable_t = None
+        if phase == 'align':
+            self._reset_alignment()
         if phase == 'lower':
             self.skill, self.skill_started = 'release', now
 
@@ -205,7 +245,73 @@ class SoloTeacher:
 
     def _drive(self, now, forward=0., left=0., turn=0.):
         wheels, duration = self.ops.duty([3*forward, 3*left, .65*turn])
+        if self.teacher_stability == 'align_relook_v1' and self.phase == 'align':
+            # Same candidate floor as b16930dc; physical response unmeasured.
+            # Fine alignment selects one axis, preserving wheel ratios.
+            duration = [max(.04, d) if w else 0. for w, d in zip(wheels, duration)]
         return self.ops.command({**self._hold(now), 'wheels': wheels, 'duration_s': duration})
+
+    def _align_drive(self, now, errors, reachable):
+        # b16930dc align_relook_v1, with deadbands inside the solo cargo's
+        # tighter readiness window. Route following ends before this law.
+        tol = self.spec.align_tol_m
+        inner = (tol*.5, tol*.5, .02)
+        outer = (tol*.75, tol*.75, .04)
+        merit = max(abs(e)/b for e, b in zip(errors, inner))
+        if self.align_best is None or merit < self.align_best-.25:
+            self.align_best, self.align_progress_t = merit, now
+        elif now-self.align_progress_t >= 3.-1e-8:
+            return self._begin_relook(now, 'no_visible_error_progress_3s')
+        for i, error in enumerate(errors):
+            if abs(error) <= inner[i]:
+                self.align_active[i] = False
+            elif abs(error) >= outer[i]:
+                self.align_active[i] = True
+            if not self.align_active[i]:
+                self.align_integral[i] = 0.
+        if not reachable and abs(errors[0]) > .0005:
+            self.align_active[0] = True
+        axis = next((i for i in (2, 1, 0) if self.align_active[i]), None)
+        if axis is None:
+            return self._hold(now)
+        sign = 1 if errors[axis] > 0 else -1
+        old = self.align_sign[axis]
+        self.align_flips[axis] = self.align_flips[axis]+1 if old and sign != old else 0
+        self.align_sign[axis] = sign
+        if self.align_flips[axis] >= 4:
+            return self._begin_relook(now, 'alternating_error_sign_4')
+        if old and sign != old:
+            self.align_integral[axis] = 0.
+        dt = 0. if self.align_t is None else max(0., min(.2, now-self.align_t))
+        self.align_t = now
+        for i in range(3):
+            if i != axis:
+                self.align_integral[i] = 0.
+        limit = (.025, .025, .03)[axis]
+        self.align_integral[axis] = max(-limit, min(limit,
+            self.align_integral[axis]+(.45, .45, .4)[axis]*errors[axis]*dt))
+        effort = (.9, .9, .8)[axis]*errors[axis]+self.align_integral[axis]
+        lo, hi = ((-.05, .08), (-.06, .06), (-.1, .1))[axis]
+        drive = [0., 0., 0.]
+        drive[axis] = max(lo, min(hi, effort))
+        return self._drive(now, *drive)
+
+    def _scan_gaze(self, age):
+        # Stationary search only. No map goal, spawn anchor or hidden pose.
+        pan = (1000, 1500, 2000, 2500, 1500, 500)[int(age/.6) % 6]
+        gaze = {**self.ops.folded, 3: 500 if int(age/3.6) % 2 == 0 else 820, 4: 2500, 6: pan}
+        self.sink.pwm.update(self.ops.slew(self.sink.pwm, gaze))
+        self.arm.commanded.update(self.sink.pwm)
+
+    def _relook(self, measurement, now):
+        age = now-self.phase_t
+        if age >= 3.6-1e-8 and measurement is not None:
+            # _target received this tick's fresh visible measurement. Never
+            # resume from a remembered target or a hidden world coordinate.
+            self._set('align', now)
+        else:
+            self._scan_gaze(age)
+        return self._hold(now)
 
     def remember_applied(self, value):
         self.previous = deepcopy(self.ops.command(value))
@@ -257,11 +363,11 @@ class SoloTeacher:
         if self.target is not None:
             gaze = self.ops.gaze(self.target['xyz'], self.sink.pwm, visible=measurement is not None)
         else:
-            age = now-self.skill_started
-            pan = (1000, 1500, 2000, 2500, 1500, 500)[int(age/.6) % 6]
-            gaze = {**self.ops.folded, 3: 500 if int(age/3.6) % 2 == 0 else 820, 4: 2500, 6: pan}
-        self.sink.pwm.update(self.ops.slew(self.sink.pwm, gaze))
-        self.arm.commanded.update(self.sink.pwm)
+            self._scan_gaze(now-self.skill_started)
+            gaze = None
+        if gaze is not None:
+            self.sink.pwm.update(self.ops.slew(self.sink.pwm, gaze))
+            self.arm.commanded.update(self.sink.pwm)
         if measurement is None:
             self.stable_t = None
             return self._hold(now)
@@ -271,12 +377,17 @@ class SoloTeacher:
         gx, gy = x-station*math.cos(angle), y-station*math.sin(angle)
         if self.phase == 'approach' and math.hypot(gx, gy) <= .08:
             self._set('align', now)
+        if self.phase == 'approach' and self.teacher_stability == 'align_relook_v1':
+            return self._route_drive(now, gx, gy, angle, x, y, station)
         reachable = False
+        self.ik_checks += 1
         try:
             self._pick_geometry(self.target)
             reachable = True
-        except ValueError:
+        except ValueError as exc:
             self.ik_rejections += 1
+            reason = str(exc)
+            self.ik_rejection_reasons[reason] = self.ik_rejection_reasons.get(reason, 0)+1
         aligned = math.hypot(gx, gy) <= self.spec.align_tol_m and abs(angle) <= .04
         self.aligned_ik_failures = self.aligned_ik_failures+1 if aligned and not reachable else 0
         if self.aligned_ik_failures >= 3:
@@ -294,6 +405,11 @@ class SoloTeacher:
                 self._set('hover', now)
             return self._hold(now)
         self.stable_t = None
+        if self.teacher_stability == 'align_relook_v1' and self.phase == 'align':
+            return self._align_drive(now, (gx, gy, angle), reachable)
+        return self._route_drive(now, gx, gy, angle, x, y, station)
+
+    def _route_drive(self, now, gx, gy, angle, x, y, station):
         if self.route is not None:
             # Route callback sees only a body-frame goal + already visible data.
             forward, left, turn = self.route((gx, gy, angle), self.context(now))
@@ -326,6 +442,8 @@ class SoloTeacher:
             self._set('approach', now)
         elif self.phase in ('approach', 'align'):
             value = self._seek(measurement, now)
+        elif self.phase == 'relook':
+            value = self._relook(measurement, now)
         elif self.phase == 'hover' and idle:
             for pose in self.descent:
                 self._queue(pose, now, .15, .04)
@@ -393,6 +511,9 @@ class SoloTeacher:
     def diagnostic(self):
         return {'profile': PROFILE, 'phase': self.phase, 'command_result': self.result,
             'holding_belief': self.holding, 'ik_rejections': self.ik_rejections,
+            'ik_checks': self.ik_checks, 'ik_rejection_reasons': dict(self.ik_rejection_reasons),
+            'teacher_stability': self.teacher_stability, 'reach_mode': self.reach_mode,
+            'alignment_relooks': self.align_relooks,
             'events': self.events, 'held_object_hidden_v1': True,
             'held_interval': 'close command through completed open command',
             'setdown_lookaround_v1': self.lookaround is not None,

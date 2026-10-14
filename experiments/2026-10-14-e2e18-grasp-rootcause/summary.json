@@ -1200,11 +1200,11 @@
     ],
     "limitations": [
       "stage1 gate host failures/missing local ownmap remain unknown",
-      "historical r69/r76/r80 and prior 40-run pose figure not independently remeasured here",
       "frame counts are correlated, not independent success denominators",
       "stage trajectories can enter fine alignment without a new detection in this segment",
-      "historical r69/r76/r80 per-stage raw recount pending; prior aggregate counts below are attributed",
-      "camera visibility geometry and arm reachable-set sweep not completed"
+      "camera visibility geometry and arm reachable-set sweep not completed",
+      "historical54 raw logs recounted; r69 positive-force held remains unknown4/6, closed measured unknown54/54",
+      "prior40-run 10.65cm/11.15deg pose figure remains attributed, not independently recomputed"
     ],
     "historical_attributed_only": {
       "r76_global_align": {
@@ -1230,7 +1230,514 @@
       },
       "source": "../2026-10-13-e2e18-grasp1 and ../2026-10-14-e2e18-pose in e2e18 worktree"
     },
-    "independence_note": "approach and detector main share checkpoints; each 1/12 held is not two independent successful initial states. Gates are short/censored; stage-track gate1 includes HOST_ERROR."
+    "independence_note": "approach and detector main share checkpoints; each 1/12 held is not two independent successful initial states. Gates are short/censored; stage-track gate1 includes HOST_ERROR.",
+    "historical_recount": {
+      "groups": {
+        "azure3/r69": {
+          "run_N": 6,
+          "global_align": {
+            "n": 6,
+            "N": 6
+          },
+          "distinct_seeds": [
+            61006
+          ],
+          "robots": {
+            "r1": {
+              "stages": {
+                "seen": {
+                  "n": 6,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 6,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 6
+                },
+                "held": {
+                  "n": 0,
+                  "N": 2,
+                  "unknown_N": 4
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 2,
+                  "unknown_N": 4
+                }
+              },
+              "first_unreached_observed_stage": {
+                "null": 4,
+                "estimated_stance_8cm": 2
+              }
+            },
+            "r2": {
+              "stages": {
+                "seen": {
+                  "n": 6,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 6,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 6,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 4,
+                  "N": 6,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 6
+                },
+                "held": {
+                  "n": 0,
+                  "N": 2,
+                  "unknown_N": 4
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 2,
+                  "unknown_N": 4
+                }
+              },
+              "first_unreached_observed_stage": {
+                "null": 4,
+                "fine_alignment_entered": 2
+              }
+            }
+          }
+        },
+        "azure3/r76": {
+          "run_N": 16,
+          "global_align": {
+            "n": 9,
+            "N": 16
+          },
+          "distinct_seeds": [
+            61006,
+            61007,
+            61008,
+            61009
+          ],
+          "robots": {
+            "r1": {
+              "stages": {
+                "seen": {
+                  "n": 13,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 13,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 3,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 1,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 1,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "fine_alignment_entered": 2,
+                "estimated_stance_8cm": 10,
+                "close_command": 1,
+                "seen": 3
+              }
+            },
+            "r2": {
+              "stages": {
+                "seen": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "estimated_stance_8cm": 16
+              }
+            }
+          }
+        },
+        "azure3/r80": {
+          "run_N": 16,
+          "global_align": {
+            "n": 16,
+            "N": 16
+          },
+          "distinct_seeds": [
+            61006,
+            61007,
+            61008,
+            61009
+          ],
+          "robots": {
+            "r1": {
+              "stages": {
+                "seen": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 5,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 2,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 2,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "estimated_stance_8cm": 11,
+                "fine_alignment_entered": 3,
+                "close_command": 2
+              }
+            },
+            "r2": {
+              "stages": {
+                "seen": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 5,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "fine_alignment_entered": 5,
+                "estimated_stance_8cm": 11
+              }
+            }
+          }
+        },
+        "azure4/r76": {
+          "run_N": 16,
+          "global_align": {
+            "n": 9,
+            "N": 16
+          },
+          "distinct_seeds": [
+            61010,
+            61011,
+            61012,
+            61013
+          ],
+          "robots": {
+            "r1": {
+              "stages": {
+                "seen": {
+                  "n": 10,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 10,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "estimated_stance_8cm": 10,
+                "seen": 6
+              }
+            },
+            "r2": {
+              "stages": {
+                "seen": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimate": {
+                  "n": 16,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "estimated_stance_8cm": {
+                  "n": 3,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "fine_alignment_entered": {
+                  "n": 1,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "alignment_ready": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "close_command": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "closed_measured": {
+                  "n": 0,
+                  "N": 0,
+                  "unknown_N": 16
+                },
+                "held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                },
+                "joint_held": {
+                  "n": 0,
+                  "N": 16,
+                  "unknown_N": 0
+                }
+              },
+              "first_unreached_observed_stage": {
+                "alignment_ready": 1,
+                "estimated_stance_8cm": 13,
+                "fine_alignment_entered": 2
+              }
+            }
+          }
+        }
+      },
+      "integrity": "historical-recount-integrity.json",
+      "archived_runs_N": 54,
+      "source_files_N": 432,
+      "no_new_physics": true,
+      "r69_contact_geometry_proxy": {
+        "n": 4,
+        "N": 6,
+        "distinct_seeds_N": 1,
+        "definition": "bilateral contacts + COM rise30mm + tilt<=10deg; positive force unavailable, not full held certification"
+      },
+      "limits": [
+        "full jaw closure not logged",
+        "any finger contact is insufficient for held/joint held; those cases remain unknown",
+        "different hosts/cohorts are not pooled",
+        "no new failure-cause or video diagnosis from event counts",
+        "pose/geometry error not recomputed in this recount",
+        "contact_geometry_only_proxy requires bilateral contacts, COM rise30mm and tilt<=10deg but force was not logged, so it is not the positive-force held label or the new3s gate",
+        "same seed across bundles is not independent start-state evidence"
+      ]
+    }
   },
   "teacher": {
     "started_N": 40,
@@ -1674,5 +2181,89 @@
     ],
     "meaning": "not demonstrated because recording ended; do not relabel old success as failure",
     "evidence": "strict-rescore-078-3a.json"
+  },
+  "visible_only_c1_partial": {
+    "n": 12,
+    "N": 16,
+    "planned_N": 40,
+    "interrupted": 16,
+    "not_started": 8,
+    "HOST_ERROR": 0,
+    "qualified": false,
+    "source_sha": "c1f02ac0a81f50d0235823a845c31f1d4116c9e9",
+    "evidence": "visible-gate-c1f02ac0-partial.json",
+    "gate": "teacher-gate-c1f02ac0.json.zst",
+    "video_review": {
+      "indices": [
+        1,
+        3,
+        9,
+        11
+      ],
+      "sim_s": [
+        0,
+        12,
+        24,
+        36,
+        48,
+        59
+      ]
+    },
+    "failure_classification": {
+      "observed_goal_occupied": 2,
+      "peer_approach_interaction_cause_under_test": 1,
+      "inconsistent_ready_predicate": 1
+    },
+    "ready_counterexample_mm": {
+      "approach_error": 27.63,
+      "wait_error": 33.57,
+      "tolerance": 30.0,
+      "revocations": 81
+    },
+    "student_data_episodes": 0
+  },
+  "visible_only_abcc_replay": {
+    "n": 0,
+    "N": 1,
+    "source_sha": "abcc8929453ec6c8171ce1a80589adc326b1d657",
+    "sim_s": 60.0,
+    "wall_per_sim": 2.5410872032080283,
+    "seed": 73009,
+    "evidence": "replay09-abcc-metrics.json",
+    "review_sim_s": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      59
+    ],
+    "cause": "new segment check rejected outward retreat from 148mm visible-beam range inside 150mm inflated margin; paired robot remained ready",
+    "next": "reuse zone no-closer escape for observed disc margins; frozen observation checks outward wheel command"
+  },
+  "gcp_transition": {
+    "directive": "PR484 coordinator 17:00 KST; no more Azure VM3 submissions",
+    "rules_pr": 492,
+    "simulation_and_training_default": "GCP",
+    "host_ready": false,
+    "gcp_physical_started_N": 0,
+    "next": "known 73009/73011 replay -> measured concurrency16 speed baseline -> fresh40",
+    "azure_submission_error": {
+      "path": "admission-d032-host-error.json",
+      "sha256": "1b7b214fab585aef0a6547df04efd1afe715d2d52e417f62082a8954c9d89547"
+    },
+    "offline_host_admission_tests": {
+      "passed": 10,
+      "failed": 0
+    },
+    "teacher_controller_baseline_sha": "d0329eee1f7ce928c00a563edf8499b399864d69",
+    "teacher_physics_changed": false
+  },
+  "gcp_ep0_regression": {
+    "path": "gcp-ep0-regression.json",
+    "sha256": "4377bf6de712bb5d93eb8a3758636387c7781a1a5a290b378ee6cc06453c30c5",
+    "physical_fix_verified": false,
+    "old_n": 0,
+    "old_N": 1
   }
 }

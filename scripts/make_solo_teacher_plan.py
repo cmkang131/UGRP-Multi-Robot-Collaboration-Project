@@ -110,9 +110,11 @@ def episode(i, kind, seed, split):
     raise ValueError(f'no admissible start for {kind} index {i}: {dict(rejects)}')
 
 
-def prepare(*, split):
+def prepare(*, split, fresh_diagnostics=False):
+    if fresh_diagnostics and split != 'solo_diagnostic':
+        raise ValueError('fresh diagnostics must stay outside the gate')
     if split == 'solo_diagnostic':
-        kinds, seed0 = list(DIAGNOSTIC_KINDS), 76900
+        kinds, seed0 = list(DIAGNOSTIC_KINDS)*(2 if fresh_diagnostics else 1), 76900
     elif split == 'solo_gate':
         left, kinds = dict(GATE_QUOTA), []
         while any(left.values()):                     # round robin: a stopped run keeps a mixed prefix
@@ -143,8 +145,9 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--split', choices=('solo_diagnostic', 'solo_gate'), required=True)
+    p.add_argument('--fresh-diagnostics', action='store_true', help='append cyan/can/tile seeds 76903-76905')
     a = p.parse_args()
-    plan = prepare(split=a.split)
+    plan = prepare(split=a.split, fresh_diagnostics=a.fresh_diagnostics)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(plan, indent=2)+'\n')
     print(json.dumps({'episodes': len(plan['episodes']), 'kinds': plan['distribution']['kinds']}))
