@@ -54,7 +54,10 @@ def main():
             wrap(name)
     from scripts.run_grasp_act_teacher import run
     plan = json.loads(a.plan.read_text())['episodes'][a.episode]
-    kwargs = dict(cap_s=a.cap_s, probe=not a.finish_on_done, teacher_profile='visible_only', execution_host=None)
+    import inspect
+    kwargs = dict(cap_s=a.cap_s, probe=not a.finish_on_done, teacher_profile='visible_only')
+    if 'execution_host' in inspect.signature(run).parameters:
+        kwargs['execution_host'] = None
     if a.speed_options:
         kwargs['speed_options'] = a.speed_options
     profiler = cProfile.Profile() if a.cprofile else None
