@@ -95,7 +95,10 @@ class GraspTeacher:
         pose=truth['robots'][self.rid]['pose'];g=truth['beam']['ends'][self.end]
         heading=truth['beam']['pose'][2]+(math.pi if self.end=='blue' else 0.)
         goal=(g[0]-STATION_M*math.cos(heading),g[1]-STATION_M*math.sin(heading))
-        if self.phase=='approach' and math.dist(pose[:2],goal)>.03:
+        # Coarse path tracking loses authority at small errors on native v7.
+        # Enter the existing higher-gain alignment law before the 3 cm stop
+        # band, rather than requiring coarse tracking to reach that band first.
+        if self.phase=='approach' and math.dist(pose[:2],goal)>.08:
             return self._route(truth,goal,heading,now),False
         if self.phase=='approach':self._set('align',now)
         gx,gy=local(pose,g);ex,ey,ea=gx-STATION_M,gy,wrap(heading-pose[2])
@@ -135,7 +138,7 @@ class GraspTeacher:
             self.arm.queue({**FOLDED,6:1500},now,duration=.5)
         arms_done=self.arm.tick(now)
         if self.outcome:return self._hold(now),self.outcome=='success'
-        if now-self.phase_t>90:
+        if now-self.phase_t>60:
             self.outcome='phase_timeout';return self._hold(now),False
         if self.phase in ('approach','align'):
             action,ready=self._approach(truth,now)

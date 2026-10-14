@@ -20,7 +20,7 @@ def summarize(rows,planned):
             'N':len(completed)} for rid in ('r1','r2')},
         'failure_reasons':dict(Counter(t['outcome'] for r in completed for t in r.get('teachers',{}).values() if t.get('outcome')!='success')),
         'host_errors':sum(r.get('status')=='HOST_ERROR' or (r.get('status')!='interrupted' and r.get('exit',0) not in (0,-2,130)) for r in rows),
-        'interrupted':sum(r.get('status')=='interrupted' for r in rows),'rows':rows}
+        'interrupted':sum(r.get('status')=='interrupted' or r.get('exit') in (-2,130) for r in rows),'rows':rows}
 
 
 def wave(root,plan,indices,cap,*,probe,limit):
@@ -60,7 +60,11 @@ def wave(root,plan,indices,cap,*,probe,limit):
         reason=type(error).__name__+':'+str(error)
     finally:
         if reason:write(root/'SUPERVISOR_STOP.json',{'reason':reason,'unix':time.time(),'scope':'this teacher wave only'})
-        for _,_,proc,_,_,_ in jobs:kill_group(proc)
+        for _,target,proc,_,_,_ in jobs:
+            # A physical result is written before compression/finalization.
+            # Preserve completed failures too: interrupting this finalizer
+            # would incorrectly remove the trigger failure from the denominator.
+            if read(target/'raw/result.json').get('status')!='complete':kill_group(proc)
         for index,target,proc,log,at,_ in jobs:
             try:code=proc.wait(timeout=45)
             except subprocess.TimeoutExpired:kill_group(proc,signal.SIGKILL);code=proc.wait()

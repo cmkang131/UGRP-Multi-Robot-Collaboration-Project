@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.e2e18.privileged_act.v1",
-  "status": "continuous_teacher_diagnostic_2_of_2; speed16_then_gate40_pending",
+  "status": "teacher_gate_incomplete_stagnation_fixed_pending_regression",
   "classification": "dev",
   "research_result": false,
   "scope_changed": "2026-10-14 one multitask ACT for local grasp/release of s1-s8 cargo; map code navigation, Gemma skill decisions, private Kaggle GPU training authorized",
@@ -1233,20 +1233,20 @@
     "independence_note": "approach and detector main share checkpoints; each 1/12 held is not two independent successful initial states. Gates are short/censored; stage-track gate1 includes HOST_ERROR."
   },
   "teacher": {
-    "started_N": 0,
-    "success_n": null,
+    "started_N": 16,
+    "success_n": 11,
     "target_rate": 0.95,
     "gate_minimum_N": 40,
     "gate_required_n": 38,
-    "gate_n": 0,
-    "gate_N": 0,
+    "gate_n": 11,
+    "gate_N": 11,
     "interrupted_batch": {
       "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-9d9b90b9",
       "excluded_N": 16,
       "reason": "coordinator whole-batch stop; raw auto 1/1 not admitted",
       "audit": "interrupted-pulse-audit.json"
     },
-    "measurement_recording": "no student RGB; 320x240 top review 1Hz; command/evaluation ledgers",
+    "measurement_recording": "no student RGB; four authored top views 320x240 tiles, 1 Hz; command/evaluation ledgers",
     "continuous_diagnostic": {
       "n": 2,
       "N": 2,
@@ -1259,7 +1259,10 @@
         2.2763992244,
         2.4963984222
       ]
-    }
+    },
+    "gate_interrupted_N": 5,
+    "gate_qualified": false,
+    "latest_gate": "teacher-gate-1f177950.json"
   },
   "data": {
     "new_episodes": 0,
@@ -1368,7 +1371,7 @@
     "credentials_location": "Mac only"
   },
   "implementation": {
-    "student_schema": "ugrp.grasp_act.student.v2",
+    "student_schema": "ugrp.grasp_act.student.v3",
     "skills": [
       "grasp",
       "wait",
@@ -1401,10 +1404,10 @@
       "r2",
       "r3"
     ],
-    "act_forward_backward_checkpoint": "2/2 CPU offline tests",
-    "static_tests": "23/23",
-    "teacher_scene": "s1/s3/s6 v4: same s1-s8 task content, current v3 hardware; 20 randomized pair plans, not executed",
-    "workflow": "grasp-act-teacher@1.0.0",
+    "act_forward_backward_checkpoint": "3/3 CPU offline tests",
+    "static_tests": "27/27",
+    "teacher_scene": "s1/s3/s6 v4, 40 randomized starts, qualification incomplete",
+    "workflow": "grasp-act-teacher@2.0.1",
     "student_worker_and_visual_verifier": "not yet integrated",
     "kaggle_submission": "not submitted",
     "action_contract": "ugrp.grasp_act.student.v3; continuous normalized mecanum + fixed command-history motor feedforward"

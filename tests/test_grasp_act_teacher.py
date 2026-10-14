@@ -89,6 +89,12 @@ def test_failed_route_cached_until_next_replan(monkeypatch):
     assert len(calls)==2 and t.no_path_calls==2
 
 
+def test_coarse_tracking_hands_to_alignment_before_stiction_stop_band():
+    t=GraspTeacher('r1','teal',FOLDED,bounds=(-3,3,-3,3));t.started=True
+    a,done=t.step(truth([.527,-.035,0.]),0)
+    assert t.phase=='align' and a['drive'][1]>.08 and not done
+
+
 def test_stop_command_stops_wheels_without_cancelling_arm():
     from scripts.run_grasp_act_teacher import apply
     from types import SimpleNamespace
