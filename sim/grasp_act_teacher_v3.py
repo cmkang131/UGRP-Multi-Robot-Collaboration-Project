@@ -36,7 +36,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             raise ValueError('unknown teacher search mode')
         if self.teacher_search!='off' and (self.teacher_stability=='off' or static_map is None):
             raise ValueError('search_body_scan_v1 requires align_relook_v1 and a static map')
-        self.mapsearch=None;self.sc=None;self.search_log=[]
+        self.mapsearch=None;self.sc=None;self.search_log=[];self.ever_seen=False
         if self.teacher_search!='off':
             from sim.grasp_act_search import StaticMapSearch
             self.mapsearch=StaticMapSearch(static_map['bounds'],static_map['rects'])
@@ -131,7 +131,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if visible:
             g=truth['beam']['ends'][self.end];pose=truth['robots'][self.rid]['pose']
             self.local_seen=[*local(pose,g),g[2]+.009];self.last_seen_t=now
-            self.search_since=None;self.sc=None
+            self.search_since=None;self.sc=None;self.ever_seen=True
             occluders=[{'xy':local(pose,v['pose']),'radius':v.get('radius',.17),
                 'top_z_bound_m':v.get('top_z_bound_m',.32)}
                 for r,v in truth['robots'].items() if r!=self.rid]
@@ -143,8 +143,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self.search_since=now if self.search_since is None else self.search_since
             age=now-self.search_since
             if self.phase!='relook' and self.phase!='search':self._set('search',now)
-            if self.teacher_search!='off' and self.phase=='search' and self.local_seen is None:
-                # Never-seen target: the original in-place pan/turn search cannot
+            if self.teacher_search!='off' and self.phase=='search' and not self.ever_seen:
+                # Never-seen target (ever_seen, not local_seen: a relook clears local_seen): the original in-place pan/turn search cannot
                 # leave a spot from which static walls hide it (GCP gate seed 76015).
                 target,value=self._search_step(truth,now,age)
                 self.sink.pwm.update(slew(self.sink.pwm,target));self.arm.commanded.update(self.sink.pwm)

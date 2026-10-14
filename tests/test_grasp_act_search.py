@@ -95,3 +95,17 @@ def test_unfindable_target_times_out_with_explicit_outcome():
 def test_search_mode_requires_stability_and_map():
     with pytest.raises(ValueError):VisibleOnlyGraspTeacher('r1','blue',FOLDED,bounds=(-20,20,-20,20),teacher_search='search_body_scan_v1')
     with pytest.raises(ValueError):VisibleOnlyGraspTeacher('r1','blue',FOLDED,bounds=(-20,20,-20,20),teacher_stability='align_relook_v1',teacher_search='search_body_scan_v1')
+
+
+def test_relook_after_a_sighting_never_translates():
+    t=make_teacher();t.started=True;t.skill_started=0.
+    m=VisibleWorld('r1','blue',initial_pose=list(START),response_gain=.75)
+    seen=m.observe([{'id':'band_blue','kind':'band','xyz':[.6,0.,.03],'yaw':0.,'visible_n':15,'probe_N':15}],0.)
+    t._observe(seen,0.)                               # sighting
+    assert t.ever_seen
+    t._begin_relook(.1,'test');assert t.local_seen is None
+    t.phase='approach'                                # relook ended, target blinks again
+    for i in range(1,160):
+        v=t._observe(m.observe([],i*.1),i*.1);m.issue(v)
+        assert not any(v['wheels']) or t.phase=='search'
+    assert t.phase=='search' and t.sc is None and not t.search_log
