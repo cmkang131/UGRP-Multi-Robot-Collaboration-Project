@@ -40,13 +40,19 @@ def main():
     plans={s:json.loads((BASE/f'release6-{s}-plan.json').read_text()) for s in ('diagnostic','gate')}
     q.update(sha=sha,branch=branch,created_local=now,ready=False,status='awaiting_coordinator_review',
         stage_ready=dict(diagnostic=False,gate=False),gate_promotion_authorized_if_all_conditions_pass=False,
-        supersedes_source_sha=OLD,offline_validation=validation,
+        supersedes_source_sha=OLD,offline_validation={k:validation[k] for k in
+            ('scope','source_parent','tests','replay','source_hashes')},
         remote_source_verification=dict(local_head=sha,remote_head=remote,matches=True),run_count=48,
         profile=plans['diagnostic']['execution_profile'],
         order='74940 reproduction (index 7) first -> first-30-SIM review -> 7 fresh diagnostics -> explicit coordinator approval -> gate 40',
         blocked_reason='User requested ready=false; coordinator must authorize diagnostics. Gate40 requires a separate explicit approval.',
         seed_reservation=json.loads((BASE/'release6-seed-reservation.json').read_text()))
     q['plan_sha256']={str((BASE/f'release6-{s}-plan.json').relative_to(ROOT)):digest(BASE/f'release6-{s}-plan.json') for s in plans}
+    q['offline_validation']['artifact']=dict(path=str((BASE/'release6-offline-summary.json').relative_to(ROOT)),
+        sha256=digest(BASE/'release6-offline-summary.json'))
+    q['approval_conditions']=dict(
+        diagnostic='Coordinator approval required; 74940 first, then first-30-SIM review before fresh seeds.',
+        gate='Separate explicit coordinator gate approval after 8/8 and source/input/video review; automatic promotion=false.')
     q['storage_budget_mib'].update(diagnostic=768,gate=3840,total=4608)
     q['preconditions']=[s.replace('7/7','8/8') for s in q['preconditions']]
     q['preconditions'].extend([
@@ -67,8 +73,7 @@ def main():
             row['seed']=plans[stage]['episodes'][index]['seed']
             row['max_parallel']=1 if stage=='diagnostic' and index==7 else (7 if stage=='diagnostic' else 16)
             row['depends_on']=[] if stage=='diagnostic' and index==7 else ([repro] if stage=='diagnostic' else diagnostic_names)
-            row['condition']=('Coordinator approval required; reproduce first and review first 30 SIM seconds before fresh seeds.'
-                              if stage=='diagnostic' else 'Separate explicit coordinator gate approval required after 8/8 and source/input/video review.')
+            row['condition']='Coordinator review required; 74940 first.' if stage=='diagnostic' else 'Explicit gate approval required after 8/8.'
             command=row['command'];name_index=command.index('--per-run-mb')+3
             assert command[name_index].startswith('release6-')
             command[name_index]=row['name']
