@@ -36,7 +36,7 @@
   - ACT 논문 수치는 조정자가 2026-10-14 논문 HTML에서 열람한 값이다(표가 펼쳐진 형태라 열 대응은 근사). 실물은 작업당 50 시연으로 6개 작업 중 5개가 84–96%(나머지 하나 20%)였다. 시뮬레이션은 각본 시연으로 86%/32%(물체 옮기기/양팔 끼우기)였다.
   - 검토한 후보는 π0.5, GR00T N1.6/N1.7, SmolVLA, X-VLA, MolmoAct2, OpenVLA-OFT, Diffusion Policy, One-Step Flow Policy(2026), Normalizing Flow Policy다.
   - 재검토 조건: 학습에 안 쓴 시작 상태(held-out)에서 성공이 낮고, 그 원인이 모델 표현력으로 확인될 때만 One-Step Flow Policy를 올린다.
-- **GPU는 Kaggle**(사용자: "Kaggle ㄱㄱ 하자").
+- **GPU는 GCP**(2026-10-14 사용자: Modal 검토 뒤 "GCP 가자 그냥", "GCP를 메인으로, Azure는 보조로 하자"). 프로젝트 `ugrp-act-train-1014`, GPU 할당량 1(L4/T4). 크레딧을 넘으면 자동 정지한다(AGENTS.md "GCP 메인" 항목). 이전 결정은 Kaggle이었다(사용자: "Kaggle ㄱㄱ 하자"). Kaggle은 대체 경로로 남긴다.
   - 학습 데이터는 **비공개** dataset으로 올리는 것을 허용한다. 올린 뒤 서버 메타데이터로 private인지 확인한다.
   - 업로드는 Mac에서 한다. 서버에 Kaggle 자격 증명을 두지 않는다.
   - 2026-10-14 조정자 확인: CLI 2.2.4, OAuth 로그인, GPU 30 h/주, 갱신 10/17. 세션 9–12시간을 가정해 중간 저장과 이어 학습을 한다.
