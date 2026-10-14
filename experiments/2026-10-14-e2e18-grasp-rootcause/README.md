@@ -18,3 +18,5 @@
 - [수치·원본 경로·sha256](summary.json), [부분 관문](visible-gate-c1f02ac0-partial.json), [진단 실패](replay09-abcc-metrics.json), [제출 오류](admission-d032-host-error.json).
 - [설계와 실패 분류](design.md), [확인한 참고 자료](references.md), [이전 버전·검사 이력](progress.md).
 - 최초 감사: 집게61mm−봉40mm → 한쪽 여유10.5mm. 원거리 끝 오차 중앙69.5mm(6.6배), 0.3m 미만도 중앙10.7mm. 전체 과거 요청 코호트의 감사 회수는 미완료 범위를 summary에 표시했다. 옛 카메라36/40과 옛1초 판정은 새3초 관문에 합산하지 않는다.
+
+과거 원본 추가 감사: [54개 실행·432파일 재집계](historical-recount-integrity.json). r76은 Azure3/4 각각 정렬 진입9/16, r80은16/16이지만 셋 모두 닫기 명령0/16이다. r69 전체6개 중4개는 발췌 종료 뒤 접촉·상승이 기록됐다. 힘 양수 여부는 저장되지 않아 정식 held로 확정하지 않으며, 동일 seed1개를 반복한 자료다.
