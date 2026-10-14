@@ -71,7 +71,7 @@ def own_end_world(world,inst,end):
     return b.xpos+rot@np.array([-.30 if end=='teal' else .30,0.,0.])
 
 
-def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2'):
+def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off'):
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
     import numpy as np
@@ -104,6 +104,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
         for controller in world.controllers.values():bind_camera(controller)
         scene.setup(world)
+        from harness.render_randomization import draw as dr_draw,apply as dr_apply
+        report['render_randomization']=dr_apply(world.model,None if render_dr=='off' else dr_draw(plan['seed'],world.model.nlight))
         place(world,[CargoInstance('beam_1','long_beam',tuple(plan['beam_pose']))])
         (out/'scene.xml').write_text(world.scene_xml);write(out/'scene.json',scene.manifest)
         static=scene.config['static_map'];zone=static['regions'][plan['destination_region']]
@@ -393,8 +395,9 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=90.)
     p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands')
-    p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look');a=p.parse_args()
+    p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look')
+    p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr),ensure_ascii=False,default=str))
 if __name__=='__main__':main()
