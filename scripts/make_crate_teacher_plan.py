@@ -13,6 +13,11 @@ Lug assignment (who takes the west/east lug):
   supervisor's rule (GT positions are allowed for the demo assignment), not a student input.
 - ``alternating``: r1 west/east alternating by index regardless of position (the beam plan's
   rule); includes crossing cases for training diversity. Not used by the gate.
+
+``start_assigned_los_v1`` conditions the existing joint proposal distribution on
+both assigned lugs having >=5/15 probes available during a static rotation scan.
+Original admissible starts/rejection rates remain in the plan. This privilege
+belongs solely to demonstration setup; runtime teachers do not receive it.
 """
 from __future__ import annotations
 import argparse, hashlib, json, math, random
@@ -46,13 +51,22 @@ def assign(own, other, crate, p=CRATE):
     return ('teal', 'blue') if straight <= crossed else ('blue', 'teal')
 
 
-def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assignment='nearest', indices=None, scenario_set='v4'):
+def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assignment='nearest', indices=None,
+            scenario_set='v4', start_assigned_los='off'):
     if assignment not in LOUD:
         raise ValueError(assignment)
+    if start_assigned_los not in ('off', 'start_assigned_los_v1'):
+        raise ValueError(start_assigned_los)
+    checker = None
+    if start_assigned_los != 'off':
+        from scripts.audit_crate_start_los import CrateStartLOS, PITCHES, summarize
+        checker = CrateStartLOS()
     check_range(split, seed, count)
     scenarios = SCENARIO_SETS[scenario_set]
     episodes = []
     rejects = Counter()
+    original_starts = []
+    accepted_starts = []
     for i in range(count):
         rng = random.Random(seed+i)
         scenario_id = scenarios[i % len(scenarios)]
@@ -68,6 +82,8 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
         axis_y = (i//2) % 2 == 0                       # crate axis along the zone's long (y) side or across it (x)
         lo, hi = STRATA[(i//4) % len(STRATA)]
         side_sign = 1 if (i//8) % 2 == 0 else -1
+        original_start = None
+        los_proposals = 0
 
         def free(q, r):
             return (bounds[0]+r <= q[0] <= bounds[1]-r and bounds[2]+r <= q[1] <= bounds[3]-r
@@ -152,7 +168,7 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
                 raise ValueError('two robots must take different lugs')
             err = {rid: [rng.gauss(0, POSE_ERROR[0]), rng.gauss(0, POSE_ERROR[0]), rng.gauss(0, POSE_ERROR[1])]
                    for rid in ('r1', 'r2')}
-            episodes.append({
+            episode = {
                 'episode_id': f'{split}-{seed+i}', 'batch': f'crate-teacher-{split}-{seed}', 'seed': seed+i, 'split': split,
                 'scenario_id': scenario_id, 'scenario_source_sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
                 'map_id': scenario['map_id'], 'cargo_pose': crate,
@@ -166,13 +182,49 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
                                                'axis': 'y' if axis_y else 'x', 'side': side_sign},
                 'near_wall': min(rect_distance(crate, rect) for rect in rects) < .45,
                 'handoff_pose_error': err, 'crate_to_zone_center_m': math.dist(crate[:2], (cx, cy)),
-                'proposal_attempts': attempt+1})
+                'proposal_attempts': attempt+1}
+            if checker is not None:
+                report = checker.check(episode)
+                los_proposals += 1
+                if original_start is None:
+                    # First geometrically valid proposal is byte-for-byte the
+                    # toggle-off start. Keep it even when subsequently rejected.
+                    original_start = {'seed': seed+i, 'cargo_pose': crate,
+                                      'spawns': episode['spawns'], 'roles': roles,
+                                      'initial_pan': episode['initial_pan'], **report}
+                if not report['accepted']:
+                    rejects['start_assigned_los'] += 1
+                    for rid, value in report['robots'].items():
+                        if not value['gate5']:
+                            rejects['start_assigned_los_'+rid] += 1
+                    continue
+                episode['start_assigned_los'] = start_assigned_los
+                episode['start_los_audit'] = report
+                episode['start_los_proposals'] = los_proposals
+                original_starts.append(original_start)
+                accepted_starts.append(report)
+            episodes.append(episode)
             break
         else:
             raise ValueError(f'no admissible crate start for index {i}; {dict(rejects)}')
     if indices is not None:     # keep only these generated indices (the episode seeds stay seed+index)
         episodes = [episodes[j] for j in indices]
+        if checker is not None:
+            original_starts = [original_starts[j] for j in indices]
+            accepted_starts = [accepted_starts[j] for j in indices]
     return {'schema': 'ugrp.crate_teacher.plan.v1', 'episodes': episodes, 'rejected_proposals': dict(rejects),
+            **({'start_assigned_los': start_assigned_los,
+                'start_los_audit': {
+                    'scope': 'demonstration start generation only; never teacher action inputs',
+                    'method': 'joint proposal rejection sampling; redraw cargo and robot poses within the existing map/zone/strata and assignment rules',
+                    'minimum_visible_probes': 5, 'probe_N': 15,
+                    'yaw_step_deg': 1, 'yaw_views_per_pitch': 360,
+                    'pitches': [list(p) for p in PITCHES],
+                    'original': summarize(original_starts), 'accepted': summarize(accepted_starts),
+                    'original_starts': original_starts,
+                    'rejected_los_proposals': rejects['start_assigned_los'],
+                    'total_los_proposals': sum(e['start_los_proposals'] for e in episodes),
+                    'mj_step_calls': 0, 'render_calls': 0}} if checker is not None else {}),
             'distribution': {
                 'robot_distance_m': [.5, 2.0], 'peer_cases': list(PEERS), 'scenarios': list(scenarios), 'scenario_set': scenario_set,
                 'crate_axis': 'zone long side (y) or across it (x), +-8 deg, both facings',
@@ -197,11 +249,12 @@ def main():
     p.add_argument('--split', default='crate_gate')
     p.add_argument('--assignment', choices=LOUD, default='nearest')
     p.add_argument('--scenario-set', choices=tuple(SCENARIO_SETS), default='v4')
+    p.add_argument('--start-assigned-los', choices=('off', 'start_assigned_los_v1'), default='off')
     p.add_argument('--indices', default=None, help='comma separated generated indices to keep (diagnostic subset)')
     a = p.parse_args()
     result = prepare(count=a.count, seed=a.seed, split=a.split, assignment=a.assignment,
                      indices=None if a.indices is None else [int(v) for v in a.indices.split(',')],
-                     scenario_set=a.scenario_set)
+                     scenario_set=a.scenario_set, start_assigned_los=a.start_assigned_los)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps({'episodes': len(result['episodes']), 'rejected': result['rejected_proposals']}))

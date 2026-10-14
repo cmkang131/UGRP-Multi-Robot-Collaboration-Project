@@ -1,0 +1,241 @@
+{
+  "schema": "ugrp.crate_start_distribution.summary.v1",
+  "created_utc": "2026-10-14T12:09:42.754336+00:00",
+  "parent_sha": "422cc0adc5e829730fa445fb11a0ad8238eb02d4",
+  "verification_scope": "offline static model compilation/kinematics/camera rays only; no physics/render/GCP submission",
+  "toggle": "start_assigned_los_v1",
+  "gate": {
+    "scope": "demonstration start generation only; never teacher action inputs",
+    "method": "joint proposal rejection sampling; redraw cargo and robot poses within the existing map/zone/strata and assignment rules",
+    "minimum_visible_probes": 5,
+    "probe_N": 15,
+    "yaw_step_deg": 1,
+    "yaw_views_per_pitch": 360,
+    "pitches": [
+      [
+        820,
+        2320
+      ],
+      [
+        700,
+        2440
+      ],
+      [
+        500,
+        2500
+      ]
+    ],
+    "original": {
+      "N": 40,
+      "both_pass": 26,
+      "rejected": 14,
+      "rejection_rate": 0.35,
+      "per_robot": {
+        "r1": {
+          "pass": 31,
+          "rejected": 9,
+          "N": 40,
+          "rejection_rate": 0.225
+        },
+        "r2": {
+          "pass": 35,
+          "rejected": 5,
+          "N": 40,
+          "rejection_rate": 0.125
+        }
+      }
+    },
+    "accepted": {
+      "N": 40,
+      "both_pass": 40,
+      "rejected": 0,
+      "rejection_rate": 0.0,
+      "per_robot": {
+        "r1": {
+          "pass": 40,
+          "rejected": 0,
+          "N": 40,
+          "rejection_rate": 0.0
+        },
+        "r2": {
+          "pass": 40,
+          "rejected": 0,
+          "N": 40,
+          "rejection_rate": 0.0
+        }
+      }
+    },
+    "rejected_los_proposals": 30,
+    "total_los_proposals": 70,
+    "mj_step_calls": 0,
+    "render_calls": 0
+  },
+  "new_diagnostics": {
+    "scope": "demonstration start generation only; never teacher action inputs",
+    "method": "joint proposal rejection sampling; redraw cargo and robot poses within the existing map/zone/strata and assignment rules",
+    "minimum_visible_probes": 5,
+    "probe_N": 15,
+    "yaw_step_deg": 1,
+    "yaw_views_per_pitch": 360,
+    "pitches": [
+      [
+        820,
+        2320
+      ],
+      [
+        700,
+        2440
+      ],
+      [
+        500,
+        2500
+      ]
+    ],
+    "original": {
+      "N": 3,
+      "both_pass": 2,
+      "rejected": 1,
+      "rejection_rate": 0.3333333333333333,
+      "per_robot": {
+        "r1": {
+          "pass": 2,
+          "rejected": 1,
+          "N": 3,
+          "rejection_rate": 0.3333333333333333
+        },
+        "r2": {
+          "pass": 3,
+          "rejected": 0,
+          "N": 3,
+          "rejection_rate": 0.0
+        }
+      }
+    },
+    "accepted": {
+      "N": 3,
+      "both_pass": 3,
+      "rejected": 0,
+      "rejection_rate": 0.0,
+      "per_robot": {
+        "r1": {
+          "pass": 3,
+          "rejected": 0,
+          "N": 3,
+          "rejection_rate": 0.0
+        },
+        "r2": {
+          "pass": 3,
+          "rejected": 0,
+          "N": 3,
+          "rejection_rate": 0.0
+        }
+      }
+    },
+    "rejected_los_proposals": 1,
+    "total_los_proposals": 4,
+    "mj_step_calls": 0,
+    "render_calls": 0
+  },
+  "reused_diagnostics": [
+    {
+      "seed": 77920,
+      "pass": true,
+      "exhaustive_max_probes": {
+        "r1": 12,
+        "r2": 12
+      }
+    },
+    {
+      "seed": 77921,
+      "pass": true,
+      "exhaustive_max_probes": {
+        "r1": 8,
+        "r2": 12
+      }
+    },
+    {
+      "seed": 77922,
+      "pass": true,
+      "exhaustive_max_probes": {
+        "r1": 10,
+        "r2": 12
+      }
+    }
+  ],
+  "legacy_v5_static": {
+    "N": 40,
+    "any_both": 30,
+    "gate5_both": 25,
+    "per_robot": {
+      "r1": {
+        "any": 32,
+        "gate5": 31
+      },
+      "r2": {
+        "any": 38,
+        "gate5": 34
+      }
+    },
+    "reverified_in_tests": [
+      "any_both",
+      "gate5_both"
+    ]
+  },
+  "relocation_example": {
+    "seed": 77902,
+    "included_in_diagnostics": false,
+    "static_reverified_r1_max_probes": 3,
+    "provided_prior_ledger": {
+      "N": 548,
+      "visible_any": 31,
+      "max_probes": 3,
+      "replayed_in_this_task": false
+    },
+    "responsibility": "map-code repositioning; independently verify in E2E"
+  },
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_crate_start_los.py",
+      "tests/test_grasp_act_crate_teacher.py"
+    ],
+    "passed": 27,
+    "skipped": 1,
+    "deselected": "test_crate_scene_resolves_lug_geoms_and_probes",
+    "seconds": 62.13,
+    "skip_reason": "optional sim.active_lookaround absent"
+  },
+  "mj_step_calls": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "remote_runs_submitted": 0,
+  "physical_success": "not measured for this candidate",
+  "runtime_input_audit": "not measured for this candidate",
+  "sha256": {
+    "scripts/make_crate_teacher_plan.py": "b2c7a96a3503af7c5dc44c5d58bc4d0707947c3d71a5ab872aaa684ea16e8e26",
+    "scripts/audit_crate_start_los.py": "12bbd0c7fd28bbf0225e922cb7a56acd344a9373a02a3e60bbc539a8a2646010",
+    "tests/test_grasp_act_crate_start_los.py": "891e37ea8da551818a9c7447473fd2b308733e4369e4fc2638b55b3a26e663c2",
+    "configs/grasp_act_seed_splits.json": "c2c25eed704a9d6e7da52fc145f63e8f06104517ba959fa56ad939408a15c0ef",
+    "scripts/run_ci_tests.py": "435d1e977f49e77ad893616693a8634b5b163a2791e27461146c0f6eaf4b5bec",
+    "sim/grasp_act_visible_measurements.py": "f5af39616bed77ccf4427b5ff41b27763e10f2a1dccf55b48193d38cba00c3e0",
+    "sim/grasp_act_teacher_v3.py": "a2424d57a5a6130e1a75d5ea0d21297af9eb80c7c3bc02be11ca2465e96ec8bf",
+    "scripts/audit_grasp_act_visibility.py": "96f679774fcd37b3504e8e3290bf5ce295a73ad41878c10775e0c3f4ec287435",
+    "scripts/audit_masterpi_v3_static.py": "cdef37695e56850c38e408a106a3cf81a738a04138325cc48f3fc378893fcf58",
+    "experiments/2026-10-14-crate-teacher/gate_plan_v6_77200.json": "50d5624dcd87613c4257b6bbd1eacf7408d11e5be1881c36c0686a1e6b3caf4d",
+    "experiments/2026-10-14-crate-teacher/diag_plan_v6_77930.json": "ef723ea80e1af4ae145eb7591d7bfee6e22462327006001a1881e6a24a85680a",
+    "experiments/2026-10-14-crate-teacher/diag_plan_v5_77920.json": "a16b0276b21d5ae56f35406c6e2a940bd2df1c50e1d91a7d4c6287b6389127e7",
+    "experiments/2026-10-14-crate-teacher/gate_plan_v5_77100.json": "ada562b2cee932a6ccc156c1e7eab030c19212790229cac8a91a1e7184f4c12a",
+    "experiments/2026-10-14-crate-teacher/diag_plan_77900.json": "4b6d96fc2a0db9e8e8c1ce5fb2f8606bd22071ea1b14c5d09f3ed0c42fb8c1ac",
+    "experiments/2026-10-14-crate-teacher/start-seed-reservation.json": "a87d5a99e045cae5cba1cfbd6165b482c981c8a73b0ff24e47ae686673308ee9",
+    "experiments/2026-10-14-crate-teacher/start-distribution.md": "72710cac5834d10414a9b280c2d521bff2f8a315a464290576cecf63a826606d"
+  },
+  "background_raw": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate-diag-422cc0ad.json",
+    "sha256": "f67ae9f9cfd0d7d5f6589e36823847cf4fadc8a948ea62c332c6888a63051854",
+    "reported_diagnostic_success": "3/4",
+    "pool_with_v6": false
+  },
+  "prior_static_audit_sources": {
+    "/private/tmp/crate_visibility_422cc0ad.py": "5e407772f7cd8a5baa2e6fd71c8bb7605aec3b743646adcd619bbe86c9785c2a",
+    "/private/tmp/crate_visibility_v5_422cc0ad.py": "e88e21376b4e6dd0958927a6640f94447b5ac243c65d7379935013bbb725303e"
+  }
+}

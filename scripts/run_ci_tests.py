@@ -33,6 +33,7 @@ TEST_PATTERNS = (
     "tests/test_grasp_act_teacher.py",
     "tests/test_grasp_act_data.py",
     "tests/test_grasp_act_crate_teacher.py",
+    "tests/test_grasp_act_crate_start_los.py",
     "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",
     "tests/test_e2e18_cadence.py",
