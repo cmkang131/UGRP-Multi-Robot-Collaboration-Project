@@ -78,7 +78,7 @@ def compress_logs(out):
             'sha256':hashlib.sha256(compressed).hexdigest(),'decoded_sha256':hashlib.sha256(raw).hexdigest()})
 
 
-def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None):
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,speed_options=''):
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use admitted execution host')
     if record_training:
         from scripts.grasp_act_host import same_machine
@@ -86,6 +86,8 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         same_machine(recording_proof.get('execution_host'),execution_host)
     import mujoco
     import numpy as np
+    from harness import grasp_speed_options
+    speed=grasp_speed_options.parse(speed_options)
     from harness import grasp_act_contract as v5
     from harness import grasp_act_contract_v4 as v4
     contract=v5 if teacher_profile=='visible_only' else v4
@@ -115,14 +117,14 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         'student_execution':False,'recording_mode':'training' if record_training else 'success_measurement',
         'episode_plan_sha256':hashlib.sha256((out/'plan.json').read_bytes()).hexdigest(),
         'physical_success':False,'teacher_profile':teacher_profile,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off',
-        'self_pose_source':self_pose_source,'recording_gate_proof':recording_proof,
+        'speed_options':speed,'self_pose_source':self_pose_source,'recording_gate_proof':recording_proof,
         'criteria':{'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.} if strict else {'min_z_m':.012,'hold_s':1.}}
     write(out/'result.json',report)
     try:
         os.environ['UGRP_SIM_OBSERVER_WIDTH']='320'
         os.environ['UGRP_SIM_OBSERVER_HEIGHT']='240'
         world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=640 if record_training else 320,height=480 if record_training else 240,render=True,
-            warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
+            warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='sphere6_v1' if speed.get('roller_sphere6') else 'mesh',idle_robot_contacts='freeze_v1' if speed.get('idle_freeze') else 'off')
         if observable:
             from sim.s2_realism_camera_binding import bind_camera
             for controller in world.controllers.values():bind_camera(controller)
@@ -147,6 +149,9 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 for port in ports.values():port.tick(now)
                 world._physics_step_for(world.robot('r1'))
             timings['physics']+=time.monotonic()-at
+        adaptive=None
+        if 'adaptive_dt' in speed:
+            adaptive=grasp_speed_options.AdaptiveStep(world,speed['adaptive_dt'],{rid:dict(p._servo_pulses) for rid,p in ports.items()},speed.get('coarse_noslip_off',False))
         advance(until)
         origin=float(world.data.time);previous={};history={};images={};writers={};teachers={};models={};clocks={}
         delays={rid:(0. if k==0 else float(rng.uniform(0,1.5))) for k,rid in enumerate(plan['roles'])}
@@ -198,7 +203,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     truth['visibility'][rid]['peers']=[peer for peer in ('r1','r2','r3') if peer!=rid and visibility.body_visible(world.data,rid,peer+'__robot')]
             ev.write(json.dumps(truth)+'\n')
             timings['evaluation']+=time.monotonic()-at
-            if i % 10 == 0:
+            if i % round(speed.get('review_period',1.)*10) == 0:
                 # Reviewer evidence only; never referenced by a student observation.
                 import io
                 from PIL import Image
@@ -269,6 +274,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     'handoff_distance_m':(math.dist(perceived[rid]['robots'][rid]['pose'][:2],perceived[rid]['beam']['ends'][t.end][:2]) if strict and perceived[rid]['beam'] is not None else None),
                     'segment':'local_grasp' if local_before else 'navigation_or_search' if strict else phase}
                 apply(ports[rid],applied,now,previous[rid]);previous[rid]=applied;history[rid].append(applied)
+                if adaptive is not None:adaptive.observe(rid,applied['pwm'],now)
                 if strict:
                     models[rid].issue(applied)
                     t.remember_applied(applied)
@@ -294,7 +300,8 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         report.update(status='complete',sim_s=float(world.data.time)-origin,wall_s=time.monotonic()-start,
             teacher_success_n=sum(t.outcome=='success' for t in teachers.values()),
             teachers={rid:t.diagnostic() for rid,t in teachers.items()},samples_per_robot=written,
-            first_attempt=True,weld='off',loadavg_at_end=os.getloadavg(),timings_s=timings)
+            first_attempt=True,weld='off',loadavg_at_end=os.getloadavg(),timings_s=timings,
+            adaptive_dt=adaptive.record() if adaptive is not None else None)
         report['physical_success']=report['teacher_success_n']==report['teacher_N'] and (len(plan['roles'])==1 or report['joint_held'] is True)
         report['data_admitted']=bool(record_training and not recording_probe and report['physical_success'])
         report['wall_per_sim']=report['wall_s']/max(.001,report['sim_s'])
@@ -317,7 +324,7 @@ def main():
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
     p.add_argument('--self-pose-source',choices=('issued','perfect_self_comparison'),default='issued')
     p.add_argument('--execution-host',choices=('azure','gcp1'),default='azure')
-    p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path)
+    p.add_argument('--speed-options',default='',help='opt-in speed toggles, see harness/grasp_speed_options.py; default none');p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path)
     p.add_argument('--gate-plan',type=Path);p.add_argument('--recording-probe',action='store_true');p.add_argument('--recording-check',type=Path)
     a=p.parse_args();proof=None
     from scripts.grasp_act_host import identity,same_machine
@@ -339,5 +346,5 @@ def main():
             proof['recording_check_sha256']=hashlib.sha256(a.recording_check.read_bytes()).hexdigest()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host,speed_options=a.speed_options),ensure_ascii=False))
 if __name__=='__main__':main()

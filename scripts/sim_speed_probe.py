@@ -20,6 +20,7 @@ def main():
     p.add_argument('--episode', type=int, default=0)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--cap-s', type=float, default=30.)
+    p.add_argument('--finish-on-done', action='store_true', help='not a fixed-length probe: stop when the teacher completes (success measurement)')
     p.add_argument('--cprofile', action='store_true')
     p.add_argument('--instrument', action='store_true', help='wrap mj_step to record ncon/nefc/niter (small overhead)')
     p.add_argument('--speed-options', default='', help='forwarded to run() when supported')
@@ -53,7 +54,7 @@ def main():
             wrap(name)
     from scripts.run_grasp_act_teacher import run
     plan = json.loads(a.plan.read_text())['episodes'][a.episode]
-    kwargs = dict(cap_s=a.cap_s, probe=True, teacher_profile='visible_only', execution_host=None)
+    kwargs = dict(cap_s=a.cap_s, probe=not a.finish_on_done, teacher_profile='visible_only', execution_host=None)
     if a.speed_options:
         kwargs['speed_options'] = a.speed_options
     profiler = cProfile.Profile() if a.cprofile else None

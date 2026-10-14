@@ -68,7 +68,7 @@ def summarize(rows,planned):
         'interrupted':sum(r.get('status')=='interrupted' or r.get('exit') in (-2,130) for r in rows),'rows':rows}
 
 
-def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teacher_profile="legacy",execution_host='azure'):
+def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teacher_profile="legacy",execution_host='azure',speed_options=''):
     jobs=[];reason=None;rows=[];monitored=0.;started=time.monotonic()
     parent=read(root.parents[0]/'RUN_META.json')
     env={**os.environ,**{k:'1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','LP_NUM_THREADS')}}
@@ -80,6 +80,7 @@ def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teache
                 '--plan',str(plan),'--episode',str(index),'--out',str(target/'raw'),'--cap-s',str(cap),
                 '--teacher-profile',teacher_profile,'--execution-host',execution_host]
             if probe:command.append('--probe')
+            if speed_options:command+=['--speed-options',speed_options]
             log=(target/'log.txt').open('x');at=time.monotonic()
             proc=subprocess.Popen(command,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,env=env)
             write(target/'PROCESS.json',{'pid':proc.pid,'command':command,'started_unix':time.time()})
@@ -144,6 +145,7 @@ def main():
     p.add_argument('--start-index',type=int,default=0);p.add_argument('--speed-gate-from',type=Path)
     p.add_argument('--episode-indices',type=int,nargs='+',help='explicit unchanged frozen-plan indices; never resample')
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
+    p.add_argument('--speed-options',default='',help='opt-in speed toggles (harness/grasp_speed_options.py); default none')
     p.add_argument('--complete-frozen-cohort',action='store_true',help='record individual finite failures; operator still stops diagnosed shared defects')
     a=p.parse_args()
     root=a.root.resolve();require_run_root(root);host=identity(a.execution_host)
@@ -172,7 +174,7 @@ def main():
         if len(indices)>a.concurrency or a.probe_only or a.speed_gate_from:
             raise ValueError('diagnostic is one finite wave, separate from speed and qualification')
         rows,reason=wave(root/'diagnostic',plan,indices,a.cap_s,probe=False,limit=a.speed_gate_limit,
-            teacher_profile=a.teacher_profile,complete_frozen_cohort=a.complete_frozen_cohort,execution_host=a.execution_host)
+            teacher_profile=a.teacher_profile,complete_frozen_cohort=a.complete_frozen_cohort,execution_host=a.execution_host,speed_options=a.speed_options)
         write(root/'diagnostic.json',{**summarize(rows,len(indices)),'qualified':False,
             'purpose':'seen regression replay; not a fresh teacher gate','stop_reason':reason,'execution_host':host})
         return
@@ -180,7 +182,7 @@ def main():
         gate,proof=reuse_speed_gate(a.speed_gate_from.resolve(),plan,a.concurrency,a.speed_gate_limit,host)
         write(root/'execution-continuity.json',proof)
     else:
-        rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit,teacher_profile=a.teacher_profile,execution_host=a.execution_host)
+        rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit,teacher_profile=a.teacher_profile,execution_host=a.execution_host,speed_options=a.speed_options)
         samples=[{'sim_s':r.get('sim_s'),'wall_s':r.get('wall_s'),'exit':r['exit'],
             'expected_stop':r.get('status')=='complete' and r.get('sim_s',0)>=30-1e-6,
             'finalization_complete':any((Path(r['raw'])/name).is_file() for name in ('manifest.json','manifest.json.zst')),'finalization_errors':[],
@@ -193,7 +195,7 @@ def main():
     for offset in range(0,len(indices),a.concurrency):
         batch=indices[offset:offset+a.concurrency]
         rows,reason=wave(root/f'cohort-{batch[0]:03d}',plan,batch,a.cap_s,probe=False,limit=a.speed_gate_limit,
-            complete_frozen_cohort=a.complete_frozen_cohort,teacher_profile=a.teacher_profile,execution_host=a.execution_host)
+            complete_frozen_cohort=a.complete_frozen_cohort,teacher_profile=a.teacher_profile,execution_host=a.execution_host,speed_options=a.speed_options)
         all_rows.extend(rows)
         summary=summarize(all_rows,len(episodes))
         summary.update(source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
