@@ -4,7 +4,7 @@ from pathlib import Path
 
 CRITERIA={'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.}
 
-def recording_admission(gate,*,source_sha,teacher_profile,gate_plan,execution_host,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off"):
+def recording_admission(gate,*,source_sha,teacher_profile,gate_plan,execution_host,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off"):
     from scripts.grasp_act_host import same_machine
     same_machine(gate.get('execution_host'),execution_host)
     digest=hashlib.sha256(Path(gate_plan).read_bytes()).hexdigest()
@@ -18,6 +18,7 @@ def recording_admission(gate,*,source_sha,teacher_profile,gate_plan,execution_ho
     if gate.get('approach_goal_set','off')!=approach_goal_set:raise ValueError('recording gate approach mode mismatch')
     if gate.get('nominal_blocked_handoff','off')!=nominal_blocked_handoff:raise ValueError('recording gate nominal handoff mode mismatch')
     if gate.get('approach_progress','off')!=approach_progress:raise ValueError('recording gate approach progress mode mismatch')
+    if gate.get('approach_recovery','off')!=approach_recovery:raise ValueError('recording gate approach recovery mode mismatch')
     completed=[r for r in gate.get('rows',[]) if r.get('status')=='complete' and r.get('exit')==0]
     if len(completed)!=gate['N'] or sum(r.get('physical_success') is True for r in completed)!=gate['n']:
         raise ValueError('recording gate denominator mismatch')
@@ -30,8 +31,9 @@ def recording_admission(gate,*,source_sha,teacher_profile,gate_plan,execution_ho
         if row.get('approach_goal_set','off')!=approach_goal_set:raise ValueError('recording gate mixed approach modes')
         if row.get('nominal_blocked_handoff','off')!=nominal_blocked_handoff:raise ValueError('recording gate mixed nominal handoff modes')
         if row.get('approach_progress','off')!=approach_progress:raise ValueError('recording gate mixed approach progress modes')
+        if row.get('approach_recovery','off')!=approach_recovery:raise ValueError('recording gate mixed approach recovery modes')
     return {'source_sha':source_sha,'teacher_profile':teacher_profile,'plan_sha256':digest,
-            'teacher_stability':teacher_stability,'teacher_search':teacher_search,'approach_goal_set':approach_goal_set,'nominal_blocked_handoff':nominal_blocked_handoff,'approach_progress':approach_progress,'qualified':True,'n':gate['n'],'N':gate['N'],'criteria':CRITERIA,'execution_host':execution_host}
+            'teacher_stability':teacher_stability,'teacher_search':teacher_search,'approach_goal_set':approach_goal_set,'nominal_blocked_handoff':nominal_blocked_handoff,'approach_progress':approach_progress,'approach_recovery':approach_recovery,'qualified':True,'n':gate['n'],'N':gate['N'],'criteria':CRITERIA,'execution_host':execution_host}
 
 def recording_mode_equivalence(gate_rows,recorded_rows):
     """The same starts must pass in both rendering modes before data admission."""
@@ -52,6 +54,7 @@ def recording_mode_equivalence(gate_rows,recorded_rows):
         if row.get('approach_goal_set','off')!=old.get('approach_goal_set','off'):raise ValueError('paired approach mode mismatch')
         if row.get('nominal_blocked_handoff','off')!=old.get('nominal_blocked_handoff','off'):raise ValueError('paired nominal handoff mode mismatch')
         if row.get('approach_progress','off')!=old.get('approach_progress','off'):raise ValueError('paired approach progress mode mismatch')
+        if row.get('approach_recovery','off')!=old.get('approach_recovery','off'):raise ValueError('paired approach recovery mode mismatch')
         for key in ('source_sha','teacher_profile','action_contract','self_pose_source','episode_plan_sha256'):
             if row.get(key)!=old.get(key):raise ValueError('paired source mismatch')
         if row.get('observation_sampling',{}).get('rgb_size')!=[640,480] or row['observation_sampling'].get('rgb_hz')!=10:
@@ -62,4 +65,5 @@ def recording_mode_equivalence(gate_rows,recorded_rows):
             'approach_goal_set':recorded_rows[0].get('approach_goal_set','off'),
             'nominal_blocked_handoff':recorded_rows[0].get('nominal_blocked_handoff','off'),
             'approach_progress':recorded_rows[0].get('approach_progress','off'),
+            'approach_recovery':recorded_rows[0].get('approach_recovery','off'),
             'execution_host':recorded_rows[0]['execution_host']}

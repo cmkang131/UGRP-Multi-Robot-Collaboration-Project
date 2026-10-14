@@ -272,7 +272,8 @@ def test_goal_set_requires_named_stability_and_valid_toggle():
 @pytest.mark.parametrize('key,mode,error',[
     ('approach_goal_set','approach_goal_set_v1','approach'),
     ('nominal_blocked_handoff','nominal_blocked_handoff_v1','nominal handoff'),
-    ('approach_progress','approach_progress_v1','approach progress')])
+    ('approach_progress','approach_progress_v1','approach progress'),
+    ('approach_recovery','approach_recovery_v1','approach recovery')])
 def test_recording_gate_rejects_different_approach_profile(tmp_path,key,mode,error):
     import hashlib
     from harness.grasp_act_admission import recording_admission,CRITERIA
