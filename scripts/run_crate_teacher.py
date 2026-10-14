@@ -385,6 +385,10 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             ev.write(json.dumps({'stage': 'grasp', 't': now, 'crate': truth['beam'], 'contacts': truth['contacts'],
                                  'robots': {r: truth['robots'][r] for r in roles}, 'held_s': held_s,
                                  'visible_probes': {r: truth['visibility'][r]['visible_probes'] for r in roles},
+                                 # Exact inputs for offline decision replay. Keep these separate
+                                 # from evaluation truth; never reconstruct missing inputs from GT.
+                                 'visible_measurements': truth['visible_measurements'],
+                                 'pick_permits': permits, 'lift_permits': lift_permits,
                                  'servo_load': load_row,
                                  'phases': {r: t.phase for r, t in teachers.items()}})+'\n')
             if rgb_lift in ('crate_rgb_lift_v2', 'crate_rgb_lift_v3'):

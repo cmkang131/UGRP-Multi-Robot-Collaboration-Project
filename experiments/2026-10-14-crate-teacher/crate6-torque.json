@@ -1,0 +1,1141 @@
+{
+  "scope": "Offline issued-PWM gravity estimate from saved scene XML; no simulator calls.\n\nAssumes a level base, commanded angles reached, vertical load at the pad centre.\nEqual load sharing is an assumption, not a measured contact-force distribution.\nInertia, horizontal contact forces, servo tracking error and friction are omitted.\n",
+  "physics_steps": 0,
+  "render_calls": 0,
+  "replay_ready": false,
+  "reason": "visible_measurements absent from saved crate evaluation ledger",
+  "runs": [
+    {
+      "seed": 77208,
+      "sha": "b033e5f9",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/result.json",
+          "sha256": "05e8494fe2c950be3dca503bb3be5ce0140eab091a3c83b648db119e4203be40"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/eval-only.jsonl",
+          "sha256": "86de0637b1ed574911ba6d172630ca53c94d03a15413d4c69e62da1276ada2b3"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/scene.xml",
+          "sha256": "9641be31d007778c9059520bc88b6411b161ed20c72de2d22de8b6023f73078a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/teacher-r1.jsonl",
+          "sha256": "45cf9140f441e11662f7e0258cce75913b7198c6cd5bf460f02e11f14b4651f6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/teacher-r2.jsonl",
+          "sha256": "be047dabcbfad3d9b11ce813c024cf7967df79feb89d48b5f3c53af4841bdaa2"
+        }
+      ],
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 45,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": null,
+        "per_robot": {},
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {},
+        "r2": {}
+      }
+    },
+    {
+      "seed": 77208,
+      "sha": "6f312f74",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/result.json",
+          "sha256": "890201310f2f07469d940afbad334861d404492c90ecb1e1d0f86c8ed84634c2"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/eval-only.jsonl.zst",
+          "sha256": "93150a69371367388307450eabb295abe210030f1d429958d31a87c5d46bae2f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/scene.xml",
+          "sha256": "f1dc5a53c75e8b528f3647caf9f57a08ad3d565b0b41b73be9afacd449bc36a9"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/teacher-r1.jsonl.zst",
+          "sha256": "e7bdead50d62f0c7b236e3cc4f48daf4d20784ae095554da8cda49c38122e13c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/teacher-r2.jsonl.zst",
+          "sha256": "bff454d0c5d1db36359fcea0e3eb30e1465dee4dca2bbc04a36aa6eddacf4eac"
+        }
+      ],
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "phase_timeout",
+        "r2": "episode_timeout"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 601,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": null,
+        "per_robot": {},
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {},
+        "r2": {}
+      }
+    },
+    {
+      "seed": 77212,
+      "sha": "b033e5f9",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/result.json",
+          "sha256": "b3eb3bb7e6a29a25ec65fe752f3907694046573e6d7fdf8cb8ff833844bd9038"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/eval-only.jsonl.zst",
+          "sha256": "d38434e612cf9c5be26fd6e132cc90b452785dc66b0162e4dc36047e8c5404af"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/scene.xml",
+          "sha256": "2738d401487bb104d555c77ef7e61c2a3632c5e5fbe3523bba08fbb2a2369dfa"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/teacher-r1.jsonl.zst",
+          "sha256": "08e4eadc127ba0321846d7edac79d62e8b3ae42b140419f192cd87a1a4e49127"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/teacher-r2.jsonl.zst",
+          "sha256": "60e185f923ef72052ffb8561222f37305db3b828e65d77a197e4ca6895699fac"
+        }
+      ],
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "no_stable_joint_hold_3s",
+        "r2": "no_stable_joint_hold_3s"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 366,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": 25.800000000040587,
+        "per_robot": {
+          "r1": {
+            "shoulder": {
+              "max_abs_ratio": 0.243,
+              "t_at_max": 0.6000000000028649,
+              "saturated_samples": 0,
+              "samples": 108
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 9,
+              "samples": 108
+            },
+            "wrist": {
+              "max_abs_ratio": 0.604,
+              "t_at_max": 0.7000000000033424,
+              "saturated_samples": 0,
+              "samples": 108
+            }
+          },
+          "r2": {
+            "shoulder": {
+              "max_abs_ratio": 0.302,
+              "t_at_max": 0.5000000000023874,
+              "saturated_samples": 0,
+              "samples": 108
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 107,
+              "samples": 108
+            },
+            "wrist": {
+              "max_abs_ratio": 0.65,
+              "t_at_max": 0.20000000000095497,
+              "saturated_samples": 0,
+              "samples": 108
+            }
+          }
+        },
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {
+          "closed": {
+            "t": 26.90000000003743,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1257,
+              "4": 2137,
+              "5": 2442,
+              "6": 1486
+            },
+            "elbow_to_pad_horizontal_m": 0.08319949685869674,
+            "arm_gravity_nm": 0.03883295832099972,
+            "payload_030kg_equal_share_nm": 0.12242805962757225,
+            "total_equal_share_nm": 0.16126101794857198,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.015258682051428024,
+            "max_supported_crate_mass_share": 0.5623169316651964,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.023978762452693626,
+                "torque_nm": 0.009409266386436979
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06215981642370426,
+                "torque_nm": 0.01524469497791347
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.07981703449533464,
+                "torque_nm": 0.00783005108399233
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.06471912204543265,
+                "torque_nm": 0.0031744729363284716
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.06471912204543265,
+                "torque_nm": 0.0031744729363284716
+              }
+            ]
+          },
+          "complete": {
+            "t": 29.30000000004889,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 775,
+              "4": 1958,
+              "5": 2139,
+              "6": 1486
+            },
+            "elbow_to_pad_horizontal_m": 0.0970871453311182,
+            "arm_gravity_nm": 0.04768841736943928,
+            "payload_030kg_equal_share_nm": 0.14286373435474042,
+            "total_equal_share_nm": 0.19055215172417972,
+            "limit_nm": 0.1765197,
+            "margin_nm": -0.014032451724179718,
+            "max_supported_crate_mass_share": 0.45088868498517554,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.03092258668890437,
+                "torque_nm": 0.012134023016726076
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.07604746489612574,
+                "torque_nm": 0.01865064076577484
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.09370468296775611,
+                "torque_nm": 0.009192429399136875
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07860677051785411,
+                "torque_nm": 0.0038556620939007445
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07860677051785411,
+                "torque_nm": 0.0038556620939007445
+              }
+            ]
+          }
+        },
+        "r2": {
+          "closed": {
+            "t": 27.400000000039817,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1248,
+              "4": 2041,
+              "5": 2495,
+              "6": 1498
+            },
+            "elbow_to_pad_horizontal_m": 0.08992935998075123,
+            "arm_gravity_nm": 0.04158973518147885,
+            "payload_030kg_equal_share_nm": 0.13233105321167543,
+            "total_equal_share_nm": 0.17392078839315428,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.002598911606845722,
+            "max_supported_crate_mass_share": 0.5098197344605446,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.025250142539185793,
+                "torque_nm": 0.009908155932376506
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06638995256925573,
+                "torque_nm": 0.01628213586760997
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.08535570670657233,
+                "torque_nm": 0.008373394827914746
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07162129004666287,
+                "torque_nm": 0.003513024276788814
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07162129004666287,
+                "torque_nm": 0.003513024276788814
+              }
+            ]
+          },
+          "complete": {
+            "t": 29.30000000004889,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 778,
+              "4": 1865,
+              "5": 2200,
+              "6": 1498
+            },
+            "elbow_to_pad_horizontal_m": 0.10109762732614533,
+            "arm_gravity_nm": 0.048666706853326976,
+            "payload_030kg_equal_share_nm": 0.14876515861042286,
+            "total_equal_share_nm": 0.19743186546374983,
+            "limit_nm": 0.1765197,
+            "margin_nm": -0.020912165463749827,
+            "max_supported_crate_mass_share": 0.42971416943629476,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.030773523372712785,
+                "torque_nm": 0.012075530571452497
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.07748568025521477,
+                "torque_nm": 0.019003363082591422
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.09648911991257172,
+                "torque_nm": 0.009465582663423287
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.08279541830641968,
+                "torque_nm": 0.004061115267929885
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.08279541830641968,
+                "torque_nm": 0.004061115267929885
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 77212,
+      "sha": "6f312f74",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/result.json",
+          "sha256": "58e682ea3881e72ac14f0cd3fa1ce8de6bed21e0d901b80cbae9b8f7291c0a86"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/eval-only.jsonl.zst",
+          "sha256": "7028750714327f55d051fe8538511bd6a948e1e7c25408f2e44f8fc0fb2068b5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/scene.xml",
+          "sha256": "d20c03de9143a76b304170388ab203b8dbdb55d7a2eef12bc0d310b842455df2"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/teacher-r1.jsonl.zst",
+          "sha256": "69260ceeaecd72755daab47980fb7d81c2dbc6a63e6591d0badd9770fa93cc19"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/teacher-r2.jsonl.zst",
+          "sha256": "f1778917fac2456504ac6cbd09cddb791b7494e51d91c714180509006d1f557c"
+        }
+      ],
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "episode_timeout",
+        "r2": "episode_timeout"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 800,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": null,
+        "per_robot": {},
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {},
+        "r2": {}
+      }
+    },
+    {
+      "seed": 77921,
+      "sha": "b033e5f9",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/result.json",
+          "sha256": "2d237f2d71b31dae05418dd888903b751f48401a321fcf7a9cb0ae4df97047d6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/eval-only.jsonl.zst",
+          "sha256": "013fdc7a93ffde257ed1c9f884753883ff43468df7a32fbf5c6c6514dda12fd0"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/scene.xml",
+          "sha256": "1a7b4e985d9757b2e64c23406fb6bab1d8db8ea9d258093d32b3b3f034df9b39"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/teacher-r1.jsonl.zst",
+          "sha256": "49ab31bb1b658a457e10c28675d22616e6f0035cc7da7acd9eecdc28fcc887ba"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/teacher-r2.jsonl.zst",
+          "sha256": "6fd819f66c0a5752ed5445b665c884a2fc54f68872c6b377e8e552da0a97f922"
+        }
+      ],
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "no_stable_joint_hold_3s",
+        "r2": "no_stable_joint_hold_3s"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 330,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": 22.200000000023397,
+        "per_robot": {
+          "r1": {
+            "shoulder": {
+              "max_abs_ratio": 0.191,
+              "t_at_max": 0.20000000000095497,
+              "saturated_samples": 0,
+              "samples": 108
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 9,
+              "samples": 108
+            },
+            "wrist": {
+              "max_abs_ratio": 0.639,
+              "t_at_max": 0.40000000000190994,
+              "saturated_samples": 0,
+              "samples": 108
+            }
+          },
+          "r2": {
+            "shoulder": {
+              "max_abs_ratio": 0.29,
+              "t_at_max": 0.5000000000023874,
+              "saturated_samples": 0,
+              "samples": 108
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 106,
+              "samples": 108
+            },
+            "wrist": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.30000000000143245,
+              "saturated_samples": 1,
+              "samples": 108
+            }
+          }
+        },
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {
+          "closed": {
+            "t": 22.90000000001833,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1217,
+              "4": 2066,
+              "5": 2473,
+              "6": 1471
+            },
+            "elbow_to_pad_horizontal_m": 0.0855722001489564,
+            "arm_gravity_nm": 0.040345912574033804,
+            "payload_030kg_equal_share_nm": 0.12591949251918935,
+            "total_equal_share_nm": 0.16626540509322316,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.010254294906776845,
+            "max_supported_crate_mass_share": 0.5407176629353638,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.025165114097823467,
+                "torque_nm": 0.00987479077198593
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06453251971396394,
+                "torque_nm": 0.015826600459849658
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.0821897377855943,
+                "torque_nm": 0.0080628132767668
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.0670918253356923,
+                "torque_nm": 0.0032908540327157075
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.0670918253356923,
+                "torque_nm": 0.0032908540327157075
+              }
+            ]
+          },
+          "complete": {
+            "t": 25.7000000000317,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 729,
+              "4": 1856,
+              "5": 2194,
+              "6": 1471
+            },
+            "elbow_to_pad_horizontal_m": 0.0967203350322493,
+            "arm_gravity_nm": 0.04740878735112511,
+            "payload_030kg_equal_share_nm": 0.14232397299995486,
+            "total_equal_share_nm": 0.18973276035107997,
+            "limit_nm": 0.1765197,
+            "margin_nm": -0.01321306035107997,
+            "max_supported_crate_mass_share": 0.4535810444559324,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.03067685967668218,
+                "torque_nm": 0.012037599737130087
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.07560624150374978,
+                "torque_nm": 0.018542430728794634
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.09330268325492615,
+                "torque_nm": 0.009152993227308255
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07824427785822766,
+                "torque_nm": 0.0038378818289460668
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07824427785822766,
+                "torque_nm": 0.0038378818289460668
+              }
+            ]
+          }
+        },
+        "r2": {
+          "closed": {
+            "t": 23.800000000022628,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1416,
+              "4": 2118,
+              "5": 2497,
+              "6": 1538
+            },
+            "elbow_to_pad_horizontal_m": 0.09548751624921648,
+            "arm_gravity_nm": 0.04134055945715399,
+            "payload_030kg_equal_share_nm": 0.14050988016072205,
+            "total_equal_share_nm": 0.18185043961787603,
+            "limit_nm": 0.1765197,
+            "margin_nm": -0.005330739617876029,
+            "max_supported_crate_mass_share": 0.481030730323809,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.022829993326526975,
+                "torque_nm": 0.008958489381329185
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06574016553463931,
+                "torque_nm": 0.01612277559737029
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.08786605897618008,
+                "torque_nm": 0.008619660385563267
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07787598463701575,
+                "torque_nm": 0.003819817046445623
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07787598463701575,
+                "torque_nm": 0.003819817046445623
+              }
+            ]
+          },
+          "complete": {
+            "t": 25.7000000000317,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 996,
+              "4": 2074,
+              "5": 2121,
+              "6": 1538
+            },
+            "elbow_to_pad_horizontal_m": 0.11161279484469987,
+            "arm_gravity_nm": 0.05162284335356398,
+            "payload_030kg_equal_share_nm": 0.16423822761397586,
+            "total_equal_share_nm": 0.21586107096753984,
+            "limit_nm": 0.1765197,
+            "margin_nm": -0.03934137096753984,
+            "max_supported_crate_mass_share": 0.3802307734956582,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.03089263262426867,
+                "torque_nm": 0.012122269041763027
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.0818654441301227,
+                "torque_nm": 0.020077500172912596
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.10399133757166348,
+                "torque_nm": 0.010201550215780189
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.09400126323249916,
+                "torque_nm": 0.004610761961554084
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.09400126323249916,
+                "torque_nm": 0.004610761961554084
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "seed": 77921,
+      "sha": "6f312f74",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/result.json",
+          "sha256": "36ec8ad19ef5c8ddf2896a1e3460427eb96445f81fd311ebda6066eddb46f2bd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/eval-only.jsonl.zst",
+          "sha256": "eacca2abe74a1582eb0af6761eee6168037b2934612264d1dd2a3639f68477d6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/scene.xml",
+          "sha256": "423843fa26290a6ea6efbf8febe7dcf96d8a73a6163ff244077b3247ce3f053b"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/teacher-r1.jsonl.zst",
+          "sha256": "6a72d900dce119d35062d11d6fc31d00bf81fc2a5bba9b77bda82dd2fe52f5a5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/teacher-r2.jsonl.zst",
+          "sha256": "d1d4e0d4d03072e8eecea4163063c7aec0736d3a0b42294c7c6fe3338d360bc6"
+        }
+      ],
+      "prefix_held": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "saved_grasp_inputs": 0,
+      "grasp_rows": 318,
+      "observed_load": {
+        "window": "own lift permit tick .. end of the grasp stage (lift + hold)",
+        "t0_sim_s": 27.000000000046317,
+        "per_robot": {
+          "r1": {
+            "shoulder": {
+              "max_abs_ratio": 0.274,
+              "t_at_max": 0.40000000000190994,
+              "saturated_samples": 0,
+              "samples": 48
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 46,
+              "samples": 48
+            },
+            "wrist": {
+              "max_abs_ratio": 0.632,
+              "t_at_max": 0.20000000000095497,
+              "saturated_samples": 0,
+              "samples": 48
+            }
+          },
+          "r2": {
+            "shoulder": {
+              "max_abs_ratio": 0.263,
+              "t_at_max": 0.5000000000023874,
+              "saturated_samples": 0,
+              "samples": 48
+            },
+            "elbow": {
+              "max_abs_ratio": 1.0,
+              "t_at_max": 0.0,
+              "saturated_samples": 46,
+              "samples": 48
+            },
+            "wrist": {
+              "max_abs_ratio": 0.662,
+              "t_at_max": 0.20000000000095497,
+              "saturated_samples": 0,
+              "samples": 48
+            }
+          }
+        },
+        "ratio": "actuator force / force limit; evaluation only"
+      },
+      "robots": {
+        "r1": {
+          "closed": {
+            "t": 27.70000000004125,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1246,
+              "4": 2117,
+              "5": 2451,
+              "6": 1448
+            },
+            "elbow_to_pad_horizontal_m": 0.08387126845318091,
+            "arm_gravity_nm": 0.03926131347822255,
+            "payload_030kg_equal_share_nm": 0.12341657152885571,
+            "total_equal_share_nm": 0.16267788500707825,
+            "limit_nm": 0.1765197,
+            "margin_nm": 0.013841814992921753,
+            "max_supported_crate_mass_share": 0.5560776191618864,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.024314648249935712,
+                "torque_nm": 0.009541067973274774
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06283158801818843,
+                "torque_nm": 0.015409446961460713
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.08048880608981882,
+                "torque_nm": 0.007895951877411227
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.06539089363991682,
+                "torque_nm": 0.00320742333303792
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.06539089363991682,
+                "torque_nm": 0.00320742333303792
+              }
+            ]
+          },
+          "complete": {
+            "t": 30.50000000005462,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 763,
+              "4": 1931,
+              "5": 2154,
+              "6": 1448
+            },
+            "elbow_to_pad_horizontal_m": 0.09699362375713973,
+            "arm_gravity_nm": 0.04762878333779189,
+            "payload_030kg_equal_share_nm": 0.1427261173586311,
+            "total_equal_share_nm": 0.190354900696423,
+            "limit_nm": 0.1765197,
+            "margin_nm": -0.013835200696422995,
+            "max_supported_crate_mass_share": 0.451532344071061,
+            "terms": [
+              {
+                "body": "r1__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.030875825901915118,
+                "torque_nm": 0.012115674083911494
+              },
+              {
+                "body": "r1__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.07595394332214725,
+                "torque_nm": 0.018627704599756614
+              },
+              {
+                "body": "r1__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.09361116139377762,
+                "torque_nm": 0.009183254932729585
+              },
+              {
+                "body": "r1__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07851324894387562,
+                "torque_nm": 0.0038510748606970994
+              },
+              {
+                "body": "r1__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07851324894387562,
+                "torque_nm": 0.0038510748606970994
+              }
+            ]
+          }
+        },
+        "r2": {
+          "closed": {
+            "t": 28.600000000045547,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1327,
+              "4": 2074,
+              "5": 2497,
+              "6": 1490
+            },
+            "elbow_to_pad_horizontal_m": 0.09312659103400302,
+            "arm_gravity_nm": 0.04170990772535596,
+            "payload_030kg_equal_share_nm": 0.13703577870653544,
+            "total_equal_share_nm": 0.1787456864318914,
+            "limit_nm": 0.1765197,
+            "margin_nm": -0.002225986431891397,
+            "max_supported_crate_mass_share": 0.4918780830345833,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.024223758762539592,
+                "torque_nm": 0.009505402938420537
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.06645290120743191,
+                "torque_nm": 0.01629757402112268
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.08703124715803902,
+                "torque_nm": 0.008537765346203628
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07511891355360975,
+                "torque_nm": 0.0036845827098045585
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.07511891355360975,
+                "torque_nm": 0.0036845827098045585
+              }
+            ]
+          },
+          "complete": {
+            "t": 30.50000000005462,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 886,
+              "4": 1970,
+              "5": 2160,
+              "6": 1490
+            },
+            "elbow_to_pad_horizontal_m": 0.106668059356534,
+            "arm_gravity_nm": 0.050344625001217835,
+            "payload_030kg_equal_share_nm": 0.1569620493431398,
+            "total_equal_share_nm": 0.20730667434435762,
+            "limit_nm": 0.1765197,
+            "margin_nm": -0.03078697434435762,
+            "max_supported_crate_mass_share": 0.4019286048022563,
+            "terms": [
+              {
+                "body": "r2__elbow_link",
+                "mass_kg": 0.04,
+                "lever_m": 0.030994492923805076,
+                "torque_nm": 0.012162239023301113
+              },
+              {
+                "body": "r2__wrist_link",
+                "mass_kg": 0.025,
+                "lever_m": 0.07999436952996289,
+                "torque_nm": 0.0196186191272234
+              },
+              {
+                "body": "r2__gripper",
+                "mass_kg": 0.01,
+                "lever_m": 0.10057271548057001,
+                "torque_nm": 0.009866183388643918
+              },
+              {
+                "body": "r2__left_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.08866038187614074,
+                "torque_nm": 0.004348791731024704
+              },
+              {
+                "body": "r2__right_jaw",
+                "mass_kg": 0.005,
+                "lever_m": 0.08866038187614074,
+                "torque_nm": 0.004348791731024704
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "pad_window_scan": {
+    "scope": "Exhaust all integer shoulder/elbow PWM pairs, with analytic wrist pruning.\n\n    This deliberately RELAXES the existing pick schedule: lift pitch can be\n    chosen independently, with +/-1 mm height error and no descent/collision\n    constraint. Optional z_bounds widens the search to all lifted pad heights.\n    Failure here also excludes the narrower fixed-pitch schedule.\n    For a fixed shoulder/elbow pair, radius and height increase with pitch in\n    [-90,-40] deg, as does torque (dT/dpitch = -B*sin(pitch)+C*cos(pitch)>0).\n    Therefore its steepest feasible integer wrist PWM is the torque minimum;\n    no feasible wrist command with a better margin is omitted.\n    ",
+    "pad_window_m": [
+      0.146,
+      0.158
+    ],
+    "z_bounds_m": [
+      0.094,
+      0.096
+    ],
+    "integer_pwm_range": [
+      500,
+      2500
+    ],
+    "shoulder_elbow_pairs_checked": 3389694,
+    "feasible_pair_minima": 48973,
+    "at_least_10pct_margin_pair_minima": 0,
+    "required_margin_fraction": 0.1,
+    "threshold_nm": 0.15886773,
+    "best": {
+      "issued_pwm": {
+        "3": 500,
+        "4": 1516,
+        "5": 2358,
+        "6": 1500
+      },
+      "arm_axis_radius_m": 0.14600251780044443,
+      "z_m": 0.09411845691713755,
+      "pitch_deg": -70.74,
+      "elbow_to_pad_horizontal_m": 0.08523482119950854,
+      "arm_gravity_nm": 0.04255459776021955,
+      "payload_030kg_equal_share_nm": 0.12542303939507682,
+      "total_equal_share_nm": 0.16797763715529637,
+      "limit_nm": 0.1765197,
+      "margin_nm": 0.00854206284470363,
+      "max_supported_crate_mass_share": 0.5340530052767918,
+      "terms": [
+        {
+          "body": "r2__elbow_link",
+          "mass_kg": 0.04,
+          "lever_m": 0.028293439209508584,
+          "torque_nm": 0.011102345545811168
+        },
+        {
+          "body": "r2__wrist_link",
+          "mass_kg": 0.025,
+          "lever_m": 0.06813181793907702,
+          "torque_nm": 0.01670932834955864
+        },
+        {
+          "body": "r2__gripper",
+          "mass_kg": 0.01,
+          "lever_m": 0.0836916691696889,
+          "torque_nm": 0.008210152745546482
+        },
+        {
+          "body": "r2__left_jaw",
+          "mass_kg": 0.005,
+          "lever_m": 0.06659297777067538,
+          "torque_nm": 0.0032663855596516277
+        },
+        {
+          "body": "r2__right_jaw",
+          "mass_kg": 0.005,
+          "lever_m": 0.06659297777067538,
+          "torque_nm": 0.0032663855596516277
+        }
+      ]
+    },
+    "best_margin_fraction": 0.04839155541678142,
+    "max_crate_mass_at_10pct_margin_kg": 0.27820996716575996,
+    "qualified": false,
+    "same_height_pair_load_split": "0.15 kg per robot",
+    "verdict": "0.30 kg is infeasible WITH the required 10% margin in this pad/lift window; not a universal lifting impossibility"
+  },
+  "all_lifted_heights_scan": {
+    "scope": "Exhaust all integer shoulder/elbow PWM pairs, with analytic wrist pruning.\n\n    This deliberately RELAXES the existing pick schedule: lift pitch can be\n    chosen independently, with +/-1 mm height error and no descent/collision\n    constraint. Optional z_bounds widens the search to all lifted pad heights.\n    Failure here also excludes the narrower fixed-pitch schedule.\n    For a fixed shoulder/elbow pair, radius and height increase with pitch in\n    [-90,-40] deg, as does torque (dT/dpitch = -B*sin(pitch)+C*cos(pitch)>0).\n    Therefore its steepest feasible integer wrist PWM is the torque minimum;\n    no feasible wrist command with a better margin is omitted.\n    ",
+    "pad_window_m": [
+      0.146,
+      0.158
+    ],
+    "z_bounds_m": [
+      0.036000000000000004,
+      1.0
+    ],
+    "integer_pwm_range": [
+      500,
+      2500
+    ],
+    "shoulder_elbow_pairs_checked": 3389694,
+    "feasible_pair_minima": 655584,
+    "at_least_10pct_margin_pair_minima": 0,
+    "required_margin_fraction": 0.1,
+    "threshold_nm": 0.15886773,
+    "best": {
+      "issued_pwm": {
+        "3": 501,
+        "4": 1414,
+        "5": 2500,
+        "6": 1500
+      },
+      "arm_axis_radius_m": 0.14600654066826052,
+      "z_m": 0.07490137622530375,
+      "pitch_deg": -74.24999999999999,
+      "elbow_to_pad_horizontal_m": 0.08164069604916964,
+      "arm_gravity_nm": 0.042133185893994674,
+      "payload_030kg_equal_share_nm": 0.12013428423635313,
+      "total_equal_share_nm": 0.1622674701303478,
+      "limit_nm": 0.1765197,
+      "margin_nm": 0.014252229869652189,
+      "max_supported_crate_mass_share": 0.5593179122856063,
+      "terms": [
+        {
+          "body": "r2__elbow_link",
+          "mass_kg": 0.04,
+          "lever_m": 0.02903304648919396,
+          "torque_nm": 0.01139256744235971
+        },
+        {
+          "body": "r2__wrist_link",
+          "mass_kg": 0.025,
+          "lever_m": 0.06756650872366553,
+          "torque_nm": 0.01657068626447897
+        },
+        {
+          "body": "r2__gripper",
+          "mass_kg": 0.01,
+          "lever_m": 0.08148445363833964,
+          "torque_nm": 0.007993624901921119
+        },
+        {
+          "body": "r2__left_jaw",
+          "mass_kg": 0.005,
+          "lever_m": 0.06295929954367863,
+          "torque_nm": 0.003088153642617437
+        },
+        {
+          "body": "r2__right_jaw",
+          "mass_kg": 0.005,
+          "lever_m": 0.06295929954367863,
+          "torque_nm": 0.003088153642617437
+        }
+      ]
+    },
+    "best_margin_fraction": 0.08074016593984801,
+    "max_crate_mass_at_10pct_margin_kg": 0.29151015011586756,
+    "qualified": false,
+    "same_height_pair_load_split": "0.15 kg per robot",
+    "verdict": "0.30 kg is infeasible WITH the required 10% margin in this pad/lift window; not a universal lifting impossibility"
+  },
+  "success_counterexample": "77921/6f312f74 held 3 s despite commanded-pose overload; issued PWM is not measured pose. This estimate cannot invalidate the observed success or determine actual load sharing/contact moment/servo tracking. It does show no 10% command-pose margin."
+}

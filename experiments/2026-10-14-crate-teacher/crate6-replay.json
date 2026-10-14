@@ -1,0 +1,2192 @@
+{
+  "scope": "Inspect stored decisions and replay the unchanged pick command generator.\n\nMissing numerical inputs are NOT synthesized from evaluation truth or images.\nPick probes use FK of issued PWM as a synthetic target, not a measured pose.\nThey prove code equivalence on those targets, not replay of the original run.\n",
+  "physics_steps": 0,
+  "render_calls": 0,
+  "full_recorded_input_replay": "BLOCKED: visible_measurements absent",
+  "baseline": "6f312f74f25e284f9339a18de901e24667c17a31",
+  "merged_rootcause": "77ee0ab7770b2320c945370234ca4b79d6e6d812",
+  "pick_and_lift_source_ast_identical": true,
+  "runs": [
+    {
+      "seed": 77208,
+      "sha": "b033e5f9",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/result.json",
+          "sha256": "05e8494fe2c950be3dca503bb3be5ce0140eab091a3c83b648db119e4203be40"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/eval-only.jsonl",
+          "sha256": "86de0637b1ed574911ba6d172630ca53c94d03a15413d4c69e62da1276ada2b3"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/teacher-r1.jsonl",
+          "sha256": "45cf9140f441e11662f7e0258cce75913b7198c6cd5bf460f02e11f14b4651f6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77208-b033e5f9/raw/teacher-r2.jsonl",
+          "sha256": "be047dabcbfad3d9b11ce813c024cf7967df79feb89d48b5f3c53af4841bdaa2"
+        }
+      ],
+      "grasp_rows": 45,
+      "saved_input_rows": 0,
+      "prefix_held": false,
+      "robots": {
+        "r1": {
+          "outcome": "approach_blocked_handoff",
+          "staging_distance_m": 0.208,
+          "planner_calls": 5,
+          "blocked_goal_calls": 4,
+          "first_goal_selection": {
+            "t": 2.4999999999999742,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.24260943985857156,
+                  0.5611404244960595
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.24567872452785156,
+                  0.5571933380238724
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.2395401551892916,
+                  0.5650875109682467
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.203,
+                "goal": [
+                  0.2883317181792824,
+                  0.5879321865521661
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.198,
+                "goal": [
+                  0.29027483835790446,
+                  0.5833252044628334
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.208,
+                "goal": [
+                  0.28638859800066024,
+                  0.5925391686414987
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.203,
+                "goal": [
+                  0.20537932866379568,
+                  0.5234277731793967
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.198,
+                "goal": [
+                  0.2093656111457549,
+                  0.5204095697445658
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.208,
+                "goal": [
+                  0.20139304618183648,
+                  0.5264459766142275
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.203,
+                "goal": [
+                  0.3394302659180092,
+                  0.6019772450390728
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.198,
+                "goal": [
+                  0.3401148011769582,
+                  0.5970243255485848
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.208,
+                "goal": [
+                  0.3387457306590601,
+                  0.6069301645295607
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.203,
+                "goal": [
+                  0.17917855514721084,
+                  0.47736428746630505
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.198,
+                "goal": [
+                  0.18381017687834703,
+                  0.47548065264509703
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.208,
+                "goal": [
+                  0.17454693341607472,
+                  0.479247922287513
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.39242280149070047,
+                  0.6023184524314537
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.39180210188332704,
+                  0.5973571288180006
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.3930435010980739,
+                  0.6072797760449067
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.16579265872514695,
+                  0.4260891177846224
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.17075398233859995,
+                  0.42546841817724895
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.16083133511169395,
+                  0.4267098173919958
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.203,
+                "goal": [
+                  0.4436979711723831,
+                  0.5889325560093898
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.198,
+                "goal": [
+                  0.4418143363511751,
+                  0.5843009342782536
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.208,
+                "goal": [
+                  0.44558160599359103,
+                  0.5935641777405258
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.203,
+                "goal": [
+                  0.16613386611752778,
+                  0.3730965822119311
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.198,
+                "goal": [
+                  0.17108678560801577,
+                  0.3737811174708801
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.208,
+                "goal": [
+                  0.16118094662703986,
+                  0.3724120469529821
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.4897614568854748,
+                  0.5627317824928049
+                ],
+                "reason": "feasible",
+                "cost": 1.2349015343311103
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.48674325345064384,
+                  0.5587455000108457
+                ],
+                "reason": "feasible",
+                "cost": 1.2342580850501181
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.4927796603203057,
+                  0.5667180649747641
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.18017892460443452,
+                  0.3219980344732043
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.18478590669376715,
+                  0.3239411546518264
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.17557194251510191,
+                  0.3200549142945822
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.5274741082021377,
+                  0.5255016712980289
+                ],
+                "reason": "feasible",
+                "cost": 1.1871922412599543
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.5235270217299505,
+                  0.522432386628749
+                ],
+                "reason": "feasible",
+                "cost": 1.1878656437489477
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.5314211946743248,
+                  0.528570955967309
+                ],
+                "reason": "feasible",
+                "cost": 1.187246869133386
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.20697068666054105,
+                  0.27627575615249345
+                ],
+                "reason": "feasible",
+                "cost": 0.35842181185859323
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.2109177731327282,
+                  0.27934504082177347
+                ],
+                "reason": "feasible",
+                "cost": 0.363247254742196
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.20302360018835391,
+                  0.27320647148321353
+                ],
+                "reason": "feasible",
+                "cost": 0.3536014077558998
+              }
+            ],
+            "selected": {
+              "choice": [
+                1.5707963267948966,
+                0.208
+              ],
+              "goal": [
+                0.20302360018835391,
+                0.27320647148321353
+              ],
+              "heading": 0.6609371626753495,
+              "cost": 0.3536014077558998
+            }
+          },
+          "last_goal_selection": {
+            "t": 5.300000000000732,
+            "candidates": [
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.17868125280234343,
+                  0.3031453942031075
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.18965141755892598,
+                  0.5935806804291676
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.19309533431868556,
+                  0.5899558442464073
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.1862075007991664,
+                  0.5972055166119277
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.203,
+                "goal": [
+                  0.23250574300908505,
+                  0.6247549011751528
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.198,
+                "goal": [
+                  0.23489413451145155,
+                  0.620362227042984
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.208,
+                "goal": [
+                  0.23011735150671855,
+                  0.6291475753073213
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.203,
+                "goal": [
+                  0.15632579988371148,
+                  0.5523771799046611
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.198,
+                "goal": [
+                  0.16059054466502806,
+                  0.5497672082668396
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.208,
+                "goal": [
+                  0.1520610551023949,
+                  0.5549871515424827
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.203,
+                "goal": [
+                  0.28196832477488176,
+                  0.6437753705166135
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.198,
+                "goal": [
+                  0.2831384260859725,
+                  0.6389142119179064
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.208,
+                "goal": [
+                  0.280798223463791,
+                  0.6486365291153205
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.203,
+                "goal": [
+                  0.1347999757548203,
+                  0.5039523500703744
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.198,
+                "goal": [
+                  0.13959491324867115,
+                  0.502535108231427
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.208,
+                "goal": [
+                  0.13000503826096946,
+                  0.505369591909322
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.33466836964975816,
+                  0.649345874900741
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.3345404402989061,
+                  0.644347511760553
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.3347962990006102,
+                  0.654344238040929
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.12654089451353004,
+                  0.4516062630536992
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.1315392576537181,
+                  0.4514783337028472
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.12154253137334203,
+                  0.45173419240455126
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.203,
+                "goal": [
+                  0.3870144566664334,
+                  0.6410867936594508
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.198,
+                "goal": [
+                  0.3855972148274859,
+                  0.6362918561655999
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.208,
+                "goal": [
+                  0.3884316985053809,
+                  0.6458817311533016
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.203,
+                "goal": [
+                  0.13211139889765758,
+                  0.3989062181788228
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.198,
+                "goal": [
+                  0.13697255749636467,
+                  0.40007631948991357
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.208,
+                "goal": [
+                  0.12725024029895052,
+                  0.39773611686773214
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.43543928650072006,
+                  0.6195609695305596
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.4328293148628985,
+                  0.6152962247492431
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.43804925813854156,
+                  0.6238257143118762
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.15113186823911834,
+                  0.3494436364130261
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.155524542371287,
+                  0.35183202791539264
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.14673919410694972,
+                  0.34705524491065964
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.47664278702522644,
+                  0.5862353518553451
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.47301795084246634,
+                  0.5827914350955855
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.4802676232079866,
+                  0.5896792686151047
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.18230608898510356,
+                  0.306589310962867
+                ],
+                "reason": "blocked_goal"
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.1859309251678637,
+                  0.31003322772262665
+                ],
+                "reason": "blocked_goal"
+              }
+            ],
+            "selected": null
+          },
+          "pick_probe": null
+        },
+        "r2": {
+          "outcome": "peer_approach_handoff",
+          "staging_distance_m": 0.203,
+          "planner_calls": 1,
+          "blocked_goal_calls": 0,
+          "first_goal_selection": {
+            "t": 2.999999999999697,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  -3.0679523701893086e-05,
+                  -1.6171607697442462e-06
+                ],
+                "reason": "feasible",
+                "cost": 3.208502930602605e-05
+              }
+            ],
+            "selected": {
+              "choice": [
+                0.0,
+                0.203
+              ],
+              "goal": [
+                -3.0679523701893086e-05,
+                -1.6171607697442462e-06
+              ],
+              "heading": 6.283117161491511,
+              "cost": 3.208502930602605e-05
+            }
+          },
+          "last_goal_selection": {
+            "t": 2.999999999999697,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  -3.0679523701893086e-05,
+                  -1.6171607697442462e-06
+                ],
+                "reason": "feasible",
+                "cost": 3.208502930602605e-05
+              }
+            ],
+            "selected": {
+              "choice": [
+                0.0,
+                0.203
+              ],
+              "goal": [
+                -3.0679523701893086e-05,
+                -1.6171607697442462e-06
+              ],
+              "heading": 6.283117161491511,
+              "cost": 3.208502930602605e-05
+            }
+          },
+          "pick_probe": null
+        }
+      }
+    },
+    {
+      "seed": 77208,
+      "sha": "6f312f74",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/result.json",
+          "sha256": "890201310f2f07469d940afbad334861d404492c90ecb1e1d0f86c8ed84634c2"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/eval-only.jsonl.zst",
+          "sha256": "93150a69371367388307450eabb295abe210030f1d429958d31a87c5d46bae2f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/teacher-r1.jsonl.zst",
+          "sha256": "e7bdead50d62f0c7b236e3cc4f48daf4d20784ae095554da8cda49c38122e13c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77208-6f312f74/raw/teacher-r2.jsonl.zst",
+          "sha256": "bff454d0c5d1db36359fcea0e3eb30e1465dee4dca2bbc04a36aa6eddacf4eac"
+        }
+      ],
+      "grasp_rows": 601,
+      "saved_input_rows": 0,
+      "prefix_held": false,
+      "robots": {
+        "r1": {
+          "outcome": "phase_timeout",
+          "staging_distance_m": 0.203,
+          "planner_calls": 59,
+          "blocked_goal_calls": 59,
+          "first_goal_selection": null,
+          "last_goal_selection": null,
+          "pick_probe": null
+        },
+        "r2": {
+          "outcome": "episode_timeout",
+          "staging_distance_m": 0.203,
+          "planner_calls": 0,
+          "blocked_goal_calls": 0,
+          "first_goal_selection": null,
+          "last_goal_selection": null,
+          "pick_probe": null
+        }
+      }
+    },
+    {
+      "seed": 77212,
+      "sha": "b033e5f9",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/result.json",
+          "sha256": "b3eb3bb7e6a29a25ec65fe752f3907694046573e6d7fdf8cb8ff833844bd9038"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/eval-only.jsonl.zst",
+          "sha256": "d38434e612cf9c5be26fd6e132cc90b452785dc66b0162e4dc36047e8c5404af"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/teacher-r1.jsonl.zst",
+          "sha256": "08e4eadc127ba0321846d7edac79d62e8b3ae42b140419f192cd87a1a4e49127"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77212-b033e5f9/raw/teacher-r2.jsonl.zst",
+          "sha256": "60e185f923ef72052ffb8561222f37305db3b828e65d77a197e4ca6895699fac"
+        }
+      ],
+      "grasp_rows": 366,
+      "saved_input_rows": 0,
+      "prefix_held": false,
+      "robots": {
+        "r1": {
+          "outcome": "no_stable_joint_hold_3s",
+          "staging_distance_m": 0.198,
+          "planner_calls": 22,
+          "blocked_goal_calls": 0,
+          "first_goal_selection": {
+            "t": 8.300000000003331,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.7163986027725919,
+                  -1.02380035210197
+                ],
+                "reason": "feasible",
+                "cost": 1.271099127822414
+              }
+            ],
+            "selected": {
+              "choice": [
+                0.0,
+                0.203
+              ],
+              "goal": [
+                0.7163986027725919,
+                -1.02380035210197
+              ],
+              "heading": 1.0770779256462206,
+              "cost": 1.271099127822414
+            }
+          },
+          "last_goal_selection": {
+            "t": 20.300000000005916,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.6385812231102312,
+                  -1.484499195240503
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.6413078857382623,
+                  -1.4803080962303508
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.6358545604822003,
+                  -1.4886902942506552
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.203,
+                "goal": [
+                  0.5983130279216479,
+                  -1.45004926483184
+                ],
+                "reason": "feasible",
+                "cost": 0.14965983783391068
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.198,
+                "goal": [
+                  0.602031518017378,
+                  -1.446706686275103
+                ],
+                "reason": "feasible",
+                "cost": 0.1463885890924837
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.208,
+                "goal": [
+                  0.5945945378259179,
+                  -1.4533918433885769
+                ],
+                "reason": "feasible",
+                "cost": 0.15303825016816872
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.203,
+                "goal": [
+                  0.6863936109131515,
+                  -1.5073530969093805
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.198,
+                "goal": [
+                  0.6879426285214062,
+                  -1.5025990939172362
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.208,
+                "goal": [
+                  0.684844593304897,
+                  -1.512107099901525
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.203,
+                "goal": [
+                  0.5683332363031645,
+                  -1.4063510115095403
+                ],
+                "reason": "feasible",
+                "cost": 0.10559162762363311
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.198,
+                "goal": [
+                  0.572790144911665,
+                  -1.404084744610988
+                ],
+                "reason": "feasible",
+                "cost": 0.10207960751463793
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.208,
+                "goal": [
+                  0.5638763276946639,
+                  -1.4086172784080924
+                ],
+                "reason": "feasible",
+                "cost": 0.1092371782223533
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.203,
+                "goal": [
+                  0.7384918561153465,
+                  -1.517053514207597
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.198,
+                "goal": [
+                  0.7387576657136948,
+                  -1.5120605846810138
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.208,
+                "goal": [
+                  0.7382260465169982,
+                  -1.52204644373418
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.5506849215096324,
+                  -1.3563823990227404
+                ],
+                "reason": "feasible",
+                "cost": 0.06859656032118638
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.5555765176746239,
+                  -1.355346886126326
+                ],
+                "reason": "feasible",
+                "cost": 0.06413798190762038
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.545793325344641,
+                  -1.3574179119191547
+                ],
+                "reason": "feasible",
+                "cost": 0.07313513893887912
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.7913255494027076,
+                  -1.5129393797269763
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.7902900365062934,
+                  -1.508047783561985
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.7923610622991218,
+                  -1.517830975891968
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.203,
+                "goal": [
+                  0.5465707870290119,
+                  -1.3035487057353794
+                ],
+                "reason": "feasible",
+                "cost": 0.05757869607323194
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.198,
+                "goal": [
+                  0.551563716555595,
+                  -1.3038145153337277
+                ],
+                "reason": "feasible",
+                "cost": 0.05275927599518781
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.208,
+                "goal": [
+                  0.5415778575024287,
+                  -1.303282896137031
+                ],
+                "reason": "feasible",
+                "cost": 0.06242839220013389
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.203,
+                "goal": [
+                  0.8412941618895075,
+                  -1.4952910649334443
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.198,
+                "goal": [
+                  0.8390278949909553,
+                  -1.4908341563249439
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.208,
+                "goal": [
+                  0.8435604287880597,
+                  -1.499747973541945
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.5562712043272283,
+                  -1.2514504605331844
+                ],
+                "reason": "feasible",
+                "cost": 0.08146000919188869
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.5610252073193727,
+                  -1.2529994781414389
+                ],
+                "reason": "feasible",
+                "cost": 0.07774255386328675
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.551517201335084,
+                  -1.2499014429249298
+                ],
+                "reason": "feasible",
+                "cost": 0.08531079780278787
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.8849924152118072,
+                  -1.4653112733149611
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.8816498366550702,
+                  -1.461592783219231
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.8883349937685441,
+                  -1.469029763410691
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.579125105996106,
+                  -1.203638072730264
+                ],
+                "reason": "feasible",
+                "cost": 0.12441296291958724
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.5833162050062582,
+                  -1.206364735358295
+                ],
+                "reason": "feasible",
+                "cost": 0.12111821903513062
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.5749340069859536,
+                  -1.2009114101022331
+                ],
+                "reason": "feasible",
+                "cost": 0.12782446979801917
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.9194423456204701,
+                  -1.4250430781263776
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.9152512466103179,
+                  -1.4223164154983468
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.9236334446306225,
+                  -1.4277697407544085
+                ],
+                "reason": "unsafe_segment"
+              }
+            ],
+            "selected": {
+              "choice": [
+                -1.0471975511965976,
+                0.198
+              ],
+              "goal": [
+                0.551563716555595,
+                -1.3038145153337277
+              ],
+              "heading": -0.053186992515040776,
+              "cost": 0.05275927599518781
+            }
+          },
+          "pick_probe": {
+            "closed_t": 26.90000000003743,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1257,
+              "4": 2137,
+              "5": 2442,
+              "6": 1486
+            },
+            "synthetic_fk_target_m": [
+              0.19463892834905766,
+              -0.0032208794644143415,
+              0.023902837418135175
+            ],
+            "command_queue_equal": true,
+            "events": 340,
+            "lift_pwm": {
+              "3": 777,
+              "4": 1961,
+              "5": 2137,
+              "6": 1486
+            },
+            "scope": "same-input command-generator probe; not original input replay"
+          }
+        },
+        "r2": {
+          "outcome": "no_stable_joint_hold_3s",
+          "staging_distance_m": 0.203,
+          "planner_calls": 1,
+          "blocked_goal_calls": 0,
+          "first_goal_selection": {
+            "t": 3.0999999999996417,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  -0.00043435787907100676,
+                  -0.00014102888651496432
+                ],
+                "reason": "feasible",
+                "cost": 0.0005011865992492248
+              }
+            ],
+            "selected": {
+              "choice": [
+                0.0,
+                0.203
+              ],
+              "goal": [
+                -0.00043435787907100676,
+                -0.00014102888651496432
+              ],
+              "heading": -0.002225368745519818,
+              "cost": 0.0005011865992492248
+            }
+          },
+          "last_goal_selection": {
+            "t": 3.0999999999996417,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  -0.00043435787907100676,
+                  -0.00014102888651496432
+                ],
+                "reason": "feasible",
+                "cost": 0.0005011865992492248
+              }
+            ],
+            "selected": {
+              "choice": [
+                0.0,
+                0.203
+              ],
+              "goal": [
+                -0.00043435787907100676,
+                -0.00014102888651496432
+              ],
+              "heading": -0.002225368745519818,
+              "cost": 0.0005011865992492248
+            }
+          },
+          "pick_probe": {
+            "closed_t": 27.400000000039817,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1248,
+              "4": 2041,
+              "5": 2495,
+              "6": 1498
+            },
+            "synthetic_fk_target_m": [
+              0.20242132175608102,
+              -0.0004845021654050953,
+              0.023910476471457002
+            ],
+            "command_queue_equal": true,
+            "events": 340,
+            "lift_pwm": {
+              "3": 778,
+              "4": 1866,
+              "5": 2200,
+              "6": 1498
+            },
+            "scope": "same-input command-generator probe; not original input replay"
+          }
+        }
+      }
+    },
+    {
+      "seed": 77212,
+      "sha": "6f312f74",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/result.json",
+          "sha256": "58e682ea3881e72ac14f0cd3fa1ce8de6bed21e0d901b80cbae9b8f7291c0a86"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/eval-only.jsonl.zst",
+          "sha256": "7028750714327f55d051fe8538511bd6a948e1e7c25408f2e44f8fc0fb2068b5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/teacher-r1.jsonl.zst",
+          "sha256": "69260ceeaecd72755daab47980fb7d81c2dbc6a63e6591d0badd9770fa93cc19"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-gate-77212-6f312f74/raw/teacher-r2.jsonl.zst",
+          "sha256": "f1778917fac2456504ac6cbd09cddb791b7494e51d91c714180509006d1f557c"
+        }
+      ],
+      "grasp_rows": 800,
+      "saved_input_rows": 0,
+      "prefix_held": false,
+      "robots": {
+        "r1": {
+          "outcome": "episode_timeout",
+          "staging_distance_m": 0.203,
+          "planner_calls": 66,
+          "blocked_goal_calls": 0,
+          "first_goal_selection": null,
+          "last_goal_selection": null,
+          "pick_probe": null
+        },
+        "r2": {
+          "outcome": "episode_timeout",
+          "staging_distance_m": 0.203,
+          "planner_calls": 0,
+          "blocked_goal_calls": 0,
+          "first_goal_selection": null,
+          "last_goal_selection": null,
+          "pick_probe": null
+        }
+      }
+    },
+    {
+      "seed": 77921,
+      "sha": "b033e5f9",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/result.json",
+          "sha256": "2d237f2d71b31dae05418dd888903b751f48401a321fcf7a9cb0ae4df97047d6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/eval-only.jsonl.zst",
+          "sha256": "013fdc7a93ffde257ed1c9f884753883ff43468df7a32fbf5c6c6514dda12fd0"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/teacher-r1.jsonl.zst",
+          "sha256": "49ab31bb1b658a457e10c28675d22616e6f0035cc7da7acd9eecdc28fcc887ba"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-b033e5f9/raw/teacher-r2.jsonl.zst",
+          "sha256": "6fd819f66c0a5752ed5445b665c884a2fc54f68872c6b377e8e552da0a97f922"
+        }
+      ],
+      "grasp_rows": 330,
+      "saved_input_rows": 0,
+      "prefix_held": false,
+      "robots": {
+        "r1": {
+          "outcome": "no_stable_joint_hold_3s",
+          "staging_distance_m": 0.198,
+          "planner_calls": 15,
+          "blocked_goal_calls": 0,
+          "first_goal_selection": {
+            "t": 8.300000000003331,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.760034111922619,
+                  -0.6927762183052344
+                ],
+                "reason": "feasible",
+                "cost": 1.057244196965995
+              }
+            ],
+            "selected": {
+              "choice": [
+                0.0,
+                0.203
+              ],
+              "goal": [
+                0.760034111922619,
+                -0.6927762183052344
+              ],
+              "heading": 1.442594429295829,
+              "cost": 1.057244196965995
+            }
+          },
+          "last_goal_selection": {
+            "t": 17.099999999990636,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.8219280814200971,
+                  -0.9965076176902758
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.8229526279751261,
+                  -0.9916137128734064
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.820903534865068,
+                  -1.0014015225071453
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.203,
+                "goal": [
+                  0.7719200385342055,
+                  -0.9789713439803223
+                ],
+                "reason": "feasible",
+                "cost": 0.22161154218030438
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.198,
+                "goal": [
+                  0.7741763102834684,
+                  -0.9745093670873433
+                ],
+                "reason": "feasible",
+                "cost": 0.21859785649164104
+              },
+              {
+                "offset_deg": -14.999999999999998,
+                "distance_m": 0.208,
+                "goal": [
+                  0.7696637667849427,
+                  -0.9834333208733012
+                ],
+                "reason": "feasible",
+                "cost": 0.22470582667635794
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.203,
+                "goal": [
+                  0.8747708631820176,
+                  -1.0005033234564218
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.198,
+                "goal": [
+                  0.8744938633882309,
+                  -0.9955110022413713
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 14.999999999999998,
+                "distance_m": 0.208,
+                "goal": [
+                  0.8750478629758042,
+                  -1.005495644671472
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.203,
+                "goal": [
+                  0.7281547000048183,
+                  -0.9490895703998317
+                ],
+                "reason": "feasible",
+                "cost": 0.17291975231885331
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.198,
+                "goal": [
+                  0.731488935757268,
+                  -0.9453635977822342
+                ],
+                "reason": "feasible",
+                "cost": 0.17026986644534206
+              },
+              {
+                "offset_deg": -29.999999999999996,
+                "distance_m": 0.208,
+                "goal": [
+                  0.7248204642523686,
+                  -0.9528155430174291
+                ],
+                "reason": "feasible",
+                "cost": 0.17568661341368996
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.203,
+                "goal": [
+                  0.926847235569718,
+                  -0.9906861605340129
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.198,
+                "goal": [
+                  0.9252875665052983,
+                  -0.9859356413613865
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 29.999999999999996,
+                "distance_m": 0.208,
+                "goal": [
+                  0.9284069046341377,
+                  -0.9954366797066395
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.6936146013270714,
+                  -0.908898690436349
+                ],
+                "reason": "feasible",
+                "cost": 0.1222386596591906
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.6977995784262637,
+                  -0.9061626409705614
+                ],
+                "reason": "feasible",
+                "cost": 0.11981345812917452
+              },
+              {
+                "offset_deg": -45.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.6894296242278792,
+                  -0.9116347399021364
+                ],
+                "reason": "feasible",
+                "cost": 0.12484079859456013
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.9746082798652511,
+                  -0.967725152352583
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.9718722303994637,
+                  -0.9635401752533908
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 45.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.9773443293310387,
+                  -0.9719101294517752
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.203,
+                "goal": [
+                  0.6706535931456415,
+                  -0.8611376461408158
+                ],
+                "reason": "feasible",
+                "cost": 0.07169797895574105
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.198,
+                "goal": [
+                  0.675404112318268,
+                  -0.8595779770763962
+                ],
+                "reason": "feasible",
+                "cost": 0.06897129788606043
+              },
+              {
+                "offset_deg": -59.99999999999999,
+                "distance_m": 0.208,
+                "goal": [
+                  0.665903073973015,
+                  -0.8626973152052355
+                ],
+                "reason": "feasible",
+                "cost": 0.07470303428471303
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.203,
+                "goal": [
+                  1.0147991598287338,
+                  -0.9331850536748361
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.198,
+                "goal": [
+                  1.0110731872111365,
+                  -0.9298508179223863
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 59.99999999999999,
+                "distance_m": 0.208,
+                "goal": [
+                  1.0185251324463314,
+                  -0.9365192894272858
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.6608364302232328,
+                  -0.8090612737531153
+                ],
+                "reason": "feasible",
+                "cost": 0.03410431398245069
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.6658287514382831,
+                  -0.8087842739593286
+                ],
+                "reason": "feasible",
+                "cost": 0.029168468417916347
+              },
+              {
+                "offset_deg": -75.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.6558441090081824,
+                  -0.809338273546902
+                ],
+                "reason": "feasible",
+                "cost": 0.039059580748787036
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.203,
+                "goal": [
+                  1.0446809334092244,
+                  -0.8894197151454489
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.198,
+                "goal": [
+                  1.0402189565162454,
+                  -0.887163443396186
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 75.0,
+                "distance_m": 0.208,
+                "goal": [
+                  1.0491429103022034,
+                  -0.8916759868947118
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.6648321359893786,
+                  -0.7562184919911948
+                ],
+                "reason": "feasible",
+                "cost": 0.05371414835537039
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.198,
+                "goal": [
+                  0.6697260408062481,
+                  -0.7572430385462239
+                ],
+                "reason": "feasible",
+                "cost": 0.050786384014231856
+              },
+              {
+                "offset_deg": -90.0,
+                "distance_m": 0.208,
+                "goal": [
+                  0.6599382311725093,
+                  -0.7551939454361657
+                ],
+                "reason": "feasible",
+                "cost": 0.056936343181420886
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.203,
+                "goal": [
+                  1.062217207119178,
+                  -0.8394116722595575
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.198,
+                "goal": [
+                  1.0573233023023085,
+                  -0.8383871257045283
+                ],
+                "reason": "unsafe_segment"
+              },
+              {
+                "offset_deg": 90.0,
+                "distance_m": 0.208,
+                "goal": [
+                  1.0671111119360475,
+                  -0.8404362188145865
+                ],
+                "reason": "unsafe_segment"
+              }
+            ],
+            "selected": {
+              "choice": [
+                -1.3089969389957472,
+                0.198
+              ],
+              "goal": [
+                0.6658287514382831,
+                -0.8087842739593286
+              ],
+              "heading": 0.055428336481917695,
+              "cost": 0.029168468417916347
+            }
+          },
+          "pick_probe": {
+            "closed_t": 22.90000000001833,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1217,
+              "4": 2066,
+              "5": 2473,
+              "6": 1471
+            },
+            "synthetic_fk_target_m": [
+              0.19754105674691855,
+              -0.006807656589990215,
+              0.023894089903699546
+            ],
+            "command_queue_equal": true,
+            "events": 340,
+            "lift_pwm": {
+              "3": 731,
+              "4": 1860,
+              "5": 2192,
+              "6": 1471
+            },
+            "scope": "same-input command-generator probe; not original input replay"
+          }
+        },
+        "r2": {
+          "outcome": "no_stable_joint_hold_3s",
+          "staging_distance_m": 0.203,
+          "planner_calls": 5,
+          "blocked_goal_calls": 0,
+          "first_goal_selection": {
+            "t": 2.4999999999999742,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.4517872560157765,
+                  0.11746992800682454
+                ],
+                "reason": "feasible",
+                "cost": 0.4747710076312225
+              }
+            ],
+            "selected": {
+              "choice": [
+                0.0,
+                0.203
+              ],
+              "goal": [
+                0.4517872560157765,
+                0.11746992800682454
+              ],
+              "heading": -0.3980861250283667,
+              "cost": 0.4747710076312225
+            }
+          },
+          "last_goal_selection": {
+            "t": 5.400000000000854,
+            "candidates": [
+              {
+                "offset_deg": 0.0,
+                "distance_m": 0.203,
+                "goal": [
+                  0.5549917239971414,
+                  0.14549365378753723
+                ],
+                "reason": "feasible",
+                "cost": 0.1520503942971275
+              }
+            ],
+            "selected": {
+              "choice": [
+                0.0,
+                0.203
+              ],
+              "goal": [
+                0.5549917239971414,
+                0.14549365378753723
+              ],
+              "heading": -0.4058647975082642,
+              "cost": 0.1520503942971275
+            }
+          },
+          "pick_probe": {
+            "closed_t": 23.800000000022628,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1416,
+              "4": 2118,
+              "5": 2497,
+              "6": 1538
+            },
+            "synthetic_fk_target_m": [
+              0.20772535284468757,
+              0.0095334348563073,
+              0.023983632922719825
+            ],
+            "command_queue_equal": true,
+            "events": 340,
+            "lift_pwm": {
+              "3": 996,
+              "4": 2074,
+              "5": 2121,
+              "6": 1538
+            },
+            "scope": "same-input command-generator probe; not original input replay"
+          }
+        }
+      }
+    },
+    {
+      "seed": 77921,
+      "sha": "6f312f74",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw",
+      "sources": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/result.json",
+          "sha256": "36ec8ad19ef5c8ddf2896a1e3460427eb96445f81fd311ebda6066eddb46f2bd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/eval-only.jsonl.zst",
+          "sha256": "eacca2abe74a1582eb0af6761eee6168037b2934612264d1dd2a3639f68477d6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/teacher-r1.jsonl.zst",
+          "sha256": "6a72d900dce119d35062d11d6fc31d00bf81fc2a5bba9b77bda82dd2fe52f5a5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-6f312f74/raw/teacher-r2.jsonl.zst",
+          "sha256": "d1d4e0d4d03072e8eecea4163063c7aec0736d3a0b42294c7c6fe3338d360bc6"
+        }
+      ],
+      "grasp_rows": 318,
+      "saved_input_rows": 0,
+      "prefix_held": true,
+      "robots": {
+        "r1": {
+          "outcome": "success",
+          "staging_distance_m": 0.203,
+          "planner_calls": 15,
+          "blocked_goal_calls": 0,
+          "first_goal_selection": null,
+          "last_goal_selection": null,
+          "pick_probe": {
+            "closed_t": 27.70000000004125,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1246,
+              "4": 2117,
+              "5": 2451,
+              "6": 1448
+            },
+            "synthetic_fk_target_m": [
+              0.19505881468145253,
+              -0.01202238399748457,
+              0.023841324591263684
+            ],
+            "command_queue_equal": true,
+            "events": 340,
+            "lift_pwm": {
+              "3": 765,
+              "4": 1934,
+              "5": 2152,
+              "6": 1448
+            },
+            "scope": "same-input command-generator probe; not original input replay"
+          }
+        },
+        "r2": {
+          "outcome": "success",
+          "staging_distance_m": 0.203,
+          "planner_calls": 6,
+          "blocked_goal_calls": 0,
+          "first_goal_selection": null,
+          "last_goal_selection": null,
+          "pick_probe": {
+            "closed_t": 28.600000000045547,
+            "issued_pwm": {
+              "1": 1500,
+              "3": 1327,
+              "4": 2074,
+              "5": 2497,
+              "6": 1490
+            },
+            "synthetic_fk_target_m": [
+              0.20562961464600069,
+              -0.0024731020119802024,
+              0.02389551950331935
+            ],
+            "command_queue_equal": true,
+            "events": 340,
+            "lift_pwm": {
+              "3": 887,
+              "4": 1972,
+              "5": 2159,
+              "6": 1490
+            },
+            "scope": "same-input command-generator probe; not original input replay"
+          }
+        }
+      }
+    }
+  ],
+  "cross_version": [
+    {
+      "seed": 77208,
+      "rid": "r1",
+      "first_issued_command_difference_tick": 7,
+      "baseline_N": 601,
+      "b033_N": 45,
+      "note": "observed commands differ; not a fixed-controller replay or attribution to one source change"
+    },
+    {
+      "seed": 77208,
+      "rid": "r2",
+      "first_issued_command_difference_tick": 9,
+      "baseline_N": 601,
+      "b033_N": 45,
+      "note": "observed commands differ; not a fixed-controller replay or attribution to one source change"
+    },
+    {
+      "seed": 77212,
+      "rid": "r1",
+      "first_issued_command_difference_tick": 62,
+      "baseline_N": 800,
+      "b033_N": 366,
+      "note": "observed commands differ; not a fixed-controller replay or attribution to one source change"
+    },
+    {
+      "seed": 77212,
+      "rid": "r2",
+      "first_issued_command_difference_tick": 217,
+      "baseline_N": 800,
+      "b033_N": 366,
+      "note": "observed commands differ; not a fixed-controller replay or attribution to one source change"
+    },
+    {
+      "seed": 77921,
+      "rid": "r1",
+      "first_issued_command_difference_tick": 62,
+      "baseline_N": 319,
+      "b033_N": 330,
+      "note": "observed commands differ; not a fixed-controller replay or attribution to one source change"
+    },
+    {
+      "seed": 77921,
+      "rid": "r2",
+      "first_issued_command_difference_tick": 7,
+      "baseline_N": 319,
+      "b033_N": 330,
+      "note": "observed commands differ; not a fixed-controller replay or attribution to one source change"
+    }
+  ],
+  "source_sha256": {
+    "sim/crate_grasp_teacher.py": "d4f51393a0c28d5a7fdd1f91d764782254163c04d09b40977664020e2442955c",
+    "sim/grasp_act_teacher_v3.py": "4736c9469e563f024e4fe39061c8aaaccc62e9cf8dc839fa89e2ccca132b3430",
+    "sim/grasp_act_goal_set.py": "1106a210603954925c94c090ec89c1aa939331840df1328854ed3fd37ea93bb3",
+    "scripts/run_crate_teacher.py": "0cf694913aea5638f238db0b8370d9c4ec3f83988a6d263302c75eb8e635be54",
+    "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+    "harness/visual_arm_v3.py": "b6b1f9ebf3b6e6510e4068e264b9472b2d83bea24996590f678e69805dbb1100"
+  }
+}

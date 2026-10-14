@@ -1,0 +1,33 @@
+<mujoco>
+  <!--Inertial/kinematic excerpt only. Source crate-diag-77921-b033e5f9/raw/scene.xml sha256=1a7b4e985d9757b2e64c23406fb6bab1d8db8ea9d258093d32b3b3f034df9b39-->
+  <worldbody>
+    <body name="r2__shoulder_link" pos="0.000000 0.000000 0.034700">
+      <joint name="r2__shoulder" type="hinge" axis="0 -1 0" range="-.15 2.80" damping=".035" />
+      <inertial pos="0.032500 0.000000 0.000000" mass=".050" diaginertia=".000020 .000030 .000030" />
+      <body name="r2__elbow_link" pos="0.065000 0.000000 0.000000">
+        <joint name="r2__elbow" type="hinge" axis="0 -1 0" range="-1.80 1.80" damping=".030" />
+        <inertial pos="0.031000 0.000000 0.000000" mass=".040" diaginertia=".000016 .000022 .000022" />
+        <body name="r2__wrist_link" pos="0.062000 0.000000 0.000000">
+          <joint name="r2__wrist_pitch" type="hinge" axis="0 -1 0" range="-1.80 1.80" damping=".020" />
+          <inertial pos=".035 0 0" mass=".025" diaginertia=".000010 .000018 .000018" />
+          <body name="r2__gripper" pos="0 0 0">
+            <inertial pos=".065 0 .006" mass=".010" diaginertia=".000010 .000017 .000017" />
+            <site name="r2__camera_axis_site" pos="0.070000 0 0" size=".001" rgba="0 0 0 0" />
+            <body name="r2__left_jaw" pos="0 .035 0">
+              <joint name="r2__left_gripper_close" type="slide" axis="0 -1 0" range="0 0.016000" damping="1.200" />
+              <inertial pos="0.081850 0.000000 -0.018000" mass=".005" diaginertia=".000002 .000006 .000006" />
+            </body>
+            <body name="r2__right_jaw" pos="0 -.035 0">
+              <joint name="r2__right_gripper_close" type="slide" axis="0 1 0" range="0 0.016000" damping="1.200" />
+              <inertial pos="0.081850 0.000000 -0.018000" mass=".005" diaginertia=".000002 .000006 .000006" />
+            </body>
+            <site name="r2__grip_site" pos="0.086850 0.000000 0.000000" size=".001" rgba="0 0 0 0" />
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <position name="r2__servo_elbow" joint="r2__elbow" kp="33.71277936971813" forcelimited="true" forcerange="-0.1765197 0.1765197" dampratio="1" />
+  </actuator>
+</mujoco>
