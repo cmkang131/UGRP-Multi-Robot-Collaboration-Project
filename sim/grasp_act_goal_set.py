@@ -22,14 +22,20 @@ def geometry(world, rid, end, choice):
     return pose, point, heading, goal
 
 
-def nominal_goal_blocked(world, rid, end, bounds, folded):
+def nominal_goal_blocked(world, rid, end, bounds, folded, *, static_map_only=False):
     """Only a static obstruction of the nominal stance enables alternatives.
 
     A peer can move away: preserve the original planner's wait/replan behavior.
     Peers still participate in every route and alternative-goal collision test.
     A failed grid segment or route is not evidence of a blocked grasp stance.
     """
-    radius, discs, rects = constraints(world, rid, folded)
+    # The map-handoff toggle shares the planner's exact clearance predicate,
+    # but never treats observed cargo or a temporary peer as a map obstruction.
+    source = ({'robots': {rid: world['robots'][rid]}, 'objects': {},
+               'beam': world['beam'], 'walls': world.get('walls', [])}
+              if static_map_only else world)
+    radius, discs, rects = constraints(source, rid, folded)
+    if static_map_only:discs = []
     goal = geometry(world, rid, end, (0., STATION_M))[3]
     x0, x1, y0, y1 = bounds
     return (not (x0+radius <= goal[0] <= x1-radius and y0+radius <= goal[1] <= y1-radius)

@@ -11,8 +11,25 @@ HELDOUT='s4_narrow_door_standoff_v4'
 BASE_Z=.032355118817659255
 
 
-def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True,visible_start=False):
-    episodes=[];rejects=Counter()
+def nominal_start_blocked_roles(row,static):
+    """Setup-only map admission; these spawn labels never reach a teacher."""
+    from sim.grasp_act_goal_set import nominal_goal_blocked
+    x,y,a=row['beam_pose']
+    ends={role:[x+d*math.cos(a),y+d*math.sin(a),.015]
+          for role,d in (('teal',-.27),('blue',.27))}
+    world={'robots':{rid:{'pose':[p[0],p[1],p[-1]]} for rid,p in row['spawns'].items()},
+           'objects':{},'beam':{'pose':[x,y,a],'ends':ends},'walls':keepout_rects(static,perimeter=True)}
+    return [rid for rid,end in row['roles'].items()
+            if nominal_goal_blocked(world,rid,end,static['bounds_m'],True,static_map_only=True)]
+
+
+def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True,visible_start=False,start_nominal_goal_feasible='off'):
+    if start_nominal_goal_feasible not in ('off','start_nominal_goal_feasible_v1'):
+        raise ValueError('unknown nominal start feasibility mode')
+    original=None
+    if start_nominal_goal_feasible!='off':
+        original=prepare(count=count,seed=seed,split=split,pair=pair,visible_start=visible_start)
+    episodes=[];rejects=Counter();nominal_tests=0
     for i in range(count):
         rng=random.Random(seed+i)
         scenario_id=HELDOUT if split=='heldout_map' else SCENARIOS[i%len(SCENARIOS)]
@@ -26,6 +43,7 @@ def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True,visible_start=F
             return bounds[0]+r<=p[0]<=bounds[1]-r and bounds[2]+r<=p[1]<=bounds[3]-r and all(rect_distance(p,rect)>=r for rect in rects)
         placements=scenario['eval']['setup']['placements']
         others=[p for p in placements if p['item_id']!='beam_1']
+        nominal_rejects=0
         for attempt in range(5000):
             # Each block spans the angle/range bins; rejection is counted, never hidden.
             a=2*math.pi*((i%12+rng.random())/12)
@@ -57,6 +75,12 @@ def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True,visible_start=F
                     blocked=blocked or any(segment_hits_rect(pos,target,rect) for rect in rects)
                 if blocked:rejects['start_wall_blocks_end']+=1;continue
             if any(math.dist(p,beam[:2])<.46 for p in active):rejects['robot_beam']+=1;continue
+            roles={'r1':end,**({'r2':'blue' if end=='teal' else 'teal'} if pair else {})}
+            if start_nominal_goal_feasible!='off':
+                proposal={'beam_pose':beam,'spawns':{rid:[*p,BASE_Z,0.] for rid,p in zip(roles,active)},'roles':roles}
+                nominal_tests+=1
+                if nominal_start_blocked_roles(proposal,static):
+                    rejects['start_nominal_goal_blocked']+=1;nominal_rejects+=1;continue
             # Park inactive robots in valid free cells away from all task bodies.
             parking=[]
             for _ in range(2000):
@@ -66,7 +90,6 @@ def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True,visible_start=F
             if len(parking)!=(1 if pair else 2):rejects['no_parking']+=1;continue
             spawns={'r1':[*own,BASE_Z,ownyaw],'r2':[*other,BASE_Z,otheryaw] if pair else [*parking[0],BASE_Z,0.],
                     'r3':[*parking[-1],BASE_Z,0.]}
-            roles={'r1':end,**({'r2':'blue' if end=='teal' else 'teal'} if pair else {})}
             row={'episode_id':f'{split}-{seed+i}','batch':f'grasp-act-{split}-{seed}','seed':seed+i,'split':split,
                  'scenario_id':scenario_id,'scenario_source_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
                  'map_id':scenario['map_id'],'beam_pose':beam,'spawns':spawns,'roles':roles,
@@ -75,9 +98,11 @@ def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True,visible_start=F
                  'initial_pan':{rid:rng.randint(500,2500) for rid in roles},
                  'initial_scene_context':'original scenario inventory; task beam/setup spawns randomized',
                  **({'visible_start':True} if visible_start else {}),'proposal_attempts':attempt+1,'near_wall':min(rect_distance(beam,rect) for rect in rects)<.45}
+            if start_nominal_goal_feasible!='off':
+                row.update(start_nominal_goal_feasible=start_nominal_goal_feasible,nominal_goal_rejected_proposals=nominal_rejects)
             episodes.append(row);break
         else:raise ValueError(f'no admissible start for index {i}; rejection counts {rejects}')
-    return {'schema':'ugrp.grasp_act.plan.v1','episodes':episodes,'rejected_proposals':dict(rejects),
+    result={'schema':'ugrp.grasp_act.plan.v1','episodes':episodes,'rejected_proposals':dict(rejects),
         'distribution':{'beam_yaw_deg':[0,360],'robot_center_distance_m':[.5,2.],
         'robot_axis_bearing_deg':[0,360],'robot_heading_error_deg':[-60,60],'initial_pan_pwm':[500,2500],
         'ends':'50:50 by index','fixed':['floor_light_v1','camera review v3','native v7','cargo_noslip_v1','weld off'],
@@ -88,14 +113,31 @@ def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True,visible_start=F
         'first_attempt':'no teacher regrasp in this gate','phase_cap_s':60,'episode_cap_s':60,'target_pair_sim_s':40},
         'stage_order':['long_beam','solo boxes/can/tile grasp and release','heavy_crate','tri_frame'],
         'student_evaluation':False}
+    if original is not None:
+        blocked=[{'seed':r['seed'],'roles':bad} for r in original['episodes']
+                 if (bad:=nominal_start_blocked_roles(r,resolve(r['map_id'])[0]))]
+        rejected=rejects['start_nominal_goal_blocked']
+        result['start_nominal_goal_feasible']=start_nominal_goal_feasible
+        result['nominal_goal_filter']={'mode':start_nominal_goal_feasible,'original_planned_N':count,
+            'original_blocked_n':len(blocked),'original_blocked_rate':len(blocked)/count if count else None,
+            'original_blocked_starts':blocked,
+            'original_episodes_sha256':hashlib.sha256(json.dumps(original['episodes'],sort_keys=True).encode()).hexdigest(),
+            'accepted_N':len(episodes),'rejected_proposals_n':rejected,
+            'nominal_tested_proposals_N':nominal_tests,'rejected_proposals_rate':rejected/nominal_tests if nominal_tests else None,
+            'all_proposals_N':sum(r['proposal_attempts'] for r in episodes),
+            'criterion':'same nominal_goal_blocked(static_map_only=True), folded planner clearance; walls/bounds only',
+            'scope':'map-to-teacher handoff distribution; excludes static-blocked nominal stances, not a wide-start gate; no physical outcomes used'}
+        result['distribution']['start_nominal_goal_feasible']='both assigned nominal goals must clear static walls/bounds; exclusions and original-plan fraction in nominal_goal_filter'
+    return result
 
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--count',type=int,default=40)
     p.add_argument('--seed',type=int,default=71000);p.add_argument('--split',choices=('teacher_gate','train','development','heldout_start','heldout_map'),default='teacher_gate')
     p.add_argument('--single',action='store_true')
-    p.add_argument('--visible-start',action='store_true',help='reject starts where a static wall blocks the line to the assigned end (episode generation only)');a=p.parse_args()
-    result=prepare(count=a.count,seed=a.seed,split=a.split,pair=not a.single,visible_start=a.visible_start)
+    p.add_argument('--visible-start',action='store_true',help='reject starts where a static wall blocks the line to the assigned end (episode generation only)')
+    p.add_argument('--start-nominal-goal-feasible',choices=('off','start_nominal_goal_feasible_v1'),default='off');a=p.parse_args()
+    result=prepare(count=a.count,seed=a.seed,split=a.split,pair=not a.single,visible_start=a.visible_start,start_nominal_goal_feasible=a.start_nominal_goal_feasible)
     a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({'episodes':len(result['episodes']),'rejected':result['rejected_proposals']}))
 if __name__=='__main__':main()

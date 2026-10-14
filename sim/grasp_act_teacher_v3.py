@@ -39,6 +39,12 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             raise ValueError('unknown approach goal set mode')
         if self.approach_goal_set!='off' and self.teacher_stability=='off':
             raise ValueError('approach goal set requires align_relook_v1')
+        self.nominal_blocked_handoff=kwargs.pop('nominal_blocked_handoff','off')
+        if self.nominal_blocked_handoff not in ('off','nominal_blocked_handoff_v1'):
+            raise ValueError('unknown nominal blocked handoff mode')
+        if self.nominal_blocked_handoff!='off' and self.teacher_stability=='off':
+            raise ValueError('nominal blocked handoff requires align_relook_v1')
+        self.nominal_handoff_log=[]
         self.approach_choice=(0.,STATION_M);self.goal_set_log=[]
         self.approach_blocked_since=None;self.approach_plan_valid=False
         self.sc=None;self.search_log=[];self.ever_seen=False
@@ -73,6 +79,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # Only the currently visible measurement frame reaches this law.
         if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:
             return self._hold(now),False
+        if self._nominal_handoff(truth,now):return self._hold(now),False
         use_goals=self._uses_goal_set(truth)
         if use_goals:
             from sim.grasp_act_visible_route import constraints,free
@@ -284,7 +291,22 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     APPROACH_BLOCKED_LIMIT_S=3.
 
+    def _nominal_handoff(self,world,now):
+        if self.nominal_blocked_handoff=='off' or self.outcome is not None:return False
+        if world['beam'] is None or world['visibility'][self.rid]['visible_probes']<5:return False
+        from sim.grasp_act_goal_set import nominal_goal_blocked,geometry
+        if not nominal_goal_blocked(world,self.rid,self.end,self.bounds,self.folded_ready,static_map_only=True):return False
+        self.outcome='approach_blocked_handoff';self.path=[];self.approach_plan_valid=False
+        row={'t':now,'approach':'nominal_blocked_handoff','goal':geometry(world,self.rid,self.end,(0.,STATION_M))[3],
+             'reason':'approach_blocked_handoff','criterion':'static_map_only',
+             'alternative_candidates_used':False,'input':'visible assigned band + visible/remembered walls; issued pose'}
+        self.nominal_handoff_log.append(row);self.events.append(row)
+        return True
+
     def _uses_goal_set(self,world):
+        # Keep the alternative implementation for the OFF comparison. With
+        # map handoff enabled, every clear nominal case uses the original law.
+        if self.nominal_blocked_handoff!='off':return False
         if self.approach_goal_set=='off':return False
         # A failed set stays active until a full collision/path check succeeds.
         # A static obstacle disappearing does not prove a peer-occupied goal safe.
@@ -301,6 +323,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                             'blocked_s':now-self.approach_blocked_since})
 
     def _plan_approach(self,world,now):
+        if self.nominal_blocked_handoff!='off':
+            self._nominal_handoff(world,now)
+            return False
         from sim.grasp_act_goal_set import select_goal
         from sim.grasp_act_visible_route import constraints,free,waypoint
         pose,g,heading,goal=self._geometry(world)
@@ -411,6 +436,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def ready_geometry(self,truth):
         if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:return False
+        if self.nominal_blocked_handoff!='off':
+            from sim.grasp_act_goal_set import nominal_goal_blocked
+            if nominal_goal_blocked(truth,self.rid,self.end,self.bounds,self.folded_ready,static_map_only=True):return False
         pose,g,heading,goal=self._geometry(truth)
         if self._uses_goal_set(truth):
             if not self.approach_plan_valid or self.approach_blocked_since is not None:return False
@@ -425,6 +453,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
     def prepare_signal(self,truth,now):
         """Own teacher readiness; only a binary READY crosses the protocol."""
         if self.outcome is not None:return False
+        if self.phase in ('approach','align','ready','search','relook') and self._nominal_handoff(truth,now):return False
         if self.phase=='ready' and not self.ready_geometry(truth):
             self.ready_revocations+=1;self._set('align',now)
         return self.phase in ('ready','pick','complete')
@@ -457,6 +486,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self.arm.queue({**FOLDED,6:self.sink.pwm[6]},now,duration=.5)
         arms_done=self.arm.tick(now)
         self.folded_ready=arms_done and 500<=self.sink.pwm[3]<=960 and 2320<=self.sink.pwm[4]<=2500 and self.sink.pwm[5]==1320
+        if self.phase in ('approach','align','ready','search','relook') and self._nominal_handoff(truth,now):return self._hold(now),False
         if self.command_complete:return self._hold(now),True
         if now-self.phase_t>60:
             self.outcome='phase_timeout';return self._hold(now),False
@@ -501,4 +531,6 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'teacher_stability':self.teacher_stability,'alignment_relooks':self.align_relooks,
                 'teacher_search':self.teacher_search,'search_log':self.search_log,
                 'approach_goal_set':self.approach_goal_set,'goal_set_log':self.goal_set_log,
+                'nominal_blocked_handoff':self.nominal_blocked_handoff,'nominal_handoff_log':self.nominal_handoff_log,
+                'alternative_goal_path_enabled':self.approach_goal_set!='off' and self.nominal_blocked_handoff=='off',
                 'done_semantics':'own issued arm sequence complete; physical evaluation separate'}
