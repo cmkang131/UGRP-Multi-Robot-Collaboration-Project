@@ -58,11 +58,19 @@ def reuse_speed_gate(prior,plan,concurrency,limit,execution_host,teacher_stabili
     return gate,proof
 
 
+def handoff_only(result):
+    """True when every unsuccessful teacher ended as search_timeout_handoff (map code's job, counted apart)."""
+    failed=[t.get('outcome') for t in result.get('teachers',{}).values() if t.get('outcome')!='success']
+    return bool(failed) and all(o=='search_timeout_handoff' for o in failed)
+
+
 def summarize(rows,planned):
     completed=[r for r in rows if r.get('status')=='complete' and r.get('exit',0)==0]
     return {'object_kind':'long_beam','n':sum(r.get('physical_success') is True for r in completed),
         'N':len(completed),'planned_N':planned,'started_N':len(rows),
         'joint_held_n':sum(r.get('joint_held') is True for r in completed),
+        'search_handoff_n':sum(bool(r.get('search_handoff')) for r in completed),
+        'search_handoff_indices':[r.get('index') for r in completed if r.get('search_handoff')],
         'robots':{rid:{'n':sum(r.get('teachers',{}).get(rid,{}).get('outcome')=='success' for r in completed),
             'N':len(completed)} for rid in ('r1','r2')},
         'failure_reasons':dict(Counter(t['outcome'] for r in completed for t in r.get('teachers',{}).values() if t.get('outcome')!='success')),
@@ -93,7 +101,7 @@ def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teache
                 result=read(target/'raw/result.json');progress=read(target/'raw/progress.json')
                 states.append({'index':index,'exit':proc.poll(),'progress':progress,'status':result.get('status')})
                 if proc.poll() not in (None,0):reason='CHILD_HOST_ERROR';break
-                if not probe and not complete_frozen_cohort and result.get('status')=='complete' and result.get('physical_success') is False:
+                if not probe and not complete_frozen_cohort and result.get('status')=='complete' and result.get('physical_success') is False and not handoff_only(result):
                     reason='PHYSICAL_TEACHER_FAILURE';break
                 if now-at > (max(300.,30*limit*3) if probe else max(600.,cap*limit*3)):
                     reason='WALL_TIMEOUT';break

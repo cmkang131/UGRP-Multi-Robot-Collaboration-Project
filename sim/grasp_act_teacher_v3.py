@@ -9,14 +9,14 @@ from copy import deepcopy
 from harness.grasp_act_contract import command,SERVOS,MEMORY_S
 from sim.grasp_act_teacher import GraspTeacher,local,wrap,grasp_poses,STATION_M,XY_TOL_M,YAW_TOL_RAD
 from sim.grasp_act_port import duty_wheels
-from scripts.zone_teacher import FOLDED,PeerDisc
+from scripts.zone_teacher import FOLDED
 
 
-def propagate_owned(point,issued,dt,gain=1.):
+def propagate_owned(point,issued,dt):
     # Nominal 65 mm wheel / 150 rpm kinematics; not calibrated odometry.
     # Only the preceding issued pulse is integrated, never measured motion.
     wheel=[w*min(dt,d) for w,d in zip(issued['wheels'],issued['duration_s'])]
-    a,b,c,d=wheel;gain=gain*.0325*150*2*math.pi/60
+    a,b,c,d=wheel;gain=.0325*150*2*math.pi/60
     dx= gain*(a+b+c+d)/4;dy=gain*(-a+b+c-d)/4
     yaw=gain*(-a+b-c+d)/(4*.1255)
     x,y,z=point;x-=dx;y-=dy;co,si=math.cos(yaw),math.sin(yaw)
@@ -28,19 +28,13 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.teacher_stability=kwargs.pop('teacher_stability','off')
         if self.teacher_stability not in ('off','align_relook_v1'):
             raise ValueError('unknown teacher stability mode')
-        # search_body_scan_v1: static-map next-best-view search (sim/grasp_act_search.py).
+        # search_body_scan_v1: pan sweep + in-place 8-direction body scan only.
         self.teacher_search=kwargs.pop('teacher_search','off')
-        static_map=kwargs.pop('static_map',None)
-        self.odometry_gain=kwargs.pop('odometry_gain',1.)
         if self.teacher_search not in ('off','search_body_scan_v1'):
             raise ValueError('unknown teacher search mode')
-        if self.teacher_search!='off' and (self.teacher_stability=='off' or static_map is None):
-            raise ValueError('search_body_scan_v1 requires align_relook_v1 and a static map')
-        self.mapsearch=None;self.sc=None;self.search_log=[];self.ever_seen=False
-        if self.teacher_search!='off':
-            from sim.grasp_act_search import StaticMapSearch
-            self.mapsearch=StaticMapSearch(static_map['bounds'],static_map['rects'])
-            self.static_rects=tuple(static_map['rects']);self.static_bounds=tuple(static_map['bounds'])
+        if self.teacher_search!='off' and self.teacher_stability=='off':
+            raise ValueError('search_body_scan_v1 requires align_relook_v1')
+        self.sc=None;self.search_log=[];self.ever_seen=False
         kwargs.pop('profile',None)
         super().__init__(*args,profile='observable_v2',**kwargs)
         self.phase='approach';self.handoff=False;self.local_seen=None
@@ -144,9 +138,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             age=now-self.search_since
             if self.phase!='relook' and self.phase!='search':self._set('search',now)
             if self.teacher_search!='off' and self.phase=='search' and not self.ever_seen:
-                # Never-seen target (ever_seen, not local_seen: a relook clears local_seen): the original in-place pan/turn search cannot
-                # leave a spot from which static walls hide it (GCP gate seed 76015).
-                target,value=self._search_step(truth,now,age)
+                # Never-seen target (ever_seen, not local_seen: a relook clears local_seen).
+                target,value=self._search_step(now,age)
                 self.sink.pwm.update(slew(self.sink.pwm,target));self.arm.commanded.update(self.sink.pwm)
                 return value
             # Full stationary pan/pitch sweep before turning the chassis.
@@ -159,100 +152,54 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if age<7.2:return self._hold(now)
         return self._continuous(now,0.,0.,.25)
 
-    SEARCH_LIMIT_S=33.   # leaves >=22 SIM s of the 60 s cap for approach, align and pick
-    SWEEP_SLOT_S=.6
+    SEARCH_LIMIT_S=33.      # backstop; one full scan normally ends at ~24 SIM s
     SWEEP_PANS=(1000,1500,2000)
-    MOVE_LIMIT_S=14.
+    SLOT_S=.6
+    SCAN_STEPS=8            # 45 deg body directions, in place, same command ACT can issue
+    # Real/nominal yaw of this turn command (width ~0.05 s): 0.73 on seed 76015's
+    # search rotation (300 ticks); 0.69-0.78 over 9 GCP gate episodes. Pulse
+    # widths differ: full-width 0.1 s yaw ticks measured 1.75 (see search-body-scan.md).
+    TURN_GAIN=.73
 
-    def _sweep_target(self,age):
-        slot=int(age/self.SWEEP_SLOT_S);near=slot%2==0
-        # Ground range of the pinhole cone (camera FK, floor plane): 700/2440 sees
-        # 0.26-0.92 m, 820/2320 sees 0.45 m to the horizon, so together >=0.26 m.
-        return {**FOLDED,3:700 if near else 820,4:2440 if near else 2320,6:self.SWEEP_PANS[slot//2]}
+    def _scan_target(self,age,pans):
+        slot=int(age/self.SLOT_S);near=slot%2==0
+        # 700/2440 sees 0.26-0.92 m ahead, 820/2320 0.45 m to the horizon (camera FK).
+        return {**FOLDED,3:700 if near else 820,4:2440 if near else 2320,6:pans[min(slot//2,len(pans)-1)]}
 
-    def _search_log(self,now,**row):
-        self.search_log.append({'t':round(now,2),**row})
-        self.events.append({'t':now,'search':row.get('stage')})
-
-    def _search_step(self,truth,now,age):
-        """search_body_scan_v1: sweep, then static-map next-best-view moves.
-
-        Inputs: own pose estimate (anchored odometry), the authored static map
-        and what the swept sectors already covered. No object/peer position.
-        """
-        from sim.grasp_act_visible_route import waypoint
-        from scripts.zone_teacher import plan_path
-        from sim.grasp_act_search import wrap as swrap
-        pose=truth['robots'][self.rid]['pose']
-        hold_target={**FOLDED,3:820,4:2320,6:1500}
-        if age>self.SEARCH_LIMIT_S:
-            if self.outcome is None:
-                self.outcome='search_timeout';self._search_log(now,stage='timeout')
-            return hold_target,self._hold(now)
+    def _search_step(self,now,age):
+        """search_body_scan_v1. Only own issued commands drive it: a pan/tilt sweep,
+        then seven 45 deg in-place turns with a short dwell each, then hand off.
+        No map, no pose, no object or peer position. Map moves are not ACT's job."""
+        from harness.grasp_act_visible_world import command_delta
+        look={**FOLDED,3:820,4:2320,6:1500}
         if self.sc is None:
-            import numpy as np
-            self.sc={'stage':'sweep','t0':now,'covered':np.zeros(len(self.mapsearch.cells),bool),
-                     'goal':None,'heading':None,'path':[],'next_plan':0.,'banned':[],'used':[],'cycle':0}
+            self.sc={'stage':'sweep','t0':now,'k':0,'turned':0.}
         sc=self.sc
+        if self.last_command is not None and self.last_tick is not None and sc['stage']=='turn':
+            sc['turned']+=abs(command_delta(self.last_command,min(.1,now-self.last_tick))[2])*self.TURN_GAIN
+        def log(stage):
+            self.search_log.append({'t':round(now,2),'stage':stage,'k':sc['k']})
+            self.events.append({'t':now,'search':stage,'k':sc['k']})
+        def handoff():
+            if self.outcome is None:
+                self.outcome='search_timeout_handoff';log('handoff')
+            return look,self._hold(now)
+        if age>self.SEARCH_LIMIT_S:return handoff()
         if sc['stage']=='sweep':
-            sweep_age=now-sc['t0']
-            if sweep_age<len(self.SWEEP_PANS)*2*self.SWEEP_SLOT_S:
-                return self._sweep_target(sweep_age),self._hold(now)
-            sc['covered']|=self.mapsearch.swept(pose)
-            self._search_log(now,stage='swept',pose=[round(v,3) for v in pose],covered=int(sc['covered'].sum()))
-            sc['stage']='plan'
-        if sc['stage']=='plan':
-            sc['path']=[]
-            def length(point):
-                path=plan_path(pose[:2],point,self.static_bounds,[],rects=self.static_rects,radius=.13 if self.folded_ready else .17)
-                if not path:return None
-                return sum(math.dist(a,b) for a,b in zip([pose[:2],*path],path))
-            choice=self.mapsearch.choose(pose,sc['covered'],length,banned=sc['banned'])
-            if choice is None:
-                # Everything reachable has been swept once (e.g. view blocked by a
-                # peer or cargo). Forget coverage and sweep again from here.
-                # Later cycles avoid the viewpoints already used, so a view-
-                # dependent miss (cargo self-occlusion) is tried from new places.
-                sc['covered'][:]=False;sc['cycle']+=1;sc['stage']='plan'
-                sc['banned']=list(sc['used']) if sc['cycle']%2 else []
-                self._search_log(now,stage='recount',cycle=sc['cycle'])
-                return hold_target,self._hold(now)
-            sc['used'].append(pose[:2]);sc.update(stage='move',goal=choice['viewpoint'],heading=choice['heading'],t0=now,next_plan=0.)
-            self._search_log(now,stage='move',viewpoint=[round(v,3) for v in choice['viewpoint']],
-                heading=round(choice['heading'],3),gain=choice['gain'],cost_s=round(choice['cost_s'],1))
-        if sc['stage']=='move':
-            goal,heading=sc['goal'],sc['heading']
-            dist=math.dist(pose[:2],goal);yaw_error=swrap(heading-pose[2])
-            if (dist<.1 and abs(yaw_error)<.12) or now-sc['t0']>self.MOVE_LIMIT_S:
-                self._search_log(now,stage='arrived' if now-sc['t0']<=self.MOVE_LIMIT_S else 'move_limit',
-                    pose=[round(v,3) for v in pose])
-                if now-sc['t0']>self.MOVE_LIMIT_S:sc['banned'].append(goal)
-                sc.update(stage='sweep',t0=now)
-                return hold_target,self._hold(now)
-            radius=.13 if self.folded_ready else .17
-            discs=[PeerDisc((*v['pose'][:2],.17+.17-radius)) for r,v in truth['robots'].items() if r!=self.rid]
-            discs+=[(*o['xy'],o['radius']+.02+.17-radius) for k,o in truth['objects'].items() if k!='beam_1']
-            rects=list(self.static_rects)+[(x,y,hx+.17-radius,hy+.17-radius,a) for x,y,hx,hy,a in truth.get('walls',[])]
-            if now>=sc['next_plan']:
-                sc['next_plan']=now+1.
-                sc['path']=plan_path(pose[:2],goal,self.static_bounds,discs,rects=rects,radius=radius) or []
-            target=waypoint(pose[:2],sc['path'],discs,rects,radius) if sc['path'] else None
-            if dist<.1:target=None
-            forward=left=0.
-            if target is not None:
-                dx,dy=target[0]-pose[0],target[1]-pose[1];norm=max(math.hypot(dx,dy),1e-9)
-                speed=min(1.,dist/.25,norm/.10);vx,vy=dx/norm*speed,dy/norm*speed
-                scale=1. if abs(yaw_error)<.5 else .3
-                forward=max(-.05,min(.15,.15*(math.cos(pose[2])*vx+math.sin(pose[2])*vy)*scale))
-                left=max(-.10,min(.10,.10*(-math.sin(pose[2])*vx+math.cos(pose[2])*vy)*scale))
-            elif dist>=.1:
-                # No path or no free waypoint: give up on this viewpoint.
-                sc['banned'].append(goal);sc.update(stage='plan')
-                self._search_log(now,stage='no_path',goal=[round(v,3) for v in goal])
-                return hold_target,self._hold(now)
-            turn=0. if abs(yaw_error)<.12 else math.copysign(max(.15,min(.25,.6*abs(yaw_error))),yaw_error)
-            return hold_target,self._continuous(now,forward,left,turn)
-        return hold_target,self._hold(now)
+            span=len(self.SWEEP_PANS)*2*self.SLOT_S
+            if now-sc['t0']<span:return self._scan_target(now-sc['t0'],self.SWEEP_PANS),self._hold(now)
+        elif sc['stage']=='dwell':
+            if now-sc['t0']<2*self.SLOT_S:return self._scan_target(now-sc['t0'],(1500,)),self._hold(now)
+        elif sc['stage']=='turn':
+            if sc['turned']<math.pi/4 and now-sc['t0']<6.:
+                return look,self._continuous(now,0.,0.,.25)
+            sc['k']+=1;sc.update(stage='dwell',t0=now,turned=0.);log('dwell')
+            return self._scan_target(0.,(1500,)),self._hold(now)
+        # sweep or dwell finished
+        log('swept' if sc['stage']=='sweep' else 'dwelled')
+        if sc['k']>=self.SCAN_STEPS-1:return handoff()
+        sc.update(stage='turn',t0=now,turned=0.)
+        return look,self._hold(now)
 
     def _geometry(self,world):
         pose=world['robots'][self.rid]['pose'];g=world['beam']['ends'][self.end]
@@ -348,7 +295,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def step(self,truth,now,*,permit_pick=False):
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
-            self.local_seen=propagate_owned(self.local_seen,self.last_command,min(.1,now-self.last_tick),self.odometry_gain)
+            self.local_seen=propagate_owned(self.local_seen,self.last_command,min(.1,now-self.last_tick))
         value,done=self._step(truth,now,permit_pick=permit_pick)
         self.last_command=deepcopy(value);self.last_tick=now
         return value,done

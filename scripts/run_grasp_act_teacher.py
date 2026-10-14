@@ -79,10 +79,6 @@ def compress_logs(out):
 
 
 
-# Measured actual/nominal wheel response of the real-wheel pulse driver (see report).
-ODOMETRY_RESPONSE_GAIN=.75
-
-
 def audit_visible_input(audit,rows):
     """Count delivered measurements, including rejected hidden rows; fail closed."""
     audit['measurement_rows']+=len(rows)
@@ -132,8 +128,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         'physical_success':False,'teacher_profile':teacher_profile,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off',
         'self_pose_source':self_pose_source,'recording_gate_proof':recording_proof,
         'teacher_stability':teacher_stability,'teacher_search':teacher_search,
-        'search_map_anchor':({'source':'plan spawn pose = navigation-handoff stand-in (ground truth at t=0, used once); afterwards issued commands only',
-            'response_gain':ODOMETRY_RESPONSE_GAIN,'gain_basis':'actual/nominal 0.69-0.78 over 9 GCP gate episodes (evaluation-only comparison, not fed live)'} if teacher_search!='off' else None),
+        'search_handoff':False,
         'input_audit':{'scope':'delivered visual measurements only; evaluator reads excluded',
             'enabled':strict,'measurement_rows':0,'invisible_measurements':0,'gt_self_pose_comparison':self_pose_source!='issued'},
         'criteria':{'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.} if strict else {'min_z_m':.012,'hold_s':1.}}
@@ -185,13 +180,10 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             pwm={str(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
             initial=command({'t':origin,'pwm':pwm,**({'wheels':[0.]*4,'duration_s':[0.]*4} if strict else {'drive':[0.]*3,'duration_s':0.})})
             previous[rid]=initial;history[rid]=deque([initial]*HISTORY,maxlen=HISTORY)
-            search_kw=({'teacher_search':teacher_search,'odometry_gain':ODOMETRY_RESPONSE_GAIN,
-                'static_map':{'bounds':scene.config['static_map']['bounds_m'],'rects':keepout_rects(scene.config['static_map'])}} if teacher_search!='off' else {})
+            search_kw={'teacher_search':teacher_search} if teacher_search!='off' else {}
             teachers[rid]=(VisibleOnlyGraspTeacher(rid,end,pwm,bounds=(-20,20,-20,20),teacher_stability=teacher_stability,**search_kw) if strict else
                 GraspTeacher(rid,end,pwm,bounds=scene.config['static_map']['bounds_m'],rects=keepout_rects(scene.config['static_map']),profile=teacher_profile))
-            if strict:
-                anchor=({'initial_pose':[plan['spawns'][rid][0],plan['spawns'][rid][1],plan['spawns'][rid][3]],'response_gain':ODOMETRY_RESPONSE_GAIN} if teacher_search!='off' else {})
-                models[rid]=VisibleWorld(rid,end,pose_source=self_pose_source,**anchor);clocks[rid]=v5.IssuedClock()
+            if strict:models[rid]=VisibleWorld(rid,end,pose_source=self_pose_source);clocks[rid]=v5.IssuedClock()
             student=None
             if record_training:
                 (out/'rgb'/rid).mkdir(parents=True)
@@ -321,7 +313,9 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             teachers={rid:t.diagnostic() for rid,t in teachers.items()},samples_per_robot=written,
             first_attempt=True,weld='off',loadavg_at_end=os.getloadavg(),timings_s=timings)
         report['physical_success']=report['teacher_success_n']==report['teacher_N'] and (len(plan['roles'])==1 or report['joint_held'] is True)
-        report['data_admitted']=bool(record_training and not recording_probe and report['physical_success'])
+        # Map code, not ACT, moves a robot that saw nothing in a full scan: counted apart, never training data.
+        report['search_handoff']=any(t.outcome=='search_timeout_handoff' for t in teachers.values())
+        report['data_admitted']=bool(record_training and not recording_probe and report['physical_success'] and not report['search_handoff'])
         report['wall_per_sim']=report['wall_s']/max(.001,report['sim_s'])
         # Pair whole-beam clearance is deliberately a separate, not-yet-evaluated metric.
         write(out/'result.json',report)

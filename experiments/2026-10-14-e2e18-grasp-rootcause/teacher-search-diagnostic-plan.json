@@ -2,56 +2,6 @@
   "schema": "ugrp.grasp_act.plan.v1",
   "episodes": [
     {
-      "episode_id": "teacher_gate-76015",
-      "batch": "grasp-act-teacher_gate-76000",
-      "seed": 76015,
-      "split": "teacher_gate",
-      "scenario_id": "s1_normal_mixed_v4",
-      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
-      "map_id": "zone_wide_door_geometry_v3",
-      "beam_pose": [
-        1.7152100070391545,
-        -1.197883724165486,
-        1.8455558462481656
-      ],
-      "spawns": {
-        "r1": [
-          2.590829530177391,
-          0.019899593926678172,
-          0.032355118817659255,
-          -2.9501173549276674
-        ],
-        "r2": [
-          1.8435422312401635,
-          -1.6531417172107723,
-          0.032355118817659255,
-          1.8455558462481656
-        ],
-        "r3": [
-          4.000130297019801,
-          -1.6327883863460757,
-          0.032355118817659255,
-          0.0
-        ]
-      },
-      "roles": {
-        "r1": "blue",
-        "r2": "teal"
-      },
-      "target_item": "beam_1",
-      "object_kind": "long_beam",
-      "assignment_source": "demo_rule_color_balanced",
-      "end_color_scene": "grasp_act_teal_blue_v1",
-      "peer_case": "other_end",
-      "initial_pan": {
-        "r1": 2169,
-        "r2": 1900
-      },
-      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
-      "proposal_attempts": 2,
-      "near_wall": false
-    },
-    {
       "episode_id": "teacher_gate-71000",
       "batch": "grasp-act-teacher_gate-71000",
       "seed": 71000,
@@ -300,6 +250,57 @@
       "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
       "proposal_attempts": 2,
       "near_wall": false
+    },
+    {
+      "episode_id": "teacher_gate-79217",
+      "batch": "grasp-act-teacher_gate-79217",
+      "seed": 79217,
+      "split": "teacher_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "beam_pose": [
+        -0.30534444451547244,
+        -1.8360234538331381,
+        0.04761058574553388
+      ],
+      "spawns": {
+        "r1": [
+          -0.15534478748714703,
+          -1.0186402878452996,
+          0.032355118817659255,
+          -0.7162687715606044
+        ],
+        "r2": [
+          0.16711956614051066,
+          -1.8135121536738168,
+          0.032355118817659255,
+          -3.093982067844259
+        ],
+        "r3": [
+          0.5048817220756256,
+          0.8397104882967317,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 2084,
+        "r2": 1706
+      },
+      "initial_scene_context": "original scenario inventory; task beam/setup spawns randomized",
+      "visible_start": true,
+      "proposal_attempts": 3,
+      "near_wall": false
     }
   ],
   "rejected_proposals": {
@@ -359,5 +360,5 @@
   "student_evaluation": false,
   "teacher_profile": "visible_only",
   "self_pose_source": "issued",
-  "registration": "search_body_scan_v1 diagnostic: 76015 (hidden behind zone_wall_divider_1 at start) + seen 71000/73011/73009 (alignment regressions, 73009 had 17.7 s initial invisible and was found by rotation) + new 78111/78113 (LOS clear, assigned end >100 deg outside the initial camera cone: rotation case). Seen cases; not part of fresh n/40."
+  "registration": "search_body_scan_v1 (pan sweep + in-place 8-direction body scan, no map moves) diagnostic: seen 71000/73011/73009 (alignment regressions; 73009 had 17.7 s initial invisible), 78111/78113 (assigned end >100 deg outside the initial camera cone), new-distribution 79217 (largest off-view start of seeds 79100..79299: end 128 deg off the initial camera, 76 deg off body heading). All starts have static LOS to both assigned ends. 76015 (behind a wall) is excluded. Not part of the 79000..79039 gate."
 }
