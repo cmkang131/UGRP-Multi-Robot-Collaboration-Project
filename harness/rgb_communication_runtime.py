@@ -153,7 +153,9 @@ class TraceRecorder:
         wall_started_s: float,
         path: str | Path | None,
         ids: _IdFactory,
+        utc_clock: Callable[[], float] | None = None,
     ) -> None:
+        self.utc_clock = utc_clock
         self.run_id = run_id
         self.condition = condition
         self.wall_clock = wall_clock
@@ -196,6 +198,9 @@ class TraceRecorder:
                 "related_ids": copy.deepcopy(dict(related_ids or {})),
                 "payload": copy.deepcopy(dict(payload or {})),
             }
+            if self.utc_clock is not None:
+                row["payload"]["communication_utc_s"] = float(self.utc_clock())
+                row["payload"]["communication_time_base"] = "internet_ntp_utc"
             self.events.append(row)
             if self.path is not None:
                 with self.path.open("a", encoding="utf-8") as stream:
@@ -317,6 +322,10 @@ class MessageChannel:
             "sent_at_s": float(clock_time_s),
             "expires_at_s": float(clock_time_s + ttl_s),
         }
+        if self.trace.utc_clock is not None:
+            utc_now = float(self.trace.utc_clock())
+            wire.update(sent_at_utc_s=utc_now, expires_at_utc_s=utc_now+ttl_s,
+                        communication_time_base="internet_ntp_utc")
         message_id = self.ids.new("message")
         wire = {"message_id": message_id, "condition": self.condition, **wire}
         size = len(json.dumps(wire, ensure_ascii=False, sort_keys=True).encode("utf-8"))
@@ -359,7 +368,10 @@ class MessageChannel:
                 keep.append(queued)
                 continue
             related = {"message_id": message["message_id"]}
-            if clock_time_s >= message["expires_at_s"]:
+            utc_now = float(self.trace.utc_clock()) if self.trace.utc_clock is not None else None
+            expired_now = (utc_now >= message["expires_at_utc_s"] if utc_now is not None
+                           else clock_time_s >= message["expires_at_s"])
+            if expired_now:
                 expired_claim = {
                     "message_id": message["message_id"],
                     "sender_id": message["sender_id"],
@@ -376,6 +388,8 @@ class MessageChannel:
                 )
                 continue
             received = {**copy.deepcopy(message), "received_at_s": float(clock_time_s)}
+            if utc_now is not None:
+                received["received_at_utc_s"] = utc_now
             delivered.append(received)
             self.trace.emit(
                 "message_received",
@@ -730,6 +744,7 @@ def run_rgb_communication(
     artifact_dir: str | Path | None = None,
     wall_clock: Callable[[], float] = time.monotonic,
     clock_snapshot: Callable[[], dict] | None = None,
+    communication_utc_clock: Callable[[], float] | None = None,
 ) -> dict[str, Any]:
     """Run one bounded, matched-condition fixture/replay/live-LLM episode.
 
@@ -760,6 +775,7 @@ def run_rgb_communication(
         wall_started_s=wall_started_s,
         path=trace_path,
         ids=ids,
+        utc_clock=communication_utc_clock,
     )
     actors = {rid: _ActorState(rid) for rid in robot_ids}
     channel = MessageChannel(condition, robot_ids, limits, trace, ids)
@@ -1139,3 +1155,17 @@ def run_rgb_communication_async(port, planners, **kwargs):
     """
     from harness.rgb_communication_async import run_rgb_communication_async as run
     return run(port, planners, **kwargs)
+
+
+def run_rgb_communication_ntp(port, planners, *, ntp_server="time.cloudflare.com", asynchronous=False, **kwargs):
+    """Explicit internet-UTC message profile; keeps physics/observations in their own clock domain.
+
+    Results from this wall-time TTL profile must not be pooled with legacy SIM-time TTL runs.
+    """
+    from harness.utc_clock import NtpUtcClock
+    clock = NtpUtcClock(ntp_server)
+    clock.synchronize()
+    if "communication_utc_clock" in kwargs:
+        raise ValueError("NTP profile owns its UTC source")
+    run = run_rgb_communication_async if asynchronous else run_rgb_communication
+    return run(port, planners, communication_utc_clock=clock.now, **kwargs)
