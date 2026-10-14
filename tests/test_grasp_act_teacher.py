@@ -137,3 +137,26 @@ def test_low_cargo_radius_does_not_shrink_walls_unknown_objects_or_peers(monkeyp
     assert abs(args[3][2][2]+kw['radius']-(.02+.02+.17))<1e-12
     t.folded_ready=False;t._route(x,(.527,0),0,1.)
     assert captured[-1][1]['radius']==.17
+
+
+def test_hidden_target_does_not_select_scan_or_translation():
+    from copy import deepcopy
+    a=truth([-.5,0,0]);b=deepcopy(a);b['beam']['ends']['teal']=[-5.,3.,.024]
+    for x in (a,b):x['visibility']={'r1':{'visible_probes':0,'objects':[],'peers':[]}}
+    commands=[]
+    for x in (a,b):
+        t=GraspTeacher('r1','teal',FOLDED,bounds=(-6,6,-6,6),profile='observable_v2');t.started=True
+        c,_=t.step(x,1.);commands.append(c)
+        assert c['drive'][:2]==[0.,0.] and not t.observed_objects
+    assert commands[0]==commands[1]
+
+
+def test_gaze_uses_real_pwm_and_brings_near_end_into_vertical_view():
+    import numpy as np
+    from sim.grasp_act_gaze import gaze_pose
+    from harness.visual_arm_v3 import camera_extrinsics
+    for target in ((.203,0,.033),(.5,.2,.033),(1.7,-.3,.033)):
+        p=gaze_pose(target,FOLDED);o,axes=camera_extrinsics(p)
+        v=np.array(axes)@(np.array(target)-o)
+        assert v[2]>0 and abs(v[1]/v[2])<.3
+        assert all(500<=x<=2500 for x in p.values())

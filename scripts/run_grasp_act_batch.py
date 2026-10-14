@@ -137,7 +137,7 @@ def main():
     p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true')
     p.add_argument('--start-index',type=int,default=0);p.add_argument('--speed-gate-from',type=Path)
     p.add_argument('--episode-indices',type=int,nargs='+',help='explicit unchanged frozen-plan indices; never resample')
-    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1'),default='legacy')
+    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='legacy')
     p.add_argument('--complete-frozen-cohort',action='store_true',help='record individual finite failures; operator still stops diagnosed shared defects')
     a=p.parse_args()
     root=a.root.resolve();require_azure(root);plan=a.plan.resolve();episodes=read(plan)['episodes']

@@ -51,8 +51,11 @@ class IssuedArm:
 
 class GraspTeacher:
     def __init__(self, rid, end, initial_pwm, *, bounds, rects=(), profile="legacy"):
-        if profile not in ("legacy","pi_geometry_v1"):raise ValueError("unknown teacher profile")
+        if profile not in ("legacy","pi_geometry_v1","observable_v2"):raise ValueError("unknown teacher profile")
         self.profile=profile;self.folded_ready=False
+        self.last_seen=None;self.last_seen_t=None;self.search_since=None
+        self.visibility_counts={'visible':0,'N':0};self.blind_s=0.;self.max_blind_s=0.
+        self.observed_objects={};self.observed_peers={}
         self.align_integral=[0.,0.,0.];self.align_t=None
         self.ik_rejections=0;self.last_ik_error=None;self.planning_radius=.17
         if rid not in ('r1','r2') or end not in ROLE:
@@ -98,11 +101,13 @@ class GraspTeacher:
             # within 0.123 m; use 0.130 m plus 5 mm low-cargo padding.
             # Tall walls, bounds, unknown/high objects and peers keep the old
             # 0.170 m clearance. No collision/physical parameter changes.
-            fine=self.profile=='pi_geometry_v1' and self.folded_ready
+            fine=self.profile!='legacy' and self.folded_ready
             radius=.13 if fine else .17;extra=.17-radius
             self.planning_radius=radius
-            discs=[PeerDisc((*v['pose'][:2],.17+extra)) for r,v in truth['robots'].items() if r!=self.rid]
-            for iid,o in truth.get('objects',{}).items():
+            peers=truth['robots'] if self.profile!='observable_v2' else self.observed_peers
+            objects=truth.get('objects',{}) if self.profile!='observable_v2' else self.observed_objects
+            discs=[PeerDisc((*v['pose'][:2],.17+extra)) for r,v in peers.items() if r!=self.rid]
+            for iid,o in objects.items():
                 if iid=='beam_1':continue
                 padding=.005 if fine and o.get('top_z_bound_m',math.inf)<=.1 else .02+extra
                 discs.append((*o['xy'],o['radius']+padding))
@@ -136,7 +141,7 @@ class GraspTeacher:
         # Reachability is checked before ready, not assumed from chassis error.
         reachable=True
         try:
-            if self.profile=='pi_geometry_v1':grasp_poses((gx,gy,g[2]))
+            if self.profile!='legacy':grasp_poses((gx,gy,g[2]))
             else:
                 solve_grip_site_ik((gx,gy,g[2]))
                 solve_grip_site_ik((gx,gy,.095))
@@ -149,7 +154,7 @@ class GraspTeacher:
         self.stable_since=None
         # Original zone_teacher._align proportional law; retain current v3 IK.
         clip=lambda v,lo,hi:max(lo,min(hi,v))
-        if self.profile=='pi_geometry_v1':
+        if self.profile!='legacy':
             dt=0. if self.align_t is None else clip(now-self.align_t,0.,.2)
             self.align_t=now
             for i,(error,gain,limit) in enumerate(zip((ex,ey,ea),(.45,.45,.4),(.025,.025,.03))):
@@ -173,21 +178,58 @@ class GraspTeacher:
         self.arm.queue(lift,now,duration=1.2,settle=.5)
         self._set('pick',now)
 
+    def _observe(self,truth,now):
+        """Look before translation; hidden target never chooses search direction."""
+        from sim.grasp_act_gaze import gaze_pose,slew
+        visibility=truth['visibility'][self.rid]
+        visible=visibility['visible_probes']>=3
+        self.visibility_counts['N']+=1;self.visibility_counts['visible']+=int(visible)
+        self.blind_s=0. if visible else self.blind_s+.1
+        self.max_blind_s=max(self.max_blind_s,self.blind_s)
+        if visible:
+            self.last_seen=deepcopy(truth['beam']['ends'][self.end]);self.last_seen_t=now;self.search_since=None
+        for iid in visibility.get('objects',[]):
+            self.observed_objects[iid]=deepcopy(truth['objects'][iid])
+        for rid in visibility.get('peers',[]):
+            self.observed_peers[rid]=deepcopy(truth['robots'][rid]);self.observed_peers[rid]['seen_t']=now
+        self.observed_peers={r:v for r,v in self.observed_peers.items() if now-v['seen_t']<=8.}
+        if self.last_seen_t is not None and now-self.last_seen_t<=1.:
+            pose=truth['robots'][self.rid]['pose'];x,y=local(pose,self.last_seen)
+            target=gaze_pose((x,y,self.last_seen[2]+.009),self.sink.pwm)
+        else:
+            # Deterministic observation search, independent of hidden end pose.
+            self.search_since=now if self.search_since is None else self.search_since
+            target={**FOLDED,3:820,6:round(1500+1000*math.sin((now-self.search_since)*.7))}
+        self.sink.pwm.update(slew(self.sink.pwm,target));self.arm.commanded.update(self.sink.pwm)
+        if visible:return None
+        # A recently seen end may be reacquired by the arm while chassis holds.
+        if self.last_seen_t is not None and now-self.last_seen_t<=1.:return self._hold(now)
+        return self._continuous(now,0.,0.,.12)
+
     def step(self,truth,now,*,permit_pick=True):
         if not self.started:
             self.started=True;self.phase_t=now
-            self.arm.queue({**FOLDED,6:1500},now,duration=.5)
+            self.arm.queue({**FOLDED,6:self.sink.pwm[6] if self.profile=='observable_v2' else 1500},now,duration=.5)
         arms_done=self.arm.tick(now)
         self.folded_ready=arms_done and all(self.sink.pwm[k]==FOLDED[k] for k in (3,4,5))
+        if self.profile=='observable_v2':
+            self.folded_ready=arms_done and 500<=self.sink.pwm[3]<=960 and 2320<=self.sink.pwm[4]<=2500 and self.sink.pwm[5]==1320
         if self.outcome:return self._hold(now),self.outcome=='success'
         if now-self.phase_t>60:
             self.outcome='phase_timeout';return self._hold(now),False
         if self.phase in ('approach','align'):
+            if self.profile=='observable_v2':
+                if not arms_done:return self._hold(now),False
+                search=self._observe(truth,now)
+                if search is not None:return search,False
             action,ready=self._approach(truth,now)
             if ready:
                 self._set('ready',now)
             return action,False
         if self.phase=='ready':
+            if self.profile=='observable_v2':
+                search=self._observe(truth,now)
+                if search is not None:return search,False
             if permit_pick:
                 try:self._queue_pick(truth,now)
                 except ValueError:
@@ -207,6 +249,7 @@ class GraspTeacher:
 
     def diagnostic(self):
         return {'profile':self.profile,'planning_radius_m':self.planning_radius,
+                'visibility_counts':self.visibility_counts,'max_unseen_before_pick_s':self.max_blind_s,
                 'ik_rejections':self.ik_rejections,'last_ik_error':self.last_ik_error,
                 'alignment_integral':list(self.align_integral),'phase':self.phase,'outcome':self.outcome,'events':deepcopy(self.events),
                 'staging_distance_m':self.staging_distance,'phase_sim_s':self.phase_durations,

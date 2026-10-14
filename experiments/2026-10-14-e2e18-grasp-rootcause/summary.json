@@ -1560,5 +1560,39 @@
       "sim/s2_servo_stiffness.py": "66dc724652d07edbe35ef185b4fa7d5f42cfc6ec535cec9e73353ee22a52bbea"
     },
     "profile": "native v7 / cargo_noslip_v1 / real_v1 / roller mesh / idle off / weld off"
+  },
+  "visibility_078": {
+    "record": "visibility-078-summary.json",
+    "record_sha256": "94c079ce8237653e6e70b4848bf8e8ce9ce5f40a0a4db78433a6a9c9e3232ffe",
+    "source_episodes": 40,
+    "student_samples": 19888,
+    "visible": 8367,
+    "approach": {
+      "n": 4508,
+      "N": 8819
+    },
+    "alignment": {
+      "n": 0,
+      "N": 1590
+    },
+    "max_blind_command_s": 57.6,
+    "review": {
+      "path": "visibility-078-own-review.jpg",
+      "sha256": "baeef70f1d4f3324d4a701dc48765e0351bbdf67d37b6e3762051ac8cda6f154",
+      "episode": 3,
+      "seconds": [
+        0,
+        5,
+        10,
+        20,
+        30,
+        37
+      ],
+      "own_robot_views": 12,
+      "saved_top_views": 6
+    },
+    "teacher_candidate": "observable_v2; not physically run",
+    "student_contract": "v4;64-second own history; no ground truth",
+    "new_gate": "not started; camera runtime basis clarification pending"
   }
 }

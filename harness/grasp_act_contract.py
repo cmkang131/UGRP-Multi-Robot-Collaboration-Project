@@ -8,7 +8,7 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping
 
-SCHEMA = 'ugrp.grasp_act.student.v3'
+SCHEMA = 'ugrp.grasp_act.student.v4'
 SKILLS = ('grasp', 'wait', 'regrasp', 'release')
 KINDS = ('cyan', 'green', 'red', 'yellow', 'can', 'tile', 'long_beam', 'heavy_crate', 'tri_frame')
 ROLES = ('teal', 'blue', 'west', 'east', 'any', 'v0', 'v1', 'v2')
@@ -16,7 +16,10 @@ KIND_ROLES = {**{k: ('west',) for k in ('cyan', 'green', 'red', 'yellow')},
               'can': ('any',), 'tile': ('west', 'east'), 'long_beam': ('teal', 'blue'),
               'heavy_crate': ('west', 'east'), 'tri_frame': ('v0', 'v1', 'v2')}
 SERVOS = (1, 3, 4, 5, 6)
-HISTORY = 4
+MEMORY_S = 64.
+HISTORY = 641  # all issued command snapshots at 10 Hz, covering measured 57.6 s
+RGB_LAGS_S = (64.,32.,16.,8.,6.,4.,2.,1.,.5,.2,.1,0.)
+RGB_HISTORY = len(RGB_LAGS_S)
 CHUNK = 8
 PERIOD_S = .1
 ACTION_DIM = 10  # drive x/y/yaw, duration, five absolute PWM targets, skill done
@@ -64,8 +67,8 @@ def validate_observation(row):
     t = finite(row['t'])
     if row['skill'] not in SKILLS or row['object_kind'] not in KIND_ROLES or row['role'] not in KIND_ROLES[row['object_kind']]:
         raise ValueError('task instruction must be a skill and named end')
-    if len(row['rgb']) != 2 or len(row['issued']) != HISTORY:
-        raise ValueError('two own images and four own command snapshots required')
+    if len(row['rgb']) != RGB_HISTORY or len(row['issued']) != HISTORY:
+        raise ValueError('fixed 64-second own image and command history required')
     times = []
     for ref in row['rgb']:
         if set(ref) != {'path', 'sha256', 't', 'robot_id'} or ref['robot_id'] != row['robot_id']:
@@ -76,7 +79,7 @@ def validate_observation(row):
         if ref['path'].startswith('/') or '..' in parts or not parts[0] == 'rgb':
             raise ValueError('RGB path must stay in episode rgb/')
         times.append(finite(ref['t']))
-    if not times[0] <= times[1] <= t or t-times[1] > .6:
+    if times!=sorted(times) or times[-1]>t or t-times[-1]>.15 or t-times[0]>MEMORY_S+.15:
         raise ValueError('future, reversed or stale image')
     commands = [command(x) for x in row['issued']]
     ctimes = [x['t'] for x in commands]
@@ -92,12 +95,20 @@ def context(row):
         values.extend(x['drive'])
         values.append(x['duration_s']/.15)
         values.extend((x['pwm'][str(s)]-1500)/1000 for s in SERVOS)
-        values.append(min(5., row['t']-x['t'])/5.)
+        values.append(min(MEMORY_S, row['t']-x['t'])/MEMORY_S)
     values.extend(float(row['skill'] == s) for s in SKILLS)
     values.extend(float(row['object_kind'] == s) for s in KINDS)
     values.extend(float(row['role'] == s) for s in ROLES)
     assert len(values) == CONTEXT_DIM
     return values
+
+
+def image_history(refs, now):
+    """Time-only subsampling; never choose frames using truth or teacher labels."""
+    if not refs:raise ValueError('nonempty own image buffer required')
+    from bisect import bisect_right
+    times=[r['t'] for r in refs]
+    return [refs[max(0,bisect_right(times,now-lag+1e-7)-1)] for lag in RGB_LAGS_S]
 
 
 def encode_action(issued, *, done=False):

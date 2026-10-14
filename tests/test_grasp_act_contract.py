@@ -2,7 +2,7 @@ import copy
 import pytest
 
 from harness.grasp_act_contract import (
-    SCHEMA, HISTORY, CONTEXT_DIM, context, validate_observation,
+    SCHEMA, RGB_HISTORY, HISTORY, CONTEXT_DIM, context, validate_observation,
     encode_action, decode_action, training_windows,
 )
 
@@ -15,7 +15,7 @@ def command(t=0):
 def observation(t=0, skill='grasp'):
     return {'schema': SCHEMA, 'sample_id': f'ep001:{t}:r1', 'robot_id': 'r1',
             't': t, 'object_kind':'long_beam','skill': skill, 'role': 'teal',
-            'rgb': [{'path': 'rgb/a.jpg', 'sha256': 'a'*64, 't': t, 'robot_id': 'r1'} for _ in range(2)],
+            'rgb': [{'path': 'rgb/a.jpg', 'sha256': 'a'*64, 't': t, 'robot_id': 'r1'} for _ in range(RGB_HISTORY)],
             'issued': [command(t)] * HISTORY}
 
 
@@ -91,3 +91,14 @@ def test_native_feedforward_uses_only_issued_command_signs():
     moving=native_wheels([.02,0.,0.],start)
     assert moving==pytest.approx((.02+1./12.,)*4)
     assert native_wheels([0.,0.,0.],moving)==(0.,)*4
+
+
+def test_history_covers_measured_blind_interval_without_privileged_selection():
+    from harness.grasp_act_contract import image_history,RGB_LAGS_S,MEMORY_S
+    refs=[{'t':i*.1,'path':str(i)} for i in range(701)]
+    sampled=image_history(refs,70.)
+    assert [round(70.-r['t'],1) for r in sampled]==list(RGB_LAGS_S)
+    assert MEMORY_S>=57.6 and (HISTORY-1)*.1>=57.6
+    assert image_history(refs[:1],0.)==[refs[0]]*RGB_HISTORY
+    x=observation();x['schema']='ugrp.grasp_act.student.v3'
+    with pytest.raises(ValueError,match='whitelist'):validate_observation(x)

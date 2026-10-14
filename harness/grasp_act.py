@@ -11,9 +11,9 @@ from lerobot.configs.types import FeatureType,PolicyFeature
 from lerobot.policies.act.configuration_act import ACTConfig
 from lerobot.policies.act.modeling_act import ACTPolicy
 from harness.reference_act import UPSTREAM_SHA
-from harness.grasp_act_contract import SCHEMA,ACTION_DIM,CONTEXT_DIM,CHUNK,context,decode_action,SKILLS,KINDS,ROLES
+from harness.grasp_act_contract import SCHEMA,ACTION_DIM,CONTEXT_DIM,CHUNK,context,decode_action,SKILLS,KINDS,ROLES,RGB_HISTORY,RGB_LAGS_S,HISTORY
 
-IMAGE_KEYS=('observation.images.own_previous','observation.images.own_current')
+IMAGE_KEYS=tuple('observation.images.own_t'+str(i) for i in range(RGB_HISTORY))
 CONTEXT_KEY='observation.environment_state'
 PROFILES={'smoke':96,'standard':224}
 
@@ -54,16 +54,17 @@ def tensor(jpeg,profile):
 
 def batch(observation,jpegs,profile):
     ctx=context(observation)
-    if len(jpegs)!=2:raise ValueError('two owned images required')
+    if len(jpegs)!=RGB_HISTORY:raise ValueError('fixed own image history required')
     return {**{k:tensor(v,profile).unsqueeze(0) for k,v in zip(IMAGE_KEYS,jpegs)},
             CONTEXT_KEY:torch.tensor([ctx],dtype=torch.float32)}
 
 
 def metadata(profile):
-    return {'schema':'ugrp.grasp_act.adapter.v3','action_contract':SCHEMA,
+    return {'schema':'ugrp.grasp_act.adapter.v4','action_contract':SCHEMA,
             'actuator_port':'continuous_native_command_feedforward_v1',
             'upstream_sha':UPSTREAM_SHA,'profile':profile,
-            'image_keys':list(IMAGE_KEYS),'skills':list(SKILLS),'object_kinds':list(KINDS),'roles':list(ROLES),'context_dim':CONTEXT_DIM,
+            'image_keys':list(IMAGE_KEYS),'rgb_lags_s':list(RGB_LAGS_S),'command_history':HISTORY,
+            'skills':list(SKILLS),'object_kinds':list(KINDS),'roles':list(ROLES),'context_dim':CONTEXT_DIM,
             'action_dim':ACTION_DIM,'chunk':CHUNK,'truth_at_inference':False,'measured_joints':False}
 
 

@@ -10,7 +10,7 @@ from collections import deque
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
-from harness.grasp_act_contract import SCHEMA,HISTORY,SERVOS,validate_observation,command
+from harness.grasp_act_contract import SCHEMA,HISTORY,SERVOS,validate_observation,command,image_history
 
 
 def write(path,value):
@@ -126,6 +126,14 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             timings['physics']+=time.monotonic()-at
         advance(until)
         origin=float(world.data.time);previous={};history={};images={};writers={};teachers={}
+        from scripts.audit_grasp_act_visibility import BandVisibility
+        visibility=BandVisibility(world.model)
+        object_bodies={c.item_id:c.body for c in scene.cargo}
+        object_bodies.update({i:c['body_name'] for i,c in scene.config['setup_only']['objects'].items()})
+        write(out/'camera-runtime.json',{'scope':'evaluation-only; actual runtime values, not XML assumptions',
+            'cameras':{rid:{'pos':world.model.cam_pos[cid].tolist(),'quat':world.model.cam_quat[cid].tolist(),
+                'intrinsic':world.model.cam_intrinsic[cid].tolist(),'resolution':world.model.cam_resolution[cid].tolist()}
+                for rid,cid in visibility.cameras.items()}})
         for rid,end in plan['roles'].items():
             pwm={str(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
             initial=command({'t':origin,'drive':[0.,0.,0.],'duration_s':0.,'pwm':pwm})
@@ -141,7 +149,13 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         inst=next(x for x in scene.cargo if x.item_id=='beam_1');i=0;written=0;both_since=None;all_done_since=None
         while float(world.data.time)-origin < cap_s-1e-8:
             now=float(world.data.time);at=time.monotonic()
-            truth=snapshot(world,inst,plan['roles'],scene);ev.write(json.dumps(truth)+'\n')
+            truth=snapshot(world,inst,plan['roles'],scene)
+            truth['visibility']={rid:visibility.measure(world.data,rid,end) for rid,end in plan['roles'].items()}
+            if teacher_profile=='observable_v2':
+                for rid in plan['roles']:
+                    truth['visibility'][rid]['objects']=[iid for iid,b in object_bodies.items() if visibility.body_visible(world.data,rid,b)]
+                    truth['visibility'][rid]['peers']=[peer for peer in ('r1','r2','r3') if peer!=rid and visibility.body_visible(world.data,rid,peer+'__robot')]
+            ev.write(json.dumps(truth)+'\n')
             timings['evaluation']+=time.monotonic()-at
             if i % 10 == 0:
                 # Reviewer evidence only; never referenced by a student observation.
@@ -163,12 +177,16 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             for rid,t in teachers.items():
                 at=time.monotonic()
                 sample_id=f"{plan['episode_id']}:{i}:{rid}"
+                # Demonstration supervisor supplies the discrete wait command;
+                # hidden peer readiness must not change a grasp action label
+                # under an identical student instruction.
+                skill='wait' if t.phase=='ready' and not permit else 'grasp'
                 if record_training:
                     capture=ports[rid].capture();jpg=base64.b64decode(capture['image']);path=f'rgb/{rid}/{i:06d}.jpg';(out/path).write_bytes(jpg)
                     ref={'path':path,'sha256':hashlib.sha256(jpg).hexdigest(),'t':now,'robot_id':rid}
-                    pair=[images[rid][-1] if rid in images else ref,ref];images[rid]=pair
+                    images.setdefault(rid,deque(maxlen=HISTORY+1)).append(ref)
                     obs={'schema':SCHEMA,'robot_id':rid,'sample_id':sample_id,'t':now,
-                        'object_kind':'long_beam','skill':'grasp','role':t.end,'rgb':images[rid],'issued':list(history[rid])}
+                        'object_kind':'long_beam','skill':skill,'role':t.end,'rgb':image_history(list(images[rid]),now),'issued':list(history[rid])}
                     validate_observation(obs)
                     writers[rid][0].write(json.dumps(obs)+'\n')
                 timings['rgb']+=time.monotonic()-at
@@ -183,10 +201,11 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     else:
                         sid=str(rng.choice([3,4,5]));applied['pwm'][sid]=int(np.clip(applied['pwm'][sid]+rng.normal(0,8),500,2500))
                 command(applied)
-                label={'sample_id':sample_id,'object_kind':'long_beam','skill':'grasp','done':done,
+                label={'sample_id':sample_id,'object_kind':'long_beam','skill':skill,'done':done,
                     'terminal_reason':'skill_success' if done else None,'clean_teacher_command':clean,
                     'applied_command':applied,'perturbed':perturbed,'teacher_phase':phase,
-                    'local_skill_sample':phase!='approach','assignment_source':plan['assignment_source']}
+                    'local_skill_sample':teacher_profile=='observable_v2' or phase!='approach','assignment_source':plan['assignment_source'],
+                    'skill_instruction_source':'demo_privileged_pair_supervisor; student runtime instruction must come from LLM'}
                 apply(ports[rid],applied,now,previous[rid]);previous[rid]=applied;history[rid].append(applied)
                 label['issued_native_wheels']=list(ports[rid]._motor_commands)
                 writers[rid][1].write(json.dumps(label)+'\n')
@@ -222,7 +241,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=60.)
     p.add_argument('--noise',action='store_true');p.add_argument('--probe',action='store_true')
-    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1'),default='legacy')
+    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='legacy')
     p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path);a=p.parse_args()
     if a.record_training:
         if a.teacher_gate is None:raise ValueError('verified >=38/40 teacher gate required before recording')

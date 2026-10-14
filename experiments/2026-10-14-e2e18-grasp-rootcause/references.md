@@ -45,3 +45,9 @@
 [Nav2 footprint 설정](https://docs.nav2.org/rolling/configuration_and_development/first_time_robot_setup_guide/footprint/setup_footprint/)은 원/다각형 외곽과 상태별 외곽 변경을 설명한다. [Nav2 voxel layer](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/costmap_2d/costmap_plugins/voxel/)는 3D 높이를 반영한 2D 계획 표현의 근거다. 우리 후보는 기존 A*를 유지하고, 접힌 팔보다 낮은 화물에 한해 모델에서 계산한 차체 반경을 쓴다. Nav2 전체를 도입한 것은 아니다. 벽·경계·다른 로봇·높이를 모르는 물체의 기존 총 여유는 유지한다. [수치 근거](teacher-v2-geometry-basis.json).
 
 [WPILib PID 문서](https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/pidcontroller.html)의 적분 기여 상한/정지 시 초기화를 참고한다. 기존 P·마찰 포트에도 남은 71033의 잔여 오차에만 기본 off PI 후보를 평가한다. WPILib는 더 정확한 feedforward로 해결할 수 있으면 적분을 피하라고 권하므로, 불안정/과도 동작 여부를 새 물리 진단에서 확인한다.
+
+### 정보 비대칭과 보고 가는 교사 (2026-10-14 추가)
+
+- Chen et al., [Learning by Cheating, CoRL 2019](https://arxiv.org/pdf/1912.12294), 본문 1–2절 확인. 정답 교사를 학습한 뒤 영상 학생의 실제 방문 상태에서 교사 라벨을 받는 DAgger형 학습을 명시한다. 교사의 모든 동작이 제한된 영상으로 모방 가능함을 보장하는 논문은 아니다.
+- Warrington et al., [Robust Asymmetric Learning in POMDPs, ICML 2021](https://proceedings.mlr.press/v139/warrington21a.html), 공식 초록 확인. Adaptive Asymmetric DAgger(A2D)는 학생의 제한된 관측에서 모방한 정책의 성과를 고려해 교사와 학생을 함께 갱신한다. 이번 팬/관찰 자세 제약은 그 문제의식을 따른 수동 제약이며 A2D 알고리즘을 구현한 것이 아니다.
+- Walsman et al., [Impossibly Good Experts and How to Follow Them, ICLR 2023](https://openreview.net/forum?id=sciA_xgYofB), [저자 공개 코드](https://github.com/aaronwalsman/impossibly-good), [공저자 연구실 목록](https://portal.cs.cornell.edu/publications/)에서 제목·저자·학회·코드 존재 확인. 논문 본문은 웹 접근 확인 화면으로 열리지 않았다. 세부 정리와 ELF 알고리즘 주장은 **미확인**이며 구현 근거로 사용하지 않는다.
