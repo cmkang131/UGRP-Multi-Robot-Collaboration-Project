@@ -39,6 +39,13 @@ OBSERVE_MODES = ('gaze_v2', 'backoff_v3')
 OBSERVE_BACKOFF_M = .15   # backoff_v3: step back before looking so the floor beyond the end enters the view
 REACH_MID_M = sum(CALIBRATED_GRASP_RADIUS_CM)/200.
 REACH_TOL_M = .01
+# reach_v2: pick-feasible window from an IK scan of pick_schedule (hover .095 m + descent to GRASP_Z_M, v3
+# physical pad) at 5d6e8291: radius 14.6-15.8 cm solves for |y| <= 3 cm; 16.1 cm fails at |y| >= 2 cm and
+# 16.4-17.6 cm always fail ("no safe v3 physical-pad IK solution"). REACH_MID_M (16.25 cm) sits in the gap.
+REACH_MODES = ('calibrated_mid_v1', 'pad_window_v2')
+PAD_WINDOW_M = (.146, .158)
+PAD_MID_M = sum(PAD_WINDOW_M)/2.
+PAD_TOL_M = .004
 
 
 def check_wheels(wheels, durations):
@@ -148,7 +155,11 @@ class ReleaseTeacher:
     """
     SCAN_EXACT_GAP_M = .03
 
-    def __init__(self, rid, end, pwm, *, handoff_pose_estimate, zone_rect, memory_s=MEMORY_S, own_pose_source='commands'):
+    def __init__(self, rid, end, pwm, *, handoff_pose_estimate, zone_rect, memory_s=MEMORY_S, own_pose_source='commands',
+                 reach_mode='calibrated_mid_v1'):
+        if reach_mode not in REACH_MODES:
+            raise ValueError(reach_mode)
+        self.reach_mode = reach_mode
         if own_pose_source not in ('commands', 'truth_comparison'):
             raise ValueError('own pose from own commands; truth only as comparison toggle')
         self.rid, self.end = rid, end
@@ -276,10 +287,16 @@ class ReleaseTeacher:
         """Own-command axial approach so the re-grasp target sits mid-reach (never a crash on reach)."""
         (x, y), _ = self.pick_target(now)
         radius = math.hypot(x-MOUNT_X_M, y)
-        lo, hi = (v/100. for v in CALIBRATED_GRASP_RADIUS_CM)
-        if lo+REACH_TOL_M <= radius <= hi-REACH_TOL_M:
+        if self.reach_mode == 'pad_window_v2':
+            lo, hi, tol = PAD_WINDOW_M[0], PAD_WINDOW_M[1], PAD_TOL_M
+        else:
+            lo, hi = (v/100. for v in CALIBRATED_GRASP_RADIUS_CM); tol = REACH_TOL_M
+        if lo+tol <= radius <= hi-tol:
             return []
-        return self.shift_plan(radius-REACH_MID_M, 1.)
+        return self.shift_plan(radius-self.reach_mid(), 1.)
+
+    def reach_mid(self):
+        return PAD_MID_M if self.reach_mode == 'pad_window_v2' else REACH_MID_M
 
     def pick_schedule(self, now):
         """Re-grasp the own band (visible band preferred): hover, descent, close, lift."""

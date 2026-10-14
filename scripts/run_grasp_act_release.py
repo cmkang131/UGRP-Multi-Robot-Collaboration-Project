@@ -15,7 +15,8 @@ ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from harness.grasp_act_contract_v4 import SERVOS,command   # prefix uses the preserved v4 observable_v2 teacher
 from scripts.run_grasp_act_teacher import write,apply,snapshot,compress_logs
-from sim.grasp_act_release_teacher import OBSERVE_MODES
+from sim.grasp_act_release_teacher import OBSERVE_MODES,REACH_MODES
+ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 
 SUCCESS={'settle_s':2.,'on_floor_z_m':.05,'speed_m_s':.01,'tilt_deg':3.,'open_pwm':1900,'clear_m':.04}
 DELIVERY_WAIT_S=4.
@@ -33,8 +34,8 @@ def zone_probes(rect,z):
 
 class Eyes:
     """Evaluation owner: which points each own camera shows now (FOV, fisheye, mj_ray)."""
-    def __init__(self,band,zone_gid):
-        self.b=band;self.zone=zone_gid
+    def __init__(self,band,zone_gid,slot_gids=()):
+        self.b=band;self.zone=zone_gid;self.slots=frozenset(int(g) for g in slot_gids)
     def visible(self,data,rid,point,*,target=None):
         import cv2,mujoco,numpy as np
         b=self.b;cid=b.cameras[rid];point=np.asarray(point,dtype=float)
@@ -62,7 +63,13 @@ class Eyes:
         skip=b.near*dist/p[2];origin=data.cam_xpos[cid]+skip*direction;hit=np.array([-1],dtype=np.int32)
         ray=mujoco.mj_ray(b.model,data,origin,direction,b.groups,True,-1,hit)
         if hit[0]<0 or abs(ray-(dist-skip))>.015:return None      # occluded (e.g. own beam/gripper)
-        return 'zone' if int(hit[0])==self.zone else 'floor'
+        return 'zone' if int(hit[0])==self.zone or int(hit[0]) in self.slots else 'floor'
+
+
+def destination_slot_geoms(names,region):
+    """Indices of the destination's slot squares (zone_slot_<letter><n>); they lie inside the zone on the static map."""
+    letter=region.split('_')[-1];pre='zone_slot_'+letter
+    return [i for i,n in enumerate(names) if n and n.startswith(pre) and n[len(pre):].isdigit()]
 
 
 def own_end_world(world,inst,end):
@@ -71,8 +78,10 @@ def own_end_world(world,inst,end):
     return b.xpos+rot@np.array([-.30 if end=='teal' else .30,0.,0.])
 
 
-def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off'):
+def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
+        zone_slots='floor',reach_mode='calibrated_mid_v1'):
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
+    if zone_slots not in ZONE_SLOT_MODES:raise ValueError(zone_slots)
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
     import numpy as np
     from PIL import Image
@@ -93,7 +102,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise RuntimeError('committed source required')
     write(out/'RUN_META.json',{'class':'dev','pr':484,'branch':'claude/grasp-act-release','sha':sha,'batch':plan['batch']})
-    report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,
+    report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,
         'weld':'off','recording_mode':'success_measurement','student_execution':False,'success_rule':SUCCESS,
         'loadavg_at_start':os.getloadavg(),'release_success':None,'prefix_held':None}
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.
@@ -121,7 +130,10 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 world._physics_step_for(world.robot('r1'))
         advance(float(world.data.time)+.5)
         origin=float(world.data.time);inst=next(x for x in scene.cargo if x.item_id=='beam_1')
-        band=BandVisibility(world.model);eyes=Eyes(band,world.model.geom('zone_'+plan['destination_region']).id)
+        band=BandVisibility(world.model);region=plan['destination_region']
+        slots=destination_slot_geoms([world.model.geom(g).name for g in range(world.model.ngeom)],region) if zone_slots=='zone' else []
+        report['zone_slot_geoms']=[world.model.geom(g).name for g in slots]
+        eyes=Eyes(band,world.model.geom('zone_'+region).id,slots)
         object_bodies={c.item_id:c.body for c in scene.cargo if c.item_id!='beam_1'}
         object_bodies.update({i:c['body_name'] for i,c in scene.config['setup_only']['objects'].items()})
         ev=(out/'eval-only.jsonl').open('w');streams.append(ev)
@@ -174,7 +186,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             err=plan['handoff_pose_error'][rid] if own_pose_source=='commands' else [0.,0.,0.]   # frozen map-code own-pose error
             estimate=[float(pose[0])+err[0],float(pose[1])+err[1],yaw+err[2]]
             pwm={int(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
-            rel[rid]=ReleaseTeacher(rid,end,pwm,handoff_pose_estimate=estimate,zone_rect=rect,own_pose_source=own_pose_source)
+            rel[rid]=ReleaseTeacher(rid,end,pwm,handoff_pose_estimate=estimate,zone_rect=rect,own_pose_source=own_pose_source,reach_mode=reach_mode)
         R=tuple(roles);code=PairReleaseCode(R);release_t0=float(world.data.time)
         st={'phase':'look','since':release_t0,'iter':0,'steps':0,'search':0,'sched':{},'plan':{},'go':None,'after_visible':False,'choice':None}
         b0=world.data.body(inst.body)
@@ -297,7 +309,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                     # Approach by own-command pulses until the re-grasp target is mid-reach (no reach crash).
                     st['plan']={rid:t.approach_plan(now) for rid,t in rel.items()}
                     for rid,pl in st['plan'].items():
-                        if pl:schedule(rid,[(0.,{k:int(v) for k,v in solve_grip_site_ik((MOUNT_X_M+REACH_MID_M,0.,.095)).items() if k in (3,4,5,6)})],now)
+                        if pl:schedule(rid,[(0.,{k:int(v) for k,v in solve_grip_site_ik((MOUNT_X_M+rel[rid].reach_mid(),0.,.095)).items() if k in (3,4,5,6)})],now)
                     moving=any(st['plan'].values())
                     st.update(phase='approach',since=now,go=now+(.8 if moving else 0.),settle=None,moving=moving)
             elif ph=='approach':
@@ -396,8 +408,10 @@ def main():
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=90.)
     p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands')
     p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look')
-    p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement');a=p.parse_args()
+    p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement')
+    p.add_argument('--zone-slots',choices=ZONE_SLOT_MODES,default='floor',help='zone: white slot squares inside the destination (static map) count as zone')
+    p.add_argument('--reach-mode',choices=REACH_MODES,default='calibrated_mid_v1',help='pad_window_v2: approach to the measured pick-feasible IK window');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode),ensure_ascii=False,default=str))
 if __name__=='__main__':main()

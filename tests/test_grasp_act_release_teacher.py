@@ -125,3 +125,49 @@ def test_approach_plan_brings_regrasp_target_to_mid_reach():
     assert sum(d[0] for _, d in plan)*AXIAL_M_PER_S_AT_035 == pytest.approx(.15, abs=.006)
     t.belief.propagate(.25, 0., 0.)           # overshoot: target too close -> back up
     assert all(w == [-WHEEL]*4 for w, _ in t.approach_plan(2.))
+
+
+@pytest.mark.parametrize('y', (-.02, 0., .02))
+def test_pad_window_v2_approach_makes_regrasp_solvable(y):
+    """5d6e8291 ep4: approach to REACH_MID_M (16.25 cm) left the re-grasp in the pad-IK gap."""
+    from sim.grasp_act_release_teacher import ReleaseTeacher, REACH_MID_M, PAD_MID_M, PAD_WINDOW_M, WHEEL
+    from sim.visible_belief import AXIAL_M_PER_S_AT_035
+    from harness.visual_arm_v3 import MOUNT_X_M
+    pwm = {1: 1500, 3: 700, 4: 2400, 5: 1320, 6: 1500}
+    x = MOUNT_X_M+math.sqrt(REACH_MID_M**2-y**2)
+    old = ReleaseTeacher('r1', 'teal', pwm, handoff_pose_estimate=[0., 0., 0.], zone_rect=(1., 0., .3, .7))
+    old.belief.observe('released_band', [x, y, 0.], 0., source='own_command')
+    assert old.approach_plan(0.) == []        # calibrated_mid_v1 accepts 16.25 cm ...
+    if y:
+        with pytest.raises(ValueError):       # ... where the physical-pad IK has no solution off-axis
+            old.pick_schedule(0.)
+    t = ReleaseTeacher('r1', 'teal', pwm, handoff_pose_estimate=[0., 0., 0.], zone_rect=(1., 0., .3, .7),
+                       reach_mode='pad_window_v2')
+    t.belief.observe('released_band', [x, y, 0.], 0., source='own_command')
+    plan = t.approach_plan(0.)
+    assert plan and all(w == [WHEEL]*4 for w, _ in plan)
+    moved = sum(d[0] for _, d in plan)*AXIAL_M_PER_S_AT_035
+    t.belief.propagate(moved, 0., 0.)
+    (bx, by), _ = t.pick_target(1.)
+    radius = math.hypot(bx-MOUNT_X_M, by)
+    assert PAD_WINDOW_M[0] <= radius <= PAD_WINDOW_M[1] and radius == pytest.approx(PAD_MID_M, abs=.006)
+    assert t.approach_plan(1.) == []
+    seq, _ = t.pick_schedule(1.)
+    assert len(seq) == 11                  # hover, 8 descent, close, lift
+
+
+def test_reach_mode_rejects_unknown():
+    from sim.grasp_act_release_teacher import ReleaseTeacher
+    with pytest.raises(ValueError):
+        ReleaseTeacher('r1', 'teal', {1: 1500, 3: 700, 4: 2400, 5: 1320, 6: 1500}, handoff_pose_estimate=[0., 0., 0.],
+                       zone_rect=(1., 0., .3, .7), reach_mode='x')
+
+
+def test_destination_slot_geoms_selects_only_own_zone_slots():
+    """5d6e8291 ep4: the zone_slot_A2 square (above the zone marking) read as 'floor' -> false edge report."""
+    from scripts.run_grasp_act_release import destination_slot_geoms, ZONE_SLOT_MODES
+    names = ['floor', 'zone_zone_A', 'zone_slot_A1', 'zone_slot_A2', 'zone_slot_A3', 'zone_slot_B1',
+             'zone_slot_A1_label', None, 'zone_wall_A']
+    assert destination_slot_geoms(names, 'zone_A') == [2, 3, 4]
+    assert destination_slot_geoms(names, 'zone_B') == [5]
+    assert ZONE_SLOT_MODES[0] == 'floor'      # default keeps the old classification
