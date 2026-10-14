@@ -7,7 +7,10 @@ in-place body yaw pulses with native wheel magnitude 0 or 0.31-0.40 (mode
 the held beam about its centre), ``pivot_end`` (rotation about the actor's grip
 point) and ``carry_straight`` (axial and lateral carry legs). Formation motion is
 open loop: per-wheel 0.35 pulses whose durations come from one shared scale so
-both robots get the same commanded body rate. Simulator truth is used ONLY for evaluation metrics written to this
+both robots get the same commanded body rate. ``setdown_look`` (G2/G6): lower
+together, open after a code GO/ACK delay, step back, look with the start arm
+pose and a pan sweep, then approach and re-grasp with the visible_only release
+teacher primitives (sim/grasp_act_release_teacher.py). Simulator truth is used ONLY for evaluation metrics written to this
 run's own files (slip, tilt, finger force, partner twist, visibility ratios).
 Nothing here is a student input and nothing feeds back into a command.
 """
@@ -39,6 +42,9 @@ ROTATE_TOTAL_DEG=90.
 ROBOT_RADIUS_M=.18                            # plan footprint radius (make_grasp_act_release_plan)
 CARRY_LEGS=(('axial',.20,1.),('axial',-.20,1.),('axial',.20,.5),('axial',-.20,.5),('lateral',.15,1.),('lateral',-.15,1.))
 FORMATION_MODES=('rotate_center','pivot_end','carry_straight')
+SETDOWN_PANS=(1500,1000,500,2000,2500)        # look sweep after set-down (servo 6 range 500-2500)
+SETDOWN_DWELL_S=.6
+REGRASP_HOLD_S=1.
 BAND_HSV={'teal':((70,120,90),(90,255,255)),'blue':((110,120,60),(130,255,255))}   # OpenCV HSV of sim/grasp_act_scene COLORS
 
 
@@ -129,6 +135,115 @@ def swept_space(samples,center0):
             radius=max(radius,math.dist(xy,center0));xs.append(xy[0]);ys.append(xy[1])
     return {'swept_radius_m':radius,'bbox_m':[min(xs),max(xs),min(ys),max(ys)] if xs else None,
             'bbox_size_m':[max(xs)-min(xs),max(ys)-min(ys)] if xs else None}
+
+
+def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,measure_fn,frame,pwm_origin,ev):
+    """G2/G6 set-down-and-look cycle. Commands come only from own geometry, own
+    commands and currently visible things; truth is used here for evaluation and
+    to give the relative pose of the own band only while it is visible."""
+    from sim.grasp_act_release_teacher import (ReleaseTeacher,QuantizedWheels,LOWER_Z_M,RAISE_Z_M,OBSERVE_BACKOFF_M,
+        REACH_MID_M,SIGNAL_DELAY_S,GO_SETTLE_S)
+    from sim.visible_belief import relative
+    from harness.visual_arm_v3 import solve_grip_site_ik,MOUNT_X_M
+    from scripts.make_setdown_probe_plan import door_points
+    data=world.data;R=tuple(roles);t0=float(data.time)
+    for rid in R:qw[rid]=QuantizedWheels(ports[rid])
+    rel={rid:ReleaseTeacher(rid,roles[rid],{s_:int(ports[rid]._servo_pulses[s_]) for s_ in SERVOS},
+        handoff_pose_estimate=[0.,0.,0.],zone_rect=(0.,0.,1.,1.)) for rid in R}   # zone priors unused here
+    sched={rid:[] for rid in R};plan_w={rid:[] for rid in R};timeline=[]
+    def pose_of(rid):return [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
+    def set_servo(rid,pose,now):
+        for sid,v in pose.items():
+            if rel[rid].pwm.get(sid)!=v:
+                ports[rid].apply({'kind':'look','pan_pulse':v} if sid==6 else {'kind':'arm','servo_id':sid,'pulse':v},now);rel[rid].pwm[sid]=v
+    def every(poses,dt):return [(dt*(k+1),q) for k,q in enumerate(poses)]
+    def step(seconds,label):
+        """Advance with scheduled servo poses and wheel pulses; dead-reckon from issued levels only."""
+        rows=[];end=float(data.time)+seconds
+        while float(data.time)<end-1e-8:
+            now=float(data.time)
+            for rid in R:
+                while sched[rid] and sched[rid][0][0]<=now+1e-9:set_servo(rid,sched[rid].pop(0)[1],now)
+                if plan_w[rid] and all(now>=u-1e-9 for u in qw[rid].until):
+                    w,d=plan_w[rid].pop(0);qw[rid].command(w,d,now)
+            issued={rid:[lv*max(0.,min(.05,u-now))/.05 if lv else 0. for lv,u in zip(qw[rid].levels,qw[rid].until)] for rid in R}
+            rows+=window(.05,label)
+            for rid in R:rel[rid].dead_reckon(issued[rid],.05)
+        return rows
+    def busy():return any(sched.values()) or any(plan_w.values()) or any(any(qw[r].levels) for r in R)
+    def until_idle(label,extra=0.,cap=20.):
+        rows=[];start=float(data.time)
+        while busy() and float(data.time)-start<cap:rows+=step(.05,label)
+        return rows+(step(extra,label) if extra else [])
+    def mark(name):timeline.append({'phase':name,'t':float(data.time)-t0})
+    def observe_band(rid,now):
+        m=band.measure(data,rid,roles[rid])
+        if m['visible_probes']>=3:
+            b=data.body(inst.body);rot=b.xmat.reshape(3,3);g=data.geom_xpos[band.bands[roles[rid]]]
+            rel[rid].belief.observe('band',relative(pose_of(rid),(float(g[0]),float(g[1])),math.atan2(rot[1,0],rot[0,0])),now)
+        return m['visible_probes']
+    pre=measure_fn(world,inst,roles,scene)
+    # 1. lower together; 2. code GO/ACK (message delay + settle) then open together
+    mark('lower')
+    for rid in R:sched[rid]=[(float(data.time)+dt,q) for dt,q in every(rel[rid].arm_waypoints(LOWER_Z_M,8),.2)]
+    rows=until_idle('setdown:lower',.6);mark('go_ack');rows+=step(SIGNAL_DELAY_S+GO_SETTLE_S,'setdown:go_ack')
+    mark('open');now=float(data.time)
+    for rid in R:set_servo(rid,{1:2000},now)
+    rows+=step(1.2,'setdown:open');landed=measure_fn(world,inst,roles,scene);frame('setdown_open')
+    # 3. raise, step back with own-command pulses
+    mark('back_off')
+    for rid,t in rel.items():
+        t.released_here(float(data.time));sched[rid]=[(float(data.time)+dt,q) for dt,q in every(t.arm_waypoints(RAISE_Z_M,3),.2)]
+    rows+=until_idle('setdown:raise')
+    for rid,t in rel.items():plan_w[rid]=t.shift_plan(OBSERVE_BACKOFF_M,-1.)
+    rows+=until_idle('setdown:back_off',.3)
+    # 4. look: start arm pose, pan sweep; visibility of door jambs, destination zone, partner, own band
+    mark('look');static=scene.config['static_map']
+    door=plan.get('door');dpts=door_points(door) if door else {'west':[],'east':[]}
+    zone=region_points(static['regions'][plan.get('destination_region','zone_A')])
+    look={rid:[] for rid in R}
+    for pan in SETDOWN_PANS:
+        now=float(data.time)
+        for rid in R:set_servo(rid,{**{k:pwm_origin[rid][k] for k in (3,4,5)},6:pan},now)
+        rows+=step(SETDOWN_DWELL_S,f'setdown:look:{pan}')
+        for rid in R:
+            peer=[p_ for p_ in R if p_!=rid]
+            look[rid].append({'pan':pan,'door_west':points.points_visible(data,rid,dpts['west']),'door_east':points.points_visible(data,rid,dpts['east']),
+                'door_N_per_face':len(dpts['west']),'zone':points.points_visible(data,rid,zone),'zone_N':len(zone),
+                'partner':any(band.body_visible(data,rid,p_+'__robot') for p_ in peer),
+                'own_band_probes':band.measure(data,rid,roles[rid])['visible_probes']})
+        frame(f'setdown_look_{pan}')
+    # 5. approach to mid-reach (visible band if seen, else own-command memory), re-grasp, lift
+    mark('approach');now=float(data.time)
+    for rid,t in rel.items():
+        set_servo(rid,{6:1500},now);observe_band(rid,now)
+        plan_w[rid]=t.approach_plan(now)
+        if plan_w[rid]:sched[rid]=[(now,{k:int(v) for k,v in solve_grip_site_ik((MOUNT_X_M+REACH_MID_M,0.,.095)).items() if k in (3,4,5,6)})]
+    rows+=until_idle('setdown:approach',.3)
+    mark('regrasp');now=float(data.time);source={};seen={}
+    try:
+        dur=0.
+        for rid,t in rel.items():
+            seen[rid]=observe_band(rid,now);source[rid]=t.pick_target(now)[1]
+            seq,d=t.pick_schedule(now);sched[rid]=[(now+.2+dt,q) for dt,q in seq];dur=max(dur,d)
+        rows+=step(.2+dur,'setdown:regrasp');error=None
+    except ValueError as e:
+        error=str(e)
+    mark('hold');hold=step(REGRASP_HOLD_S,'setdown:hold');post=measure_fn(world,inst,roles,scene);frame('setdown_regrasp')
+    held=error is None and all(min(r[rid]['finger_n'])>=LIMITS['finger_min_n'] for r in hold for rid in R) and all(r['beam_min_z']>=.012 for r in hold)
+    def pose_delta(a,b):
+        return {'move_m':math.dist(a['beam_xyz'][:2],b['beam_xyz'][:2]),'yaw_deg':((b['beam_yaw_deg']-a['beam_yaw_deg'])+180)%360-180}
+    regrip={rid:{'axial_mm':1000*(post[rid]['grip_in_beam_m'][0]-base0[rid]['grip_in_beam_m'][0]),
+                 'perp_mm':1000*math.hypot(post[rid]['grip_in_beam_m'][1]-base0[rid]['grip_in_beam_m'][1],post[rid]['grip_in_beam_m'][2]-base0[rid]['grip_in_beam_m'][2])} for rid in R}
+    fail=[] if held else (['regrasp_unreachable'] if error else ['regrasp_not_held'])
+    out={'held':held,'fail':fail,'error':error,'timeline':timeline,'cycle_sim_s':float(data.time)-t0,
+         'setdown_displacement':pose_delta(pre,landed),'total_displacement':pose_delta(pre,post),
+         'landed_tilt_deg':max(abs(landed['beam_pitch_deg']),abs(landed['beam_roll_deg'])),'post_tilt_deg':max(abs(post['beam_pitch_deg']),abs(post['beam_roll_deg'])),
+         'regrip_vs_first_grasp':regrip,'pick_target_source':source,'band_probes_at_pick':seen,'look':look,
+         'look_best':{rid:{k:max(x[k] for x in look[rid]) for k in ('door_west','door_east','zone','own_band_probes')}|{'partner_any':any(x['partner'] for x in look[rid])} for rid in R},
+         'scope':'own-command and visible-only commands; truth for evaluation and visible-band relative pose'}
+    ev.write(json.dumps({'kind':'setdown_summary',**{k:v for k,v in out.items() if k!='look'}})+'\n')
+    return out
 
 
 def band_pixels(rgb,role):
@@ -288,6 +403,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
         object_bodies={c.item_id:c.body for c in scene.cargo if c.item_id!='beam_1'}
         object_bodies.update({i:c['body_name'] for i,c in scene.config['setup_only']['objects'].items()})
         teachers={};previous={}
+        pwm_origin={rid:{s_:int(ports[rid]._servo_pulses[s_]) for s_ in SERVOS} for rid in roles}
         for rid,end in roles.items():
             pwm={str(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
             previous[rid]=command({'t':origin,'drive':[0.,0.,0.],'duration_s':0.,'pwm':pwm})
@@ -427,6 +543,9 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
                     if stop:break
             report['space']=swept_space([{'bases':[r[rid]['base_xy'] for rid in roles],'ends':r['beam_ends_xy']} for r in space_rows],c0)
             report['band_px_samples']=n_px
+        elif mode=='setdown_look':
+            report['setdown']=setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,measure,frame,pwm_origin,ev)
+            tests.append({'fail':report['setdown']['fail']})
         elif mode=='yaw':
             for duration in YAW_DURATIONS:
                 rows=[];yaw0=world.robot(actor).base_rpy()[2];vis_d={}
@@ -449,7 +568,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
         frame('end')
         safe=[t for t in tests if not t['fail']]
         report.update(status='complete',probe='done',tests=tests,visibility_p0=vis,
-            safe_max=None if mode in FORMATION_MODES else ((max(t['pan_pwm'] for t in safe) if mode!='yaw' else max(t['pulse_s'] for t in safe)) if safe else None),
+            safe_max=None if mode in FORMATION_MODES+('setdown_look',) else ((max(t['pan_pwm'] for t in safe) if mode!='yaw' else max(t['pulse_s'] for t in safe)) if safe else None),
             pass_n=len(safe),test_N=len(tests),
             first_fail=next(({'step':t.get('pan_pwm',t.get('pulse_s',t.get('leg',t.get('increment')))),'reasons':t['fail']} for t in tests if t['fail']),None))
         return report
@@ -466,7 +585,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
-    p.add_argument('--out',type=Path,required=True);p.add_argument('--mode',choices=('pan','pan_repeat','yaw')+FORMATION_MODES,required=True)
+    p.add_argument('--out',type=Path,required=True);p.add_argument('--mode',choices=('pan','pan_repeat','yaw','setdown_look')+FORMATION_MODES,required=True)
     p.add_argument('--actor',choices=('r1','r2'),default='r1');p.add_argument('--grasp-cap-s',type=float,default=45.)
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='observable_v2');a=p.parse_args()
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]

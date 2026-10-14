@@ -147,3 +147,41 @@ def test_carry_probe_plan_seeds_and_clearance():
 def pytest_approx(v):
     import pytest
     return pytest.approx(v, abs=1e-6)
+
+
+def test_door_points_on_both_faces_beside_jambs():
+    import pytest
+    from scripts.make_setdown_probe_plan import door_points
+    door = {'center_m': [2.2, .05], 'half_extents_m': [.025, .25], 'axis': 'x'}
+    pts = door_points(door)
+    assert len(pts['west']) == len(pts['east']) == 4
+    assert all(x == pytest.approx(2.165) for x, _, _ in pts['west']) and all(x == pytest.approx(2.235) for x, _, _ in pts['east'])
+    assert sorted({round(y, 3) for _, y, _ in pts['west']}) == [-.23, .33]       # outside the 0.5 m opening
+
+
+def test_setdown_plan_door_cases_and_clearance():
+    import math
+    from scripts.make_setdown_probe_plan import prepare, LATERAL_M, HALF_FORMATION_M
+    from harness.grasp_act_seed_splits import split_of, registry
+    plan = prepare(count=6); reg = registry()
+    assert [e['case'] for e in plan['episodes']] == ['door_before', 'door_after']*3
+    for e in plan['episodes']:
+        assert split_of(e['seed'], reg) == 'carry_probe'
+        (dx, dy), (hx, _) = e['door']['center_m'], e['door']['half_extents_m']
+        x, y, yaw = e['beam_pose']
+        assert abs(y-dy) <= LATERAL_M+1e-9 and abs(math.degrees(yaw)) <= 3.
+        edge = x+HALF_FORMATION_M if e['case'] == 'door_before' else x-HALF_FORMATION_M
+        gap = (dx-hx)-edge if e['case'] == 'door_before' else edge-(dx+hx)
+        assert gap == __import__('pytest').approx(e['door_gap_m']) and gap >= .25
+
+
+def test_setdown_mode_in_cli():
+    import subprocess, sys
+    out = subprocess.run([sys.executable, '-m', 'scripts.probe_carry_lookaround', '--help'], capture_output=True, text=True).stdout
+    assert 'setdown_look' in out and 'rotate_center' in out
+
+
+def test_setdown_backoff_constant_matches_teacher():
+    from scripts.make_setdown_probe_plan import BACKOFF_M
+    from sim.grasp_act_release_teacher import OBSERVE_BACKOFF_M
+    assert BACKOFF_M == OBSERVE_BACKOFF_M
