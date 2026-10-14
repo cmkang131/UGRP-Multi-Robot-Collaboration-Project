@@ -59,7 +59,7 @@ def external_ip(host):
 def guest_busy(host):
     """True when leases or simulation/archival processes exist on the VM."""
     probe = ("test -z \"$(ls -A ~/ugrp-sim/leases 2>/dev/null)\" && "
-             "! pgrep -f 'scripts\\.sim_cli|remote_run_finish|gcp_speed_probe|run_wrapper' >/dev/null")
+             "! pgrep -f 'scripts\\.sim_[c]li|[r]emote_run_finish|gcp_speed_[p]robe|[r]un_wrapper' >/dev/null")  # [x]: do not match this probe's own command line
     return subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10', host, probe]).returncode != 0
 
 

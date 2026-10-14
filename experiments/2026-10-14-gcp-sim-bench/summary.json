@@ -1,0 +1,185 @@
+{
+ "date": "2026-10-14",
+ "source_sha": "c1f02ac0a81f50d0235823a845c31f1d4116c9e9",
+ "workload": "grasp-act-teacher --probe, 30 SIM-s, visible_only, teacher-gate-plan.json episodes (index mod 40), OMP/BLAS=1, MUJOCO_GL=osmesa",
+ "driver": "same child command/env as run_grasp_act_batch.wave(probe=True); thin driver not committed (reads result.json wall_per_sim)",
+ "baseline_vm3": {
+  "machine": "Azure Standard_F16als_v6, 16 vCPU (no SMT)",
+  "n": 16,
+  "median_wall_per_sim": 2.66,
+  "raw": "azure3:/home/ugrp/ugrp-sim/runs/grasp-visible-gate-c1f02ac0/speed-gate.json",
+  "retail_usd_per_hour_linux": 1.192,
+  "price_source": "prices.azure.com retail API 2026-10-14"
+ },
+ "quotas": {
+  "c4_c4d_seoul": 0,
+  "c4_c4d_tokyo_asia-northeast1": 24,
+  "c2d_seoul": 100,
+  "n4_seoul_family": 200,
+  "cpus_regional_seoul": 100,
+  "note": "c4-highcpu-32 in Seoul failed: CPUS_PER_VM_FAMILY C4 limit 0; no quota increase requested"
+ },
+ "machines": {
+  "c2d-highcpu-32": {
+   "cpu": "AMD EPYC 7B13 (Zen3), 32 vCPU = 16 cores x2 SMT",
+   "zone": "asia-northeast3-a"
+  },
+  "n4-highcpu-64": {
+   "cpu": "Intel Xeon Platinum 8581C (Emerald Rapids), 64 vCPU = 32 cores x2 SMT",
+   "zone": "asia-northeast3-a",
+   "usd_per_hour_on_demand": 3.1454,
+   "price_source": "gcloud-compute.com third-party table; official page not retrievable; currency unlabeled; UNVERIFIED"
+  }
+ },
+ "runs": [
+  {
+   "vm": "c2d-highcpu-32",
+   "dir": "c2d-highcpu-32/gcp-bench-c2d32-n1-lp1",
+   "n": 1,
+   "lp_num_threads": "1",
+   "completed": 1,
+   "median_wall_per_sim": 3.017,
+   "max_wall_per_sim": 3.017,
+   "throughput_sim_s_per_hour": 1193,
+   "throughput_by_batch_wall": 1174,
+   "peak_loadavg1": 1.0,
+   "peak_total_threads": 2,
+   "max_threads_one_process": 2,
+   "probe_summary_sha256": "c6ed2cb18e1126021e2f87a66c8e9fb01412c686cad9c1f57372d7c0933cbefe"
+  },
+  {
+   "vm": "c2d-highcpu-32",
+   "dir": "c2d-highcpu-32/gcp-bench-c2d32-warm-n1-lp1",
+   "n": 1,
+   "lp_num_threads": "1",
+   "completed": 1,
+   "median_wall_per_sim": 2.967,
+   "max_wall_per_sim": 2.967,
+   "throughput_sim_s_per_hour": 1213,
+   "throughput_by_batch_wall": 1174,
+   "peak_loadavg1": 1.0,
+   "peak_total_threads": 2,
+   "max_threads_one_process": 2,
+   "probe_summary_sha256": "4803b0c4bce54bf5136789d10888c9a5f9dc925a9c0bef305a872097ce949273"
+  },
+  {
+   "vm": "c2d-highcpu-32",
+   "dir": "c2d-highcpu-32/gcp-bench-c2d32-warm-n16-lp1",
+   "n": 16,
+   "lp_num_threads": "1",
+   "completed": 16,
+   "median_wall_per_sim": 3.02,
+   "max_wall_per_sim": 3.315,
+   "throughput_sim_s_per_hour": 19073,
+   "throughput_by_batch_wall": 16931,
+   "peak_loadavg1": 14.1,
+   "peak_total_threads": 32,
+   "max_threads_one_process": 2,
+   "probe_summary_sha256": "a66c1b1d30aa9f070cabc118bf0e01abda02f9474c746c5439f0fcf37cadcfe7"
+  },
+  {
+   "vm": "n4-highcpu-64",
+   "dir": "n4-highcpu-64/gcp-bench-n4-64-n1-lp1",
+   "n": 1,
+   "lp_num_threads": "1",
+   "completed": 1,
+   "median_wall_per_sim": 2.254,
+   "max_wall_per_sim": 2.254,
+   "throughput_sim_s_per_hour": 1597,
+   "throughput_by_batch_wall": 1500,
+   "peak_loadavg1": 0.7,
+   "peak_total_threads": 2,
+   "max_threads_one_process": 2,
+   "probe_summary_sha256": "5c425a0da58f501f2c38b0faf0904a6e3c7302d1165ad8975ed3ca0ea1ba3fca"
+  },
+  {
+   "vm": "n4-highcpu-64",
+   "dir": "n4-highcpu-64/gcp-bench-n4-64-n16-lp1",
+   "n": 16,
+   "lp_num_threads": "1",
+   "completed": 16,
+   "median_wall_per_sim": 2.486,
+   "max_wall_per_sim": 2.701,
+   "throughput_sim_s_per_hour": 23167,
+   "throughput_by_batch_wall": 21064,
+   "peak_loadavg1": 11.4,
+   "peak_total_threads": 32,
+   "max_threads_one_process": 2,
+   "probe_summary_sha256": "8af9736653a86ff8cb2b670bf3f08b9c978507c7120412f8f96b72eb9080b70a"
+  },
+  {
+   "vm": "n4-highcpu-64",
+   "dir": "n4-highcpu-64/gcp-bench-n4-64-n16-lpunset",
+   "n": 16,
+   "lp_num_threads": "unset",
+   "completed": 16,
+   "median_wall_per_sim": 2.506,
+   "max_wall_per_sim": 2.723,
+   "throughput_sim_s_per_hour": 22982,
+   "throughput_by_batch_wall": 20563,
+   "peak_loadavg1": 35.4,
+   "peak_total_threads": 32,
+   "max_threads_one_process": 2,
+   "probe_summary_sha256": "41f1810aad50df3b0b6920c286202ff9c75ec686d3a332976d6da751e56e68a6"
+  },
+  {
+   "vm": "n4-highcpu-64",
+   "dir": "n4-highcpu-64/gcp-bench-n4-64-n32-lp1",
+   "n": 32,
+   "lp_num_threads": "1",
+   "completed": 32,
+   "median_wall_per_sim": 2.861,
+   "max_wall_per_sim": 3.397,
+   "throughput_sim_s_per_hour": 40265,
+   "throughput_by_batch_wall": 33209,
+   "peak_loadavg1": 32.6,
+   "peak_total_threads": 64,
+   "max_threads_one_process": 2,
+   "probe_summary_sha256": "d30b7b968e5a7433ddad22028c453040486d9f5a169a832e6057dd3d83842d43"
+  },
+  {
+   "vm": "n4-highcpu-64",
+   "dir": "n4-highcpu-64/gcp-bench-n4-64-n40-lp1",
+   "n": 40,
+   "lp_num_threads": "1",
+   "completed": 40,
+   "median_wall_per_sim": 3.342,
+   "max_wall_per_sim": 3.827,
+   "throughput_sim_s_per_hour": 43089,
+   "throughput_by_batch_wall": 37210,
+   "peak_loadavg1": 36.2,
+   "peak_total_threads": 80,
+   "max_threads_one_process": 2,
+   "probe_summary_sha256": "372be120efc3a8049f96da2477a1e0a1a0a8cbdaa8991f1964b846f11e9b4b4e"
+  },
+  {
+   "vm": "n4-highcpu-64",
+   "dir": "n4-highcpu-64/gcp-bench-n4-64-n48-lp1",
+   "n": 48,
+   "lp_num_threads": "1",
+   "completed": 48,
+   "median_wall_per_sim": 3.744,
+   "max_wall_per_sim": 4.19,
+   "throughput_sim_s_per_hour": 46154,
+   "throughput_by_batch_wall": 40460,
+   "peak_loadavg1": 43.9,
+   "peak_total_threads": 96,
+   "max_threads_one_process": 2,
+   "probe_summary_sha256": "db4c05c58f56b5d19c68b83ecf67eec89a811187f2029d6ba8f8035bbc116ce3"
+  }
+ ],
+ "not_measured": [
+  "c4/c4d (quota)",
+  "c3",
+  "c2d at 32/40",
+  "spot preemption",
+  "real teacher cohort on GCP"
+ ],
+ "raw": "outputs/gcp-bench-20261014/<vm>/ on the primary Mac checkout (summaries only; per-process raw stayed on the deleted/stopped VM disk)",
+ "notes": [
+  "c2d VM was first used to build the image; the image carried its three c2d runs into the n4 VM disk, so n4 raw folder also holds copies of them (ignored here)",
+  "c2d n=1 first run (cold) 3.017, second 2.967: both listed",
+  "LP_NUM_THREADS=1 vs unset at n=16 on n4: 2.486 vs 2.506 (no difference; one llvmpipe worker thread per process either way, max 2 threads/process)",
+  "c2d-highcpu-32 VM deleted after copying summaries; n4 VM renamed ugrp-sim-gcp1 and kept stopped (150 GB hyperdisk-balanced); image ugrp-sim-bench-c1f02ac0 kept"
+ ]
+}
