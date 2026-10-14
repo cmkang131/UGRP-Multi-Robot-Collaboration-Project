@@ -1,0 +1,422 @@
+{
+  "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+  "scope": "two previously stalled starts; diagnostic, not the 40-trial gate",
+  "n": 2,
+  "N": 2,
+  "speed": {
+    "status": "SPEED_GATE_PASS",
+    "admitted": true,
+    "measured_pass": true,
+    "override_reason": null,
+    "limit_wall_per_sim": 3.5,
+    "probe_sim_s": 30.0,
+    "planned_concurrency": 2,
+    "completed": 2,
+    "median_wall_per_sim": 2.6217727684613594,
+    "invalid_samples": [],
+    "samples": [
+      {
+        "sim_s": 30.00000000006064,
+        "wall_s": 75.9175816879997,
+        "exit": 0,
+        "expected_stop": true,
+        "finalization_complete": true,
+        "finalization_errors": [],
+        "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-regression-078cbb45/speed/episode-000/raw"
+      },
+      {
+        "sim_s": 30.00000000006064,
+        "wall_s": 81.38878441999987,
+        "exit": 0,
+        "expected_stop": true,
+        "finalization_complete": true,
+        "finalization_errors": [],
+        "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-regression-078cbb45/speed/episode-001/raw"
+      }
+    ]
+  },
+  "viewed": {
+    "per_episode_sim_s": [
+      0,
+      6,
+      12,
+      18,
+      24,
+      29
+    ],
+    "frames_per_episode": 6,
+    "relations": "Both carriers reached distinct assigned beam ends. No same-end conflict seen; both completed lifting after alignment."
+  },
+  "rows": [
+    {
+      "episode": "episode-000",
+      "plan_seed": 71001,
+      "physical_success": true,
+      "done_sim_s": 21.700000000021195,
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          2.1142578125,
+          2.595703125,
+          4.1572265625
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 30.00000000006064,
+        "wall_s": 75.9175816879997,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 12.299999999994009,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 13.499999999991212,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 16.799999999989204,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 22.50000000001642,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 23.500000000021195,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 10.499999999993824,
+              "align": 1.1999999999972033,
+              "ready": 3.2999999999979917,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 10,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 15.599999999986318,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 16.699999999988727,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 16.799999999989204,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 22.50000000001642,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 23.500000000021195,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 13.799999999986133,
+              "align": 1.1000000000024084,
+              "ready": 0.10000000000047748,
+              "pick": 5.700000000027217,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 13,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 300,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          2.484375,
+          2.634765625,
+          4.04736328125
+        ],
+        "timings_s": {
+          "physics": 65.48987232101172,
+          "rgb": 6.560969252997893,
+          "evaluation": 0.14663446900340205,
+          "teacher": 0.07779201804260083,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.530586056261541
+      },
+      "raw_path": "azure3:/home/ugrp/ugrp-sim/runs/grasp-teacher-regression-078cbb45/speed/episode-000/raw",
+      "files": [
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-000/000000.jpg",
+          "sha256": "964b81f108f150d7d86819a9eb44566c2f680e569488156502885b45d9d77637"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-000/000060.jpg",
+          "sha256": "250fbcf544406340e928a7814d3536c03745f7325f048ba03c4e08e3c78e6abb"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-000/000120.jpg",
+          "sha256": "66d14b7482cc907126c5a74e0a29c6558e7ea9d1c655ef640936f394fc52715e"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-000/000180.jpg",
+          "sha256": "d37622add8961b6e0b632784089b98c51eca89cb9bc8be94a442ade76a636c37"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-000/000240.jpg",
+          "sha256": "632cbeca19ece4c491008bb16e6236a383e45e7dd34e9114f5ef259075c25195"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-000/000290.jpg",
+          "sha256": "4f1a56152606c7c058a33470b537fb59dd4d91ba3cf34d4777472c24b0a2eb95"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-000/manifest.json",
+          "sha256": "9c7bb9b8198c00af3620a4ad2866e67048dcab96733e191f8658cb8d974e8d9f"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-000/plan.json",
+          "sha256": "a1bf3e08f23fc1fdf758aae7319689fa91bb4233376a584ab166522047f055ec"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-000/result.json",
+          "sha256": "f5bad1bbf1b518624c2951b618ffe0cf76d105b73e352e517cc8f635c76e3eeb"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-000/review.jpg",
+          "sha256": "4633296331e436aee78feca3f6b4e010f0f1b64f9ba9f4282e20b5f7a5cbcc3c"
+        }
+      ]
+    },
+    {
+      "episode": "episode-001",
+      "plan_seed": 71007,
+      "physical_success": true,
+      "done_sim_s": 16.799999999997798,
+      "result": {
+        "status": "complete",
+        "source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+        "teacher_success_n": 2,
+        "teacher_N": 2,
+        "joint_held": true,
+        "data_admitted": false,
+        "assignment_source": "demo_rule_color_balanced",
+        "student_execution": false,
+        "recording_mode": "success_measurement",
+        "physical_success": true,
+        "action_contract": "ugrp.grasp_act.student.v3",
+        "loadavg_at_start": [
+          2.1142578125,
+          2.595703125,
+          4.1572265625
+        ],
+        "noise": "off",
+        "observation_sampling": {
+          "rgb_size": null,
+          "rgb_hz": 0,
+          "review_tile_size": [
+            320,
+            240
+          ],
+          "review_cameras": "four authored static top views",
+          "review_hz": 1,
+          "control_hz": 10,
+          "aspect_ratio_unchanged": true,
+          "camera_fov_and_pose_unchanged": true
+        },
+        "sim_s": 30.00000000006064,
+        "wall_s": 81.38878441999987,
+        "teachers": {
+          "r1": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 9.400000000000768,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 10.599999999997971,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 11.899999999994941,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 17.599999999993024,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 18.5999999999978,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 7.600000000000583,
+              "align": 1.1999999999972033,
+              "ready": 1.2999999999969702,
+              "pick": 5.699999999998083,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 8,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          },
+          "r2": {
+            "phase": "done",
+            "outcome": "success",
+            "events": [
+              {
+                "t": 10.599999999997971,
+                "from": "approach",
+                "to": "align"
+              },
+              {
+                "t": 11.799999999995174,
+                "from": "align",
+                "to": "ready"
+              },
+              {
+                "t": 11.899999999994941,
+                "from": "ready",
+                "to": "pick"
+              },
+              {
+                "t": 17.599999999993024,
+                "from": "pick",
+                "to": "verify"
+              },
+              {
+                "t": 18.5999999999978,
+                "from": "verify",
+                "to": "done"
+              }
+            ],
+            "staging_distance_m": 0.203,
+            "phase_sim_s": {
+              "approach": 8.799999999997786,
+              "align": 1.1999999999972033,
+              "ready": 0.09999999999976694,
+              "pick": 5.699999999998083,
+              "verify": 1.0000000000047748
+            },
+            "planner_calls": 9,
+            "no_path_calls": 0,
+            "scope": "privileged_teacher_only; single-end lift is not whole-beam lift"
+          }
+        },
+        "samples_per_robot": 300,
+        "first_attempt": true,
+        "weld": "off",
+        "loadavg_at_end": [
+          2.365234375,
+          2.607421875,
+          4.03076171875
+        ],
+        "timings_s": {
+          "physics": 68.64351282700773,
+          "rgb": 8.593358633965181,
+          "evaluation": 0.19177968401709222,
+          "teacher": 0.046407583016844,
+          "io": 0.0
+        },
+        "wall_per_sim": 2.712959480661178
+      },
+      "raw_path": "azure3:/home/ugrp/ugrp-sim/runs/grasp-teacher-regression-078cbb45/speed/episode-001/raw",
+      "files": [
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-001/000000.jpg",
+          "sha256": "9cfd5c039b7b88ad4538718e4ac2a030d0effefe74107eaaa05e45923ab5e748"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-001/000060.jpg",
+          "sha256": "902911122b7459b0206b6bdf349b181914b08606c7c4a503fb6629bb21c8389b"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-001/000120.jpg",
+          "sha256": "3b740dfcf37a3914455df9b33359f53c92256a6c4734f03f3620785fa5a2e75a"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-001/000180.jpg",
+          "sha256": "42fa4fc8a71496b59e9b7d216f4b34e0c3eb2ae5d26358a453a00057cf8dc5c7"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-001/000240.jpg",
+          "sha256": "de987af3aafc789a541af398d14b5a28016b69bbd35b35e911f460a7593afe13"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-001/000290.jpg",
+          "sha256": "fc19695e3ba334e69a2ad054c229bcc098226d9f1f1b27098ffad459f2a38251"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-001/manifest.json",
+          "sha256": "1cac11bd721b9c817c072c46b6773f38c9f0037f00cb0e2e80005831563b6b86"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-001/plan.json",
+          "sha256": "9019d92ca9dcc2bbf1fcb1599bc6a88ebfc01aeb33ed6cbb847b65c883f14b8c"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-001/result.json",
+          "sha256": "952f1eb6a5b5f1c72be430fbf8d80a0b3c4b92bec9a92c1621ea2e10d4da3f75"
+        },
+        {
+          "path": "outputs/grasp-rootcause/regression-078-review/episode-001/review.jpg",
+          "sha256": "0e7232f3bff071fc8fb01b2a1fc4e89b3bc8e9adb724ee08da2812ce5502a984"
+        }
+      ]
+    }
+  ]
+}
