@@ -1,0 +1,33 @@
+{
+  "status": "CODE_READY_NOT_RUN",
+  "base": "origin/claude/grasp-act-probes 3635a226",
+  "pr": null,
+  "physics": {
+    "diagnostic_completed": 0,
+    "diagnostic_planned": 3,
+    "gate_completed": 0,
+    "gate_planned": 40,
+    "success_n": null
+  },
+  "unit_tests": "solo 4 files + test_grasp_act_release_teacher.py: see PR",
+  "tile_low_reach_v1": {
+    "station_x_m": 0.172,
+    "align_tol_m": 0.006,
+    "grip_z_m": 0.009,
+    "pitch_line": "-73 deg + 750 deg/m*(x-0.172)",
+    "min_servo_margin_pulses_in_window": 44,
+    "physical": "unverified"
+  },
+  "plans": {
+    "diagnostic": "solo-diagnostic-plan.json",
+    "gate": "solo-gate-plan.json"
+  },
+  "unverified": [
+    "tile 9 mm physical grasp",
+    "own-RGB yes on rendered frames",
+    "can floor-spot evidence",
+    "landmark detection counts and pose error reduction",
+    "single-robot yaw rate",
+    "wall/SIM speed on gcp1"
+  ]
+}

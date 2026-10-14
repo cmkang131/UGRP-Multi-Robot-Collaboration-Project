@@ -1,0 +1,179 @@
+{
+  "schema": "ugrp.grasp_act.solo_plan.v1",
+  "episodes": [
+    {
+      "episode_id": "solo_diagnostic-76900",
+      "batch": "solo-teacher-solo_diagnostic-76900",
+      "seed": 76900,
+      "split": "solo_diagnostic",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.16336699138243316,
+          -1.9145833446309686,
+          0.032355118817659255,
+          -0.4952222974719876
+        ],
+        "r2": [
+          3.1037571114600797,
+          -2.302938291438089,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.3992233159960477,
+          0.31939855685325647,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.006555632538420117,
+        0.0044468999181283015,
+        0.005754215681209439
+      ],
+      "start_to_cargo_m": 0.7772086990158146,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      }
+    },
+    {
+      "episode_id": "solo_diagnostic-76901",
+      "batch": "solo-teacher-solo_diagnostic-76901",
+      "seed": 76901,
+      "split": "solo_diagnostic",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "can",
+      "item_id": "can_1",
+      "role": "any",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.20720324776176247,
+          -0.42149822332794173,
+          0.032355118817659255,
+          -0.7023807125266086
+        ],
+        "r2": [
+          1.4367896855503317,
+          -1.3274872084294649,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.5032784214305952,
+          -1.4091594778871406,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.07403614878204912,
+        0.08917003944300614,
+        0.0048682629124657
+      ],
+      "start_to_cargo_m": 0.7431753203003602,
+      "proposal_attempts": 1,
+      "rejects": {}
+    },
+    {
+      "episode_id": "solo_diagnostic-76902",
+      "batch": "solo-teacher-solo_diagnostic-76902",
+      "seed": 76902,
+      "split": "solo_diagnostic",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "tile",
+      "item_id": "tile_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.30803279888404633,
+          -1.6080579155748898,
+          0.032355118817659255,
+          1.0816911059711647
+        ],
+        "r2": [
+          4.044658630894286,
+          1.0253941442863561,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.127856913692231,
+          -0.416199707653111,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.004667384756469688,
+        0.009212046776200817,
+        -0.07753395869726733
+      ],
+      "start_to_cargo_m": 1.0263870667472352,
+      "proposal_attempts": 1,
+      "rejects": {}
+    }
+  ],
+  "distribution": {
+    "kinds": {
+      "cyan": 1,
+      "can": 1,
+      "tile": 1
+    },
+    "scenarios": [
+      "s1_normal_mixed_v4",
+      "s2_unmapped_blockage_v4",
+      "s3_late_rendezvous_v4",
+      "s5_moved_dropped_item_v4",
+      "s6_novel_relation_v4",
+      "s7_trio_rendezvous_v4",
+      "s8_mixed_tiers_v4"
+    ],
+    "excluded": "s4 (held-out map)",
+    "start": "west of the cargo 0.6-1.1 m, facing within 25 deg",
+    "handoff_pose_error_sigma": {
+      "xy_m": 0.05,
+      "yaw_rad": 0.03490658503988659
+    },
+    "fixed": [
+      "floor_light_v1",
+      "camera review v3 runtime binding",
+      "native v7",
+      "weld off"
+    ]
+  },
+  "criteria": {
+    "teacher_target_rate": 0.95,
+    "minimum_episodes": 40,
+    "success": "lift (clearance >= 12 mm, tilt <= 10 deg, both fingers >= 0.5 N, 3 s) then set-down (5 mm, 2 s still, tilt <= 3 deg, open) and command-complete with the look-around done; per-kind n/N reported, no kind is qualified by fewer than its own samples"
+  },
+  "student_evaluation": false
+}
