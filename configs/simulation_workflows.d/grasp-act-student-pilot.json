@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "grasp-act-student-pilot",
+    "version": "1.0.0",
+    "purpose": "GCP-only isolated ACT student staged solo grasp; no teacher correction",
+    "entry": "scripts/run_grasp_act_student.py",
+    "runner": "scripts.run_grasp_act_student",
+    "docs": "experiments/2026-10-15-act-train/pilot1.md",
+    "requires": "GCP gcp1; reviewed checkpoint and plan; unused heldout starts; no Mac execution",
+    "output_flag": "--output",
+    "output_kind": "directory",
+    "required_inputs": ["--plan", "--protocol", "--model", "--actor-python"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

@@ -1,0 +1,91 @@
+{
+  "status": "local_data_conversion_verified",
+  "source_scope": "two supplied local recordings only",
+  "physical_runs": 0,
+  "training_runs": 0,
+  "remote_connections": 0,
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/gcp1-runs",
+  "converted_root": "/Users/changmin/projects/ugrp/outputs/act-train-pilot1-sample-audit-20261015-final",
+  "manifest_sha256": "4154005acf215a1d219ad43207e4e811badd3fd88161d812933f55963c107bc0",
+  "normalization_sha256": "83ee64b9739972a8316647c02dcdb21f026bf3705076ed586a9185088ee2d88a",
+  "episodes": [
+    {
+      "path": "86000-r1",
+      "seed": 86000,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86000-6f057f7e",
+      "source_hashes": {
+        "raw/student-r1.jsonl.zst": "8220e4a3d44db5cb4c69c07bfb87ef92e50ece2a7517daeb38eb7d3dac0229ba",
+        "raw/teacher-r1.jsonl.zst": "0394e2b4f4edb48145392e589e17fdd93e87c4209769aa1744134afd46f692be",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "4f354846a5f8b7613b8568acb642e29afdd7397975dbf50ac5a9ed96a309fa34",
+        "raw/result.json.zst": "dd0c4154882ec7a760ddfc15c45ccb9d3793e8c71119e9490b50941acc1de7b8",
+        "SOURCE_SHA": "0dbca2a3a678737a82f9dcf59e6844d2cac1097a11637f8715501e89199aa994",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 430,
+      "rows_selected": 344,
+      "frames": 351,
+      "skill_counts": {
+        "grasp": 257,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 0
+      },
+      "missing_done_skills": [
+        "release"
+      ],
+      "files": {
+        "samples.json": "f4ef2949299489081490030d1eb3a43fc66d83120716a9ff421ff4ca7c2e3a28",
+        "tensors.npz": "aef4f324cdb2aec928a83f29d53d1455e579033ade7c33e673552ee6c7482b1b",
+        "images.npy": "de431fc44de2dbe6691ac87a133e6d46402945edb399e4c61e749d19770fea85",
+        "rgb-provenance.json": "3979aa605dd87979bba7dccc359f2961f521306eae993967657a1b1c8514bce3"
+      }
+    },
+    {
+      "path": "86001-r1",
+      "seed": 86001,
+      "split": "train",
+      "robot_id": "r1",
+      "source_root": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-record-86001-6f057f7e",
+      "source_hashes": {
+        "raw/student-r1.jsonl.zst": "826451ef71fc3fa640f1a58f57df4679f58c63a8891b4bad40147f35c752d685",
+        "raw/teacher-r1.jsonl.zst": "4c2b658b6d5438202f197edfcbc886a2df625d17ce7f9f45b9d9152ab7550641",
+        "raw/student-camera.json": "99da2a1cbea62d5f7cc578144cfebe972447b6b1f5c253689afe95489f61267f",
+        "raw/plan.json": "0c4f336b9c5fcf684f3951c9201496dc9c133eef2ce6a5883008c14445b0eab4",
+        "raw/result.json.zst": "f2bcaa2c3ee7410731405a92446da3855340bf6ca2c178a984d86559c77b10c4",
+        "SOURCE_SHA": "0dbca2a3a678737a82f9dcf59e6844d2cac1097a11637f8715501e89199aa994",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "rows_total": 464,
+      "rows_selected": 375,
+      "frames": 385,
+      "skill_counts": {
+        "grasp": 288,
+        "release": 87
+      },
+      "done_counts": {
+        "grasp": 1,
+        "release": 0
+      },
+      "missing_done_skills": [
+        "release"
+      ],
+      "files": {
+        "samples.json": "18ecc1a3d000852b10f31953f84526d1e400f3f49d248593ec9fc54febf9a907",
+        "tensors.npz": "6d8bdfd7a7b055da419d0c8ca2fd66d31145d32270d14533361549dc686a3464",
+        "images.npy": "bf300d1a173ad7acb93350db5428d508ffb14101ed92bcb5e4fb6708ec8fa6dc",
+        "rgb-provenance.json": "b760cb774685cd6fc96ab0a016ecd49cd5bd86a6706ed813d655a215ce14b785"
+      }
+    }
+  ],
+  "input_audit": {
+    "forbidden_input_fields": 0,
+    "teacher_input_fields": 0
+  },
+  "full_dataset_verified": false,
+  "note": "partial audit cannot train; no validation seeds read; final 2x2 own-history inputs; EXIT/result admission checked"
+}

@@ -1,0 +1,130 @@
+{
+  "schema": "ugrp.grasp_act.pilot.v1",
+  "id": "2026-10-15-act-train-pilot1",
+  "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "upstream_sha": "89236ea0f4f81a81ca566081e20dd1ff5f823cbe",
+  "run_pattern": "solo-record-{seed}-6f057f7e",
+  "train_seeds": [
+    86000,
+    86001,
+    86002,
+    86003,
+    86004,
+    86005,
+    86006,
+    86007,
+    86008,
+    86009,
+    86010,
+    86011,
+    86012,
+    86013,
+    86014,
+    86015,
+    86016,
+    86017,
+    86018,
+    86019,
+    86020,
+    86021,
+    86022,
+    86023,
+    86024,
+    86025,
+    86026,
+    86027,
+    86028,
+    86029,
+    86030,
+    86031,
+    86032,
+    86033,
+    86034,
+    86035,
+    86036,
+    86037,
+    86038,
+    86039,
+    86040,
+    86041,
+    86042,
+    86043,
+    86044
+  ],
+  "validation_seeds": [
+    86045,
+    86046,
+    86047,
+    86048,
+    86049
+  ],
+  "closed_loop_seeds": [
+    91050,
+    91051,
+    91052,
+    91053,
+    91054,
+    91055,
+    91056,
+    91057,
+    91058,
+    91059,
+    91060,
+    91061,
+    91062,
+    91063,
+    91064,
+    91065,
+    91066,
+    91067,
+    91068,
+    91069
+  ],
+  "closed_loop_scope": "proposed reservation; operator must check unused seeds; staged solo grasp only",
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "admission": "User/coordinator accepted 50/50 on 2026-10-15; include local_skill_sample == true only; no independent remeasurement",
+  "smoke": {
+    "steps": 300,
+    "max_wall_s": 1800,
+    "batch_size": 8
+  },
+  "main": {
+    "steps": 10000,
+    "max_wall_s": 21600,
+    "batch_size": 8,
+    "coordinator_approval_required": true
+  },
+  "model": {
+    "chunk_size": 8,
+    "n_action_steps": 8,
+    "temporal_ensemble_coeff": null,
+    "kl_weight": 10.0,
+    "vision_backbone": "resnet18",
+    "image_hw": [
+      240,
+      320
+    ],
+    "image_history_lags_s": [
+      5.2,
+      1.5,
+      0.5,
+      0.0
+    ],
+    "state_scope": "own issued-command history and instruction tokens only",
+    "model_image_hw": [
+      480,
+      640
+    ],
+    "history_layout": "2x2_row_major_oldest_to_newest"
+  },
+  "blank_image_control": {
+    "required_before_data_expansion": true,
+    "separate_training": true,
+    "same_seeds_and_steps": true,
+    "enabled": false
+  },
+  "sources": {
+    "gcp1_runs": "/home/ugrp/ugrp-sim/runs",
+    "project": "ugrp-act-train-1014"
+  }
+}

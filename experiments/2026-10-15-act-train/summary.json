@@ -1,0 +1,38 @@
+{
+  "schema": "ugrp.act.pilot.preparation.v1",
+  "status": "offline_preparation_complete",
+  "gpu_smoke": "not_run",
+  "main_training": "not_authorized",
+  "closed_loop": "not_run",
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_data.py",
+      "tests/test_grasp_act_policy.py",
+      "tests/test_grasp_act_pilot.py"
+    ],
+    "passed": 27,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 0.422,
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/act-train-pilot1-tests-20261015.xml",
+    "junit_sha256": "aeb806f7c6dd181b63c2a45e5162510a6b787adbae2e9b0eaacc6b405a0c4e3f"
+  },
+  "checks": {
+    "py_compile": "passed",
+    "bash_n_idle_guard": "passed",
+    "git_diff_check": "passed",
+    "workflow_plan": "required_inputs_present; runtime_not_executed"
+  },
+  "local_data_audit": "local-audit.json",
+  "local_data_audit_sha256": "80ba86e1d26eb8fcd871c67abb0fc3af517475cc6ae894d2974479374a412f48",
+  "verification_scope": "Mac offline unit tests and saved-image conversion only; no training/physics/render/GCP access",
+  "remaining": [
+    "50-episode transfer and full conversion",
+    "GCP L4 smoke plus checkpoint resume/readback",
+    "coordinator main approval",
+    "source-fixed fresh-seed closed loop and image-use control",
+    "release completion labels and RGB completion confirmation",
+    "actual trained model release and download/load verification"
+  ]
+}
