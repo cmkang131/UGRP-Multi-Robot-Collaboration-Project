@@ -27,6 +27,7 @@ from sim.cargo_teacher_profile import CRATE
 
 LOOKAROUND_MODES = ('off', 'setdown_lookaround_v1')
 RGB_LIFT_MODES = ('off', 'crate_rgb_lift_v1')
+from sim.cargo_scene_version import VERSIONS as CARGO_SCENE_VERSIONS
 HOLD_S = 3.
 LIFT_FORCE_N = .5
 
@@ -110,17 +111,15 @@ def held_lugs(world, inst, roles, profile=CRATE):
 
 def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', observe_mode='gaze_v2', render_dr='off',
         zone_slots='floor', reach_mode='calibrated_mid_v1', held_object='visible_v0', lookaround='off',
-        execution_host=None, pr=None, crate_mass_kg=None, rgb_lift='off'):
+        execution_host=None, pr=None, crate_scene='catalogue_v1', rgb_lift='off'):
     for name, value, allowed in (('observe_mode', observe_mode, OBSERVE_MODES), ('zone_slots', zone_slots, ZONE_SLOT_MODES),
                                  ('reach_mode', reach_mode, REACH_MODES), ('lookaround', lookaround, LOOKAROUND_MODES)):
         if value not in allowed:
             raise ValueError(f'{name}: {value}')
     if rgb_lift not in RGB_LIFT_MODES:
         raise ValueError(f'rgb_lift: {rgb_lift}')
-    if crate_mass_kg is not None:
-        if not .05 <= float(crate_mass_kg) <= 2.:
-            raise ValueError('crate_mass_kg out of range')
-        plan = {**plan, 'crate_mass_kg': float(crate_mass_kg)}
+    from sim.cargo_scene_version import check as check_cargo_scene
+    plan = {**plan, 'cargo_scene_version': check_cargo_scene(crate_scene)}
     if plan.get('object_kind') != 'heavy_crate' or plan['target_item'] != CRATE.item_id:
         raise ValueError('heavy_crate plan required')
     if len(set(plan['roles'].values())) != 2 or set(plan['roles']) != {'r1', 'r2'}:
@@ -157,7 +156,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     report = {'status': 'running', 'source_sha': sha, 'teacher': 'crate_visible_only_v1', 'object_kind': 'heavy_crate',
               'own_pose_source': own_pose_source, 'observe_mode': observe_mode, 'zone_slots': zone_slots,
               'reach_mode': reach_mode, 'held_object': held_object, 'lookaround': lookaround,
-              'lug_color_scene': plan.get('lug_color_scene', 'off'), 'crate_mass_kg': plan.get('crate_mass_kg'),
+              'lug_color_scene': plan.get('lug_color_scene', 'off'), 'cargo_scene_version': plan['cargo_scene_version'],
               'rgb_lift': rgb_lift, 'assignment_source': plan['assignment_source'],
               'execution_host': execution_host, 'weld': 'off', 'recording_mode': 'success_measurement',
               'student_execution': False, 'success_rule': SUCCESS,
@@ -254,6 +253,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         max_hold = 0.
         held = None
         rgb_before = rgb_after = None
+        lift_window_t0 = None
+        lift_load = {}
         handoff_log = {}
         lugs_at_hold = None
         while float(world.data.time)-origin < grasp_cap_s-1e-8:
@@ -312,10 +313,21 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                     'skill_elapsed_s': elapsed['skill_elapsed_s'], 'pwm_elapsed_s': elapsed['pwm_elapsed_s'],
                     'assignment_source': plan['assignment_source'],
                     'skill_instruction_source': 'GO_ACK_code_messages; demo own READY; runtime LLM skill'})+'\n')
+            load_row = servo_load(world, roles)
+            if lift_window_t0 is None and any(lift_permits.values()):
+                lift_window_t0 = now                      # own lift permit tick: the lift window opens
+            if lift_window_t0 is not None:
+                for rid, row in load_row.items():
+                    for name, ratio in row.items():
+                        cell = lift_load.setdefault(rid, {}).setdefault(name, {'max_abs_ratio': 0., 't_at_max': None, 'saturated_samples': 0, 'samples': 0})
+                        cell['samples'] += 1
+                        cell['saturated_samples'] += int(abs(ratio) >= .98)
+                        if abs(ratio) > cell['max_abs_ratio']:
+                            cell['max_abs_ratio'], cell['t_at_max'] = abs(ratio), now-lift_window_t0
             ev.write(json.dumps({'stage': 'grasp', 't': now, 'crate': truth['beam'], 'contacts': truth['contacts'],
                                  'robots': {r: truth['robots'][r] for r in roles}, 'held_s': held_s,
                                  'visible_probes': {r: truth['visibility'][r]['visible_probes'] for r in roles},
-                                 'servo_load': servo_load(world, roles),
+                                 'servo_load': load_row,
                                  'phases': {r: t.phase for r, t in teachers.items()}})+'\n')
             if rgb_lift != 'off':
                 # own frames: one at the first tick any robot has its own lift permit, one when every robot's own
@@ -341,6 +353,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         report['prefix_held'] = held is not None
         report['prefix'] = {
             'held_sim_s': None if held is None else held-origin, 'sim_s': grasp_end-origin, 'outcomes': outcomes,
+            'servo_load_lift_window': {'window': 'own lift permit tick .. end of the grasp stage (lift + hold)', 't0_sim_s': None if lift_window_t0 is None else lift_window_t0-origin,
+                                       'per_robot': lift_load, 'ratio': 'actuator force / force limit; evaluation only'},
             'max_stable_hold_s': max_hold, 'lift_protocol': lift_sync.events, 'start_protocol': start_sync.events,
             'lugs_at_hold': lugs_at_hold, 'handoff': handoff_log,
             'assigned': dict(roles), 'distinct_lugs_at_hold': (None if lugs_at_hold is None else
@@ -824,8 +838,9 @@ def main():
     p.add_argument('--held-object', choices=HELD_OBJECT_MODES, default='visible_v0')
     p.add_argument('--setdown-lookaround', choices=LOOKAROUND_MODES, default='off',
                    help='setdown_lookaround_v1: look at static-map landmarks after the set-down (needs sim/active_lookaround.py)')
-    p.add_argument('--crate-mass-kg', type=float, default=None,
-                   help='crate_mass_kg: total crate mass (default: catalogue 0.900 kg). Real servo model: elbow limit 0.1765 N m')
+    p.add_argument('--crate-scene', choices=tuple(CARGO_SCENE_VERSIONS), default='catalogue_v1',
+                   help='cargo scene version: catalogue_v1 = crate 0.900 kg (old), crate_mass_030_v1 = 0.300 kg '
+                        '(user 2026-10-14; real_v1 elbow limit). Versions are never pooled.')
     p.add_argument('--rgb-lift', choices=RGB_LIFT_MODES, default='off',
                    help='crate_rgb_lift_v1: record an own-RGB lift verdict next to the evaluation truth (record only)')
     p.add_argument('--execution-host', choices=('azure', 'gcp1'), default='gcp1')
@@ -839,7 +854,7 @@ def main():
     print(json.dumps(run(plan, a.out, cap_s=a.cap_s, grasp_cap_s=a.grasp_cap_s, own_pose_source=a.own_pose_source,
                          observe_mode=a.observe_mode, render_dr=a.render_dr, zone_slots=a.zone_slots, reach_mode=a.reach_mode,
                          held_object=a.held_object, lookaround=a.setdown_lookaround, execution_host=host, pr=a.pr,
-                         crate_mass_kg=a.crate_mass_kg, rgb_lift=a.rgb_lift),
+                         crate_scene=a.crate_scene, rgb_lift=a.rgb_lift),
                      ensure_ascii=False, default=str))
 
 

@@ -15,6 +15,7 @@ from sim.session_scenes import ROOT
 from sim.zone_arena import BOX_HALF, COLORS, DEFAULT_GOAL
 from sim.zone_cargo_scene import CARGO_SET_SCHEMA
 from sim.zone_final_v3_scene import FinalV3Scene
+from sim import cargo_scene_version as cargo_scene_version_mod
 
 DEV_CONFIG = 'configs/zone_study_dev/dev_s1lite.json'
 
@@ -63,7 +64,7 @@ class ScenarioFinalV3Scene(FinalV3Scene):
     """Add explicit colour inventory after the inherited pair-only resolver."""
 
     @classmethod
-    def from_scenario(cls, scenario, seed, *, base_dir=ROOT):
+    def from_scenario(cls, scenario, seed, *, base_dir=ROOT, cargo_scene_version=cargo_scene_version_mod.DEFAULT):
         source = scenario if isinstance(scenario, str) else None
         scenario = load_scenario(scenario)
         spec = scene_spec(scenario, seed)
@@ -75,10 +76,12 @@ class ScenarioFinalV3Scene(FinalV3Scene):
                                'scenario_setup': scenario}}
         scene = cls(selected, base_dir)
         scene.spec = spec
+        scene.cargo_scene_version = cargo_scene_version_mod.check(cargo_scene_version)
         if source:
             path = (ROOT / 'configs/zone_study_dev/e2e_one_beam_ownmap.json' if source == 'e2e_one_beam_ownmap' else
                     ROOT / DEV_CONFIG if source == 'dev_s1lite' else
-                    registry.ROOT / 'configs' / 'zone_study_scenarios_v4' / (source + '.json'))
+                    registry.ROOT / 'configs' / ('zone_study_scenarios_v5' if source.endswith('_v5')
+                                                  else 'zone_study_scenarios_v4') / (source + '.json'))
             scene._read(path)
         return scene
 
@@ -113,6 +116,11 @@ class ScenarioFinalV3Scene(FinalV3Scene):
 
     def transform(self, xml):
         xml = super().transform(xml)
+        version = getattr(self, 'cargo_scene_version', cargo_scene_version_mod.DEFAULT)
+        xml, record = cargo_scene_version_mod.apply_version(
+            xml, version, [(c['item_id'], c['kind']) for c in self.spec['team_cargo']])
+        if version != cargo_scene_version_mod.DEFAULT:
+            self.manifest['cargo_scene_version'] = record
         # CargoZoneScene records the profile only through cargo_contact_profile;
         # the scenario explicitly requests it through the standard zone hook.
         self.manifest['scenario_setup'] = copy.deepcopy(self.config['setup_only']['scenario'])

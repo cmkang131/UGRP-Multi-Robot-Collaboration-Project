@@ -23,7 +23,8 @@ def colors(xml,option):
 
 
 def make_scene(plan):
-    scene=wrap(install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'],plan['seed']),'floor_light_v1'))
+    scene=wrap(install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'],plan['seed'],
+        cargo_scene_version=plan.get('cargo_scene_version','catalogue_v1')),'floor_light_v1'))
     scene.config['setup_only']['spawns']=plan['spawns']
     original=scene.robot_transform
     def transform(xml,**kwargs):

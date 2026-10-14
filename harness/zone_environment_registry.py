@@ -116,7 +116,7 @@ def load_scenario(scenario_id):
     if scenario_id == 'e2e_one_beam_ownmap':
         return load(scenario_id, directory=ROOT/'configs/zone_study_dev')
     directory = SCENARIO_DIR
-    for version in (2, 3, 4):
+    for version in (2, 3, 4, 5):
         if scenario_id.endswith(f'_v{version}'):
             directory = ROOT / 'configs' / f'zone_study_scenarios_v{version}'
             break

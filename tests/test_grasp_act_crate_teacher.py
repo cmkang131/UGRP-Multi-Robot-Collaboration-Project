@@ -282,21 +282,52 @@ def test_runner_refuses_inconsistent_plans(tmp_path):
         run({**base, 'roles': {'r1': 'teal', 'r2': 'blue'}}, tmp_path/'c', lookaround='nope')
 
 
-def test_crate_mass_option_scales_only_masses_default_unchanged():
-    from sim.crate_scene import scale_crate_mass
-    xml = ('<mujoco><worldbody><body name="cargo_crate_1"><geom name="a" mass=".7"/><geom name="b" mass=".1"/>'
-           '<geom name="c" mass=".1"/><geom name="nomass"/></body><body name="other"><geom mass="5"/></body></worldbody></mujoco>')
-    same, info = scale_crate_mass(xml, 'crate_1', None)
-    assert same == xml and info is None
-    out, info = scale_crate_mass(xml, 'crate_1', .3)
-    assert info['catalogue_mass_kg'] == pytest.approx(.9) and info['scale'] == pytest.approx(1/3)
+def test_cargo_scene_version_scales_only_crate_masses_default_unchanged():
     import xml.etree.ElementTree as ET
+    from sim.cargo_scene_version import apply_version, check, DEFAULT
+    xml = ('<mujoco><worldbody><body name="cargo_crate_1"><geom name="a" mass=".7"/><geom name="b" mass=".1"/>'
+           '<geom name="c" mass=".1"/><geom name="nomass"/></body><body name="cargo_beam_1"><geom mass=".3"/></body>'
+           '<body name="other"><geom mass="5"/></body></worldbody></mujoco>')
+    cargo = [('crate_1', 'heavy_crate'), ('beam_1', 'long_beam')]
+    same, record = apply_version(xml, DEFAULT, cargo)
+    assert same == xml and record['items'] == {}
+    out, record = apply_version(xml, 'crate_mass_030_v1', cargo)
+    assert record['items']['crate_1']['catalogue_mass_kg'] == pytest.approx(.9)
+    assert record['items']['crate_1']['scale'] == pytest.approx(1/3) and 'beam_1' not in record['items']
     root = ET.fromstring(out)
     masses = [float(g.get('mass')) for g in root.find(".//body[@name='cargo_crate_1']").iter('geom') if g.get('mass')]
     assert sum(masses) == pytest.approx(.3)
+    assert float(root.find(".//body[@name='cargo_beam_1']/geom").get('mass')) == .3
     assert float(root.find(".//body[@name='other']/geom").get('mass')) == 5.
     with pytest.raises(ValueError):
-        scale_crate_mass('<mujoco><worldbody/></mujoco>', 'crate_1', .3)
+        apply_version('<mujoco><worldbody/></mujoco>', 'crate_mass_030_v1', cargo)
+    with pytest.raises(ValueError):
+        check('mass_nope')
+
+
+def test_v5_scenario_scene_takes_the_cargo_scene_version(monkeypatch):
+    from sim.zone_scenario_scene import ScenarioFinalV3Scene
+    from sim.zone_final_v3_scene import FinalV3Scene
+    xml = '<mujoco><worldbody><body name="cargo_crate_1"><geom mass=".9"/></body></worldbody></mujoco>'
+    monkeypatch.setattr(FinalV3Scene, 'transform', lambda self, x: xml)
+    base = ScenarioFinalV3Scene.from_scenario('s2_unmapped_blockage_v5', 611)
+    assert base.cargo_scene_version == 'catalogue_v1' and base.transform('') == xml
+    assert 'cargo_scene_version' not in base.manifest                      # default adds nothing
+    light = ScenarioFinalV3Scene.from_scenario('s2_unmapped_blockage_v5', 611, cargo_scene_version='crate_mass_030_v1')
+    out = light.transform('')
+    assert 'mass="0.3"' in out or "mass='0.3'" in out or 'mass="0.30' in out
+    assert light.manifest['cargo_scene_version']['items']['crate_1']['mass_kg'] == .3
+    with pytest.raises(ValueError):
+        ScenarioFinalV3Scene.from_scenario('s2_unmapped_blockage_v5', 611, cargo_scene_version='x')
+
+
+def test_crate_plan_scenario_set_v5_keeps_v4_default():
+    from scripts.make_crate_teacher_plan import prepare
+    v4 = prepare(count=2, seed=77100, split='crate_gate_v2')
+    v5 = prepare(count=2, seed=77100, split='crate_gate_v2', scenario_set='v5')
+    assert [e['scenario_id'] for e in v4['episodes']] == ['s2_unmapped_blockage_v4', 's8_mixed_tiers_v4']
+    assert [e['scenario_id'] for e in v5['episodes']] == ['s2_unmapped_blockage_v5', 's8_mixed_tiers_v5']
+    assert all(e['object_kind'] == 'heavy_crate' for e in v5['episodes'])
 
 
 def test_rgb_lift_verdicts_use_own_pixels_only():

@@ -25,7 +25,9 @@ from scripts.make_grasp_act_plan import BASE_Z
 from sim.cargo_teacher_profile import CRATE, station_xy
 
 ROOT = Path(__file__).resolve().parents[1]
-SCENARIOS = ('s2_unmapped_blockage_v4', 's8_mixed_tiers_v4')
+SCENARIO_SETS = {'v4': ('s2_unmapped_blockage_v4', 's8_mixed_tiers_v4'),
+                 'v5': ('s2_unmapped_blockage_v5', 's8_mixed_tiers_v5')}
+SCENARIOS = SCENARIO_SETS['v4']      # default (old behaviour); v5 = PR #498 set without tri_frame
 HANDOFF_MAX_M = .8
 POSE_ERROR = (.05, math.radians(2.))
 STRATA = ((-.30, -.02), (0., .10), (.10, .20), (.20, .30))
@@ -44,16 +46,17 @@ def assign(own, other, crate, p=CRATE):
     return ('teal', 'blue') if straight <= crossed else ('blue', 'teal')
 
 
-def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assignment='nearest', indices=None):
+def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assignment='nearest', indices=None, scenario_set='v4'):
     if assignment not in LOUD:
         raise ValueError(assignment)
     check_range(split, seed, count)
+    scenarios = SCENARIO_SETS[scenario_set]
     episodes = []
     rejects = Counter()
     for i in range(count):
         rng = random.Random(seed+i)
-        scenario_id = SCENARIOS[i % len(SCENARIOS)]
-        path = ROOT/'configs/zone_study_scenarios_v4'/f'{scenario_id}.json'
+        scenario_id = scenarios[i % len(scenarios)]
+        path = ROOT/f'configs/zone_study_scenarios_{scenario_set}'/f'{scenario_id}.json'
         scenario = json.loads(path.read_text())
         static, _, _ = resolve(scenario['map_id'])
         bounds = static['bounds_m']
@@ -171,7 +174,7 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
         episodes = [episodes[j] for j in indices]
     return {'schema': 'ugrp.crate_teacher.plan.v1', 'episodes': episodes, 'rejected_proposals': dict(rejects),
             'distribution': {
-                'robot_distance_m': [.5, 2.0], 'peer_cases': list(PEERS), 'scenarios': list(SCENARIOS),
+                'robot_distance_m': [.5, 2.0], 'peer_cases': list(PEERS), 'scenarios': list(scenarios), 'scenario_set': scenario_set,
                 'crate_axis': 'zone long side (y) or across it (x), +-8 deg, both facings',
                 'axial_strata_outside_m': STRATA, 'handoff_max_m': HANDOFF_MAX_M,
                 'handoff_pose_error_sigma': {'xy_m': POSE_ERROR[0], 'yaw_rad': POSE_ERROR[1]},
@@ -193,10 +196,12 @@ def main():
     p.add_argument('--seed', type=int, default=77000)
     p.add_argument('--split', default='crate_gate')
     p.add_argument('--assignment', choices=LOUD, default='nearest')
+    p.add_argument('--scenario-set', choices=tuple(SCENARIO_SETS), default='v4')
     p.add_argument('--indices', default=None, help='comma separated generated indices to keep (diagnostic subset)')
     a = p.parse_args()
     result = prepare(count=a.count, seed=a.seed, split=a.split, assignment=a.assignment,
-                     indices=None if a.indices is None else [int(v) for v in a.indices.split(',')])
+                     indices=None if a.indices is None else [int(v) for v in a.indices.split(',')],
+                     scenario_set=a.scenario_set)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps({'episodes': len(result['episodes']), 'rejected': result['rejected_proposals']}))
