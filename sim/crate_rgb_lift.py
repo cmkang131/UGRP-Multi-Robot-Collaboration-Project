@@ -1,4 +1,4 @@
-"""Own-RGB lift confirmation for the crate teachers (``crate_rgb_lift_v1``; record-only, uncalibrated).
+"""Own-RGB lift confirmation for the crate teachers (``crate_rgb_lift_v1``; uncalibrated).
 
 Uses only the robot's own wrist-camera frames: one taken at its own lift permit and one after its
 own lift command sequence completed. The held lug and the crate body move rigidly with the camera;
@@ -9,8 +9,8 @@ the floor does not. After a real lift the held pixels persist (rigid) while the 
   of the held pixels changed), or the background did not change (arm did not rise),
 - ``undetermined``  fewer than MIN_BACKGROUND of the frame is background in either frame.
 No simulator state, no contact, no height. The thresholds are provisional (not calibrated against
-frames of a successful lift); the runner stores the verdict next to the evaluation-only lift truth so
-the agreement can be counted before this verdict is allowed to gate anything (확인 안 됨).
+frames of a successful lift). The crate runner uses confirmation to authorize release and stops
+on unknown/unconfirmed; agreement with evaluation-only hold truth remains unverified (확인 안 됨).
 """
 from __future__ import annotations
 import numpy as np
@@ -41,7 +41,7 @@ def features(rgb, end):
 
 
 def confirm(before, after, end):
-    """``before``/``after``: uint8 HxWx3 own frames. Returns the verdict dict (record only)."""
+    """``before``/``after``: uint8 HxWx3 own frames. Returns the provisional verdict dict."""
     fb, fa = features(before, end), features(after, end)
     lug_b, pink_b = masks(before, end)
     lug_a, pink_a = masks(after, end)

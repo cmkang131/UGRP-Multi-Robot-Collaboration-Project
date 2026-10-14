@@ -1,0 +1,48 @@
+{
+  "schema": "ugrp.crate_teacher.handoff_offline.v1",
+  "base_sha": "0ed624afc4b4a7e88f6a06a0507cad1c02e98e5d",
+  "merged_search_sha": "fe93047cc43a04126bf64a3209429141bb5c0caa",
+  "verification_scope": "offline only; no simulation/render/model calls or remote submission",
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_crate_teacher.py",
+      "tests/test_grasp_act_search.py",
+      "tests/test_zone_study_scenarios_v5.py"
+    ],
+    "passed": 53,
+    "skipped": 1,
+    "deselected": 1,
+    "failures": 0,
+    "errors": 0,
+    "skip_reason": "optional sim.active_lookaround unavailable",
+    "deselected_reason": "MuJoCo world creation forbidden on Mac",
+    "raw_location": "/Users/changmin/projects/ugrp-wt/crate-teacher/outputs/crate-handoff-final-tests.xml",
+    "sha256": "674fd7e5eef5d1398d8ef53c5667ef9c547424056195d82900721e9962b963fa"
+  },
+  "simulations": {
+    "submitted": 0,
+    "completed": 0,
+    "results": []
+  },
+  "source_sha256": {
+    "scripts/run_crate_teacher.py": "747950ef8139bce0d58e3877fbf758ad4b4e85eee18b29093c63fe7b497a9359",
+    "scripts/run_grasp_act_teacher.py": "29ec7c86a669ad0293d257ac35cb4a4cc684aef3f815631f38c69795214ffd8f",
+    "sim/grasp_act_release_teacher.py": "a42b82b1b10e1da6b1352c4570ffaf845aa717243ffff40d426259719e8cb541",
+    "sim/crate_rgb_lift.py": "98e711d8ee9f3ca4c58b4c78ff291a78c5f4b60d75c23c03837ca471ee4f8322",
+    "tests/test_grasp_act_crate_teacher.py": "010e5555fc7dac998cd85d17b9fee656145e867f69c6ef21211b88da93185f13"
+  },
+  "plans_sha256": {
+    "diag_plan_v5_77920.json": "a16b0276b21d5ae56f35406c6e2a940bd2df1c50e1d91a7d4c6287b6389127e7",
+    "diag_plan_77900.json": "4b6d96fc2a0db9e8e8c1ce5fb2f8606bd22071ea1b14c5d09f3ed0c42fb8c1ac",
+    "gate_plan_v5_77100.json": "ada562b2cee932a6ccc156c1e7eab030c19212790229cac8a91a1e7184f4c12a"
+  },
+  "remaining_unverified": [
+    "physical success",
+    "77902 search recovery",
+    "own RGB lift thresholds",
+    "release without map anchor",
+    "runtime invisible_measurements and held_world_reads",
+    "candidate speed",
+    "full CI"
+  ]
+}

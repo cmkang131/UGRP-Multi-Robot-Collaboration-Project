@@ -348,3 +348,69 @@ def test_rgb_lift_verdicts_use_own_pixels_only():
     assert confirm(before, lost, 'blue')['verdict'] == 'not_confirmed'
     only_held = frame(80, (0, 0, 0))                 # no background in view
     assert confirm(only_held, only_held, 'blue')['verdict'] == 'undetermined'
+
+
+def test_crate_runner_connects_search_modes_to_the_teacher():
+    from scripts.run_crate_teacher import make_grasp_teacher
+    t = make_grasp_teacher('r1', 'teal', FOLDED, teacher_stability='align_relook_v1',
+                           teacher_search='search_body_scan_v1')
+    assert t.teacher_search == 'search_body_scan_v1' and t.teacher_stability == 'align_relook_v1'
+    assert t.cargo_profile is CRATE
+    with pytest.raises(ValueError):
+        make_grasp_teacher('r1', 'teal', FOLDED, teacher_search='search_body_scan_v1')
+
+
+def test_crate_cli_forwards_modes_without_running_physics(monkeypatch, tmp_path):
+    import sys
+    from scripts import run_crate_teacher as runner, grasp_act_host
+    plan = tmp_path/'plan.json'
+    plan.write_text(json.dumps({'episodes': [{'seed': 77920}]}))
+    received = {}
+    def fake_run(episode, out, **kw):
+        received.update(kw)
+        return {'status': 'offline_test'}
+    monkeypatch.setattr(runner, 'run', fake_run)
+    monkeypatch.setattr(grasp_act_host, 'identity', lambda host: {'provider': host})
+    monkeypatch.setattr(sys, 'argv', ['run_crate_teacher', '--plan', str(plan), '--out', str(tmp_path/'unused'),
+        '--crate-scene', 'crate_mass_030_v1', '--held-object', 'hidden_v1', '--rgb-lift', 'crate_rgb_lift_v1',
+        '--teacher-stability', 'align_relook_v1', '--teacher-search', 'search_body_scan_v1'])
+    runner.main()
+    assert received['teacher_stability'] == 'align_relook_v1'
+    assert received['teacher_search'] == 'search_body_scan_v1'
+    assert received['crate_scene'] == 'crate_mass_030_v1' and received['held_object'] == 'hidden_v1'
+    assert received['rgb_lift'] == 'crate_rgb_lift_v1'
+
+
+def test_release_requires_both_own_lift_confirmations_and_issued_settle():
+    from scripts.run_crate_teacher import release_ready
+    done = {'r1': True, 'r2': True}
+    verdicts = {r: {'verdict': 'confirmed'} for r in done}
+    assert release_ready(done, 3., verdicts)
+    assert not release_ready(done, 2.9, verdicts)
+    assert not release_ready({**done, 'r2': False}, 30., verdicts)
+    assert not release_ready(done, 30., {'r1': verdicts['r1']})
+    for state in ('not_confirmed', 'undetermined'):
+        assert not release_ready(done, 30., {**verdicts, 'r2': {'verdict': state}})
+
+
+def test_held_grasp_inputs_never_call_the_privileged_reader_and_audit_hidden_rows():
+    from scripts.run_crate_teacher import grasp_inputs
+    from scripts.run_grasp_act_release import HeldAudit
+    audit = HeldAudit('hidden_v1')
+    def forbidden():
+        raise AssertionError('held world read')
+    assert grasp_inputs(forbidden, holding=True, audit=audit) == []
+    assert audit.record()['held_world_reads'] == 0
+    ms = [lug((.6, 0., 0.), 'teal')]
+    assert grasp_inputs(lambda: ms, holding=False, audit=audit) == ms
+    assert audit.record()['invisible_measurements'] == 0
+    with pytest.raises(RuntimeError, match='invisible measurement'):
+        grasp_inputs(lambda: [lug((.6, 0., 0.), 'teal', n=4)], holding=False, audit=audit)
+    assert audit.record()['invisible_measurements'] == 1
+
+
+def test_crate_release_has_no_map_prior_without_a_localized_handoff():
+    from sim.crate_release_teacher import CrateReleaseTeacher
+    t = CrateReleaseTeacher('r1', 'teal', FOLDED, handoff_pose_estimate=None, zone_rect=(4.6, -2.1, .3, .7))
+    assert not t.belief.items
+    assert t.report(0.)['kind'] == 'outside'

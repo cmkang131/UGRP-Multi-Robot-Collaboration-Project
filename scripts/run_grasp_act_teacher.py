@@ -252,8 +252,9 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 # under an identical student instruction.
                 allowed=permits[rid] if strict else permit
                 skill='wait' if t.phase=='ready' and not allowed else 'grasp'
-                local_distance=math.dist(truth['robots'][rid]['pose'][:2],truth['beam']['ends'][t.end][:2])
-                local_before=bool(strict and t.handoff and local_distance<=.8)
+                local_world=perceived[rid] if strict else truth
+                local_distance=None if local_world['beam'] is None else math.dist(local_world['robots'][rid]['pose'][:2],local_world['beam']['ends'][t.end][:2])
+                local_before=bool(strict and t.handoff)
                 elapsed={**clocks[rid].observe((skill,t.end,t.handoff),now,previous[rid]['pwm']),'destination_zone':'none'} if strict else {}
                 if record_training:
                     capture=ports[rid].capture();jpg=base64.b64decode(capture['image']);path=f'rgb/{rid}/{i:06d}.jpg';(out/path).write_bytes(jpg)

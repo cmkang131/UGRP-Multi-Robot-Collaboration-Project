@@ -168,8 +168,9 @@ class ReleaseTeacher:
         self.holding = True; self.phase = 'look'
         self.visible_counts = {}; self.blind_s = 0.; self.max_blind_s = {}
         self.last_report = None; self.last_scan = None
-        for side, (point, normal) in zone_edges(zone_rect).items():
-            self.belief.observe('prior:'+side, relative(handoff_pose_estimate, point, normal), 0., source='map_prior')
+        if handoff_pose_estimate is not None:
+            for side, (point, normal) in zone_edges(zone_rect).items():
+                self.belief.observe('prior:'+side, relative(handoff_pose_estimate, point, normal), 0., source='map_prior')
 
     # --- own geometry ---
     def end_and_outward(self, now):

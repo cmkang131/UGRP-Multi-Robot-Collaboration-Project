@@ -32,6 +32,34 @@ HOLD_S = 3.
 LIFT_FORCE_N = .5
 
 
+def make_grasp_teacher(rid, end, pwm, *, teacher_stability='off', teacher_search='off'):
+    from sim.crate_grasp_teacher import CrateGraspTeacher
+    return CrateGraspTeacher(rid, end, pwm, bounds=(-20, 20, -20, 20), profile=CRATE,
+                             teacher_stability=teacher_stability, teacher_search=teacher_search)
+
+
+def release_ready(command_complete, settled_s, verdicts):
+    """Own issued lift + own RGB only; physical hold truth is evaluation-only."""
+    return (all(command_complete.values()) and settled_s >= HOLD_S
+            and set(verdicts) == set(command_complete)
+            and all(v['verdict'] == 'confirmed' for v in verdicts.values()))
+
+
+def grasp_inputs(read_measurements, *, holding, audit):
+    """Do not even read held cargo measurements in the hidden profile."""
+    if audit.mode == 'hidden_v1' and holding:
+        return []
+    rows = read_measurements()
+    for m in rows:
+        visible = m['visible_n'] >= (5 if m['kind'] == 'band' else max(1, math.ceil(m['probe_N']/3)))
+        audit.measurement('grasp', m['id'], visible)
+        if not visible:
+            raise RuntimeError('invisible measurement delivered to crate teacher')
+        if m['kind'] == 'band' or m['id'] == CRATE.item_id:
+            audit.read(holding, 'grasp_cargo_measurement')
+    return rows
+
+
 def servo_load(world, rids):
     """Evaluation only: arm servo force / force limit per robot (saturation shows as |ratio| ~ 1)."""
     import mujoco
@@ -111,13 +139,19 @@ def held_lugs(world, inst, roles, profile=CRATE):
 
 def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', observe_mode='gaze_v2', render_dr='off',
         zone_slots='floor', reach_mode='calibrated_mid_v1', held_object='visible_v0', lookaround='off',
-        execution_host=None, pr=None, crate_scene='catalogue_v1', rgb_lift='off'):
+        execution_host=None, pr=None, crate_scene='catalogue_v1', rgb_lift='off',
+        teacher_stability='off', teacher_search='off'):
     for name, value, allowed in (('observe_mode', observe_mode, OBSERVE_MODES), ('zone_slots', zone_slots, ZONE_SLOT_MODES),
                                  ('reach_mode', reach_mode, REACH_MODES), ('lookaround', lookaround, LOOKAROUND_MODES)):
         if value not in allowed:
             raise ValueError(f'{name}: {value}')
     if rgb_lift not in RGB_LIFT_MODES:
         raise ValueError(f'rgb_lift: {rgb_lift}')
+    # Validate modes before any physics or output creation.
+    make_grasp_teacher('r1', 'teal', {1: 1500, 3: 820, 4: 2320, 5: 1320, 6: 1500},
+                       teacher_stability=teacher_stability, teacher_search=teacher_search)
+    if lookaround != 'off' and own_pose_source == 'commands':
+        raise ValueError('lookaround requires a verified map localization; GT handoff anchors are forbidden')
     from sim.cargo_scene_version import check as check_cargo_scene
     plan = {**plan, 'cargo_scene_version': check_cargo_scene(crate_scene)}
     if plan.get('object_kind') != 'heavy_crate' or plan['target_item'] != CRATE.item_id:
@@ -134,7 +168,6 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     from harness.grasp_act_start_sync import GraspStartSync
     from harness.zone_scenario_feasibility import landing_fits
     from sim.crate_scene import make_crate_scene
-    from sim.crate_grasp_teacher import CrateGraspTeacher
     from sim.crate_release_teacher import CrateReleaseTeacher
     from sim.grasp_act_release_teacher import (PairReleaseCode, QuantizedWheels, BACKOFF_M, LOWER_Z_M, RAISE_Z_M,
                                                FOLDED_BACKOFF, OBSERVE_BACKOFF_M)
@@ -158,6 +191,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
               'reach_mode': reach_mode, 'held_object': held_object, 'lookaround': lookaround,
               'lug_color_scene': plan.get('lug_color_scene', 'off'), 'cargo_scene_version': plan['cargo_scene_version'],
               'rgb_lift': rgb_lift, 'assignment_source': plan['assignment_source'],
+              'teacher_stability': teacher_stability, 'teacher_search': teacher_search,
+              'lift_confirmation': 'own issued lift + own RGB; unconfirmed/unknown stops before release',
               'execution_host': execution_host, 'weld': 'off', 'recording_mode': 'success_measurement',
               'student_execution': False, 'success_rule': SUCCESS,
               'grasp_criteria': {'min_z_m': .012, 'max_tilt_deg': 10., 'hold_s': HOLD_S, 'bilateral_n': LIFT_FORCE_N},
@@ -244,7 +279,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         for rid, end in roles.items():
             pwm = {str(s): int(ports[rid]._servo_pulses[s]) for s in v5.SERVOS}
             previous[rid] = v5.command({'t': origin, 'wheels': [0.]*4, 'duration_s': [0.]*4, 'pwm': pwm})
-            teachers[rid] = CrateGraspTeacher(rid, end, pwm, bounds=(-20, 20, -20, 20), profile=CRATE)
+            teachers[rid] = make_grasp_teacher(rid, end, pwm, teacher_stability=teacher_stability,
+                                               teacher_search=teacher_search)
             models[rid] = VisibleWorld(rid, end, pose_source='issued', profile=CRATE)
             clocks[rid] = v5.IssuedClock()
         i = 0
@@ -252,6 +288,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         all_done_since = None
         max_hold = 0.
         held = None
+        release_authorized_at = None
+        verdict = {}
         rgb_before = rgb_after = None
         lift_window_t0 = None
         lift_load = {}
@@ -265,7 +303,10 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             perceived = {}
             truth['visible_measurements'] = {}
             for rid, end in roles.items():
-                ms = measurements(world, band, rid, end, object_bodies)
+                # The synchronized lift needs only its already-issued arm sequence.
+                # Hide all cargo measurements for both robots from the first lift command.
+                holding = any(t.phase in ('lift', 'complete') for t in teachers.values())
+                ms = grasp_inputs(lambda: measurements(world, band, rid, end, object_bodies), holding=holding, audit=audit)
                 truth['visible_measurements'][rid] = ms
                 v = truth['visibility'][rid]
                 v['any_probe_visible'] = v['visible']
@@ -283,6 +324,9 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             both_since = (now if both_since is None else both_since) if both else None
             held_s = 0. if both_since is None else now-both_since
             max_hold = max(max_hold, held_s)
+            if held is None and held_s >= HOLD_S:
+                held = now
+                lugs_at_hold = held_lugs(world, inst, roles)
             ready = {rid: t.prepare_signal(perceived[rid], now) for rid, t in teachers.items()}
             permits = start_sync.tick(ready, now)
             lift_permits = lift_sync.tick({rid: t.lift_ready() for rid, t in teachers.items()}, now)
@@ -331,16 +375,17 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                                  'phases': {r: t.phase for r, t in teachers.items()}})+'\n')
             if rgb_lift != 'off':
                 # own frames: one at the first tick any robot has its own lift permit, one when every robot's own
-                # lift sequence has completed (own commands only); verdict is record-only
+                # lift sequence has completed (own commands only); no evaluator state
                 if rgb_before is None and any(lift_permits.values()):
                     rgb_before = {rid: own_rgb(ports[rid]) for rid in roles}
                 if rgb_before is not None and rgb_after is None and all(t.command_complete for t in teachers.values()):
                     rgb_after = {rid: own_rgb(ports[rid]) for rid in roles}
+                    from sim.crate_rgb_lift import confirm
+                    verdict = {rid: confirm(rgb_before[rid], rgb_after[rid], roles[rid]) for rid in roles}
             if all(t.command_complete for t in teachers.values()):
                 all_done_since = now if all_done_since is None else all_done_since
-                if held_s >= HOLD_S:
-                    held = now
-                    lugs_at_hold = held_lugs(world, inst, roles)
+                if release_ready({r: t.command_complete for r, t in teachers.items()}, now-all_done_since, verdict):
+                    release_authorized_at = now
                     break
                 if now-all_done_since >= 6.+HOLD_S:
                     break
@@ -351,6 +396,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         grasp_end = float(world.data.time)
         outcomes = {rid: (t.outcome or ('success' if held is not None else 'episode_timeout')) for rid, t in teachers.items()}
         report['prefix_held'] = held is not None
+        report['release_authorized_by_own_inputs'] = release_authorized_at is not None
         report['prefix'] = {
             'held_sim_s': None if held is None else held-origin, 'sim_s': grasp_end-origin, 'outcomes': outcomes,
             'servo_load_lift_window': {'window': 'own lift permit tick .. end of the grasp stage (lift + hold)', 't0_sim_s': None if lift_window_t0 is None else lift_window_t0-origin,
@@ -361,15 +407,13 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                 {'ok': len({v['nearest_lug'] for v in lugs_at_hold.values()}) == 2 and all(lugs_at_hold[r]['nearest_lug'] == roles[r] for r in roles)}),
             'teachers': {rid: t.diagnostic() for rid, t in teachers.items()}}
         if rgb_lift != 'off':
-            from sim.crate_rgb_lift import confirm
-            verdict = {rid: (confirm(rgb_before[rid], rgb_after[rid], roles[rid]) if rgb_before and rgb_after else
-                             {'verdict': 'undetermined', 'reason': 'frames not captured'}) for rid in roles}
+            verdict = verdict or {rid: {'verdict': 'undetermined', 'reason': 'frames not captured'} for rid in roles}
             # evaluation-only truth next to it so the agreement can be counted
             report['prefix']['rgb_lift'] = {'rule': 'crate_rgb_lift_v1', 'per_robot': verdict,
                                             'evaluation_truth': {'held_by_gt': held is not None, 'max_stable_hold_s': max_hold,
-                                                                 'scope': 'record-only; provisional thresholds'}}
-        if held is None:
-            report.update(status='complete', release_success=None, release_outcome='prefix_not_held')
+                                                                 'scope': 'evaluation only; RGB thresholds provisional'}}
+        if release_authorized_at is None:
+            report.update(status='complete', release_success=None, release_outcome='lift_not_confirmed_by_own_inputs')
             return report
 
         # ======================= stage 2: set-down (visible_only release teacher) =======================
@@ -377,10 +421,10 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             port.stop()
         rel = {}
         for rid, end in roles.items():
-            pose = world.robot(rid).base_xyz()
-            yaw = float(world.robot(rid).base_rpy()[2])
-            err = plan['handoff_pose_error'][rid] if own_pose_source == 'commands' else [0., 0., 0.]
-            estimate = [float(pose[0])+err[0], float(pose[1])+err[1], yaw+err[2]]
+            # Unanchored command odometry cannot be converted to the static map
+            # by adding noise to GT. No map prior until a real localization exists.
+            estimate = None if own_pose_source == 'commands' else [*world.robot(rid).base_xyz()[:2],
+                                                                    float(world.robot(rid).base_rpy()[2])]
             pwm = {int(s): int(ports[rid]._servo_pulses[s]) for s in v5.SERVOS}
             rel[rid] = CrateReleaseTeacher(rid, end, pwm, handoff_pose_estimate=estimate, zone_rect=rect,
                                            own_pose_source=own_pose_source, reach_mode=reach_mode)
@@ -653,7 +697,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             issued = {rid: (list(wheels[rid].levels),
                             max([max(0., min(.1, u-tick_t)) if lv else 0. for lv, u in zip(wheels[rid].levels, wheels[rid].until)]))
                       for rid in rel}
-            before = {rid: pose_of(rid) for rid in rel}
+            before = {rid: pose_of(rid) for rid in rel} if own_pose_source == 'truth_comparison' else None
             k += 1
             advance(tick_t+.1)
             for rid, t in rel.items():
@@ -731,6 +775,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             report['input_audit']['max_destination_blind_s_by_phase'] = {r: t.get('max_destination_blind_s_by_phase') for r, t in report['release_teachers'].items()}
         # Grasp-stage decision inputs are relative visible measurements and own commands only (VisibleWorld).
         report['input_audit']['grasp_stage_inputs'] = 'VisibleWorld(visible relative measurements + issued commands); no world crate pose'
+        report['input_audit']['scope'] = 'grasp and release decision inputs; GT hold and handoff distances evaluation only'
+        report['input_audit']['release_map_prior'] = 'disabled without verified map localization' if own_pose_source == 'commands' else 'truth_comparison'
         try:
             report['timings_s'] = timings
         except NameError:
@@ -842,7 +888,9 @@ def main():
                    help='cargo scene version: catalogue_v1 = crate 0.900 kg (old), crate_mass_030_v1 = 0.300 kg '
                         '(user 2026-10-14; real_v1 elbow limit). Versions are never pooled.')
     p.add_argument('--rgb-lift', choices=RGB_LIFT_MODES, default='off',
-                   help='crate_rgb_lift_v1: record an own-RGB lift verdict next to the evaluation truth (record only)')
+                   help='crate_rgb_lift_v1: authorize release only after own-RGB confirmation; provisional thresholds')
+    p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')
+    p.add_argument('--teacher-search', choices=('off', 'search_body_scan_v1'), default='off')
     p.add_argument('--execution-host', choices=('azure', 'gcp1'), default='gcp1')
     p.add_argument('--pr', type=int, default=None)
     a = p.parse_args()
@@ -854,7 +902,8 @@ def main():
     print(json.dumps(run(plan, a.out, cap_s=a.cap_s, grasp_cap_s=a.grasp_cap_s, own_pose_source=a.own_pose_source,
                          observe_mode=a.observe_mode, render_dr=a.render_dr, zone_slots=a.zone_slots, reach_mode=a.reach_mode,
                          held_object=a.held_object, lookaround=a.setdown_lookaround, execution_host=host, pr=a.pr,
-                         crate_scene=a.crate_scene, rgb_lift=a.rgb_lift),
+                         crate_scene=a.crate_scene, rgb_lift=a.rgb_lift,
+                         teacher_stability=a.teacher_stability, teacher_search=a.teacher_search),
                      ensure_ascii=False, default=str))
 
 
