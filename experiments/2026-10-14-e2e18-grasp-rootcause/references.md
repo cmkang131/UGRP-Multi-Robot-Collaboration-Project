@@ -25,3 +25,8 @@
 - Lin et al., [Data Scaling Laws in Imitation Learning for Robotic Manipulation](https://arxiv.org/abs/2410.18647), 2024 최초 공개/2026 v4; [공식 구현](https://github.com/Fanqi-Lin/Data-Scaling-Laws). 초록과 README를 확인했다. 환경·물체 다양성의 효과와 동일 설정 반복의 포화를 근거로 시작 상태를 층화한다. 공식 공개 모델은 32개 환경–물체 쌍 × 환경당 50회였다. **100/200/400은 우리 실험의 크기 곡선이며 논문이 보장하는 최소 수가 아니다.** 봉 하나·외관 고정인 우리 설정에서는 주로 배치·지도·가림 다양성만 늘리므로 물체 범주 일반화 주장과 구별한다.
 - Codevilla et al., [End-to-end Driving via Conditional Imitation Learning](https://arxiv.org/abs/1710.02410), ICRA 2018; [저자 코드](https://github.com/carla-simulator/imitation-learning). 논문 정보·초록 및 저장소 설명 확인. 고수준 이산 명령으로 시각 행동을 조건화한다는 근거다. 그 논문의 분기망을 복제하는 대신 고정 ACT의 ENV 입력 투영에 스킬·끝 one-hot을 함께 넣는다. 이는 우리 adapter의 변경이며 원 ACT의 언어 추론 기능이 아니다.
 - [Kaggle 실행 규칙](../../docs/kaggle_simulation.md): private Dataset 생성 후 서버 메타데이터로 확인하고, 인터넷 OFF GPU kernel에 필요한 고정 의존성·체크포인트를 미리 넣는다. 자격 증명은 Mac에만 둔다. 기존 인터넷 ON GPU 점검과 이번 학습 경로를 구분한다.
+
+### 첫 교사 진단의 접근점/수집 비용 수정
+
+- [MoveIt 공식 pick/place 예제](https://github.com/moveit/moveit_tutorials/blob/master/doc/pick_place/src/pick_place_tutorial.cpp): 접근 거리의 최소/희망 값을 구분한다. [MoveIt Grasps](https://moveit.picknik.ai/main/doc/examples/moveit_grasps/moveit_grasps_tutorial.html)는 도달 가능성 필터와 접근/들기/후퇴 경로를 설명한다. 우리 교사도 고정0.5m 점 하나 대신 지도 차체 여유를 만족하는 후보 접근점을 선택한다. MoveIt 전체를 도입한 것은 아니며 기존 A*와 v3 IK를 재사용한다.
+- [MuJoCo 공식 렌더 샘플](https://mujoco.readthedocs.io/en/3.15.0/programming/samples.html): 물리 진행과 저장 영상의 fps를 따로 설정한다. 이를 따라 명령10Hz·영상5Hz로 수집하며 화각/배치/화면비는 고정한다. 640×480→320×240는 별도 관측 표본 조건이며 실제 개선은 16동시 게이트에서 측정한다.

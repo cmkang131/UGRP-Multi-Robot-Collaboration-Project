@@ -102,3 +102,7 @@ SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
 SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 후보722개 중 확인0·관문 실패로 새 물리0, 성공영상 없음. 회색벽/청록문은 평가용GT, 제어입력 아님.
 - 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.
+
+## 2026-10-14 정답 파지 교사 첫 진단
+
+[4d0161ae 영상](../experiments/2026-10-14-e2e18-grasp-rootcause/teacher-pilot-4d0161ae.mp4): seed71000, 자기 RGB r1/r2를 좌/우로 배치, 30초·300프레임. 첫 진단1회이므로 성공률 코호트 대표로 일반화하지 않는다. 공동0/1·로봇0/2, 30초 상한. 0/6/12/17.9/23.9/29.9초 직접 확인. r1 고정 사전 접근점이 차체 여유 경계 밖이어서 정지하고 r2는 파랑 끝으로 정렬했다. [원본·보관623/623 해시·영상sha256](../experiments/2026-10-14-e2e18-grasp-rootcause/teacher-pilot-4d0161ae.json).
