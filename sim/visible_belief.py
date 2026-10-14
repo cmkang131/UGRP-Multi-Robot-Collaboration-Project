@@ -50,8 +50,8 @@ class VisibleBelief:
         self.items = {}
 
     def observe(self, name, rel_pose, now, *, source='visible', **extra):
-        if source not in ('visible', 'map_prior'):
-            raise ValueError('only visible observations or explicit map priors')
+        if source not in ('visible', 'map_prior', 'own_command'):
+            raise ValueError('only visible observations, own-command knowledge or explicit map priors')
         self.items[name] = {'pose': list(rel_pose), 'seen_t': now, 'source': source, **extra}
 
     def propagate(self, dx, dy, dyaw):
@@ -68,10 +68,10 @@ class VisibleBelief:
         item = self.items.get(name)
         if item is None:
             return None
-        if item['source'] != 'map_prior' and now-item['seen_t'] > self.memory_s:
+        if item['source'] not in ('map_prior', 'own_command') and now-item['seen_t'] > self.memory_s:
             return None
         return item
 
     def forget_expired(self, now):
-        for name in [k for k, v in self.items.items() if v['source'] != 'map_prior' and now-v['seen_t'] > self.memory_s]:
+        for name in [k for k, v in self.items.items() if v['source'] not in ('map_prior', 'own_command') and now-v['seen_t'] > self.memory_s]:
             del self.items[name]

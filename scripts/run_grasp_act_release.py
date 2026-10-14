@@ -47,6 +47,21 @@ class Eyes:
         ray=mujoco.mj_ray(b.model,data,origin,direction,b.groups,True,-1,hit)
         if target is not None:return int(hit[0])==target and abs(ray-(dist-skip))<.004
         return hit[0]<0 or ray>=dist-skip-.006
+    def classify(self,data,rid,point):
+        """None if not visible; 'zone' if the destination colour is what the camera sees there, else 'floor'."""
+        import cv2,mujoco,numpy as np
+        b=self.b;cid=b.cameras[rid];point=np.asarray(point,dtype=float)
+        p=((point-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])
+        if p[2]<=b.near:return None
+        uv=p[:2]/p[2]*np.diag(b.K)[:2]+b.K[:2,2]
+        if not (0<=uv[0]<640 and 0<=uv[1]<480):return None
+        raw,_=cv2.fisheye.projectPoints(p.reshape(1,1,3),np.zeros(3),np.zeros(3),b.K,b.D)
+        if not (0<=raw[0,0,0]<640 and 0<=raw[0,0,1]<480):return None
+        delta=point-data.cam_xpos[cid];dist=float(np.linalg.norm(delta));direction=delta/dist
+        skip=b.near*dist/p[2];origin=data.cam_xpos[cid]+skip*direction;hit=np.array([-1],dtype=np.int32)
+        ray=mujoco.mj_ray(b.model,data,origin,direction,b.groups,True,-1,hit)
+        if hit[0]<0 or abs(ray-(dist-skip))>.015:return None      # occluded (e.g. own beam/gripper)
+        return 'zone' if int(hit[0])==self.zone else 'floor'
 
 
 def own_end_world(world,inst,end):
@@ -102,7 +117,6 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands'):
         advance(float(world.data.time)+.5)
         origin=float(world.data.time);inst=next(x for x in scene.cargo if x.item_id=='beam_1')
         band=BandVisibility(world.model);eyes=Eyes(band,world.model.geom('zone_'+plan['destination_region']).id)
-        edges,interior=zone_probes(rect,.0012)
         object_bodies={c.item_id:c.body for c in scene.cargo if c.item_id!='beam_1'}
         object_bodies.update({i:c['body_name'] for i,c in scene.config['setup_only']['objects'].items()})
         ev=(out/'eval-only.jsonl').open('w');streams.append(ev)
@@ -156,115 +170,143 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands'):
             estimate=[float(pose[0])+err[0],float(pose[1])+err[1],yaw+err[2]]
             pwm={int(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
             rel[rid]=ReleaseTeacher(rid,end,pwm,handoff_pose_estimate=estimate,zone_rect=rect,own_pose_source=own_pose_source)
-        code=PairReleaseCode(tuple(roles));release_t0=float(world.data.time)
-        state={'phase':'look','since':release_t0,'plan':{},'arm':{},'go_at':None,'choice':None}
-        report['release_start']={'beam_to_zone_center_m':float(math.dist(world.data.body(inst.body).xpos[:2],rect[:2])),
-            'own_end_margin_true_m':{}}
-        def observe(rid,now):
-            at=time.monotonic();data=world.data
-            pose=[*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
-            obs={'edges':{},'interior':[]}
-            for side,pts in edges.items():
-                seen=[p for p in pts if eyes.visible(data,rid,p,target=eyes.zone)]
-                if len(seen)>=2:
-                    mid=np.mean(np.array(seen),axis=0)
-                    normal={'south':math.pi/2,'north':-math.pi/2,'west':0.,'east':math.pi}[side]
-                    point=(mid[0],mid[1]) if side in ('south','north') else (mid[0],mid[1])
-                    obs['edges'][side]=relative(pose,point,normal)
-            obs['interior']=[relative(pose,p[:2])[:2] for p in interior if eyes.visible(data,rid,p,target=eyes.zone)]
-            e=own_end_world(world,inst,roles[rid])
-            ring=[(e[0]+.06*math.cos(a),e[1]+.06*math.sin(a),.0012) for a in np.linspace(0,2*math.pi,6,endpoint=False)]
-            obs['end_area_visible']=sum(eyes.visible(data,rid,p) for p in ring)>=3
-            obs['own_band_visible']=band.measure(data,rid,roles[rid])['visible_probes']>=3
+        R=tuple(roles);code=PairReleaseCode(R);release_t0=float(world.data.time)
+        st={'phase':'look','since':release_t0,'iter':0,'steps':0,'search':0,'sched':{},'plan':{},'go':None,'after_visible':False,'choice':None}
+        b0=world.data.body(inst.body)
+        report['release_start']={'beam_to_zone_center_m':float(math.dist(b0.xpos[:2],rect[:2]))}
+        def pose_of(rid):return [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
+        def observe(rid,now,fine):
+            at=time.monotonic();data=world.data;pose=pose_of(rid)
+            b=data.body(inst.body);rot=b.xmat.reshape(3,3);axis=rot[:,0]
+            out_dir=-axis if roles[rid]=='teal' else axis;lat=np.array([-out_dir[1],out_dir[0],0.])
+            e=own_end_world(world,inst,roles[rid]);scan=[]
+            for s_ in np.arange(-.25,.2501,.01 if fine else .05):
+                for l_ in (-.05,.05):
+                    p=e+s_*out_dir+l_*lat;p=(float(p[0]),float(p[1]),.0012)
+                    c=eyes.classify(data,rid,p)
+                    if c is not None:scan.append([*relative(pose,p[:2])[:2],c])
+            m=band.measure(data,rid,roles[rid]);obs={'scan':scan,'own_band_visible':m['visible_probes']>=3,'band':None}
+            if obs['own_band_visible']:
+                gid=band.bands[roles[rid]];g=data.geom_xpos[gid]
+                obs['band']=relative(pose,(float(g[0]),float(g[1])),math.atan2(rot[1,0],rot[0,0]))
             obs['partner_visible']=any(band.body_visible(data,rid,p+'__robot') for p in roles if p!=rid)
             timings['eyes']+=time.monotonic()-at
             return obs
-        def go_ready(tag,now):
-            code.deliver(now)
-            return code.ready(tag,state['since'])
         def post(tag,now):
             for rid,t in rel.items():code.post(rid,{**(t.last_report or {}),'phase':tag},now)
-        k=0;outcome=None;steps=0;done_at=None
+        def ready(tag,now):
+            code.deliver(now);return code.ready(tag,st['since'])
+        def schedule(rid,seq,t0):st['sched'][rid]=[(t0+dt,p) for dt,p in seq]
+        def run_sched(now):
+            for rid,seq in st['sched'].items():
+                while seq and seq[0][0]<=now+1e-9:
+                    _,pose=seq.pop(0)
+                    for sid,v in pose.items():
+                        if rel[rid].pwm.get(sid)!=v:
+                            ports[rid].apply({'kind':'look','pan_pulse':v} if sid==6 else {'kind':'arm','servo_id':sid,'pulse':v},now);rel[rid].pwm[sid]=v
+            return any(st['sched'].values())
+        def run_plan(now):
+            busy=False
+            for rid,p in st['plan'].items():
+                if p:w,d=p.pop(0);wheels[rid].command(w,d,now);busy=True
+            return busy
+        def every(seq_fn,interval):return [(interval*(k+1),p) for k,p in enumerate(seq_fn)]
+        def start_lower(now):
+            for rid,t in rel.items():schedule(rid,every(t.arm_waypoints(LOWER_Z_M,8),.2),now+.2)
+            st.update(phase='lower',since=now,go=now+.2,end=now+.2+1.6+.6)
+        def start_shift(now,s):
+            st['plan']={rid:t.shift_plan(s,1. if rid==R[0] else -1.) for rid,t in rel.items()}
+            st.update(phase='shift',since=now,go=now+.2)
+        k=0;outcome=None;done_at=None
         while float(world.data.time)-origin<cap_s:
-            now=float(world.data.time);tick_t=now
-            for rid,t in rel.items():
-                obs=observe(rid,now);t.phase=state['phase'];t.perceive(obs,now)
-            ph=state['phase'];age=now-state['since']
+            now=float(world.data.time);tick_t=now;ph=st['phase'];age=now-st['since']
+            fine=ph in ('look','observe')
+            for rid,t in rel.items():t.phase=ph;t.perceive(observe(rid,now,fine),now)
             if ph=='look' and age>=.6:
-                for t in rel.values():t.report(now)
-                post('look',now);state.update(phase='await_look',since=now)
-            elif ph=='await_look' and go_ready('look',now):
-                choice=code.decide(now);state['choice']=choice
-                if choice['action']=='lower':
-                    for rid,t in rel.items():state['arm'][rid]=t.arm_waypoints(LOWER_Z_M,8)
-                    state.update(phase='lower',since=now+.2,go_at=now+.2,next_arm=now+.2)
-                else:
-                    steps+=1
-                    if steps>20:outcome='release_step_cap';break
-                    state['plan']={rid:t.shift_plan(choice['shift_m'],1. if rid==tuple(roles)[0] else -1.) for rid,t in rel.items()}
-                    state.update(phase='shift',since=now+.2,go_at=now+.2)
-            elif ph=='shift' and now>=state['go_at']-1e-9:
-                busy=False
-                for rid,p in state['plan'].items():
-                    if p:
-                        w,d=p.pop(0);wheels[rid].command(w,d,now);busy=True
-                if not busy:state.update(phase='look',since=now)
-            elif ph in ('lower','raise') and now>=state['go_at']-1e-9:
-                if now>=state['next_arm']-1e-9 and any(state['arm'].values()):
-                    for rid,t in rel.items():
-                        if not state['arm'][rid]:continue
-                        pose=state['arm'][rid].pop(0)
-                        for sid,v in pose.items():
-                            if t.pwm[sid]!=v:
-                                ports[rid].apply({'kind':'look','pan_pulse':v} if sid==6 else {'kind':'arm','servo_id':sid,'pulse':v},now);t.pwm[sid]=v
-                    state['next_arm']=now+.2;state['arm_last']=now
-                busy=any(state['arm'].values())
-                if not busy and now-state.get('arm_last',now)>=.6:
-                    if ph=='lower':
-                        for t in rel.values():t.last_report={'kind':'lowered'}
-                        post('lowered',now);state.update(phase='await_open',since=now)
-                    else:
-                        for rid,t in rel.items():state['plan'][rid]=t.shift_plan(BACKOFF_M,-1.)
-                        state.update(phase='back_off',since=now,go_at=now)
-            elif ph=='await_open' and go_ready('lowered',now):
-                state.update(phase='open',since=now+.2,go_at=now+.2)
-            elif ph=='open' and now>=state['go_at']-1e-9:
-                if not state.get('opened'):
+                for t in rel.values():t.report(now,'look')
+                post('look',now);st.update(phase='await_look',since=now)
+            elif ph=='await_look' and ready('look',now):
+                choice=code.decide(now,require_seen=False);st['choice']=choice
+                if choice['action']=='lower' or st['steps']>=8:start_lower(now)
+                else:st['steps']+=1;start_shift(now,choice['shift_m'])
+            elif ph=='shift' and now>=st['go']-1e-9:
+                if not run_plan(now):
+                    if st['after_visible']:st['after_visible']=False;start_lower(now)
+                    else:st.update(phase='look',since=now)
+            elif ph=='lower':
+                run_sched(now)
+                if now>=st['end']-1e-9:
+                    for t in rel.values():t.last_report={'kind':'lowered'}
+                    post('lowered',now);st.update(phase='await_open',since=now)
+            elif ph=='await_open' and ready('lowered',now):
+                st.update(phase='open',since=now,go=now+.2,opened=False)
+            elif ph=='open' and now>=st['go']-1e-9:
+                if not st['opened']:
                     for rid,t in rel.items():ports[rid].apply({'kind':'arm','servo_id':1,'pulse':2000},now);t.pwm[1]=2000
-                    state['opened']=True
-                if now-state['go_at']>=1.2:
-                    for rid,t in rel.items():state['arm'][rid]=t.arm_waypoints(RAISE_Z_M,3)
-                    state.update(phase='raise',since=now,go_at=now,next_arm=now)
-            elif ph=='back_off':
-                busy=False
-                for rid,p in state['plan'].items():
-                    if p:
-                        w,d=p.pop(0);wheels[rid].command(w,d,now);busy=True
-                if not busy:
+                    st['opened']=True
+                if now-st['go']>=1.2:
                     for rid,t in rel.items():
-                        for s,v in FOLDED_BACKOFF.items():ports[rid].apply({'kind':'arm','servo_id':s,'pulse':v},now);t.pwm[s]=v
-                    state.update(phase='done',since=now);done_at=now
-            elif ph=='done' and now-state['since']>=DELIVERY_WAIT_S:
-                outcome='teacher_done';break
-            # labels: issued wheel levels/durations + arm, release skill
+                        t.released_here(now)
+                        seq=every(t.arm_waypoints(RAISE_Z_M,3),.2)
+                        schedule(rid,seq+[(1.0,t.gaze_target(now))],now)
+                    st.update(phase='observe_move',since=now,end=now+1.0+.8,search=0)
+            elif ph=='observe_move':
+                run_sched(now)
+                if now>=st['end']-1e-9:st.update(phase='observe',since=now)
+            elif ph=='observe' and age>=.6:
+                reports={rid:t.report(now,'observe') for rid,t in rel.items()}
+                blind=[rid for rid,r in reports.items() if r['kind']=='prior']
+                if blind and st['search']<4:
+                    st['search']+=1;offset=(250,-250,500,-500)[st['search']-1]
+                    for rid in blind:
+                        target=dict(rel[rid].gaze_target(now));target[6]=max(500,min(2500,target[6]+offset))
+                        schedule(rid,[(0.,target)],now)
+                    st.update(phase='observe_move',since=now,end=now+.8)
+                else:
+                    post('observe',now);st.update(phase='await_observe',since=now)
+            elif ph=='await_observe' and ready('observe',now):
+                choice=code.decide(now,require_seen=True);st['choice']=choice
+                if choice['action']=='lower':
+                    for rid,t in rel.items():schedule(rid,[(0.,{3:820,4:2320})],now)
+                    st['plan']={rid:t.shift_plan(BACKOFF_M,-1.) for rid,t in rel.items()}
+                    st.update(phase='back_off',since=now,go=now+.6)
+                else:
+                    st['iter']+=1
+                    if st['iter']>3:outcome='release_iteration_cap';break
+                    dur=0.
+                    for rid,t in rel.items():
+                        seq,d=t.pick_schedule(now);schedule(rid,seq,now+.2);dur=max(dur,d)
+                    st.update(phase='repick',since=now,end=now+.2+dur)
+            elif ph=='repick':
+                run_sched(now)
+                if now>=st['end']-1e-9:
+                    for t in rel.values():t.holding=True
+                    st['after_visible']=True;start_shift(now,st['choice']['shift_m'])
+            elif ph=='back_off':
+                run_sched(now)
+                if now>=st['go']-1e-9 and not run_plan(now):
+                    for rid,t in rel.items():schedule(rid,[(0.,FOLDED_BACKOFF)],now)
+                    st.update(phase='done',since=now);done_at=now
+            elif ph=='done':
+                run_sched(now)
+                if age>=DELIVERY_WAIT_S:outcome='teacher_done';break
             for rid,t in rel.items():
                 labels[rid].write(json.dumps({'t':now,'skill':'release','object_kind':'long_beam','role':roles[rid],
-                    'teacher_phase':state['phase'],'wheels':wheels[rid].levels,'wheel_until':wheels[rid].until,
-                    'pwm':{str(s):t.pwm[s] for s in SERVOS},'done':state['phase']=='done','report':t.last_report})+'\n')
-            if k%10==0:frames(k,'release-'+state['phase'])
+                    'teacher_phase':st['phase'],'wheels':list(wheels[rid].levels),'wheel_until':list(wheels[rid].until),
+                    'pwm':{str(s):t.pwm[s] for s in SERVOS},'holding_belief':t.holding,'done':st['phase']=='done','report':t.last_report})+'\n')
+            if k%10==0:frames(k,'release-'+st['phase'])
             issued={rid:(list(wheels[rid].levels),max([max(0.,min(.1,u-tick_t)) if lv else 0. for lv,u in zip(wheels[rid].levels,wheels[rid].until)]))
                     for rid in rel}
-            before={rid:[*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])] for rid in rel}
+            before={rid:pose_of(rid) for rid in rel}
             k+=1;advance(tick_t+.1)
             for rid,t in rel.items():
-                if own_pose_source=='commands':
-                    t.dead_reckon(*issued[rid])          # own issued commands only
-                else:                                    # comparison toggle: true own motion
-                    after=[*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
-                    dx,dy,da=relative(before[rid],after[:2],after[2]);t.belief.propagate(dx,dy,da)
+                if own_pose_source=='commands':t.dead_reckon(*issued[rid])
+                else:
+                    after=pose_of(rid);dx,dy,da=relative(before[rid],after[:2],after[2]);t.belief.propagate(dx,dy,da)
             truth=snapshot(world,inst,roles,scene)
-            ev.write(json.dumps({'t':float(world.data.time),'phase':state['phase'],'beam':truth['beam'],'contacts':truth['contacts'],
+            ev.write(json.dumps({'t':float(world.data.time),'phase':st['phase'],'beam':truth['beam'],'contacts':truth['contacts'],
                 'robots':{r:truth['robots'][r] for r in roles}})+'\n')
+        steps=st['steps']
         report['release_outcome']=outcome or 'release_timeout'
         # ---------------- evaluation (truth) ----------------
         held_ok=None;t_ok=None;checks=[]
@@ -297,7 +339,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands'):
             ('gripper_not_clear',min(last['grip_to_beam_m'])<SUCCESS['clear_m'])) if v]
         report.update(release_success=best*.1>=SUCCESS['settle_s']-1e-6 and report['release_outcome']=='teacher_done',
             release_failure_reasons=reasons if reasons else ([] if report['release_outcome']=='teacher_done' else [report['release_outcome']]),
-            evaluation_last=last,evaluation_settled_s=best*.1,code_decisions=code.log,shift_steps=steps,
+            evaluation_last=last,evaluation_settled_s=best*.1,code_decisions=code.log,shift_steps=steps,iterations=st['iter'],
             teachers={rid:t.diagnostic() for rid,t in rel.items()},release_sim_s=(done_at or float(world.data.time))-release_t0,status='complete')
         return report
     except BaseException as error:

@@ -86,3 +86,26 @@ def test_dataset_split_check_reads_metadata_and_requires_heldout(tmp_path):
         check_dataset_splits({**data, 'train': [ep('g', 72001, 'zone_wide_door_geometry_v3')]}, tmp_path)
     with pytest.raises(ValueError, match='held-out map'):
         check_dataset_splits({**data, 'train': [ep('h', 80002, 'zone_wide_corridor_final_v3')]}, tmp_path)
+
+
+def test_scan_margin_edge_inside_outside():
+    from sim.grasp_act_release_teacher import ReleaseTeacher
+    m = ReleaseTeacher.scan_margin
+    zone_then_floor = [(s/100, 'zone') for s in range(-10, 12)] + [(s/100, 'floor') for s in range(13, 20)]
+    kind, v = m(zone_then_floor)
+    assert kind == 'edge' and v == pytest.approx(.12)
+    assert m([(s/100, 'zone') for s in range(-5, 8)]) == ('inside_lb', pytest.approx(.07))
+    kind, v = m([(s/100, 'zone') for s in range(-20, -9)] + [(s/100, 'floor') for s in range(-8, 5)])
+    assert kind == 'outside' and v == pytest.approx(-.09)
+    assert m([]) == (None, None)
+
+
+def test_released_end_uses_own_command_memory():
+    from sim.grasp_act_release_teacher import ReleaseTeacher
+    pwm = {1: 1500, 3: 700, 4: 2400, 5: 1320, 6: 1500}
+    t = ReleaseTeacher('r1', 'teal', pwm, handoff_pose_estimate=[0., 0., 0.], zone_rect=(1., 0., .3, .7))
+    (ex, ey), o, src = t.end_and_outward(0.)
+    assert src == 'commands_fk' and o == (-1., 0.)
+    t.released_here(0.)
+    (ex2, ey2), o2, src2 = t.end_and_outward(5.)
+    assert src2 == 'own_command_release' and ex2 == pytest.approx(ex) and o2[0] == pytest.approx(-1.)
