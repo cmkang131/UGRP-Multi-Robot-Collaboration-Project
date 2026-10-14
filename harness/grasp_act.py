@@ -60,7 +60,7 @@ def batch(observation,jpegs,profile):
 
 
 def metadata(profile):
-    return {'schema':'ugrp.grasp_act.adapter.v5','action_contract':SCHEMA,
+    return {'schema':'ugrp.grasp_act.adapter.v6','action_contract':SCHEMA,
             'actuator_port':'real_range_per_wheel_duty_v1',
             'upstream_sha':UPSTREAM_SHA,'profile':profile,
             'image_keys':list(IMAGE_KEYS),'rgb_lags_s':list(RGB_LAGS_S),'command_history':HISTORY,

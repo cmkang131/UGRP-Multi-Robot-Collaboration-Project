@@ -1,6 +1,6 @@
 """Finite, opt-in single-cargo pick / hold / set-down diagnostic on gcp1.
 
-Measurement only: no training RGB, no LLM, no transport / delivery claim.
+Default is measurement only. Training RGB is an explicit, audited profile.
 The scene owner may know setup and evaluation truth. SoloTeacher receives
 only currently visible relative target measurements, own RGB judgments and
 issued commands. This runner never forwards its Score back to the teacher.
@@ -25,7 +25,9 @@ if str(ROOT) not in sys.path:
 
 def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, cap_s=90.,
         teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off',
-        solo_lift_negative_probe_v1=False, solo_lift_lookback_margin_v1=False):
+        solo_lift_negative_probe_v1=False, solo_lift_lookback_margin_v1=False,
+        training_rgb=False, solo_truth_free_lookaround_v1=False,
+        recording_stage='pilot', recording_approval=None):
     if platform.system() != 'Linux' or execution_host != 'gcp1':
         raise RuntimeError('Linux gcp1 only; Mac physics/render disabled')
     if not 0 < cap_s <= 180 or profile != 'solo_visible_only_v1' or not hidden or not look:
@@ -35,6 +37,10 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
     if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3', 'solo_lift_lookback_v1'):
         raise ValueError('unknown solo RGB lift mode')
     validate_negative_probe(plan, solo_lift_negative_probe_v1, rgb_lift_mode)
+    from harness.grasp_act_solo_recording import validate_recording, camera_config, SoloRecorder, validate_approval
+    validate_recording(plan, training_rgb=training_rgb, truth_free_v1=solo_truth_free_lookaround_v1,
+        negative=solo_lift_negative_probe_v1, stability=teacher_stability, reach=reach_mode,
+        lift=rgb_lift_mode, margin=solo_lift_lookback_margin_v1)
     from scripts.grasp_act_host import identity, require_run_root
     host = identity(execution_host)
     require_run_root(out)
@@ -57,6 +63,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
     sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     if subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT):
         raise RuntimeError('committed source required (tracked files clean)')
+    approval = validate_approval(recording_approval, stage=recording_stage, sha=sha, host=host) if training_rgb else None
     out.mkdir(parents=True, exist_ok=False)
     write(out/'plan.json', plan)
     write(out/'RUN_META.json', {'class': 'dev', 'branch': 'claude/act-solo-teacher',
@@ -64,17 +71,26 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
           'negative_probe': bool(solo_lift_negative_probe_v1)})
     report = {'status': 'running', 'source_sha': sha, 'execution_host': host,
               'student_execution': False,
-              'recording_mode': 'negative_probe_diagnostic' if solo_lift_negative_probe_v1 else 'success_measurement',
-              'object_kind': plan['kind'], 'weld': 'off', 'training_rgb': False,
+              'recording_mode': 'training' if training_rgb else 'negative_probe_diagnostic' if solo_lift_negative_probe_v1 else 'success_measurement',
+              'object_kind': plan['kind'], 'weld': 'off', 'training_rgb': bool(training_rgb),
+              'recording_stage': recording_stage if training_rgb else None,
+              'recording_approval': approval,
+              'solo_truth_free_lookaround_v1': bool(solo_truth_free_lookaround_v1),
               'teacher_stability': teacher_stability, 'reach_mode': reach_mode,
               'rgb_lift_mode': rgb_lift_mode,
               'negative_probe': bool(solo_lift_negative_probe_v1),
               'solo_lift_lookback_margin_v1': bool(solo_lift_lookback_margin_v1),
-              'gate_eligible': not solo_lift_negative_probe_v1,
+              'gate_eligible': not solo_lift_negative_probe_v1 and not training_rgb,
               'physical_success': None, 'placement_task': 'set down at own picked location',
               'plan_sha256': hashlib.sha256((out/'plan.json').read_bytes()).hexdigest()}
+    if training_rgb:
+        report.update(training_include=False, training_candidate=False, data_admitted=False,
+                      training_exclusion_reason='not complete / awaiting qualification and dataset admission')
     write(out/'result.json', report)
-    world, streams = None, []
+    world, streams, recorder = None, [], None
+    if training_rgb:
+        (out/'teacher-raw').mkdir()
+        (out/'evaluation').mkdir()
     start = time.monotonic()
     audit, visibility_stats, score = InputAudit(), VisibilityStats(), Score()
     ops = primitives()
@@ -84,8 +100,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         scene.config['setup_only']['spawns'].update(plan['spawns'])
         os.environ['UGRP_SIM_OBSERVER_WIDTH'] = '320'
         os.environ['UGRP_SIM_OBSERVER_HEIGHT'] = '240'
-        world = build_world(scene, drive_profile=PROFILE, seed=plan['seed'], width=640,
-                            height=480, render=True, warehouse_layout=scene.engine_layout,
+        sampling = camera_config() if training_rgb else {'width': 640, 'height': 480}
+        world = build_world(scene, drive_profile=PROFILE, seed=plan['seed'], width=sampling['width'],
+                            height=sampling['height'], render=True, warehouse_layout=scene.engine_layout,
                             warehouse_cargo_ids=None, roller_collision='mesh', idle_robot_contacts='off')
         for controller in world.controllers.values():
             bind_camera(controller)
@@ -100,6 +117,12 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             inst = next(c for c in scene.cargo if c.item_id == item and c.kind == plan['kind'])
             body_name, body_origin_z = inst.body, 0.
         model, data = world.model, world.data
+        if training_rgb:
+            cid = world.controllers[rid].robot_cam_cid
+            write(out/'evaluation'/'camera-runtime.json', {
+                'pos': model.cam_pos[cid].tolist(), 'quat': model.cam_quat[cid].tolist(),
+                'intrinsic': model.cam_intrinsic[cid].tolist(), 'resolution': model.cam_resolution[cid].tolist(),
+                'scope': 'runtime camera configuration only; excluded from student observations'})
 
         # Generalize the pair's calibrated ray/FOV adapter without its two
         # mandatory beam-band IDs. Only its geometry methods are reused.
@@ -123,11 +146,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         initial_xy = data.body(body_name).xpos[:2].copy()  # EVALUATION ONLY
         last_eval_pos, last_eval_t = None, None
         static = scene.config['static_map']
-        # The map code's own-pose estimate error (frozen per episode, sigma 5 cm /
-        # 2 deg, plan['handoff_pose_error']); the estimate is built here, by the
-        # scene owner, when the set-down skill starts. The teacher never sees it.
-        pose_error = plan['handoff_pose_error']
-        relook = SoloLookaround(static, ops=ops)
+        # Legacy look-around used live truth + frozen error as a map estimate.
+        # The recording toggle replaces that path with a pose-free own-RGB scan.
+        relook = SoloLookaround(static, ops=ops, truth_free_v1=solo_truth_free_lookaround_v1)
         look_eval = {'views': []}
 
         def truth_pose():
@@ -228,8 +249,10 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                         *map(float, model.geom_size[g, :2]), wrap(math.atan2(rot[1, 0], rot[0, 0])-a)))
 
         previous = teacher._hold(float(data.time))
-        trace = (out/'teacher-commands.jsonl').open('x'); streams.append(trace)
-        ev = (out/'eval-only.jsonl').open('x'); streams.append(ev)
+        trace = (out/('teacher-raw/commands.jsonl' if training_rgb else 'teacher-commands.jsonl')).open('x'); streams.append(trace)
+        ev = (out/('evaluation/eval-only.jsonl' if training_rgb else 'eval-only.jsonl')).open('x'); streams.append(ev)
+        if training_rgb:
+            recorder = SoloRecorder(out, plan, previous)
         (out/'review-own').mkdir()
         (out/'review-top').mkdir()
         origin = float(data.time)
@@ -260,10 +283,11 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
 
             measurement = audit.measure(teacher.phase, visible_n=visible_n, probe_N=probe_N,
                                         holding=teacher.holding, read_relative=read_relative)
-            # Capture exact own-camera resolution transiently for control. Only
-            # review frames at 1 Hz are persisted; they are never training input.
+            # Capture once: recording persists exactly these controller bytes.
             jpg = base64.b64decode(port.capture()['image'])
             bgr = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+            if recorder is not None:
+                recorder.observe(now, jpg, bgr, skill=teacher.skill, phase=teacher.phase, previous=previous)
             rgb_result = {'answer': 'unknown'}
             if teacher.phase in ('verify_lift', 'hold'):
                 if lift_observer is not None:
@@ -278,10 +302,14 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             elif teacher.phase == 'lift' and lift_observer is not None:
                 lift_observer.observe(bgr, {**previous, 't': now}, complete=False, save=save_lift)
             if teacher.phase == 'lower' and not relook.armed:
-                # Set-down skill begins: hand the look-around the map code's pose estimate.
-                g = truth_pose()
-                relook.arm([g[0]+pose_error[0], g[1]+pose_error[1], g[2]+pose_error[2]])
-                look_eval['before'] = look_truth(); look_eval['armed_t'] = now
+                if solo_truth_free_lookaround_v1:
+                    relook.arm()  # no setup pose, live truth or fabricated map estimate
+                    look_eval['armed_t'] = now
+                else:
+                    # Preserved legacy comparison ONLY; forbidden for recording.
+                    g = truth_pose(); pose_error = plan['handoff_pose_error']
+                    relook.arm([g[0]+pose_error[0], g[1]+pose_error[1], g[2]+pose_error[2]])
+                    look_eval['before'] = look_truth(); look_eval['armed_t'] = now
             if tick % 5 == 0:
                 # Currently visible obstacles only (same one-third gate as the target),
                 # refreshed at 2 Hz: it feeds the route planner, never a pose or a label.
@@ -290,14 +318,16 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             value, complete = teacher.step(now, measurement=measurement,
                         rgb_holding=rgb_result.get('answer', 'unknown'),
                         own_rgb=lambda: cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB))
+            if recorder is not None:
+                recorder.target(value, skill_after=teacher.skill, phase_after=teacher.phase, complete=complete)
             views = [e for e in relook.events if e['event'] == 'view']
             if len(views) > look_state['last_view_n']:
                 # A view was captured this tick: score the updated estimate against truth (eval only).
-                row = {'t': now, **views[-1], **look_truth()}
+                row = {'t': now, **views[-1], **(look_truth() if relook.loc is not None else {})}
                 look_eval['views'].append(row)
                 ev.write(json.dumps({'kind': 'lookaround_view', **row})+'\n')
                 look_state['last_view_n'] = len(views)
-            if complete and relook.armed and 'after' not in look_eval:
+            if complete and relook.loc is not None and 'after' not in look_eval:
                 look_eval['after'] = look_truth(); look_eval['sim_s'] = now-look_eval['armed_t']
             apply(port, value, now, previous)
             if rgb_lift_mode == 'solo_lift_lookback_v1':
@@ -342,7 +372,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 negative_eval['max_pickup_offset_m'] = max(negative_eval['max_pickup_offset_m'], row['placement_offset'])
             ev.write(json.dumps({'t': now, **row, 'cargo_xyz': pos.tolist(),
                      'base_xyz': list(map(float, base)), 'visible_n': visible_n, 'probe_N': probe_N,
-                     'lookaround_estimate_xy': list(map(float, relook.loc.own.x[:2])) if relook.armed else None})+'\n')
+                     'lookaround_estimate_xy': list(map(float, relook.loc.own.x[:2])) if relook.loc is not None else None})+'\n')
             last_eval_pos, last_eval_t = pos, now
             if tick % 10 == 0:
                 cv2.imwrite(str(out/'review-own'/f'{tick:06d}.jpg'), cv2.resize(bgr, (320, 240)))
@@ -350,6 +380,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 write(out/'progress.json', {'sim_s': now-origin, 'phase': teacher.phase, 'source_sha': sha})
                 for stream in streams:
                     stream.flush()
+                if recorder is not None:
+                    recorder.flush()
+                    write(out/'recording-progress.json', recorder.record())
             if teacher.result not in (None, 'command_complete'):
                 break
             if complete:
@@ -383,6 +416,11 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             probe['cargo_eval'] = negative_eval
             probe['passed'] = probe['rgb_probe_passed'] and probe['no_pretend_setdown'] and probe['cargo_remains_at_pickup']
         report['data_admitted'] = False
+        if recorder is not None:
+            report['recording'] = recorder.record()
+            report['training_include'] = False
+            report['training_candidate'] = bool(report['physical_success'] and recorder.local_started and approval)
+            report['training_exclusion_reason'] = 'pending independent dataset admission' if report['training_candidate'] else 'pilot / failure / unqualified source or absent own-RGB handoff'
         write(out/'result.json', report)
     except BaseException as error:
         report.update(status='interrupted' if isinstance(error, KeyboardInterrupt) else 'HOST_ERROR',
@@ -391,6 +429,13 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         write(out/'result.json', report)
         raise
     finally:
+        if recorder is not None:
+            recorder.flush()
+            if 'recording' not in report:
+                report.update(recording=recorder.record(), training_include=False, training_candidate=False,
+                              data_admitted=False, training_exclusion_reason='incomplete / HOST_ERROR')
+                write(out/'result.json', report)
+            recorder.close()
         for stream in streams:
             stream.close()
         if world is not None:
@@ -429,6 +474,11 @@ def main():
     p.add_argument('--solo-lift-lookback-margin-v1', action='store_true',
                    help='box-only static retreat margin (150 mm); RGB judgment unchanged')
     p.add_argument('--cap-s', type=float, default=90.)
+    p.add_argument('--training-rgb', action='store_true')
+    p.add_argument('--solo-truth-free-lookaround-v1', action='store_true',
+                   help='pose-free fixed own-RGB sweep; required for training, default OFF')
+    p.add_argument('--recording-stage', choices=('pilot', 'batch'), default='pilot')
+    p.add_argument('--recording-approval', type=Path)
     a = p.parse_args()
     plan = json.loads(a.plan.read_text())['episodes'][a.episode]
     print(json.dumps(run(plan, a.out, execution_host=a.execution_host, profile=a.teacher_profile,
@@ -436,7 +486,9 @@ def main():
               teacher_stability=a.teacher_stability, reach_mode=a.reach_mode,
               rgb_lift_mode=a.rgb_lift_mode,
               solo_lift_negative_probe_v1=a.solo_lift_negative_probe_v1,
-              solo_lift_lookback_margin_v1=a.solo_lift_lookback_margin_v1)))
+              solo_lift_lookback_margin_v1=a.solo_lift_lookback_margin_v1,
+              training_rgb=a.training_rgb, solo_truth_free_lookaround_v1=a.solo_truth_free_lookaround_v1,
+              recording_stage=a.recording_stage, recording_approval=a.recording_approval)))
 
 
 if __name__ == '__main__':

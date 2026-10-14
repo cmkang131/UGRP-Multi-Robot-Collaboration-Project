@@ -20,6 +20,12 @@
   },
   "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "solo_gate", "solo_diagnostic", "solo_rgb_lift_v2_gate", "solo_box_gate_v1", "solo_lift_negative_probe"],
   "heldout_maps": ["zone_wide_corridor_final_v3"],
+  "reservations": {
+    "solo_record_20261015": {
+      "split": "train", "seeds": [86000, 86049], "pr": 502,
+      "purpose": "two recording pilots then explicit coordinator approval for 48; local preparation only; remote-unused check pending"
+    }
+  },
   "notes": {
     "grasp_gate_078": "teacher 078cbb45 gate 36/40 (seen)",
     "grasp_gate_v2": "observable_v2 3a451048 gate, stopped 27/32 (seen)",

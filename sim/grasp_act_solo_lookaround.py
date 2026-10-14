@@ -17,7 +17,7 @@ from __future__ import annotations
 
 class SoloLookaround:
     def __init__(self, static, *, ops, odometry_profile='off',
-                 localizer_factory=None, runner_factory=None):
+                 localizer_factory=None, runner_factory=None, truth_free_v1=False):
         if localizer_factory is None or runner_factory is None:
             from sim.lookaround_localization import LookaroundLocalizer, ScriptRunner
             localizer_factory = localizer_factory or LookaroundLocalizer
@@ -29,19 +29,26 @@ class SoloLookaround:
         self.pulses = []
         self.events = []
         self.measured_views = 0
+        self.truth_free_v1 = bool(truth_free_v1)
+        self.scan_armed = False
 
     @property
     def armed(self):
-        return self.loc is not None
+        return self.scan_armed if self.truth_free_v1 else self.loc is not None
 
-    def arm(self, estimate):
+    def arm(self, estimate=None):
         """Called once by the scene owner when the set-down skill begins.
 
         ``estimate`` is the map code's own pose estimate (x, y, yaw) in the map
-        frame. The teacher object never sees how it was produced.
+        frame. truth_free_v1 rejects an estimate and uses a fixed own-RGB scan.
         """
-        if self.loc is not None:
+        if self.armed:
             raise ValueError('look-around already armed')
+        if self.truth_free_v1:
+            if estimate is not None:
+                raise ValueError('truth-free scan accepts no pose estimate')
+            self.scan_armed = True
+            return
         self.loc = self.make_localizer(self.static, [float(v) for v in estimate],
                                        odometry_profile=self.profile)
 
@@ -53,6 +60,21 @@ class SoloLookaround:
         self.loc.propagate(levels, dt)
 
     def start(self, now, pan_pulse):
+        if self.truth_free_v1:
+            if not self.armed:
+                raise ValueError('look-around start before scan was armed')
+            from sim.lookaround_localization import look_servo, ARM_MOVE_S, VIEW_SETTLE_S, PAN_DEG_PER_PULSE
+            # No global pose prior exists in this runner. Do not invent one or
+            # initialise it from setup/truth. Inspect actual own RGB in a fixed
+            # command-only sweep; no localisation-success claim is made.
+            pans = (500, 1000, 1500, 2000, 2500, 1500)
+            script = [{'servo': look_servo((pans[0]-1500)*PAN_DEG_PER_PULSE),
+                       'wait': ARM_MOVE_S, 'capture': False, 'label': 'arm_to_look'}]
+            script.extend({'servo': look_servo((pan-1500)*PAN_DEG_PER_PULSE),
+                           'wait': VIEW_SETTLE_S, 'capture': True, 'label': f'view_{pan}'} for pan in pans)
+            self.runner = self.make_runner(script, now)
+            self.events.append({'t': now, 'event': 'start', 'views': len(pans), 'rotated': False})
+            return
         if self.loc is None:
             raise ValueError('look-around start before the pose estimate was armed')
         plan = self.loc.make_plan(int(pan_pulse))
@@ -74,6 +96,14 @@ class SoloLookaround:
             self.pulses = [(list(w), list(d)) for w, d in plan]
 
         def capture(at):
+            if self.truth_free_v1:
+                import hashlib
+                frame = own_rgb()
+                if frame.shape != (480, 640, 3):
+                    raise ValueError('truth-free scan requires native own RGB')
+                self.events.append({'t': at, 'event': 'view', 'status': 'captured_only',
+                    'pan_pulse': servo[6], 'rgb_sha256': hashlib.sha256(frame.tobytes()).hexdigest()})
+                return
             rec = self.loc.observe(at, own_rgb(), dict(servo))
             if rec.get('status') == 'measured':
                 self.measured_views += 1
@@ -91,6 +121,10 @@ class SoloLookaround:
         return value, bool(self.runner.done and not self.pulses)
 
     def record(self):
+        if self.truth_free_v1:
+            return {'armed': self.armed, 'events': self.events, 'truth_free_v1': True,
+                    'self_pose_source': 'none', 'localization_verified': False,
+                    'predictions_are_observations': False}
         if self.loc is None:
             return {'armed': False}
         return {'armed': True, 'events': self.events, 'measured_views': self.measured_views,

@@ -1,0 +1,91 @@
+{
+  "schema": "ugrp.grasp_act.solo_record_preparation.v1",
+  "created_utc": "2026-10-14T16:28:22.361554+00:00",
+  "baseline_sha": "c35e2ff2f89ca90060432d66023a35e831ff324b",
+  "source_sha": "frozen commit that contains this record; queue pins full SHA after commit",
+  "pr": 502,
+  "source_audit": {
+    "action_leaks_found": 1,
+    "recording_profile_unresolved": 0,
+    "code_paths_only": true
+  },
+  "gate_reference": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-gate-c35e2ff2.json",
+    "sha256": "c49bf6fd90cae78bc390d02b0a7b23a3b240ed2ee67f8d1f933ff940713c1ff3",
+    "physical_success": "40/40 reported by coordinator; local summary read, remote originals not rechecked",
+    "qualified_for_corrected_teacher": false
+  },
+  "offline_tests": {
+    "files": [
+      "tests/test_grasp_act_solo_recording.py",
+      "tests/test_grasp_act_solo_run_path.py",
+      "tests/test_grasp_act_contract.py"
+    ],
+    "passed": 44,
+    "failed": 0,
+    "seconds": 26.5,
+    "scope": "synthetic/stub backend, saved-file validation; no physical/render/backend execution"
+  },
+  "planned_recordings": 50,
+  "stages": {
+    "pilot": {
+      "planned": 2,
+      "submitted": 0,
+      "completed": 0
+    },
+    "batch": {
+      "planned": 48,
+      "submitted": 0,
+      "completed": 0,
+      "approved": false
+    }
+  },
+  "training_rgb": true,
+  "training_include": false,
+  "student_training_performed": false,
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "disk_budget_mib": {
+    "expected_per_episode": 96,
+    "expected_50": 4800,
+    "reserved_per_episode": 1024,
+    "reserved_50": 51200,
+    "gcp_free_space_verified": false
+  },
+  "raw_location_template": "gcp1:/home/ugrp/ugrp-sim/runs/solo-record-<seed>-<SHA8>/raw",
+  "new_real_recording_artifacts": [],
+  "artifacts": {
+    "experiments/2026-10-14-act-solo-teacher/record-plan.md": {
+      "bytes": 15255,
+      "sha256": "23a0db5e025b3db96ffcd8b192f357a809b3b5781bd3dd311bb5e1befc3f9cad"
+    },
+    "experiments/2026-10-14-act-solo-teacher/record-source-audit.json": {
+      "bytes": 3915,
+      "sha256": "03dbaf93b25074051856e1dda5e8bc2272d8399f272e4b08e3e5bbb8c70bce2f"
+    },
+    "experiments/2026-10-14-act-solo-teacher/record-seed-check.json": {
+      "bytes": 259,
+      "sha256": "5725ed8901b872dd1fbfa21c2f0e9477e7c7eba73ce544208002161a9dafcf04"
+    },
+    "experiments/2026-10-14-act-solo-teacher/record-pytest.txt": {
+      "bytes": 100,
+      "sha256": "45be75370824d393661582be1270d1fe1dfef552ea9dc5ec3311d84d99c19eec"
+    },
+    "experiments/2026-10-14-act-solo-teacher/solo-record-plan.json": {
+      "bytes": 69878,
+      "sha256": "054c140db6a7ccf5fc34babb4ecb58daabb1e82bd8fcaf5a8619e617476115bd"
+    },
+    "docs/gcp_simulation.md": {
+      "bytes": 5901,
+      "sha256": "369cc68b10c440c88880585d1e2a9059e131bce5deabf270500722293eb923e3"
+    }
+  },
+  "remaining": [
+    "pushed source SHA queue pin",
+    "corrected same-machine teacher gate",
+    "live unused seeds and budget/storage/memory checks",
+    "two actual pilot recordings and first30 check/visual review",
+    "explicit coordinator approval",
+    "48 actual recordings and raw integrity/retrieval",
+    "independent dataset admission and student training"
+  ]
+}
