@@ -117,3 +117,34 @@ def test_scan_records_coverage_and_advances_with_transport_event_signature():
     assert state['view']==1 and state['coverage'][0]['t']==3.
     assert events[0]['event']=='beam_tracking_coverage' and events[0]['frame_id']==2
     assert poses[0][2][0][0][6]==1200
+
+
+def test_final_response_is_preserved_without_selecting_skill():
+    from concurrent.futures import Future
+    from harness.e2e_end_model import Client
+    events=[];client=Client('http://127.0.0.1:18093/end');f=Future();f.set_result({'attempt':7,'decision':{'choice':'turn_memory','message':'','reason':'x'}});client.future=f
+    tr=NS(beam_clients={'r1':client},event=lambda t,event,**kw:events.append(dict(t=t,event=event,**kw)))
+    m.close(tr,30.)
+    assert client.future is None and len(events)==1
+    assert events[0]['response']['attempt']==7 and events[0]['executed'] is False
+    assert events[0]['finalizing'] is True
+
+
+def test_relay_accepts_simultaneous_robot_clients_without_paid_calls():
+    import threading
+    from concurrent.futures import ThreadPoolExecutor
+    from urllib.request import urlopen
+    from http.server import BaseHTTPRequestHandler
+    from scripts.e2e_beam_track_relay import RelayServer
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self,*args):pass
+        def do_GET(self):
+            self.send_response(200);self.end_headers();self.wfile.write(b'ok')
+    server=RelayServer(('127.0.0.1',0),Handler)
+    thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start();barrier=threading.Barrier(24)
+    def call(_):
+        barrier.wait(timeout=5)
+        with urlopen('http://127.0.0.1:'+str(server.server_port),timeout=5) as response:return response.read()
+    try:
+        with ThreadPoolExecutor(24) as pool:assert list(pool.map(call,range(24)))==[b'ok']*24
+    finally:server.shutdown();server.server_close();thread.join(timeout=5)

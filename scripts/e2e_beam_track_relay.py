@@ -5,6 +5,10 @@ from pathlib import Path
 from scripts.openrouter_upstream import keychain_key,http_send,MODEL
 from harness.e2e_beam_tracking import SYSTEM
 
+class RelayServer(ThreadingHTTPServer):
+    request_queue_size=64  # up to 32 robot clients may arrive at the stage barrier
+
+
 class Budget:
     # Worst advertised DeepInfra price and entire context window, including image
     # tokens, reserved BEFORE each attempt. Timeout/unknown usage retains reserve.
@@ -73,7 +77,7 @@ def serve(args):
                 return self.reply(502,dict(error='MODEL_CALL_FAILED',error_type=type(exc).__name__))
             finally:
                 record.update(wall_s=time.monotonic()-started,cost_usd=cost);budget.finish(index,cost,record);concurrency.release()
-    server=ThreadingHTTPServer(('127.0.0.1',args.port),Handler)
+    server=RelayServer(('127.0.0.1',args.port),Handler)
     timer=threading.Timer(args.wall_cap_s,server.shutdown);timer.daemon=True;timer.start()
     try:server.serve_forever(poll_interval=.2)
     finally:timer.cancel();server.server_close()

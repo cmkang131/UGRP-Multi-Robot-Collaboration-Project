@@ -233,3 +233,12 @@ def step(tr,rid,now,approach):
     cap=2. if phase=='wait' else 5.
     if now-state['phase_started']>=cap:finish(tr,rid,now,state,'bounded_skill_complete');return False,[dict(kind='hold')]
     return False,[dict(kind='hold') if phase=='wait' else copy.deepcopy(r.nav_command)]
+
+
+def close(tr,now):
+    """Preserve final paid responses without applying another skill after stop."""
+    for rid,client in tr.beam_clients.items():
+        client.close()
+        response=client.poll()
+        if response is not None:
+            tr.event(now,'beam_tracking_model_receipt',robot_id=rid,response=response,executed=False,finalizing=True)

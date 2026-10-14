@@ -18,3 +18,5 @@
 - **Fu et al. FLAF 2024 / revised 2025**: [논문](https://arxiv.org/abs/2409.03457). 이동 경로 추종과 PTU 시선 계획을 분리해 관측 가능한 지도 특징을 유지한다. 대상은 물체 파지가 아닌 visual teach-and-repeat이며 본 작업에 직접 성공률을 이전하지 않는다. 초록 확인, 공개 코드·전체 방법 재현은 미확인.
 
 확장 옵션은 파지 조건에 못 미치는 몸체 관측의 기억 갱신, 경로 회전·접근 시 기억 방위 팬 추종, 잃은 경우 기억 지점 재방문 및 순서 있는 주변 시야 훑기를 함께 포함한다. 탐지·기하·팬 제어·커버리지는 코드가 수행하고 LLM은 제안된 스킬만 고른다. 신선한 파지 관측의 승인 경로는 변경하지 않는다.
+
+- 실행 접속: Python socketserver 공식 문서 https://docs.python.org/3.11/library/socketserver.html — request_queue_size 기본 대기열 5와 subclass 확장. 게이트 동시 접속 3건 ConnectionReset은 대기열 포화 추정(직접 socket 계측 미확인); 64로 확대하고 유료 호출 동시 수 4는 유지. 종료 응답은 실행하지 않고 영수증만 저장.
