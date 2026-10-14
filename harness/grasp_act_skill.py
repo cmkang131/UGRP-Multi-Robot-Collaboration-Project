@@ -6,13 +6,13 @@ expiry/stop is enforced between primitive actions too. A done score alone
 never becomes a claim of physical success.
 """
 from collections.abc import Mapping
-from harness.grasp_act_contract import SKILLS, ROLES, CHUNK, PERIOD_S, finite
+from harness.grasp_act_contract import SKILLS, KIND_ROLES, CHUNK, PERIOD_S, finite
 
 
 def task(value):
-    if not isinstance(value, Mapping) or set(value) != {'skill', 'end'}:
+    if not isinstance(value, Mapping) or set(value) != {'skill', 'object_kind', 'end'}:
         raise ValueError('discrete skill/end instruction required')
-    if value['skill'] not in (*SKILLS, 'stop') or value['end'] not in ROLES:
+    if value['skill'] not in (*SKILLS, 'stop') or value['object_kind'] not in KIND_ROLES or value['end'] not in KIND_ROLES[value['object_kind']]:
         raise ValueError('unknown skill/end instruction')
     return dict(value)
 
@@ -42,7 +42,7 @@ class SkillSession:
         now, timeout_s = finite(now), finite(timeout_s)
         if not 0 < timeout_s <= 120:
             raise ValueError('bounded skill duration required')
-        if instruction['skill'] in ('grasp_end', 'regrasp') and not (
+        if instruction['skill'] in ('grasp', 'regrasp') and not (
             handoff['map_arrived'] is True and 0 <= finite(handoff['age_s']) <= 1.
             and 0 <= finite(handoff['distance_m']) <= .8
         ):

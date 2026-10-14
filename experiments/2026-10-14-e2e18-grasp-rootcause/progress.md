@@ -20,3 +20,9 @@ VM 사용 조건: **PR #483의 “VM3 비움” 코멘트 또는 조정자 확�
 후속 저장점: 기존 원본72실행(각24개)의 단계/오차 재집계 완료, `saved-audit.json.zst`에 원본별 해시·경로, `summary.json`에 표를 기록했다. 영상 두 대표 실패 각6프레임 직접 확인. r69/r76/r80 전 단계 독립 재집계 및 카메라/팔 영역 계산은 미완료로 명시. 교사/ACT 물리 실행0, 학습0.
 
 확정 스킬 경계 구현: `harness/grasp_act_contract.py`, `grasp_act_skill.py`. 색 끝 one-hot, 정답 입력 거부, 이전 끝/스킬 청크 폐기, 종료와 자기 영상 확인 분리. 다음은 v3 정답 교사와 ACT adapter/데이터 loader, Kaggle 준비. VM3는 여전히 명시적 비움 확인 전 미사용. Kaggle private 업로드는 후속 사용자 승인됨.
+
+2026-10-14 ACT 하나/멀티태스크 후속 결정: 입력 schema v2, `grasp|wait|regrasp|release` + 화물9종 + 자리8종, r1/r2/r3. 이전 beam-only schema v1로 새 모델을 학습하지 않는다. 교사/장면/데이터 export/재개 학습 코드 작성, 물리 실행 전이다. CPU 실제 ACT 검사2/2 및 오프라인23/23 통과. 첫 optional 검사 import 경로 오류는 수집 단계에서 실패했고 고친 뒤 통과했다.
+
+`teacher-gate-plan.json`: pair20개·고유seed20·r1 청록10/20·파랑10/20·벽근처1/20. 실제 s1/s3/s6 배경을 사용하며 원 화물은 모두 유지한다. s1–s8 v3는 구 하드웨어이고 v4가 같은 작업의 현재 v3 하드웨어 대응본이므로 v4를 선택했다. 중간 적재 상태·동작 중 짝·1대/3대 화물 교사는 아직 미구현이다. 등록 workflow `grasp-act-teacher@1.0.0` (기존 v숫자 번들 변경 없음).
+
+다음: 학습/수집 코드 오프라인 회귀·Kaggle 인터넷 OFF GPU 패키지, own-RGB 학생 실행기/별도 종료 확인. VM3 명시 비움 대기 계속. VM3 허가 뒤 먼저 물리 교사20개와 속도게이트, ≥95% 통과 전 수집 규모를 늘리지 않는다.

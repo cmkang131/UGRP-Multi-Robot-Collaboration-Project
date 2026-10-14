@@ -3,7 +3,7 @@
   "status": "offline_implementation_pending_vm_release",
   "classification": "dev",
   "research_result": false,
-  "scope_changed": "2026-10-14 teacher -> own RGB and issued-command ACT; training authorized; GPU decision pending",
+  "scope_changed": "2026-10-14 one multitask ACT for local grasp/release of s1-s8 cargo; map code navigation, Gemma skill decisions, private Kaggle GPU training authorized",
   "source_sha": "d7f13494b3673c0205266119fe082ed92b660f73",
   "audit": {
     "status": "short_saved_stage_audit_completed_with_limits",
@@ -1324,7 +1324,9 @@
     "gpu_zero_quota": "28/28; Azure returns strings, converted to integers",
     "initial_check_note": "First assertion compared string 0 to integer 0 and failed; corrected type conversion and rechecked. No software/physical tests were run for this document commit.",
     "visual_frames": "12/12 sha256 matched, directly viewed",
-    "contract_tests": "15/15 contract and skill boundary offline tests"
+    "contract_tests": "23/23 offline contract, skill, teacher math, dataset and scene-only construction; no World or physics",
+    "act_tests": "2/2 CPU forward/backward, deployed done gradient, save/readback under exclusive lock",
+    "workflow_and_static": "44/44 including 23 grasp tests and catalog read-only planning; missing new catalog sample fixed before pass"
   },
   "kaggle": {
     "private_dataset_upload_authorized": true,
@@ -1333,5 +1335,46 @@
     "uploaded": false,
     "kernel_submitted": false,
     "credentials_location": "Mac only"
+  },
+  "implementation": {
+    "student_schema": "ugrp.grasp_act.student.v2",
+    "skills": [
+      "grasp",
+      "wait",
+      "regrasp",
+      "release"
+    ],
+    "object_kinds": [
+      "cyan",
+      "green",
+      "red",
+      "yellow",
+      "can",
+      "tile",
+      "long_beam",
+      "heavy_crate",
+      "tri_frame"
+    ],
+    "roles": [
+      "teal",
+      "blue",
+      "west",
+      "east",
+      "any",
+      "v0",
+      "v1",
+      "v2"
+    ],
+    "robots": [
+      "r1",
+      "r2",
+      "r3"
+    ],
+    "act_forward_backward_checkpoint": "2/2 CPU offline tests",
+    "static_tests": "23/23",
+    "teacher_scene": "s1/s3/s6 v4: same s1-s8 task content, current v3 hardware; 20 randomized pair plans, not executed",
+    "workflow": "grasp-act-teacher@1.0.0",
+    "student_worker_and_visual_verifier": "not yet integrated",
+    "kaggle_submission": "not submitted"
   }
 }

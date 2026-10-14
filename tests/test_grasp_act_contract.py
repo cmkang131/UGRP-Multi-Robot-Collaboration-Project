@@ -12,9 +12,9 @@ def command(t=0):
             'pwm': {'1': 2000, '3': 740, '4': 2320, '5': 1320, '6': 1500}}
 
 
-def observation(t=0, skill='grasp_end'):
+def observation(t=0, skill='grasp'):
     return {'schema': SCHEMA, 'sample_id': f'ep001:{t}:r1', 'robot_id': 'r1',
-            't': t, 'skill': skill, 'role': 'teal',
+            't': t, 'object_kind':'long_beam','skill': skill, 'role': 'teal',
             'rgb': [{'path': 'rgb/a.jpg', 'sha256': 'a'*64, 't': t, 'robot_id': 'r1'} for _ in range(2)],
             'issued': [command(t)] * HISTORY}
 
@@ -53,7 +53,7 @@ def test_action_roundtrip_and_bounded_done():
 
 def test_chunk_masks_end_of_skill_and_timeout_is_not_done():
     obs = [observation(0), observation(.1), observation(.2, 'release')]
-    labels = [{'sample_id': x['sample_id'], 'skill': x['skill'], 'done': i == 1,
+    labels = [{'sample_id': x['sample_id'], 'object_kind':'long_beam','skill': x['skill'], 'done': i == 1,
                'terminal_reason': 'skill_success' if i == 1 else None,
                'clean_teacher_command': command(x['t'])} for i, x in enumerate(obs)]
     windows = training_windows(obs, labels, chunk=4)
@@ -68,7 +68,7 @@ def test_cross_actor_sequence_rejected():
     obs = [observation(0), observation(.1)]
     obs[1]['robot_id'] = 'r2'
     for ref in obs[1]['rgb']: ref['robot_id'] = 'r2'
-    labels = [{'sample_id': x['sample_id'], 'skill': x['skill'], 'done': False,
+    labels = [{'sample_id': x['sample_id'], 'object_kind':'long_beam','skill': x['skill'], 'done': False,
                'terminal_reason': None, 'clean_teacher_command': command(x['t'])} for x in obs]
     with pytest.raises(ValueError, match='crosses'):
         training_windows(obs, labels)

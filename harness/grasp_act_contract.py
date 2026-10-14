@@ -8,16 +8,20 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping
 
-SCHEMA = 'ugrp.grasp_act.student.v1'
-SKILLS = ('grasp_end', 'wait', 'regrasp', 'release')
-ROLES = ('teal', 'blue')
+SCHEMA = 'ugrp.grasp_act.student.v2'
+SKILLS = ('grasp', 'wait', 'regrasp', 'release')
+KINDS = ('cyan', 'green', 'red', 'yellow', 'can', 'tile', 'long_beam', 'heavy_crate', 'tri_frame')
+ROLES = ('teal', 'blue', 'west', 'east', 'any', 'v0', 'v1', 'v2')
+KIND_ROLES = {**{k: ('west',) for k in ('cyan', 'green', 'red', 'yellow')},
+              'can': ('any',), 'tile': ('west', 'east'), 'long_beam': ('teal', 'blue'),
+              'heavy_crate': ('west', 'east'), 'tri_frame': ('v0', 'v1', 'v2')}
 SERVOS = (1, 3, 4, 5, 6)
 HISTORY = 4
 CHUNK = 8
 PERIOD_S = .1
 ACTION_DIM = 10  # drive x/y/yaw, duration, five absolute PWM targets, skill done
-CONTEXT_DIM = HISTORY * 10 + len(SKILLS) + len(ROLES)
-FIELDS = {'schema', 'robot_id', 'sample_id', 't', 'skill', 'role', 'rgb', 'issued'}
+CONTEXT_DIM = HISTORY * 10 + len(SKILLS) + len(KINDS) + len(ROLES)
+FIELDS = {'schema', 'robot_id', 'sample_id', 't', 'skill', 'object_kind', 'role', 'rgb', 'issued'}
 COMMAND_FIELDS = {'t', 'drive', 'duration_s', 'pwm'}
 
 
@@ -54,10 +58,10 @@ def command(row):
 def validate_observation(row):
     if not isinstance(row, Mapping) or set(row) != FIELDS or row['schema'] != SCHEMA:
         raise ValueError('student observation whitelist mismatch')
-    if row['robot_id'] not in ('r1', 'r2') or not isinstance(row['sample_id'], str):
+    if row['robot_id'] not in ('r1', 'r2', 'r3') or not isinstance(row['sample_id'], str):
         raise ValueError('unknown actor')
     t = finite(row['t'])
-    if row['skill'] not in SKILLS or row['role'] not in ROLES:
+    if row['skill'] not in SKILLS or row['object_kind'] not in KIND_ROLES or row['role'] not in KIND_ROLES[row['object_kind']]:
         raise ValueError('task instruction must be a skill and named end')
     if len(row['rgb']) != 2 or len(row['issued']) != HISTORY:
         raise ValueError('two own images and four own command snapshots required')
@@ -89,6 +93,7 @@ def context(row):
         values.extend((x['pwm'][str(s)]-1500)/1000 for s in SERVOS)
         values.append(min(5., row['t']-x['t'])/5.)
     values.extend(float(row['skill'] == s) for s in SKILLS)
+    values.extend(float(row['object_kind'] == s) for s in KINDS)
     values.extend(float(row['role'] == s) for s in ROLES)
     assert len(values) == CONTEXT_DIM
     return values
@@ -129,7 +134,8 @@ def training_windows(observations, labels, *, chunk=CHUNK):
         if (obs['robot_id'], obs['sample_id'].split(':')[0]) != identity or obs['t'] < previous_t:
             raise ValueError('sequence crosses actor/episode or reverses time')
         previous_t = obs['t']
-        if label['sample_id'] != obs['sample_id'] or label['skill'] != obs['skill']:
+        if (label['sample_id'] != obs['sample_id'] or label['skill'] != obs['skill']
+                or label['object_kind'] != obs['object_kind'] or type(label['done']) is not bool):
             raise ValueError('misaligned teacher target')
         if label['done'] and label['terminal_reason'] != 'skill_success':
             raise ValueError('only successful skill completion is a done target')
@@ -137,7 +143,7 @@ def training_windows(observations, labels, *, chunk=CHUNK):
         ended = False
         for k in range(chunk):
             j = i+k
-            valid = not ended and j < len(labels) and (observations[j]['skill'], observations[j]['role']) == (obs['skill'], obs['role'])
+            valid = not ended and j < len(labels) and (observations[j]['skill'], observations[j]['object_kind'], observations[j]['role']) == (obs['skill'], obs['object_kind'], obs['role'])
             if valid:
                 y = labels[j]
                 action.append(encode_action(y['clean_teacher_command'], done=y['done']))
