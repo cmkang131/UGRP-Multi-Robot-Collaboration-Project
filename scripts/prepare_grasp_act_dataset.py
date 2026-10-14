@@ -13,7 +13,7 @@ from harness.grasp_act_contract import validate_observation
 
 def export_episode(source,target):
     source=Path(source);result=read(source/'result.json');plan=read(source/'plan.json')
-    if result.get('data_admitted') is not True or result.get('student_execution') is not False:
+    if result.get('recording_mode')!='training' or result.get('data_admitted') is not True or result.get('student_execution') is not False:
         raise ValueError('raw teacher run not admitted')
     manifest=read(source/'manifest.json')
     # Verify every source used, including the success and setup records.
@@ -55,8 +55,8 @@ def export_episode(source,target):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--runs',type=Path,nargs='+',required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--teacher-gate',type=Path,required=True);a=p.parse_args()
     gate=read(a.teacher_gate)
-    if gate['N']<20 or gate['n']/gate['N']<.95 or gate['object_kind']!='long_beam':
-        raise ValueError('teacher cohort gate >=95% and N>=20 required before collection export')
+    if gate['N']<40 or gate['n']/gate['N']<.95 or gate['object_kind']!='long_beam':
+        raise ValueError('teacher cohort gate >=95% and N>=40 required before collection export')
     a.out.mkdir(parents=True,exist_ok=False);report={'exported':[],'rejected':[]}
     for source in a.runs:
         try:

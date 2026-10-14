@@ -13,7 +13,7 @@ def read(path):
 
 def summarize(rows,planned):
     completed=[r for r in rows if r.get('status')=='complete' and r.get('exit',0)==0]
-    return {'object_kind':'long_beam','n':sum(r.get('data_admitted') is True for r in completed),
+    return {'object_kind':'long_beam','n':sum(r.get('physical_success') is True for r in completed),
         'N':len(completed),'planned_N':planned,'started_N':len(rows),
         'joint_held_n':sum(r.get('joint_held') is True for r in completed),
         'robots':{rid:{'n':sum(r.get('teachers',{}).get(rid,{}).get('outcome')=='success' for r in completed),
@@ -33,6 +33,7 @@ def wave(root,plan,indices,cap,*,probe,limit):
             write(target/'RUN_META.json',{**parent,'class':'dev','pr':484,'purpose':'speed_probe' if probe else 'teacher_gate'})
             command=[sys.executable,'-m','scripts.sim_cli','workflow','run','grasp-act-teacher','--',
                 '--plan',str(plan),'--episode',str(index),'--out',str(target/'raw'),'--cap-s',str(cap)]
+            if probe:command.append('--probe')
             log=(target/'log.txt').open('x');at=time.monotonic()
             proc=subprocess.Popen(command,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,env=env)
             write(target/'PROCESS.json',{'pid':proc.pid,'command':command,'started_unix':time.time()})
@@ -43,7 +44,7 @@ def wave(root,plan,indices,cap,*,probe,limit):
                 result=read(target/'raw/result.json');progress=read(target/'raw/progress.json')
                 states.append({'index':index,'exit':proc.poll(),'progress':progress,'status':result.get('status')})
                 if proc.poll() not in (None,0):reason='CHILD_HOST_ERROR';break
-                if not probe and result.get('status')=='complete' and result.get('data_admitted') is False:
+                if not probe and result.get('status')=='complete' and result.get('physical_success') is False:
                     reason='PHYSICAL_TEACHER_FAILURE';break
                 if now-at > (max(300.,30*limit*3) if probe else max(600.,cap*limit*3)):
                     reason='WALL_TIMEOUT';break
@@ -78,7 +79,7 @@ def wave(root,plan,indices,cap,*,probe,limit):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--plan',type=Path,required=True)
     p.add_argument('--concurrency',type=int,default=16);p.add_argument('--speed-gate-limit',type=float,default=3.5)
-    p.add_argument('--cap-s',type=float,default=180.);p.add_argument('--probe-only',action='store_true');a=p.parse_args()
+    p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true');a=p.parse_args()
     root=a.root.resolve();require_azure(root);plan=a.plan.resolve();episodes=read(plan)['episodes']
     if not 1<=a.concurrency<=16 or len(episodes)<a.concurrency:raise ValueError('explicit 1..16 concurrency and enough plans required')
     if not 0<a.cap_s<=180:raise ValueError('finite simulation cap required')

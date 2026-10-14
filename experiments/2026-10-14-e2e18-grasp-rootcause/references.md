@@ -30,3 +30,6 @@
 
 - [MoveIt 공식 pick/place 예제](https://github.com/moveit/moveit_tutorials/blob/master/doc/pick_place/src/pick_place_tutorial.cpp): 접근 거리의 최소/희망 값을 구분한다. [MoveIt Grasps](https://moveit.picknik.ai/main/doc/examples/moveit_grasps/moveit_grasps_tutorial.html)는 도달 가능성 필터와 접근/들기/후퇴 경로를 설명한다. 우리 교사도 고정0.5m 점 하나 대신 지도 차체 여유를 만족하는 후보 접근점을 선택한다. MoveIt 전체를 도입한 것은 아니며 기존 A*와 v3 IK를 재사용한다.
 - [MuJoCo 공식 렌더 샘플](https://mujoco.readthedocs.io/en/3.15.0/programming/samples.html): 물리 진행과 저장 영상의 fps를 따로 설정한다. 이를 따라 명령10Hz·영상5Hz로 수집하며 화각/배치/화면비는 고정한다. 640×480→320×240는 별도 관측 표본 조건이며 실제 개선은 16동시 게이트에서 측정한다.
+
+- 교사 재사용: `scripts/zone_teacher.py:_drive_to/_grasp_targets`, `experiments/2026-09-25-zone-cargo-catalogue/README.md`. 옛 pair_beam 52.3 SIM초는 seed11 빈 바닥·구형 구동·local_contact_fine의 전체 이송 1/1이며 현재 무작위 v7 파지 성공으로 승계하지 않는다.
+- [WPILib feedforward 공식 문서](https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/feedforward.html), 2026-10-14 열람: kS 마찰 보상과 단위 일치. 본 v7 relay 대응은 고정 시뮬레이터 명령 모델에서 도출한 포트 보상이며 WPILib를 그대로 설치한 것이나 실물 보정 완료가 아니다.

@@ -8,7 +8,7 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping
 
-SCHEMA = 'ugrp.grasp_act.student.v2'
+SCHEMA = 'ugrp.grasp_act.student.v3'
 SKILLS = ('grasp', 'wait', 'regrasp', 'release')
 KINDS = ('cyan', 'green', 'red', 'yellow', 'can', 'tile', 'long_beam', 'heavy_crate', 'tri_frame')
 ROLES = ('teal', 'blue', 'west', 'east', 'any', 'v0', 'v1', 'v2')
@@ -25,6 +25,11 @@ FIELDS = {'schema', 'robot_id', 'sample_id', 't', 'skill', 'object_kind', 'role'
 COMMAND_FIELDS = {'t', 'drive', 'duration_s', 'pwm'}
 
 
+def wheel_mix(drive):
+    f, l, t = drive
+    return (f-l-t, f+l+t, f+l-t, f-l+t)
+
+
 def finite(value):
     if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
         raise ValueError('finite numeric value required')
@@ -36,16 +41,12 @@ def command(row):
         raise ValueError('issued-command whitelist mismatch')
     t, duration = finite(row['t']), finite(row['duration_s'])
     drive = [finite(v) for v in row['drive']]
-    if len(drive) != 3 or sum(v != 0 for v in drive) > 1:
-        raise ValueError('one drive axis at a time')
-    if any(v != 0 and abs(v) != .35 for v in drive):
-        raise ValueError('v7 primitive speed must be 35')
-    if duration not in (0., .06, .15):
-        raise ValueError('unknown pulse duration')
+    if len(drive) != 3 or max(map(abs, wheel_mix(drive))) > 1.+1e-9:
+        raise ValueError('continuous mecanum command exceeds wheel range')
+    if duration not in (0., .15):
+        raise ValueError('continuous drive requires a 150 ms lease refreshed at 10 Hz')
     if any(drive) != (duration > 0):
         raise ValueError('hold/pulse duration mismatch')
-    if drive[1] and duration != .06:
-        raise ValueError('lateral drive requires the existing 60 ms fine primitive')
     pwm = row['pwm']
     if not isinstance(pwm, Mapping) or set(pwm) != {str(s) for s in SERVOS}:
         raise ValueError('exact own issued PWM channels required')
@@ -88,7 +89,7 @@ def context(row):
     validate_observation(row)
     values = []
     for x in row['issued']:
-        values.extend(v/.35 for v in x['drive'])
+        values.extend(x['drive'])
         values.append(x['duration_s']/.15)
         values.extend((x['pwm'][str(s)]-1500)/1000 for s in SERVOS)
         values.append(min(5., row['t']-x['t'])/5.)
@@ -101,21 +102,19 @@ def context(row):
 
 def encode_action(issued, *, done=False):
     x = command(issued)
-    return [v/.35 for v in x['drive']] + [x['duration_s']/.15] + [
+    return list(x['drive']) + [x['duration_s']/.15] + [
         (x['pwm'][str(s)]-1500)/1000 for s in SERVOS] + [float(done)]
 
 
 def decode_action(values):
-    """Bounded native primitives; no pose correction or teacher fallback."""
+    """Continuous, jointly scaled mecanum command; no truth correction."""
     if len(values) != ACTION_DIM:
         raise ValueError('wrong ACT output size')
     v = [finite(x) for x in values]
     done = v[-1] >= .65
-    drive = [0., 0., 0.]
-    axis = max(range(3), key=lambda i: abs(v[i]))
-    if not done and abs(v[axis]) >= .5:
-        drive[axis] = math.copysign(.35, v[axis])
-    duration = (.06 if axis == 1 or v[3] < .7 else .15) if any(drive) else 0.
+    scale = max(1., max(map(abs, wheel_mix(v[:3]))))
+    drive = [x/scale for x in v[:3]] if not done and v[3] >= .5 else [0., 0., 0.]
+    duration = .15 if any(drive) else 0.
     pwm = {str(s): round(max(500, min(2500, 1500+1000*v[i+4])))
            for i, s in enumerate(SERVOS)}
     return {'drive': drive, 'duration_s': duration, 'pwm': pwm,

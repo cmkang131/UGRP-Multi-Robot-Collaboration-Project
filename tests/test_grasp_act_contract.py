@@ -43,9 +43,9 @@ def test_context_is_owned_commands_and_task_only():
 
 
 def test_action_roundtrip_and_bounded_done():
-    x = command(); x.update(drive=[-.35, 0., 0.], duration_s=.06)
+    x = command(); x.update(drive=[-.35, 0., 0.], duration_s=.15)
     d = decode_action(encode_action(x))
-    assert d['drive'] == x['drive'] and d['pwm'] == x['pwm'] and d['duration_s'] == .06
+    assert d['drive'] == x['drive'] and d['pwm'] == x['pwm'] and d['duration_s'] == .15
     d = decode_action(encode_action(x, done=True))
     assert d['done'] and d['drive'] == [0., 0., 0.]
     with pytest.raises(ValueError): decode_action([float('nan')]*10)
@@ -74,8 +74,20 @@ def test_cross_actor_sequence_rejected():
         training_windows(obs, labels)
 
 
-def test_lateral_output_matches_fine_port():
-    from harness.grasp_act_contract import command as check
-    x = command(); x.update(drive=[0., .35, 0.], duration_s=.15)
-    with pytest.raises(ValueError, match='lateral'): check(x)
-    assert decode_action([0., 1., 0., 1., 0., 0., 0., 0., 0., 0.])['duration_s'] == .06
+def test_continuous_diagonal_roundtrip_and_joint_wheel_bound():
+    from harness.grasp_act_contract import command as check, wheel_mix
+    x=command();x.update(drive=[.27,-.12,.07],duration_s=.15)
+    assert decode_action(encode_action(check(x)))['drive']==x['drive']
+    d=decode_action([4.,3.,2.,1.,0.,0.,0.,0.,0.,0.])
+    assert max(map(abs,wheel_mix(d['drive'])))<=1.+1e-9
+    x['drive']=[1.,1.,0.]
+    with pytest.raises(ValueError,match='wheel range'):check(x)
+
+
+def test_native_feedforward_uses_only_issued_command_signs():
+    from sim.grasp_act_port import native_wheels
+    start=native_wheels([.02,0.,0.],[0.]*4)
+    assert start==(.35,)*4
+    moving=native_wheels([.02,0.,0.],start)
+    assert moving==pytest.approx((.02+1./12.,)*4)
+    assert native_wheels([0.,0.,0.],moving)==(0.,)*4

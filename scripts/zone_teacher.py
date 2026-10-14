@@ -74,6 +74,24 @@ def _wrap(angle):
     return (angle + math.pi) % (2*math.pi) - math.pi
 
 
+def proportional_drive(pose, goal, target, heading):
+    """The existing zone teacher's continuous approach law, shared without tuning."""
+    x, y, yaw = pose
+    dist = math.hypot(goal[0]-x, goal[1]-y)
+    wx, wy = target[0]-x, target[1]-y
+    norm = max(math.hypot(wx, wy), 1e-9)
+    speed = min(1., dist/.25)
+    vx, vy = wx/norm*speed, wy/norm*speed
+    want = heading if dist < .6 else math.atan2(wy, wx)
+    err = _wrap(want-yaw)
+    fwd = math.cos(yaw)*vx + math.sin(yaw)*vy
+    left = -math.sin(yaw)*vx + math.cos(yaw)*vy
+    scale = 1. if abs(err) < .5 else .3
+    return {'forward': float(np.clip(.15*fwd*scale, -.05, .15)),
+            'left': float(np.clip(.10*left*scale, -.10, .10)),
+            'turn': float(np.clip(.6*err, -.15, .15))}
+
+
 class PeerDisc(tuple):
     """(x, y, r) keep-out around another robot. It is never released: when the
     robot already overlaps it, it only stops the robot getting any closer."""
@@ -369,18 +387,7 @@ class TeacherRobot:
         while len(self.path) > 1 and math.hypot(self.path[0][0]-x, self.path[0][1]-y) < .12:
             self.path.pop(0)
         target = self.path[0] if len(self.path) > 1 else goal
-        wx, wy = target[0]-x, target[1]-y
-        norm = max(math.hypot(wx, wy), 1e-9)
-        speed = min(1., dist/.25)
-        vx, vy = wx/norm*speed, wy/norm*speed
-        want = heading if dist < .6 else math.atan2(wy, wx)
-        err = _wrap(want - yaw)
-        fwd = math.cos(yaw)*vx + math.sin(yaw)*vy
-        left = -math.sin(yaw)*vx + math.cos(yaw)*vy
-        scale = 1. if abs(err) < .5 else .3
-        self.port.apply({'kind': 'mecanum', 'forward': float(np.clip(.15*fwd*scale, -.05, .15)),
-                         'left': float(np.clip(.10*left*scale, -.10, .10)),
-                         'turn': float(np.clip(.6*err, -.15, .15)), 'duration_s': .15}, now)
+        self.port.apply({'kind': 'mecanum', **proportional_drive((x,y,yaw),goal,target,heading), 'duration_s': .15}, now)
         return False
 
     def _align(self, target_xy, now):

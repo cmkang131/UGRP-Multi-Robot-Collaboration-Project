@@ -20,8 +20,8 @@ def test_teacher_uses_v3_station_not_old_v2_radius():
 
 def test_teacher_corrects_sideways_with_existing_native_primitive():
     t=GraspTeacher('r1','teal',FOLDED,bounds=(-3,3,-3,3));t.started=True;t.phase='align'
-    a,done=t.step(truth([.527,-.03,0.]),0)
-    assert a['drive']==[0.,.35,0.] and a['duration_s']==.06 and not done
+    a,done=t.step(truth([.527,-.04,0.]),0)
+    assert a['drive'][1]>0 and a['duration_s']==.15 and not done
 
 
 def test_pregrasp_near_wall_can_shorten_without_changing_assigned_end():
@@ -29,7 +29,7 @@ def test_pregrasp_near_wall_can_shorten_without_changing_assigned_end():
     x={'robots':{'r1':{'pose':[.42,-1.58,-2.84]}},
        'beam':{'pose':[-.163,-2.038,.096],'ends':{'teal':[-.432,-2.064,.024]}}}
     t.step(x,0.,permit_pick=False)
-    assert t.staging_distance==.4 and t.path
+    assert t.staging_distance==.203 and t.path
     assert t.end=='teal' and t.outcome is None
 
 
@@ -68,9 +68,9 @@ def test_scene_keeps_real_scenario_inventory_without_world():
 
 def test_teacher_batch_does_not_count_interrupted_or_host_error_as_physical_trials():
     from scripts.run_grasp_act_batch import summarize
-    rows=[{'status':'complete','data_admitted':True,'joint_held':True,'exit':0,
+    rows=[{'status':'complete','physical_success':True,'joint_held':True,'exit':0,
            'teachers':{r:{'outcome':'success'} for r in ('r1','r2')}},
-          {'status':'complete','data_admitted':False,'exit':0,
+          {'status':'complete','physical_success':False,'exit':0,
            'teachers':{'r1':{'outcome':'phase_timeout'},'r2':{'outcome':'episode_timeout'}}},
           {'status':'interrupted','exit':130}, {'status':'HOST_ERROR','exit':1}]
     result=summarize(rows,20)
@@ -78,3 +78,21 @@ def test_teacher_batch_does_not_count_interrupted_or_host_error_as_physical_tria
     assert result['robots']['r1']=={'n':1,'N':2}
     assert result['interrupted']==1 and result['host_errors']==1
     assert result['failure_reasons']=={'phase_timeout':1,'episode_timeout':1}
+
+
+def test_failed_route_cached_until_next_replan(monkeypatch):
+    import sim.grasp_act_teacher as module
+    calls=[]
+    monkeypatch.setattr(module,'plan_path',lambda *a,**k:calls.append(a) or None)
+    t=GraspTeacher('r1','teal',FOLDED,bounds=(-3,3,-3,3));t.started=True
+    for now in (0.,.1,.2,.9,1.):t.step(truth([-.5,0.,0.]),now)
+    assert len(calls)==2 and t.no_path_calls==2
+
+
+def test_stop_command_stops_wheels_without_cancelling_arm():
+    from scripts.run_grasp_act_teacher import apply
+    from types import SimpleNamespace
+    calls=[];port=SimpleNamespace(stop=lambda:calls.append('stop'),apply=lambda *a:calls.append(a))
+    c={'t':0.,'drive':[0.,0.,0.],'duration_s':0.,'pwm':{str(k):v for k,v in FOLDED.items()}}
+    apply(port,c,0.,c)
+    assert calls==['stop']

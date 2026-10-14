@@ -18,9 +18,10 @@ def write(path,value):
 
 
 def apply(port,value,now,previous):
-    """Zero drive means no new pulse; native lease expires on every substep."""
+    """Same continuous actuator path for teacher and student; zero stops wheels."""
     if any(value['drive']):
         port.apply(dict(kind='mecanum',**dict(zip(('forward','left','turn'),value['drive'])),duration_s=value['duration_s']),now)
+    else:port.stop()
     for s in SERVOS:
         p=value['pwm'][str(s)]
         if p != previous['pwm'][str(s)]:
@@ -73,14 +74,14 @@ def compress_logs(out):
             'sha256':hashlib.sha256(compressed).hexdigest(),'decoded_sha256':hashlib.sha256(raw).hexdigest()})
 
 
-def run(plan,out,*,cap_s=120.,noise=False):
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False):
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use released VM3')
     import mujoco
     import numpy as np
     from sim.grasp_act_scene import make_scene
     from sim.grasp_act_teacher import GraspTeacher
     from sim.masterpi_drive_friction_v7 import build_world,PROFILE
-    from sim.s2_align_pulse import FinePulsePort
+    from sim.grasp_act_port import ContinuousActPort
     from harness.static_keepouts import keepout_rects
     rng=np.random.default_rng(plan['seed']);out.mkdir(parents=True,exist_ok=False)
     write(out/'plan.json',plan)
@@ -92,10 +93,11 @@ def run(plan,out,*,cap_s=120.,noise=False):
     timings={k:0. for k in ('physics','rgb','evaluation','teacher','io')}
     report={'status':'running','source_sha':sha,'teacher_success_n':0,'teacher_N':len(plan['roles']),
         'joint_held':None,'data_admitted':False,'assignment_source':plan['assignment_source'],
-        'student_execution':False,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off'}
+        'student_execution':False,'recording_mode':'training' if record_training else 'success_measurement',
+        'physical_success':False,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off'}
     write(out/'result.json',report)
     try:
-        world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=320,height=240,render=True,
+        world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=640 if record_training else 320,height=480 if record_training else 240,render=True,
             warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
         scene.setup(world)
         # All remaining scenario cargo stays present. Only authorized randomized
@@ -103,9 +105,10 @@ def run(plan,out,*,cap_s=120.,noise=False):
         from sim.zone_cargo import place, CargoInstance
         place(world,[CargoInstance('beam_1','long_beam',tuple(plan['beam_pose']))])
         (out/'scene.xml').write_text(world.scene_xml);write(out/'scene.json',scene.manifest)
-        report['observation_sampling']={'rgb_size':[320,240],'rgb_hz':5,'control_hz':10,
+        report['observation_sampling']={'rgb_size':[640,480] if record_training else None,'rgb_hz':10 if record_training else 0,
+            'review_size':[320,240],'review_hz':1,'control_hz':10,
             'aspect_ratio_unchanged':True,'camera_fov_and_pose_unchanged':True}
-        ports={rid:FinePulsePort(world,rid,allow_reverse=True,allow_mecanum=True,min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1') for rid in plan['roles']}
+        ports={rid:ContinuousActPort(world,rid,allow_reverse=True,allow_mecanum=True) for rid in plan['roles']}
         # Setup-only pan target: no model/camera changes. All later motion is issued commands.
         for rid,port in ports.items():port.apply({'kind':'look','pan_pulse':plan['initial_pan'][rid]},float(world.data.time))
         until=float(world.data.time)+.5
@@ -124,8 +127,11 @@ def run(plan,out,*,cap_s=120.,noise=False):
             initial=command({'t':origin,'drive':[0.,0.,0.],'duration_s':0.,'pwm':pwm})
             previous[rid]=initial;history[rid]=deque([initial]*HISTORY,maxlen=HISTORY)
             teachers[rid]=GraspTeacher(rid,end,pwm,bounds=scene.config['static_map']['bounds_m'],rects=keepout_rects(scene.config['static_map']))
-            (out/'rgb'/rid).mkdir(parents=True)
-            student=(out/f'student-{rid}.jsonl').open('w');label=(out/f'teacher-{rid}.jsonl').open('w');streams.extend([student,label]);writers[rid]=(student,label)
+            student=None
+            if record_training:
+                (out/'rgb'/rid).mkdir(parents=True)
+                student=(out/f'student-{rid}.jsonl').open('w');streams.append(student)
+            label=(out/f'teacher-{rid}.jsonl').open('w');streams.append(label);writers[rid]=(student,label)
         ev=(out/'eval-only.jsonl').open('w');streams.append(ev)
         (out/'eval-overview').mkdir()
         inst=next(x for x in scene.cargo if x.item_id=='beam_1');i=0;written=0;both_since=None;all_done_since=None
@@ -146,14 +152,16 @@ def run(plan,out,*,cap_s=120.,noise=False):
             permit=all(x.phase in ('ready','pick','verify','done') for x in teachers.values())
             for rid,t in teachers.items():
                 at=time.monotonic()
-                if i % 2 == 0:
+                sample_id=f"{plan['episode_id']}:{i}:{rid}"
+                if record_training:
                     capture=ports[rid].capture();jpg=base64.b64decode(capture['image']);path=f'rgb/{rid}/{i:06d}.jpg';(out/path).write_bytes(jpg)
                     ref={'path':path,'sha256':hashlib.sha256(jpg).hexdigest(),'t':now,'robot_id':rid}
                     pair=[images[rid][-1] if rid in images else ref,ref];images[rid]=pair
+                    obs={'schema':SCHEMA,'robot_id':rid,'sample_id':sample_id,'t':now,
+                        'object_kind':'long_beam','skill':'grasp','role':t.end,'rgb':images[rid],'issued':list(history[rid])}
+                    validate_observation(obs)
+                    writers[rid][0].write(json.dumps(obs)+'\n')
                 timings['rgb']+=time.monotonic()-at
-                obs={'schema':SCHEMA,'robot_id':rid,'sample_id':f"{plan['episode_id']}:{i}:{rid}",'t':now,
-                    'object_kind':'long_beam','skill':'grasp','role':t.end,'rgb':images[rid],'issued':list(history[rid])}
-                validate_observation(obs)
                 at=time.monotonic()
                 clean,done=t.step(truth,now,permit_pick=permit)
                 timings['teacher']+=time.monotonic()-at
@@ -165,17 +173,18 @@ def run(plan,out,*,cap_s=120.,noise=False):
                     else:
                         sid=str(rng.choice([3,4,5]));applied['pwm'][sid]=int(np.clip(applied['pwm'][sid]+rng.normal(0,8),500,2500))
                 command(applied)
-                label={'sample_id':obs['sample_id'],'object_kind':'long_beam','skill':obs['skill'],'done':done,
+                label={'sample_id':sample_id,'object_kind':'long_beam','skill':'grasp','done':done,
                     'terminal_reason':'skill_success' if done else None,'clean_teacher_command':clean,
                     'applied_command':applied,'perturbed':perturbed,'teacher_phase':phase,
                     'local_skill_sample':phase!='approach','assignment_source':plan['assignment_source']}
-                writers[rid][0].write(json.dumps(obs)+'\n');writers[rid][1].write(json.dumps(label)+'\n')
                 apply(ports[rid],applied,now,previous[rid]);previous[rid]=applied;history[rid].append(applied)
+                label['issued_native_wheels']=list(ports[rid]._motor_commands)
+                writers[rid][1].write(json.dumps(label)+'\n')
             written+=1
-            if all(t.outcome is not None for t in teachers.values()):
+            if not probe and all(t.outcome is not None for t in teachers.values()):
                 all_done_since=now if all_done_since is None else all_done_since
                 if len(teachers)==1 or report['joint_held'] is True or now-all_done_since>=3.:break
-            if any(t.outcome not in (None,'success') for t in teachers.values()):break
+            if not probe and any(t.outcome not in (None,'success') for t in teachers.values()):break
             i+=1;advance(origin+i*.1)
         for t in teachers.values():
             if t.outcome is None:t.outcome='episode_timeout'
@@ -184,7 +193,8 @@ def run(plan,out,*,cap_s=120.,noise=False):
             teacher_success_n=sum(t.outcome=='success' for t in teachers.values()),
             teachers={rid:t.diagnostic() for rid,t in teachers.items()},samples_per_robot=written,
             first_attempt=True,weld='off',loadavg_at_end=os.getloadavg(),timings_s=timings)
-        report['data_admitted']=report['teacher_success_n']==report['teacher_N'] and (len(plan['roles'])==1 or report['joint_held'] is True)
+        report['physical_success']=report['teacher_success_n']==report['teacher_N'] and (len(plan['roles'])==1 or report['joint_held'] is True)
+        report['data_admitted']=bool(record_training and report['physical_success'])
         report['wall_per_sim']=report['wall_s']/max(.001,report['sim_s'])
         # Pair whole-beam clearance is deliberately a separate, not-yet-evaluated metric.
         write(out/'result.json',report)
@@ -200,9 +210,15 @@ def run(plan,out,*,cap_s=120.,noise=False):
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
-    p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=120.)
-    p.add_argument('--noise',action='store_true');a=p.parse_args()
+    p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=60.)
+    p.add_argument('--noise',action='store_true');p.add_argument('--probe',action='store_true')
+    p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path);a=p.parse_args()
+    if a.record_training:
+        if a.teacher_gate is None:raise ValueError('verified >=38/40 teacher gate required before recording')
+        gate=json.loads(a.teacher_gate.read_text())
+        if gate.get('N',0)<40 or gate.get('n',0)/gate['N']<.95 or gate.get('object_kind')!='long_beam':
+            raise ValueError('verified >=95% with N>=40 required')
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe),ensure_ascii=False))
 if __name__=='__main__':main()

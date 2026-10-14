@@ -10,13 +10,13 @@ from copy import deepcopy
 
 from harness.visual_arm_v3 import solve_grip_site_ik, tool_pose
 from harness.grasp_act_contract import command, SERVOS
-from scripts.zone_teacher import ArmSequence, FOLDED, plan_path, PeerDisc
+from scripts.zone_teacher import ArmSequence, FOLDED, plan_path, PeerDisc, proportional_drive
 from harness.static_keepouts import rect_distance
 
 ROLE = {'teal': 'end_neg', 'blue': 'end_pos'}
 STATION_M = .203
-XY_TOL_M = .004
-YAW_TOL_RAD = math.radians(1.)
+XY_TOL_M = .03
+YAW_TOL_RAD = .06
 
 
 def wrap(x):
@@ -50,9 +50,11 @@ class GraspTeacher:
         self.next_drive=0.;self.stable_since=None
         self.outcome=None;self.events=[];self.path=[];self.next_plan=0.
         self.grasp_xyz=None;self.initial_end_z=None;self.started=False
-        self.staging_distance=None
+        self.staging_distance=STATION_M
+        self.planner_calls=0;self.no_path_calls=0;self.phase_durations={}
 
     def _set(self,phase,now):
+        self.phase_durations[self.phase]=self.phase_durations.get(self.phase,0.)+now-self.phase_t
         self.events.append({'t':now,'from':self.phase,'to':phase})
         self.phase,self.phase_t=phase,now
         self.stable_since=None
@@ -61,59 +63,56 @@ class GraspTeacher:
         return command({'t':now,'drive':[0.,0.,0.],'duration_s':0.,
                         'pwm':{str(s):self.sink.pwm[s] for s in SERVOS}})
 
-    def _pulse(self,now,axis,error,*,coarse=False):
-        value=self._hold(now)
-        if now+1e-8 < self.next_drive:return value
-        value['drive'][axis]=math.copysign(.35,error)
-        value['duration_s']=.15 if coarse and axis!=1 else .06
-        self.next_drive=now+value['duration_s']+.20  # allow passive settle
+    def _continuous(self,now,forward,left,turn):
+        # Legacy body-wrench units -> native motor effort. The shared ACT
+        # port handles the fixed v7 breakaway relay from issued commands only.
+        drive=[3.*forward,3.*left,.65*turn]
+        from harness.grasp_act_contract import wheel_mix
+        scale=max(1.,max(map(abs,wheel_mix(drive))))
+        value=self._hold(now);value['drive']=[v/scale for v in drive]
+        value['duration_s']=.15 if any(drive) else 0.
         return command(value)
 
-    def _route(self,truth,goal,now):
+    def _route(self,truth,goal,heading,now):
         pose=truth['robots'][self.rid]['pose']
-        if now>=self.next_plan or not self.path:
+        # Empty paths are cached too. Previously "or not self.path" retried
+        # a failed A* ten times per SIM second.
+        if now>=self.next_plan:
             discs=[PeerDisc((*v['pose'][:2],.17)) for r,v in truth['robots'].items() if r!=self.rid]
             discs += [(*o['xy'],o['radius']+.02) for iid,o in truth.get('objects',{}).items() if iid!='beam_1']
-            # A line of discs covers the known beam; this is teacher-only geometry.
             bx,by,ba=truth['beam']['pose']
-            discs += [(bx+x*math.cos(ba),by+x*math.sin(ba),.04) for x in (-.27,-.135,0,.135,.27)]
+            # Robot disc .17 + beam thickness .02 fits the .203 m station.
+            discs += [(bx+x*math.cos(ba),by+x*math.sin(ba),.02) for x in (-.27,-.135,0,.135,.27)]
             self.path=plan_path(pose[:2],goal,self.bounds,discs,rects=self.rects) or []
+            self.planner_calls+=1;self.no_path_calls+=int(not self.path)
             self.next_plan=now+1.
-        while self.path and math.dist(pose[:2],self.path[0])<.07:self.path.pop(0)
+        while len(self.path)>1 and math.dist(pose[:2],self.path[0])<.12:self.path.pop(0)
         if not self.path:return self._hold(now)
-        dx,dy=local(pose,self.path[0]);heading=math.atan2(dy,dx)
-        if abs(heading)>.10:return self._pulse(now,2,heading,coarse=abs(heading)>.35)
-        return self._pulse(now,0,dx,coarse=abs(dx)>.08)
+        target=self.path[0] if len(self.path)>1 else goal
+        return self._continuous(now,**proportional_drive(pose,goal,target,heading))
 
     def _approach(self,truth,now):
         pose=truth['robots'][self.rid]['pose'];g=truth['beam']['ends'][self.end]
         heading=truth['beam']['pose'][2]+(math.pi if self.end=='blue' else 0.)
-        if self.staging_distance is None:
-            # Choose a feasible pregrasp pose in configuration space. A fixed
-            # half-metre retreat can lie outside a wall even when grasp is feasible.
-            x0,x1,y0,y1=self.bounds
-            for distance in (.50,.40,.30,.25):
-                candidate=(g[0]-distance*math.cos(heading),g[1]-distance*math.sin(heading))
-                if not x0+.17<=candidate[0]<=x1-.17 or not y0+.17<=candidate[1]<=y1-.17:continue
-                if any(rect_distance(candidate,r)<.17 for r in self.rects):continue
-                if any(math.dist(candidate,o['xy'])<o['radius']+.19 for iid,o in truth.get('objects',{}).items() if iid!='beam_1'):continue
-                self.staging_distance=distance;break
-            if self.staging_distance is None:
-                self.outcome='no_feasible_pregrasp';return self._hold(now),False
-        goal=(g[0]-self.staging_distance*math.cos(heading),g[1]-self.staging_distance*math.sin(heading))
-        gx,gy=local(pose,g)
-        if self.phase=='approach' and math.dist(pose[:2],goal)>.09:
-            return self._route(truth,goal,now),False
+        goal=(g[0]-STATION_M*math.cos(heading),g[1]-STATION_M*math.sin(heading))
+        if self.phase=='approach' and math.dist(pose[:2],goal)>.03:
+            return self._route(truth,goal,heading,now),False
         if self.phase=='approach':self._set('align',now)
-        ex,ey,ea=gx-STATION_M,gy,wrap(heading-pose[2])
-        if abs(ea)>YAW_TOL_RAD or abs(ey)>XY_TOL_M or abs(ex)>XY_TOL_M:
-            self.stable_since=None
-        if abs(ea)>YAW_TOL_RAD:return self._pulse(now,2,ea,coarse=abs(ea)>.3),False
-        if abs(ey)>XY_TOL_M:return self._pulse(now,1,ey),False
-        if abs(ex)>XY_TOL_M:return self._pulse(now,0,ex,coarse=abs(ex)>.06),False
-        if now < self.next_drive:return self._hold(now),False
-        self.stable_since = now if self.stable_since is None else self.stable_since
-        return self._hold(now),now-self.stable_since>=.3
+        gx,gy=local(pose,g);ex,ey,ea=gx-STATION_M,gy,wrap(heading-pose[2])
+        # Stop the chassis within 3 cm; actual residual goes into v3 pad IK.
+        # Reachability is checked before ready, not assumed from chassis error.
+        reachable=True
+        try:
+            solve_grip_site_ik((gx,gy,g[2]))
+            solve_grip_site_ik((gx,gy,.095))
+        except ValueError:reachable=False
+        if abs(ea)<=YAW_TOL_RAD and math.dist(pose[:2],goal)<=XY_TOL_M and reachable:
+            self.stable_since=now if self.stable_since is None else self.stable_since
+            return self._hold(now),now-self.stable_since>=.3
+        self.stable_since=None
+        # Original zone_teacher._align proportional law; retain current v3 IK.
+        clip=lambda v,lo,hi:max(lo,min(hi,v))
+        return self._continuous(now,clip(.9*ex,-.05,.08),clip(.9*ey,-.06,.06),clip(.8*ea,-.10,.10)),False
 
     def _queue_pick(self,truth,now):
         pose=truth['robots'][self.rid]['pose'];g=truth['beam']['ends'][self.end]
@@ -163,5 +162,6 @@ class GraspTeacher:
 
     def diagnostic(self):
         return {'phase':self.phase,'outcome':self.outcome,'events':deepcopy(self.events),
-                'staging_distance_m':self.staging_distance,
+                'staging_distance_m':self.staging_distance,'phase_sim_s':self.phase_durations,
+                'planner_calls':self.planner_calls,'no_path_calls':self.no_path_calls,
                 'scope':'privileged_teacher_only; single-end lift is not whole-beam lift'}

@@ -11,7 +11,7 @@ HELDOUT='s4_narrow_door_standoff_v4'
 BASE_Z=.032355118817659255
 
 
-def prepare(*,count=20,seed=71000,split='teacher_gate',pair=True):
+def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True):
     episodes=[];rejects=Counter()
     for i in range(count):
         rng=random.Random(seed+i)
@@ -74,15 +74,15 @@ def prepare(*,count=20,seed=71000,split='teacher_gate',pair=True):
         'robot_axis_bearing_deg':[0,360],'robot_heading_error_deg':[-60,60],'initial_pan_pwm':[500,2500],
         'ends':'50:50 by index','fixed':['floor_light_v1','camera review v3','native v7','cargo_noslip_v1','weld off'],
         'limits':'static rejection alters accepted strata; accepted plan is the source of actual coverage. Intermediate placed objects and moving work peers are a later collection stage.'},
-        'criteria':{'teacher_target_rate':.95,'minimum_episodes':20,'single_end':'bilateral >=0.5N each and end rise >=12mm for >=1s',
+        'criteria':{'teacher_target_rate':.95,'minimum_episodes':40,'single_end':'bilateral >=0.5N each and end rise >=12mm for >=1s',
         'pair':'both bilateral + whole beam lower surface >=12mm above floor for >=1s',
-        'first_attempt':'no teacher regrasp in this gate','phase_cap_s':90,'episode_cap_s':180},
+        'first_attempt':'no teacher regrasp in this gate','phase_cap_s':60,'episode_cap_s':60,'target_pair_sim_s':40},
         'stage_order':['long_beam','solo boxes/can/tile grasp and release','heavy_crate','tri_frame'],
         'student_evaluation':False}
 
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--count',type=int,default=20)
+    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--count',type=int,default=40)
     p.add_argument('--seed',type=int,default=71000);p.add_argument('--split',choices=('teacher_gate','train','development','heldout_start','heldout_map'),default='teacher_gate')
     p.add_argument('--single',action='store_true');a=p.parse_args()
     result=prepare(count=a.count,seed=a.seed,split=a.split,pair=not a.single)
