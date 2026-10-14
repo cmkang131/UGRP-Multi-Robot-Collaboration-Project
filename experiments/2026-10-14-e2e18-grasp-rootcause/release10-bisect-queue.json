@@ -1,0 +1,145 @@
+{
+  "schema": "ugrp.release10.bisect_queue.v1",
+  "owner": "codex",
+  "created_local": "2026-10-15T06:57:06.345589+09:00",
+  "pr": 491,
+  "host": "gcp1",
+  "sha": "4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+  "source_sha": "4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+  "branch": "historical exact source 4a69e6bc (ancestor of claude/grasp-act-probes)",
+  "source_cwd": "/home/ugrp/ugrp-sim/src/4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+  "source_local_checkout_mutated": false,
+  "runner_cwd": "/Users/changmin/projects/ugrp-wt/gcp-sim-host",
+  "ready": false,
+  "status": "blocked_legacy_truth_handoff_conflicts_with_evaluation_only",
+  "blocked_reason": {
+    "source": "scripts/run_grasp_act_release.py:204-208 at 4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+    "code": "world.robot(rid).base_xyz()/base_rpy() + plan.handoff_pose_error -> ReleaseTeacher(handoff_pose_estimate=estimate)",
+    "commands_flag_does_not_remove_truth_anchor": true,
+    "original_camera_px": [
+      320,
+      240
+    ],
+    "release9_camera_px": [
+      640,
+      480
+    ],
+    "decision": "queue held ready=false under user truth-for-evaluation-only and no-code-edit constraints; no legacy execution permission inferred"
+  },
+  "run_count": 2,
+  "authorized_scope": "prepare exactly two historical diagnostics, no gate, no remote access in this round",
+  "stage_ready": {
+    "diagnostic": false,
+    "gate": false
+  },
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "max_combined_concurrency": 2,
+  "storage_budget_mib": {
+    "per_run_raw_upper": 96,
+    "total": 192
+  },
+  "cap_s": 180,
+  "training_rgb": false,
+  "weld": "off",
+  "research_result": false,
+  "profile": {
+    "own_pose_source": "commands",
+    "observe_mode": "backoff_v3",
+    "zone_slots": "zone",
+    "reach_mode": "pad_window_v2",
+    "held_object": "hidden_v1",
+    "render_dr": "off"
+  },
+  "input_plan": {
+    "local_path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/experiments/2026-10-14-e2e18-grasp-rootcause/release10-bisect-plan.json",
+    "remote_path": "/home/ugrp/ugrp-sim/inputs/release10-bisect-4a69e6bc/plan.json",
+    "sha256": "405ce907881e544aa33c0a9d1d77e23aa04a5ef045d6c4950ec1e9a7165edd26",
+    "bytes": 4362,
+    "sha256_must_match_before_execution": true,
+    "present_in_old_source_tree": false,
+    "staging_required": true,
+    "staging_note": "Stage this data-only plan outside the immutable old source; source HEAD must remain 4a69e6bc. Do not regenerate episodes from seed."
+  },
+  "static_scene_and_cli_compatible": true,
+  "remote_submission": false,
+  "remote_state_verified": false,
+  "preconditions": [
+    "Resolve the old runtime truth-anchor conflict before any ready=true; do not silently patch or relax the observation boundary.",
+    "Coordinator must confirm exact source HEAD and input SHA256, runner guards, disk/memory/cost budget and duplicate run names before launch. No host checks performed here.",
+    "Use original 4a69e6bc profile and label historical oracle-handoff diagnostic separately; original 320x240 input differs from release9 640x480.",
+    "No fresh seed cohort and no gate. Preserve failures/HOST_ERROR, verify >=6 evenly spaced review frames, and stop affected jobs if a known defect is confirmed.",
+    "Collect release_start, code_decisions, eval-only, teacher-r1/r2, original result and manifest; fetch-lite only."
+  ],
+  "runs": [
+    {
+      "stage": "diagnostic",
+      "name": "release10-bisect-74940-4a69e6bc",
+      "seed": 74940,
+      "episode": 0,
+      "ready": false,
+      "source_sha": "4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+      "command_scope": "runtime argv in exact source cwd, not a launcher command",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_grasp_act_release",
+        "--plan",
+        "/home/ugrp/ugrp-sim/inputs/release10-bisect-4a69e6bc/plan.json",
+        "--episode",
+        "0",
+        "--cap-s",
+        "180",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/release10-bisect-74940-4a69e6bc/raw",
+        "--own-pose-source",
+        "commands",
+        "--observe-mode",
+        "backoff_v3",
+        "--zone-slots",
+        "zone",
+        "--reach-mode",
+        "pad_window_v2",
+        "--held-object",
+        "hidden_v1",
+        "--render-dr",
+        "off"
+      ],
+      "gate": false
+    },
+    {
+      "stage": "diagnostic",
+      "name": "release10-bisect-74963-4a69e6bc",
+      "seed": 74963,
+      "episode": 1,
+      "ready": false,
+      "source_sha": "4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+      "command_scope": "runtime argv in exact source cwd, not a launcher command",
+      "command": [
+        ".venv-sim/bin/python",
+        "-m",
+        "scripts.run_grasp_act_release",
+        "--plan",
+        "/home/ugrp/ugrp-sim/inputs/release10-bisect-4a69e6bc/plan.json",
+        "--episode",
+        "1",
+        "--cap-s",
+        "180",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/release10-bisect-74963-4a69e6bc/raw",
+        "--own-pose-source",
+        "commands",
+        "--observe-mode",
+        "backoff_v3",
+        "--zone-slots",
+        "zone",
+        "--reach-mode",
+        "pad_window_v2",
+        "--held-object",
+        "hidden_v1",
+        "--render-dr",
+        "off"
+      ],
+      "gate": false
+    }
+  ]
+}
