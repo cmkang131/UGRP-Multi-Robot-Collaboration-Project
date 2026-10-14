@@ -10,7 +10,7 @@ run_dir=$6
 code_revision=$7
 test "$EUID" -eq 0 || { echo 'sudo is required'; exit 1; }
 test "$(hostname -s)" = "$expected_host" || { echo 'Wrong robot hostname; no change'; exit 1; }
-case "$role" in leader|follower) ;; *) exit 2 ;; esac
+case "$role" in leader|follower|internet) ;; *) exit 2 ;; esac
 python3 - "$leader_ip" "$client_ip" "$pc_ip" "$run_dir" <<'PY'
 import ipaddress, os, pathlib, pwd, sys
 for v in sys.argv[1:4]: ipaddress.IPv4Address(v)
@@ -69,7 +69,15 @@ log tracking measurements statistics
 bindcmdaddress 127.0.0.1
 bindcmdaddress ::1
 CONF
-if test "$role" = leader; then
+if test "$role" = internet; then
+    cat >> "$conf" <<'INTERNET'
+server time.cloudflare.com iburst prefer minpoll 6 maxpoll 8
+server ntp.kriss.re.kr iburst minpoll 6 maxpoll 8
+pool 2.debian.pool.ntp.org iburst maxsources 2 minpoll 6 maxpoll 8
+maxslewrate 500
+port 0
+INTERNET
+elif test "$role" = leader; then
     printf 'pool 2.debian.pool.ntp.org iburst maxsources 4 minpoll 6 maxpoll 8\n' >> "$conf"
     printf 'bindaddress %s\nallow %s\nallow %s\n' "$leader_ip" "$client_ip" "$pc_ip" >> "$conf"
 else
@@ -95,16 +103,18 @@ timedatectl show -p NTPSynchronized -p NTP -p Timezone > "$run_dir/after_status.
 date -u --iso-8601=ns > "$run_dir/after_utc.txt"
 dpkg-query -W chrony systemd-timesyncd > "$run_dir/after_packages.txt" 2>&1 || true
 python3 - "$run_dir" "$role" "$leader_ip" "$ready" "$code_revision" <<'PY'
-import datetime, hashlib, json, os, pathlib, socket, sys, time
+import datetime, hashlib, ipaddress, json, os, pathlib, socket, sys, time
 out = pathlib.Path(sys.argv[1]); role = sys.argv[2]; leader = sys.argv[3]
 sources = (out/'after_sources.txt').read_text()
 selected = [line.split()[1] for line in sources.splitlines() if line.startswith('^*')]
 tracking = (out/'after_tracking.txt').read_text()
 normal = any(line.startswith('Leap status') and line.split(':',1)[1].strip() == 'Normal' for line in tracking.splitlines())
 source_ok = bool(selected) and (role == 'leader' or leader in selected)
+if role == 'internet': source_ok = bool(selected) and all(ipaddress.ip_address(x).is_global for x in selected)
 result = {'host':socket.gethostname(),'role':role,'leader_ip':leader,
  'utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'monotonic_ns':time.monotonic_ns(),
  'source_revision':sys.argv[5],'configuration_applied':True,
+ 'reference_model':'direct_internet_ntp' if role=='internet' else 'local_relay',
  'ready':sys.argv[4]=='1' and normal and source_ok,'selected_sources':selected,
  'robot_motion_commands':0,'absolute_utc_guaranteed':False,
  'clock_check_scope':'chrony startup check; not a physical simultaneous-action test',
