@@ -199,7 +199,10 @@ class ReleaseTeacher:
     def released_here(self, now):
         """Remember the band where own commands set it down (forward kinematics)."""
         x, y, _ = forward_grip(self.pwm)
-        self.belief.observe('released_band', [x, y, 0.], now, source='own_command')
+        # Both grippers point inward. The blue robot's forward axis is opposite to the beam axis.
+        # Preserve the legacy comparison; command-relative release must not need a truth band to fix this.
+        axis = math.pi if not self.map_pose_known and self.end == 'blue' else 0.
+        self.belief.observe('released_band', [x, y, axis], now, source='own_command')
         self.holding = False
 
     def dead_reckon(self, wheels, seconds):

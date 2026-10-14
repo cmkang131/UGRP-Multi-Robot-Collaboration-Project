@@ -242,3 +242,19 @@ def test_release_visibility_counts_phase_fractions_and_continuous_blind_interval
     assert r['max_assigned_end_blind_s']['r1']==pytest.approx(.3)
     assert r['max_assigned_end_blind_s']['r2']==0.
     assert r['invisible_measurements']==2 and 'lookaround' not in r['measurements_by_phase']
+
+
+@pytest.mark.parametrize('end',('teal','blue'))
+def test_command_relative_release_keeps_same_landing_end_when_band_is_hidden(end):
+    from sim.grasp_act_release_teacher import ReleaseTeacher
+    t=ReleaseTeacher('r1',end,{1:1500,3:700,4:2400,5:1320,6:1500},
+                     handoff_pose_estimate=None,zone_rect=(4.6,.4,.3,.7))
+    before, outward, _=t.end_and_outward(0.)
+    t.released_here(0.)
+    after, outward_after, source=t.end_and_outward(1.)
+    assert after==pytest.approx(before) and outward_after==pytest.approx(outward)
+    assert source=='own_command_release'
+    t.dead_reckon([-.35]*4,1.)
+    after, outward_after, _=t.end_and_outward(2.)
+    assert after==pytest.approx((before[0]+.129,before[1]))
+    assert outward_after==pytest.approx((-1.,0.))

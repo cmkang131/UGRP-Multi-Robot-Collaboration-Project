@@ -5,12 +5,12 @@
   "tests": {
     "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_release_teacher.py tests/test_lookaround_localization.py",
     "files": 2,
-    "passed": 34,
+    "passed": 36,
     "failed": 0
   },
   "source_sha256": {
     "scripts/run_grasp_act_release.py": "4cbc9200749aab3bc90fcbcd4362712abaded867b382c4e5b448150e544a4cf5",
-    "sim/grasp_act_release_teacher.py": "b2e587b712920774488563acc1a664d7ad399c9bf22b285000d7686c646c78e1",
+    "sim/grasp_act_release_teacher.py": "9d94d6ee2b937c96758756e2d6f8412f17b9d32d21ead29f42a4d85bebd2e9ed",
     "sim/lookaround_localization.py": "fd9ccb4e597ac38d8eed5034c8ac35183658911bbae7c167caf9b2bb87fbf7ec"
   },
   "plans": {
@@ -65,5 +65,6 @@
     "Release-specific student observation/target recording adapter is not implemented. Recording queue is a non-executable draft until adapter, gate proof and coordinator approval.",
     "Existing observable_v2 prefix grasp remains unchanged and is outside the release input audit.",
     "PR #491 head is claude/grasp-act-release; this continuation is pushed to the user-requested claude/grasp-act-probes branch and linked in its PR comment."
-  ]
+  ],
+  "final_static_review": "The new command-relative profile stores the blue released-band axis as pi (teal zero), so the held and command-released landing end/outward vector remain identical even without a visible band. Legacy map-anchored comparison behavior is preserved. Two role-parametrized offline regressions cover release and backing off."
 }
