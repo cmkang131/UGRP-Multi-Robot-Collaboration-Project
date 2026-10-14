@@ -1,10 +1,13 @@
 # ACT 학생 첫 파일럿 준비 — 2026-10-15
 
-상태: **오프라인 파이프라인 준비, GCP 실행 전**. `claude/act-train`에서
+상태: **오프라인 파이프라인·완료 표적 수정 검증 완료**. 기존 `7caf9944` smoke는
+사용자 전달 기준 운영 워커가 진행 중이며, 이번 작업에서 원격 상태를 확인하지 않았다.
+`claude/act-train`에서
 PR #502의 교사 `6f057f7e97c1a3aec9e8c398b8d9068e27b25df8`에 맞춘 학생 계약만
 가져왔다(파일 SHA-256 `6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056`).
 교사/장면 소스는 병합하지 않았다. 기준 main은 `c72a2b50628e549fee8032378f4c7cf709fe688c`.
-실행 소스의 전체 SHA는 커밋 후 생성하는 대기열에 고정한다.
+기존 실행 소스는 `7caf99447c5d7543b087722957d4d9987c22cbee` 대기열에 고정돼 있다.
+이번 완료 표적 수정은 별도 소스이며 기존 실행·대기열에 소급 적용하지 않는다.
 
 50/50 기록의 조정자 승인과 86045–86049 보류는 이번 사용자 지시를 근거로 한다.
 교사 성공률을 여기서 재측정하지 않았다. 원본 result의 `data_admitted=false` 등을
@@ -49,7 +52,9 @@ feature cache와 기존 다른 작업용 sampling/metric은 사용하지 않는�
 - `student-<robot_id>.jsonl[.zst]`와 teacher의 sample ID·시각·skill·kind를 정합한다.
   행동 표적은 `clean_teacher_command`, 행 선택은 `local_skill_sample is True`만 쓴다.
 - 제외 행, 시간 간격, episode/robot/skill/kind/role/destination 변경, done에서 청크를 끊고
-  나머지는 padding한다. timeout·제외 구간의 done을 새 표적으로 만들지 않는다.
+  나머지는 padding한다. timeout·실패 done은 계속 거부한다. 프로토콜 옵션이 없으면
+  `done_label=teacher_v1`로 교사 done을 그대로 쓴다. 이번 프로토콜은 아래 조정자
+  결정에 따라 `done_label=last_local_row_v1`을 명시한다.
 - 모든 학생 행은 중첩 허용 목록을 검사한다. 정답 위치·접촉·측정 관절·자유 문장·타 로봇
   영상 key를 거부한다. actor 입력은 `observation.images.own_history`와
   `observation.state`뿐이다. 후자는 측정 상태가 아니라 자기 발행 명령 16개와 계약의
@@ -64,22 +69,50 @@ feature cache와 기존 다른 작업용 sampling/metric은 사용하지 않는�
   원본/산출물 해시, train-only normalization, JSON manifest다. 모두 `milestone`으로 보존한다.
   부분 변환 결과는 학습 loader가 거부한다.
 
-Mac 샘플 정적 변환 결과는 [local-audit.json](local-audit.json)에 원본·파생 해시와 함께 있다.
+수정 전 Mac 샘플 정적 변환 결과는 [local-audit.json](local-audit.json)에 원본·파생 해시와 함께 있다.
 
 | seed | 전체 행 | 사용 행 | 참조 원본 영상 | grasp done | release done |
 |---|---:|---:|---:|---:|---:|
 | 86000 | 430 | 344 | 351 | 1 | 0 |
 | 86001 | 464 | 375 | 385 | 1 | 0 |
 
-둘 다 release 완료가 제외된 inspection 구간에 있다. 이는 실행 실패 진단이 아니라
-표적 구성 확인이다. **놓기 완료를 배우는 양성 표적이 이 두 샘플에는 없다.** 전체 50개
-변환 시 skill별 count/done/missing_done을 확인하고 조정자가 본 학습 전에 판단한다.
-진행 중에 임의로 라벨을 바꾸지 않는다. 또한 실제 샘플 plan의 scenario ID는 `_v4`이며,
+수정 전에는 둘 다 release 완료가 제외된 inspection 구간에 있어 놓기 완료의 양성 표적이
+없었다. 이는 실행 실패 진단이 아니라 표적 구성 확인이다. 실제 샘플 plan의 scenario ID는 `_v4`이며,
 `v6`은 학생 계약 버전이다. 장면을 임의로 v6 시나리오로 치환하지 않았다.
+
+### 완료 표적 프로토콜 수정 — 2026-10-15
+
+조정자 결정: 각 grasp/release 스킬 구간의 마지막 `local_skill_sample is True` 행을
+완료 양성으로 삼는다(release는 backoff 끝). 변환기에서만 새 라벨 사본을 만들고
+교사 원본은 바꾸지 않는다. 선택에는 스킬·actor/episode/task 표시와 행 순서만 쓰며
+정답 위치·접촉·평가 성공을 쓰지 않는다. 시간 간격·제외 구간은 청크 경계로 유지하지만
+추가 done을 만들지 않는다. 같은 스킬이 다른 스킬 뒤에 반복되면 별도 구간으로 센다.
+파생 done의 `terminal_reason=command_sequence_complete`는 표적 계약용 표시이며
+물리 성공이나 RGB 완료 확인을 뜻하지 않는다.
+
+| seed | 사용 행 | grasp done | release done | release 양성 행 / SIM초 | 제외 inspection 행 |
+|---|---:|---:|---:|---|---:|
+| 86000 | 344 | 1 | 1 | `train-86000:350:r1` / 36.3 | 79 |
+| 86001 | 375 | 1 | 1 | `train-86001:384:r1` / 39.7 | 79 |
+
+[새 샘플 감사](local-audit-last-local-row-v1.json)와 [검증 요약](done-label-v1-summary.json)에
+원본·파생 해시를 보존했다. 두 release 양성은 모두 `backoff → lookaround` 행이다.
+전체 894행 중 기존과 같은 719행만 사용하고 175행을 제외했다(inspection 158행 포함).
+교사 원본 해시·학생 상태·done 외 행동 채널·padding·영상 index·영상 바이트는 수정 전과
+같다. 입력 누설 검사 0/0, 제외 행의 정답 필드 주입 거부, 교사 부가 필드를 제거해도
+표적 동일, 부분 데이터의 학습 거부를 확인했다. 이 두 샘플의 표적 수정만 검증했으며
+전체 50개와 학생의 실제 놓기 완료 성능은 미검증이다.
+
+프로토콜 SHA-256: `99a0ba8557120b75a786d92a5808926abdcbb7a9aa82529d4d60dca5f2230af2`.
+본 학습 전에 새 소스·프로토콜로 전체 50개를 다시 변환해 skill별 count/done/missing_done을
+확인해야 한다. 기존 소스 smoke 결과와 새 표적 결과를 합산하지 않는다.
 
 ## GCP 운영 워커 전달
 
-대기열 생성(로컬 JSON 작성만):
+기존 `20261015-act-train-7caf9944.json`은 이번 작업에서 수정하지 않았으며,
+SHA-256 `639dbb713a4881af11474075eca23d88bcf0f94bf7823d53463fa766389a64c3` 불변을 확인했다.
+사용자 지시대로 새 SHA용 큐도 만들지 않았다. 새 소스 SHA·프로토콜 해시는 PR 코멘트와
+보고로 전달한다. 아래 대기열 생성 명령은 이전 준비 절차의 기록이며 이번에 실행하지 않았다.
 
 ```sh
 python3 -m scripts.queue_grasp_act_pilot \
@@ -160,7 +193,10 @@ n/N 차이가 없으면 데이터 확대 전에 원인을 확인한다. blank �
 
 ## 검증 범위와 산출물 보존
 
-- 최종 시험 **27 passed / 3파일**(pytest 표시 0.44초), Python 문법·idle guard shell 문법·
+- 완료 표적 수정 시험 **36 passed / 3파일**(pytest 표시 1.82초), diff 검사 통과.
+  [이번 검증 요약과 JUnit 해시](done-label-v1-summary.json). Mac에서 저장 자료 변환만 했으며
+  원격 접속·학습·물리·렌더 실행은 0이다.
+- 수정 전 시험 **27 passed / 3파일**(pytest 표시 0.44초), Python 문법·idle guard shell 문법·
   diff 검사 통과. 표준 workflow `plan`도 실행하지 않은 명령/입력 해시를 반환했다.
   [검증 요약과 JUnit 해시](summary.json).
 - 이번 Mac 검증: 3개 시험 파일의 순수 데이터/계약/명령·승인 경계 시험과 저장 JPEG 변환.

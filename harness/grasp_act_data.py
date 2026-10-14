@@ -19,6 +19,7 @@ from PIL import Image
 from harness import grasp_act_contract as c
 
 DATA_SCHEMA = 'ugrp.grasp_act.dataset.v1'
+DONE_LABELS = ('teacher_v1', 'last_local_row_v1')
 IMAGE_HW = (240, 320)
 MODEL_IMAGE_HW = (480, 640)
 IMAGE_KEYS = ('observation.images.own_history',)
@@ -103,10 +104,19 @@ def audit_camera(camera):
         raise ValueError('recorded student contract differs from loader')
 
 
-def paired_segments(observations, labels):
+def paired_segments(observations, labels, *, done_label='teacher_v1'):
+    """Select local rows, optionally deriving completion from skill row order.
+
+    A skill interval has one actor/episode/task identity. Excluded rows and
+    clock gaps split action chunks, but do not create extra completion targets.
+    Derived labels are copies; teacher originals and privileged fields are
+    never used to choose the last local row.
+    """
+    if done_label not in DONE_LABELS:
+        raise ValueError('unknown done_label protocol option')
     if not observations or len(observations) != len(labels):
         raise ValueError('nonempty one-to-one student/teacher alignment required')
-    seen, groups, current = set(), [], []
+    seen, pairs = set(), []
     previous = None
     for obs, label in zip(observations, labels):
         c.validate_observation(obs)  # strict nested allowlist, including excluded rows
@@ -127,6 +137,21 @@ def paired_segments(observations, labels):
             raise ValueError('timeout/failure cannot be a done target')
         key = tuple(obs[k] for k in ('robot_id', 'skill', 'object_kind', 'role', 'destination_zone'))
         key += (sid.split(':')[0],)
+        pairs.append((obs, label, key))
+    if done_label == 'last_local_row_v1':
+        from itertools import groupby
+        derived = []
+        for _, interval in groupby(pairs, key=lambda pair: pair[2]):
+            interval = list(interval)
+            last_local = next((i for i in range(len(interval) - 1, -1, -1)
+                               if interval[i][1]['local_skill_sample']), None)
+            for i, (obs, label, key) in enumerate(interval):
+                done = i == last_local
+                derived.append((obs, {**label, 'done': done,
+                    'terminal_reason': 'command_sequence_complete' if done else None}, key))
+        pairs = derived
+    groups, current = [], []
+    for obs, label, key in pairs:
         contiguous = current and abs(obs['t'] - current[-1][0]['t'] - c.PERIOD_S) < 1e-5
         same = current and key == current[-1][2] and not current[-1][1]['done']
         if current and (not contiguous or not same or not label['local_skill_sample']):
@@ -160,6 +185,9 @@ def assert_tensor_keys(batch, *, training=False):
 
 def convert(runs_root, protocol, output, *, seeds=None):
     output = Path(output)
+    done_label = protocol.get('done_label', 'teacher_v1')
+    if done_label not in DONE_LABELS:
+        raise ValueError('unknown done_label protocol option')
     requested = protocol['train_seeds'] + protocol['validation_seeds']
     if len(requested) != len(set(requested)):
         raise ValueError('split overlap or duplicate seeds')
@@ -168,7 +196,7 @@ def convert(runs_root, protocol, output, *, seeds=None):
         raise ValueError('unknown or duplicate conversion seeds')
     output.mkdir(parents=True, exist_ok=False)
     report = {'schema': DATA_SCHEMA, 'status': 'running', 'complete': False,
-              'protocol': protocol, 'image_hw': list(IMAGE_HW), 'episodes': [],
+              'protocol': protocol, 'done_label': done_label, 'image_hw': list(IMAGE_HW), 'episodes': [],
               'input_keys': sorted(INPUT_KEYS), 'normalization': None,
               'input_audit': {'forbidden_input_fields': 0, 'teacher_input_fields': 0},
               'admission': 'user/coordinator accepted 50/50; not independently remeasured'}
@@ -206,7 +234,7 @@ def convert(runs_root, protocol, output, *, seeds=None):
                 observations, labels = read_rows(student), read_rows(teacher)
                 if any(o['robot_id'] != robot for o in observations):
                     raise ValueError('mixed actor in file')
-                groups = paired_segments(observations, labels)
+                groups = paired_segments(observations, labels, done_label=done_label)
                 if not groups:
                     raise ValueError('no local skill samples')
                 selected = [pair for group in groups for pair in group]

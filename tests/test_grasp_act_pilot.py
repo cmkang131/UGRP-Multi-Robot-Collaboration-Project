@@ -69,6 +69,7 @@ def test_student_worker_has_no_teacher_or_simulator_import():
 
 def test_checked_in_protocol_has_no_promotion():
     p = json.loads((ROOT / 'experiments/2026-10-15-act-train/protocol.json').read_text())
+    assert p['done_label'] == 'last_local_row_v1'
     assert p['train_seeds'] == list(range(86000, 86045))
     assert p['validation_seeds'] == list(range(86045, 86050))
     assert not p['gate_promotion_authorized_if_all_conditions_pass']
