@@ -118,7 +118,7 @@ def own_map_record(robot):
                 memory=normalize(robot.goal.snapshot()))
 
 
-def replay(recipe, raw, *, robot_factory=None, grasp_once='off', progress=None):
+def replay(recipe, raw, *, robot_factory=None, grasp_once='off', progress=None, beam_tracking='off'):
     """Rebuild source robot state from own inputs, never pass setup_only to it.
 
     Returns live robots and a verification receipt. Any estimate mismatch aborts
@@ -142,6 +142,10 @@ def replay(recipe, raw, *, robot_factory=None, grasp_once='off', progress=None):
     from harness.e2e_mapping_cadence import period
     for robot in robots.values():configure(robot.goal,'on_v1',period(source['e2e_options'].get('mapping_cadence','off'),'mapping'))
     for robot in robots.values():robot.grasp_once=grasp_once
+    if beam_tracking != 'off':
+        from harness.e2e_beam_tracking import OPTIONS
+        if beam_tracking not in OPTIONS:raise ValueError('UNKNOWN_BEAM_TRACKING')
+        for r in robots.values():r.beam_tracking=beam_tracking
     receipt = {}
     for rid in ROBOTS:
         robot = robots[rid];saved = recipe['own_inputs'][rid]

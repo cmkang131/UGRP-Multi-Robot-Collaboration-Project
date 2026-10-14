@@ -56,6 +56,9 @@ def view(tr,rid,state,fresh,grip_distance):
 
 
 def gaze_target(tr,rid,fresh,assigned):
+    from harness.e2e_beam_tracking import gaze_target as object_gaze
+    remembered=object_gaze(tr,rid,(tr.robots[rid].last_obs or {}).get('sim_time',-math.inf))
+    if remembered is not None:return remembered
     from harness.e2e_fine_view import active
     if active(tr,rid,tr.approach.get(rid,{})):return assigned
     if getattr(tr,'approach_commit','off')!='memory60_view_v1':return assigned

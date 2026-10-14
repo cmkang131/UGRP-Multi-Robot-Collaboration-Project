@@ -28,6 +28,9 @@ def advance(transport,rid,now):
         r.carrier_approach=dict(t=now,status='gaze_settle')
         return False,[dict(kind='hold')]
     fresh=b is not None and now-b['rgb']['t_sim']<=.45
+    from harness.e2e_beam_tracking import step as track_step
+    tracked_action=track_step(transport,rid,now,state)
+    if tracked_action is not None:return tracked_action
     target=g.entities.get('B')
     from harness.e2e_approach_recovery import seek_goal
     from harness.e2e_end_assignment import seed_local_station

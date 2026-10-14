@@ -1,0 +1,36 @@
+{
+  "status": "implementation_tested_not_submitted",
+  "pr": 483,
+  "options": [
+    "v434",
+    "v435",
+    "v436"
+  ],
+  "diagnosis": {
+    "unreached_runs": 6,
+    "previously_seen": 6,
+    "direct_review_frames": 36,
+    "previous_model_calls": 0,
+    "mechanisms": {
+      "strict_end_gate_blocks_body_memory": 3,
+      "lost_after_21_sim_s": 3
+    }
+  },
+  "tests": {
+    "files": [
+      "tests/test_e2e_beam_tracking.py",
+      "tests/test_e2e_stage_checkpoint.py",
+      "tests/test_e2e_grasp_once.py"
+    ],
+    "passed": 42
+  },
+  "new_stage_runs": 0,
+  "vm_started": false,
+  "unverified": [
+    "physical improvement",
+    "new checkpoint staging",
+    "actual Gemma skill receipts",
+    "pan tracking ratio",
+    "green chassis false positives and colored-end occupancy bypass remain"
+  ]
+}
