@@ -1,0 +1,170 @@
+{
+  "colour_tie_order": [
+    "cyan",
+    "red",
+    "green",
+    "yellow"
+  ],
+  "collision_scope": "same colour + destination zone",
+  "replacements": [
+    {
+      "scenario_id": "s1_normal_mixed_v6",
+      "order_id": "order-3",
+      "old_kind": "can",
+      "new_kind": "yellow",
+      "item_ids": {
+        "can_1": "yellow_1"
+      },
+      "destination_zone": "C",
+      "initial_location": {
+        "pickup_bay": "P1",
+        "slot": "P1-2"
+      },
+      "same_colour_same_zone": null
+    },
+    {
+      "scenario_id": "s1_normal_mixed_v6",
+      "order_id": "order-4",
+      "old_kind": "tile",
+      "new_kind": "red",
+      "item_ids": {
+        "tile_1": "red_2"
+      },
+      "destination_zone": "B",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-2"
+      },
+      "same_colour_same_zone": {
+        "kind": "red",
+        "destination_zone": "B",
+        "item_ids": [
+          "red_1",
+          "red_2"
+        ]
+      }
+    },
+    {
+      "scenario_id": "s3_late_rendezvous_v6",
+      "order_id": "order-3",
+      "old_kind": "tile",
+      "new_kind": "green",
+      "item_ids": {
+        "tile_1": "green_1"
+      },
+      "destination_zone": "C",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-2"
+      },
+      "same_colour_same_zone": null
+    },
+    {
+      "scenario_id": "s5_moved_dropped_item_v6",
+      "order_id": "order-3",
+      "old_kind": "can",
+      "new_kind": "green",
+      "item_ids": {
+        "can_1": "green_1"
+      },
+      "destination_zone": "C",
+      "initial_location": {
+        "pickup_bay": "P1",
+        "slot": "P1-2"
+      },
+      "same_colour_same_zone": null
+    },
+    {
+      "scenario_id": "s6_novel_relation_v6",
+      "order_id": "order-1",
+      "old_kind": "can",
+      "new_kind": "red",
+      "item_ids": {
+        "can_1": "red_1"
+      },
+      "destination_zone": "C",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-2"
+      },
+      "same_colour_same_zone": null
+    },
+    {
+      "scenario_id": "s7_pair_with_solo_v6",
+      "order_id": "order-3",
+      "old_kind": "tile",
+      "new_kind": "red",
+      "item_ids": {
+        "tile_1": "red_1"
+      },
+      "destination_zone": "C",
+      "initial_location": {
+        "pickup_bay": "P1",
+        "slot": "P1-2"
+      },
+      "same_colour_same_zone": null
+    },
+    {
+      "scenario_id": "s8_mixed_tiers_v6",
+      "order_id": "order-2",
+      "old_kind": "can",
+      "new_kind": "cyan",
+      "item_ids": {
+        "can_1": "cyan_1"
+      },
+      "destination_zone": "C",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-3"
+      },
+      "same_colour_same_zone": null
+    }
+  ],
+  "collisions": [
+    {
+      "scenario_id": "s1_normal_mixed_v6",
+      "kind": "cyan",
+      "destination_zone": "A",
+      "item_ids": [
+        "cyan_1",
+        "cyan_2"
+      ]
+    },
+    {
+      "scenario_id": "s1_normal_mixed_v6",
+      "kind": "red",
+      "destination_zone": "B",
+      "item_ids": [
+        "red_1",
+        "red_2"
+      ]
+    },
+    {
+      "scenario_id": "s2_unmapped_blockage_v6",
+      "kind": "cyan",
+      "destination_zone": "A",
+      "item_ids": [
+        "cyan_1",
+        "cyan_2"
+      ]
+    },
+    {
+      "scenario_id": "s5_moved_dropped_item_v6",
+      "kind": "red",
+      "destination_zone": "B",
+      "item_ids": [
+        "red_1",
+        "red_2"
+      ]
+    },
+    {
+      "scenario_id": "s8_mixed_tiers_v6",
+      "kind": "yellow",
+      "destination_zone": "A",
+      "item_ids": [
+        "yellow_1",
+        "yellow_2"
+      ]
+    }
+  ]
+}
