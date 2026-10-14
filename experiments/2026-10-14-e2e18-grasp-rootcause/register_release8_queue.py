@@ -39,8 +39,7 @@ def main():
                 ready=stage=='diagnostic',requires_coordinator_approval=stage=='gate',
                 max_parallel=2 if stage=='diagnostic' and i<2 else (7 if stage=='diagnostic' else 16),
                 depends_on=[] if stage=='diagnostic' and i<2 else (names[:2] if stage=='diagnostic' else names),
-                condition='authorized_reproduction' if stage=='diagnostic' and i<2 else
-                    ('reproductions_pass_and_reviewed' if stage=='diagnostic' else 'explicit_gate_approval')))
+                condition='repro' if stage=='diagnostic' and i<2 else ('fresh' if stage=='diagnostic' else 'gate')))
     now=datetime.datetime.now().astimezone().isoformat()
     queue=dict(owner='codex',branch=branch,sha=sha,pr=491,created_local=now,host='gcp1',
         pr_head_note='PR #491 head is claude/grasp-act-release; execute the pushed probes branch at this SHA.',
@@ -49,6 +48,7 @@ def main():
         ready=True,status='diagnostics_ready_gate_blocked',stage_ready=dict(diagnostic=True,gate=False),
         run_count=49,authorized_run_count=9,gate_promotion_authorized_if_all_conditions_pass=False,
         profile=profile,order='2 exact failure reproductions -> 7 new seeds -> explicit coordinator approval -> gate40',
+        conditions=dict(repro='authorized',fresh='both reproductions pass and first30 raw review',gate='explicit coordinator approval after 9/9 and raw/input/video review'),
         max_combined_concurrency=7,storage_budget_mib=dict(per_run_raw_upper=96,diagnostic=864,gate=3840,total=4704),
         criteria=dict(N=40,required=38,diagnostic_required=9,training_rgb=False,weld='off',held_world_reads=0,invisible_measurements=0),
         plan_sha256={str((BASE/f'release8-{s}-plan.json').relative_to(ROOT)):sha256(BASE/f'release8-{s}-plan.json') for s in plans},
