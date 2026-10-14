@@ -39,8 +39,8 @@ def main():
                 ready=stage=='diagnostic',requires_coordinator_approval=stage=='gate',
                 max_parallel=2 if stage=='diagnostic' and i<2 else (7 if stage=='diagnostic' else 16),
                 depends_on=[] if stage=='diagnostic' and i<2 else (names[:2] if stage=='diagnostic' else names),
-                condition='authorized exact failure reproductions' if stage=='diagnostic' and i<2 else
-                    ('both reproductions pass and first30 raw review; stop on confirmed defect' if stage=='diagnostic' else 'explicit coordinator approval after 9/9 and raw/input/video review')))
+                condition='authorized_reproduction' if stage=='diagnostic' and i<2 else
+                    ('reproductions_pass_and_reviewed' if stage=='diagnostic' else 'explicit_gate_approval')))
     now=datetime.datetime.now().astimezone().isoformat()
     queue=dict(owner='codex',branch=branch,sha=sha,pr=491,created_local=now,host='gcp1',
         pr_head_note='PR #491 head is claude/grasp-act-release; execute the pushed probes branch at this SHA.',
@@ -74,7 +74,7 @@ def main():
     old.update(ready=False,status='superseded',stage_ready=dict(diagnostic=False,gate=False),
                superseded_by_sha=sha,superseded_by_queue=str(out),superseded_at=now)
     for r in old['runs']:r['ready']=False
-    blob=json.dumps(queue,ensure_ascii=False,separators=(',',':'))+'\n';assert len(blob.encode())<65536
+    blob=json.dumps(queue,ensure_ascii=False,separators=(',',':'))+'\n';assert len(blob.encode())<65536,len(blob.encode())
     oldpath.write_text(json.dumps(old,ensure_ascii=False,separators=(',',':'))+'\n')
     pending=out.with_suffix('.json.pending');pending.write_text(blob);pending.replace(out)
     assert json.loads(out.read_text())==queue
