@@ -1,0 +1,27 @@
+{
+  "ok": false,
+  "status": "SPEED_GATE_FAIL_INCOMPLETE",
+  "complete_N": 10,
+  "N": 12,
+  "host_errors": [
+    {
+      "name": "stage-track-gate4-10-v426",
+      "error": "FRESH_MONOTONIC_OWN_RGB_REQUIRED",
+      "sim_s": 0.0
+    },
+    {
+      "name": "stage-track-gate4-11-v441",
+      "error": "FRESH_MONOTONIC_OWN_RGB_REQUIRED",
+      "sim_s": 0.0
+    }
+  ],
+  "survivor_median_wall_per_sim": 2.515912986050004,
+  "model_calls": 16,
+  "model_receipts": 16,
+  "receipt_errors": 0,
+  "choices": {
+    "turn_memory": 13
+  },
+  "max_no_motion_s": 8.100000000000001,
+  "fix": "existing strict_after_v1 enabled equally in v442/v443; no clock reset; no performance reuse"
+}

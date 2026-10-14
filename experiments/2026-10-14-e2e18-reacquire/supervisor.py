@@ -20,7 +20,7 @@ while time.monotonic()<deadline:
   if read(run/'RUN_META.json').get('pr')!=483:continue
   entry={'name':run.name,'exit':(run/'EXIT').read_text().strip() if (run/'EXIT').exists() else None,'startup':read(run/'raw/startup-progress.json'),'progress':read(run/'raw/progress.json'),'result':read(run/'raw/result.json'),'robots':{}}
   reason=None
-  if entry['exit'] is None and read(run/'STAGE_PLAN.json').get('condition')=='v441':
+  if entry['exit'] is None and read(run/'STAGE_PLAN.json').get('condition')in ('v441','v443'):
    try:
     urllib.request.urlopen('http://127.0.0.1:18093/health',timeout=3)
     relay_ok=True

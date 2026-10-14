@@ -23,3 +23,5 @@
 
 - v440 수정 근거: SemExp 공개 main.py는 물체 범주 관측의 존재로 object goal을 고르고, 파지 가능 판정을 물체 발견 조건으로 쓰지 않는다. https://raw.githubusercontent.com/devendrachaplot/Object-Goal-Navigation/master/main.py . 우리 코드는 유효한 몸체/부분 띠 기억을 마지막 2초 안에 갱신했으면 분실 스킬을 취소하되 파지 승인값은 바꾸지 않는다.
 - Nav2 RecoveryNode는 주 동작 성공 시 복구를 중단하고 재시도 상태를 리셋하며, 최대 복구 횟수 후 FAILURE를 돌려준다. https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_behavior_tree/plugins/control/recovery_node.cpp . 같은 원칙으로 재관측 시 탐색 실패 목록을 초기화하고, 실제 모든 대안 소진은 HOST_ERROR 대신 CONTROLLER_STOP으로 기록한다.
+
+- 저장 재생→실시간 경계: [OpenVINS VioManager](https://github.com/rpng/open_vins/blob/master/ov_msckf/src/core/VioManager.cpp) 298–309행은 역순 시각을 버리고 같은 시각에는 상태 전파를 반복하지 않는다(공개 원문 확인). 새 seed61010의 마지막 저장 시각=시작 시각73.2라 VO가 중복시각을 거부했다. 기존 `strict_after_v1`을 대조/후보 모두에 켠 v442/v443으로 경계 RGB만 건너뛰며 추정 상태/프레임 시각을 재설정하지 않는다.

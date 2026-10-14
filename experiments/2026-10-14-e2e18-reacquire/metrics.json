@@ -1,0 +1,196 @@
+{
+  "cohorts": {
+    "cohort1": {
+      "groups": {
+        "development_known3/v426": {
+          "N": 3,
+          "unreached": 0,
+          "opposite": 1,
+          "same": 2,
+          "simultaneous_opposite": 1,
+          "both_held": 1,
+          "first_attempt": 0,
+          "held_sim_s": [
+            293.1
+          ],
+          "loss_episodes": 39,
+          "reacquired": 36,
+          "lost_sim_s": 1184.4,
+          "robot_N": 6,
+          "pan_toward_memory": 0,
+          "pan_records": 0,
+          "pan_out_of_range": 0,
+          "model_calls": 0,
+          "judgment_choices": 0,
+          "fallback_choices": 0,
+          "ready_wait_sim_s": [
+            33.60000000000002,
+            0,
+            188.0
+          ]
+        },
+        "development_known3/v440": {
+          "N": 3,
+          "unreached": 3,
+          "opposite": 0,
+          "same": 0,
+          "simultaneous_opposite": 0,
+          "both_held": 0,
+          "first_attempt": 0,
+          "held_sim_s": [],
+          "loss_episodes": 64,
+          "reacquired": 60,
+          "lost_sim_s": 636.7999999999997,
+          "robot_N": 6,
+          "pan_toward_memory": 286,
+          "pan_records": 460,
+          "pan_out_of_range": 56,
+          "model_calls": 101,
+          "judgment_choices": 0,
+          "fallback_choices": 100,
+          "ready_wait_sim_s": []
+        },
+        "duplicate_repeat_excluded_confirmation/v426": {
+          "N": 1,
+          "unreached": 0,
+          "opposite": 1,
+          "same": 0,
+          "simultaneous_opposite": 1,
+          "both_held": 0,
+          "first_attempt": 0,
+          "held_sim_s": [],
+          "loss_episodes": 6,
+          "reacquired": 6,
+          "lost_sim_s": 336.4000000000001,
+          "robot_N": 2,
+          "pan_toward_memory": 0,
+          "pan_records": 0,
+          "pan_out_of_range": 0,
+          "model_calls": 0,
+          "judgment_choices": 0,
+          "fallback_choices": 0,
+          "ready_wait_sim_s": [
+            7.199999999999989
+          ]
+        },
+        "duplicate_repeat_excluded_confirmation/v440": {
+          "N": 1,
+          "unreached": 1,
+          "opposite": 0,
+          "same": 0,
+          "simultaneous_opposite": 0,
+          "both_held": 0,
+          "first_attempt": 0,
+          "held_sim_s": [],
+          "loss_episodes": 17,
+          "reacquired": 17,
+          "lost_sim_s": 66.79999999999998,
+          "robot_N": 2,
+          "pan_toward_memory": 75,
+          "pan_records": 136,
+          "pan_out_of_range": 22,
+          "model_calls": 17,
+          "judgment_choices": 0,
+          "fallback_choices": 17,
+          "ready_wait_sim_s": []
+        },
+        "previously_unused2_v440/v426": {
+          "N": 2,
+          "unreached": 1,
+          "opposite": 1,
+          "same": 0,
+          "simultaneous_opposite": 1,
+          "both_held": 0,
+          "first_attempt": 0,
+          "held_sim_s": [],
+          "loss_episodes": 13,
+          "reacquired": 13,
+          "lost_sim_s": 637.2000000000002,
+          "robot_N": 4,
+          "pan_toward_memory": 0,
+          "pan_records": 0,
+          "pan_out_of_range": 0,
+          "model_calls": 0,
+          "judgment_choices": 0,
+          "fallback_choices": 0,
+          "ready_wait_sim_s": []
+        },
+        "previously_unused2_v440/v440": {
+          "N": 2,
+          "unreached": 2,
+          "opposite": 0,
+          "same": 0,
+          "simultaneous_opposite": 0,
+          "both_held": 0,
+          "first_attempt": 0,
+          "held_sim_s": [],
+          "loss_episodes": 65,
+          "reacquired": 64,
+          "lost_sim_s": 564.0000000000001,
+          "robot_N": 4,
+          "pan_toward_memory": 224,
+          "pan_records": 392,
+          "pan_out_of_range": 32,
+          "model_calls": 71,
+          "judgment_choices": 0,
+          "fallback_choices": 71,
+          "ready_wait_sim_s": []
+        }
+      },
+      "scope": "candidate main: all transport errors; fixed fallback only, not a valid Gemma comparison"
+    }
+  },
+  "ledgers": [
+    {
+      "path": "outputs/e2e18-track-model-e735b700",
+      "budget": {
+        "attempts": 56,
+        "charged_or_unknown_reserved_usd": 0.00613695,
+        "pending_reserved_usd": -1.3877787807814457e-17,
+        "attempt_cap": 600,
+        "cost_cap_usd": 0.3
+      },
+      "receipts": 56,
+      "upstream_non200": 0,
+      "prompt_tokens": 63617,
+      "cached_prompt_tokens": 9664,
+      "cache_ratio": 0.15190908090604713
+    },
+    {
+      "path": "outputs/e2e18-track-model-relayfix",
+      "budget": {
+        "attempts": 24,
+        "charged_or_unknown_reserved_usd": 0.0026222199999999998,
+        "pending_reserved_usd": -1.3877787807814457e-17,
+        "attempt_cap": 544,
+        "cost_cap_usd": 0.29386305
+      },
+      "receipts": 24,
+      "upstream_non200": 0,
+      "prompt_tokens": 27090,
+      "cached_prompt_tokens": 3744,
+      "cache_ratio": 0.1382059800664452
+    },
+    {
+      "path": "outputs/e2e18-track-model-bodyfix",
+      "budget": {
+        "attempts": 0,
+        "charged_or_unknown_reserved_usd": 0.0,
+        "pending_reserved_usd": 0.0,
+        "attempt_cap": 328,
+        "cost_cap_usd": 0.29124083
+      },
+      "receipts": 0,
+      "upstream_non200": 0,
+      "prompt_tokens": 0,
+      "cached_prompt_tokens": 0,
+      "cache_ratio": null
+    }
+  ],
+  "measurement_limits": [
+    "loss/reacquisition from code RGB evidence, not dense human labels",
+    "pan ratio from sampled issued posture; baseline pan not instrumented",
+    "previous v440 duplicate excluded from confirmation; new checkpoint cases are distinct inputs, not independent environments",
+    "baseline code-only and candidate tracking+Gemma are a composite comparison"
+  ]
+}

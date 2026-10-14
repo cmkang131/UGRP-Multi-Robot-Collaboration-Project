@@ -1,1 +1,107 @@
-[{"name": "stage-track-cohort1-01-v440", "receipts": 35, "errors": {"END_TRANSPORT_ERROR:URLError": 35}, "first_receipts": [{"t": 80.2, "event": "beam_tracking_model_receipt", "robot_id": "r1", "response": {"error": "END_TRANSPORT_ERROR", "error_type": "URLError"}}, {"t": 80.2, "event": "beam_tracking_model_receipt", "robot_id": "r2", "response": {"error": "END_TRANSPORT_ERROR", "error_type": "URLError"}}]}, {"name": "stage-track-cohort1-03-v440", "receipts": 34, "errors": {"END_TRANSPORT_ERROR:URLError": 34}, "first_receipts": [{"t": 95.8, "event": "beam_tracking_model_receipt", "robot_id": "r1", "response": {"error": "END_TRANSPORT_ERROR", "error_type": "URLError"}}, {"t": 95.8, "event": "beam_tracking_model_receipt", "robot_id": "r2", "response": {"error": "END_TRANSPORT_ERROR", "error_type": "URLError"}}]}, {"name": "stage-track-cohort1-05-v440", "receipts": 32, "errors": {"END_TRANSPORT_ERROR:URLError": 32}, "first_receipts": [{"t": 135.9, "event": "beam_tracking_model_receipt", "robot_id": "r2", "response": {"error": "END_TRANSPORT_ERROR", "error_type": "URLError"}}, {"t": 136.3, "event": "beam_tracking_model_receipt", "robot_id": "r1", "response": {"error": "END_TRANSPORT_ERROR", "error_type": "URLError"}}]}, {"name": "stage-track-cohort1-07-v440", "receipts": 17, "errors": {"END_TRANSPORT_ERROR:URLError": 17}, "first_receipts": [{"t": 80.2, "event": "beam_tracking_model_receipt", "robot_id": "r1", "response": {"error": "END_TRANSPORT_ERROR", "error_type": "URLError"}}, {"t": 80.2, "event": "beam_tracking_model_receipt", "robot_id": "r2", "response": {"error": "END_TRANSPORT_ERROR", "error_type": "URLError"}}]}, {"name": "stage-track-cohort1-09-v440", "receipts": 37, "errors": {"END_TRANSPORT_ERROR:URLError": 37}, "first_receipts": [{"t": 71.2, "event": "beam_tracking_model_receipt", "robot_id": "r1", "response": {"error": "END_TRANSPORT_ERROR", "error_type": "URLError"}}, {"t": 71.2, "event": "beam_tracking_model_receipt", "robot_id": "r2", "response": {"error": "END_TRANSPORT_ERROR", "error_type": "URLError"}}]}, {"name": "stage-track-cohort1-11-v440", "receipts": 0, "errors": {}, "first_receipts": [], "sent_SIGINT": 28741}]
+[
+  {
+    "name": "stage-track-cohort1-01-v440",
+    "model_calls": 35,
+    "receipts": 35,
+    "errors": {
+      "END_TRANSPORT_ERROR:URLError": 35
+    },
+    "first_receipt": [
+      {
+        "error": "END_TRANSPORT_ERROR",
+        "error_type": "URLError"
+      }
+    ],
+    "status": "HOST_ERROR",
+    "supervisor_stop": {}
+  },
+  {
+    "name": "stage-track-cohort1-03-v440",
+    "model_calls": 34,
+    "receipts": 34,
+    "errors": {
+      "END_TRANSPORT_ERROR:URLError": 34
+    },
+    "first_receipt": [
+      {
+        "error": "END_TRANSPORT_ERROR",
+        "error_type": "URLError"
+      }
+    ],
+    "status": "HOST_ERROR",
+    "supervisor_stop": {}
+  },
+  {
+    "name": "stage-track-cohort1-05-v440",
+    "model_calls": 32,
+    "receipts": 32,
+    "errors": {
+      "END_TRANSPORT_ERROR:URLError": 32
+    },
+    "first_receipt": [
+      {
+        "error": "END_TRANSPORT_ERROR",
+        "error_type": "URLError"
+      }
+    ],
+    "status": "HOST_ERROR",
+    "supervisor_stop": {}
+  },
+  {
+    "name": "stage-track-cohort1-07-v440",
+    "model_calls": 17,
+    "receipts": 17,
+    "errors": {
+      "END_TRANSPORT_ERROR:URLError": 17
+    },
+    "first_receipt": [
+      {
+        "error": "END_TRANSPORT_ERROR",
+        "error_type": "URLError"
+      }
+    ],
+    "status": "HOST_ERROR",
+    "supervisor_stop": {}
+  },
+  {
+    "name": "stage-track-cohort1-09-v440",
+    "model_calls": 37,
+    "receipts": 37,
+    "errors": {
+      "END_TRANSPORT_ERROR:URLError": 37
+    },
+    "first_receipt": [
+      {
+        "error": "END_TRANSPORT_ERROR",
+        "error_type": "URLError"
+      }
+    ],
+    "status": "HOST_ERROR",
+    "supervisor_stop": {}
+  },
+  {
+    "name": "stage-track-cohort1-11-v440",
+    "model_calls": 34,
+    "receipts": 34,
+    "errors": {
+      "END_TRANSPORT_ERROR:URLError": 34
+    },
+    "first_receipt": [
+      {
+        "error": "END_TRANSPORT_ERROR",
+        "error_type": "URLError"
+      }
+    ],
+    "status": "EARLY_STOP",
+    "supervisor_stop": {
+      "reason": "KNOWN_TRACKING_FAILURE_BODY_VISIBLE_TREATED_LOST_AND_ALL_SKILLS_REMOVED",
+      "scope": "stop same confirmed candidate; baseline continues",
+      "checked_unix": 1791943265.3924043,
+      "process": {
+        "pid": 28741,
+        "start": "189980",
+        "boot_id": "5c5ea7ee-4ed1-49cc-9015-e5af0d79cd43"
+      }
+    }
+  }
+]
