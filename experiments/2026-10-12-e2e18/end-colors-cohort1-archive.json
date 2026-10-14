@@ -1,0 +1,1125 @@
+{
+  "checked_unix": 1791916499.6575801,
+  "runs": [
+    {
+      "name": "stage-color-cohort1-00-v419",
+      "exit": 0,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-00-v419/raw",
+      "phase": "grasp_lift",
+      "result": {
+        "status": "BOTH_HELD",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 293.1,
+        "wall_s": 881.3062616220001,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": true,
+        "both_held_s": 293.1,
+        "held_gap_s": 0.0,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 5,
+          "r2": 13
+        },
+        "condition": "v419",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-00-v419",
+        "files": 2264,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-00-v419",
+          "files": 2264,
+          "hash_matches": 2264,
+          "inventory_sha256": "d8f4a02ab92401e11102c825c81e2424772982b057c3dff98f0dce41c40721b4",
+          "reused": false,
+          "receiver_seconds": 12.121
+        },
+        "inventory_sha256": "9cd922abb7167f7e0a8048d72c89e6c3ee68502934bf72a92db03bae61167934",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-00-v419.json",
+        "proof_sha256": "d0f5aff315cd981d9ceaabe1a469c0ae6bda3debb80edee226d0f05a1528da3d"
+      },
+      "sha256": {
+        "result.json": "a0b1ca32ba7a42a4d01112444358f319391644be40e2fec70725ee1fc6529475",
+        "progress.json": "f0f4d014c0b1337624f9cf2f72f1dc59ad9484351485e87ae44b79a840814dbf",
+        "transport-trace.json": "9d2f4efe531d4507a8d6fa158cd25bc86562b1b34be627996f40a2c01027ec5a"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-00-v419",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-01-v420",
+      "exit": 130,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-01-v420/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 173.6,
+        "wall_s": 622.786754622,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 7,
+          "r2": 0
+        },
+        "condition": "v420",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-01-v420",
+        "files": 1372,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-01-v420",
+          "files": 1372,
+          "hash_matches": 1372,
+          "inventory_sha256": "1932db984e5a097b325dd2c8c5491a355d4ae4e7db4a5f7a1a8bb054b9d78afb",
+          "reused": false,
+          "receiver_seconds": 4.967
+        },
+        "inventory_sha256": "8b83b2a70af0efc46282d51fbb94b01dae97ab9d6dd6a0d3271b75710c236234",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-01-v420.json",
+        "proof_sha256": "33bfacfaedd52c51199a9f575d2703e83df14330348ea6a68bbb1bc42f6c1df0"
+      },
+      "sha256": {
+        "result.json": "61d7f13a6b91b0998d13bce6b56034e384ea47122d54f88940f5f284c723df2f",
+        "progress.json": "43fe6c578cd2e8c4fd8bea806400abebf564dbc39a2d0bb1e0d6e5d7a13533b7",
+        "transport-trace.json": "414b845aa6988d9dd2db1e2b2603bf0832baf76efd142c4029937a937d054d22"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-01-v420",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-02-v421",
+      "exit": 130,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-02-v421/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 174.4,
+        "wall_s": 622.9535307829999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 7,
+          "r2": 0
+        },
+        "condition": "v421",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-02-v421",
+        "files": 1378,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-02-v421",
+          "files": 1378,
+          "hash_matches": 1378,
+          "inventory_sha256": "658cd2095097142a519384ad74351fd8ead67ec5e669e9f6d72a25e6bfb5e06e",
+          "reused": false,
+          "receiver_seconds": 6.222
+        },
+        "inventory_sha256": "32a94e5f55f0943d9d4fa1d07e6de2ad8f305f579e6109110f96fcc953e1bacd",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-02-v421.json",
+        "proof_sha256": "1ed47cded76ede8eeff1c035747a5b7e65b4d984608fc7d3de038393da2fabc8"
+      },
+      "sha256": {
+        "result.json": "178134c2c827a316abaed8423b514b5ffb89fbc8fb3b8276d321b58fe2340d24",
+        "progress.json": "717d401b09893ba199c2e003287371264acff8d065b8cbdcc4beb49acbb67c02",
+        "transport-trace.json": "414b845aa6988d9dd2db1e2b2603bf0832baf76efd142c4029937a937d054d22"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-02-v421",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-03-v422",
+      "exit": 130,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-03-v422/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 174.8,
+        "wall_s": 622.971502642,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 7,
+          "r2": 0
+        },
+        "condition": "v422",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-03-v422",
+        "files": 1381,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-03-v422",
+          "files": 1381,
+          "hash_matches": 1381,
+          "inventory_sha256": "259ac0a14b4150ec0c7c2784fa3114e3ab85b9b40c13785b136561f4e8881a16",
+          "reused": false,
+          "receiver_seconds": 4.923
+        },
+        "inventory_sha256": "9b01038c2860c6b9b20204871dc47c87b38db99d9b0109f02ef96dcd666f896b",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-03-v422.json",
+        "proof_sha256": "e94642f253bfd5e00a0436d9df2925c6a637c19bef92a034b480e323b869e6d1"
+      },
+      "sha256": {
+        "result.json": "3fdb1dc11f2e55923256225f18028e10aa08e282f89456ffd27313ba84c36ccb",
+        "progress.json": "1081d7d8a0b1223a23a01a2b82407efb06a7fcbb9d95a96ef93f3de4328981c5",
+        "transport-trace.json": "414b845aa6988d9dd2db1e2b2603bf0832baf76efd142c4029937a937d054d22"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-03-v422",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-04-v419",
+      "exit": 0,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-04-v419/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 978.8766463759999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 2
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 17
+        },
+        "condition": "v419",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-04-v419",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-04-v419",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "c0ee6815db26d592a45f905c2e942176ae7736dccedce824968274a36cdd4105",
+          "reused": false,
+          "receiver_seconds": 2.796
+        },
+        "inventory_sha256": "a32cc05f55f9cd079cc5d42f95c1e6e40a5603d39a32f125126c97824012b2aa",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-04-v419.json",
+        "proof_sha256": "fa445c14ed0689719e7433207d330059878c66305ce54ac1fc121e8f20068838"
+      },
+      "sha256": {
+        "result.json": "b7a749f797012d8f041613433cfd6c31876e4f6e022f8dac35f26f784d0b1342",
+        "progress.json": "fc31ab0adaab79d951608f55e72e3239e28a6fa7dc0cef45daadb2772cacca4b",
+        "transport-trace.json": "dcb68c9b6034f6abe29db0453cc763426a72974d8f0fa666b76646a401c3c3b3"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-04-v419",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-05-v420",
+      "exit": 0,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-05-v420/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 1068.644976034,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 1
+        },
+        "condition": "v420",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-05-v420",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-05-v420",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "625272cff65e19007c802823d6b725b3c322bb0026ec22d858d7fa1554bc52d2",
+          "reused": false,
+          "receiver_seconds": 4.544
+        },
+        "inventory_sha256": "62da9e05f14a971713901ef7fbbf747b6687e211b22810bea2699b796724fe90",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-05-v420.json",
+        "proof_sha256": "c58dc3eabfaa0d29eb0b08fbde5d7f9668886e0fc71849dd687837d534ef03a1"
+      },
+      "sha256": {
+        "result.json": "f7f241fb9ba27fedf42e176733098f43ac9d5e2dfe2997379f15e3095d58318e",
+        "progress.json": "0c48d043b51f09bac0e05a4451559802a3369f1f3bd0159640e194e44cec817c",
+        "transport-trace.json": "a43eb1e205b3ba0b0872f02f2a7ecbcc1985507628ccdd6de69121a93097733e"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-05-v420",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-06-v421",
+      "exit": 0,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-06-v421/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 1086.475842587,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 21,
+          "r2": 0
+        },
+        "condition": "v421",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-06-v421",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-06-v421",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "fd751d22664d0d3e7a84edca661499de8a6a1c62e920142483b1b9c24e88d42c",
+          "reused": false,
+          "receiver_seconds": 9.424
+        },
+        "inventory_sha256": "2365059bc47832e33753d9bb151ca8b5540abd2096b08f7e46e2bf2c1e0ebc11",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-06-v421.json",
+        "proof_sha256": "73598a1cbd47211600dccc460e449b9e4405423dbc037f6beed67952ff079c74"
+      },
+      "sha256": {
+        "result.json": "993cdd7824a58f788e873a59e6ec5168cef0158e40098e83a475d14cfac21146",
+        "progress.json": "887974f9bd360a0655651036cb75f90937b8b3ca859f9da1365fe11354f0662b",
+        "transport-trace.json": "0772c94f48765dd34df2450e5c9329f133b0c4749e14e4bd653232b329c7d3cc"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-06-v421",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-07-v422",
+      "exit": 0,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-07-v422/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 960.45001574,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 10
+        },
+        "condition": "v422",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-07-v422",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-07-v422",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "a4ed41aeea04fc34a0a3ecce3fb6930e77737ec296d0cfc9a9252e0e2fb750f4",
+          "reused": false,
+          "receiver_seconds": 10.178
+        },
+        "inventory_sha256": "0a13b8a23f35168e5487f7e4b982eb2e989e9d6c866113f73ff26710ea6369fb",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-07-v422.json",
+        "proof_sha256": "336031e6644f93238cc368c62b14ec9694eb692f48081657f1edfd2ecd994a82"
+      },
+      "sha256": {
+        "result.json": "07df00b948b9fcbd5f80c1f510eb4b2265812c23c1eeb014d4dd80880e349c99",
+        "progress.json": "cd53a60ac9669114bdf440e3fdf1e26dd551e209e8b2babdd11da5b3e3c0100e",
+        "transport-trace.json": "680db7a85b738eb48d1518f2924089bb57a3c28793c4919656089b142f25129d"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-07-v422",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-08-v419",
+      "exit": 0,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-08-v419/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 1022.657418451,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 9,
+          "r2": 0
+        },
+        "condition": "v419",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-08-v419",
+        "files": 2314,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-08-v419",
+          "files": 2314,
+          "hash_matches": 2314,
+          "inventory_sha256": "75fca86bf7fa46d06181bc43dae476b22aad4f78c10d42c6ed221d541e813a0b",
+          "reused": false,
+          "receiver_seconds": 9.367
+        },
+        "inventory_sha256": "f9fa17691c73595173422b88c61d03d9ff8b6721ad22b4588255a9bcbadd629f",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-08-v419.json",
+        "proof_sha256": "f1ebad000f4032241444d8499f882bcd78bde7a72eee69991a252688f1b152aa"
+      },
+      "sha256": {
+        "result.json": "872707106dc4aaf4bd67a0627905163648b5413c74ba4127dbe56de6c927c214",
+        "progress.json": "fb8c0e10083fa61771bc88aaa88e1adce2f0282d2a77d3adda5f58db779627fe",
+        "transport-trace.json": "d7a424cd16d295f8d974f216d9f884356c0aedb33aab7b858a2a3e4db4c21ecc"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-08-v419",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-09-v420",
+      "exit": 0,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-09-v420/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 1031.463486001,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 2
+        },
+        "condition": "v420",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-09-v420",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-09-v420",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "85d3f40ec8f73fb4c734e41f0e51f42f4e69e51e0526ee17da14dac877d942c4",
+          "reused": false,
+          "receiver_seconds": 12.792
+        },
+        "inventory_sha256": "f8584f77233760b5757426ce866e6ac268666271cb4501ada2a3f20c524e2a6a",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-09-v420.json",
+        "proof_sha256": "b2a074866aa90be3825e87b4ad0d996ce0d1cd1895fc8af8e859c307eaa18ea2"
+      },
+      "sha256": {
+        "result.json": "89949b60442d8f83d2732c8144e9bda66b691e30e322456dc3c537b5f49f2e4b",
+        "progress.json": "691e21b68f4cc3a9d3cc93544d01c24cbb9faa1d372464192e9608b45863c116",
+        "transport-trace.json": "eb2cf34e43a92000164e6a778bdd52248b0470a9069154ed350fae8fda594b9b"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-09-v420",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-10-v421",
+      "exit": 0,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-10-v421/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 1064.622085626,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 14
+        },
+        "condition": "v421",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-10-v421",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-10-v421",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "28f01343a3428727d00be7b53cc116ef1e12ed2592cc68f50e8704bf3d5f8d9c",
+          "reused": false,
+          "receiver_seconds": 9.978
+        },
+        "inventory_sha256": "2efef104ece46a6a9dbecd4b1e6df608c29e8be53f6f164d00583856f659cd0d",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-10-v421.json",
+        "proof_sha256": "8cd3fe63ebc9d7f6b4f74c43cef25c5e10e637f837fd62334df68b51030be5ca"
+      },
+      "sha256": {
+        "result.json": "af0b93a7ff4df072b047e0227bf76e40511584d4547f07124b8573cfb828149d",
+        "progress.json": "a5cf33eb529e21f020006a418e0fd3e1913100bf614b1db717f4d448b6c43cfa",
+        "transport-trace.json": "51ac4cdba0e3e94b8b4260bf203ec172817d04695ef28cd17ae35f0d7938d968"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-10-v421",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-11-v422",
+      "exit": 0,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-11-v422/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 300.0,
+        "wall_s": 979.3477146509999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 1
+        },
+        "condition": "v422",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-11-v422",
+        "files": 2315,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-11-v422",
+          "files": 2315,
+          "hash_matches": 2315,
+          "inventory_sha256": "73412f2b6719945f8de726f3d36beeed4d6bca0b560ba5f75539a211bc01b732",
+          "reused": false,
+          "receiver_seconds": 12.301
+        },
+        "inventory_sha256": "d12262f3e9cc3f1606eac9c31cf923b387049760f2a3b3a74497716dd09e8d3d",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-11-v422.json",
+        "proof_sha256": "8f02ec14860498a14e741b105440e9b953b9267bed7fd434279fc02ec9443d17"
+      },
+      "sha256": {
+        "result.json": "36616a0010e46a4d436b4a550c80a49c1bbe0b95a464a7a83689d8a270613a28",
+        "progress.json": "bcb1f918b8c02a61c0754014f38ff7dd6251a6a8a416fd5508edad4d69c8bfa4",
+        "transport-trace.json": "2ee2c4ca7bf47e50e577993cabd1ab91ca199fc52aaeb79fa19837df907bcbd6"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-11-v422",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-12-v419",
+      "exit": 130,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-12-v419/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 91.6,
+        "wall_s": 423.54676390500003,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 2,
+          "r2": 6
+        },
+        "condition": "v419",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "9a4a445ac0c8f15580b39a3550bfa9c7a7bfe6a06812ee324b204a158fbbbe60",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-12-v419",
+        "files": 757,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-12-v419",
+          "files": 757,
+          "hash_matches": 757,
+          "inventory_sha256": "f0befecb0a146ae0209bb5d329de1eb806c809b90c8cfaa383e6e1da09b28dc0",
+          "reused": false,
+          "receiver_seconds": 2.753
+        },
+        "inventory_sha256": "479c2fc1cd299c12810db2552433ee2ff8d8107cdb58cb4a658fe4c04d160950",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-12-v419.json",
+        "proof_sha256": "2c6cf34ab7b76530b672d91c646982862a84502c7d3a510673256c1d8921e090"
+      },
+      "sha256": {
+        "result.json": "fe9e5132e0408067cf72a02c3f7ac40940e206a08d2e30a752bc609686d0e8da",
+        "progress.json": "b2d03f22247b5e53ab671fb1e21f608f7c6846bc1f06f36be82eaaeb5b166829",
+        "transport-trace.json": "8ca58a0e6e99ca38df6effa5a70f422243b9119d9bfa300802a4b821dc2a30af"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-12-v419",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-13-v420",
+      "exit": 130,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-13-v420/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 88.8,
+        "wall_s": 423.511065571,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 6,
+          "r2": 0
+        },
+        "condition": "v420",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "9a4a445ac0c8f15580b39a3550bfa9c7a7bfe6a06812ee324b204a158fbbbe60",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-13-v420",
+        "files": 736,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-13-v420",
+          "files": 736,
+          "hash_matches": 736,
+          "inventory_sha256": "f3817d4c36d07bd70966756cbb4a3ed91bd74ede552ed38d7261ff284402d6c6",
+          "reused": false,
+          "receiver_seconds": 2.637
+        },
+        "inventory_sha256": "24b32cbe9a3b3a573ef6616612d6f91964971422ba90dd8328fd61e059733397",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-13-v420.json",
+        "proof_sha256": "a52a88798351d37edb04f2e751d178301497328d794ca0775846517b39c6a17b"
+      },
+      "sha256": {
+        "result.json": "a75f1e3137f282bdb740ba0f7a16cbebc1ced9124f38713b39e2c939f44e658c",
+        "progress.json": "f698b0cad31ffe74e34d354ba885967a1a9d856fb55ddb860e5c4a5c2cb81474",
+        "transport-trace.json": "1f5fee1c5c036f1d293002fd718b161e39602fab45cef18130393250b3e86ad4"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-13-v420",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-14-v421",
+      "exit": 130,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-14-v421/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 88.0,
+        "wall_s": 423.55840420799996,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 6,
+          "r2": 0
+        },
+        "condition": "v421",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "9a4a445ac0c8f15580b39a3550bfa9c7a7bfe6a06812ee324b204a158fbbbe60",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-14-v421",
+        "files": 729,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-14-v421",
+          "files": 729,
+          "hash_matches": 729,
+          "inventory_sha256": "8c470ba50b24ca15b3db7ea1055f805989e0eababf82a2bde8a895da68b8272f",
+          "reused": false,
+          "receiver_seconds": 2.693
+        },
+        "inventory_sha256": "9ebecfa7a77f22315b1ff0e59846542dff8d5afbe55edae3672bd134cfcd517c",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-14-v421.json",
+        "proof_sha256": "0e7fff34413ccdf2c4c9e86825794aa483594c0a7e1fb99ba5c99f420f606a85"
+      },
+      "sha256": {
+        "result.json": "134427099a404271d19e2b520c8896021316e599cf32e5e83cd3ae52caedeb9c",
+        "progress.json": "7df74dc3afe8debcae5ee08e9a3bf9363de769e3e13cc808dd0ddd521af3b169",
+        "transport-trace.json": "974fd54af402126250cbcfeef086a470352c8cee972a6beba899efc3cb1416c3"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-14-v421",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    },
+    {
+      "name": "stage-color-cohort1-15-v422",
+      "exit": 130,
+      "source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-color-cohort1-15-v422/raw",
+      "phase": "align",
+      "result": {
+        "status": "EARLY_STOP",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 88.0,
+        "wall_s": 423.547528887,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 6,
+          "r2": 0
+        },
+        "condition": "v422",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "9a4a445ac0c8f15580b39a3550bfa9c7a7bfe6a06812ee324b204a158fbbbe60",
+        "error": "SIGNAL_SIGINT",
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-color-cohort1-15-v422",
+        "files": 730,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-color-cohort1-15-v422",
+          "files": 730,
+          "hash_matches": 730,
+          "inventory_sha256": "c39ca88eea8967cb184d26c88f405ed758dc4c18355215537fd35e200ea065a4",
+          "reused": false,
+          "receiver_seconds": 2.616
+        },
+        "inventory_sha256": "24b89f1526dcc4f6009d338ed2ba7692c6c22069a2b3fbe7d13414c43dc237c4",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-color-cohort1-15-v422.json",
+        "proof_sha256": "f0ba829d6759e1a397b6ce774b04bcc4e72483994c5de8e97ffd9026870c08b6"
+      },
+      "sha256": {
+        "result.json": "80181c2a2220c70cbc2d3eedc2dd69dab6f5fc673e0537267b41ba478d50104f",
+        "progress.json": "ff523c09698fe13e41536e7c72e4c5cdd88adc05a2d12180c74cfaf60ed3fb9a",
+        "transport-trace.json": "974fd54af402126250cbcfeef086a470352c8cee972a6beba899efc3cb1416c3"
+      },
+      "host": "azure3",
+      "fetch_lite": "outputs/azure3-runs/stage-color-cohort1-15-v422",
+      "fetch_lite_omissions": "media/arrays and wire request image payloads; full LLM request/response text is retained in llm ledgers; full originals and hashes on ARM"
+    }
+  ]
+}

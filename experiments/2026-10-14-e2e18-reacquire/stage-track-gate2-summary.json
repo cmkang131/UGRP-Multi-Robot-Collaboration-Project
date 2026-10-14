@@ -1,0 +1,2121 @@
+{
+  "batch": "stage-track-gate2",
+  "planned_N": 12,
+  "complete_N": 12,
+  "median_wall_per_sim": 2.351343754400002,
+  "max_wall_per_sim": 2.6294102698333366,
+  "limit": 3.5,
+  "staging_passed": true,
+  "ok": false,
+  "model_calls": 39,
+  "request_files": 0,
+  "tokens_per_sim": 111.10277777777777,
+  "api_cost_usd": 0.00373235,
+  "initial_health": [
+    {
+      "name": "stage-track-gate2-00-v426",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 5,
+            "mecanum": 118
+          },
+          "frames": 70,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 69
+          },
+          "max_no_motion_s": 0.6500000000000004,
+          "position_delta_max_m": 1.1686188334346952,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.662492392927639,
+              -0.7314863401099007,
+              0.4242149302498963
+            ],
+            "grip_own_m": [
+              -1.4773036034905507,
+              -0.6478481175867875
+            ],
+            "distance_m": 0.6014048993732874,
+            "heading_error_rad": 2.694053748254687,
+            "own_beam_age_s": 36.0,
+            "camera": "search",
+            "basis_yaw_rad": 0.4242149302498963,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 36,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.7977088928222658,
+                -0.684073257446289
+              ],
+              "carrot_distance_m": 0.6065422693651208,
+              "phase": "rotate_path",
+              "heading_error_rad": 0.2073589827816045,
+              "goal_distance_m": 0.6014048993732874,
+              "before": 0.042997747740221755,
+              "after": 0.01291628873021558
+            },
+            "projected_clear": true,
+            "gaze_bearing_deg": 102.35687412258534,
+            "gaze_pan_reachable": false,
+            "gaze_source": "own_rgb_track",
+            "track_sigma_m": 0.14208571523026467
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 43,
+            "arm": 704,
+            "look": 176
+          },
+          "frames": 45,
+          "choice_distribution": {
+            "none": 1,
+            "acquire_turn": 19,
+            "acquire_scan": 14,
+            "acquire_explore": 11
+          },
+          "max_no_motion_s": 2.0500000000000007,
+          "position_delta_max_m": 0.0158587181420159,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "acquire_turn",
+            "own_beam_age_s": 79.8,
+            "B_candidate_available": true,
+            "cycle": 2
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 125,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "roundtrip_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1750
+          }
+        },
+        "r2": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "roundtrip_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "roundtrip_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 6.938893903907228e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-01-v437",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 145,
+            "mecanum": 48,
+            "arm": 576
+          },
+          "frames": 50,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 13,
+            "beam_turn": 2,
+            "beam_scan": 34
+          },
+          "max_no_motion_s": 12.3,
+          "position_delta_max_m": 0.03061011275036957,
+          "latest_approach": {
+            "t": 107.4,
+            "status": "beam_scan",
+            "memory_age_s": 0.0
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 98,
+            "mecanum": 55,
+            "arm": 384
+          },
+          "frames": 55,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 6,
+            "beam_turn": 23,
+            "beam_scan": 23,
+            "navigate_pregrasp": 2
+          },
+          "max_no_motion_s": 4.649999999999999,
+          "position_delta_max_m": 0.023744228177772678,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              0.49526058549500873,
+              0.049533169434392677,
+              -3.0974846490646333
+            ],
+            "grip_own_m": [
+              0.29225821788249656,
+              0.040573328826744866
+            ],
+            "distance_m": 1.7399414560005146,
+            "heading_error_rad": 2.668240137197172,
+            "own_beam_age_s": 0.0,
+            "camera": "search",
+            "basis_yaw_rad": 0.044108004525160505,
+            "correct_end": false,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 74,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                0.2886981964111328,
+                -1.0682228088378913
+              ],
+              "carrot_distance_m": 0.6159728771045756,
+              "phase": "rotate_path",
+              "heading_error_rad": 0.6180955354432942,
+              "goal_distance_m": 1.7445828730657855,
+              "before": 0.3820420909349326,
+              "after": 0.2749811007969258
+            },
+            "projected_clear": true
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 125,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "roundtrip_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1750
+          }
+        },
+        "r2": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "roundtrip_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "roundtrip_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 6.938893903907228e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-02-v438",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 145,
+            "mecanum": 48,
+            "arm": 576
+          },
+          "frames": 50,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 12,
+            "beam_turn": 2,
+            "beam_scan": 35
+          },
+          "max_no_motion_s": 10.200000000000003,
+          "position_delta_max_m": 0.0311771725938184,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "beam_scan",
+            "memory_age_s": 1.5999999999999943
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 98,
+            "mecanum": 55,
+            "arm": 384
+          },
+          "frames": 55,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 10,
+            "beam_turn": 21,
+            "beam_scan": 23
+          },
+          "max_no_motion_s": 4.649999999999999,
+          "position_delta_max_m": 0.02181973172876253,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "beam_skill_pending"
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 125,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "roundtrip_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1750
+          }
+        },
+        "r2": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "roundtrip_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "roundtrip_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 6.938893903907228e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-03-v439",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 98,
+            "mecanum": 78,
+            "arm": 384
+          },
+          "frames": 55,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 4,
+            "beam_turn": 1,
+            "beam_scan": 22,
+            "navigate_pregrasp": 27
+          },
+          "max_no_motion_s": 4.75,
+          "position_delta_max_m": 0.6115460019256989,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.5387607532342267,
+              0.43556773163278195,
+              -0.2998798491257449
+            ],
+            "grip_own_m": [
+              -1.3446291650204594,
+              0.3755413502859086
+            ],
+            "distance_m": 0.9098198864270891,
+            "heading_error_rad": 2.905826944811418,
+            "own_beam_age_s": 0.0,
+            "camera": "search",
+            "basis_yaw_rad": -0.2998798491257449,
+            "correct_end": true,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 52,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.4852680206298832,
+                -0.08893928527831993
+              ],
+              "carrot_distance_m": 0.6043224119781028,
+              "before": 0.3652055776190317,
+              "after": 0.3498262520157796,
+              "body_error_m": [
+                0.599366949971242,
+                -0.07723235656900845
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": -0.12815039198671876,
+              "goal_distance_m": 0.9127824624987383
+            },
+            "projected_clear": true,
+            "regulated_pulse_period_s": 0.2
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 98,
+            "mecanum": 55,
+            "arm": 384
+          },
+          "frames": 55,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 10,
+            "beam_turn": 21,
+            "beam_scan": 23
+          },
+          "max_no_motion_s": 4.649999999999999,
+          "position_delta_max_m": 0.02181973172876253,
+          "latest_approach": {
+            "t": 108.6,
+            "status": "beam_skill_pending"
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 125,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "roundtrip_sha256": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1750
+          }
+        },
+        "r2": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "roundtrip_sha256": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 133,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "roundtrip_sha256": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 6.938893903907228e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-04-v426",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 23,
+            "mecanum": 99,
+            "arm": 64
+          },
+          "frames": 65,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 63,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 0.6999999999999993,
+          "position_delta_max_m": 0.8433383686028703,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -0.9676568591392405,
+              -0.5083413347291761,
+              0.8170504337723297
+            ],
+            "grip_own_m": [
+              -0.8285918998671178,
+              -0.36018203835313745
+            ],
+            "distance_m": 0.391695095118882,
+            "heading_error_rad": 2.3432143616654226,
+            "own_beam_age_s": 9.200000000000003,
+            "camera": "inspect",
+            "basis_yaw_rad": 0.8170504337723297,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 27,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -0.9676568591392405,
+                -0.5083413347291761
+              ],
+              "carrot_distance_m": 0.391695095118882,
+              "before": 0.15342504754019,
+              "after": 0.1435972769868237,
+              "body_error_m": [
+                0.38844705912737637,
+                0.05033815447036749
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": 0.12887002469502543,
+              "goal_distance_m": 0.391695095118882
+            },
+            "projected_clear": false
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 75
+          },
+          "frames": 75,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 74
+          },
+          "max_no_motion_s": 0.2999999999999998,
+          "position_delta_max_m": 0.12675116738580813,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "seek_own_B",
+            "source": "own_frontier_navigation"
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r2": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r3": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 137,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "roundtrip_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r2": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "roundtrip_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "roundtrip_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 3.469446951953614e-18,
+          "yaw_rad": 1.734723475976807e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-05-v437",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 44,
+            "mecanum": 68,
+            "arm": 128
+          },
+          "frames": 57,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 9,
+            "beam_turn": 20,
+            "navigate_pregrasp": 19,
+            "beam_scan": 5,
+            "gaze_settle": 3
+          },
+          "max_no_motion_s": 2.3500000000000014,
+          "position_delta_max_m": 0.1622322761524868,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "beam_turn",
+            "memory_age_s": 0.0
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 147,
+            "mecanum": 46,
+            "arm": 576
+          },
+          "frames": 45,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 7,
+            "beam_turn": 8,
+            "beam_scan": 28,
+            "gaze_settle": 1
+          },
+          "max_no_motion_s": 4.149999999999999,
+          "position_delta_max_m": 0.03366720764506245,
+          "latest_approach": {
+            "t": 123.0,
+            "status": "beam_scan",
+            "memory_age_s": 11.599999999999994
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r2": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r3": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 137,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "roundtrip_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r2": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "roundtrip_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "roundtrip_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 3.469446951953614e-18,
+          "yaw_rad": 1.734723475976807e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-06-v438",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 59,
+            "mecanum": 67,
+            "arm": 192
+          },
+          "frames": 55,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 9,
+            "navigate_pregrasp": 18,
+            "camera_settle": 1,
+            "gaze_settle": 3,
+            "beam_turn": 18,
+            "beam_scan": 5
+          },
+          "max_no_motion_s": 1.9000000000000021,
+          "position_delta_max_m": 0.25439344597648994,
+          "latest_approach": {
+            "t": 123.8,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.0129133162775787,
+              -0.5286829649472049,
+              0.765711931725876
+            ],
+            "grip_own_m": [
+              -0.8664286439231549,
+              -0.38785512407326017
+            ],
+            "distance_m": 0.8775016871002335,
+            "heading_error_rad": 2.521481283623176,
+            "own_beam_age_s": 0.0,
+            "camera": "search",
+            "basis_yaw_rad": 0.765711931725876,
+            "correct_end": true,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": false,
+            "path_points": 60,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.177387619018555,
+                0.05965499877929667
+              ],
+              "carrot_distance_m": 0.6067381612116193,
+              "phase": "rotate_path",
+              "heading_error_rad": -1.0745205984265032,
+              "goal_distance_m": 0.8775016871002335,
+              "before": 1.1545945164428504,
+              "after": 0.9427229824281674
+            },
+            "projected_clear": true,
+            "gaze_bearing_deg": -12.23097878378623,
+            "gaze_pan_reachable": true,
+            "gaze_source": "own_rgb_track",
+            "track_sigma_m": 0.03
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 130,
+            "mecanum": 49,
+            "arm": 512
+          },
+          "frames": 49,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 12,
+            "beam_turn": 6,
+            "beam_scan": 30
+          },
+          "max_no_motion_s": 4.600000000000001,
+          "position_delta_max_m": 0.033026704218406304,
+          "latest_approach": {
+            "t": 124.2,
+            "status": "beam_scan",
+            "memory_age_s": 10.799999999999997
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r2": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r3": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 137,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "roundtrip_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r2": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "roundtrip_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "roundtrip_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 3.469446951953614e-18,
+          "yaw_rad": 1.734723475976807e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-07-v439",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 41,
+            "mecanum": 70,
+            "arm": 128
+          },
+          "frames": 58,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 20,
+            "navigate_pregrasp": 17,
+            "beam_turn": 14,
+            "gaze_settle": 1,
+            "beam_scan": 5
+          },
+          "max_no_motion_s": 8.299999999999999,
+          "position_delta_max_m": 0.2372863500310032,
+          "latest_approach": {
+            "t": 123.8,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              -1.14419263397399,
+              -0.41590947517241317,
+              0.48286194886615075
+            ],
+            "grip_own_m": [
+              -0.9642245501982782,
+              -0.321560501557973
+            ],
+            "distance_m": 0.9254489827185076,
+            "heading_error_rad": 2.6184980383276084,
+            "own_beam_age_s": 0.3999999999999915,
+            "camera": "search",
+            "basis_yaw_rad": 0.48286194886615075,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 63,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                -1.0958820343017583,
+                0.21021537780761704
+              ],
+              "carrot_distance_m": 0.6168247713599241,
+              "phase": "rotate_path",
+              "heading_error_rad": -0.9774154456827279,
+              "goal_distance_m": 0.9254489827185076,
+              "before": 0.9553409534591656,
+              "after": 0.7635859892419633
+            },
+            "projected_clear": true,
+            "gaze_bearing_deg": 5.122337736699379,
+            "gaze_pan_reachable": true,
+            "gaze_source": "own_rgb_track",
+            "track_sigma_m": 0.03128101630874871
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 146,
+            "mecanum": 46,
+            "arm": 576
+          },
+          "frames": 46,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 8,
+            "beam_turn": 7,
+            "beam_scan": 30
+          },
+          "max_no_motion_s": 4.149999999999999,
+          "position_delta_max_m": 0.03366720764506245,
+          "latest_approach": {
+            "t": 123.0,
+            "status": "beam_scan",
+            "memory_age_s": 11.599999999999994
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r2": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r3": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 137,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "roundtrip_sha256": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r2": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "roundtrip_sha256": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 159,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "roundtrip_sha256": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 3.469446951953614e-18,
+          "yaw_rad": 1.734723475976807e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-08-v426",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 22,
+            "mecanum": 102,
+            "arm": 64
+          },
+          "frames": 66,
+          "choice_distribution": {
+            "none": 1,
+            "navigate_pregrasp": 60,
+            "gaze_settle": 4,
+            "camera_settle": 1
+          },
+          "max_no_motion_s": 1.1000000000000014,
+          "position_delta_max_m": 0.9973645154253546,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "gaze_settle"
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 75
+          },
+          "frames": 75,
+          "choice_distribution": {
+            "none": 1,
+            "seek_own_B": 74
+          },
+          "max_no_motion_s": 0.25,
+          "position_delta_max_m": 0.746617252446379,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "seek_own_B",
+            "source": "own_frontier_navigation"
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r2": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r3": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 196,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "roundtrip_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1250
+          }
+        },
+        "r2": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "roundtrip_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "roundtrip_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 3.469446951953614e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-09-v437",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 100,
+            "mecanum": 69,
+            "arm": 384
+          },
+          "frames": 53,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 5,
+            "beam_return": 1,
+            "beam_turn": 5,
+            "beam_scan": 20,
+            "gaze_settle": 2,
+            "navigate_pregrasp": 19
+          },
+          "max_no_motion_s": 4.3,
+          "position_delta_max_m": 0.432686976407966,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "beam_turn",
+            "memory_age_s": 0.0
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 41,
+            "arm": 768,
+            "look": 192
+          },
+          "frames": 45,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 6,
+            "beam_return": 1,
+            "beam_turn": 2,
+            "beam_scan": 33,
+            "seek_own_B": 2
+          },
+          "max_no_motion_s": 6.35,
+          "position_delta_max_m": 0.009903425833873594,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "beam_skill_pending"
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r2": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r3": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 196,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "roundtrip_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1250
+          }
+        },
+        "r2": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "roundtrip_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "roundtrip_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 3.469446951953614e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-10-v438",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 100,
+            "mecanum": 73,
+            "arm": 384
+          },
+          "frames": 54,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 6,
+            "beam_turn": 3,
+            "beam_scan": 20,
+            "gaze_settle": 1,
+            "navigate_pregrasp": 23
+          },
+          "max_no_motion_s": 4.65,
+          "position_delta_max_m": 0.5100873375508743,
+          "latest_approach": {
+            "t": 164.7,
+            "status": "navigate_pregrasp",
+            "station_own_m": [
+              1.421284153937749,
+              -0.9020654563031496,
+              2.3832789619432853
+            ],
+            "grip_own_m": [
+              1.2737616217355476,
+              -0.7623251883319937
+            ],
+            "distance_m": 0.836626101134897,
+            "heading_error_rad": -3.0655649854663203,
+            "own_beam_age_s": 2.0,
+            "camera": "search",
+            "basis_yaw_rad": 2.3832789619432853,
+            "beam_obstacle_source": "own_rgb_center_axis_known_size",
+            "path_reused": true,
+            "path_points": 50,
+            "rpp": {
+              "path_follow": "rpp_v1",
+              "lookahead_m": 0.6,
+              "carrot_m": [
+                1.016170883178711,
+                -1.1544948577880856
+              ],
+              "carrot_distance_m": 0.6157953974770494,
+              "before": 0.3792039715539172,
+              "after": 0.36345552239039214,
+              "body_error_m": [
+                0.6156657594641606,
+                -0.012635037686355596
+              ],
+              "yaw_rad": 0.0,
+              "phase": "forward_path",
+              "heading_error_rad": -0.020519679849418673,
+              "goal_distance_m": 0.8366261011348969
+            },
+            "projected_clear": true,
+            "regulated_pulse_period_s": 0.2
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 41,
+            "arm": 768,
+            "look": 192
+          },
+          "frames": 45,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 7,
+            "beam_turn": 2,
+            "beam_scan": 34,
+            "seek_own_B": 1
+          },
+          "max_no_motion_s": 6.900000000000002,
+          "position_delta_max_m": 0.009338401347353094,
+          "latest_approach": {
+            "t": 162.3,
+            "status": "beam_scan",
+            "memory_age_s": 0.0
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r2": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r3": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 196,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "roundtrip_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1250
+          }
+        },
+        "r2": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "roundtrip_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "roundtrip_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 3.469446951953614e-18
+        }
+      }
+    },
+    {
+      "name": "stage-track-gate2-11-v439",
+      "sim_s": 30.0,
+      "robots": {
+        "r1": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "look": 75,
+            "mecanum": 62,
+            "arm": 256
+          },
+          "frames": 53,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 6,
+            "beam_return": 1,
+            "beam_turn": 18,
+            "beam_scan": 7,
+            "navigate_pregrasp": 16,
+            "gaze_settle": 4
+          },
+          "max_no_motion_s": 4.3,
+          "position_delta_max_m": 0.2408835733443716,
+          "latest_approach": {
+            "t": 163.9,
+            "status": "beam_turn",
+            "memory_age_s": 0.0
+          }
+        },
+        "r2": {
+          "command_distribution": {
+            "initial_servo_command": 2,
+            "mecanum": 46,
+            "arm": 640,
+            "look": 161
+          },
+          "frames": 48,
+          "choice_distribution": {
+            "none": 1,
+            "beam_skill_pending": 10,
+            "beam_turn": 4,
+            "beam_scan": 32,
+            "gaze_settle": 1
+          },
+          "max_no_motion_s": 5.6000000000000005,
+          "position_delta_max_m": 0.01108941320213133,
+          "latest_approach": {
+            "t": 163.9,
+            "status": "beam_scan",
+            "memory_age_s": 12.400000000000006
+          }
+        }
+      },
+      "policy": {
+        "option": "baseline_v1",
+        "applied": true,
+        "before": {
+          "r1": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r2": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          },
+          "r3": {
+            "body_controller": "jev_v1",
+            "idle_s": 30.0
+          }
+        },
+        "after": {
+          "r1": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r2": {
+            "body_controller": "off",
+            "idle_s": 5.0
+          },
+          "r3": {
+            "body_controller": "off",
+            "idle_s": 30.0
+          }
+        },
+        "state_reset": false,
+        "baseline_explore_idle": "idle5_v1"
+      },
+      "route_inputs": {},
+      "own_restore": {
+        "r1": {
+          "accepted_frames": 196,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "roundtrip_sha256": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1250
+          }
+        },
+        "r2": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "roundtrip_sha256": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        },
+        "r3": {
+          "accepted_frames": 226,
+          "max_recorded_pose_error": 0.0,
+          "map_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "roundtrip_sha256": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b",
+          "historical_grid_hash_available": false,
+          "historical_estimates_matched": true,
+          "issued_servo": {
+            "1": 2000,
+            "3": 740,
+            "4": 2320,
+            "5": 1320,
+            "6": 1500
+          }
+        }
+      },
+      "placement_errors": {
+        "r1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r2": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "r3": {
+          "xyz_m": 0.0,
+          "yaw_rad": 0.0
+        },
+        "beam_1": {
+          "xyz_m": 0.0,
+          "yaw_rad": 3.469446951953614e-18
+        }
+      }
+    }
+  ],
+  "synchronized": true,
+  "actual_start_spread_s": 0.09231099499993434,
+  "provider_receipts": 34,
+  "provider_attempt_ids": [
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    53,
+    54,
+    55
+  ],
+  "receipt_reconciled": false,
+  "speed_ok": true,
+  "transport_error_N": 3,
+  "unconsumed_final_receipts_N": 2,
+  "unconsumed_provider_attempt_ids": [
+    52,
+    56
+  ],
+  "gate_rejection": "transport resets and final receipt omission, not physics speed"
+}

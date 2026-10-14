@@ -1,0 +1,629 @@
+{
+  "evaluation_only": true,
+  "stance_offset_m": 0.4732,
+  "threshold_m": 0.25,
+  "metric": "nearest over entire run for comparison to historical 5/12; simultaneous separately; resource-censored excluded, known stall stops included as failures",
+  "groups": {
+    "v415": {
+      "N": 3,
+      "excluded": 0,
+      "both_reached": 2,
+      "relations": {
+        "unreached": 1,
+        "same": 2
+      },
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "simultaneous_opposite": 1,
+      "ready_wait_sim_s": []
+    },
+    "v416": {
+      "N": 3,
+      "excluded": 0,
+      "both_reached": 1,
+      "relations": {
+        "unreached": 2,
+        "opposite": 1
+      },
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "simultaneous_opposite": 1,
+      "ready_wait_sim_s": []
+    },
+    "v417": {
+      "N": 3,
+      "excluded": 0,
+      "both_reached": 2,
+      "relations": {
+        "unreached": 1,
+        "opposite": 2
+      },
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "simultaneous_opposite": 1,
+      "ready_wait_sim_s": [
+        141.2
+      ]
+    },
+    "v418": {
+      "N": 3,
+      "excluded": 0,
+      "both_reached": 1,
+      "relations": {
+        "unreached": 2,
+        "opposite": 1
+      },
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "simultaneous_opposite": 1,
+      "ready_wait_sim_s": []
+    }
+  },
+  "runs": [
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {
+        "reason": "BEAM_ACQUISITION_NO_STATION_OVER_100_SIM_S",
+        "classification": "known stage stall; stop on original observation, no success claimed",
+        "progress": {
+          "sim_s": 122.0,
+          "phase": "align",
+          "wall_s": 267.26684977899913
+        },
+        "r2_status": "acquire_turn",
+        "cycle": 8
+      },
+      "name": "stage-end-cohort4-00-v415",
+      "condition": "v415",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 122.8,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.19351374490531642,
+            0.19211630892037593
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end0": 1
+          },
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.626918832554591,
+            1.7437563958744122
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {
+        "reason": "BEAM_ACQUISITION_NO_STATION_OVER_100_SIM_S",
+        "classification": "known stage stall; stop on original observation, no success claimed",
+        "progress": {
+          "sim_s": 131.0,
+          "phase": "align",
+          "wall_s": 267.602727341
+        },
+        "r2_status": "acquire_turn",
+        "cycle": 9
+      },
+      "name": "stage-end-cohort4-01-v416",
+      "condition": "v416",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 131.55,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            0.986686981369139,
+            0.3073409686405159
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end1": 2
+          },
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.613934804026726,
+            1.7249618455173825
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {
+        "reason": "BEAM_ACQUISITION_NO_STATION_OVER_100_SIM_S",
+        "classification": "known stage stall; stop on original observation, no success claimed",
+        "progress": {
+          "sim_s": 135.0,
+          "phase": "align",
+          "wall_s": 267.60168836199955
+        },
+        "r2_status": "acquire_scan",
+        "cycle": 9
+      },
+      "name": "stage-end-cohort4-02-v417",
+      "condition": "v417",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 135.4,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.096459414615155,
+            0.3069755605812845
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end0": 1
+          },
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.613934804026726,
+            1.7249618455173825
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {
+        "reason": "BEAM_ACQUISITION_NO_STATION_OVER_100_SIM_S",
+        "classification": "known stage stall; stop on original observation, no success claimed",
+        "progress": {
+          "sim_s": 131.0,
+          "phase": "align",
+          "wall_s": 267.25554963300056
+        },
+        "r2_status": "acquire_turn",
+        "cycle": 9
+      },
+      "name": "stage-end-cohort4-03-v418",
+      "condition": "v418",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 131.6,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.1177970745946177,
+            0.3100067250879486
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end0": 1
+          },
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.613934804026726,
+            1.7249618455173825
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-end-cohort4-04-v415",
+      "condition": "v415",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "same",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.04403546335884801,
+            0.05701834394178303
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end0": 1,
+            "end1": 1
+          },
+          "occupied_events": 293
+        },
+        "r2": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.07096371744365593,
+            0.32891861682467527
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end1": 1
+          },
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-end-cohort4-05-v416",
+      "condition": "v416",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.04757160804402707,
+            0.17043028541993127
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end1": 1,
+            "end0": 2
+          },
+          "occupied_events": 546
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.5014200931134377,
+            0.0722775647832037
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-end-cohort4-06-v417",
+      "condition": "v417",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.49441925105063034,
+            0.03889004391732979
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end0": 1
+          },
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.013574540170627083,
+            0.44965392589547704
+          ],
+          "ready_t": 158.8,
+          "ready_wait_sim_s": 141.2,
+          "assignment_choices": {
+            "end1": 1
+          },
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-end-cohort4-07-v418",
+      "condition": "v418",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.6875971861504514,
+            0.0414372759484872
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end0": 1
+          },
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.052587357845728495,
+            0.4799934200770183
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end0": 1,
+            "end1": 1
+          },
+          "occupied_events": 518
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {
+        "reason": "B_SEARCH_BLOCKS_END_DECISION_OVER_100_SIM_S",
+        "classification": "known stage stall; stop on original observation, no success claimed",
+        "progress": {
+          "sim_s": 123.0,
+          "phase": "align",
+          "wall_s": 329.20076837299985
+        },
+        "r2_status": "seek_own_B",
+        "cycle": null
+      },
+      "name": "stage-end-cohort4-08-v415",
+      "condition": "v415",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 123.2,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "same",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.09521611985624728,
+            0.3903985791889853
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end0": 1
+          },
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.11971809839723599,
+            0.4853495617098065
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {
+        "reason": "B_SEARCH_BLOCKS_END_DECISION_OVER_100_SIM_S",
+        "classification": "known stage stall; stop on original observation, no success claimed",
+        "progress": {
+          "sim_s": 117.0,
+          "phase": "align",
+          "wall_s": 327.4736864010001
+        },
+        "r2_status": "seek_own_B",
+        "cycle": null
+      },
+      "name": "stage-end-cohort4-09-v416",
+      "condition": "v416",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 117.2,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            0.7208751519424356,
+            0.3601822347083946
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end1": 1
+          },
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.11971809839723599,
+            0.4853495617098065
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-end-cohort4-10-v417",
+      "condition": "v417",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.7004137814480096,
+            0.22118506291702086
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end0": 1
+          },
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.04638729920555176,
+            0.4379234561801612
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end1": 1
+          },
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {
+        "reason": "BEAM_REACQUISITION_STALL_OVER_100_SIM_S",
+        "classification": "known stage stall; stop on original observation, no success claimed",
+        "progress": {
+          "sim_s": 204.0,
+          "phase": "align",
+          "wall_s": 551.1480086370002
+        },
+        "robot_id": "r1",
+        "robot_status": "acquire_turn",
+        "cycle": 8,
+        "continuous_stall_sim_s": 123.60000000000002
+      },
+      "name": "stage-end-cohort4-11-v418",
+      "condition": "v418",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 204.4,
+      "status": "EARLY_STOP",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            0.4689322348040669,
+            0.3636958578684254
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end0": 1
+          },
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.01597807853557729,
+            0.44468904625746447
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {
+            "end1": 1
+          },
+          "occupied_events": 0
+        }
+      }
+    }
+  ]
+}

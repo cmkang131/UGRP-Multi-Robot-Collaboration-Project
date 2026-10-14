@@ -1,0 +1,37 @@
+{
+  "scope": "actual Gemma own-RGB request and contract validation only; not end separation or grasp success",
+  "results": [
+    {
+      "robot": "r1",
+      "frame_id": 535,
+      "sha256": "b4b42b84d3cd6506aa5d1d4a907340a0112e9136d5bfa335379ed8c7e4906d93",
+      "response": {
+        "decision": {
+          "choice": "end0",
+          "message": "",
+          "reason": "I am very close to end0 (distance 0.038m) compared to end1 (distance 0.943m). In a no_comm scenario, choosing the nearest available end is the most efficient strategy to avoid collision and coordinate implicitly."
+        },
+        "model": "google/gemma-4-31b-it",
+        "attempt": 1,
+        "cost_usd": 0.00015706
+      },
+      "validated": true
+    },
+    {
+      "robot": "r2",
+      "frame_id": 848,
+      "sha256": "aeb3ce29183f83b6570c22aa7d61e471e961ae71c8b0ffe4ce7981af842fd6c0",
+      "response": {
+        "decision": {
+          "choice": "end1",
+          "message": "",
+          "reason": "I am very close to end1 (distance 0.046m) compared to end0 (distance 0.943m). In a no_comm scenario, selecting the nearest available end is the most efficient strategy to avoid collision and ensure a grasp."
+        },
+        "model": "google/gemma-4-31b-it",
+        "attempt": 2,
+        "cost_usd": 0.00015524
+      },
+      "validated": true
+    }
+  ]
+}

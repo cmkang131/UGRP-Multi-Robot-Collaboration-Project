@@ -17,7 +17,7 @@ from harness.e2e_result_writer import write, Finalizer
 
 ROOT=Path(__file__).resolve().parents[1]
 BASELINE_DIGEST='038b4b838c9e56335c42d0739de82e33d18c9a4affe0ed9ab9bc559da09e0fe9'
-MODES={'v375':'off','v384':'regulated_v1','v385':'gaze_v1','v386':'track_gaze_v1','v395':'track_gaze_v1','v396':'track_gaze_v1','v399':'track_gaze_v1','v400':'track_gaze_v1'}
+MODES={'v375':'off','v384':'regulated_v1','v385':'gaze_v1','v386':'track_gaze_v1','v395':'track_gaze_v1','v396':'track_gaze_v1','v399':'track_gaze_v1','v400':'track_gaze_v1','v407':'track_gaze_v1','v408':'track_gaze_v1','v409':'track_gaze_v1','v410':'track_gaze_v1','v411':'track_gaze_v1','v412':'track_gaze_v1','v413':'track_gaze_v1','v414':'track_gaze_v1','v415':'track_gaze_v1','v416':'track_gaze_v1','v417':'track_gaze_v1','v418':'track_gaze_v1','v419':'track_gaze_v1','v420':'track_gaze_v1','v421':'track_gaze_v1','v422':'track_gaze_v1','v423':'track_gaze_v1','v424':'track_gaze_v1','v425':'track_gaze_v1','v426':'track_gaze_v1','v427':'track_gaze_v1','v428':'track_gaze_v1','v429':'track_gaze_v1','v430':'track_gaze_v1','v431':'track_gaze_v1','v434':'track_gaze_v1','v437':'track_gaze_v1','v441':'track_gaze_v1','v442':'track_gaze_v1','v443':'track_gaze_v1','v440':'track_gaze_v1','v435':'track_gaze_v1','v438':'track_gaze_v1','v436':'track_gaze_v1','v439':'track_gaze_v1'}
 
 
 def read_json(path):
@@ -62,7 +62,7 @@ def commands_for_stage(tr, now):
 
 
 def stage_metrics(events, first, success, elapsed):
-    starts={r:sum(e.get('event')=='own_pregrasp_acquisition_begin' and e.get('robot_id')==r for e in events) for r in ('r1','r2')}
+    starts={r:sum(e.get('event') in ('own_pregrasp_acquisition_begin','beam_tracking_reacquire_begin') and e.get('robot_id')==r for e in events) for r in ('r1','r2')}
     return dict(both_held=success,first_attempt_success=success and not any(starts.values()),
         # Conservative: any acquisition after staged align entry counts, even initial search.
         reacquisition_entries=starts,held_first_s=first,
@@ -101,27 +101,55 @@ def run(args):
     route_recovery=getattr(args,'route_recovery','off');route_record=getattr(args,'route_input_record','off')
     if wrapper=='v387' and (route_recovery!='off' or route_record!='off'):
         raise ValueError('ROUTE_STAGE_REQUIRES_V393')
-    if wrapper in ('v393','v394','v395','v396','v397','v398','v399','v400'):
+    if wrapper in ('v393','v394','v395','v396','v397','v398','v399','v400','v407','v408','v409','v410','v411','v412','v413','v414','v415','v416','v417','v418','v419','v420','v421','v422','v423','v424','v425','v426','v427','v428','v429','v430','v431','v434','v435','v436','v437','v438','v439','v440','v441','v442','v443'):
         b.update(execution_bundle_id='e2e18-'+wrapper,schema='ugrp.e2e_stage_probe.'+wrapper,workflow_version='7.'+str(int(wrapper[1:])-107)+'.0')
         b['e2e_options'].update(route_recovery=route_recovery,route_input_record=route_record)
         b['route_parent_controller']={'off':'e2e18-v391','frontier_v1':'e2e18-v392','footprint_v2':'e2e18-v390'}[route_recovery] if route_record!='off' else {'off':'e2e18-v375','frontier_v1':'e2e18-v381','footprint_v2':'e2e18-v389'}[route_recovery]
         if recipe['stage']!='mapping' and (route_recovery!='off' or route_record!='off'):
             raise ValueError('ROUTE_OPTIONS_REQUIRE_MAPPING_STAGE')
     policy=getattr(args,'stage_policy_handoff','off')
-    if (policy!='off') != (wrapper in ('v394','v395','v396','v399','v400')):raise ValueError('BASELINE_HANDOFF_REQUIRES_V394')
+    if (policy!='off') != (wrapper in ('v394','v395','v396','v399','v400','v407','v408','v409','v410','v411','v412','v413','v414','v415','v416','v417','v418','v419','v420','v421','v422','v423','v424','v425','v426','v427','v428','v429','v430','v431','v434','v435','v436','v437','v438','v439','v440','v441','v442','v443')):raise ValueError('BASELINE_HANDOFF_REQUIRES_V394')
     b['e2e_options']['stage_policy_handoff']=policy
     fov={'v395':'turn60_v1','v396':'turn45_v1','v399':'near_once60_v1','v400':'near_once45_v1'}.get(wrapper,'off')
     if fov!='off' and args.condition!=wrapper:raise ValueError('FOV_CONDITION_WRAPPER_MISMATCH')
     b['e2e_options']['grasp_fov']=fov
-    b['e2e_options']['stage_cadence']='canonical_v1' if wrapper in ('v397','v398','v399','v400') else 'off'
-    b['e2e_options']['stage_rgb_boundary']='strict_after_v1' if wrapper=='v398' else 'off'
+    b['e2e_options']['end_assignment']={'v407':'lock_v1','v408':'rgb_rule_v1','v409':'gemma_v1','v412':'lock_v1','v413':'rgb_rule_v1','v414':'gemma_v1','v415':'rgb_ground_v2','v416':'gemma_ground_v2','v417':'rgb_local_v3','v418':'gemma_local_v3'}.get(wrapper,'off')
+    b['end_assignment_condition']='no_comm'
+    color_mode={'v420':'scan_v1','v421':'remember_v1','v422':'short_side_v1','v423':'anchor_v2','v424':'anchor_short_v2','v425':'sweep_v2','v427':'anchor_v2','v429':'anchor_v2','v430':'component_v3','v431':'component_short_v3','v436':'component_short_v3','v439':'component_short_v3'}.get(wrapper,'off')
+    acquire_recovery={
+        'v426':'cancel_v1','v427':'cancel_v1',
+        'v428':'persistent_v1','v429':'persistent_v1','v430':'cancel_v1','v431':'cancel_v1','v434':'cancel_v1','v437':'cancel_v1','v440':'cancel_v1','v441':'cancel_v1','v442':'cancel_v1','v443':'cancel_v1','v435':'cancel_v1','v438':'cancel_v1','v436':'cancel_v1','v439':'cancel_v1'}.get(wrapper,'off')
+    tracking={'v434':'view_return_v1','v437':'view_return_v1','v440':'view_return_v1','v441':'view_return_v1','v443':'view_return_v1','v435':'object_return_v1','v438':'object_return_v1','v436':'view_return_v1','v439':'view_return_v1'}.get(wrapper,'off')
+    if tracking!='off':
+        from harness.e2e_beam_tracking import PARAMS as tracking_params
+        b['e2e_options']['beam_tracking']=tracking
+        b['beam_tracking_parameters']=dict(tracking_params)
+        b['beam_skill_model']=dict(reference='v405',model='google/gemma-4-31b-it',provider='deepinfra/turbo',temperature=0,max_tokens=768,response_format='json_object',recognition='code_only')
+    b['e2e_options']['acquire_recovery']=acquire_recovery
+    if acquire_recovery!='off':
+        from harness.e2e_acquire_recovery import PARAMS
+        b['acquire_recovery_parameters']=dict(PARAMS)
+    b['e2e_options']['end_colors']=color_mode
+    if color_mode in ('component_v3','component_short_v3'):
+        from harness.e2e_color_detection import parameters as color_detector_parameters
+        b['end_color_detector_parameters']=dict(**color_detector_parameters(),
+            metric_support_m=.045 if color_mode=='component_short_v3' else .12)
+    b['e2e_options']['end_color_scene']='teal_blue_v1' if color_mode!='off' else 'off'
+    if color_mode!='off':
+        from harness.e2e_end_colors import record as color_record
+        b['static_end_color_order']=color_record()
+    b['stage_start_group']='bounded_restore_barrier_v1' if wrapper in ('v411','v412','v413','v414','v415','v416','v417','v418','v419','v420','v421','v422','v423','v424','v425','v426','v427','v428','v429','v430','v431','v434','v435','v436','v437','v438','v439','v440','v441','v442','v443') else 'off'
+    if bool(getattr(args,'start_group',None)) != (b['stage_start_group']!='off'):raise ValueError('START_GROUP_WRAPPER_MISMATCH')
+    if wrapper in ('v407','v408','v409','v410','v411','v412','v413','v414','v415','v416','v417','v418','v419','v420','v421','v422','v423','v424','v425','v426','v427','v428','v429','v430','v431','v434','v435','v436','v437','v438','v439','v440','v441','v442','v443') and args.condition!=wrapper:raise ValueError('END_CONDITION_WRAPPER_MISMATCH')
+    b['e2e_options']['stage_cadence']='canonical_v1' if wrapper in ('v397','v398','v399','v400','v407','v408','v409','v410','v411','v412','v413','v414','v415','v416','v417','v418','v419','v420','v421','v422','v423','v424','v425','v426','v427','v428','v429','v430','v431','v434','v435','v436','v437','v438','v439','v440','v441','v442','v443') else 'off'
+    b['e2e_options']['stage_rgb_boundary']='strict_after_v1' if wrapper in ('v398','v442','v443') else 'off'
     tracked=subprocess.check_output(['git','ls-files','harness','sim','scripts','configs'],cwd=ROOT,text=True).splitlines()
     b['original_source_sha256']=b.pop('source_sha256',{})
     b['source_sha256']={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in tracked if (ROOT/p).is_file()}
     out=args.output;out.mkdir(parents=True,exist_ok=False)
     write(out/'bundle.json',b)
-    write(out/'RUN_META.json',dict(schema='ugrp.run_meta.v1',**{'class':'dev'},pr=475,
-        branch='claude/e2e18-grasp1',sha=sha,batch=args.batch))
+    write(out/'RUN_META.json',dict(schema='ugrp.run_meta.v1',**{'class':'dev'},pr=483 if wrapper in ('v407','v408','v409','v410','v411','v412','v413','v414','v415','v416','v417','v418','v419','v420','v421','v422','v423','v424','v425','v426','v427','v428','v429','v430','v431','v434','v435','v436','v437','v438','v439','v440','v441','v442','v443') else 475,
+        branch='codex/e2e18-end-assignment' if wrapper in ('v407','v408','v409','v410','v411','v412','v413','v414','v415','v416','v417','v418','v419','v420','v421','v422','v423','v424','v425','v426','v427','v428','v429','v430','v431','v434','v435','v436','v437','v438','v439','v440','v441','v442','v443') else 'claude/e2e18-grasp1',sha=sha,batch=args.batch))
     result=dict(source_sha=sha,status='HOST_ERROR',E2E_success_eligible=False,physical_hardware=False,
         checkpoint_sha256=recipe['checkpoint_sha256'],condition=args.condition,seed=args.seed,
         stage=recipe['stage'],source_run=recipe['source_run'],first_attempt_success=False,both_held=False)
@@ -131,7 +159,13 @@ def run(args):
     from sim.e2e_stage_staging import HeldWindow
     held=HeldWindow()
     try:
-        robots,receipt=replay(recipe,args.raw,grasp_once=MODES[args.condition])
+        from contextlib import nullcontext
+        from harness.e2e_stage_start import StageStart
+        group=StageStart(args.start_group,out.parent.name,sha) if getattr(args,'start_group',None) else None
+        write(out/'startup-progress.json',dict(phase='waiting_restore_slot'))
+        with group.restore_slot() if group else nullcontext():
+            robots,receipt=replay(recipe,args.raw,grasp_once=MODES[args.condition],
+                progress=lambda rid,n:write(out/'startup-progress.json',dict(phase='restoring',robot=rid,accepted_frames=n)),beam_tracking=tracking)
         write(out/'own-restore.json',receipt)
         result['own_map_sha256']={rid:r['map_sha256'] for rid,r in receipt.items()}
         for rid,r in robots.items():write(out/f'{rid}-ownmap-entry.json',own_map_record(r))
@@ -148,6 +182,13 @@ def run(args):
         for rid,r in robots.items():
             if digest(own_map_record(r))!=receipt[rid]['map_sha256']:raise ValueError('OWN_MAP_HANDOFF_MISMATCH:'+rid)
         tr.grasp_fov=fov
+        tr.acquire_recovery=acquire_recovery
+        from harness.e2e_end_assignment import install as end_install
+        end_install(tr,{'v407':'lock_v1','v408':'rgb_rule_v1','v409':'gemma_v1','v412':'lock_v1','v413':'rgb_rule_v1','v414':'gemma_v1','v415':'rgb_ground_v2','v416':'gemma_ground_v2','v417':'rgb_local_v3','v418':'gemma_local_v3'}.get(wrapper,'off'),relay_url=getattr(args,'end_model_relay',None))
+        from harness.e2e_end_colors import install as color_install
+        color_install(tr,color_mode)
+        from harness.e2e_beam_tracking import install as tracking_install
+        tracking_install(tr,tracking,relay_url=getattr(args,'end_model_relay',None))
         cutoff=recipe['cutoff_s'];tr.set(recipe['stage'],cutoff)
         tr.event(cutoff,'stage_probe_entry',setup='TEST_SETUP_GT',prior_protocol_omitted=True,
                  controller_feedback=False,checkpoint_sha256=recipe['checkpoint_sha256'])
@@ -171,6 +212,10 @@ def run(args):
         from sim.e2e_stage_physics import update
         from harness.e2e_camera_hold import actions as camera_hold
         from harness.e2e_approach_efficiency import issued
+        if group:
+            write(out/'startup-progress.json',dict(phase='waiting_physics_barrier'))
+            result['stage_start']=group.ready()
+            write(out/'stage-start.json',result['stage_start'])
         physics_started=time.monotonic()
         for tick in range(round(args.cap_s/.05)+1):
             now=round(backend.now-origin,8);elapsed=round(now-cutoff,8)
@@ -201,6 +246,8 @@ def run(args):
                 commands+=mapping_commands(tr,now)
             if recipe['stage']=='mapping' and robots['r1'].packet is not None:
                 result['status']='OWN_ROUTE_GENERATED';break
+            from harness.e2e_beam_tracking import decorate_gaze
+            commands=decorate_gaze(tr,now,commands)
             commands=camera_hold(commands,robots,tr.state,b['e2e_options'].get('camera_hold','off'))
             commands=dispatch.step(now,tr.arm_clearance.filter(tr,now,commands))
             for rid,action in commands:
@@ -217,6 +264,15 @@ def run(args):
         finalizer.finalizing=True
         result.update(scan_cycles=cycle_counts,commands=command_count,model_calls=0,provider_cost_usd=0,wall_s=time.monotonic()-started,sim_s=elapsed,
             physics_wall_s=None if physics_started is None else time.monotonic()-physics_started)
+        if tr is not None and getattr(tr,'end_clients',None):
+            for client in tr.end_clients.values():client.close()
+            result['model_calls']=sum(client.calls for client in tr.end_clients.values())
+            result['provider_cost_usd']=None # authoritative global Mac relay ledger
+        if tr is not None and getattr(tr,'beam_clients',None):
+            from harness.e2e_beam_tracking import close as close_tracking
+            close_tracking(tr,cutoff+elapsed)
+            result['model_calls']+=sum(client.calls for client in tr.beam_clients.values())
+            result['provider_cost_usd']=None
         if tr is not None:finalizer.attempt('transport-trace',lambda:write(out/'transport-trace.json',tr.events))
         if backend is not None:finalizer.attempt('backend-close',backend.close)
         if tr is not None:result.update(stage_metrics(tr.events,held.first,result['status']=='BOTH_HELD',elapsed))
@@ -234,10 +290,12 @@ def main():
     r.add_argument('--baseline-bundle',type=Path,required=True);r.add_argument('--condition',choices=MODES,required=True)
     r.add_argument('--seed',type=int,required=True);r.add_argument('--expected-source-sha',required=True)
     r.add_argument('--cap-s',type=float,default=300.);r.add_argument('--wall-cap-s',type=float,default=1800.)
-    r.add_argument('--stage-wrapper',choices=('v387','v393','v394','v395','v396','v397','v398','v399','v400'),default='v387')
+    r.add_argument('--stage-wrapper',choices=('v387','v393','v394','v395','v396','v397','v398','v399','v400','v407','v408','v409','v410','v411','v412','v413','v414','v415','v416','v417','v418','v419','v420','v421','v422','v423','v424','v425','v426','v427','v428','v429','v430','v431','v434','v435','v436','v437','v438','v439','v440','v441','v442','v443'),default='v387')
     r.add_argument('--stage-policy-handoff',choices=('off','baseline_v1'),default='off')
     r.add_argument('--route-recovery',choices=('off','frontier_v1','footprint_v2'),default='off')
     r.add_argument('--route-input-record',choices=('off','on_v1'),default='off')
+    r.add_argument('--start-group',type=Path)
+    r.add_argument('--end-model-relay',choices=('http://127.0.0.1:18093/end',))
     r.add_argument('--batch',required=True);r.add_argument('--output',type=Path,required=True)
     a=p.parse_args()
     if a.command=='prepare':

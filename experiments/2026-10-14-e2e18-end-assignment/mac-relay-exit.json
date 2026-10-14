@@ -1,0 +1,24 @@
+{
+  "checked_unix": 1791913481.573348,
+  "model_budget": {
+    "attempts": 48,
+    "charged_or_unknown_reserved_usd": 0.007492380000000001,
+    "pending_reserved_usd": -1.3877787807814457e-17,
+    "attempt_cap": 598,
+    "cost_cap_usd": 0.299686
+  },
+  "processes": [
+    {
+      "pid": 47444,
+      "verified_command": "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -m scripts.e2e_end_model_relay --output outputs/e2e18-end-model-f9d6df3e --attempts 598 --usd 0.299686 --wall-cap-s 7200",
+      "signal": "SIGINT_process_group",
+      "exited": true
+    },
+    {
+      "pid": 47996,
+      "verified_command": "python3 outputs/e2e18-admin/end-tunnel.py",
+      "signal": "SIGINT_process_group",
+      "exited": true
+    }
+  ]
+}

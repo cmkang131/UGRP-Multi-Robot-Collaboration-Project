@@ -28,18 +28,29 @@ def advance(transport,rid,now):
         r.carrier_approach=dict(t=now,status='gaze_settle')
         return False,[dict(kind='hold')]
     fresh=b is not None and now-b['rgb']['t_sim']<=.45
+    from harness.e2e_beam_tracking import step as track_step
+    tracked_action=track_step(transport,rid,now,state)
+    if tracked_action is not None:return tracked_action
     target=g.entities.get('B')
     from harness.e2e_approach_recovery import seek_goal
-    seeking=seek_goal(transport,rid,now,target)
+    from harness.e2e_end_assignment import seed_local_station
+    from harness.e2e_end_colors import step as color_step
+    color_ends,color_action=color_step(transport,rid,now,state)
+    if color_action is not None:return color_action
+    local_ends=color_ends or seed_local_station(transport,rid,now,state)
+    seeking=None if local_ends else seek_goal(transport,rid,now,target)
     if seeking is not None:return seeking
-    if fresh and target:
+    if fresh and target and not local_ends:
         end,grip,basis=station(b,target['center_m'],rid)
         state.update(station=end,grip=grip,basis=basis,last_seen=now)
         state.pop('search_started',None);state.pop('search_step',None)
     from harness.e2e_mapping_cadence import expire
     from harness import e2e_approach_commit as committed
     from harness import e2e_grasp_once as once
-    once.seed_station(transport,rid,now,state,target)
+    if not local_ends:once.seed_station(transport,rid,now,state,target)
+    from harness.e2e_end_assignment import update_station
+    assignment=None if color_ends else update_station(transport,rid,now,state,target)
+    if assignment is not None:return assignment
     tracked=once.retained(transport,rid,now,state)
     if not tracked and not committed.retained(transport,now,state):expire(transport,rid,now,state,fresh)
     if 'station' not in state and getattr(transport,'pregrasp_acquire','off')!='off':

@@ -54,10 +54,13 @@ def explore(tr,rid,now,a):
     if option=='off':return None
     if option not in OPTIONS:raise ValueError('UNKNOWN_ACQUISITION_MOBILITY')
     r=tr.robots[rid];pose=np.asarray(r.goal.explorer.local_pose,float)
+    from harness import e2e_acquire_recovery as recovery
+    persistent=getattr(tr,'acquire_recovery','off')=='persistent_v1'
     key=a['cycles']
     if a.get('mobile_cycle')!=key:
         a.update(mobile_cycle=key,mobile_started=now,progress_t=now,progress_xy=pose[:2].copy())
-        resume(r,now)
+        if persistent:recovery.resume(r,now)
+        else:resume(r,now)
         tr.event(now,'own_acquisition_navigation_resumed',robot_id=rid,cycle=key,option=option)
         tr._poses(rid,now,[(pose_of('search'),.3,.6)])
         return False,[dict(kind='hold')]
@@ -66,13 +69,17 @@ def explore(tr,rid,now,a):
     from harness import e2e_approach_efficiency as efficient
     duration=efficient.PARAMS['search_explore_s'] if efficient.enabled(tr) else PARAMS['explore_s']
     progress=efficient.PARAMS['search_no_progress_s'] if efficient.enabled(tr) else PARAMS['progress_s']
+    if persistent:
+        duration=recovery.PARAMS['explore_s'];progress=recovery.PARAMS['progress_s']
     if now-a['mobile_started']>=duration or now-a['progress_t']>=progress:
         tr.event(now,'own_acquisition_navigation_window_end',robot_id=rid,cycle=key,
             elapsed_s=now-a['mobile_started'],no_translation_s=now-a['progress_t'])
         a.update(phase='turn',started=now,yaw=efficient.next_yaw(tr,rid,a,pose))
         return False,[dict(kind='hold')]
     action=remembered_command(tr,rid,now,a) if option=='remembered_view_v1' else None
-    return False,[action if action is not None else {k:v for k,v in r.nav_command.items() if k!='t'}]
+    action=action if action is not None else {k:v for k,v in r.nav_command.items() if k!='t'}
+    if persistent:action=recovery.filter_choice(tr,rid,now,a,action)
+    return False,[action]
 
 
 def compose(bundle,option):

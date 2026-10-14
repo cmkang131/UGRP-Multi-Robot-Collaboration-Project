@@ -1,0 +1,185 @@
+{
+  "status": "finite_stage_round_complete_goal_not_met",
+  "source_sha": "ed033f246ac4b2c51885bea9abb5eb8d44cdeffd",
+  "diagnosis": {
+    "unreached_N": 10,
+    "search_without_reacquisition": 7,
+    "cancelled_scan_deadlock": 3,
+    "black_same_N": 2,
+    "video_frames_viewed": 72
+  },
+  "bundles": {
+    "v426": {
+      "N": 3,
+      "unreached": 1,
+      "opposite": 1,
+      "same": 1,
+      "simultaneous_opposite": 1,
+      "both_held": 1,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": [
+        33.60000000000002,
+        0,
+        188.0
+      ]
+    },
+    "v427": {
+      "N": 3,
+      "unreached": 2,
+      "opposite": 1,
+      "same": 0,
+      "simultaneous_opposite": 1,
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": [
+        5.199999999999989,
+        140.0
+      ]
+    },
+    "v428": {
+      "N": 3,
+      "unreached": 1,
+      "opposite": 1,
+      "same": 1,
+      "simultaneous_opposite": 1,
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": [
+        78.80000000000001
+      ]
+    },
+    "v429": {
+      "N": 3,
+      "unreached": 2,
+      "opposite": 0,
+      "same": 1,
+      "simultaneous_opposite": 0,
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": []
+    }
+  },
+  "gate": {
+    "N": 12,
+    "passed": 12,
+    "median_wall_per_sim": 2.3968829684333333,
+    "limit": 3.5
+  },
+  "recovery": {
+    "stationary_acquire_scan_over20_N": 0,
+    "N": 12,
+    "max_stationary_scan_s": 6.3500000000000085,
+    "saved_cancel_predicate_rejected": "3/3, physical success not implied"
+  },
+  "tests": {
+    "passed": 18,
+    "files": 3
+  },
+  "model_calls": 0,
+  "tokens_per_sim": 0,
+  "api_cost_usd": 0,
+  "archive": {
+    "verified_runs": 24,
+    "files": 28582,
+    "full_milestone_representatives": 3,
+    "run_summary": "run-summary.json.zst",
+    "sha256_inventory_location": "oracle-codex:~/ugrp-archive/reviews/e2e18-approach-recovery/final-inventories; outputs/e2e18-approach-inventories"
+  },
+  "VM3": {
+    "verified_unix": 1791920750.068578,
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "VM3_deallocated": true,
+    "all_four_deallocated": true,
+    "vms": [
+      {
+        "name": "ugrp-sim-azure",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_D16as_v5"
+      },
+      {
+        "name": "ugrp-sim-azure2",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_D16as_v5"
+      },
+      {
+        "name": "ugrp-sim-azure3",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_F16als_v6"
+      },
+      {
+        "name": "ugrp-sim-azure4",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_F16als_v6"
+      }
+    ]
+  },
+  "evidence_scope": [
+    "same3checkpoints, seed62002; no full E2E or LLM dialogue test",
+    "black and colored appearances separate; historical results not pooled",
+    "B-search known failures stopped124.8/124.4SIMs and included as failures; their exposure differs from300SIMs historical controls",
+    "full-run stationary holds include legitimate ready/grasp waits; deadlock metric conditions specifically on acquire_scan",
+    "VM3 deallocation interrupted fetch-lite at run05; completed from verified ARM originals, no VM restart"
+  ],
+  "decision": "cancelled-view wait defect corrected in this cohort; no improvement in colored beam reach/joint or first grasp. Keep default off; persistent_v1 not adopted.",
+  "remaining": [
+    "r2 sees beam body but never assigned band in two runs (32/422 and182/522 body-visible frames, both end-visible0); full beam publication currently requires end_visible",
+    "one-ready/partner-search and seek_own_B loop remain; camera-only localization contribution unresolved"
+  ],
+  "next_candidate": "body-only RGB gaze/search guidance while retaining strict colored-end identity and grasp gates; unimplemented, needs separate comparison",
+  "representative_review": "representative-review.json",
+  "sha256": {
+    "run-summary.json.zst": "4d5af276f635e585462033e5a784752cf2383df867e7ef9532b745e7c588262a",
+    "final-record-compression.json.zst": "d8379026a83a89fa7fdf475731f81d54bb00e80fbe51f583cffc075080d9e2c6",
+    "pr-progress.txt": "b302197b9103e7240d161bd2d04059018c339d31b2babcad200f9b2dbafded3f",
+    "video-black-B-search-v426.json": "6894a1cc94b4cc09f46614b141a80970aeef5dd6191068ee883d46e49958a0a9",
+    "pr-gate.txt": "443a327d3df1d660d95d6128c99d25e978e739b31915e9c2e3accf55de38115a",
+    "evaluate_recovery.py": "94a3daadc8af0975e2f1c6ae937ea32ddbd6aff0ba93e94fa98d7b6bca8423fd",
+    "final-health.json": "bde2a9016c84090d5025469f0d58c58ed814bb123b03b2f37cf7cde3fdd2d838",
+    "compression-manifest-sha256.json": "1b6ff6a3c5a6a3cd860a682a98dd22da3f27205cf1f53fe4c9d5c74668624ddb",
+    "video-stage-color-cohort1-08-v419.json": "6151919844999f284a82dac14843de18f3bb7caf5fc102d6a38d37a5dd16996d",
+    "storage-budget.json": "75106ca84d8a2be8f61b4ea530ca9db5a4e175ba9afcd73358dac6bda1ca02d5",
+    "diagnostic-cohort.json": "c77ea920fb1440c9b666a5044b19ffdd21e6a53ad2f650cb5f13dd047b1951f2",
+    "video-stage-color-cohort1-03-v422.json": "c6c3b62d7c44195148665ef204584913b91684d58b677361b93d1f3e63d7f4ac",
+    "cause-analysis.md": "3d106e77441c27dc6ba63f7e13197cfbef74a44d311e9ad42059143ec9181049",
+    "cohort1-archive.json": "105e032d6576da632a0379c4cc26fc8c152a8f0c9f5fa03c1df89448f7e6dfef",
+    "cohort1-early-archive.json": "cc2177a779489fed3a1ad2e21d62116bd22d7b9d766ebc297d7c93e4140522ff",
+    "initial-health-cohort1-60.json": "a6330a3d75e1393c917ef93d97e8792f100fe8ee4b79fb3eac0c4e74e7d1206b",
+    "video-stage-color-cohort2-01-v423.json": "f6620d12cabe35ca2b11f57482bc064071dd50edbf01df3ad7c8ddd25e50eecb",
+    "final-archive-recheck.json": "8935c6a0f2ee77b06bd6133deb66d2268bce651dbe250c9c9dd4f557d948d1f8",
+    "video-stage-color-cohort1-01-v420.json": "a3887b7dfbcd0916275a73613fc61e18510b2f9dc2d177325d2dc289b45cccad",
+    "cohort1-stall-stop.json": "d1eaa5116434ea8e37d7520764882cb13c6083acb8d6dc606b6e15cd92e62319",
+    "recovery-audit.json": "d059f5dbbf16b84c9b179d31d8068cdd6f599d41d73dd91ee8f288e2839879e7",
+    "video-stage-color-cohort1-04-v419.json": "c567f1880ca8b8f54d906a4144783df6857c77318724e921237c02e9fdb79bab",
+    "video-success-black-v426.json": "e33e2e9d27649db43184ba18dae8210d060aac44f2f3e30144911d9281a79623",
+    "LOCAL_COMPRESSION.jsonl": "4609fa48a6c756f8d14a1b0104513908b94d594633ad8e5d1506f3a09e0abc22",
+    "video-color-wall-recovery-v427.json": "34a976679ef0a61b2782544d126935429b0c1bb6fbefbca571162f27e22ab4c0",
+    "README.md": "b4ab897e0bbc28710327be1d2cbc569c3117647263c45788d6efcc10694d55ee",
+    "compression.json": "3b0308c81d50a34bec1a722a4b69f69092c30fb67a263b87afb3a12691167314",
+    "diagnose.py": "140d87e79bd592da6475ecfdee81a0225a3e13bbe3a331a5313f12e182f4690b",
+    "replay_cancelled_views.py": "4dfcf164e8d5a3f34b4aef29fc24e8af2d557c44573aa48de7c5444514362e6b",
+    "stage-plan.json": "c2029decd3363580679dcb8035cd975ce8471b5838dced7db36fae28fef07555",
+    "video-stage-color-cohort2-03-v425.json": "96a00d741c718dfe1edbcf4aecd11d5803b17f99282534b8eb5b54779819fbdd",
+    "local-validation.json": "e8ecd7dde6d8aa4dce6dad3353e4b2f9e7236ea91f436e5e94c0cede076fc027",
+    "references.md": "3d89151f7317d6c9c91d9fb7b9df9349bf01474a5ec8e85555e4130ee11f4b7f",
+    "video-stage-color-cohort1-02-v421.json": "690ea01496f5f8fd2809723d4838717956c3ea882667d6eecb4e658b3a266be8",
+    "video-stage-color-cohort1-09-v420.json": "a61e8e20972219dcd906978d0337c4a5eec6fd758ef37e2fbb01487f8c30da77",
+    "video-stage-color-cohort2-09-v423.json": "09a151859493201010c5a8589bab256327eada103335895e57908bdac1606d68",
+    "bundle-inventory.json": "877841699299e665115c87c8b289f4bdd37b98e30f7ea6dce68dbda96f219bc1",
+    "search-numerics.json": "5a6bc56f3e308f7f8090ac8ad59269b2afef912ef58d6053e89617f5909ad1c6",
+    "pr-held.txt": "7f6b2203a0fdfc0875d75c843a500ca702b0f10a746fbfbd170a0451a2fb733d",
+    "stage-approach-gate1-summary.json": "1feb4dc687828752d0458b2edd6c65bd2958de119efd4f4d645e67a4db01f4e4",
+    "cancelled-view-replay.json": "00b99a7ba2378c8a46d3dc4057bf645335a7563c7524975982b6a2e22d329d6a",
+    "initial-health-cohort1.json": "67b8f8738373c39cc363e4ba99a9a67a8d60e9ac937becce76914a08199b121a",
+    "representative-review.json": "0a22b569606e3ccb8bd2df9d477b543cb77b25c844d5d50b986a966364a29ba6",
+    "ledger-diagnosis.json": "cb9802dd195d4c9ab37498a2e604c00aca7fd752fc4a4c68494e2d824b8e7133",
+    "video-stage-color-cohort1-05-v420.json": "3284c92ca6aeed2373a2909a7a5dfc6e8e765eee7d0b560ebe54c61eba2f9d7a",
+    "initial-health-gate1.json": "1858cd8aa92805c8f9953c7db9286bca57cfff933266ae4581a9cc41319c77e0",
+    "video-stage-color-cohort2-10-v424.json": "b7997c20aba1899259f6fde1fa067b6f8bb6adb44e8e07230eea5997fc3df299",
+    "gate1-archive.json": "40bfa68fcbec52c32f589ea014793eae47cbf0c6018b1e05444ab2a56de1cc7f",
+    "cohort1-B-search-stop.json": "23ca809415365c7b86b0d4b7f91ddb376d3770bee47bdc718b58c59c7a5ea8c8",
+    "evaluation.json": "565e2f192572e35b006bee12c7562d8995e25c2e69a33de5d80d9351167c0518",
+    "vm-final.json": "d57c88a586a1f92ed844fea467204d0c826af165b25c12a169ed227441e4630f",
+    "video-stage-color-cohort2-02-v424.json": "13b7f123d84ad193a365924a20ac765588e37750980d4717db09910df382d30e",
+    "classification.json.zst": "7e7d5db868b447ea4200d810b4931c36ae913d1850364e0190b449ac6368a8a3"
+  }
+}

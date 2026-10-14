@@ -1,0 +1,65 @@
+{
+  "result": {
+    "source_sha": "2d57788a48fd88f8bdfe6a4b7da0e2721b5c30d5",
+    "status": "HOST_ERROR",
+    "E2E_success_eligible": false,
+    "physical_hardware": false,
+    "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+    "condition": "v443",
+    "seed": 62002,
+    "stage": "align",
+    "source_run": "e2e18-v379-s61008-r80",
+    "first_attempt_success": false,
+    "both_held": false,
+    "finalization_complete": true,
+    "shutdown_signals": [
+      2,
+      15
+    ],
+    "finalization_errors": [],
+    "own_map_sha256": {
+      "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+      "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+      "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+    },
+    "scan_cycles": {
+      "r1": 0,
+      "r2": 0
+    },
+    "commands": 0,
+    "model_calls": 0,
+    "provider_cost_usd": null,
+    "wall_s": 162.57637883799998,
+    "sim_s": 0.0,
+    "physics_wall_s": null,
+    "reacquisition_entries": {
+      "r1": 0,
+      "r2": 0
+    },
+    "held_first_s": {},
+    "both_held_s": null,
+    "censored_s": 0.0,
+    "held_gap_s": null
+  },
+  "stop": {
+    "reason": "\uc0ac\uc6a9\uc790 \uacb0\uc815\uc73c\ub85c \uc2dc\ud5d8 \uc885\ub8cc",
+    "reason_code": "USER_ENDED_BEAM_TRACKING_COMPARISON",
+    "checked_unix": 1791945149.540835,
+    "scope": "only PR483 beam tracking stage runs",
+    "run": "/home/ugrp/ugrp-sim/runs/stage-track-gate5-03-v443",
+    "meta": {
+      "class": "dev",
+      "pr": 483,
+      "branch": "codex/e2e18-end-assignment",
+      "sha": "2d57788a48fd88f8bdfe6a4b7da0e2721b5c30d5",
+      "batch": "stage-track-gate5"
+    },
+    "process": {
+      "pid": 54203,
+      "start": "462364",
+      "boot_id": "5c5ea7ee-4ed1-49cc-9015-e5af0d79cd43"
+    },
+    "ownership_verified": true
+  },
+  "result_mtime": 1791945149.8100467
+}

@@ -379,6 +379,8 @@ def ownmap_record(robot, obs, trace, now):
         pose_continuity=trace.get('pose_continuity'),exploration=trace.get('exploration'),
         navigation_status=trace.get('status'),pulse=trace.get('pulse'),stall_odometry=trace.get('stall_odometry'),
         **{k:trace[k] for k in ('boundary_view','boundary_diagnostics','explore_deadlock','boundary_association') if k in trace})
+    if getattr(robot,'beam_tracking','off')!='off':
+        record['beam_tracking']=dict(option=robot.beam_tracking,memory=getattr(robot,'beam_memory',None),servo=dict(robot.servo))
     rl=robot.goal.e2e_relook
     if rl.pending is not None:
         record['relook']=dict(t=rl.pending['t'],node=rl.pending['node'],candidate_nodes=rl.pending.get('candidate_nodes'),matches=len(rl.pending['matches']),latest_event=rl.events[-1] if rl.events else None)

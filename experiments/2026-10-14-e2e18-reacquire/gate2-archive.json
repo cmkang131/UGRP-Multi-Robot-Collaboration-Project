@@ -1,0 +1,929 @@
+{
+  "runs": [
+    {
+      "name": "stage-track-gate2-00-v426",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-00-v426/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 256.9373398129999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 2
+        },
+        "condition": "v426",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-00-v426",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-00-v426",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "1453a3cbb58ac07237542ca8e7e9b417beb79dcaed4c53209bc0cf8781f70093",
+          "reused": false,
+          "receiver_seconds": 0.977
+        },
+        "inventory_sha256": "e67bc83fe8ee4137eed623329589c6e6a6ddc33e891c3448f917aab6c7fd3042",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-00-v426.json",
+        "proof_sha256": "0cd0a301670500a13a087f10df3d8392ce9e289e2ffcc84cacf8c3bc2240b4f6"
+      },
+      "sha256": {
+        "result.json": "1b9e8198878caa6ee1b99ce2b3f319e00241be6ac9a12cac647702a2f461b930",
+        "progress.json": "00a3b62abe24c45a6cc3498780ce8b673a917c3cf9a826965536d3d53e56c94a",
+        "transport-trace.json": "31f8ef1cff9ff7ec9a172fbda8b23749a8bf16b4e48397b1524c17601cd45380"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-00-v426",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-00-v426.tar",
+        "sha256": "cd140674576a757ed796a0bd2c3c6c40bc358e3de2a3d685b5122f90fdcd2a22",
+        "bytes": 368640,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-01-v437",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-01-v437/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 252.38284409999994,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 4,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v437",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-01-v437",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-01-v437",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "9e0068d4aaa417115ab44569fe9a514520e7eb63956c9e0ed917ea45a6a07207",
+          "reused": false,
+          "receiver_seconds": 0.935
+        },
+        "inventory_sha256": "2da3eace28c4b18016f726c317797e4983b7c1bb3681fc4aee8eec5f6bc51e3e",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-01-v437.json",
+        "proof_sha256": "4984f98dcb24f47d3d2b85315f07efab7e40c8cfdcfe77214147c9426e10545e"
+      },
+      "sha256": {
+        "result.json": "940bc315ac52fa2ad30ee195b90453f17fdfb8b86c6c596626c090c4f143bf24",
+        "progress.json": "1993518e01ba30a755f24b6f0bb2f703db07a9b4b323beac3a2b19488862d149",
+        "transport-trace.json": "2b789a93d43ac6a0522d5c94d333331c80c8bb73ee99f8c566b8caaed5bde585"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-01-v437",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-01-v437.tar",
+        "sha256": "f7d2d891d2162fc653252dbf77d4e260c18733adc14910bad2713273799c9080",
+        "bytes": 348160,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-02-v438",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-02-v438/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 253.06077514100002,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 4,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v438",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-02-v438",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-02-v438",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "8b9b93260858d8bc88f4c0b37616aea1f3dfa065d6a80868a4e0dce540c9f7c5",
+          "reused": false,
+          "receiver_seconds": 0.968
+        },
+        "inventory_sha256": "20c68f54d0be26691913ac0adfbb21c17a98649f46d32b5b44798a19a57ea91e",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-02-v438.json",
+        "proof_sha256": "da0909373748b85984b6662e02678795ca5907efc34d95d6e481703b5bb26871"
+      },
+      "sha256": {
+        "result.json": "0b70b724bb3f7a6b99ea32bc5a8c1f25142b654eac26de7f7f68b0b9b64e9050",
+        "progress.json": "af7cac0c39d75febdd954798edc72b87f6bd871e976fb295f1f35ec9fcd36bc7",
+        "transport-trace.json": "b4fb62dab66a22518c781f432d29469b5c01ca07a41dcbae1d03b2f117eab111"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-02-v438",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-02-v438.tar",
+        "sha256": "440019b6646b4aab963e9b25462af31af0f95e27f0ac931dc2bf148a58d1d611",
+        "bytes": 337920,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-03-v439",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-03-v439/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 256.3449835419999,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 3,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 1,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v439",
+        "source_run": "e2e18-v377-s61006-r80",
+        "checkpoint_sha256": "ec2d9bc47277b0d052a2ce16be1aebc88c25c8368a33f12df5f4c3a6278220fd",
+        "own_map_sha256": {
+          "r1": "7e2c8686a3e98ccfab2dab539c6f09ab4d56d9f1c98c4b4ecea3e6482eefc0b7",
+          "r2": "c0854a18e787086c680adb2a8ce00945b7f8108b3567304acd66c3ecb6f796c8",
+          "r3": "a4a04303a6527e5dd85ed31adbf94b1a52e5dfcdeeca1fb37ebe9416b6bfc08d"
+        },
+        "initial_physics_sha256": "d80bf1e3de5804e3cc8dd76eb58abd72a7a68f08a1a88bcca7843023b3f21109",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-03-v439",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-03-v439",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "f206fc07e6f6cfa630403921548767142410db6f5394fee888f38bbbc1f4c622",
+          "reused": false,
+          "receiver_seconds": 0.952
+        },
+        "inventory_sha256": "7b0fd8835feeb58c89417d30cd69a9cc2c89882111359734ac5c5a3a9a7b3d34",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-03-v439.json",
+        "proof_sha256": "40e53367219abcff6fe164479bfe2f4b6bf27d69ca7bcffdd955ed9b43af69c6"
+      },
+      "sha256": {
+        "result.json": "c00a4162a1d7b5844130759f414739d76eda4df192dc8f738ef7615480c7a8bf",
+        "progress.json": "d5559ea1625cf1acc6de6c18ef49fefe140cf212ae3d82d31655989a96c89a91",
+        "transport-trace.json": "5132e8ce5da314bece4c3ce6803ab2effca0887b6c86132ba346adb9dc728155"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-03-v439",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-03-v439.tar",
+        "sha256": "2434bcce72c34df19683affaf376416c1999bb5ab7b867fab750b7c23b1de549",
+        "bytes": 368640,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-04-v426",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-04-v426/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 264.1537813,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v426",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-04-v426",
+        "files": 289,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-04-v426",
+          "files": 289,
+          "hash_matches": 289,
+          "inventory_sha256": "d98e913bd3c8ea0c0189476b6f2fb2757faaf8f7a1068a190916294369daefaf",
+          "reused": false,
+          "receiver_seconds": 1.057
+        },
+        "inventory_sha256": "b97adf3a12a092020f8a597724600e7a9edaa0598d43c4b510c9b15fb85329c1",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-04-v426.json",
+        "proof_sha256": "9ce1af45721b8b835d49355b59a3af1021d73ab7f3789dc15ff78567e48da940"
+      },
+      "sha256": {
+        "result.json": "433de8a76eb621bdbfe48ad0029abb481994b72731bb6d5dfb4f6369a7cb3753",
+        "progress.json": "8a505573122c2a1e135eabcad8c005bbb2a2a8564a83537a98fc02f5a8aee59f",
+        "transport-trace.json": "2bed829f5e6e5d7a2c299f2f3fe98717ccf03f128389c7d0015aa7b3cb882903"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-04-v426",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-04-v426.tar",
+        "sha256": "e32360103b66790cbe10d5abfbd7fc22a376e874295288272ea8898fb8c83163",
+        "bytes": 348160,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-05-v437",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-05-v437/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 260.7880671040001,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 5,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 3,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v437",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-05-v437",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-05-v437",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "17e8a4f3fc9afbfb50654aee19b8a4b0eecd421a146bd1ed8f052c2f0ffcfeab",
+          "reused": false,
+          "receiver_seconds": 1.052
+        },
+        "inventory_sha256": "db12506238235242231882a2982a451f4d5a0fbe9c847704e2af4818e24dc757",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-05-v437.json",
+        "proof_sha256": "666908a2d78960190f72efb26612aff742236300ae1e37df7fb3282e536f7cc9"
+      },
+      "sha256": {
+        "result.json": "d9395e1ad02245f8a5b66b6d5c63715427659f822503cd7b486c46efec500100",
+        "progress.json": "b608edc3cc1617a5118abf080a7d85ba824fe5da583c85aa29d68e2ab80520aa",
+        "transport-trace.json": "8a0b585861d9454d72997252047374c2935757e6577be4aa7a0efd72ac468b07"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-05-v437",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-05-v437.tar",
+        "sha256": "ce5cb2f8b5c21745ab0099bd57766e3b42ecb5ac04060898939209d552482f25",
+        "bytes": 368640,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-06-v438",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-06-v438/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 255.90032297499988,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 5,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 3,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v438",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-06-v438",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-06-v438",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "feadf39ae37eca1903420d09d75e1c106f473b6dea23477d9c14976d9e6226c8",
+          "reused": false,
+          "receiver_seconds": 1.057
+        },
+        "inventory_sha256": "30ee0816418ff1d5e64285de08b6ca7666f10ad5bf4f0ab4c180f0d135fa285b",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-06-v438.json",
+        "proof_sha256": "603c3dd0a5cf801990427fe44d052ed9370c4ee974b55bf5ede258f261ac5802"
+      },
+      "sha256": {
+        "result.json": "eaec873584763f5e9a1e595f037aa3bd7436f3f1bffcc9ac2769e4207e45d9e8",
+        "progress.json": "5a26df65586124c59a03066dfb4e59ef48845abfc5e0276fc49b146e284ac294",
+        "transport-trace.json": "54d46dba1d1c2368fd31851cbb1dc2615a8a63066c57db806f91c2d07bfa778f"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-06-v438",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-06-v438.tar",
+        "sha256": "d265c6559cdcf60df22d55c86205c3fac34f9709bc8ef5ad87dbf749c4361c30",
+        "bytes": 358400,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-07-v439",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-07-v439/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 259.805498036,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 4,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v439",
+        "source_run": "e2e18-v379-s61008-r80",
+        "checkpoint_sha256": "559569d9392cc8805dac3c3c78bec19248364dfaaebfc292b14de43eb69268e4",
+        "own_map_sha256": {
+          "r1": "e5fd0bf9dc134067d655ac30d7dd0d0bb47f1931b8bc9878800125b7ea990fa6",
+          "r2": "918d40372e7a9d5eddfe484a0d3836c4a23f2990f5d7a98952ce579271412118",
+          "r3": "989cb0d46a32d5ad68c0f229416204b9b54502578b59e069ea98203bb64042cc"
+        },
+        "initial_physics_sha256": "e93e8994fcbd5d29c0a00113e7ffb36a05f8275918aaede6f148b6232522b8d1",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-07-v439",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-07-v439",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "ea9041e0fe4984b55b03d6aef077205ce47b0789422ee42f66ee5af305c6142b",
+          "reused": false,
+          "receiver_seconds": 1.009
+        },
+        "inventory_sha256": "c13ba9cb192c8c0b52f9e596ea740a6e688f4f756defb8235aa9f9aa78fab365",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-07-v439.json",
+        "proof_sha256": "1345a2bf1cdd1d742a1820186c69eb5d2025f176446821543e9e1e60b8e77e60"
+      },
+      "sha256": {
+        "result.json": "4eab91dca72f43af828483fe9c0641917798b1597abcf0828d88966bf0304843",
+        "progress.json": "96d812d6192b4fcbc3fb0c05610e65760bb41419097ec8183671d1c6df8370d5",
+        "transport-trace.json": "55f82a2d65b5b7e7a65bc39255d844939485c9f07d7a0d97982583a36c92a4ee"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-07-v439",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-07-v439.tar",
+        "sha256": "6dc615f4808f3d79f30bc6d390823a3663a4c4b88bc29bd12b4362efa198e9ce",
+        "bytes": 358400,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-08-v426",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-08-v426/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 268.22949969299987,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 0,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 0,
+          "r2": 0
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v426",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": 0
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-08-v426",
+        "files": 289,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-08-v426",
+          "files": 289,
+          "hash_matches": 289,
+          "inventory_sha256": "24670bfe5362caa1e37bf2c05f34665e7f2ae2807fd9533745f19755e467f307",
+          "reused": false,
+          "receiver_seconds": 1.07
+        },
+        "inventory_sha256": "3663246a63fdd4765f4cb510042f145c94115e1d215d47f8b0c7f1b4a71bf653",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-08-v426.json",
+        "proof_sha256": "ac1e7c04cb0b35bd7f49bba5d58af10f5ac6826ba09f47a317301ca0669cc910"
+      },
+      "sha256": {
+        "result.json": "94e4bc6cb5a0d6ecfd8c7c025b15b4f2d9e0104ae8b18eb9053e1fd32a38a0db",
+        "progress.json": "1b6619ac2c00f1aedf8a5c868b81c4870b2bc569ffa83caaebf843b3b079e763",
+        "transport-trace.json": "2410198cd0ce70945d75112988783631a6273ae7e6e1dadafeb4181a616f3893"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-08-v426",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-08-v426.tar",
+        "sha256": "cf45535b45a8e8ea6f4523a48240d49ca8870e0bc28b64a1b36664a8c8d5840b",
+        "bytes": 337920,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-09-v437",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-09-v437/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 261.106149297,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 5,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 3
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v437",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-09-v437",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-09-v437",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "78fea1ee4fef182402de29eac3919a8851b6dcd72e04eae8f84686bcfc9ae566",
+          "reused": false,
+          "receiver_seconds": 1.08
+        },
+        "inventory_sha256": "41989aa91f51a1af43d707e3be45b3f264f91cc4ff326e5d8c651b92bf881e15",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-09-v437.json",
+        "proof_sha256": "f332be2bd384c1fa8cd755f6fa88275fc6da7030c51c40e1856d4c6b95df83a7"
+      },
+      "sha256": {
+        "result.json": "d5fd48efbf44e832bc8ff260a435f7f00ea0dce2913ff10b50d0fdb15f21cbee",
+        "progress.json": "1d77f167245ee76fca26f7a29edf7b4ffe7073b4605fecd0600f47257806b5ac",
+        "transport-trace.json": "911f9dd9167b740af32096464b6992d4c24d9913d8737b380da57a1074113b85"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-09-v437",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-09-v437.tar",
+        "sha256": "424d72e375150102d49e67f987f4f29e07d2dd48e72bbcfa804cbdac931ec16e",
+        "bytes": 378880,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-10-v438",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-10-v438/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 259.33865175000017,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 4,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 2,
+          "r2": 2
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v438",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-10-v438",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-10-v438",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "34207075fb9c1b6756d5f130202ce2fdafb35f03beb69eeea45587506d69857b",
+          "reused": false,
+          "receiver_seconds": 1.059
+        },
+        "inventory_sha256": "5687cd4e443cc000483a29d787ebf69b8b99df4f1d2f59f2aad176044714bf55",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-10-v438.json",
+        "proof_sha256": "d3560532144680a54863ac385343ced435513b6c7a57ca394e2fc057f54cb8db"
+      },
+      "sha256": {
+        "result.json": "e3f9c206b8f6774bf004e46cd4523ae989585ce35253922743b571bbc0d2874d",
+        "progress.json": "cc53d9a546b206c806458d296c64112fec4a7338534fa142fcd14245cf5a8530",
+        "transport-trace.json": "bd3b223fb4df368d8c7556ee8abf9477aed4a6e7489104363246e356050f6a48"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-10-v438",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-10-v438.tar",
+        "sha256": "0e4a4983043bfd924d407a9d9c60c990733f0253c6c72a276b5a52d603246945",
+        "bytes": 378880,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    },
+    {
+      "name": "stage-track-gate2-11-v439",
+      "exit": 0,
+      "source_sha": "e11ec4a4bef0186f0a5f81747d81aa98386eb4ef",
+      "class_": "dev",
+      "raw": "/home/ugrp/ugrp-sim/runs/stage-track-gate2-11-v439/raw",
+      "phase": "align",
+      "result": {
+        "status": "SIM_BUDGET_EXHAUSTED",
+        "controller_failure": null,
+        "failure": null,
+        "sim_s": 30.0,
+        "wall_s": 263.87607921099993,
+        "LLM_operated": null,
+        "own_map_completed": null,
+        "start_to_finish_transport": null,
+        "E2E_success": null,
+        "model_calls": 5,
+        "finalization_complete": true,
+        "first_attempt_success": false,
+        "both_held": false,
+        "both_held_s": null,
+        "held_gap_s": null,
+        "reacquisition_entries": {
+          "r1": 3,
+          "r2": 1
+        },
+        "scan_cycles": {
+          "r1": 0,
+          "r2": 0
+        },
+        "condition": "v439",
+        "source_run": "e2e18-v380-s61007-r80",
+        "checkpoint_sha256": "ce27a29e1827bc87350cd72d375d9a9c05943f4cf3cc2295b25727c2c08ab2ff",
+        "own_map_sha256": {
+          "r1": "f51066b6a121b85e038da5b709e9daf60857e9ce3c06d1f5fe431c89fa19ecb6",
+          "r2": "2a1d39759e522869dca5f13e43a2288221b81296d6af0cbb938110eca72b5fc7",
+          "r3": "381fef5bdd6eb2e272c6345609fe5baa5f65acf82be7f5638fa48e6f5299b99b"
+        },
+        "initial_physics_sha256": "99b60935fc2762a1c942d8c6f2743b89fecafde6a3e09c8a81dfc79925605c72",
+        "error": null,
+        "provider_cost_usd": null
+      },
+      "archive": {
+        "verified": true,
+        "arm_path": "/home/ugrp/ugrp-sim/arm/native-stage-track-gate2-11-v439",
+        "files": 290,
+        "native_verification": {
+          "verified": true,
+          "schema": "ugrp.archive-native.v1",
+          "native_arm_path": "/home/ubuntu/ugrp-archive/runs/native-stage-track-gate2-11-v439",
+          "files": 290,
+          "hash_matches": 290,
+          "inventory_sha256": "1044c578ffbce6b600c2fc04b781fc0ba5d3189538e259bf6d85436f37d516f8",
+          "reused": false,
+          "receiver_seconds": 1.131
+        },
+        "inventory_sha256": "381df530869e9694b94c2ba6efb38b90c63acd56f47bb81be35a95600e814618",
+        "proof_path": "/home/ugrp/ugrp-sim/lifecycle/archives/stage-track-gate2-11-v439.json",
+        "proof_sha256": "f4d3f680788e747748929768cd782699a2e76ba84f702f82f178a6d548b638bf"
+      },
+      "sha256": {
+        "result.json": "0bd701e805d2064a74b245e43b0a359e20242674a70a3beaeccea9a22769dca9",
+        "progress.json": "fb253071b7aab6286f0ec44f5751e889b63235aebab94cdf3c77c9e942230d98",
+        "transport-trace.json": "68999b03247f36f18f8ced75e2ae15db3655ecf12839d65e6c4c743c438ab2e0"
+      },
+      "fetch_lite": "outputs/azure3-runs/stage-track-gate2-11-v439",
+      "fetch_lite_verified": true,
+      "fetch_pack": {
+        "path": "/home/ubuntu/ugrp-archive/reviews/e2e18-tracking-lite/stage-track-gate2-11-v439.tar",
+        "sha256": "b949bf1605e9205f91e64f15bc78ee446f65ca7f1fefad92543fe06e28b8cf54",
+        "bytes": 368640,
+        "files": 28
+      },
+      "fetch_lite_omissions": "selected light ledgers; media, arrays, dense contacts/dynamics remain full verified ARM raw",
+      "host": "azure3"
+    }
+  ],
+  "fetch_source": "verified ARM selected ledger export; VM3 deallocation after all original/representative archives verified"
+}

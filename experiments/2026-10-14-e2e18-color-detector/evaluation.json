@@ -1,0 +1,517 @@
+{
+  "evaluation_only": true,
+  "host": "azure3",
+  "stance_offset_m": 0.4732,
+  "threshold_m": 0.25,
+  "metric": "nearest entire run; simultaneous opposite separate; known failure stops included",
+  "runs": [
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-00-v426",
+      "condition": "v426",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 293.1,
+      "status": "BOTH_HELD",
+      "both_held": true,
+      "both_held_s": 293.1,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.01730725672772906,
+            0.19211630892037593
+          ],
+          "ready_t": 253.99999999999997,
+          "ready_wait_sim_s": 33.60000000000002,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.9213194715445836,
+            0.03637008871261739
+          ],
+          "ready_t": 287.6,
+          "ready_wait_sim_s": 0,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-01-v427",
+      "condition": "v427",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.011407586950416776,
+            0.1350948614410572
+          ],
+          "ready_t": 294.79999999999995,
+          "ready_wait_sim_s": 5.199999999999989,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.4071065874552722,
+            1.5983312052401513
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-02-v430",
+      "condition": "v430",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.005309656657004404,
+            0.1350948614410572
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.2426522277178327,
+            1.3574894644109492
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-03-v431",
+      "condition": "v431",
+      "source_run": "e2e18-v377-s61006-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.007046398967375734,
+            0.1350948614410572
+          ],
+          "ready_t": 159.2,
+          "ready_wait_sim_s": 140.79999999999998,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.3542854295547493,
+            1.581949208948183
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-04-v426",
+      "condition": "v426",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "same",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.015239249654089923,
+            0.23049648635213738
+          ],
+          "ready_t": 112.0,
+          "ready_wait_sim_s": 188.0,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.06003491226519538,
+            0.2834584183072983
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-05-v427",
+      "condition": "v427",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.05365677457649206,
+            0.22680313222400458
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.485918068558702,
+            0.00659609207163136
+          ],
+          "ready_t": 160.0,
+          "ready_wait_sim_s": 140.0,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-06-v430",
+      "condition": "v430",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.025897767667294267,
+            0.22666747655289715
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.485918068558702,
+            0.03399640093208899
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-07-v431",
+      "condition": "v431",
+      "source_run": "e2e18-v379-s61008-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "opposite",
+      "simultaneous_opposite": true,
+      "robots": {
+        "r1": {
+          "reached_end": 0,
+          "min_stance_distance_m": [
+            0.034708327824378354,
+            0.22666747655289715
+          ],
+          "ready_t": 258.8,
+          "ready_wait_sim_s": 41.19999999999999,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.21036468408990563,
+            0.0964519528649266
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-08-v426",
+      "condition": "v426",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "same",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.4152071414589854,
+            0.08091008608525804
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.11971809839723599,
+            0.008922559540136467
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-09-v427",
+      "condition": "v427",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.253029072639765,
+            0.35542050717686535
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            0.25360033959860084,
+            0.2970481572967386
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-10-v430",
+      "condition": "v430",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.253029072639765,
+            0.35542050717686535
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.25360033959860084,
+            0.20346571573488403
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    },
+    {
+      "eligible_for_denominator": true,
+      "supervisor_stop": {},
+      "name": "stage-detector-cohort1-11-v431",
+      "condition": "v431",
+      "source_run": "e2e18-v380-s61007-r80",
+      "sim_s": 300.0,
+      "status": "SIM_BUDGET_EXHAUSTED",
+      "both_held": false,
+      "both_held_s": null,
+      "first_attempt_success": false,
+      "relation": "unreached",
+      "simultaneous_opposite": false,
+      "robots": {
+        "r1": {
+          "reached_end": null,
+          "min_stance_distance_m": [
+            1.253029072639765,
+            0.35542050717686535
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        },
+        "r2": {
+          "reached_end": 1,
+          "min_stance_distance_m": [
+            0.4738959682315457,
+            0.031936988762975904
+          ],
+          "ready_t": null,
+          "ready_wait_sim_s": null,
+          "assignment_choices": {},
+          "occupied_events": 0
+        }
+      }
+    }
+  ],
+  "groups": {
+    "v426": {
+      "N": 3,
+      "unreached": 0,
+      "opposite": 1,
+      "same": 2,
+      "simultaneous_opposite": 1,
+      "both_held": 1,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": [
+        33.60000000000002,
+        0,
+        188.0
+      ]
+    },
+    "v427": {
+      "N": 3,
+      "unreached": 2,
+      "opposite": 1,
+      "same": 0,
+      "simultaneous_opposite": 1,
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": [
+        5.199999999999989,
+        140.0
+      ]
+    },
+    "v430": {
+      "N": 3,
+      "unreached": 2,
+      "opposite": 1,
+      "same": 0,
+      "simultaneous_opposite": 1,
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": []
+    },
+    "v431": {
+      "N": 3,
+      "unreached": 2,
+      "opposite": 1,
+      "same": 0,
+      "simultaneous_opposite": 1,
+      "both_held": 0,
+      "first_attempt_success": 0,
+      "ready_wait_sim_s": [
+        140.79999999999998,
+        41.19999999999999
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "ok": true,
+  "planned_gate_runs": 16,
+  "planned_main_runs": 16,
+  "gate_expected_mib": 128,
+  "main_expected_mib": 512,
+  "checks": [
+    {
+      "host": "x86",
+      "free_bytes": 61948063744,
+      "expected_bytes": 11811160064,
+      "projected_free_bytes": 50136903680,
+      "floor_bytes": 8589934592,
+      "ok": true
+    },
+    {
+      "host": "arm",
+      "free_bytes": 51064258560,
+      "expected_bytes": 11811160064,
+      "projected_free_bytes": 39253098496,
+      "floor_bytes": 26843545600,
+      "ok": true
+    },
+    {
+      "host": "mac",
+      "free_bytes": 107850215424,
+      "expected_bytes": 1073741824,
+      "projected_free_bytes": 106776473600,
+      "floor_bytes": 21474836480,
+      "ok": true
+    }
+  ]
+}

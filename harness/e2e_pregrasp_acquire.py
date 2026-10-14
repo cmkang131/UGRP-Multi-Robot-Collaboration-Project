@@ -73,6 +73,9 @@ def acquire(tr,rid,now,state,target):
                   and all(r.servo.get(k)==v for k,v in a.get('view_pose',{}).items()))
         index=a['view']+(1 if observed else 0)
         if a['view']<0:index=0
+        from harness.e2e_acquire_recovery import failed_view
+        if not observed and failed_view(tr,rid,now,a,busy(tr,rid,now)):
+            index=a['view']+1
     if index>=len(sequence):
         a['cycles']+=1
         phase='explore' if a['cycles']%2==0 else 'turn'
@@ -83,7 +86,7 @@ def acquire(tr,rid,now,state,target):
         a['view']=index
         tag,pan=sequence[index];posture=pose_of(tag);posture[6]=pan
         if efficient.enabled(tr):
-            a.update(view_frame=(r.last_obs or {}).get('frame_id'),view_pose=dict(posture))
+            a.update(view_frame=(r.last_obs or {}).get('frame_id'),view_pose=dict(posture),view_failure_count=0)
         tr._poses(rid,now,[(posture,.3,.6)])
         tr.event(now,'own_pregrasp_acquisition_view',robot_id=rid,camera=tag,pan_pulse=pan)
     return False,[dict(kind='hold')]

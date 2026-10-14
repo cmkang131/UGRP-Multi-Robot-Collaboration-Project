@@ -1,0 +1,266 @@
+{
+  "source": "e2e18-v377-s61006-r80",
+  "cutoff_s": 79.4,
+  "robots": {
+    "r1": {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v377-s61006-r80/raw/robots/r1/ownmap.jsonl.zst",
+      "sha256_uncompressed": "83b1b819b86e2c3dbf6e46014d2a07fe0b302a7427e7a402cda1210e78fee23a",
+      "rows": 125,
+      "seen": 32,
+      "first": {
+        "t": 52.2,
+        "frame_id": 88,
+        "sha256": "ed434dcee33cdc3ed55dc47ac6d2c6b14faea5e8fefcaa814ee6e43d03db1aae",
+        "pose_own_m": [
+          0.06284277512003181,
+          0.03450135759705943,
+          -3.017844746718848
+        ],
+        "own_beam": {
+          "rgb": {
+            "robot_id": "r1",
+            "frame_id": 88,
+            "t_sim": 52.2,
+            "sha256": "ed434dcee33cdc3ed55dc47ac6d2c6b14faea5e8fefcaa814ee6e43d03db1aae"
+          },
+          "pose_own_m": [
+            -1.5718508280181418,
+            -1.5173998355036544,
+            -2.289367025314804
+          ],
+          "grip_base_m": [
+            1.6122768944781467,
+            1.1585114691417377
+          ],
+          "axis_heading_rad": 0.7284777214040439,
+          "endpoint_model": "long_side_v1",
+          "observed_band_side": "near",
+          "endpoint_side_evidence": {
+            "points": 71,
+            "q02_m": -0.015286118115394374,
+            "q98_m": 0.5933058285621677,
+            "long_before": 0,
+            "long_after": 50
+          }
+        },
+        "own_beam_observation": {
+          "result": {
+            "visible": true,
+            "reason": "NO_BAND_END_ESTIMATE",
+            "end_visible": true,
+            "points": 79,
+            "axis_heading_rad": 0.7284777214040439,
+            "near_end_base_m": [
+              1.5898912334806568,
+              1.1385394341501436
+            ],
+            "grip_base_m": [
+              1.6122768944781467,
+              1.1585114691417377
+            ],
+            "visible_length_m": 0.533180351417438,
+            "lateral_spread_m": 0.021392364144130652,
+            "provenance": "own_rgb_lime_hue+issued_pwm_camera_fk+beam_top_plane+observed_long_side_inward",
+            "perception": "owncam_pair_beam_perception_v2",
+            "grip_source": "end_plus_inset_v1",
+            "endpoint_model": "long_side_v1",
+            "endpoint_side_evidence": {
+              "points": 71,
+              "q02_m": -0.015286118115394374,
+              "q98_m": 0.5933058285621677,
+              "long_before": 0,
+              "long_after": 50
+            },
+            "observed_band_side": "near"
+          },
+          "rgb": {
+            "robot_id": "r1",
+            "frame_id": 88,
+            "t_sim": 52.2,
+            "sha256": "ed434dcee33cdc3ed55dc47ac6d2c6b14faea5e8fefcaa814ee6e43d03db1aae"
+          }
+        }
+      },
+      "last": {
+        "t": 74.4,
+        "frame_id": 125,
+        "sha256": "88ccef502a057ef2ca79f0d04c1766f2a638fe32ebbf4d9da6be8db6fbf61776",
+        "pose_own_m": [
+          -0.3610357596853457,
+          -0.0622454358585263,
+          -2.682609137195664
+        ],
+        "own_beam": null,
+        "own_beam_observation": {
+          "result": {
+            "visible": true,
+            "reason": "BAND_INWARD_SIDE_UNRESOLVED",
+            "end_visible": false,
+            "points": 1096,
+            "axis_heading_rad": -0.10128800109752058,
+            "near_end_base_m": [
+              0.6831772919930734,
+              -0.012610698201601803
+            ],
+            "grip_base_m": [
+              0.7130235346260928,
+              -0.01564414519980926
+            ],
+            "visible_length_m": 0.6564405513830196,
+            "lateral_spread_m": 0.01212864958578852,
+            "provenance": "own_rgb_lime_hue+issued_pwm_camera_fk+beam_top_plane+black_grip_band_centre",
+            "perception": "owncam_pair_beam_perception_v2",
+            "band": {
+              "near_m": 0.0953,
+              "far_m": 0.1201,
+              "length_m": 0.0248,
+              "points": 49,
+              "touches_invalid_border": false
+            },
+            "grip_source": "band_centre",
+            "endpoint_model": "long_side_v1",
+            "endpoint_side_evidence": {
+              "points": 1096,
+              "q02_m": -0.10549095419413693,
+              "q98_m": 0.5278919693116609,
+              "long_before": 0,
+              "long_after": 462
+            }
+          },
+          "rgb": {
+            "robot_id": "r1",
+            "frame_id": 125,
+            "t_sim": 74.4,
+            "sha256": "88ccef502a057ef2ca79f0d04c1766f2a638fe32ebbf4d9da6be8db6fbf61776"
+          }
+        }
+      }
+    },
+    "r2": {
+      "path": "/home/ubuntu/ugrp-archive/runs/native-e2e18-v377-s61006-r80/raw/robots/r2/ownmap.jsonl.zst",
+      "sha256_uncompressed": "760fffcc49c6c0c7d91f9f075314847fda8b1d1ccc78eea87ab7faf05e8821d8",
+      "rows": 133,
+      "seen": 34,
+      "first": {
+        "t": 0.0,
+        "frame_id": 1,
+        "sha256": "2d2dbdf9481535bc453d52832f9fdb1b2e47b6f2d76d0adeb4404b71f1d92803",
+        "pose_own_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "own_beam": {
+          "rgb": {
+            "robot_id": "r2",
+            "frame_id": 1,
+            "t_sim": 0.0,
+            "sha256": "2d2dbdf9481535bc453d52832f9fdb1b2e47b6f2d76d0adeb4404b71f1d92803"
+          },
+          "pose_own_m": [
+            0.6796142765484834,
+            0.000553797145726343,
+            0.0006476404763500859
+          ],
+          "grip_base_m": [
+            0.4096143331726365,
+            0.0003789342293358511
+          ],
+          "axis_heading_rad": 0.0006476404763500859,
+          "endpoint_model": "long_side_v1",
+          "observed_band_side": "near",
+          "endpoint_side_evidence": {
+            "points": 3667,
+            "q02_m": -0.05205227109928622,
+            "q98_m": 0.5099395108025949,
+            "long_before": 0,
+            "long_after": 1546
+          }
+        },
+        "own_beam_observation": {
+          "result": {
+            "visible": true,
+            "reason": "BAND_VISIBLE",
+            "end_visible": true,
+            "points": 3667,
+            "axis_heading_rad": 0.0006476404763500859,
+            "near_end_base_m": [
+              0.3796143394642091,
+              0.0003595050164035742
+            ],
+            "grip_base_m": [
+              0.4096143331726365,
+              0.0003789342293358511
+            ],
+            "visible_length_m": 0.5845446938326831,
+            "lateral_spread_m": 0.011952004475391423,
+            "provenance": "own_rgb_lime_hue+issued_pwm_camera_fk+beam_top_plane+black_grip_band_centre+observed_long_side_inward",
+            "perception": "owncam_pair_beam_perception_v2",
+            "band": {
+              "near_m": 0.0356,
+              "far_m": 0.069,
+              "length_m": 0.0334,
+              "points": 639,
+              "touches_invalid_border": false
+            },
+            "grip_source": "band_centre",
+            "endpoint_model": "long_side_v1",
+            "endpoint_side_evidence": {
+              "points": 3667,
+              "q02_m": -0.05205227109928622,
+              "q98_m": 0.5099395108025949,
+              "long_before": 0,
+              "long_after": 1546
+            },
+            "observed_band_side": "near"
+          },
+          "rgb": {
+            "robot_id": "r2",
+            "frame_id": 1,
+            "t_sim": 0.0,
+            "sha256": "2d2dbdf9481535bc453d52832f9fdb1b2e47b6f2d76d0adeb4404b71f1d92803"
+          }
+        }
+      },
+      "last": {
+        "t": 33.0,
+        "frame_id": 56,
+        "sha256": "6e91ba40ab14d991ce05a3204f5114f6a8edc1a7f82528e94b72ad96cb90de0b",
+        "pose_own_m": [
+          0.3554763685429279,
+          -0.09061854282025318,
+          0.30301009525693345
+        ],
+        "own_beam": null,
+        "own_beam_observation": {
+          "result": {
+            "visible": true,
+            "reason": "END_CLIPPED",
+            "end_visible": false,
+            "points": 269,
+            "axis_heading_rad": -0.6611722749016781,
+            "near_end_base_m": [
+              0.3537725218268116,
+              -0.1454374216334939
+            ],
+            "grip_base_m": [
+              0.37745071024730514,
+              -0.16385869718986096
+            ],
+            "visible_length_m": 0.06670539599434873,
+            "lateral_spread_m": 0.0037331885473487216,
+            "provenance": "own_rgb_lime_hue+issued_pwm_camera_fk+beam_top_plane",
+            "perception": "owncam_pair_beam_perception_v2",
+            "grip_source": "end_plus_inset_v1"
+          },
+          "rgb": {
+            "robot_id": "r2",
+            "frame_id": 56,
+            "t_sim": 33.0,
+            "sha256": "6e91ba40ab14d991ce05a3204f5114f6a8edc1a7f82528e94b72ad96cb90de0b"
+          }
+        }
+      }
+    }
+  }
+}

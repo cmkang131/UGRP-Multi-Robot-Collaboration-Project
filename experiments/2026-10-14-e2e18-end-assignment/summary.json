@@ -1,0 +1,250 @@
+{
+  "status": "stage_comparison_finished_not_ready",
+  "same_end": 7,
+  "opposite_end": 5,
+  "both_reached": 12,
+  "main_runs": 24,
+  "causes": {
+    "initial_basis_reversed": 4,
+    "basis_reassigned_during_approach": 2,
+    "incidental_B_search": 1
+  },
+  "stance_offset_m": 0.4732,
+  "threshold_m": 0.25,
+  "vm3": "deallocated_verified",
+  "reserved_bundles": [
+    407,
+    408,
+    409,
+    410,
+    411,
+    412,
+    413,
+    414,
+    415,
+    416,
+    417,
+    418
+  ],
+  "raw": "outputs/azure3-runs/stage-*-cohort*-*-grasp-*; oracle-codex:/home/ubuntu/ugrp-archive/runs/native-*",
+  "notes": [
+    "nearest approach over full run, not simultaneous occupancy",
+    "saved-frame replay cannot establish counterfactual physical separation",
+    "cohort4 baseline repeats were truncated by observed100SIM stall policy; contrast cohort3/4 rates with this difference explicit",
+    "cohort4 v417 ready158.8SIM, waiting141.2SIM; stale carrier status during this interval is aligned waiting, not a pending model call"
+  ],
+  "module_tests_passed": 46,
+  "offline": {
+    "evaluated_saved_rgb_frames": 90,
+    "uniform_samples_per_robot": 13,
+    "lock_changed_runs": 4,
+    "occupancy_confirmed_runs": 0,
+    "physical_separation_verified": false
+  },
+  "budget": {
+    "attempt_cap": 600,
+    "cost_cap_usd": 0.3,
+    "attempts": 50,
+    "cost_usd": 0.00780638,
+    "model": "google/gemma-4-31b-it",
+    "reason": "Ling429 correction not verified; Gemma and fixed-rule comparison"
+  },
+  "remaining": [
+    "First-attempt grasp not achieved; alignment/beam reacquisition and persistent pose uncertainty remain",
+    "Other communication conditions model/channel runtime not connected; current stage only no_comm",
+    "Historical saved replay has4/7 opposite first choices, not counterfactual physical completion; current RGB occupancy sparse",
+    "Small staged checkpoint comparison, unequal known-stall durations; do not claim E2E or confirmatory improvement"
+  ],
+  "registered_bundles": [
+    407,
+    408,
+    409,
+    410,
+    411,
+    412,
+    413,
+    414,
+    415,
+    416,
+    417,
+    418
+  ],
+  "source_stage": "grasp checkpoint only; no_comm; no full E2E",
+  "latest_related_tests_passed": 46,
+  "live_gate_runs": 60,
+  "live_main_runs": 44,
+  "gate1": {
+    "completed_30_sim_s": 4,
+    "administratively_interrupted": 12,
+    "valid_speed_gate": false,
+    "reason": "restore load 14.74 >12.8 and no common physics start"
+  },
+  "completed_main_runs": 24,
+  "false_occupancy_replay": {
+    "rejected": 3,
+    "N": 3
+  },
+  "ground_options": [
+    "rgb_ground_v2",
+    "gemma_ground_v2"
+  ],
+  "current_active": 0,
+  "local_fallback_first_choices_opposite": {
+    "n": 4,
+    "N": 7,
+    "physical_separation_verified": false
+  },
+  "cohort3": {
+    "submitted": 16,
+    "resource_censored": 4,
+    "eligible_N": 12,
+    "both_held": 1,
+    "first_attempt_success": 0,
+    "held_condition": "v411 baseline; not a new-candidate success",
+    "milestone": "first-stage-held-milestone.json",
+    "groups": {
+      "v411": {
+        "N": 3,
+        "excluded": 1,
+        "both_reached": 3,
+        "relations": {
+          "opposite": 1,
+          "same": 2
+        },
+        "both_held": 1,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 1,
+        "ready_wait_sim_s": [
+          33.60000000000002,
+          0,
+          188.0
+        ]
+      },
+      "v412": {
+        "N": 3,
+        "excluded": 1,
+        "both_reached": 3,
+        "relations": {
+          "same": 3
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 0,
+        "ready_wait_sim_s": [
+          188.0
+        ]
+      },
+      "v415": {
+        "N": 3,
+        "excluded": 1,
+        "both_reached": 3,
+        "relations": {
+          "opposite": 2,
+          "same": 1
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 3,
+        "ready_wait_sim_s": []
+      },
+      "v416": {
+        "N": 3,
+        "excluded": 1,
+        "both_reached": 3,
+        "relations": {
+          "opposite": 3
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 3,
+        "ready_wait_sim_s": []
+      }
+    },
+    "archive_manifest": "experiments/2026-10-12-e2e18/end-cohort3-archive.json"
+  },
+  "related_tests_passed": 46,
+  "cohort4": {
+    "submitted": 12,
+    "eligible_N": 12,
+    "both_held": 0,
+    "first_attempt_success": 0,
+    "known_stall_stops": 7,
+    "cap300_exits": 5,
+    "groups": {
+      "v415": {
+        "N": 3,
+        "excluded": 0,
+        "both_reached": 2,
+        "relations": {
+          "unreached": 1,
+          "same": 2
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 1,
+        "ready_wait_sim_s": []
+      },
+      "v416": {
+        "N": 3,
+        "excluded": 0,
+        "both_reached": 1,
+        "relations": {
+          "unreached": 2,
+          "opposite": 1
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 1,
+        "ready_wait_sim_s": []
+      },
+      "v417": {
+        "N": 3,
+        "excluded": 0,
+        "both_reached": 2,
+        "relations": {
+          "unreached": 1,
+          "opposite": 2
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 1,
+        "ready_wait_sim_s": [
+          141.2
+        ]
+      },
+      "v418": {
+        "N": 3,
+        "excluded": 0,
+        "both_reached": 1,
+        "relations": {
+          "unreached": 2,
+          "opposite": 1
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "simultaneous_opposite": 1,
+        "ready_wait_sim_s": []
+      }
+    },
+    "raw": "azure3:~/ugrp-sim/runs/stage-end-cohort4-*",
+    "archive_manifest": "experiments/2026-10-12-e2e18/end-cohort4-archive.json"
+  },
+  "all_failure_inclusive_first_attempt": {
+    "n": 0,
+    "N": 32,
+    "definition": "24 cohort3/4 comparisons +8 known occupancy-defect stops; exclude60 gates,8 matched-control censorings,4 resource censorings"
+  },
+  "archive": {
+    "runs": 104,
+    "verified": 104,
+    "manifest": "final-archive-check.json",
+    "model_text": "mac-model-text-archive.json",
+    "milestone": "first-stage-held-milestone.json"
+  },
+  "vm_state_record": "final-vm-state.json",
+  "cause_zero_findings": {
+    "near_end_override_observed": 0,
+    "recovery_explicit_opposite_end_reroute_observed": 0,
+    "N": 7
+  }
+}

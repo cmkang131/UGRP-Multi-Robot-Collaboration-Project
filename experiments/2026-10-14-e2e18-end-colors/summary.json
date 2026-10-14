@@ -1,0 +1,362 @@
+{
+  "status": "finite_color_stage_comparison_complete",
+  "exception": "사용자 명시 예외(물체 외관 변경)",
+  "unit_tests": {
+    "passed": 45,
+    "files": 3,
+    "execution_source_sha": "69f71de434c38f1bd38b8d0ffacda722b6ac9244"
+  },
+  "physical": {
+    "stage_comparison_complete": true,
+    "gate_N": 28,
+    "primary_N": 24,
+    "resource_censored_N": 4,
+    "not_full_E2E": true
+  },
+  "raw_locations": [
+    "azure3:~/ugrp-sim/runs/stage-color-*",
+    "oracle-codex:~/ugrp-archive/runs/native-stage-color-*"
+  ],
+  "sha256": {
+    "README.md": "a108da4bfef89317d60fad4bcbbb95fd1bdbaaf2eca6c223c1a8ad3de939fbc1",
+    "admin-record-compression.json": "d65a6dfcc916d8e6547b361439639eaa0c93a62b195fe2c815122d4f411cf91f",
+    "cohort1-color-geometry.json": "27c24977cc844d45b17fe249fe93c0d12edc7eeabd05204c01511b5c4f9bbdb9",
+    "cohort1-evaluation.json": "94abf3576e8dda1e85c6ed7121066af89afea41a8c5c810eb5191ea1558dc853",
+    "cohort1-initial-health.json.zst": "2762d34c59fc1969cb408193b94e0c7a762c6ab7fd66ab128d12a41a22a2a441",
+    "cohort1-initial-health.manifest.json": "78454dde2d22719fdf4969e37eaf4efd608cbf3234c77f4860320a630fd5e927",
+    "cohort1-stall-stop.json": "1a24b28e4c0b604c798bb8b1e9af7e8967d45228e093b0e0ab1dca3305eec7f3",
+    "cohort2-color-geometry.json": "cf2c01b2d52d9d4d231eb7a278e5476d59cc6476ae4ba1b058df4d334f6145b9",
+    "cohort2-evaluation.json": "1b5f2483fec5fca1edefcf6cd10c8812136c7bbc4f865139f821ae52bc76e156",
+    "cohort2-initial-health.json": "46c965cb7fb260c51154c8823a58a5b3ca7ec0e79dc14aa8c70d3e9caf4c336a",
+    "cohort2-initial-summary.json": "c3417cbeee79e5f5b7845825ee09e4ba0dd5452b58152404f594e6ed1bef5b8d",
+    "cohort2-scan-deadlock-followup.json": "9bf783ebabf3a8e6d88b3d51a96e9ad5aeec4948b476bb5d9241da0f60da6e0e",
+    "cohort2-scan-deadlock.json": "cbfa8f728539484ca41638746e09ce95fb4d9a2119dc05ea095d5e3453c4ea5a",
+    "cohort2-stage-progress.json": "9a4d8730c7728e71f1b34a92b2ffd8b92f66120b7b52573574b44cbade526c90",
+    "cohort2-stall-stop-followup.json": "e9914705c2efd4d1471e6f215105c3f330fdbde77332c4808eaf8dacbc586b4a",
+    "cohort2-stall-stop.json": "bab8aebe57065439154cecdb0a581013a5ba98ae3e3b66c0de608dadbf447cac",
+    "colored-raw-replay.json": "964d8e5951d60351a3643bfc1b91eba4ec6f9b5f661f750fda03a9c793bfc0e3",
+    "completed-record-compression.json": "313418e3462137140a82576cc6e2adfe24c07870bd0251494b22218066689404",
+    "early-visual-review.json": "dbecc01728dc8ae114be9d58063c4195d7150193dac7aa78ac6693d47b3a71d1",
+    "evaluate.py": "ce32400b00f56b065d522ae9743a96b174d7c2d5a995eaea81f209653a4e65c6",
+    "evaluate_color_geometry.py": "9fa148297b575ec0c1a8dd7deeca2c3de7acb6c21c1ef44eec3d141589b59e98",
+    "final-archive-recheck.json": "036ca20b29fb333f623c42fe2f3d59676e395717837662ede5cb95fac1f1af57",
+    "final-record-compression.json": "33197df54a8aeddad848ae1762e58393f933772c455a90541df5149a399dadae",
+    "gate-perception.json": "bbff525b731746c42941af1748ab1541af11a57de150afaa02a65401be64fcd2",
+    "offline-replay.json": "32fdbea564f8ad75e457cedb0196798ca7da859339ba6e9706bb253f29710044",
+    "references.md": "737eb6c25c96e588ec2bc9659fe469ba1e2348360d5384e8ee7af8051966f386",
+    "repeat-resource-stop.json": "d79a8f9ea94173e841e2ab0cfe3d325580d0d882e0ac77dc50c2b07b45af1b47",
+    "replay.py": "a2c93816f538f48990c9beadae7b770b1084578eb0830bf0e688d6082055e788",
+    "run-summary.json.zst": "a7c238b45294a7d71df8b488c85ab50dbe9d3cbc2937ed6cb19e20051291393a",
+    "scene-invariance.json": "71c4d14cf277bceb25e25f51c1f1d3625b336ebb0a827d77e3ffd916b2658690",
+    "stage-color-gate1-summary.json.zst": "2e465c827e466dc736c1d9ac124967e3a4150fd9fc04eadc90a16f2e4dbc96f1",
+    "stage-color-gate1-summary.json.zst.manifest.json": "112ab148a3ecd21518a20e555ef160168c61a9007dfc9e3905e9e3061f38e120",
+    "stage-color-gate2-summary.json": "0085842424f7309f5bbb239b270df248f94640637472f109446018010aa0dc30",
+    "stage-plan-recovery.json": "99156cb0f44b2d07fa65add4c6a3d1f4161356e5addff054b8b1afea944338eb",
+    "stage-plan.json": "3312ed5a5e9470d1ce4fe0a6bcb603f50d83442dfda0450bb9c297b4c29e1feb",
+    "storage-budget-recovery.json": "5de873eff10c7ffa0d6c48fec9c9e2db17b255e7a8e99a0df6fa3fbb2966cc83",
+    "storage-budget.json": "c2305c62e48a78978cb86cf9767fa6143b603085e376c5b7db576192eae1b450",
+    "video-failure-recovery-v423.json": "733f5efec588abb8a8b17dd7542d6ca29097697168d511646b7b517141d94497",
+    "video-failure-v420.json": "5bd959ec1253a3efb4bb19b2f05fc77301e7d277f627fc7aad3558911cbd3b6b",
+    "video-review.json": "d32ea00d5b6faeb92f6d18ddf96baf148ec66f9a4766840bb0e366647f5cc449",
+    "video-success-black-control-v419.json": "ada9a39d132654dc22dcd5e644733321bd29ec125324ac5c81da1bda64a61f8e",
+    "vm-before.json": "f4155bc6601dad6edf2b6fa258138e144c508d2e280c72ff6ecc21a712814177",
+    "vm-final.json": "2446cbb24f672588ce8d642ae3337b333340d5caf077ebe2303a5a5baae6549f"
+  },
+  "offline": {
+    "saved_frames": 161,
+    "color_observations": 322,
+    "false_positive": 0,
+    "synthetic_positive": 2,
+    "not_physical": true
+  },
+  "execution_source_sha": "5d2b22746dbb0260d7b776650e8fcd91df785efa",
+  "gate": {
+    "batch": "stage-color-gate1",
+    "planned_N": 16,
+    "complete_N": 16,
+    "median_wall_per_sim": 2.3848971630499998,
+    "max_wall_per_sim": 2.7873438761999996,
+    "limit": 3.5,
+    "staging_passed": true,
+    "ok": true,
+    "model_calls": 0,
+    "request_files": 0,
+    "tokens_per_sim": 0.0,
+    "api_cost_usd": 0,
+    "synchronized": true,
+    "actual_start_spread_s": 0.09567022999999608,
+    "provider_receipts": 0,
+    "provider_attempt_ids": [],
+    "receipt_reconciled": true
+  },
+  "scene_invariance": "scene-invariance.json",
+  "model_cost_usd": 0,
+  "vm": "all four deallocated confirmed; only VM3 started for this comparison",
+  "cohort1": {
+    "groups": {
+      "primary_3_checkpoints/v419": {
+        "N": 3,
+        "opposite": 1,
+        "simultaneous_opposite": 1,
+        "relations": {
+          "opposite": 1,
+          "same": 2
+        },
+        "both_held": 1,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          33.60000000000002,
+          0,
+          188.0
+        ]
+      },
+      "primary_3_checkpoints/v420": {
+        "N": 3,
+        "opposite": 0,
+        "simultaneous_opposite": 0,
+        "relations": {
+          "unreached": 3
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      },
+      "primary_3_checkpoints/v421": {
+        "N": 3,
+        "opposite": 2,
+        "simultaneous_opposite": 2,
+        "relations": {
+          "unreached": 1,
+          "opposite": 2
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          221.2
+        ]
+      },
+      "primary_3_checkpoints/v422": {
+        "N": 3,
+        "opposite": 1,
+        "simultaneous_opposite": 2,
+        "relations": {
+          "unreached": 1,
+          "same": 1,
+          "opposite": 1
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          121.60000000000002
+        ]
+      },
+      "separate_seed_repeat_checkpoint377/v419": {
+        "N": 0,
+        "opposite": 0,
+        "simultaneous_opposite": 0,
+        "relations": {},
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      },
+      "separate_seed_repeat_checkpoint377/v420": {
+        "N": 0,
+        "opposite": 0,
+        "simultaneous_opposite": 0,
+        "relations": {},
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      },
+      "separate_seed_repeat_checkpoint377/v421": {
+        "N": 0,
+        "opposite": 0,
+        "simultaneous_opposite": 0,
+        "relations": {},
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      },
+      "separate_seed_repeat_checkpoint377/v422": {
+        "N": 0,
+        "opposite": 0,
+        "simultaneous_opposite": 0,
+        "relations": {},
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      }
+    },
+    "excluded_extra_seed_runs": 4,
+    "known_stall_stops": 3,
+    "full_raw_arm_verified": 16,
+    "raw_files": 27866,
+    "colored_summary": {
+      "N": 9,
+      "opposite": 3,
+      "simultaneous_opposite": 4,
+      "first_attempt": 0,
+      "both_held": 0,
+      "max_ready_wait_sim_s": 221.2
+    }
+  },
+  "recovery": {
+    "source_sha": "69f71de434c38f1bd38b8d0ffacda722b6ac9244",
+    "bundles": [
+      419,
+      423,
+      424,
+      425
+    ],
+    "gate_N": 12,
+    "main_N": 12,
+    "unit_tests_passed": 45,
+    "gate_verified": {
+      "N": 12,
+      "median_wall_per_sim": 2.3535849645666644,
+      "max_wall_per_sim": 2.5977201007,
+      "limit": 3.5
+    },
+    "initial_health": "cohort2-initial-health.json"
+  },
+  "video_review": "video-review.json",
+  "cohort2": {
+    "groups": {
+      "primary_3_checkpoints/v419": {
+        "N": 3,
+        "opposite": 1,
+        "simultaneous_opposite": 1,
+        "relations": {
+          "opposite": 1,
+          "same": 2
+        },
+        "both_held": 1,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          33.60000000000002,
+          0,
+          188.0
+        ]
+      },
+      "primary_3_checkpoints/v423": {
+        "N": 3,
+        "opposite": 1,
+        "simultaneous_opposite": 1,
+        "relations": {
+          "unreached": 2,
+          "opposite": 1
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          5.199999999999989,
+          140.0
+        ]
+      },
+      "primary_3_checkpoints/v424": {
+        "N": 3,
+        "opposite": 1,
+        "simultaneous_opposite": 1,
+        "relations": {
+          "unreached": 2,
+          "opposite": 1
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": [
+          174.8
+        ]
+      },
+      "primary_3_checkpoints/v425": {
+        "N": 3,
+        "opposite": 2,
+        "simultaneous_opposite": 1,
+        "relations": {
+          "unreached": 1,
+          "opposite": 2
+        },
+        "both_held": 0,
+        "first_attempt_success": 0,
+        "ready_wait_sim_s": []
+      }
+    },
+    "known_scan_deadlock_stops": 4,
+    "full_raw_arm_verified": 12,
+    "colored_summary": {
+      "N": 9,
+      "opposite": 4,
+      "simultaneous_opposite": 3,
+      "first_attempt": 0,
+      "both_held": 0,
+      "both_ever_ready": 0,
+      "entered_grasp_close": 0,
+      "max_ready_wait_sim_s": 174.8
+    }
+  },
+  "archive": {
+    "runs": 56,
+    "files": 59553,
+    "full_raw_arm_verified": true,
+    "representative_full_copies": 3,
+    "representatives": [
+      "video-failure-v420.json",
+      "video-success-black-control-v419.json",
+      "video-failure-recovery-v423.json"
+    ]
+  },
+  "model_calls": 0,
+  "tokens_per_sim": 0,
+  "remaining_causes": [
+    "Assigned band often lost/occluded; color identity is correct when geometrically detected, but not continuous visibility.",
+    "Requested scan pose abandoned by arm-clearance without invalidating acquisition view index: 4 known stationary search failures.",
+    "One-ready/partner-search and fine-alignment stalls remain: recovery color candidates 0/9 both-ever-ready and 0/9 grasp-close entry."
+  ],
+  "evidence_scope": [
+    "Staging restores pose/issued arm targets with zero velocity/upright assumption, not original bitwise integration state.",
+    "Own-map replay roundtrip and recorded estimates verified; historical grid hash unavailable in checkpoint.",
+    "Color geometry evaluator uses independent truth only after execution; it never supplies control inputs.",
+    "Black-control held results and colored results are separate. Repeated checkpoint control is deterministic reproduction, not an independent seed."
+  ],
+  "run_summary": "run-summary.json.zst",
+  "vm_final": {
+    "verified_unix": 1791918067.804239,
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "VM3_deallocated": true,
+    "all_four_deallocated": true,
+    "vms": [
+      {
+        "name": "ugrp-sim-azure",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_D16as_v5"
+      },
+      {
+        "name": "ugrp-sim-azure2",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_D16as_v5"
+      },
+      {
+        "name": "ugrp-sim-azure3",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_F16als_v6"
+      },
+      {
+        "name": "ugrp-sim-azure4",
+        "powerState": "VM deallocated",
+        "vmSize": "Standard_F16als_v6"
+      }
+    ]
+  },
+  "verdict": "not_ready: colored identities disambiguate observed bands, but first-attempt and cooperative grasp goals remain unmet",
+  "next_scope": "Invalidate/retry cancelled camera-view requests, then preserve observation through opposite-end approach; own-pose work remains separate and untouched.",
+  "color_geometry": {
+    "cohort1": {
+      "valid_observation_frames": 2068,
+      "closer_to_assigned_end": 2068
+    },
+    "cohort2": {
+      "valid_observation_frames": 1725,
+      "closer_to_assigned_end": 1725
+    },
+    "scope": "Evaluation-only, valid detections only; not a recall measure or run success rate."
+  }
+}
