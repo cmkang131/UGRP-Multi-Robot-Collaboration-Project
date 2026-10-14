@@ -32,7 +32,7 @@ def nominal_goal_blocked(world, rid, end, bounds, folded, *, profile=None):
 
 
 def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, profile=None,
-                distances=DISTANCES_M, excluded=()):
+                distances=DISTANCES_M, excluded=(), grasp_filter=None):
     """Fallback after nominal_goal_blocked; keep an already selected stance.
 
     Angles stay on the assigned end's outward half-circle. Distances must pass
@@ -55,6 +55,8 @@ def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, pro
         row = {'offset_deg': math.degrees(choice[0]), 'distance_m': distance, 'goal': goal}
         checked.append(row)
         if choice in excluded:row['reason'] = 'previously_stalled'; return None
+        if grasp_filter is not None and not grasp_filter(world, (goal[0], goal[1], heading)):
+            row['reason'] = 'grasp_geometry'; return None
         if not reachable[distance]:row['reason'] = 'ik_unreachable'; return None
         if not (x0+radius <= goal[0] <= x1-radius and y0+radius <= goal[1] <= y1-radius):
             row['reason'] = 'outside_bounds'; return None

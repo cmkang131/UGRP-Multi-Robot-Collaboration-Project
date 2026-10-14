@@ -5,11 +5,11 @@ Differences from the beam (docs: experiments/2026-10-14-crate-teacher/README.md)
 - the start skew (0..1.5 s, GraspStartSync) only delays the descent and close;
 - after the close the robot reports its own READY-TO-LIFT (own issued close sequence
   complete + settle, no contact, no object height) and waits for a second code
-  READY/GO/ACK barrier; only then the lift is queued. 0.9 kg is above one robot's
-  measured capacity (0.66-0.68 kg), so a lift by one robot is a tip-over, not a
-  harmless early start.
-Everything else (approach, alignment, observation, route, pick poses) is the
-unchanged ``VisibleOnlyGraspTeacher``.
+  READY/GO/ACK barrier; only then the lift is queued. The 0.25 kg scene keeps
+  the same two-robot barrier; historical 0.66-0.68 kg solo limits predate the
+  current servo limits and are not applicable.
+The default reuses ``VisibleOnlyGraspTeacher``; opt-in crate modes add the
+pre-grasp checks and command-space lift described in crate8.md / crate9.md.
 """
 from __future__ import annotations
 import math
@@ -17,7 +17,7 @@ from harness.visual_arm_v3 import solve_grip_site_ik, tool_pose
 from sim.grasp_act_teacher_v3 import VisibleOnlyGraspTeacher
 from sim.grasp_act_teacher import local
 from sim.cargo_teacher_profile import CRATE
-from sim.crate_lift_pose import MODES as LIFT_POSE_MODES, CARTESIAN_OPTION, select_lift_prefix
+from sim.crate_lift_pose import MODES as LIFT_POSE_MODES, CARTESIAN_MODES, ANTIPODAL_OPTION, select_lift_prefix
 
 LIFT_WAIT_LIMIT_S = 20.
 
@@ -36,7 +36,11 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         self.lift_prefix = None
         self.approach_excluded = set()
         self.approach_progress = None
-        if crate_lift_pose == CARTESIAN_OPTION:
+        if crate_lift_pose == ANTIPODAL_OPTION:
+            from sim.crate_antipodal import visible_grasp
+            self.approach_grasp_filter = lambda world, pose: visible_grasp(
+                world, self.rid, self.end, pose=pose)['valid']
+        if crate_lift_pose in CARTESIAN_MODES:
             if self.teacher_stability == 'off' or self.approach_goal_set == 'off':
                 raise ValueError('Cartesian crate lift requires alignment and approach goal set')
             from sim.crate_cartesian_lift import STATION_M
@@ -45,7 +49,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             self.approach_distances = (STATION_M,)
 
     def _begin_relook(self, now, reason):
-        if self.crate_lift_pose == CARTESIAN_OPTION:
+        if self.crate_lift_pose in CARTESIAN_MODES:
             # Finite recovery: retain the failed stance, re-observe, then use
             # the existing collision-checked alternative-goal planner.
             self.approach_excluded.add(self.approach_choice)
@@ -55,7 +59,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return super()._begin_relook(now, reason)
 
     def _approach(self, truth, now):
-        if (self.crate_lift_pose == CARTESIAN_OPTION and self.phase == 'approach'
+        if (self.crate_lift_pose in CARTESIAN_MODES and self.phase == 'approach'
                 and truth['beam'] is not None and truth['visibility'][self.rid]['visible_probes'] >= 5):
             pose, _, _, goal = self._geometry(truth)
             error = math.dist(pose[:2], goal)
@@ -68,8 +72,12 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def ready_geometry(self, truth):
         if not super().ready_geometry(truth):
             return False
-        if self.crate_lift_pose != CARTESIAN_OPTION:
+        if self.crate_lift_pose not in CARTESIAN_MODES:
             return True
+        if self.crate_lift_pose == ANTIPODAL_OPTION:
+            from sim.crate_antipodal import visible_grasp
+            if not visible_grasp(truth, self.rid, self.end)['valid']:
+                return False
         # This runs only before the pick, on the currently visible assigned lug.
         from sim.crate_cartesian_lift import plan_lift
         pose, g, _, _ = self._geometry(truth)
@@ -86,7 +94,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             phase = 'closed'
             self.closed_at = now
             if self.crate_lift_pose != 'off':
-                if self.crate_lift_pose == CARTESIAN_OPTION:
+                if self.crate_lift_pose in CARTESIAN_MODES:
                     from sim.crate_cartesian_lift import plan_lift
                     self.lift_prefix, self.lift_selection = plan_lift(self.sink.pwm)
                 else:
@@ -101,6 +109,13 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
 
     # --- picking: hover, descent, close (no lift yet) ---
     def _queue_pick(self, truth, now):
+        if self.crate_lift_pose == ANTIPODAL_OPTION:
+            from sim.crate_antipodal import visible_grasp
+            if not visible_grasp(truth, self.rid, self.end)['valid']:
+                # READY can become stale during the asynchronous start delay.
+                # Replan from current visible inputs before any grasp command.
+                self._begin_relook(now, 'crate_grasp_geometry_changed')
+                return
         pose = truth['robots'][self.rid]['pose']
         g = truth['beam']['ends'][self.end]
         x, y = local(pose, g)
@@ -173,5 +188,5 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 'closed_at': self.closed_at, 'lift_done': self.lift_done,
                 'crate_lift_pose': self.crate_lift_pose, 'lift_pose_selection': self.lift_selection,
                 **({'excluded_stalled_stances': sorted(self.approach_excluded)}
-                   if self.crate_lift_pose == CARTESIAN_OPTION else {}),
+                   if self.crate_lift_pose in CARTESIAN_MODES else {}),
                 'done_semantics': 'own issued close+lift sequence complete after the lift barrier; physical evaluation separate'}

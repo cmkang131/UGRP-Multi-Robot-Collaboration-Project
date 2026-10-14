@@ -321,7 +321,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             from sim.grasp_act_goal_set import DISTANCES_M
             selected,checked=select_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.approach_choice,
                                         profile=self.cargo_profile,distances=getattr(self,'approach_distances',DISTANCES_M),
-                                        excluded=getattr(self,'approach_excluded',()))
+                                        excluded=getattr(self,'approach_excluded',()),
+                                        grasp_filter=getattr(self,'approach_grasp_filter',None))
             self.planner_calls+=1;self.next_plan=now+1.;self.path_goal=tuple(goal)
             self.blocked_goal_calls+=int(blocked)
             self.approach_plan_valid=selected is not None

@@ -21,7 +21,9 @@ from scripts.zone_teacher import ArmSequence
 
 OPTION = 'crate_lift_pose_margin_v1'
 CARTESIAN_OPTION = 'crate_cartesian_lift_v1'
-MODES = ('off', OPTION, CARTESIAN_OPTION)
+ANTIPODAL_OPTION = 'crate_antipodal_grasp_v1'
+CARTESIAN_MODES = (CARTESIAN_OPTION, ANTIPODAL_OPTION)
+MODES = ('off', OPTION, *CARTESIAN_MODES)
 PAYLOAD_PER_ARM_KG = .125
 MIN_RISE_M = .012
 LIMIT_NM = TORQUE_NM['elbow']

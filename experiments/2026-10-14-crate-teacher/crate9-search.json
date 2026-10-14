@@ -1,0 +1,44 @@
+{
+  "seed": 77969,
+  "ledger_N": 650,
+  "observer_N": 643,
+  "visible_n": 79,
+  "visible_t": [
+    4.7,
+    12.5
+  ],
+  "lost_t": 12.6,
+  "r1_state": "READY, no pick, closed or lift",
+  "rotations": [
+    {
+      "t": [
+        22.6,
+        36.9
+      ],
+      "command_estimated_yaw_deg": 392.6,
+      "measured_net_yaw_deg": 74.31605765710572,
+      "measured_abs_yaw_deg": 74.38619706592537
+    },
+    {
+      "t": [
+        37.4,
+        51.7
+      ],
+      "command_estimated_yaw_deg": 392.6,
+      "measured_net_yaw_deg": 0.6593149577274243,
+      "measured_abs_yaw_deg": 0.793725590463181
+    },
+    {
+      "t": [
+        52.4,
+        66.7
+      ],
+      "command_estimated_yaw_deg": 392.6,
+      "measured_net_yaw_deg": 0.48081248219007916,
+      "measured_abs_yaw_deg": 0.5374583953669578
+    }
+  ],
+  "source": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77969-5644e3dd/raw/eval-only.jsonl.zst",
+  "simple_fix": false,
+  "reason": "command yaw is not actual rotation; near wall and wheel-lug contact; needs allowed-image motion confirmation and collision-safe recovery, not a scan-time/gain change"
+}

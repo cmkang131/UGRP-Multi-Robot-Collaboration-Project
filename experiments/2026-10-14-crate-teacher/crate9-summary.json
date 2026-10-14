@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-15",
+  "baseline_sha": "5644e3dd114c34c2ee0e5e09b4bdaba10754621e",
+  "baseline_success_n": 5,
+  "baseline_N": 10,
+  "lift_subset_success_n": 5,
+  "lift_subset_N": 9,
+  "root_causes": {
+    "oblique_finger_contacts_main_box_downward": 4,
+    "wheel_lug_collision_search_rotation_stall": 1
+  },
+  "new_mode": "crate_antipodal_grasp_v1",
+  "default": "off",
+  "new_runtime_success": "unverified",
+  "baseline_replayed_robot_ticks": 7166,
+  "bad_saved_grasps_rejected": "4/4",
+  "successful_saved_grasps_preserved": "10/10",
+  "frames_viewed": 180,
+  "integrity": {
+    "files_matched": 1824,
+    "missing": 0,
+    "mismatched": 0
+  },
+  "local_tests": {
+    "passed": 61,
+    "failed": 0,
+    "files": [
+      "tests/test_crate_antipodal.py",
+      "tests/test_crate_cartesian_lift.py",
+      "tests/test_grasp_act_goal_set.py"
+    ],
+    "junit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate9-audit/tests.xml",
+      "sha256": "50c02ee385261e76285748637fb65c4b9c7856f4f587eec2851bdfd49e60cf3d"
+    },
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_crate_antipodal.py tests/test_crate_cartesian_lift.py tests/test_grasp_act_goal_set.py --junitxml=/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate9-audit/tests.xml"
+  },
+  "new_diagnostic_seeds": [
+    77970,
+    77971,
+    77972,
+    77973,
+    77974,
+    77975,
+    77976,
+    77977,
+    77978,
+    77979
+  ],
+  "queue_ready": false,
+  "queue_blocker": "Known 77969 search collision/no-motion defect not safely fixed; do not execute.",
+  "remaining_unverified": [
+    "Physical validation of new pregrasp candidates, load/hold/release and input audit.",
+    "77969 visual no-motion detection and collision-safe recovery; new candidate reproduces old search commands offline.",
+    "Remote unused seeds, costs, disk, speed and combined concurrency admission."
+  ],
+  "input_audit": {
+    "retrieved_runs_N": 10,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "new_runtime": "unverified"
+  },
+  "physics_steps": 0,
+  "forward_calls": 0,
+  "render_calls": 0,
+  "new_remote_runs": 0,
+  "model_calls": 0,
+  "artifacts": {
+    "analysis": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate9-analysis.json",
+      "sha256": "de30dd358d36f8fabd478195aea2a9202ae8dd1c229c59fbcc23e10cd02442d9"
+    },
+    "record": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate9.md",
+      "sha256": "046a76985147f4f3849ddecb572fe872acd211da6d7d39c8e19ba56158596205"
+    },
+    "visual_review": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate9-visual-review.json",
+      "sha256": "8ef71f4a6fc805279bd22ad0baec84479b0ff126204e1d7492a8c49436e65f00"
+    },
+    "replay": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate9-replay.json",
+      "sha256": "b4efd8005c392a3e70a23cc75a1a74619a44d4498606b731780d416628b1726a"
+    },
+    "search": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate9-search.json",
+      "sha256": "ef6147f58afcb16d543885becc631346258861c59710b104bee45cda31a7fcfb"
+    },
+    "capacity": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate9-static-capacity.json",
+      "sha256": "f315907388f2e166a574e6276f9689e8bd7b6ee915686b163683f7c7727ba37b"
+    },
+    "plan": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/diag_plan_crate9_77970.json",
+      "sha256": "0136a11ec5ed366c2aad4a6f21d79f449130ff5606d09d14b9e4c5dc48b20b05"
+    },
+    "junit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate9-audit/tests.xml",
+      "sha256": "50c02ee385261e76285748637fb65c4b9c7856f4f587eec2851bdfd49e60cf3d"
+    },
+    "integrity": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate9-audit/integrity.json",
+      "sha256": "80c7a465d4c0a5fbf8155613c39aa80304db8d0805fc66df56317e4cbe4bd58a"
+    }
+  },
+  "source_sha256": {
+    "sim/crate_antipodal.py": "8468f7b7b432af936ea01397f0b96d5d06f50020be983b41099c4b8b0b0b38c9",
+    "sim/crate_grasp_teacher.py": "0b9dd16895e2c68e04cd1c8ddafc18ded8c44bfd358591c35b0f0d584114410b",
+    "sim/crate_lift_pose.py": "0e434d6f013f79407680460607c4bff72bfc2299c0dd6e9a7d7d8ad2f90d8c60",
+    "sim/grasp_act_goal_set.py": "4e5b732dfb48eec78ec2b62d62c36b0c07a6e3668657c215d706863cd207335e",
+    "sim/grasp_act_teacher_v3.py": "4d2453598b73b4fd00f8213294afffeec0b6be8bcc2238f4c20d90be0bb08c4e",
+    "scripts/run_crate_teacher.py": "ecdf02c17d10622176cee94c46b7ab646c2d2631d42276c80cac051b7f128e8c",
+    "tests/test_crate_antipodal.py": "34c48abb5bf23171b7e0bef0d50b8f9474db277f232c15a18c4475e6382bcd7d",
+    "tests/test_crate_cartesian_lift.py": "93ad54fa58c478611a42e1f12f879c95879ea64a7ff8977bf922dd4c12c0bb30",
+    "tests/test_grasp_act_goal_set.py": "7e877760168bb89d1cedfbe4d8339a813d622d1c0c424af702e3aa38b6a8ea94"
+  },
+  "remote_vm_connections": 0
+}
