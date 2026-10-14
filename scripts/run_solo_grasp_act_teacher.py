@@ -31,7 +31,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         raise ValueError('finite opt-in solo profile with both required toggles')
     if teacher_stability not in ('off', 'align_relook_v1') or reach_mode not in ('box_station_v1', 'pad_window_v2'):
         raise ValueError('unknown solo stability/reach mode')
-    if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3'):
+    if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3', 'solo_lift_lookback_v1'):
         raise ValueError('unknown solo RGB lift mode')
     from scripts.grasp_act_host import identity, require_run_root
     host = identity(execution_host)
@@ -163,7 +163,11 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                               lookaround=relook, route=route, ops=ops,
                               teacher_stability=teacher_stability, reach_mode=reach_mode,
                               rgb_lift_mode=rgb_lift_mode)
-        lift_observer = SoloLiftObserver(plan['kind'], mode=rgb_lift_mode) if rgb_lift_mode != 'off' else None
+        if rgb_lift_mode == 'solo_lift_lookback_v1':
+            from sim.grasp_act_solo_lookback import LookbackObserver
+            lift_observer = LookbackObserver(plan['kind'])
+        else:
+            lift_observer = SoloLiftObserver(plan['kind'], mode=rgb_lift_mode) if rgb_lift_mode != 'off' else None
         if lift_observer is not None:
             (out/'lift-rgb').mkdir()
 
@@ -286,7 +290,14 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             if complete and relook.armed and 'after' not in look_eval:
                 look_eval['after'] = look_truth(); look_eval['sim_s'] = now-look_eval['armed_t']
             apply(port, value, now, previous)
-            if lift_observer is not None and phase_before == 'close' and teacher.phase == 'lift':
+            if rgb_lift_mode == 'solo_lift_lookback_v1':
+                if phase_before in ('align', 'approach') and teacher.phase == 'hover':
+                    # Before hover/descent/close: the last visible pickup frame.
+                    # Its camera pose is the PREVIOUS issued command, not the
+                    # newly queued arm target and never teacher.grasp_xyz.
+                    lift_observer.start(bgr, {**previous, 't': now}, save_lift)
+                lift_observer.issue(value, teacher.phase)
+            elif lift_observer is not None and phase_before == 'close' and teacher.phase == 'lift':
                 # This frame was captured BEFORE issuing the raise. Commands
                 # are the teacher's own outputs, not servo measurements.
                 lift_observer.start(bgr, value, save_lift)
@@ -369,7 +380,7 @@ def main():
     p.add_argument('--setdown-lookaround-v1', action='store_true')
     p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')
     p.add_argument('--reach-mode', choices=('box_station_v1', 'pad_window_v2'), default='box_station_v1')
-    p.add_argument('--rgb-lift-mode', choices=('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3'), default='off')
+    p.add_argument('--rgb-lift-mode', choices=('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3', 'solo_lift_lookback_v1'), default='off')
     p.add_argument('--cap-s', type=float, default=90.)
     a = p.parse_args()
     plan = json.loads(a.plan.read_text())['episodes'][a.episode]

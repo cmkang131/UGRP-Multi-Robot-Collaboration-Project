@@ -1,0 +1,920 @@
+{
+  "schema": "solo_lift_lookback_static_v1",
+  "mode": "solo_lift_lookback_v1",
+  "scope": "nominal command geometry and saved-frame eligibility; not physical success",
+  "parent_sha": "1b72b3ee7c1d56e7630d94fcb335d6d9a2b982e9",
+  "saved_source_sha": "b48ebdf1672554a24511dd853617408308061a95",
+  "manifest_sha256": "027122a6c258db03c94cf9a57315f52a3937acbd91d019c58c5c250aa1eab334",
+  "source_sha256": {
+    "sim/grasp_act_solo_lookback.py": "dfceb0c880bbf525c6218e2ec306ada5a48f3f951520635f43c4c1f9541ab323",
+    "sim/grasp_act_solo_teacher.py": "5c02fb4cf4a1a1cc4be5b878e63dbbd9811c3f8cde466ce91cd15522664846c0",
+    "scripts/run_solo_grasp_act_teacher.py": "fc58af636b1ba02dba99382d236d223549e7b3a338934202029b18c31db59b08",
+    "scripts/probe_solo_lift_lookback.py": "098fc410e04c6446d0ba3b7c238c422b8e13a67cca93df456cb877f39f4679ef",
+    "harness/data/servo_camera_v3_chain.json": "0cced72fd129556cb1e1ecbeef63155129426e669f77b6d5a70244d3d9b269be",
+    "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+    "harness/grasp_act_visible_world.py": "7195113eff657e62d504c4e63b5e2d1a10ffa7e1d35296e5ee2c29da76858a7e"
+  },
+  "runs": [
+    {
+      "run": "solo-diag-0-b48ebdf1",
+      "kind": "cyan",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1216,
+        "4": 2037,
+        "5": 2489,
+        "6": 1491
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 730,
+        "4": 1827,
+        "5": 2214,
+        "6": 1491
+      },
+      "lookback_plan": {
+        "pwm": {
+          "1": 1500,
+          "3": 730,
+          "4": 1827,
+          "5": 2214,
+          "6": 1491
+        },
+        "backoff_m": 0.125,
+        "geometry": {
+          "site_from_issued_grip_m": [
+            0.32517544481633903,
+            -0.002148645378621219,
+            0.0
+          ],
+          "site_pixels": 22657,
+          "ring_pixels": 11776,
+          "surface_in_frame_n": 81,
+          "surface_N": 81,
+          "held_occlusion_pixels": 0,
+          "bbox_xyxy": [
+            184,
+            111,
+            378,
+            235
+          ],
+          "qualified": true,
+          "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+        },
+        "command_distance_margin_m": 0.005,
+        "backoff_bounds_m": [
+          0.09,
+          0.155
+        ]
+      },
+      "old_unmoved_lift_geometry": {
+        "site_from_issued_grip_m": [
+          0.20017544481633903,
+          -0.002148645378621219,
+          0.0
+        ],
+        "site_pixels": 0,
+        "ring_pixels": 0,
+        "surface_in_frame_n": 0,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          149,
+          534,
+          426,
+          789
+        ],
+        "qualified": false,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "saved_lookback_frames_eligible": false,
+      "saved_phases": [
+        "align",
+        "approach",
+        "close",
+        "descent",
+        "failed",
+        "fold",
+        "hover",
+        "lift",
+        "verify_lift"
+      ],
+      "verified_samples": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "9d4b7977f1cd02a56c76e5a2e0e548201cd9d2bd60a147594d3f0510defff73a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "1694b98c8da60bd5a37e1cc112dd555611f1af69e1f470d48bba6cc2d92c8071"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "978e64eede5345de45f79c4e180c945824292e17fa9d037f3903b365f76c610c"
+        }
+      ],
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw",
+      "trace_sha256": "9b5c303c23d279f6772c1bb20bcaca4090417f03bee941a262bb26aa136a9ba3"
+    },
+    {
+      "run": "solo-diag-1-b48ebdf1",
+      "kind": "can",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1201,
+        "4": 2035,
+        "5": 2487,
+        "6": 1508
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 706,
+        "4": 1806,
+        "5": 2221,
+        "6": 1508
+      },
+      "lookback_plan": {
+        "pwm": {
+          "1": 1500,
+          "3": 706,
+          "4": 1806,
+          "5": 2221,
+          "6": 1508
+        },
+        "backoff_m": 0.125,
+        "geometry": {
+          "site_from_issued_grip_m": [
+            0.3240011846258019,
+            0.0018951233314361468,
+            0.0
+          ],
+          "site_pixels": 23993,
+          "ring_pixels": 12000,
+          "surface_in_frame_n": 81,
+          "surface_N": 81,
+          "held_occlusion_pixels": 0,
+          "bbox_xyxy": [
+            199,
+            98,
+            388,
+            234
+          ],
+          "qualified": true,
+          "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+        },
+        "command_distance_margin_m": 0.005,
+        "backoff_bounds_m": [
+          0.09,
+          0.155
+        ]
+      },
+      "old_unmoved_lift_geometry": {
+        "site_from_issued_grip_m": [
+          0.1990011846258019,
+          0.0018951233314361468,
+          0.0
+        ],
+        "site_pixels": 0,
+        "ring_pixels": 0,
+        "surface_in_frame_n": 0,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          155,
+          520,
+          421,
+          794
+        ],
+        "qualified": false,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "saved_lookback_frames_eligible": false,
+      "saved_phases": [
+        "align",
+        "approach",
+        "close",
+        "descent",
+        "failed",
+        "fold",
+        "hover",
+        "lift",
+        "verify_lift"
+      ],
+      "verified_samples": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "46ebd208712aab2cf3294492985f585d696fc2b7a4ed3cff5ffce0710dcc451b"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "6cd92451659a9556c3a55a015494ac3a87598ab39cebb6e6b59a5468edce9e0e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "5c8146b25c02bce534b8dea9da985ee6b94ce581886d8873741c5958937bb6c8"
+        }
+      ],
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw",
+      "trace_sha256": "7b3ef375a8521259e09e2542096c3c768b155bff58c5fc49801dd036e13d2bcb"
+    },
+    {
+      "run": "solo-diag-2-b48ebdf1",
+      "kind": "tile",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1417,
+        "4": 2321,
+        "5": 2450,
+        "6": 1512
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 847,
+        "4": 2241,
+        "5": 1961,
+        "6": 1512
+      },
+      "lookback_plan": {
+        "pwm": {
+          "1": 1500,
+          "3": 558,
+          "4": 1906,
+          "5": 2007,
+          "6": 1512
+        },
+        "backoff_m": 0.13,
+        "geometry": {
+          "site_from_issued_grip_m": [
+            0.30696382450087933,
+            0.0024274284105081055,
+            0.0
+          ],
+          "site_pixels": 30203,
+          "ring_pixels": 13184,
+          "surface_in_frame_n": 81,
+          "surface_N": 81,
+          "held_occlusion_pixels": 0,
+          "bbox_xyxy": [
+            207,
+            86,
+            385,
+            270
+          ],
+          "qualified": true,
+          "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+        },
+        "command_distance_margin_m": 0.005,
+        "backoff_bounds_m": [
+          0.09,
+          0.155
+        ]
+      },
+      "old_unmoved_lift_geometry": {
+        "site_from_issued_grip_m": [
+          0.1769638245008793,
+          0.0024274284105081055,
+          0.0
+        ],
+        "site_pixels": 2014,
+        "ring_pixels": 0,
+        "surface_in_frame_n": 0,
+        "surface_N": 81,
+        "held_occlusion_pixels": 2014,
+        "bbox_xyxy": [
+          142,
+          451,
+          433,
+          855
+        ],
+        "qualified": false,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "saved_lookback_frames_eligible": false,
+      "saved_phases": [
+        "align",
+        "approach",
+        "backoff",
+        "close",
+        "complete",
+        "descent",
+        "fold",
+        "hold",
+        "hover",
+        "lift",
+        "lookaround",
+        "lower",
+        "open",
+        "retract",
+        "verify_lift"
+      ],
+      "verified_samples": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "ef6acdae295cc459b2050f2a514dc524dd4f9aead807145f6aaa55fc1760b5e1"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "c72f08ee61a1b38dc6498a05ba1617cfb42ee5bf59d74564db0a20e9f4746589"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "59faef0ed934811fecdbc0e32b57aa096997f3b3ea58462d07178b461be19e46"
+        }
+      ],
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw",
+      "trace_sha256": "8abc446564e64c9f3fb555c51c28a1520aa8b9685a5603f3784480f99483a6ac"
+    },
+    {
+      "run": "solo-diag-3-b48ebdf1",
+      "kind": "cyan",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1203,
+        "4": 2013,
+        "5": 2500,
+        "6": 1469
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 710,
+        "4": 1785,
+        "5": 2236,
+        "6": 1469
+      },
+      "lookback_plan": {
+        "pwm": {
+          "1": 1500,
+          "3": 710,
+          "4": 1785,
+          "5": 2236,
+          "6": 1469
+        },
+        "backoff_m": 0.125,
+        "geometry": {
+          "site_from_issued_grip_m": [
+            0.32588303995799534,
+            -0.00744073472652383,
+            0.0
+          ],
+          "site_pixels": 22615,
+          "ring_pixels": 11744,
+          "surface_in_frame_n": 81,
+          "surface_N": 81,
+          "held_occlusion_pixels": 0,
+          "bbox_xyxy": [
+            169,
+            111,
+            362,
+            235
+          ],
+          "qualified": true,
+          "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+        },
+        "command_distance_margin_m": 0.005,
+        "backoff_bounds_m": [
+          0.09,
+          0.155
+        ]
+      },
+      "old_unmoved_lift_geometry": {
+        "site_from_issued_grip_m": [
+          0.20088303995799534,
+          -0.00744073472652383,
+          0.0
+        ],
+        "site_pixels": 0,
+        "ring_pixels": 0,
+        "surface_in_frame_n": 0,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          149,
+          534,
+          426,
+          789
+        ],
+        "qualified": false,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "saved_lookback_frames_eligible": false,
+      "saved_phases": [
+        "align",
+        "approach",
+        "close",
+        "descent",
+        "failed",
+        "fold",
+        "hover",
+        "lift",
+        "verify_lift"
+      ],
+      "verified_samples": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "9d4b7977f1cd02a56c76e5a2e0e548201cd9d2bd60a147594d3f0510defff73a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "eff82e20ad6c0b3f414bdc3175346fcd31926915a1f0be6dba2ba632edff080b"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "8f5856e94f1acb20facef3ec809ee3cf13740916a8b5f482c8bfa4bac6cfd893"
+        }
+      ],
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw",
+      "trace_sha256": "8695731154ff6bcb8b1d3de9a6f31174b4b4a1e200cf96259b838e84ea5e83bf"
+    },
+    {
+      "run": "solo-diag-4-b48ebdf1",
+      "kind": "can",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1235,
+        "4": 2043,
+        "5": 2490,
+        "6": 1497
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 757,
+        "4": 1854,
+        "5": 2203,
+        "6": 1497
+      },
+      "lookback_plan": {
+        "pwm": {
+          "1": 1500,
+          "3": 757,
+          "4": 1854,
+          "5": 2203,
+          "6": 1497
+        },
+        "backoff_m": 0.125,
+        "geometry": {
+          "site_from_issued_grip_m": [
+            0.32629187274682436,
+            -0.0007214337943261099,
+            0.0
+          ],
+          "site_pixels": 23424,
+          "ring_pixels": 11872,
+          "surface_in_frame_n": 81,
+          "surface_N": 81,
+          "held_occlusion_pixels": 0,
+          "bbox_xyxy": [
+            192,
+            115,
+            379,
+            249
+          ],
+          "qualified": true,
+          "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+        },
+        "command_distance_margin_m": 0.005,
+        "backoff_bounds_m": [
+          0.09,
+          0.155
+        ]
+      },
+      "old_unmoved_lift_geometry": {
+        "site_from_issued_grip_m": [
+          0.20129187274682436,
+          -0.0007214337943261099,
+          0.0
+        ],
+        "site_pixels": 0,
+        "ring_pixels": 0,
+        "surface_in_frame_n": 0,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          149,
+          532,
+          427,
+          828
+        ],
+        "qualified": false,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "saved_lookback_frames_eligible": false,
+      "saved_phases": [
+        "align",
+        "approach",
+        "close",
+        "descent",
+        "failed",
+        "fold",
+        "hover",
+        "lift",
+        "verify_lift"
+      ],
+      "verified_samples": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "579cb765ee4f131442fdb506bd26b87bb53cafc1eb199373bffe0a9dcbe4b6a3"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "b456666836223bda7a77e6245fe334d04db6324dcd65b0f93763bb3be28d6497"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "e1d16ba52f94bec0bb30770fc22dba16f5c079ba8a535396900b43a57e2491e9"
+        }
+      ],
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw",
+      "trace_sha256": "14f95f0ea0cc31d4e010152bb3f70a51eea204a3765a2abda32a796f0517d31d"
+    },
+    {
+      "run": "solo-diag-5-b48ebdf1",
+      "kind": "tile",
+      "grasp_pwm": {
+        "1": 1500,
+        "3": 1393,
+        "4": 2307,
+        "5": 2452,
+        "6": 1485
+      },
+      "lift_pwm": {
+        "1": 1500,
+        "3": 824,
+        "4": 2219,
+        "5": 1972,
+        "6": 1485
+      },
+      "lookback_plan": {
+        "pwm": {
+          "1": 1500,
+          "3": 527,
+          "4": 1865,
+          "5": 2027,
+          "6": 1485
+        },
+        "backoff_m": 0.13,
+        "geometry": {
+          "site_from_issued_grip_m": [
+            0.30643148804178477,
+            -0.003021942502449962,
+            0.0
+          ],
+          "site_pixels": 30383,
+          "ring_pixels": 13184,
+          "surface_in_frame_n": 81,
+          "surface_N": 81,
+          "held_occlusion_pixels": 0,
+          "bbox_xyxy": [
+            188,
+            78,
+            366,
+            262
+          ],
+          "qualified": true,
+          "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+        },
+        "command_distance_margin_m": 0.005,
+        "backoff_bounds_m": [
+          0.09,
+          0.155
+        ]
+      },
+      "old_unmoved_lift_geometry": {
+        "site_from_issued_grip_m": [
+          0.17643148804178477,
+          -0.003021942502449962,
+          0.0
+        ],
+        "site_pixels": 3913,
+        "ring_pixels": 0,
+        "surface_in_frame_n": 9,
+        "surface_N": 81,
+        "held_occlusion_pixels": 3913,
+        "bbox_xyxy": [
+          146,
+          443,
+          429,
+          831
+        ],
+        "qualified": false,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "saved_lookback_frames_eligible": false,
+      "saved_phases": [
+        "align",
+        "approach",
+        "backoff",
+        "close",
+        "complete",
+        "descent",
+        "fold",
+        "hold",
+        "hover",
+        "lift",
+        "lookaround",
+        "lower",
+        "open",
+        "retract",
+        "verify_lift"
+      ],
+      "verified_samples": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "0cb76cb3d3ccbe4fd1f184301b09d03ac9df003f33494995a392e98c0a63af49"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "f9975a0880c9e21db867fb96b0e0ab00e8148ca53d52e79758d42cc6ddf506a0"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "7ec78a9f23090b14d08b72410fd0f2fe06778e1fa43d283ad29427aad76a7508"
+        }
+      ],
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw",
+      "trace_sha256": "3e10a560a264e83af28846c40cfcdd292e6ce9249e90fdae47c6db0ed76cb534"
+    }
+  ],
+  "reviewed_own_frames": [
+    {
+      "run": "solo-diag-0-b48ebdf1",
+      "t": 1.3000000000000178,
+      "phase": "fold",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000000.jpg",
+      "sha256": "04a1ba02dc8fae6781f6792045ee77439fb0c838fe2fd0a5a22cf4b684a21175"
+    },
+    {
+      "run": "solo-diag-0-b48ebdf1",
+      "t": 5.300000000000732,
+      "phase": "approach",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000040.jpg",
+      "sha256": "65cd3d39fc319b3431b5e2113e92ea6c457d48a3b974feedfac9a94f8a9c8d36"
+    },
+    {
+      "run": "solo-diag-0-b48ebdf1",
+      "t": 9.300000000001,
+      "phase": "approach",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000080.jpg",
+      "sha256": "3c68cd047acdc815e3ca6aa89bd928a1bdc6298d328677b404174a3d83e95e9a"
+    },
+    {
+      "run": "solo-diag-0-b48ebdf1",
+      "t": 14.299999999989348,
+      "phase": "descent",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000130.jpg",
+      "sha256": "d16b5fc462e51e17499fe3b9afef9bb12b193f46fafbc8268171b32ad0461227"
+    },
+    {
+      "run": "solo-diag-0-b48ebdf1",
+      "t": 18.299999999996366,
+      "phase": "verify_lift",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000170.jpg",
+      "sha256": "60806c77cb75a01103895dfc4b90441f46f88be27465c14f3bd131b7597019e2"
+    },
+    {
+      "run": "solo-diag-0-b48ebdf1",
+      "t": 22.300000000015466,
+      "phase": "verify_lift",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000210.jpg",
+      "sha256": "c5ebaa58d200753b8de0901b88130c56e5066577846be67ff1dbbadad715b6ab"
+    },
+    {
+      "run": "solo-diag-1-b48ebdf1",
+      "t": 1.3000000000000178,
+      "phase": "fold",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000000.jpg",
+      "sha256": "9ecf28647c69ed5182f8506940e31e129e0e3a2080f00d992c78e2ea7cd54ce3"
+    },
+    {
+      "run": "solo-diag-1-b48ebdf1",
+      "t": 5.300000000000732,
+      "phase": "approach",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000040.jpg",
+      "sha256": "e20044f38ad883cf7274f332175db7ab7475a37e08a2eb5b10476622d65add8b"
+    },
+    {
+      "run": "solo-diag-1-b48ebdf1",
+      "t": 9.300000000001,
+      "phase": "align",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000080.jpg",
+      "sha256": "431db2a188552e29cf91970cccd145526d305f1997382818ccccaddab8492ab4"
+    },
+    {
+      "run": "solo-diag-1-b48ebdf1",
+      "t": 12.299999999994009,
+      "phase": "descent",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000110.jpg",
+      "sha256": "a73449149f85b14cab56b2ca052322db7ca7a6f7e427c7f9c66a7b35681503b1"
+    },
+    {
+      "run": "solo-diag-1-b48ebdf1",
+      "t": 16.299999999986817,
+      "phase": "verify_lift",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000150.jpg",
+      "sha256": "855213bcf77f680fecf152ce6f3048679312296b307a500dd21429cbd377cb5e"
+    },
+    {
+      "run": "solo-diag-1-b48ebdf1",
+      "t": 20.300000000005916,
+      "phase": "verify_lift",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000190.jpg",
+      "sha256": "85d072b78e9e1febb0deb75bd5f2239b17a5f65ca26f3869f281ab471e9233bd"
+    },
+    {
+      "run": "solo-diag-2-b48ebdf1",
+      "t": 1.3000000000000178,
+      "phase": "fold",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000000.jpg",
+      "sha256": "a44ad958023a670841e3e99569fbd4c37064eeec50c385509c74885183ccb820"
+    },
+    {
+      "run": "solo-diag-2-b48ebdf1",
+      "t": 8.300000000003331,
+      "phase": "approach",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000070.jpg",
+      "sha256": "1e25997675662b4c7bd711ea3cc1f8fe2d22793b1660adb998777c77a5c2b669"
+    },
+    {
+      "run": "solo-diag-2-b48ebdf1",
+      "t": 16.299999999986817,
+      "phase": "descent",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000150.jpg",
+      "sha256": "6622f3661c0d3880049ffba507ecd6806548d748d74fd00130c491ebab1d7beb"
+    },
+    {
+      "run": "solo-diag-2-b48ebdf1",
+      "t": 23.30000000002024,
+      "phase": "verify_lift",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000220.jpg",
+      "sha256": "e9bfdfca63e981d6794bd4a2ef74bdc3d9abffc882bd13de7ffe34dee346c77d"
+    },
+    {
+      "run": "solo-diag-2-b48ebdf1",
+      "t": 31.30000000005844,
+      "phase": "backoff",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000300.jpg",
+      "sha256": "a49c6a32e9d44b1b72dba85484ae402bfdbe3a104d1cff42e74b2ab1c66bead4"
+    },
+    {
+      "run": "solo-diag-2-b48ebdf1",
+      "t": 38.30000000009186,
+      "phase": "complete",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000370.jpg",
+      "sha256": "39b436fc55554084dcac38cddd97cec7198b3e928dd37c8915233a6e656414ab"
+    },
+    {
+      "run": "solo-diag-3-b48ebdf1",
+      "t": 1.3000000000000178,
+      "phase": "fold",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000000.jpg",
+      "sha256": "127880217bd13bd31cac120e0418935180b9bacf66769b44d350212df896d083"
+    },
+    {
+      "run": "solo-diag-3-b48ebdf1",
+      "t": 5.300000000000732,
+      "phase": "approach",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000040.jpg",
+      "sha256": "1c369ff905bfde525a85019588fe164b6952a60f32a380390476c37f38c42652"
+    },
+    {
+      "run": "solo-diag-3-b48ebdf1",
+      "t": 9.300000000001,
+      "phase": "align",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000080.jpg",
+      "sha256": "83a0d15355d5c75047080fa16cc48d4e64ad36b5b6ea23ae75a08473407dc4e3"
+    },
+    {
+      "run": "solo-diag-3-b48ebdf1",
+      "t": 13.299999999991678,
+      "phase": "descent",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000120.jpg",
+      "sha256": "03253524009d6d2ebba87874cca19d79a9816dcc5e646c6bfccfb20bb681f93b"
+    },
+    {
+      "run": "solo-diag-3-b48ebdf1",
+      "t": 17.29999999999159,
+      "phase": "verify_lift",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000160.jpg",
+      "sha256": "708a1787f072807dd496112d95ca584f377b8cc93f14dfad7cb20677a8a898ca"
+    },
+    {
+      "run": "solo-diag-3-b48ebdf1",
+      "t": 21.30000000001069,
+      "phase": "failed",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000200.jpg",
+      "sha256": "410bb21b315bdc7f7c79adec547e8c80baef34c21193d911a928938428b4b047"
+    },
+    {
+      "run": "solo-diag-4-b48ebdf1",
+      "t": 1.3000000000000178,
+      "phase": "fold",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000000.jpg",
+      "sha256": "cecf16c6677c1f0afad57f94b3badd8a16c3e479729d3812c402e10023b9e795"
+    },
+    {
+      "run": "solo-diag-4-b48ebdf1",
+      "t": 5.300000000000732,
+      "phase": "approach",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000040.jpg",
+      "sha256": "a3b877ccf0b6b164d410419aefbca2aeac88481f949bdb8cd02bf8d79d14f380"
+    },
+    {
+      "run": "solo-diag-4-b48ebdf1",
+      "t": 9.300000000001,
+      "phase": "approach",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000080.jpg",
+      "sha256": "3165c11aeba323a5806345c7a20be7e3978581c669156cd60661a38995085502"
+    },
+    {
+      "run": "solo-diag-4-b48ebdf1",
+      "t": 14.299999999989348,
+      "phase": "descent",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000130.jpg",
+      "sha256": "b320b85d6e74e7183e41294db3b974754ff3f306f93f90fad860b8878ffdee4b"
+    },
+    {
+      "run": "solo-diag-4-b48ebdf1",
+      "t": 18.299999999996366,
+      "phase": "verify_lift",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000170.jpg",
+      "sha256": "7f691831afe2265cf02185735b0179fe99b9c54dcadf4b60c4cc58de2ef29219"
+    },
+    {
+      "run": "solo-diag-4-b48ebdf1",
+      "t": 22.300000000015466,
+      "phase": "verify_lift",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000210.jpg",
+      "sha256": "e9aebbedc1c302cafe794a2bece42d7474706c6c3a918323160990b41467f4f8"
+    },
+    {
+      "run": "solo-diag-5-b48ebdf1",
+      "t": 1.3000000000000178,
+      "phase": "fold",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000000.jpg",
+      "sha256": "d4ad43a06ac187be66949b1e4434e213b8cb308949177a1a842f5268d1eb4ca5"
+    },
+    {
+      "run": "solo-diag-5-b48ebdf1",
+      "t": 8.300000000003331,
+      "phase": "approach",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000070.jpg",
+      "sha256": "4b3adf34b54688d894b94467345ebcac929e9609819577ed1562d9a6b2cf7fbb"
+    },
+    {
+      "run": "solo-diag-5-b48ebdf1",
+      "t": 15.299999999987017,
+      "phase": "hover",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000140.jpg",
+      "sha256": "299dc04003063539b25a73eb5ce92a27bda30d1ac4dbb089e87c9bf99e48181a"
+    },
+    {
+      "run": "solo-diag-5-b48ebdf1",
+      "t": 23.30000000002024,
+      "phase": "verify_lift",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000220.jpg",
+      "sha256": "2492586159e8cfeb5aa65506bf09924487bd2053fb3eba3e5d34bd0e9cfe323c"
+    },
+    {
+      "run": "solo-diag-5-b48ebdf1",
+      "t": 30.300000000053664,
+      "phase": "retract",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000290.jpg",
+      "sha256": "60e10187ba5efcd2112a233a2500dd301e1a618191643950ad340f9c82db46f8"
+    },
+    {
+      "run": "solo-diag-5-b48ebdf1",
+      "t": 37.30000000008709,
+      "phase": "complete",
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000360.jpg",
+      "sha256": "4ce892e4021661fe6da68f79d5409bb7ff78a13ee04abca782e1d8787c1a6246"
+    }
+  ],
+  "totals": {
+    "planned_geometry_n": 6,
+    "N": 6,
+    "eligible_saved_positive_pairs": 0,
+    "verified_exact_frames": 18,
+    "verified_review_frames": 36
+  },
+  "new_remote_runs": 0,
+  "physics_runs": 0,
+  "render_runs": 0,
+  "limitations": [
+    "commanded motion is not measured displacement; wheel slip and loaded sag unmeasured",
+    "empty site cannot distinguish held cargo from cargo knocked away",
+    "held cargo occlusion is a catalogue bounding box enlarged by 1 mm, not measured grip pose",
+    "uniform floor-coloured occluders and wrong-site registration remain diagnostic risks"
+  ],
+  "validation": {
+    "test_files": [
+      "tests/test_grasp_act_solo_lookback.py",
+      "tests/test_grasp_act_solo_run_path.py",
+      "tests/test_grasp_act_solo_teacher.py"
+    ],
+    "passed": 84,
+    "failed": 0,
+    "seconds": 16.54,
+    "log": "experiments/2026-10-14-act-solo-teacher/solo-lookback-pytest.txt",
+    "log_sha256": "85d61da5f22fbfaa539c2d48220f2ec1c78ca042a3def4a6bdc037679cf87fbf",
+    "scope": "static/synthetic/stub backend only"
+  }
+}

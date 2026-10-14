@@ -173,7 +173,7 @@ class SoloTeacher:
             raise ValueError('unknown teacher stability mode')
         if reach_mode not in ('box_station_v1', 'pad_window_v2'):
             raise ValueError('unknown solo reach mode')
-        if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3'):
+        if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3', 'solo_lift_lookback_v1'):
             raise ValueError('unknown solo RGB lift mode')
         self.rgb_lift_mode = rgb_lift_mode
         self.teacher_stability, self.reach_mode = teacher_stability, reach_mode
@@ -206,6 +206,9 @@ class SoloTeacher:
         self.low = self.high = None
         self.verify_t = None
         self.backoff_m = 0.
+        self.lookback_m = 0.
+        self.lookback_return_m = 0.
+        self.lookback_plan = None
         self.ik_rejections = 0
         self.ik_checks = 0
         self.ik_rejection_reasons = {}
@@ -239,7 +242,7 @@ class SoloTeacher:
         self.stable_t = None
         if phase == 'align':
             self._reset_alignment()
-        if phase == 'lower':
+        if phase in ('lower', 'lookback_return') and self.skill != 'release':
             self.skill, self.skill_started = 'release', now
 
     def _hold(self, now):
@@ -433,6 +436,10 @@ class SoloTeacher:
             self.lookaround.issue(self.previous, dt)
         if self.phase == 'backoff' and self.previous is not None:
             self.backoff_m -= self.ops.delta(self.previous, dt)[0]
+        if self.phase == 'lookback' and self.previous is not None:
+            self.lookback_m -= self.ops.delta(self.previous, dt)[0]
+        if self.phase == 'lookback_return' and self.previous is not None:
+            self.lookback_return_m += self.ops.delta(self.previous, dt)[0]
         self._target(measurement, now, dt)
         idle = self.arm.tick(now)
         value = self._hold(now)
@@ -461,6 +468,28 @@ class SoloTeacher:
             self._set('lift', now)
         elif self.phase == 'lift' and idle:
             self.verify_t = None
+            self._set('lift_settle' if self.rgb_lift_mode == 'solo_lift_lookback_v1' else 'verify_lift', now)
+        elif self.phase == 'lift_settle' and now-self.phase_t >= 3.2-1e-8:
+            # Hold the existing upright lift for the unchanged 3 s evaluation
+            # window, then inspect the original site. No evaluation enters here.
+            from sim.grasp_act_solo_lookback import plan_lookback
+            try:
+                self.lookback_plan = plan_lookback(self.spec.kind,
+                    {1: 1500, **self.low}, self.sink.pwm)
+            except ValueError:
+                self.result = 'lookback_geometry_unavailable'
+                self._set('failed', now)
+            else:
+                self._queue(self.lookback_plan['pwm'], now, .8, .3)
+                self._set('lookback_pose', now)
+        elif self.phase == 'lookback_pose' and idle:
+            self._set('lookback', now)
+        elif self.phase == 'lookback':
+            if self.lookback_m < self.lookback_plan['backoff_m']:
+                value = self._drive(now, -.05)
+            else:
+                self._set('lookback_settle', now)
+        elif self.phase == 'lookback_settle' and now-self.phase_t >= .5-1e-8:
             self._set('verify_lift', now)
         elif self.phase in ('verify_lift', 'hold'):
             # RGB-only recognizer + completed own close/raise commands.
@@ -471,8 +500,11 @@ class SoloTeacher:
                 if self.phase == 'verify_lift' and now-self.verify_t >= 1.-1e-8:
                     self._set('hold', now)
                 elif self.phase == 'hold' and now-self.phase_t >= 3.-1e-8:
-                    self._queue(self.low, now, .8, .2)
-                    self._set('lower', now)
+                    if self.rgb_lift_mode == 'solo_lift_lookback_v1':
+                        self._set('lookback_return', now)
+                    else:
+                        self._queue(self.low, now, .8, .2)
+                        self._set('lower', now)
             else:
                 self.verify_t = None
                 # v2/v3 need completion + a 3 s RGB sample + the existing 1 s
@@ -482,6 +514,13 @@ class SoloTeacher:
                     # No hidden truth recovery or silent scripted retry.
                     self.result = 'rgb_lift_unconfirmed' if self.phase == 'verify_lift' else 'rgb_hold_lost'
                     self._set('failed', now)
+        elif self.phase == 'lookback_return':
+            if self.lookback_return_m < self.lookback_m:
+                value = self._drive(now, .05)
+            else:
+                self._queue(self.high, now, .8, .2)
+                self._queue(self.low, now, .8, .2)
+                self._set('lower', now)
         elif self.phase == 'lower' and idle:
             self._queue({1: 2000}, now, .5, .2)
             self._set('open', now)
@@ -520,6 +559,9 @@ class SoloTeacher:
             'ik_checks': self.ik_checks, 'ik_rejection_reasons': dict(self.ik_rejection_reasons),
             'teacher_stability': self.teacher_stability, 'reach_mode': self.reach_mode,
             'rgb_lift_mode': self.rgb_lift_mode,
+            'lookback_commanded_backoff_m': self.lookback_m,
+            'lookback_commanded_return_m': self.lookback_return_m,
+            'lookback_plan': self.lookback_plan,
             'alignment_relooks': self.align_relooks,
             'events': self.events, 'held_object_hidden_v1': True,
             'held_interval': 'close command through completed open command',

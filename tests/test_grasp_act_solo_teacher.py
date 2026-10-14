@@ -28,7 +28,7 @@ def test_hidden_and_held_lazy_reads_are_never_evaluated():
                   read_relative=lambda: {**target, 'true_distance': .2})
 
 
-@pytest.mark.parametrize('mode,limit', [('off', 3.), ('solo_rgb_lift_v2', 5.)])
+@pytest.mark.parametrize('mode,limit', [('off', 3.), ('solo_rgb_lift_v2', 5.), ('solo_lift_lookback_v1', 5.)])
 def test_rgb_unknown_never_authorizes_setdown_with_either_timeout(mode, limit):
     t = make(rgb_lift_mode=mode)
     t.phase = 'verify_lift'; t.phase_t = 0.; t.skill_started = 0.; t.holding = True

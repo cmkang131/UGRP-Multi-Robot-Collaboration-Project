@@ -264,3 +264,73 @@ def test_run_rgb_hold_or_blocks_setdown_and_saves_exact_own_evidence(backend, mo
     else:
         assert 'lower' not in phases and 'open' not in phases
         assert report['teacher']['command_result'] == 'rgb_lift_unconfirmed'
+
+
+@pytest.mark.parametrize('kind,case', [('cyan', 'empty'), ('can', 'empty'), ('tile', 'empty'),
+                                       ('cyan', 'miss'), ('cyan', 'unknown'), ('cyan', 'hold_loss')])
+def test_lookback_real_run_loop_records_pre_pick_and_gates_return_lower_open(backend, monkeypatch, kind, case):
+    import hashlib
+    import sim.grasp_act_solo_teacher as teacher_module
+    import scripts.run_grasp_act_teacher as shared_runner
+    from sim.grasp_act_solo_lookback import MODE, regions
+    from harness.visual_arm_v3 import forward_grip, solve_grip_site_ik
+    from tests.test_grasp_act_solo_lookback import colour
+    runner, world, runs = backend
+    monkeypatch.setattr(shared_runner, 'compress_logs', lambda out: None)
+    x = .172 if kind == 'tile' else .2002
+    world.data.bodies['cargo_body'].xpos[:] = (x, 0., .016 if kind == 'cyan' else 0.)
+    scene = sys.modules['sim.grasp_act_scene'].make_scene({})
+    scene.cargo[0].kind = kind
+    scene.config['static_map'].update(regions={}, obstacles=[
+        {'id': 'wall0', 'kind': 'wall', 'center_m': [0., 1.5], 'half_extents_m': [1., .1]}])
+    live = {}
+    real_teacher = teacher_module.SoloTeacher
+    class ObservedTeacher(real_teacher):
+        def __init__(self, *a, **kw):
+            super().__init__(*a, **kw)
+            live['teacher'] = self
+    monkeypatch.setattr(teacher_module, 'SoloTeacher', ObservedTeacher)
+    low = {1: 1500, **solve_grip_site_ik((x, 0., .009 if kind == 'tile' else .024),
+               preferred_pitch_deg=-73 if kind == 'tile' else -66, calibrated_grasp_only=False)}
+    def capture(self):
+        t = live['teacher']
+        frame = np.full((480, 640, 3), 100, np.uint8)
+        gp = {1: 1500, **t.low} if t.low is not None else low
+        sx, sy, _ = forward_grip(gp)
+        site = (sx+t.lookback_m, sy, 0.)
+        roi, _, _ = regions(kind, gp, t.sink.pwm, site=site, held=t.holding)
+        if not t.holding or case == 'miss':
+            frame[roi] = colour(kind)
+        if (case == 'unknown' and t.holding) or (case == 'hold_loss' and t.phase == 'hold'):
+            frame[:] = 0
+        return {'image': base64.b64encode(cv2.imencode('.jpg', frame)[1]).decode()}
+    monkeypatch.setattr(FakePort, 'capture', capture)
+    out = runs/f'lookback-{kind}-{case}'
+    report = runner.run(plan(kind), out, execution_host='gcp1', profile='solo_visible_only_v1',
+                        hidden=True, look=True, cap_s=24., rgb_lift_mode=MODE,
+                        teacher_stability='align_relook_v1', reach_mode='pad_window_v2')
+    assert report['status'] == 'complete'
+    assert report['input_audit']['invisible_measurements'] == report['input_audit']['held_world_reads'] == 0
+    ev = report['lift_lookback_v1']
+    assert {'before_pick', 'lookback_complete'} <= ev['samples'].keys()
+    for sample in ev['samples'].values():
+        assert hashlib.sha256((out/sample['path']).read_bytes()).hexdigest() == sample['sha256']
+        assert sample['shape'] == [480, 640, 3]
+    trace = [json.loads(line) for line in (out/'teacher-commands.jsonl').read_text().splitlines()]
+    phases = [r['phase'] for r in trace]
+    assert ev['samples']['before_pick']['t'] < next(r['t'] for r in trace if r['phase'] == 'close')
+    assert all(r['visible_target'] is None for r in trace
+               if r['phase'] in ('lift_settle', 'lookback_pose', 'lookback', 'lookback_settle', 'verify_lift', 'hold', 'lookback_return'))
+    if case == 'empty':
+        assert 'lookback_return' in phases and 'lower' in phases and 'open' in phases
+        assert 'settled_lookback' in ev['samples']
+        assert ev['last']['answer'] == 'yes'
+        elapsed = [r['student_context']['skill_elapsed_s'] for r in trace
+                   if r['phase'] in ('lookback_return', 'lower', 'open')]
+        assert elapsed == sorted(elapsed)  # release clock includes the return
+        d = report['teacher']
+        assert d['lookback_commanded_backoff_m'] >= d['lookback_plan']['backoff_m']
+        assert abs(d['lookback_commanded_backoff_m']-d['lookback_commanded_return_m']) <= .005
+    else:
+        assert not set(phases) & {'lookback_return', 'lower', 'open'}
+        assert report['teacher']['command_result'] in ('rgb_lift_unconfirmed', 'rgb_hold_lost')

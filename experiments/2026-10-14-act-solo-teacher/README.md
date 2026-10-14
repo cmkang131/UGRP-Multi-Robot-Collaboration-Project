@@ -1,5 +1,7 @@
 # 1대 화물 교사 (solo_visible_only_v1)
 
+- 2026-10-14 후속: [원래 집은 자리 재관측 `solo_lift_lookback_v1`](solo-lookback.md) — 정적 기하·관련 84시험 통과, 새 원격 진단/관문 대기.
+
 최신 후속: [들기 후 확인 자세의 정적 기하 검사](solo-inspect-pose.md) — 고정 손목 카메라와
 강체 파지는 함께 움직여 시야를 바꿀 수 없다. 실행 동작 미구현·대기열 blocked.
 
