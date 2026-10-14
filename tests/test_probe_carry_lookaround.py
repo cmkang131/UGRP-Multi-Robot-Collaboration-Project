@@ -185,3 +185,20 @@ def test_setdown_backoff_constant_matches_teacher():
     from scripts.make_setdown_probe_plan import BACKOFF_M
     from sim.grasp_act_release_teacher import OBSERVE_BACKOFF_M
     assert BACKOFF_M == OBSERVE_BACKOFF_M
+
+
+def test_pair_odometry_profile_default_unchanged_and_scales_plans():
+    import pytest
+    from scripts.probe_carry_lookaround import rotation_plan, carry_plan, GRIP_X_M, BEAM_GRIP_HALF_M
+    from sim.visible_belief import rates, odometry, AXIAL_M_PER_S_AT_035, LATERAL_M_PER_S_AT_035, YAW_RAD_PER_S_AT_035
+    assert rates() == (AXIAL_M_PER_S_AT_035, LATERAL_M_PER_S_AT_035, YAW_RAD_PER_S_AT_035)
+    assert odometry([.35]*4, .1) == odometry([.35]*4, .1, 'off')
+    ax0, lat0, yaw0 = rates('off'); ax1, lat1, yaw1 = rates('gcp_probe_v1')
+    assert ax1 == ax0 and lat1/lat0 == pytest.approx(1.54, abs=.02) and yaw1/yaw0 == pytest.approx(1.68, abs=.02)
+    old = rotation_plan('rotate_center', 'r1', 'r2'); new = rotation_plan('rotate_center', 'r1', 'r2', odometry='gcp_probe_v1')
+    assert old['periods'] > new['periods']                   # faster yaw -> fewer periods per 15 deg
+    assert new['commanded_step_deg'] == pytest.approx(15, abs=4)
+    for p in (old, new):
+        assert p['duty']['r1']['realized_pivot_x_m'] == pytest.approx(GRIP_X_M+BEAM_GRIP_HALF_M, abs=.02)
+    assert carry_plan('lateral', .15, 1., 'r1', 'r2', 'gcp_probe_v1')['periods'] < carry_plan('lateral', .15, 1., 'r1', 'r2')['periods']
+    assert carry_plan('axial', .2, 1., 'r1', 'r2', 'gcp_probe_v1')['periods'] == carry_plan('axial', .2, 1., 'r1', 'r2')['periods']

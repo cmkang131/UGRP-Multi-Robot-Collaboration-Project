@@ -48,12 +48,13 @@ REGRASP_HOLD_S=1.
 BAND_HSV={'teal':((70,120,90),(90,255,255)),'blue':((110,120,60),(130,255,255))}   # OpenCV HSV of sim/grasp_act_scene COLORS
 
 
-def rotation_efforts(radius_m,omega=1.):
+def rotation_efforts(radius_m,omega=1.,odometry='off'):
     """Wheel efforts (level units) for body rotation at omega about the body-frame point (radius, 0).
 
     Body velocity of the base: forward 0, lateral -omega*radius, turn omega.
     Wheel mix (f-l-t, f+l+t, f+l-t, f-l+t) as harness.grasp_act_contract.wheel_mix."""
-    from sim.visible_belief import LATERAL_M_PER_S_AT_035 as LAT,YAW_RAD_PER_S_AT_035 as YAW
+    from sim.visible_belief import rates
+    _,LAT,YAW=rates(odometry)
     l=-omega*radius_m/LAT*WHEEL;t=omega/YAW*WHEEL
     return (-l-t,l+t,l-t,-l+t)
 
@@ -64,14 +65,15 @@ def body_levels(levels,durations,period=DUTY_PERIOD_S):
     return wheel_to_body([w*d/period for w,d in zip(levels,durations)])
 
 
-def pair_duty(efforts,*,period=DUTY_PERIOD_S,min_pulse=MIN_PULSE_S):
+def pair_duty(efforts,*,period=DUTY_PERIOD_S,min_pulse=MIN_PULSE_S,odometry='off'):
     """Shared-scale per-wheel 0.35 pulses for several robots.
 
     One scale for all robots keeps the commanded body rates equal. A pulse
     shorter than ``min_pulse`` is zeroed (recorded); the robot's remaining
     wheels are then rescaled so its turn level matches the intended one, and
     the realized rotation point is reported. Raises if not realizable."""
-    from sim.visible_belief import LATERAL_M_PER_S_AT_035 as LAT,YAW_RAD_PER_S_AT_035 as YAW
+    from sim.visible_belief import rates
+    _,LAT,YAW=rates(odometry)
     top=max(abs(w) for e in efforts.values() for w in e)
     if top<=0:raise ValueError('zero motion')
     out={}
@@ -93,25 +95,27 @@ def pair_duty(efforts,*,period=DUTY_PERIOD_S,min_pulse=MIN_PULSE_S):
     return out
 
 
-def rotation_plan(mode,actor,partner,*,step_deg=ROTATE_STEP_DEG,sign=1.):
+def rotation_plan(mode,actor,partner,*,step_deg=ROTATE_STEP_DEG,sign=1.,odometry='off'):
     """Per-period wheel plan and period count for one rotation increment."""
-    from sim.visible_belief import YAW_RAD_PER_S_AT_035 as YAW
+    from sim.visible_belief import rates
+    YAW=rates(odometry)[2]
     if mode=='rotate_center':radii={actor:GRIP_X_M+BEAM_GRIP_HALF_M,partner:GRIP_X_M+BEAM_GRIP_HALF_M}
     elif mode=='pivot_end':radii={actor:GRIP_X_M,partner:GRIP_X_M+2*BEAM_GRIP_HALF_M}
     else:raise ValueError(mode)
-    duty=pair_duty({rid:rotation_efforts(r,sign) for rid,r in radii.items()})
+    duty=pair_duty({rid:rotation_efforts(r,sign,odometry) for rid,r in radii.items()},odometry=odometry)
     omega=duty[actor]['body_levels'][2]/WHEEL*YAW
     periods=max(1,round(math.radians(step_deg)/(abs(omega)*DUTY_PERIOD_S)))
     return {'duty':duty,'commanded_rad_s':omega,'periods':periods,'commanded_step_deg':math.degrees(abs(omega)*DUTY_PERIOD_S*periods),
             'intended_pivot_x_m':radii}
 
 
-def carry_plan(kind,distance_m,duty,actor,partner):
+def carry_plan(kind,distance_m,duty,actor,partner,odometry='off'):
     """Formation translation: robots face each other along the beam axis.
 
     axial: actor forward, partner backward; lateral: actor left, partner right.
     All four wheels at 0.35 for duty*period each period."""
-    from sim.visible_belief import AXIAL_M_PER_S_AT_035 as AX,LATERAL_M_PER_S_AT_035 as LAT
+    from sim.visible_belief import rates
+    AX,LAT,_=rates(odometry)
     if not 0<duty<=1:raise ValueError('duty in (0, 1]')
     d=round(DUTY_PERIOD_S*duty,4)
     if d<MIN_PULSE_S:raise ValueError('pulse below minimum')
@@ -356,7 +360,7 @@ def region_points(region,z=.002):
     return [(cx+sx*hx*.8,cy+sy*hy*.8,z) for sx in (-1,0,1) for sy in (-1,0,1)]
 
 
-def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',destination='zone_A'):
+def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',destination='zone_A',pair_odometry='off'):
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
     from sim.grasp_act_scene import make_scene
     from sim.grasp_act_teacher import GraspTeacher
@@ -370,7 +374,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise RuntimeError('committed source required')
     write(out/'RUN_META.json',{'class':'dev','pr':484,'branch':'claude/grasp-act-release','sha':sha,'batch':plan['batch']+'-lookaround-'+mode})
-    report={'status':'running','source_sha':sha,'mode':mode,'actor':actor,'weld':'off','limits':LIMITS,
+    report={'status':'running','source_sha':sha,'mode':mode,'actor':actor,'weld':'off','pair_odometry':pair_odometry,'limits':LIMITS,
             'scope':'evaluation-only truth metrics; probe commands are fixed schedules, not truth-corrected',
             'loadavg_at_start':os.getloadavg()}
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[]
@@ -515,7 +519,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
                               'base_yaw_deg':((after[rid]['base_yaw_deg']-before[rid]['base_yaw_deg'])+180)%360-180}
                 return out
             if mode=='carry_straight':
-                legs=[(kind,dist,duty,carry_plan(kind,dist,duty,actor,partner)) for kind,dist,duty in CARRY_LEGS]
+                legs=[(kind,dist,duty,carry_plan(kind,dist,duty,actor,partner,pair_odometry)) for kind,dist,duty in CARRY_LEGS]
                 for kind,dist,duty,plan_m in legs:
                     before=measure(world,inst,roles,scene)
                     rows=drive(plan_m,f'carry:{kind}:{dist:+.2f}:{duty}')
@@ -529,7 +533,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
                     base=measure(world,inst,roles,scene)
             else:
                 for sign in (1.,-1.):
-                    plan_m=rotation_plan(mode,actor,partner,sign=sign)
+                    plan_m=rotation_plan(mode,actor,partner,sign=sign,odometry=pair_odometry)
                     for inc in range(int(round(ROTATE_TOTAL_DEG/ROTATE_STEP_DEG))):
                         before=measure(world,inst,roles,scene)
                         rows=drive(plan_m,f'{mode}:{sign:+.0f}:{inc}')
@@ -587,7 +591,8 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--mode',choices=('pan','pan_repeat','yaw','setdown_look')+FORMATION_MODES,required=True)
     p.add_argument('--actor',choices=('r1','r2'),default='r1');p.add_argument('--grasp-cap-s',type=float,default=45.)
-    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='observable_v2');a=p.parse_args()
+    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='observable_v2')
+    p.add_argument('--pair-odometry',choices=('off','gcp_probe_v1'),default='off',help='gcp_probe_v1: pair-carry rates measured on gcp1 (sim/visible_belief.py)');a=p.parse_args()
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,mode=a.mode,actor=a.actor,grasp_cap_s=a.grasp_cap_s,teacher_profile=a.teacher_profile),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,mode=a.mode,actor=a.actor,grasp_cap_s=a.grasp_cap_s,teacher_profile=a.teacher_profile,pair_odometry=a.pair_odometry),ensure_ascii=False))
 if __name__=='__main__':main()

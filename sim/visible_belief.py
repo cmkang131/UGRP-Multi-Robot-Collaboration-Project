@@ -21,6 +21,19 @@ MEMORY_S = 1.6
 AXIAL_M_PER_S_AT_035 = .129
 LATERAL_M_PER_S_AT_035 = .08      # unmeasured at 0.35; low-power strafe is weak on v7
 YAW_RAD_PER_S_AT_035 = .35        # replaced by the yaw probe measurement when available
+# Pair-carry profile (toggle, default off): GCP gcp1 probes at 5d6e8291, two robots holding one beam with
+# shared-scale 0.35 duty pulses <= 0.15 s, seeds 75000-75002. Realized/commanded: yaw 24.1-25.6 deg vs
+# 14.7-14.9 deg (x1.68, 72 increments), lateral 219-225 mm vs 144 mm (x1.54, 6 legs), axial 196-205 mm vs
+# 194-203 mm (x1.0, 12 legs). Not measured for a single free robot or other loads.
+ODOMETRY_PROFILES = {
+    'off': (AXIAL_M_PER_S_AT_035, LATERAL_M_PER_S_AT_035, YAW_RAD_PER_S_AT_035),
+    'gcp_probe_v1': (AXIAL_M_PER_S_AT_035, .123, .588),
+}
+
+
+def rates(profile='off'):
+    """(axial m/s, lateral m/s, yaw rad/s) at wheel level 0.35 for an odometry profile."""
+    return ODOMETRY_PROFILES[profile]
 
 
 def wheel_to_body(wheels):
@@ -29,12 +42,11 @@ def wheel_to_body(wheels):
     return (w0+w1+w2+w3)/4, (-w0+w1+w2-w3)/4, (-w0+w1-w2+w3)/4
 
 
-def odometry(wheels, seconds):
+def odometry(wheels, seconds, profile='off'):
     """Body-frame displacement (dx, dy, dyaw) from issued wheel levels only."""
     f, l, t = wheel_to_body(wheels)
-    k = 1/.35
-    return (f*k*AXIAL_M_PER_S_AT_035*seconds, l*k*LATERAL_M_PER_S_AT_035*seconds,
-            t*k*YAW_RAD_PER_S_AT_035*seconds)
+    k = 1/.35; ax, lat, yaw = rates(profile)
+    return (f*k*ax*seconds, l*k*lat*seconds, t*k*yaw*seconds)
 
 
 def relative(robot_pose, xy, yaw=0.):

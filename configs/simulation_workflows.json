@@ -790,8 +790,8 @@
     },
     {
       "id": "grasp-act-lookaround-probe",
-      "version": "1.2.0",
-      "purpose": "운반 중 둘러보기·하중 이동 진단: 공동 파지 뒤 팬(서보 6)·몸체 회전 단계 증가(pan/pan_repeat/yaw), 빔 중심 회전·한쪽 끝 축 회전(G1 rotate_center/pivot_end), 축·옆 방향 운반 중 손가락 힘·미끄럼과 자기 카메라 끝 띠 화소(G7 carry_straight), 문 앞뒤에서 내려놓고 물러나 보기 뒤 다시 잡기(G2/G6 setdown_look). 열린 루프 명령, 정답은 평가 전용, weld OFF",
+      "version": "1.3.0",
+      "purpose": "운반 중 둘러보기·하중 이동 진단: 공동 파지 뒤 팬(서보 6)·몸체 회전 단계 증가(pan/pan_repeat/yaw), 빔 중심 회전·한쪽 끝 축 회전(G1 rotate_center/pivot_end), 축·옆 방향 운반 중 손가락 힘·미끄럼과 자기 카메라 끝 띠 화소(G7 carry_straight), 문 앞뒤에서 내려놓고 물러나 보기 뒤 다시 잡기(G2/G6 setdown_look). 열린 루프 명령, 정답은 평가 전용, weld OFF. 1.3.0: --pair-odometry gcp_probe_v1(짝 운반 실측 회전·옆 이동 속도로 계획, 기본 off)",
       "entry": "scripts/probe_carry_lookaround.py",
       "runner": "scripts.probe_carry_lookaround",
       "docs": "experiments/2026-10-14-e2e18-grasp-rootcause/phase-review.md",
