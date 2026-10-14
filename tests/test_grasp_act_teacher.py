@@ -24,6 +24,15 @@ def test_teacher_corrects_sideways_with_existing_native_primitive():
     assert a['drive']==[0.,.35,0.] and a['duration_s']==.06 and not done
 
 
+def test_pregrasp_near_wall_can_shorten_without_changing_assigned_end():
+    t=GraspTeacher('r1','teal',FOLDED,bounds=(-1.05,5.4,-3.15,1.45));t.started=True
+    x={'robots':{'r1':{'pose':[.42,-1.58,-2.84]}},
+       'beam':{'pose':[-.163,-2.038,.096],'ends':{'teal':[-.432,-2.064,.024]}}}
+    t.step(x,0.,permit_pick=False)
+    assert t.staging_distance==.4 and t.path
+    assert t.end=='teal' and t.outcome is None
+
+
 def test_no_contact_or_no_lift_never_success():
     for contacts,z in (([1.,1.],.024),([0.,0.],.1)):
         t=GraspTeacher('r1','teal',FOLDED,bounds=(-3,3,-3,3));t.started=True

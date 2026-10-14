@@ -82,12 +82,13 @@ def run(plan,out,*,cap_s=120.,noise=False):
         raise RuntimeError('committed source required')
     write(out/'RUN_META.json',{'class':'dev','pr':484,'branch':'claude/e2e18-grasp-rootcause','sha':sha,'batch':plan['batch']})
     scene=make_scene(plan);world=None;streams=[];start=time.monotonic()
+    timings={k:0. for k in ('physics','rgb','evaluation','teacher','io')}
     report={'status':'running','source_sha':sha,'teacher_success_n':0,'teacher_N':len(plan['roles']),
         'joint_held':None,'data_admitted':False,'assignment_source':plan['assignment_source'],
         'student_execution':False,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off'}
     write(out/'result.json',report)
     try:
-        world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=640,height=480,render=True,
+        world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=320,height=240,render=True,
             warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
         scene.setup(world)
         # All remaining scenario cargo stays present. Only authorized randomized
@@ -95,16 +96,20 @@ def run(plan,out,*,cap_s=120.,noise=False):
         from sim.zone_cargo import place, CargoInstance
         place(world,[CargoInstance('beam_1','long_beam',tuple(plan['beam_pose']))])
         (out/'scene.xml').write_text(world.scene_xml);write(out/'scene.json',scene.manifest)
+        report['observation_sampling']={'rgb_size':[320,240],'rgb_hz':5,'control_hz':10,
+            'aspect_ratio_unchanged':True,'camera_fov_and_pose_unchanged':True}
         ports={rid:FinePulsePort(world,rid,allow_reverse=True,allow_mecanum=True,min_wheel_cmd='real_v1',alignment_pulse='real_fine_v1') for rid in plan['roles']}
         # Setup-only pan target: no model/camera changes. All later motion is issued commands.
         for rid,port in ports.items():port.apply({'kind':'look','pan_pulse':plan['initial_pan'][rid]},float(world.data.time))
         until=float(world.data.time)+.5
         def advance(target):
+            at=time.monotonic()
             while float(world.data.time)<target-1e-8:
                 now=float(world.data.time)
                 if world.data.eq_active.any():raise RuntimeError('WELD_ACTIVE')
                 for port in ports.values():port.tick(now)
                 world._physics_step_for(world.robot('r1'))
+            timings['physics']+=time.monotonic()-at
         advance(until)
         origin=float(world.data.time);previous={};history={};images={};writers={};teachers={}
         for rid,end in plan['roles'].items():
@@ -118,24 +123,33 @@ def run(plan,out,*,cap_s=120.,noise=False):
         (out/'eval-overview').mkdir()
         inst=next(x for x in scene.cargo if x.item_id=='beam_1');i=0;both_since=None;all_done_since=None
         while float(world.data.time)-origin < cap_s-1e-8:
-            now=float(world.data.time);truth=snapshot(world,inst,plan['roles'],scene);ev.write(json.dumps(truth)+'\n')
+            now=float(world.data.time);at=time.monotonic()
+            truth=snapshot(world,inst,plan['roles'],scene);ev.write(json.dumps(truth)+'\n')
+            timings['evaluation']+=time.monotonic()-at
             if i % 10 == 0:
                 # Reviewer evidence only; never referenced by a student observation.
-                (out/'eval-overview'/f'{i:06d}.jpg').write_bytes(world.render_team_jpeg())
+                at=time.monotonic();(out/'eval-overview'/f'{i:06d}.jpg').write_bytes(world.render_team_jpeg())
+                timings['rgb']+=time.monotonic()-at
                 write(out/'progress.json',{'sim_s':now-origin,'wall_s':time.monotonic()-start,
-                    'phases':{rid:t.phase for rid,t in teachers.items()},'sample':i})
+                    'phases':{rid:t.phase for rid,t in teachers.items()},'sample':i,'timings_s':timings})
                 for stream in streams:stream.flush()
             both=all(min(truth['contacts'][rid])>=.5 for rid in plan['roles']) and truth['beam']['min_z']>=.012
             both_since=(now if both_since is None else both_since) if both else None
             if len(plan['roles'])==2 and both_since is not None and now-both_since>=1.:report['joint_held']=True
             permit=all(x.phase in ('ready','pick','verify','done') for x in teachers.values())
             for rid,t in teachers.items():
-                capture=ports[rid].capture();jpg=base64.b64decode(capture['image']);path=f'rgb/{rid}/{i:06d}.jpg';(out/path).write_bytes(jpg)
-                ref={'path':path,'sha256':hashlib.sha256(jpg).hexdigest(),'t':now,'robot_id':rid}
+                at=time.monotonic()
+                if i % 2 == 0:
+                    capture=ports[rid].capture();jpg=base64.b64decode(capture['image']);path=f'rgb/{rid}/{i:06d}.jpg';(out/path).write_bytes(jpg)
+                    ref={'path':path,'sha256':hashlib.sha256(jpg).hexdigest(),'t':now,'robot_id':rid}
+                    pair=[images[rid][-1] if rid in images else ref,ref];images[rid]=pair
+                timings['rgb']+=time.monotonic()-at
                 obs={'schema':SCHEMA,'robot_id':rid,'sample_id':f"{plan['episode_id']}:{i}:{rid}",'t':now,
-                    'object_kind':'long_beam','skill':'grasp','role':t.end,'rgb':[images.get(rid,ref),ref],'issued':list(history[rid])}
-                validate_observation(obs);images[rid]=ref
+                    'object_kind':'long_beam','skill':'grasp','role':t.end,'rgb':images[rid],'issued':list(history[rid])}
+                validate_observation(obs)
+                at=time.monotonic()
                 clean,done=t.step(truth,now,permit_pick=permit)
+                timings['teacher']+=time.monotonic()-at
                 # Privileged navigation samples remain in raw but are excluded by the data admission loader.
                 phase=t.phase;applied=json.loads(json.dumps(clean));perturbed=False
                 if noise and phase not in ('done','ready') and rng.random()<.05:
@@ -161,7 +175,7 @@ def run(plan,out,*,cap_s=120.,noise=False):
         report.update(status='complete',sim_s=float(world.data.time)-origin,wall_s=time.monotonic()-start,
             teacher_success_n=sum(t.outcome=='success' for t in teachers.values()),
             teachers={rid:t.diagnostic() for rid,t in teachers.items()},samples_per_robot=i+1,
-            first_attempt=True,weld='off',loadavg_at_end=os.getloadavg())
+            first_attempt=True,weld='off',loadavg_at_end=os.getloadavg(),timings_s=timings)
         report['data_admitted']=report['teacher_success_n']==report['teacher_N'] and (len(plan['roles'])==1 or report['joint_held'] is True)
         report['wall_per_sim']=report['wall_s']/max(.001,report['sim_s'])
         # Pair whole-beam clearance is deliberately a separate, not-yet-evaluated metric.

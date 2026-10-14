@@ -11,6 +11,7 @@ from copy import deepcopy
 from harness.visual_arm_v3 import solve_grip_site_ik, tool_pose
 from harness.grasp_act_contract import command, SERVOS
 from scripts.zone_teacher import ArmSequence, FOLDED, plan_path, PeerDisc
+from harness.static_keepouts import rect_distance
 
 ROLE = {'teal': 'end_neg', 'blue': 'end_pos'}
 STATION_M = .203
@@ -49,6 +50,7 @@ class GraspTeacher:
         self.next_drive=0.;self.stable_since=None
         self.outcome=None;self.events=[];self.path=[];self.next_plan=0.
         self.grasp_xyz=None;self.initial_end_z=None;self.started=False
+        self.staging_distance=None
 
     def _set(self,phase,now):
         self.events.append({'t':now,'from':self.phase,'to':phase})
@@ -86,7 +88,19 @@ class GraspTeacher:
     def _approach(self,truth,now):
         pose=truth['robots'][self.rid]['pose'];g=truth['beam']['ends'][self.end]
         heading=truth['beam']['pose'][2]+(math.pi if self.end=='blue' else 0.)
-        goal=(g[0]-.50*math.cos(heading),g[1]-.50*math.sin(heading))
+        if self.staging_distance is None:
+            # Choose a feasible pregrasp pose in configuration space. A fixed
+            # half-metre retreat can lie outside a wall even when grasp is feasible.
+            x0,x1,y0,y1=self.bounds
+            for distance in (.50,.40,.30,.25):
+                candidate=(g[0]-distance*math.cos(heading),g[1]-distance*math.sin(heading))
+                if not x0+.17<=candidate[0]<=x1-.17 or not y0+.17<=candidate[1]<=y1-.17:continue
+                if any(rect_distance(candidate,r)<.17 for r in self.rects):continue
+                if any(math.dist(candidate,o['xy'])<o['radius']+.19 for iid,o in truth.get('objects',{}).items() if iid!='beam_1'):continue
+                self.staging_distance=distance;break
+            if self.staging_distance is None:
+                self.outcome='no_feasible_pregrasp';return self._hold(now),False
+        goal=(g[0]-self.staging_distance*math.cos(heading),g[1]-self.staging_distance*math.sin(heading))
         gx,gy=local(pose,g)
         if self.phase=='approach' and math.dist(pose[:2],goal)>.09:
             return self._route(truth,goal,now),False
@@ -149,4 +163,5 @@ class GraspTeacher:
 
     def diagnostic(self):
         return {'phase':self.phase,'outcome':self.outcome,'events':deepcopy(self.events),
+                'staging_distance_m':self.staging_distance,
                 'scope':'privileged_teacher_only; single-end lift is not whole-beam lift'}
