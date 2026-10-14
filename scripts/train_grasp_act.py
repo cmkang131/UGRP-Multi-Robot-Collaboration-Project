@@ -5,7 +5,9 @@ from pathlib import Path
 import numpy as np
 import torch
 from torch.utils.data import Dataset,DataLoader,WeightedRandomSampler
-from harness.grasp_act import make_policy,GraspAct,IMAGE_KEYS,CONTEXT_KEY,tensor,metadata,verify_upstream
+from harness.grasp_act import make_policy,GraspAct,IMAGE_KEYS,CONTEXT_KEY,tensor,metadata,verify_upstream,PROFILES
+from harness.grasp_act_augment import draw as draw_augment,augmented_tensor,RANGES as AUGMENT_RANGES
+from harness.grasp_act_seed_splits import check_dataset_splits
 from harness.grasp_act_contract import context
 from harness.grasp_act_data import validate_splits,sha
 from harness.reference_act import UPSTREAM_SHA
@@ -16,8 +18,8 @@ def write(path,value):
 
 
 class Examples(Dataset):
-    def __init__(self,entries,profile):
-        self.rows=[];self.profile=profile
+    def __init__(self,entries,profile,*,augment=False,seed=0):
+        self.rows=[];self.profile=profile;self.augment=augment;self.seed=seed;self.calls=0
         for root,meta,seq in entries:
             for obs,labels,windows in seq.values():
                 self.rows.extend((Path(root),o,w) for o,w in zip(obs,windows))
@@ -25,7 +27,13 @@ class Examples(Dataset):
     def __len__(self):return len(self.rows)
     def __getitem__(self,i):
         root,obs,win=self.rows[i]
-        return {**{k:tensor((root/ref['path']).read_bytes(),self.profile) for k,ref in zip(IMAGE_KEYS,obs['rgb'])},
+        if self.augment:
+            # One draw per sample, identical for all history frames (one camera).
+            self.calls+=1;params=draw_augment(np.random.default_rng((self.seed,i,self.calls)))
+            images={k:augmented_tensor((root/ref['path']).read_bytes(),PROFILES[self.profile],params) for k,ref in zip(IMAGE_KEYS,obs['rgb'])}
+        else:
+            images={k:tensor((root/ref['path']).read_bytes(),self.profile) for k,ref in zip(IMAGE_KEYS,obs['rgb'])}
+        return {**images,
                 CONTEXT_KEY:torch.tensor(context(obs),dtype=torch.float32),
                 'action':torch.tensor(win['action'],dtype=torch.float32),
                 'action_is_pad':torch.tensor(win['action_is_pad'],dtype=torch.bool)}
@@ -58,14 +66,19 @@ def deployed_done_loss(policy,batch):
 
 
 def train(dataset,out,*,steps=10000,seed=20261014,profile='standard',device='cuda',batch_size=8,
-          max_wall_s=8.5*3600,resume=None,pretrained=True):
+          max_wall_s=8.5*3600,resume=None,pretrained=True,augment=True,allow_no_heldout=False):
     verify_upstream()  # exact ACT/config bytes also verifies offline wheels without VCS direct_url
     if device=='cuda' and not torch.cuda.is_available():raise ValueError('CUDA required by selected training job')
     random.seed(seed);np.random.seed(seed);torch.manual_seed(seed);torch.set_num_threads(2)
     data=json.loads(Path(dataset).read_text());base=Path(dataset).parent
     # Final holdouts are not opened during model selection.
     entries={k:[base/x for x in data[k]] for k in ('train','development')}
-    checked=validate_splits(entries);trainset=Examples(checked['train'],profile);devset=Examples(checked['development'],profile)
+    # Registered seed ranges + held-out map check over ALL declared splits,
+    # metadata only (holdout samples are not opened).
+    if allow_no_heldout:split_check={'skipped':'explicit --allow-no-heldout (pipeline smoke only; not a reportable model)'}
+    else:split_check=check_dataset_splits(data,base)
+    checked=validate_splits(entries)
+    trainset=Examples(checked['train'],profile,augment=augment,seed=seed);devset=Examples(checked['development'],profile)
     if not len(trainset) or not len(devset):raise ValueError('nonempty episode splits required')
     from collections import Counter
     counts=Counter(trainset.groups);weights=torch.tensor([1/counts[g] for g in trainset.groups],dtype=torch.double)
@@ -90,6 +103,8 @@ def train(dataset,out,*,steps=10000,seed=20261014,profile='standard',device='cud
         'adapter':metadata(profile),'seed':seed,'target_steps':steps,'resumed_from':str(resume) if resume else None,
         'train_episodes':data['train'],'development_episodes':data['development'],'train_samples':len(trainset),'dev_samples':len(devset),
         'selection':'dev missed done + 4*false done + action MAE; no final holdout',
+        'augmentation':{'enabled':augment,'ranges':AUGMENT_RANGES,'scope':'train split only; development/inference unaugmented; camera geometry unchanged'},
+        'split_check':split_check,
         'environment':{'platform':platform.platform(),'device':device,**{k:importlib.metadata.version(k) for k in ('torch','torchvision','lerobot')}},'progress':[]}
     started=time.monotonic();write(out/'report.json',report)
     step=step0
@@ -131,7 +146,10 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--dataset',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
     p.add_argument('--steps',type=int,default=10000);p.add_argument('--seed',type=int,default=20261014);p.add_argument('--batch-size',type=int,default=8)
     p.add_argument('--profile',choices=('smoke','standard'),default='standard');p.add_argument('--device',choices=('cpu','mps','cuda'),default='cuda')
-    p.add_argument('--max-wall-s',type=float,default=30600);p.add_argument('--resume',type=Path);p.add_argument('--no-pretrained',action='store_true');a=p.parse_args()
+    p.add_argument('--max-wall-s',type=float,default=30600);p.add_argument('--resume',type=Path);p.add_argument('--no-pretrained',action='store_true')
+    p.add_argument('--augment',choices=('on','off'),default='on',help='training image augmentation (default on for new data)')
+    p.add_argument('--allow-no-heldout',action='store_true',help='pipeline smoke only; skips registered split/held-out map check');a=p.parse_args()
     if not 1<=a.steps<=100000 or not 0<a.max_wall_s<=30600:raise ValueError('finite training budget required')
-    train(a.dataset,a.out,steps=a.steps,seed=a.seed,profile=a.profile,device=a.device,batch_size=a.batch_size,max_wall_s=a.max_wall_s,resume=a.resume,pretrained=not a.no_pretrained)
+    train(a.dataset,a.out,steps=a.steps,seed=a.seed,profile=a.profile,device=a.device,batch_size=a.batch_size,max_wall_s=a.max_wall_s,resume=a.resume,pretrained=not a.no_pretrained,
+          augment=a.augment=='on',allow_no_heldout=a.allow_no_heldout)
 if __name__=='__main__':main()
