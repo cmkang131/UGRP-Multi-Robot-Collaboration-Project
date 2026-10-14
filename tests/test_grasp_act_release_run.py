@@ -327,3 +327,59 @@ def test_nbv_runs_after_legacy_budget_then_uses_only_new_own_rgb(tmp_path,fake_b
         assert len(saved['views'])==33+sum(captures)
         assert not saved['map_pose_known'] and not saved['decision']['accepted']
     assert result['input_audit']['held_world_reads']==result['input_audit']['invisible_measurements']==0
+
+
+@pytest.mark.parametrize('recover', (False, True))
+def test_setdown_panorama_after_open_retrace_then_original_regrasp(tmp_path,fake_backend,monkeypatch,recover):
+    import math
+    from sim.lookaround_localization import LookaroundLocalizer
+    from sim import release_global_observation as active
+    from sim.grasp_act_release_teacher import ReleaseTeacher
+    original=LookaroundLocalizer.finalize
+    def fitted(self):
+        result=original(self)   # blank frames must still be rejected
+        self.decision={**result,'credible_hypotheses':[dict(pose=[4.7,.7,math.pi/2])]}
+        return self.decision
+    monkeypatch.setattr(LookaroundLocalizer,'finalize',fitted)
+    def forbidden(*a,**kw):raise AssertionError('truth perception in setdown recovery')
+    monkeypatch.setattr(runner.Eyes,'classify',forbidden)
+    monkeypatch.setattr(runner.Eyes,'visible',forbidden)
+    if recover:
+        def margins(loc,t,now,**kw):
+            count=len(loc.views)
+            # Synthetic sensor receipt tests the runner transition only, NOT
+            # localization accuracy or new-view detection on a real scene.
+            if count<25:return dict(phase='observe',kind='none')
+            margin=(.1 if t.rid=='r1' else .7) if count==25 else .4
+            return dict(phase='observe',kind='localized_margin',margin_m=margin,
+                        expected_slack_m=.8,lateral_clearance_m=.2)
+        monkeypatch.setattr(active,'margin_report',margins)
+    picks=[];old_pick=ReleaseTeacher.pick_schedule
+    def pick(self,now):
+        picks.append(self.rid)
+        return old_pick(self,now)
+    monkeypatch.setattr(ReleaseTeacher,'pick_schedule',pick)
+    plans=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release6-diagnostic-plan.json').read_text())
+    profile={**plans['execution_profile'],'active_recovery':'setdown_lookaround_v1'}
+    out=tmp_path/'setdown'
+    result=runner.run(plans['episodes'][0],out,cap_s=180.,**profile)
+    assert result['release_outcome']==('teacher_done' if recover else 'active_observation_exhausted')
+    assert result['legacy_visibility_counts_applicable'] is False
+    assert result['final_map_pose_accepted']=={'r1':False,'r2':False}
+    assert result['shift_steps']==int(recover)
+    assert picks==(['r1','r2'] if recover else [])
+    for rid in ('r1','r2'):
+        actions=[a for a in result['active_observation'] if a['robot']==rid]
+        assert [a['action'] for a in actions]==['pan','setdown_lookaround_v1']
+        rows=[json.loads(s) for s in (out/f'teacher-{rid}.jsonl').read_text().splitlines()]
+        first_open=next(v['t'] for v in rows if not v['holding_belief'])
+        start=actions[1]['t']
+        assert first_open<start and all(not v['holding_belief'] for v in rows if start<=v['t'] and v['teacher_phase']=='lookaround')
+        sweeps=result['lookaround_result'][rid]['evaluation']['sweeps']
+        labels=[s['label'] for sweep in sweeps for s in sweep['script']]
+        assert 'setdown_retrace_backoff_0.10m' in labels and 'setdown_turn_return' in labels
+        assert len([s for s in labels if s.startswith('setdown_view')])==12
+        if not recover:
+            assert len(result['lookaround_result'][rid]['localizer']['views'])==25
+            assert not result['lookaround_result'][rid]['localizer']['decision']['accepted']
+    assert result['input_audit']['held_world_reads']==result['input_audit']['invisible_measurements']==0

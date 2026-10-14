@@ -158,7 +158,8 @@ def recovery_script(localizer, teacher, stage, now):
                       body_turn_rad=BODY_TURN_RAD,all_retained_hypotheses_clear=safe)
 
 
-def recovery_round(localizers, teachers, reports, stages, now, *, active_recovery='off', nbv_history=None):
+def recovery_round(localizers, teachers, reports, stages, now, *, active_recovery='off', nbv_history=None,
+                   release_command_poses=None):
     """Build one round atomically. Accepted own margins wait for the partner.
 
     Extra NBV rounds run only where the old three-stage policy would stop.
@@ -171,6 +172,23 @@ def recovery_round(localizers, teachers, reports, stages, now, *, active_recover
     pending = [rid for rid in teachers if reports[rid]['kind'] != 'localized_margin']
     if not pending:
         pending = list(teachers)  # scalar margins disagree
+    if active_recovery == 'setdown_lookaround_v1':
+        from sim.release_setdown_lookaround import script as unloaded_script
+        if any(stages[rid] >= 2 for rid in pending):
+            return None, []
+        steps = {rid: [] for rid in teachers}; entries = []
+        for rid in pending:
+            if stages[rid] == 0:
+                steps[rid], entry = recovery_script(localizers[rid], teachers[rid], 1, now)
+            else:
+                steps[rid], entry = unloaded_script(localizers[rid], teachers[rid], now,
+                                                    (release_command_poses or {}).get(rid))
+                if not steps[rid]:
+                    return None, [dict(robot=rid, stage=stages[rid]+1, **entry)]
+            entries.append(dict(entry, robot=rid, stage=stages[rid]+1))
+        for rid in pending:
+            stages[rid] += 1
+        return steps, entries
     history = nbv_history if nbv_history is not None else {rid: [] for rid in teachers}
     if active_recovery == 'off' and any(stages[rid] >= 3 for rid in pending):
         return None, []

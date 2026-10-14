@@ -15,7 +15,7 @@ from sim.active_lookaround import OwnPose, gain, information, wrap, MOTION_COST_
 from sim.lookaround_localization import (LOOK_ARM, LOOK_ARM_V2, look_servo,
                                          visible_fn_for, rotate_plan, pan_pulse)
 
-MODES = ('off', 'map_nbv_v1')
+MODES = ('off', 'map_nbv_v1', 'setdown_lookaround_v1')
 MAX_ROUNDS = 3
 VIEW_BUDGET = 3
 BACKSTEP_M = .10

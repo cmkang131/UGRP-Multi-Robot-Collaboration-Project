@@ -346,6 +346,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         st={'phase':'look','since':release_t0,'iter':0,'steps':0,'search':0,'sched':{},'plan':{},'go':None,'after_visible':False,'choice':None}
         recovery_stage={rid:0 for rid in roles}; recovery_log=[]
         nbv_history={rid:[] for rid in roles}
+        release_command_poses={}
         b0=world.data.body(inst.body)
         report['release_start']={'beam_to_zone_center_m':float(math.dist(b0.xpos[:2],rect[:2]))}
         def pose_of(rid):return [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
@@ -450,6 +451,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                     # Step back with the gripper raised, then look: the floor beyond the own end enters the view.
                     for rid,t in rel.items():
                         t.released_here(now);schedule(rid,every(t.arm_waypoints(RAISE_Z_M,3),.2),now)
+                        if active_recovery=='setdown_lookaround_v1':
+                            release_command_poses[rid]=loc[rid].command_own.x.copy()
                     st['plan']={rid:t.shift_plan(OBSERVE_BACKOFF_M,-1.) for rid,t in rel.items()}
                     st.update(phase='observe_back',since=now,go=now+.8,settle=None,search=0)
                 elif now-st['go']>=1.2:
@@ -550,7 +553,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                     # Only own perception chooses the recovery action. A robot
                     # with sufficient evidence waits; no partner pose is read.
                     scripts,entries=recovery_round(loc,rel,code.delivered,recovery_stage,now,
-                        active_recovery=active_recovery,nbv_history=nbv_history)
+                        active_recovery=active_recovery,nbv_history=nbv_history,
+                        release_command_poses=release_command_poses)
                     recovery_log.extend(entries)
                     if scripts is None:
                         outcome='active_observation_exhausted';break
@@ -674,6 +678,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             report['active_observation']=recovery_log
             report['active_recovery']=active_recovery
             report['final_map_pose_known']={rid:loc[rid].map_pose_known for rid in roles}
+            report['final_map_pose_accepted']={rid:bool((loc[rid].decision or {}).get('accepted')) for rid in roles}
+            report['legacy_visibility_counts_applicable']=False  # RGB-only observe() deliberately returns an empty scan
             report['own_rgb_localization_inputs']={rid:{'frames':len(loc[rid].views),
                 'measured_frames':sum(v.get('status')=='measured' for v in loc[rid].views),
                 'native_input_hashes':sum('input_sha256' in v for v in loc[rid].views)} for rid in roles}
@@ -702,7 +708,7 @@ def main():
     p.add_argument('--pose-anchor',choices=POSE_ANCHOR_MODES,default='legacy_truth_v0',help='command_relative_v1: no truth handoff anchor; map pose unknown, own-command sweep only')
     p.add_argument('--placement',choices=PLACEMENT_MODES,default='margin_v0',help='zone_center_rgb_v1: local RGB rectangle centering; no world anchor')
     p.add_argument('--lateral-recovery',choices=LATERAL_MODES,default='off',help='bounded_v1: recover insufficient side clearance using own RGB localization')
-    p.add_argument('--active-recovery',choices=ACTIVE_RECOVERY_MODES,default='off',help='map_nbv_v1: bounded informative own-map views after the legacy observation budget')
+    p.add_argument('--active-recovery',choices=ACTIVE_RECOVERY_MODES,default='off',help='map_nbv_v1: extra map views; setdown_lookaround_v1: retrace own backoff and scan front/rear after setdown')
     p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look')
     p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement')
     p.add_argument('--zone-slots',choices=ZONE_SLOT_MODES,default='floor',help='zone: white slot squares inside the destination (static map) count as zone')
