@@ -1,0 +1,274 @@
+"""Carry look-around safety probe on VM3. Weld OFF, normal physics.
+
+The frozen grasp teacher (unchanged) reaches a joint hold. Afterwards one robot
+issues bounded look commands: servo-6 pan sweeps (mode ``pan``) or short
+in-place body yaw pulses with native wheel magnitude 0 or 0.31-0.40 (mode
+``yaw``). Simulator truth is used ONLY for evaluation metrics written to this
+run's own files (slip, tilt, finger force, partner twist, visibility ratios).
+Nothing here is a student input and nothing feeds back into a command.
+"""
+from __future__ import annotations
+import argparse,base64,io,json,math,os,platform,subprocess,sys,time
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
+from harness.grasp_act_contract import SERVOS,command
+from scripts.run_grasp_act_teacher import write,apply,snapshot,compress_logs
+
+# Provisional safety thresholds (evaluation only; first measurement, no prior basis).
+LIMITS={'finger_min_n':.5,'slip_axis_mm':5.,'slip_perp_mm':3.,'tilt_deg':5.,
+        'partner_shift_mm':10.,'partner_yaw_deg':3.,'beam_floor_z_m':.005}
+PAN_STEPS=(20,40,80,120,180,270,400)          # PWM; 2000/180 PWM per degree
+YAW_DURATIONS=(.1,.2,.3,.5,.8)                # s; native wheel level 1/3 (0.31-0.40 band)
+YAW_EFFORT=.25                                # +1/12 kinetic feedforward -> 0.333, breakaway 0.35
+
+
+def beam_frame(world,inst):
+    import numpy as np
+    b=world.data.body(inst.body);return np.array(b.xpos),np.array(b.xmat).reshape(3,3)
+
+
+def grip_xyz(world,rid):
+    try:return world.data.site(f'{rid}__grip_site').xpos.copy()
+    except KeyError:return world.robot(rid).site_xyz('grip_site')
+
+
+def measure(world,inst,roles,scene,base=None):
+    """Truth-only evaluation sample."""
+    import numpy as np
+    from scripts.cargo_formation_teacher import FormationTeacher
+    from types import SimpleNamespace
+    pos,rot=beam_frame(world,inst)
+    forces=FormationTeacher.finger_forces(SimpleNamespace(world=world,inst=inst,roles=roles))
+    row={'t':float(world.data.time),'beam_xyz':pos.tolist(),
+         'beam_pitch_deg':math.degrees(math.asin(max(-1.,min(1.,rot[2,0])))),
+         'beam_roll_deg':math.degrees(math.atan2(rot[2,1],rot[2,2])),
+         'beam_yaw_deg':math.degrees(math.atan2(rot[1,0],rot[0,0]))}
+    snap=snapshot(world,inst,roles,scene);row['beam_min_z']=snap['beam']['min_z']
+    for rid in roles:
+        local=rot.T@(grip_xyz(world,rid)-pos)
+        xyz=world.robot(rid).base_xyz();yaw=float(world.robot(rid).base_rpy()[2])
+        row[rid]={'finger_n':list(forces[rid]),'grip_in_beam_m':local.tolist(),
+                  'base_xy':[float(xyz[0]),float(xyz[1])],'base_yaw_deg':math.degrees(yaw)}
+    if base is not None:
+        row['delta']=delta(row,base,roles)
+    return row
+
+
+def delta(row,base,roles):
+    d={'tilt_pitch_deg':abs(row['beam_pitch_deg']-base['beam_pitch_deg']),
+       'tilt_roll_deg':abs(row['beam_roll_deg']-base['beam_roll_deg']),
+       'beam_yaw_deg':abs(((row['beam_yaw_deg']-base['beam_yaw_deg'])+180)%360-180)}
+    for rid in roles:
+        g,g0=row[rid]['grip_in_beam_m'],base[rid]['grip_in_beam_m']
+        d[rid]={'slip_axis_mm':1000*abs(g[0]-g0[0]),'slip_perp_mm':1000*math.hypot(g[1]-g0[1],g[2]-g0[2]),
+                'finger_min_n':min(row[rid]['finger_n']),
+                'base_shift_mm':1000*math.dist(row[rid]['base_xy'],base[rid]['base_xy']),
+                'base_yaw_deg':abs(((row[rid]['base_yaw_deg']-base[rid]['base_yaw_deg'])+180)%360-180)}
+    return d
+
+
+def verdict(samples,roles,actor):
+    """Worst case over one test window, relative to the pre-test hold."""
+    worst={'tilt_deg':0.,'beam_min_z':math.inf}
+    for rid in roles:worst[rid]={'slip_axis_mm':0.,'slip_perp_mm':0.,'finger_min_n':math.inf,'base_shift_mm':0.,'base_yaw_deg':0.}
+    for s in samples:
+        d=s['delta'];worst['tilt_deg']=max(worst['tilt_deg'],d['tilt_pitch_deg'],d['tilt_roll_deg'])
+        worst['beam_min_z']=min(worst['beam_min_z'],s['beam_min_z'])
+        for rid in roles:
+            for k in ('slip_axis_mm','slip_perp_mm','base_shift_mm','base_yaw_deg'):worst[rid][k]=max(worst[rid][k],d[rid][k])
+            worst[rid]['finger_min_n']=min(worst[rid]['finger_min_n'],d[rid]['finger_min_n'])
+    reasons=[]
+    if worst['tilt_deg']>LIMITS['tilt_deg']:reasons.append('tilt')
+    if worst['beam_min_z']<LIMITS['beam_floor_z_m']:reasons.append('beam_touches_floor')
+    for rid in roles:
+        w=worst[rid]
+        if w['finger_min_n']<LIMITS['finger_min_n']:reasons.append(rid+':grip_force')
+        if w['slip_axis_mm']>LIMITS['slip_axis_mm']:reasons.append(rid+':slip_axis')
+        if w['slip_perp_mm']>LIMITS['slip_perp_mm']:reasons.append(rid+':slip_perp')
+        if rid!=actor and w['base_shift_mm']>LIMITS['partner_shift_mm']:reasons.append(rid+':partner_dragged')
+        if rid!=actor and w['base_yaw_deg']>LIMITS['partner_yaw_deg']:reasons.append(rid+':partner_twisted')
+    return worst,reasons
+
+
+class PointVisibility:
+    """Evaluation-only floor/body point exposure in the actual runtime camera."""
+    def __init__(self,band):self.band=band
+    def points_visible(self,data,rid,points):
+        import cv2,mujoco,numpy as np
+        b=self.band;cid=b.cameras[rid];seen=0
+        for point in np.asarray(points,dtype=float):
+            p=((point-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])
+            if p[2]<=b.near:continue
+            uv=p[:2]/p[2]*np.diag(b.K)[:2]+b.K[:2,2]
+            raw,_=cv2.fisheye.projectPoints(p.reshape(1,1,3),np.zeros(3),np.zeros(3),b.K,b.D)
+            if not (0<=uv[0]<640 and 0<=uv[1]<480 and 0<=raw[0,0,0]<640 and 0<=raw[0,0,1]<480):continue
+            delta=point-data.cam_xpos[cid];dist=float(np.linalg.norm(delta));direction=delta/dist
+            skip=b.near*dist/p[2];origin=data.cam_xpos[cid]+skip*direction;hit=np.array([-1],dtype=np.int32)
+            ray=mujoco.mj_ray(b.model,data,origin,direction,b.groups,True,-1,hit)
+            if hit[0]<0 or ray<0 or ray>=dist-skip-.01:seen+=1   # nothing in front of the floor point
+        return seen
+
+
+def region_points(region,z=.002):
+    (cx,cy),(hx,hy)=region['center_m'],region['half_extents_m']
+    return [(cx+sx*hx*.8,cy+sy*hy*.8,z) for sx in (-1,0,1) for sy in (-1,0,1)]
+
+
+def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',destination='zone_A'):
+    if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
+    from sim.grasp_act_scene import make_scene
+    from sim.grasp_act_teacher import GraspTeacher
+    from sim.masterpi_drive_friction_v7 import build_world,PROFILE
+    from sim.grasp_act_port import ContinuousActPort
+    from harness.static_keepouts import keepout_rects
+    from scripts.audit_grasp_act_visibility import BandVisibility
+    from collections import deque
+    from PIL import Image
+    out.mkdir(parents=True,exist_ok=False);write(out/'plan.json',plan)
+    sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise RuntimeError('committed source required')
+    write(out/'RUN_META.json',{'class':'dev','pr':484,'branch':'claude/grasp-act-release','sha':sha,'batch':plan['batch']+'-lookaround-'+mode})
+    report={'status':'running','source_sha':sha,'mode':mode,'actor':actor,'weld':'off','limits':LIMITS,
+            'scope':'evaluation-only truth metrics; probe commands are fixed schedules, not truth-corrected',
+            'loadavg_at_start':os.getloadavg()}
+    write(out/'result.json',report);world=None;start=time.monotonic();streams=[]
+    try:
+        os.environ['UGRP_SIM_OBSERVER_WIDTH']='320';os.environ['UGRP_SIM_OBSERVER_HEIGHT']='240'
+        scene=make_scene(plan)
+        world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=320,height=240,render=True,
+            warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
+        if teacher_profile=='observable_v2':
+            from sim.s2_realism_camera_binding import bind_camera
+            for controller in world.controllers.values():bind_camera(controller)
+        scene.setup(world)
+        from sim.zone_cargo import place,CargoInstance
+        place(world,[CargoInstance('beam_1','long_beam',tuple(plan['beam_pose']))])
+        (out/'scene.xml').write_text(world.scene_xml)
+        roles=plan['roles'];ports={rid:ContinuousActPort(world,rid,allow_reverse=True,allow_mecanum=True) for rid in roles}
+        for rid,port in ports.items():port.apply({'kind':'look','pan_pulse':plan['initial_pan'][rid]},float(world.data.time))
+        def advance(target):
+            while float(world.data.time)<target-1e-8:
+                now=float(world.data.time)
+                if world.data.eq_active.any():raise RuntimeError('WELD_ACTIVE')
+                for port in ports.values():port.tick(now)
+                world._physics_step_for(world.robot('r1'))
+        advance(float(world.data.time)+.5)
+        origin=float(world.data.time);inst=next(x for x in scene.cargo if x.item_id=='beam_1')
+        band=BandVisibility(world.model);points=PointVisibility(band)
+        static=scene.config['static_map'];dest=region_points(static['regions'][destination])
+        object_bodies={c.item_id:c.body for c in scene.cargo if c.item_id!='beam_1'}
+        object_bodies.update({i:c['body_name'] for i,c in scene.config['setup_only']['objects'].items()})
+        teachers={};previous={}
+        for rid,end in roles.items():
+            pwm={str(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
+            previous[rid]=command({'t':origin,'drive':[0.,0.,0.],'duration_s':0.,'pwm':pwm})
+            teachers[rid]=GraspTeacher(rid,end,pwm,bounds=static['bounds_m'],rects=keepout_rects(static),profile=teacher_profile)
+        ev=(out/'eval-only.jsonl').open('w');streams.append(ev)
+        for rid in roles:(out/'eval-own'/rid).mkdir(parents=True)
+        def frame(tag):
+            for rid in roles:
+                jpg=base64.b64decode(ports[rid].capture()['image'])
+                Image.open(io.BytesIO(jpg)).resize((320,240)).save(out/'eval-own'/rid/f'{tag}.jpg',quality=86)
+        # --- phase A: frozen grasp teacher until a 1 s joint hold ---
+        i=0;both_since=None;held_at=None
+        while float(world.data.time)-origin<grasp_cap_s:
+            now=float(world.data.time);truth=snapshot(world,inst,roles,scene)
+            truth['visibility']={rid:band.measure(world.data,rid,end) for rid,end in roles.items()}
+            if teacher_profile=='observable_v2':
+                for rid in roles:
+                    truth['visibility'][rid]['objects']=[k for k,b in object_bodies.items() if band.body_visible(world.data,rid,b)]
+                    truth['visibility'][rid]['peers']=[p for p in ('r1','r2','r3') if p!=rid and band.body_visible(world.data,rid,p+'__robot')]
+            if i%10==0:frame(f'grasp-{i:05d}')
+            both=all(min(truth['contacts'][rid])>=.5 for rid in roles) and truth['beam']['min_z']>=.012
+            both_since=(now if both_since is None else both_since) if both else None
+            done=all(t.outcome=='success' for t in teachers.values())
+            if done and both_since is not None and now-both_since>=1.:held_at=now;break
+            if any(t.outcome not in (None,'success') for t in teachers.values()):break
+            permit=all(x.phase in ('ready','pick','verify','done') for x in teachers.values())
+            if teacher_profile=='observable_v2':
+                permit=permit and all(x.phase!='ready' or truth['visibility'][rid]['visible_probes']>=3 for rid,x in teachers.items())
+            for rid,t in teachers.items():
+                clean,_=t.step(truth,now,permit_pick=permit)
+                apply(ports[rid],clean,now,previous[rid]);previous[rid]=clean
+            i+=1;advance(origin+i*.1)
+        report['grasp']={'held':held_at is not None,'held_sim_s':None if held_at is None else held_at-origin,
+                         'outcomes':{r:t.outcome for r,t in teachers.items()}}
+        if held_at is None:
+            report.update(status='complete',probe='not_reached');return report
+        frame('held')
+        # --- phase B: settle hold, all wheels zero, last issued arm pose kept ---
+        for port in ports.values():port.stop()
+        advance(float(world.data.time)+2.)
+        base=base0=measure(world,inst,roles,scene);ev.write(json.dumps({'kind':'baseline',**base})+'\n')
+        p0=int(ports[actor]._servo_pulses[6]);tests=[];failures=0
+        def window(seconds,label):
+            rows=[];end=float(world.data.time)+seconds
+            while float(world.data.time)<end-1e-8:
+                advance(float(world.data.time)+.05);s=measure(world,inst,roles,scene,base)
+                s['label']=label;rows.append(s);ev.write(json.dumps(s)+'\n')
+            return rows
+        def look_vis(rid):
+            peer=[p for p in roles if p!=rid]
+            return {'destination_points':points.points_visible(world.data,rid,dest),'destination_N':len(dest),
+                    'partner':[band.body_visible(world.data,rid,p+'__robot') for p in peer],
+                    'obstacles':sorted(k for k,b in object_bodies.items() if band.body_visible(world.data,rid,b)),
+                    'obstacle_N':len(object_bodies),'own_end_probes':band.measure(world.data,rid,roles[rid])['visible_probes']}
+        vis={'p0':look_vis(actor)}
+        if mode=='pan':
+            for amp in PAN_STEPS:
+                rows=[];vis_amp={}
+                for k,target in enumerate((p0+amp,p0,p0-amp,p0)):
+                    target=max(500,min(2500,target))
+                    ports[actor].apply({'kind':'look','pan_pulse':target},float(world.data.time))
+                    rows+=window(1.,f'pan{amp}:{k}')
+                    if target!=p0:vis_amp[str(target-p0)]=look_vis(actor);frame(f'pan{amp:03d}_{"p" if target>p0 else "m"}')
+                worst,reasons=verdict(rows,roles,actor)
+                tests.append({'cumulative_after':delta(measure(world,inst,roles,scene),base0,roles),'pan_pwm':amp,'pan_deg':amp*180/2000,'worst':worst,'fail':reasons,'visibility':vis_amp})
+                failures+=bool(reasons)
+                if any('grip_force' in r or r=='beam_touches_floor' for r in reasons) or failures>=2:break
+                base=measure(world,inst,roles,scene)   # re-zero after a recovered sweep
+        else:
+            for duration in YAW_DURATIONS:
+                rows=[];yaw0=world.robot(actor).base_rpy()[2];vis_d={}
+                for k,sign in enumerate((1,-1)):
+                    t0=float(world.data.time)
+                    while float(world.data.time)<t0+duration-1e-8:
+                        ports[actor].apply({'kind':'mecanum','forward':0.,'left':0.,'turn':sign*YAW_EFFORT,'duration_s':.15},float(world.data.time))
+                        step=min(.1,t0+duration-float(world.data.time))
+                        rows+=window(step,f'yaw{duration}:{k}:on')
+                    ports[actor].stop();rows+=window(1.5,f'yaw{duration}:{k}:hold')
+                    if k==0:
+                        turned=math.degrees(((world.robot(actor).base_rpy()[2]-yaw0)+math.pi)%(2*math.pi)-math.pi)
+                        vis_d['turned']=look_vis(actor);frame(f'yaw{int(duration*1000):04d}')
+                worst,reasons=verdict(rows,roles,actor)
+                tests.append({'cumulative_after':delta(measure(world,inst,roles,scene),base0,roles),'pulse_s':duration,'native_wheel_level':[round(x,3) for x in (.35,YAW_EFFORT+1/12)],
+                              'turned_deg':turned,'rate_deg_s':turned/duration,'worst':worst,'fail':reasons,'visibility':vis_d})
+                failures+=bool(reasons)
+                if any('grip_force' in r or r=='beam_touches_floor' for r in reasons) or failures>=2:break
+                base=measure(world,inst,roles,scene)
+        frame('end')
+        safe=[t for t in tests if not t['fail']]
+        report.update(status='complete',probe='done',tests=tests,visibility_p0=vis,
+            safe_max=(max(t['pan_pwm'] for t in safe) if mode=='pan' else max(t['pulse_s'] for t in safe)) if safe else None,
+            first_fail=next(({'step':t.get('pan_pwm',t.get('pulse_s')),'reasons':t['fail']} for t in tests if t['fail']),None))
+        return report
+    except BaseException as error:
+        report.update(status='HOST_ERROR' if not isinstance(error,KeyboardInterrupt) else 'interrupted',error_type=type(error).__name__,error=str(error))
+        raise
+    finally:
+        report['wall_s']=time.monotonic()-start;report['sim_s']=None if world is None else float(world.data.time)
+        report['loadavg_at_end']=os.getloadavg();write(out/'result.json',report)
+        for s in streams:s.close()
+        if world is not None:world.close()
+        compress_logs(out)
+
+
+def main():
+    p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
+    p.add_argument('--out',type=Path,required=True);p.add_argument('--mode',choices=('pan','yaw'),required=True)
+    p.add_argument('--actor',choices=('r1','r2'),default='r1');p.add_argument('--grasp-cap-s',type=float,default=45.)
+    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='observable_v2');a=p.parse_args()
+    plan=json.loads(a.plan.read_text())['episodes'][a.episode]
+    print(json.dumps(run(plan,a.out,mode=a.mode,actor=a.actor,grasp_cap_s=a.grasp_cap_s,teacher_profile=a.teacher_profile),ensure_ascii=False))
+if __name__=='__main__':main()

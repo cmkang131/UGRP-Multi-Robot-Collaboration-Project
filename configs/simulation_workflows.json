@@ -787,6 +787,23 @@
       "required_inputs": [
         "--plan"
       ]
+    },
+    {
+      "id": "grasp-act-lookaround-probe",
+      "version": "1.0.0",
+      "purpose": "운반 중 둘러보기 안전 진단: 공동 파지 뒤 팬(서보 6)·몸체 회전 단계 증가, 정답은 평가 전용, weld OFF",
+      "entry": "scripts/probe_carry_lookaround.py",
+      "runner": "scripts.probe_carry_lookaround",
+      "docs": "experiments/2026-10-14-e2e18-grasp-rootcause/phase-review.md",
+      "requires": "VM3, committed source, at most 2 concurrent short runs; no Mac physics",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--plan",
+        "--mode"
+      ]
     }
   ]
 }
