@@ -38,7 +38,9 @@ def main():
             runs.append(dict(stage=stage,name=name,seed=episode['seed'],command=command,
                 ready=stage=='diagnostic' and i<2,requires_coordinator_approval=stage=='gate',
                 max_parallel=2 if stage=='diagnostic' and i<2 else (7 if stage=='diagnostic' else 16),
-                depends_on=[] if stage=='diagnostic' and i<2 else (names[:2] if stage=='diagnostic' else names),
+                # Fresh runs each depend on both reproductions. Gate depends
+                # on all seven fresh runs; repro dependencies are transitive.
+                depends_on=[] if stage=='diagnostic' and i<2 else (names[:2] if stage=='diagnostic' else names[2:]),
                 condition='repro' if stage=='diagnostic' and i<2 else ('fresh' if stage=='diagnostic' else 'gate')))
     now=datetime.datetime.now().astimezone().isoformat()
     queue=dict(owner='codex',branch=branch,sha=sha,pr=491,created_local=now,host='gcp1',
