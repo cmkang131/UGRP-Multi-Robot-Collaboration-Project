@@ -64,6 +64,13 @@ def compress_logs(out):
             entry={'sha256':hashlib.sha256(z).hexdigest(),'bytes':len(z),'decoded_sha256':entry['sha256']}
         manifest[str(path.relative_to(out))]=entry
     write(out/'manifest.json',manifest)
+    path=out/'manifest.json';raw=path.read_bytes()
+    if len(raw)>65536:
+        compressed=subprocess.check_output(['zstd','-q','-c'],input=raw)
+        assert subprocess.check_output(['zstd','-qdc'],input=compressed)==raw
+        target=out/'manifest.json.zst';target.write_bytes(compressed);path.unlink()
+        write(out/'manifest-compression.json',{'path':target.name,'bytes':len(compressed),
+            'sha256':hashlib.sha256(compressed).hexdigest(),'decoded_sha256':hashlib.sha256(raw).hexdigest()})
 
 
 def run(plan,out,*,cap_s=120.,noise=False):
@@ -121,7 +128,7 @@ def run(plan,out,*,cap_s=120.,noise=False):
             student=(out/f'student-{rid}.jsonl').open('w');label=(out/f'teacher-{rid}.jsonl').open('w');streams.extend([student,label]);writers[rid]=(student,label)
         ev=(out/'eval-only.jsonl').open('w');streams.append(ev)
         (out/'eval-overview').mkdir()
-        inst=next(x for x in scene.cargo if x.item_id=='beam_1');i=0;both_since=None;all_done_since=None
+        inst=next(x for x in scene.cargo if x.item_id=='beam_1');i=0;written=0;both_since=None;all_done_since=None
         while float(world.data.time)-origin < cap_s-1e-8:
             now=float(world.data.time);at=time.monotonic()
             truth=snapshot(world,inst,plan['roles'],scene);ev.write(json.dumps(truth)+'\n')
@@ -164,6 +171,7 @@ def run(plan,out,*,cap_s=120.,noise=False):
                     'local_skill_sample':phase!='approach','assignment_source':plan['assignment_source']}
                 writers[rid][0].write(json.dumps(obs)+'\n');writers[rid][1].write(json.dumps(label)+'\n')
                 apply(ports[rid],applied,now,previous[rid]);previous[rid]=applied;history[rid].append(applied)
+            written+=1
             if all(t.outcome is not None for t in teachers.values()):
                 all_done_since=now if all_done_since is None else all_done_since
                 if len(teachers)==1 or report['joint_held'] is True or now-all_done_since>=3.:break
@@ -174,7 +182,7 @@ def run(plan,out,*,cap_s=120.,noise=False):
         if len(plan['roles'])==2 and report['joint_held'] is None:report['joint_held']=False
         report.update(status='complete',sim_s=float(world.data.time)-origin,wall_s=time.monotonic()-start,
             teacher_success_n=sum(t.outcome=='success' for t in teachers.values()),
-            teachers={rid:t.diagnostic() for rid,t in teachers.items()},samples_per_robot=i+1,
+            teachers={rid:t.diagnostic() for rid,t in teachers.items()},samples_per_robot=written,
             first_attempt=True,weld='off',loadavg_at_end=os.getloadavg(),timings_s=timings)
         report['data_admitted']=report['teacher_success_n']==report['teacher_N'] and (len(plan['roles'])==1 or report['joint_held'] is True)
         report['wall_per_sim']=report['wall_s']/max(.001,report['sim_s'])

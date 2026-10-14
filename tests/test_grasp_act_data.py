@@ -42,3 +42,16 @@ def test_missing_done_cannot_be_admitted(tmp_path):
     for x in xs:x['done']=False;x['terminal_reason']='timeout'
     p.write_text(''.join(json.dumps(x)+'\n' for x in xs))
     with pytest.raises(ValueError,match='termination'):read_episode(a)
+
+
+def test_large_manifest_is_losslessly_compressed_and_still_readable(tmp_path):
+    from scripts.run_grasp_act_teacher import compress_logs
+    from harness.grasp_act_data import read
+    # Long distinct names create a large inventory without large raw test data.
+    for i in range(600):(tmp_path/(f'{i:04d}-'+'x'*70+'.txt')).write_text('evidence')
+    compress_logs(tmp_path)
+    assert not (tmp_path/'manifest.json').exists()
+    manifest=read(tmp_path/'manifest.json');assert len(manifest)==600
+    assert all(x['bytes']==8 for x in manifest.values())
+    receipt=read(tmp_path/'manifest-compression.json')
+    assert receipt['sha256']==hashlib.sha256((tmp_path/'manifest.json.zst').read_bytes()).hexdigest()

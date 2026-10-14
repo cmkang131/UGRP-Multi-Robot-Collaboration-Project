@@ -19,7 +19,7 @@ def summarize(rows,planned):
         'robots':{rid:{'n':sum(r.get('teachers',{}).get(rid,{}).get('outcome')=='success' for r in completed),
             'N':len(completed)} for rid in ('r1','r2')},
         'failure_reasons':dict(Counter(t['outcome'] for r in completed for t in r.get('teachers',{}).values() if t.get('outcome')!='success')),
-        'host_errors':sum(r.get('status')=='HOST_ERROR' or r.get('exit',0) not in (0,-2,130) for r in rows),
+        'host_errors':sum(r.get('status')=='HOST_ERROR' or (r.get('status')!='interrupted' and r.get('exit',0) not in (0,-2,130)) for r in rows),
         'interrupted':sum(r.get('status')=='interrupted' for r in rows),'rows':rows}
 
 
@@ -90,7 +90,7 @@ def main():
     rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit)
     samples=[{'sim_s':r.get('sim_s'),'wall_s':r.get('wall_s'),'exit':r['exit'],
         'expected_stop':r.get('status')=='complete' and r.get('sim_s',0)>=30-1e-6,
-        'finalization_complete':(Path(r['raw'])/'manifest.json').is_file(),'finalization_errors':[],
+        'finalization_complete':any((Path(r['raw'])/name).is_file() for name in ('manifest.json','manifest.json.zst')),'finalization_errors':[],
         'raw':r['raw']} for r in rows]
     gate=verdict(samples,a.concurrency,a.speed_gate_limit)
     if reason:gate.update(status='SPEED_GATE_FAIL',admitted=False,reason=reason)

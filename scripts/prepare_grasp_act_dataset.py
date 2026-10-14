@@ -4,7 +4,7 @@ Run near VM raw on persistent disk, then transfer this reduced artifact to Mac.
 No simulator truth, LLM logs, credentials, top camera, or measured joints are
 included. Raw originals remain on VM/ARM. No upload is performed here.
 """
-import argparse,hashlib,io,json,subprocess,tarfile
+import argparse,hashlib,io,json,re,subprocess,tarfile
 from pathlib import Path
 from PIL import Image
 from harness.grasp_act_data import read,sha,owned_image,read_episode
@@ -44,7 +44,7 @@ def export_episode(source,target):
     meta={'schema':'ugrp.grasp_act.episode.v1','teacher_admitted':True,'episode_id':plan['episode_id'],
           'start_state_id':plan['episode_id'],'initial_state_sha256':hashlib.sha256(json.dumps(initial,sort_keys=True).encode()).hexdigest(),
           'map_id':plan['map_id'],'split':plan['split'],'robots':list(plan['roles']),
-          'source_sha':result['source_sha'],'raw_manifest_sha256':sha(source/'manifest.json'),
+          'source_sha':result['source_sha'],'raw_manifest_sha256':sha(source/('manifest.json' if (source/'manifest.json').exists() else 'manifest.json.zst')),
           'assignment_source':plan['assignment_source'],'image_size':[224,224],'images':images,'samples':samples,
           'scope':'near grasp only; teacher global navigation samples excluded'}
     (target/'episode.json').write_text(json.dumps(meta,indent=2)+'\n')
@@ -59,7 +59,10 @@ def main():
         raise ValueError('teacher cohort gate >=95% and N>=20 required before collection export')
     a.out.mkdir(parents=True,exist_ok=False);report={'exported':[],'rejected':[]}
     for source in a.runs:
-        try:report['exported'].append(export_episode(source,a.out/source.name))
+        try:
+            episode_id=read(source/'plan.json')['episode_id']
+            if not re.fullmatch(r'[A-Za-z0-9_-]{1,120}',episode_id):raise ValueError('invalid episode identifier')
+            report['exported'].append(export_episode(source,a.out/episode_id))
         except ValueError as e:report['rejected'].append({'source':str(source),'reason':str(e)})
     (a.out/'export.json').write_text(json.dumps(report,indent=2)+'\n')
     from scripts.run_grasp_act_teacher import compress_logs
