@@ -141,7 +141,7 @@ def swept_space(samples,center0):
             'bbox_size_m':[max(xs)-min(xs),max(ys)-min(ys)] if xs else None}
 
 
-def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,measure_fn,frame,pwm_origin,ev,*,audit,reach_mode='calibrated_mid_v1'):
+def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,measure_fn,frame,pwm_origin,ev,*,audit,reach_mode='calibrated_mid_v1',lookaround='off'):
     """G2/G6 set-down-and-look cycle. Commands come only from own geometry, own
     commands and currently visible things; truth is used here for evaluation and
     to give the relative pose of the own band only while it is visible."""
@@ -156,6 +156,17 @@ def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,m
         handoff_pose_estimate=[0.,0.,0.],zone_rect=(0.,0.,1.,1.),reach_mode=reach_mode) for rid in R}   # zone priors unused here
     sched={rid:[] for rid in R};plan_w={rid:[] for rid in R};timeline=[]
     def pose_of(rid):return [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
+    loc={};est_err={}
+    if lookaround!='off':
+        # Map-code own pose estimate: truth at the cycle start plus a frozen per-seed error with the release plan's
+        # sigma (scripts/make_grasp_act_release_plan.POSE_ERROR); afterwards moved only by own issued commands.
+        import numpy as np
+        from sim.lookaround_localization import LookaroundLocalizer
+        from scripts.make_grasp_act_release_plan import POSE_ERROR
+        rng=np.random.default_rng(int(plan['seed'])+911)
+        for rid in sorted(R):
+            est_err[rid]=[float(rng.normal(0,POSE_ERROR[0])),float(rng.normal(0,POSE_ERROR[0])),float(rng.normal(0,POSE_ERROR[1]))]
+            g=pose_of(rid);loc[rid]=LookaroundLocalizer(scene.config['static_map'],[g[0]+est_err[rid][0],g[1]+est_err[rid][1],g[2]+est_err[rid][2]])
     def set_servo(rid,pose,now):
         for sid,v in pose.items():
             if rel[rid].pwm.get(sid)!=v:
@@ -172,7 +183,9 @@ def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,m
                     w,d=plan_w[rid].pop(0);qw[rid].command(w,d,now)
             issued={rid:[lv*max(0.,min(.05,u-now))/.05 if lv else 0. for lv,u in zip(qw[rid].levels,qw[rid].until)] for rid in R}
             rows+=window(.05,label)
-            for rid in R:rel[rid].dead_reckon(issued[rid],.05)
+            for rid in R:
+                rel[rid].dead_reckon(issued[rid],.05)
+                if rid in loc:loc[rid].propagate(issued[rid],.05)
         return rows
     def busy():return any(sched.values()) or any(plan_w.values()) or any(any(qw[r].levels) for r in R)
     def until_idle(label,extra=0.,cap=20.):
@@ -206,8 +219,44 @@ def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,m
     mark('look');static=scene.config['static_map']
     door=plan.get('door');dpts=door_points(door) if door else {'west':[],'east':[]}
     zone=region_points(static['regions'][plan.get('destination_region','zone_A')])
-    look={rid:[] for rid in R}
-    for pan in SETDOWN_PANS:
+    look={rid:[] for rid in R};look_eval={}
+    def gt_view(rid):
+        peer=[p_ for p_ in R if p_!=rid]
+        return {'door_west':points.points_visible(data,rid,dpts['west']),'door_east':points.points_visible(data,rid,dpts['east']),
+                'door_N_per_face':len(dpts['west']),'zone':points.points_visible(data,rid,zone),'zone_N':len(zone),
+                'partner':any(band.body_visible(data,rid,p_+'__robot') for p_ in peer),
+                'own_band_probes':band.measure(data,rid,roles[rid])['visible_probes']}
+    if lookaround!='off':
+        import base64,io
+        import numpy as np
+        from PIL import Image
+        from sim.lookaround_localization import ScriptRunner
+        def err(rid):   # evaluation only
+            g=pose_of(rid);x=loc[rid].own.x
+            return {'error_xy_m':float(math.hypot(x[0]-g[0],x[1]-g[1])),'error_yaw_deg':float(math.degrees((x[2]-g[2]+math.pi)%(2*math.pi)-math.pi)),'truth':g}
+        runners={}
+        for rid in R:
+            look_eval[rid]={'before':err(rid),'t0':float(data.time),'views':[],'estimate_error_at_cycle_start':est_err[rid]}
+            loc[rid].make_plan(rel[rid].pwm.get(6,1500));runners[rid]=ScriptRunner(loc[rid].script(),float(data.time))
+        def capture(rid,now):
+            img=np.asarray(Image.open(io.BytesIO(base64.b64decode(ports[rid].capture()['image']))).convert('RGB'))
+            servo={1:rel[rid].pwm.get(1,2000),**{k:rel[rid].pwm[k] for k in (3,4,5,6)}}
+            rec=loc[rid].observe(now,img,servo);audit.measurement('lookaround','own_rgb_landmarks',rec.get('status')=='measured')
+            row={'t':now-t0,'pan_pulse':servo[6],'wall_points':rec.get('wall_points'),'floor_lines':rec.get('floor_lines'),'doors':rec.get('doors'),
+                 'seen_groups':rec.get('seen_groups'),**err(rid)}
+            look_eval[rid]['views'].append(row);look[rid].append({'pan':servo[6],**gt_view(rid)})
+            ev.write(json.dumps({'kind':'lookaround_view','rid':rid,**row})+'\n');frame(f'setdown_look_{rid}_{servo[6]}')
+        cap=float(data.time)+30.
+        while not all(r.done for r in runners.values()) and float(data.time)<cap:
+            now=float(data.time)
+            for rid in R:
+                runners[rid].tick(now,set_servo=lambda pose,at,rid=rid:set_servo(rid,pose,at),
+                    set_wheels=lambda pl,at,rid=rid:plan_w[rid].extend(pl),
+                    wheels_idle=lambda rid=rid:not plan_w[rid] and all(now>=u-1e-9 for u in qw[rid].until),
+                    capture=lambda at,rid=rid:capture(rid,at))
+            rows+=step(.05,'setdown:lookaround')
+        for rid in R:look_eval[rid].update(after=err(rid),sim_s=float(data.time)-look_eval[rid]['t0'],script=runners[rid].log,done=runners[rid].done)
+    for pan in (SETDOWN_PANS if lookaround=='off' else ()):
         now=float(data.time)
         for rid in R:set_servo(rid,{**{k:pwm_origin[rid][k] for k in (3,4,5)},6:pan},now)
         rows+=step(SETDOWN_DWELL_S,f'setdown:look:{pan}')
@@ -244,10 +293,11 @@ def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,m
     out={'held':held,'fail':fail,'error':error,'timeline':timeline,'cycle_sim_s':float(data.time)-t0,
          'setdown_displacement':pose_delta(pre,landed),'total_displacement':pose_delta(pre,post),
          'landed_tilt_deg':max(abs(landed['beam_pitch_deg']),abs(landed['beam_roll_deg'])),'post_tilt_deg':max(abs(post['beam_pitch_deg']),abs(post['beam_roll_deg'])),
-         'regrip_vs_first_grasp':regrip,'pick_target_source':source,'band_probes_at_pick':seen,'look':look,
-         'look_best':{rid:{k:max(x[k] for x in look[rid]) for k in ('door_west','door_east','zone','own_band_probes')}|{'partner_any':any(x['partner'] for x in look[rid])} for rid in R},
+         'regrip_vs_first_grasp':regrip,'pick_target_source':source,'band_probes_at_pick':seen,'look':look,'lookaround':lookaround,
+         'lookaround_result':{rid:{'localizer':loc[rid].record(),'evaluation':look_eval[rid]} for rid in loc} or None,
+         'look_best':{rid:{k:max((x[k] for x in look[rid]),default=0) for k in ('door_west','door_east','zone','own_band_probes')}|{'partner_any':any(x['partner'] for x in look[rid])} for rid in R},
          'scope':'own-command and visible-only commands; truth for evaluation and visible-band relative pose'}
-    ev.write(json.dumps({'kind':'setdown_summary',**{k:v for k,v in out.items() if k!='look'}})+'\n')
+    ev.write(json.dumps({'kind':'setdown_summary',**{k:v for k,v in out.items() if k not in ('look','lookaround_result')}})+'\n')
     return out
 
 
@@ -362,8 +412,10 @@ def region_points(region,z=.002):
 
 
 def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',destination='zone_A',pair_odometry='off',
-        reach_mode='calibrated_mid_v1',held_object='visible_v0'):
-    from scripts.run_grasp_act_release import HeldAudit
+        reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off'):
+    from scripts.run_grasp_act_release import HeldAudit,LOOKAROUND_MODES,LOOK_RES
+    if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
+    if lookaround!='off' and mode!='setdown_look':raise ValueError('lookaround applies to setdown_look only')
     audit=HeldAudit(held_object)
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
     from sim.grasp_act_scene import make_scene
@@ -378,14 +430,16 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise RuntimeError('committed source required')
     write(out/'RUN_META.json',{'class':'dev','pr':484,'branch':'claude/grasp-act-release','sha':sha,'batch':plan['batch']+'-lookaround-'+mode})
-    report={'status':'running','source_sha':sha,'mode':mode,'actor':actor,'weld':'off','pair_odometry':pair_odometry,'reach_mode':reach_mode,'held_object':held_object,'limits':LIMITS,
+    report={'status':'running','source_sha':sha,'mode':mode,'actor':actor,'weld':'off','pair_odometry':pair_odometry,'reach_mode':reach_mode,'held_object':held_object,'lookaround':lookaround,
+            'own_camera_px':list(LOOK_RES if lookaround!='off' else (320,240)),'limits':LIMITS,
             'scope':'evaluation-only truth metrics; probe commands are fixed schedules, not truth-corrected',
             'loadavg_at_start':os.getloadavg()}
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[]
     try:
         os.environ['UGRP_SIM_OBSERVER_WIDTH']='320';os.environ['UGRP_SIM_OBSERVER_HEIGHT']='240'
         scene=make_scene(plan)
-        world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=320,height=240,render=True,
+        cw,ch=LOOK_RES if lookaround!='off' else (320,240)   # existing OpenCV localisation modules work at 640x480 only
+        world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=cw,height=ch,render=True,
             warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
         if teacher_profile=='observable_v2':
             from sim.s2_realism_camera_binding import bind_camera
@@ -552,7 +606,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
             report['space']=swept_space([{'bases':[r[rid]['base_xy'] for rid in roles],'ends':r['beam_ends_xy']} for r in space_rows],c0)
             report['band_px_samples']=n_px
         elif mode=='setdown_look':
-            report['setdown']=setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,measure,frame,pwm_origin,ev,audit=audit,reach_mode=reach_mode)
+            report['setdown']=setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,measure,frame,pwm_origin,ev,audit=audit,reach_mode=reach_mode,lookaround=lookaround)
             tests.append({'fail':report['setdown']['fail']})
         elif mode=='yaw':
             for duration in YAW_DURATIONS:
@@ -599,7 +653,8 @@ def main():
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='observable_v2')
     p.add_argument('--pair-odometry',choices=('off','gcp_probe_v1'),default='off',help='gcp_probe_v1: pair-carry rates measured on gcp1 (sim/visible_belief.py)')
     p.add_argument('--reach-mode',choices=('calibrated_mid_v1','pad_window_v2'),default='calibrated_mid_v1',help='setdown_look re-grasp approach target')
-    p.add_argument('--held-object',choices=('visible_v0','hidden_v1'),default='visible_v0',help='hidden_v1: held cargo world pose never enters decisions while held');a=p.parse_args()
+    p.add_argument('--held-object',choices=('visible_v0','hidden_v1'),default='visible_v0',help='hidden_v1: held cargo world pose never enters decisions while held')
+    p.add_argument('--lookaround',choices=('off','setdown_lookaround_v1'),default='off',help='setdown_look: look toward static-map landmarks from the own pose estimate (640x480 own camera)');a=p.parse_args()
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,mode=a.mode,actor=a.actor,grasp_cap_s=a.grasp_cap_s,teacher_profile=a.teacher_profile,pair_odometry=a.pair_odometry,reach_mode=a.reach_mode,held_object=a.held_object),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,mode=a.mode,actor=a.actor,grasp_cap_s=a.grasp_cap_s,teacher_profile=a.teacher_profile,pair_odometry=a.pair_odometry,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround),ensure_ascii=False))
 if __name__=='__main__':main()

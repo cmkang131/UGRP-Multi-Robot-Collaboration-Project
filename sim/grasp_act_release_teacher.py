@@ -167,9 +167,14 @@ class ReleaseTeacher:
         self.belief = VisibleBelief(memory_s); self.own_pose_source = own_pose_source
         self.holding = True; self.phase = 'look'
         self.visible_counts = {}; self.blind_s = 0.; self.max_blind_s = {}
-        self.last_report = None; self.last_scan = None
+        self.last_report = None; self.last_scan = None; self.zone_rect = zone_rect; self.belief_time = 0.
         for side, (point, normal) in zone_edges(zone_rect).items():
             self.belief.observe('prior:'+side, relative(handoff_pose_estimate, point, normal), 0., source='map_prior')
+
+    def reanchor_priors(self, pose_estimate):
+        """setdown_lookaround_v1: re-place the static-map zone-edge priors from the looked-at own pose estimate."""
+        for side, (point, normal) in zone_edges(self.zone_rect).items():
+            self.belief.observe('prior:'+side, relative(pose_estimate, point, normal), self.belief_time, source='map_prior')
 
     # --- own geometry ---
     def end_and_outward(self, now):
