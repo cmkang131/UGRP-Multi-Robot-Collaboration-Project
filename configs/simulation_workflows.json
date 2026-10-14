@@ -804,6 +804,22 @@
         "--plan",
         "--mode"
       ]
+    },
+    {
+      "id": "grasp-act-release-teacher",
+      "version": "1.0.0",
+      "purpose": "시연 전용 두 로봇 봉 해제 교사(visible_only): 구역 경계를 자기 카메라로 보고 축 이동·동기 내려놓기·GO/ACK 열기·물러나기, weld OFF",
+      "entry": "scripts/run_grasp_act_release.py",
+      "runner": "scripts.run_grasp_act_release",
+      "docs": "docs/act_execution_decisions.md",
+      "requires": "VM3, committed source, release plan seeds from configs/grasp_act_seed_splits.json; 16-way speed gate for cohorts; no Mac physics",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--plan"
+      ]
     }
   ]
 }

@@ -1,0 +1,23 @@
+{
+  "schema": "ugrp.grasp_act.seed_splits.v1",
+  "registered": "2026-10-14, claude/grasp-act-release (PR #491 on #484). Ranges are inclusive. Never reuse a range for another split; add new ranges instead.",
+  "ranges": {
+    "grasp_gate_078": [[71000, 71039]],
+    "grasp_gate_v2": [[72000, 72039]],
+    "grasp_gate_v3": [[73000, 73039]],
+    "release_gate": [[74000, 74039]],
+    "release_diagnostic": [[74900, 74999]],
+    "train": [[80000, 89999]],
+    "development": [[90000, 90999]],
+    "heldout_start": [[91000, 91999]],
+    "heldout_map": [[92000, 92999]]
+  },
+  "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic"],
+  "heldout_maps": ["zone_wide_corridor_final_v3"],
+  "notes": {
+    "grasp_gate_078": "teacher 078cbb45 gate 36/40 (seen)",
+    "grasp_gate_v2": "observable_v2 3a451048 gate, stopped 27/32 (seen)",
+    "grasp_gate_v3": "Codex new grasp gate, reserved in PR #484 comment",
+    "heldout_maps": "s4_narrow_door_standoff_v4 map, HELDOUT in scripts/make_grasp_act_plan.py"
+  }
+}
