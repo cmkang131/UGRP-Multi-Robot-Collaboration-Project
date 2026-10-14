@@ -107,3 +107,93 @@ def test_speed_gate_cannot_mix_recovery_profiles(tmp_path,monkeypatch):
     monkeypatch.setattr(batch,'same_machine',lambda *a:None)
     with pytest.raises(ValueError,match='approach recovery mode mismatch'):
         batch.reuse_speed_gate(prior,tmp_path/'plan.json',16,3.5,{},approach_recovery='approach_recovery_v1')
+
+
+@pytest.mark.parametrize('idx',[3,17])
+def test_v2_cargo_wall_use_safe_axial_goal_with_unchanged_ik_and_margins(idx):
+    from sim.grasp_act_teacher import grasp_poses
+    from sim.grasp_act_recovery import AXIAL_CHOICES
+    row=next(r for r in CASES if r['episode']==idx);t=make(row,'approach_recovery_v2')
+    w=deepcopy(row['world']);original=deepcopy(w);rad,ds,rs=constraints(w,t.rid,True)
+    nominal=t._geometry(w)[3];assert not free(nominal,ds,rs,rad)
+    value,ready=t._approach(w,w['t'])
+    assert not ready and any(value['wheels']) and t.outcome is None
+    assert t.approach_choice in AXIAL_CHOICES and t.approach_choice[0]==0.
+    pose,g,heading,goal=t._geometry(w);grasp_poses((t.staging_distance,0.,g[2]))
+    assert free(goal,ds,rs,rad) and w==original
+    assert all(segment_free(a,b,ds,rs,rad) for a,b in zip([pose[:2],*t.path],t.path))
+    # Choice is retained through READY; permission does not bypass new obstacles.
+    w['robots'][t.rid]['pose']=[*goal,heading];t.phase='align'
+    assert t.ready_geometry(w)
+    w['objects']['new_obstacle']={'xy':goal,'radius':.1,'top_z_bound_m':.2}
+    assert not t.ready_geometry(w)
+
+
+def test_v2_full_block_keeps_finite_handoff_and_original_constraints():
+    row=CASES[0];t=make(row,'approach_recovery_v2');w=deepcopy(row['world'])
+    w['objects']['block']={'xy':w['beam']['ends'][t.end][:2],'radius':.6,'top_z_bound_m':.4}
+    for dt in (0.,1.,2.,3.):
+        value,ready=t._approach(w,w['t']+dt)
+        assert not ready and not any(value['wheels'])
+    assert t.outcome=='approach_blocked_handoff'
+    assert all(c['offset_deg']==0 for row in t.goal_set_log for c in row['candidates'])
+    # Hidden/expired obstacles never relax geometric margins in the selector.
+    assert constraints(w,t.rid,True)[0]==.13
+
+
+@pytest.mark.parametrize('phase',['search','relook'])
+def test_v2_restore_issued_view_then_near_first_spin_without_hidden_target(phase):
+    t=make(CASES[0],'approach_recovery_v2');t.ever_seen=True;t.search_since=0.;t.phase=phase
+    t.last_visible_pwm={**FOLDED,3:500,4:2500,6:1000}
+    audit=new_input_audit(True,'issued');w=AuditedTeacherInput({'beam':None,'visibility':{t.rid:{'visible_probes':0}}},audit)
+    # Short losses retain v1's exact scan commands.
+    old=make(CASES[0]);old.ever_seen=True;old.search_since=0.;old.phase=phase
+    for now in (0.,.5,1.,2.,3.):assert t._observe_stable(w,now)==old._observe_stable(w,now)
+    for i in range(32,47):
+        value=t._observe_stable(w,i/10);t.remember_applied(value);t.last_tick=i/10
+    assert t.sc['stage']=='settle' and t.sc['k']==0 and not any(value['wheels'])
+    assert value['pwm']['3']==500 and value['pwm']['4']==2500
+    for i in range(47,70):
+        value=t._observe_stable(w,i/10);t.remember_applied(value);t.last_tick=i/10
+    assert t.sc['stage']=='turn' and any(value['wheels'])
+    assert value['pwm']['3']==500 and value['pwm']['4']==2500
+    assert audit['held_world_reads']==audit['invisible_measurements']==0
+
+
+def test_v2_reacquisition_budget_survives_brief_visibility_flicker():
+    row=CASES[0];t=make(row,'approach_recovery_v2');t.episode_started=0.;t.ever_seen=True
+    t.search_since=10.;t.phase='search'
+    lost={'beam':None,'visibility':{t.rid:{'visible_probes':0}}}
+    t._observe_stable(lost,14.)
+    t._observe_stable(row['world'],20.)
+    t._observe_stable(lost,20.1)
+    assert t.reacquire_since==10.
+    value,done=t.step(lost,50.)
+    assert not done and not any(value['wheels']) and t.outcome=='search_timeout_handoff'
+    # A continuously reacquired target does end that encounter budget.
+    t=make(row,'approach_recovery_v2');t.reacquire_since=10.
+    t._observe_stable(row['world'],20.);t._observe_stable(row['world'],20.6)
+    assert t.reacquire_since is None
+
+
+def test_v2_requires_goal_set_before_any_host_work(tmp_path):
+    with pytest.raises(ValueError,match='approach recovery v2'):
+        run({},tmp_path,approach_recovery='approach_recovery_v2')
+    kw={**KW,'approach_goal_set':'off'}
+    with pytest.raises(ValueError,match='approach recovery v2'):
+        VisibleOnlyGraspTeacher('r1','blue',FOLDED,**kw,approach_recovery='approach_recovery_v2')
+
+
+def test_v2_checks_issued_pulse_and_does_not_cancel_committed_pick(monkeypatch):
+    t=make(CASES[0],'approach_recovery_v2');t.phase='align'
+    t.approach_choice=(0.,.196);t.approach_plan_valid=True
+    w={'robots':{t.rid:{'pose':[0.,0.,0.]}},'objects':{'obstacle':{'xy':[.16,0.],'radius':.02,'top_z_bound_m':.05}},
+       'walls':[],'beam':{'pose':[1.,0.,0.]}}
+    value=t._continuous(0.,.15,0.,0.);assert any(value['wheels'])
+    monkeypatch.setattr(t,'_step',lambda *a,**kw:(value,False))
+    guarded,done=t.step(w,0.)
+    assert not done and not any(guarded['wheels'])
+    t=make(CASES[0],'approach_recovery_v2');t.started=True;t.phase='pick';t.phase_t=0.
+    t.reacquire_since=0.;t.episode_started=0.
+    value,done=t.step(CASES[0]['world'],50.)
+    assert done and t.phase=='complete' and t.outcome is None

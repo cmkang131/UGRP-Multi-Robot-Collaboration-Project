@@ -82,16 +82,17 @@ def test_first_failure_leaves_other_episode_running(tmp_path,fake_children):
     assert summary['clean_handoff_rate']==summary['approach_handoff_rate']==1/3
 
 
-def test_nominal_handoff_toggle_reaches_each_teacher_child(tmp_path,fake_children):
+@pytest.mark.parametrize('recovery',['approach_recovery_v1','approach_recovery_v2'])
+def test_nominal_handoff_toggle_reaches_each_teacher_child(tmp_path,fake_children,recovery):
     fake_children[0].update({0:(0,HANDOFF,0),1:(1,SUCCESS,0)})
     rows,reason,killed=run_wave(tmp_path,fake_children,nominal_blocked_handoff='nominal_blocked_handoff_v1',
-                               approach_progress='approach_progress_v1',approach_recovery='approach_recovery_v1')
+                               approach_progress='approach_progress_v1',approach_recovery=recovery)
     assert reason is None and killed==[]
     for i in (0,1):
         command=json.loads((tmp_path/f'wave/episode-{i:03d}/PROCESS.json').read_text())['command']
         assert command[command.index('--nominal-blocked-handoff')+1]=='nominal_blocked_handoff_v1'
         assert command[command.index('--approach-progress')+1]=='approach_progress_v1'
-        assert command[command.index('--approach-recovery')+1]=='approach_recovery_v1'
+        assert command[command.index('--approach-recovery')+1]==recovery
     summary=batch.summarize(rows,40)
     assert (summary['n'],summary['N'],summary['planned_N'],summary['approach_handoff_n'])==(1,2,40,1)
 
@@ -138,3 +139,22 @@ def test_host_error_still_stops_immediately(tmp_path,fake_children):
 def test_repeated_policy_cannot_be_bypassed(tmp_path,fake_children):
     with pytest.raises(ValueError,match='cannot bypass'):
         run_wave(tmp_path,fake_children,complete_frozen_cohort=True)
+
+
+def test_diagnostic18_limits_concurrency_and_carries_failure_causes_across_waves(tmp_path,monkeypatch):
+    calls=[];stop=batch.FailureStop('repeated_cause_v1')
+    def wave(root,plan,indices,cap,**kw):
+        calls.append((root.name,list(indices)))
+        assert kw['failure_stop'] is stop and len(indices)<=15
+        failed=kw['failure_stop'].observe(indices[-1],failure())
+        return [{'index':i} for i in indices], 'PHYSICAL_TEACHER_FAILURE' if failed else None
+    monkeypatch.setattr(batch,'wave',wave)
+    rows,reason=batch.diagnostic_waves(tmp_path,tmp_path/'plan.json',list(range(18)),60.,
+                                      concurrency=15,failure_stop=stop)
+    assert calls==[('diagnostic',list(range(15))),('diagnostic-015',[15,16,17])]
+    assert len(rows)==18 and reason=='PHYSICAL_TEACHER_FAILURE'
+    assert stop.diagnostic()['causes'][0]['episode_indices']==[14,17]
+    calls.clear();stop=batch.FailureStop('repeated_cause_v1');stop.observe(99,failure())
+    rows,reason=batch.diagnostic_waves(tmp_path,tmp_path/'plan.json',list(range(18)),60.,
+                                      concurrency=15,failure_stop=stop)
+    assert len(calls)==1 and len(rows)==15 and reason=='PHYSICAL_TEACHER_FAILURE'

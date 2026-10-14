@@ -42,7 +42,7 @@ def nominal_goal_blocked(world, rid, end, bounds, folded, *, static_map_only=Fal
             or not free(goal, [d for d in discs if not isinstance(d, PeerDisc)], rects, radius))
 
 
-def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M)):
+def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, choices=None):
     """Fallback after nominal_goal_blocked; keep an already selected stance.
 
     Angles stay on the assigned end's outward half-circle. Distances must pass
@@ -84,11 +84,15 @@ def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M)):
     best = candidate(current)
     if best is None:
         alternatives = []
-        for angle in ANGLES_DEG:
-            for distance in DISTANCES_M:
-                choice = (math.radians(angle), distance)
-                if choice == current:continue
-                item = candidate(choice)
-                if item is not None:alternatives.append(item)
-        best = min(alternatives, key=lambda p:p['cost']) if alternatives else None
+        candidates = ([(math.radians(a), d) for a in ANGLES_DEG for d in DISTANCES_M]
+                      if choices is None else choices)
+        for choice in candidates:
+            if choice == current:continue
+            item = candidate(choice)
+            if item is not None:alternatives.append(item)
+        # The narrow axial set first minimizes departure from the nominal
+        # distance; the original wide-angle comparison keeps route-cost order.
+        rank = ((lambda p:p['cost']) if choices is None else
+                (lambda p:(abs(p['choice'][1]-STATION_M),p['cost'])))
+        best = min(alternatives, key=rank) if alternatives else None
     return best, checked

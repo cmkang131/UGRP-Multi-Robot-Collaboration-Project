@@ -1,0 +1,170 @@
+{
+  "fixture": "tests/fixtures/grasp_act_search8_blocks.json",
+  "fixture_sha256": "05d4809f786335bb8d850bcf0359e9ae65f993bd54ba3121484f255505ea4bf3",
+  "scope": "saved visible geometry/issued pose; collision margins and full IK only; not physical grasp",
+  "rows": [
+    {
+      "episode": 3,
+      "rid": "r1",
+      "selected_choice": [
+        0.0,
+        0.196
+      ],
+      "selected_goal": [
+        0.18636724221001322,
+        -0.9754613577037695
+      ],
+      "moving": true,
+      "goal_free": true,
+      "all_segments_free": true,
+      "minimum_goal_clearance_m": 0.000942060677919937,
+      "candidate_log": [
+        {
+          "t": 8.600000000002632,
+          "candidates": [
+            {
+              "offset_deg": 0.0,
+              "distance_m": 0.203,
+              "goal": [
+                0.17938683013050435,
+                -0.9759846618220859
+              ],
+              "reason": "blocked_goal"
+            },
+            {
+              "offset_deg": 0.0,
+              "distance_m": 0.198,
+              "goal": [
+                0.18437283875872496,
+                -0.9756108731661456
+              ],
+              "reason": "blocked_goal"
+            },
+            {
+              "offset_deg": 0.0,
+              "distance_m": 0.208,
+              "goal": [
+                0.17440082150228375,
+                -0.976358450478026
+              ],
+              "reason": "blocked_goal"
+            },
+            {
+              "offset_deg": 0.0,
+              "distance_m": 0.196,
+              "goal": [
+                0.18636724221001322,
+                -0.9754613577037695
+              ],
+              "reason": "feasible",
+              "cost": 0.975755696065933
+            },
+            {
+              "offset_deg": 0.0,
+              "distance_m": 0.21,
+              "goal": [
+                0.17240641805099552,
+                -0.9765079659404021
+              ],
+              "reason": "ik_unreachable"
+            }
+          ],
+          "selected": {
+            "choice": [
+              0.0,
+              0.196
+            ],
+            "goal": [
+              0.18636724221001322,
+              -0.9754613577037695
+            ],
+            "heading": 6.358012847392502,
+            "cost": 0.975755696065933
+          }
+        }
+      ]
+    },
+    {
+      "episode": 17,
+      "rid": "r2",
+      "selected_choice": [
+        0.0,
+        0.198
+      ],
+      "selected_goal": [
+        1.270751145658581,
+        -0.39709408163043675
+      ],
+      "moving": true,
+      "goal_free": true,
+      "all_segments_free": true,
+      "minimum_goal_clearance_m": 0.0035337220113118573,
+      "candidate_log": [
+        {
+          "t": 8.400000000003098,
+          "candidates": [
+            {
+              "offset_deg": 0.0,
+              "distance_m": 0.203,
+              "goal": [
+                1.2746997231235608,
+                -0.40016144792793906
+              ],
+              "reason": "blocked_goal"
+            },
+            {
+              "offset_deg": 0.0,
+              "distance_m": 0.198,
+              "goal": [
+                1.270751145658581,
+                -0.39709408163043675
+              ],
+              "reason": "feasible",
+              "cost": 0.676650503627886
+            },
+            {
+              "offset_deg": 0.0,
+              "distance_m": 0.208,
+              "goal": [
+                1.2786483005885407,
+                -0.40322881422544143
+              ],
+              "reason": "blocked_goal"
+            },
+            {
+              "offset_deg": 0.0,
+              "distance_m": 0.196,
+              "goal": [
+                1.2691717146725892,
+                -0.3958671351114358
+              ],
+              "reason": "feasible",
+              "cost": 0.6761415493930927
+            },
+            {
+              "offset_deg": 0.0,
+              "distance_m": 0.21,
+              "goal": [
+                1.2802277315745325,
+                -0.4044557607444424
+              ],
+              "reason": "ik_unreachable"
+            }
+          ],
+          "selected": {
+            "choice": [
+              0.0,
+              0.198
+            ],
+            "goal": [
+              1.270751145658581,
+              -0.39709408163043675
+            ],
+            "heading": 2.481141421358078,
+            "cost": 0.676650503627886
+          }
+        }
+      ]
+    }
+  ]
+}

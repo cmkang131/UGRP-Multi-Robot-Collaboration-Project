@@ -113,7 +113,8 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
     if approach_progress not in ('off','approach_progress_v1'):raise ValueError('unknown approach progress mode')
     if approach_progress!='off' and (teacher_profile!='visible_only' or teacher_stability=='off' or self_pose_source!='issued'):
         raise ValueError('approach progress requires visible_only, align_relook_v1 and issued pose')
-    if approach_recovery not in ('off','approach_recovery_v1'):raise ValueError('unknown approach recovery mode')
+    if approach_recovery=='approach_recovery_v2' and approach_goal_set=='off':raise ValueError('approach recovery v2 requires approach goal set')
+    if approach_recovery not in ('off','approach_recovery_v1','approach_recovery_v2'):raise ValueError('unknown approach recovery mode')
     if approach_recovery!='off' and (teacher_profile!='visible_only' or self_pose_source!='issued' or approach_progress=='off' or teacher_search!='search_body_scan_v2'):
         raise ValueError('approach recovery requires visible_only, issued, progress and search_body_scan_v2')
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use admitted execution host')
@@ -365,7 +366,7 @@ def main():
     p.add_argument('--approach-goal-set',choices=('off','approach_goal_set_v1'),default='off')
     p.add_argument('--nominal-blocked-handoff',choices=('off','nominal_blocked_handoff_v1'),default='off')
     p.add_argument('--approach-progress',choices=('off','approach_progress_v1'),default='off')
-    p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1'),default='off')
+    p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1','approach_recovery_v2'),default='off')
     p.add_argument('--self-pose-source',choices=('issued','perfect_self_comparison'),default='issued')
     p.add_argument('--execution-host',choices=('azure','gcp1'),default='azure')
     p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path)

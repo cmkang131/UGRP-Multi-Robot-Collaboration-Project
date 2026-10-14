@@ -7,6 +7,11 @@ import math
 from scripts.zone_teacher import PeerDisc, plan_path
 from sim.grasp_act_visible_route import free, segment_free
 
+# A narrow goal neighbourhood along the SAME beam axis. Every distance must
+# pass the existing full descent IK and original obstacle/peer margins.
+# No sideways grasp, footprint reduction or measured-state input.
+AXIAL_CHOICES = tuple((0., d) for d in (.203, .198, .208, .196, .210))
+
 
 def peer_goal_blocked(goal, discs, rects, radius):
     peers = [d for d in discs if isinstance(d, PeerDisc)]

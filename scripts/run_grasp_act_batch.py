@@ -197,13 +197,25 @@ def selected_indices(size,start,explicit):
     return sorted(explicit)
 
 
+def diagnostic_waves(root,plan,indices,cap,*,concurrency,failure_stop,**kwargs):
+    """Finite seen-case batch; preserve repeated causes across <=16-job waves."""
+    rows=[];reason=None
+    for offset in range(0,len(indices),concurrency):
+        target=root/('diagnostic' if offset==0 else f'diagnostic-{offset:03d}')
+        current,reason=wave(target,plan,indices[offset:offset+concurrency],cap,
+                            failure_stop=failure_stop,**kwargs)
+        rows.extend(current)
+        if reason:break
+    return rows,reason
+
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--plan',type=Path,required=True)
     p.add_argument('--concurrency',type=int,default=16);p.add_argument('--speed-gate-limit',type=positive)
     p.add_argument('--execution-host',choices=('azure','gcp1'),default='azure')
     p.add_argument('--speed-baseline',type=Path,help='same-machine concurrency measurement before the first GCP cohort')
     p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true')
-    p.add_argument('--diagnostic-only',action='store_true',help='one finite wave of seen cases; never qualifies a gate')
+    p.add_argument('--diagnostic-only',action='store_true',help='finite waves of seen cases; never qualifies a gate')
     p.add_argument('--start-index',type=int,default=0);p.add_argument('--speed-gate-from',type=Path)
     p.add_argument('--episode-indices',type=int,nargs='+',help='explicit unchanged frozen-plan indices; never resample')
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
@@ -212,7 +224,7 @@ def main():
     p.add_argument('--approach-goal-set',choices=('off','approach_goal_set_v1'),default='off')
     p.add_argument('--nominal-blocked-handoff',choices=('off','nominal_blocked_handoff_v1'),default='off')
     p.add_argument('--approach-progress',choices=('off','approach_progress_v1'),default='off')
-    p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1'),default='off')
+    p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1','approach_recovery_v2'),default='off')
     p.add_argument('--failure-stop-scope',choices=('first_failure','repeated_cause_v1'),default='first_failure',
         help='opt-in: stop the batch after the same reason and phase fail in two independent episodes')
     p.add_argument('--complete-frozen-cohort',action='store_true',help='record individual finite failures; operator still stops diagnosed shared defects')
@@ -225,6 +237,7 @@ def main():
     if a.approach_goal_set!='off' and (a.teacher_profile!='visible_only' or a.teacher_stability=='off'):raise ValueError('approach goal set requires visible_only and align_relook_v1')
     if a.nominal_blocked_handoff!='off' and (a.teacher_profile!='visible_only' or a.teacher_stability=='off'):raise ValueError('nominal blocked handoff requires visible_only and align_relook_v1')
     if a.approach_progress!='off' and (a.teacher_profile!='visible_only' or a.teacher_stability=='off'):raise ValueError('approach progress requires visible_only and align_relook_v1')
+    if a.approach_recovery=='approach_recovery_v2' and a.approach_goal_set=='off':raise ValueError('approach recovery v2 requires approach goal set')
     if a.approach_recovery!='off' and (a.teacher_profile!='visible_only' or a.approach_progress=='off' or a.teacher_search!='search_body_scan_v2'):raise ValueError('approach recovery requires visible_only, progress and search_body_scan_v2')
     root=a.root.resolve();require_run_root(root);host=identity(a.execution_host)
     if a.speed_gate_limit is None:
@@ -250,10 +263,10 @@ def main():
         'teacher_stability':a.teacher_stability,'teacher_search':a.teacher_search,'approach_goal_set':a.approach_goal_set,'nominal_blocked_handoff':a.nominal_blocked_handoff,'approach_progress':a.approach_progress,'approach_recovery':a.approach_recovery,
         'start_nominal_goal_feasible':plan_data.get('start_nominal_goal_feasible','off'),'nominal_goal_filter':plan_data.get('nominal_goal_filter'),'execution_host':host,'load_limit':load_limit,'speed_limit':a.speed_gate_limit,'speed_baseline':baseline})
     if a.diagnostic_only:
-        if len(indices)>a.concurrency or a.probe_only or a.speed_gate_from:
-            raise ValueError('diagnostic is one finite wave, separate from speed and qualification')
-        rows,reason=wave(root/'diagnostic',plan,indices,a.cap_s,probe=False,limit=a.speed_gate_limit,
-            failure_stop=failure_stop,
+        if a.probe_only or a.speed_gate_from:
+            raise ValueError('diagnostic is separate from speed and qualification')
+        rows,reason=diagnostic_waves(root,plan,indices,a.cap_s,probe=False,limit=a.speed_gate_limit,
+            concurrency=a.concurrency,failure_stop=failure_stop,
             teacher_profile=a.teacher_profile,complete_frozen_cohort=a.complete_frozen_cohort,execution_host=a.execution_host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery)
         write(root/'diagnostic.json',{**summarize(rows,len(indices)),'qualified':False,
             'purpose':'seen regression replay; not a fresh teacher gate','stop_reason':reason,'execution_host':host,'failure_stop':failure_stop.diagnostic()})
