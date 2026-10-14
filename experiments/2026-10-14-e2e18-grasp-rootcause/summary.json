@@ -1,10 +1,10 @@
 {
   "schema": "ugrp.e2e18.privileged_act.v1",
-  "status": "offline_implementation_pending_vm_release",
+  "status": "continuous_teacher_diagnostic_submitted",
   "classification": "dev",
   "research_result": false,
   "scope_changed": "2026-10-14 one multitask ACT for local grasp/release of s1-s8 cargo; map code navigation, Gemma skill decisions, private Kaggle GPU training authorized",
-  "source_sha": "d7f13494b3673c0205266119fe082ed92b660f73",
+  "source_sha": "b0cc9d775f57c2b8eca76144fe986b3c501ed35f",
   "audit": {
     "status": "short_saved_stage_audit_completed_with_limits",
     "funnel": {
@@ -1235,7 +1235,29 @@
   "teacher": {
     "started_N": 0,
     "success_n": null,
-    "target_rate": 0.95
+    "target_rate": 0.95,
+    "gate_minimum_N": 40,
+    "gate_required_n": 38,
+    "gate_n": 0,
+    "gate_N": 0,
+    "interrupted_batch": {
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-9d9b90b9",
+      "excluded_N": 16,
+      "reason": "coordinator whole-batch stop; raw auto 1/1 not admitted",
+      "audit": "interrupted-pulse-audit.json"
+    },
+    "measurement_recording": "no student RGB; 320x240 top review 1Hz; command/evaluation ledgers",
+    "continuous_diagnostic": {
+      "source_sha": "b0cc9d775f57c2b8eca76144fe986b3c501ed35f",
+      "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-continuous-b0cc9d77",
+      "status": "submitted_not_verified_complete",
+      "r1_distance_m": [
+        0.5086075822921837,
+        1.9250158193227715
+      ],
+      "cap_s": 30,
+      "N": 0
+    }
   },
   "data": {
     "new_episodes": 0,
@@ -1266,8 +1288,10 @@
     "price_scope": "retail list, not actual invoice; disk and network excluded"
   },
   "vm3": {
-    "release_required": "PR483 explicit VM3 비움 or coordinator confirmation",
-    "used_by_this_task": false
+    "release_authorized": "2026-10-14 11:38 KST",
+    "host": "azure3",
+    "size": "Standard_F16als_v6",
+    "shutdown_verification": "pending_after_work"
   },
   "raw": [
     {
@@ -1326,7 +1350,12 @@
     "visual_frames": "12/12 sha256 matched, directly viewed",
     "contract_tests": "23/23 offline contract, skill, teacher math, dataset and scene-only construction; no World or physics",
     "act_tests": "2/2 CPU forward/backward, deployed done gradient, save/readback under exclusive lock",
-    "workflow_and_static": "44/44 including 23 grasp tests and catalog read-only planning; missing new catalog sample fixed before pass"
+    "workflow_and_static": "44/44 including 23 grasp tests and catalog read-only planning; missing new catalog sample fixed before pass",
+    "continuous_contract_tests": {
+      "passed": 26,
+      "failed": 0,
+      "scope": "offline; no physical success implication"
+    }
   },
   "kaggle": {
     "private_dataset_upload_authorized": true,
@@ -1375,7 +1404,8 @@
     "teacher_scene": "s1/s3/s6 v4: same s1-s8 task content, current v3 hardware; 20 randomized pair plans, not executed",
     "workflow": "grasp-act-teacher@1.0.0",
     "student_worker_and_visual_verifier": "not yet integrated",
-    "kaggle_submission": "not submitted"
+    "kaggle_submission": "not submitted",
+    "action_contract": "ugrp.grasp_act.student.v3; continuous normalized mecanum + fixed command-history motor feedforward"
   },
   "teacher_pilot_20261014": {
     "diagnostic_joint": {
@@ -1392,5 +1422,15 @@
     "evidence": "teacher-pilot-4d0161ae.json",
     "archive_verified": true,
     "data_generated_for_training": 0
+  },
+  "physics_profile_check": {
+    "method": "unchanged source hashes vs interrupted v7 run; runtime XML manifest still pending",
+    "modules": {
+      "sim/masterpi_drive_friction_v7.py": "6adcfd8e2fae919df777cf7532ef2e757e3b734dfe980fb38a6b4ccb65c2c2fa",
+      "sim/zone_scenario_scene.py": "18408239cf13487e7f808eb9797337f3106ac1939892fb4ae8ec1f956b16c9e3",
+      "sim/grasp_act_scene.py": "c558fbb29ef49a07ef38ae0dedfcb50499dff3494e207ba50306abebfad7048a",
+      "sim/s2_servo_stiffness.py": "66dc724652d07edbe35ef185b4fa7d5f42cfc6ec535cec9e73353ee22a52bbea"
+    },
+    "profile": "native v7 / cargo_noslip_v1 / real_v1 / roller mesh / idle off / weld off"
   }
 }
