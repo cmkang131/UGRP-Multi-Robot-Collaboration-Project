@@ -100,3 +100,20 @@ def test_new_reacquisition_is_not_reported_first_attempt():
     from scripts.run_e2e_stage_probe import stage_metrics
     result=stage_metrics([{'event':'beam_tracking_reacquire_begin','robot_id':'r1'}],{'r1':10.,'r2':10.},True,10.)
     assert result['both_held'] and not result['first_attempt_success']
+
+
+def test_scan_records_coverage_and_advances_with_transport_event_signature():
+    r=robot();r.last_obs['frame_id']=2
+    class Client:
+        future=None
+        def poll(self):return None
+    events=[];poses=[]
+    def event(t,event,**details):events.append(dict(t=t,event=event,**details))
+    state=dict(phase='scan',phase_started=0.,view=0,view_frame=1,coverage=[],blocked=set(),failures={})
+    tr=NS(beam_tracking='view_return_v1',robots={'r1':r},beam_search={'r1':state},
+          beam_clients={'r1':Client()},event=event,_poses=lambda *args:poses.append(args))
+    fine,actions=m.step(tr,'r1',3.,{})
+    assert not fine and actions==[{'kind':'hold'}]
+    assert state['view']==1 and state['coverage'][0]['t']==3.
+    assert events[0]['event']=='beam_tracking_coverage' and events[0]['frame_id']==2
+    assert poses[0][2][0][0][6]==1200

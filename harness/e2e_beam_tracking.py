@@ -222,7 +222,7 @@ def step(tr,rid,now,approach):
         frame=r.last_obs['frame_id'];index=state.get('view',-1)
         if index>=0 and now-state['phase_started']>=PARAMS['scan_view_s'] and frame!=state.get('view_frame'):
             state['coverage'].append(dict(index=index,frame_id=frame,t=now,servo=dict(r.servo),body_visible=bool((r.beam_observation or {}).get('result',{}).get('visible'))))
-            tr.event(now,'beam_tracking_coverage',robot_id=rid,**state['coverage'][-1]);index+=1
+            tr.event(now,'beam_tracking_coverage',robot_id=rid,**{k:v for k,v in state['coverage'][-1].items() if k!='t'});index+=1
         elif index<0:index=0
         if index>=len(views):finish(tr,rid,now,state,'ordered_sweep_complete');return False,[dict(kind='hold')]
         if index!=state.get('view'):
