@@ -3,7 +3,11 @@
 The frozen grasp teacher (unchanged) reaches a joint hold. Afterwards one robot
 issues bounded look commands: servo-6 pan sweeps (mode ``pan``) or short
 in-place body yaw pulses with native wheel magnitude 0 or 0.31-0.40 (mode
-``yaw``). Simulator truth is used ONLY for evaluation metrics written to this
+``yaw``). Loaded formation motion (G1/G7): ``rotate_center`` (both robots rotate
+the held beam about its centre), ``pivot_end`` (rotation about the actor's grip
+point) and ``carry_straight`` (axial and lateral carry legs). Formation motion is
+open loop: per-wheel 0.35 pulses whose durations come from one shared scale so
+both robots get the same commanded body rate. Simulator truth is used ONLY for evaluation metrics written to this
 run's own files (slip, tilt, finger force, partner twist, visibility ratios).
 Nothing here is a student input and nothing feeds back into a command.
 """
@@ -22,6 +26,118 @@ PAN_STEPS=(20,40,80,120,180,270,400)          # PWM; 2000/180 PWM per degree
 PAN_REPEAT=((40,8),(120,8))                   # ratchet check: same amplitude repeated
 YAW_DURATIONS=(.1,.2,.3,.5,.8)                # s; native wheel level 1/3 (0.31-0.40 band)
 YAW_EFFORT=.25                                # +1/12 kinetic feedforward -> 0.333, breakaway 0.35
+# Loaded formation motion (G1 rotation, G7 carry). Open loop; rates use the provisional
+# own-command calibration in sim/visible_belief.py, and the realized motion is logged
+# against it (this probe doubles as calibration data for those constants).
+WHEEL=.35
+DUTY_PERIOD_S=.15                             # = pulse cap; min/max realizable duration ratio 0.04/0.15
+MIN_PULSE_S=.04
+GRIP_X_M=.203                                 # base -> grip site along the body x axis (station distance)
+BEAM_GRIP_HALF_M=.27                          # beam centre -> band centre (grip)
+ROTATE_STEP_DEG=15.
+ROTATE_TOTAL_DEG=90.
+ROBOT_RADIUS_M=.18                            # plan footprint radius (make_grasp_act_release_plan)
+CARRY_LEGS=(('axial',.20,1.),('axial',-.20,1.),('axial',.20,.5),('axial',-.20,.5),('lateral',.15,1.),('lateral',-.15,1.))
+FORMATION_MODES=('rotate_center','pivot_end','carry_straight')
+BAND_HSV={'teal':((70,120,90),(90,255,255)),'blue':((110,120,60),(130,255,255))}   # OpenCV HSV of sim/grasp_act_scene COLORS
+
+
+def rotation_efforts(radius_m,omega=1.):
+    """Wheel efforts (level units) for body rotation at omega about the body-frame point (radius, 0).
+
+    Body velocity of the base: forward 0, lateral -omega*radius, turn omega.
+    Wheel mix (f-l-t, f+l+t, f+l-t, f-l+t) as harness.grasp_act_contract.wheel_mix."""
+    from sim.visible_belief import LATERAL_M_PER_S_AT_035 as LAT,YAW_RAD_PER_S_AT_035 as YAW
+    l=-omega*radius_m/LAT*WHEEL;t=omega/YAW*WHEEL
+    return (-l-t,l+t,l-t,-l+t)
+
+
+def body_levels(levels,durations,period=DUTY_PERIOD_S):
+    """Time-averaged body (forward, left, turn) level over one period."""
+    from sim.visible_belief import wheel_to_body
+    return wheel_to_body([w*d/period for w,d in zip(levels,durations)])
+
+
+def pair_duty(efforts,*,period=DUTY_PERIOD_S,min_pulse=MIN_PULSE_S):
+    """Shared-scale per-wheel 0.35 pulses for several robots.
+
+    One scale for all robots keeps the commanded body rates equal. A pulse
+    shorter than ``min_pulse`` is zeroed (recorded); the robot's remaining
+    wheels are then rescaled so its turn level matches the intended one, and
+    the realized rotation point is reported. Raises if not realizable."""
+    from sim.visible_belief import LATERAL_M_PER_S_AT_035 as LAT,YAW_RAD_PER_S_AT_035 as YAW
+    top=max(abs(w) for e in efforts.values() for w in e)
+    if top<=0:raise ValueError('zero motion')
+    out={}
+    for rid,e in efforts.items():
+        dur=[period*abs(w)/top for w in e];lev=[math.copysign(WHEEL,w) if w else 0. for w in e]
+        intended=body_levels(lev,dur,period)
+        zeroed=[i for i,d in enumerate(dur) if 0<d<min_pulse]
+        for i in zeroed:dur[i]=0.;lev[i]=0.
+        got=body_levels(lev,dur,period)
+        ref=2 if abs(intended[2])>1e-12 else (0 if abs(intended[0])>1e-12 else 1)
+        if zeroed and abs(got[ref])>1e-12:
+            k=intended[ref]/got[ref];dur=[d*k for d in dur]
+        if any(d>period+1e-9 for d in dur):raise ValueError(f'{rid}: not realizable after min-pulse rescale')
+        dur=[round(d,4) for d in dur];got=body_levels(lev,dur,period)
+        pivot=None
+        if abs(got[2])>1e-12:
+            pivot=-(got[1]/WHEEL*LAT)/(got[2]/WHEEL*YAW)
+        out[rid]={'levels':lev,'durations':dur,'zeroed_wheels':zeroed,'body_levels':list(got),'realized_pivot_x_m':pivot}
+    return out
+
+
+def rotation_plan(mode,actor,partner,*,step_deg=ROTATE_STEP_DEG,sign=1.):
+    """Per-period wheel plan and period count for one rotation increment."""
+    from sim.visible_belief import YAW_RAD_PER_S_AT_035 as YAW
+    if mode=='rotate_center':radii={actor:GRIP_X_M+BEAM_GRIP_HALF_M,partner:GRIP_X_M+BEAM_GRIP_HALF_M}
+    elif mode=='pivot_end':radii={actor:GRIP_X_M,partner:GRIP_X_M+2*BEAM_GRIP_HALF_M}
+    else:raise ValueError(mode)
+    duty=pair_duty({rid:rotation_efforts(r,sign) for rid,r in radii.items()})
+    omega=duty[actor]['body_levels'][2]/WHEEL*YAW
+    periods=max(1,round(math.radians(step_deg)/(abs(omega)*DUTY_PERIOD_S)))
+    return {'duty':duty,'commanded_rad_s':omega,'periods':periods,'commanded_step_deg':math.degrees(abs(omega)*DUTY_PERIOD_S*periods),
+            'intended_pivot_x_m':radii}
+
+
+def carry_plan(kind,distance_m,duty,actor,partner):
+    """Formation translation: robots face each other along the beam axis.
+
+    axial: actor forward, partner backward; lateral: actor left, partner right.
+    All four wheels at 0.35 for duty*period each period."""
+    from sim.visible_belief import AXIAL_M_PER_S_AT_035 as AX,LATERAL_M_PER_S_AT_035 as LAT
+    if not 0<duty<=1:raise ValueError('duty in (0, 1]')
+    d=round(DUTY_PERIOD_S*duty,4)
+    if d<MIN_PULSE_S:raise ValueError('pulse below minimum')
+    sgn=1. if distance_m>0 else -1.
+    if kind=='axial':f={actor:(1.,1.,1.,1.),partner:(-1.,-1.,-1.,-1.)};speed=AX
+    elif kind=='lateral':f={actor:(-1.,1.,1.,-1.),partner:(1.,-1.,-1.,1.)};speed=LAT
+    else:raise ValueError(kind)
+    plan={rid:{'levels':[sgn*WHEEL*x for x in v],'durations':[d]*4} for rid,v in f.items()}
+    periods=max(1,round(abs(distance_m)/(speed*duty*DUTY_PERIOD_S)))
+    return {'duty':plan,'periods':periods,'commanded_m':speed*duty*DUTY_PERIOD_S*periods*sgn}
+
+
+def swept_space(samples,center0):
+    """Truth-only: space the formation needed (robot footprints + beam ends)."""
+    radius=0.;xs=[];ys=[]
+    for s in samples:
+        for xy in s['bases']:
+            radius=max(radius,math.dist(xy,center0)+ROBOT_RADIUS_M)
+            xs+=[xy[0]-ROBOT_RADIUS_M,xy[0]+ROBOT_RADIUS_M];ys+=[xy[1]-ROBOT_RADIUS_M,xy[1]+ROBOT_RADIUS_M]
+        for xy in s['ends']:
+            radius=max(radius,math.dist(xy,center0));xs.append(xy[0]);ys.append(xy[1])
+    return {'swept_radius_m':radius,'bbox_m':[min(xs),max(xs),min(ys),max(ys)] if xs else None,
+            'bbox_size_m':[max(xs)-min(xs),max(ys)-min(ys)] if xs else None}
+
+
+def band_pixels(rgb,role):
+    """Own-camera slip proxy (what map code could compute with OpenCV): own end band pixels."""
+    import cv2,numpy as np
+    hsv=cv2.cvtColor(np.asarray(rgb,dtype=np.uint8),cv2.COLOR_RGB2HSV);lo,hi=BAND_HSV[role]
+    mask=cv2.inRange(hsv,np.array(lo),np.array(hi));ys,xs=np.nonzero(mask)
+    if not len(xs):return {'area_px':0,'centroid':None,'top_v':None,'bottom_v':None}
+    return {'area_px':int(len(xs)),'centroid':[float(xs.mean()),float(ys.mean())],'top_v':int(ys.min()),'bottom_v':int(ys.max())}
 
 
 def beam_frame(world,inst):
@@ -46,6 +162,7 @@ def measure(world,inst,roles,scene,base=None):
          'beam_roll_deg':math.degrees(math.atan2(rot[2,1],rot[2,2])),
          'beam_yaw_deg':math.degrees(math.atan2(rot[1,0],rot[0,0]))}
     snap=snapshot(world,inst,roles,scene);row['beam_min_z']=snap['beam']['min_z']
+    row['beam_ends_xy']=[list(map(float,v[:2])) for v in snap['beam']['ends'].values()]
     for rid in roles:
         local=rot.T@(grip_xyz(world,rid)-pos)
         xyz=world.robot(rid).base_xyz();yaw=float(world.robot(rid).base_rpy()[2])
@@ -69,7 +186,7 @@ def delta(row,base,roles):
     return d
 
 
-def verdict(samples,roles,actor):
+def verdict(samples,roles,actor,*,formation=False):
     """Worst case over one test window, relative to the pre-test hold."""
     worst={'tilt_deg':0.,'beam_min_z':math.inf}
     for rid in roles:worst[rid]={'slip_axis_mm':0.,'slip_perp_mm':0.,'finger_min_n':math.inf,'base_shift_mm':0.,'base_yaw_deg':0.,
@@ -94,6 +211,7 @@ def verdict(samples,roles,actor):
         if w['longest_low_force_s']>=LIMITS['grip_loss_s']-1e-9:reasons.append(rid+':grip_force')
         if w['slip_axis_mm']>LIMITS['slip_axis_mm']:reasons.append(rid+':slip_axis')
         if w['slip_perp_mm']>LIMITS['slip_perp_mm']:reasons.append(rid+':slip_perp')
+        if formation:continue                     # both robots move on purpose
         if rid!=actor and w['base_shift_mm']>LIMITS['partner_shift_mm']:reasons.append(rid+':partner_dragged')
         if rid!=actor and w['base_yaw_deg']>LIMITS['partner_yaw_deg']:reasons.append(rid+':partner_twisted')
     return worst,reasons
@@ -154,12 +272,14 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
         place(world,[CargoInstance('beam_1','long_beam',tuple(plan['beam_pose']))])
         (out/'scene.xml').write_text(world.scene_xml)
         roles=plan['roles'];ports={rid:ContinuousActPort(world,rid,allow_reverse=True,allow_mecanum=True) for rid in roles}
+        qw={}
         for rid,port in ports.items():port.apply({'kind':'look','pan_pulse':plan['initial_pan'][rid]},float(world.data.time))
         def advance(target):
             while float(world.data.time)<target-1e-8:
                 now=float(world.data.time)
                 if world.data.eq_active.any():raise RuntimeError('WELD_ACTIVE')
                 for port in ports.values():port.tick(now)
+                for w in qw.values():w.tick(now)
                 world._physics_step_for(world.robot('r1'))
         advance(float(world.data.time)+.5)
         origin=float(world.data.time);inst=next(x for x in scene.cargo if x.item_id=='beam_1')
@@ -249,7 +369,65 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
                     if any('grip_force' in r or r=='beam_touches_floor' for r in reasons):break
                     base=measure(world,inst,roles,scene)
                 frame(f'rep{amp:03d}')
-        else:
+        elif mode in FORMATION_MODES:
+            from sim.grasp_act_release_teacher import QuantizedWheels
+            partner=next(r for r in roles if r!=actor)
+            for rid in roles:qw[rid]=QuantizedWheels(ports[rid])
+            c0=base0['beam_xyz'][:2];space_rows=[];stop=False;n_px=0
+            def band_px():
+                out={}
+                for rid in roles:
+                    jpg=base64.b64decode(ports[rid].capture()['image'])
+                    out[rid]=band_pixels(Image.open(io.BytesIO(jpg)).convert('RGB'),roles[rid])
+                return out
+            def drive(plan_m,label):
+                nonlocal n_px
+                rows=[]
+                for k in range(plan_m['periods']):
+                    now=float(world.data.time)
+                    for rid in roles:
+                        d=plan_m['duty'][rid];qw[rid].command(d['levels'],d['durations'],now)
+                    rows+=window(DUTY_PERIOD_S,label+':on')
+                    if k%3==0:rows[-1]['band_px']=band_px();n_px+=1;ev.write(json.dumps({'kind':'band_px','t':rows[-1]['t'],'label':label,**rows[-1]['band_px']})+'\n')
+                for w in qw.values():w.stop()
+                return rows+window(1.,label+':hold')
+            def realized(before,after):
+                out={'beam_yaw_deg':((after['beam_yaw_deg']-before['beam_yaw_deg'])+180)%360-180,
+                     'beam_move_m':math.dist(after['beam_xyz'][:2],before['beam_xyz'][:2])}
+                for rid in roles:
+                    out[rid]={'base_move_m':math.dist(after[rid]['base_xy'],before[rid]['base_xy']),
+                              'base_yaw_deg':((after[rid]['base_yaw_deg']-before[rid]['base_yaw_deg'])+180)%360-180}
+                return out
+            if mode=='carry_straight':
+                legs=[(kind,dist,duty,carry_plan(kind,dist,duty,actor,partner)) for kind,dist,duty in CARRY_LEGS]
+                for kind,dist,duty,plan_m in legs:
+                    before=measure(world,inst,roles,scene)
+                    rows=drive(plan_m,f'carry:{kind}:{dist:+.2f}:{duty}')
+                    after=measure(world,inst,roles,scene);worst,reasons=verdict(rows,roles,actor,formation=True)
+                    tests.append({'leg':[kind,dist,duty],'plan':plan_m,'realized':realized(before,after),
+                                  'cumulative_after':delta(after,base0,roles),'worst':worst,'fail':reasons,
+                                  'force_slip_series':[{'t':r['t'],**{rid:{'finger_n':r[rid]['finger_n'],'slip_axis_mm':r['delta'][rid]['slip_axis_mm'],
+                                      'slip_perp_mm':r['delta'][rid]['slip_perp_mm']} for rid in roles},**({'band_px':r['band_px']} if 'band_px' in r else {})} for r in rows]})
+                    space_rows+=rows;frame(f'carry_{kind}_{"p" if dist>0 else "m"}{int(duty*100):03d}')
+                    if any('grip_force' in r or r=='beam_touches_floor' for r in reasons):break
+                    base=measure(world,inst,roles,scene)
+            else:
+                for sign in (1.,-1.):
+                    plan_m=rotation_plan(mode,actor,partner,sign=sign)
+                    for inc in range(int(round(ROTATE_TOTAL_DEG/ROTATE_STEP_DEG))):
+                        before=measure(world,inst,roles,scene)
+                        rows=drive(plan_m,f'{mode}:{sign:+.0f}:{inc}')
+                        after=measure(world,inst,roles,scene);worst,reasons=verdict(rows,roles,actor,formation=True)
+                        tests.append({'direction':sign,'increment':inc,'plan':plan_m,'realized':realized(before,after),
+                                      'cumulative_after':delta(after,base0,roles),'worst':worst,'fail':reasons})
+                        space_rows+=rows
+                        if any('grip_force' in r or r=='beam_touches_floor' for r in reasons):stop=True;break
+                        base=measure(world,inst,roles,scene)
+                    frame(f'{mode}_{"ccw" if sign>0 else "cw"}')
+                    if stop:break
+            report['space']=swept_space([{'bases':[r[rid]['base_xy'] for rid in roles],'ends':r['beam_ends_xy']} for r in space_rows],c0)
+            report['band_px_samples']=n_px
+        elif mode=='yaw':
             for duration in YAW_DURATIONS:
                 rows=[];yaw0=world.robot(actor).base_rpy()[2];vis_d={}
                 for k,sign in enumerate((1,-1)):
@@ -271,8 +449,9 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
         frame('end')
         safe=[t for t in tests if not t['fail']]
         report.update(status='complete',probe='done',tests=tests,visibility_p0=vis,
-            safe_max=(max(t['pan_pwm'] for t in safe) if mode!='yaw' else max(t['pulse_s'] for t in safe)) if safe else None,
-            first_fail=next(({'step':t.get('pan_pwm',t.get('pulse_s')),'reasons':t['fail']} for t in tests if t['fail']),None))
+            safe_max=None if mode in FORMATION_MODES else ((max(t['pan_pwm'] for t in safe) if mode!='yaw' else max(t['pulse_s'] for t in safe)) if safe else None),
+            pass_n=len(safe),test_N=len(tests),
+            first_fail=next(({'step':t.get('pan_pwm',t.get('pulse_s',t.get('leg',t.get('increment')))),'reasons':t['fail']} for t in tests if t['fail']),None))
         return report
     except BaseException as error:
         report.update(status='HOST_ERROR' if not isinstance(error,KeyboardInterrupt) else 'interrupted',error_type=type(error).__name__,error=str(error))
@@ -287,7 +466,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
-    p.add_argument('--out',type=Path,required=True);p.add_argument('--mode',choices=('pan','pan_repeat','yaw'),required=True)
+    p.add_argument('--out',type=Path,required=True);p.add_argument('--mode',choices=('pan','pan_repeat','yaw')+FORMATION_MODES,required=True)
     p.add_argument('--actor',choices=('r1','r2'),default='r1');p.add_argument('--grasp-cap-s',type=float,default=45.)
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='observable_v2');a=p.parse_args()
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]

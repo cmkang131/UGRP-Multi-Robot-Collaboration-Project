@@ -790,8 +790,8 @@
     },
     {
       "id": "grasp-act-lookaround-probe",
-      "version": "1.0.0",
-      "purpose": "운반 중 둘러보기 안전 진단: 공동 파지 뒤 팬(서보 6)·몸체 회전 단계 증가, 정답은 평가 전용, weld OFF",
+      "version": "1.1.0",
+      "purpose": "운반 중 둘러보기·하중 이동 진단: 공동 파지 뒤 팬(서보 6)·몸체 회전 단계 증가(pan/pan_repeat/yaw), 빔 중심 회전·한쪽 끝 축 회전(G1 rotate_center/pivot_end), 축·옆 방향 운반 중 손가락 힘·미끄럼과 자기 카메라 끝 띠 화소(G7 carry_straight). 열린 루프 명령, 정답은 평가 전용, weld OFF",
       "entry": "scripts/probe_carry_lookaround.py",
       "runner": "scripts.probe_carry_lookaround",
       "docs": "experiments/2026-10-14-e2e18-grasp-rootcause/phase-review.md",
@@ -807,8 +807,8 @@
     },
     {
       "id": "grasp-act-release-teacher",
-      "version": "1.0.0",
-      "purpose": "시연 전용 두 로봇 봉 해제 교사(visible_only): 구역 경계를 자기 카메라로 보고 축 이동·동기 내려놓기·GO/ACK 열기·물러나기, weld OFF",
+      "version": "1.1.0",
+      "purpose": "시연 전용 두 로봇 봉 해제 교사(visible_only): 구역 경계를 자기 카메라로 보고 축 이동·동기 내려놓기·GO/ACK 열기·물러나기, weld OFF. 1.1.0: --observe-mode backoff_v3(놓은 뒤 0.15 m 물러나서 보기, 기본 off), 다시 잡기 전 도달 범위 중앙까지 접근",
       "entry": "scripts/run_grasp_act_release.py",
       "runner": "scripts.run_grasp_act_release",
       "docs": "docs/act_execution_decisions.md",

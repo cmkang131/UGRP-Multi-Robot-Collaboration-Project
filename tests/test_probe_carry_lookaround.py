@@ -56,3 +56,94 @@ def test_workflow_registered():
     rows = json.loads(Path('configs/simulation_workflows.json').read_text())['workflows']
     row = next(r for r in rows if r['id'] == 'grasp-act-lookaround-probe')
     assert row['runner'] == 'scripts.probe_carry_lookaround' and Path(row['entry']).is_file()
+
+
+def _pulses_ok(duty):
+    from sim.grasp_act_release_teacher import check_wheels
+    from scripts.probe_carry_lookaround import MIN_PULSE_S
+    for d in duty.values():
+        check_wheels(d['levels'], d['durations'])
+        assert all(x == 0. or x >= MIN_PULSE_S-1e-9 for x in d['durations'])
+
+
+def test_rotate_center_equal_rates_and_pivot():
+    import pytest
+    from scripts.probe_carry_lookaround import rotation_plan, GRIP_X_M, BEAM_GRIP_HALF_M
+    plan = rotation_plan('rotate_center', 'r1', 'r2')
+    d = plan['duty']; _pulses_ok(d)
+    assert d['r1']['body_levels'][2] == pytest.approx(d['r2']['body_levels'][2]) and d['r1']['body_levels'][2] > 0
+    for rid in d:
+        assert d[rid]['realized_pivot_x_m'] == pytest.approx(GRIP_X_M+BEAM_GRIP_HALF_M, abs=.002)
+        assert d[rid]['body_levels'][0] == pytest.approx(0.)
+    assert 13 < plan['commanded_step_deg'] < 17
+    mirrored = rotation_plan('rotate_center', 'r1', 'r2', sign=-1.)['duty']['r1']
+    assert mirrored['levels'] == [-x for x in d['r1']['levels']]
+
+
+def test_pivot_end_zeroes_short_pulses_and_records_shifted_pivot():
+    import pytest
+    from scripts.probe_carry_lookaround import rotation_plan
+    plan = rotation_plan('pivot_end', 'r1', 'r2')
+    d = plan['duty']; _pulses_ok(d)
+    assert d['r1']['zeroed_wheels'] == [0, 1] and d['r2']['zeroed_wheels'] == []
+    assert d['r1']['body_levels'][2] == pytest.approx(d['r2']['body_levels'][2], rel=1e-3)
+    assert d['r1']['realized_pivot_x_m'] == pytest.approx(.2286, abs=.002)     # intended 0.203
+    assert d['r2']['realized_pivot_x_m'] == pytest.approx(.743, abs=.003)
+
+
+def test_pair_duty_rejects_zero_motion():
+    import pytest
+    from scripts.probe_carry_lookaround import pair_duty
+    with pytest.raises(ValueError):
+        pair_duty({'r1': (0., 0., 0., 0.)})
+
+
+def test_carry_plan_moves_formation_together():
+    import pytest
+    from sim.visible_belief import wheel_to_body
+    from scripts.probe_carry_lookaround import carry_plan
+    ax = carry_plan('axial', .2, 1., 'r1', 'r2'); _pulses_ok(ax['duty'])
+    f1, f2 = (wheel_to_body(ax['duty'][r]['levels'])[0] for r in ('r1', 'r2'))
+    assert f1 > 0 > f2 and ax['commanded_m'] == pytest.approx(.2, abs=.02)
+    lat = carry_plan('lateral', -.15, .5, 'r1', 'r2'); _pulses_ok(lat['duty'])
+    l1, l2 = (wheel_to_body(lat['duty'][r]['levels'])[1] for r in ('r1', 'r2'))
+    assert l1 < 0 < l2                       # facing each other: actor right = partner left
+    with pytest.raises(ValueError):
+        carry_plan('axial', .2, .2, 'r1', 'r2')   # 0.03 s pulse below the minimum
+
+
+def test_swept_space_includes_footprint():
+    import pytest
+    from scripts.probe_carry_lookaround import swept_space, ROBOT_RADIUS_M
+    s = swept_space([{'bases': [[1., 0.], [-1., 0.]], 'ends': [[.3, 0.], [-.3, 0.]]}], [0., 0.])
+    assert s['swept_radius_m'] == pytest.approx(1.+ROBOT_RADIUS_M)
+    assert s['bbox_size_m'][0] == pytest.approx(2.+2*ROBOT_RADIUS_M)
+
+
+def test_band_pixels_finds_own_band_colour_only():
+    import numpy as np
+    from scripts.probe_carry_lookaround import band_pixels
+    img = np.zeros((240, 320, 3), np.uint8); img[:] = (170, 100, 50)          # brown floor
+    img[:, 140:180] = (160, 230, 40)                                           # lime beam body
+    img[200:230, 140:180] = (5, 242, 153)                                      # teal band (0.02, 0.95, 0.60)
+    teal = band_pixels(img, 'teal')
+    assert teal['area_px'] == 30*40 and teal['centroid'] == [159.5, 214.5] and teal['bottom_v'] == 229
+    assert band_pixels(img, 'blue')['area_px'] == 0
+
+
+def test_carry_probe_plan_seeds_and_clearance():
+    import math
+    from scripts.make_carry_probe_plan import prepare, CLEAR_RADIUS_M
+    from harness.grasp_act_seed_splits import split_of, registry
+    plan = prepare(count=3)
+    reg = registry()
+    for e in plan['episodes']:
+        assert split_of(e['seed'], reg) == 'carry_probe'
+        assert e['min_wall_distance_m'] >= CLEAR_RADIUS_M
+        b = e['beam_pose']; r1 = e['spawns']['r1']
+        assert math.dist(b[:2], r1[:2]) == pytest_approx(.473)
+
+
+def pytest_approx(v):
+    import pytest
+    return pytest.approx(v, abs=1e-6)
