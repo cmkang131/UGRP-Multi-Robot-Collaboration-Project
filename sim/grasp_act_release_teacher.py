@@ -102,7 +102,7 @@ class PairReleaseCode:
 
         r1 margin grows with s, r2 margin shrinks. Exact edges and inside lower
         bounds give constraints; 'outside' forces a step; priors only when
-        nothing visible. Returns (lo, hi, evidence)."""
+        nothing visible. 'none' supplies no constraint. Returns (lo, hi, evidence)."""
         lo, hi = -math.inf, math.inf; evidence = []
         for rid, sign in ((self.robots[0], 1.), (self.robots[1], -1.)):
             m = msgs[rid]; kind = m['kind']; evidence.append(kind)
@@ -138,7 +138,10 @@ class PairReleaseCode:
                 # Move away from the side without visible evidence (its end may be outside).
                 s = -.05 if unseen and unseen[0] == self.robots[1] else .05
             choice = {'action': 'shift', 'shift_m': max(-MAX_STEP_M, min(MAX_STEP_M, s))}
-        choice.update(lo=lo, hi=hi, evidence=evidence, exact=exact, t=now)
+        # Unbounded intervals stay infinite for arithmetic, but their diagnostic
+        # bounds are null so the strict result JSON can preserve the decision.
+        choice.update(lo=lo if math.isfinite(lo) else None, hi=hi if math.isfinite(hi) else None,
+                      evidence=evidence, exact=exact, t=now)
         self.log.append(choice); self.steps += choice['action'] == 'shift'
         return choice
 
@@ -259,7 +262,9 @@ class ReleaseTeacher:
                 px, py, a = item['pose']; nx, ny = math.cos(a), math.sin(a)
                 score = -(nx*ox+ny*oy)        # inward normal opposite to outward
                 if score > .7 and (best is None or score > best[0]): best = (score, (ex-px)*nx+(ey-py)*ny)
-            kind, m = ('prior', best[1]) if best else (('prior', None) if not self.map_pose_known else ('outside', None))
+            # An arbitrary command frame has no map prior. Absence of evidence is
+            # not a numeric bound, unlike a real prior or a visible outside scan.
+            kind, m = ('prior', best[1]) if best else (('none', None) if not self.map_pose_known else ('outside', None))
         self.last_report = {'phase': phase, 'kind': kind, 'margin_m': m}
         return self.last_report
 

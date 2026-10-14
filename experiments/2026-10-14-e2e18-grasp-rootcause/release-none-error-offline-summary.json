@@ -1,0 +1,319 @@
+{
+  "schema": "ugrp.release.none_evidence.fix.offline.v1",
+  "failed_source_sha": "ff8f11efc4309320225f6c63a3522bf017074ee8",
+  "introduced_by": "2e13f24fb4cba13f6adcfd938bafa313bc7e309f",
+  "fix_source": "containing Git commit; exact fixed SHA is recorded in the replacement queue after push",
+  "root_cause": {
+    "file": "sim/grasp_act_release_teacher.py",
+    "failed_source_line": 262,
+    "description": "command_relative_v1 has unknown map pose and no map priors; report() emitted prior with margin_m=None when the own floor scan gave no evidence. prior is a numeric-bound kind.",
+    "call_path_at_failed_source": [
+      "scripts/run_grasp_act_release.py:281",
+      "sim/grasp_act_release_teacher.py:171-174",
+      "sim/grasp_act_release_teacher.py:250-264",
+      "scripts/run_grasp_act_release.py:382-385",
+      "sim/grasp_act_release_teacher.py:110"
+    ],
+    "old_test": "tests/test_grasp_act_release_teacher.py:224 asserted the malformed prior/None pair; it never delivered it to PairReleaseCode"
+  },
+  "fix": {
+    "producer": "sim/grasp_act_release_teacher.py:267 returns none/None for unknown map pose without evidence; real priors retain numeric margins",
+    "observation_search": "scripts/run_grasp_act_release.py:457 searches for both prior and none after setdown",
+    "strict_json": "sim/grasp_act_release_teacher.py:143 records unbounded diagnostic lo/hi as null; interval arithmetic stays unchanged. The first fixed fake run exposed a second ValueError when strict JSON rejected -Infinity."
+  },
+  "verification_scope": "Real run(), release teachers, code message posting/delivery/decision, arm scheduler and lookaround v2; fake scene/world/clock/ports/prefix/visibility/evaluation and synthetic blank JPEG. No native physics or rendering, model calls, remote submissions or training data.",
+  "reproduction": {
+    "test": "tests/test_grasp_act_release_run.py:135",
+    "profile": "same diagnostic-plan execution_profile: command_relative_v1 + setdown_lookaround_v2 + hidden_v1 + backoff_v3 + commands + zone + pad_window_v2",
+    "before": {
+      "failed": 3,
+      "error": "TypeError at sim/grasp_act_release_teacher.py:110 after real report/post/deliver/decide"
+    },
+    "after": {
+      "diagnostic_cases_passed": 3,
+      "cap_s": 3,
+      "minimum_release_ticks": 15,
+      "extended_search_case_cap_s": 22,
+      "extended_checks": "unknown-map lookaround, all four observation search pans, no false release acceptance, strict result JSON saved"
+    }
+  },
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_release_teacher.py",
+      "tests/test_grasp_act_release_run.py",
+      "tests/test_lookaround_localization.py"
+    ],
+    "passed": 44,
+    "failed": 0,
+    "seconds": 2.06,
+    "pyflakes": {
+      "files": [
+        "sim/grasp_act_release_teacher.py",
+        "scripts/run_grasp_act_release.py",
+        "tests/test_grasp_act_release_teacher.py",
+        "tests/test_grasp_act_release_run.py"
+      ],
+      "exit": 0,
+      "undefined_names": 0,
+      "version": "4.0.3"
+    },
+    "logs": [
+      {
+        "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release-none-fix/before-pytest.txt",
+        "bytes": 8444,
+        "sha256": "560f155fd9b7549349d9a0a08bf8ed32080a6b7ceae6eb1fe62dc50c0187b73d"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release-none-fix/after-pytest.txt",
+        "bytes": 99,
+        "sha256": "a740da298aac1a8dc98e3d2a6011cef26f78ba77b6d0767aab78da4c927273ba"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release-none-fix/pyflakes.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "source_files": {
+    "sim/grasp_act_release_teacher.py": {
+      "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/sim/grasp_act_release_teacher.py",
+      "bytes": 18386,
+      "sha256": "73b6717da7de9454582ef3e5f84ac0d4e18802362f526cec6a51f410192751ea"
+    },
+    "scripts/run_grasp_act_release.py": {
+      "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/scripts/run_grasp_act_release.py",
+      "bytes": 43722,
+      "sha256": "87675628bd1537cdc2a3398277e253ebcfd9a25d907cf118311163bf8191bf42"
+    },
+    "tests/test_grasp_act_release_teacher.py": {
+      "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/tests/test_grasp_act_release_teacher.py",
+      "bytes": 14934,
+      "sha256": "28a0c9ffe144fdd0547d2445ae4e8d90ffcebf9e09028c89409ed033788f0564"
+    },
+    "tests/test_grasp_act_release_run.py": {
+      "path": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/tests/test_grasp_act_release_run.py",
+      "bytes": 8158,
+      "sha256": "a55c25f0f6df7fe6ad193afdb06e34f94019f5dbdb93b48d506af4367ede4bcc"
+    }
+  },
+  "gcp_failed_diagnostics": {
+    "planned": 3,
+    "started": 3,
+    "HOST_ERROR": 3,
+    "release_completed": 0,
+    "release_success_rate": "unmeasured because all runs raised code errors",
+    "runs": [
+      {
+        "name": "release-command-diagnostic-00-ff8f11ef",
+        "exit": 1,
+        "status": "HOST_ERROR",
+        "prefix_held": true,
+        "release_success": null,
+        "sim_s": 9.099999999997086,
+        "wall_s": 32.788807274999726,
+        "last_ledger": {
+          "r1": {
+            "rows": 8,
+            "last_t": 10.799999999997505,
+            "last_phase": "await_look",
+            "last_report": {
+              "phase": "look",
+              "kind": "prior",
+              "margin_m": null
+            }
+          },
+          "r2": {
+            "rows": 8,
+            "last_t": 10.799999999997505,
+            "last_phase": "await_look",
+            "last_report": {
+              "phase": "look",
+              "kind": "prior",
+              "margin_m": null
+            }
+          }
+        },
+        "files": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-00-ff8f11ef/SOURCE_SHA",
+            "bytes": 40,
+            "sha256": "e8cb3402ae68b41a2626b7f197b6a6c6e626147c0190f43e031972761b83f414"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-00-ff8f11ef/log.txt",
+            "bytes": 1806,
+            "sha256": "e66d08577f94877de3508fb8f3a69de3eade27032062a1a5ad29ab71345fc8dd"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-00-ff8f11ef/raw/result.json",
+            "bytes": 2889,
+            "sha256": "10393220a277bc67de3bfec56bcee1596d0cef54e49df580b29c276d838ab3b0"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-00-ff8f11ef/raw/teacher-r1.jsonl",
+            "bytes": 2469,
+            "sha256": "93c59f37fc1e8d549df4038b729791097f766de063ae10e185a721c0910e50e6"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-00-ff8f11ef/raw/teacher-r2.jsonl",
+            "bytes": 2469,
+            "sha256": "cf1cb7a0e829426188cd5f2076b09ab93a1b1196ea43305b1d11b250929317d2"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-00-ff8f11ef/SHA256SUMS",
+            "bytes": 7410,
+            "sha256": "ed0d349e874343461f07433c919b2f7f5c771e31ce1d5e41b8534c6036bb357f"
+          }
+        ]
+      },
+      {
+        "name": "release-command-diagnostic-01-ff8f11ef",
+        "exit": 1,
+        "status": "HOST_ERROR",
+        "prefix_held": true,
+        "release_success": null,
+        "sim_s": 9.099999999997086,
+        "wall_s": 31.294627596999817,
+        "last_ledger": {
+          "r1": {
+            "rows": 8,
+            "last_t": 10.799999999997505,
+            "last_phase": "await_look",
+            "last_report": {
+              "phase": "look",
+              "kind": "prior",
+              "margin_m": null
+            }
+          },
+          "r2": {
+            "rows": 8,
+            "last_t": 10.799999999997505,
+            "last_phase": "await_look",
+            "last_report": {
+              "phase": "look",
+              "kind": "prior",
+              "margin_m": null
+            }
+          }
+        },
+        "files": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-01-ff8f11ef/SOURCE_SHA",
+            "bytes": 40,
+            "sha256": "e8cb3402ae68b41a2626b7f197b6a6c6e626147c0190f43e031972761b83f414"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-01-ff8f11ef/log.txt",
+            "bytes": 1806,
+            "sha256": "b69268e91a17a44aaa117dd45e1fb00417fb50a3cb4c4c213282954b61ae87f5"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-01-ff8f11ef/raw/result.json",
+            "bytes": 2888,
+            "sha256": "a86f1be52cc3cbe194dedbd2383252c78af95761a2d3fb84d458adb18b32fff3"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-01-ff8f11ef/raw/teacher-r1.jsonl",
+            "bytes": 2469,
+            "sha256": "93c59f37fc1e8d549df4038b729791097f766de063ae10e185a721c0910e50e6"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-01-ff8f11ef/raw/teacher-r2.jsonl",
+            "bytes": 2469,
+            "sha256": "cf1cb7a0e829426188cd5f2076b09ab93a1b1196ea43305b1d11b250929317d2"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-01-ff8f11ef/SHA256SUMS",
+            "bytes": 7410,
+            "sha256": "c1af049a0662578d39deb05b1d9e50dfddbd7dfdbf0138ed59282f5f8861f7dc"
+          }
+        ]
+      },
+      {
+        "name": "release-command-diagnostic-02-ff8f11ef",
+        "exit": 1,
+        "status": "HOST_ERROR",
+        "prefix_held": true,
+        "release_success": null,
+        "sim_s": 9.099999999997086,
+        "wall_s": 31.079117595999833,
+        "last_ledger": {
+          "r1": {
+            "rows": 8,
+            "last_t": 10.799999999997505,
+            "last_phase": "await_look",
+            "last_report": {
+              "phase": "look",
+              "kind": "prior",
+              "margin_m": null
+            }
+          },
+          "r2": {
+            "rows": 8,
+            "last_t": 10.799999999997505,
+            "last_phase": "await_look",
+            "last_report": {
+              "phase": "look",
+              "kind": "prior",
+              "margin_m": null
+            }
+          }
+        },
+        "files": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-02-ff8f11ef/SOURCE_SHA",
+            "bytes": 40,
+            "sha256": "e8cb3402ae68b41a2626b7f197b6a6c6e626147c0190f43e031972761b83f414"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-02-ff8f11ef/log.txt",
+            "bytes": 1806,
+            "sha256": "aa2bd7e2116e05541284877e5739fc20387afb5c1daa5cb71e0199e00771662d"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-02-ff8f11ef/raw/result.json",
+            "bytes": 2893,
+            "sha256": "a1cbf74e97b02c201031a6bf26d614116abf734976e15a8ba4ca0ea61fd56b3e"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-02-ff8f11ef/raw/teacher-r1.jsonl",
+            "bytes": 2469,
+            "sha256": "93c59f37fc1e8d549df4038b729791097f766de063ae10e185a721c0910e50e6"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-02-ff8f11ef/raw/teacher-r2.jsonl",
+            "bytes": 2469,
+            "sha256": "cf1cb7a0e829426188cd5f2076b09ab93a1b1196ea43305b1d11b250929317d2"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-command-diagnostic-02-ff8f11ef/SHA256SUMS",
+            "bytes": 7410,
+            "sha256": "51fcce1f7069acac3e162c9f2ca57e346cbe5c4ff0bbba98315e1c88ca6b693d"
+          }
+        ]
+      }
+    ]
+  },
+  "new_fixed_source_physical_runs": {
+    "diagnostics": 0,
+    "gate": 0,
+    "recording": 0
+  },
+  "remaining": [
+    "Coordinator must run/review 3 replacement GCP diagnostics before the fixed-SHA 40-episode gate.",
+    "No new physical release success or 38/40 gate proof exists.",
+    "Release-specific training recording adapter is absent; the 50-episode recording queue remains a disabled draft.",
+    "PR #491 head remains claude/grasp-act-release; this requested continuation is on claude/grasp-act-probes."
+  ],
+  "references": [
+    {
+      "url": "https://docs.python.org/3/library/typing.html#typing.Optional",
+      "use": "None is an explicitly absent value, separate from the float-valued bound kinds; source-side evidence tagging is the chosen repair, not float substitution."
+    },
+    {
+      "url": "https://github.com/PyCQA/pyflakes",
+      "use": "Static source checks supplement actual runtime regression tests; pyflakes alone cannot verify message value semantics."
+    }
+  ]
+}

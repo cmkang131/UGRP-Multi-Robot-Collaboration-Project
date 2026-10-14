@@ -2,7 +2,7 @@
 import json, math
 import pytest
 from sim.visible_belief import VisibleBelief, odometry, relative, wheel_to_body
-from sim.grasp_act_release_teacher import check_wheels, PairReleaseCode, zone_edges, MARGIN_M
+from sim.grasp_act_release_teacher import check_wheels, PairReleaseCode, zone_edges
 from harness.grasp_act_seed_splits import registry, split_of, check_range, check_dataset_splits
 
 
@@ -57,6 +57,17 @@ def test_code_shift_direction_equalizes_margins():
     assert code.decide(0.)['shift_m'] > 0
     code.delivered = {'r1': msg('edge', .4), 'r2': msg('outside')}
     assert code.decide(0.)['shift_m'] < 0
+
+
+@pytest.mark.parametrize('other', (msg('none'), msg('edge', .2), msg('prior', .2)))
+def test_no_evidence_never_confirms_release_and_records_unbounded_interval(other):
+    code = PairReleaseCode(('r1', 'r2'))
+    code.delivered = {'r1': msg('none'), 'r2': other}
+    lo, _, evidence = code.interval(code.delivered)
+    assert lo == -math.inf and evidence[0] == 'none'
+    decision = code.decide(0., require_seen=True)
+    assert decision['action'] == 'shift' and decision['lo'] is None
+    json.dumps(decision, allow_nan=False)   # preserve unknown bounds without nonstandard Infinity
 
 
 def test_zone_edges_inward_normals():
@@ -221,11 +232,20 @@ def test_unknown_map_pose_never_seeds_zone_priors_and_keeps_visual_evidence():
     from sim.grasp_act_release_teacher import ReleaseTeacher
     t=ReleaseTeacher('r1','teal',{1:1500,3:700,4:2400,5:1320,6:1500},
                      handoff_pose_estimate=None,zone_rect=(4.6,.4,.3,.7))
-    assert not t.belief.items and t.report(0.)['kind']=='prior' and t.report(0.)['margin_m'] is None
+    assert not t.belief.items and t.report(0.) == {'phase':'look','kind':'none','margin_m':None}
     with pytest.raises(ValueError,match='map pose unknown'):t.reanchor_priors([0.,0.,0.])
     (x,y),(ox,oy),_=t.end_and_outward(0.)
     t.perceive({'scan':[[x+ox*s/100,y+oy*s/100,'zone'] for s in range(-5,8)],'band':None},0.)
     assert t.report(0.)['kind']=='inside_lb' and t.report(0.)['margin_m']==pytest.approx(.07)
+    assert t.report(.2) == {'phase':'look','kind':'none','margin_m':None}   # expired scan, no map prior
+
+
+def test_known_map_prior_has_a_numeric_margin_without_visible_scan():
+    from sim.grasp_act_release_teacher import ReleaseTeacher
+    t=ReleaseTeacher('r1','teal',{1:1500,3:700,4:2400,5:1320,6:1500},
+                     handoff_pose_estimate=[4.6,.4,math.pi/2],zone_rect=(4.6,.4,.3,.7))
+    report=t.report(0.)
+    assert report['kind']=='prior' and math.isfinite(report['margin_m'])
 
 
 def test_release_visibility_counts_phase_fractions_and_continuous_blind_intervals():

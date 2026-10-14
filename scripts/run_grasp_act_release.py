@@ -172,9 +172,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     from sim.grasp_act_scene import make_scene
     from sim.grasp_act_teacher import GraspTeacher
     from sim.grasp_act_release_teacher import (ReleaseTeacher,PairReleaseCode,QuantizedWheels,BACKOFF_M,
-        LOWER_Z_M,RAISE_Z_M,FOLDED_BACKOFF,WHEEL,OBSERVE_BACKOFF_M,REACH_MID_M)
+        LOWER_Z_M,RAISE_Z_M,FOLDED_BACKOFF,OBSERVE_BACKOFF_M)
     from harness.visual_arm_v3 import solve_grip_site_ik,MOUNT_X_M
-    from sim.visible_belief import relative,AXIAL_M_PER_S_AT_035
+    from sim.visible_belief import relative
     from sim.masterpi_drive_friction_v7 import build_world,PROFILE
     from sim.grasp_act_port import ContinuousActPort
     from sim.s2_realism_camera_binding import bind_camera
@@ -454,7 +454,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 if now>=st['end']-1e-9:st.update(phase='observe',since=now)
             elif ph=='observe' and age>=.6:
                 reports={rid:t.report(now,'observe') for rid,t in rel.items()}
-                blind=[rid for rid,r in reports.items() if r['kind']=='prior']
+                blind=[rid for rid,r in reports.items() if r['kind'] in ('prior','none')]
                 if blind and st['search']<4:
                     st['search']+=1;offset=(250,-250,500,-500)[st['search']-1]
                     for rid in blind:
@@ -528,7 +528,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         steps=st['steps']
         report['release_outcome']=outcome or 'release_timeout'
         # ---------------- evaluation (truth) ----------------
-        held_ok=None;t_ok=None;checks=[]
+        checks=[]
         for j in range(int((SUCCESS['settle_s']+.5)/.1)):
             now=float(world.data.time);b=world.data.body(inst.body);rot=b.xmat.reshape(3,3)
             yaw=math.atan2(rot[1,0],rot[0,0])

@@ -1,0 +1,174 @@
+"""Real release run/message loop on a clock-only backend; no physics or render."""
+import base64
+import io
+import json
+import sys
+from types import ModuleType, SimpleNamespace
+
+import numpy as np
+import pytest
+from PIL import Image
+
+from scripts import run_grasp_act_release as runner
+
+
+@pytest.fixture
+def fake_backend(monkeypatch):
+    """Replace only the scene, native I/O, prefix and evaluation owners."""
+    def module(name, **members):
+        stub = ModuleType(name)
+        stub.__dict__.update(members)
+        monkeypatch.setitem(sys.modules, name, stub)
+
+    from harness import zone_pair_highpose_contract as contract
+    static = contract.resolve('zone_wide_two_doors_final_v3')[0]
+    cargo = SimpleNamespace(item_id='beam_1', body='beam')
+    scene = SimpleNamespace(config={'static_map': static, 'setup_only': {'objects': {}}},
+                            cargo=[cargo], engine_layout=None, manifest={'fake_backend': True},
+                            setup=lambda world: None)
+    image_bytes = io.BytesIO()
+    Image.new('RGB', (640, 480)).save(image_bytes, format='JPEG')
+    jpeg = image_bytes.getvalue()
+    geometry = SimpleNamespace(name='zone_zone_A', id=0)
+    beam = SimpleNamespace(xpos=np.array([4.6, .4, .03]), xmat=np.eye(3).ravel())
+
+    class World:
+        def __init__(self):
+            self.data = SimpleNamespace(time=0., eq_active=np.array([False]),
+                                        body=lambda name: beam,
+                                        site=lambda name: SimpleNamespace(xpos=np.array([0., 0., .1])),
+                                        cam_xpos=np.zeros((2, 3)),
+                                        cam_xmat=np.tile(np.eye(3).ravel(), (2, 1)))
+            self.model = SimpleNamespace(ngeom=1, geom=lambda key: geometry)
+            self.controllers = {r: SimpleNamespace(robot_cam_cid=i) for i, r in enumerate(('r1', 'r2'))}
+            self.scene_xml = '<fake-clock-only/>'
+            self.closed = False
+            self.steps = 0
+
+        def robot(self, rid):
+            return SimpleNamespace(base_xyz=lambda: [0., 0., .03], base_rpy=lambda: [0., 0., 0.])
+
+        def _physics_step_for(self, robot):
+            self.steps += 1
+            self.data.time += .05     # clock only; no simulator or dynamics
+
+        def render_team_jpeg(self, **kwargs):
+            return jpeg              # synthetic blank fixture, no renderer
+
+        def close(self):
+            self.closed = True
+
+    world = World()
+    ports = {}
+
+    class Port:
+        def __init__(self, world, rid, **kwargs):
+            # Arm commands from the ff8f11ef crash ledgers, never measured joints.
+            self._servo_pulses = {1: 1500, 3: 811, 4: 1905, 5: 2183, 6: 1500}
+            self._motor_commands = (0.,)*4
+            self.actions = []
+            ports[rid] = self
+
+        def apply(self, action, now):
+            self.actions.append((now, action))
+            if action['kind'] == 'look':
+                self._servo_pulses[6] = action['pan_pulse']
+            elif action['kind'] == 'arm':
+                self._servo_pulses[action['servo_id']] = action['pulse']
+
+        def _set_motors(self, levels):
+            self._motor_commands = tuple(levels)
+
+        def stop(self):
+            self._set_motors((0.,)*4)
+
+        def tick(self, now):
+            pass
+
+        def capture(self):
+            return {'image': base64.b64encode(jpeg).decode()}
+
+    class Prefix:
+        phase = 'done'
+        outcome = 'success'
+
+        def __init__(self, rid, end, pwm, **kwargs):
+            self.pwm = pwm
+
+        def step(self, truth, now, **kwargs):
+            return runner.command({'t': now, 'drive': [0., 0., 0.], 'duration_s': 0., 'pwm': self.pwm}), None
+
+    class Visibility:
+        def __init__(self, model):
+            pass
+
+        def measure(self, data, rid, end):
+            return {'visible_probes': 0}
+
+        def body_visible(self, data, rid, body):
+            return False
+
+    module('sim.grasp_act_scene', make_scene=lambda plan: scene)
+    module('sim.masterpi_drive_friction_v7', build_world=lambda *a, **kw: world, PROFILE='fake')
+    module('sim.grasp_act_port', ContinuousActPort=Port)
+    module('sim.s2_realism_camera_binding', bind_camera=lambda controller: None)
+    module('sim.grasp_act_teacher', GraspTeacher=Prefix)
+    from sim import zone_cargo
+    monkeypatch.setattr(zone_cargo, 'place', lambda *a: None)
+    monkeypatch.setattr(zone_cargo, 'CargoInstance', lambda *a: cargo)
+    module('harness.render_randomization', draw=lambda *a: None, apply=lambda *a: {'profile': 'off'})
+    monkeypatch.setattr(runner.platform, 'system', lambda: 'FakeBackend')
+    monkeypatch.setattr(runner.subprocess, 'check_output',
+                        lambda args, **kw: '' if 'status' in args else 'fake-committed-source\n')
+    from scripts import audit_grasp_act_visibility
+    monkeypatch.setattr(audit_grasp_act_visibility, 'BandVisibility', Visibility)
+    monkeypatch.setattr(runner.Eyes, 'classify', lambda *a: None)
+    monkeypatch.setattr(runner, 'snapshot', lambda *a: {
+        'beam': {'min_z': .02}, 'contacts': {r: [1., 1.] for r in ('r1', 'r2')},
+        'robots': {r: {'pose': [0., 0., 0.]} for r in ('r1', 'r2', 'r3')}})
+    # Keep the real JSON writer, message coordinator, release teachers, localizers and scheduler.
+    monkeypatch.setattr(runner, 'compress_logs', lambda out: None)
+    return world, ports
+
+
+@pytest.mark.parametrize('episode', (0, 1, 2))
+def test_command_relative_no_evidence_reaches_pair_decision(tmp_path, fake_backend, episode):
+    plans = json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/'
+                        'release-command-diagnostic-plan.json').read_text())
+    out = tmp_path/'release'
+    result = runner.run(plans['episodes'][episode], out, cap_s=3., **plans['execution_profile'])
+    world, _ = fake_backend
+    assert world.closed and world.steps >= 60
+    assert result['status'] == 'complete' and result['prefix_held']
+    assert result['code_decisions'][0]['evidence'] == ['none', 'none']
+    assert result['code_decisions'][0]['action'] == 'lower'   # blind set-down, then look; not acceptance
+    assert result['code_decisions'][0]['lo'] is None and result['code_decisions'][0]['hi'] is None
+    assert not result['release_success'] and result['release_outcome'] == 'release_timeout'
+    for rid in ('r1', 'r2'):
+        rows = [json.loads(s) for s in (out/f'teacher-{rid}.jsonl').read_text().splitlines()]
+        assert len(rows) >= 15 and any(r['teacher_phase'] == 'lower' for r in rows)
+        reports = [r['report'] for r in rows if r['report']]
+        assert all(r['kind'] == 'none' and r['margin_m'] is None for r in reports)
+        assert not result['teachers'][rid]['map_pose_known']
+        assert not result['lookaround_result'][rid]['localizer']['map_pose_known']
+    assert result['input_audit']['held_world_reads'] == 0
+    assert result['input_audit']['invisible_measurements'] == 0
+    assert json.loads((out/'result.json').read_text())['status'] == 'complete'
+
+
+def test_unknown_evidence_still_searches_after_lookaround(tmp_path, fake_backend):
+    plans = json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/'
+                        'release-command-diagnostic-plan.json').read_text())
+    out = tmp_path/'release-search'
+    result = runner.run(plans['episodes'][0], out, cap_s=22., **plans['execution_profile'])
+    world, ports = fake_backend
+    assert world.closed and result['status'] == 'complete'
+    for rid in ('r1', 'r2'):
+        phases = [json.loads(s)['teacher_phase'] for s in (out/f'teacher-{rid}.jsonl').read_text().splitlines()]
+        assert 'lookaround' in phases and 'observe' in phases
+        pans = [a['pan_pulse'] for _, a in ports[rid].actions if a['kind'] == 'look']
+        assert all(p in pans for p in (1750, 1250, 2000, 1000))
+        localizer = result['lookaround_result'][rid]['localizer']
+        assert localizer['decision']['reason'] == 'map_pose_unknown'
+        assert not localizer['decision']['accepted']
+    assert not result['release_success']   # blank RGB and no zone evidence cannot accept release
