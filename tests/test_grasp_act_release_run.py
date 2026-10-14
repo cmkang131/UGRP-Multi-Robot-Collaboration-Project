@@ -292,3 +292,38 @@ def test_lateral_recovery_regrasp_pwm_setdown_and_reobserve(tmp_path,fake_backen
     assert len(result['lateral_motion_commands'])==1
     assert result['input_audit']['held_world_reads']==result['input_audit']['invisible_measurements']==0
     assert all(len(v['evaluation']['sweeps'])==2 for v in result['lookaround_result'].values())
+
+
+def test_nbv_runs_after_legacy_budget_then_uses_only_new_own_rgb(tmp_path,fake_backend,monkeypatch):
+    from sim.lookaround_localization import LookaroundLocalizer
+    from sim import release_nbv_observation as nbv
+    original=LookaroundLocalizer.finalize
+    counts={}
+    def fitted(self):
+        count=counts.get(id(self),0)+1;counts[id(self)]=count
+        # Do not inspect backend truth. Synthetic ambiguous own-image receipt
+        # exercises the real scheduler, camera capture and turn/return path.
+        out=original(self)
+        self.decision={**out,'alternatives':[dict(pose=[4.6,.4,math.pi/2])]}
+        return self.decision
+    import math
+    monkeypatch.setattr(LookaroundLocalizer,'finalize',fitted)
+    def forbidden(*a,**kw):raise AssertionError('truth perception entered NBV')
+    monkeypatch.setattr(runner.Eyes,'classify',forbidden)
+    monkeypatch.setattr(runner.Eyes,'visible',forbidden)
+    plans=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release-command-diagnostic-plan.json').read_text())
+    profile={**plans['execution_profile'],'lookaround':'setdown_global_v1',
+             'placement':'global_localized_release_v1','active_recovery':'map_nbv_v1'}
+    result=runner.run(plans['episodes'][0],tmp_path/'nbv',cap_s=180.,**profile)
+    assert result['release_outcome']=='active_observation_exhausted'
+    assert not result['release_success'] and result['shift_steps']==0
+    for rid in ('r1','r2'):
+        entries=[r for r in result['active_observation'] if r['robot']==rid]
+        assert [r['stage'] for r in entries]==[1,2,3,4,5,6]
+        assert all(r['action']=='map_nbv' for r in entries[3:])
+        captures=[len(r['views']) for r in entries[3:]]
+        assert all(1<=n<=nbv.VIEW_BUDGET for n in captures)
+        saved=result['lookaround_result'][rid]['localizer']
+        assert len(saved['views'])==33+sum(captures)
+        assert not saved['map_pose_known'] and not saved['decision']['accepted']
+    assert result['input_audit']['held_world_reads']==result['input_audit']['invisible_measurements']==0

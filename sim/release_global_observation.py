@@ -156,3 +156,38 @@ def recovery_script(localizer, teacher, stage, now):
     steps.append(dict(servo=restore,wait=1.,capture=False,label='restore_arm'))
     return steps,dict(stage=stage,action=action,t=now,backstep_cap_m=BACKSTEP_M,
                       body_turn_rad=BODY_TURN_RAD,all_retained_hypotheses_clear=safe)
+
+
+def recovery_round(localizers, teachers, reports, stages, now, *, active_recovery='off', nbv_history=None):
+    """Build one round atomically. Accepted own margins wait for the partner.
+
+    Extra NBV rounds run only where the old three-stage policy would stop.
+    All successful legacy trajectories therefore keep their decisions.
+    No robot receives another robot's localization inputs or hypotheses.
+    """
+    from sim.release_nbv_observation import MODES, MAX_ROUNDS, script
+    if active_recovery not in MODES:
+        raise ValueError(active_recovery)
+    pending = [rid for rid in teachers if reports[rid]['kind'] != 'localized_margin']
+    if not pending:
+        pending = list(teachers)  # scalar margins disagree
+    history = nbv_history if nbv_history is not None else {rid: [] for rid in teachers}
+    if active_recovery == 'off' and any(stages[rid] >= 3 for rid in pending):
+        return None, []
+    steps = {rid: [] for rid in teachers}; entries = []
+    for rid in pending:
+        if stages[rid] < 3:
+            steps[rid], entry = recovery_script(localizers[rid], teachers[rid], stages[rid]+1, now)
+        else:
+            if len(history[rid]) >= MAX_ROUNDS:
+                return None, []
+            used = [v['key'] for previous in history[rid] for v in previous['views']]
+            steps[rid], entry = script(localizers[rid], teachers[rid], now, used=used)
+            if not steps[rid]:
+                return None, [dict(robot=rid, stage=stages[rid], **entry)]
+        entries.append({**entry, 'robot':rid, 'stage':stages[rid]+1})
+    for entry in entries:
+        rid = entry['robot']; stages[rid] += 1
+        if entry['action'] == 'map_nbv':
+            history[rid].append(entry)
+    return steps, entries

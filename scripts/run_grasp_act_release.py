@@ -18,6 +18,7 @@ from scripts.run_grasp_act_teacher import write,apply,snapshot,compress_logs
 from sim.grasp_act_release_teacher import OBSERVE_MODES,REACH_MODES
 from sim.release_zone_servo import MODES as PLACEMENT_MODES, OPTION as RGB_CENTER
 from sim.release_global_observation import LATERAL_MODES
+from sim.release_nbv_observation import MODES as ACTIVE_RECOVERY_MODES
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 # User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
 # hidden_v1: while the own gripper holds the cargo, its world pose never enters teacher/map-code inputs.
@@ -159,7 +160,7 @@ def own_end_world(world,inst,end):
 
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
-        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off'):
+        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off'):
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
     if lookaround!='off' and observe_mode!='backoff_v3':raise ValueError('lookaround runs after the backoff_v3 step back')
@@ -172,6 +173,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     global_release=placement=='global_localized_release_v1'
     if lateral_recovery not in LATERAL_MODES:raise ValueError(lateral_recovery)
     if lateral_recovery!='off' and not global_release:raise ValueError('lateral recovery requires global release')
+    if active_recovery not in ACTIVE_RECOVERY_MODES:raise ValueError(active_recovery)
+    if active_recovery!='off' and not global_release:raise ValueError('active recovery requires global release')
     rgb_only=rgb_center or global_release
     if global_release and not (relative_pose and held_object=='hidden_v1' and lookaround=='setdown_global_v1' and observe_mode=='backoff_v3'):
         raise ValueError('global_localized_release_v1 requires command_relative_v1, hidden_v1, setdown_global_v1, backoff_v3')
@@ -201,7 +204,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise RuntimeError('committed source required')
     branch=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()
     write(out/'RUN_META.json',{'class':'dev','pr':491,'branch':branch,'sha':sha,'batch':plan['batch']})
-    report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,'held_object':held_object,'lateral_recovery':lateral_recovery,
+    report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,'held_object':held_object,'lateral_recovery':lateral_recovery,'active_recovery':active_recovery,
         'lookaround':lookaround,'pose_anchor':pose_anchor,'placement':placement,'map_pose_known':not relative_pose,
         'release_decision_inputs':'own RGB, own issued commands, static map only' if rgb_only else 'legacy visible-only teacher',
         'pose_estimate_source':'own issued wheels from arbitrary zero; map pose unknown' if relative_pose else 'legacy truth at release handoff plus frozen plan error',
@@ -342,6 +345,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         R=tuple(roles);code=PairReleaseCode(R);release_t0=float(world.data.time)
         st={'phase':'look','since':release_t0,'iter':0,'steps':0,'search':0,'sched':{},'plan':{},'go':None,'after_visible':False,'choice':None}
         recovery_stage={rid:0 for rid in roles}; recovery_log=[]
+        nbv_history={rid:[] for rid in roles}
         b0=world.data.body(inst.body)
         report['release_start']={'beam_to_zone_center_m':float(math.dist(b0.xpos[:2],rect[:2]))}
         def pose_of(rid):return [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
@@ -541,22 +545,18 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 else:choice=code.decide(now,require_seen=True)
                 st['choice']=choice
                 if choice['action']=='observe' and global_release:
-                    from sim.release_global_observation import recovery_script
+                    from sim.release_global_observation import recovery_round
                     from sim.lookaround_localization import ScriptRunner
                     # Only own perception chooses the recovery action. A robot
                     # with sufficient evidence waits; no partner pose is read.
-                    pending=[rid for rid in R if code.delivered[rid]['kind']!='localized_margin']
-                    if not pending:pending=list(R)  # delivered scalar margins disagree
-                    if any(recovery_stage[rid]>=3 for rid in pending):
+                    scripts,entries=recovery_round(loc,rel,code.delivered,recovery_stage,now,
+                        active_recovery=active_recovery,nbv_history=nbv_history)
+                    recovery_log.extend(entries)
+                    if scripts is None:
                         outcome='active_observation_exhausted';break
                     for rid,t in rel.items():
-                        steps=[]
-                        if rid in pending:
-                            recovery_stage[rid]+=1
-                            steps,entry=recovery_script(loc[rid],t,recovery_stage[rid],now)
-                            recovery_log.append(dict(robot=rid,**entry))
                         look_eval[rid]['before']=look_truth(rid);look_eval[rid]['t0']=now
-                        look_run[rid]=ScriptRunner(steps,now)
+                        look_run[rid]=ScriptRunner(scripts[rid],now)
                     st.update(phase='lookaround',since=now)
                     continue
                 if choice['action']=='stop':outcome=choice['reason'];break
@@ -575,6 +575,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                         from sim.release_global_observation import MAX_CORRECTIONS as limit
                     if st['iter']>limit:outcome='release_iteration_cap';break
                     recovery_stage={rid:0 for rid in roles}
+                    nbv_history={rid:[] for rid in roles}
                     # Approach by own-command pulses until the re-grasp target is mid-reach (no reach crash).
                     for rid,t in rel.items():audit.pick('approach',rid,now,t)
                     st['plan']={rid:t.approach_plan(now) for rid,t in rel.items()}
@@ -671,6 +672,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             lookaround_result=None if lookaround=='off' else {rid:{'localizer':loc[rid].record(),'evaluation':look_eval[rid]} for rid in roles},release_sim_s=(done_at or float(world.data.time))-release_t0,status='complete')
         if global_release:
             report['active_observation']=recovery_log
+            report['active_recovery']=active_recovery
             report['final_map_pose_known']={rid:loc[rid].map_pose_known for rid in roles}
             report['own_rgb_localization_inputs']={rid:{'frames':len(loc[rid].views),
                 'measured_frames':sum(v.get('status')=='measured' for v in loc[rid].views),
@@ -700,6 +702,7 @@ def main():
     p.add_argument('--pose-anchor',choices=POSE_ANCHOR_MODES,default='legacy_truth_v0',help='command_relative_v1: no truth handoff anchor; map pose unknown, own-command sweep only')
     p.add_argument('--placement',choices=PLACEMENT_MODES,default='margin_v0',help='zone_center_rgb_v1: local RGB rectangle centering; no world anchor')
     p.add_argument('--lateral-recovery',choices=LATERAL_MODES,default='off',help='bounded_v1: recover insufficient side clearance using own RGB localization')
+    p.add_argument('--active-recovery',choices=ACTIVE_RECOVERY_MODES,default='off',help='map_nbv_v1: bounded informative own-map views after the legacy observation budget')
     p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look')
     p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement')
     p.add_argument('--zone-slots',choices=ZONE_SLOT_MODES,default='floor',help='zone: white slot squares inside the destination (static map) count as zone')
@@ -708,5 +711,5 @@ def main():
     p.add_argument('--lookaround',choices=LOOKAROUND_MODES,default='off',help='setdown_lookaround_v1: after the backoff step, look toward static-map landmarks chosen from the own pose estimate (640x480 own camera)');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery),ensure_ascii=False,default=str))
 if __name__=='__main__':main()
