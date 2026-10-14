@@ -50,9 +50,12 @@ def waypoint(start,path,discs,rects,radius):
     if not path:return None
     closest=min(range(len(path)),key=lambda i:math.dist(start,path[i]))
     best=None
-    for point in path[min(closest+1,len(path)-1):]:
+    # A* rounds the start onto its grid. Its nearest point can still be an
+    # unreached corner: skipping it can reject every remaining shortcut and
+    # return hold forever, even though the first segment is collision-free.
+    for point in path[closest:]:
         distance=math.dist(start,point)
-        if distance<.005:continue
+        if distance<.001:continue
         if segment_free(start,point,discs,rects,radius):
             best=point
             if distance>=.12:break
@@ -62,7 +65,10 @@ def waypoint(start,path,discs,rects,radius):
 
 def drive(pose,goal,target,end):
     x,y,yaw=pose;dx,dy=target[0]-x,target[1]-y
-    norm=max(math.hypot(dx,dy),1e-9);speed=min(1.,math.dist(pose[:2],goal)/.25)
+    norm=max(math.hypot(dx,dy),1e-9)
+    # Slow the pulse duty at a nearby corner too, so reaching the retained
+    # point does not overshoot it at the far-away final goal's speed.
+    speed=min(1.,math.dist(pose[:2],goal)/.25,norm/.10)
     vx,vy=dx/norm*speed,dy/norm*speed
     wanted=math.atan2(end[1]-y,end[0]-x);error=math.atan2(math.sin(wanted-yaw),math.cos(wanted-yaw))
     clip=lambda x,lo,hi:max(lo,min(hi,x))

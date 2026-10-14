@@ -101,3 +101,31 @@ def test_segment_check_allows_retreat_from_observed_beam_margin():
     world=row['world'];pose,g,heading,goal=t._geometry(world)
     value=t._route(world,goal,heading,world['t'])
     assert t.path and any(value['wheels'])
+
+def test_saved_gcp_ep0_keeps_unreached_nearest_corner():
+    import json,math
+    from pathlib import Path
+    from sim.grasp_act_visible_route import constraints,segment_free,waypoint
+    from harness.grasp_act_visible_world import command_delta
+    # fdfca319 / seed 71000, sample 120: r1 held forever while r2 waited.
+    # The 17.6 mm-away rounded start cell is the only safe next waypoint.
+    row=json.loads((Path(__file__).parent/'fixtures/grasp_act_gcp_ep0_corner.json').read_text())
+    w=row['world'];t=VisibleOnlyGraspTeacher(row['rid'],row['end'],row['pwm'],bounds=(-20,20,-20,20))
+    t.folded_ready=True
+    pose,g,heading,goal=t._geometry(w)
+    value=t._route(w,goal,heading,w['t'])
+    radius,discs,rects=constraints(w,row['rid'],True)
+    assert math.dist(pose[:2],t.path[0])==pytest.approx(.0176297,abs=1e-6)
+    assert segment_free(pose[:2],t.path[0],discs,rects,radius)
+    assert all(not segment_free(pose[:2],p,discs,rects,radius) for p in t.path[1:])
+    assert waypoint(pose[:2],t.path,discs,rects,radius)==t.path[0]
+    assert t.blocked_goal_calls==t.no_path_calls==0
+    dx,dy,_=command_delta(value,.1);co,si=math.cos(pose[2]),math.sin(pose[2])
+    following=(pose[0]+co*dx-si*dy,pose[1]+si*dx+co*dy)
+    assert math.dist(following,t.path[0])<math.dist(pose[:2],t.path[0])
+    assert segment_free(pose[:2],following,discs,rects,radius)
+    # The old 5 mm proximity band also discards the still-needed corner.
+    corner=t.path[0];distance=math.dist(pose[:2],corner)
+    near=tuple(c+(p-c)*.004/distance for p,c in zip(pose[:2],corner))
+    assert all(not segment_free(near,p,discs,rects,radius) for p in t.path[1:])
+    assert waypoint(near,t.path,discs,rects,radius)==corner
