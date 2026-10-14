@@ -120,7 +120,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         os.environ['UGRP_SIM_OBSERVER_WIDTH']='320'
         os.environ['UGRP_SIM_OBSERVER_HEIGHT']='240'
         world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=640 if record_training else 320,height=480 if record_training else 240,render=True,
-            warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='sphere6_v1' if speed.get('roller_sphere6') else 'mesh',idle_robot_contacts='freeze_v1' if speed.get('idle_freeze') else 'off')
+            warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='freeze_v1' if speed.get('idle_freeze') else 'off')
         if observable:
             from sim.s2_realism_camera_binding import bind_camera
             for controller in world.controllers.values():bind_camera(controller)
@@ -147,7 +147,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             timings['physics']+=time.monotonic()-at
         adaptive=None
         if 'adaptive_dt' in speed:
-            adaptive=grasp_speed_options.AdaptiveStep(world,speed['adaptive_dt'],{rid:dict(p._servo_pulses) for rid,p in ports.items()},speed.get('coarse_noslip_off',False))
+            adaptive=grasp_speed_options.AdaptiveStep(world,speed['adaptive_dt'],{rid:dict(p._servo_pulses) for rid,p in ports.items()})
         advance(until)
         origin=float(world.data.time);previous={};history={};images={};writers={};teachers={};models={};clocks={}
         delays={rid:(0. if k==0 else float(rng.uniform(0,1.5))) for k,rid in enumerate(plan['roles'])}
