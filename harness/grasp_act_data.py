@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import math
 import subprocess
 from collections import Counter
 from pathlib import Path
@@ -42,6 +43,27 @@ def write_json(path, value):
     temporary = path.with_suffix(path.suffix + '.tmp')
     temporary.write_text(json.dumps(value, indent=2, allow_nan=False) + '\n')
     temporary.replace(path)
+
+
+def write_summary(path, value):
+    """Write report-only nonfinite numbers as null, without changing inputs.
+
+    Contracts, tensors and checkpoint metadata still use strict write_json;
+    a missing report metric must never relax model-input validation.
+    """
+    def clean(item):
+        if isinstance(item, np.ndarray):
+            return clean(item.tolist())
+        if isinstance(item, np.generic):
+            return clean(item.item())
+        if isinstance(item, float) and not math.isfinite(item):
+            return None
+        if isinstance(item, dict):
+            return {key: clean(v) for key, v in item.items()}
+        if isinstance(item, (list, tuple)):
+            return [clean(v) for v in item]
+        return item
+    write_json(path, clean(value))
 
 
 def read_rows(path):

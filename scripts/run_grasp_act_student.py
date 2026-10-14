@@ -1,6 +1,6 @@
-"""GCP-only staged solo grasp evaluation. No teacher/IK/GT policy correction.
+"""GCP-only staged solo student evaluation. No teacher/IK/GT policy correction.
 
-This is a component probe, not navigation, release or E2E completion. The setup
+This is a component probe, not navigation or E2E completion. The setup
 owner reads static initial poses; the isolated worker sees only the v6 contract.
 Evaluation truth is written after action selection and cannot change commands.
 """
@@ -20,17 +20,17 @@ if str(Path(__file__).resolve().parents[1]) not in sys.path:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from harness import grasp_act_contract as c
-from harness.grasp_act_data import sha256, write_json
+from harness.grasp_act_data import sha256, write_json, write_summary
 from harness.grasp_act_policy import ChunkExecutor
-from harness.grasp_act_rollout import OwnHistory, LiftScore, InputAudit
+from harness.grasp_act_rollout import OwnHistory, SoloSequence, SoloScore, InputAudit
 from scripts.grasp_act_training_guard import ROOT, require_gcp, source_sha
 
 
 def validate_plan(plan, protocol):
-    if (plan['seed'] not in protocol['closed_loop_seeds'] or plan['skill'] != 'grasp'
+    if (plan['seed'] not in protocol['closed_loop_seeds'] or plan['skill'] not in ('grasp', 'grasp_release')
             or plan['object_kind'] not in ('cyan', 'red', 'green', 'yellow')
             or plan['role'] != 'west' or plan['robot_id'] not in ('r1', 'r2', 'r3')):
-        raise ValueError('pilot supports registered fresh-seed solo grasp only')
+        raise ValueError('pilot supports registered fresh-seed solo boxes only')
     if set(protocol['closed_loop_seeds']) & set(protocol['train_seeds'] + protocol['validation_seeds']):
         raise ValueError('closed-loop seed leak')
     distance = math.dist(plan['spawns'][plan['robot_id']][:2], plan['target_setup_xy'])
@@ -54,15 +54,18 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
         raise ValueError('finite <=90 SIM seconds required')
     host, source = require_gcp(training=False), source_sha()
     validate_plan(plan, protocol)
+    with_release = plan['skill'] == 'grasp_release'
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     report = {'status': 'running', 'complete': False, 'host': host, 'source_sha': source,
         'seed': plan['seed'], 'model_sha256': sha256(model / 'model.safetensors'),
         'student_execution': True, 'teacher_assisted': False, 'weld': 'off',
-        'scope': 'staged near-field solo grasp; no navigation/release/E2E claim',
+        'scope': 'staged solo grasp/lift/setdown at pickup_site; no navigation/E2E claim' if with_release
+                 else 'staged near-field solo grasp; no navigation/release/E2E claim',
+        'object_kind': plan['object_kind'], 'requested_sequence': plan['skill'],
         'input_audit': {'forbidden_input_fields': 0, 'teacher_input_fields': 0, 'requests': 0},
         'completion_confirmation': 'unknown', 'gate_promotion_authorized_if_all_conditions_pass': False}
-    write_json(output / 'summary.json', report)
+    write_summary(output / 'summary.json', report)
     write_json(output / 'plan.json', plan)
     write_json(output / 'RUN_META.json', {'class': 'dev', 'sha': source})
     world = worker = port = None
@@ -134,12 +137,13 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
             if set(result) != {'chunk'}:
                 raise ValueError('student response whitelist mismatch')
             return result['chunk']
-        executor, score = ChunkExecutor(predict), LiftScore()
+        executor, score = ChunkExecutor(predict), SoloScore()
+        sequence = SoloSequence(with_release)
         # Evaluation-only private handles; these never leave the simulation owner.
         body = world.model.body(obj['body_name']).id
         gids = [g for g in range(world.model.ngeom) if world.model.geom_bodyid[g] == body and world.model.geom_contype[g]]
         fingers = {world.model.geom(rid + '__' + side + '_finger').id: i for i, side in enumerate(('left', 'right'))}
-        origin, tick, done_at = float(world.data.time), 0, None
+        origin, tick = float(world.data.time), 0
         with (output / 'student-inputs.jsonl').open('x') as inputs, (output / 'commands.jsonl').open('x') as commands, (output / 'eval-only.jsonl').open('x') as evaluations:
             while float(world.data.time) - origin < cap_s - 1e-8:
                 if (output / 'SUPERVISOR_STOP.json').exists():
@@ -148,13 +152,14 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
                     raise TimeoutError('rollout wall cap')
                 now = float(world.data.time)
                 jpeg = base64.b64decode(port.capture()['image'])
-                obs, jpegs, rel = history.observe(now, jpeg, skill='grasp',
-                    object_kind=plan['object_kind'], role=plan['role'])
+                obs, jpegs, rel = history.observe(now, jpeg, skill=sequence.skill,
+                    object_kind=plan['object_kind'], role=plan['role'],
+                    destination_zone='pickup_site' if sequence.skill == 'release' else 'none')
                 (output / rel).write_bytes(jpeg)
                 c.validate_observation(obs)
                 inputs.write(json.dumps(obs) + '\n')
                 value, done = executor.step(obs, jpegs)
-                commands.write(json.dumps({'command': value, 'done_requested': done}) + '\n')
+                commands.write(json.dumps({'command': value, 'skill': obs['skill'], 'done_requested': done}) + '\n')
                 # Match recording's independent normalized wheel pulses exactly.
                 port._command_expires_at = port._drive_expires_at = None
                 port._set_motors(tuple(value['wheels']))
@@ -166,8 +171,6 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
                                    {'kind': 'arm', 'servo_id': s, 'pulse': pwm}, now)
                 history.issue(value)
                 previous = value
-                if done and done_at is None:
-                    done_at = now  # model output, never an evaluation label
                 clearance = min(float(world.data.geom_xpos[g, 2] - np.abs(world.data.geom_xmat[g].reshape(3, 3)[2]) @ world.model.geom_size[g]) for g in gids)
                 rotation = world.data.xmat[body].reshape(3, 3)
                 tilt = math.degrees(math.acos(float(np.clip(rotation[2, 2], -1, 1))))
@@ -181,16 +184,20 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
                         forces[fingers[finger]] += abs(float(force[0]))
                 evaluation = {'clearance': clearance, 'tilt': tilt, 'forces': forces,
                               'weld': bool(world.data.eq_active.any())}
-                score.add(now, **evaluation)
-                evaluations.write(json.dumps({'t': now, **evaluation}) + '\n')
+                velocity = np.zeros(6)
+                mujoco.mj_objectVelocity(world.model, world.data, mujoco.mjtObj.mjOBJ_BODY, body, velocity, 0)
+                linear_speed = float(np.linalg.norm(velocity[3:]))
+                score.add(now, skill=obs['skill'], linear_speed=linear_speed, **evaluation)
+                evaluations.write(json.dumps({'t': now, 'skill': obs['skill'],
+                    'linear_speed': linear_speed, **evaluation}, allow_nan=False) + '\n')
                 if tick % 10 == 0:
                     for stream in (inputs, commands, evaluations):
                         stream.flush()
                     write_json(output / 'progress.json', {'sim_s': now-origin, 'done_requested': done,
                                'inference_calls': len(latencies)})
-                # Fixed settling window after the student's done output; no GT
-                # early stopping or task switch. Confirmation remains unknown.
-                if done_at is not None and now - done_at >= 3.1:
+                # Student done + fixed clock window are the ONLY phase/stop inputs.
+                # Evaluation truth never enters the sequence or the worker.
+                if sequence.update(now, done):
                     break
                 tick += 1
                 until = origin + tick * c.PERIOD_S
@@ -200,10 +207,10 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
                     port._set_motors(tuple(w if t < deadline else 0. for w, deadline in zip(value['wheels'], deadlines)))
                     world._physics_step_for(world.robot(rid))
         report.update(status='complete', complete=True, sim_s=float(world.data.time)-origin,
-            done_requested=done_at is not None, **score.record(),
+            done_requested=bool(sequence.done_times), done_times=sequence.done_times,
+            **score.record(sequence.done_times, with_release=with_release),
             inference_latency_s={'n': len(latencies), 'median': float(np.median(latencies)),
                                  'p95': float(np.percentile(latencies, 95))},
-            physical_success=bool(score.record()['lift_success']),
             skill_completion_success=None)
     except BaseException as exc:
         report.update(status='interrupted' if isinstance(exc, KeyboardInterrupt) else 'HOST_ERROR',
@@ -223,7 +230,7 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
         report['wall_s'] = time.monotonic() - begin
         report['artifacts'] = {str(p.relative_to(output)): sha256(p) for p in output.rglob('*')
                                if p.is_file() and p.name != 'summary.json'}
-        write_json(output / 'summary.json', report)
+        write_summary(output / 'summary.json', report)
     return report
 
 

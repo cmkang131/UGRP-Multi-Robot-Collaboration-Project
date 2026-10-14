@@ -60,28 +60,18 @@
     86049
   ],
   "closed_loop_seeds": [
-    91050,
-    91051,
-    91052,
-    91053,
-    91054,
-    91055,
-    91056,
-    91057,
-    91058,
-    91059,
-    91060,
-    91061,
-    91062,
-    91063,
-    91064,
-    91065,
-    91066,
-    91067,
-    91068,
-    91069
+    91100,
+    91101,
+    91102,
+    91103,
+    91104,
+    91105,
+    91106,
+    91107,
+    91108,
+    91109
   ],
-  "closed_loop_scope": "proposed reservation; operator must check unused seeds; staged solo grasp only",
+  "closed_loop_scope": "10 proposed unused seed reservations; operator inventory/collision check required; solo ACT grasp-lift-setdown at pickup_site",
   "gate_promotion_authorized_if_all_conditions_pass": false,
   "admission": "User/coordinator accepted 50/50 on 2026-10-15; include local_skill_sample == true only; no independent remeasurement",
   "smoke": {
@@ -127,5 +117,12 @@
   "sources": {
     "gcp1_runs": "/home/ugrp/ugrp-sim/runs",
     "project": "ugrp-act-train-1014"
-  }
+  },
+  "closed_loop_kind_counts": {
+    "cyan": 3,
+    "red": 3,
+    "green": 2,
+    "yellow": 2
+  },
+  "closed_loop_sequence": "grasp_release"
 }

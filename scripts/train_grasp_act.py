@@ -13,7 +13,7 @@ import sys
 if str(Path(__file__).resolve().parents[1]) not in sys.path:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from harness.grasp_act_data import GraspDataset, assert_tensor_keys, sha256, write_json
+from harness.grasp_act_data import GraspDataset, assert_tensor_keys, sha256, write_json, write_summary
 from scripts.grasp_act_training_guard import authorize_main, require_gcp, source_sha
 
 
@@ -53,7 +53,7 @@ def main():
         'blank_images': a.blank_images, 'batch_size': 8, 'readback_verified': False,
         'gate_promotion_authorized_if_all_conditions_pass': False,
         'selection': 'fixed final step; validation never selects checkpoint'}
-    write_json(a.output / 'summary.json', report)
+    write_summary(a.output / 'summary.json', report)
     write_json(a.output / 'RUN_META.json', {'class': 'milestone', 'sha': source})
     started, last_checkpoint = time.monotonic(), None
     stop = {'requested': False}
@@ -152,7 +152,7 @@ def main():
                     log.write(json.dumps(row, allow_nan=False) + '\n')
                     log.flush()
                     report.update(steps_completed=step, latest=row)
-                    write_json(a.output / 'summary.json', report)
+                    write_summary(a.output / 'summary.json', report)
                 if step % (100 if a.stage == 'smoke' else 500) == 0:
                     checkpoint()
             checkpoint()
@@ -176,7 +176,7 @@ def main():
         report['wall_s'] = time.monotonic() - started
         report['artifacts'] = {str(f.relative_to(a.output)): sha256(f) for f in a.output.rglob('*')
                                if f.is_file() and f.name != 'summary.json'}
-        write_json(a.output / 'summary.json', report)
+        write_summary(a.output / 'summary.json', report)
 
 
 if __name__ == '__main__':

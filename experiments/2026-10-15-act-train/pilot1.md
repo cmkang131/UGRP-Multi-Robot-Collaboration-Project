@@ -1,13 +1,22 @@
 # ACT 학생 첫 파일럿 준비 — 2026-10-15
 
-상태: **오프라인 파이프라인·완료 표적 수정 검증 완료**. 기존 `7caf9944` smoke는
-사용자 전달 기준 운영 워커가 진행 중이며, 이번 작업에서 원격 상태를 확인하지 않았다.
-`claude/act-train`에서
-PR #502의 교사 `6f057f7e97c1a3aec9e8c398b8d9068e27b25df8`에 맞춘 학생 계약만
-가져왔다(파일 SHA-256 `6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056`).
-교사/장면 소스는 병합하지 않았다. 기준 main은 `c72a2b50628e549fee8032378f4c7cf709fe688c`.
-기존 실행 소스는 `7caf99447c5d7543b087722957d4d9987c22cbee` 대기열에 고정돼 있다.
-이번 완료 표적 수정은 별도 소스이며 기존 실행·대기열에 소급 적용하지 않는다.
+상태: **solo 본 학습 1회(총10,000 step) + 보류5 + 새 seed10 폐루프 평가 승인, 운영 큐 준비**.
+목적은 학습·폐루프 연결 확인이며 최종 모델이 아니다. 이후 빔·상자·내려놓기 데이터를
+합치는 학습은 별도 단계다. `gate_promotion_authorized_if_all_conditions_pass=false`를 유지한다.
+이 작업의 기준 HEAD는 `8c4490ba3145f673f24944f405ccc0fea38e9efd`, PR은 #504다.
+실행 소스는 새 큐의 전체 `source_sha`로 고정한다. 원격 접속·실행·VM 상태 재확인은 하지 않았다.
+
+기존 `7caf9944` smoke는 운영 워커·조정자 보고상 완료했다. 변환50 에피소드/17,851행,
+train45·보류5, 입력 감사0/0, grasp done50/50·release done0/50이다. 300 step에82.415초,
+loss2.82619, 가중치 재로딩 통과, 보류5의 grasp done 검출0/40이다(중복 horizon 분모).
+원본 보고는 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act-smoke-7caf9944.json`,
+SHA-256 `bc93bb38946030fe644af52c4bd100155048706ad9f15d595dba37af43ff85f0`.
+현재 로컬 파일은 `parse_constant`로 비표준 수를 거부해도 읽혀 119행 오류를 재현하지 못했다.
+원본은 보존했다. [준비·검증 기록](main-eval-preparation-summary.json)에 범위를 남겼다.
+
+학생 계약은 PR #502 교사 `6f057f7e97c1a3aec9e8c398b8d9068e27b25df8`에 맞췄고
+기준 main은 `c72a2b50628e549fee8032378f4c7cf709fe688c`다. 교사/장면 소스를 추가 병합하지 않았다.
+기존 smoke는 이전 라벨의 결과이며 새 데이터·모델과 합산하지 않는다.
 
 50/50 기록의 조정자 승인과 86045–86049 보류는 이번 사용자 지시를 근거로 한다.
 교사 성공률을 여기서 재측정하지 않았다. 원본 result의 `data_admitted=false` 등을
@@ -103,112 +112,116 @@ feature cache와 기존 다른 작업용 sampling/metric은 사용하지 않는�
 표적 동일, 부분 데이터의 학습 거부를 확인했다. 이 두 샘플의 표적 수정만 검증했으며
 전체 50개와 학생의 실제 놓기 완료 성능은 미검증이다.
 
-프로토콜 SHA-256: `99a0ba8557120b75a786d92a5808926abdcbb7a9aa82529d4d60dca5f2230af2`.
+완료 표적 수정 당시 프로토콜 SHA-256: `99a0ba8557120b75a786d92a5808926abdcbb7a9aa82529d4d60dca5f2230af2`
+(새 폐루프 목록을 추가한 현재 프로토콜 해시는 새 큐에 별도 고정).
 본 학습 전에 새 소스·프로토콜로 전체 50개를 다시 변환해 skill별 count/done/missing_done을
 확인해야 한다. 기존 소스 smoke 결과와 새 표적 결과를 합산하지 않는다.
 
+## 요약 JSON 저장
+
+`harness.grasp_act_data.write_summary`는 중첩 dict/list/tuple 및 NumPy 수치의
+NaN/±Infinity를 `null`로 바꾼 사본을 만든 뒤 `allow_nan=False`로 원자 저장한다.
+학습·보류 평가·학생 실행 요약에 적용했다. 입력·표적·config·adapter는 계속 엄격한
+`write_json`과 유한값 검사를 써서 잘못된 제어값을 허용하지 않는다. 운영 집계 요약도
+이 함수를 사용한다. 분모가 없는 done precision/recall은 `null`이다.
+[Python 공식 JSON 문서](https://docs.python.org/3/library/json.html#infinite-and-nan-number-values)는
+기본 NaN/Infinity 처리가 표준 JSON 범위를 벗어나고 `allow_nan=False`가 이를 거부함을 설명한다.
+이번 null 변환은 보고 지표의 결측 표현이며 실패를 성공으로 바꾸지 않는다.
+
 ## GCP 운영 워커 전달
 
-기존 `20261015-act-train-7caf9944.json`은 이번 작업에서 수정하지 않았으며,
-SHA-256 `639dbb713a4881af11474075eca23d88bcf0f94bf7823d53463fa766389a64c3` 불변을 확인했다.
-사용자 지시대로 새 SHA용 큐도 만들지 않았다. 새 소스 SHA·프로토콜 해시는 PR 코멘트와
-보고로 전달한다. 아래 대기열 생성 명령은 이전 준비 절차의 기록이며 이번에 실행하지 않았다.
-
 ```sh
-python3 -m scripts.queue_grasp_act_pilot \
+python3 -m scripts.queue_grasp_act_pilot --mode main-eval \
   --output-dir /Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue
 ```
 
-파일명 `20261015-act-train-<SHA8>.json`, `gate_promotion_authorized_if_all_conditions_pass=false`.
-convert/smoke만 운영 사전 점검 뒤 가능하고 main·폐루프·blank 학습은 비활성이다.
+커밋한 깨끗한 소스에서 `20261015-act-train-<SHA8>.json`을 새로 만든다. 이전 `7caf9944`
+큐와 원본·산출물은 보존한다. `coordinator_approval`은 `approved=true`, `stage=main+eval`,
+`steps=10000`, RGB main 1회다. 기존 blank-image 별도 학습은 **비활성 유지**한다.
+데이터 확대 전 필요한 대조군 계획은 남겨 두며 이번 승인에 추가하지 않는다.
 
-계획 머신은 서울 `asia-northeast3-a`, `g2-standard-4`, L4 1장(24 GiB), 4 vCPU/16 GiB.
-부팅 pd-balanced 60 GiB + 데이터 pd-balanced 250 GiB. 원본 gcp1 디스크의 snapshot을
-같은 프로젝트 `ugrp-act-train-1014`에 만들고 데이터 디스크로 복원한다. `/mnt/act-source`
-아래 원본 runs는 보존하며, 새 결과는 `/mnt/act-source/act-pilot1/`에 둔다. source disk명과
-snapshot ID는 아직 조회하지 않았고 운영 워커가 기록한다. 완료된 원본의 해시가 변하지
-않는 시점에 복제하고, source/복제본의 `SHA256SUMS` 전부를 맞춘 뒤에만 변환한다.
-공개 dataset 업로드·VM에 SSH 개인키/모델키 저장은 없다.
+서울 `asia-northeast3-a`의 기존 `ugrp-act-l4-pilot1`(g2-standard-4, L4 1장, 100 GB
+pd-balanced 부팅 디스크)을 재시작·재사용한다. TERMINATED·디스크/데이터 보존은 전달받은
+상태이며 운영자가 현재 상태를 확인한다. 새 VM·snapshot·데이터 디스크를 만들지 않는다.
+`/mnt/act-source/home/ugrp/ugrp-sim/runs`의 기존50개 기록을 쓰고, 새 산출물은
+`/mnt/act-source/act-main-<SHA8>/`에 둔다. 저장 공간40 GiB 이상·원본 파일 해시를 확인한다.
+원본 tar는 `gs://ugrp-act-train-1014-runs/solo-record-6f057f7e/solo-record-6f057f7e-milestone.tar`,
+SHA-256 `2917caf7ff8c8c4a429a5b840ac2223c6d4c784eaa95e0e99a11267ea64b00f8`다.
+기존 보고의 RUN_META100개 차이는 문서화된 milestone-update manifest와 대조하며 다른 차이는 중단한다.
 
-운영 워커의 모든 gcloud 명령은 `--project=ugrp-act-train-1014`를 포함한다.
-VM 생성에 `--max-run-duration=8h --instance-termination-action=STOP --no-service-account
---no-scopes`를 유지한다. 기존 budget-stop을 변경하지 않고 잔여 크레딧·활성 경보를
-확인한다. 발동하면 정지·보고하며 다른 호스트로 넘기지 않는다. 이번 소스의
-`gcp_idle_guard_startup.sh`는 새 학습/변환/평가 프로세스도 작업으로 인식하며 유휴
-20분 종료를 유지한다. 운영 워커가 설치·timer 활성 상태를 검증한다.
+순서: 전체 재변환 → 새300-step smoke → offline-smoke → RGB main 총10,000 step →
+보류5 offline-main → gcp1 새10 seed 폐루프다. 변환 manifest에서 스킬별50개 에피소드,
+각 에피소드 done1개, 합계 grasp50/50·release50/50, missing_done0, 입력 감사0/0를
+확인한 뒤만 진행한다. 새 소스·manifest·정규화가 달라 **옛 smoke 가중치는 resume하지 않는다**.
+새 smoke step300에서 main을 이어 총10,000 step으로 끝낸다(추가10,000이 아님).
 
-추정 디스크 사용: 입력 전체는 미실측; 기록된 22,268 frame 기준 파생 uint8 영상 약
-4.8 GiB + 표적/메타데이터 + 체크포인트/optimizer 약 15 GiB 여유. 복원 후 40 GiB 이상
-여유를 요구한다. snapshot·정지된 VM 디스크도 비용에 포함한다. 원본 삭제는 하지 않는다.
+개별 trainer 승인 파일의 `stage=main`은 기존 검증 계약대로 유지한다. 운영자는 큐의
+명시적 `main+eval` 승인에 따라 새 source SHA·dataset manifest SHA·새 smoke summary SHA를
+정확히 채워 `/approvals/main.json`을 만든다. 이 범위의 추가 조정자 승인은 필요 없다.
+AdamW1e-5/backbone1e-5, weight decay1e-4, batch8, KL10, clip1, chunk8/8,
+ImageNet ResNet18 미세조정과 시간 앙상블off는 위 조사 근거·고정 upstream을 유지한다.
+보류 오차로 체크포인트를 선택하지 않고 고정 step10,000을 쓴다. 500 step마다
+모델·optimizer·RNG를 보존하며 체크포인트 전체 파일 SHA-256·재로딩을 확인한다.
 
-공식 서울 시간표에서 g2-standard-4 **$0.907714004/시간**을 확인했다(2026-10-15,
-[가격 출처](https://cloud.google.com/products/compute/pricing/accelerator-optimized),
-[추출 기록](pricing.json)). 300-step smoke는 5–20분 예상, 프로세스 상한 30분으로
-계산 비용 최대 약 $0.454. 본 학습 10k step은 **미실측 추정 2–6시간**, 계산 비용
-약 $1.82–5.45, VM 8시간 계산 비용 약 $7.26. GPU를 중복 과금해 더하지 않는다.
-snapshot/디스크/네트워크·세금·환율·실제 크레딧 잔액은 미확인이다.
-[디스크 공식 가격](https://cloud.google.com/compute/disks-image-pricing).
+모든 gcloud 명령은 `--project=ugrp-act-train-1014`를 붙인다. 잔여 크레딧·budget-stop을
+확인하고 발동 시 정지·보고한다. 8h STOP·유휴1200초를 유지하고 키를 저장하지 않는다.
+각 단계 뒤 요약·해시를 회수하고 해당 VM을 정지해 `TERMINATED`를 실제 확인·기록한다.
+다음 단계는 같은 VM을 재시작한다. 폐루프 후에는 소유 작업을 확인한 gcp1과 학습 VM 모두
+정지를 확인한다. 다른 작업이 있으면 운영자가 조정하고 상태 미확인을 완료로 보고하지 않는다.
 
-smoke에서 실제 step/s·GPU peak memory·finite loss/gradient·샘플/청크 정합·가중치
-재로딩 예측 동일성·5개 보류 seed 행동 오차를 회수한다. 이후 VM은 정지 상태
-`TERMINATED`를 확인하고 조정자 승인을 기다린다. main 승인 JSON은 source SHA,
-dataset manifest hash, smoke summary hash, 10,000 step, blank 여부에 묶인다.
-학습은 고정 마지막 step을 평가하며 보류 오차로 체크포인트를 고르지 않는다.
-100-step(smoke)/500-step(main)마다 optimizer·RNG·모델을 저장한다. SIGINT/SIGTERM과
-wall cap에서 현재 step을 저장하고 미완료로 기록한다. main은 smoke step300에서 이어서
-총10k를 목표로 한다. 8시간 안에 끝나지 않으면 재승인된 다음 세션에서 같은 소스로 잇는다.
+[가격 기록](pricing.json)의 $0.907714004/시간은 2026-10-15에 수집한 추정이다.
+현재 가격·실제 크레딧·디스크/네트워크·세금은 이 작업에서 조회하지 않았으며 운영자가 실행 전
+확인한다. 비용이 없다고 가정하지 않는다.
 
 ## 평가 실행 경로와 성공 기준
 
-오프라인: `scripts.evaluate_grasp_act_offline`은 86045–86049만 열어 첫 명령과 전체
-유효 horizon의 wheel MAE, pulse-width 초 MAE, PWM MAE, 투영 후 명령 오차,
-완료 양성/음성 분모와 누락/거짓 완료 수를 JSON/JSONL로 저장한다. padding은 제외한다.
-완료 양성이 0개이면 recall 성공으로 표시하지 않는다. 모델 선택이나 물리 성공 수치가 아니다.
+오프라인은 86045–86049 보류5개다. 행동 MAE(바퀴·pulse-width·PWM·투영 후 명령)와
+완료 TP/FP/FN·양성/음성/예측 양성 분모·precision/recall을 seed/skill/task별 기록한다.
+`first_action_by_skill`은 고유 timestep이고 `by_skill`의 all-horizons는 중복 청크다.
+padding은 제외하며 분모0은 null이다. 행동 적합도를 폐루프 물리 성공으로 해석하지 않는다.
 
-폐루프: 표준 `sim_cli workflow run grasp-act-student-pilot` →
-`scripts.run_grasp_act_student` → 별도 CPU 프로세스 `scripts.grasp_act_student_worker`.
-기존 Scene·카메라·stiffness·v7 바퀴 물리 조합을 사용한다. actor에는 world/teacher/IK가
-없고 직렬화된 허용 관측과 자기 JPEG만 보낸다. 출력은 wheel/PWM 청크이며 교사·정답
-보정·손으로 짠 파지 대체는 없다. 초기 배치만 setup 소유자가 만든다. 영상·명령·평가
-파일을 분리하고 입력 허용 목록 위반 시 실행을 거부한다.
+폐루프는 `closed-loop-main-plans/91100..91109.json`의 새10개 제안이다. BOX_KINDS는
+cyan3·red3·green2·yellow2로, 10이4로 나뉘지 않아 최대 차이를1로 했다. 정적 설정으로만
+만든 근거리 시작이며 원격 seed 재고·정적 충돌·실제 가시성은 운영자가 확인한다. 기존20개
+cyan 집기 전용 계획은 재생용 보존한다. 새 계획은 작은 상자의 집기→들기→pickup_site 놓기
+부품 평가이며 지도 주행·운반 경로·협력·연구 관문 승격을 주장하지 않는다.
 
-초기 계획은 `closed-loop-plans/91050..91069.json`: 같은 학습 지도에서 **cyan의 새로운
-근거리 시작 20개**다. seed는 제안 예약이며 운영 워커가 원격 사용 이력과 정적 충돌
-검사를 끝내야 한다. 학습/보류 50개와 겹치지 않는다. 0.4–0.8 m 구간에서 시작하는
-집기 부품 평가이며 지도 주행 인계·다른 색·새 지도·빔·상자·연속 운반 성공을 뜻하지 않는다.
-그 범위 확대는 다음 코호트로 나눈다. 실행 전 CPU 추론이 포함된 첫 30 SIM초,
-동시1 속도·관측/명령·입력 감사 0/0를 운영 워커가 확인한다. 오류/실패는 분모에서 빼지 않는다.
+표준 workflow `grasp-act-student-pilot` 1.1.0을 쓴다. 최종 actor의 config/adapter/weights/
+SHA256.json을 gcp1에 복사해 전체 해시·CPU 로딩을 확인하고 기존 격리 CPU worker를
+stdin/stdout으로 연결한다. 별도 네트워크 추론 서버는 만들지 않는다. 추론 청크당
+n·median·p95 지연과 wall/SIM을 남긴다. 동시1의 첫 실행30 SIM초 원본·입력 감사0/0·
+명령과 실측 속도를 확인한 뒤 나머지를 낸다. gcp1 실측 기준을 쓰고 Azure 속도 수치를 전용하지 않는다.
 
-집기 물리 성공은 평가 전용 접촉/geometry로 **전체 바닥 여유 ≥12 mm, 기울기 ≤10°,
-두 손가락 각각 ≥0.5 N을 3 SIM초 연속 유지**, weld off로 센다. 평가값은 명령·전환에
-되돌리지 않는다. 모델 done 이후 고정 3.1초 관측하며 추가 집기 코드는 없다.
-RGB 완료 확인기는 아직 연결하지 않아 `completion_confirmation=unknown`,
-`skill_completion_success=null`로 둔다. 따라서 성공 lift도 전체 스킬 완료·놓기·E2E 성공으로
-승격하지 않는다. 전체 n/N, 실제 완료 요청 n/N, 실패/시간초과/HOST_ERROR, CPU 추론
-중앙/p95를 별도로 보고한다. 영상 검토 범위(최소6장, 긴 실행 60초마다)를 기록해야 한다.
+ACT는 grasp 명령을 받고, **학생 done→고정3.1초 대기→ACT release 명령→학생 done→고정3.1초**
+순서로만 전환한다. 코드에 손 파지 경로·교사·정답 보정은 없다. 평가 정답은 분리된
+`eval-only.jsonl`과 채점에만 쓴다. 들기 성공은 바닥 여유≥12mm·기울기≤10°·두 손가락
+각≥0.5N을3 SIM초 유지한 경우다. 놓기는 release 지시 뒤 바닥 여유−5..6mm·기울기≤10°·
+각 손가락<0.1N·선속도≤0.02m/s를3 SIM초 유지한 경우다. 두 조건을 순서대로 만족하고 관측된 낙하가 없어야
+`physical_success=true`다. 들기 후 여유>12mm에서 양손가락 모두<0.1N이면 낙하 실패를
+고정하며 이후 바닥에서 안정돼도 성공으로 바꾸지 않는다. 10Hz 표본 사이의 낙하는 놓칠 수
+있으므로 영상에서 발견한 낙하도 실패로 기록한다. 기존 집기 전용 성공과 합산하지 않는다. 선속도는 [MuJoCo mj_objectVelocity 공식 API](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-objectvelocity)의
+회전/병진6D 출력 중 병진 성분을 평가에만 사용한다. RGB 완료 확인은 계속 unknown이다.
 
-화면 사용 점검은 동일 train split·step의 **별도 blank-image 학생**을 학습해 같은 새로운
-시작 상태에서 비교한다. 사후에 RGB 학생의 화면만 가리는 실험으로 대신하지 않는다.
-n/N 차이가 없으면 데이터 확대 전에 원인을 확인한다. blank 학습은 별도 smoke/승인 대상이다.
+10개 전체·색별 n/N, done 요청과 물리 성공, 실패 사유 분포·HOST_ERROR·미회수 상태를
+각각 남긴다. 실제 실패 원인 판단 전 최소6장·60 SIM초마다1장 이상 영상을 보고 범위를
+기록한다. 결함이 확인되면 같은 결함의 소유 실행·대기를 즉시 멈추고 원본을 보존한다.
 
 ## 검증 범위와 산출물 보존
 
-- 완료 표적 수정 시험 **36 passed / 3파일**(pytest 표시 1.82초), diff 검사 통과.
-  [이번 검증 요약과 JUnit 해시](done-label-v1-summary.json). Mac에서 저장 자료 변환만 했으며
-  원격 접속·학습·물리·렌더 실행은 0이다.
-- 수정 전 시험 **27 passed / 3파일**(pytest 표시 0.44초), Python 문법·idle guard shell 문법·
-  diff 검사 통과. 표준 workflow `plan`도 실행하지 않은 명령/입력 해시를 반환했다.
-  [검증 요약과 JUnit 해시](summary.json).
-- 이번 Mac 검증: 3개 시험 파일의 순수 데이터/계약/명령·승인 경계 시험과 저장 JPEG 변환.
-  실제 샘플 2개 719행과 원본 참조 736개 해시 정합. 원격 접속·학습·물리·렌더 실행 0.
-- GPU LeRobot forward/backward·메모리·속도·resume, 전체 50개 데이터, 시뮬레이터 actuator
-  연결·폐루프 성능은 아직 실행하지 않았다. 테스트 통과를 이 결과들로 확대하지 않는다.
-- 각 단계는 running/complete/HOST_ERROR·원본 위치·해시를 summary JSON에 남긴다.
-  회수 뒤 로컬 프로젝트 기록과 hash를 갱신한다. 현재 원본 전체의 두 번째 복사본은 미확인이다.
-- 모델이 생기면 선택 모델·보고한 비교/실패 모델을 config/adapter/정규화/출처와 묶어 새
-  GitHub Release asset으로 보존한다. `configs/model_artifacts.json`에 URL·크기·SHA·검증
-  범위를 기록하고 재다운로드·전체 해시·모델 로딩을 확인한다. 현재는 가중치가 없으므로
-  배포 완료 항목을 만들지 않았다. [모델 배포 규칙](../../docs/model_artifacts.md).
+이번 수정은 **25 passed / 2파일**(0.30초)로 JSON 비유한값의 null 저장·엄격 입력 거부,
+done 분모/precision/recall, 승인·새 경로·10개 계획, 학생 명령만 쓰는 전환과
+들기 뒤 안정 놓기 채점을 확인했다. [준비 요약](main-eval-preparation-summary.json)에 JUnit
+경로·해시와 보고 원본을 남겼다. Mac 물리·렌더·학습·원격 접속은0이다.
+기존 완료 표적 샘플 시험36개와 데이터 정적 감사는 이전 기록 범위 그대로다.
+전체50개 새 변환, GPU 학습·보류 평가, 실제 폐루프·CPU 지연·현재 VM 정지는
+**아직 검증하지 않았고 운영자가 수행할 일**이다. 순수 시험 통과를 이 결과로 확대하지 않는다.
+
+실패/HOST_ERROR를 포함한 모든 요약은 표준 JSON과 원본 경로·해시를 기록한다.
+회수·전체 hash·가중치 로딩을 확인하기 전에는 모델 보존/배포 완료로 표시하지 않는다.
+선택 모델과 보고한 비교/실패 모델을 versioned GitHub Release asset으로 보존하고
+`configs/model_artifacts.json`에 URL·크기·SHA·검증 범위를 기록한다. 재다운로드·전체
+hash·로딩까지 확인한다. 원본·옛 큐·옛 체크포인트는 삭제하거나 덮어쓰지 않는다.
+[모델 배포 규칙](../../docs/model_artifacts.md).
 
 ## 운영 참고 자료
 

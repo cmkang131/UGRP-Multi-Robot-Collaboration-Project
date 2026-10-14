@@ -10,7 +10,7 @@ import sys
 if str(Path(__file__).resolve().parents[1]) not in sys.path:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from harness.grasp_act_data import GraspDataset, INPUT_KEYS, sha256, write_json
+from harness.grasp_act_data import GraspDataset, INPUT_KEYS, sha256, write_summary
 from harness import grasp_act_contract as c
 from scripts.grasp_act_training_guard import require_gcp, source_sha
 
@@ -26,14 +26,17 @@ def action_metrics(prediction, target, pad):
     pd = np.asarray([c.encode_action({'t': 0., **{k: v for k, v in c.decode_action(row).items()
                       if k in ('wheels', 'duration_s', 'pwm')}}, done=c.decode_action(row)['done']) for row in p])
     positives, calls = y[:, -1] >= .5, p[:, -1] >= .65
+    tp, fp, fn = int((calls & positives).sum()), int((calls & ~positives).sum()), int((~calls & positives).sum())
     return {'valid_actions': len(y), 'wheel_mae': float(error[:, :4].mean()),
             'pulse_width_mae_s': float(error[:, 4:8].mean() * .15),
             'pwm_mae': float(error[:, 8:13].mean() * 1000),
             'decoded_wheel_mae': float(np.abs(pd[:, :4] - y[:, :4]).mean()),
             'decoded_pwm_mae': float(np.abs(pd[:, 8:13] - y[:, 8:13]).mean() * 1000),
             'done_positive_N': int(positives.sum()), 'done_negative_N': int((~positives).sum()),
-            'done_false_positive_n': int((calls & ~positives).sum()),
-            'done_missed_n': int((~calls & positives).sum())}
+            'done_true_positive_n': tp, 'done_predicted_positive_N': int(calls.sum()),
+            'done_false_positive_n': fp, 'done_missed_n': fn,
+            'done_precision': tp / (tp + fp) if tp + fp else None,
+            'done_recall': tp / (tp + fn) if tp + fn else None}
 
 
 def main():
@@ -47,7 +50,7 @@ def main():
     report = {'status': 'running', 'complete': False, 'host': host, 'source_sha': source,
               'dataset_manifest_sha256': sha256(a.dataset / 'manifest.json'),
               'model_sha256': sha256(a.model / 'model.safetensors'), 'physical_runs': 0}
-    write_json(a.output / 'summary.json', report)
+    write_summary(a.output / 'summary.json', report)
     try:
         import torch
         from harness.grasp_act_policy import GraspActor
@@ -79,15 +82,17 @@ def main():
                             'prediction': pred[i].tolist(), 'target': target[i].tolist(),
                             'action_is_pad': pads[i].tolist()}, allow_nan=False) + '\n')
                 ps, ys, masks = np.asarray(ps), np.asarray(ys), np.asarray(masks)
-                by_skill = {}
+                by_skill, first_by_skill = {}, {}
                 for skill in sorted({r['skill'] for r in metadata}):
                     chosen = np.asarray([r['skill'] == skill for r in metadata])
                     by_skill[skill] = action_metrics(ps[chosen], ys[chosen], masks[chosen])
+                    first_by_skill[skill] = action_metrics(ps[chosen, :1], ys[chosen, :1], masks[chosen, :1])
                 by_task = {}
                 for task in sorted({(r['robot_id'], r['object_kind'], r['role'], r['skill']) for r in metadata}):
                     chosen = np.asarray([tuple(r[k] for k in ('robot_id', 'object_kind', 'role', 'skill')) == task for r in metadata])
                     by_task['/'.join(task)] = action_metrics(ps[chosen], ys[chosen], masks[chosen])
-                episodes.append({'seed': e['seed'], 'robot_id': e['robot_id'], 'by_skill': by_skill, 'by_task': by_task,
+                episodes.append({'seed': e['seed'], 'robot_id': e['robot_id'], 'by_skill': by_skill,
+                    'first_action_by_skill': first_by_skill, 'by_task': by_task,
                     'all_horizons': action_metrics(ps, ys, masks),
                     'first_action': action_metrics(ps[:, :1], ys[:, :1], masks[:, :1])})
                 offset += e['rows_selected']
@@ -98,7 +103,7 @@ def main():
         report.update(status='HOST_ERROR', error_type=type(exc).__name__)
         raise
     finally:
-        write_json(a.output / 'summary.json', report)
+        write_summary(a.output / 'summary.json', report)
 
 
 if __name__ == '__main__':
