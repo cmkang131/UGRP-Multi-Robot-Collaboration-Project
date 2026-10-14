@@ -1,0 +1,416 @@
+{
+  "status": "offline_complete",
+  "baseline_sha": "77151eec997ce9ab4cbdfd64d6952737d2f0f44d",
+  "merged_search_sha": "23a2a1137e3907073001ce079dd3294419fb5b1b",
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_crate_teacher.py",
+      "tests/test_grasp_act_search.py",
+      "tests/test_crate_rgb_lift_v2.py"
+    ],
+    "passed": 94,
+    "skipped": 1,
+    "deselected": 1,
+    "junit": "outputs/crate-v2-tests.xml",
+    "junit_sha256": "04b354a710cfbf7d27006e1f07175f44dea5f95241830f8e350b31e25c6bb9b3"
+  },
+  "actual_frame_pairs": [
+    {
+      "seed": 77921,
+      "robot": "r1",
+      "assigned_lug": "blue",
+      "frames": [
+        {
+          "local": "/private/tmp/ops/frames/crate-diag-77921/r1-000440.jpg",
+          "raw_relative": "eval-own/r1/000440-grasp.jpg",
+          "sha256": "f2ff3be4db59971c951f178a030595d7c1e63620443608e5e845c48a72b93f87",
+          "frame_index": 440
+        },
+        {
+          "local": "/private/tmp/ops/frames/crate-diag-77921/r1-000540.jpg",
+          "raw_relative": "eval-own/r1/000540-grasp.jpg",
+          "sha256": "bf5602abef52193f1f6ecc6463653ad3c55dee34b9136b5c8ce393c1276b74b7",
+          "frame_index": 540
+        }
+      ],
+      "ledger": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-77151eec/raw/teacher-r1.jsonl.zst",
+      "ledger_sha256": "cfd5e4f0ee983fb31ce92ee32c5f4b6402d85222b00a0582510606a241a6654f",
+      "candidate_pair": {
+        "rule": "crate_rgb_lift_v2",
+        "thresholds": "provisional; GCP validation pending",
+        "command_evidence": {
+          "valid": true,
+          "duration_s": 10.70000000005109,
+          "arm_pwm_span": 485,
+          "reason": "closed stationary issued lift"
+        },
+        "comparisons": [
+          {
+            "sample": "lift_complete",
+            "parts": {
+              "lug": {
+                "after": {
+                  "fraction": 0.6312890625,
+                  "center": [
+                    0.48762936235381477,
+                    0.5947736835591857
+                  ],
+                  "extent": [
+                    0.90625,
+                    0.7291666666666666
+                  ]
+                },
+                "area_ratio": 1.0572419207117625,
+                "center_shift": 0.018874425821947316,
+                "extent_shift": 0.029166666666666674
+              },
+              "pink": {
+                "after": {
+                  "fraction": 0.18326822916666666,
+                  "center": [
+                    0.46818206039076377,
+                    0.1352267613972765
+                  ],
+                  "extent": [
+                    0.896875,
+                    0.25
+                  ]
+                },
+                "area_ratio": 0.8413533385139578,
+                "center_shift": 0.019435053415324394,
+                "extent_shift": 0.041666666666666685
+              }
+            }
+          }
+        ],
+        "before": {
+          "lug": {
+            "fraction": 0.597109375,
+            "center": [
+              0.4896307623533517,
+              0.613648109381133
+            ],
+            "extent": [
+              0.90625,
+              0.7
+            ]
+          },
+          "pink": {
+            "fraction": 0.21782552083333334,
+            "center": [
+              0.4660712684559747,
+              0.15466181481260088
+            ],
+            "extent": [
+              0.9,
+              0.2916666666666667
+            ]
+          }
+        },
+        "verdict": "undetermined",
+        "reason": "settled hold frame missing"
+      },
+      "pair_scope": "pre-lift to late hold, no separate completion frame",
+      "release_replay_verified": false
+    },
+    {
+      "seed": 77921,
+      "robot": "r2",
+      "assigned_lug": "teal",
+      "frames": [
+        {
+          "local": "/private/tmp/ops/frames/crate-diag-77921/r2-000440.jpg",
+          "raw_relative": "eval-own/r2/000440-grasp.jpg",
+          "sha256": "c09ccd8ab1decd4e1e8da953c0ab78a060ee031edcc4a870288bcdcb32ab625c",
+          "frame_index": 440
+        },
+        {
+          "local": "/private/tmp/ops/frames/crate-diag-77921/r2-000540.jpg",
+          "raw_relative": "eval-own/r2/000540-grasp.jpg",
+          "sha256": "ba28b75c6be7a965da46ba79200ad586344fe8e9c5d6c45c4806149d66ecc47f",
+          "frame_index": 540
+        }
+      ],
+      "ledger": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77921-77151eec/raw/teacher-r2.jsonl.zst",
+      "ledger_sha256": "272b724963c7350d7b03485c2460646ac55b8fa8a37c2fa8bfc04be47c01a6eb",
+      "candidate_pair": {
+        "rule": "crate_rgb_lift_v2",
+        "thresholds": "provisional; GCP validation pending",
+        "command_evidence": {
+          "valid": true,
+          "duration_s": 10.70000000005109,
+          "arm_pwm_span": 441,
+          "reason": "closed stationary issued lift"
+        },
+        "comparisons": [
+          {
+            "sample": "lift_complete",
+            "parts": {
+              "lug": {
+                "after": {
+                  "fraction": 0.4455338541666667,
+                  "center": [
+                    0.48216694187099984,
+                    0.6981618542439918
+                  ],
+                  "extent": [
+                    0.90625,
+                    0.5166666666666667
+                  ]
+                },
+                "area_ratio": 1.0336525390447997,
+                "center_shift": 0.008043650795833468,
+                "extent_shift": 0.008333333333333415
+              },
+              "pink": {
+                "after": {
+                  "fraction": 0.37029947916666667,
+                  "center": [
+                    0.484380384331376,
+                    0.23823798305144345
+                  ],
+                  "extent": [
+                    0.90625,
+                    0.42916666666666664
+                  ]
+                },
+                "area_ratio": 0.9628914846791942,
+                "center_shift": 0.007903318229522643,
+                "extent_shift": 0.02083333333333337
+              }
+            }
+          }
+        ],
+        "before": {
+          "lug": {
+            "fraction": 0.43102864583333333,
+            "center": [
+              0.4799413006374045,
+              0.7062055050398253
+            ],
+            "extent": [
+              0.90625,
+              0.5083333333333333
+            ]
+          },
+          "pink": {
+            "fraction": 0.3845703125,
+            "center": [
+              0.4874412772981208,
+              0.2461413012809661
+            ],
+            "extent": [
+              0.90625,
+              0.45
+            ]
+          }
+        },
+        "verdict": "undetermined",
+        "reason": "settled hold frame missing"
+      },
+      "pair_scope": "pre-lift to late hold, no separate completion frame",
+      "release_replay_verified": false
+    },
+    {
+      "seed": 77922,
+      "robot": "r1",
+      "assigned_lug": "teal",
+      "frames": [
+        {
+          "local": "/private/tmp/ops/frames/crate-diag-77922/r1-000260.jpg",
+          "raw_relative": "eval-own/r1/000260-grasp.jpg",
+          "sha256": "d4589c59c025c906d6a6288aa5b784025c9edcb1c5515cd8d51237dc0bc31e52",
+          "frame_index": 260
+        },
+        {
+          "local": "/private/tmp/ops/frames/crate-diag-77922/r1-000320.jpg",
+          "raw_relative": "eval-own/r1/000320-grasp.jpg",
+          "sha256": "121abc11e4016f68710b35b9518f45d3acb381f14996cdfad4d187dbab007815",
+          "frame_index": 320
+        }
+      ],
+      "ledger": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77922-77151eec/raw/teacher-r1.jsonl.zst",
+      "ledger_sha256": "8bc80af3dd4cc14ea61fe9697ec20653764ff41a73cddf2a795e314176fb24f7",
+      "candidate_pair": {
+        "rule": "crate_rgb_lift_v2",
+        "thresholds": "provisional; GCP validation pending",
+        "command_evidence": {
+          "valid": true,
+          "duration_s": 10.70000000005109,
+          "arm_pwm_span": 483,
+          "reason": "closed stationary issued lift"
+        },
+        "comparisons": [
+          {
+            "sample": "lift_complete",
+            "parts": {
+              "lug": {
+                "after": {
+                  "fraction": 0.5041015625,
+                  "center": [
+                    0.488442222006974,
+                    0.6654965775539197
+                  ],
+                  "extent": [
+                    0.90625,
+                    0.5916666666666667
+                  ]
+                },
+                "area_ratio": 1.0189498618239243,
+                "center_shift": 0.005108984581449039,
+                "extent_shift": 0.004166666666666652
+              },
+              "pink": {
+                "after": {
+                  "fraction": 0.3102213541666667,
+                  "center": [
+                    0.4753229275970619,
+                    0.20475078698845753
+                  ],
+                  "extent": [
+                    0.90625,
+                    0.37916666666666665
+                  ]
+                },
+                "area_ratio": 0.9702708206068011,
+                "center_shift": 0.005432814450489043,
+                "extent_shift": 0.016666666666666663
+              }
+            }
+          }
+        ],
+        "before": {
+          "lug": {
+            "fraction": 0.4947265625,
+            "center": [
+              0.4902421371233057,
+              0.6706055621353687
+            ],
+            "extent": [
+              0.90625,
+              0.5875
+            ]
+          },
+          "pink": {
+            "fraction": 0.3197265625,
+            "center": [
+              0.47267524434941965,
+              0.21018360143894657
+            ],
+            "extent": [
+              0.90625,
+              0.3958333333333333
+            ]
+          }
+        },
+        "verdict": "undetermined",
+        "reason": "settled hold frame missing"
+      },
+      "pair_scope": "two post-lift hold frames only; pre-lift frame unavailable",
+      "release_replay_verified": false
+    },
+    {
+      "seed": 77922,
+      "robot": "r2",
+      "assigned_lug": "blue",
+      "frames": [
+        {
+          "local": "/private/tmp/ops/frames/crate-diag-77922/r2-000260.jpg",
+          "raw_relative": "eval-own/r2/000260-grasp.jpg",
+          "sha256": "e475f36d6c961358e04fed3bf07ff5edc390c4a39a44ca588710f145a1792d9f",
+          "frame_index": 260
+        },
+        {
+          "local": "/private/tmp/ops/frames/crate-diag-77922/r2-000320.jpg",
+          "raw_relative": "eval-own/r2/000320-grasp.jpg",
+          "sha256": "46561f27212b42bdaea5771c50398044dac83ef59a0098a4c049cd4270ce6821",
+          "frame_index": 320
+        }
+      ],
+      "ledger": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77922-77151eec/raw/teacher-r2.jsonl.zst",
+      "ledger_sha256": "241c23df25e4a690f14ca3dfe106f9b3159c5470cb5c8d5095ad134521a72899",
+      "candidate_pair": {
+        "rule": "crate_rgb_lift_v2",
+        "thresholds": "provisional; GCP validation pending",
+        "command_evidence": {
+          "valid": true,
+          "duration_s": 10.70000000005109,
+          "arm_pwm_span": 484,
+          "reason": "closed stationary issued lift"
+        },
+        "comparisons": [
+          {
+            "sample": "lift_complete",
+            "parts": {
+              "lug": {
+                "after": {
+                  "fraction": 0.5354296875,
+                  "center": [
+                    0.48257474891174823,
+                    0.6480428694178967
+                  ],
+                  "extent": [
+                    0.90625,
+                    0.6166666666666667
+                  ]
+                },
+                "area_ratio": 0.9959552412323193,
+                "center_shift": 0.001239621500826349,
+                "extent_shift": 0.004166666666666652
+              },
+              "pink": {
+                "after": {
+                  "fraction": 0.28029947916666664,
+                  "center": [
+                    0.4846466065870767,
+                    0.18939335872779922
+                  ],
+                  "extent": [
+                    0.90625,
+                    0.3375
+                  ]
+                },
+                "area_ratio": 1.0085265870227218,
+                "center_shift": 0.001312231219405352,
+                "extent_shift": 0.0
+              }
+            }
+          }
+        ],
+        "before": {
+          "lug": {
+            "fraction": 0.5376041666666667,
+            "center": [
+              0.4824603244284053,
+              0.6468032479170703
+            ],
+            "extent": [
+              0.90625,
+              0.6208333333333333
+            ]
+          },
+          "pink": {
+            "fraction": 0.2779296875,
+            "center": [
+              0.4852439095806981,
+              0.18808112750839387
+            ],
+            "extent": [
+              0.90625,
+              0.3375
+            ]
+          }
+        },
+        "verdict": "undetermined",
+        "reason": "settled hold frame missing"
+      },
+      "pair_scope": "two post-lift hold frames only; pre-lift frame unavailable",
+      "release_replay_verified": false
+    }
+  ],
+  "actual_full_replays": 0,
+  "actual_frame_hashes_verified": 8,
+  "physics_runs": 0,
+  "remote_runs_submitted": 0,
+  "scope": "Synthetic three-frame and command-history tests passed. Actual sparse pairs are partial evidence only; no physical or complete runtime replay claim. GCP diagnostic and runtime audit zeros pending."
+}

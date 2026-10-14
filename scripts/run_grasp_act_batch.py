@@ -59,9 +59,9 @@ def reuse_speed_gate(prior,plan,concurrency,limit,execution_host,teacher_stabili
 
 
 def handoff_only(result):
-    """True when every unsuccessful teacher ended as search_timeout_handoff (map code's job, counted apart)."""
+    """Map handoff and its cancelled peers, with no independent failure."""
     failed=[t.get('outcome') for t in result.get('teachers',{}).values() if t.get('outcome')!='success']
-    return bool(failed) and all(o=='search_timeout_handoff' for o in failed)
+    return 'search_timeout_handoff' in failed and all(o in ('search_timeout_handoff','peer_search_handoff') for o in failed)
 
 
 def summarize(rows,planned):
@@ -70,6 +70,7 @@ def summarize(rows,planned):
         'N':len(completed),'planned_N':planned,'started_N':len(rows),
         'joint_held_n':sum(r.get('joint_held') is True for r in completed),
         'search_handoff_n':sum(bool(r.get('search_handoff')) for r in completed),
+        'search_handoff_rate':sum(bool(r.get('search_handoff')) for r in completed)/len(completed) if completed else None,
         'search_handoff_indices':[r.get('index') for r in completed if r.get('search_handoff')],
         'robots':{rid:{'n':sum(r.get('teachers',{}).get(rid,{}).get('outcome')=='success' for r in completed),
             'N':len(completed)} for rid in ('r1','r2')},
@@ -156,7 +157,7 @@ def main():
     p.add_argument('--episode-indices',type=int,nargs='+',help='explicit unchanged frozen-plan indices; never resample')
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
     p.add_argument('--teacher-stability',choices=('off','align_relook_v1'),default='off')
-    p.add_argument('--teacher-search',choices=('off','search_body_scan_v1'),default='off')
+    p.add_argument('--teacher-search',choices=('off','search_body_scan_v1','search_body_scan_v2'),default='off')
     p.add_argument('--complete-frozen-cohort',action='store_true',help='record individual finite failures; operator still stops diagnosed shared defects')
     a=p.parse_args()
     if a.teacher_stability!='off' and a.teacher_profile!='visible_only':raise ValueError('stability mode requires visible_only')

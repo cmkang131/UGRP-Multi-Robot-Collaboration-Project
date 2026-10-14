@@ -26,7 +26,7 @@ from sim.grasp_act_release_teacher import OBSERVE_MODES, REACH_MODES
 from sim.cargo_teacher_profile import CRATE
 
 LOOKAROUND_MODES = ('off', 'setdown_lookaround_v1')
-RGB_LIFT_MODES = ('off', 'crate_rgb_lift_v1')
+RGB_LIFT_MODES = ('off', 'crate_rgb_lift_v1', 'crate_rgb_lift_v2')
 from sim.cargo_scene_version import VERSIONS as CARGO_SCENE_VERSIONS
 HOLD_S = 3.
 LIFT_FORCE_N = .5
@@ -291,6 +291,20 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         release_authorized_at = None
         verdict = {}
         rgb_before = rgb_after = None
+        from sim.crate_rgb_lift import LiftObserver
+        lift_observers = {rid: LiftObserver(end) for rid, end in roles.items()}
+        lift_frames = {rid: {} for rid in roles}
+
+        def lift_capture(rid, tag, now):
+            # Review evidence, not training RGB. Same own camera as the teacher.
+            import hashlib
+            rgb = own_rgb(ports[rid])
+            path = out/'eval-own'/rid/f'lift-v2-{tag}.png'
+            Image.fromarray(rgb).save(path)
+            lift_frames[rid][tag] = {'t': now, 'path': str(path.relative_to(out)),
+                                    'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+            return rgb
+
         lift_window_t0 = None
         lift_load = {}
         handoff_log = {}
@@ -373,7 +387,13 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                                  'visible_probes': {r: truth['visibility'][r]['visible_probes'] for r in roles},
                                  'servo_load': load_row,
                                  'phases': {r: t.phase for r, t in teachers.items()}})+'\n')
-            if rgb_lift != 'off':
+            if rgb_lift == 'crate_rgb_lift_v2':
+                for rid, t in teachers.items():
+                    value = lift_observers[rid].observe(permit=lift_permits[rid], complete=t.command_complete,
+                        command=previous[rid], capture=lambda tag, rid=rid: lift_capture(rid, tag, now))
+                    if value is not None:
+                        verdict[rid] = value
+            elif rgb_lift == 'crate_rgb_lift_v1':
                 # own frames: one at the first tick any robot has its own lift permit, one when every robot's own
                 # lift sequence has completed (own commands only); no evaluator state
                 if rgb_before is None and any(lift_permits.values()):
@@ -394,7 +414,12 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             i += 1
             advance(origin+i*.1)
         grasp_end = float(world.data.time)
-        outcomes = {rid: (t.outcome or ('success' if held is not None else 'episode_timeout')) for rid, t in teachers.items()}
+        from scripts.run_grasp_act_teacher import finalize_outcomes
+        finalize_outcomes(teachers, strict=True, joint_held=held is not None)
+        outcomes = {rid: t.outcome for rid, t in teachers.items()}
+        report['search_handoff'] = 'search_timeout_handoff' in outcomes.values()
+        report['search_handoff_n'] = sum(v == 'search_timeout_handoff' for v in outcomes.values())
+        report['peer_search_handoff_n'] = sum(v == 'peer_search_handoff' for v in outcomes.values())
         report['prefix_held'] = held is not None
         report['release_authorized_by_own_inputs'] = release_authorized_at is not None
         report['prefix'] = {
@@ -407,9 +432,13 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                 {'ok': len({v['nearest_lug'] for v in lugs_at_hold.values()}) == 2 and all(lugs_at_hold[r]['nearest_lug'] == roles[r] for r in roles)}),
             'teachers': {rid: t.diagnostic() for rid, t in teachers.items()}}
         if rgb_lift != 'off':
-            verdict = verdict or {rid: {'verdict': 'undetermined', 'reason': 'frames not captured'} for rid in roles}
+            verdict = {rid: verdict.get(rid, {'verdict': 'undetermined', 'reason': 'frames not captured'})
+                       for rid in roles}
             # evaluation-only truth next to it so the agreement can be counted
-            report['prefix']['rgb_lift'] = {'rule': 'crate_rgb_lift_v1', 'per_robot': verdict,
+            unknown = sum(v['verdict'] == 'undetermined' for v in verdict.values())
+            report['prefix']['rgb_lift'] = {'rule': rgb_lift, 'per_robot': verdict,
+                                            'undetermined_n': unknown, 'N': len(roles),
+                                            'undetermined_rate': unknown/len(roles), 'frames': lift_frames,
                                             'evaluation_truth': {'held_by_gt': held is not None, 'max_stable_hold_s': max_hold,
                                                                  'scope': 'evaluation only; RGB thresholds provisional'}}
         if release_authorized_at is None:
@@ -888,9 +917,9 @@ def main():
                    help='cargo scene version: catalogue_v1 = crate 0.900 kg (old), crate_mass_030_v1 = 0.300 kg '
                         '(user 2026-10-14; real_v1 elbow limit). Versions are never pooled.')
     p.add_argument('--rgb-lift', choices=RGB_LIFT_MODES, default='off',
-                   help='crate_rgb_lift_v1: authorize release only after own-RGB confirmation; provisional thresholds')
+                   help='authorize release only after own-RGB confirmation; v2 uses lug/body co-motion; provisional thresholds')
     p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')
-    p.add_argument('--teacher-search', choices=('off', 'search_body_scan_v1'), default='off')
+    p.add_argument('--teacher-search', choices=('off', 'search_body_scan_v1', 'search_body_scan_v2'), default='off')
     p.add_argument('--execution-host', choices=('azure', 'gcp1'), default='gcp1')
     p.add_argument('--pr', type=int, default=None)
     a = p.parse_args()

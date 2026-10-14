@@ -87,6 +87,20 @@ def audit_visible_input(audit,rows):
     if bad:raise ValueError('invisible measurement delivered to teacher')
 
 
+def finalize_outcomes(teachers,*,strict,joint_held):
+    """A pair stopped for map handoff has not timed out its unfinished peer.
+
+    Preserve independent failures and completed physical hold failures; only
+    unfinished peers receive the explicit administrative cancellation label.
+    """
+    handoff=any(t.outcome=='search_timeout_handoff' for t in teachers.values())
+    for t in teachers.values():
+        if strict and t.command_complete:
+            t.outcome='success' if joint_held else 'no_stable_joint_hold_3s'
+        elif t.outcome is None:
+            t.outcome='peer_search_handoff' if handoff else 'episode_timeout'
+
+
 def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off"):
     if teacher_stability!='off' and teacher_profile!='visible_only':raise ValueError('stability mode requires visible_only')
     if teacher_search!='off' and teacher_stability=='off':raise ValueError('search mode requires teacher stability')
@@ -302,9 +316,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 if len(teachers)==1 or report['joint_held'] is True or now-all_done_since>=3.:break
             if not probe and any(t.outcome not in (None,'success') for t in teachers.values()):break
             i+=1;advance(origin+i*.1)
-        for t in teachers.values():
-            if strict and t.command_complete:t.outcome='success' if report['joint_held'] else 'no_stable_joint_hold_3s'
-            elif t.outcome is None:t.outcome='episode_timeout'
+        finalize_outcomes(teachers,strict=strict,joint_held=report['joint_held'])
         if strict:
             report['max_stable_hold_s']=max_hold
             write(out/'start-protocol.json',{'source':'READY/GO/ACK only; no peer probes','delays_s':delays,'events':sync.events})
@@ -336,7 +348,7 @@ def main():
     p.add_argument('--noise',action='store_true');p.add_argument('--probe',action='store_true')
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
     p.add_argument('--teacher-stability',choices=('off','align_relook_v1'),default='off')
-    p.add_argument('--teacher-search',choices=('off','search_body_scan_v1'),default='off')
+    p.add_argument('--teacher-search',choices=('off','search_body_scan_v1','search_body_scan_v2'),default='off')
     p.add_argument('--self-pose-source',choices=('issued','perfect_self_comparison'),default='issued')
     p.add_argument('--execution-host',choices=('azure','gcp1'),default='azure')
     p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path)

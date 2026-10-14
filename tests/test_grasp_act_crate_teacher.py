@@ -353,8 +353,8 @@ def test_rgb_lift_verdicts_use_own_pixels_only():
 def test_crate_runner_connects_search_modes_to_the_teacher():
     from scripts.run_crate_teacher import make_grasp_teacher
     t = make_grasp_teacher('r1', 'teal', FOLDED, teacher_stability='align_relook_v1',
-                           teacher_search='search_body_scan_v1')
-    assert t.teacher_search == 'search_body_scan_v1' and t.teacher_stability == 'align_relook_v1'
+                           teacher_search='search_body_scan_v2')
+    assert t.teacher_search == 'search_body_scan_v2' and t.teacher_stability == 'align_relook_v1'
     assert t.cargo_profile is CRATE
     with pytest.raises(ValueError):
         make_grasp_teacher('r1', 'teal', FOLDED, teacher_search='search_body_scan_v1')
@@ -372,13 +372,13 @@ def test_crate_cli_forwards_modes_without_running_physics(monkeypatch, tmp_path)
     monkeypatch.setattr(runner, 'run', fake_run)
     monkeypatch.setattr(grasp_act_host, 'identity', lambda host: {'provider': host})
     monkeypatch.setattr(sys, 'argv', ['run_crate_teacher', '--plan', str(plan), '--out', str(tmp_path/'unused'),
-        '--crate-scene', 'crate_mass_030_v1', '--held-object', 'hidden_v1', '--rgb-lift', 'crate_rgb_lift_v1',
-        '--teacher-stability', 'align_relook_v1', '--teacher-search', 'search_body_scan_v1'])
+        '--crate-scene', 'crate_mass_030_v1', '--held-object', 'hidden_v1', '--rgb-lift', 'crate_rgb_lift_v2',
+        '--teacher-stability', 'align_relook_v1', '--teacher-search', 'search_body_scan_v2'])
     runner.main()
     assert received['teacher_stability'] == 'align_relook_v1'
-    assert received['teacher_search'] == 'search_body_scan_v1'
+    assert received['teacher_search'] == 'search_body_scan_v2'
     assert received['crate_scene'] == 'crate_mass_030_v1' and received['held_object'] == 'hidden_v1'
-    assert received['rgb_lift'] == 'crate_rgb_lift_v1'
+    assert received['rgb_lift'] == 'crate_rgb_lift_v2'
 
 
 def test_release_requires_both_own_lift_confirmations_and_issued_settle():

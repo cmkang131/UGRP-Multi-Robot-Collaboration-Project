@@ -70,3 +70,105 @@ def confirm(before, after, end):
     out.update(verdict='confirmed' if change >= BACKGROUND_CHANGE else 'not_confirmed',
                reason='background changed' if change >= BACKGROUND_CHANGE else 'background did not change (arm did not rise)')
     return out
+
+
+# v2 is an opt-in, command-conditioned visual hypothesis, not a height sensor.
+# A stalled actuator + perfectly rigid close view can be visually ambiguous.
+V2_MIN_PART = .01
+V2_AREA_RATIO = (.70, 1.40)
+V2_CENTER_SHIFT = .06
+V2_EXTENT_SHIFT = .10
+
+
+def shape(mask):
+    """Normalized image geometry; no camera calibration or world coordinates."""
+    y, x = np.nonzero(mask)
+    if not len(x):
+        return None
+    h, w = mask.shape
+    return {'fraction': float(mask.mean()), 'center': [float(x.mean()/w), float(y.mean()/h)],
+            'extent': [float((x.max()-x.min()+1)/w), float((y.max()-y.min()+1)/h)]}
+
+
+def lift_commands(commands):
+    """Check only issued PWM/time, never measured joints or simulated execution."""
+    if len(commands) < 2:
+        return {'valid': False, 'reason': 'missing issued lift history'}
+    times = [c['t'] for c in commands]
+    pwms = [{int(s): v for s, v in c['pwm'].items()} for c in commands]
+    delta = max(max(p[s] for p in pwms)-min(p[s] for p in pwms) for s in (3, 4, 5))
+    valid = (all(b >= a for a, b in zip(times, times[1:])) and times[-1]-times[0] >= 1.2-1e-8
+             and delta >= 20 and all(p[1] <= 1600 for p in pwms)
+             and all(p[6] == pwms[0][6] for p in pwms)
+             and all(not any(c['wheels']) for c in commands))
+    return {'valid': valid, 'duration_s': times[-1]-times[0], 'arm_pwm_span': delta,
+            'reason': 'closed stationary issued lift' if valid else 'incomplete or incompatible issued lift'}
+
+
+def confirm_v2(before, after, end, *, commands, settled=None):
+    """Own lug AND pink body stay with the wrist through lift and settled hold.
+
+    No background is required. Area, centroid and extent must persist for each
+    part independently (a pink wall/other lug cannot replace the assigned lug).
+    Missing/occluded evidence remains undetermined; clear loss is not_confirmed.
+    No probing pan is issued: the documented held-pan slip risk still applies.
+    """
+    out = {'rule': 'crate_rgb_lift_v2', 'thresholds': 'provisional; GCP validation pending',
+           'command_evidence': lift_commands(commands), 'comparisons': []}
+    if end not in ('blue', 'teal'):
+        raise ValueError('assigned lug must be blue or teal')
+    if not out['command_evidence']['valid']:
+        return {**out, 'verdict': 'undetermined', 'reason': out['command_evidence']['reason']}
+    if before.shape != after.shape or (settled is not None and before.shape != settled.shape):
+        return {**out, 'verdict': 'undetermined', 'reason': 'incompatible frame sizes'}
+    reference = [shape(m) for m in masks(before, end)]
+    out['before'] = dict(zip(('lug', 'pink'), reference))
+    if any(s is None or s['fraction'] < V2_MIN_PART for s in reference):
+        return {**out, 'verdict': 'undetermined', 'reason': 'assigned lug and pink body not both visible before lift'}
+    for tag, frame in [('lift_complete', after), ('settled_hold', settled)]:
+        if frame is None:
+            return {**out, 'verdict': 'undetermined', 'reason': 'settled hold frame missing'}
+        parts = [shape(m) for m in masks(frame, end)]
+        comparison = {'sample': tag, 'parts': {}}
+        out['comparisons'].append(comparison)
+        for name, b, a in zip(('lug', 'pink'), reference, parts):
+            if a is None or a['fraction'] < V2_MIN_PART or a['fraction']/b['fraction'] < .4:
+                return {**out, 'verdict': 'not_confirmed', 'reason': f'{name} disappeared or shrank (possible grip loss)'}
+            ratio = a['fraction']/b['fraction']
+            shift = max(abs(x-y) for x, y in zip(a['center'], b['center']))
+            extent = max(abs(x-y) for x, y in zip(a['extent'], b['extent']))
+            comparison['parts'][name] = {'after': a, 'area_ratio': ratio, 'center_shift': shift, 'extent_shift': extent}
+            if not (V2_AREA_RATIO[0] <= ratio <= V2_AREA_RATIO[1] and shift <= V2_CENTER_SHIFT
+                    and extent <= V2_EXTENT_SHIFT):
+                return {**out, 'verdict': 'undetermined', 'reason': f'{name} did not remain rigid in wrist view'}
+    return {**out, 'verdict': 'confirmed', 'reason': 'assigned lug and pink body co-move through issued lift and settled hold'}
+
+
+class LiftObserver:
+    """Small runner adapter: capture before own permit, after own completion, at 3s.
+
+    Dependencies are a capture callback and the robot's own issued command only.
+    The callback can save the frames and hashes without changing the classifier.
+    """
+    def __init__(self, end):
+        self.end = end
+        self.before = self.after = None
+        self.commands = []
+        self.completed_at = None
+        self.verdict = None
+
+    def observe(self, *, permit, complete, command, capture):
+        if self.before is None:
+            if not permit:
+                return None
+            self.before = capture('before_lift')
+        if self.verdict is not None:
+            return self.verdict
+        self.commands.append(command)
+        if complete and self.after is None:
+            self.after = capture('lift_complete')
+            self.completed_at = command['t']
+        if self.after is not None and command['t']-self.completed_at >= 3.-1e-8:
+            self.verdict = confirm_v2(self.before, self.after, self.end, commands=self.commands,
+                                      settled=capture('settled_hold'))
+        return self.verdict
