@@ -16,9 +16,10 @@ from harness.grasp_act_contract import SERVOS,command
 from scripts.run_grasp_act_teacher import write,apply,snapshot,compress_logs
 
 # Provisional safety thresholds (evaluation only; first measurement, no prior basis).
-LIMITS={'finger_min_n':.5,'slip_axis_mm':5.,'slip_perp_mm':3.,'tilt_deg':5.,
+LIMITS={'finger_min_n':.5,'grip_loss_s':.15,'slip_axis_mm':5.,'slip_perp_mm':3.,'tilt_deg':5.,
         'partner_shift_mm':10.,'partner_yaw_deg':3.,'beam_floor_z_m':.005}
 PAN_STEPS=(20,40,80,120,180,270,400)          # PWM; 2000/180 PWM per degree
+PAN_REPEAT=((40,8),(120,8))                   # ratchet check: same amplitude repeated
 YAW_DURATIONS=(.1,.2,.3,.5,.8)                # s; native wheel level 1/3 (0.31-0.40 band)
 YAW_EFFORT=.25                                # +1/12 kinetic feedforward -> 0.333, breakaway 0.35
 
@@ -71,8 +72,15 @@ def delta(row,base,roles):
 def verdict(samples,roles,actor):
     """Worst case over one test window, relative to the pre-test hold."""
     worst={'tilt_deg':0.,'beam_min_z':math.inf}
-    for rid in roles:worst[rid]={'slip_axis_mm':0.,'slip_perp_mm':0.,'finger_min_n':math.inf,'base_shift_mm':0.,'base_yaw_deg':0.}
+    for rid in roles:worst[rid]={'slip_axis_mm':0.,'slip_perp_mm':0.,'finger_min_n':math.inf,'base_shift_mm':0.,'base_yaw_deg':0.,
+                                 'dropout_samples':0,'longest_low_force_s':0.}
+    runs={rid:0. for rid in roles};last_t=None
     for s in samples:
+        dt=.05 if last_t is None else max(0.,s.get('t',0.)-last_t);last_t=s.get('t',last_t)
+        for rid in roles:
+            low=s['delta'][rid]['finger_min_n']<LIMITS['finger_min_n']
+            worst[rid]['dropout_samples']+=low;runs[rid]=runs[rid]+dt if low else 0.
+            worst[rid]['longest_low_force_s']=max(worst[rid]['longest_low_force_s'],runs[rid])
         d=s['delta'];worst['tilt_deg']=max(worst['tilt_deg'],d['tilt_pitch_deg'],d['tilt_roll_deg'])
         worst['beam_min_z']=min(worst['beam_min_z'],s['beam_min_z'])
         for rid in roles:
@@ -83,7 +91,7 @@ def verdict(samples,roles,actor):
     if worst['beam_min_z']<LIMITS['beam_floor_z_m']:reasons.append('beam_touches_floor')
     for rid in roles:
         w=worst[rid]
-        if w['finger_min_n']<LIMITS['finger_min_n']:reasons.append(rid+':grip_force')
+        if w['longest_low_force_s']>=LIMITS['grip_loss_s']-1e-9:reasons.append(rid+':grip_force')
         if w['slip_axis_mm']>LIMITS['slip_axis_mm']:reasons.append(rid+':slip_axis')
         if w['slip_perp_mm']>LIMITS['slip_perp_mm']:reasons.append(rid+':slip_perp')
         if rid!=actor and w['base_shift_mm']>LIMITS['partner_shift_mm']:reasons.append(rid+':partner_dragged')
@@ -228,6 +236,19 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
                 failures+=bool(reasons)
                 if any('grip_force' in r or r=='beam_touches_floor' for r in reasons) or failures>=2:break
                 base=measure(world,inst,roles,scene)   # re-zero after a recovered sweep
+        elif mode=='pan_repeat':
+            for amp,reps in PAN_REPEAT:
+                for rep in range(reps):
+                    rows=[]
+                    for k,target in enumerate((p0+amp,p0,p0-amp,p0)):
+                        ports[actor].apply({'kind':'look','pan_pulse':max(500,min(2500,target))},float(world.data.time))
+                        rows+=window(1.,f'rep{amp}:{rep}:{k}')
+                    worst,reasons=verdict(rows,roles,actor)
+                    tests.append({'cumulative_after':delta(measure(world,inst,roles,scene),base0,roles),'pan_pwm':amp,'rep':rep,
+                                  'worst':worst,'fail':reasons})
+                    if any('grip_force' in r or r=='beam_touches_floor' for r in reasons):break
+                    base=measure(world,inst,roles,scene)
+                frame(f'rep{amp:03d}')
         else:
             for duration in YAW_DURATIONS:
                 rows=[];yaw0=world.robot(actor).base_rpy()[2];vis_d={}
@@ -250,7 +271,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
         frame('end')
         safe=[t for t in tests if not t['fail']]
         report.update(status='complete',probe='done',tests=tests,visibility_p0=vis,
-            safe_max=(max(t['pan_pwm'] for t in safe) if mode=='pan' else max(t['pulse_s'] for t in safe)) if safe else None,
+            safe_max=(max(t['pan_pwm'] for t in safe) if mode!='yaw' else max(t['pulse_s'] for t in safe)) if safe else None,
             first_fail=next(({'step':t.get('pan_pwm',t.get('pulse_s')),'reasons':t['fail']} for t in tests if t['fail']),None))
         return report
     except BaseException as error:
@@ -266,7 +287,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
-    p.add_argument('--out',type=Path,required=True);p.add_argument('--mode',choices=('pan','yaw'),required=True)
+    p.add_argument('--out',type=Path,required=True);p.add_argument('--mode',choices=('pan','pan_repeat','yaw'),required=True)
     p.add_argument('--actor',choices=('r1','r2'),default='r1');p.add_argument('--grasp-cap-s',type=float,default=45.)
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='observable_v2');a=p.parse_args()
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]

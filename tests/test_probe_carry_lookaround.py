@@ -22,10 +22,22 @@ def test_quiet_hold_passes():
 
 def test_each_failure_reason_is_reported():
     base = sample()
-    s = sample(grip1=(.006, .004, 0.), force=(.3, 2.), shift=.02, pitch=6.)
-    s['delta'] = delta(s, base, ROLES)
-    _, reasons = verdict([s], ROLES, 'r1')
+    rows = []
+    for k in range(4):
+        s = sample(grip1=(.006, .004, 0.), force=(.3, 2.), shift=.02, pitch=6.); s['t'] = .05*k
+        s['delta'] = delta(s, base, ROLES); rows.append(s)
+    _, reasons = verdict(rows, ROLES, 'r1')
     assert {'tilt', 'r1:grip_force', 'r1:slip_axis', 'r1:slip_perp', 'r2:partner_dragged'} <= set(reasons)
+
+
+def test_single_force_dropout_is_not_grip_loss():
+    base = sample(); rows = []
+    for k, f in enumerate((2., .1, 2., .1, .1, .1, 2.)):
+        s = sample(force=(f, 2.)); s['t'] = .05*k; s['delta'] = delta(s, base, ROLES); rows.append(s)
+    worst, reasons = verdict(rows[:3], ROLES, 'r1')
+    assert reasons == [] and worst['r1']['dropout_samples'] == 1
+    worst, reasons = verdict(rows, ROLES, 'r1')
+    assert 'r1:grip_force' in reasons and worst['r1']['longest_low_force_s'] >= .15
 
 
 def test_actor_own_motion_is_not_partner_drag():
