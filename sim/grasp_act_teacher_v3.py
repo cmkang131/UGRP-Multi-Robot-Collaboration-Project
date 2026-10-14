@@ -96,6 +96,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.last_command=deepcopy(value);self.last_tick=now
         return value,done
 
+    def remember_applied(self,value):
+        # DART may alter the label command before it is sent. The observer
+        # integrates what was actually issued, which is also in student input.
+        self.last_command=deepcopy(command(value))
+
     def _step(self,truth,now,*,permit_pick):
         if not self.started:
             self.started=True;self.phase_t=now;self.skill_started=now

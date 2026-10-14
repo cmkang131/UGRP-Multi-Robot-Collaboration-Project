@@ -249,7 +249,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 timings['teacher']+=time.monotonic()-at
                 # Privileged navigation samples remain in raw but are excluded by the data admission loader.
                 phase=t.phase;applied=json.loads(json.dumps(clean));perturbed=False
-                if noise and phase not in ('done','ready') and rng.random()<.05:
+                if noise and phase not in ('done','complete','ready') and rng.random()<.05:
                     perturbed=True
                     if strict and any(applied['wheels']):applied.update(wheels=[0.]*4,duration_s=[0.]*4)
                     elif not strict and any(applied['drive']):applied.update(drive=[0.,0.,0.],duration_s=0.)
@@ -267,6 +267,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 apply(ports[rid],applied,now,previous[rid]);previous[rid]=applied;history[rid].append(applied)
                 if strict:
                     models[rid].issue(applied)
+                    t.remember_applied(applied)
                     if done:t.done_recorded=True
                 label['issued_native_wheels']=list(ports[rid]._motor_commands)
                 writers[rid][1].write(json.dumps(label)+'\n')

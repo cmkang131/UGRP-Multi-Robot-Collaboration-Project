@@ -35,6 +35,15 @@ def test_clear_partial_view_is_not_centered_behind_visible_peer():
     # former centering command changed 3/4/6 and lost all probes next tick.
     assert gaze_pose(target,FOLDED,[peer],visible=True)==FOLDED
 
+def test_dart_observer_remembers_sent_command_not_clean_label():
+    t=VisibleOnlyGraspTeacher('r1','teal',FOLDED,bounds=(-20,20,-20,20))
+    value=t._continuous(0.,.05,0.,0.)
+    assert any(value['wheels'])
+    value.update(wheels=[0.]*4,duration_s=[0.]*4)
+    t.remember_applied(value)
+    from sim.grasp_act_teacher_v3 import propagate_owned
+    assert propagate_owned([.4,0.,.033],t.last_command,.1)==[.4,0.,.033]
+
 def test_ready_is_revoked_on_drift_and_done_never_reads_contact_truth():
     m=VisibleWorld('r1','teal');t=VisibleOnlyGraspTeacher('r1','teal',FOLDED,bounds=(-20,20,-20,20))
     t.started=True;t.skill_started=0.;t.phase='ready'
