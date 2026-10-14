@@ -74,13 +74,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:
             return self._hold(now),False
         use_goals=self._uses_goal_set(truth)
-        if not use_goals and self.approach_blocked_since is not None:
-            self.approach_blocked_since=None;self.next_plan=now
         if use_goals:
             from sim.grasp_act_visible_route import constraints,free
             pose,g,heading,goal=self._geometry(truth)
             radius,discs,rects=constraints(truth,self.rid,self.folded_ready)
-            if self.phase=='align' and not free(goal,discs,rects,radius):
+            if self.phase in ('align','ready') and (not self.approach_plan_valid or not free(goal,discs,rects,radius)):
                 self._set('approach',now);self._reset_alignment();self.next_plan=now
             if self.phase=='approach' and not self._plan_approach(truth,now):
                 return self._hold(now),False
@@ -288,6 +286,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def _uses_goal_set(self,world):
         if self.approach_goal_set=='off':return False
+        # A failed set stays active until a full collision/path check succeeds.
+        # A static obstacle disappearing does not prove a peer-occupied goal safe.
+        if self.approach_blocked_since is not None:return True
         # Once selected, retain the end-relative stance through alignment/READY.
         # Until then the exact original planner, cadence and readiness law run.
         if self.approach_choice!=(0.,STATION_M):return True
@@ -412,6 +413,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:return False
         pose,g,heading,goal=self._geometry(truth)
         if self._uses_goal_set(truth):
+            if not self.approach_plan_valid or self.approach_blocked_since is not None:return False
             from sim.grasp_act_visible_route import constraints,free
             radius,discs,rects=constraints(truth,self.rid,self.folded_ready)
             if not free(goal,discs,rects,radius):return False
@@ -422,6 +424,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def prepare_signal(self,truth,now):
         """Own teacher readiness; only a binary READY crosses the protocol."""
+        if self.outcome is not None:return False
         if self.phase=='ready' and not self.ready_geometry(truth):
             self.ready_revocations+=1;self._set('align',now)
         return self.phase in ('ready','pick','complete')
@@ -441,8 +444,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
     def _step(self,truth,now,*,permit_pick):
         if self.outcome is not None:return self._hold(now),False
         if (self.approach_blocked_since is not None and truth['beam'] is not None
-                and truth['visibility'][self.rid]['visible_probes']>=5 and not self._uses_goal_set(truth)):
-            self.approach_blocked_since=None;self.next_plan=now
+                and truth['visibility'][self.rid]['visible_probes']>=5):
+            # A fresh view may recover before the deadline, but only after the
+            # complete candidate check (static obstacles, peers and route).
+            self._plan_approach(truth,now)
+            if self.outcome is not None:return self._hold(now),False
         # Losing sight cannot reset a blocked approach's finite deadline.
         if self.approach_blocked_since is not None and now-self.approach_blocked_since>=self.APPROACH_BLOCKED_LIMIT_S-1e-8:
             self._approach_handoff(now);return self._hold(now),False

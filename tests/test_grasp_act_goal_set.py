@@ -54,6 +54,22 @@ def test_episode030_issued_replay_single_goal_blocked_but_goal_set_has_safe_path
     assert ready and new.approach_choice[0]!=0
 
 
+def test_gcp_ep006_full_candidate_ledger_has_nine_feasible_stances():
+    from collections import Counter
+    row=json.loads((Path(__file__).parent/'fixtures/grasp_act_77ee_ep006_goal_set.json').read_text())
+    w=row['world'];t=teacher(row)
+    selected,checked=select_goal(w,'r1','teal',t.bounds,True)
+    assert Counter(c['reason'] for c in checked)=={'blocked_goal':30,'feasible':9}
+    assert len(checked)==len(row['candidates'])==39
+    for actual,expected in zip(checked,row['candidates']):
+        assert actual['reason']==expected['reason']
+        assert actual['goal']==pytest.approx(expected['goal'],abs=1e-12)
+    assert selected['choice']==pytest.approx(row['selected']['choice'],abs=1e-12)
+    assert selected['cost']==pytest.approx(row['selected']['cost'],abs=1e-12)
+    value,_=t._approach(w,w['t'])
+    assert any(value['wheels']) and t.approach_blocked_since is None and t.outcome is None
+
+
 def test_all_goals_blocked_handoff_in_three_seconds_and_terminal_hold():
     row,w=saved();t=teacher(row);end=w['beam']['ends']['teal']
     w['objects']['visible_obstacle']={'xy':end[:2],'radius':.6,'top_z_bound_m':.4}
@@ -72,6 +88,39 @@ def test_lost_view_cannot_reset_blocked_deadline():
     t._approach(w,w['t'])
     value,_=t.step({'beam':None},w['t']+3.)
     assert t.outcome=='approach_blocked_handoff' and not any(value['wheels'])
+
+
+@pytest.mark.parametrize('phase',['approach','align','ready'])
+def test_static_clearance_cannot_bypass_pending_peer_block(phase):
+    row,w=saved();t=teacher(row)
+    w['objects']['block']={'xy':w['beam']['ends']['teal'][:2],'radius':.6,'top_z_bound_m':.4}
+    t._approach(w,w['t'])
+    # The static obstruction clears, but a peer now covers every stance.
+    # The former _uses_goal_set=False reset lost the deadline here; at the
+    # nominal stance it also permitted READY despite that dynamic occupancy.
+    w['walls']=[];w['objects']={}
+    pose,end,heading,goal=t._geometry(w)
+    w['robots']['r1']['pose']=[*goal,heading]
+    w['robots']['r2']['pose']=[*end[:2],0.]
+    assert not nominal_goal_blocked(w,'r1','teal',t.bounds,True)
+    t.phase=phase;t.started=True;t.skill_started=w['t'];t.phase_t=w['t']
+    assert not t.ready_geometry(w)
+    t.prepare_signal(w,w['t']+.1)
+    for dt in (.1,1.1,2.1,3.1):
+        value,done=t.step(w,w['t']+dt,permit_pick=True)
+        assert not done and not any(value['wheels']) and t.phase not in ('ready','pick','complete')
+    assert t.outcome=='approach_blocked_handoff' and not t.prepare_signal(w,w['t']+3.2)
+    assert len([e for e in t.events if e.get('approach')=='all_goals_blocked_handoff'])==1
+
+
+def test_align_cannot_use_an_invalid_goal_set_plan():
+    row,w=saved();t=teacher(row)
+    t.approach_choice=(math.pi/2,.208)
+    _,_,heading,goal=t._geometry(w);w['robots']['r1']['pose']=[*goal,heading]
+    t.phase='align';t.approach_plan_valid=False
+    assert not t.ready_geometry(w)
+    _,ready=t._approach(w,w['t'])
+    assert t.approach_plan_valid and not ready
 
 
 @pytest.mark.parametrize('use_step',[False,True])
