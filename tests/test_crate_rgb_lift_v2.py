@@ -69,3 +69,31 @@ def test_runner_observer_waits_for_own_permit_completion_and_three_second_hold()
     # Both robots are still required by the actual release authorization helper.
     from scripts.run_crate_teacher import release_ready
     assert not release_ready({'r1': True, 'r2': True}, 3, {'r1': out, 'r2': {'verdict': 'undetermined'}})
+
+
+@pytest.mark.parametrize('end', ['blue', 'teal'])
+def test_v3_retains_lug_but_allows_body_outline_rotation(end):
+    from sim.crate_rgb_lift import confirm_v3
+    b = np.zeros((100, 120, 3), np.uint8) + 140
+    b[5:50, 30:90] = (255, 150, 180)
+    b[55:90, 20:100] = (0, 20, 255) if end == 'blue' else (0, 255, 120)
+    a = b.copy()
+    a[20:35, 10:110] = (255, 150, 180)  # body outline wider; grasped lug unchanged
+    assert confirm_v2(b, a, end, commands=history(), settled=a)['verdict'] == 'undetermined'
+    assert confirm_v3(b, a, end, commands=history(), settled=a)['verdict'] == 'confirmed'
+    # Neither one colour alone, a vanished body, nor body sliding down is accepted.
+    missing = a.copy(); missing[:55] = 140
+    assert confirm_v3(b, missing, end, commands=history(), settled=missing)['verdict'] == 'not_confirmed'
+    down = b.copy(); down[:55] = 140; down[22:52, 30:90] = (255, 150, 180)
+    assert confirm_v3(b, down, end, commands=history(), settled=down)['verdict'] == 'not_confirmed'
+    assert confirm_v3(b, a, end, commands=history())['verdict'] == 'undetermined'
+    assert confirm_v3(b, a, end, commands=[], settled=a)['verdict'] == 'undetermined'
+    assert confirm_v3(b, a, end, commands=history(), settled=frame(loss=True))['verdict'] == 'not_confirmed'
+
+
+def test_v3_opt_in_observer_does_not_change_v2_or_solo_core():
+    from sim.crate_rgb_lift import confirm_v3
+    assert LiftObserver('teal').confirm is confirm_v2
+    assert LiftObserver('teal', mode='crate_rgb_lift_v3').confirm is confirm_v3
+    with pytest.raises(ValueError):
+        LiftObserver('teal', mode='unknown')

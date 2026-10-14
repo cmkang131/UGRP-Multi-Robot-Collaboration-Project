@@ -26,16 +26,16 @@ from sim.grasp_act_release_teacher import OBSERVE_MODES, REACH_MODES
 from sim.cargo_teacher_profile import CRATE
 
 LOOKAROUND_MODES = ('off', 'setdown_lookaround_v1')
-RGB_LIFT_MODES = ('off', 'crate_rgb_lift_v1', 'crate_rgb_lift_v2')
+RGB_LIFT_MODES = ('off', 'crate_rgb_lift_v1', 'crate_rgb_lift_v2', 'crate_rgb_lift_v3')
 from sim.cargo_scene_version import VERSIONS as CARGO_SCENE_VERSIONS
 HOLD_S = 3.
 LIFT_FORCE_N = .5
 
 
-def make_grasp_teacher(rid, end, pwm, *, teacher_stability='off', teacher_search='off'):
+def make_grasp_teacher(rid, end, pwm, *, teacher_stability='off', teacher_search='off', approach_goal_set='off'):
     from sim.crate_grasp_teacher import CrateGraspTeacher
     return CrateGraspTeacher(rid, end, pwm, bounds=(-20, 20, -20, 20), profile=CRATE,
-                             teacher_stability=teacher_stability, teacher_search=teacher_search)
+                             teacher_stability=teacher_stability, teacher_search=teacher_search, approach_goal_set=approach_goal_set)
 
 
 def release_ready(command_complete, settled_s, verdicts):
@@ -140,7 +140,7 @@ def held_lugs(world, inst, roles, profile=CRATE):
 def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', observe_mode='gaze_v2', render_dr='off',
         zone_slots='floor', reach_mode='calibrated_mid_v1', held_object='visible_v0', lookaround='off',
         execution_host=None, pr=None, crate_scene='catalogue_v1', rgb_lift='off',
-        teacher_stability='off', teacher_search='off'):
+        teacher_stability='off', teacher_search='off', approach_goal_set='off'):
     for name, value, allowed in (('observe_mode', observe_mode, OBSERVE_MODES), ('zone_slots', zone_slots, ZONE_SLOT_MODES),
                                  ('reach_mode', reach_mode, REACH_MODES), ('lookaround', lookaround, LOOKAROUND_MODES)):
         if value not in allowed:
@@ -149,7 +149,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         raise ValueError(f'rgb_lift: {rgb_lift}')
     # Validate modes before any physics or output creation.
     make_grasp_teacher('r1', 'teal', {1: 1500, 3: 820, 4: 2320, 5: 1320, 6: 1500},
-                       teacher_stability=teacher_stability, teacher_search=teacher_search)
+                       teacher_stability=teacher_stability, teacher_search=teacher_search, approach_goal_set=approach_goal_set)
     if lookaround != 'off' and own_pose_source == 'commands':
         raise ValueError('lookaround requires a verified map localization; GT handoff anchors are forbidden')
     from sim.cargo_scene_version import check as check_cargo_scene
@@ -191,7 +191,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
               'reach_mode': reach_mode, 'held_object': held_object, 'lookaround': lookaround,
               'lug_color_scene': plan.get('lug_color_scene', 'off'), 'cargo_scene_version': plan['cargo_scene_version'],
               'rgb_lift': rgb_lift, 'assignment_source': plan['assignment_source'],
-              'teacher_stability': teacher_stability, 'teacher_search': teacher_search,
+              'teacher_stability': teacher_stability, 'teacher_search': teacher_search, 'approach_goal_set': approach_goal_set,
               'lift_confirmation': 'own issued lift + own RGB; unconfirmed/unknown stops before release',
               'execution_host': execution_host, 'weld': 'off', 'recording_mode': 'success_measurement',
               'student_execution': False, 'success_rule': SUCCESS,
@@ -280,7 +280,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             pwm = {str(s): int(ports[rid]._servo_pulses[s]) for s in v5.SERVOS}
             previous[rid] = v5.command({'t': origin, 'wheels': [0.]*4, 'duration_s': [0.]*4, 'pwm': pwm})
             teachers[rid] = make_grasp_teacher(rid, end, pwm, teacher_stability=teacher_stability,
-                                               teacher_search=teacher_search)
+                                               teacher_search=teacher_search, approach_goal_set=approach_goal_set)
             models[rid] = VisibleWorld(rid, end, pose_source='issued', profile=CRATE)
             clocks[rid] = v5.IssuedClock()
         i = 0
@@ -292,7 +292,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         verdict = {}
         rgb_before = rgb_after = None
         from sim.crate_rgb_lift import LiftObserver
-        lift_observers = {rid: LiftObserver(end) for rid, end in roles.items()}
+        lift_observers = {rid: LiftObserver(end, mode=rgb_lift if rgb_lift in ('crate_rgb_lift_v2', 'crate_rgb_lift_v3') else 'crate_rgb_lift_v2') for rid, end in roles.items()}
         lift_frames = {rid: {} for rid in roles}
 
         def lift_capture(rid, tag, now):
@@ -387,7 +387,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                                  'visible_probes': {r: truth['visibility'][r]['visible_probes'] for r in roles},
                                  'servo_load': load_row,
                                  'phases': {r: t.phase for r, t in teachers.items()}})+'\n')
-            if rgb_lift == 'crate_rgb_lift_v2':
+            if rgb_lift in ('crate_rgb_lift_v2', 'crate_rgb_lift_v3'):
                 for rid, t in teachers.items():
                     value = lift_observers[rid].observe(permit=lift_permits[rid], complete=t.command_complete,
                         command=previous[rid], capture=lambda tag, rid=rid: lift_capture(rid, tag, now))
@@ -919,7 +919,8 @@ def main():
     p.add_argument('--rgb-lift', choices=RGB_LIFT_MODES, default='off',
                    help='authorize release only after own-RGB confirmation; v2 uses lug/body co-motion; provisional thresholds')
     p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')
-    p.add_argument('--teacher-search', choices=('off', 'search_body_scan_v1', 'search_body_scan_v2'), default='off')
+    p.add_argument('--teacher-search', choices=('off', 'search_body_scan_v1', 'search_body_scan_v2', 'search_reacquire_v1'), default='off')
+    p.add_argument('--approach-goal-set', choices=('off', 'approach_goal_set_v1'), default='off')
     p.add_argument('--execution-host', choices=('azure', 'gcp1'), default='gcp1')
     p.add_argument('--pr', type=int, default=None)
     a = p.parse_args()
@@ -932,7 +933,7 @@ def main():
                          observe_mode=a.observe_mode, render_dr=a.render_dr, zone_slots=a.zone_slots, reach_mode=a.reach_mode,
                          held_object=a.held_object, lookaround=a.setdown_lookaround, execution_host=host, pr=a.pr,
                          crate_scene=a.crate_scene, rgb_lift=a.rgb_lift,
-                         teacher_stability=a.teacher_stability, teacher_search=a.teacher_search),
+                         teacher_stability=a.teacher_stability, teacher_search=a.teacher_search, approach_goal_set=a.approach_goal_set),
                      ensure_ascii=False, default=str))
 
 

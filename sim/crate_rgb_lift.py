@@ -144,13 +144,64 @@ def confirm_v2(before, after, end, *, commands, settled=None):
     return {**out, 'verdict': 'confirmed', 'reason': 'assigned lug and pink body co-move through issued lift and settled hold'}
 
 
+def confirm_v3(before, after, end, *, commands, settled=None):
+    """Track the grasped lug; require body retention, not a rigid silhouette.
+
+    The two-robot crate can rotate about its lug. Keep the v2 rigidity test on
+    the assigned lug, but test the body for disappearance and downward image
+    drift relative to that lug. This is a visual hypothesis, not load/height
+    measurement. See the crate4 reference/adaptation record. v2 is unchanged.
+    """
+    if end not in ('blue', 'teal'):
+        raise ValueError('assigned lug must be blue or teal')
+    out = {'rule': 'crate_rgb_lift_v3', 'thresholds': 'provisional; uncalibrated',
+           'command_evidence': lift_commands(commands), 'comparisons': []}
+    if not out['command_evidence']['valid']:
+        return {**out, 'verdict': 'undetermined', 'reason': out['command_evidence']['reason']}
+    if before.shape != after.shape or (settled is not None and before.shape != settled.shape):
+        return {**out, 'verdict': 'undetermined', 'reason': 'incompatible frame sizes'}
+    reference = [shape(m) for m in masks(before, end)]
+    out['before'] = dict(zip(('lug', 'pink'), reference))
+    if any(s is None or s['fraction'] < V2_MIN_PART for s in reference):
+        return {**out, 'verdict': 'undetermined', 'reason': 'assigned lug and pink body not both visible before lift'}
+    for tag, frame in [('lift_complete', after), ('settled_hold', settled)]:
+        if frame is None:
+            return {**out, 'verdict': 'undetermined', 'reason': 'settled hold frame missing'}
+        parts = [shape(m) for m in masks(frame, end)]
+        comparison = {'sample': tag, 'parts': {}}
+        out['comparisons'].append(comparison)
+        for name, b, a in zip(('lug', 'pink'), reference, parts):
+            if a is None or a['fraction'] < V2_MIN_PART or a['fraction']/b['fraction'] < .4:
+                return {**out, 'verdict': 'not_confirmed', 'reason': f'{name} disappeared or shrank (possible grip loss)'}
+            ratio = a['fraction']/b['fraction']
+            shift = max(abs(x-y) for x, y in zip(a['center'], b['center']))
+            extent = max(abs(x-y) for x, y in zip(a['extent'], b['extent']))
+            row = {'after': a, 'area_ratio': ratio, 'center_shift': shift, 'extent_shift': extent}
+            comparison['parts'][name] = row
+            if name == 'lug':
+                if not (V2_AREA_RATIO[0] <= ratio <= V2_AREA_RATIO[1] and
+                        shift <= V2_CENTER_SHIFT and extent <= V2_EXTENT_SHIFT):
+                    return {**out, 'verdict': 'undetermined', 'reason': 'lug did not remain rigid in wrist view'}
+            else:
+                downward = ((a['center'][1]-parts[0]['center'][1]) -
+                            (b['center'][1]-reference[0]['center'][1]))
+                row['downward_relative_to_lug'] = downward
+                if downward > V2_CENTER_SHIFT:
+                    return {**out, 'verdict': 'not_confirmed', 'reason': 'pink moved down relative to held lug'}
+    return {**out, 'verdict': 'confirmed',
+            'reason': 'assigned lug co-moves; pink persists without downward relative drift'}
+
+
 class LiftObserver:
     """Small runner adapter: capture before own permit, after own completion, at 3s.
 
     Dependencies are a capture callback and the robot's own issued command only.
     The callback can save the frames and hashes without changing the classifier.
     """
-    def __init__(self, end):
+    def __init__(self, end, *, mode='crate_rgb_lift_v2'):
+        if mode not in ('crate_rgb_lift_v2', 'crate_rgb_lift_v3'):
+            raise ValueError('unknown crate lift observer mode')
+        self.confirm = confirm_v3 if mode == 'crate_rgb_lift_v3' else confirm_v2
         self.end = end
         self.before = self.after = None
         self.commands = []
@@ -169,6 +220,6 @@ class LiftObserver:
             self.after = capture('lift_complete')
             self.completed_at = command['t']
         if self.after is not None and command['t']-self.completed_at >= 3.-1e-8:
-            self.verdict = confirm_v2(self.before, self.after, self.end, commands=self.commands,
-                                      settled=capture('settled_hold'))
+            self.verdict = self.confirm(self.before, self.after, self.end, commands=self.commands,
+                                       settled=capture('settled_hold'))
         return self.verdict

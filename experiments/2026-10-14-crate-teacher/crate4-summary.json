@@ -1,0 +1,69 @@
+{
+  "baseline_sha": "6f312f74f25e284f9339a18de901e24667c17a31",
+  "merged_rootcause_sha": "a3f3be78f5547d7b44396cab38b6e57354b4a49d",
+  "tests": {
+    "passed": 101,
+    "skipped": 1,
+    "deselected": 1,
+    "files": 3,
+    "junit_sha256": "57559b9e2b32614149a4abdab6e0977f302058bec667671fbbbe431db50a4ec8"
+  },
+  "new_gate_seeds": [
+    77300,
+    77339
+  ],
+  "static_start_los": {
+    "N": 40,
+    "both_pass": 40,
+    "rejected": 0,
+    "rejection_rate": 0.0,
+    "per_robot": {
+      "r1": {
+        "pass": 40,
+        "rejected": 0,
+        "N": 40,
+        "rejection_rate": 0.0
+      },
+      "r2": {
+        "pass": 40,
+        "rejected": 0,
+        "N": 40,
+        "rejection_rate": 0.0
+      }
+    }
+  },
+  "simulation_steps": 0,
+  "render_calls": 0,
+  "new_gcp_runs": 0,
+  "offline_ready": false,
+  "exact_RGB_replayed": {
+    "B": "0/8",
+    "prior_success": "0/24",
+    "negative_controls": "0/2"
+  },
+  "false_positive_rate": "unmeasured",
+  "fetch_request": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/fetch-requests/crate4.txt",
+  "fetch_request_sha256": "7dc33a5cfa59c6fb5fc241bc6ebad93659e29d5aa542aa45a3bc2a48af812248",
+  "A_axial_goal_evaluation": [
+    {
+      "seed": 77208,
+      "wall_clearance_m": 0.009981764840187334,
+      "required_m": 0.13,
+      "no_path": "59/59"
+    },
+    {
+      "seed": 77225,
+      "wall_clearance_m": 0.06059291962043414,
+      "required_m": 0.13,
+      "alignment_relooks": 3
+    }
+  ],
+  "remaining": [
+    "original RGB retrieval and hash verification",
+    "video inspection",
+    "8/8 B and 24/24 success replay; two negative controls",
+    "GCP diagnostics10 then fresh gate40",
+    "runtime audit and speed",
+    "GitHub CI"
+  ]
+}

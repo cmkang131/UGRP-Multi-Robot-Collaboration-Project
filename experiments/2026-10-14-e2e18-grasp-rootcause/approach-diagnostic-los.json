@@ -1,0 +1,245 @@
+{
+  "schema": "ugrp.grasp_goal_set.start_los.v1",
+  "scope": "Static initial geometry/kinematics and first-hit rays only; no physics stepping, forward dynamics, rendering, World or controller initialization. Same 3 pitches x 360 headings admission as 23a2a113; initial heading need not see target before search.",
+  "N": 7,
+  "both_qualify_n": 7,
+  "minimum_visible_probes": 15,
+  "forbidden_api_call_n": 0,
+  "rows": [
+    {
+      "seed": 71000,
+      "robots": {
+        "r1": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 189,
+          "wrist": 820,
+          "elbow": 2320
+        },
+        "r2": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 170,
+          "wrist": 500,
+          "elbow": 2500
+        }
+      },
+      "both_qualify": true
+    },
+    {
+      "seed": 73011,
+      "robots": {
+        "r1": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 302,
+          "wrist": 820,
+          "elbow": 2320
+        },
+        "r2": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 172,
+          "wrist": 820,
+          "elbow": 2320
+        }
+      },
+      "both_qualify": true
+    },
+    {
+      "seed": 73009,
+      "robots": {
+        "r1": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 263,
+          "wrist": 820,
+          "elbow": 2320
+        },
+        "r2": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 266,
+          "wrist": 500,
+          "elbow": 2500
+        }
+      },
+      "both_qualify": true
+    },
+    {
+      "seed": 78111,
+      "robots": {
+        "r1": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 62,
+          "wrist": 820,
+          "elbow": 2320
+        },
+        "r2": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 188,
+          "wrist": 500,
+          "elbow": 2500
+        }
+      },
+      "both_qualify": true
+    },
+    {
+      "seed": 78113,
+      "robots": {
+        "r1": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 255,
+          "wrist": 700,
+          "elbow": 2440
+        },
+        "r2": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 179,
+          "wrist": 500,
+          "elbow": 2500
+        }
+      },
+      "both_qualify": true
+    },
+    {
+      "seed": 79217,
+      "robots": {
+        "r1": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 223,
+          "wrist": 820,
+          "elbow": 2320
+        },
+        "r2": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 167,
+          "wrist": 500,
+          "elbow": 2500
+        }
+      },
+      "both_qualify": true
+    },
+    {
+      "seed": 79030,
+      "robots": {
+        "r1": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 302,
+          "wrist": 820,
+          "elbow": 2320
+        },
+        "r2": {
+          "in_frame": true,
+          "visible": true,
+          "visible_probes": 15,
+          "in_frame_probes": 15,
+          "probe_N": 15,
+          "occluders": [],
+          "yaw_deg": 5,
+          "wrist": 500,
+          "elbow": 2500
+        }
+      },
+      "both_qualify": true
+    }
+  ],
+  "templates": [
+    {
+      "seed": 71000,
+      "template": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-000/episode-000/raw/scene.xml",
+      "sha256": "018c842e4067481a7255dee66319660a6dc81fc31e2d7b381d833cdbd7cf539e"
+    },
+    {
+      "seed": 73011,
+      "template": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-000/episode-002/raw/scene.xml",
+      "sha256": "6c8379bef66dcc6564ec99c908c31cd8a9378d9902b3a5e88f200342fc2f74ca"
+    },
+    {
+      "seed": 73009,
+      "template": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-000/episode-000/raw/scene.xml",
+      "sha256": "018c842e4067481a7255dee66319660a6dc81fc31e2d7b381d833cdbd7cf539e"
+    },
+    {
+      "seed": 78111,
+      "template": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-000/episode-000/raw/scene.xml",
+      "sha256": "018c842e4067481a7255dee66319660a6dc81fc31e2d7b381d833cdbd7cf539e"
+    },
+    {
+      "seed": 78113,
+      "template": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-000/episode-000/raw/scene.xml",
+      "sha256": "018c842e4067481a7255dee66319660a6dc81fc31e2d7b381d833cdbd7cf539e"
+    },
+    {
+      "seed": 79217,
+      "template": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-000/episode-000/raw/scene.xml",
+      "sha256": "018c842e4067481a7255dee66319660a6dc81fc31e2d7b381d833cdbd7cf539e"
+    },
+    {
+      "seed": 79030,
+      "template": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-000/episode-000/raw/scene.xml",
+      "sha256": "018c842e4067481a7255dee66319660a6dc81fc31e2d7b381d833cdbd7cf539e"
+    }
+  ],
+  "wall_s": 2.4092013749759644,
+  "plan_sha256": "9981a428483e1f01a70db150ec5ff62f83e1029306fde967a791b5e4211b7263"
+}

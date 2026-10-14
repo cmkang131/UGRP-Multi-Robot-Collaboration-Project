@@ -273,3 +273,41 @@ def test_v2_unseen_commands_do_not_depend_on_hidden_geometry():
     _,_,ca,_=geometric_search(a,'r1',hidden=True)
     _,_,cb,_=geometric_search(b,'r1',hidden=True)
     assert ca==cb
+
+
+@pytest.mark.parametrize('glimpses', [False, True])
+def test_reacquire_after_sighting_finishes_all_pitch_circles_with_bounded_deadline(glimpses):
+    t=VisibleOnlyGraspTeacher('r1','blue',{**FOLDED,6:2500},bounds=(-20,20,-20,20),
+        teacher_stability='align_relook_v1',teacher_search='search_reacquire_v1')
+    model=VisibleWorld('r1','blue')
+    seen=[{'id':'band_blue','kind':'band','xyz':[.6,0.,.03],'yaw':0.,'visible_n':15,'probe_N':15}]
+    # A prior real sighting used to disable the full search forever.
+    t._observe(model.observe(seen,0.),0.)
+    assert t.ever_seen
+    t.started=True;t.skill_started=0.;t.phase_t=0.
+    for i in range(1,590):
+        now=i*.1
+        ms=seen if glimpses and i in (40,120,240) else []
+        cmd,_=t.step(model.observe(ms,now),now)
+        model.issue(cmd);t.remember_applied(cmd)
+        if t.outcome is not None:break
+    circles=[r for r in t.search_log if r['stage']=='circle_complete']
+    assert len(circles)==3 and all(r['command_estimated_yaw_deg']>=390 for r in circles)
+    assert t.outcome=='search_timeout_handoff'
+    assert t.search_log[-1]['t']<t.SEARCH_V2_LIMIT_S+.1
+
+
+def test_reacquisition_requires_sustained_visibility_and_then_resumes_approach():
+    t=VisibleOnlyGraspTeacher('r1','blue',FOLDED,bounds=(-20,20,-20,20),
+        teacher_stability='align_relook_v1',teacher_search='search_reacquire_v1')
+    model=VisibleWorld('r1','blue')
+    t._observe(model.observe([],0.),0.)
+    seen=[{'id':'band_blue','kind':'band','xyz':[.6,0.,.03],'yaw':0.,'visible_n':15,'probe_N':15}]
+    for now in (.1,.2,.3):
+        cmd=t._observe(model.observe(seen,now),now)
+        assert cmd is not None and not any(cmd['wheels']) and t.phase=='search'
+    assert t._observe(model.observe(seen,.4),.4) is None
+    assert t.phase=='approach' and t.sc is None
+    t._observe(model.observe([],1.),1.)
+    assert t._observe(model.observe(seen,1.1),1.1) is not None
+    assert t.phase=='search'

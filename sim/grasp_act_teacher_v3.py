@@ -30,11 +30,18 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             raise ValueError('unknown teacher stability mode')
         # search_body_scan_v1: pan sweep + in-place 8-direction body scan only.
         self.teacher_search=kwargs.pop('teacher_search','off')
-        if self.teacher_search not in ('off','search_body_scan_v1','search_body_scan_v2'):
+        if self.teacher_search not in ('off','search_body_scan_v1','search_body_scan_v2','search_reacquire_v1'):
             raise ValueError('unknown teacher search mode')
         if self.teacher_search!='off' and self.teacher_stability=='off':
             raise ValueError('teacher search requires align_relook_v1')
-        self.sc=None;self.search_log=[];self.ever_seen=False
+        self.approach_goal_set=kwargs.pop('approach_goal_set','off')
+        if self.approach_goal_set not in ('off','approach_goal_set_v1'):
+            raise ValueError('unknown approach goal set mode')
+        if self.approach_goal_set!='off' and self.teacher_stability=='off':
+            raise ValueError('approach goal set requires align_relook_v1')
+        self.approach_choice=(0.,STATION_M);self.goal_set_log=[]
+        self.approach_blocked_since=None;self.approach_plan_valid=False
+        self.sc=None;self.search_log=[];self.ever_seen=False;self.reacquired_since=None
         kwargs.pop('profile',None)
         super().__init__(*args,profile='observable_v2',**kwargs)
         self.phase='approach';self.handoff=False;self.local_seen=None
@@ -69,11 +76,19 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # Only the currently visible measurement frame reaches this law.
         if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:
             return self._hold(now),False
+        if self.approach_goal_set!='off':
+            from sim.grasp_act_visible_route import constraints,free
+            pose,g,heading,goal=self._geometry(truth)
+            radius,discs,rects=constraints(truth,self.rid,self.folded_ready,self.cargo_profile)
+            if self.phase=='align' and not free(goal,discs,rects,radius):
+                self._set('approach',now);self._reset_alignment();self.next_plan=now
+            if self.phase=='approach' and not self._plan_approach(truth,now):
+                return self._hold(now),False
         pose,g,heading,goal=self._geometry(truth)
         if self.phase=='approach' and math.dist(pose[:2],goal)>.08:
             return self._route(truth,goal,heading,now),False
         if self.phase=='approach':self._set('align',now);self._reset_alignment()
-        gx,gy=local(pose,g);errors=(gx-STATION_M,gy,wrap(heading-pose[2]))
+        gx,gy=local(pose,g);errors=(gx-self.staging_distance,gy,wrap(heading-pose[2]))
         if self.ready_geometry(truth):
             self.stable_since=now if self.stable_since is None else self.stable_since
             self._reset_alignment()
@@ -125,27 +140,32 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.visibility_counts['N']+=1;self.visibility_counts['visible']+=int(visible)
         self.blind_s=0. if visible else self.blind_s+.1
         self.max_blind_s=max(self.max_blind_s,self.blind_s)
+        if self.teacher_search=='search_reacquire_v1' and self.sc is not None:
+            # A one-tick glimpse must not reset a partly completed full scan.
+            self.reacquired_since=(now if self.reacquired_since is None else self.reacquired_since) if visible else None
+            if visible and now-self.reacquired_since < self.SEARCH_V2_SETTLE_S-1e-8:
+                return self._hold(now)
         if visible:
             g=truth['beam']['ends'][self.end];pose=truth['robots'][self.rid]['pose']
             self.local_seen=[*local(pose,g),g[2]+.009];self.last_seen_t=now
-            self.search_since=None;self.sc=None;self.ever_seen=True
+            self.search_since=None;self.sc=None;self.ever_seen=True;self.reacquired_since=None
             occluders=[{'xy':local(pose,v['pose']),'radius':v.get('radius',.17),
                 'top_z_bound_m':v.get('top_z_bound_m',.32)}
                 for r,v in truth['robots'].items() if r!=self.rid]
             occluders += [{'xy':local(pose,v['xy']),'radius':v['radius'],
-                'top_z_bound_m':v['top_z_bound_m']} for k,v in truth['objects'].items() if k!='beam_1']
+                'top_z_bound_m':v['top_z_bound_m']} for k,v in truth['objects'].items() if k!=(self.cargo_profile.item_id if self.teacher_search=='search_reacquire_v1' and self.cargo_profile is not None else 'beam_1')]
             target=gaze_pose(self.local_seen,self.sink.pwm,occluders,visible=True)
             if self.phase=='search':self._set('approach',now);self._reset_alignment()
         else:
             self.search_since=now if self.search_since is None else self.search_since
             age=now-self.search_since
-            if self.phase!='relook' and self.phase!='search':self._set('search',now)
-            if self.teacher_search!='off' and self.phase=='search' and not self.ever_seen:
+            if self.phase!='search' and (self.phase!='relook' or self.teacher_search=='search_reacquire_v1'):self._set('search',now)
+            if self.teacher_search!='off' and self.phase=='search' and (not self.ever_seen or self.teacher_search=='search_reacquire_v1'):
                 # Never-seen target (ever_seen, not local_seen: a relook clears local_seen).
-                target,value=(self._search_step_v2(now,age) if self.teacher_search=='search_body_scan_v2'
+                target,value=(self._search_step_v2(now,age) if self.teacher_search in ('search_body_scan_v2','search_reacquire_v1')
                               else self._search_step(now,age))
                 self.sink.pwm.update(slew(self.sink.pwm,target));self.arm.commanded.update(self.sink.pwm)
-                if self.teacher_search=='search_body_scan_v2':
+                if self.teacher_search in ('search_body_scan_v2','search_reacquire_v1'):
                     # The returned command must contain this tick's slewed pose,
                     # not the pre-slew snapshot made by _hold/_continuous.
                     value['pwm']={str(s):self.sink.pwm[s] for s in SERVOS}
@@ -261,15 +281,61 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return look,self._hold(now)
 
     def _geometry(self,world):
+        if self.approach_goal_set!='off':
+            from sim.grasp_act_goal_set import geometry
+            return geometry(world,self.rid,self.end,self.approach_choice)
         pose=world['robots'][self.rid]['pose'];g=world['beam']['ends'][self.end]
         heading=world['beam']['pose'][2]+(math.pi if self.end=='blue' else 0.)
         goal=(g[0]-STATION_M*math.cos(heading),g[1]-STATION_M*math.sin(heading))
         return pose,g,heading,goal
 
+    APPROACH_BLOCKED_LIMIT_S=3.
+
+    def _approach_handoff(self,now):
+        self.outcome='approach_blocked_handoff';self.path=[];self.approach_plan_valid=False
+        self.events.append({'t':now,'approach':'all_goals_blocked_handoff',
+                            'blocked_s':now-self.approach_blocked_since})
+
+    def _plan_approach(self,world,now):
+        from sim.grasp_act_goal_set import select_goal
+        from sim.grasp_act_visible_route import constraints,free,waypoint
+        pose,g,heading,goal=self._geometry(world)
+        radius,discs,rects=constraints(world,self.rid,self.folded_ready,self.cargo_profile)
+        self.planning_radius=radius
+        changed=self.path_goal is None or math.dist(goal,self.path_goal)>.025
+        blocked=not free(goal,discs,rects,radius)
+        unusable=self.path and math.dist(pose[:2],goal)>.08 and waypoint(pose[:2],self.path,discs,rects,radius) is None
+        if changed or now>=self.next_plan or (self.approach_plan_valid and (blocked or unusable)):
+            selected,checked=select_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.approach_choice,profile=self.cargo_profile)
+            self.planner_calls+=1;self.next_plan=now+1.;self.path_goal=tuple(goal)
+            self.blocked_goal_calls+=int(blocked)
+            self.approach_plan_valid=selected is not None
+            self.no_path_calls+=int(selected is None)
+            row={'t':now,'candidates':checked,'selected':None}
+            if selected is None:
+                self.path=[]
+                if self.approach_blocked_since is None:self.approach_blocked_since=now
+            else:
+                self.approach_choice=selected['choice'];self.staging_distance=self.approach_choice[1]
+                self.path=selected['path'];self.path_goal=tuple(selected['goal'])
+                self.approach_blocked_since=None
+                row['selected']={k:v for k,v in selected.items() if k!='path'}
+            self.goal_set_log.append(row)
+        if self.approach_blocked_since is not None and now-self.approach_blocked_since>=self.APPROACH_BLOCKED_LIMIT_S-1e-8:
+            self._approach_handoff(now)
+        return self.approach_plan_valid
+
     def _route(self,world,goal,heading,now):
         from sim.grasp_act_visible_route import constraints,free,segment_free,waypoint,drive
         from scripts.zone_teacher import plan_path
         pose=world['robots'][self.rid]['pose']
+        if self.approach_goal_set!='off':
+            if not self._plan_approach(world,now):return self._hold(now)
+            pose,g,heading,goal=self._geometry(world)
+            radius,discs,rects=constraints(world,self.rid,self.folded_ready,self.cargo_profile)
+            target=waypoint(pose[:2],self.path,discs,rects,radius)
+            if target is None:return self._hold(now)
+            return self._continuous(now,**drive(pose,goal,target,g))
         radius,discs,rects=constraints(world,self.rid,self.folded_ready,self.cargo_profile)
         self.planning_radius=radius
         # A newly observed target may disagree with dead reckoning. Cached
@@ -341,6 +407,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
     def ready_geometry(self,truth):
         if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:return False
         pose,g,heading,goal=self._geometry(truth)
+        if self.approach_goal_set!='off':
+            from sim.grasp_act_visible_route import constraints,free
+            radius,discs,rects=constraints(truth,self.rid,self.folded_ready,self.cargo_profile)
+            if not free(goal,discs,rects,radius):return False
         x,y=local(pose,g)
         try:grasp_poses((x,y,g[2]))
         except ValueError:return False
@@ -365,6 +435,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.last_command=deepcopy(command(value))
 
     def _step(self,truth,now,*,permit_pick):
+        if self.outcome is not None:return self._hold(now),False
+        # Losing sight cannot reset a blocked approach's finite deadline.
+        if self.approach_blocked_since is not None and now-self.approach_blocked_since>=self.APPROACH_BLOCKED_LIMIT_S-1e-8:
+            self._approach_handoff(now);return self._hold(now),False
         if not self.started:
             self.started=True;self.phase_t=now;self.skill_started=now
             self.arm.queue({**FOLDED,6:self.sink.pwm[6]},now,duration=.5)
@@ -413,4 +487,5 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'blocked_goal_calls':self.blocked_goal_calls,
                 'teacher_stability':self.teacher_stability,'alignment_relooks':self.align_relooks,
                 'teacher_search':self.teacher_search,'search_log':self.search_log,
+                'approach_goal_set':self.approach_goal_set,'goal_set_log':self.goal_set_log,
                 'done_semantics':'own issued arm sequence complete; physical evaluation separate'}

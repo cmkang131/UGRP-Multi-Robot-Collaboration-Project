@@ -372,13 +372,14 @@ def test_crate_cli_forwards_modes_without_running_physics(monkeypatch, tmp_path)
     monkeypatch.setattr(runner, 'run', fake_run)
     monkeypatch.setattr(grasp_act_host, 'identity', lambda host: {'provider': host})
     monkeypatch.setattr(sys, 'argv', ['run_crate_teacher', '--plan', str(plan), '--out', str(tmp_path/'unused'),
-        '--crate-scene', 'crate_mass_030_v1', '--held-object', 'hidden_v1', '--rgb-lift', 'crate_rgb_lift_v2',
-        '--teacher-stability', 'align_relook_v1', '--teacher-search', 'search_body_scan_v2'])
+        '--crate-scene', 'crate_mass_030_v1', '--held-object', 'hidden_v1', '--rgb-lift', 'crate_rgb_lift_v3',
+        '--teacher-stability', 'align_relook_v1', '--teacher-search', 'search_reacquire_v1', '--approach-goal-set', 'approach_goal_set_v1'])
     runner.main()
     assert received['teacher_stability'] == 'align_relook_v1'
-    assert received['teacher_search'] == 'search_body_scan_v2'
+    assert received['teacher_search'] == 'search_reacquire_v1'
+    assert received['approach_goal_set'] == 'approach_goal_set_v1'
     assert received['crate_scene'] == 'crate_mass_030_v1' and received['held_object'] == 'hidden_v1'
-    assert received['rgb_lift'] == 'crate_rgb_lift_v2'
+    assert received['rgb_lift'] == 'crate_rgb_lift_v3'
 
 
 def test_release_requires_both_own_lift_confirmations_and_issued_settle():
@@ -414,3 +415,24 @@ def test_crate_release_has_no_map_prior_without_a_localized_handoff():
     t = CrateReleaseTeacher('r1', 'teal', FOLDED, handoff_pose_estimate=None, zone_rect=(4.6, -2.1, .3, .7))
     assert not t.belief.items
     assert t.report(0.)['kind'] == 'outside'
+
+
+def test_crate_goal_set_passes_cargo_geometry_and_preserves_selected_alignment(monkeypatch):
+    from scripts.run_crate_teacher import make_grasp_teacher
+    import sim.grasp_act_goal_set as goals
+    import sim.grasp_act_visible_route as route
+    t=make_grasp_teacher('r1','teal',FOLDED,teacher_stability='align_relook_v1',
+                         teacher_search='search_reacquire_v1',approach_goal_set='approach_goal_set_v1')
+    world={'robots':{'r1':{'pose':[-.5,0.,0.]}},'beam':{'pose':[0.,0.,0.],
+           'ends':{'teal':[-.1,0.,.024],'blue':[.1,0.,.024]}},'objects':{},'walls':[]}
+    calls=[]; original=route.constraints
+    def checked(world,rid,folded,profile=None):
+        calls.append(profile)
+        return original(world,rid,folded,profile)
+    monkeypatch.setattr(route,'constraints',checked)
+    monkeypatch.setattr(goals,'constraints',checked)
+    assert t._plan_approach(world,0.)
+    assert calls and all(p is CRATE for p in calls)
+    pose,g,heading,goal=t._geometry(world)
+    assert t.staging_distance==t.approach_choice[1]
+    assert abs(math.dist(g[:2],goal)-t.staging_distance)<1e-9

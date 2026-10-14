@@ -1,0 +1,219 @@
+{
+  "base_sha": "23a2a1137e3907073001ce079dd3294419fb5b1b",
+  "candidate_source": "commit containing this record; exact published SHA recorded in vm3-queue after push",
+  "status": "STATIC_REGRESSION_PASSED_REMOTE_PENDING",
+  "previous_gate": {
+    "planned_N": 40,
+    "started_N": 32,
+    "completed_N": 28,
+    "success_n": 27,
+    "failed_n": 1,
+    "interrupted": 4,
+    "not_started": 8,
+    "qualified": false,
+    "raw_root": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113"
+  },
+  "root_cause": {
+    "type": "single_axial_goal_inside_observed_divider_wall_margin",
+    "old_source_lines": [
+      "sim/grasp_act_teacher_v3.py:260-284",
+      "sim/grasp_act_visible_route.py:12-27"
+    ],
+    "padded_wall_distance_m": 0.0026891851271162,
+    "required_radius_m": 0.13,
+    "direct_peer_block": false
+  },
+  "static_regression": {
+    "source_sample": 40,
+    "source_absolute_t": 5.800000000001343,
+    "old_no_path": true,
+    "new_selection": {
+      "choice": [
+        1.5707963267948966,
+        0.208
+      ],
+      "goal": [
+        0.8256803821038003,
+        0.41645742710435385
+      ],
+      "heading": -0.21569392490714057,
+      "cost": 0.9083656086498305
+    },
+    "candidate_n": 39,
+    "feasible_n": 9,
+    "all_blocked_handoff_limit_s": 3.0,
+    "success_scope": "path segments + existing pad IK, not physical grasp"
+  },
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_goal_set.py",
+      "tests/test_grasp_act_visible_only.py",
+      "tests/test_grasp_act_search.py"
+    ],
+    "passed": 87,
+    "physics_calls": 0,
+    "model_calls": 0
+  },
+  "input_boundary": {
+    "source": "visible relative measurements + own issued commands",
+    "fixture_full_truth_fields": false,
+    "original_invisible_measurements": 0
+  },
+  "visual_review": {
+    "frames": 18,
+    "timestamps": [
+      0,
+      10,
+      20,
+      30,
+      40,
+      59
+    ],
+    "cameras": [
+      "r1",
+      "r2",
+      "overview"
+    ],
+    "montage": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/montage.jpg"
+  },
+  "start_los": {
+    "N": 40,
+    "both_pass": 40,
+    "robot_N": 80,
+    "each_max_visible_probes": 15,
+    "physics_calls": 0,
+    "report": "approach-start-los.json"
+  },
+  "physical_success": null,
+  "new_remote_runs": 0,
+  "previous_speed_median": 3.04,
+  "new_speed16_required": true,
+  "new_speed_reason": "candidate enumeration, IK, segment checks and route selection change runtime; same-host measurement must be repeated",
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-016/episode-030/raw/plan.json",
+      "bytes": 1234,
+      "sha256": "08c1d572e1aa2c9cd4cdd56b0366dc5899526843564587482c4bacecb05a54f3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-016/episode-030/raw/result.json",
+      "bytes": 5736,
+      "sha256": "2645b160caa3389aa85c1cf42fa38a894867c7bd46b3d16f2fd6c432ed973484"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-016/episode-030/raw/eval-only.jsonl.zst",
+      "bytes": 1251451,
+      "sha256": "87255eeff8f744bc4de08c93f4c963b5a3d65185303a2071d049eb62863a72af"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-016/episode-030/raw/teacher-r1.jsonl.zst",
+      "bytes": 19631,
+      "sha256": "211a8270e23400ff9816ee7fd6f586cc6227063d9da3a0da3eb9cdb8daddbdbe"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-016/episode-030/raw/teacher-r2.jsonl.zst",
+      "bytes": 20323,
+      "sha256": "0235c943184e03fb94327de84853f838dedbab8bab546c1a2cc485adb3ab6c31"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-23a2a113/cohort-016/episode-030/raw/scene.xml",
+      "bytes": 506427,
+      "sha256": "34b6b846647723ff72f671a0b8555d7b8c2fc72a6ae69759c61791effa5e8301"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-overview-000000.jpg",
+      "bytes": 30659,
+      "sha256": "dd91c34fd167d1f94524012562529873523422364877416589bc03387faeaab5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-overview-000100.jpg",
+      "bytes": 30560,
+      "sha256": "edd8831395781212c7a2a452d7ad4df27ebd56a5a4c9aef61e5d6222f3502fe5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-overview-000200.jpg",
+      "bytes": 30592,
+      "sha256": "1aae4df34cb10711f6eb4d7d5eca5e6610147728e3e55c864d65348f8b227da6"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-overview-000300.jpg",
+      "bytes": 30583,
+      "sha256": "ffcba1b4c1eb9ac8275211cf5f08b18026795d04b4a151e096849bdcae1940b7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-overview-000400.jpg",
+      "bytes": 30528,
+      "sha256": "93340907577342a67bbe5d335a911bb023d52654869d3f038f68f281c461c1a8"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-overview-000590.jpg",
+      "bytes": 30560,
+      "sha256": "342591d7bd3c4c3b45c796fe7eadcf8349279159b556e68c12e27c1f0f3181c1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r1-000000.jpg",
+      "bytes": 5592,
+      "sha256": "b7b74b0f01cf34a46959fb6bad1ac9e8a19b66e822836c431f2b35c148a6261b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r1-000100.jpg",
+      "bytes": 7482,
+      "sha256": "cb88aa92ceb093efb2a39186bcf4db5dc489510de78a9a492d61b679b4ea23f3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r1-000200.jpg",
+      "bytes": 7472,
+      "sha256": "74f8a5dc2a5523ecea755af8c5485ff93fa5b9ff494d29f05fdd4b66835e534f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r1-000300.jpg",
+      "bytes": 7484,
+      "sha256": "11c998215f08814292d6b46c5cf8dcb806a31573626ff4bd29538bd1b2fc53b1"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r1-000400.jpg",
+      "bytes": 7489,
+      "sha256": "7005fed83b62d7ccfac670acf5f171acfcbbdfdf35b0a0da738fbab0af66906b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r1-000590.jpg",
+      "bytes": 7520,
+      "sha256": "0a9e1a6650cfcd85af1b6004fcb0dbd98a9cbe387b26929bc78b8540c305fb56"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r2-000000.jpg",
+      "bytes": 6067,
+      "sha256": "1433e0fefdd155514fb474902f5a256d7d341130dd4d9f78adb7bb16fc227196"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r2-000100.jpg",
+      "bytes": 6905,
+      "sha256": "42d6b41aef2214353896180fb7eb2a85f26858939430cb993c9fcd83580e4dc0"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r2-000200.jpg",
+      "bytes": 6926,
+      "sha256": "9f2e5e22242c2ae69e758c67ea414fe5610260923b77d6e62b3d64095bf49cfe"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r2-000300.jpg",
+      "bytes": 6911,
+      "sha256": "d8a77f9cb6106f9593654a90599460ef3c0d6d566e0182e0adb5348b83953a15"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r2-000400.jpg",
+      "bytes": 6921,
+      "sha256": "49d1c0b761f2d858431d7304eeab2efb3aea34ce4754ba7a262b4ba0a834560e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/eval-own_r2-000590.jpg",
+      "bytes": 6918,
+      "sha256": "a4b90a889e6c8b6dda63f9eb306c770907dc6ee3f256c7bc4acc0b6b8823c914"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/ep030-frames-23a2a113/montage.jpg",
+      "bytes": 123078,
+      "sha256": "09a8f76a6142bf780f2137fa21e6477cb1bf47b30d4f5107040efd9bd45ecb37"
+    }
+  ]
+}
