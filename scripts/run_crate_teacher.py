@@ -26,8 +26,29 @@ from sim.grasp_act_release_teacher import OBSERVE_MODES, REACH_MODES
 from sim.cargo_teacher_profile import CRATE
 
 LOOKAROUND_MODES = ('off', 'setdown_lookaround_v1')
+RGB_LIFT_MODES = ('off', 'crate_rgb_lift_v1')
 HOLD_S = 3.
 LIFT_FORCE_N = .5
+
+
+def servo_load(world, rids):
+    """Evaluation only: arm servo force / force limit per robot (saturation shows as |ratio| ~ 1)."""
+    import mujoco
+    out = {}
+    for rid in rids:
+        row = {}
+        for name in ('shoulder', 'elbow', 'wrist'):
+            aid = mujoco.mj_name2id(world.model, mujoco.mjtObj.mjOBJ_ACTUATOR, f'{rid}__servo_{name}')
+            limit = float(world.model.actuator_forcerange[aid][1])
+            row[name] = round(float(world.data.actuator_force[aid])/limit, 3)
+        out[rid] = row
+    return out
+
+
+def own_rgb(port):
+    import numpy as np
+    from PIL import Image
+    return np.array(Image.open(io.BytesIO(base64.b64decode(port.capture()['image']))).convert('RGB'))
 
 
 def snapshot_cargo(world, inst, roles, scene, profile=CRATE):
@@ -89,11 +110,17 @@ def held_lugs(world, inst, roles, profile=CRATE):
 
 def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', observe_mode='gaze_v2', render_dr='off',
         zone_slots='floor', reach_mode='calibrated_mid_v1', held_object='visible_v0', lookaround='off',
-        execution_host=None, pr=None):
+        execution_host=None, pr=None, crate_mass_kg=None, rgb_lift='off'):
     for name, value, allowed in (('observe_mode', observe_mode, OBSERVE_MODES), ('zone_slots', zone_slots, ZONE_SLOT_MODES),
                                  ('reach_mode', reach_mode, REACH_MODES), ('lookaround', lookaround, LOOKAROUND_MODES)):
         if value not in allowed:
             raise ValueError(f'{name}: {value}')
+    if rgb_lift not in RGB_LIFT_MODES:
+        raise ValueError(f'rgb_lift: {rgb_lift}')
+    if crate_mass_kg is not None:
+        if not .05 <= float(crate_mass_kg) <= 2.:
+            raise ValueError('crate_mass_kg out of range')
+        plan = {**plan, 'crate_mass_kg': float(crate_mass_kg)}
     if plan.get('object_kind') != 'heavy_crate' or plan['target_item'] != CRATE.item_id:
         raise ValueError('heavy_crate plan required')
     if len(set(plan['roles'].values())) != 2 or set(plan['roles']) != {'r1', 'r2'}:
@@ -130,7 +157,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     report = {'status': 'running', 'source_sha': sha, 'teacher': 'crate_visible_only_v1', 'object_kind': 'heavy_crate',
               'own_pose_source': own_pose_source, 'observe_mode': observe_mode, 'zone_slots': zone_slots,
               'reach_mode': reach_mode, 'held_object': held_object, 'lookaround': lookaround,
-              'lug_color_scene': plan.get('lug_color_scene', 'off'), 'assignment_source': plan['assignment_source'],
+              'lug_color_scene': plan.get('lug_color_scene', 'off'), 'crate_mass_kg': plan.get('crate_mass_kg'),
+              'rgb_lift': rgb_lift, 'assignment_source': plan['assignment_source'],
               'execution_host': execution_host, 'weld': 'off', 'recording_mode': 'success_measurement',
               'student_execution': False, 'success_rule': SUCCESS,
               'grasp_criteria': {'min_z_m': .012, 'max_tilt_deg': 10., 'hold_s': HOLD_S, 'bilateral_n': LIFT_FORCE_N},
@@ -225,6 +253,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         all_done_since = None
         max_hold = 0.
         held = None
+        rgb_before = rgb_after = None
         handoff_log = {}
         lugs_at_hold = None
         while float(world.data.time)-origin < grasp_cap_s-1e-8:
@@ -286,7 +315,15 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             ev.write(json.dumps({'stage': 'grasp', 't': now, 'crate': truth['beam'], 'contacts': truth['contacts'],
                                  'robots': {r: truth['robots'][r] for r in roles}, 'held_s': held_s,
                                  'visible_probes': {r: truth['visibility'][r]['visible_probes'] for r in roles},
+                                 'servo_load': servo_load(world, roles),
                                  'phases': {r: t.phase for r, t in teachers.items()}})+'\n')
+            if rgb_lift != 'off':
+                # own frames: one at the first tick any robot has its own lift permit, one when every robot's own
+                # lift sequence has completed (own commands only); verdict is record-only
+                if rgb_before is None and any(lift_permits.values()):
+                    rgb_before = {rid: own_rgb(ports[rid]) for rid in roles}
+                if rgb_before is not None and rgb_after is None and all(t.command_complete for t in teachers.values()):
+                    rgb_after = {rid: own_rgb(ports[rid]) for rid in roles}
             if all(t.command_complete for t in teachers.values()):
                 all_done_since = now if all_done_since is None else all_done_since
                 if held_s >= HOLD_S:
@@ -309,6 +346,14 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             'assigned': dict(roles), 'distinct_lugs_at_hold': (None if lugs_at_hold is None else
                 {'ok': len({v['nearest_lug'] for v in lugs_at_hold.values()}) == 2 and all(lugs_at_hold[r]['nearest_lug'] == roles[r] for r in roles)}),
             'teachers': {rid: t.diagnostic() for rid, t in teachers.items()}}
+        if rgb_lift != 'off':
+            from sim.crate_rgb_lift import confirm
+            verdict = {rid: (confirm(rgb_before[rid], rgb_after[rid], roles[rid]) if rgb_before and rgb_after else
+                             {'verdict': 'undetermined', 'reason': 'frames not captured'}) for rid in roles}
+            # evaluation-only truth next to it so the agreement can be counted
+            report['prefix']['rgb_lift'] = {'rule': 'crate_rgb_lift_v1', 'per_robot': verdict,
+                                            'evaluation_truth': {'held_by_gt': held is not None, 'max_stable_hold_s': max_hold,
+                                                                 'scope': 'record-only; provisional thresholds'}}
         if held is None:
             report.update(status='complete', release_success=None, release_outcome='prefix_not_held')
             return report
@@ -779,6 +824,10 @@ def main():
     p.add_argument('--held-object', choices=HELD_OBJECT_MODES, default='visible_v0')
     p.add_argument('--setdown-lookaround', choices=LOOKAROUND_MODES, default='off',
                    help='setdown_lookaround_v1: look at static-map landmarks after the set-down (needs sim/active_lookaround.py)')
+    p.add_argument('--crate-mass-kg', type=float, default=None,
+                   help='crate_mass_kg: total crate mass (default: catalogue 0.900 kg). Real servo model: elbow limit 0.1765 N m')
+    p.add_argument('--rgb-lift', choices=RGB_LIFT_MODES, default='off',
+                   help='crate_rgb_lift_v1: record an own-RGB lift verdict next to the evaluation truth (record only)')
     p.add_argument('--execution-host', choices=('azure', 'gcp1'), default='gcp1')
     p.add_argument('--pr', type=int, default=None)
     a = p.parse_args()
@@ -789,7 +838,8 @@ def main():
     plan = json.loads(a.plan.read_text())['episodes'][a.episode]
     print(json.dumps(run(plan, a.out, cap_s=a.cap_s, grasp_cap_s=a.grasp_cap_s, own_pose_source=a.own_pose_source,
                          observe_mode=a.observe_mode, render_dr=a.render_dr, zone_slots=a.zone_slots, reach_mode=a.reach_mode,
-                         held_object=a.held_object, lookaround=a.setdown_lookaround, execution_host=host, pr=a.pr),
+                         held_object=a.held_object, lookaround=a.setdown_lookaround, execution_host=host, pr=a.pr,
+                         crate_mass_kg=a.crate_mass_kg, rgb_lift=a.rgb_lift),
                      ensure_ascii=False, default=str))
 
 

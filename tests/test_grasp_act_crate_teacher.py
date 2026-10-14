@@ -280,3 +280,40 @@ def test_runner_refuses_inconsistent_plans(tmp_path):
         run({**base, 'object_kind': 'long_beam'}, tmp_path/'b')
     with pytest.raises(ValueError):
         run({**base, 'roles': {'r1': 'teal', 'r2': 'blue'}}, tmp_path/'c', lookaround='nope')
+
+
+def test_crate_mass_option_scales_only_masses_default_unchanged():
+    from sim.crate_scene import scale_crate_mass
+    xml = ('<mujoco><worldbody><body name="cargo_crate_1"><geom name="a" mass=".7"/><geom name="b" mass=".1"/>'
+           '<geom name="c" mass=".1"/><geom name="nomass"/></body><body name="other"><geom mass="5"/></body></worldbody></mujoco>')
+    same, info = scale_crate_mass(xml, 'crate_1', None)
+    assert same == xml and info is None
+    out, info = scale_crate_mass(xml, 'crate_1', .3)
+    assert info['catalogue_mass_kg'] == pytest.approx(.9) and info['scale'] == pytest.approx(1/3)
+    import xml.etree.ElementTree as ET
+    root = ET.fromstring(out)
+    masses = [float(g.get('mass')) for g in root.find(".//body[@name='cargo_crate_1']").iter('geom') if g.get('mass')]
+    assert sum(masses) == pytest.approx(.3)
+    assert float(root.find(".//body[@name='other']/geom").get('mass')) == 5.
+    with pytest.raises(ValueError):
+        scale_crate_mass('<mujoco><worldbody/></mujoco>', 'crate_1', .3)
+
+
+def test_rgb_lift_verdicts_use_own_pixels_only():
+    import numpy as np
+    from sim.crate_rgb_lift import confirm
+    def frame(lug_cols, floor):
+        f = np.zeros((60, 80, 3), np.uint8)
+        f[:, :] = floor
+        f[:30, :lug_cols] = (255, 150, 180)          # crate body (pink), held
+        f[30:, :lug_cols] = (0, 10, 255)             # own lug (blue), held
+        return f
+    before = frame(30, (120, 120, 120))
+    lifted = frame(30, (160, 150, 140))              # held part rigid, floor changed (camera rose)
+    assert confirm(before, lifted, 'blue')['verdict'] == 'confirmed'
+    sagged = frame(30, (121, 120, 120))              # floor unchanged: the arm did not rise
+    assert confirm(before, sagged, 'blue')['verdict'] == 'not_confirmed'
+    lost = frame(2, (160, 150, 140))                 # held pixels vanished
+    assert confirm(before, lost, 'blue')['verdict'] == 'not_confirmed'
+    only_held = frame(80, (0, 0, 0))                 # no background in view
+    assert confirm(only_held, only_held, 'blue')['verdict'] == 'undetermined'

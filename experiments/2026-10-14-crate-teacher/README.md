@@ -52,3 +52,33 @@
 - 병렬 수행기 협조 파지의 동시 접촉 동기화: 본 코드의 READY/GO/ACK 장벽에 해당 (원문 미확인).
 - 시연 생성: ACT(Zhao et al. 2023, ALOHA) 양팔 시연 + 시간 앙상블, 정답 교사 시연 + 학생 모방 (원문 미확인, 저장소의 docs/act_execution_decisions.md가 기존 근거).
 - 저장소 내부: `sim/grasp_act_teacher_v3.py`(2대 빔 교사), `sim/grasp_act_release_teacher.py`, `docs/act_execution_decisions.md`, AGENTS.md의 held_object_hidden_v1 / setdown_lookaround_v1 규칙(PR #497).
+
+## 진단 d43d17b1 결과와 원인 (2026-10-14, 3개 모두 들기 실패)
+원본: `outputs/gcp1-runs/crate-diag-7790{0,1,2}-d43d17b1`. 원본 프레임은 VM에서만 읽었다(fetch-lite가 jpg를 제외).
+
+잘 된 것: `held_world_reads` 0, `invisible_measurements` 0, 두 로봇이 서로 다른 lug 3/3. GO/ACK/START 정상(77900 둘째 장벽 23.1 s, 77901 23.9 s).
+
+원인 판정 (확인한 범위와 근거):
+1. **들기 실패의 원인 = 팔 서보 토크 한계(상자 0.9 kg이 실제 서보 모델의 한계 밖). 기존 4개 후보 중 어느 것도 아님.**
+   - 이 장면은 `real_v1` 서보 강성을 쓴다(`sim/grasp_act_scene.py:31`, `sim/s2_servo_stiffness.py`): 어깨 1.275 N m, 팔꿈치·손목 0.1765 N m(1.8 kgf cm, LFD 공식표). 화물 목록의 0.66–0.68 kg 한 대 한계(2026-09-25)는 서보 토크가 이렇게 낮게 들어가기 전 값이다.
+   - 로봇 한 대가 mass m을 들 때 팔꿈치 토크: scene.xml을 MuJoCo로 읽어 자코비안(J^T F)으로 계산하면 pick 자세 0.389, lift 자세 0.432 N m (m=0.45 kg, 두 대가 정확히 반씩 들 때). 한계 0.1765의 2.2–2.4배. 한 대 최대는 lift 자세에서 0.1765/0.432*0.45 = 0.184 kg, 두 대 합 약 0.37 kg(자체 무게 제외). 빔 0.15 kg/대는 0.144 N m(82%)로 통과한다.
+   - 관측과 일치: 77900에서 상자는 t=23.6에 뜨기 시작해 최대 최저점 23 mm(24.2–24.4 s)까지 올랐다가 0 mm로 돌아왔다. 기울기 7도. 두 로봇 손가락 힘은 계속 4–7 N(잡은 채). 로봇 r2의 차체 z가 0.032→0.056 m(+24 mm)로 올라갔다. 77901은 상자가 한 번도 뜨지 못했다(최저점 > 0 없음, 기울기 6도). 정지 유지 최대 0.5 s / 0 s.
+   - 영상(자기 카메라, 77900 r1·r2 t=18.8·21.8·23.8·24.8·25.8·26.8, 77901 r1·r2 t=11.8·21.8·24.8·25.8·26.8·28.8, 77902 r1·r2 t=1.8·11.8·21.8·31.8·41.8·60.8): 두 로봇 모두 lug를 집게로 문 채 유지한다(lug 색이 화면을 채움). 77901 r1은 25.8 s 이후 상자 밑면(어두운 분홍)이 보여 상자가 기울었다. 집게가 빠진 것이 아니라 팔이 하중을 못 버틴 모양이다. 위에서 본 전체 시점은 해상도가 낮아(320x240 4분할) 기울기를 구별하지 못했다.
+   - 아닌 것: IK 자세 없음(pick/lift 자세가 모두 풀렸다, 마지막 pick에서 팔꿈치 5번 서보 2494–2498은 한계 2500 근처이나 빔 파지도 같은 자세), 집게 미끄러짐(손가락 힘 유지, 한계는 팔꿈치), 두 로봇 시각 어긋남(GO/ACK 같은 틱, 시작 0.1 s 차이. 다만 한쪽이 먼저 뜨는 순서 효과는 서보가 모자라서 구분 안 됨).
+2. **IK 거절은 원인이 아니다.** 77900 r1 14회, 77901 r1 39회 r2 14회, 77902 r2 13회는 모두 align 단계(반경이 pad 창 14.6–15.8 cm 밖일 때 `reachable=False`로 정지 후 재조정)이고, 이후 모든 로봇이 ready→pick→closed까지 갔다(pick 4 s). 거절이 들기 실패를 만들었다는 증거는 없다.
+3. 77902: r1이 60 s 동안 상자를 못 봄(0/593). 다른 에이전트의 `search_body_scan_v1`(claude/e2e18-grasp-rootcause)로 고친다. 이 PR에서는 고치지 않는다.
+
+## 수정 (모두 토글, 기본 = 이전 동작)
+- `--crate-mass-kg X` (기본 없음 = 0.900 kg): 상자 geom 질량 전부를 합이 X가 되게 곱한다(`sim/crate_scene.py scale_crate_mass`, 관성은 MuJoCo가 다시 계산). 진단은 **0.30 kg**: 빔과 같은 대당 0.15 kg이라 팔꿈치 82%(이미 통과한 부하 수준)이고, 한 대 한계 0.184 kg보다 커서 두 대가 필요하다. **장면 정의(화물 목록 질량) 변경이므로 사용자/조정자 확인 필요.** 0.9 kg 그대로는 이 서보 모델에서 물리적으로 불가능하다.
+  - 같은 이유로 tri_frame 1.5 kg(대당 0.5 kg)도 이 서보 모델에서는 들 수 없다(미검증 추정).
+- `--rgb-lift crate_rgb_lift_v1` (기본 off): 자기 손목 카메라 프레임 두 장(자기 lift 허가 시점, 자기 lift 명령열 완료 시점)만으로 `confirmed / not_confirmed / undetermined`를 `result.json prefix.rgb_lift`에 기록한다(`sim/crate_rgb_lift.py`). 잡힌 물체(lug+몸통) 픽셀의 비율 유지, lug/몸통 비율 변화(집게 안에서 움직임), 배경(바닥) 픽셀 변화로 판정한다. **기록 전용이며 임계값은 보정 전이다**(성공한 들기 프레임이 아직 없음). 평가용 GT 들림과 나란히 저장해 일치를 센다. 77900의 기울어진 상태 프레임으로 `not_confirmed`가 나오는 것만 확인했다.
+- 평가 전용 기록 추가: `eval-only.jsonl` 그라스프 행에 `servo_load`(로봇별 어깨/팔꿈치/손목 서보 힘/한계). 팔꿈치 포화(|ratio|≈1)를 직접 확인하려는 것이며 제어 입력이 아니다.
+- 대기열: 77900–77902(재현, 질량 0.30)와 새 시드 77910–77912(`diag_plan_77910.json`).
+
+## 참고 자료 (추가)
+- 정적 관절 토크 τ = J^T F: Craig, Introduction to Robotics ch.5(static forces); Siciliano et al., Robotics: Modelling, Planning and Control §3.7 (원문 미확인, 표준식). 여기서는 MuJoCo `mj_jacSite`로 계산했다.
+- 서보 토크 근거: `experiments/2026-10-07-servo-stiffness/REFERENCES.md`(LFD 1.8 kgf cm @6V, 공식 표). 화물 한계 근거: `experiments/2026-09-25-zone-cargo-catalogue/README.md`(real_v1 도입 전 측정).
+- 쌍 협조 운반의 하중 분담이 팔 토크 한계로 정해진다는 일반 설명: 협조 조작 문헌(Khatib 계열, 원문 미확인).
+
+## 이번 수정에서 확인 안 된 것
+- 0.30 kg에서 실제로 들리는지(물리 실행 전), RGB 판정의 정확도, 두 로봇 하중 불균형(한쪽이 먼저 뜨는 순서 효과)이 0.30 kg에서 문제가 되는지.
