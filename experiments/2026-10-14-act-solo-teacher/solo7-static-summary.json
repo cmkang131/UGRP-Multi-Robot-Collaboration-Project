@@ -1,0 +1,2738 @@
+{
+  "schema": "solo7_saved_and_static_v1",
+  "source_sha": "f678a911d54eefda0bc52eb07dbff8251821b50d",
+  "scope": "saved evaluator/issued-command ledger and static geometry only; no new execution",
+  "historical_gate": {
+    "all": "39/40",
+    "boxes": "20/20",
+    "box_subset_is_final_gate": false,
+    "per_kind": {
+      "cyan": "7/7",
+      "can": "10/10",
+      "tile": "9/10",
+      "red": "5/5",
+      "green": "5/5",
+      "yellow": "3/3"
+    },
+    "raw_report": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-gate-f678a911.json",
+    "sha256": "6bc895ddbe5b2dfd1c47ccd2bc2a7454e5cf2ec0d00f25cbd517ec5568e2d07d"
+  },
+  "failure_79505": {
+    "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-gate-79505-f678a911/raw",
+    "sha256": {
+      "result.json.zst": "ae5124bd08f9873f943688deb7f66e783b5b39cc37637f7555a38bd2ff023317",
+      "teacher-commands.jsonl.zst": "3d492c67d8fd021169d136ad9516fbfbe443cec50db934ba7fbbaab45b021172",
+      "eval-only.jsonl.zst": "d52f2b21e2bfc572633fe6587b5aec4d6f87e4623e015240f0782ef00ff2c044",
+      "plan.json": "edecac8c56d43a71a9edcdfa6e4cc4a981e1a132bb9c7067a29d64eda26b5eff"
+    },
+    "times_absolute_sim_s": {
+      "retreat_start": 23.500000000021195,
+      "first_verdict": 25.900000000032655,
+      "last_verdict": 30.800000000056052
+    },
+    "commanded_retreat_m": 0.13017974558312703,
+    "observed_base_retreat_m": 0.09113354020264468,
+    "retreat_shortfall_m": 0.039046205380482354,
+    "predicted_held_planar_radius_m": 0.1736231846454977,
+    "evaluated_body_planar_radius_m": 0.1775899986259048,
+    "radius_mismatch_m": 0.003966813980407102,
+    "padding_m": 0.001,
+    "evaluated_original_site_planar_radius_m": 0.2688646649499984,
+    "predicted_site_planar_radius_m": 0.30375376305324386,
+    "last_verdict": "no",
+    "last_geometry": {
+      "site_from_issued_grip_m": [
+        0.30374456890668444,
+        -0.002363351158553496,
+        0.0
+      ],
+      "site_pixels": 30572,
+      "ring_pixels": 13248,
+      "surface_in_frame_n": 81,
+      "surface_N": 81,
+      "held_occlusion_pixels": 0,
+      "bbox_xyxy": [
+        190,
+        66,
+        369,
+        251
+      ],
+      "qualified": true,
+      "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+    },
+    "last_colour": {
+      "colour_pixels": 965,
+      "largest_blob_pixels": 965,
+      "colour_share": 0.031564830563914695,
+      "floor_like_share": 0.9646735575035981,
+      "ring_uniform_share": 0.7089371980676329,
+      "floor_bgr": [
+        130.0,
+        99.0,
+        80.0
+      ],
+      "floor_lit": true
+    },
+    "first_colour": {
+      "colour_pixels": 1029,
+      "largest_blob_pixels": 1029,
+      "colour_share": 0.03365824937851629,
+      "floor_like_share": 0.9645754284966637,
+      "ring_uniform_share": 0.7089371980676329,
+      "floor_bgr": [
+        130.0,
+        99.0,
+        80.0
+      ],
+      "floor_lit": true
+    },
+    "held_overlap_with_observed_retreat_magnitude_assumption": {
+      "site_from_issued_grip_m": [
+        0.26469836352620196,
+        -0.002363351158553496,
+        0.0
+      ],
+      "site_pixels": 41163,
+      "ring_pixels": 7905,
+      "surface_in_frame_n": 81,
+      "surface_N": 81,
+      "held_occlusion_pixels": 18360,
+      "bbox_xyxy": [
+        184,
+        157,
+        378,
+        383
+      ],
+      "qualified": false,
+      "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+    },
+    "interpretation": "Issued retreat overestimates actual retreat; nominal held body differs by more than 1 mm. Zero predicted overlap is not a measured occlusion guarantee.",
+    "frame_review_this_task": 0,
+    "prior_coordinator_review": "79505: own 7시각(0–29 SIM s)·top 7시각·lift-rgb 3장. 나머지 39개는 result.json 집계만, 프레임 개별 확인 안 됨",
+    "frames_missing_locally": [
+      "lift-rgb/before_pick.png",
+      "lift-rgb/lookback_complete.png",
+      "lift-rgb/settled_lookback.png"
+    ],
+    "not_verified": [
+      "actual camera pose, robot yaw and held-body rotation are absent from eval ledger",
+      "new independent frame review (images not retrieved locally; remote access prohibited)"
+    ]
+  },
+  "box_static_cases": [
+    {
+      "kind": "cyan",
+      "aligned_xyz_m": [
+        0.1962,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32126860712834515,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 22772,
+        "ring_pixels": 11808,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          178,
+          103,
+          373,
+          227
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2822224017478628,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 33232,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          169,
+          206,
+          388,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3012686071283452,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 27986,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          173,
+          152,
+          380,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "cyan",
+      "aligned_xyz_m": [
+        0.1962,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32107787427272727,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 22899,
+        "ring_pixels": 11808,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          191,
+          103,
+          385,
+          228
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2820316688922449,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 33404,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          178,
+          206,
+          397,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30107787427272725,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 27939,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          184,
+          152,
+          391,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "cyan",
+      "aligned_xyz_m": [
+        0.1962,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32126860712834515,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 22719,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          103,
+          397,
+          227
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2822224017478628,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 33344,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          206,
+          407,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3012686071283452,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 27940,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          195,
+          152,
+          402,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "cyan",
+      "aligned_xyz_m": [
+        0.2002,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3250838732788207,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 22602,
+        "ring_pixels": 11744,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          113,
+          372,
+          237
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28603766789833834,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 33066,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          169,
+          215,
+          387,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30508387327882075,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 27686,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          173,
+          162,
+          380,
+          304
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "cyan",
+      "aligned_xyz_m": [
+        0.2002,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3252458159011154,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 22633,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          191,
+          112,
+          385,
+          236
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28619961052063303,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 33041,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          215,
+          397,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3052458159011154,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 27711,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          184,
+          161,
+          391,
+          303
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "cyan",
+      "aligned_xyz_m": [
+        0.2002,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3250838732788207,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 22673,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          113,
+          397,
+          237
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28603766789833834,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 33167,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          215,
+          406,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30508387327882075,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 27730,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          195,
+          162,
+          402,
+          304
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "cyan",
+      "aligned_xyz_m": [
+        0.2042,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3291764498536097,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 21813,
+        "ring_pixels": 11584,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          181,
+          150,
+          372,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.29013024447312735,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 32056,
+        "ring_pixels": 13536,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          171,
+          250,
+          387,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4653,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3091764498536097,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 26764,
+        "ring_pixels": 12608,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          175,
+          198,
+          380,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "cyan",
+      "aligned_xyz_m": [
+        0.2042,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32916731109209535,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 21856,
+        "ring_pixels": 11584,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          192,
+          150,
+          383,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.290121105711613,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 32090,
+        "ring_pixels": 13568,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          250,
+          396,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4681,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30916731109209533,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 26805,
+        "ring_pixels": 12608,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          185,
+          198,
+          390,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "cyan",
+      "aligned_xyz_m": [
+        0.2042,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3291764498536097,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 21869,
+        "ring_pixels": 11616,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          150,
+          395,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.29013024447312735,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 32070,
+        "ring_pixels": 13568,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          250,
+          405,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4659,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3091764498536097,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 26769,
+        "ring_pixels": 12576,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          196,
+          198,
+          400,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "red",
+      "aligned_xyz_m": [
+        0.1962,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32126860712834515,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 22772,
+        "ring_pixels": 11808,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          178,
+          103,
+          373,
+          227
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2822224017478628,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 33232,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          169,
+          206,
+          388,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3012686071283452,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 27986,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          173,
+          152,
+          380,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "red",
+      "aligned_xyz_m": [
+        0.1962,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32107787427272727,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 22899,
+        "ring_pixels": 11808,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          191,
+          103,
+          385,
+          228
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2820316688922449,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 33404,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          178,
+          206,
+          397,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30107787427272725,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 27939,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          184,
+          152,
+          391,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "red",
+      "aligned_xyz_m": [
+        0.1962,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32126860712834515,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 22719,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          103,
+          397,
+          227
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2822224017478628,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 33344,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          206,
+          407,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3012686071283452,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 27940,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          195,
+          152,
+          402,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "red",
+      "aligned_xyz_m": [
+        0.2002,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3250838732788207,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 22602,
+        "ring_pixels": 11744,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          113,
+          372,
+          237
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28603766789833834,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 33066,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          169,
+          215,
+          387,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30508387327882075,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 27686,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          173,
+          162,
+          380,
+          304
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "red",
+      "aligned_xyz_m": [
+        0.2002,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3252458159011154,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 22633,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          191,
+          112,
+          385,
+          236
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28619961052063303,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 33041,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          215,
+          397,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3052458159011154,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 27711,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          184,
+          161,
+          391,
+          303
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "red",
+      "aligned_xyz_m": [
+        0.2002,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3250838732788207,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 22673,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          113,
+          397,
+          237
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28603766789833834,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 33167,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          215,
+          406,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30508387327882075,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 27730,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          195,
+          162,
+          402,
+          304
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "red",
+      "aligned_xyz_m": [
+        0.2042,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3291764498536097,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 21813,
+        "ring_pixels": 11584,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          181,
+          150,
+          372,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.29013024447312735,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 32056,
+        "ring_pixels": 13536,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          171,
+          250,
+          387,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4653,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3091764498536097,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 26764,
+        "ring_pixels": 12608,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          175,
+          198,
+          380,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "red",
+      "aligned_xyz_m": [
+        0.2042,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32916731109209535,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 21856,
+        "ring_pixels": 11584,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          192,
+          150,
+          383,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.290121105711613,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 32090,
+        "ring_pixels": 13568,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          250,
+          396,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4681,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30916731109209533,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 26805,
+        "ring_pixels": 12608,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          185,
+          198,
+          390,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "red",
+      "aligned_xyz_m": [
+        0.2042,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3291764498536097,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 21869,
+        "ring_pixels": 11616,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          150,
+          395,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.29013024447312735,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 32070,
+        "ring_pixels": 13568,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          250,
+          405,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4659,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3091764498536097,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 26769,
+        "ring_pixels": 12576,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          196,
+          198,
+          400,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "green",
+      "aligned_xyz_m": [
+        0.1962,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32126860712834515,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 22772,
+        "ring_pixels": 11808,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          178,
+          103,
+          373,
+          227
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2822224017478628,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 33232,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          169,
+          206,
+          388,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3012686071283452,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 27986,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          173,
+          152,
+          380,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "green",
+      "aligned_xyz_m": [
+        0.1962,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32107787427272727,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 22899,
+        "ring_pixels": 11808,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          191,
+          103,
+          385,
+          228
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2820316688922449,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 33404,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          178,
+          206,
+          397,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30107787427272725,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 27939,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          184,
+          152,
+          391,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "green",
+      "aligned_xyz_m": [
+        0.1962,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32126860712834515,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 22719,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          103,
+          397,
+          227
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2822224017478628,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 33344,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          206,
+          407,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3012686071283452,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 27940,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          195,
+          152,
+          402,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "green",
+      "aligned_xyz_m": [
+        0.2002,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3250838732788207,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 22602,
+        "ring_pixels": 11744,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          113,
+          372,
+          237
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28603766789833834,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 33066,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          169,
+          215,
+          387,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30508387327882075,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 27686,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          173,
+          162,
+          380,
+          304
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "green",
+      "aligned_xyz_m": [
+        0.2002,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3252458159011154,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 22633,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          191,
+          112,
+          385,
+          236
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28619961052063303,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 33041,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          215,
+          397,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3052458159011154,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 27711,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          184,
+          161,
+          391,
+          303
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "green",
+      "aligned_xyz_m": [
+        0.2002,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3250838732788207,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 22673,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          113,
+          397,
+          237
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28603766789833834,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 33167,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          215,
+          406,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30508387327882075,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 27730,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          195,
+          162,
+          402,
+          304
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "green",
+      "aligned_xyz_m": [
+        0.2042,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3291764498536097,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 21813,
+        "ring_pixels": 11584,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          181,
+          150,
+          372,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.29013024447312735,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 32056,
+        "ring_pixels": 13536,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          171,
+          250,
+          387,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4653,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3091764498536097,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 26764,
+        "ring_pixels": 12608,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          175,
+          198,
+          380,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "green",
+      "aligned_xyz_m": [
+        0.2042,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32916731109209535,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 21856,
+        "ring_pixels": 11584,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          192,
+          150,
+          383,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.290121105711613,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 32090,
+        "ring_pixels": 13568,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          250,
+          396,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4681,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30916731109209533,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 26805,
+        "ring_pixels": 12608,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          185,
+          198,
+          390,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "green",
+      "aligned_xyz_m": [
+        0.2042,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3291764498536097,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 21869,
+        "ring_pixels": 11616,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          150,
+          395,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.29013024447312735,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 32070,
+        "ring_pixels": 13568,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          250,
+          405,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4659,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3091764498536097,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 26769,
+        "ring_pixels": 12576,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          196,
+          198,
+          400,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "yellow",
+      "aligned_xyz_m": [
+        0.1962,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32126860712834515,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 22772,
+        "ring_pixels": 11808,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          178,
+          103,
+          373,
+          227
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2822224017478628,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 33232,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          169,
+          206,
+          388,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3012686071283452,
+          -0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 27986,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          173,
+          152,
+          380,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "yellow",
+      "aligned_xyz_m": [
+        0.1962,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32107787427272727,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 22899,
+        "ring_pixels": 11808,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          191,
+          103,
+          385,
+          228
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2820316688922449,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 33404,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          178,
+          206,
+          397,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30107787427272725,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 27939,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          184,
+          152,
+          391,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "yellow",
+      "aligned_xyz_m": [
+        0.1962,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32126860712834515,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 22719,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          103,
+          397,
+          227
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.2822224017478628,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 33344,
+        "ring_pixels": 13760,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          206,
+          407,
+          367
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3012686071283452,
+          0.003954895706853157,
+          0.0
+        ],
+        "site_pixels": 27940,
+        "ring_pixels": 12800,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          195,
+          152,
+          402,
+          295
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "yellow",
+      "aligned_xyz_m": [
+        0.2002,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3250838732788207,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 22602,
+        "ring_pixels": 11744,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          113,
+          372,
+          237
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28603766789833834,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 33066,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          169,
+          215,
+          387,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30508387327882075,
+          -0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 27686,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          173,
+          162,
+          380,
+          304
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "yellow",
+      "aligned_xyz_m": [
+        0.2002,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3252458159011154,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 22633,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          191,
+          112,
+          385,
+          236
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28619961052063303,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 33041,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          215,
+          397,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3052458159011154,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 27711,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          184,
+          161,
+          391,
+          303
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "yellow",
+      "aligned_xyz_m": [
+        0.2002,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3250838732788207,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 22673,
+        "ring_pixels": 11776,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          113,
+          397,
+          237
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.28603766789833834,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 33167,
+        "ring_pixels": 13696,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          215,
+          406,
+          375
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 0,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30508387327882075,
+          0.004056801033118156,
+          0.0
+        ],
+        "site_pixels": 27730,
+        "ring_pixels": 12768,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          195,
+          162,
+          402,
+          304
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "yellow",
+      "aligned_xyz_m": [
+        0.2042,
+        -0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3291764498536097,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 21813,
+        "ring_pixels": 11584,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          181,
+          150,
+          372,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.29013024447312735,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 32056,
+        "ring_pixels": 13536,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          171,
+          250,
+          387,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4653,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3091764498536097,
+          -0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 26764,
+        "ring_pixels": 12608,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          175,
+          198,
+          380,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "yellow",
+      "aligned_xyz_m": [
+        0.2042,
+        0.0,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.32916731109209535,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 21856,
+        "ring_pixels": 11584,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          192,
+          150,
+          383,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.290121105711613,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 32090,
+        "ring_pixels": 13568,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          179,
+          250,
+          396,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4681,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.30916731109209533,
+          0.0,
+          0.0
+        ],
+        "site_pixels": 26805,
+        "ring_pixels": 12608,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          185,
+          198,
+          390,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    },
+    {
+      "kind": "yellow",
+      "aligned_xyz_m": [
+        0.2042,
+        0.004,
+        0.024
+      ],
+      "backoff_m": 0.125,
+      "nominal": {
+        "site_from_issued_grip_m": [
+          0.3291764498536097,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 21869,
+        "ring_pixels": 11616,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          203,
+          150,
+          395,
+          271
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_sensitivity": {
+        "site_from_issued_grip_m": [
+          0.29013024447312735,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 32070,
+        "ring_pixels": 13568,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          188,
+          250,
+          405,
+          407
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "short_retreat_plus_shift_tilt_max_overlap_px": 4659,
+      "margin_backoff_m": 0.15,
+      "margin_short_retreat_geometry": {
+        "site_from_issued_grip_m": [
+          0.3091764498536097,
+          0.003920941347031098,
+          0.0
+        ],
+        "site_pixels": 26769,
+        "ring_pixels": 12576,
+        "surface_in_frame_n": 81,
+        "surface_N": 81,
+        "held_occlusion_pixels": 0,
+        "bbox_xyxy": [
+          196,
+          198,
+          400,
+          337
+        ],
+        "qualified": true,
+        "fk_scope": "nominal issued PWM; loaded sag and physical calibration unverified"
+      },
+      "margin_short_retreat_plus_shift_tilt_max_overlap_px": 0
+    }
+  ],
+  "box_static_totals": {
+    "N": 36,
+    "nominal_qualified": 36,
+    "nominal_overlap_max_px": 0,
+    "short_retreat_overlap_max_px": 0,
+    "shift_tilt_overlap_max_px": 4681,
+    "margin_shift_tilt_overlap_max_px": 0
+  },
+  "geometry_fix_toggle": {
+    "name": "solo_lift_lookback_margin_v1",
+    "default": "off",
+    "new_queue": "on",
+    "change": "150 mm issued retreat; RGB judge unchanged"
+  },
+  "limitations": [
+    "Static box clearance does not establish physical RGB accuracy, loaded pose or return accuracy.",
+    "Four box colours share catalogue geometry; colour verdicts require fresh diagnostics.",
+    "5 mm translations and +/-1 degree tilt are sensitivity cases, not proven uncertainty bounds."
+  ],
+  "new_physics_runs": 0,
+  "new_render_runs": 0,
+  "remote_connections": 0
+}

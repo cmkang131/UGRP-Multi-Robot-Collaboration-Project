@@ -11,12 +11,14 @@
     "solo_gate": [[78000, 78039]],
     "solo_diagnostic": [[76900, 76999]],
     "solo_rgb_lift_v2_gate": [[79500, 79539]],
+    "solo_box_gate_v1": [[79700, 79739]],
+    "solo_lift_negative_probe": [[79790, 79797]],
     "train": [[80000, 89999]],
     "development": [[90000, 90999]],
     "heldout_start": [[91000, 91999]],
     "heldout_map": [[92000, 92999]]
   },
-  "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "solo_gate", "solo_diagnostic", "solo_rgb_lift_v2_gate"],
+  "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "solo_gate", "solo_diagnostic", "solo_rgb_lift_v2_gate", "solo_box_gate_v1", "solo_lift_negative_probe"],
   "heldout_maps": ["zone_wide_corridor_final_v3"],
   "notes": {
     "grasp_gate_078": "teacher 078cbb45 gate 36/40 (seen)",
@@ -25,6 +27,8 @@
     "solo_gate": "single-robot cargo teacher gate (claude/act-solo-teacher): 40 fresh seeds, mixed kinds",
     "solo_diagnostic": "single-robot cargo teacher diagnostics (cyan, can, tile), seen/tunable",
     "solo_rgb_lift_v2_gate": "PR 502 RGB lift v2: fresh mixed-cargo gate after 6/6 diagnostic; reserved against main and all 17 open PRs on 2026-10-14",
+    "solo_box_gate_v1": "PR 502: new 40-seed gate, four box colours x10; old 20/20 subset is not the final gate",
+    "solo_lift_negative_probe": "PR 502: intentional miss diagnostics, four box colours x2; never gate or training data",
     "carry_probe": "loaded-motion probes (G1 rotation, G7 carry, G2/G6 set-down-look), claude/grasp-act-release",
     "heldout_maps": "s4_narrow_door_standoff_v4 map, HELDOUT in scripts/make_grasp_act_plan.py"
   }

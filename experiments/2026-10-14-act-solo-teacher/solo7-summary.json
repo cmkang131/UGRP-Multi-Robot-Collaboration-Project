@@ -1,0 +1,115 @@
+{
+  "schema": "solo7_offline_summary_v1",
+  "parent_sha": "f678a911d54eefda0bc52eb07dbff8251821b50d",
+  "created_utc": "2026-10-14T15:24:29.913127+00:00",
+  "historical_gate": {
+    "all": "39/40",
+    "boxes": "20/20",
+    "box_subset_is_final_gate": false,
+    "per_kind": {
+      "cyan": "7/7",
+      "can": "10/10",
+      "tile": "9/10",
+      "red": "5/5",
+      "green": "5/5",
+      "yellow": "3/3"
+    },
+    "raw_report": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-gate-f678a911.json",
+    "sha256": "6bc895ddbe5b2dfd1c47ccd2bc2a7454e5cf2ec0d00f25cbd517ec5568e2d07d"
+  },
+  "cargo_decision": {
+    "user_quote": "걍 타일같은 건 빼는 게 어떄? 보라 캔도 연구 목적과 상관없는 거 같아",
+    "decision_time_kst_approx": "2026-10-15T00:00+09:00",
+    "time_precision": "approximately, provided by user; exact session timestamp not independently retrieved",
+    "during_gate_before_result_review": true,
+    "gate_result_comment_time_kst": "2026-10-15T00:09:43+09:00",
+    "scenario_v6_pr": 503,
+    "final_solo_cargo": [
+      "cyan",
+      "red",
+      "green",
+      "yellow"
+    ],
+    "box_subset_is_final_gate": false
+  },
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_solo_teacher.py",
+      "tests/test_grasp_act_solo_run_path.py",
+      "tests/test_grasp_act_solo_lookback.py"
+    ],
+    "passed": 107,
+    "failed": 0,
+    "seconds": 42.83,
+    "raw_log": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/solo7-pytest-final.txt",
+    "raw_log_sha256": "628c6574c3c51f2ecf1c8fd2389aafed5eabd22cfb4486be1ef2a78361600c5f",
+    "junit": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/solo7-pytest-final.xml",
+    "junit_sha256": "0e8c662ea97a5bcbf7f967637930184fdf9bf778e76acdf0de62500ff7939125",
+    "scope": "static/synthetic/stub backend only"
+  },
+  "unchanged_rgb_judge": {
+    "path": "sim/grasp_act_solo_lookback.py",
+    "sha256": "dfceb0c880bbf525c6218e2ec306ada5a48f3f951520635f43c4c1f9541ab323",
+    "byte_equal_to_f678a911": true
+  },
+  "toggles": {
+    "solo_lift_negative_probe_v1": {
+      "default": "off",
+      "negative_diagnostics": "on",
+      "gate": "off",
+      "training": "forbidden"
+    },
+    "solo_lift_lookback_margin_v1": {
+      "default": "off",
+      "negative_diagnostics": "on",
+      "gate": "on",
+      "issued_retreat_m": 0.15,
+      "judge_change": false
+    }
+  },
+  "next_runs": {
+    "negative_probe": {
+      "N": 8,
+      "successes_measured": 0,
+      "seeds": [
+        79790,
+        79797
+      ],
+      "status": "queued after push"
+    },
+    "box_gate": {
+      "N": 40,
+      "successes_measured": 0,
+      "seeds": [
+        79700,
+        79739
+      ],
+      "status": "disabled; negative diagnostic review and coordinator approval required"
+    },
+    "gate_promotion_authorized_if_all_conditions_pass": false
+  },
+  "predecessor": {
+    "queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261014-solo-f678a911.json",
+    "sha256": "53ed01bade44d43584c4b9527705cf8a73c53edeeac6a56ea980cda7b93d0356",
+    "file_status_observed": "ready",
+    "execution_status": "completed",
+    "do_not_resubmit": true,
+    "file_modified_by_this_task": false,
+    "note": "Source queue still says ready; preserved byte-for-byte per user. Actual gate completed 40/40 as shown by report."
+  },
+  "artifacts": {
+    "experiments/2026-10-14-act-solo-teacher/solo7-static-summary.json": "025a23b0f0cd2a2c842c8268be3595b7f6473d968b2fff75b033607e52741df9",
+    "experiments/2026-10-14-act-solo-teacher/solo7-seed-check.json": "636b977bb14872c374ed616eda8748ba5974794508af577939a59d20c32bb168",
+    "experiments/2026-10-14-act-solo-teacher/solo7-negative-plan.json": "291e7d2c401d2de8daf7c7860f9934c20a38d20e64dfa0d441ac9385b7a55ae9",
+    "experiments/2026-10-14-act-solo-teacher/solo7-box-gate-plan.json": "371f4b01da1963afc7c1bf512e30242eddc3d47562247e7156fb1f4ec7b7baa5"
+  },
+  "new_physics_runs": 0,
+  "new_render_runs": 0,
+  "remote_connections": 0,
+  "remaining": [
+    "negative diagnostic 0/8; box gate 0/40; no new training data",
+    "79505 images absent locally; prior coordinator frame review only",
+    "remote seed inventory and admission remain operations preconditions",
+    "old queue file status remains ready; treat as completed and never resubmit"
+  ]
+}

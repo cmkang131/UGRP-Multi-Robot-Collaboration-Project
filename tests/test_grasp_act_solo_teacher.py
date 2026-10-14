@@ -48,6 +48,43 @@ def test_v2_gate_uses_its_own_registered_forty_seeds_and_preserves_kind_quota():
     assert p['distribution']['kinds'] == GATE_QUOTA and not p['student_evaluation']
 
 
+def test_new_box_gate_and_intentional_miss_seeds_are_balanced_and_never_training():
+    from scripts.make_solo_teacher_plan import prepare
+    from harness.grasp_act_seed_splits import registry, split_of
+    reg = registry()
+    diag, gate = (prepare(split=s) for s in ('solo_lift_negative_probe', 'solo_box_gate_v1'))
+    assert diag['distribution']['kinds'] == dict.fromkeys(('cyan', 'red', 'green', 'yellow'), 2)
+    assert gate['distribution']['kinds'] == dict.fromkeys(('cyan', 'red', 'green', 'yellow'), 10)
+    assert [e['seed'] for e in diag['episodes']] == list(range(79790, 79798))
+    assert [e['seed'] for e in gate['episodes']] == list(range(79700, 79740))
+    for p in (diag, gate):
+        for e in p['episodes']:
+            assert split_of(e['seed'], reg) == e['split']
+            assert e['split'] in reg['gate_seeds_never_train']
+            assert not e['training_eligible']
+            assert e['negative_probe'] == (e['split'] == 'solo_lift_negative_probe')
+            assert e['gate_eligible'] != e['negative_probe']
+
+
+@pytest.mark.parametrize('split', ['solo_box_gate_v1', 'solo_gate', 'train', 'development', 'heldout_start'])
+def test_intentional_miss_cannot_be_enabled_in_gate_or_training(split):
+    from scripts.run_solo_grasp_act_teacher import validate_negative_probe
+    with pytest.raises(ValueError, match='dedicated diagnostic'):
+        validate_negative_probe({'split': split, 'negative_probe': True}, True, 'solo_lift_lookback_v1')
+
+
+def test_negative_probe_rejects_missing_toggle_wrong_seed_cargo_or_judge():
+    from scripts.run_solo_grasp_act_teacher import validate_negative_probe
+    p = {'split': 'solo_lift_negative_probe', 'negative_probe': True, 'seed': 79790, 'kind': 'cyan'}
+    validate_negative_probe(p, True, 'solo_lift_lookback_v1')
+    for bad, enabled, mode in [(p, False, 'solo_lift_lookback_v1'),
+                                ({**p, 'seed': 79700}, True, 'solo_lift_lookback_v1'),
+                                ({**p, 'kind': 'tile'}, True, 'solo_lift_lookback_v1'),
+                                (p, True, 'off')]:
+        with pytest.raises(ValueError):
+            validate_negative_probe(bad, enabled, mode)
+
+
 def test_clocks_and_sample_selection_ignore_hidden_distance():
     a, b = make(), make()
     for i in range(12):

@@ -90,6 +90,26 @@ def test_camera_chain_is_the_unchanged_mount_and_not_an_invented_camera_servo():
         assert transform_from_commands(p, camera_pose='servo_fk_v1')[0] is None
 
 
+@pytest.mark.parametrize('kind', ['cyan', 'red', 'green', 'yellow'])
+def test_margin_action_frames_window_ends_without_nominal_or_perturbed_held_overlap(kind):
+    from sim.grasp_act_solo_lookback_margin import plan_with_margin
+    from scripts.probe_solo_lift_negative_geometry import held_overlap
+    for x in (.1962, .2002, .2042):
+        for y in (-.004, 0., .004):
+            low = {1: 1500, **solve_grip_site_ik((x, y, .024), preferred_pitch_deg=-66,
+                                                calibrated_grasp_only=False)}
+            high = {1: 1500, **solve_grip_site_ik((x, y, .095), preferred_pitch_deg=tool_pose(low).pitch_deg,
+                                                 calibrated_grasp_only=False)}
+            p = plan_with_margin(kind, low, high)
+            assert p['backoff_m'] == .150 and p['geometry']['qualified']
+            gx, gy, _ = forward_grip(low)
+            roi, _, info = regions(kind, low, p['pwm'], site=(gx+.105, gy, 0.))
+            assert info['qualified']
+            for shift in ((.005, 0., 0.), (-.005, 0., 0.), (0., .005, 0.), (0., -.005, 0.), (0., 0., -.001)):
+                for tilt in (-1., 0., 1.):
+                    assert held_overlap(kind, low, p['pwm'], roi, shift=shift, tilt_deg=tilt) == 0
+
+
 def observer_case(kind):
     run = next(r for r in RUNS if r['kind'] == kind)
     low, high = poses(run)

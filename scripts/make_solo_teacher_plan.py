@@ -13,7 +13,7 @@ from pathlib import Path
 from harness.zone_final_environment import resolve
 from harness.static_keepouts import keepout_rects, rect_distance, inside_rect
 from harness.grasp_act_seed_splits import check_range
-from sim.grasp_act_solo_teacher import cargo
+from sim.grasp_act_solo_teacher import BOX_KINDS, cargo
 
 ROOT = Path(__file__).resolve().parents[1]
 SCENARIOS = ('s1_normal_mixed_v4', 's2_unmapped_blockage_v4', 's3_late_rendezvous_v4', 's5_moved_dropped_item_v4',
@@ -115,6 +115,10 @@ def prepare(*, split, fresh_diagnostics=False):
         raise ValueError('fresh diagnostics must stay outside the gate')
     if split == 'solo_diagnostic':
         kinds, seed0 = list(DIAGNOSTIC_KINDS)*(2 if fresh_diagnostics else 1), 76900
+    elif split == 'solo_lift_negative_probe':
+        kinds, seed0 = list(BOX_KINDS)*2, 79790
+    elif split == 'solo_box_gate_v1':
+        kinds, seed0 = list(BOX_KINDS)*10, 79700
     elif split in ('solo_gate', 'solo_rgb_lift_v2_gate'):
         left, kinds = dict(GATE_QUOTA), []
         while any(left.values()):                     # round robin: a stopped run keeps a mixed prefix
@@ -128,8 +132,12 @@ def prepare(*, split, fresh_diagnostics=False):
     episodes = []
     for n, kind in enumerate(kinds):
         episodes.append(episode(per_kind[kind], kind, seed0+n, split))
+        if split in ('solo_lift_negative_probe', 'solo_box_gate_v1'):
+            episodes[-1]['negative_probe'] = split == 'solo_lift_negative_probe'
+            episodes[-1]['gate_eligible'] = split == 'solo_box_gate_v1'
+            episodes[-1]['training_eligible'] = False
         per_kind[kind] += 1
-    return {'schema': 'ugrp.grasp_act.solo_plan.v1', 'episodes': episodes,
+    result = {'schema': 'ugrp.grasp_act.solo_plan.v1', 'episodes': episodes,
             'distribution': {'kinds': dict(Counter(kinds)), 'scenarios': list(SCENARIOS), 'excluded': 's4 (held-out map)',
                              'start': 'west of the cargo 0.6-1.1 m, facing within 25 deg',
                              'handoff_pose_error_sigma': {'xy_m': POSE_ERROR[0], 'yaw_rad': POSE_ERROR[1]},
@@ -139,12 +147,18 @@ def prepare(*, split, fresh_diagnostics=False):
                                     '(5 mm, 2 s still, tilt <= 3 deg, open) and command-complete with the look-around '
                                     'done; per-kind n/N reported, no kind is qualified by fewer than its own samples'},
             'student_evaluation': False}
+    if split == 'solo_lift_negative_probe':
+        result['criteria'] = {'diagnostic_only': True, 'N': 8, 'required': 8,
+                              'success': 'completed lookback; yes ticks 0; no pretend set-down or return; cargo remains at pickup (evaluation only)',
+                              'gate_eligible': False, 'training_eligible': False}
+    return result
 
 
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--out', type=Path, required=True)
-    p.add_argument('--split', choices=('solo_diagnostic', 'solo_gate', 'solo_rgb_lift_v2_gate'), required=True)
+    p.add_argument('--split', choices=('solo_diagnostic', 'solo_gate', 'solo_rgb_lift_v2_gate',
+                                      'solo_lift_negative_probe', 'solo_box_gate_v1'), required=True)
     p.add_argument('--fresh-diagnostics', action='store_true', help='append cyan/can/tile seeds 76903-76905')
     a = p.parse_args()
     plan = prepare(split=a.split, fresh_diagnostics=a.fresh_diagnostics)

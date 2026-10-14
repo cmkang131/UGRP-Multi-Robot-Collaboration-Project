@@ -162,7 +162,8 @@ def primitives():
 class SoloTeacher:
     def __init__(self, kind, role, pwm, *, profile='off', held_object_hidden_v1=False,
                  setdown_lookaround_v1=False, lookaround=None, route=None, ops=None,
-                 teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off'):
+                 teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off',
+                 solo_lift_negative_probe_v1=False, solo_lift_lookback_margin_v1=False):
         if profile != PROFILE:
             raise ValueError('solo teacher is opt-in; legacy defaults are unchanged')
         if not held_object_hidden_v1:
@@ -175,6 +176,12 @@ class SoloTeacher:
             raise ValueError('unknown solo reach mode')
         if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3', 'solo_lift_lookback_v1'):
             raise ValueError('unknown solo RGB lift mode')
+        if solo_lift_negative_probe_v1 and (kind not in BOX_KINDS or rgb_lift_mode != 'solo_lift_lookback_v1'):
+            raise ValueError('negative probe requires a box and the unchanged lookback judge')
+        self.negative_probe = bool(solo_lift_negative_probe_v1)
+        if solo_lift_lookback_margin_v1 and (kind not in BOX_KINDS or rgb_lift_mode != 'solo_lift_lookback_v1'):
+            raise ValueError('lookback margin requires box cargo and the unchanged lookback judge')
+        self.lookback_margin = bool(solo_lift_lookback_margin_v1)
         self.rgb_lift_mode = rgb_lift_mode
         self.teacher_stability, self.reach_mode = teacher_stability, reach_mode
         self.spec = cargo(kind)
@@ -326,7 +333,7 @@ class SoloTeacher:
         # Called from an explicit skill instruction, before a perception result.
         return {'skill': self.skill, 'object_kind': self.spec.kind, 'role': self.role,
                 'skill_elapsed_s': max(0., now-self.skill_started) if self.skill_started is not None else 0.,
-                'local_skill_sample': self.phase not in ('start', 'lookaround', 'complete', 'failed')}
+                'local_skill_sample': not self.negative_probe and self.phase not in ('start', 'lookaround', 'complete', 'failed')}
 
     def _target(self, measurement, now, dt):
         if self.target is not None and self.previous is not None:
@@ -464,6 +471,15 @@ class SoloTeacher:
             self._queue({1: 1500}, now, .8, .3)
             self._set('close', now)
         elif self.phase == 'close' and idle:
+            if self.negative_probe:
+                # Diagnostic intervention only: release at the pickup pose,
+                # BEFORE raising. Keep the held-input boundary conservative.
+                self._queue({1: 2000}, now, .5, .3)
+                self._set('negative_probe_open', now)
+            else:
+                self._queue(self.high, now, 1.2, .3)
+                self._set('lift', now)
+        elif self.phase == 'negative_probe_open' and idle:
             self._queue(self.high, now, 1.2, .3)
             self._set('lift', now)
         elif self.phase == 'lift' and idle:
@@ -473,6 +489,8 @@ class SoloTeacher:
             # Hold the existing upright lift for the unchanged 3 s evaluation
             # window, then inspect the original site. No evaluation enters here.
             from sim.grasp_act_solo_lookback import plan_lookback
+            if self.lookback_margin:
+                from sim.grasp_act_solo_lookback_margin import plan_with_margin as plan_lookback
             try:
                 self.lookback_plan = plan_lookback(self.spec.kind,
                     {1: 1500, **self.low}, self.sink.pwm)
@@ -495,7 +513,12 @@ class SoloTeacher:
             # RGB-only recognizer + completed own close/raise commands.
             if rgb_holding not in ('yes', 'no', 'unknown'):
                 raise ValueError('own RGB evidence must be yes/no/unknown')
-            if rgb_holding == 'yes':
+            if self.negative_probe and rgb_holding == 'yes':
+                # Preserve the verdict as a false positive; never act out a
+                # successful set-down or travel back with an empty gripper.
+                self.result = 'negative_probe_false_positive'
+                self._set('failed', now)
+            elif rgb_holding == 'yes':
                 self.verify_t = now if self.verify_t is None else self.verify_t
                 if self.phase == 'verify_lift' and now-self.verify_t >= 1.-1e-8:
                     self._set('hold', now)
@@ -559,6 +582,10 @@ class SoloTeacher:
             'ik_checks': self.ik_checks, 'ik_rejection_reasons': dict(self.ik_rejection_reasons),
             'teacher_stability': self.teacher_stability, 'reach_mode': self.reach_mode,
             'rgb_lift_mode': self.rgb_lift_mode,
+            'negative_probe': self.negative_probe,
+            'solo_lift_negative_probe_v1': self.negative_probe,
+            'solo_lift_lookback_margin_v1': self.lookback_margin,
+            'gate_eligible': not self.negative_probe,
             'lookback_commanded_backoff_m': self.lookback_m,
             'lookback_commanded_return_m': self.lookback_return_m,
             'lookback_plan': self.lookback_plan,

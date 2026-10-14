@@ -266,9 +266,11 @@ def test_run_rgb_hold_or_blocks_setdown_and_saves_exact_own_evidence(backend, mo
         assert report['teacher']['command_result'] == 'rgb_lift_unconfirmed'
 
 
-@pytest.mark.parametrize('kind,case', [('cyan', 'empty'), ('can', 'empty'), ('tile', 'empty'),
-                                       ('cyan', 'miss'), ('cyan', 'unknown'), ('cyan', 'hold_loss')])
-def test_lookback_real_run_loop_records_pre_pick_and_gates_return_lower_open(backend, monkeypatch, kind, case):
+@pytest.mark.parametrize('kind,case,negative',
+    [(k, c, False) for k, c in [('cyan', 'empty'), ('can', 'empty'), ('tile', 'empty'),
+                               ('cyan', 'miss'), ('cyan', 'unknown'), ('cyan', 'hold_loss')]] +
+    [(k, c, True) for k in ('cyan', 'red', 'green', 'yellow') for c in ('miss', 'unknown', 'empty')])
+def test_lookback_real_run_loop_records_pre_pick_and_gates_return_lower_open(backend, monkeypatch, kind, case, negative):
     import hashlib
     import sim.grasp_act_solo_teacher as teacher_module
     import scripts.run_grasp_act_teacher as shared_runner
@@ -278,7 +280,7 @@ def test_lookback_real_run_loop_records_pre_pick_and_gates_return_lower_open(bac
     runner, world, runs = backend
     monkeypatch.setattr(shared_runner, 'compress_logs', lambda out: None)
     x = .172 if kind == 'tile' else .2002
-    world.data.bodies['cargo_body'].xpos[:] = (x, 0., .016 if kind == 'cyan' else 0.)
+    world.data.bodies['cargo_body'].xpos[:] = (x, 0., .016 if kind in ('cyan', 'red', 'green', 'yellow') else 0.)
     scene = sys.modules['sim.grasp_act_scene'].make_scene({})
     scene.cargo[0].kind = kind
     scene.config['static_map'].update(regions={}, obstacles=[
@@ -306,9 +308,13 @@ def test_lookback_real_run_loop_records_pre_pick_and_gates_return_lower_open(bac
         return {'image': base64.b64encode(cv2.imencode('.jpg', frame)[1]).decode()}
     monkeypatch.setattr(FakePort, 'capture', capture)
     out = runs/f'lookback-{kind}-{case}'
-    report = runner.run(plan(kind), out, execution_host='gcp1', profile='solo_visible_only_v1',
+    episode = plan(kind)
+    if negative:
+        episode.update(split='solo_lift_negative_probe', seed=79790, negative_probe=True)
+    report = runner.run(episode, out, execution_host='gcp1', profile='solo_visible_only_v1',
                         hidden=True, look=True, cap_s=24., rgb_lift_mode=MODE,
-                        teacher_stability='align_relook_v1', reach_mode='pad_window_v2')
+                        teacher_stability='align_relook_v1', reach_mode='pad_window_v2',
+                        solo_lift_negative_probe_v1=negative, solo_lift_lookback_margin_v1=negative)
     assert report['status'] == 'complete'
     assert report['input_audit']['invisible_measurements'] == report['input_audit']['held_world_reads'] == 0
     ev = report['lift_lookback_v1']
@@ -321,7 +327,26 @@ def test_lookback_real_run_loop_records_pre_pick_and_gates_return_lower_open(bac
     assert ev['samples']['before_pick']['t'] < next(r['t'] for r in trace if r['phase'] == 'close')
     assert all(r['visible_target'] is None for r in trace
                if r['phase'] in ('lift_settle', 'lookback_pose', 'lookback', 'lookback_settle', 'verify_lift', 'hold', 'lookback_return'))
-    if case == 'empty':
+    if negative:
+        assert report['teacher']['lookback_plan']['backoff_m'] == .150
+        assert report['solo_lift_lookback_margin_v1']
+        assert not any(r['student_context']['local_skill_sample'] for r in trace)
+        assert report['negative_probe'] and not report['gate_eligible'] and not report['data_admitted']
+        evaluation = [json.loads(s) for s in (out/'eval-only.jsonl').read_text().splitlines()]
+        assert all(e['negative_probe'] for e in evaluation)
+        assert 'negative_probe_open' in phases
+        lift = next(r['command'] for r in trace if r['phase'] == 'lift')
+        assert lift['pwm']['1'] == 2000  # completed opening before any raise
+        assert not set(phases) & {'hold', 'lookback_return', 'lower', 'open', 'backoff', 'lookaround', 'complete'}
+        probe = report['negative_probe_evaluation']
+        assert probe['no_pretend_setdown'] and probe['cargo_remains_at_pickup']
+        if case == 'empty':
+            assert ev['last']['answer'] == 'yes' and probe['yes_ticks'] == 1
+            assert not probe['passed'] and report['teacher']['command_result'] == 'negative_probe_false_positive'
+        else:
+            assert probe['yes_ticks'] == 0 and probe['passed']
+            assert ev['last']['answer'] == ('no' if case == 'miss' else 'unknown')
+    elif case == 'empty':
         assert 'lookback_return' in phases and 'lower' in phases and 'open' in phases
         assert 'settled_lookback' in ev['samples']
         assert ev['last']['answer'] == 'yes'

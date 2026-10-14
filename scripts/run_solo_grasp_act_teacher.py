@@ -24,7 +24,8 @@ if str(ROOT) not in sys.path:
 
 
 def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, cap_s=90.,
-        teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off'):
+        teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off',
+        solo_lift_negative_probe_v1=False, solo_lift_lookback_margin_v1=False):
     if platform.system() != 'Linux' or execution_host != 'gcp1':
         raise RuntimeError('Linux gcp1 only; Mac physics/render disabled')
     if not 0 < cap_s <= 180 or profile != 'solo_visible_only_v1' or not hidden or not look:
@@ -33,6 +34,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         raise ValueError('unknown solo stability/reach mode')
     if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3', 'solo_lift_lookback_v1'):
         raise ValueError('unknown solo RGB lift mode')
+    validate_negative_probe(plan, solo_lift_negative_probe_v1, rgb_lift_mode)
     from scripts.grasp_act_host import identity, require_run_root
     host = identity(execution_host)
     require_run_root(out)
@@ -58,12 +60,17 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
     out.mkdir(parents=True, exist_ok=False)
     write(out/'plan.json', plan)
     write(out/'RUN_META.json', {'class': 'dev', 'branch': 'claude/act-solo-teacher',
-          'sha': sha, 'pr': plan.get('pr'), 'batch': plan['batch']})
+          'sha': sha, 'pr': plan.get('pr'), 'batch': plan['batch'],
+          'negative_probe': bool(solo_lift_negative_probe_v1)})
     report = {'status': 'running', 'source_sha': sha, 'execution_host': host,
-              'student_execution': False, 'recording_mode': 'success_measurement',
+              'student_execution': False,
+              'recording_mode': 'negative_probe_diagnostic' if solo_lift_negative_probe_v1 else 'success_measurement',
               'object_kind': plan['kind'], 'weld': 'off', 'training_rgb': False,
               'teacher_stability': teacher_stability, 'reach_mode': reach_mode,
               'rgb_lift_mode': rgb_lift_mode,
+              'negative_probe': bool(solo_lift_negative_probe_v1),
+              'solo_lift_lookback_margin_v1': bool(solo_lift_lookback_margin_v1),
+              'gate_eligible': not solo_lift_negative_probe_v1,
               'physical_success': None, 'placement_task': 'set down at own picked location',
               'plan_sha256': hashlib.sha256((out/'plan.json').read_bytes()).hexdigest()}
     write(out/'result.json', report)
@@ -162,7 +169,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                               held_object_hidden_v1=hidden, setdown_lookaround_v1=look,
                               lookaround=relook, route=route, ops=ops,
                               teacher_stability=teacher_stability, reach_mode=reach_mode,
-                              rgb_lift_mode=rgb_lift_mode)
+                              rgb_lift_mode=rgb_lift_mode,
+                              solo_lift_negative_probe_v1=solo_lift_negative_probe_v1,
+                              solo_lift_lookback_margin_v1=solo_lift_lookback_margin_v1)
         if rgb_lift_mode == 'solo_lift_lookback_v1':
             from sim.grasp_act_solo_lookback import LookbackObserver
             lift_observer = LookbackObserver(plan['kind'])
@@ -225,6 +234,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         (out/'review-top').mkdir()
         origin = float(data.time)
         finished_t = None
+        negative_eval = {'N': 0, 'max_clearance_m': 0., 'max_pickup_offset_m': 0.}
         tick = 0
         while float(data.time)-origin < cap_s-1e-8:
             if (out/'SUPERVISOR_STOP.json').exists():
@@ -323,8 +333,13 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             tilt = math.degrees(math.acos(float(np.clip(rot[2, 2], -1., 1.))))
             row = {'min_z': min_z, 'support_z': 0., 'tilt_deg': tilt, 'finger_forces': forces,
                 'speed': speed, 'open_issued': value['pwm']['1'] >= 1900,
-                'placement_offset': float(np.linalg.norm(pos[:2]-initial_xy)), 'weld_active': False}
-            score.add(now, **row)
+                'placement_offset': float(np.linalg.norm(pos[:2]-initial_xy)), 'weld_active': False,
+                'negative_probe': bool(solo_lift_negative_probe_v1)}
+            score.add(now, **{k: v for k, v in row.items() if k != 'negative_probe'})
+            if solo_lift_negative_probe_v1 and rgb_result.get('evidence') == 'solo_lift_lookback_v1':
+                negative_eval['N'] += 1
+                negative_eval['max_clearance_m'] = max(negative_eval['max_clearance_m'], min_z)
+                negative_eval['max_pickup_offset_m'] = max(negative_eval['max_pickup_offset_m'], row['placement_offset'])
             ev.write(json.dumps({'t': now, **row, 'cargo_xyz': pos.tolist(),
                      'base_xyz': list(map(float, base)), 'visible_n': visible_n, 'probe_N': probe_N,
                      'lookaround_estimate_xy': list(map(float, relook.loc.own.x[:2])) if relook.armed else None})+'\n')
@@ -352,6 +367,21 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             lift_rgb_evidence_ticks=lift_evidence, **score.record(teacher.result == 'command_complete'))
         if lift_observer is not None:
             report[rgb_lift_mode.removeprefix('solo_')] = lift_observer.record()
+        if solo_lift_negative_probe_v1:
+            phases = {e['to'] for e in teacher.events}
+            counts = lift_observer.answer_counts
+            report['negative_probe_evaluation'] = {
+                'intervention': 'open_after_close_before_lift',
+                'yes_ticks': counts['yes'], 'no_ticks': counts['no'], 'unknown_ticks': counts['unknown'],
+                'no_pretend_setdown': not bool(phases & {'hold', 'lookback_return', 'lower', 'open', 'backoff', 'lookaround', 'complete'}),
+                'rgb_probe_passed': bool(lift_observer.completed_at is not None and counts['yes'] == 0
+                                         and teacher.result == 'rgb_lift_unconfirmed'),
+                'evaluation_only': True, 'gate_eligible': False, 'training_eligible': False}
+            probe = report['negative_probe_evaluation']
+            probe['cargo_remains_at_pickup'] = bool(negative_eval['N'] > 0 and negative_eval['max_clearance_m'] <= .005
+                                                  and negative_eval['max_pickup_offset_m'] <= .05)
+            probe['cargo_eval'] = negative_eval
+            probe['passed'] = probe['rgb_probe_passed'] and probe['no_pretend_setdown'] and probe['cargo_remains_at_pickup']
         report['data_admitted'] = False
         write(out/'result.json', report)
     except BaseException as error:
@@ -369,6 +399,19 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
     return report
 
 
+def validate_negative_probe(plan, enabled, rgb_lift_mode):
+    """Reject diagnostic interventions in gate/training runs before any world exists."""
+    diagnostic = plan.get('split') == 'solo_lift_negative_probe'
+    if diagnostic != bool(enabled) or bool(plan.get('negative_probe', False)) != bool(enabled):
+        raise ValueError('negative probe requires its dedicated diagnostic split and explicit matching toggle')
+    if enabled:
+        from harness.grasp_act_seed_splits import check_range
+        from sim.grasp_act_solo_teacher import BOX_KINDS
+        check_range('solo_lift_negative_probe', plan['seed'], 1)
+        if plan['kind'] not in BOX_KINDS or rgb_lift_mode != 'solo_lift_lookback_v1':
+            raise ValueError('negative probe requires box cargo and the unchanged lookback judge')
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--plan', type=Path, required=True)
@@ -381,13 +424,19 @@ def main():
     p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')
     p.add_argument('--reach-mode', choices=('box_station_v1', 'pad_window_v2'), default='box_station_v1')
     p.add_argument('--rgb-lift-mode', choices=('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3', 'solo_lift_lookback_v1'), default='off')
+    p.add_argument('--solo-lift-negative-probe-v1', action='store_true',
+                   help='diagnostic only: open before lifting; forbidden in gates and training')
+    p.add_argument('--solo-lift-lookback-margin-v1', action='store_true',
+                   help='box-only static retreat margin (150 mm); RGB judgment unchanged')
     p.add_argument('--cap-s', type=float, default=90.)
     a = p.parse_args()
     plan = json.loads(a.plan.read_text())['episodes'][a.episode]
     print(json.dumps(run(plan, a.out, execution_host=a.execution_host, profile=a.teacher_profile,
               hidden=a.held_object_hidden_v1, look=a.setdown_lookaround_v1, cap_s=a.cap_s,
               teacher_stability=a.teacher_stability, reach_mode=a.reach_mode,
-              rgb_lift_mode=a.rgb_lift_mode)))
+              rgb_lift_mode=a.rgb_lift_mode,
+              solo_lift_negative_probe_v1=a.solo_lift_negative_probe_v1,
+              solo_lift_lookback_margin_v1=a.solo_lift_lookback_margin_v1)))
 
 
 if __name__ == '__main__':
