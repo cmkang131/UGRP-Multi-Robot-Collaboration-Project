@@ -31,6 +31,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.last_command=None;self.last_tick=None;self.command_complete=False
         self.ready_revocations=0;self.skill_started=None
         self.path_goal=None;self.blocked_goal_calls=0
+        # Another two-robot cargo (sim/cargo_teacher_profile): its item id is not an obstacle
+        # or an occluder, its discs replace the beam's. None = long beam, unchanged.
+        self.cargo_profile=None
 
     def _geometry(self,world):
         pose=world['robots'][self.rid]['pose'];g=world['beam']['ends'][self.end]
@@ -42,7 +45,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         from sim.grasp_act_visible_route import constraints,free,segment_free,waypoint,drive
         from scripts.zone_teacher import plan_path
         pose=world['robots'][self.rid]['pose']
-        radius,discs,rects=constraints(world,self.rid,self.folded_ready)
+        radius,discs,rects=constraints(world,self.rid,self.folded_ready,self.cargo_profile)
         self.planning_radius=radius
         # A newly observed target may disagree with dead reckoning. Cached
         # odometry-frame waypoints must then be rebuilt from the new view.
@@ -92,7 +95,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                        for rid,v in truth['robots'].items() if rid!=self.rid]
             occluders += [{'xy':local(pose,v['xy']),'radius':v['radius'],
                           'top_z_bound_m':v['top_z_bound_m']}
-                         for key,v in truth['objects'].items() if key!='beam_1']
+                         for key,v in truth['objects'].items() if key!=('beam_1' if self.cargo_profile is None else self.cargo_profile.item_id)]
             target=gaze_pose(self.local_seen,self.sink.pwm,occluders,visible=visible)
         else:
             # Clock starts at the issued local-skill instruction, not hidden

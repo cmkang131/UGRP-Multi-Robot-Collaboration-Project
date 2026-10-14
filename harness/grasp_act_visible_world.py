@@ -15,9 +15,9 @@ def command_delta(issued,dt):
 
 
 class VisibleWorld:
-    def __init__(self,rid,end,*,pose_source='issued'):
+    def __init__(self,rid,end,*,pose_source='issued',profile=None):
         if pose_source not in ('issued','perfect_self_comparison'):raise ValueError('explicit pose source required')
-        self.rid=rid;self.end=end;self.pose_source=pose_source
+        self.rid=rid;self.end=end;self.pose_source=pose_source;self.profile=profile  # None: long beam
         self.pose=[0.,0.,0.];self.memory={};self.previous=None;self.previous_t=None
 
     def issue(self,command):self.previous=deepcopy(command)
@@ -43,10 +43,13 @@ class VisibleWorld:
         self.memory={k:v for k,v in self.memory.items() if now-v['seen_t']<=MEMORY_S}
         band=self.memory.get('band_'+self.end);beam=None
         if band is not None:
-            x,y,z=band['xyz'];a=band['yaw'];offset=-.27 if self.end=='teal' else .27
+            x,y,z=band['xyz'];a=band['yaw']
+            centre,grasp,dz=(.27,.27,-.0086) if self.profile is None else (
+                self.profile.band_center_m,self.profile.grasp_m,self.profile.end_z_offset_m)
+            offset=-centre if self.end=='teal' else centre
             bx=x-offset*math.cos(a);by=y-offset*math.sin(a)
             # Known rigid shape supplies inferred geometry, not hidden GT.
-            ends={role:[bx+d*math.cos(a),by+d*math.sin(a),z-.0086] for role,d in (('teal',-.27),('blue',.27))}
+            ends={role:[bx+d*math.cos(a),by+d*math.sin(a),z+dz] for role,d in (('teal',-grasp),('blue',grasp))}
             beam={'pose':[bx,by,a],'ends':ends,'source':'visible band + known rigid shape','seen_t':band['seen_t']}
         robots={self.rid:{'pose':list(self.pose)}};objects={};walls=[]
         for key,m in self.memory.items():

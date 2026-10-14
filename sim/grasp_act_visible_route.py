@@ -8,16 +8,17 @@ from scripts.zone_teacher import PeerDisc,_no_closer,_wall_limits
 from harness.static_keepouts import rect_distance
 
 
-def constraints(world,rid,folded):
+def constraints(world,rid,folded,profile=None):
     radius=.13 if folded else .17;extra=.17-radius
     pose=world['robots'][rid]['pose']
     discs=[PeerDisc((*v['pose'][:2],.17+extra)) for r,v in world['robots'].items() if r!=rid]
     for key,o in world['objects'].items():
-        if key=='beam_1':continue
+        if key==('beam_1' if profile is None else profile.item_id):continue
         padding=.005 if folded and o.get('top_z_bound_m',math.inf)<=.1 else .02+extra
         discs.append((*o['xy'],o['radius']+padding))
     x,y,a=world['beam']['pose']
-    discs += [(x+d*math.cos(a),y+d*math.sin(a),.02) for d in (-.27,-.135,0.,.135,.27)]
+    discs += ([(x+d*math.cos(a),y+d*math.sin(a),.02) for d in (-.27,-.135,0.,.135,.27)] if profile is None else
+              [(x+d*math.cos(a),y+d*math.sin(a),r) for d,r in profile.discs])
     rects=[(x,y,hx+extra,hy+extra,a) for x,y,hx,hy,a in world.get('walls',[])]
     return radius,discs,rects
 

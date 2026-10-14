@@ -18,7 +18,9 @@ def read(path, lines=False):
 
 
 class BandVisibility:
-    def __init__(self, model):
+    def __init__(self, model, profile=None):
+        # profile (sim/cargo_teacher_profile.CargoProfile): marker geoms/probes of another
+        # two-robot cargo (heavy crate lugs). None = the long beam bands, unchanged.
         import numpy as np
         from sim.masterpi_camera_profile import scaled_camera_matrix,CAMERA_FISHEYE_D
         self.np=np;self.model=model;self.K=scaled_camera_matrix(640,480)
@@ -26,12 +28,17 @@ class BandVisibility:
         self.groups=np.array([1,1,1,1,0,0],dtype=np.uint8)
         self.near=float(model.vis.map.znear*model.stat.extent)
         self.cameras={r:model.camera(r+'__robot_cam').id for r in ('r1','r2')}
-        self.bands={r:model.geom('cargo_beam_1__band_'+s).id for r,s in (('teal','neg'),('blue','pos'))}
+        self.profile=profile
+        if profile is None:
+            self.bands={r:model.geom('cargo_beam_1__band_'+s).id for r,s in (('teal','neg'),('blue','pos'))}
+            fractions=[(x,y) for x in (-.9,-.45,0.,.45,.9) for y in (-.9,0.,.9)]
+        else:
+            self.bands={r:model.geom(name).id for r,name in zip(('teal','blue'),profile.band_geoms)}
+            fractions=list(profile.probe_xy)
         self.probes={};self.body_gids={}
         for role,gid in self.bands.items():
             size=model.geom_size[gid]
-            self.probes[role]=np.array([(x*size[0],y*size[1],size[2]+1e-6)
-                for x in (-.9,-.45,0.,.45,.9) for y in (-.9,0.,.9)])
+            self.probes[role]=np.array([(x*size[0],y*size[1],size[2]+1e-6) for x,y in fractions])
 
 
     def restore_recorded_runtime_mount(self):

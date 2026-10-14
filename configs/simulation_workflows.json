@@ -820,6 +820,22 @@
       "required_inputs": [
         "--plan"
       ]
+    },
+    {
+      "id": "grasp-act-crate-teacher",
+      "version": "1.0.0",
+      "purpose": "시연 전용 두 로봇 heavy_crate 교사(visible_only): 접근·정렬·잡기(READY/GO/ACK 시작)·두 번째 GO/ACK 뒤 동시 들기·3 s 동시 유지·내려놓기(구역 경계를 자기 카메라로 봄)·열기·물러나기, weld OFF. 단계별 분모를 따로 기록(prefix_held, release_success). --held-object hidden_v1(들고 있는 동안 화물 세계 좌표 미사용, input_audit.held_world_reads), --setdown-lookaround setdown_lookaround_v1(내려놓은 뒤 정적 지도 지형지물 둘러보기, 기본 off, sim/active_lookaround.py 필요), 끝 구별은 plan lug_color_scene=crate_lug_colors_v1(기본 장면 토글)",
+      "entry": "scripts/run_crate_teacher.py",
+      "runner": "scripts.run_crate_teacher",
+      "docs": "experiments/2026-10-14-crate-teacher/README.md",
+      "requires": "GCP gcp1 via coordinator queue, committed source, crate plan seeds from configs/grasp_act_seed_splits.json (crate_gate, crate_diagnostic); 16-way speed gate for cohorts; no Mac physics",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--plan"
+      ]
     }
   ]
 }
