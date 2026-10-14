@@ -107,7 +107,9 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         raise ValueError('unknown handoff observation mode')
     if handoff_observation!='off' and (teacher_profile!='visible_only' or self_pose_source!='issued'):
         raise ValueError('visible handoff requires visible_only and issued pose')
-    if approach_coordination not in ('off','prioritized_approach_v1'):raise ValueError('unknown approach coordination mode')
+    if record_training and teacher_profile=='visible_only' and handoff_observation!='visible_handoff_v1':
+        raise ValueError('recording requires visible handoff observation; GT sample selection forbidden')
+    if approach_coordination not in ('off','prioritized_approach_v1','observed_blocked_priority_v2'):raise ValueError('unknown approach coordination mode')
     if approach_coordination!='off' and (teacher_profile!='visible_only' or self_pose_source!='issued' or teacher_stability!='align_relook_v1' or approach_recovery!='off' or sorted(plan.get('roles',{}).values())!=['blue','teal']):
         raise ValueError('approach coordination requires visible_only issued baseline and one robot per end')
     if approach_coordination!='off':
@@ -147,7 +149,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
     from sim.grasp_act_port import ContinuousActPort,DutyActPort
     from sim.grasp_act_teacher_v3 import VisibleOnlyGraspTeacher
     from harness.grasp_act_visible_world import VisibleWorld
-    from harness.grasp_act_start_sync import GraspStartSync,GraspApproachSync
+    from harness.grasp_act_start_sync import GraspStartSync,GraspApproachSync,GraspConditionalApproachSync
     from sim.grasp_act_visible_measurements import measurements
     from harness.static_keepouts import keepout_rects
     rng=np.random.default_rng(plan['seed']);out.mkdir(parents=True,exist_ok=False)
@@ -203,7 +205,9 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         advance(until)
         origin=float(world.data.time);previous={};history={};images={};writers={};teachers={};models={};clocks={}
         delays={rid:(0. if k==0 else float(rng.uniform(0,1.5))) for k,rid in enumerate(plan['roles'])}
-        sync=(GraspApproachSync if approach_coordination!='off' else GraspStartSync)(plan['roles'],delays) if strict else None
+        sync_cls=(GraspConditionalApproachSync if approach_coordination=='observed_blocked_priority_v2' else
+                  GraspApproachSync if approach_coordination!='off' else GraspStartSync)
+        sync=sync_cls(plan['roles'],delays) if strict else None
         report['grasp_start_delays_s']=delays if strict else {r:0. for r in plan['roles']}
         from scripts.audit_grasp_act_visibility import BandVisibility
         visibility=BandVisibility(world.model)
@@ -278,6 +282,10 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             elif len(plan['roles'])==2 and held_s>=1.:report['joint_held']=True
             permit=all(x.phase in ('ready','pick','verify','done') for x in teachers.values())
             if strict:
+                if approach_coordination=='observed_blocked_priority_v2':
+                    blocked={rid:t.request_coordination(perceived[rid],now) for rid,t in teachers.items()}
+                    if sync.request(blocked,now):
+                        for t in teachers.values():t.activate_coordination(now)
                 ready={rid:t.prepare_signal(perceived[rid],now) for rid,t in teachers.items()}
                 permits=sync.tick(ready,now)
             elif observable:
@@ -350,7 +358,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         finalize_outcomes(teachers,strict=strict,joint_held=report['joint_held'])
         if strict:
             report['max_stable_hold_s']=max_hold
-            write(out/'start-protocol.json',{'source':'READY/GO/ACK only; no peer probes','delays_s':delays,'events':sync.events})
+            write(out/'start-protocol.json',{'source':('BLOCKED/READY/GO/ACK boolean messages; no peer poses' if approach_coordination=='observed_blocked_priority_v2' else 'READY/GO/ACK only; no peer probes'),'delays_s':delays,'events':sync.events})
         if len(plan['roles'])==2 and report['joint_held'] is None:report['joint_held']=False
         report.update(status='complete',sim_s=float(world.data.time)-origin,wall_s=time.monotonic()-start,
             teacher_success_n=sum(t.outcome=='success' for t in teachers.values()),
@@ -385,7 +393,7 @@ def main():
     p.add_argument('--nominal-blocked-handoff',choices=('off','nominal_blocked_handoff_v1'),default='off')
     p.add_argument('--approach-progress',choices=('off','approach_progress_v1'),default='off')
     p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1','approach_recovery_v2'),default='off')
-    p.add_argument('--approach-coordination',choices=('off','prioritized_approach_v1'),default='off')
+    p.add_argument('--approach-coordination',choices=('off','prioritized_approach_v1','observed_blocked_priority_v2'),default='off')
     p.add_argument('--handoff-observation',choices=('off','visible_handoff_v1'),default='off')
     p.add_argument('--self-pose-source',choices=('issued','perfect_self_comparison'),default='issued')
     p.add_argument('--execution-host',choices=('azure','gcp1'),default='azure')

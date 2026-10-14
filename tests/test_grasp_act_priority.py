@@ -182,3 +182,93 @@ def test_speed_and_recording_cannot_inherit_other_coordination_modes(tmp_path,mo
         recording_admission(gate,source_sha='sha',teacher_profile='visible_only',gate_plan=plan,execution_host={},handoff_observation='visible_handoff_v1')
     with pytest.raises(ValueError,match='handoff observation mode mismatch'):
         batch.reuse_speed_gate(prior,plan,16,3.5,{},handoff_observation='visible_handoff_v1')
+
+
+from sim.grasp_act_priority import OBSERVED_MODE,ObservedPriorityApproach,checked_path
+from harness.grasp_act_start_sync import GraspConditionalApproachSync
+RESERVATIONS=json.loads((Path(__file__).parent/'fixtures/grasp_act_search12_reservations.json').read_text())['cases']
+
+
+def conditional(rid='r1',end='teal'):
+    t=VisibleOnlyGraspTeacher(rid,end,FOLDED,**KW,approach_coordination=OBSERVED_MODE)
+    t.started=True;t.folded_ready=True;t.phase_t=0.;t.skill_started=0.;t.episode_started=0.
+    return t
+
+
+@pytest.mark.parametrize('case',RESERVATIONS,ids=lambda c:str(c['episode']))
+def test_actual_no_path_is_reservation_not_peer_body(case):
+    w=case['world'];start,goal=case['start'],case['goal'];old=teacher(case['rid'],case['end']);old.priority.round=1
+    cs=old._constraints(w)
+    assert not checked_path(start,goal,old.bounds,cs)
+    from scripts.zone_teacher import PeerDisc
+    assert not checked_path(start,goal,old.bounds,(cs[0],[d for d in cs[1] if not isinstance(d,PeerDisc)],cs[2]))
+    new=conditional(case['rid'],case['end']);new.activate_coordination(w['t']);new.priority.round=1
+    assert new._constraints(w)==constraints(w,new.rid,True)
+    assert checked_path(start,goal,new.bounds,new._constraints(w))
+
+
+def blocked_world():
+    w=world();w['t']=0.;w['robots']['r1']['pose']=[-.9,0.,0.];w['robots']['r2']['pose']=[-.55,0.,math.pi]
+    return w
+
+
+def test_conditional_activation_requires_current_blocking_peer_and_net_stall():
+    t=conditional();w=blocked_world()
+    assert t.priority is None and not t.request_coordination(w,0.)
+    assert not t.request_coordination(w,2.9)
+    assert t.request_coordination(w,3.)
+    sync=GraspConditionalApproachSync(('r1','r2'),{'r1':0.,'r2':0.})
+    assert sync.request({'r1':True,'r2':False},3.)
+    t.activate_coordination(3.)
+    assert t.priority.round==0 and t.priority_request.events[-1]['stalled_s']==3.
+    assert not t.request_coordination(w,4.) and not sync.request({'r1':True,'r2':True},4.)
+    with pytest.raises(ValueError,match='BLOCKED'):sync.request({'r1':{'xy':[0.,0.]},'r2':False},5.)
+
+
+@pytest.mark.parametrize('variant',['not_visible','far','ready','search','moving','clear_path'])
+def test_nearby_or_remembered_peer_alone_never_changes_baseline(variant):
+    t=conditional();w=blocked_world()
+    if variant=='not_visible':w['visibility']['r1']['peers']=[]
+    if variant=='far':w['robots']['r2']['pose']=[2.,0.,0.]
+    if variant in ('ready','search'):t.phase=variant
+    if variant=='clear_path':w['robots']['r2']['pose']=[-.9,.6,0.]
+    for now in (0.,1.,2.,3.,4.):
+        if variant=='moving':w['robots']['r1']['pose'][0]-=.011
+        assert not t.request_coordination(w,now)
+    assert t.priority is None
+
+
+def test_dormant_sync_is_exact_pick_barrier_and_cannot_interrupt_pick():
+    s=GraspConditionalApproachSync(('a','b'),{'a':0.,'b':.4})
+    from harness.grasp_act_start_sync import GraspStartSync
+    b=GraspStartSync(('a','b'),{'a':0.,'b':.4})
+    for now in (0.,.1,.4):
+        assert not s.request({'a':False,'b':False},now)
+        assert s.tick({'a':True,'b':True},now)==b.tick({'a':True,'b':True},now)
+    assert s.events==b.events and not s.request({'a':True,'b':True},.5)
+
+
+def test_fixed_parking_does_not_drift_with_reobserved_beam_and_block_second_go():
+    w=world();w['t']=0.;t=conditional('r2','blue');t.activate_coordination(0.)
+    goal=t.priority.park_goal(w,'r2');assert goal is not None
+    w['robots']['r2']['pose'][:2]=goal
+    assert t.prepare_signal(w,0.)
+    t.priority.advance(t,1.)
+    # In ep2/3 the old moving goal became 25.323/25.437 mm away while the
+    # waiter could no longer move (25 mm READY tolerance). Fix the goal frame.
+    w['beam']['pose'][0]+=.03
+    for e in w['beam']['ends'].values():e[0]+=.03
+    assert t.priority.park_goal(w,'r2')==goal and t.prepare_signal(w,2.)
+    s=GraspApproachSync(('r1','r2'),{'r1':0.,'r2':0.});s.round=1
+    assert not any(s.tick({'r1':True,'r2':t.prepare_signal(w,2.)},2.).values())
+    assert all(s.tick({'r1':True,'r2':t.prepare_signal(w,2.1)},2.1).values())
+
+
+def test_no_safe_parking_is_bounded_and_recording_refuses_gt_labels(tmp_path):
+    w=world();w['t']=0.;w['visibility']['r2']['peers']=[]
+    t=conditional('r2','blue');t.activate_coordination(0.)
+    for now in (0.,1.,2.,3.):cmd,done=t.priority.step_wait(t,w,now)
+    assert t.outcome=='approach_blocked_handoff' and not done and not any(cmd['wheels'])
+    from scripts.run_grasp_act_teacher import run
+    with pytest.raises(ValueError,match='recording requires visible handoff'):
+        run({},tmp_path,teacher_profile='visible_only',record_training=True)

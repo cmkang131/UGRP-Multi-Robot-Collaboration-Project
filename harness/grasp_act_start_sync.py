@@ -55,3 +55,32 @@ class GraspApproachSync:
         result={r:ok and r not in self.delivered for r,ok in permits.items()}
         self.delivered.update(r for r,ok in result.items() if ok)
         return result
+
+
+class GraspConditionalApproachSync:
+    """Ordinary pick barrier until an explicit boolean BLOCKED message arrives."""
+    def __init__(self, participants, delays):
+        self.participants = tuple(participants)
+        self.delays = dict(delays)
+        self.sync = GraspStartSync(participants, delays)
+        self.active = False
+        self.events = []
+        self.offset = 0
+
+    def request(self, blocked, now):
+        if set(blocked) != set(self.participants) or any(type(v) is not bool for v in blocked.values()):
+            raise ValueError('boolean BLOCKED messages only')
+        if self.active or self.sync.started or not any(blocked.values()):
+            return False
+        self.active = True
+        self.events.append({'t':now, 'event':'BLOCKED_to_serial_approach',
+                            'senders':[r for r,v in blocked.items() if v]})
+        self.sync = GraspApproachSync(self.participants, self.delays)
+        self.offset = 0
+        return True  # one discrete activation message delivered to both robots
+
+    def tick(self, ready, now):
+        permits = self.sync.tick(ready, now)
+        self.events.extend(self.sync.events[self.offset:])
+        self.offset = len(self.sync.events)
+        return permits

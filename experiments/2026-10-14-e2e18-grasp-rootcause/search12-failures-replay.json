@@ -1,0 +1,1680 @@
+{
+  "source_sha": "86367b4b78a14c772f6194f6b36d524a0f934afe",
+  "scope": "baseline saved failed inputs, post-divergence shadow only; no physical success",
+  "rows": [
+    {
+      "episode": 3,
+      "seed": 87003,
+      "saved_success": false,
+      "recorded_commands_verified": 260,
+      "off_identical_commands": 260,
+      "shadow_changed_commands": {
+        "off": 0,
+        "gt_only": 0,
+        "priority_only": 67,
+        "both_old": 67,
+        "conditional_with_gt": 0
+      },
+      "first_divergence": {
+        "off": null,
+        "gt_only": null,
+        "priority_only": {
+          "tick": 63,
+          "elapsed_s": 6.300000000003613,
+          "robots": [
+            "r1"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 8.100000000003797,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.05357142857142858,
+                  0.05357142857142858,
+                  0.0021428571428571447,
+                  0.0021428571428571447
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 940
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 8.100000000003797,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.05826733227353403,
+                  0.048458056916751376,
+                  0.007256228797534345,
+                  0.002553046559248314
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 940
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "both_old": {
+          "tick": 63,
+          "elapsed_s": 6.300000000003613,
+          "robots": [
+            "r1"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 8.100000000003797,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.05357142857142858,
+                  0.05357142857142858,
+                  0.0021428571428571447,
+                  0.0021428571428571447
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 940
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 8.100000000003797,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.05826733227353403,
+                  0.048458056916751376,
+                  0.007256228797534345,
+                  0.002553046559248314
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 940
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "conditional_with_gt": null
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 665,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 0,
+      "first_label_divergence": null,
+      "conditional_protocol_events": [],
+      "conditional_request_events": {
+        "r1": [],
+        "r2": []
+      },
+      "max_recorded_libm_delta_s": 0.0,
+      "command_sha256": [
+        "aa165866afe945417d61e24e0aa99fb153dddc06e7e8fc052921d4dd3f2701f7",
+        "aa165866afe945417d61e24e0aa99fb153dddc06e7e8fc052921d4dd3f2701f7",
+        "aa165866afe945417d61e24e0aa99fb153dddc06e7e8fc052921d4dd3f2701f7",
+        "05c511b3465363e5c243eb9f20ea9e7f604e7a328f50b81841fbe6601738799d",
+        "05c511b3465363e5c243eb9f20ea9e7f604e7a328f50b81841fbe6601738799d",
+        "aa165866afe945417d61e24e0aa99fb153dddc06e7e8fc052921d4dd3f2701f7"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-003/raw/plan.json",
+          "sha256": "9a3f9a79f0d15d7c4cc23aa2055028ca455c6683f0f8913a504ffbf826a2241a",
+          "decoded_sha256": "9a3f9a79f0d15d7c4cc23aa2055028ca455c6683f0f8913a504ffbf826a2241a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-003/raw/result.json",
+          "sha256": "314ea3617a374d57ad59d1eb9c7d86c03ad620acf5e38839ec443e9f34862ae9",
+          "decoded_sha256": "314ea3617a374d57ad59d1eb9c7d86c03ad620acf5e38839ec443e9f34862ae9"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-003/raw/teacher-r1.jsonl.zst",
+          "sha256": "03eb694fe965a285650f5f169d3b6bcecc245d849a10b76b19c7b9b8b958c3d9",
+          "decoded_sha256": "ca44c6dcd5158a686b8582ec6f0176dae220a50b8b46cb51d47bc166909addc3"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-003/raw/teacher-r2.jsonl.zst",
+          "sha256": "873a193f935f4692fd5c54b02431a0b379b89bae65edda35ba1a13363174c972",
+          "decoded_sha256": "b93f1593eddc815c25abfce29239f1f6e4e5a56a7876ebb6ae245e2a7c8166dd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-003/raw/eval-only.jsonl.zst",
+          "sha256": "cf8ec85d2fa8dc8c80ce19646a47b86a31b84653df5b056ab59ed1dc114ec953",
+          "decoded_sha256": "081511b78799775939413c23a1cc125986abb06cc0d84bdc38e809aa38041545"
+        }
+      ]
+    },
+    {
+      "episode": 7,
+      "seed": 87007,
+      "saved_success": false,
+      "recorded_commands_verified": 1200,
+      "off_identical_commands": 1200,
+      "shadow_changed_commands": {
+        "off": 0,
+        "gt_only": 0,
+        "priority_only": 349,
+        "both_old": 349,
+        "conditional_with_gt": 0
+      },
+      "first_divergence": {
+        "off": null,
+        "gt_only": null,
+        "priority_only": {
+          "tick": 7,
+          "elapsed_s": 0.6999999999997895,
+          "robots": [
+            "r2"
+          ],
+          "baseline": {
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.03217370121057033,
+                  0.06956574697357415,
+                  0.09999999999999999,
+                  0.0017394481841444807
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1174
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1174
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "both_old": {
+          "tick": 7,
+          "elapsed_s": 0.6999999999997895,
+          "robots": [
+            "r2"
+          ],
+          "baseline": {
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.03217370121057033,
+                  0.06956574697357415,
+                  0.09999999999999999,
+                  0.0017394481841444807
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1174
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1174
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "conditional_with_gt": null
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1887,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 316,
+      "first_label_divergence": {
+        "tick": 176,
+        "elapsed_s": 17.600000000001433,
+        "robot": "r1",
+        "recorded": true,
+        "visible": false
+      },
+      "conditional_protocol_events": [],
+      "conditional_request_events": {
+        "r1": [],
+        "r2": []
+      },
+      "max_recorded_libm_delta_s": 4.163336342344337e-17,
+      "command_sha256": [
+        "50f1ad6e2961bf06ea0ffa8341012d87a2e638881eec1bc1a6208d798c65ba5b",
+        "50f1ad6e2961bf06ea0ffa8341012d87a2e638881eec1bc1a6208d798c65ba5b",
+        "50f1ad6e2961bf06ea0ffa8341012d87a2e638881eec1bc1a6208d798c65ba5b",
+        "5ee2022f02ebeb88864ca6fbdf90eddc0cc585579cc14756ba0080723e97ea5b",
+        "5ee2022f02ebeb88864ca6fbdf90eddc0cc585579cc14756ba0080723e97ea5b",
+        "50f1ad6e2961bf06ea0ffa8341012d87a2e638881eec1bc1a6208d798c65ba5b"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-007/raw/plan.json",
+          "sha256": "3dca3836fd51429783db8c3cbcb9a09890691f3aae072aa1605eab653fea7abd",
+          "decoded_sha256": "3dca3836fd51429783db8c3cbcb9a09890691f3aae072aa1605eab653fea7abd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-007/raw/result.json",
+          "sha256": "f530cf8597fffdeb0b3ce3c36627501e167ab0ce81066e166a7c3d8bfaa6fa7f",
+          "decoded_sha256": "f530cf8597fffdeb0b3ce3c36627501e167ab0ce81066e166a7c3d8bfaa6fa7f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-007/raw/teacher-r1.jsonl.zst",
+          "sha256": "f1a0a2174410895d40babc2ebfcf0044d74e56e614b2b6ba8101f4d210039641",
+          "decoded_sha256": "e24de43a78d079b5fed10f1f6f71e4bdcf7f1b1c106d54914942e99ec59769cf"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-007/raw/teacher-r2.jsonl.zst",
+          "sha256": "1c789a884776ede1019ee04bfae95711074c09b237b046e150ae5c9fe492c7bd",
+          "decoded_sha256": "63922f8673cf85bc5410a5050069a78a4ffa2676c36825febd287d6b733056a6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-007/raw/eval-only.jsonl.zst",
+          "sha256": "9f249ac0b02234bc90635270dbf6289f16f966b23c7ae655938d9e4ed4f4b1d5",
+          "decoded_sha256": "ad168f21f3f358cd797d67cce0ad3830f9e60ab39b11418ef9af34ace44f3416"
+        }
+      ]
+    },
+    {
+      "episode": 8,
+      "seed": 87008,
+      "saved_success": false,
+      "recorded_commands_verified": 218,
+      "off_identical_commands": 218,
+      "shadow_changed_commands": {
+        "off": 0,
+        "gt_only": 0,
+        "priority_only": 204,
+        "both_old": 204,
+        "conditional_with_gt": 0
+      },
+      "first_divergence": {
+        "off": null,
+        "gt_only": null,
+        "priority_only": {
+          "tick": 7,
+          "elapsed_s": 0.6999999999997895,
+          "robots": [
+            "r1",
+            "r2"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.07331400736199252,
+                  0.01876576995617215,
+                  0.036948515758113566,
+                  0.01759972164770679
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1040
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.1,
+                  0.07567353998837363,
+                  0.1,
+                  0.07567353998837363
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1216
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1040
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  -0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.019278893723368884,
+                  0.1,
+                  0.06646634267068334,
+                  0.014254763605947787
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1216
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "both_old": {
+          "tick": 7,
+          "elapsed_s": 0.6999999999997895,
+          "robots": [
+            "r1",
+            "r2"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.07331400736199252,
+                  0.01876576995617215,
+                  0.036948515758113566,
+                  0.01759972164770679
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1040
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.1,
+                  0.07567353998837363,
+                  0.1,
+                  0.07567353998837363
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1216
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 740,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1040
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  -0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.019278893723368884,
+                  0.1,
+                  0.06646634267068334,
+                  0.014254763605947787
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1216
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "conditional_with_gt": null
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 565,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 0,
+      "first_label_divergence": null,
+      "conditional_protocol_events": [],
+      "conditional_request_events": {
+        "r1": [],
+        "r2": []
+      },
+      "max_recorded_libm_delta_s": 6.938893903907228e-17,
+      "command_sha256": [
+        "8c7f5c19cc5d0dfaf2f070ef1b11aea5ca86596d7c2d22209ab43d6cf7fa4455",
+        "8c7f5c19cc5d0dfaf2f070ef1b11aea5ca86596d7c2d22209ab43d6cf7fa4455",
+        "8c7f5c19cc5d0dfaf2f070ef1b11aea5ca86596d7c2d22209ab43d6cf7fa4455",
+        "04ac632f0a4b59c7ac4c6da9c2e7cbdcf6b4e080364427bab586f54b4cd8182b",
+        "04ac632f0a4b59c7ac4c6da9c2e7cbdcf6b4e080364427bab586f54b4cd8182b",
+        "8c7f5c19cc5d0dfaf2f070ef1b11aea5ca86596d7c2d22209ab43d6cf7fa4455"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-008/raw/plan.json",
+          "sha256": "60671fb324ef6046044b87c959f8072f285cf15a68eba6551ef4c4d8498fea21",
+          "decoded_sha256": "60671fb324ef6046044b87c959f8072f285cf15a68eba6551ef4c4d8498fea21"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-008/raw/result.json",
+          "sha256": "869aab60969f48263fb2b061adb2c1d98705f3013065fed5c3dd9225aac15a79",
+          "decoded_sha256": "869aab60969f48263fb2b061adb2c1d98705f3013065fed5c3dd9225aac15a79"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-008/raw/teacher-r1.jsonl.zst",
+          "sha256": "3ba102371beb8ea8d572e6e2d4086b82d605d53aff065006964501c1e9491d13",
+          "decoded_sha256": "8cf476d6a0d3d264fc620ff9fe72eec707811cdd8914363fbd38fc44edaa00fa"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-008/raw/teacher-r2.jsonl.zst",
+          "sha256": "ef153ddd3157a67537a074ba43324482f757da19f7248a201d8c8bc268d89e54",
+          "decoded_sha256": "da9ed2fa253e987ad8883da608cda4470bc6707ead5a34517bdd7e44c0b64988"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-008/raw/eval-only.jsonl.zst",
+          "sha256": "d3ae0525189fa69ec48041deed279d920c5f837d608510541b3794dbe85fea20",
+          "decoded_sha256": "0a7d2020b52d2df0aed03218f77b124a4a1da77f2783ee37c75f3dd166870d71"
+        }
+      ]
+    },
+    {
+      "episode": 14,
+      "seed": 87014,
+      "saved_success": false,
+      "recorded_commands_verified": 390,
+      "off_identical_commands": 390,
+      "shadow_changed_commands": {
+        "off": 0,
+        "gt_only": 0,
+        "priority_only": 264,
+        "both_old": 264,
+        "conditional_with_gt": 40
+      },
+      "first_divergence": {
+        "off": null,
+        "gt_only": null,
+        "priority_only": {
+          "tick": 36,
+          "elapsed_s": 3.6000000000006693,
+          "robots": [
+            "r2"
+          ],
+          "baseline": {
+            "r2": [
+              {
+                "t": 5.400000000000854,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.1,
+                  0.08063627788033362,
+                  0.1,
+                  0.08063627788033362
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 760,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r2": [
+              {
+                "t": 5.400000000000854,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 760,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "both_old": {
+          "tick": 36,
+          "elapsed_s": 3.6000000000006693,
+          "robots": [
+            "r2"
+          ],
+          "baseline": {
+            "r2": [
+              {
+                "t": 5.400000000000854,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.1,
+                  0.08063627788033362,
+                  0.1,
+                  0.08063627788033362
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 760,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r2": [
+              {
+                "t": 5.400000000000854,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 760,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "conditional_with_gt": {
+          "tick": 175,
+          "elapsed_s": 17.500000000000956,
+          "robots": [
+            "r1",
+            "r2"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 19.30000000000114,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.08788242925105108,
+                  0.04471762164259622,
+                  0.03260005089364727,
+                  0.1
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 840,
+                  "4": 2340,
+                  "5": 1320,
+                  "6": 1640
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 19.30000000000114,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 720,
+                  "4": 2440,
+                  "5": 1320,
+                  "6": 1560
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 19.30000000000114,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 840,
+                  "4": 2340,
+                  "5": 1320,
+                  "6": 1640
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 19.30000000000114,
+                "wheels": [
+                  -0.35,
+                  -0.35,
+                  -0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.006779751618563114,
+                  0.06207994677652011,
+                  0.1,
+                  0.031140301604916786
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 720,
+                  "4": 2440,
+                  "5": 1320,
+                  "6": 1560
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode observed_blocked_priority_v2"
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1007,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 0,
+      "first_label_divergence": null,
+      "conditional_protocol_events": [
+        {
+          "t": 19.30000000000114,
+          "event": "BLOCKED_to_serial_approach",
+          "senders": [
+            "r2"
+          ]
+        }
+      ],
+      "conditional_request_events": {
+        "r1": [],
+        "r2": [
+          {
+            "t": 19.30000000000114,
+            "event": "own_visible_peer_blocked_request",
+            "stalled_s": 3.0000000000143245,
+            "peer_ids": [
+              "r1"
+            ],
+            "input": "current own RGB admission + issued pose; boolean request only"
+          }
+        ]
+      },
+      "max_recorded_libm_delta_s": 8.326672684688674e-17,
+      "command_sha256": [
+        "d8fa13a6a24c6ddd00bdb1daf8b9d869ca6919098551fcb8a1a22f5399fd8f37",
+        "d8fa13a6a24c6ddd00bdb1daf8b9d869ca6919098551fcb8a1a22f5399fd8f37",
+        "d8fa13a6a24c6ddd00bdb1daf8b9d869ca6919098551fcb8a1a22f5399fd8f37",
+        "da96faa5f753ee191e94bbdebdb2e30e98037009cdbc1514aa9156233faa0626",
+        "da96faa5f753ee191e94bbdebdb2e30e98037009cdbc1514aa9156233faa0626",
+        "1a0dd844fbf88f3c3e487dd2cc8a338f0be8b336f533c302d0dc02e392c3825e"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-014/raw/plan.json",
+          "sha256": "7032015e34a3f8c81766205bd54576cc6557d6564ca4fcb6186dfea2b346cd0e",
+          "decoded_sha256": "7032015e34a3f8c81766205bd54576cc6557d6564ca4fcb6186dfea2b346cd0e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-014/raw/result.json",
+          "sha256": "049ed4b6acdd208d2ed5e55afeddea5dd5a1d4e73d747d0d577e478d7f8a1331",
+          "decoded_sha256": "049ed4b6acdd208d2ed5e55afeddea5dd5a1d4e73d747d0d577e478d7f8a1331"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-014/raw/teacher-r1.jsonl.zst",
+          "sha256": "5f91ddab200f61d2917285c2758be864d00b3220d244694a55346ce16be85539",
+          "decoded_sha256": "fee1a34a5dac8a0c586e4f0f7b4b270d5919ba946fb24af9ab1ee306aafc635c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-014/raw/teacher-r2.jsonl.zst",
+          "sha256": "3bb7b453260b66f760f21c8e2a293fae5ebced3291bfe6027c584dce4e13f349",
+          "decoded_sha256": "ed0917f71700bbe505e22bf7e7bc864c759b68afd81d36efdb3ad42e47db3e77"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-000/episode-014/raw/eval-only.jsonl.zst",
+          "sha256": "03cddf0c7ac10f21731f2949e033a73aa655ecc9c0d91c2f5ec1af467aa278f3",
+          "decoded_sha256": "5081b25dd347fc83e046790701cf3d365c5bb91c7a86651b23810dc8e35514c2"
+        }
+      ]
+    },
+    {
+      "episode": 17,
+      "seed": 87017,
+      "saved_success": false,
+      "recorded_commands_verified": 134,
+      "off_identical_commands": 134,
+      "shadow_changed_commands": {
+        "off": 0,
+        "gt_only": 0,
+        "priority_only": 119,
+        "both_old": 119,
+        "conditional_with_gt": 0
+      },
+      "first_divergence": {
+        "off": null,
+        "gt_only": null,
+        "priority_only": {
+          "tick": 7,
+          "elapsed_s": 0.6999999999997895,
+          "robots": [
+            "r1",
+            "r2"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.09542308516697322,
+                  0.1,
+                  0.09542308516697322,
+                  0.1
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1345
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.1,
+                  0.07415411321202492,
+                  0.1,
+                  0.07415411321202492
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1543
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  -0.35,
+                  0.35,
+                  0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.03686414929819913,
+                  0.10000000000000002,
+                  0.09513278973412417,
+                  0.03199693903232329
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1345
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1543
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "both_old": {
+          "tick": 7,
+          "elapsed_s": 0.6999999999997895,
+          "robots": [
+            "r1",
+            "r2"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.09542308516697322,
+                  0.1,
+                  0.09542308516697322,
+                  0.1
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1345
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.1,
+                  0.07415411321202492,
+                  0.1,
+                  0.07415411321202492
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1543
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  -0.35,
+                  0.35,
+                  0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.03686414929819913,
+                  0.10000000000000002,
+                  0.09513278973412417,
+                  0.03199693903232329
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1345
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1543
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "conditional_with_gt": null
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 630,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 0,
+      "first_label_divergence": null,
+      "conditional_protocol_events": [],
+      "conditional_request_events": {
+        "r1": [],
+        "r2": []
+      },
+      "max_recorded_libm_delta_s": 2.7755575615628914e-17,
+      "command_sha256": [
+        "8f906c5e14cc9aaa109f9fed366c843910c98616629e5587c2df4813d60316d4",
+        "8f906c5e14cc9aaa109f9fed366c843910c98616629e5587c2df4813d60316d4",
+        "8f906c5e14cc9aaa109f9fed366c843910c98616629e5587c2df4813d60316d4",
+        "84ec489b5e7dace40365596465834fe513c1fd81c22a431a0d7b73388a4053d4",
+        "84ec489b5e7dace40365596465834fe513c1fd81c22a431a0d7b73388a4053d4",
+        "8f906c5e14cc9aaa109f9fed366c843910c98616629e5587c2df4813d60316d4"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-017/raw/plan.json",
+          "sha256": "a13baea07c69d4744bca482f267933391afaaf8f1321a5969d622a9a1a060ecc",
+          "decoded_sha256": "a13baea07c69d4744bca482f267933391afaaf8f1321a5969d622a9a1a060ecc"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-017/raw/result.json",
+          "sha256": "ec37cc45cc9c8c3d7dfdd7e2b1a3f1c35abd87e3fcd4c7cb5ace1044ee2d9c65",
+          "decoded_sha256": "ec37cc45cc9c8c3d7dfdd7e2b1a3f1c35abd87e3fcd4c7cb5ace1044ee2d9c65"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-017/raw/teacher-r1.jsonl",
+          "sha256": "753db37241acc7195069f09683e2c687f748db0f3be172f2f52469defd51172d",
+          "decoded_sha256": "753db37241acc7195069f09683e2c687f748db0f3be172f2f52469defd51172d"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-017/raw/teacher-r2.jsonl",
+          "sha256": "e1c2dc67ff47a70f41fae88ed64a951ef1e96f15029fc541fd96743bdb746965",
+          "decoded_sha256": "e1c2dc67ff47a70f41fae88ed64a951ef1e96f15029fc541fd96743bdb746965"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-016/episode-017/raw/eval-only.jsonl.zst",
+          "sha256": "bfc774e8cef9570deb92c1ab9a4328f16cce7c75790ca346be4960a62dedac34",
+          "decoded_sha256": "71090d8ff5ff4c02747a2841a76f25c089fad0c6f7344c1446f19264663799db"
+        }
+      ]
+    },
+    {
+      "episode": 32,
+      "seed": 87032,
+      "saved_success": false,
+      "recorded_commands_verified": 314,
+      "off_identical_commands": 314,
+      "shadow_changed_commands": {
+        "off": 0,
+        "gt_only": 0,
+        "priority_only": 245,
+        "both_old": 245,
+        "conditional_with_gt": 28
+      },
+      "first_divergence": {
+        "off": null,
+        "gt_only": null,
+        "priority_only": {
+          "tick": 28,
+          "elapsed_s": 2.7999999999996916,
+          "robots": [
+            "r2"
+          ],
+          "baseline": {
+            "r2": [
+              {
+                "t": 4.599999999999876,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.1,
+                  0.07357147192592581,
+                  0.1,
+                  0.07357147192592581
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 760,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r2": [
+              {
+                "t": 4.599999999999876,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  -0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.030504913905722436,
+                  0.1,
+                  0.06825539104772985,
+                  0.001239695046547738
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 760,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "both_old": {
+          "tick": 28,
+          "elapsed_s": 2.7999999999996916,
+          "robots": [
+            "r2"
+          ],
+          "baseline": {
+            "r2": [
+              {
+                "t": 4.599999999999876,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.1,
+                  0.07357147192592581,
+                  0.1,
+                  0.07357147192592581
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 760,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r2": [
+              {
+                "t": 4.599999999999876,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  -0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.030504913905722436,
+                  0.1,
+                  0.06825539104772985,
+                  0.001239695046547738
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 760,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1500
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode prioritized_approach_v1"
+        },
+        "conditional_with_gt": {
+          "tick": 143,
+          "elapsed_s": 14.299999999985676,
+          "robots": [
+            "r1",
+            "r2"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 16.09999999998586,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.09476385040264979,
+                  0.02279545646212535,
+                  0.017559306864775137,
+                  0.1
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 880,
+                  "4": 2420,
+                  "5": 1320,
+                  "6": 1380
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 16.09999999998586,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 720,
+                  "4": 2440,
+                  "5": 1320,
+                  "6": 1560
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 16.09999999998586,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 880,
+                  "4": 2420,
+                  "5": 1320,
+                  "6": 1380
+                }
+              },
+              false,
+              "approach"
+            ],
+            "r2": [
+              {
+                "t": 16.09999999998586,
+                "wheels": [
+                  0.0,
+                  -0.35,
+                  -0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.0,
+                  0.07243986630471785,
+                  0.1,
+                  0.027734202441900096
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 720,
+                  "4": 2440,
+                  "5": 1320,
+                  "6": 1560
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "coordination mode observed_blocked_priority_v2"
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1046,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 0,
+      "first_label_divergence": null,
+      "conditional_protocol_events": [
+        {
+          "t": 16.09999999998586,
+          "event": "BLOCKED_to_serial_approach",
+          "senders": [
+            "r2"
+          ]
+        }
+      ],
+      "conditional_request_events": {
+        "r1": [],
+        "r2": [
+          {
+            "t": 16.09999999998586,
+            "event": "own_visible_peer_blocked_request",
+            "stalled_s": 2.999999999993717,
+            "peer_ids": [
+              "r1"
+            ],
+            "input": "current own RGB admission + issued pose; boolean request only"
+          }
+        ]
+      },
+      "max_recorded_libm_delta_s": 5.551115123125783e-17,
+      "command_sha256": [
+        "46dd8014b208cce866e558573381580172bd6fbadcf46eee68b9bff927a8c2a4",
+        "46dd8014b208cce866e558573381580172bd6fbadcf46eee68b9bff927a8c2a4",
+        "46dd8014b208cce866e558573381580172bd6fbadcf46eee68b9bff927a8c2a4",
+        "12edf0cd5d88f3653ade64f29e5f4b00eb3ed2f70eba9443cb12fa2c610f8dd5",
+        "12edf0cd5d88f3653ade64f29e5f4b00eb3ed2f70eba9443cb12fa2c610f8dd5",
+        "b182d06daef99ca249c18fb2a55ff57e85f55653d61228c3cdce0883e4de3d74"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-032/raw/plan.json",
+          "sha256": "a71292e6a277b19a1e0f5266ed1332a910723a1e5e4b5a3edca762ac4ed0eda9",
+          "decoded_sha256": "a71292e6a277b19a1e0f5266ed1332a910723a1e5e4b5a3edca762ac4ed0eda9"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-032/raw/result.json",
+          "sha256": "0b3c4fda4bcff1375740d966c8315a718d9a98e0c6120a5f677e6c563b878637",
+          "decoded_sha256": "0b3c4fda4bcff1375740d966c8315a718d9a98e0c6120a5f677e6c563b878637"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-032/raw/teacher-r1.jsonl.zst",
+          "sha256": "e9452e8c601d48823669abddde5a15598633abe512eb1593c664088aa7b855d1",
+          "decoded_sha256": "1946d77e5252e87621339bbb0807431c5dbec20ce2d3e58edbf9b1445d2b0526"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-032/raw/teacher-r2.jsonl.zst",
+          "sha256": "aed4203f8b298201562cb875dcbfad55a3b467e7692eb0d3b22252c73d01c33a",
+          "decoded_sha256": "6f3d4cb353a6843b722818e0c52dd9d762ac73458f4f78000fb50d66450108af"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-gate-gcp-86367b4b/cohort-032/episode-032/raw/eval-only.jsonl.zst",
+          "sha256": "e080842e75946d600a546a537c1ec4e5b3de0cbeaae49e6fececb4b4ebcf534e",
+          "decoded_sha256": "dad0192e5a49cb98c5e1a2bc87d9cd392eea571e7c16120eadd09be533613b20"
+        }
+      ]
+    }
+  ]
+}

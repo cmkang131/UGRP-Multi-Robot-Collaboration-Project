@@ -227,7 +227,7 @@ def main():
     p.add_argument('--nominal-blocked-handoff',choices=('off','nominal_blocked_handoff_v1'),default='off')
     p.add_argument('--approach-progress',choices=('off','approach_progress_v1'),default='off')
     p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1','approach_recovery_v2'),default='off')
-    p.add_argument('--approach-coordination',choices=('off','prioritized_approach_v1'),default='off')
+    p.add_argument('--approach-coordination',choices=('off','prioritized_approach_v1','observed_blocked_priority_v2'),default='off')
     p.add_argument('--handoff-observation',choices=('off','visible_handoff_v1'),default='off')
     p.add_argument('--failure-stop-scope',choices=('first_failure','repeated_cause_v1'),default='first_failure',
         help='opt-in: stop the batch after the same reason and phase fail in two independent episodes')

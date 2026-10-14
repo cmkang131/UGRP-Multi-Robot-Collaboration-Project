@@ -59,8 +59,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.approach_recovery=='approach_recovery_v2' and self.approach_goal_set=='off':
             raise ValueError('approach recovery v2 requires approach goal set')
         self.approach_coordination=kwargs.pop('approach_coordination','off')
-        from sim.grasp_act_priority import MODE,PriorityApproach,require_baseline
-        if self.approach_coordination not in ('off',MODE):raise ValueError('unknown approach coordination mode')
+        from sim.grasp_act_priority import MODE,OBSERVED_MODE,PriorityApproach,ObservedPriorityRequest,require_baseline
+        if self.approach_coordination not in ('off',MODE,OBSERVED_MODE):raise ValueError('unknown approach coordination mode')
         if self.approach_coordination!='off':
             require_baseline(self.teacher_stability,self.teacher_search,self.approach_goal_set,self.nominal_blocked_handoff,self.approach_progress,self.approach_recovery)
         self.peer_wait_since=None;self.peer_wait_ids=set();self.peer_clear_since=None
@@ -73,7 +73,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.reacquire_since=None;self.reacquire_clear_since=None;self.episode_started=None
         kwargs.pop('profile',None)
         super().__init__(*args,profile='observable_v2',**kwargs)
-        self.priority=PriorityApproach(self.end) if self.approach_coordination!='off' else None
+        self.priority=PriorityApproach(self.end) if self.approach_coordination==MODE else None
+        self.priority_request=ObservedPriorityRequest() if self.approach_coordination==OBSERVED_MODE else None
         self.phase='approach';self.handoff=False;self.local_seen=None
         self.last_command=None;self.last_tick=None;self.command_complete=False
         self.ready_revocations=0;self.skill_started=None
@@ -354,7 +355,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def _constraints(self,world):
         from sim.grasp_act_visible_route import constraints
-        if self.priority is not None and not self.priority.waiting:
+        if self.approach_coordination=='prioritized_approach_v1' and self.priority is not None and not self.priority.waiting:
             from sim.grasp_act_priority import reserved_constraints
             return reserved_constraints(world,self.rid,self.end,self.folded_ready)
         return constraints(world,self.rid,self.folded_ready)
@@ -599,6 +600,21 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         except ValueError:return False
         return math.dist(pose[:2],goal)<=XY_TOL_M and abs(wrap(heading-pose[2]))<=YAW_TOL_RAD
 
+    def request_coordination(self, world, now):
+        return (self.priority_request.observe(self, world, now)
+                if self.priority_request is not None and self.priority is None else False)
+
+    def activate_coordination(self, now):
+        from sim.grasp_act_priority import ObservedPriorityApproach, OBSERVED_MODE
+        if self.approach_coordination != OBSERVED_MODE or self.priority is not None:
+            raise ValueError('unexpected coordination activation')
+        if self.phase in ('pick', 'complete') or self.outcome is not None:
+            raise ValueError('cannot coordinate terminal/picking teacher')
+        self.priority = ObservedPriorityApproach(self.end)
+        self.priority.events.append({'t':now, 'event':'BLOCKED_activation_received'})
+        self.path=[];self.path_goal=None;self.next_plan=now;self.progress.reset()
+        self._set('approach',now)
+
     def prepare_signal(self,truth,now):
         """Own teacher readiness; only a binary READY crosses the protocol."""
         if self.outcome is not None:return False
@@ -722,6 +738,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'approach_progress':self.approach_progress,'approach_progress_log':self.progress_log,
                 'approach_recovery':self.approach_recovery,'recovery_log':self.recovery_log,
                 'approach_coordination':self.approach_coordination,
+                'coordination_request_log':self.priority_request.events if self.priority_request is not None else [],
                 'coordination_round':self.priority.round if self.priority is not None else None,
                 'coordination_log':self.priority.events if self.priority is not None else [],
                 'alternative_goal_path_enabled':self.approach_goal_set!='off' and (self.nominal_blocked_handoff=='off' or self.approach_recovery=='approach_recovery_v2'),
