@@ -42,3 +42,12 @@ def test_deployed_done_loss_retains_zero_latent_gradient():
     b['action_is_pad']=torch.zeros(1,CHUNK,dtype=torch.bool)
     policy.train();loss=deployed_done_loss(policy,b);assert policy.training and loss.requires_grad
     loss.backward();assert torch.count_nonzero(policy.model.action_head.weight.grad)>0
+
+
+def test_old_pulse_checkpoint_cannot_load_as_continuous(tmp_path):
+    import json
+    from harness.grasp_act import metadata
+    old=metadata('smoke');old.pop('action_contract');old.pop('actuator_port')
+    old['schema']='ugrp.grasp_act.adapter.v2'
+    (tmp_path/'adapter.json').write_text(json.dumps(old))
+    with pytest.raises(ValueError,match='wrong ACT adapter'):GraspAct.load(tmp_path)

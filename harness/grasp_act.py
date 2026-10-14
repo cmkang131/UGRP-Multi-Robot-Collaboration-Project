@@ -11,7 +11,7 @@ from lerobot.configs.types import FeatureType,PolicyFeature
 from lerobot.policies.act.configuration_act import ACTConfig
 from lerobot.policies.act.modeling_act import ACTPolicy
 from harness.reference_act import UPSTREAM_SHA
-from harness.grasp_act_contract import ACTION_DIM,CONTEXT_DIM,CHUNK,context,decode_action,SKILLS,KINDS,ROLES
+from harness.grasp_act_contract import SCHEMA,ACTION_DIM,CONTEXT_DIM,CHUNK,context,decode_action,SKILLS,KINDS,ROLES
 
 IMAGE_KEYS=('observation.images.own_previous','observation.images.own_current')
 CONTEXT_KEY='observation.environment_state'
@@ -60,7 +60,9 @@ def batch(observation,jpegs,profile):
 
 
 def metadata(profile):
-    return {'schema':'ugrp.grasp_act.adapter.v2','upstream_sha':UPSTREAM_SHA,'profile':profile,
+    return {'schema':'ugrp.grasp_act.adapter.v3','action_contract':SCHEMA,
+            'actuator_port':'continuous_native_command_feedforward_v1',
+            'upstream_sha':UPSTREAM_SHA,'profile':profile,
             'image_keys':list(IMAGE_KEYS),'skills':list(SKILLS),'object_kinds':list(KINDS),'roles':list(ROLES),'context_dim':CONTEXT_DIM,
             'action_dim':ACTION_DIM,'chunk':CHUNK,'truth_at_inference':False,'measured_joints':False}
 
