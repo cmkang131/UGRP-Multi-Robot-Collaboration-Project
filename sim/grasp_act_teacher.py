@@ -199,12 +199,17 @@ class GraspTeacher:
         else:
             # Deterministic observation search, independent of hidden end pose.
             self.search_since=now if self.search_since is None else self.search_since
-            target={**FOLDED,3:820,6:round(1500+1000*math.sin((now-self.search_since)*.7))}
+            age=now-self.search_since
+            # Cover the already-at-end case first: pan-only sweeps at the
+            # folded far-view pitch cannot see a band 20 cm from the base.
+            near=age<2. or (age>=3.2 and int((age-3.2)/1.2)%2==0)
+            target={**FOLDED,3:500 if near else 820,4:2500 if near else 2320,6:1500}
         self.sink.pwm.update(slew(self.sink.pwm,target));self.arm.commanded.update(self.sink.pwm)
         if visible:return None
         # A recently seen end may be reacquired by the arm while chassis holds.
         if self.last_seen_t is not None and now-self.last_seen_t<=1.:return self._hold(now)
-        return self._continuous(now,0.,0.,.12)
+        if now-self.search_since<3.2:return self._hold(now)
+        return self._continuous(now,0.,0.,.45)
 
     def step(self,truth,now,*,permit_pick=True):
         if not self.started:
