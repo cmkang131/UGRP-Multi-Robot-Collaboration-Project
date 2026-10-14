@@ -111,7 +111,7 @@ def extract(rgb, servo, *, frame_id, t, sha256='', options=None):
     """
     from harness.e2e_rgb_vo import HEIGHT, WIDTH, ground, image_mask
 
-    o = options or Options()
+    o = options if isinstance(options, Options) else Options(**(options or {}))
     image = np.asarray(rgb)
     if image.shape != (HEIGHT, WIDTH, 3) or image.dtype != np.uint8:
         raise ValueError('NATURAL_FLOOR_REQUIRES_640X480_UINT8_RGB')

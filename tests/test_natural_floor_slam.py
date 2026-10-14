@@ -122,7 +122,8 @@ def test_rgb_adapter_extracts_only_calibrated_floor_points(monkeypatch):
     rgb = np.dstack([gray]*3)
     monkeypatch.setattr(frontend, 'image_mask', lambda image, servo: np.full((480, 640), 255, np.uint8))
     monkeypatch.setattr(frontend, 'ground', lambda servo, uv: (np.asarray(uv)/100., np.ones(len(uv))))
-    found = extract(rgb, {3: 1}, frame_id=4, t=.8, sha256='a'*64)
+    found = extract(rgb, {3: 1}, frame_id=4, t=.8, sha256='a'*64,
+                    options={'features': 200})
     points, desc = found.checked()
     assert len(points) > 20 and desc.shape == (len(points), 32)
     assert found.frame_id == 4 and found.sha256 == 'a'*64
