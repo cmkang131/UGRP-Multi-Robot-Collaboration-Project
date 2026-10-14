@@ -32,7 +32,12 @@ try {
     $taskSetup=Join-Path $PSScriptRoot 'clock_setup.sh'
     $taskProbe=Join-Path $PSScriptRoot 'clock_pair_probe.py'
     if(-not(Test-Path -LiteralPath $taskSetup) -or -not(Test-Path -LiteralPath $taskProbe)){throw 'Missing setup or probe file'}
-    Get-FileHash -LiteralPath $taskSetup,$taskProbe,$PSCommandPath | Select-Object Path,Hash | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $taskOutput 'source_hashes.json')
+    $taskHashes=@(foreach($taskPath in @($taskSetup,$taskProbe,$PSCommandPath)){
+        $taskHasher=[Security.Cryptography.SHA256]::Create()
+        try { $taskDigest=$taskHasher.ComputeHash([IO.File]::ReadAllBytes($taskPath)); @{Path=$taskPath;Hash=[BitConverter]::ToString($taskDigest).Replace('-','')} }
+        finally { $taskHasher.Dispose() }
+    })
+    $taskHashes | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $taskOutput 'source_hashes.json')
     Save-State
     # SSH/sudo passwords are entered only in the native interactive terminal.
     foreach($taskSpec in @(@{target=$LeaderTarget;role='leader'},@{target=$FollowerTarget;role='follower'})){
