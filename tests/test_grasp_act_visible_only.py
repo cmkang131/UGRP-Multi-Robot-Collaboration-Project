@@ -87,3 +87,17 @@ def test_observed_cargo_at_goal_does_not_launch_futile_astar(monkeypatch):
     monkeypatch.setattr(zone,'plan_path',lambda *a,**k:pytest.fail('occupied goal sent to A*'))
     value=t._route(w,(.597,0.),0.,0.)
     assert not any(value['wheels']) and t.blocked_goal_calls==1
+
+def test_segment_check_allows_retreat_from_observed_beam_margin():
+    from sim.grasp_act_visible_route import segment_free
+    # 73009 replay: 148 mm from the visible end inside a 150 mm inflated
+    # keepout. The base must be able to follow A*'s outward escape segment.
+    assert segment_free((.148,0.),(.18,0.),[(0.,0.,.02)],[],.13)
+    assert not segment_free((.148,0.),(.13,0.),[(0.,0.,.02)],[],.13)
+    import json
+    from pathlib import Path
+    row=json.loads((Path(__file__).parent/'fixtures/grasp_act_replay09_margin.json').read_text())
+    t=VisibleOnlyGraspTeacher(row['rid'],row['end'],row['pwm'],bounds=(-20,20,-20,20));t.folded_ready=True
+    world=row['world'];pose,g,heading,goal=t._geometry(world)
+    value=t._route(world,goal,heading,world['t'])
+    assert t.path and any(value['wheels'])

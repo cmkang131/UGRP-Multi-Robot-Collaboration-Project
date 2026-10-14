@@ -28,9 +28,11 @@ def free(point,discs,rects,radius):
 
 
 def segment_free(start,end,discs,rects,radius):
-    # Reuse the no-closer rule when a peer has approached an already waiting
-    # robot; clearance is never reduced for an object the robot can avoid.
-    ds=[_no_closer(start,d,radius) if isinstance(d,PeerDisc) else d for d in discs]
+    # Match zone A*'s margin-escape rule for both peers and cargo. If fresh
+    # visual localization puts the base inside an inflated margin, permit
+    # retreat without getting closer. Otherwise the safety check rejects the
+    # very escape path returned by the planner. Physical bodies stay intact.
+    ds=[_no_closer(start,d,radius) for d in discs]
     walls=_wall_limits(start,rects,radius)
     # Analytic segment/disc test; grid cells alone do not prevent corner cuts.
     dx,dy=end[0]-start[0],end[1]-start[1];norm=dx*dx+dy*dy

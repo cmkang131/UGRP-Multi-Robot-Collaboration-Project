@@ -135,6 +135,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--plan',type=Path,required=True)
     p.add_argument('--concurrency',type=int,default=16);p.add_argument('--speed-gate-limit',type=float,default=3.5)
     p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true')
+    p.add_argument('--diagnostic-only',action='store_true',help='one finite wave of seen cases; never qualifies a gate')
     p.add_argument('--start-index',type=int,default=0);p.add_argument('--speed-gate-from',type=Path)
     p.add_argument('--episode-indices',type=int,nargs='+',help='explicit unchanged frozen-plan indices; never resample')
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
@@ -151,6 +152,14 @@ def main():
     write(root/'resource-admission.json',{'loadavg':os.getloadavg(),'memory_available_kib':available,
         'plan_sha256':hashlib.sha256(plan.read_bytes()).hexdigest(),'concurrency':a.concurrency,
         'episode_indices':indices,'complete_frozen_cohort':a.complete_frozen_cohort})
+    if a.diagnostic_only:
+        if len(indices)>a.concurrency or a.probe_only or a.speed_gate_from:
+            raise ValueError('diagnostic is one finite wave, separate from speed and qualification')
+        rows,reason=wave(root/'diagnostic',plan,indices,a.cap_s,probe=False,limit=a.speed_gate_limit,
+            teacher_profile=a.teacher_profile,complete_frozen_cohort=a.complete_frozen_cohort)
+        write(root/'diagnostic.json',{**summarize(rows,len(indices)),'qualified':False,
+            'purpose':'seen regression replay; not a fresh teacher gate','stop_reason':reason})
+        return
     if a.speed_gate_from:
         gate,proof=reuse_speed_gate(a.speed_gate_from.resolve(),plan,a.concurrency,a.speed_gate_limit)
         write(root/'execution-continuity.json',proof)
