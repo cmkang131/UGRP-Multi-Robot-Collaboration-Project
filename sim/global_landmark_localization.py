@@ -14,6 +14,7 @@ import numpy as np
 from scipy.optimize import least_squares
 
 OPTION = 'setdown_global_v1'
+SUPPORT_MODES = ('off', 'map_free_v1')
 PARAMS = dict(line_sigma_m=.04, angle_sigma_rad=math.radians(5),
               inlier_sigma=2.5, min_lines=3, min_views=2,
               min_span_m=.20, wall_fit_m=.025, wall_min_points=8,
@@ -86,7 +87,10 @@ def observations(views, current_command):
 
 
 class GlobalLandmarkMatcher:
-    def __init__(self, static):
+    def __init__(self, static, *, localization_support='off'):
+        if localization_support not in SUPPORT_MODES:
+            raise ValueError(localization_support)
+        self.localization_support = localization_support
         from harness.zone_solo_cyan_landmarks import MapFeatures
         self.static = static; self.edges = []
         for e in MapFeatures(static).edges:
@@ -108,8 +112,23 @@ class GlobalLandmarkMatcher:
                 (e['hue'] is None or abs(float(wrap(math.radians(2*(e['hue']-f['hue']))))) <= math.radians(24))]
 
     def free(self, poses, *, extra_clearance=0.):
+        """Motion clearance; never reduced by the localization support option."""
+        return self._free(poses, PARAMS['robot_clearance_m']+extra_clearance)
+
+    def pose_supported(self, poses):
+        """AMCL-style map support is not a collision-free motion certificate.
+
+        Nav2 uniformPoseGenerator samples unoccupied map cells. Inflating them
+        by the robot's circumscribed radius deletes real near-wall poses (and
+        their alternatives) before sensor scoring. Keep that inflation only
+        in free(), which the existing motion planners still use unchanged.
+        See release9.md; this is not a particle filter or a threshold relaxation.
+        """
+        margin = 0. if self.localization_support == 'map_free_v1' else PARAMS['robot_clearance_m']
+        return self._free(poses, margin)
+
+    def _free(self, poses, margin):
         q = np.asarray(poses); x, y = q[:,0], q[:,1]; a,b,c,d = self.static['bounds_m']
-        margin = PARAMS['robot_clearance_m']+extra_clearance
         good = (x>=a+margin)&(x<=b-margin)&(y>=c+margin)&(y<=d-margin)
         for o in self.static['obstacles']:
             if o.get('kind')!='wall':
@@ -119,6 +138,7 @@ class GlobalLandmarkMatcher:
         return good
 
     def hypotheses(self, fs, matches):
+        self.support_audit = dict(generated=0, rejected_before_score=0, rejected_after_refine=0)
         hypotheses = []
         # Enumerate the finite correspondence set instead of random subsampling.
         for i,j in itertools.combinations(range(len(fs)),2):
@@ -138,7 +158,9 @@ class GlobalLandmarkMatcher:
                 xy=np.linalg.solve(N,rhs); hypotheses.append([*xy,float(wrap(yaw))])
         if not hypotheses:
             return np.empty((0,3))
-        q=np.array(hypotheses);q=q[self.free(q)]
+        q=np.array(hypotheses);supported=self.pose_supported(q)
+        self.support_audit.update(generated=len(q), rejected_before_score=int((~supported).sum()))
+        q=q[supported]
         # Only numerical duplicates removed; alternative regions/headings stay.
         return np.unique(np.round(q,6),axis=0)
 
@@ -170,11 +192,17 @@ class GlobalLandmarkMatcher:
         if len(fs)<PARAMS['min_lines'] or base['views_with_evidence']<PARAMS['min_views']:
             return base
         q=self.hypotheses(fs,matches);base['hypotheses']=len(q)
+        if self.localization_support != 'off':
+            base['localization_support'] = self.localization_support
+            base['support_audit'] = self.support_audit
         if not len(q):
             return {**base,'reason':'unobservable_global_landmarks'}
         threshold=PARAMS['inlier_sigma']**2
         errors,_=self.residuals(q,fs,matches)
         scores=np.maximum(0,1-errors/threshold).sum(1)
+        if self.localization_support != 'off':
+            base['candidate_score_quantiles'] = dict(zip(('min','p25','p50','p75','p90','p99','max'),
+                                                        np.quantile(scores,[0,.25,.5,.75,.9,.99,1]).tolist()))
         seeds=[]
         for i in np.argsort(-scores,kind='stable'):
             if any(np.linalg.norm(q[i,:2]-p[:2])<PARAMS['cluster_m'] and abs(float(wrap(q[i,2]-p[2])))<PARAMS['cluster_rad'] for p in seeds):
@@ -198,7 +226,8 @@ class GlobalLandmarkMatcher:
                 return out
             opt=least_squares(residual,seed,loss='huber',f_scale=1.,max_nfev=40)
             p=opt.x;p[2]=float(wrap(p[2]))
-            if not self.free([p])[0]:
+            if not self.pose_supported([p])[0]:
+                self.support_audit['rejected_after_refine'] += 1
                 continue
             er,ids2=self.residuals(p,fs,matches); er=er[0];keep2=np.flatnonzero(er<=threshold)
             score=float(np.maximum(0,1-er/threshold).sum())
@@ -215,6 +244,10 @@ class GlobalLandmarkMatcher:
         normals=np.array([self.edges[best['ids'][i]]['n'] for i in keep])
         rank=int(np.linalg.matrix_rank(normals)) if len(normals) else 0
         ok=len(keep)>=PARAMS['min_lines'] and view_count>=PARAMS['min_views'] and rank==2 and (gap is None or gap>=PARAMS['min_score_gap'])
+        if self.localization_support != 'off':
+            base['acceptance_checks'] = dict(lines=bool(len(keep)>=PARAMS['min_lines']),
+                views=bool(view_count>=PARAMS['min_views']), normal_rank=bool(rank==2),
+                score_gap=bool(gap is None or gap>=PARAMS['min_score_gap']))
         metric_errors=[];angle_errors=[];R=rotation(best['pose'][2])
         for i in keep:
             f=fs[i];e=self.edges[best['ids'][i]];p=f['p']@R.T+best['pose'][:2];a,b=e['p'];v=b-a

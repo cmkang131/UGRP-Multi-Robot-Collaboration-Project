@@ -156,6 +156,26 @@ def test_command_relative_no_evidence_reaches_pair_decision(tmp_path, fake_backe
     assert json.loads((out/'result.json').read_text())['status'] == 'complete'
 
 
+def test_map_support_runner_keeps_blank_input_closed_and_records_option(tmp_path, fake_backend, monkeypatch):
+    plans = json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/'
+                        'release8-diagnostic-plan.json').read_text())
+    def forbidden(*args, **kwargs):
+        raise AssertionError('truth-derived perception entered map-support localization')
+    monkeypatch.setattr(runner.Eyes, 'classify', forbidden)
+    result = runner.run(plans['episodes'][0], tmp_path/'map-support', cap_s=14.,
+                        **plans['execution_profile'], localization_support='map_free_v1')
+    assert result['localization_support'] == 'map_free_v1' and not result['release_success']
+    assert result['input_audit']['held_world_reads'] == 0
+    assert result['input_audit']['invisible_measurements'] == 0
+    for loc in result['lookaround_result'].values():
+        assert loc['localizer']['localization_support'] == 'map_free_v1'
+        assert not loc['localizer']['map_pose_known']
+        assert loc['evaluation']['sweeps']
+        assert not loc['evaluation']['sweeps'][0]['decision']['accepted']
+    with pytest.raises(ValueError, match='global RGB'):
+        runner.run(plans['episodes'][0], tmp_path/'invalid', localization_support='map_free_v1')
+
+
 def test_unknown_evidence_still_searches_after_lookaround(tmp_path, fake_backend):
     plans = json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/'
                         'release-command-diagnostic-plan.json').read_text())

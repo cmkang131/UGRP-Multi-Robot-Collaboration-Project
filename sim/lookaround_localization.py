@@ -193,9 +193,13 @@ class LookaroundLocalizer:
     """One robot's own-pose estimate, look plan and image updates (no simulator input)."""
 
     def __init__(self, static, estimate, *, sigma_xy=.05, sigma_yaw=math.radians(2.), odometry_profile='off',
-                 mode='setdown_lookaround_v1', map_pose_known=True):
+                 mode='setdown_lookaround_v1', map_pose_known=True, localization_support='off'):
         if mode not in MODES:
             raise ValueError(mode)
+        from sim.global_landmark_localization import SUPPORT_MODES
+        if localization_support not in SUPPORT_MODES or (localization_support != 'off' and mode != 'setdown_global_v1'):
+            raise ValueError('localization support requires global landmark localization')
+        self.localization_support = localization_support
         self.mode, self.arm = mode, LOOK_ARMS[mode]
         self.map_pose_known = bool(map_pose_known)
         self.v2 = mode == 'setdown_lookaround_v2'
@@ -209,7 +213,7 @@ class LookaroundLocalizer:
         self.global_matcher = None
         if mode == 'setdown_global_v1':
             from sim.global_landmark_localization import GlobalLandmarkMatcher
-            self.global_matcher = GlobalLandmarkMatcher(static)
+            self.global_matcher = GlobalLandmarkMatcher(static, localization_support=localization_support)
         self.profile = odometry_profile
         self.camera = Camera()
         self.landmarks = map_landmarks(static)
@@ -476,6 +480,7 @@ class LookaroundLocalizer:
 
     def record(self):
         return {'option': self.mode, 'plan': self.plan, 'views': self.views, 'odometry_profile': self.profile, 'decision': self.decision,
+                'localization_support': self.localization_support,
                 'command_pose': self.command_own.x.tolist(),
                 'map_pose_known': self.map_pose_known, 'pose_frame': 'map' if self.map_pose_known else 'arbitrary_command_start',
                 'final_estimate': [float(z) for z in self.own.x],

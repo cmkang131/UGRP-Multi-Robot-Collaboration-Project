@@ -127,7 +127,7 @@ def test_lateral_pwm_is_same_world_translation_for_opposite_own_headings():
 
 def test_recovery_order_motion_bounds_and_no_blind_translation(matcher):
     from sim.grasp_act_release_teacher import ReleaseTeacher
-    loc=SimpleNamespace(global_matcher=matcher,decision=dict(alternatives=[dict(pose=[4.6,-.5,math.pi/2])]))
+    loc=SimpleNamespace(global_matcher=matcher,profile='off',decision=dict(alternatives=[dict(pose=[4.6,-.5,math.pi/2])]))
     teacher=ReleaseTeacher('r1','teal',{1:2000,3:820,4:2320,5:1320,6:1500},handoff_pose_estimate=None,zone_rect=(4.6,.4,.3,.7))
     plans=[recovery_script(loc,teacher,i,0) for i in (1,2,3)]
     assert [d['action'] for _,d in plans]==['pan','backstep','body_turn']
@@ -151,3 +151,44 @@ def test_saved_camera_detections_recover_unique_pose_and_reject_ambiguity(matche
         if out['accepted']:
             # Test/evaluation side only: the estimator never sees this label.
             assert math.dist(out['proposed'][:2],row['evaluation_truth'][:2])<.10
+
+
+def test_map_support_keeps_near_wall_hypotheses_without_authorizing_motion(matcher):
+    m = GlobalLandmarkMatcher(matcher.static, localization_support='map_free_v1')
+    poses = [[4.7, 1.31, -1.5], [4.7, 1.45, 0.], [6., 0., 0.]]
+    assert m.pose_supported(poses).tolist() == [True, False, False]
+    assert not matcher.pose_supported(poses).any()
+    assert np.array_equal(m.free(poses), matcher.free(poses))
+    assert np.array_equal(m.free(poses, extra_clearance=.15), matcher.free(poses, extra_clearance=.15))
+    assert not m.free(poses, extra_clearance=.15).any()
+    with pytest.raises(ValueError):
+        GlobalLandmarkMatcher(matcher.static, localization_support='unknown')
+
+
+def test_saved_74963_sensor_evidence_recovers_pose_deleted_by_motion_inflation():
+    fixture = json.loads((Path(__file__).parent/'fixtures/release9_map_support.json').read_text())
+    static = contract.resolve(fixture['map_id'])[0]
+    old = GlobalLandmarkMatcher(static)
+    new = GlobalLandmarkMatcher(static, localization_support='map_free_v1')
+    for row in fixture['cases']:
+        before = old.fit(row['views'], row['command_pose'])
+        after = new.fit(row['views'], row['command_pose'])
+        assert before['accepted'] == row['old_accepted']
+        assert after['accepted'] and after['normal_rank'] == 2
+        assert after['score_gap'] >= .75 and all(after['acceptance_checks'].values())
+        # Evaluation label is read only AFTER both estimates have been computed.
+        assert math.dist(after['proposed'][:2], row['evaluation_truth'][:2]) < .05
+        assert math.dist(before['proposed'][:2], row['evaluation_truth'][:2]) > .5
+        assert not new.free([after['proposed']])[0]
+
+
+def test_map_support_does_not_accept_symmetric_or_parallel_evidence(matcher):
+    static = copy.deepcopy(matcher.static)
+    static['regions']['zone_B']['rgba'] = static['regions']['zone_A']['rgba']
+    m = GlobalLandmarkMatcher(static, localization_support='map_free_v1')
+    assert not m.fit(scene_views(m, [4.5, -.5, .72]), [0, 0, 0])['accepted']
+    assert not m.fit(scene_views(m, [4.5, -.5, .72], only_parallel=True), [0, 0, 0])['accepted']
+    loc = LookaroundLocalizer(static, [0, 0, 0], mode='setdown_global_v1',
+                             map_pose_known=False, localization_support='map_free_v1')
+    assert loc.record()['localization_support'] == 'map_free_v1'
+    assert not loc.finalize()['accepted'] and not loc.map_pose_known
