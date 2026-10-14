@@ -1,10 +1,10 @@
 {
   "schema": "ugrp.e2e18.privileged_act.v1",
-  "status": "teacher_gate_incomplete_stagnation_fixed_pending_regression",
+  "status": "fixed_078_teacher_gate_failed_36_of_40",
   "classification": "dev",
   "research_result": false,
   "scope_changed": "2026-10-14 one multitask ACT for local grasp/release of s1-s8 cargo; map code navigation, Gemma skill decisions, private Kaggle GPU training authorized",
-  "source_sha": "b0cc9d775f57c2b8eca76144fe986b3c501ed35f",
+  "source_sha": "6a77d2da76be6b2d388113b0334e01816d983011",
   "audit": {
     "status": "short_saved_stage_audit_completed_with_limits",
     "funnel": {
@@ -1262,7 +1262,130 @@
     },
     "gate_interrupted_N": 5,
     "gate_qualified": false,
-    "latest_gate": "teacher-gate-1f177950.json"
+    "latest_gate": "teacher-gate-078-verified.json.zst",
+    "continuation": {
+      "baseline_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+      "n": 36,
+      "N": 40,
+      "planned_N": 40,
+      "interrupted_excluded": 2,
+      "unfinished_indices": [],
+      "current_run": "grasp-teacher-final10-6a77d2da",
+      "teacher_changes": "none; batch driver only",
+      "candidate_archived_sha": "87c4231d",
+      "data_episodes": 0,
+      "source_components": "teacher-continuation-components.json",
+      "analysis": "teacher-continuation-analysis.json",
+      "current_run_status": "complete",
+      "qualified": false
+    },
+    "fixed_078_gate": {
+      "n": 36,
+      "N": 40,
+      "qualified": false,
+      "teacher_stage_funnel": {
+        "r1": {
+          "align": {
+            "n": 40,
+            "N": 40
+          },
+          "ready": {
+            "n": 39,
+            "N": 40
+          },
+          "pick": {
+            "n": 36,
+            "N": 40
+          },
+          "verify": {
+            "n": 36,
+            "N": 40
+          },
+          "done": {
+            "n": 36,
+            "N": 40
+          }
+        },
+        "r2": {
+          "align": {
+            "n": 37,
+            "N": 40
+          },
+          "ready": {
+            "n": 37,
+            "N": 40
+          },
+          "pick": {
+            "n": 36,
+            "N": 40
+          },
+          "verify": {
+            "n": 36,
+            "N": 40
+          },
+          "done": {
+            "n": 36,
+            "N": 40
+          }
+        }
+      },
+      "episode_sim_s": {
+        "N": 40,
+        "min": 9.899999999995222,
+        "median": 21.600000000020533,
+        "p95": 60.00000000020389,
+        "max": 60.00000000020389
+      },
+      "success_sim_s": {
+        "N": 36,
+        "min": 9.899999999995222,
+        "median": 21.3000000000191,
+        "p95": 26.675000000044765,
+        "max": 37.40000000009598
+      },
+      "wall_per_sim": {
+        "N": 40,
+        "min": 2.328802624325422,
+        "median": 2.577870417578654,
+        "p95": 2.9200295832844323,
+        "max": 3.013885189799519
+      },
+      "excluded": [
+        {
+          "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-continue-7176b238/cohort-016/episode-017/raw",
+          "status": "interrupted"
+        },
+        {
+          "raw": "/home/ugrp/ugrp-sim/runs/grasp-teacher-continue-7176b238/cohort-016/episode-020/raw",
+          "status": "interrupted"
+        }
+      ],
+      "plan_sha256": "f5d07562055edd77e6fedcb8c83a27bcf8d3e7de606d5906d4d1792f09a25f72",
+      "baseline_source_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
+      "student_rgb_frames": 0,
+      "data_episodes": 0,
+      "student_physical_trials": 0,
+      "failure_classes": {
+        "goal_without_path": {
+          "n": 3,
+          "N": 40,
+          "indices": [
+            17,
+            20,
+            25
+          ]
+        },
+        "alignment_unreachable_ground_ik": {
+          "n": 1,
+          "N": 40,
+          "indices": [
+            33
+          ]
+        }
+      },
+      "raw_and_sha256": "teacher-gate-078-verified.json.zst",
+      "verification": "teacher-gate-078-verification.json"
+    }
   },
   "data": {
     "new_episodes": 0,

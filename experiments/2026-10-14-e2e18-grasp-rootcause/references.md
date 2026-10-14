@@ -33,3 +33,9 @@
 
 - 교사 재사용: `scripts/zone_teacher.py:_drive_to/_grasp_targets`, `experiments/2026-09-25-zone-cargo-catalogue/README.md`. 옛 pair_beam 52.3 SIM초는 seed11 빈 바닥·구형 구동·local_contact_fine의 전체 이송 1/1이며 현재 무작위 v7 파지 성공으로 승계하지 않는다.
 - [WPILib feedforward 공식 문서](https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/feedforward.html), 2026-10-14 열람: kS 마찰 보상과 단위 일치. 본 v7 relay 대응은 고정 시뮬레이터 명령 모델에서 도출한 포트 보상이며 WPILib를 그대로 설치한 것이나 실물 보정 완료가 아니다.
+
+### 관문 접근 불가 분석
+
+[MoveIt Grasps 공식 문서](https://moveit.picknik.ai/main/doc/examples/moveit_grasps/moveit_grasps_tutorial.html)와 [PDDLStream, ICAPS 2020](https://ojs.aaai.org/index.php/ICAPS/article/view/6739), [저자 공개 코드](https://github.com/caelan/pddlstream)를 확인했다. IK·충돌·접근 경로의 가능 조건과, 방해 물체를 치우는 작업 순서를 구분한다. 현재 교사는 기존 A*와 고정 끝 자세를 쓰며 PDDLStream을 설치하거나 작업 재배치를 구현하지 않았다. 이 자료는 원인 분류 근거이며 실패를 성공/제외로 바꾸는 근거가 아니다.
+
+이전 320×240·5Hz 수집 제안은 철회됐다. 현재 성공 관문은 자기 RGB 0장, 검토용 네 정적 카메라 모음 1Hz다. 게이트 통과 뒤 학습 수집은 실제 학생 입력 640×480·10Hz로 별도 실행한다.
