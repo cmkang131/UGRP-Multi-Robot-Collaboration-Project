@@ -30,3 +30,12 @@ def test_resume_checks_plan_speed_and_every_changed_execution_path(tmp_path,monk
     with pytest.raises(ValueError,match='byte-identical'):reuse_speed_gate(prior,plan,16,3.5)
     after['sim/grasp_act_teacher.py']='old';plan.write_text('{}')
     with pytest.raises(ValueError,match='same frozen plan'):reuse_speed_gate(prior,plan,16,3.5)
+
+
+def test_exact_unfinished_indices_preserve_frozen_plan():
+    from scripts.run_grasp_act_batch import selected_indices
+    assert selected_indices(40,0,[17,20,*range(32,40)])==[17,20,*range(32,40)]
+    assert selected_indices(40,16,None)==list(range(16,40))
+    for indices in ([17,17],[40],[-1],[]):
+        with pytest.raises(ValueError):selected_indices(40,0,indices)
+    with pytest.raises(ValueError):selected_indices(40,16,[17])

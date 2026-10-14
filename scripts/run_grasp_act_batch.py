@@ -65,7 +65,7 @@ def summarize(rows,planned):
         'interrupted':sum(r.get('status')=='interrupted' or r.get('exit') in (-2,130) for r in rows),'rows':rows}
 
 
-def wave(root,plan,indices,cap,*,probe,limit):
+def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False):
     jobs=[];reason=None;rows=[];monitored=0.;started=time.monotonic()
     parent=read(root.parents[0]/'RUN_META.json')
     env={**os.environ,**{k:'1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','LP_NUM_THREADS')}}
@@ -86,7 +86,7 @@ def wave(root,plan,indices,cap,*,probe,limit):
                 result=read(target/'raw/result.json');progress=read(target/'raw/progress.json')
                 states.append({'index':index,'exit':proc.poll(),'progress':progress,'status':result.get('status')})
                 if proc.poll() not in (None,0):reason='CHILD_HOST_ERROR';break
-                if not probe and result.get('status')=='complete' and result.get('physical_success') is False:
+                if not probe and not complete_frozen_cohort and result.get('status')=='complete' and result.get('physical_success') is False:
                     reason='PHYSICAL_TEACHER_FAILURE';break
                 if now-at > (max(300.,30*limit*3) if probe else max(600.,cap*limit*3)):
                     reason='WALL_TIMEOUT';break
@@ -122,20 +122,33 @@ def wave(root,plan,indices,cap,*,probe,limit):
     return rows,reason
 
 
+def selected_indices(size,start,explicit):
+    if explicit is None:return list(range(start,size))
+    if start!=0:raise ValueError('use start-index or episode-indices, not both')
+    if not explicit or len(set(explicit))!=len(explicit) or any(i<0 or i>=size for i in explicit):
+        raise ValueError('distinct frozen episode indices in range required')
+    return sorted(explicit)
+
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--plan',type=Path,required=True)
     p.add_argument('--concurrency',type=int,default=16);p.add_argument('--speed-gate-limit',type=float,default=3.5)
     p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true')
-    p.add_argument('--start-index',type=int,default=0);p.add_argument('--speed-gate-from',type=Path);a=p.parse_args()
+    p.add_argument('--start-index',type=int,default=0);p.add_argument('--speed-gate-from',type=Path)
+    p.add_argument('--episode-indices',type=int,nargs='+',help='explicit unchanged frozen-plan indices; never resample')
+    p.add_argument('--complete-frozen-cohort',action='store_true',help='record individual finite failures; operator still stops diagnosed shared defects')
+    a=p.parse_args()
     root=a.root.resolve();require_azure(root);plan=a.plan.resolve();episodes=read(plan)['episodes']
     if not 1<=a.concurrency<=16 or len(episodes)<a.concurrency:raise ValueError('explicit 1..16 concurrency and enough plans required')
     if not 0<a.cap_s<=180:raise ValueError('finite simulation cap required')
     if not 0<=a.start_index<len(episodes):raise ValueError('start index outside frozen plan')
+    indices=selected_indices(len(episodes),a.start_index,a.episode_indices)
     if os.getloadavg()[0]>=12.8:raise ValueError('AZURE_LOAD_ADMISSION')
     available=int(next(l.split()[1] for l in Path('/proc/meminfo').read_text().splitlines() if l.startswith('MemAvailable:')))
     if available<6*1024**2+a.concurrency*512*1024:raise ValueError('AZURE_MEMORY_ADMISSION')
     write(root/'resource-admission.json',{'loadavg':os.getloadavg(),'memory_available_kib':available,
-        'plan_sha256':hashlib.sha256(plan.read_bytes()).hexdigest(),'concurrency':a.concurrency})
+        'plan_sha256':hashlib.sha256(plan.read_bytes()).hexdigest(),'concurrency':a.concurrency,
+        'episode_indices':indices,'complete_frozen_cohort':a.complete_frozen_cohort})
     if a.speed_gate_from:
         gate,proof=reuse_speed_gate(a.speed_gate_from.resolve(),plan,a.concurrency,a.speed_gate_limit)
         write(root/'execution-continuity.json',proof)
@@ -150,8 +163,10 @@ def main():
     write(root/'speed-gate.json',gate)
     if not gate['admitted'] or a.probe_only:return
     all_rows=[]
-    for start in range(a.start_index,len(episodes),a.concurrency):
-        rows,reason=wave(root/f'cohort-{start:03d}',plan,range(start,min(start+a.concurrency,len(episodes))),a.cap_s,probe=False,limit=a.speed_gate_limit)
+    for offset in range(0,len(indices),a.concurrency):
+        batch=indices[offset:offset+a.concurrency]
+        rows,reason=wave(root/f'cohort-{batch[0]:03d}',plan,batch,a.cap_s,probe=False,limit=a.speed_gate_limit,
+            complete_frozen_cohort=a.complete_frozen_cohort)
         all_rows.extend(rows);write(root/'teacher-gate.json',summarize(all_rows,len(episodes)))
         if reason:break
 
