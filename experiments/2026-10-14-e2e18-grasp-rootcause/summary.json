@@ -1733,5 +1733,23 @@
     ],
     "cause": "new segment check rejected outward retreat from 148mm visible-beam range inside 150mm inflated margin; paired robot remained ready",
     "next": "reuse zone no-closer escape for observed disc margins; frozen observation checks outward wheel command"
+  },
+  "gcp_transition": {
+    "directive": "PR484 coordinator 17:00 KST; no more Azure VM3 submissions",
+    "rules_pr": 492,
+    "simulation_and_training_default": "GCP",
+    "host_ready": false,
+    "gcp_physical_started_N": 0,
+    "next": "known 73009/73011 replay -> measured concurrency16 speed baseline -> fresh40",
+    "azure_submission_error": {
+      "path": "admission-d032-host-error.json",
+      "sha256": "1b7b214fab585aef0a6547df04efd1afe715d2d52e417f62082a8954c9d89547"
+    },
+    "offline_host_admission_tests": {
+      "passed": 10,
+      "failed": 0
+    },
+    "teacher_controller_baseline_sha": "d0329eee1f7ce928c00a563edf8499b399864d69",
+    "teacher_physics_changed": false
   }
 }

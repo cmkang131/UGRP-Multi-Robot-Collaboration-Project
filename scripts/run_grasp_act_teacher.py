@@ -1,6 +1,6 @@
-"""Finite teacher demonstration on VM3; no LLM/API keys, weld always OFF.
+"""Finite teacher demonstration on an admitted host; weld always OFF.
 
-Run only after VM3 release and storage/speed gates. The optional noise is
+Run only after host release and storage/speed gates. The optional noise is
 DART-inspired until its covariance is estimated from a trained student's
 residuals. Teacher labels and simulator truth never share the student file.
 """
@@ -78,8 +78,12 @@ def compress_logs(out):
             'sha256':hashlib.sha256(compressed).hexdigest(),'decoded_sha256':hashlib.sha256(raw).hexdigest()})
 
 
-def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False):
-    if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use released VM3')
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None):
+    if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use admitted execution host')
+    if record_training:
+        from scripts.grasp_act_host import same_machine
+        if not recording_proof or recording_proof.get('qualified') is not True:raise ValueError('qualified recording proof required')
+        same_machine(recording_proof.get('execution_host'),execution_host)
     import mujoco
     import numpy as np
     from harness import grasp_act_contract as v5
@@ -106,7 +110,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
     write(out/'RUN_META.json',{'class':'milestone' if record_training else 'dev','pr':484,'branch':'claude/e2e18-grasp-rootcause','sha':sha,'batch':plan['batch']})
     scene=make_scene(plan);world=None;streams=[];start=time.monotonic()
     timings={k:0. for k in ('physics','rgb','evaluation','teacher','io')}
-    report={'status':'running','source_sha':sha,'teacher_success_n':0,'teacher_N':len(plan['roles']),
+    report={'status':'running','source_sha':sha,'teacher_success_n':0,'teacher_N':len(plan['roles']),'execution_host':execution_host,
         'joint_held':None,'data_admitted':False,'assignment_source':plan['assignment_source'],
         'student_execution':False,'recording_mode':'training' if record_training else 'success_measurement',
         'episode_plan_sha256':hashlib.sha256((out/'plan.json').read_bytes()).hexdigest(),
@@ -312,24 +316,28 @@ def main():
     p.add_argument('--noise',action='store_true');p.add_argument('--probe',action='store_true')
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
     p.add_argument('--self-pose-source',choices=('issued','perfect_self_comparison'),default='issued')
+    p.add_argument('--execution-host',choices=('azure','gcp1'),default='azure')
     p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path)
     p.add_argument('--gate-plan',type=Path);p.add_argument('--recording-probe',action='store_true');p.add_argument('--recording-check',type=Path)
     a=p.parse_args();proof=None
+    from scripts.grasp_act_host import identity,same_machine
+    host=identity(a.execution_host)
     if a.record_training:
         if a.teacher_gate is None:raise ValueError('verified >=38/40 teacher gate required before recording')
         from harness.grasp_act_admission import recording_admission
         gate=json.loads(a.teacher_gate.read_text())
         if a.gate_plan is None:raise ValueError('frozen measured gate plan required')
         source_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-        proof=recording_admission(gate,source_sha=source_sha,teacher_profile=a.teacher_profile,gate_plan=a.gate_plan)
+        proof=recording_admission(gate,source_sha=source_sha,teacher_profile=a.teacher_profile,gate_plan=a.gate_plan,execution_host=host)
         proof['gate_sha256']=hashlib.sha256(a.teacher_gate.read_bytes()).hexdigest()
         if not a.recording_probe:
             if a.recording_check is None:raise ValueError('paired 640x480 recording-mode check required')
             check=json.loads(a.recording_check.read_text())
             if check.get('qualified') is not True or check.get('N',0)<3 or check.get('n')!=check.get('N') or check.get('source_sha')!=source_sha or check.get('teacher_profile')!=a.teacher_profile:
                 raise ValueError('unverified recording-mode equivalence')
+            same_machine(check.get('execution_host'),host)
             proof['recording_check_sha256']=hashlib.sha256(a.recording_check.read_bytes()).hexdigest()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host),ensure_ascii=False))
 if __name__=='__main__':main()
