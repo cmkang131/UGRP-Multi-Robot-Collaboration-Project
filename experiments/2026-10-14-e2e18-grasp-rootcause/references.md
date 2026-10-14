@@ -19,3 +19,9 @@
 - `experiments/2026-09-16-reference-act/README.md`: 축소 ACT 물리 0/3, 종료 누락; 기존 커널 3/3. 이 결과를 현재 물리·봉 모델의 기준 성공률로 승계하지 않는다.
 - `harness/reference_act.py`, `scripts/patch_reference_act.py`, CI `reference-act-smoke`: 고정 LeRobot SHA와 두 줄 device 호환 패치를 재사용할 기반.
 - `scripts/cargo_formation_teacher.py`, `scripts/zone_teacher.py`, `harness/visual_arm_v3.py`: 정답 전용 교사·명령 IK. v2와 v3의 팔 장착 위치 및 손가락 중심 차이를 확인해야 한다.
+
+## 2026-10-14 추가 결정의 근거
+
+- Lin et al., [Data Scaling Laws in Imitation Learning for Robotic Manipulation](https://arxiv.org/abs/2410.18647), 2024 최초 공개/2026 v4; [공식 구현](https://github.com/Fanqi-Lin/Data-Scaling-Laws). 초록과 README를 확인했다. 환경·물체 다양성의 효과와 동일 설정 반복의 포화를 근거로 시작 상태를 층화한다. 공식 공개 모델은 32개 환경–물체 쌍 × 환경당 50회였다. **100/200/400은 우리 실험의 크기 곡선이며 논문이 보장하는 최소 수가 아니다.** 봉 하나·외관 고정인 우리 설정에서는 주로 배치·지도·가림 다양성만 늘리므로 물체 범주 일반화 주장과 구별한다.
+- Codevilla et al., [End-to-end Driving via Conditional Imitation Learning](https://arxiv.org/abs/1710.02410), ICRA 2018; [저자 코드](https://github.com/carla-simulator/imitation-learning). 논문 정보·초록 및 저장소 설명 확인. 고수준 이산 명령으로 시각 행동을 조건화한다는 근거다. 그 논문의 분기망을 복제하는 대신 고정 ACT의 ENV 입력 투영에 스킬·끝 one-hot을 함께 넣는다. 이는 우리 adapter의 변경이며 원 ACT의 언어 추론 기능이 아니다.
+- [Kaggle 실행 규칙](../../docs/kaggle_simulation.md): private Dataset 생성 후 서버 메타데이터로 확인하고, 인터넷 OFF GPU kernel에 필요한 고정 의존성·체크포인트를 미리 넣는다. 자격 증명은 Mac에만 둔다. 기존 인터넷 ON GPU 점검과 이번 학습 경로를 구분한다.
