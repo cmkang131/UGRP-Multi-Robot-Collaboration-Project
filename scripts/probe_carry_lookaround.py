@@ -12,7 +12,7 @@ import argparse,base64,io,json,math,os,platform,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
-from harness.grasp_act_contract import SERVOS,command
+from harness.grasp_act_contract_v4 import SERVOS,command   # prefix uses the preserved v4 observable_v2 teacher
 from scripts.run_grasp_act_teacher import write,apply,snapshot,compress_logs
 
 # Provisional safety thresholds (evaluation only; first measurement, no prior basis).
