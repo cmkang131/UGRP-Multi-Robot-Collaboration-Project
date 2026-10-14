@@ -20,6 +20,7 @@ function Save-State { $taskState | ConvertTo-Json -Depth 10 | Set-Content -Liter
 function SSH-Options { $taskArgs=@('-o','StrictHostKeyChecking=yes','-o','ConnectTimeout=10','-o','ServerAliveInterval=5','-o','ServerAliveCountMax=3'); if($IdentityFile){$taskArgs+=@('-o','IdentitiesOnly=yes','-i',$IdentityFile)}; return $taskArgs }
 function Run-Native([string]$Name,[string]$Program,[string[]]$Arguments) {
     Write-Host ('--- '+$Name+' ---')
+    if($Program -eq $taskSSH){$Arguments=@('-v','-E',(Join-Path $taskOutput (($Name -replace '[^A-Za-z0-9]','_')+'.ssh.log')))+$Arguments}
     & $Program @Arguments
     $taskCode=$LASTEXITCODE
     $taskState.steps+=@{name=$Name;exit_code=$taskCode;utc=[DateTime]::UtcNow.ToString('o')}; Save-State
@@ -41,23 +42,29 @@ try {
     Save-State
     # SSH/sudo passwords are entered only in the native interactive terminal.
     foreach($taskSpec in @(@{target=$LeaderTarget;role='leader'},@{target=$FollowerTarget;role='follower'})){
-        $taskTarget=$taskSpec.target; $taskRole=$taskSpec.role; $taskHost=($taskTarget -split '@')[1] -replace '\.local$',''; $taskUser=($taskTarget -split '@')[0]
+        $taskLogical=$taskSpec.target; $taskRole=$taskSpec.role; $taskHost=($taskLogical -split '@')[1] -replace '\.local$',''; $taskUser=($taskLogical -split '@')[0]
+        $taskAlias=($taskLogical -split '@')[1]
+        $taskAddress=$FollowerAddress; if($taskRole -eq 'leader'){$taskAddress=$LeaderAddress}
+        $taskTarget=$taskUser+'@'+$taskAddress
+        $taskConnection=(SSH-Options)+@('-o',('HostKeyAlias='+$taskAlias))
         $taskRemote='/home/'+$taskUser+'/ugrp_clock_logs/'+$taskRun
         $taskPayload=[Convert]::ToBase64String([IO.File]::ReadAllBytes($taskSetup))
         $taskCommand="umask 077; mkdir -p '$taskRemote' && printf '%s' '$taskPayload' | base64 -d > '$taskRemote/clock_setup.sh' && bash -n '$taskRemote/clock_setup.sh' && sudo bash '$taskRemote/clock_setup.sh' '$taskRole' '$taskHost' '$LeaderAddress' '$FollowerAddress' '$PCAddress' '$taskRemote' '$SourceRevision'"
-        try { Run-Native ($taskRole+' configure clock') $taskSSH ((SSH-Options)+@('-tt',$taskTarget,$taskCommand)) }
+        try { Run-Native ($taskRole+' configure clock') $taskSSH ($taskConnection+@('-tt',$taskTarget,$taskCommand)) }
         finally {
             $taskLocal=Join-Path $taskOutput $taskRole; New-Item -ItemType Directory -Path $taskLocal -Force | Out-Null
-            & $taskSCP @(SSH-Options) -r ($taskTarget+':'+$taskRemote+'/.') $taskLocal
+            & $taskSCP @taskConnection -r ($taskTarget+':'+$taskRemote+'/.') $taskLocal
             $taskRetrieveCode=$LASTEXITCODE
             $taskState.steps+=@{name=($taskRole+' retrieve logs');exit_code=$taskRetrieveCode}; Save-State
             if($taskRetrieveCode -ne 0){throw 'Failed to retrieve complete robot logs'}
         }
     }
     $taskRemote='/home/'+(($FollowerTarget -split '@')[0])+'/ugrp_clock_logs/'+$taskRun
-    Run-Native 'copy clock comparison' $taskSCP ((SSH-Options)+@($taskProbe,($FollowerTarget+':'+$taskRemote+'/clock_pair_probe.py')))
-    try { Run-Native '30 paired clock samples' $taskSSH ((SSH-Options)+@('-tt',$FollowerTarget,"python3 '$taskRemote/clock_pair_probe.py' --server '$LeaderAddress' --output '$taskRemote' --count 30")) }
-    finally { & $taskSCP @(SSH-Options) -r ($FollowerTarget+':'+$taskRemote+'/.') (Join-Path $taskOutput 'follower'); $taskRetrieveCode=$LASTEXITCODE; $taskState.steps+=@{name='retrieve pair samples';exit_code=$taskRetrieveCode}; Save-State; if($taskRetrieveCode -ne 0){throw 'Failed to retrieve complete pair samples'} }
+    $taskTarget=(($FollowerTarget -split '@')[0])+'@'+$FollowerAddress
+    $taskConnection=(SSH-Options)+@('-o',('HostKeyAlias='+(($FollowerTarget -split '@')[1])))
+    Run-Native 'copy clock comparison' $taskSCP ($taskConnection+@($taskProbe,($taskTarget+':'+$taskRemote+'/clock_pair_probe.py')))
+    try { Run-Native '30 paired clock samples' $taskSSH ($taskConnection+@('-tt',$taskTarget,"python3 '$taskRemote/clock_pair_probe.py' --server '$LeaderAddress' --output '$taskRemote' --count 30")) }
+    finally { & $taskSCP @taskConnection -r ($taskTarget+':'+$taskRemote+'/.') (Join-Path $taskOutput 'follower'); $taskRetrieveCode=$LASTEXITCODE; $taskState.steps+=@{name='retrieve pair samples';exit_code=$taskRetrieveCode}; Save-State; if($taskRetrieveCode -ne 0){throw 'Failed to retrieve complete pair samples'} }
     $taskPair=Get-Content -LiteralPath (Join-Path $taskOutput 'follower\pair_result.json') -Raw | ConvertFrom-Json
     if(-not $taskPair.sampled_clock_check_passed){throw 'Clock sample check failed'}
     $taskState.status='configured_and_sample_check_passed'
