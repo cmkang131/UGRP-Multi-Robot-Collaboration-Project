@@ -15,6 +15,7 @@ ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from harness.grasp_act_contract_v4 import SERVOS,command   # prefix uses the preserved v4 observable_v2 teacher
 from scripts.run_grasp_act_teacher import write,apply,snapshot,compress_logs
+from sim.grasp_act_release_teacher import OBSERVE_MODES
 
 SUCCESS={'settle_s':2.,'on_floor_z_m':.05,'speed_m_s':.01,'tilt_deg':3.,'open_pwm':1900,'clear_m':.04}
 DELIVERY_WAIT_S=4.
@@ -70,14 +71,16 @@ def own_end_world(world,inst,end):
     return b.xpos+rot@np.array([-.30 if end=='teal' else .30,0.,0.])
 
 
-def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands'):
+def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2'):
+    if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
     import numpy as np
     from PIL import Image
     from sim.grasp_act_scene import make_scene
     from sim.grasp_act_teacher import GraspTeacher
     from sim.grasp_act_release_teacher import (ReleaseTeacher,PairReleaseCode,QuantizedWheels,BACKOFF_M,
-        LOWER_Z_M,RAISE_Z_M,FOLDED_BACKOFF,WHEEL)
+        LOWER_Z_M,RAISE_Z_M,FOLDED_BACKOFF,WHEEL,OBSERVE_BACKOFF_M,REACH_MID_M)
+    from harness.visual_arm_v3 import solve_grip_site_ik,MOUNT_X_M
     from sim.visible_belief import relative,AXIAL_M_PER_S_AT_035
     from sim.masterpi_drive_friction_v7 import build_world,PROFILE
     from sim.grasp_act_port import ContinuousActPort
@@ -90,7 +93,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands'):
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise RuntimeError('committed source required')
     write(out/'RUN_META.json',{'class':'dev','pr':484,'branch':'claude/grasp-act-release','sha':sha,'batch':plan['batch']})
-    report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,
+    report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,
         'weld':'off','recording_mode':'success_measurement','student_execution':False,'success_rule':SUCCESS,
         'loadavg_at_start':os.getloadavg(),'release_success':None,'prefix_held':None}
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.
@@ -244,12 +247,25 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands'):
                 if not st['opened']:
                     for rid,t in rel.items():ports[rid].apply({'kind':'arm','servo_id':1,'pulse':2000},now);t.pwm[1]=2000
                     st['opened']=True
-                if now-st['go']>=1.2:
+                if now-st['go']>=1.2 and observe_mode=='backoff_v3':
+                    # Step back with the gripper raised, then look: the floor beyond the own end enters the view.
+                    for rid,t in rel.items():
+                        t.released_here(now);schedule(rid,every(t.arm_waypoints(RAISE_Z_M,3),.2),now)
+                    st['plan']={rid:t.shift_plan(OBSERVE_BACKOFF_M,-1.) for rid,t in rel.items()}
+                    st.update(phase='observe_back',since=now,go=now+.8,settle=None,search=0)
+                elif now-st['go']>=1.2:
                     for rid,t in rel.items():
                         t.released_here(now)
                         seq=every(t.arm_waypoints(RAISE_Z_M,3),.2)
                         schedule(rid,seq+[(1.0,t.gaze_target(now))],now)
                     st.update(phase='observe_move',since=now,end=now+1.0+.8,search=0)
+            elif ph=='observe_back':
+                run_sched(now)
+                if now>=st['go']-1e-9 and not run_plan(now):
+                    if st['settle'] is None:st['settle']=now+.3
+                    elif now>=st['settle']-1e-9:
+                        for rid,t in rel.items():schedule(rid,[(0.,t.gaze_target(now))],now)
+                        st.update(phase='observe_move',since=now,end=now+.8)
             elif ph=='observe_move':
                 run_sched(now)
                 if now>=st['end']-1e-9:st.update(phase='observe',since=now)
@@ -266,17 +282,34 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands'):
                     post('observe',now);st.update(phase='await_observe',since=now)
             elif ph=='await_observe' and ready('observe',now):
                 choice=code.decide(now,require_seen=True);st['choice']=choice
-                if choice['action']=='lower':
+                if choice['action']=='lower' and observe_mode=='backoff_v3':
+                    for rid in rel:schedule(rid,[(0.,FOLDED_BACKOFF)],now)
+                    st.update(phase='done',since=now);done_at=now
+                elif choice['action']=='lower':
                     for rid,t in rel.items():schedule(rid,[(0.,{3:820,4:2320})],now)
                     st['plan']={rid:t.shift_plan(BACKOFF_M,-1.) for rid,t in rel.items()}
                     st.update(phase='back_off',since=now,go=now+.6)
                 else:
                     st['iter']+=1
                     if st['iter']>3:outcome='release_iteration_cap';break
-                    dur=0.
-                    for rid,t in rel.items():
-                        seq,d=t.pick_schedule(now);schedule(rid,seq,now+.2);dur=max(dur,d)
-                    st.update(phase='repick',since=now,end=now+.2+dur)
+                    # Approach by own-command pulses until the re-grasp target is mid-reach (no reach crash).
+                    st['plan']={rid:t.approach_plan(now) for rid,t in rel.items()}
+                    for rid,pl in st['plan'].items():
+                        if pl:schedule(rid,[(0.,{k:int(v) for k,v in solve_grip_site_ik((MOUNT_X_M+REACH_MID_M,0.,.095)).items() if k in (3,4,5,6)})],now)
+                    moving=any(st['plan'].values())
+                    st.update(phase='approach',since=now,go=now+(.8 if moving else 0.),settle=None,moving=moving)
+            elif ph=='approach':
+                run_sched(now)
+                if now>=st['go']-1e-9 and not run_plan(now):
+                    if st['settle'] is None:st['settle']=now+(.3 if st['moving'] else 0.)
+                    if now>=st['settle']-1e-9:
+                        dur=0.
+                        try:
+                            for rid,t in rel.items():
+                                seq,d=t.pick_schedule(now);schedule(rid,seq,now+.2);dur=max(dur,d)
+                        except ValueError as error:
+                            report['repick_error']=str(error);outcome='repick_unreachable';break
+                        st.update(phase='repick',since=now,end=now+.2+dur)
             elif ph=='repick':
                 run_sched(now)
                 if now>=st['end']-1e-9:
@@ -359,8 +392,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands'):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=90.)
-    p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands');a=p.parse_args()
+    p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands')
+    p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode),ensure_ascii=False,default=str))
 if __name__=='__main__':main()

@@ -109,3 +109,19 @@ def test_released_end_uses_own_command_memory():
     t.released_here(0.)
     (ex2, ey2), o2, src2 = t.end_and_outward(5.)
     assert src2 == 'own_command_release' and ex2 == pytest.approx(ex) and o2[0] == pytest.approx(-1.)
+
+
+def test_approach_plan_brings_regrasp_target_to_mid_reach():
+    from sim.grasp_act_release_teacher import ReleaseTeacher, REACH_MID_M, WHEEL
+    from sim.visible_belief import AXIAL_M_PER_S_AT_035
+    from harness.visual_arm_v3 import MOUNT_X_M
+    pwm = {1: 1500, 3: 700, 4: 2400, 5: 1320, 6: 1500}
+    t = ReleaseTeacher('r1', 'teal', pwm, handoff_pose_estimate=[0., 0., 0.], zone_rect=(1., 0., .3, .7))
+    t.belief.observe('released_band', [MOUNT_X_M+REACH_MID_M, 0., 0.], 0., source='own_command')
+    assert t.approach_plan(0.) == []
+    t.belief.propagate(-.15, 0., 0.)          # stepped back 0.15 m (backoff_v3 observe)
+    plan = t.approach_plan(1.)
+    assert plan and all(w == [WHEEL]*4 for w, _ in plan)
+    assert sum(d[0] for _, d in plan)*AXIAL_M_PER_S_AT_035 == pytest.approx(.15, abs=.006)
+    t.belief.propagate(.25, 0., 0.)           # overshoot: target too close -> back up
+    assert all(w == [-WHEEL]*4 for w, _ in t.approach_plan(2.))

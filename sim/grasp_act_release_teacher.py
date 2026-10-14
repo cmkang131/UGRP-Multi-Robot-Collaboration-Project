@@ -16,7 +16,8 @@ motion by duration (docs/decision_log.md 2026-08-29).
 """
 from __future__ import annotations
 import math
-from harness.visual_arm_v3 import solve_grip_site_ik, tool_pose, forward_grip
+from harness.visual_arm_v3 import solve_grip_site_ik, tool_pose, forward_grip, MOUNT_X_M
+from harness.visual_arm import CALIBRATED_GRASP_RADIUS_CM
 from sim.visible_belief import VisibleBelief, odometry, relative, MEMORY_S, AXIAL_M_PER_S_AT_035
 GRASP_Z_M = .024           # sim/zone_cargo.GRASP_Z_M (catalogue constant, not a measurement)
 
@@ -34,6 +35,10 @@ GO_SETTLE_S = .2          # same as go_ack_settle_s
 INSIDE_LB_DEFAULT = .0
 OUTSIDE_STEP_M = .08
 FOLDED_BACKOFF = {3: 820, 4: 2320, 5: 1320}
+OBSERVE_MODES = ('gaze_v2', 'backoff_v3')
+OBSERVE_BACKOFF_M = .15   # backoff_v3: step back before looking so the floor beyond the end enters the view
+REACH_MID_M = sum(CALIBRATED_GRASP_RADIUS_CM)/200.
+REACH_TOL_M = .01
 
 
 def check_wheels(wheels, durations):
@@ -263,10 +268,22 @@ class ReleaseTeacher:
         # Look slightly outward of the end so the zone boundary beyond it is in view.
         return {k: int(v) for k, v in gaze_pose((ex+.06*ox, ey+.06*oy, .03), self.pwm).items() if k in (3, 4, 5, 6)}
 
+    def pick_target(self, now):
+        band = self.belief.get('band', now) or self.belief.get('released_band', now)
+        return band['pose'][:2], band['source']
+
+    def approach_plan(self, now):
+        """Own-command axial approach so the re-grasp target sits mid-reach (never a crash on reach)."""
+        (x, y), _ = self.pick_target(now)
+        radius = math.hypot(x-MOUNT_X_M, y)
+        lo, hi = (v/100. for v in CALIBRATED_GRASP_RADIUS_CM)
+        if lo+REACH_TOL_M <= radius <= hi-REACH_TOL_M:
+            return []
+        return self.shift_plan(radius-REACH_MID_M, 1.)
+
     def pick_schedule(self, now):
         """Re-grasp the own band (visible band preferred): hover, descent, close, lift."""
-        band = self.belief.get('band', now) or self.belief.get('released_band', now)
-        x, y = band['pose'][:2]
+        (x, y), _ = self.pick_target(now)
         grip = solve_grip_site_ik((x, y, GRASP_Z_M)); pitch = tool_pose(grip).pitch_deg
         seq = [(0., {**{k: int(v) for k, v in solve_grip_site_ik((x, y, .095), preferred_pitch_deg=pitch).items() if k in (3, 4, 5, 6)}, 1: 2000})]
         t = 1.2
