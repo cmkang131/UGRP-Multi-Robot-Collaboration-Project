@@ -91,3 +91,11 @@ def test_changed_scenarios_have_a_feasible_carry_route(scenarios):
         report = evaluate(sc, maps_dir=env.maps_dir_for(sc['map_id']))
         verdicts = {item: route.verdict for item, route in report.routes.items()}
         assert set(verdicts.values()) == {'feasible'}, (sid, verdicts)
+
+
+@pytest.mark.parametrize('sid', ['s7_pair_with_solo_v5', 's8_mixed_tiers_v5'])
+def test_scene_builds_from_a_v5_scenario_id_string(sid):
+    """The scene factory reads the scenario by id; it must find the v5 directory (review of PR #498)."""
+    from sim.zone_scenario_scene import ScenarioFinalV3Scene
+    scene = ScenarioFinalV3Scene.from_scenario(sid, 661)
+    assert scene.scene['params']['scenario_setup']['scenario_id'] == sid
