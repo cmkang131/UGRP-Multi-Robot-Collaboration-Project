@@ -30,7 +30,7 @@ def lift_answer(frame_bgr, pwm, kind, grasp_pose, floor_xy, *, held_judge=None, 
     answer = held['answer']
     record = {'evidence': 'kind_in_at_grip_band', 'answer': answer,
               'reason': held.get('reason'), 'v3_reason': held.get('v3_reason'),
-              'observed': held.get('observed')}
+              'observed': held.get('observed'), 'image_information': held.get('image_information')}
     if answer in ('yes', 'no'):
         return answer, record
     if held.get('v3_reason') != NOT_FRAMED:
@@ -46,3 +46,72 @@ def lift_answer(frame_bgr, pwm, kind, grasp_pose, floor_xy, *, held_judge=None, 
     if slot['answer'] == 'yes':
         return 'no', record           # the ordered kind is still standing there
     return 'unknown', record
+
+
+class SoloLiftObserver:
+    """Opt-in solo_rgb_lift_v2: own BGR and issued command history only.
+
+    Capture at close->lift before the raise command, after its scheduled
+    completion, and after three seconds stationary. Recheck every hold tick so
+    an earlier confirmation cannot authorize set-down after a visual loss.
+    """
+    def __init__(self, kind):
+        if kind not in ('cyan', 'red', 'green', 'yellow', 'can', 'tile'):
+            raise ValueError('solo cargo kind required')
+        self.kind = kind
+        self.before = self.after = None
+        self.completed_at = None
+        self.commands = []
+        self.samples = {}
+        self.answer_counts = {'yes': 0, 'no': 0, 'unknown': 0}
+        self.last = None
+
+    def _masks(self, bgr):
+        import cv2
+        from harness.zone_own_perception import hue_mask, _usable_region
+        hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
+        return ((hue_mask(hsv, self.kind) > 0) & _usable_region(bgr.shape[1], bgr.shape[0]),)
+
+    def start(self, frame, command, save):
+        import copy
+        self.before = frame.copy()
+        self.commands = [copy.deepcopy(command)]
+        self.samples['before_lift'] = save('before_lift', frame, command['t'])
+
+    def observe(self, frame, command, *, complete, save):
+        import copy
+        from sim.rgb_lift_evidence import SETTLE_S, confirm_parts_v2
+        out = {'evidence': 'solo_rgb_lift_v2', 'answer': 'unknown', 'verdict': 'undetermined',
+               'reason': 'before lift frame missing'}
+        if self.before is not None:
+            if self.after is None:
+                self.commands.append(copy.deepcopy(command))
+                if complete:
+                    self.after = frame.copy()
+                    self.completed_at = command['t']
+                    self.samples['lift_complete'] = save('lift_complete', frame, command['t'])
+            if self.after is None:
+                out['reason'] = 'issued lift completion pending'
+            else:
+                settled = frame if command['t']-self.completed_at >= SETTLE_S-1e-8 else None
+                if settled is not None and 'settled_hold' not in self.samples:
+                    self.samples['settled_hold'] = save('settled_hold', frame, command['t'])
+                rec = confirm_parts_v2(self.before, self.after, commands=self.commands,
+                                      masks=self._masks, names=(self.kind,), settled=settled,
+                                      rule='solo_rgb_lift_v2')
+                # A later incompatible command cannot reuse a cached yes.
+                current = {int(s): v for s, v in command['pwm'].items()}
+                final = {int(s): v for s, v in self.commands[-1]['pwm'].items()}
+                if any(command['wheels']) or current != final:
+                    rec.update(verdict='undetermined', reason='hold issued command changed')
+                out = {**rec, 'evidence': 'solo_rgb_lift_v2',
+                       'answer': {'confirmed': 'yes', 'not_confirmed': 'no', 'undetermined': 'unknown'}[rec['verdict']],
+                       'samples': dict(self.samples), 'completed_at': self.completed_at,
+                       'settled_s': command['t']-self.completed_at}
+        self.answer_counts[out['answer']] += 1
+        self.last = out
+        return out
+
+    def record(self):
+        return {'mode': 'solo_rgb_lift_v2', 'samples': self.samples,
+                'answer_counts': self.answer_counts, 'last': self.last}

@@ -24,20 +24,22 @@ if str(ROOT) not in sys.path:
 
 
 def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, cap_s=90.,
-        teacher_stability='off', reach_mode='box_station_v1'):
+        teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off'):
     if platform.system() != 'Linux' or execution_host != 'gcp1':
         raise RuntimeError('Linux gcp1 only; Mac physics/render disabled')
     if not 0 < cap_s <= 180 or profile != 'solo_visible_only_v1' or not hidden or not look:
         raise ValueError('finite opt-in solo profile with both required toggles')
     if teacher_stability not in ('off', 'align_relook_v1') or reach_mode not in ('box_station_v1', 'pad_window_v2'):
         raise ValueError('unknown solo stability/reach mode')
+    if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2'):
+        raise ValueError('unknown solo RGB lift mode')
     from scripts.grasp_act_host import identity, require_run_root
     host = identity(execution_host)
     require_run_root(out)
     from scripts.run_grasp_act_teacher import write, apply, compress_logs
     from sim.grasp_act_solo_teacher import SoloTeacher, InputAudit, VisibilityStats, primitives
     from sim.grasp_act_solo_lookaround import SoloLookaround
-    from sim.grasp_act_solo_rgb import lift_answer
+    from sim.grasp_act_solo_rgb import lift_answer, SoloLiftObserver
     from sim.grasp_act_solo_evaluation import Score, bottom_z
     from sim.grasp_act_scene import make_scene
     from sim.grasp_act_port import DutyActPort
@@ -61,6 +63,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
               'student_execution': False, 'recording_mode': 'success_measurement',
               'object_kind': plan['kind'], 'weld': 'off', 'training_rgb': False,
               'teacher_stability': teacher_stability, 'reach_mode': reach_mode,
+              'rgb_lift_mode': rgb_lift_mode,
               'physical_success': None, 'placement_task': 'set down at own picked location',
               'plan_sha256': hashlib.sha256((out/'plan.json').read_bytes()).hexdigest()}
     write(out/'result.json', report)
@@ -158,7 +161,20 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         teacher = SoloTeacher(plan['kind'], plan['role'], pwm, profile=profile,
                               held_object_hidden_v1=hidden, setdown_lookaround_v1=look,
                               lookaround=relook, route=route, ops=ops,
-                              teacher_stability=teacher_stability, reach_mode=reach_mode)
+                              teacher_stability=teacher_stability, reach_mode=reach_mode,
+                              rgb_lift_mode=rgb_lift_mode)
+        lift_observer = SoloLiftObserver(plan['kind']) if rgb_lift_mode == 'solo_rgb_lift_v2' else None
+        if lift_observer is not None:
+            (out/'lift-rgb').mkdir()
+
+        def save_lift(tag, frame, now):
+            path = out/'lift-rgb'/f'{tag}.png'
+            if not cv2.imwrite(str(path), frame):
+                raise RuntimeError('failed to save own lift RGB evidence')
+            return {'path': str(path.relative_to(out)), 't': now,
+                    'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+                    'pixel_sha256': hashlib.sha256(frame.tobytes()).hexdigest(),
+                    'shape': list(frame.shape)}
         lift_evidence = {}
         look_state = {'last_view_n': 0}
         def refresh_obstacles():
@@ -236,10 +252,17 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             bgr = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
             rgb_result = {'answer': 'unknown'}
             if teacher.phase in ('verify_lift', 'hold'):
-                answer, rec = lift_answer(bgr, teacher.sink.pwm, plan['kind'], teacher.low,
-                                          teacher.grasp_xyz[:2])
-                rgb_result = {**rec, 'answer': answer}
-                lift_evidence[rec['evidence']] = lift_evidence.get(rec['evidence'], 0)+1
+                if lift_observer is not None:
+                    rgb_result = lift_observer.observe(bgr, {**previous, 't': now},
+                                                      complete=True, save=save_lift)
+                else:
+                    answer, rec = lift_answer(bgr, teacher.sink.pwm, plan['kind'], teacher.low,
+                                              teacher.grasp_xyz[:2])
+                    rgb_result = {**rec, 'answer': answer}
+                evidence = rgb_result['evidence']
+                lift_evidence[evidence] = lift_evidence.get(evidence, 0)+1
+            elif teacher.phase == 'lift' and lift_observer is not None:
+                lift_observer.observe(bgr, {**previous, 't': now}, complete=False, save=save_lift)
             if teacher.phase == 'lower' and not relook.armed:
                 # Set-down skill begins: hand the look-around the map code's pose estimate.
                 g = truth_pose()
@@ -249,6 +272,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 # Currently visible obstacles only (same one-third gate as the target),
                 # refreshed at 2 Hz: it feeds the route planner, never a pose or a label.
                 refresh_obstacles()
+            phase_before = teacher.phase
             value, complete = teacher.step(now, measurement=measurement,
                         rgb_holding=rgb_result.get('answer', 'unknown'),
                         own_rgb=lambda: cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB))
@@ -262,6 +286,10 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             if complete and relook.armed and 'after' not in look_eval:
                 look_eval['after'] = look_truth(); look_eval['sim_s'] = now-look_eval['armed_t']
             apply(port, value, now, previous)
+            if lift_observer is not None and phase_before == 'close' and teacher.phase == 'lift':
+                # This frame was captured BEFORE issuing the raise. Commands
+                # are the teacher's own outputs, not servo measurements.
+                lift_observer.start(bgr, value, save_lift)
             previous = value
             trace.write(json.dumps({'t': now, 'phase': teacher.phase, 'command': value,
                                    'visible_target': measurement,
@@ -311,6 +339,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             teacher=teacher.diagnostic(), input_audit=audit.record(), visibility=visibility_stats.record(),
             lookaround={'localizer': relook.record(), 'evaluation': look_eval},
             lift_rgb_evidence_ticks=lift_evidence, **score.record(teacher.result == 'command_complete'))
+        if lift_observer is not None:
+            report['rgb_lift_v2'] = lift_observer.record()
         report['data_admitted'] = False
         write(out/'result.json', report)
     except BaseException as error:
@@ -339,12 +369,14 @@ def main():
     p.add_argument('--setdown-lookaround-v1', action='store_true')
     p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')
     p.add_argument('--reach-mode', choices=('box_station_v1', 'pad_window_v2'), default='box_station_v1')
+    p.add_argument('--rgb-lift-mode', choices=('off', 'solo_rgb_lift_v2'), default='off')
     p.add_argument('--cap-s', type=float, default=90.)
     a = p.parse_args()
     plan = json.loads(a.plan.read_text())['episodes'][a.episode]
     print(json.dumps(run(plan, a.out, execution_host=a.execution_host, profile=a.teacher_profile,
               hidden=a.held_object_hidden_v1, look=a.setdown_lookaround_v1, cap_s=a.cap_s,
-              teacher_stability=a.teacher_stability, reach_mode=a.reach_mode)))
+              teacher_stability=a.teacher_stability, reach_mode=a.reach_mode,
+              rgb_lift_mode=a.rgb_lift_mode)))
 
 
 if __name__ == '__main__':

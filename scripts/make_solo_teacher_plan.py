@@ -115,14 +115,14 @@ def prepare(*, split, fresh_diagnostics=False):
         raise ValueError('fresh diagnostics must stay outside the gate')
     if split == 'solo_diagnostic':
         kinds, seed0 = list(DIAGNOSTIC_KINDS)*(2 if fresh_diagnostics else 1), 76900
-    elif split == 'solo_gate':
+    elif split in ('solo_gate', 'solo_rgb_lift_v2_gate'):
         left, kinds = dict(GATE_QUOTA), []
         while any(left.values()):                     # round robin: a stopped run keeps a mixed prefix
             for k in KINDS:
                 if left[k]:
                     kinds.append(k)
                     left[k] -= 1
-        seed0 = 78000
+        seed0 = 79500 if split == 'solo_rgb_lift_v2_gate' else 78000
     check_range(split, seed0, len(kinds))
     per_kind = Counter()
     episodes = []
@@ -144,7 +144,7 @@ def prepare(*, split, fresh_diagnostics=False):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--out', type=Path, required=True)
-    p.add_argument('--split', choices=('solo_diagnostic', 'solo_gate'), required=True)
+    p.add_argument('--split', choices=('solo_diagnostic', 'solo_gate', 'solo_rgb_lift_v2_gate'), required=True)
     p.add_argument('--fresh-diagnostics', action='store_true', help='append cyan/can/tile seeds 76903-76905')
     a = p.parse_args()
     plan = prepare(split=a.split, fresh_diagnostics=a.fresh_diagnostics)

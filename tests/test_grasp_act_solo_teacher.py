@@ -28,6 +28,26 @@ def test_hidden_and_held_lazy_reads_are_never_evaluated():
                   read_relative=lambda: {**target, 'true_distance': .2})
 
 
+@pytest.mark.parametrize('mode,limit', [('off', 3.), ('solo_rgb_lift_v2', 5.)])
+def test_rgb_unknown_never_authorizes_setdown_with_either_timeout(mode, limit):
+    t = make(rgb_lift_mode=mode)
+    t.phase = 'verify_lift'; t.phase_t = 0.; t.skill_started = 0.; t.holding = True
+    for i in range(int(limit*10)+2):
+        t.step(i*.1, rgb_holding='unknown')
+    assert t.phase == 'failed' and t.result == 'rgb_lift_unconfirmed'
+    assert t.holding and not any(e['to'] in ('lower', 'open') for e in t.events)
+
+
+def test_v2_gate_uses_its_own_registered_forty_seeds_and_preserves_kind_quota():
+    from scripts.make_solo_teacher_plan import prepare, GATE_QUOTA
+    from harness.grasp_act_seed_splits import registry, split_of
+    p = prepare(split='solo_rgb_lift_v2_gate'); reg = registry()
+    assert [e['seed'] for e in p['episodes']] == list(range(79500, 79540))
+    assert all(split_of(e['seed'], reg) == 'solo_rgb_lift_v2_gate' for e in p['episodes'])
+    assert 'solo_rgb_lift_v2_gate' in reg['gate_seeds_never_train']
+    assert p['distribution']['kinds'] == GATE_QUOTA and not p['student_evaluation']
+
+
 def test_clocks_and_sample_selection_ignore_hidden_distance():
     a, b = make(), make()
     for i in range(12):

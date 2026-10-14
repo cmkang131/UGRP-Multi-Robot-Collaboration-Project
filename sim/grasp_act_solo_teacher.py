@@ -162,7 +162,7 @@ def primitives():
 class SoloTeacher:
     def __init__(self, kind, role, pwm, *, profile='off', held_object_hidden_v1=False,
                  setdown_lookaround_v1=False, lookaround=None, route=None, ops=None,
-                 teacher_stability='off', reach_mode='box_station_v1'):
+                 teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off'):
         if profile != PROFILE:
             raise ValueError('solo teacher is opt-in; legacy defaults are unchanged')
         if not held_object_hidden_v1:
@@ -173,6 +173,9 @@ class SoloTeacher:
             raise ValueError('unknown teacher stability mode')
         if reach_mode not in ('box_station_v1', 'pad_window_v2'):
             raise ValueError('unknown solo reach mode')
+        if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2'):
+            raise ValueError('unknown solo RGB lift mode')
+        self.rgb_lift_mode = rgb_lift_mode
         self.teacher_stability, self.reach_mode = teacher_stability, reach_mode
         self.spec = cargo(kind)
         if role not in self.spec.roles:
@@ -472,7 +475,10 @@ class SoloTeacher:
                     self._set('lower', now)
             else:
                 self.verify_t = None
-                if self.phase == 'hold' or now-self.phase_t >= 3.:
+                # v2 needs completion + a 3 s RGB sample + the existing 1 s
+                # continuous yes window. Timeout still fails closed.
+                verify_limit = 5. if self.rgb_lift_mode == 'solo_rgb_lift_v2' else 3.
+                if self.phase == 'hold' or now-self.phase_t >= verify_limit:
                     # No hidden truth recovery or silent scripted retry.
                     self.result = 'rgb_lift_unconfirmed' if self.phase == 'verify_lift' else 'rgb_hold_lost'
                     self._set('failed', now)
@@ -513,6 +519,7 @@ class SoloTeacher:
             'holding_belief': self.holding, 'ik_rejections': self.ik_rejections,
             'ik_checks': self.ik_checks, 'ik_rejection_reasons': dict(self.ik_rejection_reasons),
             'teacher_stability': self.teacher_stability, 'reach_mode': self.reach_mode,
+            'rgb_lift_mode': self.rgb_lift_mode,
             'alignment_relooks': self.align_relooks,
             'events': self.events, 'held_object_hidden_v1': True,
             'held_interval': 'close command through completed open command',

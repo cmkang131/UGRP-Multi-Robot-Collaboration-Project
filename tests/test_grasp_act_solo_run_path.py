@@ -217,3 +217,40 @@ def test_run_loop_enters_stationary_relook_when_fake_base_cannot_progress(backen
     assert align and all(.04 <= d <= .15 for c in align for w, d in zip(c['wheels'], c['duration_s']) if w)
     relook = [r['command'] for r in trace if r['phase'] == 'relook']
     assert relook and all(not any(c['wheels']) for c in relook)
+
+
+@pytest.mark.parametrize('visible_colour', [True, False])
+def test_run_v2_reaches_rgb_hold_or_blocks_setdown_and_saves_exact_own_evidence(backend, monkeypatch, visible_colour):
+    import hashlib
+    from harness.zone_own_perception import APPEARANCE
+    runner, world, runs = backend
+    # Keep the trace directly readable; compression is independently covered
+    # by the existing runner. This stub verifies the RGB/command lifecycle.
+    import scripts.run_grasp_act_teacher as shared_runner
+    monkeypatch.setattr(shared_runner, 'compress_logs', lambda out: None)
+    world.data.bodies['cargo_body'].xpos[0] = .2002
+    lo, hi = APPEARANCE['cyan']['hue'][0]
+    colour = cv2.cvtColor(np.uint8([[[(lo+hi)//2, 210, 200]]]), cv2.COLOR_HSV2BGR)[0, 0]
+    image = np.full((480, 640, 3), colour if visible_colour else 0, np.uint8)
+    jpg = cv2.imencode('.jpg', image)[1].tobytes()
+    monkeypatch.setattr(FakePort, 'capture', lambda self: {'image': base64.b64encode(jpg).decode()})
+    out = runs/'v2-loop'
+    report = runner.run(plan(), out, execution_host='gcp1', profile='solo_visible_only_v1',
+                        hidden=True, look=True, cap_s=13.5, rgb_lift_mode='solo_rgb_lift_v2')
+    assert report['rgb_lift_mode'] == report['teacher']['rgb_lift_mode'] == 'solo_rgb_lift_v2'
+    assert report['input_audit']['invisible_measurements'] == report['input_audit']['held_world_reads'] == 0
+    samples = report['rgb_lift_v2']['samples']
+    assert set(samples) == {'before_lift', 'lift_complete', 'settled_hold'}
+    assert samples['settled_hold']['t']-samples['lift_complete']['t'] >= 3.-1e-8
+    for sample in samples.values():
+        assert hashlib.sha256((out/sample['path']).read_bytes()).hexdigest() == sample['sha256']
+        assert sample['shape'] == [480, 640, 3]
+    trace = [json.loads(line) for line in (out/'teacher-commands.jsonl').read_text().splitlines()]
+    assert all(r['visible_target'] is None for r in trace if r['rgb_confirmation'].get('evidence') == 'solo_rgb_lift_v2')
+    phases = [r['phase'] for r in trace]
+    if visible_colour:
+        assert 'hold' in phases and 'lower' in phases
+        assert report['rgb_lift_v2']['last']['answer'] == 'yes'
+    else:
+        assert 'lower' not in phases and 'open' not in phases
+        assert report['teacher']['command_result'] == 'rgb_lift_unconfirmed'
