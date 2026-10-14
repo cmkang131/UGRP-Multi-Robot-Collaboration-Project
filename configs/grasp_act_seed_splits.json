@@ -12,9 +12,10 @@
     "development": [[90000, 90999]],
     "heldout_start": [[91000, 91999]],
     "heldout_map": [[92000, 92999]],
-    "release_gate_command_relative_v1": [[74100, 74139]]
+    "release_gate_command_relative_v1": [[74100, 74139]],
+    "release_gate_zone_center_rgb_v1": [[74200, 74239]]
   },
-  "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "release_gate_command_relative_v1"],
+  "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "release_gate_command_relative_v1", "release_gate_zone_center_rgb_v1"],
   "heldout_maps": ["zone_wide_corridor_final_v3"],
   "notes": {
     "grasp_gate_078": "teacher 078cbb45 gate 36/40 (seen)",
@@ -23,6 +24,7 @@
     "carry_probe": "loaded-motion probes (G1 rotation, G7 carry, G2/G6 set-down-look), claude/grasp-act-release",
     "heldout_maps": "s4_narrow_door_standoff_v4 map, HELDOUT in scripts/make_grasp_act_plan.py",
     "release_gate_command_relative_v1": "PR #491 continuation on claude/grasp-act-probes: held hidden_v1 + setdown_lookaround_v2 + command_relative_v1; new profile, no pooling with 74000-74039",
-    "release_record_first50": "train seeds 88000-88049 reserved for the first 50 release recordings; approval and new-profile >=38/40 gate required; no gate or diagnostic seeds"
+    "release_record_first50": "train seeds 88000-88049 reserved for the first 50 release recordings; approval and new-profile >=38/40 gate required; no gate or diagnostic seeds",
+    "release_gate_zone_center_rgb_v1": "PR #491 probes continuation: RGB local rectangle centering, new seeds. Main + all 17 open PR branches/comments checked; 74218-74220 references were archive PIDs, 74228 was a byte count, not seeds. Never train."
   }
 }

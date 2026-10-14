@@ -9,13 +9,14 @@ currently shows and for the separate evaluation record.
 Training RGB recording is OFF (success first, then recording; user 10/14).
 """
 from __future__ import annotations
-import argparse,base64,io,json,math,os,platform,subprocess,sys,time
+import argparse,base64,copy,io,json,math,os,platform,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:sys.path.insert(0,str(ROOT))
 from harness.grasp_act_contract_v4 import SERVOS,command   # prefix uses the preserved v4 observable_v2 teacher
 from scripts.run_grasp_act_teacher import write,apply,snapshot,compress_logs
 from sim.grasp_act_release_teacher import OBSERVE_MODES,REACH_MODES
+from sim.release_zone_servo import MODES as PLACEMENT_MODES, OPTION as RGB_CENTER
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 # User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
 # hidden_v1: while the own gripper holds the cargo, its world pose never enters teacher/map-code inputs.
@@ -157,7 +158,7 @@ def own_end_world(world,inst,end):
 
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
-        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0'):
+        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0'):
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
     if lookaround!='off' and observe_mode!='backoff_v3':raise ValueError('lookaround runs after the backoff_v3 step back')
@@ -165,6 +166,10 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     if pose_anchor not in POSE_ANCHOR_MODES:raise ValueError(pose_anchor)
     relative_pose=pose_anchor=='command_relative_v1'
     if relative_pose and own_pose_source!='commands':raise ValueError('command_relative_v1 requires own commands')
+    if placement not in PLACEMENT_MODES:raise ValueError(placement)
+    rgb_center=placement==RGB_CENTER
+    if rgb_center and not (relative_pose and held_object=='hidden_v1' and lookaround=='setdown_lookaround_v2' and observe_mode=='backoff_v3'):
+        raise ValueError('zone_center_rgb_v1 requires command_relative_v1, hidden_v1, setdown_lookaround_v2, backoff_v3')
     audit=HeldAudit(held_object)
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
     import numpy as np
@@ -188,7 +193,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     branch=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()
     write(out/'RUN_META.json',{'class':'dev','pr':491,'branch':branch,'sha':sha,'batch':plan['batch']})
     report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,'held_object':held_object,
-        'lookaround':lookaround,'pose_anchor':pose_anchor,'map_pose_known':not relative_pose,
+        'lookaround':lookaround,'pose_anchor':pose_anchor,'placement':placement,'map_pose_known':not relative_pose,
+        'release_decision_inputs':'own RGB, own issued commands, static map only' if rgb_center else 'legacy visible-only teacher',
         'pose_estimate_source':'own issued wheels from arbitrary zero; map pose unknown' if relative_pose else 'legacy truth at release handoff plus frozen plan error',
         'own_camera_px':list(LOOK_RES if lookaround!='off' else (320,240)),'weld':'off','recording_mode':'success_measurement','student_execution':False,'success_rule':SUCCESS,
         'loadavg_at_start':os.getloadavg(),'release_success':None,'prefix_held':None}
@@ -287,7 +293,11 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 truth_pose=None if relative_pose else [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
                 estimate=handoff_estimate(plan,rid,issued_pose[rid],pose_anchor=pose_anchor,own_pose_source=own_pose_source,truth_pose=truth_pose)
                 loc[rid]=LookaroundLocalizer(static,estimate,mode=lookaround,map_pose_known=not relative_pose)
-        look_eval={rid:{'views':[]} for rid in roles};look_run={}
+        zone_servo={}
+        if rgb_center:
+            from sim.release_zone_servo import ZoneCenterServo
+            zone_servo={rid:ZoneCenterServo(static,region,loc[rid].camera,loc[rid].vl.mp) for rid in roles}
+        look_eval={rid:{'views':[],'sweeps':[]} for rid in roles};look_run={}
         def look_truth(rid):
             # evaluation only: estimate error against truth and FK camera vs rendered camera (never fed back)
             g=pose_of(rid);x=loc[rid].own.x
@@ -306,6 +316,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             img=np.asarray(Image.open(io.BytesIO(base64.b64decode(ports[rid].capture()['image']))).convert('RGB'))
             servo={1:rel[rid].pwm[1],**{k:rel[rid].pwm[k] for k in (3,4,5,6)}}
             rec=loc[rid].observe(now,img,servo)
+            if rgb_center:
+                zone_servo[rid].observe(img,servo,now)
             audit.measurement('lookaround','own_rgb_landmarks',True,count=sum(rec.get(k,0) for k in ('wall_points','floor_lines','doors')))
             row={'t':now,'pan_pulse':servo[6],'wall_points':rec.get('wall_points'),'floor_lines':rec.get('floor_lines'),'doors':rec.get('doors'),
                  'seen_groups':rec.get('seen_groups'),**look_truth(rid)}
@@ -316,6 +328,10 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         report['release_start']={'beam_to_zone_center_m':float(math.dist(b0.xpos[:2],rect[:2]))}
         def pose_of(rid):return [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
         def observe(rid,now,fine):
+            if rgb_center:
+                # This path must never call Eyes, pose_of, band.measure or a
+                # simulator object lookup. Regrasp uses the issued release pose.
+                return {'scan':[],'own_band_visible':False,'band':None,'partner_visible':False}
             at=time.monotonic();data=world.data;pose=pose_of(rid);t=rel[rid]
             m=band.measure(data,rid,roles[rid])
             if relative_pose or (t.holding and held_object=='hidden_v1'):
@@ -372,6 +388,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             st.update(phase='lower',since=now,go=now+.2,end=now+.2+1.6+.6)
         def start_shift(now,s):
             st['plan']={rid:t.shift_plan(s,1. if rid==R[0] else -1.) for rid,t in rel.items()}
+            st['steps']+=1
             st.update(phase='shift',since=now,go=now+.2)
         k=0;outcome=None;done_at=None
         while float(world.data.time)-origin<cap_s:
@@ -384,7 +401,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             elif ph=='await_look' and ready('look',now):
                 choice=code.decide(now,require_seen=False);st['choice']=choice
                 if choice['action']=='lower' or st['steps']>=8:start_lower(now)
-                else:st['steps']+=1;start_shift(now,choice['shift_m'])
+                else:start_shift(now,choice['shift_m'])
             elif ph=='shift' and now>=st['go']-1e-9:
                 if not run_plan(now):
                     if st['after_visible']:st['after_visible']=False;start_lower(now)
@@ -422,7 +439,15 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                             look_eval[rid]['before']=look_truth(rid);look_eval[rid]['t0']=now
                             loc[rid].make_plan(t.pwm[6])
                             restore={k:t.pwm[k] for k in (3,4,5,6)} if lookaround=='setdown_lookaround_v2' else None
-                            look_run[rid]=ScriptRunner(loc[rid].script(restore=restore),now)
+                            script=loc[rid].script(restore=restore)
+                            if rgb_center:
+                                from sim.lookaround_localization import LOOK_ARM,look_servo,VIEW_SETTLE_S
+                                zone_servo[rid].begin()
+                                # Preserve the real surroundings panorama, then
+                                # inspect nearby floor edges with a downward view.
+                                script=script[:-1]+[{'servo':look_servo(p,LOOK_ARM),'wait':1.0 if i==0 else VIEW_SETTLE_S,
+                                    'capture':True,'label':f'zone_floor_{p:+.0f}'} for i,p in enumerate((-35.,0.,35.))]+script[-1:]
+                            look_run[rid]=ScriptRunner(script,now)
                         st.update(phase='lookaround',since=now)
                     elif now>=st['settle']-1e-9:
                         for rid,t in rel.items():schedule(rid,[(0.,t.gaze_target(now))],now)
@@ -447,13 +472,27 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                             t.reanchor_priors(list(loc[rid].own.x))
                         elif dec and dec['accepted']:              # v2: only an accepted correction moves the priors
                             t.reanchor_priors(list(loc[rid].own.x))
+                        if rgb_center:
+                            (ex,ey),(ox,oy),_=t.end_and_outward(now)
+                            zfit=zone_servo[rid].finalize([ex-.30*ox,ey-.30*oy])
+                            look_eval[rid]['zone_center']=zfit
+                            look_eval[rid]['zone_rgb_views']=zone_servo[rid].views
+                            # Separate scoring, never inserted into zfit/the posted report.
+                            target=relative(pose_of(rid),rect[:2])[:2]
+                            predicted=zfit.get('center_body_m')
+                            look_eval[rid]['zone_center_evaluation']={'truth_center_body_m':target,
+                                'center_error_m':None if predicted is None else math.dist(predicted,target)}
+                        look_eval[rid]['sweeps'].append(copy.deepcopy({k:v for k,v in look_eval[rid].items() if k not in ('sweeps','views')}))
                         schedule(rid,[(0.,t.gaze_target(now))],now)
                     st.update(phase='observe_move',since=now,end=now+ARM_MOVE_BACK_S)
             elif ph=='observe_move':
                 run_sched(now)
                 if now>=st['end']-1e-9:st.update(phase='observe',since=now)
             elif ph=='observe' and age>=.6:
-                reports={rid:t.report(now,'observe') for rid,t in rel.items()}
+                if rgb_center:
+                    reports={rid:{'phase':'observe','kind':'rgb_center','zone_center':zone_servo[rid].result or {}} for rid in rel}
+                    for rid,t in rel.items():t.last_report=reports[rid]
+                else:reports={rid:t.report(now,'observe') for rid,t in rel.items()}
                 blind=[rid for rid,r in reports.items() if r['kind'] in ('prior','none')]
                 if blind and st['search']<4:
                     st['search']+=1;offset=(250,-250,500,-500)[st['search']-1]
@@ -464,7 +503,12 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 else:
                     post('observe',now);st.update(phase='await_observe',since=now)
             elif ph=='await_observe' and ready('observe',now):
-                choice=code.decide(now,require_seen=True);st['choice']=choice
+                if rgb_center:
+                    from sim.release_zone_servo import pair_choice
+                    choice=pair_choice(code.delivered,R,now);code.log.append(choice)
+                else:choice=code.decide(now,require_seen=True)
+                st['choice']=choice
+                if choice['action']=='stop':outcome=choice['reason'];break
                 if choice['action']=='lower' and observe_mode=='backoff_v3':
                     for rid in rel:schedule(rid,[(0.,FOLDED_BACKOFF)],now)
                     st.update(phase='done',since=now);done_at=now
@@ -474,7 +518,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                     st.update(phase='back_off',since=now,go=now+.6)
                 else:
                     st['iter']+=1
-                    if st['iter']>3:outcome='release_iteration_cap';break
+                    from sim.release_zone_servo import MAX_CORRECTIONS
+                    if st['iter']>(MAX_CORRECTIONS if rgb_center else 3):outcome='release_iteration_cap';break
                     # Approach by own-command pulses until the re-grasp target is mid-reach (no reach crash).
                     for rid,t in rel.items():audit.pick('approach',rid,now,t)
                     st['plan']={rid:t.approach_plan(now) for rid,t in rel.items()}
@@ -523,6 +568,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 else:
                     after=pose_of(rid);dx,dy,da=relative(before[rid],after[:2],after[2]);t.belief.propagate(dx,dy,da)
             truth=snapshot(world,inst,roles,scene)
+            if rgb_center:
+                # Evaluation-only visibility audit, never returned to perception.
+                for rid in roles:audit.assigned_end(st['phase'],rid,band.measure(world.data,rid,roles[rid])['visible_probes']>=3)
             ev.write(json.dumps({'t':float(world.data.time),'phase':st['phase'],'beam':truth['beam'],'contacts':truth['contacts'],
                 'robots':{r:truth['robots'][r] for r in roles}})+'\n')
         steps=st['steps']
@@ -585,6 +633,7 @@ def main():
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=90.)
     p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands')
     p.add_argument('--pose-anchor',choices=POSE_ANCHOR_MODES,default='legacy_truth_v0',help='command_relative_v1: no truth handoff anchor; map pose unknown, own-command sweep only')
+    p.add_argument('--placement',choices=PLACEMENT_MODES,default='margin_v0',help='zone_center_rgb_v1: local RGB rectangle centering; no world anchor')
     p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look')
     p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement')
     p.add_argument('--zone-slots',choices=ZONE_SLOT_MODES,default='floor',help='zone: white slot squares inside the destination (static map) count as zone')
@@ -593,5 +642,5 @@ def main():
     p.add_argument('--lookaround',choices=LOOKAROUND_MODES,default='off',help='setdown_lookaround_v1: after the backoff step, look toward static-map landmarks chosen from the own pose estimate (640x480 own camera)');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement),ensure_ascii=False,default=str))
 if __name__=='__main__':main()

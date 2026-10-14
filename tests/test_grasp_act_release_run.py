@@ -172,3 +172,64 @@ def test_unknown_evidence_still_searches_after_lookaround(tmp_path, fake_backend
         assert localizer['decision']['reason'] == 'map_pose_unknown'
         assert not localizer['decision']['accepted']
     assert not result['release_success']   # blank RGB and no zone evidence cannot accept release
+
+
+def test_rgb_center_blank_stops_after_real_sweep_without_truth_perception(tmp_path, fake_backend, monkeypatch):
+    from sim.grasp_act_release_teacher import ReleaseTeacher
+    def forbidden(*args, **kwargs):
+        raise AssertionError('truth-derived perception entered RGB centering')
+    monkeypatch.setattr(runner.Eyes,'classify',forbidden)
+    monkeypatch.setattr(runner.Eyes,'visible',forbidden)
+    original=ReleaseTeacher.perceive
+    def check(self,obs,now):
+        assert obs['band'] is None and not obs['scan']
+        return original(self,obs,now)
+    monkeypatch.setattr(ReleaseTeacher,'perceive',check)
+    plans=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release-command-diagnostic-plan.json').read_text())
+    result=runner.run(plans['episodes'][0],tmp_path/'blank',cap_s=60.,placement='zone_center_rgb_v1',**plans['execution_profile'])
+    assert result['release_outcome']=='zone_center_unobserved'
+    assert result['shift_steps']==0 and not result['release_success']
+    for rid in ('r1','r2'):
+        sweeps=result['lookaround_result'][rid]['evaluation']['sweeps']
+        assert len(sweeps)==1
+        assert len(sweeps[0]['zone_rgb_views'])==6
+        assert len({v['servo'][6] for v in sweeps[0]['zone_rgb_views']})==5
+        assert not sweeps[0]['zone_center']['accepted']
+        assert sweeps[0]['before']['error_frame']=='arbitrary_command_start'
+    assert result['input_audit']['held_world_reads']==result['input_audit']['invisible_measurements']==0
+
+
+def test_rgb_center_reobserve_after_bounded_move_and_count_actual_shifts(tmp_path, fake_backend, monkeypatch):
+    from sim.release_zone_servo import ZoneCenterServo
+    calls=[]
+    def fitted(self,beam):
+        # Pair reports are body-relative (opposite signs), never a map location.
+        n=len(calls);calls.append(beam)
+        shift=(.63 if n%2==0 else -.63) if n<2 else 0.
+        self.result={'accepted':True,'shift_body_m':shift,'map_pose_known':False}
+        return self.result
+    monkeypatch.setattr(ZoneCenterServo,'finalize',fitted)
+    plans=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release-command-diagnostic-plan.json').read_text())
+    result=runner.run(plans['episodes'][0],tmp_path/'move',cap_s=120.,placement='zone_center_rgb_v1',**plans['execution_profile'])
+    assert result['release_outcome']=='teacher_done'
+    assert result['shift_steps']==1 and len(calls)==4
+    assert result['code_decisions'][1]['shift_m']==.5
+    for rid in ('r1','r2'):
+        assert len(result['lookaround_result'][rid]['evaluation']['sweeps'])==2
+        rows=[json.loads(x) for x in (tmp_path/'move'/f'teacher-{rid}.jsonl').read_text().splitlines()]
+        assert any(r['teacher_phase']=='shift' for r in rows)
+        assert sum(r['teacher_phase']=='lookaround' for r in rows)>60
+
+
+def test_release_summary_includes_failure_distances_and_missing_runs(tmp_path):
+    from scripts.summarize_grasp_act_release import summarize
+    plan={'episodes':[{'seed':i} for i in range(40)]};sha='a'*40
+    for i in range(39):
+        p=tmp_path/f'gate-{i:02d}-{sha[:8]}'/'raw'/'result.json';p.parent.mkdir(parents=True)
+        p.write_text(json.dumps({'status':'complete','source_sha':sha,'prefix_held':True,'release_success':i<38,
+            'evaluation_position_error':{'center_distance_m':.6 if i==38 else .02},
+            'input_audit':{'held_world_reads':0,'invisible_measurements':0}}))
+    result=summarize(plan,tmp_path,'gate',sha)
+    assert result['release_success']==38 and not result['gate_pass']
+    assert result['complete']==39 and result['runs'][-1]['status']=='missing'
+    assert result['center_distance_m']['median']==.02 and result['center_distance_m']['max']==.6
