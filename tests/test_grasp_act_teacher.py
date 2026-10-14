@@ -55,3 +55,17 @@ def test_scene_keeps_real_scenario_inventory_without_world():
     before=ET.fromstring(xml);after=ET.fromstring(colors(xml,COLOR_PROFILE))
     for x,y in zip(before.iter(),after.iter()):
         assert x.tag==y.tag and {k:v for k,v in x.attrib.items() if k!='rgba'}=={k:v for k,v in y.attrib.items() if k!='rgba'}
+
+
+def test_teacher_batch_does_not_count_interrupted_or_host_error_as_physical_trials():
+    from scripts.run_grasp_act_batch import summarize
+    rows=[{'status':'complete','data_admitted':True,'joint_held':True,'exit':0,
+           'teachers':{r:{'outcome':'success'} for r in ('r1','r2')}},
+          {'status':'complete','data_admitted':False,'exit':0,
+           'teachers':{'r1':{'outcome':'phase_timeout'},'r2':{'outcome':'episode_timeout'}}},
+          {'status':'interrupted','exit':130}, {'status':'HOST_ERROR','exit':1}]
+    result=summarize(rows,20)
+    assert (result['n'],result['N'],result['planned_N'],result['started_N'])==(1,2,20,4)
+    assert result['robots']['r1']=={'n':1,'N':2}
+    assert result['interrupted']==1 and result['host_errors']==1
+    assert result['failure_reasons']=={'phase_timeout':1,'episode_timeout':1}

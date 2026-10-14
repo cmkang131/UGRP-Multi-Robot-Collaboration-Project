@@ -115,9 +115,16 @@ def run(plan,out,*,cap_s=120.,noise=False):
             (out/'rgb'/rid).mkdir(parents=True)
             student=(out/f'student-{rid}.jsonl').open('w');label=(out/f'teacher-{rid}.jsonl').open('w');streams.extend([student,label]);writers[rid]=(student,label)
         ev=(out/'eval-only.jsonl').open('w');streams.append(ev)
+        (out/'eval-overview').mkdir()
         inst=next(x for x in scene.cargo if x.item_id=='beam_1');i=0;both_since=None;all_done_since=None
         while float(world.data.time)-origin < cap_s-1e-8:
             now=float(world.data.time);truth=snapshot(world,inst,plan['roles'],scene);ev.write(json.dumps(truth)+'\n')
+            if i % 10 == 0:
+                # Reviewer evidence only; never referenced by a student observation.
+                (out/'eval-overview'/f'{i:06d}.jpg').write_bytes(world.render_team_jpeg())
+                write(out/'progress.json',{'sim_s':now-origin,'wall_s':time.monotonic()-start,
+                    'phases':{rid:t.phase for rid,t in teachers.items()},'sample':i})
+                for stream in streams:stream.flush()
             both=all(min(truth['contacts'][rid])>=.5 for rid in plan['roles']) and truth['beam']['min_z']>=.012
             both_since=(now if both_since is None else both_since) if both else None
             if len(plan['roles'])==2 and both_since is not None and now-both_since>=1.:report['joint_held']=True
