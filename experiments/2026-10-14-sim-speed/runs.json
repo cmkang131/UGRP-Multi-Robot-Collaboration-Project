@@ -1,0 +1,4487 @@
+[
+{
+"run": "ss-a1-adapt-73009",
+"exit": "0",
+"source_sha": "24d3731d463ce3db88bb052bfa6ae9c995d68f93",
+"speed_options": {
+"adaptive_dt": 0.002
+},
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 51.32,
+"wall_per_sim": 0.8554,
+"timings_s": {
+"physics": 18.02,
+"rgb": 24.13,
+"evaluation": 4.59,
+"teacher": 0.52,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.484375,
+2.646484375,
+1.69482421875
+],
+"result_sha256": "316c4ccbb4431d98683f2c87916e52fd846c828b799b60c835e9bc309ddd365a",
+"raw": "gcp1:~/ugrp-sim/runs/ss-a1-adapt-73009/raw",
+"mujoco_steps": 35998
+},
+{
+"run": "ss-a1-base-73009",
+"exit": "0",
+"source_sha": "24d3731d463ce3db88bb052bfa6ae9c995d68f93",
+"speed_options": {},
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 179.63,
+"wall_per_sim": 2.9939,
+"timings_s": {
+"physics": 139.95,
+"rgb": 27.18,
+"evaluation": 5.85,
+"teacher": 1.86,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.484375,
+2.646484375,
+1.69482421875
+],
+"result_sha256": "5b16d219d768210b39b216a1a40b870daa35217b80838eafa1672e386fe2ca8b",
+"raw": "gcp1:~/ugrp-sim/runs/ss-a1-base-73009/raw",
+"mujoco_steps": 247748
+},
+{
+"run": "ss-b1-adns-e0",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 41.56,
+"wall_per_sim": 0.6927,
+"timings_s": {
+"physics": 10.54,
+"rgb": 21.29,
+"evaluation": 4.71,
+"teacher": 0.36,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.6279296875,
+1.5615234375,
+1.513671875
+],
+"result_sha256": "d50e2fc34c7e4e1482179ce0f620e1afe00f405932b0bc11625dd8bc5c1825b5",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b1-adns-e0/raw",
+"mujoco_steps": 35998
+},
+{
+"run": "ss-b1-adns-e2",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 44.23,
+"wall_per_sim": 0.7371,
+"timings_s": {
+"physics": 9.69,
+"rgb": 23.61,
+"evaluation": 4.82,
+"teacher": 0.95,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.6279296875,
+1.5615234375,
+1.513671875
+],
+"result_sha256": "42a32ca8a42c91209ee5b6b034cb9a9413c422c98c057e8523706d13c9a7a0a8",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b1-adns-e2/raw",
+"mujoco_steps": 35998
+},
+{
+"run": "ss-b1-base-e0",
+"exit": "1",
+"error": "[Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/runs/ss-b1-base-e0/raw"
+},
+{
+"run": "ss-b1-base-e2",
+"exit": "1",
+"error": "[Errno 2] No such file or directory: '/home/ugrp/ugrp-sim/runs/ss-b1-base-e2/raw"
+},
+{
+"run": "ss-b1-frz-e0",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 75.06,
+"wall_per_sim": 1.251,
+"timings_s": {
+"physics": 44.59,
+"rgb": 20.43,
+"evaluation": 5.12,
+"teacher": 1.54,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.953125,
+1.7998046875,
+1.6201171875
+],
+"result_sha256": "81d3e8e455647a0dc55a55f7abef99f5ec8e632ecb80dfd1d64ee5bba6654262",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b1-frz-e0/raw",
+"mujoco_steps": 247748
+},
+{
+"run": "ss-b1-frz-e2",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.8,
+"wall_s": 66.24,
+"wall_per_sim": 2.1507,
+"timings_s": {
+"physics": 49.25,
+"rgb": 11.84,
+"evaluation": 2.49,
+"teacher": 0.31,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+24.0,
+25.1
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.9892578125,
+1.84716796875,
+1.65283203125
+],
+"result_sha256": "b47cb367c5a601eb6f49578042f9fa11c5feac4ab5d2275dab8b31298c3d4c44",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b1-frz-e2/raw",
+"mujoco_steps": 130948
+},
+{
+"run": "ss-b1-sph6-e0",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.6,
+"wall_s": 113.45,
+"wall_per_sim": 3.2789,
+"timings_s": {
+"physics": 92.72,
+"rgb": 12.2,
+"evaluation": 3.33,
+"teacher": 0.55,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+27.5,
+28.9
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.39990234375,
+1.6484375,
+1.5478515625
+],
+"result_sha256": "9a7755dcb530508ef23e07ecc251959bc7bac26950a39ad710d30cdecda2af74",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b1-sph6-e0/raw",
+"mujoco_steps": 146148
+},
+{
+"run": "ss-b1-sph6-e2",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 187.78,
+"wall_per_sim": 3.1297,
+"timings_s": {
+"physics": 151.3,
+"rgb": 23.5,
+"evaluation": 5.8,
+"teacher": 2.55,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.6884765625,
+1.7041015625,
+1.56640625
+],
+"result_sha256": "cb8e0e7038e4b2ba8fb7433b1a2825606cb5c28cafcfab863ad2a5f027d26b04",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b1-sph6-e2/raw",
+"mujoco_steps": 247748
+},
+{
+"run": "ss-b2-adapt-e0",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 48.04,
+"wall_per_sim": 0.8007,
+"timings_s": {
+"physics": 17.52,
+"rgb": 20.73,
+"evaluation": 4.83,
+"teacher": 0.79,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.87646484375,
+1.5419921875,
+1.56201171875
+],
+"result_sha256": "74f430113002965be7222a028f0fd7302b977f111428ef9039c70da1177dcc7f",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b2-adapt-e0/raw",
+"mujoco_steps": 35998
+},
+{
+"run": "ss-b2-adapt-e2",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 49.11,
+"wall_per_sim": 0.8185,
+"timings_s": {
+"physics": 16.94,
+"rgb": 23.13,
+"evaluation": 4.58,
+"teacher": 0.44,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.76904296875,
+1.66064453125,
+1.60302734375
+],
+"result_sha256": "bc67455077d45106762afb6748b0681ec80e0c17770109205e8e77f3438f18f6",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b2-adapt-e2/raw",
+"mujoco_steps": 35998
+},
+{
+"run": "ss-b2-base-e0",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 29.8,
+"wall_s": 84.02,
+"wall_per_sim": 2.8194,
+"timings_s": {
+"physics": 66.75,
+"rgb": 10.35,
+"evaluation": 2.49,
+"teacher": 0.46,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.87646484375,
+1.5419921875,
+1.56201171875
+],
+"result_sha256": "333eb7e5a74f5096e07707194eb71761cb548bfacbac2a97df3a8250132b0860",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b2-base-e0/raw",
+"mujoco_steps": 126948
+},
+{
+"run": "ss-b2-base-e2",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.8,
+"wall_s": 87.28,
+"wall_per_sim": 2.8338,
+"timings_s": {
+"physics": 68.39,
+"rgb": 12.22,
+"evaluation": 2.61,
+"teacher": 0.33,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+24.0,
+25.1
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.43994140625,
+1.59814453125,
+1.58056640625
+],
+"result_sha256": "db22a765676abd4b87a90cc806ece61f06f51dbbe6a1b2d0480333d3b7732dc1",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b2-base-e2/raw",
+"mujoco_steps": 130948
+},
+{
+"run": "ss-b3-dt05-e0",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 29.9,
+"wall_s": 62.31,
+"wall_per_sim": 2.0841,
+"timings_s": {
+"physics": 44.73,
+"rgb": 10.67,
+"evaluation": 2.5,
+"teacher": 0.46,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.8,
+24.2
+],
+"adaptive_switch_t": [
+22.9
+],
+"loadavg_at_start": [
+3.07177734375,
+2.0556640625,
+1.7451171875
+],
+"result_sha256": "30369109b3f8a7caca7345d4940bcf2ad2d8e4f967bc6014ece7e42fb53170d2",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b3-dt05-e0/raw",
+"mujoco_steps": 84148
+},
+{
+"run": "ss-b3-dt1-e0",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 29.7,
+"wall_s": 51.2,
+"wall_per_sim": 1.7238,
+"timings_s": {
+"physics": 33.82,
+"rgb": 10.47,
+"evaluation": 2.48,
+"teacher": 0.46,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.6,
+24.0
+],
+"adaptive_switch_t": [
+22.7
+],
+"loadavg_at_start": [
+3.07177734375,
+2.0556640625,
+1.7451171875
+],
+"result_sha256": "76b74c9bb0848c84073f98ec67d62061272928790ca1d040da4b3a8d3c64e0cd",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b3-dt1-e0/raw",
+"mujoco_steps": 62348
+},
+{
+"run": "ss-b4-base-e4",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 23.4,
+"wall_s": 67.43,
+"wall_per_sim": 2.8818,
+"timings_s": {
+"physics": 50.81,
+"rgb": 10.63,
+"evaluation": 2.14,
+"teacher": 0.22,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.3,
+17.7
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+3.32861328125,
+2.68212890625,
+2.04150390625
+],
+"result_sha256": "97092fb1a2a7cd9dbfc1dd8a058bbff50ea28ab61659bef5b542445361d0e151",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b4-base-e4/raw",
+"mujoco_steps": 101348
+},
+{
+"run": "ss-b4-base-e5",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.4,
+"wall_s": 87.53,
+"wall_per_sim": 2.7875,
+"timings_s": {
+"physics": 68.88,
+"rgb": 12.07,
+"evaluation": 2.55,
+"teacher": 0.37,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.6,
+25.7
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+2.5751953125,
+2.57470703125,
+2.03662109375
+],
+"result_sha256": "22897584cc6c4fc2aac1174a7bc287c1e3b19bdc613506d2bad79816244f9156",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b4-base-e5/raw",
+"mujoco_steps": 133348
+},
+{
+"run": "ss-b4-dt1-e2",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.9,
+"wall_s": 51.75,
+"wall_per_sim": 1.6747,
+"timings_s": {
+"physics": 32.82,
+"rgb": 12.41,
+"evaluation": 2.56,
+"teacher": 0.33,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+24.1,
+25.2
+],
+"adaptive_switch_t": [
+24.2
+],
+"loadavg_at_start": [
+3.14794921875,
+2.50537109375,
+1.9501953125
+],
+"result_sha256": "d2d85a0a201b0baeac4549069724f3e9fde5906aa29364c69d4ae02477a9c9fc",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b4-dt1-e2/raw",
+"mujoco_steps": 62648
+},
+{
+"run": "ss-b4-dt1-e4",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 23.6,
+"wall_s": 44.09,
+"wall_per_sim": 1.8684,
+"timings_s": {
+"physics": 26.86,
+"rgb": 11.3,
+"evaluation": 2.1,
+"teacher": 0.22,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.5,
+17.9
+],
+"adaptive_switch_t": [
+17.6
+],
+"loadavg_at_start": [
+3.22216796875,
+2.67041015625,
+2.041015625
+],
+"result_sha256": "8221812f4b888332225ea3eb0ef7f945aec709bcde37388c1f9b3f105a8506c0",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b4-dt1-e4/raw",
+"mujoco_steps": 53248
+},
+{
+"run": "ss-b4-dt1-e5",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.2,
+"wall_s": 50.14,
+"wall_per_sim": 1.607,
+"timings_s": {
+"physics": 31.4,
+"rgb": 12.04,
+"evaluation": 2.5,
+"teacher": 0.37,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.5,
+25.6
+],
+"adaptive_switch_t": [
+25.6
+],
+"loadavg_at_start": [
+2.4111328125,
+2.53662109375,
+2.03466796875
+],
+"result_sha256": "d121c04dd7e0ab1ca0d5a2d96c31c7024baf7022f8a3ed1eec15b911c8f0f6b7",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b4-dt1-e5/raw",
+"mujoco_steps": 59648
+},
+{
+"run": "ss-b4-dt15-e0",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 55.28,
+"wall_per_sim": 0.9213,
+"timings_s": {
+"physics": 23.13,
+"rgb": 20.57,
+"evaluation": 5.33,
+"teacher": 1.61,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+3.14794921875,
+2.50537109375,
+1.9501953125
+],
+"result_sha256": "7b67a6dd44a4a015ff809c9814fb857cf1d35dba050b8002e9ba4e6404c065f2",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b4-dt15-e0/raw",
+"mujoco_steps": 46082
+},
+{
+"run": "ss-b4-dt15-e2",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 57.73,
+"wall_per_sim": 0.9622,
+"timings_s": {
+"physics": 22.71,
+"rgb": 24.26,
+"evaluation": 5.03,
+"teacher": 1.48,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+2.49169921875,
+2.53369140625,
+2.05908203125
+],
+"result_sha256": "f01300253cc25bd103269fc283c00df8210a264661510b181ca9c2486526ab0f",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b4-dt15-e2/raw",
+"mujoco_steps": 46082
+},
+{
+"run": "ss-b4-dt15-e4",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 57.1,
+"wall_s": 73.37,
+"wall_per_sim": 1.285,
+"timings_s": {
+"physics": 37.49,
+"rgb": 25.5,
+"evaluation": 5.04,
+"teacher": 1.05,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+51.0,
+51.4
+],
+"adaptive_switch_t": [
+51.1
+],
+"loadavg_at_start": [
+2.7275390625,
+2.58154296875,
+2.08544921875
+],
+"result_sha256": "d999f61f6e880038c1f2d82f5c08cc431b37f5d5bfcc944b3e07abc7ee57a050",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b4-dt15-e4/raw",
+"mujoco_steps": 70147
+},
+{
+"run": "ss-b5-frz-e0",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 29.8,
+"wall_s": 40.92,
+"wall_per_sim": 1.3731,
+"timings_s": {
+"physics": 24.82,
+"rgb": 10.41,
+"evaluation": 2.47,
+"teacher": 0.46,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [
+22.8
+],
+"loadavg_at_start": [
+6.7080078125,
+5.02734375,
+3.14501953125
+],
+"result_sha256": "c4b7956da7ab98a3b67a3c4805db6ae9a84b79ef5604c0452245967d54caaeb1",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b5-frz-e0/raw",
+"mujoco_steps": 62448
+},
+{
+"run": "ss-b5-frz-e2",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.5,
+"wall_s": 43.34,
+"wall_per_sim": 1.421,
+"timings_s": {
+"physics": 26.09,
+"rgb": 12.1,
+"evaluation": 2.46,
+"teacher": 0.31,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+23.7,
+24.8
+],
+"adaptive_switch_t": [
+23.8
+],
+"loadavg_at_start": [
+5.9833984375,
+4.92724609375,
+3.13232421875
+],
+"result_sha256": "4915f808c596b62575cfc8093d0f9f3eb1ea323423d32e1eb3a271d79e4c451f",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b5-frz-e2/raw",
+"mujoco_steps": 62248
+},
+{
+"run": "ss-b5-frz-e4",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 23.6,
+"wall_s": 37.21,
+"wall_per_sim": 1.5768,
+"timings_s": {
+"physics": 21.91,
+"rgb": 10.56,
+"evaluation": 2.11,
+"teacher": 0.22,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.5,
+17.9
+],
+"adaptive_switch_t": [
+17.6
+],
+"loadavg_at_start": [
+4.4130859375,
+4.64599609375,
+3.09423828125
+],
+"result_sha256": "b1d97e3ec856309bdd70ee48a790412a992fb180327874fa55aecc9dc0866ae9",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b5-frz-e4/raw",
+"mujoco_steps": 53248
+},
+{
+"run": "ss-b5-frz-e5",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.5,
+"wall_s": 41.73,
+"wall_per_sim": 1.3249,
+"timings_s": {
+"physics": 24.35,
+"rgb": 11.9,
+"evaluation": 2.5,
+"teacher": 0.38,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.8,
+25.9
+],
+"adaptive_switch_t": [
+25.9
+],
+"loadavg_at_start": [
+3.8779296875,
+4.51611328125,
+3.076171875
+],
+"result_sha256": "a6ffcd48f866b1ae32e15dec3f5771dda824bf99153a0bc7989c8ca9ddddfad0",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b5-frz-e5/raw",
+"mujoco_steps": 59948
+},
+{
+"run": "ss-b5-nsoff-e0",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 29.8,
+"wall_s": 47.26,
+"wall_per_sim": 1.5857,
+"timings_s": {
+"physics": 29.02,
+"rgb": 11.19,
+"evaluation": 2.55,
+"teacher": 0.47,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [
+22.8
+],
+"loadavg_at_start": [
+7.84765625,
+4.14208984375,
+2.67333984375
+],
+"result_sha256": "d95cadebb550c6060795e4bf43cade547f512d2963cb694fc5d7fa6d8d99cb10",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b5-nsoff-e0/raw",
+"mujoco_steps": 62448
+},
+{
+"run": "ss-b5-nsoff-e2",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 52.71,
+"wall_per_sim": 0.8785,
+"timings_s": {
+"physics": 17.49,
+"rgb": 24.36,
+"evaluation": 5.07,
+"teacher": 1.46,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+7.84765625,
+4.14208984375,
+2.67333984375
+],
+"result_sha256": "595d4b1d0dda78b813037aeb35a456f9c8235f6145910a38930dc34b5fb300d5",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b5-nsoff-e2/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-b5-nsoff-e4",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 23.6,
+"wall_s": 39.86,
+"wall_per_sim": 1.6889,
+"timings_s": {
+"physics": 23.21,
+"rgb": 10.65,
+"evaluation": 2.13,
+"teacher": 0.22,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.5,
+17.9
+],
+"adaptive_switch_t": [
+17.6
+],
+"loadavg_at_start": [
+9.2626953125,
+5.13232421875,
+3.0908203125
+],
+"result_sha256": "8d15fa804f17b0fa367f419ab765546ca1896bbdf13b2f3fcc597db877163761",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b5-nsoff-e4/raw",
+"mujoco_steps": 53248
+},
+{
+"run": "ss-b5-nsoff-e5",
+"exit": "0",
+"source_sha": "2558376bb01eb884e5b9d65820a5249efd04064b",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.0,
+"wall_s": 44.31,
+"wall_per_sim": 1.4292,
+"timings_s": {
+"physics": 25.91,
+"rgb": 11.84,
+"evaluation": 2.46,
+"teacher": 0.37,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.3,
+25.4
+],
+"adaptive_switch_t": [
+25.4
+],
+"loadavg_at_start": [
+9.1611328125,
+5.18017578125,
+3.11767578125
+],
+"result_sha256": "660359f968fbf3de05d715ea536aff2980c37bcea62472f3c392f7a66a4d0a1b",
+"raw": "gcp1:~/ugrp-sim/runs/ss-b5-nsoff-e5/raw",
+"mujoco_steps": 59448
+},
+{
+"run": "ss-base-cprof",
+"exit": "0",
+"source_sha": "cc368e477c3edb40ea0b069d50330218be1a6470",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 30.0,
+"wall_s": 96.33,
+"wall_per_sim": 3.2109,
+"timings_s": {
+"physics": 71.56,
+"rgb": 11.16,
+"evaluation": 3.33,
+"teacher": 2.22,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+6.4599609375,
+2.1328125,
+0.7666015625
+],
+"result_sha256": "f9f56af5abbb98ffaaa358d4aae2a4c35fb1137d1192ae3610fbb33bcff93f75",
+"raw": "gcp1:~/ugrp-sim/runs/ss-base-cprof/raw",
+"mujoco_steps": 127748
+},
+{
+"run": "ss-base-instr",
+"exit": "0",
+"source_sha": "cc368e477c3edb40ea0b069d50330218be1a6470",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 30.0,
+"wall_s": 86.81,
+"wall_per_sim": 2.8937,
+"timings_s": {
+"physics": 66.67,
+"rgb": 10.93,
+"evaluation": 2.5,
+"teacher": 0.64,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+6.4599609375,
+2.1328125,
+0.7666015625
+],
+"result_sha256": "98f85a51b9880365cb0383f2a18e9120fd8e45cf13bbcdd0f2135454582bb63a",
+"raw": "gcp1:~/ugrp-sim/runs/ss-base-instr/raw",
+"mujoco_steps": 127748
+},
+{
+"run": "ss-c1-base-e0",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 85.49,
+"wall_per_sim": 2.8498,
+"timings_s": {
+"physics": 67.47,
+"rgb": 10.54,
+"evaluation": 2.54,
+"teacher": 0.47,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.92138671875,
+2.73779296875,
+2.63916015625
+],
+"result_sha256": "9f938334f113d3848a0f0ed8581b68401dc4340e8cf4bb31388ada1bd73042b7",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c1-base-e0/raw",
+"mujoco_steps": 127748
+},
+{
+"run": "ss-c1-dt1-e0",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 52.95,
+"wall_per_sim": 1.7649,
+"timings_s": {
+"physics": 34.84,
+"rgb": 11.06,
+"evaluation": 2.58,
+"teacher": 0.48,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.6,
+24.0
+],
+"adaptive_switch_t": [
+22.7
+],
+"loadavg_at_start": [
+3.97021484375,
+3.10986328125,
+2.77001953125
+],
+"result_sha256": "3a66c070bd204fa21c78f469eb5fcb744eb0db971d8a6461873828e93416c1f8",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c1-dt1-e0/raw",
+"mujoco_steps": 63548
+},
+{
+"run": "ss-c1-frz-e0",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 42.73,
+"wall_per_sim": 1.4244,
+"timings_s": {
+"physics": 25.97,
+"rgb": 10.94,
+"evaluation": 2.52,
+"teacher": 0.47,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [
+22.8
+],
+"loadavg_at_start": [
+7.93994140625,
+4.32666015625,
+3.205078125
+],
+"result_sha256": "71b888eadc9ec5a451aeef03e0f6010edc081d879b02e78b15c8c3c4a67556be",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c1-frz-e0/raw",
+"mujoco_steps": 63248
+},
+{
+"run": "ss-c1-rev-e0",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 37.7,
+"wall_per_sim": 1.2567,
+"timings_s": {
+"physics": 26.13,
+"rgb": 5.69,
+"evaluation": 2.57,
+"teacher": 0.47,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [
+22.8
+],
+"loadavg_at_start": [
+10.5419921875,
+5.48828125,
+3.650390625
+],
+"result_sha256": "d8cae6fb1858ea33ffcdaa38e8ae60e3c5b31e381625852600024f62c8e641e8",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c1-rev-e0/raw",
+"mujoco_steps": 63248
+},
+{
+"run": "ss-c16-base-e0",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 91.67,
+"wall_per_sim": 3.0557,
+"timings_s": {
+"physics": 72.2,
+"rgb": 11.93,
+"evaluation": 2.75,
+"teacher": 0.5,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "9823011c4d1373a0e1e6f034224d5422bd9f2bba265b351398f52c04455028dc",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-base-e0/raw",
+"mujoco_steps": 127748
+},
+{
+"run": "ss-c16-base-e2",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 30.0,
+"wall_s": 90.78,
+"wall_per_sim": 3.0259,
+"timings_s": {
+"physics": 69.89,
+"rgb": 13.79,
+"evaluation": 2.76,
+"teacher": 0.35,
+"io": 0.0
+},
+"outcomes": {
+"r1": "no_stable_joint_hold_3s",
+"r2": "no_stable_joint_hold_3s"
+},
+"plan_episode_seed": null,
+"pick_t": [
+24.0,
+25.1
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "ecb67dac342a4b79736a804321b9d45afb02ea3181fd1009de1d2e94c2fd9a36",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-base-e2/raw",
+"mujoco_steps": 127748
+},
+{
+"run": "ss-c16-base-e4",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 95.59,
+"wall_per_sim": 3.1863,
+"timings_s": {
+"physics": 73.08,
+"rgb": 15.34,
+"evaluation": 2.83,
+"teacher": 0.25,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.3,
+17.7
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "0217a5a0310706fe307661b9f42f69be26095ec1b83a07ec2fd570ea35892ce2",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-base-e4/raw",
+"mujoco_steps": 127748
+},
+{
+"run": "ss-c16-base-e5",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 30.0,
+"wall_s": 89.69,
+"wall_per_sim": 2.9895,
+"timings_s": {
+"physics": 69.05,
+"rgb": 13.39,
+"evaluation": 2.72,
+"teacher": 0.42,
+"io": 0.0
+},
+"outcomes": {
+"r1": "no_stable_joint_hold_3s",
+"r2": "no_stable_joint_hold_3s"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.6,
+25.7
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "d3dbfd36442c241190aa754a697180ea1765e420534a60ddad1295de62f1a318",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-base-e5/raw",
+"mujoco_steps": 127748
+},
+{
+"run": "ss-c16-dt1-e0",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 58.39,
+"wall_per_sim": 1.9463,
+"timings_s": {
+"physics": 38.09,
+"rgb": 12.6,
+"evaluation": 2.9,
+"teacher": 0.52,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.6,
+24.0
+],
+"adaptive_switch_t": [
+22.7
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "2a6eab5229d6db1645a47bb83682ebb492863c76b997040ee4cea37afa3fc4c2",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-dt1-e0/raw",
+"mujoco_steps": 63548
+},
+{
+"run": "ss-c16-dt1-e2",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 30.0,
+"wall_s": 54.45,
+"wall_per_sim": 1.815,
+"timings_s": {
+"physics": 33.11,
+"rgb": 14.13,
+"evaluation": 2.91,
+"teacher": 0.37,
+"io": 0.0
+},
+"outcomes": {
+"r1": "no_stable_joint_hold_3s",
+"r2": "no_stable_joint_hold_3s"
+},
+"plan_episode_seed": null,
+"pick_t": [
+24.1,
+25.2
+],
+"adaptive_switch_t": [
+24.2
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "18d12662eec257e39973cbf0c61874f0e0578f4de8ed0bc49215eb53af8191f8",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-dt1-e2/raw",
+"mujoco_steps": 59048
+},
+{
+"run": "ss-c16-dt1-e4",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 71.07,
+"wall_per_sim": 2.3691,
+"timings_s": {
+"physics": 47.59,
+"rgb": 16.37,
+"evaluation": 2.94,
+"teacher": 0.26,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.5,
+17.9
+],
+"adaptive_switch_t": [
+17.6
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "fe36dc5057a97c90614c799b633c5fc5d85425f6773191e6f4f4a1f5d2f89d39",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-dt1-e4/raw",
+"mujoco_steps": 78848
+},
+{
+"run": "ss-c16-dt1-e5",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 30.0,
+"wall_s": 50.79,
+"wall_per_sim": 1.6929,
+"timings_s": {
+"physics": 29.92,
+"rgb": 13.85,
+"evaluation": 2.68,
+"teacher": 0.41,
+"io": 0.0
+},
+"outcomes": {
+"r1": "no_stable_joint_hold_3s",
+"r2": "no_stable_joint_hold_3s"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.5,
+25.6
+],
+"adaptive_switch_t": [
+25.6
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "956ea8d6900aa7967e2ee6eddb7091b8a2d3898163a9107670232ac12f6f75e2",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-dt1-e5/raw",
+"mujoco_steps": 54848
+},
+{
+"run": "ss-c16-frz-e0",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 46.46,
+"wall_per_sim": 1.5485,
+"timings_s": {
+"physics": 27.25,
+"rgb": 12.93,
+"evaluation": 2.78,
+"teacher": 0.51,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [
+22.8
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "8247f56e9859aa9f57cdde99d7b7417b8f9e95c1bc4670123ecf30819d1f6935",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-frz-e0/raw",
+"mujoco_steps": 63248
+},
+{
+"run": "ss-c16-frz-e2",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 30.0,
+"wall_s": 47.1,
+"wall_per_sim": 1.5701,
+"timings_s": {
+"physics": 27.14,
+"rgb": 14.16,
+"evaluation": 2.77,
+"teacher": 0.36,
+"io": 0.0
+},
+"outcomes": {
+"r1": "no_stable_joint_hold_3s",
+"r2": "no_stable_joint_hold_3s"
+},
+"plan_episode_seed": null,
+"pick_t": [
+23.7,
+24.8
+],
+"adaptive_switch_t": [
+23.8
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "6c68a4b1b73d9301ab95f6330b690cc49cca5bf43e57fe16e5c55de42ce5c084",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-frz-e2/raw",
+"mujoco_steps": 60248
+},
+{
+"run": "ss-c16-frz-e4",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 62.27,
+"wall_per_sim": 2.0757,
+"timings_s": {
+"physics": 39.93,
+"rgb": 16.37,
+"evaluation": 2.89,
+"teacher": 0.26,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.5,
+17.9
+],
+"adaptive_switch_t": [
+17.6
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "a2bdf74292d8c43df72de31433390f175df2af9c5b85c1fa8a520facf2b8e653",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-frz-e4/raw",
+"mujoco_steps": 78848
+},
+{
+"run": "ss-c16-frz-e5",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 30.0,
+"wall_s": 42.56,
+"wall_per_sim": 1.4185,
+"timings_s": {
+"physics": 22.57,
+"rgb": 14.13,
+"evaluation": 2.79,
+"teacher": 0.42,
+"io": 0.0
+},
+"outcomes": {
+"r1": "no_stable_joint_hold_3s",
+"r2": "no_stable_joint_hold_3s"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.8,
+25.9
+],
+"adaptive_switch_t": [
+25.9
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "6c5d908246c2abd2175b8bdccdce7a9d5f554366fda53fa931e1cfd24157faee",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-frz-e5/raw",
+"mujoco_steps": 53948
+},
+{
+"run": "ss-c16-rev-e0",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 41.34,
+"wall_per_sim": 1.3781,
+"timings_s": {
+"physics": 28.33,
+"rgb": 6.52,
+"evaluation": 2.84,
+"teacher": 0.51,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [
+22.8
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "e0688d2b77490fdfd1a97a079cd5ef39c9a68c025e3c604e1eaf3ad92c47da39",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-rev-e0/raw",
+"mujoco_steps": 63248
+},
+{
+"run": "ss-c16-rev-e2",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 30.0,
+"wall_s": 39.34,
+"wall_per_sim": 1.3112,
+"timings_s": {
+"physics": 26.88,
+"rgb": 6.85,
+"evaluation": 2.76,
+"teacher": 0.35,
+"io": 0.0
+},
+"outcomes": {
+"r1": "no_stable_joint_hold_3s",
+"r2": "no_stable_joint_hold_3s"
+},
+"plan_episode_seed": null,
+"pick_t": [
+23.7,
+24.8
+],
+"adaptive_switch_t": [
+23.8
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "125cbfeee3d1ca8955c2f049c6219ab21e736de86dbe16d62d3c1d9909d40ae6",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-rev-e2/raw",
+"mujoco_steps": 60248
+},
+{
+"run": "ss-c16-rev-e4",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.0,
+"wall_s": 53.62,
+"wall_per_sim": 1.7872,
+"timings_s": {
+"physics": 39.68,
+"rgb": 8.06,
+"evaluation": 2.94,
+"teacher": 0.26,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.5,
+17.9
+],
+"adaptive_switch_t": [
+17.6
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "dcf48424f496c7c413ad497d4d9c879c2f9be6ece18838abf7fec163d691e2af",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-rev-e4/raw",
+"mujoco_steps": 78848
+},
+{
+"run": "ss-c16-rev-e5",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 30.0,
+"wall_s": 35.39,
+"wall_per_sim": 1.1797,
+"timings_s": {
+"physics": 22.42,
+"rgb": 7.23,
+"evaluation": 2.71,
+"teacher": 0.42,
+"io": 0.0
+},
+"outcomes": {
+"r1": "no_stable_joint_hold_3s",
+"r2": "no_stable_joint_hold_3s"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.8,
+25.9
+],
+"adaptive_switch_t": [
+25.9
+],
+"loadavg_at_start": [
+11.22119140625,
+6.44970703125,
+4.0751953125
+],
+"result_sha256": "72a9293d25f7de8afef997785ef37ae7a9bb5b7b7c7ba6fb0b4ada16ea308fcf",
+"raw": "gcp1:~/ugrp-sim/runs/ss-c16-rev-e5/raw",
+"mujoco_steps": 53948
+},
+{
+"run": "ss-d-base-e10",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 50.6,
+"wall_s": 152.46,
+"wall_per_sim": 3.0131,
+"timings_s": {
+"physics": 123.99,
+"rgb": 19.44,
+"evaluation": 4.58,
+"teacher": 0.53,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+44.1,
+44.9
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+8.17822265625,
+9.8173828125,
+6.228515625
+],
+"result_sha256": "c653558e49cdee948b4e7e6b306ac997fd30331b64edd1714abcc99bef5c38b0",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-base-e10/raw",
+"mujoco_steps": 210148
+},
+{
+"run": "ss-d-base-e12",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 32.2,
+"wall_s": 93.11,
+"wall_per_sim": 2.8916,
+"timings_s": {
+"physics": 73.43,
+"rgb": 12.17,
+"evaluation": 2.86,
+"teacher": 0.52,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.4,
+26.5
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+7.1953125,
+9.48779296875,
+6.19580078125
+],
+"result_sha256": "ff9c480829a7fa81742c2db25db2452c940084cd979d357a3ff39b0d903e8bb7",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-base-e12/raw",
+"mujoco_steps": 136548
+},
+{
+"run": "ss-d-base-e13",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.3,
+"wall_s": 94.66,
+"wall_per_sim": 2.7598,
+"timings_s": {
+"physics": 74.89,
+"rgb": 12.82,
+"evaluation": 2.79,
+"teacher": 0.36,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+27.2,
+28.6
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+5.47509765625,
+8.66943359375,
+6.08837890625
+],
+"result_sha256": "c5d333086b4a0bd28d1f9f19e1efac30662a218e82733e0367477500b7b9750c",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-base-e13/raw",
+"mujoco_steps": 144948
+},
+{
+"run": "ss-d-base-e6",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.5,
+"wall_s": 100.99,
+"wall_per_sim": 2.9271,
+"timings_s": {
+"physics": 77.81,
+"rgb": 15.02,
+"evaluation": 3.37,
+"teacher": 0.58,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+28.3,
+28.8
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+14.7705078125,
+10.740234375,
+6.06201171875
+],
+"result_sha256": "ca1b53e3a8da6595f0c7dd04df88d6b7ffd08c1e9936d7cba2903f1a5f54cd1a",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-base-e6/raw",
+"mujoco_steps": 145748
+},
+{
+"run": "ss-d-base-e7",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 41.2,
+"wall_s": 117.42,
+"wall_per_sim": 2.8501,
+"timings_s": {
+"physics": 92.71,
+"rgb": 15.86,
+"evaluation": 3.38,
+"teacher": 1.46,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+35.5,
+35.5
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+14.7705078125,
+10.740234375,
+6.06201171875
+],
+"result_sha256": "e7b9cd16ce508f43ae42c560d06b489cea5ac543c7460d7ec82a761378d1c047",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-base-e7/raw",
+"mujoco_steps": 172548
+},
+{
+"run": "ss-d-base-e8",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.5,
+"wall_s": 88.84,
+"wall_per_sim": 2.8203,
+"timings_s": {
+"physics": 69.64,
+"rgb": 12.32,
+"evaluation": 2.73,
+"teacher": 0.39,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+24.4,
+25.8
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+11.802734375,
+10.61083984375,
+6.26953125
+],
+"result_sha256": "47858871d3082257752745ac2a3c2c7178544024a37c2292eed07a728b5aeca8",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-base-e8/raw",
+"mujoco_steps": 133748
+},
+{
+"run": "ss-d-cand-e10",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 65.36,
+"wall_per_sim": 1.0893,
+"timings_s": {
+"physics": 33.68,
+"rgb": 23.27,
+"evaluation": 5.37,
+"teacher": 0.53,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+7.92333984375,
+9.7373046875,
+6.2216796875
+],
+"result_sha256": "4bb57f8fe9119567cfdc92f63a6851b43618711084d2ea571c2ea9ae5d53f5b6",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-cand-e10/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-d-cand-e12",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 32.1,
+"wall_s": 43.38,
+"wall_per_sim": 1.3513,
+"timings_s": {
+"physics": 25.45,
+"rgb": 11.96,
+"evaluation": 2.72,
+"teacher": 0.51,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.3,
+26.4
+],
+"adaptive_switch_t": [
+25.4
+],
+"loadavg_at_start": [
+6.349609375,
+9.1474609375,
+6.1533203125
+],
+"result_sha256": "2dc62dab8ac8084885c3e38d8c6d12380ac387f2b8aaa0505dac31eef1bb34c7",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-cand-e12/raw",
+"mujoco_steps": 63848
+},
+{
+"run": "ss-d-cand-e13",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 33.8,
+"wall_s": 45.3,
+"wall_per_sim": 1.3401,
+"timings_s": {
+"physics": 27.25,
+"rgb": 12.46,
+"evaluation": 2.68,
+"teacher": 0.35,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+26.7,
+28.1
+],
+"adaptive_switch_t": [
+26.8
+],
+"loadavg_at_start": [
+5.248046875,
+8.51513671875,
+6.06591796875
+],
+"result_sha256": "cad26a53ffe61eae143907aad31a080469657739710a2b0ba22651f7076ae9d5",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-cand-e13/raw",
+"mujoco_steps": 66448
+},
+{
+"run": "ss-d-cand-e6",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.5,
+"wall_s": 47.42,
+"wall_per_sim": 1.3745,
+"timings_s": {
+"physics": 25.65,
+"rgb": 15.03,
+"evaluation": 3.31,
+"teacher": 0.59,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+28.3,
+28.8
+],
+"adaptive_switch_t": [
+28.4
+],
+"loadavg_at_start": [
+14.7705078125,
+10.740234375,
+6.06201171875
+],
+"result_sha256": "375e93d6c4232fef408b7f0db1c5b925baa97f9c885ac5e8d8043dc00c4a8053",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-cand-e6/raw",
+"mujoco_steps": 64448
+},
+{
+"run": "ss-d-cand-e7",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 53.48,
+"wall_per_sim": 0.8914,
+"timings_s": {
+"physics": 17.09,
+"rgb": 22.21,
+"evaluation": 4.99,
+"teacher": 6.17,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+14.7705078125,
+10.740234375,
+6.06201171875
+],
+"result_sha256": "7765598e2411274a19dca29b9df0dc987eac44cf61b9b84463cb524ffa9fa236",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-cand-e7/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-d-cand-e8",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 46.14,
+"wall_per_sim": 0.769,
+"timings_s": {
+"physics": 14.07,
+"rgb": 22.59,
+"evaluation": 5.08,
+"teacher": 1.41,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+11.337890625,
+10.5341796875,
+6.26806640625
+],
+"result_sha256": "8ff5528ff697c71c3768c5e3d7ca417aa5bbad39c393f03ebb6a3237f6f8a06b",
+"raw": "gcp1:~/ugrp-sim/runs/ss-d-cand-e8/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-base-e00",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 29.8,
+"wall_s": 88.02,
+"wall_per_sim": 2.9536,
+"timings_s": {
+"physics": 69.36,
+"rgb": 11.43,
+"evaluation": 2.67,
+"teacher": 0.48,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "23b8f3e122e57d4fef5128b1afebde2dc5f59b97e2148b4e540ffe9cf9ab714d",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e00/raw",
+"mujoco_steps": 126948
+},
+{
+"run": "ss-e-base-e01",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 228.83,
+"wall_per_sim": 3.8139,
+"timings_s": {
+"physics": 133.81,
+"rgb": 22.8,
+"evaluation": 5.62,
+"teacher": 62.32,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "f600d434c06ad98dc0366350761e0d3bded380685fdc37f91d23dc96845c25bd",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e01/raw",
+"mujoco_steps": 247748
+},
+{
+"run": "ss-e-base-e02",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.8,
+"wall_s": 91.92,
+"wall_per_sim": 2.9843,
+"timings_s": {
+"physics": 71.81,
+"rgb": 13.18,
+"evaluation": 2.74,
+"teacher": 0.34,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+24.0,
+25.1
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "0e2d0b9b1c5aab1df941da14e6042e5de06f21c0cf37639d7beb874ffb7d4c0c",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e02/raw",
+"mujoco_steps": 130948
+},
+{
+"run": "ss-e-base-e03",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 207.76,
+"wall_per_sim": 3.4627,
+"timings_s": {
+"physics": 122.89,
+"rgb": 25.69,
+"evaluation": 5.57,
+"teacher": 49.0,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "b0a4cb67cdd7c6e82040c476cd07015691c6863dec83d4bef22ec75b425c9ed4",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e03/raw",
+"mujoco_steps": 247748
+},
+{
+"run": "ss-e-base-e04",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 23.4,
+"wall_s": 69.8,
+"wall_per_sim": 2.9828,
+"timings_s": {
+"physics": 52.03,
+"rgb": 11.54,
+"evaluation": 2.24,
+"teacher": 0.23,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.3,
+17.7
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "84f6b3ca6234633f22fba80788a2b3c6c02faa3ae9ecf7cb1a2eee186e7d254a",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e04/raw",
+"mujoco_steps": 101348
+},
+{
+"run": "ss-e-base-e05",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.4,
+"wall_s": 92.52,
+"wall_per_sim": 2.9464,
+"timings_s": {
+"physics": 72.29,
+"rgb": 13.25,
+"evaluation": 2.76,
+"teacher": 0.4,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.6,
+25.7
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "8ffff9b1b862b9cf1830f7e07f69936522928223fc78893fb7b3f8ff233b0293",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e05/raw",
+"mujoco_steps": 133348
+},
+{
+"run": "ss-e-base-e06",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.5,
+"wall_s": 102.29,
+"wall_per_sim": 2.9648,
+"timings_s": {
+"physics": 78.95,
+"rgb": 15.19,
+"evaluation": 3.39,
+"teacher": 0.59,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+28.3,
+28.8
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "5e1107ca3264bd0929abf5a119e3674078b7627d61b86ed1cd2d29711cf0c286",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e06/raw",
+"mujoco_steps": 145748
+},
+{
+"run": "ss-e-base-e07",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 41.2,
+"wall_s": 118.36,
+"wall_per_sim": 2.8728,
+"timings_s": {
+"physics": 93.32,
+"rgb": 16.27,
+"evaluation": 3.37,
+"teacher": 1.48,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+35.5,
+35.5
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "766a2e053f310b6974996f4879ff595156e9f43a45f8158eee64f29757bea355",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e07/raw",
+"mujoco_steps": 172548
+},
+{
+"run": "ss-e-base-e08",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.5,
+"wall_s": 90.76,
+"wall_per_sim": 2.8813,
+"timings_s": {
+"physics": 70.7,
+"rgb": 13.1,
+"evaluation": 2.8,
+"teacher": 0.4,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+24.4,
+25.8
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "30dc2b968439e582fd7108d4dd632eefd36b287c0b137823c89d5abd9c813618",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e08/raw",
+"mujoco_steps": 133748
+},
+{
+"run": "ss-e-base-e09",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 187.89,
+"wall_per_sim": 3.1315,
+"timings_s": {
+"physics": 144.83,
+"rgb": 28.44,
+"evaluation": 6.0,
+"teacher": 4.17,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "777f6ac1ee94fd4136a11d83cf06ac2d5caa53695bcc8b4533e099761c150194",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e09/raw",
+"mujoco_steps": 247748
+},
+{
+"run": "ss-e-base-e10",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 50.6,
+"wall_s": 153.95,
+"wall_per_sim": 3.0425,
+"timings_s": {
+"physics": 124.42,
+"rgb": 20.31,
+"evaluation": 4.6,
+"teacher": 0.53,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+44.1,
+44.9
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "c2aecdf84888651e9d49d357b51bc4f358395ba6d207c9a9eb532a2113d3d38d",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e10/raw",
+"mujoco_steps": 210148
+},
+{
+"run": "ss-e-base-e11",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 163.64,
+"wall_per_sim": 2.7274,
+"timings_s": {
+"physics": 128.37,
+"rgb": 22.63,
+"evaluation": 5.38,
+"teacher": 2.87,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "fc8302a985c410c4c05093d809a72319204cfb9e127fa1dfb445440babab6e86",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e11/raw",
+"mujoco_steps": 247748
+},
+{
+"run": "ss-e-base-e12",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 32.2,
+"wall_s": 94.21,
+"wall_per_sim": 2.9257,
+"timings_s": {
+"physics": 73.96,
+"rgb": 12.7,
+"evaluation": 2.89,
+"teacher": 0.52,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.4,
+26.5
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "1deed585e9c5f77f58d02acea062e455f041efa1dfdfca065a88d7558d63e075",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e12/raw",
+"mujoco_steps": 136548
+},
+{
+"run": "ss-e-base-e13",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.3,
+"wall_s": 98.09,
+"wall_per_sim": 2.8597,
+"timings_s": {
+"physics": 76.97,
+"rgb": 13.95,
+"evaluation": 2.84,
+"teacher": 0.37,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+27.2,
+28.6
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "7a06c5e7c0bc33c5d889637b26567025e23eaf67fd34040186edc845e0b1cef4",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e13/raw",
+"mujoco_steps": 144948
+},
+{
+"run": "ss-e-base-e14",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 33.4,
+"wall_s": 94.05,
+"wall_per_sim": 2.8159,
+"timings_s": {
+"physics": 73.04,
+"rgb": 13.92,
+"evaluation": 3.06,
+"teacher": 0.33,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+27.7,
+27.8
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "42a7cf6c4dc940a59da9ea98e43ae355c272e8ff7ee1be8cc070966ae29f7c56",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e14/raw",
+"mujoco_steps": 141348
+},
+{
+"run": "ss-e-base-e15",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 26.7,
+"wall_s": 81.57,
+"wall_per_sim": 3.0552,
+"timings_s": {
+"physics": 62.76,
+"rgb": 11.91,
+"evaluation": 2.36,
+"teacher": 0.4,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+19.6,
+21.0
+],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+1.94873046875,
+6.46240234375,
+5.615234375
+],
+"result_sha256": "494c5322f91c7325af499b8806b1978141460f9d6057b093a65b11cbbc1ed4aa",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-base-e15/raw",
+"mujoco_steps": 114548
+},
+{
+"run": "ss-e-cand-e00",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 29.8,
+"wall_s": 43.49,
+"wall_per_sim": 1.4594,
+"timings_s": {
+"physics": 25.99,
+"rgb": 11.59,
+"evaluation": 2.6,
+"teacher": 0.48,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.7,
+24.1
+],
+"adaptive_switch_t": [
+22.8
+],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "0854008b609d04434da0cb1e29b27b05052e446d6dca12a498fd728755a1074c",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e00/raw",
+"mujoco_steps": 62448
+},
+{
+"run": "ss-e-cand-e01",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 88.04,
+"wall_per_sim": 1.4674,
+"timings_s": {
+"physics": 12.5,
+"rgb": 23.46,
+"evaluation": 5.42,
+"teacher": 43.66,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "c14b45fd47d0ca6185cf5217d2f2238236743f995fad4138545db93a84019ca4",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e01/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-cand-e02",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.5,
+"wall_s": 46.57,
+"wall_per_sim": 1.5268,
+"timings_s": {
+"physics": 27.83,
+"rgb": 13.24,
+"evaluation": 2.72,
+"teacher": 0.34,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+23.7,
+24.8
+],
+"adaptive_switch_t": [
+23.8
+],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "71d810b199d64d78a235d5e63d37039c67b21faa41d9e497d724dd70180bbbeb",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e02/raw",
+"mujoco_steps": 62248
+},
+{
+"run": "ss-e-cand-e03",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 93.18,
+"wall_per_sim": 1.5531,
+"timings_s": {
+"physics": 10.73,
+"rgb": 26.19,
+"evaluation": 5.36,
+"teacher": 47.6,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "af500ba67f825cb993ade213c8896927179a0b1438ca4a65904360a278471bd6",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e03/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-cand-e04",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 23.6,
+"wall_s": 39.74,
+"wall_per_sim": 1.6837,
+"timings_s": {
+"physics": 23.01,
+"rgb": 11.74,
+"evaluation": 2.26,
+"teacher": 0.24,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.5,
+17.9
+],
+"adaptive_switch_t": [
+17.6
+],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "13f3c40d9d512786d0909b19f0f99ca5b448a724e1e7efd61ba2cef55d6ce634",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e04/raw",
+"mujoco_steps": 53248
+},
+{
+"run": "ss-e-cand-e05",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.5,
+"wall_s": 44.39,
+"wall_per_sim": 1.4091,
+"timings_s": {
+"physics": 25.58,
+"rgb": 13.19,
+"evaluation": 2.72,
+"teacher": 0.41,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.8,
+25.9
+],
+"adaptive_switch_t": [
+25.9
+],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "839c2ee262f64020c2b5eaab87bd1e80b9d8565afaab9cf6c73c99d70edf8513",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e05/raw",
+"mujoco_steps": 59948
+},
+{
+"run": "ss-e-cand-e06",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.5,
+"wall_s": 48.57,
+"wall_per_sim": 1.4079,
+"timings_s": {
+"physics": 26.19,
+"rgb": 15.53,
+"evaluation": 3.38,
+"teacher": 0.6,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+28.3,
+28.8
+],
+"adaptive_switch_t": [
+28.4
+],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "392cf4c674ad2d49876c8d8b5a34bdb50103ae6e5c657239b113d258a130a13e",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e06/raw",
+"mujoco_steps": 64448
+},
+{
+"run": "ss-e-cand-e07",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 55.42,
+"wall_per_sim": 0.9237,
+"timings_s": {
+"physics": 17.59,
+"rgb": 23.1,
+"evaluation": 5.12,
+"teacher": 6.61,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "15643e6670ac1efe6e789a3c79f579eb5f0b03570458548e83ca1e01d77a8453",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e07/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-cand-e08",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 49.24,
+"wall_per_sim": 0.8207,
+"timings_s": {
+"physics": 14.67,
+"rgb": 24.61,
+"evaluation": 5.37,
+"teacher": 1.52,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "2584d6d240430c87332520781465f53ca96a892f3156408506e04c6c7d1891d7",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e08/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-cand-e09",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 59.83,
+"wall_per_sim": 0.9971,
+"timings_s": {
+"physics": 19.99,
+"rgb": 29.51,
+"evaluation": 5.96,
+"teacher": 1.1,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "04867f784db0dd8a49cb3e61c79ad1f120a42ea6d977ac3425fc067e522dd974",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e09/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-cand-e10",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 67.96,
+"wall_per_sim": 1.1327,
+"timings_s": {
+"physics": 34.43,
+"rgb": 24.93,
+"evaluation": 5.54,
+"teacher": 0.55,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "cb05d53ea6a4d06e2376c959f4b5d6d873680aeba050b7cd34066bcf8b834a7b",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e10/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-cand-e11",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 36.0,
+"wall_s": 50.71,
+"wall_per_sim": 1.4086,
+"timings_s": {
+"physics": 28.32,
+"rgb": 14.64,
+"evaluation": 3.26,
+"teacher": 1.9,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+29.5,
+30.3
+],
+"adaptive_switch_t": [
+29.6
+],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "448b4e1bfe51d241f56be9c4a821aadba803b8c85fd9005c21e4a714f4934f75",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e11/raw",
+"mujoco_steps": 66848
+},
+{
+"run": "ss-e-cand-e12",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 32.1,
+"wall_s": 46.18,
+"wall_per_sim": 1.4387,
+"timings_s": {
+"physics": 26.6,
+"rgb": 13.15,
+"evaluation": 2.93,
+"teacher": 0.56,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.3,
+26.4
+],
+"adaptive_switch_t": [
+25.4
+],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "3e4ede06d70a86b1b8fbcad75e5b27b422531bcf9ed92789862064f17135ea5f",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e12/raw",
+"mujoco_steps": 63848
+},
+{
+"run": "ss-e-cand-e13",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 33.8,
+"wall_s": 47.73,
+"wall_per_sim": 1.412,
+"timings_s": {
+"physics": 28.33,
+"rgb": 13.62,
+"evaluation": 2.81,
+"teacher": 0.37,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+26.7,
+28.1
+],
+"adaptive_switch_t": [
+26.8
+],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "5e7de0c33e38de8bf811d9ed5a4b14ed0482d8d32731919b748039f602f82db1",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e13/raw",
+"mujoco_steps": 66448
+},
+{
+"run": "ss-e-cand-e14",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 50.39,
+"wall_per_sim": 0.8398,
+"timings_s": {
+"physics": 15.45,
+"rgb": 24.85,
+"evaluation": 5.62,
+"teacher": 1.39,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "0e323060aff2f035bfd969462a96ad6d71c3377247ac6bd1f1b6d12e0a8778ce",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e14/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-cand-e15",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 26.7,
+"wall_s": 42.69,
+"wall_per_sim": 1.5988,
+"timings_s": {
+"physics": 25.15,
+"rgb": 11.86,
+"evaluation": 2.37,
+"teacher": 0.42,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+19.6,
+21.0
+],
+"adaptive_switch_t": [
+19.7
+],
+"loadavg_at_start": [
+4.72998046875,
+7.0986328125,
+6.22412109375
+],
+"result_sha256": "44781fdac7c0d617393452ed8e7cd038afe6f065e3f216d2c0f581b7866c5e78",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-cand-e15/raw",
+"mujoco_steps": 59348
+},
+{
+"run": "ss-e-dt05-e00",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 29.9,
+"wall_s": 65.08,
+"wall_per_sim": 2.1767,
+"timings_s": {
+"physics": 46.0,
+"rgb": 11.82,
+"evaluation": 2.69,
+"teacher": 0.48,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.8,
+24.2
+],
+"adaptive_switch_t": [
+22.9
+],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "e703f18ceb2fbfd3e380ac23ab645ee4dfce28fea6b65147ed4d28580f52414e",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e00/raw",
+"mujoco_steps": 84148
+},
+{
+"run": "ss-e-dt05-e01",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 145.69,
+"wall_per_sim": 2.4282,
+"timings_s": {
+"physics": 68.18,
+"rgb": 22.91,
+"evaluation": 5.49,
+"teacher": 44.63,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "20722d288559532d6aa7eec54b81f1201714737d66cdc6a99f3349d35b73f076",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e01/raw",
+"mujoco_steps": 126748
+},
+{
+"run": "ss-e-dt05-e02",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 32.0,
+"wall_s": 70.21,
+"wall_per_sim": 2.1942,
+"timings_s": {
+"physics": 48.04,
+"rgb": 13.49,
+"evaluation": 2.87,
+"teacher": 2.08,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.2,
+26.3
+],
+"adaptive_switch_t": [
+25.3
+],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "8b40def31f5cb9b8ba2bd230b264419716dead7616f68e0a8a93dee86f6f6632",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e02/raw",
+"mujoco_steps": 87748
+},
+{
+"run": "ss-e-dt05-e03",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 155.44,
+"wall_per_sim": 2.5907,
+"timings_s": {
+"physics": 68.0,
+"rgb": 26.11,
+"evaluation": 5.54,
+"teacher": 51.15,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "3c35f86f66ad7edf0183dfc152ff26b075574af22728680c7df8423fce1ee9e6",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e03/raw",
+"mujoco_steps": 126748
+},
+{
+"run": "ss-e-dt05-e04",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 23.5,
+"wall_s": 55.08,
+"wall_per_sim": 2.3437,
+"timings_s": {
+"physics": 36.8,
+"rgb": 12.01,
+"evaluation": 2.28,
+"teacher": 0.24,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.4,
+17.8
+],
+"adaptive_switch_t": [
+17.5
+],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "cbe31c94f8c2e75b56a269d06ef65d78a69ee9f037ff047f4578d3e0ccbdbf54",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e04/raw",
+"mujoco_steps": 69348
+},
+{
+"run": "ss-e-dt05-e05",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 102.34,
+"wall_per_sim": 1.7057,
+"timings_s": {
+"physics": 67.62,
+"rgb": 23.54,
+"evaluation": 5.35,
+"teacher": 1.43,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "e39b8a4dec5ad8ab5a385e51db1956134e63baba561ed0bad07ebf488465923d",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e05/raw",
+"mujoco_steps": 126748
+},
+{
+"run": "ss-e-dt05-e06",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.9,
+"wall_s": 75.88,
+"wall_per_sim": 2.1741,
+"timings_s": {
+"physics": 51.73,
+"rgb": 15.89,
+"evaluation": 3.47,
+"teacher": 0.61,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+28.7,
+29.2
+],
+"adaptive_switch_t": [
+28.8
+],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "500886dc516a7dbb851389b0e51b88e0ab6c745149a8fce531fb289a13aa1953",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e06/raw",
+"mujoco_steps": 92348
+},
+{
+"run": "ss-e-dt05-e07",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 46.8,
+"wall_s": 95.63,
+"wall_per_sim": 2.0433,
+"timings_s": {
+"physics": 63.85,
+"rgb": 18.43,
+"evaluation": 3.85,
+"teacher": 5.44,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+41.1,
+41.1
+],
+"adaptive_switch_t": [
+41.2
+],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "11380341ca1ea147ade8ab1a2bf73b4ecae35b766be476844f0d09ae353e7b2c",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e07/raw",
+"mujoco_steps": 115148
+},
+{
+"run": "ss-e-dt05-e08",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.4,
+"wall_s": 68.34,
+"wall_per_sim": 2.1763,
+"timings_s": {
+"physics": 47.99,
+"rgb": 13.34,
+"evaluation": 2.82,
+"teacher": 0.39,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+24.3,
+25.7
+],
+"adaptive_switch_t": [
+24.4
+],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "9350fe89655966b727fa18d4396842d24dbb1f2f9a7b74ab9568a32cd7748959",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e08/raw",
+"mujoco_steps": 87148
+},
+{
+"run": "ss-e-dt05-e09",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 106.64,
+"wall_per_sim": 1.7773,
+"timings_s": {
+"physics": 66.57,
+"rgb": 28.54,
+"evaluation": 5.71,
+"teacher": 1.1,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "1bb63e519177032928d45ab1113fa81140b6640d0568a96b0ca1bf32272986a2",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e09/raw",
+"mujoco_steps": 126748
+},
+{
+"run": "ss-e-dt05-e10",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 117.33,
+"wall_per_sim": 1.9554,
+"timings_s": {
+"physics": 82.91,
+"rgb": 24.31,
+"evaluation": 5.73,
+"teacher": 0.56,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "e28984ea4521de38db363ec63d902479f900c40ea89237a8d6f25ecab5a7491b",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e10/raw",
+"mujoco_steps": 126748
+},
+{
+"run": "ss-e-dt05-e11",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.6,
+"wall_s": 75.03,
+"wall_per_sim": 2.1686,
+"timings_s": {
+"physics": 52.19,
+"rgb": 14.11,
+"evaluation": 3.09,
+"teacher": 1.82,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+28.1,
+28.9
+],
+"adaptive_switch_t": [
+28.2
+],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "94a5ab5176191a78d11fc0d1a636739f2481c9c49a7e28770b5650a27f153aa3",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e11/raw",
+"mujoco_steps": 92348
+},
+{
+"run": "ss-e-dt05-e12",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 102.52,
+"wall_per_sim": 1.7087,
+"timings_s": {
+"physics": 67.43,
+"rgb": 22.95,
+"evaluation": 5.72,
+"teacher": 1.62,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "a301bb1856208b00abad65e155bb19a21ed86294f3b2794711d50df0cafbf448",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e12/raw",
+"mujoco_steps": 126748
+},
+{
+"run": "ss-e-dt05-e13",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.3,
+"wall_s": 71.9,
+"wall_per_sim": 2.0962,
+"timings_s": {
+"physics": 50.67,
+"rgb": 14.16,
+"evaluation": 2.84,
+"teacher": 0.38,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+27.2,
+28.6
+],
+"adaptive_switch_t": [
+27.3
+],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "2bd4143554371d92786c51186b6959eff30b9bf1c9cfd8e5f085bbeb0bc73693",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e13/raw",
+"mujoco_steps": 92948
+},
+{
+"run": "ss-e-dt05-e14",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 32.9,
+"wall_s": 66.34,
+"wall_per_sim": 2.0164,
+"timings_s": {
+"physics": 45.64,
+"rgb": 13.7,
+"evaluation": 2.93,
+"teacher": 0.32,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+27.2,
+27.3
+],
+"adaptive_switch_t": [
+27.3
+],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "10ded2917a2a170808b8596d4fdb120e7820d9796e5cfb4307d3f01c868210b2",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e14/raw",
+"mujoco_steps": 87348
+},
+{
+"run": "ss-e-dt05-e15",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 101.93,
+"wall_per_sim": 1.6989,
+"timings_s": {
+"physics": 64.35,
+"rgb": 25.62,
+"evaluation": 5.58,
+"teacher": 1.61,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+0.03271484375,
+1.0498046875,
+3.5947265625
+],
+"result_sha256": "96c5c670f0652739828f442de712fc51b987bd3286b577b6a594bb1b296330c6",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt05-e15/raw",
+"mujoco_steps": 126748
+},
+{
+"run": "ss-e-dt1-e00",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 29.7,
+"wall_s": 53.87,
+"wall_per_sim": 1.8139,
+"timings_s": {
+"physics": 35.15,
+"rgb": 11.45,
+"evaluation": 2.62,
+"teacher": 0.48,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+22.6,
+24.0
+],
+"adaptive_switch_t": [
+22.7
+],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "9796e3f84d584316593f0568a7c767f7e9eeb627695a45a53a0b42032b6c23af",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e00/raw",
+"mujoco_steps": 62348
+},
+{
+"run": "ss-e-dt1-e01",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 128.42,
+"wall_per_sim": 2.1403,
+"timings_s": {
+"physics": 33.86,
+"rgb": 23.55,
+"evaluation": 5.45,
+"teacher": 61.29,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "c62d426953e6efa4e70f43aa05e32d1c2d3d7189d9df0c0b2d368d8047284cbf",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e01/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-dt1-e02",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 30.9,
+"wall_s": 54.03,
+"wall_per_sim": 1.7486,
+"timings_s": {
+"physics": 33.86,
+"rgb": 13.37,
+"evaluation": 2.67,
+"teacher": 0.34,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+24.1,
+25.2
+],
+"adaptive_switch_t": [
+24.2
+],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "52bbdc99a27de59be9fafb9600991342d7b14e848411ea37d2ef24a84ff90237",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e02/raw",
+"mujoco_steps": 62648
+},
+{
+"run": "ss-e-dt1-e03",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 116.91,
+"wall_per_sim": 1.9484,
+"timings_s": {
+"physics": 33.15,
+"rgb": 26.5,
+"evaluation": 5.4,
+"teacher": 47.17,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "d01b3fc95d5a99e5ab4697988346697fe6ef298e9779ea924016736cbfb9e588",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e03/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-dt1-e04",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 23.6,
+"wall_s": 46.33,
+"wall_per_sim": 1.9631,
+"timings_s": {
+"physics": 27.97,
+"rgb": 12.15,
+"evaluation": 2.26,
+"teacher": 0.24,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+17.5,
+17.9
+],
+"adaptive_switch_t": [
+17.6
+],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "ccd371bf202abd5152ce901cbb8c7c27ee188b7abccd13cc31a32de99e432f06",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e04/raw",
+"mujoco_steps": 53248
+},
+{
+"run": "ss-e-dt1-e05",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.2,
+"wall_s": 52.6,
+"wall_per_sim": 1.6858,
+"timings_s": {
+"physics": 32.59,
+"rgb": 12.99,
+"evaluation": 2.73,
+"teacher": 0.4,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.5,
+25.6
+],
+"adaptive_switch_t": [
+25.6
+],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "e29b7d4106b6ce1334155ac953f53abf356a9d8fb00405fa6c4c053769c0e9e8",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e05/raw",
+"mujoco_steps": 59648
+},
+{
+"run": "ss-e-dt1-e06",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 34.4,
+"wall_s": 60.46,
+"wall_per_sim": 1.7575,
+"timings_s": {
+"physics": 36.65,
+"rgb": 15.53,
+"evaluation": 3.36,
+"teacher": 0.61,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+28.2,
+28.7
+],
+"adaptive_switch_t": [
+28.3
+],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "c9ad9e1a9a8da71f968731898c7f0e381c9f12c2b7d65ef1fb7bfe3922407050",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e06/raw",
+"mujoco_steps": 64348
+},
+{
+"run": "ss-e-dt1-e07",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 71.31,
+"wall_per_sim": 1.1885,
+"timings_s": {
+"physics": 32.45,
+"rgb": 23.09,
+"evaluation": 4.97,
+"teacher": 6.38,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "df17f6ece2c4f1f44938caa6971dc8e3eb9714a7fb4a2ca69217c2d91da24c36",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e07/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-dt1-e08",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 70.61,
+"wall_per_sim": 1.1768,
+"timings_s": {
+"physics": 35.03,
+"rgb": 24.24,
+"evaluation": 5.37,
+"teacher": 1.48,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "f5de32bb2fd0cc6e70f3311a2cd66afcc70f9d7c1cfb7c99595d26ab73b61f4b",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e08/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-dt1-e09",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 79.09,
+"wall_per_sim": 1.3182,
+"timings_s": {
+"physics": 37.47,
+"rgb": 29.64,
+"evaluation": 6.07,
+"teacher": 1.23,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "e49ed8c4281a46d17d63cfda1c684bf9ef712ef781ab748652f43eb31e3fa7b5",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e09/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-dt1-e10",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 75.94,
+"wall_per_sim": 1.2657,
+"timings_s": {
+"physics": 41.3,
+"rgb": 24.54,
+"evaluation": 5.65,
+"teacher": 0.56,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "b95c6a8535f3397b5619566ad878be79c8160cea46c80008e5a637113de3ac2b",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e10/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-dt1-e11",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 36.1,
+"wall_s": 59.86,
+"wall_per_sim": 1.6582,
+"timings_s": {
+"physics": 36.18,
+"rgb": 14.71,
+"evaluation": 3.15,
+"teacher": 1.91,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+29.6,
+30.4
+],
+"adaptive_switch_t": [
+29.7
+],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "cd71c6bb46a81d40c59df36511831ff87d20cf204d6a6d712a6486e177121844",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e11/raw",
+"mujoco_steps": 66948
+},
+{
+"run": "ss-e-dt1-e12",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 31.8,
+"wall_s": 57.2,
+"wall_per_sim": 1.7988,
+"timings_s": {
+"physics": 37.25,
+"rgb": 12.4,
+"evaluation": 2.87,
+"teacher": 0.54,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+25.0,
+26.1
+],
+"adaptive_switch_t": [
+25.1
+],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "e2da76bfa373bf98603932d3357442306ea4921b79b233c03078a7c4e7859968",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e12/raw",
+"mujoco_steps": 63548
+},
+{
+"run": "ss-e-dt1-e13",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 33.7,
+"wall_s": 56.79,
+"wall_per_sim": 1.6852,
+"timings_s": {
+"physics": 36.23,
+"rgb": 13.59,
+"evaluation": 2.75,
+"teacher": 0.37,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+26.6,
+28.0
+],
+"adaptive_switch_t": [
+26.7
+],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "86008285d457c85c1162f126f0093641772fa5a97b2b2a0dacc8e6462d0b6f61",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e13/raw",
+"mujoco_steps": 66348
+},
+{
+"run": "ss-e-dt1-e14",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": false,
+"sim_s": 60.0,
+"wall_s": 69.56,
+"wall_per_sim": 1.1593,
+"timings_s": {
+"physics": 34.03,
+"rgb": 24.45,
+"evaluation": 5.47,
+"teacher": 1.37,
+"io": 0.0
+},
+"outcomes": {
+"r1": "episode_timeout",
+"r2": "episode_timeout"
+},
+"plan_episode_seed": null,
+"pick_t": [],
+"adaptive_switch_t": [],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "fb7fd4173a55f333cc53094ac5cd8faf9830137bee610a0e7b017628110b4d50",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e14/raw",
+"mujoco_steps": 66248
+},
+{
+"run": "ss-e-dt1-e15",
+"exit": "0",
+"source_sha": "2681c6493e7de394264eda3e280aa3fad8e05b13",
+"speed_options": null,
+"physical_success": true,
+"sim_s": 26.7,
+"wall_s": 51.39,
+"wall_per_sim": 1.9247,
+"timings_s": {
+"physics": 32.89,
+"rgb": 11.7,
+"evaluation": 2.32,
+"teacher": 0.41,
+"io": 0.0
+},
+"outcomes": {
+"r1": "success",
+"r2": "success"
+},
+"plan_episode_seed": null,
+"pick_t": [
+19.6,
+21.0
+],
+"adaptive_switch_t": [
+19.7
+],
+"loadavg_at_start": [
+8.16845703125,
+8.35205078125,
+6.79443359375
+],
+"result_sha256": "fa3bef310267d2b2418345d09105abfb72a2f1c605d369587f0c7763758480fe",
+"raw": "gcp1:~/ugrp-sim/runs/ss-e-dt1-e15/raw",
+"mujoco_steps": 59348
+}
+]

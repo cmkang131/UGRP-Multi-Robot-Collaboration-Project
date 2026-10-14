@@ -1,0 +1,134 @@
+{
+ "wall_total_s": 87.48597330300001,
+ "sim_s": 30.00000000006064,
+ "wall_per_sim": 2.8937186988608166,
+ "physical_success": false,
+ "timings_s": {
+  "physics": 66.67046362000036,
+  "rgb": 10.925963465000166,
+  "evaluation": 2.501704064000023,
+  "teacher": 0.6362744610000561,
+  "io": 0.0
+ },
+ "mujoco_calls": {
+  "mj_forward": 97,
+  "mj_step": 127748
+ },
+ "mujoco_wall_s": {
+  "mj_forward": 0.05249221900015755,
+  "mj_step": 66.30927615799976
+ },
+ "mjdata_timers": {
+  "mjTIMER_ACTUATION": {
+   "duration_s": 0.1789466179972511,
+   "number": 127283
+  },
+  "mjTIMER_ADVANCE": {
+   "duration_s": 2.067272445000742,
+   "number": 127200
+  },
+  "mjTIMER_COL_BROAD": {
+   "duration_s": 5.150805189999557,
+   "number": 127283
+  },
+  "mjTIMER_COL_NARROW": {
+   "duration_s": 10.987178867999237,
+   "number": 127283
+  },
+  "mjTIMER_CONSTRAINT": {
+   "duration_s": 16.636878924000495,
+   "number": 127283
+  },
+  "mjTIMER_FORWARD": {
+   "duration_s": 63.85915332199885,
+   "number": 127283
+  },
+  "mjTIMER_INVERSE": {
+   "duration_s": 0.0,
+   "number": 0
+  },
+  "mjTIMER_POSITION": {
+   "duration_s": 45.139750830000395,
+   "number": 127283
+  },
+  "mjTIMER_POS_COLLISION": {
+   "duration_s": 16.160246917000553,
+   "number": 127283
+  },
+  "mjTIMER_POS_INERTIA": {
+   "duration_s": 1.2346992759977085,
+   "number": 127283
+  },
+  "mjTIMER_POS_KINEMATICS": {
+   "duration_s": 3.62155029499915,
+   "number": 127283
+  },
+  "mjTIMER_POS_MAKE": {
+   "duration_s": 2.666706178003629,
+   "number": 127283
+  },
+  "mjTIMER_POS_PROJECT": {
+   "duration_s": 21.389893663998418,
+   "number": 127283
+  },
+  "mjTIMER_STEP": {
+   "duration_s": 66.00983493499805,
+   "number": 127200
+  },
+  "mjTIMER_VELOCITY": {
+   "duration_s": 1.4753766280009815,
+   "number": 127283
+  }
+ },
+ "model": {
+  "timestep": 0.00025,
+  "integrator": 3,
+  "solver": 2,
+  "iterations": 80,
+  "tolerance": 1e-08,
+  "noslip_iterations": 10,
+  "cone": 1,
+  "impratio": 1.0,
+  "nbody": 162,
+  "ngeom": 1390,
+  "njnt": 156,
+  "nv": 246,
+  "nu": 30,
+  "nmesh": 20,
+  "npair": 54,
+  "nexclude": 1296,
+  "nu_": 30,
+  "opt_flags_disable": 0,
+  "opt_flags_enable": 0,
+  "ccd_iterations": 35,
+  "ccd_tolerance": 1e-06,
+  "sleep_enabled": null
+ },
+ "per_step": {
+  "ncon": {
+   "mean": 41.26231330431788,
+   "p50": 41.0,
+   "p95": 42.0,
+   "max": 66.0
+  },
+  "nefc": {
+   "mean": 233.72598396843787,
+   "p50": 233.0,
+   "p95": 237.0,
+   "max": 309.0
+  },
+  "niter": {
+   "mean": 7.358338291010427,
+   "p50": 6.0,
+   "p95": 13.0,
+   "max": 17.0
+  },
+  "nisland": {
+   "mean": 9.940914926261076,
+   "p50": 10.0,
+   "p95": 10.0,
+   "max": 10.0
+  }
+ },
+ "steps_recorded": 127748
+}

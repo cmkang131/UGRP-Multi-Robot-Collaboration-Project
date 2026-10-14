@@ -1,0 +1,85 @@
+# source cc368e47 (fdfca319 + probe wrapper), gcp1 n4-highcpu-64, teacher-gate-plan ep0 seed 71000, 30 SIM s, cProfile (adds overhead)
+
+         25630544 function calls (24349037 primitive calls) in 106.644 seconds
+
+   Ordered by: internal time
+   List reduced from 2429 to 30 due to restriction <30>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+   127748   66.711    0.001   66.711    0.001 {built-in method mujoco._functions.mj_step}
+        1    6.335    6.335    6.993    6.993 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/zone_scene.py:100(setup)
+      180    5.760    0.032    5.760    0.032 {built-in method mujoco._render.mjr_render}
+      180    4.985    0.028    4.985    0.028 {built-in method mujoco._render.mjr_readPixels}
+        1    4.164    4.164    4.165    4.165 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/session_scenes.py:198(setup)
+   127200    1.924    0.000   72.958    0.001 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/masterpi_drive_friction_v7.py:212(_physics_step_for)
+   381600    1.098    0.000    3.160    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/v7_exact_speedups.py:41(command_step)
+   293251    1.087    0.000    2.208    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/harness/visual_arm.py:200(_ik_at_pitch)
+     9000    0.944    0.000    1.620    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/scripts/audit_grasp_act_visibility.py:101(region_visible)
+  1144800    0.599    0.000    0.761    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/v7_exact_speedups.py:47(<genexpr>)
+      301    0.597    0.002   71.556    0.238 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/scripts/run_grasp_act_teacher.py:142(advance)
+   244000    0.447    0.000    1.463    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/grasp_act_port.py:95(tick)
+     5750    0.447    0.000    2.935    0.001 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/harness/visual_arm_v3.py:48(solve_grip_site_ik)
+  1144800    0.439    0.000    0.439    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/v7_exact_speedups.py:44(<genexpr>)
+   127845    0.420    0.000   67.340    0.001 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/scripts/sim_speed_probe.py:35(inner)
+   511578    0.383    0.000    1.051    0.000 {built-in method builtins.any}
+        2    0.380    0.190    0.380    0.190 {built-in method mujoco._structs.from_xml_string}
+      398    0.343    0.001    0.343    0.001 {method 'read' of '_io.BufferedReader' objects}
+   782175    0.327    0.000    0.327    0.000 {method 'copy' of 'numpy.ndarray' objects}
+  1144800    0.297    0.000    0.614    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/v7_exact_speedups.py:48(<genexpr>)
+   244056    0.273    0.000    0.427    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/camera_robot_port.py:246(_advance_servos)
+1940750/1940748    0.271    0.000    0.287    0.000 {built-in method builtins.isinstance}
+    20730    0.271    0.000    0.271    0.000 {built-in method mujoco._functions.mj_ray}
+   125965    0.265    0.000    0.379    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/multi_masterpi_production.py:978(normalize_robot_id)
+  1101200    0.260    0.000    0.260    0.000 {method 'get' of 'dict' objects}
+ 35748/40    0.257    0.000    0.430    0.011 /usr/lib/python3.12/xml/etree/ElementTree.py:850(_serialize_xml)
+   244056    0.239    0.000    0.372    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/camera_robot_port.py:278(_finite_number)
+   128817    0.235    0.000    0.235    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+        2    0.222    0.111    0.247    0.123 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/.venv-sim/lib/python3.12/site-packages/mujoco/rendering/classic/renderer.py:29(__init__)
+   244000    0.206    0.000    1.004    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/camera_robot_port.py:196(tick)
+
+
+
+
+         25630544 function calls (24349037 primitive calls) in 106.644 seconds
+
+   Ordered by: cumulative time
+   List reduced from 2429 to 35 due to restriction <35>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+   127200    1.924    0.000   72.958    0.001 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/masterpi_drive_friction_v7.py:212(_physics_step_for)
+      301    0.597    0.002   71.556    0.238 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/scripts/run_grasp_act_teacher.py:142(advance)
+   127845    0.420    0.000   67.340    0.001 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/scripts/sim_speed_probe.py:35(inner)
+   127748   66.711    0.001   66.711    0.001 {built-in method mujoco._functions.mj_step}
+      184    0.003    0.000   11.152    0.061 /usr/lib/python3.12/threading.py:323(wait)
+      181    0.002    0.000   11.130    0.061 /usr/lib/python3.12/concurrent/futures/_base.py:428(result)
+      182    0.002    0.000   11.103    0.061 /usr/lib/python3.12/concurrent/futures/thread.py:53(run)
+      180    0.009    0.000   10.765    0.060 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/.venv-sim/lib/python3.12/site-packages/mujoco/rendering/classic/renderer.py:132(render)
+      120    0.002    0.000    8.790    0.073 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/multi_masterpi_production.py:4609(render_team_jpeg)
+      120    0.004    0.000    8.695    0.072 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/multi_masterpi_production.py:888(_render_team_rgb_direct)
+        1    6.335    6.335    6.993    6.993 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/zone_scene.py:100(setup)
+      180    5.760    0.032    5.760    0.032 {built-in method mujoco._render.mjr_render}
+      180    4.985    0.028    4.985    0.028 {built-in method mujoco._render.mjr_readPixels}
+        1    4.164    4.164    4.165    4.165 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/session_scenes.py:198(setup)
+        1    0.057    0.057    4.160    4.160 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/multi_masterpi_production.py:1979(_team_joint_move_servos)
+   381600    1.098    0.000    3.160    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/v7_exact_speedups.py:41(command_step)
+      575    0.017    0.000    2.978    0.005 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/grasp_act_teacher.py:32(grasp_poses)
+     1183    0.001    0.000    2.962    0.003 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/grasp_act_teacher_v3.py:117(prepare_signal)
+      570    0.004    0.000    2.960    0.005 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/grasp_act_teacher_v3.py:109(ready_geometry)
+     5750    0.447    0.000    2.935    0.001 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/harness/visual_arm_v3.py:48(solve_grip_site_ik)
+      600    0.003    0.000    2.216    0.004 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/grasp_act_teacher_v3.py:123(step)
+   293251    1.087    0.000    2.208    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/harness/visual_arm.py:200(_ik_at_pitch)
+       60    0.001    0.000    2.191    0.037 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/camera_robot_port.py:100(capture)
+       60    0.001    0.000    2.187    0.036 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/multi_masterpi_production.py:4605(render_jpeg)
+      600    0.006    0.000    2.170    0.004 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/grasp_act_teacher_v3.py:135(_step)
+       60    0.000    0.000    2.155    0.036 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/multi_masterpi_production.py:4505(render_rgb)
+       60    0.000    0.000    2.154    0.036 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/multi_masterpi_production.py:365(render_rgb)
+       60    0.000    0.000    2.154    0.036 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/multi_masterpi_production.py:880(_render_rgb_for)
+       60    0.001    0.000    2.144    0.036 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/multi_masterpi_production.py:840(_render_rgb_direct)
+     9000    0.944    0.000    1.620    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/scripts/audit_grasp_act_visibility.py:101(region_visible)
+   244000    0.447    0.000    1.463    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/grasp_act_port.py:95(tick)
+   511578    0.383    0.000    1.051    0.000 {built-in method builtins.any}
+   244000    0.206    0.000    1.004    0.000 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/camera_robot_port.py:196(tick)
+        1    0.000    0.000    0.866    0.866 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/masterpi_drive_friction_v7.py:236(build_world)
+        1    0.000    0.000    0.865    0.865 /home/ugrp/ugrp-sim/src/cc368e477c3edb40ea0b069d50330218be1a6470/sim/multi_masterpi_production.py:615(__init__)
+
+
