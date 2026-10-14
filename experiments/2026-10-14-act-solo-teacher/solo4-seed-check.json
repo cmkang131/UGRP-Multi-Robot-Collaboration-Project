@@ -1,0 +1,107 @@
+{
+  "checked": [
+    {
+      "pr": "main",
+      "ref": "origin/main",
+      "registry": "absent"
+    },
+    {
+      "pr": 502,
+      "ref": "origin/claude/act-solo-teacher",
+      "sha": "b48ebdf1672554a24511dd853617408308061a95"
+    },
+    {
+      "pr": 500,
+      "ref": "origin/claude/act-crate-teacher",
+      "sha": "b033e5f914a0d3e221eb77db455d84288104b004"
+    },
+    {
+      "pr": 499,
+      "ref": "origin/claude/sim-speed",
+      "registry": "absent"
+    },
+    {
+      "pr": 496,
+      "ref": "origin/codex/natural-floor-slam",
+      "registry": "absent"
+    },
+    {
+      "pr": 493,
+      "ref": "origin/codex/robot-clock-sync",
+      "registry": "absent"
+    },
+    {
+      "pr": 491,
+      "ref": "origin/claude/grasp-act-release",
+      "sha": "5d6e82912291230107326a8eb2daab9c530208cb"
+    },
+    {
+      "pr": 484,
+      "ref": "origin/claude/e2e18-grasp-rootcause",
+      "registry": "absent"
+    },
+    {
+      "pr": 483,
+      "ref": "origin/codex/e2e18-end-assignment",
+      "registry": "absent"
+    },
+    {
+      "pr": 480,
+      "ref": "origin/codex/e2e18-pose-diagnosis",
+      "registry": "absent"
+    },
+    {
+      "pr": 475,
+      "ref": "origin/claude/e2e18-grasp1",
+      "registry": "absent"
+    },
+    {
+      "pr": 473,
+      "ref": "origin/claude/e2e18-gemma-planner",
+      "registry": "absent"
+    },
+    {
+      "pr": 461,
+      "ref": "origin/codex/e2e18",
+      "registry": "absent"
+    },
+    {
+      "pr": 459,
+      "ref": "origin/claude/e2e-bcones",
+      "registry": "absent"
+    },
+    {
+      "pr": 440,
+      "ref": "origin/codex/ego-pose-continuity",
+      "registry": "absent"
+    },
+    {
+      "pr": 437,
+      "ref": "origin/codex/egomap70-overview",
+      "registry": "absent"
+    },
+    {
+      "pr": 385,
+      "ref": "origin/codex/real-robot-link",
+      "registry": "absent"
+    },
+    {
+      "pr": 339,
+      "ref": "origin/codex/integ-target-backend",
+      "registry": "absent"
+    }
+  ],
+  "overlap": [
+    {
+      "pr": 502,
+      "ref": "origin/claude/act-solo-teacher",
+      "split": "solo_rgb_lift_v2_gate",
+      "range": [
+        79500,
+        79539
+      ]
+    }
+  ],
+  "execution_evidence": "Coordinator diag-release-cdace35e-solo-b48ebdf1.json says gate NOT submitted; no solo-gate-79500..79539 paths in local gcp1-runs. Remote execution not queried.",
+  "reservation_only": true
+}

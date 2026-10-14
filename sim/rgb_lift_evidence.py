@@ -1,6 +1,6 @@
 """Shared command-conditioned wrist-RGB evidence, extracted from crate v2.
 
-Source: claude/act-crate-teacher 422cc0ad, shape/lift_commands/confirm_v2.
+Sources: crate 422cc0ad (v2), b033e5f9 (v3 local-part/body comparison).
 Only normalized colour-mask geometry and issued commands enter this module.
 These provisional thresholds express a visual hypothesis, not measured height.
 """
@@ -75,3 +75,88 @@ def confirm_parts_v2(before, after, *, commands, masks, names, settled=None, rul
             if not (AREA_RATIO[0] <= ratio <= AREA_RATIO[1] and shift <= CENTER_SHIFT and extent <= EXTENT_SHIFT):
                 return {**out, 'verdict': 'undetermined', 'reason': f'{name} did not remain rigid in wrist view'}
     return {**out, 'verdict': 'confirmed', 'reason': 'colour parts co-move through issued lift and settled hold'}
+
+
+def confirm_parts_v3(before, after, *, commands, masks, names, settled=None, rule,
+                     relative_to=None):
+    """Generalize crate b033e5f9 confirm_v3 without relaxing its thresholds.
+
+    Each part is rigid unless ``relative_to`` names its rigid anchor. Such a
+    body must persist without downward drift relative to the anchor. Solo
+    cargo has no separately coloured lug, so its visible colour is the rigid
+    part. Missing pixels cannot be replaced by background or issued commands.
+    Record both samples, including zero masks, before deciding the verdict.
+    """
+    relative_to = dict(relative_to or {})
+    if (not names or len(set(names)) != len(names) or
+            any(body not in names or anchor not in names or anchor in relative_to
+                for body, anchor in relative_to.items())):
+        raise ValueError('unique parts and a rigid anchor required')
+    out = {'rule': rule, 'thresholds': 'provisional; uncalibrated',
+           'command_evidence': lift_commands(commands), 'comparisons': []}
+    if before.shape != after.shape or (settled is not None and before.shape != settled.shape):
+        return {**out, 'verdict': 'undetermined', 'reason': 'incompatible frame sizes'}
+
+    def shapes(frame):
+        values = [shape(m) for m in masks(frame)]
+        if len(values) != len(names):
+            raise ValueError('one colour mask required for each named part')
+        return dict(zip(names, values))
+
+    reference = shapes(before)
+    out['before'] = reference
+    pixels = before.shape[0]*before.shape[1]
+    out['before_pixels'] = {name: round(s['fraction']*pixels) if s else 0
+                            for name, s in reference.items()}
+    for tag, frame in [('lift_complete', after), ('settled_hold', settled)]:
+        comparison = {'sample': tag, 'missing': frame is None, 'parts': {}}
+        out['comparisons'].append(comparison)
+        if frame is None:
+            continue
+        comparison['identical_to_before'] = bool(np.array_equal(before, frame))
+        parts = shapes(frame)
+        for name in names:
+            b, a = reference[name], parts[name]
+            row = {'after': a, 'after_pixels': round(a['fraction']*pixels) if a else 0,
+                   'area_ratio': 0. if b is not None and a is None else None,
+                   'center_shift': None, 'extent_shift': None}
+            comparison['parts'][name] = row
+            if b is not None and a is not None:
+                row.update(area_ratio=a['fraction']/b['fraction'],
+                           center_shift=max(abs(x-y) for x, y in zip(a['center'], b['center'])),
+                           extent_shift=max(abs(x-y) for x, y in zip(a['extent'], b['extent'])))
+            if name in relative_to:
+                anchor = relative_to[name]
+                rb, ra = reference[anchor], parts[anchor]
+                row['downward_relative_to_anchor'] = (
+                    (a['center'][1]-ra['center'][1]) - (b['center'][1]-rb['center'][1])
+                    if all(v is not None for v in (a, b, ra, rb)) else None)
+
+    if not out['command_evidence']['valid']:
+        return {**out, 'verdict': 'undetermined', 'reason': out['command_evidence']['reason']}
+    if any(s is None or s['fraction'] < MIN_PART for s in reference.values()):
+        return {**out, 'verdict': 'undetermined', 'reason': 'required colour parts not visible before lift'}
+    for comparison in out['comparisons']:
+        if comparison['missing']:
+            return {**out, 'verdict': 'undetermined', 'reason': 'settled hold frame missing'}
+        if comparison['identical_to_before']:
+            return {**out, 'verdict': 'undetermined',
+                    'reason': f"{comparison['sample']} identical to pre-lift frame; no new visual evidence"}
+        for name, row in comparison['parts'].items():
+            a = row['after']
+            if a is None or a['fraction'] < MIN_PART or row['area_ratio'] < .4:
+                return {**out, 'verdict': 'not_confirmed',
+                        'reason': f'{name} disappeared or shrank (possible grip loss)'}
+            if name in relative_to:
+                downward = row['downward_relative_to_anchor']
+                if downward is None:
+                    return {**out, 'verdict': 'undetermined', 'reason': 'rigid anchor not visible'}
+                if downward > CENTER_SHIFT:
+                    return {**out, 'verdict': 'not_confirmed',
+                            'reason': f'{name} moved down relative to {relative_to[name]}'}
+            elif not (AREA_RATIO[0] <= row['area_ratio'] <= AREA_RATIO[1] and
+                      row['center_shift'] <= CENTER_SHIFT and row['extent_shift'] <= EXTENT_SHIFT):
+                return {**out, 'verdict': 'undetermined',
+                        'reason': f'{name} did not remain rigid in wrist view'}
+    return {**out, 'verdict': 'confirmed',
+            'reason': 'rigid parts co-move; bodies persist without downward relative drift'}

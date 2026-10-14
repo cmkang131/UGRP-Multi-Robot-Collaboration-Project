@@ -1,0 +1,1468 @@
+{
+  "schema": "ugrp.solo4.fetch_preflight.v1",
+  "source_sha": "b48ebdf1672554a24511dd853617408308061a95",
+  "reference_sha": "b033e5f914a0d3e221eb77db455d84288104b004",
+  "status": "waiting_for_frames",
+  "scope": "saved source and ledger inspection only; no image viewed, simulation, render, model call, code change, tests or submission",
+  "runs": [
+    {
+      "run": "solo-diag-0-b48ebdf1",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw",
+      "status": "complete",
+      "kind": "cyan",
+      "plan_seed": 76900,
+      "source_sha": "b48ebdf1672554a24511dd853617408308061a95",
+      "physical_success": false,
+      "lift_success": true,
+      "release_success": false,
+      "max_stable_lift_s": 6.000000000028649,
+      "observer_answer_counts": {
+        "yes": 0,
+        "no": 0,
+        "unknown": 65
+      },
+      "recorded_confirmation_ticks": 50,
+      "recorded_answer_counts": {
+        "unknown": 50
+      },
+      "recorded_reasons": {
+        "required colour parts not visible before lift": 50
+      },
+      "last_before": {
+        "cyan": null
+      },
+      "last_comparisons": [],
+      "last_reason": "required colour parts not visible before lift",
+      "samples": {
+        "before_lift": {
+          "path": "lift-rgb/before_lift.png",
+          "t": 16.299999999986817,
+          "sha256": "9d4b7977f1cd02a56c76e5a2e0e548201cd9d2bd60a147594d3f0510defff73a",
+          "pixel_sha256": "24fc6259f026c0907b0f32e53719bd3b1774961c8ab54fb8e80c2241ff10b1b6",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "lift_complete": {
+          "path": "lift-rgb/lift_complete.png",
+          "t": 17.899999999994456,
+          "sha256": "1694b98c8da60bd5a37e1cc112dd555611f1af69e1f470d48bba6cc2d92c8071",
+          "pixel_sha256": "be814509ecdd2ace50c6b25736dfd69538b39242421c9db47f33ce76084a9ebe",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "settled_hold": {
+          "path": "lift-rgb/settled_hold.png",
+          "t": 20.90000000000878,
+          "sha256": "978e64eede5345de45f79c4e180c945824292e17fa9d037f3903b365f76c610c",
+          "pixel_sha256": "7f4d0448164d9804f5c2edfd7ca08f32cdd266fa244697f3d569872efe5b14f7",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 22,
+        "blocked_held": 77,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 87,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw_hash_checks": {
+        "result.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/result.json",
+          "sha256": "1c4dca38c638248602db38b6c46d2e7fcbc770ce0c87cb336b80128ec901a758"
+        },
+        "teacher-commands.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/teacher-commands.jsonl.zst",
+          "sha256": "9b5c303c23d279f6772c1bb20bcaca4090417f03bee941a262bb26aa136a9ba3"
+        },
+        "eval-only.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/eval-only.jsonl.zst",
+          "sha256": "21918986cb66fcdddc87a79a35f8079164f374bcc6c764adb3aa2f2cccd13082"
+        },
+        "plan.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/plan.json",
+          "sha256": "daebdeb72e96f281d3b546e6766a307ac1f7b8b29ddc78625ad6607fc00352a8"
+        },
+        "scene.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/scene.json",
+          "sha256": "4a080d584d34e33b95cfc29345d587c6eff558f5cdaa0437a26bcdcdfaec6618"
+        },
+        "scene.xml": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/scene.xml",
+          "sha256": "eeda37bcb60b71bfcef695cefdba6d20a92a258d9aab3619462a8aff5382ed64"
+        }
+      },
+      "manifest_sha256": "ec504aaa8a8f18c037eb4530c9aea2c317694670e35b448cc2a88ff7ea4714ba",
+      "manifest_image_count": 47,
+      "local_image_count": 0,
+      "review_ticks": [
+        0,
+        40,
+        80,
+        130,
+        170,
+        210
+      ],
+      "review_sim_times": [
+        1.3000000000000178,
+        5.300000000000732,
+        9.300000000001,
+        14.299999999989348,
+        18.299999999996366,
+        22.300000000015466
+      ],
+      "requested": [
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "9d4b7977f1cd02a56c76e5a2e0e548201cd9d2bd60a147594d3f0510defff73a",
+          "bytes": 40657
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "1694b98c8da60bd5a37e1cc112dd555611f1af69e1f470d48bba6cc2d92c8071",
+          "bytes": 48736
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "978e64eede5345de45f79c4e180c945824292e17fa9d037f3903b365f76c610c",
+          "bytes": 48670
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-own/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000000.jpg",
+          "sha256": "04a1ba02dc8fae6781f6792045ee77439fb0c838fe2fd0a5a22cf4b684a21175",
+          "bytes": 10887
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-top/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-top/000000.jpg",
+          "sha256": "74d45cb37bc76031db38f81663fbce405a0215028bc98933e67f0c98ee5c36d7",
+          "bytes": 18559
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-own/000040.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000040.jpg",
+          "sha256": "65cd3d39fc319b3431b5e2113e92ea6c457d48a3b974feedfac9a94f8a9c8d36",
+          "bytes": 11161
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-top/000040.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-top/000040.jpg",
+          "sha256": "b71d46fb390997cc768ed622ae64e3ea0939b0c59636b37748d67fef32d4e4a1",
+          "bytes": 18522
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-own/000080.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000080.jpg",
+          "sha256": "3c68cd047acdc815e3ca6aa89bd928a1bdc6298d328677b404174a3d83e95e9a",
+          "bytes": 8497
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-top/000080.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-top/000080.jpg",
+          "sha256": "d1a6b6f24490026a3458d456e0751b989f4141cf16aad38cf108361e12312e53",
+          "bytes": 18407
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-own/000130.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000130.jpg",
+          "sha256": "d16b5fc462e51e17499fe3b9afef9bb12b193f46fafbc8268171b32ad0461227",
+          "bytes": 5758
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-top/000130.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-top/000130.jpg",
+          "sha256": "7382c2dd608df04b4f32a905c61b79c69791aa3f73fd41d0808b31ee1386b2ae",
+          "bytes": 18662
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-own/000170.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000170.jpg",
+          "sha256": "60806c77cb75a01103895dfc4b90441f46f88be27465c14f3bd131b7597019e2",
+          "bytes": 6537
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-top/000170.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-top/000170.jpg",
+          "sha256": "9f964660abd096c677a67cf3351b68d1e95f5f36c095ecde5df9e447b0d7624f",
+          "bytes": 18624
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-own/000210.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-own/000210.jpg",
+          "sha256": "c5ebaa58d200753b8de0901b88130c56e5066577846be67ff1dbbadad715b6ab",
+          "bytes": 6538
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-0-b48ebdf1/raw/review-top/000210.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-0-b48ebdf1/raw/review-top/000210.jpg",
+          "sha256": "bd8b6a4c81c64b7ce5670b8cd0d264cf0fcda63ce2392dd0001d0a6e56324bdd",
+          "bytes": 18642
+        }
+      ]
+    },
+    {
+      "run": "solo-diag-1-b48ebdf1",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw",
+      "status": "complete",
+      "kind": "can",
+      "plan_seed": 76901,
+      "source_sha": "b48ebdf1672554a24511dd853617408308061a95",
+      "physical_success": false,
+      "lift_success": true,
+      "release_success": false,
+      "max_stable_lift_s": 6.000000000017989,
+      "observer_answer_counts": {
+        "yes": 0,
+        "no": 50,
+        "unknown": 16
+      },
+      "recorded_confirmation_ticks": 50,
+      "recorded_answer_counts": {
+        "no": 50
+      },
+      "recorded_reasons": {
+        "can disappeared or shrank (possible grip loss)": 50
+      },
+      "last_before": {
+        "can": {
+          "fraction": 0.0112890625,
+          "center": [
+            0.39894256415801616,
+            0.940625
+          ],
+          "extent": [
+            0.4359375,
+            0.041666666666666664
+          ]
+        }
+      },
+      "last_comparisons": [
+        {
+          "sample": "lift_complete",
+          "parts": {}
+        }
+      ],
+      "last_reason": "can disappeared or shrank (possible grip loss)",
+      "samples": {
+        "before_lift": {
+          "path": "lift-rgb/before_lift.png",
+          "t": 13.89999999999028,
+          "sha256": "46ebd208712aab2cf3294492985f585d696fc2b7a4ed3cff5ffce0710dcc451b",
+          "pixel_sha256": "12e1ae897811b48fc31fd87ae7b7a1fdd146030036e3d5fc8013dfe1255f2a6f",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "lift_complete": {
+          "path": "lift-rgb/lift_complete.png",
+          "t": 15.599999999986318,
+          "sha256": "6cd92451659a9556c3a55a015494ac3a87598ab39cebb6e6b59a5468edce9e0e",
+          "pixel_sha256": "d49d217d74c546081d9b03e37b8cde16be4db77605d9fc2eb17a5a22c650203a",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "settled_hold": {
+          "path": "lift-rgb/settled_hold.png",
+          "t": 18.5999999999978,
+          "sha256": "5c8146b25c02bce534b8dea9da985ee6b94ce581886d8873741c5958937bb6c8",
+          "pixel_sha256": "24c4ee18fa1b3f3e690717738c751e51966b8f8f75042db92ebba3693314bd41",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 23,
+        "blocked_held": 78,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 55,
+          "align": 27,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw_hash_checks": {
+        "result.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/result.json",
+          "sha256": "dd609cb2aa9df2c2f5624866e991662ea06457cc6c7592b49cc8510bc7d0a03c"
+        },
+        "teacher-commands.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/teacher-commands.jsonl.zst",
+          "sha256": "7b3ef375a8521259e09e2542096c3c768b155bff58c5fc49801dd036e13d2bcb"
+        },
+        "eval-only.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/eval-only.jsonl.zst",
+          "sha256": "a14060d227edd0e383c15dba9dfa9dbaf21a8a3637df338fa736648c686a8713"
+        },
+        "plan.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/plan.json",
+          "sha256": "01ce6e98e312e119a7fecb0bc1e0e4782310b93e342510484f9d8f8af70cae50"
+        },
+        "scene.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/scene.json",
+          "sha256": "2af21d548fe9aca787bf020f7c98ef35548d109dae9ef0aeb8d0ce4d6e3a2d70"
+        },
+        "scene.xml": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/scene.xml",
+          "sha256": "c9fb095e3d7a1caaade3a783bcbed2ee353bd75de7fd88ed05323cae9716ae8c"
+        }
+      },
+      "manifest_sha256": "079dcb86c92af63ebdda35f0fd4449648b81d9e7484d58748c33491489a6d332",
+      "manifest_image_count": 43,
+      "local_image_count": 0,
+      "review_ticks": [
+        0,
+        40,
+        80,
+        110,
+        150,
+        190
+      ],
+      "review_sim_times": [
+        1.3000000000000178,
+        5.300000000000732,
+        9.300000000001,
+        12.299999999994009,
+        16.299999999986817,
+        20.300000000005916
+      ],
+      "requested": [
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "46ebd208712aab2cf3294492985f585d696fc2b7a4ed3cff5ffce0710dcc451b",
+          "bytes": 46219
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "6cd92451659a9556c3a55a015494ac3a87598ab39cebb6e6b59a5468edce9e0e",
+          "bytes": 45101
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "5c8146b25c02bce534b8dea9da985ee6b94ce581886d8873741c5958937bb6c8",
+          "bytes": 45087
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-own/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000000.jpg",
+          "sha256": "9ecf28647c69ed5182f8506940e31e129e0e3a2080f00d992c78e2ea7cd54ce3",
+          "bytes": 11918
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-top/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-top/000000.jpg",
+          "sha256": "585450f5bc5a95e2a9a40327beb352017704c4afc5fac809373f7821841fa7dc",
+          "bytes": 19558
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-own/000040.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000040.jpg",
+          "sha256": "e20044f38ad883cf7274f332175db7ab7475a37e08a2eb5b10476622d65add8b",
+          "bytes": 13378
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-top/000040.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-top/000040.jpg",
+          "sha256": "26059dcca93cc92185852716b5e173553820913ed94772f023c2b72ad13dd72e",
+          "bytes": 19618
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-own/000080.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000080.jpg",
+          "sha256": "431db2a188552e29cf91970cccd145526d305f1997382818ccccaddab8492ab4",
+          "bytes": 8373
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-top/000080.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-top/000080.jpg",
+          "sha256": "91b35ea2f3ede910aa9b4606ddd65c82e03dcb952067dbbb7955f31eedd2ab90",
+          "bytes": 20026
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-own/000110.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000110.jpg",
+          "sha256": "a73449149f85b14cab56b2ca052322db7ca7a6f7e427c7f9c66a7b35681503b1",
+          "bytes": 6590
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-top/000110.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-top/000110.jpg",
+          "sha256": "2f81530f1460aa00c25d7d85e3194d1f4ea09b59679447282566168f92a9aaee",
+          "bytes": 20260
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-own/000150.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000150.jpg",
+          "sha256": "855213bcf77f680fecf152ce6f3048679312296b307a500dd21429cbd377cb5e",
+          "bytes": 6418
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-top/000150.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-top/000150.jpg",
+          "sha256": "562587ac4d5db9df72d6576f1e95bdd9d05fd81e9ab9b413566848971e172846",
+          "bytes": 20238
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-own/000190.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-own/000190.jpg",
+          "sha256": "85d072b78e9e1febb0deb75bd5f2239b17a5f65ca26f3869f281ab471e9233bd",
+          "bytes": 6408
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-1-b48ebdf1/raw/review-top/000190.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-1-b48ebdf1/raw/review-top/000190.jpg",
+          "sha256": "a893c5ab7ec60da53e1bb34be62af9c00467b80fceb004aa2f19590212b703bb",
+          "bytes": 20227
+        }
+      ]
+    },
+    {
+      "run": "solo-diag-2-b48ebdf1",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw",
+      "status": "complete",
+      "kind": "tile",
+      "plan_seed": 76902,
+      "source_sha": "b48ebdf1672554a24511dd853617408308061a95",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "max_stable_lift_s": 8.900000000042496,
+      "observer_answer_counts": {
+        "yes": 41,
+        "no": 0,
+        "unknown": 45
+      },
+      "recorded_confirmation_ticks": 71,
+      "recorded_answer_counts": {
+        "unknown": 30,
+        "yes": 41
+      },
+      "recorded_reasons": {
+        "settled hold frame missing": 30,
+        "colour parts co-move through issued lift and settled hold": 41
+      },
+      "last_before": {
+        "tile": {
+          "fraction": 0.218974609375,
+          "center": [
+            0.4736787190236216,
+            0.8163370509942668
+          ],
+          "extent": [
+            0.86875,
+            0.28541666666666665
+          ]
+        }
+      },
+      "last_comparisons": [
+        {
+          "sample": "lift_complete",
+          "parts": {
+            "tile": {
+              "after": {
+                "fraction": 0.21944986979166667,
+                "center": [
+                  0.473797606244901,
+                  0.8161072585230785
+                ],
+                "extent": [
+                  0.86875,
+                  0.28541666666666665
+                ]
+              },
+              "area_ratio": 1.002170390521637,
+              "center_shift": 0.00022979247118826152,
+              "extent_shift": 0.0
+            }
+          }
+        },
+        {
+          "sample": "settled_hold",
+          "parts": {
+            "tile": {
+              "after": {
+                "fraction": 0.21966796875,
+                "center": [
+                  0.47391878575027413,
+                  0.8159912396392124
+                ],
+                "extent": [
+                  0.86875,
+                  0.28541666666666665
+                ]
+              },
+              "area_ratio": 1.0031663916514293,
+              "center_shift": 0.00034581135505440397,
+              "extent_shift": 0.0
+            }
+          }
+        }
+      ],
+      "last_reason": "colour parts co-move through issued lift and settled hold",
+      "samples": {
+        "before_lift": {
+          "path": "lift-rgb/before_lift.png",
+          "t": 18.99999999999971,
+          "sha256": "ef6acdae295cc459b2050f2a514dc524dd4f9aead807145f6aaa55fc1760b5e1",
+          "pixel_sha256": "30dead90859874d19e34cd109377cf27119410e23c775a9f48bc2ebf7dc8184a",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "lift_complete": {
+          "path": "lift-rgb/lift_complete.png",
+          "t": 20.60000000000735,
+          "sha256": "c72f08ee61a1b38dc6498a05ba1617cfb42ee5bf59d74564db0a20e9f4746589",
+          "pixel_sha256": "a0b98c68d5e8ceeb61c14786930d2d65feba9652fd91d61138b0fe3663b0ee48",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "settled_hold": {
+          "path": "lift-rgb/settled_hold.png",
+          "t": 23.600000000021673,
+          "sha256": "59faef0ed934811fecdbc0e32b57aa096997f3b3ea58462d07178b461be19e46",
+          "pixel_sha256": "ebbbaf7a430b72e80329cea4282d76437b670e333702b1d62a55f7b3e6b1d84d",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 116,
+        "blocked_held": 114,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 116,
+          "align": 19,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw_hash_checks": {
+        "result.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/result.json",
+          "sha256": "709fbccc10a0c5da2dc4e9f7707aab9e4559baf2bddc836ca72fca19b55c7c3d"
+        },
+        "teacher-commands.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/teacher-commands.jsonl.zst",
+          "sha256": "8abc446564e64c9f3fb555c51c28a1520aa8b9685a5603f3784480f99483a6ac"
+        },
+        "eval-only.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/eval-only.jsonl.zst",
+          "sha256": "63f6996dccbfaccedf18bc8e4e1569b2a3f1d4a53e1d50454b52935e7092aa84"
+        },
+        "plan.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/plan.json",
+          "sha256": "d539e2ed97d34694cdda9baf32935b725c7a07373e8030389e9197d1a9c420ca"
+        },
+        "scene.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/scene.json",
+          "sha256": "95acca63f9216449323dcbbb01aa536f722f6b374a91886a4f6fdff6b0a37692"
+        },
+        "scene.xml": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/scene.xml",
+          "sha256": "13a5491ca5516a08d63e7fbafe961b744b0963c1327ed5787f1b3cebcc2f5754"
+        }
+      },
+      "manifest_sha256": "f94c257dd2119c60e5bfd3597d82c5af9043726dd0751fa7482279239179251f",
+      "manifest_image_count": 79,
+      "local_image_count": 0,
+      "review_ticks": [
+        0,
+        70,
+        150,
+        220,
+        300,
+        370
+      ],
+      "review_sim_times": [
+        1.3000000000000178,
+        8.300000000003331,
+        16.299999999986817,
+        23.30000000002024,
+        31.30000000005844,
+        38.30000000009186
+      ],
+      "requested": [
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "ef6acdae295cc459b2050f2a514dc524dd4f9aead807145f6aaa55fc1760b5e1",
+          "bytes": 57470
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "c72f08ee61a1b38dc6498a05ba1617cfb42ee5bf59d74564db0a20e9f4746589",
+          "bytes": 61698
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "59faef0ed934811fecdbc0e32b57aa096997f3b3ea58462d07178b461be19e46",
+          "bytes": 61501
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-own/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000000.jpg",
+          "sha256": "a44ad958023a670841e3e99569fbd4c37064eeec50c385509c74885183ccb820",
+          "bytes": 12192
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-top/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-top/000000.jpg",
+          "sha256": "f7e3ac90119fff121aa748c07831235801bb1df905962a9423a57da95dfc7a3d",
+          "bytes": 18633
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-own/000070.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000070.jpg",
+          "sha256": "1e25997675662b4c7bd711ea3cc1f8fe2d22793b1660adb998777c77a5c2b669",
+          "bytes": 11314
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-top/000070.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-top/000070.jpg",
+          "sha256": "b9ab72e2de619287384eeab98f22dd2335c24307821b1e98560a455596037e6d",
+          "bytes": 18664
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-own/000150.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000150.jpg",
+          "sha256": "6622f3661c0d3880049ffba507ecd6806548d748d74fd00130c491ebab1d7beb",
+          "bytes": 6412
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-top/000150.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-top/000150.jpg",
+          "sha256": "231d5be3898fe6217d8313d61351b950a3fbd19709661bd7daf284565f1d7457",
+          "bytes": 18665
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-own/000220.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000220.jpg",
+          "sha256": "e9bfdfca63e981d6794bd4a2ef74bdc3d9abffc882bd13de7ffe34dee346c77d",
+          "bytes": 8298
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-top/000220.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-top/000220.jpg",
+          "sha256": "976e3510f340e34087abe8b0ad36abf71977a1adc413dca3cea0663735fce429",
+          "bytes": 18628
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-own/000300.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000300.jpg",
+          "sha256": "a49c6a32e9d44b1b72dba85484ae402bfdbe3a104d1cff42e74b2ab1c66bead4",
+          "bytes": 9302
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-top/000300.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-top/000300.jpg",
+          "sha256": "09be215a706a3997d60a6e06f978dfdc6a4f43e4c5fb95e8600016e21fad4219",
+          "bytes": 18612
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-own/000370.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-own/000370.jpg",
+          "sha256": "39b436fc55554084dcac38cddd97cec7198b3e928dd37c8915233a6e656414ab",
+          "bytes": 8464
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-2-b48ebdf1/raw/review-top/000370.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-2-b48ebdf1/raw/review-top/000370.jpg",
+          "sha256": "840ed456deda175b1fe910369d534c0576347cd59d6df0e70925e0ab4da2080c",
+          "bytes": 18659
+        }
+      ]
+    },
+    {
+      "run": "solo-diag-3-b48ebdf1",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw",
+      "status": "complete",
+      "kind": "cyan",
+      "plan_seed": 76903,
+      "source_sha": "b48ebdf1672554a24511dd853617408308061a95",
+      "physical_success": false,
+      "lift_success": true,
+      "release_success": false,
+      "max_stable_lift_s": 6.1000000000234404,
+      "observer_answer_counts": {
+        "yes": 0,
+        "no": 0,
+        "unknown": 66
+      },
+      "recorded_confirmation_ticks": 50,
+      "recorded_answer_counts": {
+        "unknown": 50
+      },
+      "recorded_reasons": {
+        "required colour parts not visible before lift": 50
+      },
+      "last_before": {
+        "cyan": null
+      },
+      "last_comparisons": [],
+      "last_reason": "required colour parts not visible before lift",
+      "samples": {
+        "before_lift": {
+          "path": "lift-rgb/before_lift.png",
+          "t": 14.699999999988416,
+          "sha256": "9d4b7977f1cd02a56c76e5a2e0e548201cd9d2bd60a147594d3f0510defff73a",
+          "pixel_sha256": "24fc6259f026c0907b0f32e53719bd3b1774961c8ab54fb8e80c2241ff10b1b6",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "lift_complete": {
+          "path": "lift-rgb/lift_complete.png",
+          "t": 16.399999999987294,
+          "sha256": "eff82e20ad6c0b3f414bdc3175346fcd31926915a1f0be6dba2ba632edff080b",
+          "pixel_sha256": "742b4a2895d5606d9f7780c63aaa40ceb6e886c4c511c26dabd625463d4e9780",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "settled_hold": {
+          "path": "lift-rgb/settled_hold.png",
+          "t": 19.40000000000162,
+          "sha256": "8f5856e94f1acb20facef3ec809ee3cf13740916a8b5f482c8bfa4bac6cfd893",
+          "pixel_sha256": "c16d8200c44fe9067160d19b55515d23b35d55718c05b4d8268fa17165a01826",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 22,
+        "blocked_held": 78,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 61,
+          "align": 29,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw_hash_checks": {
+        "result.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/result.json",
+          "sha256": "d9d1cfecfc4bf80866ceaf7fb2cc76a552f5aa80f18d0984903e60c2a6bd807e"
+        },
+        "teacher-commands.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/teacher-commands.jsonl.zst",
+          "sha256": "8695731154ff6bcb8b1d3de9a6f31174b4b4a1e200cf96259b838e84ea5e83bf"
+        },
+        "eval-only.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/eval-only.jsonl.zst",
+          "sha256": "0be30e3b0eb6c09c03255d01a8d703a945c94e52e692365445b2d0e404925082"
+        },
+        "plan.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/plan.json",
+          "sha256": "9b38e7f99d347c1727270fcd743de245874200fc618958b6737d93301d76019d"
+        },
+        "scene.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/scene.json",
+          "sha256": "a215779ea67774ffe8a3cf7c66281b56b57ef27e29a734eb798981caa8f2f846"
+        },
+        "scene.xml": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/scene.xml",
+          "sha256": "8aa4a35025eb30b13196b37794369260664bbf7aeb126ee17c5412f97a88fac6"
+        }
+      },
+      "manifest_sha256": "df03fd492c8bae509f186585eb71e0facc355fe9e63bc3591e3abbe1d474bdd6",
+      "manifest_image_count": 45,
+      "local_image_count": 0,
+      "review_ticks": [
+        0,
+        40,
+        80,
+        120,
+        160,
+        200
+      ],
+      "review_sim_times": [
+        1.3000000000000178,
+        5.300000000000732,
+        9.300000000001,
+        13.299999999991678,
+        17.29999999999159,
+        21.30000000001069
+      ],
+      "requested": [
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "9d4b7977f1cd02a56c76e5a2e0e548201cd9d2bd60a147594d3f0510defff73a",
+          "bytes": 40657
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "eff82e20ad6c0b3f414bdc3175346fcd31926915a1f0be6dba2ba632edff080b",
+          "bytes": 49133
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "8f5856e94f1acb20facef3ec809ee3cf13740916a8b5f482c8bfa4bac6cfd893",
+          "bytes": 49318
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-own/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000000.jpg",
+          "sha256": "127880217bd13bd31cac120e0418935180b9bacf66769b44d350212df896d083",
+          "bytes": 9902
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-top/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-top/000000.jpg",
+          "sha256": "147c6c51bf94338757bb12d1915ef94928c2cab53ba1b5fcec2009851673a5b2",
+          "bytes": 18612
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-own/000040.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000040.jpg",
+          "sha256": "1c369ff905bfde525a85019588fe164b6952a60f32a380390476c37f38c42652",
+          "bytes": 11173
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-top/000040.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-top/000040.jpg",
+          "sha256": "049f62cc93bf162cd568be885dc8aae92c9352ba03684f9fe7c3f05b52026a00",
+          "bytes": 18422
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-own/000080.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000080.jpg",
+          "sha256": "83a0d15355d5c75047080fa16cc48d4e64ad36b5b6ea23ae75a08473407dc4e3",
+          "bytes": 7855
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-top/000080.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-top/000080.jpg",
+          "sha256": "bd1539ca50ed45c3a90cba59a3f03578305c52753bf5b67602c89db6a34ba0f3",
+          "bytes": 18492
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-own/000120.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000120.jpg",
+          "sha256": "03253524009d6d2ebba87874cca19d79a9816dcc5e646c6bfccfb20bb681f93b",
+          "bytes": 5679
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-top/000120.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-top/000120.jpg",
+          "sha256": "24178b5c30656a26946571bf5cc20c5d319e3f54e063e2b75d0546f5a1e1df59",
+          "bytes": 18636
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-own/000160.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000160.jpg",
+          "sha256": "708a1787f072807dd496112d95ca584f377b8cc93f14dfad7cb20677a8a898ca",
+          "bytes": 6515
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-top/000160.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-top/000160.jpg",
+          "sha256": "bd24397c1c7b7c17e39330c041ebe620bd0cfc91c64c2a99983016f3590c4c2a",
+          "bytes": 18617
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-own/000200.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-own/000200.jpg",
+          "sha256": "410bb21b315bdc7f7c79adec547e8c80baef34c21193d911a928938428b4b047",
+          "bytes": 6519
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-3-b48ebdf1/raw/review-top/000200.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-3-b48ebdf1/raw/review-top/000200.jpg",
+          "sha256": "5ddbaaca3ac587da002442623a587c589f4805204566732661cef96bb5f8c6e2",
+          "bytes": 18606
+        }
+      ]
+    },
+    {
+      "run": "solo-diag-4-b48ebdf1",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw",
+      "status": "complete",
+      "kind": "can",
+      "plan_seed": 76904,
+      "source_sha": "b48ebdf1672554a24511dd853617408308061a95",
+      "physical_success": false,
+      "lift_success": true,
+      "release_success": false,
+      "max_stable_lift_s": 5.900000000028172,
+      "observer_answer_counts": {
+        "yes": 0,
+        "no": 50,
+        "unknown": 15
+      },
+      "recorded_confirmation_ticks": 50,
+      "recorded_answer_counts": {
+        "no": 50
+      },
+      "recorded_reasons": {
+        "can disappeared or shrank (possible grip loss)": 50
+      },
+      "last_before": {
+        "can": {
+          "fraction": 0.09495768229166666,
+          "center": [
+            0.5272418454972404,
+            0.8817721367111172
+          ],
+          "extent": [
+            0.8078125,
+            0.16875
+          ]
+        }
+      },
+      "last_comparisons": [
+        {
+          "sample": "lift_complete",
+          "parts": {}
+        }
+      ],
+      "last_reason": "can disappeared or shrank (possible grip loss)",
+      "samples": {
+        "before_lift": {
+          "path": "lift-rgb/before_lift.png",
+          "t": 16.699999999988727,
+          "sha256": "579cb765ee4f131442fdb506bd26b87bb53cafc1eb199373bffe0a9dcbe4b6a3",
+          "pixel_sha256": "f5f6894c7ea73ac6e343ae2153957cbec1698e2abc670d541b0138bd20719886",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "lift_complete": {
+          "path": "lift-rgb/lift_complete.png",
+          "t": 18.299999999996366,
+          "sha256": "b456666836223bda7a77e6245fe334d04db6324dcd65b0f93763bb3be28d6497",
+          "pixel_sha256": "4311c73224ef086ff5d444bb1e3c895987be8c14370d4c2d665b7df5100f9c68",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "settled_hold": {
+          "path": "lift-rgb/settled_hold.png",
+          "t": 21.30000000001069,
+          "sha256": "e1d16ba52f94bec0bb30770fc22dba16f5c079ba8a535396900b43a57e2491e9",
+          "pixel_sha256": "b3cb4d7a64ebdf7228a3bcc74b72a8f8ec7faffed3c77057bde4e632fe779af4",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 23,
+        "blocked_held": 76,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 87,
+          "align": 24,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw_hash_checks": {
+        "result.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/result.json",
+          "sha256": "9e7c1824b6fc54e2c7cc3b2172f5fb1f7cd3e7cfbd4a86c2c8038b43d637444c"
+        },
+        "teacher-commands.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/teacher-commands.jsonl.zst",
+          "sha256": "14f95f0ea0cc31d4e010152bb3f70a51eea204a3765a2abda32a796f0517d31d"
+        },
+        "eval-only.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/eval-only.jsonl.zst",
+          "sha256": "8d46cfa42c58e627d0ace390a9e5ac15762f4feaf02af7f7cb45f6b6e4bf40ba"
+        },
+        "plan.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/plan.json",
+          "sha256": "45a2836eb93e34ea7a1c48e3d286a86d5be816c5a4541cfbbecfd92eecfaf164"
+        },
+        "scene.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/scene.json",
+          "sha256": "8f94bd79cbf63110a545b0f32a66d7eaf1afd77b88d833f1823d9d1cadfef947"
+        },
+        "scene.xml": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/scene.xml",
+          "sha256": "56384e8b1fc92335ba546356cfc33824bd1728f92adf4e99180cbe9ed18600a1"
+        }
+      },
+      "manifest_sha256": "214c024de9578b5ce641777dbdf18faab16971d5c4bcb98b8284d6b900be0f80",
+      "manifest_image_count": 47,
+      "local_image_count": 0,
+      "review_ticks": [
+        0,
+        40,
+        80,
+        130,
+        170,
+        210
+      ],
+      "review_sim_times": [
+        1.3000000000000178,
+        5.300000000000732,
+        9.300000000001,
+        14.299999999989348,
+        18.299999999996366,
+        22.300000000015466
+      ],
+      "requested": [
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "579cb765ee4f131442fdb506bd26b87bb53cafc1eb199373bffe0a9dcbe4b6a3",
+          "bytes": 55626
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "b456666836223bda7a77e6245fe334d04db6324dcd65b0f93763bb3be28d6497",
+          "bytes": 48748
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "e1d16ba52f94bec0bb30770fc22dba16f5c079ba8a535396900b43a57e2491e9",
+          "bytes": 48199
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-own/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000000.jpg",
+          "sha256": "cecf16c6677c1f0afad57f94b3badd8a16c3e479729d3812c402e10023b9e795",
+          "bytes": 12410
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-top/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-top/000000.jpg",
+          "sha256": "6f7035071028ce003d75ef84fec26fb6b0d36a4d0d0e384e687edefdbc3f9f7e",
+          "bytes": 18461
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-own/000040.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000040.jpg",
+          "sha256": "a3b877ccf0b6b164d410419aefbca2aeac88481f949bdb8cd02bf8d79d14f380",
+          "bytes": 11921
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-top/000040.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-top/000040.jpg",
+          "sha256": "7ed0c1ed052ba5047a3fd5af9c340369f1d82da8316b771cb7ef1ed651752769",
+          "bytes": 18601
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-own/000080.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000080.jpg",
+          "sha256": "3165c11aeba323a5806345c7a20be7e3978581c669156cd60661a38995085502",
+          "bytes": 11518
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-top/000080.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-top/000080.jpg",
+          "sha256": "2b9c6992a4b20dca3bfaad61b544604a4a09fc7820ad8e3e0ac36120e100b5d1",
+          "bytes": 18579
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-own/000130.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000130.jpg",
+          "sha256": "b320b85d6e74e7183e41294db3b974754ff3f306f93f90fad860b8878ffdee4b",
+          "bytes": 6549
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-top/000130.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-top/000130.jpg",
+          "sha256": "55fda9b6e19924140b3a3a0d2d49a7bc650d8d56b5019334a72154e9c021a412",
+          "bytes": 18715
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-own/000170.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000170.jpg",
+          "sha256": "7f691831afe2265cf02185735b0179fe99b9c54dcadf4b60c4cc58de2ef29219",
+          "bytes": 6859
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-top/000170.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-top/000170.jpg",
+          "sha256": "30c9b48ca49fe5a165b2939f0ca977c5d17097814940663c546ab3847d371055",
+          "bytes": 18692
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-own/000210.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-own/000210.jpg",
+          "sha256": "e9aebbedc1c302cafe794a2bece42d7474706c6c3a918323160990b41467f4f8",
+          "bytes": 6760
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-4-b48ebdf1/raw/review-top/000210.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-4-b48ebdf1/raw/review-top/000210.jpg",
+          "sha256": "da6eee7d7a231c4c7fe4e71458bc91bc14e8ad984457c8552950a1e4ca0ebae6",
+          "bytes": 18741
+        }
+      ]
+    },
+    {
+      "run": "solo-diag-5-b48ebdf1",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw",
+      "status": "complete",
+      "kind": "tile",
+      "plan_seed": 76905,
+      "source_sha": "b48ebdf1672554a24511dd853617408308061a95",
+      "physical_success": true,
+      "lift_success": true,
+      "release_success": true,
+      "max_stable_lift_s": 8.900000000042496,
+      "observer_answer_counts": {
+        "yes": 41,
+        "no": 0,
+        "unknown": 45
+      },
+      "recorded_confirmation_ticks": 71,
+      "recorded_answer_counts": {
+        "unknown": 30,
+        "yes": 41
+      },
+      "recorded_reasons": {
+        "settled hold frame missing": 30,
+        "colour parts co-move through issued lift and settled hold": 41
+      },
+      "last_before": {
+        "tile": {
+          "fraction": 0.25244791666666666,
+          "center": [
+            0.47626532036569014,
+            0.7971645100491713
+          ],
+          "extent": [
+            0.871875,
+            0.325
+          ]
+        }
+      },
+      "last_comparisons": [
+        {
+          "sample": "lift_complete",
+          "parts": {
+            "tile": {
+              "after": {
+                "fraction": 0.252646484375,
+                "center": [
+                  0.47630891812582943,
+                  0.7970454638183465
+                ],
+                "extent": [
+                  0.871875,
+                  0.325
+                ]
+              },
+              "area_ratio": 1.0007865690117599,
+              "center_shift": 0.00011904623082481525,
+              "extent_shift": 0.0
+            }
+          }
+        },
+        {
+          "sample": "settled_hold",
+          "parts": {
+            "tile": {
+              "after": {
+                "fraction": 0.2527669270833333,
+                "center": [
+                  0.47638089584674825,
+                  0.7969940974458039
+                ],
+                "extent": [
+                  0.871875,
+                  0.325
+                ]
+              },
+              "area_ratio": 1.001263668248401,
+              "center_shift": 0.00017041260336747577,
+              "extent_shift": 0.0
+            }
+          }
+        }
+      ],
+      "last_reason": "colour parts co-move through issued lift and settled hold",
+      "samples": {
+        "before_lift": {
+          "path": "lift-rgb/before_lift.png",
+          "t": 18.399999999996844,
+          "sha256": "0cb76cb3d3ccbe4fd1f184301b09d03ac9df003f33494995a392e98c0a63af49",
+          "pixel_sha256": "2b690c4341ab2fd3d79cecc386cf20aaaff6af8d291e815352f04dadca0668c0",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "lift_complete": {
+          "path": "lift-rgb/lift_complete.png",
+          "t": 20.000000000004484,
+          "sha256": "f9975a0880c9e21db867fb96b0e0ab00e8148ca53d52e79758d42cc6ddf506a0",
+          "pixel_sha256": "ca147d5044575fcb1f1b328e6b2b1b711f43b5b5ec131f7d9a18ee1ba3c42ba9",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        },
+        "settled_hold": {
+          "path": "lift-rgb/settled_hold.png",
+          "t": 23.000000000018808,
+          "sha256": "7ec78a9f23090b14d08b72410fd0f2fe06778e1fa43d283ad29427aad76a7508",
+          "pixel_sha256": "e0fc9c25699c20e18153e760e444e39db5f1a3c567a6ba6dc7032406a465d2d7",
+          "shape": [
+            480,
+            640,
+            3
+          ]
+        }
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 117,
+        "blocked_held": 114,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 108,
+          "align": 20,
+          "hover": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw_hash_checks": {
+        "result.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/result.json",
+          "sha256": "744851c30465cc9d6d0859b607572f4b316ad2c00fdaeefe69585a42e3180e15"
+        },
+        "teacher-commands.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/teacher-commands.jsonl.zst",
+          "sha256": "3e10a560a264e83af28846c40cfcdd292e6ce9249e90fdae47c6db0ed76cb534"
+        },
+        "eval-only.jsonl.zst": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/eval-only.jsonl.zst",
+          "sha256": "65b6948884c8f3694c93e30dd5d56016ecc8f0c561057ae085baa9cb5f3a8ab4"
+        },
+        "plan.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/plan.json",
+          "sha256": "7fdb6dae0d160b8cf24d8a67821a6dcd3398100edd54b5c8bc953f1f683db605"
+        },
+        "scene.json": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/scene.json",
+          "sha256": "03b22f3145b56911b60cec3928f9988a56df0d33fcfa0d51411da728c3b7c348"
+        },
+        "scene.xml": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/scene.xml",
+          "sha256": "6b98ba85d78b485578ba9ba64233c67ca0ef6e369c5a4b0ff952cd15d8c056fa"
+        }
+      },
+      "manifest_sha256": "aceaf79ce76535a511b1f6b2550984277fd5d99e25983184e5c94b9ec27d2058",
+      "manifest_image_count": 77,
+      "local_image_count": 0,
+      "review_ticks": [
+        0,
+        70,
+        140,
+        220,
+        290,
+        360
+      ],
+      "review_sim_times": [
+        1.3000000000000178,
+        8.300000000003331,
+        15.299999999987017,
+        23.30000000002024,
+        30.300000000053664,
+        37.30000000008709
+      ],
+      "requested": [
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/lift-rgb/before_lift.png",
+          "sha256": "0cb76cb3d3ccbe4fd1f184301b09d03ac9df003f33494995a392e98c0a63af49",
+          "bytes": 59635
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/lift-rgb/lift_complete.png",
+          "sha256": "f9975a0880c9e21db867fb96b0e0ab00e8148ca53d52e79758d42cc6ddf506a0",
+          "bytes": 62523
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/lift-rgb/settled_hold.png",
+          "sha256": "7ec78a9f23090b14d08b72410fd0f2fe06778e1fa43d283ad29427aad76a7508",
+          "bytes": 62705
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-own/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000000.jpg",
+          "sha256": "d4ad43a06ac187be66949b1e4434e213b8cb308949177a1a842f5268d1eb4ca5",
+          "bytes": 10782
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-top/000000.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-top/000000.jpg",
+          "sha256": "b90a77846a8911d1f6bf66294ca218cb5bb48f52d9b1513f46d5031a8e29a8dc",
+          "bytes": 18441
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-own/000070.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000070.jpg",
+          "sha256": "4b3adf34b54688d894b94467345ebcac929e9609819577ed1562d9a6b2cf7fbb",
+          "bytes": 9769
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-top/000070.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-top/000070.jpg",
+          "sha256": "752b6eaf419a7e21928fed4c77c9c61a9da36d6cf69641d740ab99335790d37d",
+          "bytes": 18440
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-own/000140.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000140.jpg",
+          "sha256": "299dc04003063539b25a73eb5ce92a27bda30d1ac4dbb089e87c9bf99e48181a",
+          "bytes": 7049
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-top/000140.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-top/000140.jpg",
+          "sha256": "cdefb105b3647994fc872f551b79bf2b524074f92bbe7c0b54b18a7b144c5bc4",
+          "bytes": 19621
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-own/000220.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000220.jpg",
+          "sha256": "2492586159e8cfeb5aa65506bf09924487bd2053fb3eba3e5d34bd0e9cfe323c",
+          "bytes": 8421
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-top/000220.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-top/000220.jpg",
+          "sha256": "bcddf7c0a2f4733921dbe6f97642942bd6fd09f824ee431bbe2cdc1275353698",
+          "bytes": 19596
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-own/000290.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000290.jpg",
+          "sha256": "60e10187ba5efcd2112a233a2500dd301e1a618191643950ad340f9c82db46f8",
+          "bytes": 8562
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-top/000290.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-top/000290.jpg",
+          "sha256": "287e10a16d5813e4e3d9f19d160ab0d480fa086aa19901a0b013d4c4b1159b2b",
+          "bytes": 19567
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-own/000360.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-own/000360.jpg",
+          "sha256": "4ce892e4021661fe6da68f79d5409bb7ff78a13ee04abca782e1d8787c1a6246",
+          "bytes": 8584
+        },
+        {
+          "remote": "/home/ugrp/ugrp-sim/runs/solo-diag-5-b48ebdf1/raw/review-top/000360.jpg",
+          "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-diag-5-b48ebdf1/raw/review-top/000360.jpg",
+          "sha256": "d0ac91a5a0469d44bb692e8006efb1c7a65e7083a5dc095d66062585a02659f9",
+          "bytes": 19581
+        }
+      ]
+    }
+  ],
+  "fetch_request": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/fetch-requests/solo4.txt",
+    "sha256": "fdb24e8da33ff69935c5434e095fbc55c0befc561d5bda1fdd0197b3a53f3e7e",
+    "file_count": 90,
+    "total_bytes": 1928579,
+    "images_retrieved": 0,
+    "source_hash_consistency": "90/90"
+  },
+  "totals": {
+    "physical_success": 2,
+    "lift_success": 6,
+    "N": 6,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "manifest_images": 338,
+    "images_viewed": 0,
+    "offline_rejudged": 0,
+    "same_image_controls_tested": 0
+  },
+  "references": [
+    {
+      "url": "https://proceedings.mlr.press/v87/kalashnikov18a/kalashnikov18a.pdf",
+      "read": "Appendix D.3; post-drop scene difference reward, not pre-release wrist proof"
+    },
+    {
+      "url": "https://arxiv.org/html/2505.03046v1",
+      "read": "Section IV; gripper ROI localization and object-presence classification; no imported learned checkpoint"
+    }
+  ]
+}

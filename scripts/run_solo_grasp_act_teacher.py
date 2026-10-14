@@ -31,7 +31,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         raise ValueError('finite opt-in solo profile with both required toggles')
     if teacher_stability not in ('off', 'align_relook_v1') or reach_mode not in ('box_station_v1', 'pad_window_v2'):
         raise ValueError('unknown solo stability/reach mode')
-    if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2'):
+    if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3'):
         raise ValueError('unknown solo RGB lift mode')
     from scripts.grasp_act_host import identity, require_run_root
     host = identity(execution_host)
@@ -163,7 +163,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                               lookaround=relook, route=route, ops=ops,
                               teacher_stability=teacher_stability, reach_mode=reach_mode,
                               rgb_lift_mode=rgb_lift_mode)
-        lift_observer = SoloLiftObserver(plan['kind']) if rgb_lift_mode == 'solo_rgb_lift_v2' else None
+        lift_observer = SoloLiftObserver(plan['kind'], mode=rgb_lift_mode) if rgb_lift_mode != 'off' else None
         if lift_observer is not None:
             (out/'lift-rgb').mkdir()
 
@@ -340,7 +340,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             lookaround={'localizer': relook.record(), 'evaluation': look_eval},
             lift_rgb_evidence_ticks=lift_evidence, **score.record(teacher.result == 'command_complete'))
         if lift_observer is not None:
-            report['rgb_lift_v2'] = lift_observer.record()
+            report[rgb_lift_mode.removeprefix('solo_')] = lift_observer.record()
         report['data_admitted'] = False
         write(out/'result.json', report)
     except BaseException as error:
@@ -369,7 +369,7 @@ def main():
     p.add_argument('--setdown-lookaround-v1', action='store_true')
     p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')
     p.add_argument('--reach-mode', choices=('box_station_v1', 'pad_window_v2'), default='box_station_v1')
-    p.add_argument('--rgb-lift-mode', choices=('off', 'solo_rgb_lift_v2'), default='off')
+    p.add_argument('--rgb-lift-mode', choices=('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3'), default='off')
     p.add_argument('--cap-s', type=float, default=90.)
     a = p.parse_args()
     plan = json.loads(a.plan.read_text())['episodes'][a.episode]

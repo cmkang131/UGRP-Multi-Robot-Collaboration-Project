@@ -49,16 +49,19 @@ def lift_answer(frame_bgr, pwm, kind, grasp_pose, floor_xy, *, held_judge=None, 
 
 
 class SoloLiftObserver:
-    """Opt-in solo_rgb_lift_v2: own BGR and issued command history only.
+    """Opt-in solo_rgb_lift_v2/v3: own BGR and issued command history only.
 
     Capture at close->lift before the raise command, after its scheduled
     completion, and after three seconds stationary. Recheck every hold tick so
     an earlier confirmation cannot authorize set-down after a visual loss.
     """
-    def __init__(self, kind):
+    def __init__(self, kind, *, mode='solo_rgb_lift_v2'):
         if kind not in ('cyan', 'red', 'green', 'yellow', 'can', 'tile'):
             raise ValueError('solo cargo kind required')
         self.kind = kind
+        if mode not in ('solo_rgb_lift_v2', 'solo_rgb_lift_v3'):
+            raise ValueError('unknown solo lift observer mode')
+        self.mode = mode
         self.before = self.after = None
         self.completed_at = None
         self.commands = []
@@ -67,6 +70,9 @@ class SoloLiftObserver:
         self.last = None
 
     def _masks(self, bgr):
+        # Boxes: painted face; can: purple cylinder; tile: pink slab. None has
+        # the crate's distinct lug/body colours. Keep one rigid colour part;
+        # do not invent a body or accept floor pixels when the part is hidden.
         import cv2
         from harness.zone_own_perception import hue_mask, _usable_region
         hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
@@ -80,8 +86,9 @@ class SoloLiftObserver:
 
     def observe(self, frame, command, *, complete, save):
         import copy
-        from sim.rgb_lift_evidence import SETTLE_S, confirm_parts_v2
-        out = {'evidence': 'solo_rgb_lift_v2', 'answer': 'unknown', 'verdict': 'undetermined',
+        from sim.rgb_lift_evidence import SETTLE_S, confirm_parts_v2, confirm_parts_v3
+        confirm = confirm_parts_v3 if self.mode == 'solo_rgb_lift_v3' else confirm_parts_v2
+        out = {'evidence': self.mode, 'answer': 'unknown', 'verdict': 'undetermined',
                'reason': 'before lift frame missing'}
         if self.before is not None:
             if self.after is None:
@@ -96,15 +103,15 @@ class SoloLiftObserver:
                 settled = frame if command['t']-self.completed_at >= SETTLE_S-1e-8 else None
                 if settled is not None and 'settled_hold' not in self.samples:
                     self.samples['settled_hold'] = save('settled_hold', frame, command['t'])
-                rec = confirm_parts_v2(self.before, self.after, commands=self.commands,
+                rec = confirm(self.before, self.after, commands=self.commands,
                                       masks=self._masks, names=(self.kind,), settled=settled,
-                                      rule='solo_rgb_lift_v2')
+                                      rule=self.mode)
                 # A later incompatible command cannot reuse a cached yes.
                 current = {int(s): v for s, v in command['pwm'].items()}
                 final = {int(s): v for s, v in self.commands[-1]['pwm'].items()}
                 if any(command['wheels']) or current != final:
                     rec.update(verdict='undetermined', reason='hold issued command changed')
-                out = {**rec, 'evidence': 'solo_rgb_lift_v2',
+                out = {**rec, 'evidence': self.mode,
                        'answer': {'confirmed': 'yes', 'not_confirmed': 'no', 'undetermined': 'unknown'}[rec['verdict']],
                        'samples': dict(self.samples), 'completed_at': self.completed_at,
                        'settled_s': command['t']-self.completed_at}
@@ -113,5 +120,5 @@ class SoloLiftObserver:
         return out
 
     def record(self):
-        return {'mode': 'solo_rgb_lift_v2', 'samples': self.samples,
+        return {'mode': self.mode, 'samples': self.samples,
                 'answer_counts': self.answer_counts, 'last': self.last}

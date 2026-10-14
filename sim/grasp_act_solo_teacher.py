@@ -173,7 +173,7 @@ class SoloTeacher:
             raise ValueError('unknown teacher stability mode')
         if reach_mode not in ('box_station_v1', 'pad_window_v2'):
             raise ValueError('unknown solo reach mode')
-        if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2'):
+        if rgb_lift_mode not in ('off', 'solo_rgb_lift_v2', 'solo_rgb_lift_v3'):
             raise ValueError('unknown solo RGB lift mode')
         self.rgb_lift_mode = rgb_lift_mode
         self.teacher_stability, self.reach_mode = teacher_stability, reach_mode
@@ -475,9 +475,9 @@ class SoloTeacher:
                     self._set('lower', now)
             else:
                 self.verify_t = None
-                # v2 needs completion + a 3 s RGB sample + the existing 1 s
+                # v2/v3 need completion + a 3 s RGB sample + the existing 1 s
                 # continuous yes window. Timeout still fails closed.
-                verify_limit = 5. if self.rgb_lift_mode == 'solo_rgb_lift_v2' else 3.
+                verify_limit = 5. if self.rgb_lift_mode != 'off' else 3.
                 if self.phase == 'hold' or now-self.phase_t >= verify_limit:
                     # No hidden truth recovery or silent scripted retry.
                     self.result = 'rgb_lift_unconfirmed' if self.phase == 'verify_lift' else 'rgb_hold_lost'
