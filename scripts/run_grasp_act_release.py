@@ -26,13 +26,22 @@ class HeldAudit:
     """Counts reads of the held cargo's world pose feeding decisions; hidden_v1 refuses them."""
     def __init__(self,mode):
         if mode not in HELD_OBJECT_MODES:raise ValueError(mode)
-        self.mode=mode;self.reads={}
+        self.mode=mode;self.reads={};self.meas={};self.picks=[]
+    def measurement(self,phase,kind,visible):
+        """Each truth-derived measurement handed to a teacher, with its own visibility gate re-checked."""
+        row=self.meas.setdefault(phase,{}).setdefault(kind,[0,0]);row[0]+=1;row[1]+=0 if visible else 1
+    def pick(self,phase,rid,now,teacher):
+        item=teacher.belief.get('band',now) or teacher.belief.get('released_band',now)
+        self.picks.append({'phase':phase,'robot':rid,'t':now,'source':item['source'],'age_s':now-item['seen_t']})
     def read(self,holding,site):
         if not holding:return
         if self.mode=='hidden_v1':raise RuntimeError(f'HELD_WORLD_READ:{site}')
         self.reads[site]=self.reads.get(site,0)+1
     def record(self):
         return {'held_object':self.mode,'held_world_reads':sum(self.reads.values()),'held_world_reads_by_site':dict(self.reads),
+                'invisible_measurements':sum(v[1] for ph in self.meas.values() for v in ph.values()),
+                'measurements_by_phase':{ph:{k:{'n':v[0],'invisible':v[1]} for k,v in kinds.items()} for ph,kinds in self.meas.items()},
+                'pick_target_uses':self.picks,
                 'scope':'decision inputs from release start to release complete; truth stays in evaluation-only outputs; '
                         'prefix grasp teacher stops at the held check'}
 
@@ -88,6 +97,17 @@ def destination_slot_geoms(names,region):
     """Indices of the destination's slot squares (zone_slot_<letter><n>); they lie inside the zone on the static map."""
     letter=region.split('_')[-1];pre='zone_slot_'+letter
     return [i for i,n in enumerate(names) if n and n.startswith(pre) and n[len(pre):].isdigit()]
+
+
+def position_error(beam_xy_yaw,rect,half_len=.30):
+    """Evaluation only: landed beam vs the destination rectangle (axis-aligned, centre cx,cy, half hx,hy)."""
+    x,y,yaw=beam_xy_yaw;cx,cy,hx,hy=rect
+    long_axis=math.pi/2 if hy>=hx else 0.
+    err=(yaw-long_axis+math.pi/2)%math.pi-math.pi/2          # beam has no head/tail
+    ends=[(x+k*half_len*math.cos(yaw),y+k*half_len*math.sin(yaw)) for k in (-1,1)]
+    margin=min(min(hx-abs(ex-cx),hy-abs(ey-cy)) for ex,ey in ends)
+    return {'center_offset_m':[x-cx,y-cy],'center_distance_m':math.hypot(x-cx,y-cy),'yaw_error_deg':math.degrees(err),
+            'min_end_margin_m':margin,'zone_long_axis':'y' if hy>=hx else 'x'}
 
 
 def own_end_world(world,inst,end):
@@ -228,10 +248,11 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 for l_ in (-.05,.05):
                     p=e+s_*out_dir+l_*lat;p=(float(p[0]),float(p[1]),.0012)
                     c=eyes.classify(data,rid,p)
-                    if c is not None:scan.append([*relative(pose,p[:2])[:2],c])
+                    if c is not None:scan.append([*relative(pose,p[:2])[:2],c]);audit.measurement(st['phase'],'scan_point',True)
             m=band.measure(data,rid,roles[rid]);obs={'scan':scan,'own_band_visible':m['visible_probes']>=3,'band':None}
             if obs['own_band_visible'] and not (t.holding and held_object=='hidden_v1'):
                 audit.read(t.holding,'band_pose')
+                audit.measurement(st['phase'],'own_band_pose',m['visible_probes']>=3)
                 gid=band.bands[roles[rid]];g=data.geom_xpos[gid];rot=data.body(inst.body).xmat.reshape(3,3)
                 obs['band']=relative(pose,(float(g[0]),float(g[1])),math.atan2(rot[1,0],rot[0,0]))
             obs['partner_visible']=any(band.body_visible(data,rid,p+'__robot') for p in roles if p!=rid)
@@ -335,6 +356,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                     st['iter']+=1
                     if st['iter']>3:outcome='release_iteration_cap';break
                     # Approach by own-command pulses until the re-grasp target is mid-reach (no reach crash).
+                    for rid,t in rel.items():audit.pick('approach',rid,now,t)
                     st['plan']={rid:t.approach_plan(now) for rid,t in rel.items()}
                     for rid,pl in st['plan'].items():
                         if pl:schedule(rid,[(0.,{k:int(v) for k,v in solve_grip_site_ik((MOUNT_X_M+rel[rid].reach_mid(),0.,.095)).items() if k in (3,4,5,6)})],now)
@@ -348,6 +370,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                         dur=0.
                         try:
                             for rid,t in rel.items():
+                                audit.pick('repick',rid,now,t)
                                 seq,d=t.pick_schedule(now);schedule(rid,seq,now+.2);dur=max(dur,d)
                         except ValueError as error:
                             report['repick_error']=str(error);outcome='repick_unreachable';break
@@ -408,6 +431,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         for idx,r in enumerate(checks):
             streak=streak+1 if good(r,checks[idx-1] if idx else None) else 0;best=max(best,streak)
         last=checks[-1]
+        report['evaluation_position_error']=position_error(last['beam_xy_yaw'],rect)
         reasons=[n for n,v in (('not_in_zone',not last['fit']),('not_on_floor',last['z']>=SUCCESS['on_floor_z_m']),
             ('tilt',last['tilt_deg']>=SUCCESS['tilt_deg']),('finger_contact',any(max(v)>1e-6 for v in last['contact_n'].values())),
             ('gripper_closed',any(p<SUCCESS['open_pwm'] for p in last['open_pwm'].values())),
@@ -423,6 +447,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     finally:
         report['wall_s']=time.monotonic()-start;report['sim_s']=None if world is None else float(world.data.time)-origin
         report['loadavg_at_end']=os.getloadavg();report['input_audit']=audit.record()
+        if isinstance(report.get('teachers'),dict):   # copied from the teachers' own diagnostics (no recomputation)
+            report['input_audit']['visibility_by_phase']={r:t.get('visible_counts_by_phase') for r,t in report['teachers'].items()}
+            report['input_audit']['max_destination_blind_s_by_phase']={r:t.get('max_destination_blind_s_by_phase') for r,t in report['teachers'].items()}
         try:report['timings_s']=timings
         except NameError:pass
         write(out/'result.json',report)

@@ -187,3 +187,15 @@ def test_held_audit_counts_old_profile_and_refuses_hidden_v1():
     assert new.record()['held_world_reads'] == 0
     with pytest.raises(ValueError):
         HeldAudit('x')
+
+
+def test_position_error_and_measurement_audit():
+    from scripts.run_grasp_act_release import position_error, HeldAudit
+    e = position_error([4.62, 0.30, math.pi/2+math.radians(5)], (4.6, 0.4, .3, .7))
+    assert e['center_offset_m'] == pytest.approx([.02, -.10]) and e['yaw_error_deg'] == pytest.approx(5)
+    assert e['zone_long_axis'] == 'y' and 0 < e['min_end_margin_m'] < .3
+    assert position_error([4.6, 0.4, -math.pi/2], (4.6, 0.4, .3, .7))['yaw_error_deg'] == pytest.approx(0, abs=1e-9)
+    a = HeldAudit('hidden_v1')
+    a.measurement('observe', 'scan_point', True); a.measurement('observe', 'own_band_pose', False)
+    r = a.record()
+    assert r['invisible_measurements'] == 1 and r['measurements_by_phase']['observe']['scan_point'] == {'n': 1, 'invisible': 0}
