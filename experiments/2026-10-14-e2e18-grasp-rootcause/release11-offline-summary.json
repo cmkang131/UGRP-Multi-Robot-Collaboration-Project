@@ -26,13 +26,13 @@
     "tests/test_release_regrasp.py": "febb0e373fa2f21e388412480ee3e6755be192bb6ef461541502b6a6b71b2600",
     "tests/test_grasp_act_release_run.py": "29424ad398395de088674905ba97a9999f88a61ce87e59c4cc90eab9ceeee442",
     "experiments/2026-10-14-e2e18-grasp-rootcause/analyze_release11.py": "a6f4e7b5030ce24ca865b613632d723cc67c18d1ec7fd8422ea95af49812c523",
-    "experiments/2026-10-14-e2e18-grasp-rootcause/register_release11_queue.py": "671fdcf7ea1e3c2153c08f868242572a1c056e1168ec9ce95d503b45c1f4491a",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/register_release11_queue.py": "781b879728320bbabc358d8fbeba48a3cb8b3d620e0758bf4bcf4716e771cb88",
     "experiments/2026-10-14-e2e18-grasp-rootcause/release11-diagnostic-plan.json": "77078a352267d84d939df563ef528768a581800a44987ec2aaff5ee8726fe3a3",
     "experiments/2026-10-14-e2e18-grasp-rootcause/release11-gate-plan.json": "3be96ec6b813c12b78b0ed84838ae59493ff791079115b76c0bff4c83ba8ed33",
     "experiments/2026-10-14-e2e18-grasp-rootcause/release11-references.json": "f2a96d59d86214756eb2107749c74cbf1dd8ca500967238a4100302f99e9b9f7",
     "experiments/2026-10-14-e2e18-grasp-rootcause/release11-replay.json": "422b210fb813f570472b3103fbafcf2f2600deb0ccbd3a574def6a6d77fbf3b3",
     "experiments/2026-10-14-e2e18-grasp-rootcause/release11-seed-reservation.json": "60dc133c78d8b61cbf90b5c7a9a31a4f9a89775cf9211a4095b1de0c11c7d5ae",
-    "experiments/2026-10-14-e2e18-grasp-rootcause/release11.md": "ead5ef6b34a32634cd758dcff08ab10ecfd3bf732fb81534f5686c63e524fb46"
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release11.md": "806fa2f19c51dcf37c53f7bfd5dd9adfd3def68232ce3d1c48c974af7709210a"
   },
   "runs": [
     {
@@ -118,5 +118,11 @@
     "74940 5/5 placement choices only; full enabled trajectory/outcome equivalence not established.",
     "74963 post-branch stored observations are isolated branch tests, not new-path predictions.",
     "Original prefix remains separate observable_v2 teacher; release input audit is not a new prefix audit."
-  ]
+  ],
+  "queue_registration_preflight": {
+    "initial_status": "rejected_before_write",
+    "initial_bytes": 67057,
+    "limit_bytes": 65536,
+    "fix": "diagnostic run label shortened to diag; commands and dependencies preserved"
+  }
 }

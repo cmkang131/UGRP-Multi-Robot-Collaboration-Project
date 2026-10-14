@@ -34,11 +34,11 @@ def main():
     profile=plans['diagnostic']['execution_profile']
     assert profile==plans['gate']['execution_profile'] and profile['regrasp_check']=='own_rgb_lift_v1'
     assert all(p['gate_promotion_authorized_if_all_conditions_pass'] is False for p in plans.values())
-    names=[f'release11-diagnostic-{i:02d}-{sha[:8]}' for i in range(9)]
+    names=[f'release11-diag-{i:02d}-{sha[:8]}' for i in range(9)]
     runs=[]
     for stage,plan in plans.items():
         for i,episode in enumerate(plan['episodes']):
-            name=f'release11-{stage}-{i:02d}-{sha[:8]}'
+            name=f'release11-{"diag" if stage=="diagnostic" else stage}-{i:02d}-{sha[:8]}'
             command=['python3','scripts/remote_run.py','--host','gcp1','--detach','--class','dev','--pr','491',
                 '--per-run-mb','96',str(ROOT),name,'--','.venv-sim/bin/python','-m','scripts.run_grasp_act_release',
                 '--plan',str((BASE/f'release11-{stage}-plan.json').relative_to(ROOT)), '--episode',str(i),
