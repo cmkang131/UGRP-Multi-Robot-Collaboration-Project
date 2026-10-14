@@ -119,3 +119,157 @@ def test_handoff_is_not_a_physical_failure_stop_and_is_counted_apart():
     assert handoff_only(row)
     assert not handoff_only({**row,'teachers':{'r1':{'outcome':'search_timeout_handoff'},'r2':{'outcome':'episode_timeout'}}})
     s=summarize([row],1);assert s['search_handoff_n']==1 and s['n']==0 and s['N']==1
+
+
+# This oracle is evaluation-only: the teacher receives only visible relative
+# band measurements. No MuJoCo/model/renderer is constructed or called.
+def geometric_band(episode,rid,body_yaw,pwm):
+    import numpy as np
+    from functools import lru_cache
+    from sim.grasp_act_gaze import camera_extrinsics
+    from sim.masterpi_camera_profile import scaled_camera_matrix,CAMERA_FISHEYE_D
+    from harness.zone_final_environment import resolve
+    from harness.static_keepouts import keepout_rects
+    # Cache only rigid command FK; no stateful simulator or true pose inputs.
+    if not hasattr(geometric_band,'fk'):
+        geometric_band.fk=lru_cache(maxsize=4096)(lambda pairs:camera_extrinsics(dict(pairs)))
+        geometric_band.rects=lru_cache(maxsize=32)(lambda mid:keepout_rects(resolve(mid)[0]))
+    origin,axes=geometric_band.fk(tuple(sorted((int(k),v) for k,v in pwm.items())))
+    bx,by,ba=episode['beam_pose'];end=episode['roles'][rid]
+    offset=-.27 if end=='teal' else .27
+    # Original band box: half extents 18/20.5/0.6 mm; 15 inset top probes.
+    points=np.array([(offset+x*.018,y*.0205,.033201) for x in (-.9,-.45,0.,.45,.9) for y in (-.9,0.,.9)])
+    ca,sa=math.cos(ba),math.sin(ba)
+    rot=np.array([[ca,-sa,0],[sa,ca,0],[0,0,1]])
+    points=points@rot.T+[bx,by,0.]
+    base=np.array([*episode['spawns'][rid][:2],0.])
+    c,s=math.cos(body_yaw),math.sin(body_yaw)
+    body=np.array([[c,-s,0],[s,c,0],[0,0,1]])
+    relative=(points-base)@body
+    optical=(relative-origin)@np.asarray(axes).T
+    z=optical[:,2];xy=optical[:,:2]/np.maximum(z[:,None],1e-12)
+    K=scaled_camera_matrix(640,480);uv=xy*K.diagonal()[:2]+K[:2,2]
+    radius=np.linalg.norm(xy,axis=1);theta=np.arctan(radius)
+    distorted=theta*(1+sum(k*theta**(2*i+2) for i,k in enumerate(CAMERA_FISHEYE_D)))
+    raw=xy*(distorted/np.maximum(radius,1e-12))[:,None]*K.diagonal()[:2]+K[:2,2]
+    inside=(z>.005)&(uv[:,0]>=0)&(uv[:,0]<640)&(uv[:,1]>=0)&(uv[:,1]<480)&(raw[:,0]>=0)&(raw[:,0]<640)&(raw[:,1]>=0)&(raw[:,1]<480)
+    lens=base+body@origin
+    rects=geometric_band.rects(episode['map_id'])
+    seen=sum(bool(ok) and not any(segment_hits_rect(lens[:2],p[:2],r) for r in rects)
+             for ok,p in zip(inside,points))
+    center=np.array([bx+offset*ca,by+offset*sa,.0326])
+    return seen,((center-base)@body).tolist(),ba-body_yaw
+
+
+def geometric_search(episode,rid,*,mode='search_body_scan_v2',gain=.73,hidden=False):
+    from scripts.run_grasp_act_teacher import audit_visible_input
+    end=episode['roles'][rid];yaw=episode['spawns'][rid][3]
+    t=VisibleOnlyGraspTeacher(rid,end,{**FOLDED,6:episode['initial_pan'][rid]},
+        bounds=(-20,20,-20,20),teacher_stability='align_relook_v1',teacher_search=mode)
+    model=VisibleWorld(rid,end);pwm={str(k):v for k,v in t.sink.pwm.items()}
+    audit={'measurement_rows':0,'invisible_measurements':0};commands=[]
+    for i in range(600):
+        now=i*.1;n,xyz,ba=geometric_band(episode,rid,yaw,pwm)
+        ms=[] if hidden or n<5 else [{'id':'band_'+end,'kind':'band','xyz':xyz,'yaw':ba,'visible_n':n,'probe_N':15}]
+        audit_visible_input(audit,ms)
+        value,_=t.step(model.observe(ms,now),now)
+        if t.ever_seen:
+            assert t.phase in ('approach','align','ready')
+            return now,t,commands,audit
+        commands.append(value);model.issue(value);t.remember_applied(value);pwm=value['pwm']
+        dx,dy,da=command_delta(value,.1)
+        assert dx==dy==0.  # no commanded translation before a sighting
+        yaw+=gain*da
+        if t.outcome is not None:return None,t,commands,audit
+    pytest.fail('search did not terminate before the episode cap')
+
+
+DIAGNOSTICS=json.loads((EXP/'teacher-search-diagnostic-plan.json').read_text())['episodes']
+
+
+@pytest.mark.parametrize('gain',[.69,.73,.78])
+@pytest.mark.parametrize('rid',['r1','r2'])
+@pytest.mark.parametrize('episode',DIAGNOSTICS,ids=lambda e:str(e['seed']))
+def test_six_frozen_starts_acquire_assigned_band_with_real_camera_geometry(episode,rid,gain):
+    found,t,commands,audit=geometric_search(episode,rid,gain=gain)
+    assert found is not None,(episode['seed'],rid,gain,t.search_log)
+    assert t.outcome is None and found<t.SEARCH_V2_LIMIT_S
+    assert audit['invisible_measurements']==0
+
+
+@pytest.mark.parametrize('seed',[78111,79217])
+def test_v1_close_stance_misses_all_probes_even_with_360_degrees(seed):
+    episode=next(e for e in DIAGNOSTICS if e['seed']==seed)
+    for yaw_deg in range(360):
+        for w,e in ((700,2440),(820,2320)):
+            n,_,_=geometric_band(episode,'r2',math.radians(yaw_deg),{**FOLDED,3:w,4:e,6:1500})
+            assert n==0
+    found,t,_,_=geometric_search(episode,'r2',mode='search_body_scan_v1')
+    assert found is None and t.outcome=='search_timeout_handoff'
+
+
+@pytest.mark.parametrize('pan',[500,2500])
+def test_v2_unseen_scan_covers_every_pitch_and_settles_issued_pwm(pan):
+    from copy import deepcopy
+    ep=deepcopy(DIAGNOSTICS[0]);ep['initial_pan']['r1']=pan
+    found,t,commands,audit=geometric_search(ep,'r1',hidden=True)
+    assert found is None and t.outcome=='search_timeout_handoff'
+    circles=[r for r in t.search_log if r['stage']=='circle_complete']
+    assert len(circles)==3 and all(r['command_estimated_yaw_deg']>=390 for r in circles)
+    assert t.search_log[-1]['stage']=='handoff'
+    assert t.search_log[-1]['t']<t.SEARCH_V2_LIMIT_S
+    # Each new turning posture was issued with stopped wheels for >=0.3 s.
+    for i,v in enumerate(commands):
+        if any(v['wheels']) and not any(commands[i-1]['wheels']):
+            assert i>=4
+            assert all(p['pwm']==v['pwm'] and not any(p['wheels']) for p in commands[i-4:i])
+    assert audit['invisible_measurements']==0
+    # A probe may keep ticking after a terminal result; never turn again or
+    # index past the last pitch while the runner finishes its fixed clock.
+    terminal=list(t.search_log)
+    for i in range(10):
+        _,v=t._search_step_v2(60.+i*.1,60.+i*.1)
+        assert not any(v['wheels'])
+    assert t.search_log==terminal
+
+
+def test_pair_handoff_finalization_preserves_failures_and_gate_denominator():
+    from types import SimpleNamespace
+    from scripts.run_grasp_act_teacher import finalize_outcomes
+    from scripts.run_grasp_act_batch import handoff_only,summarize
+    def result(peer=None,complete=False):
+        ts={'r1':SimpleNamespace(outcome=peer,command_complete=complete),
+            'r2':SimpleNamespace(outcome='search_timeout_handoff',command_complete=False)}
+        finalize_outcomes(ts,strict=True,joint_held=False)
+        return {'status':'complete','exit':0,'search_handoff':True,'physical_success':False,
+                'index':5,'teachers':{rid:vars(t) for rid,t in ts.items()}}
+    row=result();assert row['teachers']['r1']['outcome']=='peer_search_handoff'
+    assert handoff_only(row)
+    assert not handoff_only(result('alignment_no_progress'))
+    assert not handoff_only(result(complete=True))
+    assert not handoff_only(result('episode_timeout'))
+    summary=summarize([row,{'status':'interrupted','exit':130}],6)
+    assert (summary['n'],summary['N'],summary['planned_N'])==(0,1,6)
+    assert summary['search_handoff_rate']==1. and summary['search_handoff_indices']==[5]
+
+
+@pytest.mark.parametrize('heading_delta',[90,180,270])
+@pytest.mark.parametrize('gain',[.69,.78])
+def test_v2_close_target_behind_initial_heading_is_found_during_turn(heading_delta,gain):
+    from copy import deepcopy
+    ep=deepcopy(next(e for e in DIAGNOSTICS if e['seed']==79217))
+    ep['spawns']['r2'][3]+=math.radians(heading_delta)
+    ep['initial_pan']['r2']=1500
+    found,t,commands,audit=geometric_search(ep,'r2',gain=gain)
+    assert found is not None and found<t.SEARCH_V2_LIMIT_S
+    assert any(any(c['wheels']) for c in commands)
+    assert audit['invisible_measurements']==0
+
+
+def test_v2_unseen_commands_do_not_depend_on_hidden_geometry():
+    from copy import deepcopy
+    a=deepcopy(DIAGNOSTICS[0]);b=deepcopy(DIAGNOSTICS[-1])
+    a['initial_pan']['r1']=b['initial_pan']['r1']=500
+    _,_,ca,_=geometric_search(a,'r1',hidden=True)
+    _,_,cb,_=geometric_search(b,'r1',hidden=True)
+    assert ca==cb

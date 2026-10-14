@@ -30,10 +30,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             raise ValueError('unknown teacher stability mode')
         # search_body_scan_v1: pan sweep + in-place 8-direction body scan only.
         self.teacher_search=kwargs.pop('teacher_search','off')
-        if self.teacher_search not in ('off','search_body_scan_v1'):
+        if self.teacher_search not in ('off','search_body_scan_v1','search_body_scan_v2'):
             raise ValueError('unknown teacher search mode')
         if self.teacher_search!='off' and self.teacher_stability=='off':
-            raise ValueError('search_body_scan_v1 requires align_relook_v1')
+            raise ValueError('teacher search requires align_relook_v1')
         self.sc=None;self.search_log=[];self.ever_seen=False
         kwargs.pop('profile',None)
         super().__init__(*args,profile='observable_v2',**kwargs)
@@ -139,8 +139,13 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             if self.phase!='relook' and self.phase!='search':self._set('search',now)
             if self.teacher_search!='off' and self.phase=='search' and not self.ever_seen:
                 # Never-seen target (ever_seen, not local_seen: a relook clears local_seen).
-                target,value=self._search_step(now,age)
+                target,value=(self._search_step_v2(now,age) if self.teacher_search=='search_body_scan_v2'
+                              else self._search_step(now,age))
                 self.sink.pwm.update(slew(self.sink.pwm,target));self.arm.commanded.update(self.sink.pwm)
+                if self.teacher_search=='search_body_scan_v2':
+                    # The returned command must contain this tick's slewed pose,
+                    # not the pre-slew snapshot made by _hold/_continuous.
+                    value['pwm']={str(s):self.sink.pwm[s] for s in SERVOS}
                 return value
             # Full stationary pan/pitch sweep before turning the chassis.
             # All targets depend on issued scan age, never a hidden pose.
@@ -160,6 +165,57 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
     # search rotation (300 ticks); 0.69-0.78 over 9 GCP gate episodes. Pulse
     # widths differ: full-width 0.1 s yaw ticks measured 1.75 (see search-body-scan.md).
     TURN_GAIN=.73
+
+    # v2 covers the close peer stance (203 mm) as well as middle/far targets.
+    # Each pitch gets a continuous revolution: a close target's horizontal
+    # cone is narrower than 45 deg because the camera is ahead of the axle.
+    SEARCH_V2_LIMIT_S=58.
+    SEARCH_V2_PITCHES=((500,2500),(700,2440),(820,2320))
+    SEARCH_V2_CIRCLE_PITCHES=tuple(reversed(SEARCH_V2_PITCHES))
+    SEARCH_V2_TURN_RAD=math.radians(390.)  # >=360 at measured gains .69..78
+    SEARCH_V2_SETTLE_S=.3
+
+    def _search_step_v2(self,now,age):
+        """Issued pan/tilt settle, then three in-place pitch-specific circles.
+
+        No target, spawn, map or measured pose input. Visibility is still
+        evaluated on every tick, including turns, by the unchanged >=5 gate.
+        """
+        from harness.grasp_act_visible_world import command_delta
+        if self.outcome is not None:return dict(self.sink.pwm),self._hold(now)
+        sweep=[(pan,w,e) for pan in (1500,1000,2000) for w,e in self.SEARCH_V2_PITCHES]
+        if self.sc is None:
+            self.sc={'stage':'sweep','k':0,'view':0,'turned':0.,'settled_t':None}
+        sc=self.sc
+        if sc['stage']=='turn' and self.last_command is not None and self.last_tick is not None:
+            sc['turned']+=abs(command_delta(self.last_command,min(.1,now-self.last_tick))[2])*self.TURN_GAIN
+        def log(stage):
+            row={'t':round(now,2),'stage':stage,'k':sc['k'],
+                 'command_estimated_yaw_deg':round(math.degrees(sc['turned']),2)}
+            self.search_log.append(row);self.events.append({**row,'search':stage})
+        def handoff(reason):
+            self.outcome='search_timeout_handoff';log(reason)
+            return dict(self.sink.pwm),self._hold(now)
+        if age>=self.SEARCH_V2_LIMIT_S:return handoff('scan_deadline_handoff')
+        if sc['stage']=='turn' and sc['turned']>=self.SEARCH_V2_TURN_RAD:
+            log('circle_complete');sc['k']+=1
+            if sc['k']==len(self.SEARCH_V2_CIRCLE_PITCHES):return handoff('handoff')
+            sc.update(stage='settle',settled_t=None,turned=0.)
+        if sc['stage']=='sweep':pan,w,e=sweep[sc['view']]
+        else:pan=1500;w,e=self.SEARCH_V2_CIRCLE_PITCHES[sc['k']]
+        target={**FOLDED,3:w,4:e,6:pan}
+        if sc['stage']=='turn':return target,self._continuous(now,0.,0.,.25)
+        # Dwell starts only once the target has actually been issued. This
+        # handles extreme initial pans and does not read measured joints.
+        reached=self.last_command is not None and all(self.last_command['pwm'][str(s)]==v for s,v in target.items())
+        sc['settled_t']=(now if sc['settled_t'] is None else sc['settled_t']) if reached else None
+        if sc['settled_t'] is not None and now-sc['settled_t']>=self.SEARCH_V2_SETTLE_S-1e-8:
+            if sc['stage']=='sweep':
+                log('view_complete');sc['view']+=1
+                if sc['view']==len(sweep):sc['stage']='settle'
+            else:sc['stage']='turn';log('circle_start')
+            sc['settled_t']=None
+        return target,self._hold(now)
 
     def _scan_target(self,age,pans):
         slot=int(age/self.SLOT_S);near=slot%2==0
