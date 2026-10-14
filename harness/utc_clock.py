@@ -16,6 +16,19 @@ NTP_EPOCH=2208988800
 
 class ClockError(RuntimeError): pass
 
+if os.name == 'nt':
+    import ctypes
+    class _FileTime(ctypes.Structure):
+        _fields_=[('low',ctypes.c_uint32),('high',ctypes.c_uint32)]
+    _precise_time=ctypes.WinDLL('kernel32',use_last_error=True).GetSystemTimePreciseAsFileTime
+    _precise_time.argtypes=[ctypes.POINTER(_FileTime)]
+    _precise_time.restype=None
+    def system_utc():
+        stamp=_FileTime();_precise_time(ctypes.byref(stamp))
+        return ((stamp.high<<32)+stamp.low-116444736000000000)/10_000_000
+else:
+    def system_utc(): return time.time()
+
 def iso_utc(value: float) -> str:
     return datetime.fromtimestamp(value,timezone.utc).isoformat()
 
@@ -59,9 +72,9 @@ class NtpUtcClock:
                 with socket.socket(socket.AF_INET,socket.SOCK_DGRAM) as sock:
                     sock.settimeout(timeout_s);sock.connect(addr)
                     req=bytearray(48);req[0]=0x23
-                    t1=time.time();m1=time.monotonic();v=t1+NTP_EPOCH
+                    t1=system_utc();m1=time.perf_counter();v=t1+NTP_EPOCH
                     req[40:48]=struct.pack('!II',int(v),int((v%1)*2**32))
-                    sock.send(req);data=sock.recv(512);m4=time.monotonic();t4=time.time()
+                    sock.send(req);data=sock.recv(512);m4=time.perf_counter();t4=system_utc()
                     sample=decode_ntp(data,req,t1,t4,m4-m1)
                     sample.update(monotonic_s=m4,server_address=addr[0]);samples.append(sample)
             except (OSError,ClockError) as exc:
@@ -71,7 +84,7 @@ class NtpUtcClock:
         if not samples: raise ClockError('No valid public NTP response')
         self.anchor=min(samples,key=lambda s:s['round_trip_s'])
         return self.health()
-    def monotonic(self): return time.monotonic()
+    def monotonic(self): return time.perf_counter()
     def now(self):
         if self.anchor is None: raise ClockError('NTP clock was not initialized')
         age=self.monotonic()-self.anchor['monotonic_s']
@@ -88,7 +101,7 @@ class SystemUtcClock:
     """Robot clock maintained by chrony; readiness is rechecked for each reservation."""
     def __init__(self,*,require_public=True,max_sync_age_s=600):
         self.require_public=require_public;self.max_sync_age_s=max_sync_age_s
-    def monotonic(self): return time.monotonic()
+    def monotonic(self): return time.perf_counter()
     def now(self): return time.time()
     def health(self):
         try:

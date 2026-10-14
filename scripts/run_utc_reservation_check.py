@@ -51,7 +51,9 @@ def main():
             session=(name,proc,mailbox,remote,opts);sessions.append(session)
             event=mailbox.get(timeout=120);result['events'].append(event)
             if event.get('phase')!='WELCOME':raise ClockError('Agent not ready: '+json.dumps(event))
-        clock=NtpUtcClock();result['coordinator_clock']=clock.synchronize()
+        clock=NtpUtcClock()
+        try:result['coordinator_clock']=clock.synchronize()
+        finally:result['coordinator_ntp_samples']=list(clock.samples)
         target=clock.now()+10
         prepare={'schema':SCHEMA,'phase':'PREPARE','action_id':check,'participants':[x[0] for x in peers],'execute_at_utc_s':target}
         for name,proc,mailbox,remote,opts in sessions:

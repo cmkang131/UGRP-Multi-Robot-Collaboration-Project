@@ -22,6 +22,9 @@ def prepare(c):
     return r,{**p,'phase':'COMMIT','ready_participants':['a','b']}
 
 class UTCClockTests(unittest.TestCase):
+    def test_high_resolution_monotonic_source(self):
+        with patch.object(clock.time,'perf_counter',return_value=12.3456789):
+            self.assertEqual(clock.NtpUtcClock().monotonic(),12.3456789)
     def test_timezone_required(self):
         with self.assertRaises(clock.ClockError):clock.parse_utc('2026-10-14T13:04:30')
         self.assertEqual(clock.parse_utc('2026-10-14T13:04:30+09:00'),clock.parse_utc('2026-10-14T04:04:30Z'))

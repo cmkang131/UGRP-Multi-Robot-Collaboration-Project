@@ -424,7 +424,9 @@ def _expire_actor_messages(
     current: list[dict[str, Any]] = []
     expired_ids = {item["message_id"] for item in actor.expired_messages}
     for message in actor.received_messages:
-        if clock_time_s < message["expires_at_s"]:
+        still_current = (float(trace.utc_clock()) < message["expires_at_utc_s"]
+                         if trace.utc_clock is not None else clock_time_s < message["expires_at_s"])
+        if still_current:
             current.append(message)
             continue
         if message["message_id"] not in expired_ids:
