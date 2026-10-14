@@ -16,9 +16,9 @@ KIND_ROLES = {**{k: ('west',) for k in ('cyan', 'green', 'red', 'yellow')},
               'can': ('any',), 'tile': ('west', 'east'), 'long_beam': ('teal', 'blue'),
               'heavy_crate': ('west', 'east'), 'tri_frame': ('v0', 'v1', 'v2')}
 SERVOS = (1, 3, 4, 5, 6)
-MEMORY_S = 64.
-HISTORY = 641  # all issued command snapshots at 10 Hz, covering measured 57.6 s
-RGB_LAGS_S = (64.,32.,16.,8.,6.,4.,2.,1.,.5,.2,.1,0.)
+MEMORY_S = .6  # provisional existing window; size from NEW teacher diagnostics
+HISTORY = 4
+RGB_LAGS_S = (.1,0.)
 RGB_HISTORY = len(RGB_LAGS_S)
 CHUNK = 8
 PERIOD_S = .1
@@ -68,7 +68,7 @@ def validate_observation(row):
     if row['skill'] not in SKILLS or row['object_kind'] not in KIND_ROLES or row['role'] not in KIND_ROLES[row['object_kind']]:
         raise ValueError('task instruction must be a skill and named end')
     if len(row['rgb']) != RGB_HISTORY or len(row['issued']) != HISTORY:
-        raise ValueError('fixed 64-second own image and command history required')
+        raise ValueError('fixed own image and command history required')
     times = []
     for ref in row['rgb']:
         if set(ref) != {'path', 'sha256', 't', 'robot_id'} or ref['robot_id'] != row['robot_id']:

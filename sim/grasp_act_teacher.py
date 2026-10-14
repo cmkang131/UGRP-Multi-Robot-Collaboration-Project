@@ -229,7 +229,9 @@ class GraspTeacher:
         if self.phase=='ready':
             if self.profile=='observable_v2':
                 search=self._observe(truth,now)
-                if search is not None:return search,False
+                if search is not None:
+                    if any(search['drive']):self._set('align',now)
+                    return search,False
             if permit_pick:
                 try:self._queue_pick(truth,now)
                 except ValueError:

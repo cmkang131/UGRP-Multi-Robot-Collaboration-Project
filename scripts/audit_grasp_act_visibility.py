@@ -105,7 +105,7 @@ def stage(label,pick_t):
     return {'approach':'approach','align':'alignment','ready':'ready','verify':'lift','done':'done'}.get(phase,phase)
 
 
-def audit(gate,out):
+def audit(gate,out,*,camera_binding='runtime_legacy'):
     import mujoco,numpy as np
     out.mkdir(parents=True,exist_ok=False)
     counts=defaultdict(lambda:{'visible_n':0,'in_frame_n':0,'N':0,'moving_n':0,'blind_moving_n':0})
@@ -114,7 +114,7 @@ def audit(gate,out):
         for entry in read(gate)['rows']:
             root=Path(entry['raw'].split(':',1)[1]);model=mujoco.MjModel.from_xml_path(str(root/'scene.xml'))
             data=mujoco.MjData(model);evaluator=BandVisibility(model)
-            evaluator.restore_recorded_runtime_mount()
+            if camera_binding=='runtime_legacy':evaluator.restore_recorded_runtime_mount()
             rows=read(root/'eval-only.jsonl',True);plan=read(root/'plan.json')
             labels={r:read(root/f'teacher-{r}.jsonl',True) for r in plan['roles']}
             if any(len(ls)!=len(rows) for ls in labels.values()):raise ValueError('sample alignment mismatch')
@@ -149,7 +149,7 @@ def audit(gate,out):
         'gate_path':str(gate),'gate_sha256':hashlib.sha256(gate.read_bytes()).hexdigest(),'episode_N':len(episodes),
         'definition':'any of 15 inset band top-surface probes in source pinhole and raw fisheye frame, first ray hit assigned band; groups 4/5 hidden, original near clip',
         'limitations':['geometric availability is not detector recognition','pick substages reconstructed from fixed ArmSequence timings; <=0.1 s boundary uncertainty','commanded motion is not measured motion'],
-        'camera':'frozen runner runtime mount from masterpi_camera_profile (overwrites XML v3 mount); unchanged measured fisheye K/D at 640x480',
+        'camera':camera_binding,'camera_scope':'actual old render' if camera_binding=='runtime_legacy' else 'counterfactual v3 projection of OLD saved trajectories; not a new teacher rollout',
         'stages':dict(counts),'episodes':episodes,'sources':sources,
         'samples':{'path':str(packed),'sha256':hashlib.sha256(compressed).hexdigest(),'decoded_sha256':hashlib.sha256(raw).hexdigest()}}
     (out/'summary.json').write_text(json.dumps(result,indent=2)+'\n')
@@ -157,5 +157,6 @@ def audit(gate,out):
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--gate',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
-    audit(a.gate,a.out)
+    p=argparse.ArgumentParser();p.add_argument('--gate',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--camera-binding',choices=('runtime_legacy','v3'),default='runtime_legacy');a=p.parse_args()
+    audit(a.gate,a.out,camera_binding=a.camera_binding)

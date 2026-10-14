@@ -6,9 +6,18 @@ not. The sampled compact wrist/elbow family stays above low floor cargo.
 import math
 from functools import lru_cache
 import numpy as np
-from harness.visual_arm_v3 import camera_extrinsics,MOUNT_X_M
+from harness.visual_arm_v3 import camera_extrinsics as old_camera_extrinsics,MOUNT_X_M
 from harness.visual_arm import PULSE_PER_DEGREE
 from scripts.zone_teacher import FOLDED
+
+
+def camera_extrinsics(pose):
+    # Reuse the already reviewed rigid camera-v3 calibration composition.
+    from harness.zone_solo_cyan_camera_v3 import camera_calibration
+    origin,axes=old_camera_extrinsics(pose)
+    row={'frame':'optical_to_actual_chassis','origin_m':list(origin),'rotation':np.array(axes).T.tolist()}
+    row=camera_calibration({'camera_models':{'gaze':{'pose':row}}})['camera_models']['gaze']['pose']
+    return row['origin_m'],np.array(row['rotation']).T
 
 
 @lru_cache(maxsize=1)

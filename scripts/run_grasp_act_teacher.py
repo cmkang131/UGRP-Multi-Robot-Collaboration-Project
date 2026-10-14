@@ -103,6 +103,9 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         os.environ['UGRP_SIM_OBSERVER_HEIGHT']='240'
         world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=640 if record_training else 320,height=480 if record_training else 240,render=True,
             warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
+        if teacher_profile=='observable_v2':
+            from sim.s2_realism_camera_binding import bind_camera
+            for controller in world.controllers.values():bind_camera(controller)
         scene.setup(world)
         # All remaining scenario cargo stays present. Only authorized randomized
         # initial placement changes, before the trial clock and any teacher step.
@@ -131,6 +134,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         object_bodies={c.item_id:c.body for c in scene.cargo}
         object_bodies.update({i:c['body_name'] for i,c in scene.config['setup_only']['objects'].items()})
         write(out/'camera-runtime.json',{'scope':'evaluation-only; actual runtime values, not XML assumptions',
+            'binding':'v3' if teacher_profile=='observable_v2' else 'runtime_legacy',
             'cameras':{rid:{'pos':world.model.cam_pos[cid].tolist(),'quat':world.model.cam_quat[cid].tolist(),
                 'intrinsic':world.model.cam_intrinsic[cid].tolist(),'resolution':world.model.cam_resolution[cid].tolist()}
                 for rid,cid in visibility.cameras.items()}})
@@ -146,6 +150,10 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             label=(out/f'teacher-{rid}.jsonl').open('w');streams.append(label);writers[rid]=(student,label)
         ev=(out/'eval-only.jsonl').open('w');streams.append(ev)
         (out/'eval-overview').mkdir()
+        if teacher_profile=='observable_v2':
+            for rid in plan['roles']:(out/'eval-own'/rid).mkdir(parents=True)
+            report['observation_sampling']['own_review_hz']=1
+            report['observation_sampling']['own_review_size']=[320,240]
         inst=next(x for x in scene.cargo if x.item_id=='beam_1');i=0;written=0;both_since=None;all_done_since=None
         while float(world.data.time)-origin < cap_s-1e-8:
             now=float(world.data.time);at=time.monotonic()
@@ -166,6 +174,10 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     frame=Image.open(io.BytesIO(world.render_team_jpeg(camera=camera['name'])))
                     overview.paste(frame.resize((320,240)),((k%2)*320,(k//2)*240))
                 overview.save(out/'eval-overview'/f'{i:06d}.jpg',quality=86)
+                if teacher_profile=='observable_v2':
+                    for rid in plan['roles']:
+                        jpg=base64.b64decode(ports[rid].capture()['image'])
+                        Image.open(io.BytesIO(jpg)).resize((320,240)).save(out/'eval-own'/rid/f'{i:06d}.jpg',quality=86)
                 timings['rgb']+=time.monotonic()-at
                 write(out/'progress.json',{'sim_s':now-origin,'wall_s':time.monotonic()-start,
                     'phases':{rid:t.phase for rid,t in teachers.items()},'sample':i,'timings_s':timings})
@@ -174,6 +186,8 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             both_since=(now if both_since is None else both_since) if both else None
             if len(plan['roles'])==2 and both_since is not None and now-both_since>=1.:report['joint_held']=True
             permit=all(x.phase in ('ready','pick','verify','done') for x in teachers.values())
+            if teacher_profile=='observable_v2':
+                permit=permit and all(x.phase!='ready' or truth['visibility'][rid]['visible_probes']>=3 for rid,x in teachers.items())
             for rid,t in teachers.items():
                 at=time.monotonic()
                 sample_id=f"{plan['episode_id']}:{i}:{rid}"

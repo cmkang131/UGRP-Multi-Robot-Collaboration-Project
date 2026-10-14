@@ -93,12 +93,12 @@ def test_native_feedforward_uses_only_issued_command_signs():
     assert native_wheels([0.,0.,0.],moving)==(0.,)*4
 
 
-def test_history_covers_measured_blind_interval_without_privileged_selection():
+def test_history_subsampling_without_privileged_selection():
     from harness.grasp_act_contract import image_history,RGB_LAGS_S,MEMORY_S
     refs=[{'t':i*.1,'path':str(i)} for i in range(701)]
     sampled=image_history(refs,70.)
     assert [round(70.-r['t'],1) for r in sampled]==list(RGB_LAGS_S)
-    assert MEMORY_S>=57.6 and (HISTORY-1)*.1>=57.6
+    assert MEMORY_S<64.  # the old teacher's blind stall must not set memory size
     assert image_history(refs[:1],0.)==[refs[0]]*RGB_HISTORY
     x=observation();x['schema']='ugrp.grasp_act.student.v3'
     with pytest.raises(ValueError,match='whitelist'):validate_observation(x)

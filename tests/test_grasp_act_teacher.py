@@ -153,10 +153,16 @@ def test_hidden_target_does_not_select_scan_or_translation():
 
 def test_gaze_uses_real_pwm_and_brings_near_end_into_vertical_view():
     import numpy as np
-    from sim.grasp_act_gaze import gaze_pose
-    from harness.visual_arm_v3 import camera_extrinsics
+    from sim.grasp_act_gaze import gaze_pose,camera_extrinsics
     for target in ((.203,0,.033),(.5,.2,.033),(1.7,-.3,.033)):
         p=gaze_pose(target,FOLDED);o,axes=camera_extrinsics(p)
         v=np.array(axes)@(np.array(target)-o)
         assert v[2]>0 and abs(v[1]/v[2])<.3
         assert all(500<=x<=2500 for x in p.values())
+
+
+def test_ready_robot_realigns_after_search_turn_instead_of_blind_pick():
+    t=GraspTeacher('r1','teal',FOLDED,bounds=(-6,6,-6,6),profile='observable_v2')
+    t.started=True;t.phase='ready';x=truth([.527,0,0]);x['visibility']={'r1':{'visible_probes':0}}
+    c,done=t.step(x,1.,permit_pick=True)
+    assert t.phase=='align' and c['drive'][2] and not t.arm.events and not done
