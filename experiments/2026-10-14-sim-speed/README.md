@@ -66,3 +66,18 @@ mj_step 내부(MuJoCo `mjData.timer`): 위치단계 45.1 s 중 `POS_PROJECT` 21.
 - MuJoCo 계산 문서(timestep, implicitfast, 접촉 해석): https://mujoco.readthedocs.io/en/3.6.0/computation/ ; sleeping island: https://mujoco.readthedocs.io/en/3.12.0/programming/simulation.html#sleeping-islands ; mjData.timer 항목은 설치 버전(3.12.0)의 `mujoco.mjtTimer`로 읽음.
 - 저장소 안: 2026-10-12 e2e-speed3(adaptive dt와 일반 dt 후보), `sim/zone_cargo_contact.py`(noslip 근거), `sim/dispatch_contact_profile.py`(0.25 ms 근거).
 - 원본: `gcp1:~/ugrp-sim/runs/ss-*`(130 실행, 각 raw·로그). 요약·해시: `runs.json`(실패 포함 전부; `ss-b1-base-*`/`ss-b1-adapt-*` 2건은 작업 큐 오타로 시작 즉시 실패, EXIT 1).
+
+## 7. 추가 측정: adaptive_dt 없이 `idle_freeze,review_period=2`만 (조정자 요청, 소스 tmp/ss-on-c1f 2681c649, 에피소드 0–15)
+
+| 항목 | 기준 | idle_freeze + review_period=2 |
+|---|---:|---:|
+| 교사 성공 | 12/16 | **8/16** |
+| 성공 에피소드 | 0 2 4 5 6 7 8 10 12 13 14 15 | 2 4 7 8 11 12 14 15 |
+| wall/SIM 동시 1 (30 SIM초, 에피소드 0) | 2.81 | 1.34 (*) |
+| wall/SIM 동시 16 (30 SIM초 짝, 에피소드 0·2·4·5 ×2씩 8+8, 중앙값) | 2.90 | 1.81 (범위 1.40–2.30) |
+| wall/SIM 동시 16 (에피소드 0–15 전부, finish-on-done 중앙값) | 2.96 | 1.92 |
+
+- **성공 집합이 기준과 같지 않다.** 기준만 성공 5개(0 5 6 10 13), 토글만 성공 1개(11). 에피소드 0은 기준이 24.1 SIM초에 파지를 시작하는데 토글은 접근에서 멈췄다. 즉 `idle_freeze`만으로도 궤적이 갈린다(sleeping island는 잠든 로봇의 속도를 0으로 만드는 근사다). 같은 성공 집합이 나오지 않았으므로 "성공 영향 없음"으로 쓸 수 없다.
+- (*) 동시 1 값은 토글이 접근에서 멈춘 실행이라 파지 구간(0.25 ms 풀 비용)이 빠져 낙관적이다. 대표값은 동시 16의 8+8 짝(1.81)이다.
+- 앞선 결과와 합치면: adaptive_dt 단독 9/16, adaptive_dt+idle_freeze 9/16(같은 집합), idle_freeze+review_period 8/16. 어떤 물리 토글도 기준 12/16 집합을 재현하지 못했고, 기준과 일치한 것은 둘 다 성공한 에피소드의 파지 시작 시각뿐이다. review_period만은 물리와 무관해 성공 집합을 바꾸지 않는다(검토 영상 주기만 변경; 이번에는 단독으로 쟤지 않음 — 확인 안 됨).
+- 원본: `gcp1:~/ugrp-sim/runs/ss-f-*`(단독 2, 16-wave 16, 짝 16 = 34 실행), 요약·해시는 `runs.json`.
