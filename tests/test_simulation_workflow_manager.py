@@ -249,6 +249,8 @@ raise SystemExit(3 if a.fail else 0)
         (model / "weights.bin").write_bytes(b"fixture")
         samples = {
             "grasp-act-teacher": ["--plan", str(source)],
+            "grasp-act-release-teacher": ["--plan", str(source)],
+            "grasp-act-lookaround-probe": ["--plan", str(source), "--mode", "setdown_look"],
             "active-nav2": ["--case", "new-seed", "--expected-source-sha", "0"*40],
             "pulse-rotation-audit": ["--expected-source-sha", "0"*40],
             "active-recovery": ["--case", "new-seed", "--expected-source-sha", "0"*40],

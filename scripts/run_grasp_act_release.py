@@ -22,7 +22,7 @@ ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map,
 HELD_OBJECT_MODES=("visible_v0","hidden_v1")
 # setdown_lookaround_v1 (user 2026-10-14 "둘러보기 위해서 아래에 뒀으면, 진짜 좀 둘러봐야 할듯"): after the backoff step the
 # robot looks toward static-map landmarks chosen from its own pose estimate (sim/lookaround_localization.py).
-LOOKAROUND_MODES=("off","setdown_lookaround_v1")
+LOOKAROUND_MODES=("off","setdown_lookaround_v1","setdown_lookaround_v2")   # v2: folded look arm, association gate + joint acceptance tests, no body turn, arm restored
 LOOK_RES=(640,480)          # own camera size for the existing OpenCV localisation modules
 ARM_MOVE_BACK_S=1.0         # look arm pose -> gaze pose
 
@@ -240,7 +240,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             for rid,t in rel.items():   # the map code's own pose estimate (same frozen error as the teacher's priors)
                 pose=world.robot(rid).base_xyz();yaw=float(world.robot(rid).base_rpy()[2])
                 err=plan['handoff_pose_error'][rid] if own_pose_source=='commands' else [0.,0.,0.]
-                loc[rid]=LookaroundLocalizer(static,[float(pose[0])+err[0],float(pose[1])+err[1],yaw+err[2]])
+                loc[rid]=LookaroundLocalizer(static,[float(pose[0])+err[0],float(pose[1])+err[1],yaw+err[2]],mode=lookaround)
         look_eval={rid:{'views':[]} for rid in roles};look_run={}
         def look_truth(rid):
             # evaluation only: estimate error against truth and FK camera vs rendered camera (never fed back)
@@ -365,7 +365,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                         from sim.lookaround_localization import ScriptRunner
                         for rid,t in rel.items():
                             look_eval[rid]['before']=look_truth(rid);look_eval[rid]['t0']=now
-                            loc[rid].make_plan(t.pwm[6]);look_run[rid]=ScriptRunner(loc[rid].script(),now)
+                            loc[rid].make_plan(t.pwm[6])
+                            restore={k:t.pwm[k] for k in (3,4,5,6)} if lookaround=='setdown_lookaround_v2' else None
+                            look_run[rid]=ScriptRunner(loc[rid].script(restore=restore),now)
                         st.update(phase='lookaround',since=now)
                     elif now>=st['settle']-1e-9:
                         for rid,t in rel.items():schedule(rid,[(0.,t.gaze_target(now))],now)
@@ -383,8 +385,12 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                         capture=lambda at,rid=rid:look_capture(rid,at))
                 if all(r.done for r in look_run.values()):
                     for rid,t in rel.items():
-                        look_eval[rid].update(after=look_truth(rid),sim_s=now-look_eval[rid]['t0'],script=look_run[rid].log)
+                        dec=loc[rid].finalize()    # v2: one joint update with acceptance tests (None for v1)
+                        look_eval[rid].update(after=look_truth(rid),sim_s=now-look_eval[rid]['t0'],script=look_run[rid].log,
+                                              decision=None if dec is None else {k:dec.get(k) for k in ('accepted','reason','wall_inliers','features','views_with_evidence')})
                         if lookaround=='setdown_lookaround_v1':   # the static-map priors now come from the looked-at estimate
+                            t.reanchor_priors(list(loc[rid].own.x))
+                        elif dec and dec['accepted']:              # v2: only an accepted correction moves the priors
                             t.reanchor_priors(list(loc[rid].own.x))
                         schedule(rid,[(0.,t.gaze_target(now))],now)
                     st.update(phase='observe_move',since=now,end=now+ARM_MOVE_BACK_S)

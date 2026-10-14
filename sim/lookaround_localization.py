@@ -36,7 +36,20 @@ import numpy as np
 from sim.active_lookaround import OwnPose, plan_views, wrap
 
 OPTION = 'setdown_lookaround_v1'
-LOOK_ARM = {3: 896, 4: 2035, 5: 1894}      # harness/zone_pair_highpose.HIGH arm joints: camera sees walls (column model domain)
+MODES = ('setdown_lookaround_v1', 'setdown_lookaround_v2')
+LOOK_ARM = {3: 896, 4: 2035, 5: 1894}      # v1: harness/zone_pair_highpose.HIGH arm joints
+# v2 (3635a226 diagnostic): HIGH tilts the camera 30 deg down, the floor is seen only 0.15-0.94 m ahead (FK), so
+# walls 0.9-3 m away never enter the image and floor-tile edges were read as wall bases. The release teacher's own
+# folded pose (FOLDED_BACKOFF) tilts it 10.9 deg down: floor from 0.37 m to the horizon, walls in view.
+LOOK_ARM_V2 = {3: 820, 4: 2320, 5: 1320}
+LOOK_ARMS = {'setdown_lookaround_v1': LOOK_ARM, 'setdown_lookaround_v2': LOOK_ARM_V2}
+# v2 data association and acceptance (standard tests, references in the PR):
+# individual compatibility gate per wall point (chi2 1 dof 99 %), the point's mapped wall face must be one the
+# static map predicts visible from the prior for that view, one joint update over all views, then a joint
+# compatibility test of the correction against the own-command prior (chi2 3 dof 99 %), a covariance-shrink test
+# and a posterior inlier ratio. Not enough gated evidence (or evidence from one view only) -> no correction.
+V2 = {'gate_chi2_1': 6.63, 'joint_chi2_3': 11.34, 'min_wall_inliers': 12, 'min_features': 2, 'min_views': 2, 'min_per_view': 4, 'min_inlier_ratio': .7,
+      'wall_range_m': 2.5, 'sigma0_m': .03, 'edge_px': 2., 'floor_gate_m': .2, 'floor_gate_deg': 10., 'door_gate_m': .3}
 GRIPPER_OPEN = 2000                         # FK is qualified only with the gripper open (servo 1 > 1600)
 WIDTH, HEIGHT = 640, 480                    # existing OpenCV modules (vis3 mp, check_frame) work at native size only
 VIEW_SETTLE_S = .8                          # every view: command, then 0.8 s (pan <=1000 pulses at 2000 pulse/s + 0.3 s settle)
@@ -56,8 +69,8 @@ def pan_pulse(pan_deg):
     return int(round(1500+pan_deg/PAN_DEG_PER_PULSE))
 
 
-def look_servo(pan_deg):
-    return {1: GRIPPER_OPEN, **LOOK_ARM, 6: pan_pulse(pan_deg)}
+def look_servo(pan_deg, arm=None):
+    return {1: GRIPPER_OPEN, **(LOOK_ARM if arm is None else arm), 6: pan_pulse(pan_deg)}
 
 
 def wall_rects(static):
@@ -147,18 +160,18 @@ class Camera:
         return self._cache[key]
 
 
-def visible_fn_for(static, camera):
+def visible_fn_for(static, camera, arm=None, wall_range=None):
     rects = wall_rects(static)
 
     def visible(pose, body_yaw_deg, pan_deg, lm):
-        cam, _ = camera.pose(look_servo(pan_deg))
+        cam, _ = camera.pose(look_servo(pan_deg, arm))
         if cam is None:
             return False
         origin, rot = cam
         yaw = pose[2]+math.radians(body_yaw_deg); c, s = math.cos(yaw), math.sin(yaw)
         cw = (pose[0]+c*origin[0]-s*origin[1], pose[1]+s*origin[0]+c*origin[1])
         lx, ly = lm['xy']
-        if math.dist(cw, (lx, ly)) > lm['range']:
+        if math.dist(cw, (lx, ly)) > (wall_range if (wall_range and lm['type'] == 'wall') else lm['range']):
             return False
         if not lm.get('two_sided') and (cw[0]-lx)*lm['normal'][0]+(cw[1]-ly)*lm['normal'][1] <= 0:
             return False
@@ -179,7 +192,12 @@ def visible_fn_for(static, camera):
 class LookaroundLocalizer:
     """One robot's own-pose estimate, look plan and image updates (no simulator input)."""
 
-    def __init__(self, static, estimate, *, sigma_xy=.05, sigma_yaw=math.radians(2.), odometry_profile='off'):
+    def __init__(self, static, estimate, *, sigma_xy=.05, sigma_yaw=math.radians(2.), odometry_profile='off',
+                 mode='setdown_lookaround_v1'):
+        if mode not in MODES:
+            raise ValueError(mode)
+        self.mode, self.arm = mode, LOOK_ARMS[mode]
+        self.v2 = mode == 'setdown_lookaround_v2'
         from harness import vision_loc_protocol as vp
         from harness import zone_pair_highpose_contract as contract
         from harness.zone_solo_cyan_likelihood_field import Field
@@ -189,11 +207,12 @@ class LookaroundLocalizer:
         self.profile = odometry_profile
         self.camera = Camera()
         self.landmarks = map_landmarks(static)
-        self.visible = visible_fn_for(static, self.camera)
+        self.visible = visible_fn_for(static, self.camera, self.arm, V2['wall_range_m'] if self.v2 else None)
         self.vl = vp.load_vis3()[0]
         self.gates = contract.own_image_gates()
         self.field = Field(static); self.mapped = MapFeatures(static)
         self.views, self.plan = [], None
+        self.pending, self.decision = [], None
 
     # --- own motion ---
     def propagate(self, wheels, seconds):
@@ -204,7 +223,9 @@ class LookaroundLocalizer:
     # --- view plan ---
     def make_plan(self, start_pan_pulse=1500):
         start = (start_pan_pulse-1500)*PAN_DEG_PER_PULSE
-        plan = plan_views(tuple(self.own.x), self.own.P, self.landmarks, self.visible, start_pan=start)
+        # v2: no body rotation (free-robot yaw rate unmeasured; the one rotated run lost its re-grasp)
+        plan = plan_views(tuple(self.own.x), self.own.P, self.landmarks, self.visible, start_pan=start,
+                          **({'body_yaws': (0.,)} if self.v2 else {}))
         self.plan = {'expected_gain_nats': plan['expected_gain_nats'], 'rotated': plan['rotated'],
                      'expected_landmarks': plan['expected_landmarks'],
                      'views': [{'body_yaw_deg': v['body_yaw_deg'], 'pan_deg': v['pan_deg'], 'pan_pulse': pan_pulse(v['pan_deg']),
@@ -213,21 +234,23 @@ class LookaroundLocalizer:
                      'sigma_at_plan': [float(math.sqrt(self.own.P[i, i])) for i in range(3)]}
         return self.plan
 
-    def script(self):
-        """Fixed-timing command script for the plan: arm to look pose, (rotate), views, (rotate back)."""
+    def script(self, restore=None):
+        """Fixed-timing command script for the plan: arm to look pose, (rotate), views, (rotate back), (restore arm)."""
         steps = []; yaw_now = 0.
         views = self.plan['views'] if self.plan else []
         first = views[0]['pan_pulse'] if views else 1500
-        steps.append({'servo': look_servo((first-1500)*PAN_DEG_PER_PULSE), 'wait': ARM_MOVE_S, 'capture': False, 'label': 'arm_to_look'})
+        steps.append({'servo': look_servo((first-1500)*PAN_DEG_PER_PULSE, self.arm), 'wait': ARM_MOVE_S, 'capture': False, 'label': 'arm_to_look'})
         for v in views:
             if v['body_yaw_deg'] != yaw_now:
                 steps.append({'wheels': rotate_plan(math.radians(v['body_yaw_deg']-yaw_now)), 'wait': .3, 'capture': False,
                               'label': f"rotate_{v['body_yaw_deg']:+.0f}"})
                 yaw_now = v['body_yaw_deg']
-            steps.append({'servo': look_servo(v['pan_deg']), 'wait': VIEW_SETTLE_S, 'capture': True,
+            steps.append({'servo': look_servo(v['pan_deg'], self.arm), 'wait': VIEW_SETTLE_S, 'capture': True,
                           'label': f"view_{v['body_yaw_deg']:+.0f}_{v['pan_deg']:+.0f}"})
         if yaw_now:
             steps.append({'wheels': rotate_plan(math.radians(-yaw_now)), 'wait': .3, 'capture': False, 'label': 'rotate_back'})
+        if restore:    # v2: back to the exact pre-look arm pose, so what follows starts as without the look
+            steps.append({'servo': dict(restore), 'wait': ARM_MOVE_S, 'capture': False, 'label': 'restore_arm'})
         return steps
 
     # --- detection + update ---
@@ -263,6 +286,11 @@ class LookaroundLocalizer:
         doors = door_features(und, cm, obs, np.linalg.inv(mp.K_INV), clear)
         rec.update(status='measured', wall_points=int(len(walls)), floor_lines=len(floors), doors=len(doors),
                    features=copy.deepcopy(floors+doors))
+        if self.v2:
+            self._gate(walls, floors, doors, servo, cam, rec)
+            rec['seen_groups'] = self.seen_groups(walls, floors, doors)
+            self.views.append(rec)
+            return rec
         if len(walls)+len(floors)+len(doors):
             self._grid_update(walls, floors+doors, rec)
         rec['posterior'] = [float(z) for z in self.own.x]
@@ -271,7 +299,90 @@ class LookaroundLocalizer:
         self.views.append(rec)
         return rec
 
-    def _grid_update(self, walls, features, rec):
+    # --- v2: gated detections, one joint update with acceptance tests ---
+    def _gate(self, walls, floors, doors, servo, cam, rec):
+        x0, P = self.own.x, self.own.P; c, s = math.cos(x0[2]), math.sin(x0[2])
+        pan = (int(servo[6])-1500)*PAN_DEG_PER_PULSE; h = float(cam[0][2]); f = float(self.camera.K[1, 1])
+        expected = {l['group'] for l in self.landmarks if l['type'] == 'wall' and self.visible(tuple(x0), 0., pan, l)}
+        walls = np.asarray(walls, float).reshape(-1, 2)
+        sig_xy = math.sqrt(.5*(P[0, 0]+P[1, 1])); sig_t = math.sqrt(P[2, 2])
+        keep, sig, why = [], [], {'range': 0, 'gate': 0, 'not_predicted': 0}
+        for qx, qy in walls:
+            r = math.hypot(qx-cam[0][0], qy-cam[0][1])
+            if r > V2['wall_range_m']:
+                why['range'] += 1; continue
+            wx, wy = x0[0]+c*qx-s*qy, x0[1]+s*qx+c*qy
+            d = float(self.field.distances(np.array([[wx, wy]]))[0])
+            sm = math.hypot(V2['sigma0_m'], V2['edge_px']*r*r/(f*h))          # ground-projection error grows with r^2
+            sd = math.sqrt(sm*sm+sig_xy**2+(math.hypot(qx, qy)*sig_t)**2)
+            if d*d > V2['gate_chi2_1']*sd*sd:
+                why['gate'] += 1; continue
+            g = min(((abs((wx-l['xy'][0])*l['normal'][0]+(wy-l['xy'][1])*l['normal'][1])+
+                      .2*max(0., math.dist((wx, wy), l['xy'])-SAMPLE_WALL_M), l['group'])
+                     for l in self.landmarks if l['type'] == 'wall'))[1]
+            if g not in expected:
+                why['not_predicted'] += 1; continue
+            keep.append((qx, qy)); sig.append(sm)
+        feats = []
+        for ft in floors:
+            mx, my = np.mean(ft['endpoints'], axis=0); wx, wy = x0[0]+c*mx-s*my, x0[1]+s*mx+c*my
+            ang = x0[2]+math.atan2(ft['normal'][1], ft['normal'][0]); ok = False
+            for e in self.mapped.edges:
+                hd = abs(e['hue']-ft['hue']); hd = min(hd, 180-hd)
+                if hd > 12:
+                    continue
+                v = e['b']-e['a']; fr = np.clip(((np.array([wx, wy])-e['a'])@v)/(v@v), 0, 1); q = e['a']+fr*v
+                da = abs(wrap(ang-math.atan2(e['normal'][1], e['normal'][0])))
+                if math.dist((wx, wy), q) <= V2['floor_gate_m'] and math.degrees(da) <= V2['floor_gate_deg']:
+                    ok = True; break
+            if ok:
+                feats.append(ft)
+        for ft in doors:
+            mx, my = ft['center']; wx, wy = x0[0]+c*mx-s*my, x0[1]+s*mx+c*my
+            if any(math.dist((wx, wy), d['center']) <= V2['door_gate_m'] for d in self.mapped.doors):
+                feats.append(ft)
+        self.pending.append({'walls': keep, 'sigmas': sig, 'features': feats})
+        rec['gate'] = {'wall_in': len(keep), 'wall_out': why, 'features_in': len(feats),
+                       'features_out': len(floors)+len(doors)-len(feats), 'expected_wall_groups': sorted(expected)}
+        rec['wall_points_body'] = [[round(float(a), 3), round(float(b), 3)] for a, b in walls]
+
+    def finalize(self):
+        """v2: one joint update over every view's gated detections; keep the prior unless every test passes."""
+        if not self.v2:
+            return None
+        walls = [p for v in self.pending for p in v['walls']]; sig = [x for v in self.pending for x in v['sigmas']]
+        feats = [f for v in self.pending for f in v['features']]
+        dec = {'wall_inliers': len(walls), 'features': len(feats), 'prior': [float(z) for z in self.own.x],
+               'prior_sigma': [float(math.sqrt(self.own.P[i, i])) for i in range(3)]}
+        views = sum(1 for v in self.pending if len(v['walls'])+2*len(v['features']) >= V2['min_per_view'])
+        dec['views_with_evidence'] = views
+        if len(walls) < V2['min_wall_inliers'] and len(feats) < V2['min_features']:
+            dec.update(accepted=False, reason='insufficient_evidence'); self.decision = dec; return dec
+        if views < V2['min_views']:     # one direction alone: no correction (avoid single-view over-correction)
+            dec.update(accepted=False, reason='single_view'); self.decision = dec; return dec
+        rec = {}
+        x_new, P_new = self._grid_update(np.asarray(walls).reshape(-1, 2), feats, rec, sigmas=np.asarray(sig), commit=False)
+        delta = x_new-self.own.x; delta[2] = wrap(delta[2])
+        d2 = float(delta@np.linalg.inv(self.own.P)@delta)
+        shrink = float(np.linalg.det(P_new)) < float(np.linalg.det(self.own.P))
+        ratio = None
+        if walls:
+            c, s = math.cos(x_new[2]), math.sin(x_new[2]); q = np.asarray(walls)
+            d = self.field.distances(np.c_[x_new[0]+c*q[:, 0]-s*q[:, 1], x_new[1]+s*q[:, 0]+c*q[:, 1]])
+            ratio = float(np.mean(d <= 2*np.asarray(sig)))
+        tests = {'joint_chi2': d2, 'joint_ok': d2 <= V2['joint_chi2_3'], 'cov_shrinks': shrink,
+                 'inlier_ratio': ratio, 'inlier_ok': ratio is None or ratio >= V2['min_inlier_ratio']}
+        ok = tests['joint_ok'] and tests['cov_shrinks'] and tests['inlier_ok']
+        dec.update(accepted=bool(ok), tests=tests, grid=rec.get('grid'), proposed=[float(z) for z in x_new],
+                   reason='accepted' if ok else ','.join(k for k in ('joint_ok', 'cov_shrinks', 'inlier_ok') if not tests[k]))
+        if ok:
+            self.own.x, self.own.P = x_new, P_new
+        dec['posterior'] = [float(z) for z in self.own.x]
+        dec['posterior_sigma'] = [float(math.sqrt(self.own.P[i, i])) for i in range(3)]
+        self.decision = dec
+        return dec
+
+    def _grid_update(self, walls, features, rec, sigmas=None, commit=True):
         from harness.zone_solo_cyan_landmarks import landmark_likelihood
         x0 = self.own.x; P = self.own.P
         sx, sy, st = (math.sqrt(P[i, i]) for i in range(3))
@@ -288,16 +399,19 @@ class LookaroundLocalizer:
         logw = -.5*np.einsum('ni,ij,nj->n', D, Pi, D)
         like = np.ones(len(px))
         if len(walls):
-            logw = logw+wall_loglik(self.field, px, walls)
+            logw = logw+wall_loglik(self.field, px, walls, sigmas)
         if features:
             like = like*landmark_likelihood(self.mapped, px, features)
         logw = logw+np.log(np.maximum(like, 1e-300))
         w = np.exp(logw-logw.max()); w /= w.sum()
         mean_d = w@D; dd = D-mean_d
         cov = (w[:, None]*dd).T@dd+np.diag([step_xy**2/12]*2+[step_t**2/12])
-        self.own.x = x0+mean_d; self.own.x[2] = wrap(self.own.x[2]); self.own.P = cov
+        x_new = x0+mean_d; x_new[2] = wrap(x_new[2])
         rec['grid'] = {'poses': int(len(px)), 'steps': [step_xy, step_t], 'half_extent': [hx, hy, ht], 'effective_n': float(1/np.sum(w*w)),
                        'shift': [float(z) for z in mean_d]}
+        if commit:
+            self.own.x, self.own.P = x_new, cov
+        return x_new, cov
 
     def seen_groups(self, walls, floors, doors):
         """Which mapped features the detections fall on, given the updated estimate (association report only)."""
@@ -322,10 +436,10 @@ class LookaroundLocalizer:
         return sorted(groups)
 
     def record(self):
-        return {'option': OPTION, 'plan': self.plan, 'views': self.views, 'odometry_profile': self.profile,
+        return {'option': self.mode, 'plan': self.plan, 'views': self.views, 'odometry_profile': self.profile, 'decision': self.decision,
                 'final_estimate': [float(z) for z in self.own.x],
                 'final_sigma': [float(math.sqrt(self.own.P[i, i])) for i in range(3)],
-                'constants': {'look_arm': LOOK_ARM, 'view_settle_s': VIEW_SETTLE_S, 'arm_move_s': ARM_MOVE_S,
+                'constants': {'look_arm': self.arm, 'v2': V2 if self.v2 else None, 'view_settle_s': VIEW_SETTLE_S, 'arm_move_s': ARM_MOVE_S,
                               'yaw_rate_rad_s': YAW_RATE_RAD_S, 'grid': GRID, 'wall_field': WALL_FIELD,
                               'sigmas': [SIGMA_WALL_M, SIGMA_EDGE_M, SIGMA_DOOR_M]},
                 'own_image_gates_sha256': self.gates['sha256'],
@@ -341,12 +455,15 @@ class LookaroundLocalizer:
 WALL_FIELD = {'sigma_hit_m': .05, 'z_hit': .9, 'z_rand': .1, 'max_dist_m': 2., 'temper': .2}
 
 
-def wall_loglik(field, px, points):
+def wall_loglik(field, px, points, sigmas=None):
+    """sigmas: per-point measurement sigma (v2, range dependent); None = WALL_FIELD sigma_hit_m (v1)."""
     px = np.asarray(px, float); co, si = np.cos(px[:, 2]), np.sin(px[:, 2]); out = np.zeros(len(px))
-    norm = 1/(math.sqrt(2*math.pi)*WALL_FIELD['sigma_hit_m']); rand = WALL_FIELD['z_rand']/WALL_FIELD['max_dist_m']
-    for qx, qy in np.asarray(points, float).reshape(-1, 2):
+    rand = WALL_FIELD['z_rand']/WALL_FIELD['max_dist_m']; pts = np.asarray(points, float).reshape(-1, 2)
+    sig = np.full(len(pts), WALL_FIELD['sigma_hit_m']) if sigmas is None else np.asarray(sigmas, float)
+    for (qx, qy), sg in zip(pts, sig):
         d = field.distances(np.column_stack((px[:, 0]+co*qx-si*qy, px[:, 1]+si*qx+co*qy)))
-        out += WALL_FIELD['temper']*np.log(WALL_FIELD['z_hit']*norm*np.exp(-.5*(d/WALL_FIELD['sigma_hit_m'])**2)+rand)
+        norm = 1/(math.sqrt(2*math.pi)*sg)
+        out += WALL_FIELD['temper']*np.log(WALL_FIELD['z_hit']*norm*np.exp(-.5*(d/sg)**2)+rand)
     return out
 
 

@@ -166,7 +166,7 @@ def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,m
         rng=np.random.default_rng(int(plan['seed'])+911)
         for rid in sorted(R):
             est_err[rid]=[float(rng.normal(0,POSE_ERROR[0])),float(rng.normal(0,POSE_ERROR[0])),float(rng.normal(0,POSE_ERROR[1]))]
-            g=pose_of(rid);loc[rid]=LookaroundLocalizer(scene.config['static_map'],[g[0]+est_err[rid][0],g[1]+est_err[rid][1],g[2]+est_err[rid][2]])
+            g=pose_of(rid);loc[rid]=LookaroundLocalizer(scene.config['static_map'],[g[0]+est_err[rid][0],g[1]+est_err[rid][1],g[2]+est_err[rid][2]],mode=lookaround)
     def set_servo(rid,pose,now):
         for sid,v in pose.items():
             if rel[rid].pwm.get(sid)!=v:
@@ -237,7 +237,10 @@ def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,m
         runners={}
         for rid in R:
             look_eval[rid]={'before':err(rid),'t0':float(data.time),'views':[],'estimate_error_at_cycle_start':est_err[rid]}
-            loc[rid].make_plan(rel[rid].pwm.get(6,1500));runners[rid]=ScriptRunner(loc[rid].script(),float(data.time))
+            loc[rid].make_plan(rel[rid].pwm.get(6,1500))
+            # v2: end in the pose the fixed sweep handed to the approach (start arm, last pan), so the re-grasp path is unchanged
+            restore={**{k:pwm_origin[rid][k] for k in (3,4,5)},6:SETDOWN_PANS[-1]} if lookaround=='setdown_lookaround_v2' else None
+            runners[rid]=ScriptRunner(loc[rid].script(restore=restore),float(data.time))
         def capture(rid,now):
             img=np.asarray(Image.open(io.BytesIO(base64.b64decode(ports[rid].capture()['image']))).convert('RGB'))
             servo={1:rel[rid].pwm.get(1,2000),**{k:rel[rid].pwm[k] for k in (3,4,5,6)}}
@@ -255,7 +258,10 @@ def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,m
                     wheels_idle=lambda rid=rid:not plan_w[rid] and all(now>=u-1e-9 for u in qw[rid].until),
                     capture=lambda at,rid=rid:capture(rid,at))
             rows+=step(.05,'setdown:lookaround')
-        for rid in R:look_eval[rid].update(after=err(rid),sim_s=float(data.time)-look_eval[rid]['t0'],script=runners[rid].log,done=runners[rid].done)
+        for rid in R:
+            dec=loc[rid].finalize()
+            look_eval[rid].update(after=err(rid),sim_s=float(data.time)-look_eval[rid]['t0'],script=runners[rid].log,done=runners[rid].done,
+                                  decision=None if dec is None else {k:dec.get(k) for k in ('accepted','reason','wall_inliers','features','views_with_evidence')})
     for pan in (SETDOWN_PANS if lookaround=='off' else ()):
         now=float(data.time)
         for rid in R:set_servo(rid,{**{k:pwm_origin[rid][k] for k in (3,4,5)},6:pan},now)
@@ -654,7 +660,7 @@ def main():
     p.add_argument('--pair-odometry',choices=('off','gcp_probe_v1'),default='off',help='gcp_probe_v1: pair-carry rates measured on gcp1 (sim/visible_belief.py)')
     p.add_argument('--reach-mode',choices=('calibrated_mid_v1','pad_window_v2'),default='calibrated_mid_v1',help='setdown_look re-grasp approach target')
     p.add_argument('--held-object',choices=('visible_v0','hidden_v1'),default='visible_v0',help='hidden_v1: held cargo world pose never enters decisions while held')
-    p.add_argument('--lookaround',choices=('off','setdown_lookaround_v1'),default='off',help='setdown_look: look toward static-map landmarks from the own pose estimate (640x480 own camera)');a=p.parse_args()
+    p.add_argument('--lookaround',choices=('off','setdown_lookaround_v1','setdown_lookaround_v2'),default='off',help='setdown_look: look toward static-map landmarks from the own pose estimate (640x480 own camera)');a=p.parse_args()
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
     print(json.dumps(run(plan,a.out,mode=a.mode,actor=a.actor,grasp_cap_s=a.grasp_cap_s,teacher_profile=a.teacher_profile,pair_odometry=a.pair_odometry,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround),ensure_ascii=False))
 if __name__=='__main__':main()

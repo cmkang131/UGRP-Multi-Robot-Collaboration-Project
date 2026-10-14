@@ -96,3 +96,60 @@ def test_script_runner_fixed_timing():
     assert [p for _, p in servo] == [pan_pulse(-30), 1500, pan_pulse(30)]
     assert shots == [1.8, 2.6] and r.end == pytest.approx(2.6)
     assert all(look_servo(0)[k] == v for k, v in LOOK_ARM.items())
+
+
+# ---- v2 (association gate, joint update, acceptance tests) ----
+from sim.lookaround_localization import LOOK_ARM_V2
+
+
+def v2_feed(loc, truth, rng, *, outliers=0, bias=(0., 0.)):
+    """Feed every planned view: wall base points seen from the truth pose (+ optional floor-tile outliers)."""
+    for view in loc.plan['views']:
+        servo = look_servo(view['pan_deg'], LOOK_ARM_V2); cam = loc.camera.pose(servo)[0]
+        walls, _ = synthetic_detections(loc, (truth[0]+bias[0], truth[1]+bias[1], truth[2]), view['pan_deg'], rng)
+        if outliers:
+            far = rng.uniform([.5, -.6], [1.2, .6], (outliers, 2))          # tile edges on the open floor
+            walls = np.vstack([walls.reshape(-1, 2), far])
+        loc._gate(walls, [], [], servo, cam, rec := {})
+        loc.views.append(rec)
+
+
+def test_v2_plan_uses_folded_arm_and_sees_walls(static):
+    loc = LookaroundLocalizer(static, [4.46, .93, -math.pi/2], mode='setdown_lookaround_v2')
+    plan = loc.make_plan()
+    assert not plan['rotated'] and any(':' in g and g.startswith('wall') for g in plan['expected_landmarks'])
+    steps = loc.script(restore={3: 700, 4: 2300, 5: 1500, 6: 1500})
+    assert steps[0]['servo'][3] == LOOK_ARM_V2[3] and steps[-1]['label'] == 'restore_arm' and steps[-1]['servo'][3] == 700
+
+
+@pytest.mark.parametrize('truth', [(4.6, -.55, math.pi/2), (2.68, .04, 0.), (0.54, .08, 0.)])
+def test_v2_gates_outliers_and_accepts_consistent_correction(static, truth):
+    est = [truth[0]+.05, truth[1]-.03, truth[2]+math.radians(1.)]
+    loc = LookaroundLocalizer(static, est, mode='setdown_lookaround_v2'); loc.make_plan()
+    v2_feed(loc, truth, np.random.default_rng(1), outliers=30)
+    out = sum(v['gate']['wall_out']['gate']+v['gate']['wall_out']['not_predicted'] for v in loc.views)
+    assert out >= 20                                                      # most tile-edge points rejected
+    dec = loc.finalize()
+    assert dec['accepted'], dec
+    assert math.hypot(loc.own.x[0]-truth[0], loc.own.x[1]-truth[1]) < math.hypot(est[0]-truth[0], est[1]-truth[1])
+
+
+def test_v2_no_evidence_means_no_correction(static):
+    est = [4.46, .93, -math.pi/2]
+    loc = LookaroundLocalizer(static, est, mode='setdown_lookaround_v2'); loc.make_plan()
+    rng = np.random.default_rng(2)
+    for view in loc.plan['views']:
+        servo = look_servo(view['pan_deg'], LOOK_ARM_V2)
+        loc._gate(rng.uniform([.4, -.5], [1.0, .5], (25, 2)), [], [], servo, loc.camera.pose(servo)[0], {})
+    dec = loc.finalize()
+    assert not dec['accepted'] and list(loc.own.x) == est
+
+
+def test_v2_single_view_evidence_is_not_used(static):
+    truth = (3.0, .10, -math.pi/2); est = [truth[0]+.05, truth[1], truth[2]]
+    loc = LookaroundLocalizer(static, est, mode='setdown_lookaround_v2'); loc.make_plan()
+    view = loc.plan['views'][-1]; servo = look_servo(view['pan_deg'], LOOK_ARM_V2)
+    walls, _ = synthetic_detections(loc, truth, view['pan_deg'], np.random.default_rng(5))
+    loc._gate(walls, [], [], servo, loc.camera.pose(servo)[0], {})
+    dec = loc.finalize()
+    assert not dec['accepted'] and dec['reason'] in ('single_view', 'insufficient_evidence') and list(loc.own.x) == est
