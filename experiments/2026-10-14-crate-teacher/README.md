@@ -17,7 +17,7 @@
 - `alternating` 배정(교차 포함)은 학습 다양성용이며 관문에는 쓰지 않는다.
 
 ## 들기 장벽
-- 잡은 뒤 두 번째 READY/GO/ACK 장벽(`GraspStartSync`/`PairCarrySync`)을 통과해야 동시에 든다. 들기 확인은 자기 명령 이력과 RGB(집게 닫힘 펄스·상자가 화면에서 올라옴)만 쓴다. GT 접촉·높이는 성공 판정과 평가에만 쓴다.
+- 잡은 뒤 두 번째 READY/GO/ACK 장벽(`GraspStartSync`/`PairCarrySync`)을 통과해야 동시에 든다. READY-TO-LIFT는 자기가 낸 닫기 명령열이 끝난 것(자기 명령 이력)만 근거로 한다(`CrateGraspTeacher.lift_ready`). GT 접촉·높이는 성공 판정과 평가에만 쓴다. RGB로 들림을 확인하는 단계는 구현하지 않았다(명령 이력 기반만; 후속 과제). 20 s 안에 장벽이 안 열리면 `lift_barrier_timeout`.
 - 내려놓기는 `PairReleaseCode` + 상자 치수 서브클래스(`sim/crate_release_teacher.py`).
 
 ## 규칙 준수
@@ -44,7 +44,7 @@
 - 합산 금지: GCP gcp1 n4-highcpu-64 전용. Azure, 다른 머신, 다른 프로파일(lookaround·lug 색)과 합치지 않는다.
 
 ## 확인 안 된 것
-- 물리 실행 전부(Mac은 시험만). 손목 간격(상자 lug와 손목/집게 충돌), 낙하 감지, held 읽기 0(GCP 실행에서만), 둘러보기(의존 모듈 미커밋), lug 색 사용자 승인, 가시 비율 수치(실행 전).
+- 물리 실행 전부(Mac은 시험만). RGB 기반 들림 확인(미구현), 손목 간격(상자 lug와 손목/집게 충돌), 낙하 감지, held 읽기 0(GCP 실행에서만), 둘러보기(의존 모듈 미커밋), lug 색 사용자 승인, 가시 비율 수치(실행 전).
 
 ## 참고 자료
 조사 요약(열어 읽지 않은 자료는 표시):
