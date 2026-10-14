@@ -20,7 +20,8 @@ from sim.s2_servo_stiffness import TORQUE_NM
 from scripts.zone_teacher import ArmSequence
 
 OPTION = 'crate_lift_pose_margin_v1'
-MODES = ('off', OPTION)
+CARTESIAN_OPTION = 'crate_cartesian_lift_v1'
+MODES = ('off', OPTION, CARTESIAN_OPTION)
 PAYLOAD_PER_ARM_KG = .125
 MIN_RISE_M = .012
 LIMIT_NM = TORQUE_NM['elbow']

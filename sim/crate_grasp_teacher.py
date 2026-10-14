@@ -12,11 +12,12 @@ Everything else (approach, alignment, observation, route, pick poses) is the
 unchanged ``VisibleOnlyGraspTeacher``.
 """
 from __future__ import annotations
+import math
 from harness.visual_arm_v3 import solve_grip_site_ik, tool_pose
 from sim.grasp_act_teacher_v3 import VisibleOnlyGraspTeacher
 from sim.grasp_act_teacher import local
 from sim.cargo_teacher_profile import CRATE
-from sim.crate_lift_pose import MODES as LIFT_POSE_MODES, select_lift_prefix
+from sim.crate_lift_pose import MODES as LIFT_POSE_MODES, CARTESIAN_OPTION, select_lift_prefix
 
 LIFT_WAIT_LIMIT_S = 20.
 
@@ -33,6 +34,49 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         self.crate_lift_pose = crate_lift_pose
         self.lift_selection = None
         self.lift_prefix = None
+        self.approach_excluded = set()
+        self.approach_progress = None
+        if crate_lift_pose == CARTESIAN_OPTION:
+            if self.teacher_stability == 'off' or self.approach_goal_set == 'off':
+                raise ValueError('Cartesian crate lift requires alignment and approach goal set')
+            from sim.crate_cartesian_lift import STATION_M
+            self.staging_distance = STATION_M
+            self.approach_choice = (0., STATION_M)
+            self.approach_distances = (STATION_M,)
+
+    def _begin_relook(self, now, reason):
+        if self.crate_lift_pose == CARTESIAN_OPTION:
+            # Finite recovery: retain the failed stance, re-observe, then use
+            # the existing collision-checked alternative-goal planner.
+            self.approach_excluded.add(self.approach_choice)
+            self.approach_plan_valid = False
+            self.approach_progress = None
+            self.next_plan = now
+        return super()._begin_relook(now, reason)
+
+    def _approach(self, truth, now):
+        if (self.crate_lift_pose == CARTESIAN_OPTION and self.phase == 'approach'
+                and truth['beam'] is not None and truth['visibility'][self.rid]['visible_probes'] >= 5):
+            pose, _, _, goal = self._geometry(truth)
+            error = math.dist(pose[:2], goal)
+            if self.approach_progress is None or error < self.approach_progress[0]-.005:
+                self.approach_progress = (error, now)
+            elif now-self.approach_progress[1] >= 3.:
+                return self._begin_relook(now, 'crate_approach_no_visible_progress_3s')
+        return super()._approach(truth, now)
+
+    def ready_geometry(self, truth):
+        if not super().ready_geometry(truth):
+            return False
+        if self.crate_lift_pose != CARTESIAN_OPTION:
+            return True
+        # This runs only before the pick, on the currently visible assigned lug.
+        from sim.crate_cartesian_lift import plan_lift
+        pose, g, _, _ = self._geometry(truth)
+        x, y = local(pose, g)
+        grip = {1: 1500, **solve_grip_site_ik((x, y, g[2]))}
+        best, _ = plan_lift(grip)
+        return best is not None
 
     # --- phase bookkeeping ---
     def _set(self, phase, now):
@@ -42,7 +86,11 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             phase = 'closed'
             self.closed_at = now
             if self.crate_lift_pose != 'off':
-                self.lift_prefix, self.lift_selection = select_lift_prefix(self.sink.pwm, self.lift_pose)
+                if self.crate_lift_pose == CARTESIAN_OPTION:
+                    from sim.crate_cartesian_lift import plan_lift
+                    self.lift_prefix, self.lift_selection = plan_lift(self.sink.pwm)
+                else:
+                    self.lift_prefix, self.lift_selection = select_lift_prefix(self.sink.pwm, self.lift_pose)
                 if self.lift_prefix is None:
                     self.outcome = 'crate_lift_pose_no_candidate'
         super()._set(phase, now)
@@ -76,8 +124,8 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             if self.lift_prefix is None:
                 self.outcome = 'crate_lift_pose_no_candidate'
                 return
-            # Retain the exact interpolation samples/timing, truncating only
-            # the original lift's tail. A newly interpolated path is not used.
+            # Issue the already checked command samples at their planned times.
+            # v1 is a legacy prefix; Cartesian v1 shares the same rise/time law.
             start = max(now, self.arm.until)
             self.arm.events.extend((start+t, sid, pulse) for t, sid, pulse in self.lift_prefix['events'])
             self.arm.commanded.update(self.lift_prefix['issued_pwm'])
@@ -124,4 +172,6 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return {**super().diagnostic(), 'profile': 'visible_only_crate', 'lift_barrier': True,
                 'closed_at': self.closed_at, 'lift_done': self.lift_done,
                 'crate_lift_pose': self.crate_lift_pose, 'lift_pose_selection': self.lift_selection,
+                **({'excluded_stalled_stances': sorted(self.approach_excluded)}
+                   if self.crate_lift_pose == CARTESIAN_OPTION else {}),
                 'done_semantics': 'own issued close+lift sequence complete after the lift barrier; physical evaluation separate'}

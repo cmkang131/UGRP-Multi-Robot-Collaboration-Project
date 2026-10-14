@@ -29,6 +29,7 @@ LOOKAROUND_MODES = ('off', 'setdown_lookaround_v1')
 RGB_LIFT_MODES = ('off', 'crate_rgb_lift_v1', 'crate_rgb_lift_v2', 'crate_rgb_lift_v3')
 from sim.cargo_scene_version import VERSIONS as CARGO_SCENE_VERSIONS
 from sim.crate_lift_pose import MODES as LIFT_POSE_MODES
+from sim.crate_eval_load import collect as collect_load_detail
 HOLD_S = 3.
 LIFT_FORCE_N = .5
 
@@ -161,7 +162,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                        teacher_stability=teacher_stability, teacher_search=teacher_search,
                        approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose)
     if crate_lift_pose != 'off' and (crate_scene != 'crate_mass_025_v1' or reach_mode != 'pad_window_v2'):
-        raise ValueError('crate_lift_pose_margin_v1 requires crate_mass_025_v1 and pad_window_v2')
+        raise ValueError('crate lift planning requires crate_mass_025_v1 and pad_window_v2')
     if lookaround != 'off' and own_pose_source == 'commands':
         raise ValueError('lookaround requires a verified map localization; GT handoff anchors are forbidden')
     from sim.cargo_scene_version import check as check_cargo_scene
@@ -405,6 +406,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                                  'visible_measurements': truth['visible_measurements'],
                                  'pick_permits': permits, 'lift_permits': lift_permits,
                                  'servo_load': load_row,
+                                 **({'load_detail': collect_load_detail(world, inst, roles)}
+                                    if crate_lift_pose == 'crate_cartesian_lift_v1' else {}),
                                  'phases': {r: t.phase for r, t in teachers.items()}})+'\n')
             if rgb_lift in ('crate_rgb_lift_v2', 'crate_rgb_lift_v3'):
                 for rid, t in teachers.items():
@@ -937,7 +940,8 @@ def main():
                    help='cargo scene version: catalogue_v1 = crate 0.900 kg (old), crate_mass_030_v1 = 0.300 kg '
                         '(user 2026-10-14; real_v1 elbow limit). Versions are never pooled.')
     p.add_argument('--crate-lift-pose', choices=LIFT_POSE_MODES, default='off',
-                   help='crate_lift_pose_margin_v1: retain >=10%% static elbow margin at 0.125 kg/arm; no candidate stops')
+                   help='margin_v1: legacy lift prefix; crate_cartesian_lift_v1: preplanned constant-XY lift; '
+                        'both require >=10%% static margin at 0.125 kg/arm; default off')
     p.add_argument('--rgb-lift', choices=RGB_LIFT_MODES, default='off',
                    help='authorize release only after own-RGB confirmation; v2 uses lug/body co-motion; provisional thresholds')
     p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')

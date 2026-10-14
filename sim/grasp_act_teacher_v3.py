@@ -318,7 +318,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         unusable=self.path and math.dist(pose[:2],goal)>.08 and waypoint(pose[:2],self.path,discs,rects,radius) is None
         entering=not self.approach_plan_valid and self.approach_blocked_since is None
         if entering or changed or now>=self.next_plan or (self.approach_plan_valid and (blocked or unusable)):
-            selected,checked=select_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.approach_choice,profile=self.cargo_profile)
+            from sim.grasp_act_goal_set import DISTANCES_M
+            selected,checked=select_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.approach_choice,
+                                        profile=self.cargo_profile,distances=getattr(self,'approach_distances',DISTANCES_M),
+                                        excluded=getattr(self,'approach_excluded',()))
             self.planner_calls+=1;self.next_plan=now+1.;self.path_goal=tuple(goal)
             self.blocked_goal_calls+=int(blocked)
             self.approach_plan_valid=selected is not None

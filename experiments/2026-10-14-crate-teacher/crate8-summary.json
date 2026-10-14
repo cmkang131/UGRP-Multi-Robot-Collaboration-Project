@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-15",
+  "baseline_sha": "c5a76175086473115eacd7bef6fe662e06fd908f",
+  "baseline_success_n": 0,
+  "baseline_N": 10,
+  "root_causes": {
+    "late_infeasible_pose": 5,
+    "insufficient_clearance_with_elbow_saturation": 3,
+    "approach_stall": 1,
+    "alignment_stall": 1
+  },
+  "baseline_replayed_robot_ticks": 6116,
+  "replay_scope": "PWM/wheels/phases exact, duration tolerance 1e-10 s, own recorded visible measurements and issued history; candidate stops at first changed command",
+  "integrity": {
+    "files_matched": 1413,
+    "missing": 0,
+    "mismatched": 0,
+    "runs": 10
+  },
+  "frames_viewed": 99,
+  "new_mode": "crate_cartesian_lift_v1",
+  "default": "off",
+  "new_diagnostic_seeds": [
+    77960,
+    77961,
+    77962,
+    77963,
+    77964,
+    77965,
+    77966,
+    77967,
+    77968,
+    77969
+  ],
+  "local_tests": {
+    "passed": 44,
+    "failed": 0,
+    "files": [
+      "tests/test_crate_cartesian_lift.py",
+      "tests/test_crate_lift_pose.py",
+      "tests/test_grasp_act_goal_set.py"
+    ],
+    "junit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate8-audit/tests.xml",
+      "sha256": "1f23cdc05076d37160094d7593c6c28c4df5e4873b7bfc6bb001d778fa3f6334"
+    },
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_crate_cartesian_lift.py tests/test_crate_lift_pose.py tests/test_grasp_act_goal_set.py --junitxml=/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate8-audit/tests.xml"
+  },
+  "new_remote_runs": 0,
+  "physics_steps": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "input_audit": {
+    "old_runs": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "N": 10
+    },
+    "new_runtime": "unverified"
+  },
+  "artifacts": {
+    "analysis": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate8-analysis.json",
+      "sha256": "0dac3cf452e058978041a61934c60ba10d325cc1b33028cb996eef3129d8516e"
+    },
+    "visual_review": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate8-visual-review.json",
+      "sha256": "2352908b5ec9d35d9a3fe745e6af15c36316324a6a5f3ddad38535c5ce8c8a41"
+    },
+    "plan": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/diag_plan_crate8_77960.json",
+      "sha256": "ebc38f087e8dece937ee10da3bee47b280ca692a1be88a5c9d5d5c36a5c906c9"
+    },
+    "record": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate8.md",
+      "sha256": "f28ef56587c1eb2895f82744d21536894dd351a192c68be3ecad0a75f6b3bca6"
+    },
+    "integrity": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate8-audit/integrity.json",
+      "sha256": "94b79c0157521ce09a6443fee437a64770867966ba08c156a180a6adfba1daad"
+    },
+    "junit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate8-audit/tests.xml",
+      "sha256": "1f23cdc05076d37160094d7593c6c28c4df5e4873b7bfc6bb001d778fa3f6334"
+    }
+  },
+  "source_sha256": {
+    "sim/crate_cartesian_lift.py": "98d24d199efc23a4bf76d3a1bcd47f9fda8add0272838dbddaf40e41291699cf",
+    "sim/crate_eval_load.py": "bddf7164697a433e0f297a8e4d50b9843f41b5c794af8b7493f26cd3f754936f",
+    "sim/crate_grasp_teacher.py": "a7e39b8290187c855728c9e75a5404caae8798a23502f2375fe8bf77d437a45b",
+    "sim/crate_lift_pose.py": "3e911c29218960c0bd4f6a06350dc0adeb83c6b8e289379bcecd9e979896f535",
+    "sim/grasp_act_goal_set.py": "c196dc435253093277fe6e4c2a96863bb537c850a0bbd2f45bc626e0f06a37cb",
+    "sim/grasp_act_teacher_v3.py": "2ba6816174747bbe67bec1dce640da9ed02a8aad632751ab039f336ce07bf13c",
+    "scripts/run_crate_teacher.py": "2a1d1763e3123ec1caf76d779409e45d7e5a4fbbed4e99f4f0906c83ce8a305e",
+    "tests/test_crate_cartesian_lift.py": "93ad54fa58c478611a42e1f12f879c95879ea64a7ff8977bf922dd4c12c0bb30",
+    "tests/test_crate_lift_pose.py": "7371a70b2191c3af98e8dfecc61e668209926f2563a772943f4a27f84d8fc363",
+    "tests/test_grasp_act_goal_set.py": "7e877760168bb89d1cedfbe4d8339a813d622d1c0c424af702e3aa38b6a8ea94"
+  },
+  "remaining_unverified": [
+    "New physical hold/clearance/collision and load sharing not tested; static equal-share model only.",
+    "Old measured joint states and world contact-force vectors unavailable; internal-force explanation is a hypothesis.",
+    "New closed-loop approach recovery, runtime telemetry and input audit 0/0 require GCP diagnostic.",
+    "New remote seed freshness, credit/disk safeguards and combined concurrency enforcement not verified; no remote access.",
+    "No gate/training/student success; new runs submitted=0."
+  ]
+}

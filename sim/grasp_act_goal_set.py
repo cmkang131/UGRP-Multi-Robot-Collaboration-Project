@@ -31,7 +31,8 @@ def nominal_goal_blocked(world, rid, end, bounds, folded, *, profile=None):
             or not free(goal, [d for d in discs if not isinstance(d, PeerDisc)], rects, radius))
 
 
-def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, profile=None):
+def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, profile=None,
+                distances=DISTANCES_M, excluded=()):
     """Fallback after nominal_goal_blocked; keep an already selected stance.
 
     Angles stay on the assigned end's outward half-circle. Distances must pass
@@ -53,6 +54,7 @@ def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, pro
                 reachable[distance] = False
         row = {'offset_deg': math.degrees(choice[0]), 'distance_m': distance, 'goal': goal}
         checked.append(row)
+        if choice in excluded:row['reason'] = 'previously_stalled'; return None
         if not reachable[distance]:row['reason'] = 'ik_unreachable'; return None
         if not (x0+radius <= goal[0] <= x1-radius and y0+radius <= goal[1] <= y1-radius):
             row['reason'] = 'outside_bounds'; return None
@@ -74,7 +76,7 @@ def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, pro
     if best is None:
         alternatives = []
         for angle in ANGLES_DEG:
-            for distance in DISTANCES_M:
+            for distance in distances:
                 choice = (math.radians(angle), distance)
                 if choice == current:continue
                 item = candidate(choice)
