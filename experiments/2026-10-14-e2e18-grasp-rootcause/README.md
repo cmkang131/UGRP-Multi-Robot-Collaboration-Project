@@ -2,6 +2,10 @@
 
 진행 [PR #484](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/484), Refs #461. **새 38/40 관문 미통과, 학습 데이터·학습 모델·학생 물리 평가 모두 0.**
 
+[77ee0ab7 감독기·핸드오프 수정](search5.md): 완료 0/1·감독 중단6.
+ep6 실제 후보는 차단30/39·feasible9/39로 정정했다. 동일 사유/단계 두 에피소드 정지
+토글과 별도 전부 차단 반례를 수정했고 관련107개 통과. 새 GCP 물리 결과는 미확인이다.
+
 | 실행 | 공동 파지 | 제외·범위 |
 |---|---:|---|
 | visible_only c1f02ac0 관문 | 12/16 | 중단16, 미시작8, HOST_ERROR0 |

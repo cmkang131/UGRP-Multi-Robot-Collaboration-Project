@@ -1,0 +1,1524 @@
+[
+  {
+    "seed": 77969,
+    "roles": {
+      "r1": "teal",
+      "r2": "blue"
+    },
+    "outcomes": {
+      "r1": "peer_search_handoff",
+      "r2": "search_timeout_handoff"
+    },
+    "robots": {
+      "r1": {
+        "phase": "ready",
+        "outcome": null,
+        "blocked_goal_calls": 0,
+        "planner_calls": 18,
+        "plan_reason_counts": {
+          "feasible": 17,
+          "unsafe_segment": 13
+        },
+        "first_blocked": [],
+        "first_failed_plan": {
+          "t": 6.800000000002565,
+          "rid": "r1",
+          "phase": "approach",
+          "visible": 12,
+          "outcome": null,
+          "goal": [
+            1.2375968620083917,
+            -0.4507177954648583
+          ],
+          "pose": [
+            0.5609594878046811,
+            -0.09558834445259862,
+            -0.6632356289841201
+          ],
+          "blockers": {
+            "peer": false,
+            "wall": false,
+            "cargo": false
+          },
+          "plans": [
+            {
+              "t": 6.800000000002565,
+              "candidates": [
+                {
+                  "offset_deg": 0.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.2375968620083917,
+                    -0.4507177954648583
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": -14.999999999999998,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.2796321471876446,
+                    -0.47998154899766676
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": 14.999999999999998,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.1894198776928482,
+                    -0.433330712524067
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": -29.999999999999996,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.312661098012234,
+                    -0.5191276966798708
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": 29.999999999999996,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.1383843761058876,
+                    -0.4290052011441947
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": -45.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.3344328460663863,
+                    -0.565488493238996
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": 45.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.0879683423405069,
+                    -0.43803603777753414
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": -59.99999999999999,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.3434636826997257,
+                    -0.6159045270043767
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": 59.99999999999999,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.0416075457813816,
+                    -0.45980778583168636
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": -75.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.3391381713198534,
+                    -0.6669400285913375
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": 75.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.0024613980991774,
+                    -0.4928367366562758
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": -90.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.3217510883790622,
+                    -0.7151170129068809
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": 90.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9731976445663691,
+                    -0.5348720218355287
+                  ],
+                  "reason": "unsafe_segment"
+                }
+              ],
+              "selected": null
+            }
+          ]
+        },
+        "search_log": [],
+        "events": [
+          {
+            "t": 15.099999999987483,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 18.5999999999978,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 23.000000000018808,
+            "from": "ready",
+            "to": "align"
+          },
+          {
+            "t": 23.900000000023105,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 25.800000000032178,
+            "from": "ready",
+            "to": "align"
+          },
+          {
+            "t": 26.200000000034088,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 27.100000000038385,
+            "from": "ready",
+            "to": "align"
+          },
+          {
+            "t": 27.500000000040295,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 28.000000000042682,
+            "from": "ready",
+            "to": "align"
+          },
+          {
+            "t": 28.90000000004698,
+            "from": "align",
+            "to": "ready"
+          }
+        ]
+      },
+      "r2": {
+        "phase": "search",
+        "outcome": "search_timeout_handoff",
+        "blocked_goal_calls": 0,
+        "planner_calls": 12,
+        "plan_reason_counts": {
+          "feasible": 12
+        },
+        "first_blocked": [],
+        "first_failed_plan": null,
+        "search_log": [
+          {
+            "t": 4.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 13.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 14.5,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 15.1,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 16.4,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 17.2,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 17.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 19.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 20.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 21.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 22.6,
+            "stage": "circle_start",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 36.9,
+            "stage": "circle_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 392.6
+          },
+          {
+            "t": 37.4,
+            "stage": "circle_start",
+            "k": 1,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 51.7,
+            "stage": "circle_complete",
+            "k": 1,
+            "command_estimated_yaw_deg": 392.6
+          },
+          {
+            "t": 52.4,
+            "stage": "circle_start",
+            "k": 2,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 66.7,
+            "stage": "circle_complete",
+            "k": 2,
+            "command_estimated_yaw_deg": 392.6
+          },
+          {
+            "t": 66.7,
+            "stage": "handoff",
+            "k": 3,
+            "command_estimated_yaw_deg": 392.6
+          }
+        ],
+        "events": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 4.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.000000000000365,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 12.59999999999331,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 13.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 14.5,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 15.1,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 16.4,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 17.2,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 17.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 19.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 20.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 21.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 22.6,
+            "stage": "circle_start",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "circle_start"
+          },
+          {
+            "t": 36.9,
+            "stage": "circle_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 392.6,
+            "search": "circle_complete"
+          },
+          {
+            "t": 37.4,
+            "stage": "circle_start",
+            "k": 1,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "circle_start"
+          },
+          {
+            "t": 51.7,
+            "stage": "circle_complete",
+            "k": 1,
+            "command_estimated_yaw_deg": 392.6,
+            "search": "circle_complete"
+          },
+          {
+            "t": 52.4,
+            "stage": "circle_start",
+            "k": 2,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "circle_start"
+          },
+          {
+            "t": 66.7,
+            "stage": "circle_complete",
+            "k": 2,
+            "command_estimated_yaw_deg": 392.6,
+            "search": "circle_complete"
+          },
+          {
+            "t": 66.7,
+            "stage": "handoff",
+            "k": 3,
+            "command_estimated_yaw_deg": 392.6,
+            "search": "handoff"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "seed": 77978,
+    "roles": {
+      "r1": "teal",
+      "r2": "blue"
+    },
+    "outcomes": {
+      "r1": "approach_blocked_handoff",
+      "r2": "peer_approach_handoff"
+    },
+    "robots": {
+      "r1": {
+        "phase": "approach",
+        "outcome": "approach_blocked_handoff",
+        "blocked_goal_calls": 2,
+        "planner_calls": 25,
+        "plan_reason_counts": {
+          "blocked_goal": 6,
+          "grasp_geometry": 60,
+          "feasible": 21,
+          "previously_stalled": 4,
+          "unsafe_segment": 6
+        },
+        "first_blocked": [
+          {
+            "t": 11.59999999999564,
+            "rid": "r1",
+            "phase": "search",
+            "visible": 5,
+            "outcome": null,
+            "goal": [
+              0.956691126201725,
+              0.7807425527110718
+            ],
+            "pose": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "blockers": {
+              "peer": false,
+              "wall": true,
+              "cargo": false
+            }
+          }
+        ],
+        "first_failed_plan": {
+          "t": 11.899999999994941,
+          "rid": "r1",
+          "phase": "approach",
+          "visible": 5,
+          "outcome": null,
+          "goal": [
+            0.9566965531842506,
+            0.780669183638594
+          ],
+          "pose": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "blockers": {
+            "peer": false,
+            "wall": true,
+            "cargo": false
+          },
+          "plans": [
+            {
+              "t": 11.899999999994941,
+              "candidates": [
+                {
+                  "offset_deg": 0.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9566965531842506,
+                    0.780669183638594
+                  ],
+                  "reason": "blocked_goal"
+                },
+                {
+                  "offset_deg": -14.999999999999998,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9435265577662637,
+                    0.7311728838615371
+                  ],
+                  "reason": "blocked_goal"
+                },
+                {
+                  "offset_deg": 14.999999999999998,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9566072068461868,
+                    0.831887583537087
+                  ],
+                  "reason": "blocked_goal"
+                },
+                {
+                  "offset_deg": -29.999999999999996,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9179947340155156,
+                    0.68677177523922
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": 29.999999999999996,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9432646075573596,
+                    0.8813376342463417
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": -45.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.8818410335272858,
+                    0.6504917199479521
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": 45.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9175780314096148,
+                    0.9256493965305952
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": -59.99999999999999,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.8375292712430324,
+                    0.6248051438002072
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": 59.99999999999999,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.8812979761183469,
+                    0.9618030970188248
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": -75.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.7880792205337777,
+                    0.6114625445113802
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": 75.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.8368968674960297,
+                    0.9873349207695731
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": -90.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.7368608206352847,
+                    0.6113731981733164
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": 90.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.7874005677189728,
+                    1.0005049161875599
+                  ],
+                  "reason": "grasp_geometry"
+                }
+              ],
+              "selected": null
+            }
+          ]
+        },
+        "search_log": [
+          {
+            "t": 3.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 4.6,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 5.2,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 6.5,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 7.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 7.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 10.0,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 10.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 11.4,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 16.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 17.1,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 17.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 19.0,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 19.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 20.4,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 22.5,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 23.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 23.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          }
+        ],
+        "events": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 3.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.6,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.2,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 6.5,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 7.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 7.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 10.0,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 10.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 11.4,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 11.899999999994941,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 14.299999999989348,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 14.699999999988416,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 15.299999999987017,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 16.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 17.1,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 17.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 19.0,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 19.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 20.4,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 22.5,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 23.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 23.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 24.600000000026448,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 24.600000000026448,
+            "alignment_recovery": "crate_approach_no_visible_progress_3s"
+          },
+          {
+            "t": 24.600000000026448,
+            "from": "approach",
+            "to": "relook"
+          },
+          {
+            "t": 25.000000000028358,
+            "from": "relook",
+            "to": "approach"
+          },
+          {
+            "t": 25.600000000031223,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 26.000000000033133,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 37.800000000089476,
+            "approach": "all_goals_blocked_handoff",
+            "blocked_s": 3.0000000000143245
+          }
+        ]
+      },
+      "r2": {
+        "phase": "ready",
+        "outcome": null,
+        "blocked_goal_calls": 0,
+        "planner_calls": 1,
+        "plan_reason_counts": {
+          "feasible": 1
+        },
+        "first_blocked": [],
+        "first_failed_plan": null,
+        "search_log": [],
+        "events": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 2.999999999999697,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 2.999999999999697,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 3.49999999999942,
+            "from": "align",
+            "to": "ready"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "seed": 77979,
+    "roles": {
+      "r1": "teal",
+      "r2": "blue"
+    },
+    "outcomes": {
+      "r1": "approach_blocked_handoff",
+      "r2": "peer_approach_handoff"
+    },
+    "robots": {
+      "r1": {
+        "phase": "approach",
+        "outcome": "approach_blocked_handoff",
+        "blocked_goal_calls": 0,
+        "planner_calls": 22,
+        "plan_reason_counts": {
+          "feasible": 20,
+          "unsafe_segment": 5,
+          "grasp_geometry": 50,
+          "previously_stalled": 7
+        },
+        "first_blocked": [],
+        "first_failed_plan": {
+          "t": 62.100000000205505,
+          "rid": "r1",
+          "phase": "approach",
+          "visible": 8,
+          "outcome": null,
+          "goal": [
+            0.9159137090939675,
+            -0.5523931580459871
+          ],
+          "pose": [
+            0.9392040743645554,
+            -0.38652294393491593,
+            24.527425118645294
+          ],
+          "blockers": {
+            "peer": false,
+            "wall": false,
+            "cargo": false
+          },
+          "plans": [
+            {
+              "t": 62.100000000205505,
+              "candidates": [
+                {
+                  "offset_deg": 0.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9159137090939675,
+                    -0.5523931580459871
+                  ],
+                  "reason": "previously_stalled"
+                },
+                {
+                  "offset_deg": -14.999999999999998,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.8934740207287519,
+                    -0.5063519497972658
+                  ],
+                  "reason": "previously_stalled"
+                },
+                {
+                  "offset_deg": 14.999999999999998,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.949505125174108,
+                    -0.5910577314518968
+                  ],
+                  "reason": "unsafe_segment"
+                },
+                {
+                  "offset_deg": -29.999999999999996,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.8837152877572122,
+                    -0.45607173896119024
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": 29.999999999999996,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.991959069475751,
+                    -0.6197107432336108
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": -45.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.88730255170429,
+                    -0.40497903881426023
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": 45.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.0403823758532007,
+                    -0.6363995379895466
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": -59.99999999999999,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9039913464602256,
+                    -0.35655573243681127
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": 59.99999999999999,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.09147507600013,
+                    -0.6399868019366243
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": -75.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9326443582419399,
+                    -0.31410178813516776
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": 75.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.1417552868362062,
+                    -0.6302280689650844
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": -90.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    0.9713089316478491,
+                    -0.2805103720550277
+                  ],
+                  "reason": "grasp_geometry"
+                },
+                {
+                  "offset_deg": 90.0,
+                  "distance_m": 0.19619999999999999,
+                  "goal": [
+                    1.187796495084927,
+                    -0.6077883805998691
+                  ],
+                  "reason": "grasp_geometry"
+                }
+              ],
+              "selected": null
+            }
+          ]
+        },
+        "search_log": [
+          {
+            "t": 3.6,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 17.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 18.5,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 19.1,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 20.4,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 21.2,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 21.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 23.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 24.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 25.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 26.6,
+            "stage": "circle_start",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 40.9,
+            "stage": "circle_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 392.6
+          },
+          {
+            "t": 41.4,
+            "stage": "circle_start",
+            "k": 1,
+            "command_estimated_yaw_deg": 0.0
+          },
+          {
+            "t": 55.7,
+            "stage": "circle_complete",
+            "k": 1,
+            "command_estimated_yaw_deg": 392.6
+          },
+          {
+            "t": 56.4,
+            "stage": "circle_start",
+            "k": 2,
+            "command_estimated_yaw_deg": 0.0
+          }
+        ],
+        "events": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 3.6,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 4.2999999999995095,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 15.399999999986784,
+            "alignment_recovery": "crate_approach_no_visible_progress_3s"
+          },
+          {
+            "t": 15.399999999986784,
+            "from": "approach",
+            "to": "relook"
+          },
+          {
+            "t": 15.899999999985619,
+            "from": "relook",
+            "to": "approach"
+          },
+          {
+            "t": 16.89999999998968,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 17.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 18.5,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 19.1,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 20.4,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 21.2,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 21.8,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 23.9,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 24.7,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 25.3,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 26.6,
+            "stage": "circle_start",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "circle_start"
+          },
+          {
+            "t": 40.9,
+            "stage": "circle_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 392.6,
+            "search": "circle_complete"
+          },
+          {
+            "t": 41.4,
+            "stage": "circle_start",
+            "k": 1,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "circle_start"
+          },
+          {
+            "t": 55.7,
+            "stage": "circle_complete",
+            "k": 1,
+            "command_estimated_yaw_deg": 392.6,
+            "search": "circle_complete"
+          },
+          {
+            "t": 56.4,
+            "stage": "circle_start",
+            "k": 2,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "circle_start"
+          },
+          {
+            "t": 61.60000000020312,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 61.60000000020312,
+            "alignment_recovery": "crate_approach_no_visible_progress_3s"
+          },
+          {
+            "t": 61.60000000020312,
+            "from": "approach",
+            "to": "relook"
+          },
+          {
+            "t": 62.00000000020503,
+            "from": "relook",
+            "to": "approach"
+          },
+          {
+            "t": 65.10000000018856,
+            "approach": "all_goals_blocked_handoff",
+            "blocked_s": 2.9999999999830536
+          }
+        ]
+      },
+      "r2": {
+        "phase": "ready",
+        "outcome": null,
+        "blocked_goal_calls": 0,
+        "planner_calls": 9,
+        "plan_reason_counts": {
+          "feasible": 10,
+          "previously_stalled": 3,
+          "grasp_geometry": 20
+        },
+        "first_blocked": [],
+        "first_failed_plan": null,
+        "search_log": [
+          {
+            "t": 4.4,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0
+          }
+        ],
+        "events": [
+          {
+            "t": 2.4999999999999742,
+            "from": "approach",
+            "to": "search"
+          },
+          {
+            "t": 4.4,
+            "stage": "view_complete",
+            "k": 0,
+            "command_estimated_yaw_deg": 0.0,
+            "search": "view_complete"
+          },
+          {
+            "t": 5.2000000000006095,
+            "from": "search",
+            "to": "approach"
+          },
+          {
+            "t": 9.799999999999836,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 12.699999999993077,
+            "from": "align",
+            "to": "ready"
+          },
+          {
+            "t": 34.80000000007515,
+            "from": "ready",
+            "to": "align"
+          },
+          {
+            "t": 38.00000000009043,
+            "alignment_recovery": "no_visible_error_progress_3s"
+          },
+          {
+            "t": 38.00000000009043,
+            "from": "align",
+            "to": "relook"
+          },
+          {
+            "t": 38.40000000009234,
+            "from": "relook",
+            "to": "approach"
+          },
+          {
+            "t": 38.50000000009282,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 43.20000000011526,
+            "alignment_recovery": "no_visible_error_progress_3s"
+          },
+          {
+            "t": 43.20000000011526,
+            "from": "align",
+            "to": "relook"
+          },
+          {
+            "t": 43.60000000011717,
+            "from": "relook",
+            "to": "approach"
+          },
+          {
+            "t": 44.200000000120035,
+            "from": "approach",
+            "to": "align"
+          },
+          {
+            "t": 47.20000000013436,
+            "from": "align",
+            "to": "ready"
+          }
+        ]
+      }
+    }
+  }
+]

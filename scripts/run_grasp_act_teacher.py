@@ -102,11 +102,20 @@ def finalize_outcomes(teachers,*,strict,joint_held):
             t.outcome='peer_approach_handoff' if approach else 'peer_search_handoff' if search else 'episode_timeout'
 
 
-def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off",approach_goal_set="off"):
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off"):
     if teacher_stability!='off' and teacher_profile!='visible_only':raise ValueError('stability mode requires visible_only')
     if teacher_search!='off' and teacher_stability=='off':raise ValueError('search mode requires teacher stability')
     if approach_goal_set!='off' and (teacher_profile!='visible_only' or teacher_stability=='off' or self_pose_source!='issued'):
         raise ValueError('approach goal set requires visible_only, align_relook_v1 and issued pose')
+    if nominal_blocked_handoff not in ('off','nominal_blocked_handoff_v1'):raise ValueError('unknown nominal blocked handoff mode')
+    if nominal_blocked_handoff!='off' and (teacher_profile!='visible_only' or teacher_stability=='off' or self_pose_source!='issued'):
+        raise ValueError('nominal blocked handoff requires visible_only, align_relook_v1 and issued pose')
+    if approach_progress not in ('off','approach_progress_v1'):raise ValueError('unknown approach progress mode')
+    if approach_progress!='off' and (teacher_profile!='visible_only' or teacher_stability=='off' or self_pose_source!='issued'):
+        raise ValueError('approach progress requires visible_only, align_relook_v1 and issued pose')
+    if approach_recovery not in ('off','approach_recovery_v1'):raise ValueError('unknown approach recovery mode')
+    if approach_recovery!='off' and (teacher_profile!='visible_only' or self_pose_source!='issued' or approach_progress=='off' or teacher_search!='search_body_scan_v2'):
+        raise ValueError('approach recovery requires visible_only, issued, progress and search_body_scan_v2')
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use admitted execution host')
     if record_training:
         from scripts.grasp_act_host import same_machine
@@ -138,16 +147,17 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
     write(out/'RUN_META.json',{'class':'milestone' if record_training else 'dev','pr':484,'branch':'claude/e2e18-grasp-rootcause','sha':sha,'batch':plan['batch']})
     scene=make_scene(plan);world=None;streams=[];start=time.monotonic()
     timings={k:0. for k in ('physics','rgb','evaluation','teacher','io')}
+    from harness.grasp_act_input_audit import AuditedTeacherInput,new_input_audit
     report={'status':'running','source_sha':sha,'teacher_success_n':0,'teacher_N':len(plan['roles']),'execution_host':execution_host,
         'joint_held':None,'data_admitted':False,'assignment_source':plan['assignment_source'],
         'student_execution':False,'recording_mode':'training' if record_training else 'success_measurement',
         'episode_plan_sha256':hashlib.sha256((out/'plan.json').read_bytes()).hexdigest(),
         'physical_success':False,'teacher_profile':teacher_profile,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off',
         'self_pose_source':self_pose_source,'recording_gate_proof':recording_proof,
-        'teacher_stability':teacher_stability,'teacher_search':teacher_search,'approach_goal_set':approach_goal_set,
+        'teacher_stability':teacher_stability,'teacher_search':teacher_search,'approach_goal_set':approach_goal_set,'nominal_blocked_handoff':nominal_blocked_handoff,'approach_progress':approach_progress,'approach_recovery':approach_recovery,
+        'start_nominal_goal_feasible':plan.get('start_nominal_goal_feasible','off'),
         'search_handoff':False,
-        'input_audit':{'scope':'delivered visual measurements only; evaluator reads excluded',
-            'enabled':strict,'measurement_rows':0,'invisible_measurements':0,'gt_self_pose_comparison':self_pose_source!='issued'},
+        'input_audit':new_input_audit(strict,self_pose_source),
         'criteria':{'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.} if strict else {'min_z_m':.012,'hold_s':1.}}
     write(out/'result.json',report)
     try:
@@ -198,7 +208,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             initial=command({'t':origin,'pwm':pwm,**({'wheels':[0.]*4,'duration_s':[0.]*4} if strict else {'drive':[0.]*3,'duration_s':0.})})
             previous[rid]=initial;history[rid]=deque([initial]*HISTORY,maxlen=HISTORY)
             search_kw={'teacher_search':teacher_search} if teacher_search!='off' else {}
-            teachers[rid]=(VisibleOnlyGraspTeacher(rid,end,pwm,bounds=(-20,20,-20,20),teacher_stability=teacher_stability,approach_goal_set=approach_goal_set,**search_kw) if strict else
+            teachers[rid]=(VisibleOnlyGraspTeacher(rid,end,pwm,bounds=(-20,20,-20,20),teacher_stability=teacher_stability,approach_goal_set=approach_goal_set,nominal_blocked_handoff=nominal_blocked_handoff,approach_progress=approach_progress,approach_recovery=approach_recovery,**search_kw) if strict else
                 GraspTeacher(rid,end,pwm,bounds=scene.config['static_map']['bounds_m'],rects=keepout_rects(scene.config['static_map']),profile=teacher_profile))
             if strict:models[rid]=VisibleWorld(rid,end,pose_source=self_pose_source);clocks[rid]=v5.IssuedClock()
             student=None
@@ -225,7 +235,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     audit_visible_input(report['input_audit'],ms)
                     truth['visible_measurements'][rid]=ms
                     v=truth['visibility'][rid];v['any_probe_visible']=v['visible'];v['visible']=v['visible_probes']>=5
-                    perceived[rid]=models[rid].observe(ms,now,comparison_pose=(truth['robots'][rid]['pose'] if self_pose_source=='perfect_self_comparison' else None))
+                    perceived[rid]=AuditedTeacherInput(models[rid].observe(ms,now,comparison_pose=(truth['robots'][rid]['pose'] if self_pose_source=='perfect_self_comparison' else None)),report['input_audit'])
             elif observable:
                 for rid in plan['roles']:
                     truth['visibility'][rid]['objects']=[iid for iid,b in object_bodies.items() if visibility.body_visible(world.data,rid,b)]
@@ -354,6 +364,9 @@ def main():
     p.add_argument('--teacher-stability',choices=('off','align_relook_v1'),default='off')
     p.add_argument('--teacher-search',choices=('off','search_body_scan_v1','search_body_scan_v2'),default='off')
     p.add_argument('--approach-goal-set',choices=('off','approach_goal_set_v1'),default='off')
+    p.add_argument('--nominal-blocked-handoff',choices=('off','nominal_blocked_handoff_v1'),default='off')
+    p.add_argument('--approach-progress',choices=('off','approach_progress_v1'),default='off')
+    p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1'),default='off')
     p.add_argument('--self-pose-source',choices=('issued','perfect_self_comparison'),default='issued')
     p.add_argument('--execution-host',choices=('azure','gcp1'),default='azure')
     p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path)
@@ -367,16 +380,16 @@ def main():
         gate=json.loads(a.teacher_gate.read_text())
         if a.gate_plan is None:raise ValueError('frozen measured gate plan required')
         source_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-        proof=recording_admission(gate,source_sha=source_sha,teacher_profile=a.teacher_profile,gate_plan=a.gate_plan,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set)
+        proof=recording_admission(gate,source_sha=source_sha,teacher_profile=a.teacher_profile,gate_plan=a.gate_plan,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery)
         proof['gate_sha256']=hashlib.sha256(a.teacher_gate.read_bytes()).hexdigest()
         if not a.recording_probe:
             if a.recording_check is None:raise ValueError('paired 640x480 recording-mode check required')
             check=json.loads(a.recording_check.read_text())
-            if check.get('qualified') is not True or check.get('N',0)<3 or check.get('n')!=check.get('N') or check.get('source_sha')!=source_sha or check.get('teacher_profile')!=a.teacher_profile or check.get('teacher_stability','off')!=a.teacher_stability or check.get('teacher_search','off')!=a.teacher_search or check.get('approach_goal_set','off')!=a.approach_goal_set:
+            if check.get('qualified') is not True or check.get('N',0)<3 or check.get('n')!=check.get('N') or check.get('source_sha')!=source_sha or check.get('teacher_profile')!=a.teacher_profile or check.get('teacher_stability','off')!=a.teacher_stability or check.get('teacher_search','off')!=a.teacher_search or check.get('approach_goal_set','off')!=a.approach_goal_set or check.get('nominal_blocked_handoff','off')!=a.nominal_blocked_handoff or check.get('approach_progress','off')!=a.approach_progress or check.get('approach_recovery','off')!=a.approach_recovery:
                 raise ValueError('unverified recording-mode equivalence')
             same_machine(check.get('execution_host'),host)
             proof['recording_check_sha256']=hashlib.sha256(a.recording_check.read_bytes()).hexdigest()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery),ensure_ascii=False))
 if __name__=='__main__':main()

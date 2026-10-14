@@ -1,0 +1,119 @@
+{
+  "scope": "local saved-input diagnostics and proposed teacher source; not new physical success",
+  "baseline_diagnostic": {
+    "sha": "bf31840fe16cd2d37631d8a8e50ff077e3d42575",
+    "success": 8,
+    "N": 10,
+    "grasp_entered": 8,
+    "grasp_success": 8,
+    "pool_with_5644e3dd": false
+  },
+  "beam_merge": "793865d20475098f96f6966edf8ea1ccba058f6d",
+  "candidate_mode": "crate_approach_recovery_v1",
+  "input_audit": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "replay": {
+    "scope": "all baseline grasp commands; candidate only through first divergence; no new physical result",
+    "physics_steps": 0,
+    "render_calls": 0,
+    "remote_calls": 0,
+    "baseline_commands_verified": 8368,
+    "successful_unchanged": [
+      77970,
+      77974,
+      77975,
+      77977
+    ],
+    "successful_changed": [
+      77971,
+      77972,
+      77973,
+      77976
+    ],
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "success_command_changes": {
+    "unchanged_seeds": [
+      77970,
+      77974,
+      77975,
+      77977
+    ],
+    "unchanged_commands": 2458,
+    "total_success_commands": 5078,
+    "changed_seed_count": 4,
+    "first_changed_command_count": 4,
+    "after_first_divergence": "unmeasured; saved future observations excluded"
+  },
+  "local_tests": {
+    "passed": 94,
+    "failed": 0,
+    "files": [
+      "tests/test_crate_approach_recovery.py",
+      "tests/test_crate_antipodal.py",
+      "tests/test_grasp_act_goal_set.py"
+    ],
+    "junit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate10-audit/tests.xml",
+      "sha256": "35690c5947ed38e6f30a559c139510f07cdb11ff0e89df8c0554bf780c8236fb"
+    }
+  },
+  "artifacts": {
+    "crate10-replay.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate10-replay.json",
+      "sha256": "be0259560b69ee76a67fc2b6d878164b8de92d6c8ba8aecba1b176a20700c8d1"
+    },
+    "crate10-source-hashes.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate10-source-hashes.json",
+      "sha256": "29a5f78c00984800f1b9d1029c15e2b0a1a1f09f3fee088db5afa0ad3bd3dd3e"
+    },
+    "crate10-visual-review.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate10-visual-review.json",
+      "sha256": "15ae641d6977c8692747d8220c79f84e36994959e9fa15544ed5c7838cfc2c7a"
+    },
+    "crate10-analysis.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate10-analysis.json",
+      "sha256": "952edf9b91ef91910d0f633c9c468c2614674732b7e5b62e7d814405cfdf9d49"
+    },
+    "crate10-motion-eval.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate10-motion-eval.json",
+      "sha256": "58aea31eac18fedc30cf11e2c21632103046a2892e8750fcbdb5312efb0a99a9"
+    },
+    "crate10-seed-reservation.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/experiments/2026-10-14-crate-teacher/crate10-seed-reservation.json",
+      "sha256": "2e1b494cbf337987985e0ce8959c331224fb3d4f22ace8296b36103dc1175e00"
+    },
+    "crate10-visible-approach.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/crate-teacher/tests/fixtures/crate10-visible-approach.json",
+      "sha256": "bdd25e634d6d291d45c095a88a9e040485e2bd7d2274347294ab6ced3ed8c225"
+    }
+  },
+  "local_full_traces": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate10-audit/77969-baseline.json.zst",
+      "sha256": "df92d1ccc4d8f1de0c27a670ef3ea5eb85b938f6d5f97db74c97346de95975f7",
+      "decoded_sha256": "fafd97e15720ae6a190eafd322edf986d4fd0dcc04cc36bac899d4d03dc14b07"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate10-audit/77978-baseline.json.zst",
+      "sha256": "ba86abc796d707282045630ed67fd0a289f0f450497623816c1aa8924e51a837",
+      "decoded_sha256": "4d400eae733023072f1c97ee8c178a2bc265761ea1812c80c9b69473a6ac2852"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate10-audit/77979-baseline.json.zst",
+      "sha256": "43d94c8d888b3d9e6b40f7e420b09bccd62a6cc8ecbb96cf8a9921283aef99fe",
+      "decoded_sha256": "1bed00aaf94a82b1ee7f89d2fe3eaf9ad341d62a9b9c30913e31df00cb75d5d3"
+    }
+  ],
+  "remote_calls": 0,
+  "physics_steps": 0,
+  "render_calls": 0,
+  "remaining_unverified": [
+    "New GCP physical approach/grasp/hold/release and audit/velocity/collision regression; 4/8 prior successes change commands.",
+    "77978 has no statically safe antipodal stance in the saved view; clean handoff is failure and cannot authorize gate.",
+    "Remote seed reservations, GCP credit stop, disk/speed/concurrency admission and coordinator approval."
+  ]
+}

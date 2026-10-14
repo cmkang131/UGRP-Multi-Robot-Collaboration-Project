@@ -1,0 +1,275 @@
+{
+  "scope": "isolated archived visible-input slices; not a candidate trajectory after pair divergence",
+  "cases": [
+    {
+      "seed": 77969,
+      "rid": "r2",
+      "end": "blue",
+      "world": {
+        "t": 11.29999999999634,
+        "robots": {
+          "r2": {
+            "pose": [
+              0.7393705076411452,
+              -0.30342741803694306,
+              0.5462598762979869
+            ]
+          }
+        },
+        "objects": {
+          "crate_1": {
+            "xy": [
+              0.8105634947590227,
+              -0.0793069541652345
+            ],
+            "radius": 0.132766809568717,
+            "top_z_bound_m": 0.1210679604372565
+          }
+        },
+        "walls": [],
+        "beam": {
+          "pose": [
+            0.8105634947601277,
+            -0.07930695417318895,
+            -1.4327976686194006
+          ],
+          "ends": {
+            "teal": [
+              0.7968073871783353,
+              0.019742374467636048,
+              0.02396362461438885
+            ],
+            "blue": [
+              0.82431960234192,
+              -0.17835628281401394,
+              0.02396362461438885
+            ]
+          },
+          "source": "visible band + known rigid shape",
+          "seen_t": 11.29999999999634
+        },
+        "visibility": {
+          "r2": {
+            "visible_probes": 9,
+            "objects": [
+              "crate_1"
+            ],
+            "peers": []
+          }
+        },
+        "scope": "visible_only; remembered objects expire at student memory horizon"
+      },
+      "baseline_command": {
+        "t": 11.29999999999634,
+        "wheels": [
+          0.35,
+          0.35,
+          -0.35,
+          0.35
+        ],
+        "duration_s": [
+          0.043057755600755386,
+          0.018313423401583716,
+          0.03740086231270201,
+          0.09877204131504111
+        ],
+        "pwm": {
+          "1": 2000,
+          "3": 500,
+          "4": 2500,
+          "5": 1320,
+          "6": 1890
+        }
+      },
+      "phase": "approach",
+      "folded": true,
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77969-5644e3dd/raw/eval-only.jsonl.zst",
+        "sha256": "ec5d0a5ab21fa02dcd27e5c1da736007a99caf99e0776b75c23701efe9c8d487",
+        "tick": 95
+      }
+    },
+    {
+      "seed": 77978,
+      "rid": "r1",
+      "end": "teal",
+      "world": {
+        "t": 11.899999999994941,
+        "robots": {
+          "r1": {
+            "pose": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "objects": {
+          "crate_1": {
+            "xy": [
+              0.6629635896803105,
+              0.8188187073047374
+            ],
+            "radius": 0.1327668095687223,
+            "top_z_bound_m": 0.12106796043725646
+          }
+        },
+        "walls": [
+          [
+            0.9708745528879179,
+            -1.6329679642049124,
+            3.25,
+            0.025,
+            1.5342193433436881
+          ]
+        ],
+        "beam": {
+          "pose": [
+            0.6629635896882797,
+            0.8188187073037022,
+            3.012437376689073
+          ],
+          "ends": {
+            "teal": [
+              0.7621306941771288,
+              0.8059390571804381,
+              0.02396362461436745
+            ],
+            "blue": [
+              0.5637964851994307,
+              0.8316983574269663,
+              0.02396362461436745
+            ]
+          },
+          "source": "visible band + known rigid shape",
+          "seen_t": 11.899999999994941
+        },
+        "visibility": {
+          "r1": {
+            "visible_probes": 5,
+            "objects": [
+              "crate_1"
+            ],
+            "peers": []
+          }
+        },
+        "scope": "visible_only; remembered objects expire at student memory horizon"
+      },
+      "baseline_command": {
+        "t": 11.899999999994941,
+        "wheels": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "duration_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pwm": {
+          "1": 2000,
+          "3": 820,
+          "4": 2320,
+          "5": 1320,
+          "6": 1940
+        }
+      },
+      "phase": "approach",
+      "folded": true,
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77978-bf31840f/raw/eval-only.jsonl.zst",
+        "sha256": "f7164d46d60f7953f1bc390be789f84e503272747af0c39bbc750513fbdfcb02",
+        "tick": 101
+      }
+    },
+    {
+      "seed": 77979,
+      "rid": "r1",
+      "end": "teal",
+      "world": {
+        "t": 10.699999999997738,
+        "robots": {
+          "r1": {
+            "pose": [
+              0.6522248871844893,
+              -0.4025108994789222,
+              0.40050986085761664
+            ]
+          }
+        },
+        "objects": {
+          "crate_1": {
+            "xy": [
+              0.7211645742202435,
+              -0.19050749091659197
+            ],
+            "radius": 0.13276680956871934,
+            "top_z_bound_m": 0.1210679604372565
+          }
+        },
+        "walls": [],
+        "beam": {
+          "pose": [
+            0.7230115692206013,
+            -0.19140313488113994,
+            1.984133922249264
+          ],
+          "ends": {
+            "teal": [
+              0.7631783772635897,
+              -0.28298166692679855,
+              0.02396362467725208
+            ],
+            "blue": [
+              0.6828447611776128,
+              -0.09982460283548132,
+              0.02396362467725208
+            ]
+          },
+          "source": "visible band + known rigid shape",
+          "seen_t": 10.699999999997738
+        },
+        "visibility": {
+          "r1": {
+            "visible_probes": 8,
+            "objects": [],
+            "peers": []
+          }
+        },
+        "scope": "visible_only; remembered objects expire at student memory horizon"
+      },
+      "baseline_command": {
+        "t": 10.699999999997738,
+        "wheels": [
+          0.35,
+          0.35,
+          -0.35,
+          0.35
+        ],
+        "duration_s": [
+          0.061999467749985535,
+          0.029891321307961308,
+          0.008109210942053155,
+          0.1
+        ],
+        "pwm": {
+          "1": 2000,
+          "3": 500,
+          "4": 2500,
+          "5": 1320,
+          "6": 1740
+        }
+      },
+      "phase": "approach",
+      "folded": true,
+      "source": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77979-bf31840f/raw/eval-only.jsonl.zst",
+        "sha256": "cb9abbd2ff7d927da0a1ea12edf518bc469ee9c2d0b84b24012910e5ea3d09cd",
+        "tick": 89
+      }
+    }
+  ]
+}

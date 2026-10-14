@@ -34,18 +34,20 @@ HOLD_S = 3.
 LIFT_FORCE_N = .5
 
 
-def make_grasp_teacher(rid, end, pwm, *, teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off'):
+def make_grasp_teacher(rid, end, pwm, *, teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off', crate_approach_recovery='off'):
     from sim.crate_grasp_teacher import CrateGraspTeacher
     return CrateGraspTeacher(rid, end, pwm, bounds=(-20, 20, -20, 20), profile=CRATE,
                              teacher_stability=teacher_stability, teacher_search=teacher_search,
-                             approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose)
+                             approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose,
+                             crate_approach_recovery=crate_approach_recovery)
 
 
-def run_meta(plan, sha, pr, crate_lift_pose):
+def run_meta(plan, sha, pr, crate_lift_pose, crate_approach_recovery='off'):
     """Execution identity, also available to offline metadata tests."""
     return {'class': 'dev', 'pr': pr, 'branch': 'claude/act-crate-teacher', 'sha': sha,
             'batch': plan['batch'], 'cargo_scene_version': plan['cargo_scene_version'],
-            'crate_lift_pose': crate_lift_pose, 'lug_color_scene': plan.get('lug_color_scene', 'off')}
+            'crate_lift_pose': crate_lift_pose, 'crate_approach_recovery': crate_approach_recovery,
+            'lug_color_scene': plan.get('lug_color_scene', 'off')}
 
 
 def release_ready(command_complete, settled_s, verdicts):
@@ -150,7 +152,10 @@ def held_lugs(world, inst, roles, profile=CRATE):
 def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', observe_mode='gaze_v2', render_dr='off',
         zone_slots='floor', reach_mode='calibrated_mid_v1', held_object='visible_v0', lookaround='off',
         execution_host=None, pr=None, crate_scene='catalogue_v1', rgb_lift='off',
-        teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off'):
+        teacher_stability='off', teacher_search='off', approach_goal_set='off', crate_lift_pose='off', crate_approach_recovery='off'):
+    from sim.crate_approach_recovery import MODES as CRATE_APPROACH_MODES
+    if crate_approach_recovery not in CRATE_APPROACH_MODES:
+        raise ValueError('unknown crate approach recovery')
     for name, value, allowed in (('observe_mode', observe_mode, OBSERVE_MODES), ('zone_slots', zone_slots, ZONE_SLOT_MODES),
                                  ('reach_mode', reach_mode, REACH_MODES), ('lookaround', lookaround, LOOKAROUND_MODES)):
         if value not in allowed:
@@ -160,7 +165,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     # Validate modes before any physics or output creation.
     make_grasp_teacher('r1', 'teal', {1: 1500, 3: 820, 4: 2320, 5: 1320, 6: 1500},
                        teacher_stability=teacher_stability, teacher_search=teacher_search,
-                       approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose)
+                       approach_goal_set=approach_goal_set, crate_lift_pose=crate_lift_pose,
+                       crate_approach_recovery=crate_approach_recovery)
     if crate_lift_pose != 'off' and (crate_scene != 'crate_mass_025_v1' or reach_mode != 'pad_window_v2'):
         raise ValueError('crate lift planning requires crate_mass_025_v1 and pad_window_v2')
     if lookaround != 'off' and own_pose_source == 'commands':
@@ -172,6 +178,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     if len(set(plan['roles'].values())) != 2 or set(plan['roles']) != {'r1', 'r2'}:
         raise ValueError('two robots on two different lugs required')
     audit = HeldAudit(held_object)
+    from harness.grasp_act_input_audit import AuditedTeacherInput, new_input_audit
+    boundary_audit = new_input_audit(True, 'issued')
     if platform.system() == 'Darwin':
         raise RuntimeError('Mac physics/render disabled; use an admitted execution host')
     import numpy as np
@@ -197,14 +205,14 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
     sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     if subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT):
         raise RuntimeError('committed source required')
-    write(out/'RUN_META.json', run_meta(plan, sha, pr, crate_lift_pose))
+    write(out/'RUN_META.json', run_meta(plan, sha, pr, crate_lift_pose, crate_approach_recovery))
     report = {'status': 'running', 'source_sha': sha, 'teacher': 'crate_visible_only_v1', 'object_kind': 'heavy_crate',
               'own_pose_source': own_pose_source, 'observe_mode': observe_mode, 'zone_slots': zone_slots,
               'reach_mode': reach_mode, 'held_object': held_object, 'lookaround': lookaround,
               'lug_color_scene': plan.get('lug_color_scene', 'off'), 'cargo_scene_version': plan['cargo_scene_version'],
               'rgb_lift': rgb_lift, 'assignment_source': plan['assignment_source'],
               'teacher_stability': teacher_stability, 'teacher_search': teacher_search, 'approach_goal_set': approach_goal_set,
-              'crate_lift_pose': crate_lift_pose,
+              'crate_lift_pose': crate_lift_pose, 'crate_approach_recovery': crate_approach_recovery,
               'lift_confirmation': 'own issued lift + own RGB; unconfirmed/unknown stops before release',
               'execution_host': execution_host, 'weld': 'off', 'recording_mode': 'success_measurement',
               'student_execution': False, 'success_rule': SUCCESS,
@@ -294,7 +302,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
             previous[rid] = v5.command({'t': origin, 'wheels': [0.]*4, 'duration_s': [0.]*4, 'pwm': pwm})
             teachers[rid] = make_grasp_teacher(rid, end, pwm, teacher_stability=teacher_stability,
                                                teacher_search=teacher_search, approach_goal_set=approach_goal_set,
-                                               crate_lift_pose=crate_lift_pose)
+                                               crate_lift_pose=crate_lift_pose, crate_approach_recovery=crate_approach_recovery)
             models[rid] = VisibleWorld(rid, end, pose_source='issued', profile=CRATE)
             clocks[rid] = v5.IssuedClock()
         i = 0
@@ -339,7 +347,7 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
                 v = truth['visibility'][rid]
                 v['any_probe_visible'] = v['visible']
                 v['visible'] = v['visible_probes'] >= 5
-                perceived[rid] = models[rid].observe(ms, now)
+                perceived[rid] = AuditedTeacherInput(models[rid].observe(ms, now), boundary_audit)
             timings['evaluation'] += time.monotonic()-at
             if i % 10 == 0:
                 frames(i, 'grasp')
@@ -822,6 +830,8 @@ def run(plan, out, *, cap_s=90., grasp_cap_s=80., own_pose_source='commands', ob
         report['sim_s'] = None if world is None else float(world.data.time)-origin
         report['loadavg_at_end'] = os.getloadavg()
         report['input_audit'] = audit.record()
+        report['input_audit']['held_world_reads'] += boundary_audit['held_world_reads']
+        report['input_audit']['teacher_boundary'] = boundary_audit
         if isinstance(report.get('release_teachers'), dict):
             report['input_audit']['visibility_by_phase'] = {r: t.get('visible_counts_by_phase') for r, t in report['release_teachers'].items()}
             report['input_audit']['max_destination_blind_s_by_phase'] = {r: t.get('max_destination_blind_s_by_phase') for r, t in report['release_teachers'].items()}
@@ -947,6 +957,8 @@ def main():
     p.add_argument('--teacher-stability', choices=('off', 'align_relook_v1'), default='off')
     p.add_argument('--teacher-search', choices=('off', 'search_body_scan_v1', 'search_body_scan_v2', 'search_reacquire_v1'), default='off')
     p.add_argument('--approach-goal-set', choices=('off', 'approach_goal_set_v1'), default='off')
+    from sim.crate_approach_recovery import MODES as CRATE_APPROACH_MODES
+    p.add_argument('--crate-approach-recovery', choices=CRATE_APPROACH_MODES, default='off')
     p.add_argument('--execution-host', choices=('azure', 'gcp1'), default='gcp1')
     p.add_argument('--pr', type=int, default=None)
     a = p.parse_args()
@@ -960,7 +972,8 @@ def main():
                          held_object=a.held_object, lookaround=a.setdown_lookaround, execution_host=host, pr=a.pr,
                          crate_scene=a.crate_scene, rgb_lift=a.rgb_lift,
                          teacher_stability=a.teacher_stability, teacher_search=a.teacher_search,
-                         approach_goal_set=a.approach_goal_set, crate_lift_pose=a.crate_lift_pose),
+                         approach_goal_set=a.approach_goal_set, crate_lift_pose=a.crate_lift_pose,
+                         crate_approach_recovery=a.crate_approach_recovery),
                      ensure_ascii=False, default=str))
 
 

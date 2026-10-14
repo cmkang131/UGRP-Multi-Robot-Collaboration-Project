@@ -22,9 +22,13 @@ def geometry(world, rid, end, choice):
     return pose, point, heading, goal
 
 
-def nominal_goal_blocked(world, rid, end, bounds, folded, *, profile=None):
+def nominal_goal_blocked(world, rid, end, bounds, folded, *, profile=None, static_map_only=False):
     """Only static obstruction enables alternatives; preserve peer waiting."""
-    radius, discs, rects = constraints(world, rid, folded, profile)
+    source = ({'robots': {rid: world['robots'][rid]}, 'objects': {},
+               'beam': world['beam'], 'walls': world.get('walls', [])}
+              if static_map_only else world)
+    radius, discs, rects = constraints(source, rid, folded, profile)
+    if static_map_only:discs = []
     goal = geometry(world, rid, end, (0., STATION_M))[3]
     x0, x1, y0, y1 = bounds
     return (not (x0+radius <= goal[0] <= x1-radius and y0+radius <= goal[1] <= y1-radius)

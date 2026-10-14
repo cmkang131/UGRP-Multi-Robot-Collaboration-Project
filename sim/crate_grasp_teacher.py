@@ -23,7 +23,14 @@ LIFT_WAIT_LIMIT_S = 20.
 
 
 class CrateGraspTeacher(VisibleOnlyGraspTeacher):
-    def __init__(self, *args, profile=CRATE, crate_lift_pose='off', **kwargs):
+    def __init__(self, *args, profile=CRATE, crate_lift_pose='off', crate_approach_recovery='off', **kwargs):
+        from sim.crate_approach_recovery import MODES, OPTION
+        if crate_approach_recovery not in MODES:
+            raise ValueError(f'crate_approach_recovery: {crate_approach_recovery}')
+        if crate_approach_recovery == OPTION:
+            if crate_lift_pose != ANTIPODAL_OPTION:
+                raise ValueError('crate approach recovery requires antipodal grasp')
+            kwargs.update(approach_progress='approach_progress_v1', approach_recovery='approach_recovery_v1')
         if crate_lift_pose not in LIFT_POSE_MODES:
             raise ValueError(f'crate_lift_pose: {crate_lift_pose}')
         super().__init__(*args, **kwargs)
@@ -35,7 +42,11 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         self.lift_selection = None
         self.lift_prefix = None
         self.approach_excluded = set()
-        self.approach_progress = None
+        # Separate from the common parent's approach_progress mode string.
+        self.crate_visible_progress = None
+        self.crate_last_visible_t = None
+        self.crate_approach_recovery = crate_approach_recovery
+        self.crate_recovery_log = []
         if crate_lift_pose == ANTIPODAL_OPTION:
             from sim.crate_antipodal import visible_grasp
             self.approach_grasp_filter = lambda world, pose: visible_grasp(
@@ -54,7 +65,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             # the existing collision-checked alternative-goal planner.
             self.approach_excluded.add(self.approach_choice)
             self.approach_plan_valid = False
-            self.approach_progress = None
+            self.crate_visible_progress = None
             self.next_plan = now
         return super()._begin_relook(now, reason)
 
@@ -63,11 +74,59 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 and truth['beam'] is not None and truth['visibility'][self.rid]['visible_probes'] >= 5):
             pose, _, _, goal = self._geometry(truth)
             error = math.dist(pose[:2], goal)
-            if self.approach_progress is None or error < self.approach_progress[0]-.005:
-                self.approach_progress = (error, now)
-            elif now-self.approach_progress[1] >= 3.:
+            if (self.crate_approach_recovery != 'off'
+                    and (self.crate_last_visible_t is None or now-self.crate_last_visible_t > .15)):
+                self.crate_visible_progress = None
+            self.crate_last_visible_t = now
+            if self.crate_visible_progress is None or error < self.crate_visible_progress[0]-.005:
+                self.crate_visible_progress = (error, now)
+            elif now-self.crate_visible_progress[1] >= 3.:
                 return self._begin_relook(now, 'crate_approach_no_visible_progress_3s')
         return super()._approach(truth, now)
+
+    def _plan_approach(self, world, now):
+        valid = super()._plan_approach(world, now)
+        if (self.crate_approach_recovery != 'off' and not valid and self.goal_set_log
+                and self.goal_set_log[-1]['t'] == now):
+            candidates = self.goal_set_log[-1]['candidates']
+            # Every geometrically legal stance is statically occupied: give
+            # navigation an explicit handoff, rather than scanning for 30 s.
+            # Never call a peer, path/grid failure or excluded stance static.
+            from sim.grasp_act_visible_route import constraints, free
+            from scripts.zone_teacher import PeerDisc
+            radius, discs, rects = constraints(world, self.rid, self.folded_ready, self.cargo_profile)
+            fixed = [d for d in discs if not isinstance(d, PeerDisc)]
+            legal = [c for c in candidates if c['reason'] != 'grasp_geometry']
+            if legal and all(c['reason'] == 'blocked_goal' and not free(c['goal'], fixed, rects, radius)
+                             for c in legal):
+                self._approach_handoff(now)
+                self.crate_recovery_log.append({'t': now, 'recovery': 'static_stances_blocked_handoff'})
+        return valid
+
+    def _check_navigation_pulse(self, truth, value, now):
+        # A held or invisible assigned lug is never read by this correction.
+        if (self.crate_approach_recovery == 'off' or self.phase not in ('approach', 'align', 'ready')
+                or truth['visibility'][self.rid]['visible_probes'] < 5 or truth['beam'] is None):
+            return value
+        from sim.crate_approach_recovery import safe_pulse
+        from sim.grasp_act_visible_route import constraints, waypoint, drive
+        pose, g, _, goal = self._geometry(truth)
+        radius, discs, rects = constraints(truth, self.rid, self.folded_ready, self.cargo_profile)
+        if safe_pulse(value, pose, discs, rects, radius):
+            return value
+        # Use the same collision-checked route with yaw decoupled. Recheck
+        # the quantized wheel pulse too; no untested fallback can be issued.
+        target = waypoint(pose[:2], self.path, discs, rects, radius)
+        if target is not None:
+            effort = drive(pose, goal, target, g)
+            effort['turn'] = 0.
+            candidate = self._continuous(now, **effort)
+            if any(candidate['wheels']) and safe_pulse(candidate, pose, discs, rects, radius):
+                self.crate_recovery_log.append({'t': now, 'recovery': 'safe_translation_without_yaw'})
+                return candidate
+        self.crate_recovery_log.append({'t': now, 'recovery': 'unsafe_pulse_hold_replan'})
+        self.path = []; self.path_goal = None; self.next_plan = now
+        return self._hold(now)
 
     def ready_geometry(self, truth):
         if not super().ready_geometry(truth):
@@ -155,6 +214,9 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
             self.local_seen = propagate_owned(self.local_seen, self.last_command, min(.1, now-self.last_tick))
         value, done = self._step(truth, now, permit_pick=permit_pick, permit_lift=permit_lift)
+        value = self._check_navigation_pulse(truth, value, now)
+        if self.phase in ('align', 'ready', 'pick', 'closed', 'lift', 'complete'):
+            self.progress.reset()
         self.last_command = deepcopy(value)
         self.last_tick = now
         return value, done
@@ -185,6 +247,8 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
 
     def diagnostic(self):
         return {**super().diagnostic(), 'profile': 'visible_only_crate', 'lift_barrier': True,
+                'crate_approach_recovery': self.crate_approach_recovery,
+                'crate_recovery_log': self.crate_recovery_log,
                 'closed_at': self.closed_at, 'lift_done': self.lift_done,
                 'crate_lift_pose': self.crate_lift_pose, 'lift_pose_selection': self.lift_selection,
                 **({'excluded_stalled_stances': sorted(self.approach_excluded)}

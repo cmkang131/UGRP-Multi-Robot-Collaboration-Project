@@ -21,9 +21,9 @@ def saved():
     return row,world
 
 
-def teacher(row, mode='approach_goal_set_v1'):
+def teacher(row, mode='approach_goal_set_v1', **kwargs):
     t=VisibleOnlyGraspTeacher(row['rid'],row['end'],row['pwm'],bounds=(-20,20,-20,20),
-        teacher_stability='align_relook_v1',teacher_search='search_body_scan_v2',approach_goal_set=mode)
+        teacher_stability='align_relook_v1',teacher_search='search_body_scan_v2',approach_goal_set=mode,**kwargs)
     t.folded_ready=True
     return t
 
@@ -54,6 +54,22 @@ def test_episode030_issued_replay_single_goal_blocked_but_goal_set_has_safe_path
     assert ready and new.approach_choice[0]!=0
 
 
+def test_gcp_ep006_full_candidate_ledger_has_nine_feasible_stances():
+    from collections import Counter
+    row=json.loads((Path(__file__).parent/'fixtures/grasp_act_77ee_ep006_goal_set.json').read_text())
+    w=row['world'];t=teacher(row)
+    selected,checked=select_goal(w,'r1','teal',t.bounds,True)
+    assert Counter(c['reason'] for c in checked)=={'blocked_goal':30,'feasible':9}
+    assert len(checked)==len(row['candidates'])==39
+    for actual,expected in zip(checked,row['candidates']):
+        assert actual['reason']==expected['reason']
+        assert actual['goal']==pytest.approx(expected['goal'],abs=1e-12)
+    assert selected['choice']==pytest.approx(row['selected']['choice'],abs=1e-12)
+    assert selected['cost']==pytest.approx(row['selected']['cost'],abs=1e-12)
+    value,_=t._approach(w,w['t'])
+    assert any(value['wheels']) and t.approach_blocked_since is None and t.outcome is None
+
+
 def test_all_goals_blocked_handoff_in_three_seconds_and_terminal_hold():
     row,w=saved();t=teacher(row);end=w['beam']['ends']['teal']
     w['objects']['visible_obstacle']={'xy':end[:2],'radius':.6,'top_z_bound_m':.4}
@@ -72,6 +88,39 @@ def test_lost_view_cannot_reset_blocked_deadline():
     t._approach(w,w['t'])
     value,_=t.step({'beam':None},w['t']+3.)
     assert t.outcome=='approach_blocked_handoff' and not any(value['wheels'])
+
+
+@pytest.mark.parametrize('phase',['approach','align','ready'])
+def test_static_clearance_cannot_bypass_pending_peer_block(phase):
+    row,w=saved();t=teacher(row)
+    w['objects']['block']={'xy':w['beam']['ends']['teal'][:2],'radius':.6,'top_z_bound_m':.4}
+    t._approach(w,w['t'])
+    # The static obstruction clears, but a peer now covers every stance.
+    # The former _uses_goal_set=False reset lost the deadline here; at the
+    # nominal stance it also permitted READY despite that dynamic occupancy.
+    w['walls']=[];w['objects']={}
+    pose,end,heading,goal=t._geometry(w)
+    w['robots']['r1']['pose']=[*goal,heading]
+    w['robots']['r2']['pose']=[*end[:2],0.]
+    assert not nominal_goal_blocked(w,'r1','teal',t.bounds,True)
+    t.phase=phase;t.started=True;t.skill_started=w['t'];t.phase_t=w['t']
+    assert not t.ready_geometry(w)
+    t.prepare_signal(w,w['t']+.1)
+    for dt in (.1,1.1,2.1,3.1):
+        value,done=t.step(w,w['t']+dt,permit_pick=True)
+        assert not done and not any(value['wheels']) and t.phase not in ('ready','pick','complete')
+    assert t.outcome=='approach_blocked_handoff' and not t.prepare_signal(w,w['t']+3.2)
+    assert len([e for e in t.events if e.get('approach')=='all_goals_blocked_handoff'])==1
+
+
+def test_align_cannot_use_an_invalid_goal_set_plan():
+    row,w=saved();t=teacher(row)
+    t.approach_choice=(math.pi/2,.208)
+    _,_,heading,goal=t._geometry(w);w['robots']['r1']['pose']=[*goal,heading]
+    t.phase='align';t.approach_plan_valid=False
+    assert not t.ready_geometry(w)
+    _,ready=t._approach(w,w['t'])
+    assert t.approach_plan_valid and not ready
 
 
 @pytest.mark.parametrize('use_step',[False,True])
@@ -106,8 +155,9 @@ NOMINAL_CASES=json.loads((Path(__file__).parent/'fixtures/grasp_act_nominal_regr
 
 
 @pytest.mark.parametrize('row',NOMINAL_CASES,ids=lambda r:f"{r['episode']}-{r['rid']}-{r['kind']}")
-def test_six_baseline_starts_and_late_divergences_preserve_frozen_decisions(row):
-    w=row['world'];t=teacher(row);expected=row['expected']
+@pytest.mark.parametrize('handoff',['off','nominal_blocked_handoff_v1'])
+def test_six_baseline_starts_and_late_divergences_preserve_frozen_decisions(row,handoff):
+    w=row['world'];t=teacher(row,nominal_blocked_handoff=handoff);expected=row['expected']
     assert not nominal_goal_blocked(w,row['rid'],row['end'],t.bounds,True)
     value,ready=t._approach(w,w['t'])
     # This includes clear direct routes, A* grid segments rejected by v1,
@@ -118,6 +168,61 @@ def test_six_baseline_starts_and_late_divergences_preserve_frozen_decisions(row)
     assert t.phase==expected['phase']
     assert (t.planner_calls,t.no_path_calls)==(expected['planner_calls'],expected['no_path_calls'])
     assert t.approach_choice==(0.,.203) and not t.goal_set_log
+
+
+@pytest.mark.parametrize('phase',['approach','align','ready','search'])
+def test_episode030_nominal_map_block_hands_off_before_any_alternative(monkeypatch,phase):
+    import sim.grasp_act_goal_set as goals
+    from scripts.run_grasp_act_teacher import finalize_outcomes
+    from scripts.run_grasp_act_batch import handoff_only,FailureStop,summarize
+    row,w=saved();t=teacher(row,nominal_blocked_handoff='nominal_blocked_handoff_v1')
+    t.phase=phase;t.started=True;t.phase_t=w['t'];t.skill_started=w['t']
+    # A feasible alternative must not be considered under the new contract.
+    assert select_goal(w,t.rid,t.end,t.bounds,True)[0] is not None
+    monkeypatch.setattr(goals,'select_goal',lambda *a,**kw:pytest.fail('alternative selected'))
+    assert not t.prepare_signal(w,w['t'])
+    issued,done=t.step(w,w['t'],permit_pick=True)
+    assert not done and not any(issued['wheels']) and t.outcome=='approach_blocked_handoff'
+    assert not t.goal_set_log and t.nominal_handoff_log[0]['t']==w['t']
+    assert not t.diagnostic()['alternative_goal_path_enabled']
+    peer=SimpleNamespace(outcome=None,command_complete=False)
+    finalize_outcomes({'r1':t,'r2':peer},strict=True,joint_held=False)
+    result={'status':'complete','physical_success':False,'approach_handoff':True,
+            'teachers':{'r1':t.diagnostic(),'r2':vars(peer)}}
+    assert handoff_only(result) and not FailureStop('repeated_cause_v1').observe(6,result)
+    assert summarize([result],40)['n']==0 and summarize([result],40)['N']==1
+
+
+def test_nominal_map_predicate_ignores_cargo_and_peer_but_checks_bounds():
+    row,w=saved();w['walls']=[]
+    t=teacher(row,nominal_blocked_handoff='nominal_blocked_handoff_v1')
+    w['objects']['block']={'xy':w['beam']['ends'][t.end][:2],'radius':1.,'top_z_bound_m':.4}
+    assert nominal_goal_blocked(w,t.rid,t.end,t.bounds,True)
+    assert not nominal_goal_blocked(w,t.rid,t.end,t.bounds,True,static_map_only=True)
+    t._approach(w,w['t'])
+    assert t.outcome is None and not t.goal_set_log
+    assert nominal_goal_blocked(w,t.rid,t.end,(0.,.01,0.,.01),True,static_map_only=True)
+
+
+def test_fresh_gate_map_handoff_distribution_reports_original_exclusions():
+    from scripts.make_grasp_act_plan import prepare,nominal_start_blocked_roles
+    from harness.zone_final_environment import resolve
+    original=prepare(count=40,seed=86000,visible_start=True)
+    plan=prepare(count=40,seed=86000,visible_start=True,start_nominal_goal_feasible='start_nominal_goal_feasible_v1')
+    report=plan['nominal_goal_filter']
+    bad=[r['seed'] for r in original['episodes'] if nominal_start_blocked_roles(r,resolve(r['map_id'])[0])]
+    assert report['original_blocked_n']==len(bad)>0
+    assert report['original_planned_N']==40 and report['original_blocked_rate']==len(bad)/40
+    assert [r['seed'] for r in report['original_blocked_starts']]==bad
+    assert report['rejected_proposals_n']==plan['rejected_proposals']['start_nominal_goal_blocked']
+    assert sum(r['nominal_goal_rejected_proposals'] for r in plan['episodes'])==report['rejected_proposals_n']
+    assert [r['seed'] for r in plan['episodes']]==list(range(86000,86040))
+    assert all(not nominal_start_blocked_roles(r,resolve(r['map_id'])[0]) for r in plan['episodes'])
+    for row in plan['episodes']:
+        if row['seed'] not in bad:
+            before=next(r for r in original['episodes'] if r['seed']==row['seed'])
+            assert row['beam_pose']==before['beam_pose'] and row['spawns']==before['spawns']
+    with pytest.raises(ValueError):prepare(count=1,start_nominal_goal_feasible='unknown')
 
 
 def test_peer_only_block_waits_without_changing_stance_or_starting_handoff():
@@ -159,11 +264,17 @@ def test_new_handoff_retains_denominator_and_independent_failure():
 
 
 def test_goal_set_requires_named_stability_and_valid_toggle():
-    for kwargs in ({'approach_goal_set':'bogus'}, {'approach_goal_set':'approach_goal_set_v1'}):
+    for kwargs in ({'approach_goal_set':'bogus'}, {'approach_goal_set':'approach_goal_set_v1'},
+                   {'nominal_blocked_handoff':'unknown'},{'nominal_blocked_handoff':'nominal_blocked_handoff_v1'}):
         with pytest.raises(ValueError):VisibleOnlyGraspTeacher('r1','teal',FOLDED,bounds=(-20,20,-20,20),**kwargs)
 
 
-def test_recording_gate_rejects_different_approach_profile(tmp_path):
+@pytest.mark.parametrize('key,mode,error',[
+    ('approach_goal_set','approach_goal_set_v1','approach'),
+    ('nominal_blocked_handoff','nominal_blocked_handoff_v1','nominal handoff'),
+    ('approach_progress','approach_progress_v1','approach progress'),
+    ('approach_recovery','approach_recovery_v1','approach recovery')])
+def test_recording_gate_rejects_different_approach_profile(tmp_path,key,mode,error):
     import hashlib
     from harness.grasp_act_admission import recording_admission,CRITERIA
     host={'schema':'ugrp.grasp_act.host.v1','provider':'gcp','project_id':'ugrp-act-train-1014',
@@ -175,10 +286,10 @@ def test_recording_gate_rejects_different_approach_profile(tmp_path):
           'rows':[{'status':'complete','exit':0,'physical_success':True,'source_sha':'abc',
                    'teacher_profile':'visible_only','execution_host':host} for _ in range(40)]}
     kwargs={'source_sha':'abc','teacher_profile':'visible_only','gate_plan':plan,'execution_host':host}
-    with pytest.raises(ValueError,match='approach mode'):
-        recording_admission(gate,**kwargs,approach_goal_set='approach_goal_set_v1')
-    gate['approach_goal_set']='approach_goal_set_v1'
-    with pytest.raises(ValueError,match='mixed approach'):
-        recording_admission(gate,**kwargs,approach_goal_set='approach_goal_set_v1')
-    for row in gate['rows']:row['approach_goal_set']='approach_goal_set_v1'
-    assert recording_admission(gate,**kwargs,approach_goal_set='approach_goal_set_v1')['qualified']
+    with pytest.raises(ValueError,match=error+' mode'):
+        recording_admission(gate,**kwargs,**{key:mode})
+    gate[key]=mode
+    with pytest.raises(ValueError,match='mixed '+error):
+        recording_admission(gate,**kwargs,**{key:mode})
+    for row in gate['rows']:row[key]=mode
+    assert recording_admission(gate,**kwargs,**{key:mode})['qualified']

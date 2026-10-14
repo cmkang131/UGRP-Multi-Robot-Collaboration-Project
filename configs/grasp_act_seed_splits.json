@@ -91,6 +91,12 @@
         77300,
         77339
       ]
+    ],
+    "crate_gate_v5": [
+      [
+        77400,
+        77439
+      ]
     ]
   },
   "gate_seeds_never_train": [
@@ -104,7 +110,8 @@
     "crate_gate_v2",
     "crate_gate_v3",
     "crate_diagnostic",
-    "crate_gate_v4"
+    "crate_gate_v4",
+    "crate_gate_v5"
   ],
   "heldout_maps": [
     "zone_wide_corridor_final_v3"
@@ -119,6 +126,7 @@
     "crate_diagnostic": "heavy_crate teacher diagnostics (3 runs, seen/tunable)",
     "carry_probe": "loaded-motion probes (G1 rotation, G7 carry, G2/G6 set-down-look), claude/grasp-act-release",
     "heldout_maps": "s4_narrow_door_standoff_v4 map, HELDOUT in scripts/make_grasp_act_plan.py",
-    "crate_gate_v4": "crate4 fixes, fresh 77300-77339; old 77200-77239 diagnostic only; never train"
+    "crate_gate_v4": "crate4 fixes, fresh 77300-77339; old 77200-77239 diagnostic only; never train",
+    "crate_gate_v5": "crate10 approach recovery, fresh 77400-77439; coordinator approval required after diagnostic10+reproduction3; never train"
   }
 }
