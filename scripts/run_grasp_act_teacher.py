@@ -102,7 +102,17 @@ def finalize_outcomes(teachers,*,strict,joint_held):
             t.outcome='peer_approach_handoff' if approach else 'peer_search_handoff' if search else 'episode_timeout'
 
 
-def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off"):
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off",approach_coordination="off",handoff_observation="off"):
+    if handoff_observation not in ('off','visible_handoff_v1'):
+        raise ValueError('unknown handoff observation mode')
+    if handoff_observation!='off' and (teacher_profile!='visible_only' or self_pose_source!='issued'):
+        raise ValueError('visible handoff requires visible_only and issued pose')
+    if approach_coordination not in ('off','prioritized_approach_v1'):raise ValueError('unknown approach coordination mode')
+    if approach_coordination!='off' and (teacher_profile!='visible_only' or self_pose_source!='issued' or teacher_stability!='align_relook_v1' or approach_recovery!='off' or sorted(plan.get('roles',{}).values())!=['blue','teal']):
+        raise ValueError('approach coordination requires visible_only issued baseline and one robot per end')
+    if approach_coordination!='off':
+        from sim.grasp_act_priority import require_baseline
+        require_baseline(teacher_stability,teacher_search,approach_goal_set,nominal_blocked_handoff,approach_progress,approach_recovery)
     if teacher_stability!='off' and teacher_profile!='visible_only':raise ValueError('stability mode requires visible_only')
     if teacher_search!='off' and teacher_stability=='off':raise ValueError('search mode requires teacher stability')
     if approach_goal_set!='off' and (teacher_profile!='visible_only' or teacher_stability=='off' or self_pose_source!='issued'):
@@ -137,7 +147,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
     from sim.grasp_act_port import ContinuousActPort,DutyActPort
     from sim.grasp_act_teacher_v3 import VisibleOnlyGraspTeacher
     from harness.grasp_act_visible_world import VisibleWorld
-    from harness.grasp_act_start_sync import GraspStartSync
+    from harness.grasp_act_start_sync import GraspStartSync,GraspApproachSync
     from sim.grasp_act_visible_measurements import measurements
     from harness.static_keepouts import keepout_rects
     rng=np.random.default_rng(plan['seed']);out.mkdir(parents=True,exist_ok=False)
@@ -155,7 +165,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         'episode_plan_sha256':hashlib.sha256((out/'plan.json').read_bytes()).hexdigest(),
         'physical_success':False,'teacher_profile':teacher_profile,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off',
         'self_pose_source':self_pose_source,'recording_gate_proof':recording_proof,
-        'teacher_stability':teacher_stability,'teacher_search':teacher_search,'approach_goal_set':approach_goal_set,'nominal_blocked_handoff':nominal_blocked_handoff,'approach_progress':approach_progress,'approach_recovery':approach_recovery,
+        'teacher_stability':teacher_stability,'teacher_search':teacher_search,'approach_goal_set':approach_goal_set,'nominal_blocked_handoff':nominal_blocked_handoff,'approach_progress':approach_progress,'approach_recovery':approach_recovery,'approach_coordination':approach_coordination,'handoff_observation':handoff_observation,
         'start_nominal_goal_feasible':plan.get('start_nominal_goal_feasible','off'),
         'search_handoff':False,
         'input_audit':new_input_audit(strict,self_pose_source),
@@ -193,7 +203,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         advance(until)
         origin=float(world.data.time);previous={};history={};images={};writers={};teachers={};models={};clocks={}
         delays={rid:(0. if k==0 else float(rng.uniform(0,1.5))) for k,rid in enumerate(plan['roles'])}
-        sync=GraspStartSync(plan['roles'],delays) if strict else None
+        sync=(GraspApproachSync if approach_coordination!='off' else GraspStartSync)(plan['roles'],delays) if strict else None
         report['grasp_start_delays_s']=delays if strict else {r:0. for r in plan['roles']}
         from scripts.audit_grasp_act_visibility import BandVisibility
         visibility=BandVisibility(world.model)
@@ -209,7 +219,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             initial=command({'t':origin,'pwm':pwm,**({'wheels':[0.]*4,'duration_s':[0.]*4} if strict else {'drive':[0.]*3,'duration_s':0.})})
             previous[rid]=initial;history[rid]=deque([initial]*HISTORY,maxlen=HISTORY)
             search_kw={'teacher_search':teacher_search} if teacher_search!='off' else {}
-            teachers[rid]=(VisibleOnlyGraspTeacher(rid,end,pwm,bounds=(-20,20,-20,20),teacher_stability=teacher_stability,approach_goal_set=approach_goal_set,nominal_blocked_handoff=nominal_blocked_handoff,approach_progress=approach_progress,approach_recovery=approach_recovery,**search_kw) if strict else
+            teachers[rid]=(VisibleOnlyGraspTeacher(rid,end,pwm,bounds=(-20,20,-20,20),teacher_stability=teacher_stability,approach_goal_set=approach_goal_set,nominal_blocked_handoff=nominal_blocked_handoff,approach_progress=approach_progress,approach_recovery=approach_recovery,approach_coordination=approach_coordination,**search_kw) if strict else
                 GraspTeacher(rid,end,pwm,bounds=scene.config['static_map']['bounds_m'],rects=keepout_rects(scene.config['static_map']),profile=teacher_profile))
             if strict:models[rid]=VisibleWorld(rid,end,pose_source=self_pose_source);clocks[rid]=v5.IssuedClock()
             student=None
@@ -279,9 +289,16 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 # hidden peer readiness must not change a grasp action label
                 # under an identical student instruction.
                 allowed=permits[rid] if strict else permit
-                skill='wait' if t.phase=='ready' and not allowed else 'grasp'
-                local_distance=math.dist(truth['robots'][rid]['pose'][:2],truth['beam']['ends'][t.end][:2])
-                local_before=bool(strict and t.handoff and local_distance<=.8)
+                coordinated_wait=strict and t.priority is not None and t.priority.waiting
+                stationary_wait=coordinated_wait and (t.end=='teal' or t.priority.round==1)
+                skill='wait' if (t.phase=='ready' and not allowed) or stationary_wait else 'grasp'
+                if handoff_observation=='visible_handoff_v1':
+                    from harness.grasp_act_handoff import visible_local_sample
+                    local_before,local_distance=visible_local_sample(
+                        perceived[rid],rid,t.end,handed_off=t.handoff,coordinated_wait=coordinated_wait)
+                else:
+                    local_distance=math.dist(truth['robots'][rid]['pose'][:2],truth['beam']['ends'][t.end][:2])
+                    local_before=bool(strict and t.handoff and local_distance<=.8 and not coordinated_wait)
                 elapsed={**clocks[rid].observe((skill,t.end,t.handoff),now,previous[rid]['pwm']),'destination_zone':'none'} if strict else {}
                 if record_training:
                     capture=ports[rid].capture();jpg=base64.b64decode(capture['image']);path=f'rgb/{rid}/{i:06d}.jpg';(out/path).write_bytes(jpg)
@@ -311,6 +328,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     'local_skill_sample':(local_before and skill!='wait' and (phase!='complete' or not getattr(t,'done_recorded',False))) if strict else (teacher_profile=='observable_v2' or phase!='approach'),'assignment_source':plan['assignment_source'],
                     'skill_instruction_source':'GO_ACK_code_messages; demo own READY; runtime LLM skill' if strict else 'demo_privileged_pair_supervisor; student runtime instruction must come from LLM',
                     'local_distance_m':local_distance,
+                    'local_distance_source':'visible_issued' if handoff_observation!='off' else 'legacy_evaluation_truth',
                     'handoff_distance_m':(math.dist(perceived[rid]['robots'][rid]['pose'][:2],perceived[rid]['beam']['ends'][t.end][:2]) if strict and perceived[rid]['beam'] is not None else None),
                     'segment':'local_grasp' if local_before else 'navigation_or_search' if strict else phase}
                 apply(ports[rid],applied,now,previous[rid]);previous[rid]=applied;history[rid].append(applied)
@@ -367,6 +385,8 @@ def main():
     p.add_argument('--nominal-blocked-handoff',choices=('off','nominal_blocked_handoff_v1'),default='off')
     p.add_argument('--approach-progress',choices=('off','approach_progress_v1'),default='off')
     p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1','approach_recovery_v2'),default='off')
+    p.add_argument('--approach-coordination',choices=('off','prioritized_approach_v1'),default='off')
+    p.add_argument('--handoff-observation',choices=('off','visible_handoff_v1'),default='off')
     p.add_argument('--self-pose-source',choices=('issued','perfect_self_comparison'),default='issued')
     p.add_argument('--execution-host',choices=('azure','gcp1'),default='azure')
     p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path)
@@ -380,16 +400,16 @@ def main():
         gate=json.loads(a.teacher_gate.read_text())
         if a.gate_plan is None:raise ValueError('frozen measured gate plan required')
         source_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-        proof=recording_admission(gate,source_sha=source_sha,teacher_profile=a.teacher_profile,gate_plan=a.gate_plan,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery)
+        proof=recording_admission(gate,source_sha=source_sha,teacher_profile=a.teacher_profile,gate_plan=a.gate_plan,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery,approach_coordination=a.approach_coordination,handoff_observation=a.handoff_observation)
         proof['gate_sha256']=hashlib.sha256(a.teacher_gate.read_bytes()).hexdigest()
         if not a.recording_probe:
             if a.recording_check is None:raise ValueError('paired 640x480 recording-mode check required')
             check=json.loads(a.recording_check.read_text())
-            if check.get('qualified') is not True or check.get('N',0)<3 or check.get('n')!=check.get('N') or check.get('source_sha')!=source_sha or check.get('teacher_profile')!=a.teacher_profile or check.get('teacher_stability','off')!=a.teacher_stability or check.get('teacher_search','off')!=a.teacher_search or check.get('approach_goal_set','off')!=a.approach_goal_set or check.get('nominal_blocked_handoff','off')!=a.nominal_blocked_handoff or check.get('approach_progress','off')!=a.approach_progress or check.get('approach_recovery','off')!=a.approach_recovery:
+            if check.get('qualified') is not True or check.get('N',0)<3 or check.get('n')!=check.get('N') or check.get('source_sha')!=source_sha or check.get('teacher_profile')!=a.teacher_profile or check.get('teacher_stability','off')!=a.teacher_stability or check.get('teacher_search','off')!=a.teacher_search or check.get('approach_goal_set','off')!=a.approach_goal_set or check.get('nominal_blocked_handoff','off')!=a.nominal_blocked_handoff or check.get('approach_progress','off')!=a.approach_progress or check.get('approach_recovery','off')!=a.approach_recovery or check.get('approach_coordination','off')!=a.approach_coordination or check.get('handoff_observation','off')!=a.handoff_observation:
                 raise ValueError('unverified recording-mode equivalence')
             same_machine(check.get('execution_host'),host)
             proof['recording_check_sha256']=hashlib.sha256(a.recording_check.read_bytes()).hexdigest()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery,approach_coordination=a.approach_coordination,handoff_observation=a.handoff_observation),ensure_ascii=False))
 if __name__=='__main__':main()

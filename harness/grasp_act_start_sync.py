@@ -27,3 +27,31 @@ class GraspStartSync:
         for rid,ok in permit.items():
             if ok and rid not in self.started:self.events.append({'t':now,'event':'START','robot':rid});self.started.add(rid)
         return permit
+
+
+class GraspApproachSync:
+    """Three uses of the same boolean READY -> GO -> ACK barrier.
+
+    Round meanings are fixed at construction on each robot, never inferred
+    from host poses, teacher phases, paths or a hidden supervisor decision.
+    Deliver GO only once per robot per approach round. The final round keeps
+    the existing pick barrier semantics and its configured start delays.
+    """
+    def __init__(self, participants, delays):
+        self.participants=tuple(participants);self.delays=dict(delays)
+        if len(self.participants)!=2 or set(delays)!=set(self.participants) or any(not 0<=v<=1.5 for v in delays.values()):
+            raise ValueError('two participants and bounded delays required')
+        self.round=0;self.delivered=set();self.events=[];self.offset=0
+        self.sync=GraspStartSync(self.participants,{r:0. for r in self.participants})
+
+    def tick(self, ready, now):
+        if self.round < 2 and len(self.delivered)==len(self.participants):
+            self.round+=1;self.delivered.clear();self.offset=0
+            self.sync=GraspStartSync(self.participants,self.delays if self.round==2 else {r:0. for r in self.participants})
+        permits=self.sync.tick(ready,now)
+        self.events.extend({**e,'round':self.round} for e in self.sync.events[self.offset:])
+        self.offset=len(self.sync.events)
+        if self.round==2:return permits
+        result={r:ok and r not in self.delivered for r,ok in permits.items()}
+        self.delivered.update(r for r,ok in result.items() if ok)
+        return result

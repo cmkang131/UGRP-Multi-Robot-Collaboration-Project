@@ -20,7 +20,7 @@ def execution_tree(source):
     return {line.split('\t',1)[1]:line.split('\t',1)[0] for line in raw.splitlines()}
 
 
-def reuse_speed_gate(prior,plan,concurrency,limit,execution_host,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off"):
+def reuse_speed_gate(prior,plan,concurrency,limit,execution_host,teacher_stability="off",teacher_search="off",approach_goal_set="off",nominal_blocked_handoff="off",approach_progress="off",approach_recovery="off",approach_coordination="off",handoff_observation="off"):
     """Reuse an observed gate only when all execution code is byte-identical.
 
     The batch driver may change for explicit start indices. No teacher,
@@ -43,6 +43,8 @@ def reuse_speed_gate(prior,plan,concurrency,limit,execution_host,teacher_stabili
     if admission.get('nominal_blocked_handoff','off')!=nominal_blocked_handoff:raise ValueError('speed gate nominal handoff mode mismatch')
     if admission.get('approach_progress','off')!=approach_progress:raise ValueError('speed gate approach progress mode mismatch')
     if admission.get('approach_recovery','off')!=approach_recovery:raise ValueError('speed gate approach recovery mode mismatch')
+    if admission.get('approach_coordination','off')!=approach_coordination:raise ValueError('speed gate approach coordination mode mismatch')
+    if admission.get('handoff_observation','off')!=handoff_observation:raise ValueError('speed gate handoff observation mode mismatch')
     if admission.get('plan_sha256')!=hashlib.sha256(plan.read_bytes()).hexdigest():
         raise ValueError('same frozen plan required')
     gate=read(prior/'speed-gate.json')
@@ -124,7 +126,7 @@ def summarize(rows,planned):
         'interrupted':sum(r.get('status')=='interrupted' or r.get('exit') in (-2,130) for r in rows),'rows':rows}
 
 
-def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teacher_profile="legacy",execution_host='azure',teacher_stability='off',teacher_search='off',approach_goal_set='off',nominal_blocked_handoff='off',approach_progress='off',approach_recovery='off',failure_stop=None):
+def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teacher_profile="legacy",execution_host='azure',teacher_stability='off',teacher_search='off',approach_goal_set='off',nominal_blocked_handoff='off',approach_progress='off',approach_recovery='off',approach_coordination='off',handoff_observation='off',failure_stop=None):
     jobs=[];reason=None;rows=[];monitored=0.;started=time.monotonic()
     failure_stop=FailureStop() if failure_stop is None else failure_stop
     if complete_frozen_cohort and failure_stop.scope!='first_failure':
@@ -138,7 +140,7 @@ def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teache
             command=[sys.executable,'-m','scripts.sim_cli','workflow','run','grasp-act-teacher','--',
                 '--plan',str(plan),'--episode',str(index),'--out',str(target/'raw'),'--cap-s',str(cap),
                 '--teacher-profile',teacher_profile,'--execution-host',execution_host,
-                '--teacher-stability',teacher_stability,'--teacher-search',teacher_search,'--approach-goal-set',approach_goal_set,'--nominal-blocked-handoff',nominal_blocked_handoff,'--approach-progress',approach_progress,'--approach-recovery',approach_recovery]
+                '--teacher-stability',teacher_stability,'--teacher-search',teacher_search,'--approach-goal-set',approach_goal_set,'--nominal-blocked-handoff',nominal_blocked_handoff,'--approach-progress',approach_progress,'--approach-recovery',approach_recovery,'--approach-coordination',approach_coordination,'--handoff-observation',handoff_observation]
             if probe:command.append('--probe')
             log=(target/'log.txt').open('x');at=time.monotonic()
             proc=subprocess.Popen(command,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,env=env)
@@ -225,10 +227,19 @@ def main():
     p.add_argument('--nominal-blocked-handoff',choices=('off','nominal_blocked_handoff_v1'),default='off')
     p.add_argument('--approach-progress',choices=('off','approach_progress_v1'),default='off')
     p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1','approach_recovery_v2'),default='off')
+    p.add_argument('--approach-coordination',choices=('off','prioritized_approach_v1'),default='off')
+    p.add_argument('--handoff-observation',choices=('off','visible_handoff_v1'),default='off')
     p.add_argument('--failure-stop-scope',choices=('first_failure','repeated_cause_v1'),default='first_failure',
         help='opt-in: stop the batch after the same reason and phase fail in two independent episodes')
     p.add_argument('--complete-frozen-cohort',action='store_true',help='record individual finite failures; operator still stops diagnosed shared defects')
     a=p.parse_args()
+    if a.approach_coordination!='off' and (a.teacher_profile!='visible_only' or a.teacher_stability!='align_relook_v1' or a.approach_recovery!='off'):
+        raise ValueError('approach coordination requires visible_only baseline stability and recovery off')
+    if a.approach_coordination!='off':
+        from sim.grasp_act_priority import require_baseline
+        require_baseline(a.teacher_stability,a.teacher_search,a.approach_goal_set,a.nominal_blocked_handoff,a.approach_progress,a.approach_recovery)
+    if a.handoff_observation!='off' and a.teacher_profile!='visible_only':
+        raise ValueError('visible handoff requires visible_only profile')
     failure_stop=FailureStop(a.failure_stop_scope)
     if a.complete_frozen_cohort and a.failure_stop_scope!='first_failure':
         raise ValueError('complete-frozen-cohort cannot bypass repeated-cause stopping')
@@ -260,22 +271,22 @@ def main():
     write(root/'resource-admission.json',{'loadavg':os.getloadavg(),'memory_available_kib':available,
         'plan_sha256':hashlib.sha256(plan.read_bytes()).hexdigest(),'concurrency':a.concurrency,
         'episode_indices':indices,'complete_frozen_cohort':a.complete_frozen_cohort,'failure_stop_scope':a.failure_stop_scope,
-        'teacher_stability':a.teacher_stability,'teacher_search':a.teacher_search,'approach_goal_set':a.approach_goal_set,'nominal_blocked_handoff':a.nominal_blocked_handoff,'approach_progress':a.approach_progress,'approach_recovery':a.approach_recovery,
+        'teacher_stability':a.teacher_stability,'teacher_search':a.teacher_search,'approach_goal_set':a.approach_goal_set,'nominal_blocked_handoff':a.nominal_blocked_handoff,'approach_progress':a.approach_progress,'approach_recovery':a.approach_recovery,'approach_coordination':a.approach_coordination,'handoff_observation':a.handoff_observation,
         'start_nominal_goal_feasible':plan_data.get('start_nominal_goal_feasible','off'),'nominal_goal_filter':plan_data.get('nominal_goal_filter'),'execution_host':host,'load_limit':load_limit,'speed_limit':a.speed_gate_limit,'speed_baseline':baseline})
     if a.diagnostic_only:
         if a.probe_only or a.speed_gate_from:
             raise ValueError('diagnostic is separate from speed and qualification')
         rows,reason=diagnostic_waves(root,plan,indices,a.cap_s,probe=False,limit=a.speed_gate_limit,
             concurrency=a.concurrency,failure_stop=failure_stop,
-            teacher_profile=a.teacher_profile,complete_frozen_cohort=a.complete_frozen_cohort,execution_host=a.execution_host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery)
+            teacher_profile=a.teacher_profile,complete_frozen_cohort=a.complete_frozen_cohort,execution_host=a.execution_host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery,approach_coordination=a.approach_coordination,handoff_observation=a.handoff_observation)
         write(root/'diagnostic.json',{**summarize(rows,len(indices)),'qualified':False,
             'purpose':'seen regression replay; not a fresh teacher gate','stop_reason':reason,'execution_host':host,'failure_stop':failure_stop.diagnostic()})
         return
     if a.speed_gate_from:
-        gate,proof=reuse_speed_gate(a.speed_gate_from.resolve(),plan,a.concurrency,a.speed_gate_limit,host,a.teacher_stability,a.teacher_search,a.approach_goal_set,a.nominal_blocked_handoff,a.approach_progress,a.approach_recovery)
+        gate,proof=reuse_speed_gate(a.speed_gate_from.resolve(),plan,a.concurrency,a.speed_gate_limit,host,a.teacher_stability,a.teacher_search,a.approach_goal_set,a.nominal_blocked_handoff,a.approach_progress,a.approach_recovery,a.approach_coordination,a.handoff_observation)
         write(root/'execution-continuity.json',proof)
     else:
-        rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit,teacher_profile=a.teacher_profile,execution_host=a.execution_host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery,failure_stop=failure_stop)
+        rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit,teacher_profile=a.teacher_profile,execution_host=a.execution_host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery,approach_coordination=a.approach_coordination,handoff_observation=a.handoff_observation,failure_stop=failure_stop)
         samples=[{'sim_s':r.get('sim_s'),'wall_s':r.get('wall_s'),'exit':r['exit'],
             'expected_stop':r.get('status')=='complete' and r.get('sim_s',0)>=30-1e-6,
             'finalization_complete':any((Path(r['raw'])/name).is_file() for name in ('manifest.json','manifest.json.zst')),'finalization_errors':[],
@@ -289,12 +300,12 @@ def main():
         batch=indices[offset:offset+a.concurrency]
         rows,reason=wave(root/f'cohort-{batch[0]:03d}',plan,batch,a.cap_s,probe=False,limit=a.speed_gate_limit,
             failure_stop=failure_stop,
-            complete_frozen_cohort=a.complete_frozen_cohort,teacher_profile=a.teacher_profile,execution_host=a.execution_host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery)
+            complete_frozen_cohort=a.complete_frozen_cohort,teacher_profile=a.teacher_profile,execution_host=a.execution_host,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery,approach_coordination=a.approach_coordination,handoff_observation=a.handoff_observation)
         all_rows.extend(rows)
         summary=summarize(all_rows,len(episodes))
         summary.update(source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
             failure_stop=failure_stop.diagnostic(),stop_reason=reason,
-            teacher_profile=a.teacher_profile,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery,
+            teacher_profile=a.teacher_profile,teacher_stability=a.teacher_stability,teacher_search=a.teacher_search,approach_goal_set=a.approach_goal_set,nominal_blocked_handoff=a.nominal_blocked_handoff,approach_progress=a.approach_progress,approach_recovery=a.approach_recovery,approach_coordination=a.approach_coordination,handoff_observation=a.handoff_observation,
             start_nominal_goal_feasible=plan_data.get('start_nominal_goal_feasible','off'),nominal_goal_filter=plan_data.get('nominal_goal_filter'),plan_sha256=hashlib.sha256(plan.read_bytes()).hexdigest(),execution_host=host,
             self_pose_source='issued',criteria=({'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.} if a.teacher_profile=='visible_only' else {'min_z_m':.012,'hold_s':1.}),
             qualified=reason is None and summary['N']>=40 and summary['n']/max(1,summary['N'])>=.95)

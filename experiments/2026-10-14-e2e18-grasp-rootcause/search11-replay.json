@@ -1,0 +1,737 @@
+{
+  "schema": "ugrp.grasp_act.search11_replay.v1",
+  "baseline_sha": "86367b4b78a14c772f6194f6b36d524a0f934afe",
+  "normal_N": 6,
+  "recorded_commands_verified": 4664,
+  "off_identical_commands": 4664,
+  "shadow_changed_commands": {
+    "baseline_to_off": 0,
+    "baseline_to_priority": 3396
+  },
+  "visible_handoff_changed_training_labels": 53,
+  "invisible_measurements": 0,
+  "held_world_reads": 0,
+  "scope": "same saved measurements and actual issued history; after first divergence counterfactual shadow outputs only; cannot generate new viewpoints or establish peer-block improvement; handoff labels do not remove episodes from gate",
+  "rows": [
+    {
+      "episode": 0,
+      "seed": 71000,
+      "saved_success": true,
+      "recorded_commands_verified": 550,
+      "off_identical_commands": 550,
+      "shadow_changed_commands": {
+        "baseline_to_off": 0,
+        "baseline_to_priority": 527
+      },
+      "first_divergence": {
+        "baseline_to_off": null,
+        "baseline_to_priority": {
+          "tick": 7,
+          "elapsed_s": 0.6999999999997895,
+          "robots": [
+            "r1"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.0687890181183401,
+                  0.1,
+                  0.0687890181183401,
+                  0.1
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1845
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 1845
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "fixed blue park -> teal approach -> blue approach sequence; recovery remains off"
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 800,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 0,
+      "max_recorded_libm_delta_s": 4.163336342344337e-17,
+      "command_sha256": [
+        "c73255d9f97e17f036c2989324d827466c9beb929fbfc502d251f94622a6b8af",
+        "c73255d9f97e17f036c2989324d827466c9beb929fbfc502d251f94622a6b8af",
+        "fb66927e0ab0a925bf7d0e591fd39fd03517693ae8756b94e6156e47f1b8b57d"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-000/raw/plan.json",
+          "sha256": "92dabede583f6739ad3a466604af749ee70101942ff8d273f6881f1b4ed7b2cd",
+          "decoded_sha256": "92dabede583f6739ad3a466604af749ee70101942ff8d273f6881f1b4ed7b2cd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-000/raw/result.json",
+          "sha256": "c74d995b8486839ea29e7f3697fcaae22eacff69b1d5f79b9e29762edd331c79",
+          "decoded_sha256": "c74d995b8486839ea29e7f3697fcaae22eacff69b1d5f79b9e29762edd331c79"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-000/raw/teacher-r1.jsonl.zst",
+          "sha256": "5bbfec3e1dc89ec37c247e828d865dae9fdb9b12f3fee287ee541cc7ba51d099",
+          "decoded_sha256": "4db3c9d4323dbca37ed4182281793d39cb776dd2eecffa79cad95a40057ec6c2"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-000/raw/teacher-r2.jsonl.zst",
+          "sha256": "e2f0ad7d1abd6c0d7a46b9ab2752918e07980cec59b3693c20b25f97877537ce",
+          "decoded_sha256": "4702ffb4da1189754230fb3f640b955f193e9ca779949829972f2c4c3df84ba9"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-000/raw/eval-only.jsonl.zst",
+          "sha256": "b10785e13e733fb5a6a9e85775eafb44d04aa81cc2867cd9a22cac525d565a97",
+          "decoded_sha256": "a3f01bc3561a9582c51bbc285467e22da5394e72d6effdebfc3445f8576b29d5"
+        }
+      ]
+    },
+    {
+      "episode": 1,
+      "seed": 73011,
+      "saved_success": true,
+      "recorded_commands_verified": 706,
+      "off_identical_commands": 706,
+      "shadow_changed_commands": {
+        "baseline_to_off": 0,
+        "baseline_to_priority": 605
+      },
+      "first_divergence": {
+        "baseline_to_off": null,
+        "baseline_to_priority": {
+          "tick": 7,
+          "elapsed_s": 0.6999999999997895,
+          "robots": [
+            "r1"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.1,
+                  0.0966505011289902,
+                  0.1,
+                  0.0966505011289902
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 780,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1622
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 2.4999999999999742,
+                "wheels": [
+                  0.35,
+                  -0.35,
+                  -0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.1,
+                  0.02904484865757894,
+                  0.02561546874361918,
+                  0.09657062008604025
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 780,
+                  "4": 2320,
+                  "5": 1320,
+                  "6": 1622
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "fixed blue park -> teal approach -> blue approach sequence; recovery remains off"
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1172,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 0,
+      "max_recorded_libm_delta_s": 1.3053794156725473e-16,
+      "command_sha256": [
+        "e397bb8403490443f674532d902bc6567723777be2bbab158b30056353bbdef8",
+        "e397bb8403490443f674532d902bc6567723777be2bbab158b30056353bbdef8",
+        "e42e37945035b7200e42ab9137bd36f627b29cc3e180994a1dac6bcf5281a90e"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-001/raw/plan.json",
+          "sha256": "3f9524a9542566a17b0a0f9bb882cb83393ff45a04411a55d84b78849b761c52",
+          "decoded_sha256": "3f9524a9542566a17b0a0f9bb882cb83393ff45a04411a55d84b78849b761c52"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-001/raw/result.json",
+          "sha256": "3df0287e3e33852af3180f4688ac7a764539138c0f6a99020ebfee2dc86c6286",
+          "decoded_sha256": "3df0287e3e33852af3180f4688ac7a764539138c0f6a99020ebfee2dc86c6286"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-001/raw/teacher-r1.jsonl.zst",
+          "sha256": "9fdfa0b178743c5be6d80d9c1290d97f4e0de82c43549dbaa3c0337a2a7a0029",
+          "decoded_sha256": "79e20c3009b16d71736e8e3969f5d93290be96b41ee2e87dce28e0caf109db89"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-001/raw/teacher-r2.jsonl.zst",
+          "sha256": "58e3151f0bd9a5f692d258be9eb450700a91eefda2053980c4aab375fea4bedd",
+          "decoded_sha256": "9e7e206a790cf9b73d6874cf392005243be312c9043779cbcea942d21e278ae0"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-001/raw/eval-only.jsonl.zst",
+          "sha256": "ad59a0eb5e980740c29e6360562de7f1fa842f495b1b41d6ee53a68a9e7d38ed",
+          "decoded_sha256": "39c0db117951f2dda3b92aa1bf5c944c68a4c42632bdfd2416f209bfcbf76e7b"
+        }
+      ]
+    },
+    {
+      "episode": 2,
+      "seed": 73009,
+      "saved_success": true,
+      "recorded_commands_verified": 1034,
+      "off_identical_commands": 1034,
+      "shadow_changed_commands": {
+        "baseline_to_off": 0,
+        "baseline_to_priority": 402
+      },
+      "first_divergence": {
+        "baseline_to_off": null,
+        "baseline_to_priority": {
+          "tick": 86,
+          "elapsed_s": 8.599999999998252,
+          "robots": [
+            "r1"
+          ],
+          "baseline": {
+            "r1": [
+              {
+                "t": 10.399999999998437,
+                "wheels": [
+                  -0.35,
+                  0.35,
+                  -0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.06444921292480493,
+                  0.04005449954636471,
+                  0.015659786167921012,
+                  0.008734927210519217
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 760,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 2000
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "candidate": {
+            "r1": [
+              {
+                "t": 10.399999999998437,
+                "wheels": [
+                  0.35,
+                  0.35,
+                  -0.35,
+                  0.35
+                ],
+                "duration_s": [
+                  0.017045384248456866,
+                  0.03449220739261321,
+                  0.021222078321672513,
+                  0.07275966996274258
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 760,
+                  "4": 2380,
+                  "5": 1320,
+                  "6": 2000
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "fixed blue park -> teal approach -> blue approach sequence; recovery remains off"
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1926,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 0,
+      "max_recorded_libm_delta_s": 1.249000902703301e-16,
+      "command_sha256": [
+        "67593b61273d25149a14ca26203c0f031c2a0d625cab29e32021bcad6b0b528d",
+        "67593b61273d25149a14ca26203c0f031c2a0d625cab29e32021bcad6b0b528d",
+        "7764b2af929f083da0eac93a23e694be1013f928c472ea0cd796091ac81e3dc9"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-002/raw/plan.json",
+          "sha256": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869",
+          "decoded_sha256": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-002/raw/result.json",
+          "sha256": "098cdba90d1e9c575a2c63128c12091ffbb725876e3dc94efb386275b4c74224",
+          "decoded_sha256": "098cdba90d1e9c575a2c63128c12091ffbb725876e3dc94efb386275b4c74224"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-002/raw/teacher-r1.jsonl.zst",
+          "sha256": "242ecff8ef925c7276557d7f0a13ca98360c946f78b20196dd283ded92785b53",
+          "decoded_sha256": "0e5cac37100adaa3113a7e5b6e55fe842e88a9d1a3c4525a0da0ea013f34f763"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-002/raw/teacher-r2.jsonl.zst",
+          "sha256": "e8a40892904abb77c3e20ca14b7cba377cdc86f20dc5bfa134ea0299b5e509a1",
+          "decoded_sha256": "0f32c86cc408281552ce75c912a5739a8fc5ff35a9a5d81891f5d73838204ac2"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-002/raw/eval-only.jsonl.zst",
+          "sha256": "94cf976167c78d23eeaf99c49a6eaee3381241c5feacd6200bc75cc0872032a9",
+          "decoded_sha256": "e767d703020410dda13dc48bbd35388eb5214cde013c99f9a00edf490823a366"
+        }
+      ]
+    },
+    {
+      "episode": 3,
+      "seed": 78111,
+      "saved_success": true,
+      "recorded_commands_verified": 612,
+      "off_identical_commands": 612,
+      "shadow_changed_commands": {
+        "baseline_to_off": 0,
+        "baseline_to_priority": 536
+      },
+      "first_divergence": {
+        "baseline_to_off": null,
+        "baseline_to_priority": {
+          "tick": 10,
+          "elapsed_s": 0.9999999999996232,
+          "robots": [
+            "r2"
+          ],
+          "baseline": {
+            "r2": [
+              {
+                "t": 2.799999999999808,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 500,
+                  "4": 2500,
+                  "5": 1320,
+                  "6": 1222
+                }
+              },
+              false,
+              "align"
+            ]
+          },
+          "candidate": {
+            "r2": [
+              {
+                "t": 2.799999999999808,
+                "wheels": [
+                  -0.35,
+                  0.35,
+                  0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.0856044459884214,
+                  0.08576391500796018,
+                  0.08582409247485479,
+                  0.085664623455316
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 500,
+                  "4": 2500,
+                  "5": 1320,
+                  "6": 1222
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "fixed blue park -> teal approach -> blue approach sequence; recovery remains off"
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1352,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 1,
+      "max_recorded_libm_delta_s": 5.551115123125783e-17,
+      "command_sha256": [
+        "e3dabebe73f6d2172d9cb67fe30c25f4758bc1e41905ce4a5ed45b3135df1a05",
+        "e3dabebe73f6d2172d9cb67fe30c25f4758bc1e41905ce4a5ed45b3135df1a05",
+        "69ab795474fa663086615ed0a4d3c9f08dd94a6a453ac886af493bd9d53bda97"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-003/raw/plan.json",
+          "sha256": "dc11609c7cd2f157ea9fa6dcded9f61d06155adbac8e6ca27051315108c07679",
+          "decoded_sha256": "dc11609c7cd2f157ea9fa6dcded9f61d06155adbac8e6ca27051315108c07679"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-003/raw/result.json",
+          "sha256": "85333da7f8e53d10cccdf950f1df73ee9ce617bceb9759c7c3b284d94ed3e4ab",
+          "decoded_sha256": "85333da7f8e53d10cccdf950f1df73ee9ce617bceb9759c7c3b284d94ed3e4ab"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-003/raw/teacher-r1.jsonl.zst",
+          "sha256": "9290507f8bd7cde0ac822ac5f4ea943a15cf24d7c9973d7af5039ff0036cdd8c",
+          "decoded_sha256": "39a647e0de9cd7b68109d868be28ed74db5fe11fb44d78d7437853d7aa70afdf"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-003/raw/teacher-r2.jsonl.zst",
+          "sha256": "14ba4205f825175cccfaff41d0f6dc36d944237625c202c863ab9e5cc2bdb7ed",
+          "decoded_sha256": "06ea051e95f401e4ca97f5aae917439982890cc622813eeea686a77fe55e8e30"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-003/raw/eval-only.jsonl.zst",
+          "sha256": "3a611f2e5fa6c0593b77f48695a48a3b414bdff00a4cb88e22392c936cc90ade",
+          "decoded_sha256": "43ac0702b809d0329f11e3458a420e92cdf78d16488f45c4672291f7573ceeea"
+        }
+      ]
+    },
+    {
+      "episode": 4,
+      "seed": 78113,
+      "saved_success": true,
+      "recorded_commands_verified": 880,
+      "off_identical_commands": 880,
+      "shadow_changed_commands": {
+        "baseline_to_off": 0,
+        "baseline_to_priority": 665
+      },
+      "first_divergence": {
+        "baseline_to_off": null,
+        "baseline_to_priority": {
+          "tick": 10,
+          "elapsed_s": 0.9999999999996232,
+          "robots": [
+            "r2"
+          ],
+          "baseline": {
+            "r2": [
+              {
+                "t": 2.799999999999808,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 560,
+                  "4": 2500,
+                  "5": 1320,
+                  "6": 1325
+                }
+              },
+              false,
+              "align"
+            ]
+          },
+          "candidate": {
+            "r2": [
+              {
+                "t": 2.799999999999808,
+                "wheels": [
+                  -0.35,
+                  0.35,
+                  0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.08581517484159577,
+                  0.0858407465576761,
+                  0.08561339573931112,
+                  0.0855878240232308
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 560,
+                  "4": 2500,
+                  "5": 1320,
+                  "6": 1325
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "fixed blue park -> teal approach -> blue approach sequence; recovery remains off"
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1170,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 51,
+      "max_recorded_libm_delta_s": 1.8041124150158794e-16,
+      "command_sha256": [
+        "74180f00bf51c1afa80c40e5340e9fcc2479a693ef2143a40bfb7a561e30ec9b",
+        "74180f00bf51c1afa80c40e5340e9fcc2479a693ef2143a40bfb7a561e30ec9b",
+        "88aac15b5b2cad8e86c42bbb2e0f5dd9ef48143da3b112b54e99e3b8b215bcaf"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-004/raw/plan.json",
+          "sha256": "514c886d2bdc787ea61b7449522a8deb6b9457db070b98f2364423f62a96ae18",
+          "decoded_sha256": "514c886d2bdc787ea61b7449522a8deb6b9457db070b98f2364423f62a96ae18"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-004/raw/result.json",
+          "sha256": "0d59ed1c02e0948f490c363a1482628aa25c7c5ea2b834595fb6a979e9f43e1a",
+          "decoded_sha256": "0d59ed1c02e0948f490c363a1482628aa25c7c5ea2b834595fb6a979e9f43e1a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-004/raw/teacher-r1.jsonl.zst",
+          "sha256": "3745d2127e48f0563d059fba31ce293d1dc2574d736b039160c7377d6b2d567f",
+          "decoded_sha256": "a776a0499488fb0e95179abb4e5cc389002cd64fcfef8f5dd1748a4dbd352289"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-004/raw/teacher-r2.jsonl.zst",
+          "sha256": "1e0bdc8da55ffeed17f58176764fef76633c2f827fcaaf2b5d8aaacbdafcfb49",
+          "decoded_sha256": "421c15cfa95e8c41f71858b83e54752c7cc5479a9c563283458d508b0b75a0f6"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-004/raw/eval-only.jsonl.zst",
+          "sha256": "9d988eb8699ed96ef52703eddd6f27863aa4387610e05c396bfb63cfc70e7a65",
+          "decoded_sha256": "4a0e1d9ca3df5b9249793597ef8487b867caa0770ba0ccd6a3fb44ccea7c4bda"
+        }
+      ]
+    },
+    {
+      "episode": 5,
+      "seed": 79217,
+      "saved_success": true,
+      "recorded_commands_verified": 882,
+      "off_identical_commands": 882,
+      "shadow_changed_commands": {
+        "baseline_to_off": 0,
+        "baseline_to_priority": 661
+      },
+      "first_divergence": {
+        "baseline_to_off": null,
+        "baseline_to_priority": {
+          "tick": 10,
+          "elapsed_s": 0.9999999999996232,
+          "robots": [
+            "r2"
+          ],
+          "baseline": {
+            "r2": [
+              {
+                "t": 2.799999999999808,
+                "wheels": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "duration_s": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 560,
+                  "4": 2500,
+                  "5": 1320,
+                  "6": 1526
+                }
+              },
+              false,
+              "align"
+            ]
+          },
+          "candidate": {
+            "r2": [
+              {
+                "t": 2.799999999999808,
+                "wheels": [
+                  -0.35,
+                  0.35,
+                  0.35,
+                  -0.35
+                ],
+                "duration_s": [
+                  0.08484320463232463,
+                  0.08563923885764083,
+                  0.08658454536957236,
+                  0.08578851114425616
+                ],
+                "pwm": {
+                  "1": 2000,
+                  "3": 560,
+                  "4": 2500,
+                  "5": 1320,
+                  "6": 1526
+                }
+              },
+              false,
+              "approach"
+            ]
+          },
+          "reason": "fixed blue park -> teal approach -> blue approach sequence; recovery remains off"
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1375,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "visible_handoff_changed_training_labels": 1,
+      "max_recorded_libm_delta_s": 1.3877787807814457e-16,
+      "command_sha256": [
+        "d9ceda727e78b383e521f2239a68914616f582775fe2d6e4f79f058228e2a675",
+        "d9ceda727e78b383e521f2239a68914616f582775fe2d6e4f79f058228e2a675",
+        "2ea2a0ab62c9e95886be2e7903a83b0f27322f1c94b10b83c9d7bd2aab7ff51c"
+      ],
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-005/raw/plan.json",
+          "sha256": "7d60d2fb0f46ed8d052c92004c164d7616fbce3461787952e459efc1bb22de60",
+          "decoded_sha256": "7d60d2fb0f46ed8d052c92004c164d7616fbce3461787952e459efc1bb22de60"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-005/raw/result.json",
+          "sha256": "3ea6bbfa35df9fe2709d212fd3e4894d1fcb9f14d8e09fc3b08289c3b9dfcfb8",
+          "decoded_sha256": "3ea6bbfa35df9fe2709d212fd3e4894d1fcb9f14d8e09fc3b08289c3b9dfcfb8"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-005/raw/teacher-r1.jsonl.zst",
+          "sha256": "9179641615680a7ccc5b7aacc3df29a43391c1b2b834eb35f4880b3dfe4c9732",
+          "decoded_sha256": "45214670054a528fc3e5bf00507721c652cfb497f1cbc11fce766d919770345c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-005/raw/teacher-r2.jsonl.zst",
+          "sha256": "3c65a21162ea6307eb295c45b379da3cae5929b9777ab45f8d7f17e553a0ce0c",
+          "decoded_sha256": "8bd8e8d54a61a9ebd6d565cb87cc20e82e96f0ac9dc5100b13d70e735a85dd5f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-86367b4b/diagnostic/episode-005/raw/eval-only.jsonl.zst",
+          "sha256": "7b5b1c12c477b4977c5151218fb6f6a66b577dec449861bc16efb614f056e6ec",
+          "decoded_sha256": "63d03e74d19b44f7891aa418513171f895013e8a3ed4de9c990688266b2ac55a"
+        }
+      ]
+    }
+  ]
+}
