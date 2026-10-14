@@ -3,7 +3,7 @@ import argparse,hashlib,json,math,random
 from collections import Counter
 from pathlib import Path
 from harness.zone_final_environment import resolve
-from harness.static_keepouts import keepout_rects,pose_clear,rect_distance
+from harness.static_keepouts import keepout_rects,pose_clear,rect_distance,segment_hits_rect
 
 ROOT=Path(__file__).resolve().parents[1]
 SCENARIOS=('s1_normal_mixed_v4','s3_late_rendezvous_v4','s6_novel_relation_v4')
@@ -11,7 +11,7 @@ HELDOUT='s4_narrow_door_standoff_v4'
 BASE_Z=.032355118817659255
 
 
-def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True):
+def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True,visible_start=False):
     episodes=[];rejects=Counter()
     for i in range(count):
         rng=random.Random(seed+i)
@@ -48,6 +48,14 @@ def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True):
             if any(not free(p,.18) for p in active):rejects['robot_wall']+=1;continue
             if any(math.dist(p,q['pose_m'][:2])<.24 for p in active for q in others):rejects['robot_other_cargo']+=1;continue
             if pair and math.dist(own,other)<.37:rejects['robot_overlap']+=1;continue
+            if visible_start:
+                # Real system: map code brings the robot to a spot from which the cargo is
+                # visible. Episode generation only (static walls + spawn); never a teacher input.
+                ends={'teal':-.27,'blue':.27};blocked=False
+                for pos,end_name in zip(active,(end,'blue' if end=='teal' else 'teal')):
+                    target=(beam[0]+ends[end_name]*math.cos(a),beam[1]+ends[end_name]*math.sin(a))
+                    blocked=blocked or any(segment_hits_rect(pos,target,rect) for rect in rects)
+                if blocked:rejects['start_wall_blocks_end']+=1;continue
             if any(math.dist(p,beam[:2])<.46 for p in active):rejects['robot_beam']+=1;continue
             # Park inactive robots in valid free cells away from all task bodies.
             parking=[]
@@ -66,13 +74,14 @@ def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True):
                  'end_color_scene':'grasp_act_teal_blue_v1','peer_case':peer,
                  'initial_pan':{rid:rng.randint(500,2500) for rid in roles},
                  'initial_scene_context':'original scenario inventory; task beam/setup spawns randomized',
-                 'proposal_attempts':attempt+1,'near_wall':min(rect_distance(beam,rect) for rect in rects)<.45}
+                 **({'visible_start':True} if visible_start else {}),'proposal_attempts':attempt+1,'near_wall':min(rect_distance(beam,rect) for rect in rects)<.45}
             episodes.append(row);break
         else:raise ValueError(f'no admissible start for index {i}; rejection counts {rejects}')
     return {'schema':'ugrp.grasp_act.plan.v1','episodes':episodes,'rejected_proposals':dict(rejects),
         'distribution':{'beam_yaw_deg':[0,360],'robot_center_distance_m':[.5,2.],
         'robot_axis_bearing_deg':[0,360],'robot_heading_error_deg':[-60,60],'initial_pan_pwm':[500,2500],
         'ends':'50:50 by index','fixed':['floor_light_v1','camera review v3','native v7','cargo_noslip_v1','weld off'],
+        **({'start_visibility':'static wall must not block the line from each spawn to its assigned end (episode generation only)'} if visible_start else {}),
         'limits':'static rejection alters accepted strata; accepted plan is the source of actual coverage. Intermediate placed objects and moving work peers are a later collection stage.'},
         'criteria':{'teacher_target_rate':.95,'minimum_episodes':40,'single_end':'bilateral >=0.5N each and end rise >=12mm for >=1s',
         'pair':'both bilateral + whole beam lower surface >=12mm above floor for >=1s',
@@ -84,8 +93,9 @@ def prepare(*,count=40,seed=71000,split='teacher_gate',pair=True):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--count',type=int,default=40)
     p.add_argument('--seed',type=int,default=71000);p.add_argument('--split',choices=('teacher_gate','train','development','heldout_start','heldout_map'),default='teacher_gate')
-    p.add_argument('--single',action='store_true');a=p.parse_args()
-    result=prepare(count=a.count,seed=a.seed,split=a.split,pair=not a.single)
+    p.add_argument('--single',action='store_true')
+    p.add_argument('--visible-start',action='store_true',help='reject starts where a static wall blocks the line to the assigned end (episode generation only)');a=p.parse_args()
+    result=prepare(count=a.count,seed=a.seed,split=a.split,pair=not a.single,visible_start=a.visible_start)
     a.out.parent.mkdir(parents=True,exist_ok=True);a.out.write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({'episodes':len(result['episodes']),'rejected':result['rejected_proposals']}))
 if __name__=='__main__':main()

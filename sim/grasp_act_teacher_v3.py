@@ -28,6 +28,13 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.teacher_stability=kwargs.pop('teacher_stability','off')
         if self.teacher_stability not in ('off','align_relook_v1'):
             raise ValueError('unknown teacher stability mode')
+        # search_body_scan_v1: pan sweep + in-place 8-direction body scan only.
+        self.teacher_search=kwargs.pop('teacher_search','off')
+        if self.teacher_search not in ('off','search_body_scan_v1'):
+            raise ValueError('unknown teacher search mode')
+        if self.teacher_search!='off' and self.teacher_stability=='off':
+            raise ValueError('search_body_scan_v1 requires align_relook_v1')
+        self.sc=None;self.search_log=[];self.ever_seen=False
         kwargs.pop('profile',None)
         super().__init__(*args,profile='observable_v2',**kwargs)
         self.phase='approach';self.handoff=False;self.local_seen=None
@@ -121,7 +128,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if visible:
             g=truth['beam']['ends'][self.end];pose=truth['robots'][self.rid]['pose']
             self.local_seen=[*local(pose,g),g[2]+.009];self.last_seen_t=now
-            self.search_since=None
+            self.search_since=None;self.sc=None;self.ever_seen=True
             occluders=[{'xy':local(pose,v['pose']),'radius':v.get('radius',.17),
                 'top_z_bound_m':v.get('top_z_bound_m',.32)}
                 for r,v in truth['robots'].items() if r!=self.rid]
@@ -133,6 +140,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self.search_since=now if self.search_since is None else self.search_since
             age=now-self.search_since
             if self.phase!='relook' and self.phase!='search':self._set('search',now)
+            if self.teacher_search!='off' and self.phase=='search' and not self.ever_seen:
+                # Never-seen target (ever_seen, not local_seen: a relook clears local_seen).
+                target,value=self._search_step(now,age)
+                self.sink.pwm.update(slew(self.sink.pwm,target));self.arm.commanded.update(self.sink.pwm)
+                return value
             # Full stationary pan/pitch sweep before turning the chassis.
             # All targets depend on issued scan age, never a hidden pose.
             pans=(self.initial_search_pan,1500,1000,2000,500,2500)
@@ -142,6 +154,55 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if visible:return None
         if age<7.2:return self._hold(now)
         return self._continuous(now,0.,0.,.25)
+
+    SEARCH_LIMIT_S=33.      # backstop; one full scan normally ends at ~24 SIM s
+    SWEEP_PANS=(1000,1500,2000)
+    SLOT_S=.6
+    SCAN_STEPS=8            # 45 deg body directions, in place, same command ACT can issue
+    # Real/nominal yaw of this turn command (width ~0.05 s): 0.73 on seed 76015's
+    # search rotation (300 ticks); 0.69-0.78 over 9 GCP gate episodes. Pulse
+    # widths differ: full-width 0.1 s yaw ticks measured 1.75 (see search-body-scan.md).
+    TURN_GAIN=.73
+
+    def _scan_target(self,age,pans):
+        slot=int(age/self.SLOT_S);near=slot%2==0
+        # 700/2440 sees 0.26-0.92 m ahead, 820/2320 0.45 m to the horizon (camera FK).
+        return {**FOLDED,3:700 if near else 820,4:2440 if near else 2320,6:pans[min(slot//2,len(pans)-1)]}
+
+    def _search_step(self,now,age):
+        """search_body_scan_v1. Only own issued commands drive it: a pan/tilt sweep,
+        then seven 45 deg in-place turns with a short dwell each, then hand off.
+        No map, no pose, no object or peer position. Map moves are not ACT's job."""
+        from harness.grasp_act_visible_world import command_delta
+        look={**FOLDED,3:820,4:2320,6:1500}
+        if self.sc is None:
+            self.sc={'stage':'sweep','t0':now,'k':0,'turned':0.}
+        sc=self.sc
+        if self.last_command is not None and self.last_tick is not None and sc['stage']=='turn':
+            sc['turned']+=abs(command_delta(self.last_command,min(.1,now-self.last_tick))[2])*self.TURN_GAIN
+        def log(stage):
+            self.search_log.append({'t':round(now,2),'stage':stage,'k':sc['k']})
+            self.events.append({'t':now,'search':stage,'k':sc['k']})
+        def handoff():
+            if self.outcome is None:
+                self.outcome='search_timeout_handoff';log('handoff')
+            return look,self._hold(now)
+        if age>self.SEARCH_LIMIT_S:return handoff()
+        if sc['stage']=='sweep':
+            span=len(self.SWEEP_PANS)*2*self.SLOT_S
+            if now-sc['t0']<span:return self._scan_target(now-sc['t0'],self.SWEEP_PANS),self._hold(now)
+        elif sc['stage']=='dwell':
+            if now-sc['t0']<2*self.SLOT_S:return self._scan_target(now-sc['t0'],(1500,)),self._hold(now)
+        elif sc['stage']=='turn':
+            if sc['turned']<math.pi/4 and now-sc['t0']<6.:
+                return look,self._continuous(now,0.,0.,.25)
+            sc['k']+=1;sc.update(stage='dwell',t0=now,turned=0.);log('dwell')
+            return self._scan_target(0.,(1500,)),self._hold(now)
+        # sweep or dwell finished
+        log('swept' if sc['stage']=='sweep' else 'dwelled')
+        if sc['k']>=self.SCAN_STEPS-1:return handoff()
+        sc.update(stage='turn',t0=now,turned=0.)
+        return look,self._hold(now)
 
     def _geometry(self,world):
         pose=world['robots'][self.rid]['pose'];g=world['beam']['ends'][self.end]
@@ -295,4 +356,5 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'ready_revocations':self.ready_revocations,'handoff':self.handoff,
                 'blocked_goal_calls':self.blocked_goal_calls,
                 'teacher_stability':self.teacher_stability,'alignment_relooks':self.align_relooks,
+                'teacher_search':self.teacher_search,'search_log':self.search_log,
                 'done_semantics':'own issued arm sequence complete; physical evaluation separate'}
