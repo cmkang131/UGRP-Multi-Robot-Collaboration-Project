@@ -1,0 +1,797 @@
+{
+  "schema": "ugrp.approach_regression.offline.v1",
+  "status": "awaiting_requested_frames_before_fix",
+  "source_shas": [
+    "23a2a1137e3907073001ce079dd3294419fb5b1b",
+    "a3f3be78f5547d7b44396cab38b6e57354b4a49d"
+  ],
+  "scope": "13 stored runs; visible-input/issued-command replay, no physical simulation, rendering, model calls or remote submission",
+  "replayed_runs": 13,
+  "replayed_robots": 26,
+  "source_command_tolerance": 1e-12,
+  "source_command_material_mismatches": 0,
+  "source_command_max_abs_error": 1.8041124150158794e-16,
+  "baseline_cases_with_command_divergence": 6,
+  "original_results": [
+    {
+      "source": "23a2a113",
+      "episode": "episode-000",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw",
+      "result_decoded_sha256": "4b0f568176e2a73a43a0b4934375ba211f26cf6cb9f3337b5757722edc550903"
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-001",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-001/raw",
+      "result_decoded_sha256": "1fabcdbe4d1f1bb431a2e610d49521a90cf1ff8ae7a8cf73125aa1db8a256f20"
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-002",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-002/raw",
+      "result_decoded_sha256": "d7fa6930e156e790b5e5a74f60e0ecbe097bc766d28ecfb6d18e8e97039fbd8b"
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-003",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-003/raw",
+      "result_decoded_sha256": "0e38c397256f0db117fbb2669b97c0fed62306bdcde622d352617baadc83b51a"
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-004",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-004/raw",
+      "result_decoded_sha256": "46fd545affe4ad813354d98a407b88f7b3d685ae93d86c85448c33c768df049e"
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-005",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-005/raw",
+      "result_decoded_sha256": "a778355288c3fca2a48a1816062f83bb6e54e06924d55efedb7c9b4dd41628c2"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-000",
+      "status": "complete",
+      "physical_success": false,
+      "outcomes": {
+        "r1": "no_stable_joint_hold_3s",
+        "r2": "no_stable_joint_hold_3s"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw",
+      "result_decoded_sha256": "89fec78d69fd5b586d280c4eb2e3a56cffed6fd81703496a28c76ab182c67c6f"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-001",
+      "status": "complete",
+      "physical_success": false,
+      "outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw",
+      "result_decoded_sha256": "b5d0fdfc2dd51225c81405f736ece4b7331257fd498bad85cf20cf9c831afb86"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-002",
+      "status": "complete",
+      "physical_success": false,
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw",
+      "result_decoded_sha256": "68e1c5bb1dc705ccbd31c8bf7c5d3af0f3756631ae362507e5e0b4ab64c2aeb9"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-003",
+      "status": "interrupted",
+      "physical_success": false,
+      "outcomes": {},
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-003/raw",
+      "result_decoded_sha256": "58910ce132d51b7010c54a1c57396192e7334d097ff1da6ab32d3a008a5e7329"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-004",
+      "status": "interrupted",
+      "physical_success": false,
+      "outcomes": {},
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-004/raw",
+      "result_decoded_sha256": "c9e7586a04b422ebbd5f31a6d637412fe06ae9b6bc466eabc53074b9b8770c17"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-005",
+      "status": "interrupted",
+      "physical_success": false,
+      "outcomes": {},
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-005/raw",
+      "result_decoded_sha256": "a94ef069384978c7bee34aea77c393e492917211db5bb7e9744180ad031c647d"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-006",
+      "status": "interrupted",
+      "physical_success": false,
+      "outcomes": {},
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-006/raw",
+      "result_decoded_sha256": "313bb019f14a9457d36d0ed2e34e9d201532d7ace40ddfbe3d1b6b936d8a9908"
+    }
+  ],
+  "ep0_numeric": {
+    "23a2a113": {
+      "max_stable_hold_s": 3.0000000000143245,
+      "beam_min_z_range_m": [
+        -0.00022547741240892816,
+        0.061567169705945266
+      ],
+      "protocol": {
+        "source": "READY/GO/ACK only; no peer probes",
+        "delays_s": {
+          "r1": 0.0,
+          "r2": 0.8212263485867997
+        },
+        "events": [
+          {
+            "t": 20.800000000008303,
+            "event": "GO",
+            "epoch": 0
+          },
+          {
+            "t": 20.90000000000878,
+            "event": "ACK",
+            "robot": "r1"
+          },
+          {
+            "t": 20.90000000000878,
+            "event": "ACK",
+            "robot": "r2"
+          },
+          {
+            "t": 20.90000000000878,
+            "event": "START",
+            "robot": "r1"
+          },
+          {
+            "t": 21.7000000000126,
+            "event": "START",
+            "robot": "r2"
+          }
+        ]
+      },
+      "robots": {
+        "r1": {
+          "pick_sample": 191,
+          "pick_absolute_t": 20.90000000000878,
+          "yaw_relative_to_nominal_deg": 1.832685037177334,
+          "staging_m": 0.203,
+          "bilateral_contact_samples": 51,
+          "total_samples": 275
+        },
+        "r2": {
+          "pick_sample": 199,
+          "pick_absolute_t": 21.7000000000126,
+          "yaw_relative_to_nominal_deg": 0.02159888868898239,
+          "staging_m": 0.203,
+          "bilateral_contact_samples": 43,
+          "total_samples": 275
+        }
+      }
+    },
+    "a3f3be78": {
+      "max_stable_hold_s": 0.0,
+      "beam_min_z_range_m": [
+        -0.000531047122125608,
+        -0.00010775542042025521
+      ],
+      "protocol": {
+        "source": "READY/GO/ACK only; no peer probes",
+        "delays_s": {
+          "r1": 0.0,
+          "r2": 0.8212263485867997
+        },
+        "events": [
+          {
+            "t": 15.099999999987483,
+            "event": "GO",
+            "epoch": 0
+          },
+          {
+            "t": 15.19999999998725,
+            "event": "ACK",
+            "robot": "r1"
+          },
+          {
+            "t": 15.19999999998725,
+            "event": "ACK",
+            "robot": "r2"
+          },
+          {
+            "t": 15.19999999998725,
+            "event": "START",
+            "robot": "r1"
+          },
+          {
+            "t": 15.999999999985386,
+            "event": "START",
+            "robot": "r2"
+          }
+        ]
+      },
+      "robots": {
+        "r1": {
+          "pick_sample": 134,
+          "pick_absolute_t": 15.19999999998725,
+          "yaw_relative_to_nominal_deg": -89.85090800881355,
+          "staging_m": 0.198,
+          "bilateral_contact_samples": 16,
+          "total_samples": 260
+        },
+        "r2": {
+          "pick_sample": 142,
+          "pick_absolute_t": 15.999999999985386,
+          "yaw_relative_to_nominal_deg": 0.024838789284880237,
+          "staging_m": 0.203,
+          "bilateral_contact_samples": 85,
+          "total_samples": 260
+        }
+      }
+    }
+  },
+  "pending": [
+    "Review requested own/overview frames; contact mechanism not visually confirmed",
+    "Implement fallback-only nominal-preserving approach and regressions",
+    "Run relevant tests, commit/push, verify remote SHA",
+    "Issue replacement queue ready=true, supersede old queue, comment on PR #484"
+  ],
+  "artifacts": {
+    "approach-regression-replay.json": "ccc658e2ec78cce59e1bd458731e187c41f84f1161ceb2c988c7e9f7b57b24a0",
+    "approach-regression-starts.json": "63acf3fd41d9480beb239a7d1df4cd8848ac5028d8a8b7539b427f2c35c29729",
+    "audit_approach_regression.py": "47ea949a126eeb9c85d039c5364f99719bbcb6b2844fadb74616d9fe90b5aad9"
+  },
+  "input_integrity": {
+    "checked_files": 39,
+    "manifest_and_decoded_hashes_match": true
+  },
+  "frame_request": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/fetch-requests/search4.txt",
+    "sha256": "270190134cefda821e9b7919e1bbb924c912e9665f48a9ea46383ea533933741",
+    "N": 81,
+    "bytes": 1212989,
+    "local_available": 0,
+    "frames": [
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000000.jpg",
+        "sha256": "10b7a5711b9af9d9073ed22d177112e572670bfed3977dacdfe15d56eab72c7f",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000000.jpg",
+        "bytes": 30525
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+        "sha256": "2f90c44fe00496b7f3ff4b415a6915550ec72a7d6f68f8b2813d2459ce71f19a",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+        "bytes": 10948
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+        "sha256": "50f1c83ce8432fadc7d90bdaabdec76ecccad163a6655816e7d98bf4c304beb3",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+        "bytes": 6605
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000050.jpg",
+        "sha256": "f117d56db93c9bb38a721747d787f6c15ba0299afcedd02e4b23d41ddd7aec6f",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000050.jpg",
+        "bytes": 30451
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000050.jpg",
+        "sha256": "a6559025b5343a614ebb2e881971f6603700f4626479cb46a835e2ed93329142",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000050.jpg",
+        "bytes": 7823
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000050.jpg",
+        "sha256": "d8577754235191b04738178e585f49dc33e4129c1c0387615d3ee3117a89639e",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000050.jpg",
+        "bytes": 7270
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000110.jpg",
+        "sha256": "bf2f512bd5acde3f4153c5a7e7cea0a09cb2a1d384a0d8f275e19eeb1eba374e",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000110.jpg",
+        "bytes": 30403
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000110.jpg",
+        "sha256": "3dff719fa859c02a0148805dca72ee636b8bc124b93e4e883c1a3b4bfa212ed1",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000110.jpg",
+        "bytes": 6325
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000110.jpg",
+        "sha256": "26cfd5b2a4cde183562653a78635b361aafb2e58a7db9d1faaa144272627b04c",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000110.jpg",
+        "bytes": 7279
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000160.jpg",
+        "sha256": "8f6ffa85827a995b541dc128e8b5d26163ae57a7a7e57ffabf541f75fdb44c96",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000160.jpg",
+        "bytes": 30441
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000160.jpg",
+        "sha256": "c90063bcc61f5c3a2fef18e8d88a47276ac0542ea71dfae6b496bab49aec6149",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000160.jpg",
+        "bytes": 6683
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000160.jpg",
+        "sha256": "ef3f0ced8b2865bf1264e53612809caa5da1b2a1cd835e63ddb23795d1995686",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000160.jpg",
+        "bytes": 7286
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000220.jpg",
+        "sha256": "402ff850c18c21be5695179c81a6cd81e4af6843d29100b25afb7151e0aac0c0",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000220.jpg",
+        "bytes": 30455
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000220.jpg",
+        "sha256": "0229d6f32dae57de8ec14ca4a4bfdd1ae29b6892e176180e81e98ea7126b1e4f",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000220.jpg",
+        "bytes": 6182
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000220.jpg",
+        "sha256": "f06678f0c85455c976527b564082af1421046156c6e58deaa7d966d8cbb7f09b",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000220.jpg",
+        "bytes": 6596
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000270.jpg",
+        "sha256": "5e56822936c8cf6d997ab984b17a65da568fdad3d785e5c874702f5494226143",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-overview/000270.jpg",
+        "bytes": 30471
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000270.jpg",
+        "sha256": "762d2fe4bfd3622ba347c78eaf330af705bd3d694ce2eff4b1b8e0b11bdea8e4",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r1/000270.jpg",
+        "bytes": 6076
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000270.jpg",
+        "sha256": "93108215cd6683c35748dbdc04f536490ef37850df1047d5414709a4d4246530",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw/eval-own/r2/000270.jpg",
+        "bytes": 6066
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000000.jpg",
+        "sha256": "10b7a5711b9af9d9073ed22d177112e572670bfed3977dacdfe15d56eab72c7f",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000000.jpg",
+        "bytes": 30525
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+        "sha256": "2f90c44fe00496b7f3ff4b415a6915550ec72a7d6f68f8b2813d2459ce71f19a",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+        "bytes": 10948
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+        "sha256": "50f1c83ce8432fadc7d90bdaabdec76ecccad163a6655816e7d98bf4c304beb3",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+        "bytes": 6605
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000050.jpg",
+        "sha256": "f117d56db93c9bb38a721747d787f6c15ba0299afcedd02e4b23d41ddd7aec6f",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000050.jpg",
+        "bytes": 30451
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000050.jpg",
+        "sha256": "a6559025b5343a614ebb2e881971f6603700f4626479cb46a835e2ed93329142",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000050.jpg",
+        "bytes": 7823
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000050.jpg",
+        "sha256": "d8577754235191b04738178e585f49dc33e4129c1c0387615d3ee3117a89639e",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000050.jpg",
+        "bytes": 7270
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000100.jpg",
+        "sha256": "5697be62bffc751756c4821f2b42c922a60fcee005415650bbb85f4f7fd7d2a2",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000100.jpg",
+        "bytes": 30394
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000100.jpg",
+        "sha256": "45a6c67989a6a92598a4d8d651e963c0090b5f00535f744753e5dff3330d5cb2",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000100.jpg",
+        "bytes": 5559
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000100.jpg",
+        "sha256": "9e23b30cdc8d275dfbceab51a98b4e801e1a0767e71f74d6310f2934379baa86",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000100.jpg",
+        "bytes": 7263
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000120.jpg",
+        "sha256": "155e66b90750a741d1f8ef46d67ee75365ba057e95ff103fb5df3ac48c51f34d",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000120.jpg",
+        "bytes": 30464
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000120.jpg",
+        "sha256": "c0af350e2123028b59a62dcfa8e544e97909a1b934324af891c7c21175627c10",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000120.jpg",
+        "bytes": 5562
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000120.jpg",
+        "sha256": "ee9f95442a3e0b0653497c394fc325f73af23006d24567944dc155f85e595ace",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000120.jpg",
+        "bytes": 7268
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000150.jpg",
+        "sha256": "744137c10d3050ea31b1380d4e97aee733465b35feda16d87df6c68a39c59b45",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000150.jpg",
+        "bytes": 30418
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000150.jpg",
+        "sha256": "31caabe2fc2250f0b06417b8d919de9dddbaac790c10dfb6ec3b4d009ad4e7df",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000150.jpg",
+        "bytes": 4181
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000150.jpg",
+        "sha256": "cf22ac1da082357c2cef2f28aa9283449b4e981a06870fc9d94ef2ed53ab1323",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000150.jpg",
+        "bytes": 6099
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000170.jpg",
+        "sha256": "d2f2cf4960dfd5e1d1486b3a2e5375c7bc34d08ed6d0cddf554d01451a54faf0",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000170.jpg",
+        "bytes": 30443
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000170.jpg",
+        "sha256": "476b0ac586866b12aea43a2faffd05e2fee38beeee8406a6a7b52102b8a652b7",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000170.jpg",
+        "bytes": 4205
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000170.jpg",
+        "sha256": "640a91b921ad815b8eb1ae828add221fae41e00ee3e37b07ecd43730b0d11115",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000170.jpg",
+        "bytes": 6470
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000180.jpg",
+        "sha256": "7f791a4d2c916f62e03c528dc0f29207ac8b893cf2670eb990a77a7fa422e494",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000180.jpg",
+        "bytes": 30415
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000180.jpg",
+        "sha256": "466c03f88e20418e65276c93259ff2ee70ad3ac7b226777486ba9ba0e94ea967",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000180.jpg",
+        "bytes": 5640
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000180.jpg",
+        "sha256": "f9c70e0af1ddc1d3ef9d769bdf0584f7e070b84f6994c7a8a16f5147b7a8d176",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000180.jpg",
+        "bytes": 6476
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000200.jpg",
+        "sha256": "89f29a31319b42e485ff759e48599cfcfe20da353419c05e19e204950afa8985",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000200.jpg",
+        "bytes": 30409
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000200.jpg",
+        "sha256": "dcee5df37aeebf90661711fa00c95ca32d689c131013098d315e124fcd1f8cc4",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000200.jpg",
+        "bytes": 5292
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000200.jpg",
+        "sha256": "762585ed298533e922eaa486377fcb13ab14d85477b114141036733b7d0e2161",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000200.jpg",
+        "bytes": 6381
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000250.jpg",
+        "sha256": "bc8a9e0ade6aa3775616a327c317a4db7bac194013a462d270cfee4a961b6825",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-overview/000250.jpg",
+        "bytes": 30448
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000250.jpg",
+        "sha256": "388fc81b73a3382fd9a6356c591d2f5cd5c58066b0eb2ac04c30cf51ae6f7f6b",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r1/000250.jpg",
+        "bytes": 5303
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000250.jpg",
+        "sha256": "57cdd70a14d291888de59973380a23ff1a75b4d66256d10bea935085c7aa2593",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw/eval-own/r2/000250.jpg",
+        "bytes": 6317
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000000.jpg",
+        "sha256": "da807446c1123870887130341bcfad243d5840b74f600aab32326d2a22e04b26",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000000.jpg",
+        "bytes": 30162
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000000.jpg",
+        "sha256": "aedcd67221879affa8b299fd2c14f86212087de4fab5c07f25eb7a7bc47f97f0",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000000.jpg",
+        "bytes": 8913
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000000.jpg",
+        "sha256": "7617e1bc8c56b8f45c3bf0a2d0caf57238b42e57deb1b04edcfdab4ea9627c41",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000000.jpg",
+        "bytes": 7235
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000030.jpg",
+        "sha256": "ac85f844946540da5e35489fa93fa8ab65a8aaf4fbc33cec6d6ee7458d7b482d",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000030.jpg",
+        "bytes": 30181
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000030.jpg",
+        "sha256": "93d209f0d91e289d9068160209e1def1f8e2d2286d224c9bef15cc4005ebc813",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000030.jpg",
+        "bytes": 7661
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000030.jpg",
+        "sha256": "cab56140534c6d62d343839cc145bed36e02795a0b4785772b4e08d731581c17",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000030.jpg",
+        "bytes": 8839
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000060.jpg",
+        "sha256": "8063bb566bc68ada1f3043c57179bce47fff0031e17a60e77d406a2c50834919",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000060.jpg",
+        "bytes": 30098
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000060.jpg",
+        "sha256": "c4d4641249a16e002375ec07469788657d5e850505f12a1fcd98aa50689feafb",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000060.jpg",
+        "bytes": 6821
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000060.jpg",
+        "sha256": "ba9ec009f7192ea7b8099030560597c6f671dff16f10736bd700890e9c662255",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000060.jpg",
+        "bytes": 12442
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000080.jpg",
+        "sha256": "30e6e8307821fdce579e5523d43aeeae9f96e081362caa646f0db64bf7364079",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000080.jpg",
+        "bytes": 30092
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000080.jpg",
+        "sha256": "0e2f2f915f86b726075ba51ab9871538ed9c57900a6eddf8ff864ed65c989e82",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000080.jpg",
+        "bytes": 6645
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000080.jpg",
+        "sha256": "5bbb942b6b0665105394deed131c6be38a3d63330d0d4f6ed54a8186769a8266",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000080.jpg",
+        "bytes": 6927
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000110.jpg",
+        "sha256": "b9d2ed12096093086a4b4b9670d022c93ae994cbffc116c77dd4c56f3a5d7fcd",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000110.jpg",
+        "bytes": 30078
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000110.jpg",
+        "sha256": "b65759939fce10e9b3c77794ecb4230e5929c01543327942c2601e6b93e5d27a",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000110.jpg",
+        "bytes": 5863
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000110.jpg",
+        "sha256": "3383ec23003d9ecd8b3b0bc5c2d6e6714ccfe269881c5abe02f2e72352354633",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000110.jpg",
+        "bytes": 8677
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000140.jpg",
+        "sha256": "6d9ee6649a9158aac911e35707c34035ee0602302e0db1ce15db4a5219055ea7",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-overview/000140.jpg",
+        "bytes": 30135
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000140.jpg",
+        "sha256": "0349d14dfc1fa64bcba08c06501c71919913720b993b18de9d5a6e8af2e342c3",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r1/000140.jpg",
+        "bytes": 6202
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000140.jpg",
+        "sha256": "a1a904aeed72c663180751afbdfc74cff66e507185648d5963baf1fc1af5fe9c",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw/eval-own/r2/000140.jpg",
+        "bytes": 7712
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000000.jpg",
+        "sha256": "e88d36dcc15d3cc8cf2eeaaaa433b2b9351e4465a72adcf3b2a1e2acd8d28741",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000000.jpg",
+        "bytes": 31029
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000000.jpg",
+        "sha256": "09dc6159278dba2cb5af7aa41c72f2b3ff4f1377c876891404d51aaee80e5001",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000000.jpg",
+        "bytes": 7051
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000000.jpg",
+        "sha256": "7abe4855ae82604ad5902e657a2b8a4dddd63c82e8e5d4319e71ca52a2c41aea",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000000.jpg",
+        "bytes": 6596
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000030.jpg",
+        "sha256": "b69d34370c26cac590b7bbe283e063ff04815b93667046e99b3ee181f9f3633a",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000030.jpg",
+        "bytes": 31063
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000030.jpg",
+        "sha256": "cf236c61212e47f9c19348b613b19f5f5827204865162762fb4e50a546f6819a",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000030.jpg",
+        "bytes": 6959
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000030.jpg",
+        "sha256": "78f6ef53e93a8e22895f0cbd321b1dca20b9a9d060abd12642dd3504ca0b4499",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000030.jpg",
+        "bytes": 6929
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000070.jpg",
+        "sha256": "3a0dd289faf4ca14b1ff3dc100c2118eeac396ee248422aa2db5185c4c2a5c0f",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000070.jpg",
+        "bytes": 31041
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000070.jpg",
+        "sha256": "1e07fb1ed7aa58876d9a1f0fa9e7e2e8fef005222121a777d31cd5f929526a3b",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000070.jpg",
+        "bytes": 4955
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000070.jpg",
+        "sha256": "66a79e2c7e127894c1e0c5e7a6ca696f417080b3670661d4bad52b5f21343f96",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000070.jpg",
+        "bytes": 6945
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000100.jpg",
+        "sha256": "233c3b1bb4968d346b25187ba9873f35fd34ba759143fc8eaa67c5038b2c2bfc",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000100.jpg",
+        "bytes": 31052
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000100.jpg",
+        "sha256": "e4b7126df494362943b3689e70cc5f3be5b69578c5e37e14ff97806bd447e37c",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000100.jpg",
+        "bytes": 11864
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000100.jpg",
+        "sha256": "f3e628fc832e6c8ec9b65fcac952d485212884aa7cb893c76e487e19982b0eb3",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000100.jpg",
+        "bytes": 6943
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000140.jpg",
+        "sha256": "768ea0c83ca852fef3858f98b6fd18d4b7a904565aa057b13985775491429dc6",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000140.jpg",
+        "bytes": 31099
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000140.jpg",
+        "sha256": "7a37516b192d42f1a8d3c62fc4c20c5ec19ae286c4376bd9552e1de3a04487f7",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000140.jpg",
+        "bytes": 12440
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000140.jpg",
+        "sha256": "75269f03ccfdb5c10e812b2c8bec8a3420bedb6f19b8ed0307a48361d38f31fd",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000140.jpg",
+        "bytes": 6935
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000170.jpg",
+        "sha256": "aafaaa30629d1f16557100127d0e5fcb8c74f27b10cc088eadc4aced9f350686",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-overview/000170.jpg",
+        "bytes": 31083
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000170.jpg",
+        "sha256": "290979ae0c7de54338996fb312eac794d159d8b7c9a28cac2ae2f249d5746af8",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r1/000170.jpg",
+        "bytes": 10866
+      },
+      {
+        "remote": "/home/ugrp/ugrp-sim/runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000170.jpg",
+        "sha256": "263f285639c3d4ae359e0bbd85e9307bda93865f57703328cfa5c49ad44ef34f",
+        "local": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw/eval-own/r2/000170.jpg",
+        "bytes": 6942
+      }
+    ]
+  },
+  "old_queue": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261014-grasp-search-a3f3be78.json",
+    "status": "blocked_diagnostic_failure",
+    "ready": false,
+    "superseded_pending_new_sha": true
+  }
+}

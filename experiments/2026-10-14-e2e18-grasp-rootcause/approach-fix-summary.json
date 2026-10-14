@@ -1,0 +1,210 @@
+{
+  "schema": "ugrp.approach_fix.summary.v1",
+  "status": "offline_validated_pending_gcp_diagnostic",
+  "scope": "No physics, rendering, model calls, remote submission or monitoring. Existing images inspected.",
+  "source_files": {
+    "sim/grasp_act_teacher_v3.py": "5491fa8c619c49a34e196631d15078f314217561244f91b68d0b7ef9f1f7745f",
+    "sim/grasp_act_goal_set.py": "fba42c67cf9a198e358558ed6e4eea1036904065735baa0115bb7a0532db2112"
+  },
+  "tests": {
+    "passed": 109,
+    "files": [
+      "tests/test_grasp_act_goal_set.py",
+      "tests/test_grasp_act_visible_only.py",
+      "tests/test_grasp_act_search.py"
+    ]
+  },
+  "baseline_replay": {
+    "runs": 6,
+    "robots": 12,
+    "samples": 4664,
+    "command_mismatches": 0,
+    "first_approach_goal_and_path_equal": 12
+  },
+  "failed_source_replay": {
+    "runs": 7,
+    "robots": 14,
+    "first_approach_goal_and_path_equal": 14,
+    "command_mismatches": 228,
+    "mismatch_scope": "Only seed79030 r1 from sample36 when nominal goal becomes statically blocked; expected fallback. First six starts match baseline on all 2856 saved robot decisions."
+  },
+  "ep030_static_regression": {
+    "old": "blocked_goal/no_path",
+    "fixed": "safe alternative route and wheel command",
+    "physical_success": "unverified"
+  },
+  "frames": {
+    "inspected": 81,
+    "hash_verified": 81,
+    "record": "approach-fix-visual-review.json"
+  },
+  "old_results": [
+    {
+      "source": "23a2a113",
+      "episode": "episode-000",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-000/raw",
+      "result_decoded_sha256": "4b0f568176e2a73a43a0b4934375ba211f26cf6cb9f3337b5757722edc550903"
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-001",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-001/raw",
+      "result_decoded_sha256": "1fabcdbe4d1f1bb431a2e610d49521a90cf1ff8ae7a8cf73125aa1db8a256f20"
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-002",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-002/raw",
+      "result_decoded_sha256": "d7fa6930e156e790b5e5a74f60e0ecbe097bc766d28ecfb6d18e8e97039fbd8b"
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-003",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-003/raw",
+      "result_decoded_sha256": "0e38c397256f0db117fbb2669b97c0fed62306bdcde622d352617baadc83b51a"
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-004",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-004/raw",
+      "result_decoded_sha256": "46fd545affe4ad813354d98a407b88f7b3d685ae93d86c85448c33c768df049e"
+    },
+    {
+      "source": "23a2a113",
+      "episode": "episode-005",
+      "status": "complete",
+      "physical_success": true,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-23a2a113/diagnostic/episode-005/raw",
+      "result_decoded_sha256": "a778355288c3fca2a48a1816062f83bb6e54e06924d55efedb7c9b4dd41628c2"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-000",
+      "status": "complete",
+      "physical_success": false,
+      "outcomes": {
+        "r1": "no_stable_joint_hold_3s",
+        "r2": "no_stable_joint_hold_3s"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-000/raw",
+      "result_decoded_sha256": "89fec78d69fd5b586d280c4eb2e3a56cffed6fd81703496a28c76ab182c67c6f"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-001",
+      "status": "complete",
+      "physical_success": false,
+      "outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-001/raw",
+      "result_decoded_sha256": "b5d0fdfc2dd51225c81405f736ece4b7331257fd498bad85cf20cf9c831afb86"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-002",
+      "status": "complete",
+      "physical_success": false,
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-002/raw",
+      "result_decoded_sha256": "68e1c5bb1dc705ccbd31c8bf7c5d3af0f3756631ae362507e5e0b4ab64c2aeb9"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-003",
+      "status": "interrupted",
+      "physical_success": false,
+      "outcomes": {},
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-003/raw",
+      "result_decoded_sha256": "58910ce132d51b7010c54a1c57396192e7334d097ff1da6ab32d3a008a5e7329"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-004",
+      "status": "interrupted",
+      "physical_success": false,
+      "outcomes": {},
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-004/raw",
+      "result_decoded_sha256": "c9e7586a04b422ebbd5f31a6d637412fe06ae9b6bc466eabc53074b9b8770c17"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-005",
+      "status": "interrupted",
+      "physical_success": false,
+      "outcomes": {},
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-005/raw",
+      "result_decoded_sha256": "a94ef069384978c7bee34aea77c393e492917211db5bb7e9744180ad031c647d"
+    },
+    {
+      "source": "a3f3be78",
+      "episode": "episode-006",
+      "status": "interrupted",
+      "physical_success": false,
+      "outcomes": {},
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-a3f3be78/diagnostic/episode-006/raw",
+      "result_decoded_sha256": "313bb019f14a9457d36d0ed2e34e9d201532d7ace40ddfbe3d1b6b936d8a9908"
+    }
+  ],
+  "diagnostic_N": 7,
+  "speed_concurrency": 16,
+  "fresh_gate_N": 40,
+  "fresh_seeds_inclusive": [
+    86000,
+    86039
+  ],
+  "remaining": [
+    "Operations diagnostic7 with video review, then speed16 <=3.5 and gate40 >=38/40 on the same GCP machine/source. No physical recovery claim yet."
+  ],
+  "artifacts": {
+    "approach-fix-replay.json": "a301ea9a83e6886f1255d0381d087188ccfada9b35203f01f45af5dfb27479f5",
+    "approach-fix-visual-review.json": "79320c90690e1a82b634d5dc423cc247673f9bf11aed5c0f1a13b92dfeee2f19",
+    "approach-regression-replay.json": "ccc658e2ec78cce59e1bd458731e187c41f84f1161ceb2c988c7e9f7b57b24a0",
+    "approach-regression-starts.json": "63acf3fd41d9480beb239a7d1df4cd8848ac5028d8a8b7539b427f2c35c29729",
+    "approach-regression-summary.json": "b1bd5647adb74599f4f27a79a45f77de7e020b498910caa88a29ad0ac2ec2b83",
+    "approach-fix-seeds.json": "55521a57d64459a5b9858fb0f2b1069dfa03fbedd8bee9a15e20f710e2e681a0",
+    "audit_approach_fix.py": "9d2e2c47066ee6eb2f75cd0a2ac71f055e4d66b2a8bb58be325937fb3b3d101a"
+  },
+  "fixture": {
+    "path": "tests/fixtures/grasp_act_nominal_regression.json",
+    "sha256": "36e08c30a6610248730e0f28c7e82d2853e413632357cc0142bad9e4a87931cc"
+  }
+}

@@ -73,7 +73,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # Only the currently visible measurement frame reaches this law.
         if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:
             return self._hold(now),False
-        if self.approach_goal_set!='off':
+        use_goals=self._uses_goal_set(truth)
+        if not use_goals and self.approach_blocked_since is not None:
+            self.approach_blocked_since=None;self.next_plan=now
+        if use_goals:
             from sim.grasp_act_visible_route import constraints,free
             pose,g,heading,goal=self._geometry(truth)
             radius,discs,rects=constraints(truth,self.rid,self.folded_ready)
@@ -283,6 +286,14 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     APPROACH_BLOCKED_LIMIT_S=3.
 
+    def _uses_goal_set(self,world):
+        if self.approach_goal_set=='off':return False
+        # Once selected, retain the end-relative stance through alignment/READY.
+        # Until then the exact original planner, cadence and readiness law run.
+        if self.approach_choice!=(0.,STATION_M):return True
+        from sim.grasp_act_goal_set import nominal_goal_blocked
+        return nominal_goal_blocked(world,self.rid,self.end,self.bounds,self.folded_ready)
+
     def _approach_handoff(self,now):
         self.outcome='approach_blocked_handoff';self.path=[];self.approach_plan_valid=False
         self.events.append({'t':now,'approach':'all_goals_blocked_handoff',
@@ -297,7 +308,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         changed=self.path_goal is None or math.dist(goal,self.path_goal)>.025
         blocked=not free(goal,discs,rects,radius)
         unusable=self.path and math.dist(pose[:2],goal)>.08 and waypoint(pose[:2],self.path,discs,rects,radius) is None
-        if changed or now>=self.next_plan or (self.approach_plan_valid and (blocked or unusable)):
+        entering=not self.approach_plan_valid and self.approach_blocked_since is None
+        if entering or changed or now>=self.next_plan or (self.approach_plan_valid and (blocked or unusable)):
             selected,checked=select_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.approach_choice)
             self.planner_calls+=1;self.next_plan=now+1.;self.path_goal=tuple(goal)
             self.blocked_goal_calls+=int(blocked)
@@ -321,7 +333,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         from sim.grasp_act_visible_route import constraints,free,segment_free,waypoint,drive
         from scripts.zone_teacher import plan_path
         pose=world['robots'][self.rid]['pose']
-        if self.approach_goal_set!='off':
+        if self._uses_goal_set(world):
             if not self._plan_approach(world,now):return self._hold(now)
             pose,g,heading,goal=self._geometry(world)
             radius,discs,rects=constraints(world,self.rid,self.folded_ready)
@@ -399,7 +411,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
     def ready_geometry(self,truth):
         if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:return False
         pose,g,heading,goal=self._geometry(truth)
-        if self.approach_goal_set!='off':
+        if self._uses_goal_set(truth):
             from sim.grasp_act_visible_route import constraints,free
             radius,discs,rects=constraints(truth,self.rid,self.folded_ready)
             if not free(goal,discs,rects,radius):return False
@@ -428,6 +440,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def _step(self,truth,now,*,permit_pick):
         if self.outcome is not None:return self._hold(now),False
+        if (self.approach_blocked_since is not None and truth['beam'] is not None
+                and truth['visibility'][self.rid]['visible_probes']>=5 and not self._uses_goal_set(truth)):
+            self.approach_blocked_since=None;self.next_plan=now
         # Losing sight cannot reset a blocked approach's finite deadline.
         if self.approach_blocked_since is not None and now-self.approach_blocked_since>=self.APPROACH_BLOCKED_LIMIT_S-1e-8:
             self._approach_handoff(now);return self._hold(now),False

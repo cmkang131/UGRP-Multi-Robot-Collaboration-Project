@@ -7,7 +7,7 @@ experiments/2026-10-14-e2e18-grasp-rootcause/approach-goal-set.md for sources.
 import math
 from sim.grasp_act_teacher import STATION_M, grasp_poses, wrap
 from sim.grasp_act_visible_route import constraints, free, segment_free
-from scripts.zone_teacher import plan_path
+from scripts.zone_teacher import PeerDisc, plan_path
 
 ANGLES_DEG = (0, -15, 15, -30, 30, -45, 45, -60, 60, -75, 75, -90, 90)
 DISTANCES_M = (STATION_M, .198, .208)
@@ -22,8 +22,22 @@ def geometry(world, rid, end, choice):
     return pose, point, heading, goal
 
 
+def nominal_goal_blocked(world, rid, end, bounds, folded):
+    """Only a static obstruction of the nominal stance enables alternatives.
+
+    A peer can move away: preserve the original planner's wait/replan behavior.
+    Peers still participate in every route and alternative-goal collision test.
+    A failed grid segment or route is not evidence of a blocked grasp stance.
+    """
+    radius, discs, rects = constraints(world, rid, folded)
+    goal = geometry(world, rid, end, (0., STATION_M))[3]
+    x0, x1, y0, y1 = bounds
+    return (not (x0+radius <= goal[0] <= x1-radius and y0+radius <= goal[1] <= y1-radius)
+            or not free(goal, [d for d in discs if not isinstance(d, PeerDisc)], rects, radius))
+
+
 def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M)):
-    """Keep a feasible current stance; otherwise choose the cheapest alternative.
+    """Fallback after nominal_goal_blocked; keep an already selected stance.
 
     Angles stay on the assigned end's outward half-circle. Distances must pass
     the existing descent/hover IK, and every path segment keeps the unchanged

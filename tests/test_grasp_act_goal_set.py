@@ -8,7 +8,7 @@ import pytest
 from harness.grasp_act_visible_world import VisibleWorld
 from scripts.zone_teacher import FOLDED
 from sim.grasp_act_teacher_v3 import VisibleOnlyGraspTeacher
-from sim.grasp_act_goal_set import select_goal
+from sim.grasp_act_goal_set import nominal_goal_blocked, select_goal
 from sim.grasp_act_visible_route import constraints, free, segment_free
 
 
@@ -74,13 +74,24 @@ def test_lost_view_cannot_reset_blocked_deadline():
     assert t.outcome=='approach_blocked_handoff' and not any(value['wheels'])
 
 
+@pytest.mark.parametrize('use_step',[False,True])
+def test_visible_clear_nominal_goal_cancels_fallback_deadline(use_step):
+    row,w=saved();t=teacher(row);blocked=deepcopy(w)
+    blocked['objects']['block']={'xy':w['beam']['ends']['teal'][:2],'radius':.6,'top_z_bound_m':.4}
+    t._approach(blocked,w['t'])
+    assert t.approach_blocked_since is not None
+    clear=deepcopy(w);clear['walls']=[];clear['objects']={};clear['robots']={'r1':clear['robots']['r1']}
+    (t.step if use_step else t._approach)(clear,w['t']+3.)
+    assert t.approach_blocked_since is None and t.outcome is None
+
+
 def test_clear_nominal_goal_is_preserved_and_cached():
     row,w=saved();w['walls']=[];w['objects']={};w['robots']={'r1':w['robots']['r1']}
     t=teacher(row);t._approach(w,w['t'])
     assert t.approach_choice==(0.,.203)
-    assert len(t.goal_set_log[-1]['candidates'])==1
+    assert not t.goal_set_log and t.planner_calls==1
     t._approach(w,w['t']+.1)
-    assert len(t.goal_set_log)==1
+    assert not t.goal_set_log and t.planner_calls==1
 
 
 def test_new_wall_invalidates_cached_goal_before_next_replan():
@@ -88,7 +99,40 @@ def test_new_wall_invalidates_cached_goal_before_next_replan():
     t=teacher(row);t._approach(clear,w['t'])
     assert t.approach_choice==(0.,.203)
     t._approach(w,w['t']+.1)
-    assert t.approach_choice[0]!=0 and len(t.goal_set_log)==2
+    assert t.approach_choice[0]!=0 and len(t.goal_set_log)==1
+
+
+NOMINAL_CASES=json.loads((Path(__file__).parent/'fixtures/grasp_act_nominal_regression.json').read_text())['cases']
+
+
+@pytest.mark.parametrize('row',NOMINAL_CASES,ids=lambda r:f"{r['episode']}-{r['rid']}-{r['kind']}")
+def test_six_baseline_starts_and_late_divergences_preserve_frozen_decisions(row):
+    w=row['world'];t=teacher(row);expected=row['expected']
+    assert not nominal_goal_blocked(w,row['rid'],row['end'],t.bounds,True)
+    value,ready=t._approach(w,w['t'])
+    # This includes clear direct routes, A* grid segments rejected by v1,
+    # nominal alignment without a planner call, and the temporary peer block.
+    assert list(t._geometry(w)[3])==expected['goal']
+    assert [list(p) for p in t.path]==expected['path']
+    assert value==expected['command'] and ready==expected['ready']
+    assert t.phase==expected['phase']
+    assert (t.planner_calls,t.no_path_calls)==(expected['planner_calls'],expected['no_path_calls'])
+    assert t.approach_choice==(0.,.203) and not t.goal_set_log
+
+
+def test_peer_only_block_waits_without_changing_stance_or_starting_handoff():
+    row=next(r for r in NOMINAL_CASES if r['episode']=='episode-001' and r['rid']=='r2')
+    w=row['world'];t=teacher(row)
+    radius,discs,rects=constraints(w,t.rid,True)
+    assert not free(t._geometry(w)[3],discs,rects,radius)
+    for dt in (0.,1.,2.,3.,4.):
+        value,_=t._approach(w,w['t']+dt)
+        assert not any(value['wheels'])
+    assert t.outcome is None and t.approach_blocked_since is None
+    assert t.approach_choice==(0.,.203) and not t.goal_set_log
+    clear=deepcopy(w);clear['robots']={t.rid:clear['robots'][t.rid]}
+    value,_=t._approach(clear,w['t']+5.)
+    assert t.path and any(value['wheels'])
 
 
 def test_goal_set_rejects_unreachable_ik(monkeypatch):
