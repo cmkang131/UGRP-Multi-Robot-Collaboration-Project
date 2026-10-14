@@ -44,6 +44,13 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             raise ValueError('unknown nominal blocked handoff mode')
         if self.nominal_blocked_handoff!='off' and self.teacher_stability=='off':
             raise ValueError('nominal blocked handoff requires align_relook_v1')
+        self.approach_progress=kwargs.pop('approach_progress','off')
+        if self.approach_progress not in ('off','approach_progress_v1'):
+            raise ValueError('unknown approach progress mode')
+        if self.approach_progress!='off' and self.teacher_stability=='off':
+            raise ValueError('approach progress requires align_relook_v1')
+        from sim.grasp_act_progress import ApproachProgress
+        self.progress=ApproachProgress();self.progress_log=[]
         self.nominal_handoff_log=[]
         self.approach_choice=(0.,STATION_M);self.goal_set_log=[]
         self.approach_blocked_since=None;self.approach_plan_valid=False
@@ -359,6 +366,21 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         from sim.grasp_act_visible_route import constraints,free,segment_free,waypoint,drive
         from scripts.zone_teacher import plan_path
         pose=world['robots'][self.rid]['pose']
+        if self.approach_progress!='off':
+            recovery=self.progress.observe(pose[:2],now)
+            if recovery is not None:
+                row={'t':now,'approach_progress':recovery,'phase':self.phase,
+                     'required_movement_m':self.progress.required_movement_m,
+                     'allowance_s':self.progress.allowance_s,
+                     'planner_calls':self.planner_calls,'no_path_calls':self.no_path_calls,
+                     'blocked_goal_calls':self.blocked_goal_calls,
+                     'reason':'no_issued_pose_progress','input':'issued-command pose only'}
+                self.progress_log.append(row);self.events.append(row)
+                self.path=[];self.path_goal=None;self.next_plan=now
+                self.approach_plan_valid=False
+                if recovery=='handoff':
+                    self.outcome='approach_blocked_handoff'
+                    return self._hold(now)
         if self._uses_goal_set(world):
             if not self._plan_approach(world,now):return self._hold(now)
             pose,g,heading,goal=self._geometry(world)
@@ -462,6 +484,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
             self.local_seen=propagate_owned(self.local_seen,self.last_command,min(.1,now-self.last_tick))
         value,done=self._step(truth,now,permit_pick=permit_pick)
+        # READY waiting belongs to GO/ACK, and fine alignment has its own
+        # error-progress checker. A search detour does not erase route debt.
+        if self.phase in ('align','ready','pick','complete'):self.progress.reset()
         self.last_command=deepcopy(value);self.last_tick=now
         return value,done
 
@@ -532,5 +557,6 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'teacher_search':self.teacher_search,'search_log':self.search_log,
                 'approach_goal_set':self.approach_goal_set,'goal_set_log':self.goal_set_log,
                 'nominal_blocked_handoff':self.nominal_blocked_handoff,'nominal_handoff_log':self.nominal_handoff_log,
+                'approach_progress':self.approach_progress,'approach_progress_log':self.progress_log,
                 'alternative_goal_path_enabled':self.approach_goal_set!='off' and self.nominal_blocked_handoff=='off',
                 'done_semantics':'own issued arm sequence complete; physical evaluation separate'}

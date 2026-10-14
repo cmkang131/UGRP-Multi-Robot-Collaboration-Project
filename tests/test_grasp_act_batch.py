@@ -84,11 +84,13 @@ def test_first_failure_leaves_other_episode_running(tmp_path,fake_children):
 
 def test_nominal_handoff_toggle_reaches_each_teacher_child(tmp_path,fake_children):
     fake_children[0].update({0:(0,HANDOFF,0),1:(1,SUCCESS,0)})
-    rows,reason,killed=run_wave(tmp_path,fake_children,nominal_blocked_handoff='nominal_blocked_handoff_v1')
+    rows,reason,killed=run_wave(tmp_path,fake_children,nominal_blocked_handoff='nominal_blocked_handoff_v1',
+                               approach_progress='approach_progress_v1')
     assert reason is None and killed==[]
     for i in (0,1):
         command=json.loads((tmp_path/f'wave/episode-{i:03d}/PROCESS.json').read_text())['command']
         assert command[command.index('--nominal-blocked-handoff')+1]=='nominal_blocked_handoff_v1'
+        assert command[command.index('--approach-progress')+1]=='approach_progress_v1'
     summary=batch.summarize(rows,40)
     assert (summary['n'],summary['N'],summary['planned_N'],summary['approach_handoff_n'])==(1,2,40,1)
 
