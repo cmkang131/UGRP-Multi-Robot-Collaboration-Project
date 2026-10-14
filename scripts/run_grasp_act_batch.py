@@ -11,6 +11,37 @@ def read(path):
     except (OSError,ValueError):return {}
 
 
+def reuse_speed_gate(prior,plan,concurrency,limit):
+    """Reuse an observed gate only when all execution code is byte-identical.
+
+    The batch driver may change for explicit start indices. No teacher,
+    actuator, contract, scene, physics, map or other execution change is allowed.
+    """
+    source=Path(__file__).resolve().parents[1]
+    meta=read(prior/'RUN_META.json');old=meta['sha']
+    changed=subprocess.check_output(['git','diff','--name-only',old,'HEAD','--',
+        'harness','sim','scripts','configs','maps'],cwd=source,text=True).splitlines()
+    if set(changed)-{'scripts/run_grasp_act_batch.py'}:
+        raise ValueError('speed reuse requires byte-identical execution components')
+    if read(prior/'resource-admission.json').get('plan_sha256')!=hashlib.sha256(plan.read_bytes()).hexdigest():
+        raise ValueError('same frozen plan required')
+    gate=read(prior/'speed-gate.json')
+    if not gate.get('admitted') or gate.get('completed')!=concurrency or gate.get('median_wall_per_sim',float('inf'))>limit:
+        raise ValueError('completed same-concurrency speed gate required')
+    components={}
+    for name in ('sim/grasp_act_teacher.py','sim/grasp_act_scene.py','sim/grasp_act_port.py',
+                 'scripts/run_grasp_act_teacher.py','scripts/zone_teacher.py','harness/grasp_act_contract.py',
+                 'harness/visual_arm_v3.py','sim/masterpi_drive_friction_v7.py','configs/simulation_workflows.json'):
+        before=subprocess.check_output(['git','show',old+':'+name],cwd=source)
+        after=(source/name).read_bytes()
+        if before!=after:raise ValueError('execution bytes differ: '+name)
+        components[name]=hashlib.sha256(after).hexdigest()
+    proof={'prior':str(prior),'execution_baseline_sha':old,'changed_execution_files':changed,
+           'identical_components_sha256':components,
+           'speed_gate_sha256':hashlib.sha256((prior/'speed-gate.json').read_bytes()).hexdigest()}
+    return gate,proof
+
+
 def summarize(rows,planned):
     completed=[r for r in rows if r.get('status')=='complete' and r.get('exit',0)==0]
     return {'object_kind':'long_beam','n':sum(r.get('physical_success') is True for r in completed),
@@ -83,26 +114,32 @@ def wave(root,plan,indices,cap,*,probe,limit):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--plan',type=Path,required=True)
     p.add_argument('--concurrency',type=int,default=16);p.add_argument('--speed-gate-limit',type=float,default=3.5)
-    p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true');a=p.parse_args()
+    p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true')
+    p.add_argument('--start-index',type=int,default=0);p.add_argument('--speed-gate-from',type=Path);a=p.parse_args()
     root=a.root.resolve();require_azure(root);plan=a.plan.resolve();episodes=read(plan)['episodes']
     if not 1<=a.concurrency<=16 or len(episodes)<a.concurrency:raise ValueError('explicit 1..16 concurrency and enough plans required')
     if not 0<a.cap_s<=180:raise ValueError('finite simulation cap required')
+    if not 0<=a.start_index<len(episodes):raise ValueError('start index outside frozen plan')
     if os.getloadavg()[0]>=12.8:raise ValueError('AZURE_LOAD_ADMISSION')
     available=int(next(l.split()[1] for l in Path('/proc/meminfo').read_text().splitlines() if l.startswith('MemAvailable:')))
     if available<6*1024**2+a.concurrency*512*1024:raise ValueError('AZURE_MEMORY_ADMISSION')
     write(root/'resource-admission.json',{'loadavg':os.getloadavg(),'memory_available_kib':available,
         'plan_sha256':hashlib.sha256(plan.read_bytes()).hexdigest(),'concurrency':a.concurrency})
-    rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit)
-    samples=[{'sim_s':r.get('sim_s'),'wall_s':r.get('wall_s'),'exit':r['exit'],
-        'expected_stop':r.get('status')=='complete' and r.get('sim_s',0)>=30-1e-6,
-        'finalization_complete':any((Path(r['raw'])/name).is_file() for name in ('manifest.json','manifest.json.zst')),'finalization_errors':[],
-        'raw':r['raw']} for r in rows]
-    gate=verdict(samples,a.concurrency,a.speed_gate_limit)
-    if reason:gate.update(status='SPEED_GATE_FAIL',admitted=False,reason=reason)
+    if a.speed_gate_from:
+        gate,proof=reuse_speed_gate(a.speed_gate_from.resolve(),plan,a.concurrency,a.speed_gate_limit)
+        write(root/'execution-continuity.json',proof)
+    else:
+        rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit)
+        samples=[{'sim_s':r.get('sim_s'),'wall_s':r.get('wall_s'),'exit':r['exit'],
+            'expected_stop':r.get('status')=='complete' and r.get('sim_s',0)>=30-1e-6,
+            'finalization_complete':any((Path(r['raw'])/name).is_file() for name in ('manifest.json','manifest.json.zst')),'finalization_errors':[],
+            'raw':r['raw']} for r in rows]
+        gate=verdict(samples,a.concurrency,a.speed_gate_limit)
+        if reason:gate.update(status='SPEED_GATE_FAIL',admitted=False,reason=reason)
     write(root/'speed-gate.json',gate)
     if not gate['admitted'] or a.probe_only:return
     all_rows=[]
-    for start in range(0,len(episodes),a.concurrency):
+    for start in range(a.start_index,len(episodes),a.concurrency):
         rows,reason=wave(root/f'cohort-{start:03d}',plan,range(start,min(start+a.concurrency,len(episodes))),a.cap_s,probe=False,limit=a.speed_gate_limit)
         all_rows.extend(rows);write(root/'teacher-gate.json',summarize(all_rows,len(episodes)))
         if reason:break
