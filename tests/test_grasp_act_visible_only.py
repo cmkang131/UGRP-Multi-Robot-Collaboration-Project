@@ -129,3 +129,66 @@ def test_saved_gcp_ep0_keeps_unreached_nearest_corner():
     near=tuple(c+(p-c)*.004/distance for p,c in zip(pose[:2],corner))
     assert all(not segment_free(near,p,discs,rects,radius) for p in t.path[1:])
     assert waypoint(near,t.path,discs,rects,radius)==corner
+
+
+def stable_teacher():
+    t=VisibleOnlyGraspTeacher('r1','teal',FOLDED,bounds=(-20,20,-20,20),teacher_stability='align_relook_v1')
+    t.phase='align';t.started=True;t.skill_started=0.
+    return t
+
+def test_saved_73011_tiny_mixed_pulses_become_bounded_forward_correction():
+    import json
+    from pathlib import Path
+    row=json.loads((Path(__file__).parent/'fixtures/grasp_act_align73011.json').read_text())
+    t=VisibleOnlyGraspTeacher('r2','teal',row['pwm'],bounds=(-20,20,-20,20),teacher_stability='align_relook_v1');t.phase='align'
+    a,ready=t._approach(row['world'],row['world']['t'])
+    assert not ready and a['wheels']==[.35]*4
+    assert all(.04<=d<=.15 for d in a['duration_s'])
+
+def test_alternating_alignment_errors_reset_into_relook():
+    t=stable_teacher();t.ready_geometry=lambda w:False
+    for k in range(5):
+        b=band(x=.203+(.005 if k%2==0 else -.005))
+        w=VisibleWorld('r1','teal').observe([b],k*.1)
+        a,_=t._approach(w,k*.1)
+    assert t.phase=='relook' and not any(a['wheels'])
+    assert not any(t.align_integral)
+
+def test_alignment_no_progress_has_three_second_deadline():
+    t=stable_teacher();t.ready_geometry=lambda w:False
+    w=VisibleWorld('r1','teal').observe([band(x=.210)],0.)
+    for now in (0.,.1,2.9,3.):a,_=t._approach(w,now)
+    assert t.phase=='relook' and not any(a['wheels'])
+    assert t.events[-2]['alignment_recovery']=='no_visible_error_progress_3s'
+
+def test_lateral_deadband_has_distinct_restart_threshold():
+    t=stable_teacher();t.ready_geometry=lambda w:False
+    chosen=[]
+    for k,y in enumerate((.019,.016,.011,.016,.019)):
+        b=band(x=.210);b['xyz'][1]=y
+        w=VisibleWorld('r1','teal').observe([b],k*.1)
+        t._approach(w,k*.1);chosen.append(t.align_active[1])
+    assert chosen==[True,True,False,False,True]
+
+def test_search_sweeps_pan_before_turning_and_ignores_hidden_target():
+    from copy import deepcopy
+    commands=[]
+    for hidden in ((9.,8.,2.),(-9.,-8.,-2.)):
+        t=stable_teacher();w=VisibleWorld('r1','teal').observe([],0.)
+        w['beam']={'pose':list(hidden),'ends':{'teal':list(hidden)}}
+        series=[]
+        for k in range(60):series.append(t._observe(w,k*.1))
+        assert all(not any(c['wheels']) for c in series)
+        assert len(set(c['pwm']['6'] for c in series))>3
+        commands.append(deepcopy(series))
+    assert commands[0]==commands[1]
+
+def test_input_audit_survives_result_writer_and_rejects_hidden_rows(tmp_path):
+    import json
+    from scripts.run_grasp_act_teacher import audit_visible_input,write
+    report={'input_audit':{'measurement_rows':0,'invisible_measurements':0}}
+    audit_visible_input(report['input_audit'],[band()])
+    write(tmp_path/'result.json',report)
+    assert json.loads((tmp_path/'result.json').read_text())['input_audit']['invisible_measurements']==0
+    with pytest.raises(ValueError,match='invisible'):audit_visible_input(report['input_audit'],[band(4)])
+    assert report['input_audit']['invisible_measurements']==1
