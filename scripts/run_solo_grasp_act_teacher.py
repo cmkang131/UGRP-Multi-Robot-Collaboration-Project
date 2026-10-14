@@ -273,6 +273,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                     mujoco.mj_contactForce(model, data, i, f)
                     forces[finger_ids[finger]] += abs(float(f[0]))
             pos = body.xpos.copy()
+            base = world.robot(rid).base_xyz()      # evaluation-only record, never read by the teacher
             speed = 0. if last_eval_t is None else float(np.linalg.norm(pos-last_eval_pos)/(now-last_eval_t))
             tilt = math.degrees(math.acos(float(np.clip(rot[2, 2], -1., 1.))))
             row = {'min_z': min_z, 'support_z': 0., 'tilt_deg': tilt, 'finger_forces': forces,

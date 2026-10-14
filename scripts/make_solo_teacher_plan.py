@@ -11,7 +11,7 @@ import argparse, hashlib, json, math, random
 from collections import Counter
 from pathlib import Path
 from harness.zone_final_environment import resolve
-from harness.static_keepouts import keepout_rects, rect_distance
+from harness.static_keepouts import keepout_rects, rect_distance, inside_rect
 from harness.grasp_act_seed_splits import check_range
 from sim.grasp_act_solo_teacher import cargo
 
@@ -26,6 +26,23 @@ POSE_ERROR = (.05, math.radians(2.))
 START_RANGE_M = (.6, 1.1)
 FACING_JITTER = math.radians(25.)
 FREE_ROBOT_M = .18
+
+
+def line_of_sight(start, cargo_xy, rects, others, *, step=.02, clear_m=.05):
+    """True when no map obstacle or other cargo stands on the start-to-cargo segment.
+
+    The search is pan and in-place rotation only, so a start whose target is hidden
+    behind a wall or another item could never see it. Scene-owner geometry, used only
+    to draw the start state (never by the teacher).
+    """
+    n = max(2, int(math.dist(start, cargo_xy)/step))
+    for i in range(n):
+        p = (start[0]+(cargo_xy[0]-start[0])*i/n, start[1]+(cargo_xy[1]-start[1])*i/n)
+        if any(inside_rect(p, rect) for rect in rects):
+            return False
+        if any(math.dist(p, q['pose_m'][:2]) < clear_m for q in others):
+            return False
+    return True
 
 
 def candidates(kind):
@@ -66,6 +83,9 @@ def episode(i, kind, seed, split):
         start = (cx-r*math.cos(phi), cy+r*math.sin(phi))
         if not free(start) or any(math.dist(start, q['pose_m'][:2]) < .35 for q in others):
             rejects['start_blocked'] += 1
+            continue
+        if not line_of_sight(start, (cx, cy), rects, others):
+            rejects['target_hidden_from_start'] += 1
             continue
         yaw = math.atan2(cy-start[1], cx-start[0])+rng.uniform(-FACING_JITTER, FACING_JITTER)
         parking = []

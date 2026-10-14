@@ -135,3 +135,9 @@ Codex 초안 작성 시 확인(수치 성능을 우리 과제로 옮기지 않�
    여유 자유도로 관절 한계에서 멀어지는 고전 방법. 우리 팔은 여유가 피치 하나뿐이라 피치를 한계 여유가 큰 쪽으로 정하는 단순한 형태만 썼다.
 9. 둘러보기 방법의 출처(정보 이득 시야 선택, Active Markov Localization, 격자 위치 추정)는 `sim/active_lookaround.py`와 `sim/lookaround_localization.py` 머리말의 목록을 따른다(Opus, PR #484/#491).
 10. 자기 영상 판단: 저장소의 `harness/zone_own_perception_v3_1.py`(재사용). 새 임계값은 만들지 않았다.
+
+## 2026-10-14 진단 3개 HOST_ERROR 수정
+
+- 93fae70a 진단 3개가 시작 3.7초 만에 `NameError: base`(run()의 평가 전용 행 기록)로 끝났다. 평가 전용 줄에서 `base = world.robot(rid).base_xyz()`를 정의해 고쳤다(교사 입력 아님).
+- `tests/test_grasp_act_solo_run_path.py`: 가짜 시뮬레이션 백엔드로 run() 반복문을 실제로 3틱 돌린다(MuJoCo 물리 없음). 수정 전 코드에서는 실패함을 확인했다. `pyflakes`는 해당 파일들에서 정의되지 않은 이름이 없다고 보고했다.
+- 탐색: 교사의 탐색은 팬(servo 6) 스윕뿐이고 지도 기반 이동은 대상을 본 뒤에만 시작한다. 정답 spawn 자세는 교사 판단에 쓰지 않는다(장면 구성에만 쓴다). 시작 상태를 뽑을 때 시작-화물 선분이 지도 장애물이나 다른 화물에 가리면 버린다(`target_hidden_from_start`). 진단 계획은 그대로고 관문 계획만 1개 시작이 바뀌었다.

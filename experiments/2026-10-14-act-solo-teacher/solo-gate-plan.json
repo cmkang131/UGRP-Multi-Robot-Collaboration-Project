@@ -432,24 +432,24 @@
       "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
       "map_id": "zone_wide_two_doors_final_v3",
       "kind": "yellow",
-      "item_id": "yellow_2",
+      "item_id": "yellow_1",
       "role": "west",
       "robot_id": "r1",
       "cargo_pose_m": [
-        0.4,
+        -0.2,
         0.75,
         0.0
       ],
       "spawns": {
         "r1": [
-          -0.5825916158201011,
-          0.7786793582724634,
+          -0.8031160507749946,
+          0.5517220000600056,
           0.032355118817659255,
-          -0.40464743796944164
+          -0.04939750894243711
         ],
         "r2": [
-          1.1740776518950833,
-          -2.616423981970774,
+          0.8463677857060965,
+          0.9313455499619749,
           0.032355118817659255,
           0.0
         ],
@@ -465,9 +465,11 @@
         -0.0031810301843887205,
         0.000400256611736855
       ],
-      "start_to_cargo_m": 0.9830100655999803,
-      "proposal_attempts": 1,
-      "rejects": {}
+      "start_to_cargo_m": 0.6348725352089428,
+      "proposal_attempts": 2,
+      "rejects": {
+        "target_hidden_from_start": 1
+      }
     },
     {
       "episode_id": "solo_gate-78010",
