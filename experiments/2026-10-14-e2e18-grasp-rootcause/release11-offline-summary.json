@@ -1,0 +1,122 @@
+{
+  "schema": "ugrp.release11.offline.v1",
+  "parent_sha": "1dafcae50150166e4c8ca13a2caebd3356299bdd",
+  "scope": "offline unit tests, clock-only backend, stored own-input replay; no physics/render/remote host",
+  "tests": {
+    "tests": 28,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "passed": 28,
+    "files": [
+      "tests/test_release_regrasp.py",
+      "tests/test_grasp_act_release_run.py"
+    ],
+    "junit": "outputs/release11-review/tests.xml",
+    "junit_sha256": "b2c34386a45a402bcf99866cf39e6ce68173eada4e3b24626fab7ea4abdcb9d6",
+    "elapsed_s": 47.973
+  },
+  "source_hashes": {
+    "scripts/run_grasp_act_release.py": "e69391aa5f189889ba5ef826174c70a7cd7ee47c04801d396bb4429a986682bc",
+    "scripts/run_ci_tests.py": "18059ba6fadfc76aa71ec1204afc8a502f6db86877a4dd83213448f1a47148a2",
+    "sim/release_regrasp.py": "de1000487c3ff836419adec38b83f288538c3632ee7efd4b3cc4ad6ee058a1af",
+    "sim/release_axis_correction.py": "b0242d98fbc492dfbcc67e9c3093b464f9ebd0bef98cae1b34327460bc7efac7",
+    "sim/release_global_observation.py": "8a9cda30d11c16eccb133e46063920977597dd6db7f89b783575a7890e974122",
+    "sim/rgb_lift_evidence.py": "92719542fc830c6f9662fd66dce97d77c71bf2ff622da1c4828af289b1396f65",
+    "tests/test_release_regrasp.py": "febb0e373fa2f21e388412480ee3e6755be192bb6ef461541502b6a6b71b2600",
+    "tests/test_grasp_act_release_run.py": "29424ad398395de088674905ba97a9999f88a61ce87e59c4cc90eab9ceeee442",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/analyze_release11.py": "a6f4e7b5030ce24ca865b613632d723cc67c18d1ec7fd8422ea95af49812c523",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/register_release11_queue.py": "671fdcf7ea1e3c2153c08f868242572a1c056e1168ec9ce95d503b45c1f4491a",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release11-diagnostic-plan.json": "77078a352267d84d939df563ef528768a581800a44987ec2aaff5ee8726fe3a3",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release11-gate-plan.json": "3be96ec6b813c12b78b0ed84838ae59493ff791079115b76c0bff4c83ba8ed33",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release11-references.json": "f2a96d59d86214756eb2107749c74cbf1dd8ca500967238a4100302f99e9b9f7",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release11-replay.json": "422b210fb813f570472b3103fbafcf2f2600deb0ccbd3a574def6a6d77fbf3b3",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release11-seed-reservation.json": "60dc133c78d8b61cbf90b5c7a9a31a4f9a89775cf9211a4095b1de0c11c7d5ae",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release11.md": "ead5ef6b34a32634cd758dcff08ab10ecfd3bf732fb81534f5686c63e524fb46"
+  },
+  "runs": [
+    {
+      "seed": 74940,
+      "status": "offline_replay_complete",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-00-8e520ea2/raw",
+      "source_sha": "8e520ea2816c46a0f0d7aac250fcf0969416c808",
+      "placement_decisions_equivalent": 5,
+      "N": 5,
+      "margin_max_error_m": 0.0,
+      "new_physical_result": null,
+      "full_enabled_trajectory_equivalence": "unverified",
+      "input_audit_scope": "stored baseline and synthetic runner only",
+      "original_input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "seed": 74963,
+      "status": "offline_replay_complete",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-01-8e520ea2/raw",
+      "source_sha": "8e520ea2816c46a0f0d7aac250fcf0969416c808",
+      "placement_decisions_equivalent": 1,
+      "N": 4,
+      "margin_max_error_m": 0.0,
+      "new_physical_result": null,
+      "full_enabled_trajectory_equivalence": "unverified",
+      "input_audit_scope": "stored baseline and synthetic runner only",
+      "original_input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    }
+  ],
+  "raw_provenance": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-00-8e520ea2/raw/plan.json",
+      "sha256": "2490bbd1eba83397303bacdbd0ca8dce2bd385db87418765df576909d5317c22"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-00-8e520ea2/raw/result.json.zst",
+      "sha256": "9f52fd8c8101feb2f90a57fe78fe6a6303625c09d4b16d61599ec9be4e1b4114"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-00-8e520ea2/raw/teacher-r1.jsonl.zst",
+      "sha256": "6e46065b09687f5f0477f6f0183b8ff217c95d593f87adb28d5188e4ac19a7ef"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-00-8e520ea2/raw/teacher-r2.jsonl.zst",
+      "sha256": "f84d4421d08bee822ba2ba925786f591e374119f35c25c4a3849690c18276764"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-01-8e520ea2/raw/plan.json",
+      "sha256": "dec564a1be5a7ee1f4c119d70c3ec8506eeddbd82653190ceffe8b251c31e6a6"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-01-8e520ea2/raw/result.json.zst",
+      "sha256": "5b82eef56f00fd0ee3e23e1108caf768687cb4913b4271b34bba7f356def9e6f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-01-8e520ea2/raw/teacher-r1.jsonl.zst",
+      "sha256": "abba3fbaa2af24e0c6a16b07d85d27a8b86058e5d2c406ebf8330066189652ea"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release9-diagnostic-01-8e520ea2/raw/teacher-r2.jsonl.zst",
+      "sha256": "e5b70e651f22de65dd153e62bdb64e4b72492500b1ee5ebed7d2f1fa1656b50e"
+    }
+  ],
+  "review_frames_verified": 51,
+  "teacher_physical_gate_complete": false,
+  "physics_runs": 0,
+  "remote_execution": false,
+  "queue_intent": {
+    "reproduction": 2,
+    "fresh": 7,
+    "gate": 40,
+    "ready": 2,
+    "gate_promotion_authorized_if_all_conditions_pass": false
+  },
+  "limitations": [
+    "Own-RGB detector thresholds are provisional; physical positive/negative evaluation remains.",
+    "74940 5/5 placement choices only; full enabled trajectory/outcome equivalence not established.",
+    "74963 post-branch stored observations are isolated branch tests, not new-path predictions.",
+    "Original prefix remains separate observable_v2 teacher; release input audit is not a new prefix audit."
+  ]
+}

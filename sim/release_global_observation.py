@@ -18,7 +18,7 @@ LATERAL_MODES = ('off', 'bounded_v1')
 MAX_LATERAL_SHIFT_M = .10
 
 
-def margin_report(localizer, teacher, now, *, lateral_recovery='off'):
+def margin_report(localizer, teacher, now, *, lateral_recovery='off', axis_recovery=False):
     """Static zone bounds through the accepted own RGB pose, own release FK."""
     decision = localizer.decision or {}
     base = dict(phase='observe', kind='none', margin_m=None)
@@ -30,10 +30,12 @@ def margin_report(localizer, teacher, now, *, lateral_recovery='off'):
     outward=np.array([c*ox-s*oy,s*ox+c*oy])
     cx,cy,hx,hy=teacher.zone_rect
     axis=1 if hy>=hx else 0; lateral=1-axis
+    error=(math.atan2(outward[1],outward[0])-(math.pi/2 if axis else 0.)+math.pi/2)%math.pi-math.pi/2
+    extra={'axis_error_rad':error} if axis_recovery else {}
     # The unchanged teacher transports axially. Rotation is an observation
     # action only and returns to its starting heading before a grasp/shift.
     if abs(outward[axis])<math.cos(math.radians(10)):
-        return {**base,'reason':'release_axis_unaligned'}
+        return {**base,'reason':'release_axis_unaligned',**extra}
     center=np.array([cx,cy]);half=np.array([hx,hy]);sign=1 if outward[axis]>0 else -1
     margin=float(half[axis]-sign*(point[axis]-center[axis]))
     other=point-.60*outward
@@ -41,7 +43,7 @@ def margin_report(localizer, teacher, now, *, lateral_recovery='off'):
     report = dict(phase='observe',kind='localized_margin',margin_m=margin,
                 lateral_clearance_m=lateral_clearance,pose_sigma_m=max(decision['sigma'][:2]),
                 expected_slack_m=2*float(half[axis])-.60,
-                reason='own_rgb_map_consensus')
+                reason='own_rgb_map_consensus',**extra)
     if lateral_recovery == 'bounded_v1':
         # Same full-beam envelope and 2 cm thickness as the existing guard.
         # Transmit an admissible scalar displacement interval, never a pose.
@@ -51,9 +53,15 @@ def margin_report(localizer, teacher, now, *, lateral_recovery='off'):
     return report
 
 
-def pair_choice(reports, robots, now, *, lateral_recovery='off'):
+def pair_choice(reports, robots, now, *, lateral_recovery='off', axis_recovery=False):
     """Use delivered margins only; balance ends, with a fresh look every leg."""
     rows=[reports[r] for r in robots]
+    if axis_recovery and any(r and r.get('reason')=='release_axis_unaligned' for r in rows):
+        # Preserve axis rejection even if the other robot is unlocalized.
+        # The axis planner owns missing/disagreeing geometry; it must not
+        # consume the unrelated landmark-reobservation budget.
+        return dict(action='axis_correct', reason='release_axis_unaligned', t=now,
+                    axis_errors_rad=[r.get('axis_error_rad') if r else None for r in rows])
     if not all(r and r.get('kind')=='localized_margin' for r in rows):
         return dict(action='observe',reason='global_pose_unobserved',t=now)
     if min(r['lateral_clearance_m'] for r in rows)<MARGIN_M:

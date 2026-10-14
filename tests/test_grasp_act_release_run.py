@@ -314,6 +314,58 @@ def test_lateral_recovery_regrasp_pwm_setdown_and_reobserve(tmp_path,fake_backen
     assert all(len(v['evaluation']['sweeps'])==2 for v in result['lookaround_result'].values())
 
 
+@pytest.mark.parametrize('failure_robot', ('r1', 'r2', None))
+@pytest.mark.parametrize('motion', ('lateral', 'axis'))
+def test_rgb_regrasp_barrier_real_runner(tmp_path,fake_backend,monkeypatch,failure_robot,motion):
+    from sim import release_global_observation as active
+    from sim import release_regrasp as check
+    import math
+    calls=[]
+    def margins(loc,teacher,now,**kwargs):
+        assert kwargs['axis_recovery']
+        loc.own.x=np.array([4.6,.4,math.pi/2 if teacher.rid=='r1' else -math.pi/2])
+        loc.decision={'accepted':True}
+        n=len(calls);calls.append(teacher.rid)
+        if motion=='axis' and n<2:
+            return dict(phase='observe',kind='none',reason='release_axis_unaligned',axis_error_rad=.24)
+        return dict(phase='observe',kind='localized_margin',margin_m=.4,expected_slack_m=.8,
+            lateral_clearance_m=.025 if n<2 else .20,lateral_shift_lo_m=.015,lateral_shift_hi_m=.43)
+    monkeypatch.setattr(active,'margin_report',margins)
+    # Synthetic detector answers isolate the real scheduler/barrier/ACK. The
+    # RGB classifier itself is tested on images in test_release_regrasp.py.
+    original=check.RegraspBarrier.tick
+    current={}
+    def tick(self,*args):
+        current['rid']=self.rid
+        return original(self,*args)
+    monkeypatch.setattr(check.RegraspBarrier,'tick',tick)
+    monkeypatch.setattr(check,'lift_evidence',lambda *args:dict(
+        answer='no' if current['rid']==failure_robot else 'yes',reason='fixture_own_rgb'))
+    monkeypatch.setattr(check,'continuity',lambda *args:dict(answer='yes',reason='fixture_retained'))
+    def forbidden(*a,**kw):raise AssertionError('truth-derived perception')
+    monkeypatch.setattr(runner.Eyes,'classify',forbidden)
+    plans=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release9-diagnostic-plan.json').read_text())
+    result=runner.run(plans['episodes'][0],tmp_path/'checked',cap_s=180.,
+        **plans['execution_profile'],regrasp_check=check.OPTION)
+    assert result['input_audit']['held_world_reads']==result['input_audit']['invisible_measurements']==0
+    verification=result['regrasp_verification'][0]
+    assert result['regrasp_input_frames'] and verification['samples']
+    if failure_robot:
+        assert result['shift_steps']==0 and not result.get('lateral_motion_commands')
+        assert not result.get('axis_motion_commands')
+        assert result['release_outcome']==f'regrasp_attempt_cap:{failure_robot}:fixture_own_rgb'
+        assert verification['attempts'][failure_robot]==3
+        other=next(r for r in ('r1','r2') if r!=failure_robot)
+        assert verification['attempts'][other]==1
+    else:
+        assert result['release_outcome']=='teacher_done' and result['shift_steps']==1
+        assert all(verification['confirmed'].values())
+        assert verification['attempts']=={'r1':1,'r2':1}
+        motion_t=result['lateral_motion_commands' if motion=='lateral' else 'axis_motion_commands'][0]['t']
+        confirmed_t=max(r['t'] for r in verification['events'] if r['event']=='confirmed')
+        assert motion_t>=confirmed_t+.1-1e-8
+
+
 def test_nbv_runs_after_legacy_budget_then_uses_only_new_own_rgb(tmp_path,fake_backend,monkeypatch):
     from sim.lookaround_localization import LookaroundLocalizer
     from sim import release_nbv_observation as nbv

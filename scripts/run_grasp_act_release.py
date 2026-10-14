@@ -19,6 +19,7 @@ from sim.grasp_act_release_teacher import OBSERVE_MODES,REACH_MODES
 from sim.release_zone_servo import MODES as PLACEMENT_MODES, OPTION as RGB_CENTER
 from sim.release_global_observation import LATERAL_MODES
 from sim.release_nbv_observation import MODES as ACTIVE_RECOVERY_MODES
+from sim.release_regrasp import MODES as REGRASP_CHECK_MODES
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 # User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
 # hidden_v1: while the own gripper holds the cargo, its world pose never enters teacher/map-code inputs.
@@ -160,7 +161,7 @@ def own_end_world(world,inst,end):
 
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
-        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off'):
+        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off'):
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
     if lookaround!='off' and observe_mode!='backoff_v3':raise ValueError('lookaround runs after the backoff_v3 step back')
@@ -171,6 +172,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     if placement not in PLACEMENT_MODES:raise ValueError(placement)
     rgb_center=placement==RGB_CENTER
     global_release=placement=='global_localized_release_v1'
+    if regrasp_check not in REGRASP_CHECK_MODES:raise ValueError(regrasp_check)
+    checked_regrasp=regrasp_check!='off'
+    if checked_regrasp and not global_release:raise ValueError('regrasp check requires global RGB release')
     from sim.global_landmark_localization import SUPPORT_MODES
     if localization_support not in SUPPORT_MODES:raise ValueError(localization_support)
     if localization_support!='off' and not global_release:raise ValueError('localization support requires global RGB release')
@@ -210,7 +214,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     branch=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()
     write(out/'RUN_META.json',{'class':'dev','pr':491,'branch':branch,'sha':sha,'batch':plan['batch']})
     report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,'held_object':held_object,'lateral_recovery':lateral_recovery,'active_recovery':active_recovery,
-        'lookaround':lookaround,'pose_anchor':pose_anchor,'placement':placement,'command_motion':command_motion,'localization_support':localization_support,'map_pose_known':not relative_pose,
+        'lookaround':lookaround,'pose_anchor':pose_anchor,'placement':placement,'command_motion':command_motion,'localization_support':localization_support,'regrasp_check':regrasp_check,'map_pose_known':not relative_pose,
         'release_decision_inputs':'own RGB, own issued commands, static map only' if rgb_only else 'legacy visible-only teacher',
         'pose_estimate_source':'own issued wheels from arbitrary zero; map pose unknown' if relative_pose else 'legacy truth at release handoff plus frozen plan error',
         'own_camera_px':list(LOOK_RES if lookaround!='off' else (320,240)),'weld':'off','recording_mode':'success_measurement','student_execution':False,'success_rule':SUCCESS,
@@ -350,6 +354,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         R=tuple(roles);code=PairReleaseCode(R);release_t0=float(world.data.time)
         st={'phase':'look','since':release_t0,'iter':0,'steps':0,'search':0,'sched':{},'plan':{},'go':None,'after_visible':False,'choice':None}
         recovery_stage={rid:0 for rid in roles}; recovery_log=[]
+        regrasp_barriers=[]; barrier=None; regrasp_inputs=[]; rejection_counts={}
         nbv_history={rid:[] for rid in roles}
         release_command_poses={}
         b0=world.data.body(inst.body)
@@ -415,8 +420,18 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             for rid,t in rel.items():schedule(rid,every(t.arm_waypoints(LOWER_Z_M,8),.2),now+.2)
             st.update(phase='lower',since=now,go=now+.2,end=now+.2+1.6+.6)
         def start_shift(now,s):
+            if checked_regrasp:
+                if barrier is None or not all(barrier.confirmed.values()) or barrier.state!='ready':
+                    raise RuntimeError('REGRASP_BARRIER_REQUIRED')
+                tag=f'regrasp_confirmed_{barrier.epoch}'
+                if not code.ready(tag,st['since']):raise RuntimeError('REGRASP_ACK_REQUIRED')
             lateral=(st['choice'] or {}).get('lateral_shift_m')
-            if lateral is not None:
+            if (st['choice'] or {}).get('action')=='axis_correct':
+                from sim.release_axis_correction import plans as axis_plans
+                st['plan']=axis_plans(loc,rel,st['choice']['axis_turn_rad'],now)
+                report.setdefault('axis_motion_commands',[]).append(dict(t=now,
+                    angle_rad=st['choice']['axis_turn_rad'],plans=copy.deepcopy(st['plan'])))
+            elif lateral is not None:
                 from sim.release_global_observation import lateral_shift_plans
                 st['plan']=lateral_shift_plans(loc,rel,lateral)
                 report.setdefault('lateral_motion_commands',[]).append(dict(t=now,shift_m=lateral,
@@ -425,6 +440,13 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 st['plan']={rid:t.shift_plan(s,1. if rid==R[0] else -1.) for rid,t in rel.items()}
             st['steps']+=1
             st.update(phase='shift',since=now,go=now+.2)
+        def regrasp_capture(rid,now,label):
+            jpeg=base64.b64decode(ports[rid].capture()['image'])
+            path=out/'eval-regrasp-input'/rid/f'{len(regrasp_inputs):05d}-{label}.jpg'
+            path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(jpeg)
+            regrasp_inputs.append(dict(robot=rid,t=now,epoch=barrier.epoch,label=label,
+                path=str(path.relative_to(out)),sha256=hashlib.sha256(jpeg).hexdigest()))
+            return np.asarray(Image.open(io.BytesIO(jpeg)).convert('RGB'))[:,:,::-1].copy()
         k=0;outcome=None;done_at=None
         while float(world.data.time)-origin<cap_s:
             now=float(world.data.time);tick_t=now;ph=st['phase'];age=now-st['since']
@@ -531,8 +553,15 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             elif ph=='observe' and age>=.6:
                 if global_release:
                     from sim.release_global_observation import margin_report
-                    reports={rid:margin_report(loc[rid],t,now,**({'lateral_recovery':lateral_recovery} if lateral_recovery!='off' else {})) for rid,t in rel.items()}
+                    reports={rid:margin_report(loc[rid],t,now,
+                        **({'lateral_recovery':lateral_recovery} if lateral_recovery!='off' else {}),
+                        **({'axis_recovery':True} if checked_regrasp else {})) for rid,t in rel.items()}
                     for rid,t in rel.items():t.last_report=reports[rid]
+                    if checked_regrasp:
+                        for rid,r in reports.items():
+                            if r.get('kind')=='none':
+                                reason=r.get('reason','unobserved')
+                                rejection_counts[reason]=rejection_counts.get(reason,0)+1
                 elif rgb_center:
                     reports={rid:{'phase':'observe','kind':'rgb_center','zone_center':zone_servo[rid].result or {}} for rid in rel}
                     for rid,t in rel.items():t.last_report=reports[rid]
@@ -549,12 +578,18 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             elif ph=='await_observe' and ready('observe',now):
                 if global_release:
                     from sim.release_global_observation import pair_choice
-                    choice=pair_choice(code.delivered,R,now,lateral_recovery=lateral_recovery);code.log.append(choice)
+                    choice=pair_choice(code.delivered,R,now,lateral_recovery=lateral_recovery,
+                        **({'axis_recovery':True} if checked_regrasp else {}));code.log.append(choice)
                 elif rgb_center:
                     from sim.release_zone_servo import pair_choice
                     choice=pair_choice(code.delivered,R,now);code.log.append(choice)
                 else:choice=code.decide(now,require_seen=True)
                 st['choice']=choice
+                if choice['action']=='axis_correct':
+                    from sim.release_axis_correction import correction_angle
+                    try:choice['axis_turn_rad']=correction_angle(choice)
+                    except ValueError as error:
+                        outcome=str(error);rejection_counts[outcome]=rejection_counts.get(outcome,0)+1;break
                 if choice['action']=='observe' and global_release:
                     from sim.release_global_observation import recovery_round
                     from sim.lookaround_localization import ScriptRunner
@@ -611,8 +646,39 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             elif ph=='repick':
                 run_sched(now)
                 if now>=st['end']-1e-9:
-                    for t in rel.values():t.holding=True
-                    st['after_visible']=True;start_shift(now,st['choice']['shift_m'])
+                    if checked_regrasp:
+                        from sim.release_regrasp import RegraspBarrier
+                        barrier=RegraspBarrier(rel,st['iter'],now,wheel_commands=lambda r:list(wheels[r].levels))
+                        regrasp_barriers.append(barrier)
+                        for t in rel.values():t.holding=False
+                        st.update(phase='regrasp_check',since=now)
+                    else:
+                        for t in rel.values():t.holding=True
+                        st['after_visible']=True;start_shift(now,st['choice']['shift_m'])
+            elif ph=='regrasp_check':
+                run_sched(now)
+                status=barrier.tick(now,regrasp_capture,schedule)
+                if status=='failed':outcome=barrier.failure;break
+                if status=='ready':
+                    tag=f'regrasp_confirmed_{barrier.epoch}'
+                    for rid,t in rel.items():
+                        t.holding=True
+                        t.last_report=dict(kind='own_rgb_confirmed',epoch=barrier.epoch,attempt=barrier.attempts[rid])
+                    post(tag,now);st.update(phase='await_regrasp',since=now)
+            elif ph=='await_regrasp':
+                tag=f'regrasp_confirmed_{barrier.epoch}'
+                if ready(tag,now):
+                    bad,reason=barrier.fresh(now,regrasp_capture)
+                    if bad is not None:
+                        barrier.retry(bad,reason,now,schedule)
+                        st.update(phase='regrasp_check',since=now)
+                    else:
+                        st['after_visible']=True
+                        try:start_shift(now,st['choice'].get('shift_m',0.))
+                        except ValueError as error:
+                            outcome=str(error);rejection_counts[outcome]=rejection_counts.get(outcome,0)+1;break
+                elif age>DELIVERY_WAIT_S:
+                    outcome='regrasp_go_ack_timeout';break
             elif ph=='back_off':
                 run_sched(now)
                 if now>=st['go']-1e-9 and not run_plan(now):
@@ -628,7 +694,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             if k%10==0:frames(k,'release-'+st['phase'])
             issued={rid:(list(wheels[rid].levels),max([max(0.,min(.1,u-tick_t)) if lv else 0. for lv,u in zip(wheels[rid].levels,wheels[rid].until)]))
                     for rid in rel}
-            if lateral_recovery!='off' and ph=='shift' and (st['choice'] or {}).get('lateral_shift_m') is not None:
+            if ph=='shift' and ((lateral_recovery!='off' and (st['choice'] or {}).get('lateral_shift_m') is not None)
+                    or (checked_regrasp and (st['choice'] or {}).get('action')=='axis_correct')):
                 # Independent wheel PWM must propagate its time integral, not
                 # max(duration) for every wheel (legacy axial pulses are equal).
                 issued={rid:([lv*max(0.,min(.1,u-tick_t))/.1 for lv,u in zip(wheels[rid].levels,wheels[rid].until)],.1) for rid in rel}
@@ -698,6 +765,10 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     finally:
         report['wall_s']=time.monotonic()-start;report['sim_s']=None if world is None else float(world.data.time)-origin
         report['loadavg_at_end']=os.getloadavg();report['input_audit']=audit.record()
+        if checked_regrasp:
+            report['regrasp_verification']=[b.record() for b in locals().get('regrasp_barriers',[])]
+            report['regrasp_input_frames']=locals().get('regrasp_inputs',[])
+            report['release_rejection_reasons']=locals().get('rejection_counts',{})
         if isinstance(report.get('teachers'),dict):   # copied from the teachers' own diagnostics (no recomputation)
             report['input_audit']['visibility_by_phase']={r:t.get('visible_counts_by_phase') for r,t in report['teachers'].items()}
             report['input_audit']['max_destination_blind_s_by_phase']={r:t.get('max_destination_blind_s_by_phase') for r,t in report['teachers'].items()}
@@ -719,6 +790,7 @@ def main():
     p.add_argument('--active-recovery',choices=ACTIVE_RECOVERY_MODES,default='off',help='map_nbv_v1: extra map views; setdown_lookaround_v1: retrace own backoff and scan front/rear after setdown')
     p.add_argument('--command-motion',choices=('off','native_yaw_v1'),default='off',help='native_yaw_v1: native wheel yaw sign in command integration and inverse rotation planning; speed magnitude unchanged')
     p.add_argument('--localization-support',choices=('off','map_free_v1'),default='off',help='map_free_v1: use uninflated static-map free space for pose hypotheses; motion clearance unchanged')
+    p.add_argument('--regrasp-check',choices=REGRASP_CHECK_MODES,default='off',help='own_rgb_lift_v1: sequential own-RGB lift tests, bounded own retries, code ACK barrier and distinct axis recovery')
     p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look')
     p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement')
     p.add_argument('--zone-slots',choices=ZONE_SLOT_MODES,default='floor',help='zone: white slot squares inside the destination (static map) count as zone')
@@ -727,5 +799,5 @@ def main():
     p.add_argument('--lookaround',choices=LOOKAROUND_MODES,default='off',help='setdown_lookaround_v1: after the backoff step, look toward static-map landmarks chosen from the own pose estimate (640x480 own camera)');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check),ensure_ascii=False,default=str))
 if __name__=='__main__':main()
