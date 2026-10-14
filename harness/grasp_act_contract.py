@@ -8,24 +8,25 @@ from __future__ import annotations
 import math
 from collections.abc import Mapping
 
-SCHEMA = 'ugrp.grasp_act.student.v4'
+SCHEMA = 'ugrp.grasp_act.student.v5'
 SKILLS = ('grasp', 'wait', 'regrasp', 'release')
 KINDS = ('cyan', 'green', 'red', 'yellow', 'can', 'tile', 'long_beam', 'heavy_crate', 'tri_frame')
 ROLES = ('teal', 'blue', 'west', 'east', 'any', 'v0', 'v1', 'v2')
 KIND_ROLES = {**{k: ('west',) for k in ('cyan', 'green', 'red', 'yellow')},
               'can': ('any',), 'tile': ('west', 'east'), 'long_beam': ('teal', 'blue'),
               'heavy_crate': ('west', 'east'), 'tri_frame': ('v0', 'v1', 'v2')}
+DESTINATIONS = ('none','A','B','C')
 SERVOS = (1, 3, 4, 5, 6)
-MEMORY_S = .6  # provisional existing window; size from NEW teacher diagnostics
-HISTORY = 4
-RGB_LAGS_S = (.1,0.)
+MEMORY_S = 5.2  # v2 final blind motion minus GT-only verification; recheck v3 gate
+HISTORY = 16
+RGB_LAGS_S = (5.2, 1.5, .5, 0.)
 RGB_HISTORY = len(RGB_LAGS_S)
 CHUNK = 8
 PERIOD_S = .1
-ACTION_DIM = 10  # drive x/y/yaw, duration, five absolute PWM targets, skill done
-CONTEXT_DIM = HISTORY * 10 + len(SKILLS) + len(KINDS) + len(ROLES)
-FIELDS = {'schema', 'robot_id', 'sample_id', 't', 'skill', 'object_kind', 'role', 'rgb', 'issued'}
-COMMAND_FIELDS = {'t', 'drive', 'duration_s', 'pwm'}
+ACTION_DIM = 14  # four wheels, four pulse widths, five PWM targets, command completion
+CONTEXT_DIM = HISTORY * 14 + len(SKILLS) + len(KINDS) + len(ROLES) + len(DESTINATIONS) + 2
+FIELDS = {'schema', 'robot_id', 'sample_id', 't', 'skill', 'object_kind', 'role', 'rgb', 'issued', 'skill_elapsed_s', 'pwm_elapsed_s', 'destination_zone'}
+COMMAND_FIELDS = {'t', 'wheels', 'duration_s', 'pwm'}
 
 
 def wheel_mix(drive):
@@ -42,21 +43,23 @@ def finite(value):
 def command(row):
     if not isinstance(row, Mapping) or set(row) != COMMAND_FIELDS:
         raise ValueError('issued-command whitelist mismatch')
-    t, duration = finite(row['t']), finite(row['duration_s'])
-    drive = [finite(v) for v in row['drive']]
-    if len(drive) != 3 or max(map(abs, wheel_mix(drive))) > 1.+1e-9:
-        raise ValueError('continuous mecanum command exceeds wheel range')
-    if duration not in (0., .15):
-        raise ValueError('continuous drive requires a 150 ms lease refreshed at 10 Hz')
-    if any(drive) != (duration > 0):
-        raise ValueError('hold/pulse duration mismatch')
+    t = finite(row['t'])
+    wheels = [finite(v) for v in row['wheels']]
+    duration = [finite(v) for v in row['duration_s']]
+    if len(wheels) != 4 or len(duration) != 4:
+        raise ValueError('four wheel commands and pulse widths required')
+    for w, dt in zip(wheels, duration):
+        if not (w == 0. or .31-1e-9 <= abs(w) <= .40+1e-9):
+            raise ValueError('wheel range is zero or 31..40 percent')
+        if not 0. <= dt <= .15 or ((w == 0.) != (dt == 0.)):
+            raise ValueError('each moving wheel needs a pulse within 150 ms')
     pwm = row['pwm']
     if not isinstance(pwm, Mapping) or set(pwm) != {str(s) for s in SERVOS}:
         raise ValueError('exact own issued PWM channels required')
     for v in pwm.values():
         if type(v) is not int or not 500 <= v <= 2500:
             raise ValueError('invalid issued PWM')
-    return {'t': t, 'drive': drive, 'duration_s': duration, 'pwm': dict(pwm)}
+    return {'t': t, 'wheels': wheels, 'duration_s': duration, 'pwm': dict(pwm)}
 
 
 def validate_observation(row):
@@ -67,8 +70,12 @@ def validate_observation(row):
     t = finite(row['t'])
     if row['skill'] not in SKILLS or row['object_kind'] not in KIND_ROLES or row['role'] not in KIND_ROLES[row['object_kind']]:
         raise ValueError('task instruction must be a skill and named end')
+    if row['destination_zone'] not in DESTINATIONS or (row['skill']=='release' and row['destination_zone']=='none'):
+        raise ValueError('release requires a named destination zone')
     if len(row['rgb']) != RGB_HISTORY or len(row['issued']) != HISTORY:
         raise ValueError('fixed own image and command history required')
+    for key in ('skill_elapsed_s', 'pwm_elapsed_s'):
+        if finite(row[key]) < 0.: raise ValueError('nonnegative issued-command clock required')
     times = []
     for ref in row['rgb']:
         if set(ref) != {'path', 'sha256', 't', 'robot_id'} or ref['robot_id'] != row['robot_id']:
@@ -92,13 +99,15 @@ def context(row):
     validate_observation(row)
     values = []
     for x in row['issued']:
-        values.extend(x['drive'])
-        values.append(x['duration_s']/.15)
+        values.extend(x['wheels'])
+        values.extend(d/.15 for d in x['duration_s'])
         values.extend((x['pwm'][str(s)]-1500)/1000 for s in SERVOS)
         values.append(min(MEMORY_S, row['t']-x['t'])/MEMORY_S)
     values.extend(float(row['skill'] == s) for s in SKILLS)
     values.extend(float(row['object_kind'] == s) for s in KINDS)
     values.extend(float(row['role'] == s) for s in ROLES)
+    values.extend(float(row['destination_zone']==s) for s in DESTINATIONS)
+    values.extend(min(120., row[k])/120. for k in ('skill_elapsed_s', 'pwm_elapsed_s'))
     assert len(values) == CONTEXT_DIM
     return values
 
@@ -111,25 +120,37 @@ def image_history(refs, now):
     return [refs[max(0,bisect_right(times,now-lag+1e-7)-1)] for lag in RGB_LAGS_S]
 
 
+class IssuedClock:
+    """Only instruction changes and issued PWM changes update these clocks."""
+    def __init__(self):
+        self.skill = None; self.started = None; self.changed = None; self.pwm = None
+    def observe(self, instruction, now, issued_pwm):
+        now = finite(now)
+        if instruction != self.skill or self.started is None:
+            self.skill = instruction; self.started = now
+        if self.pwm != issued_pwm or self.changed is None:
+            self.pwm = dict(issued_pwm); self.changed = now
+        return {'skill_elapsed_s': now-self.started, 'pwm_elapsed_s': now-self.changed}
+
+
 def encode_action(issued, *, done=False):
     x = command(issued)
-    return list(x['drive']) + [x['duration_s']/.15] + [
+    return x['wheels'] + [d/.15 for d in x['duration_s']] + [
         (x['pwm'][str(s)]-1500)/1000 for s in SERVOS] + [float(done)]
 
 
 def decode_action(values):
-    """Continuous, jointly scaled mecanum command; no truth correction."""
-    if len(values) != ACTION_DIM:
-        raise ValueError('wrong ACT output size')
-    v = [finite(x) for x in values]
-    done = v[-1] >= .65
-    scale = max(1., max(map(abs, wheel_mix(v[:3]))))
-    drive = [x/scale for x in v[:3]] if not done and v[3] >= .5 else [0., 0., 0.]
-    duration = .15 if any(drive) else 0.
-    pwm = {str(s): round(max(500, min(2500, 1500+1000*v[i+4])))
-           for i, s in enumerate(SERVOS)}
-    return {'drive': drive, 'duration_s': duration, 'pwm': pwm,
-            'done': done, 'done_score': max(0., min(1., v[-1]))}
+    """Project each real wheel into its allowed range; no measured-state correction."""
+    if len(values) != ACTION_DIM: raise ValueError('wrong ACT output size')
+    v = [finite(x) for x in values]; done = v[-1] >= .65
+    wheels=[];duration=[]
+    for w,d in zip(v[:4],v[4:8]):
+        dt=max(0.,min(.15,d*.15))
+        if done or abs(w)<.155 or dt<.001: wheels.append(0.);duration.append(0.)
+        else: wheels.append(math.copysign(max(.31,min(.40,abs(w))),w));duration.append(dt)
+    pwm = {str(s): round(max(500,min(2500,1500+1000*v[i+8]))) for i,s in enumerate(SERVOS)}
+    return {'wheels':wheels,'duration_s':duration,'pwm':pwm,'done':done,
+            'done_score':max(0.,min(1.,v[-1]))}
 
 
 def training_windows(observations, labels, *, chunk=CHUNK):
@@ -147,13 +168,13 @@ def training_windows(observations, labels, *, chunk=CHUNK):
         if (label['sample_id'] != obs['sample_id'] or label['skill'] != obs['skill']
                 or label['object_kind'] != obs['object_kind'] or type(label['done']) is not bool):
             raise ValueError('misaligned teacher target')
-        if label['done'] and label['terminal_reason'] != 'skill_success':
+        if label['done'] and label['terminal_reason'] != 'command_sequence_complete':
             raise ValueError('only successful skill completion is a done target')
         action, pad = [], []
         ended = False
         for k in range(chunk):
             j = i+k
-            valid = not ended and j < len(labels) and (observations[j]['skill'], observations[j]['object_kind'], observations[j]['role']) == (obs['skill'], obs['object_kind'], obs['role'])
+            valid = not ended and j < len(labels) and abs(observations[j]['t']-obs['t']-k*PERIOD_S)<1e-5 and (observations[j]['skill'], observations[j]['object_kind'], observations[j]['role'], observations[j]['destination_zone']) == (obs['skill'], obs['object_kind'], obs['role'], obs['destination_zone'])
             if valid:
                 y = labels[j]
                 action.append(encode_action(y['clean_teacher_command'], done=y['done']))

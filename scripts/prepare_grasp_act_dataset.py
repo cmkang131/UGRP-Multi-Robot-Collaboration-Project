@@ -15,6 +15,9 @@ def export_episode(source,target):
     source=Path(source);result=read(source/'result.json');plan=read(source/'plan.json')
     if result.get('recording_mode')!='training' or result.get('data_admitted') is not True or result.get('student_execution') is not False:
         raise ValueError('raw teacher run not admitted')
+    proof=result.get('recording_gate_proof') or {}
+    if proof.get('qualified') is not True or proof.get('source_sha')!=result['source_sha'] or proof.get('teacher_profile')!=result.get('teacher_profile') or not proof.get('recording_check_sha256'):
+        raise ValueError('missing source-bound gate and recording check')
     manifest=read(source/'manifest.json')
     # Verify every source used, including the success and setup records.
     for rel,row in manifest.items():
@@ -28,7 +31,8 @@ def export_episode(source,target):
         for x,y in zip(obs,labels):
             validate_observation(x)
             if x['sample_id']!=y['sample_id']:raise ValueError('raw target alignment')
-            if y['local_skill_sample'] is not True:continue
+            if y['local_skill_sample'] is not True or x['skill']=='wait' or y.get('segment')!='local_grasp':continue
+            if not 0<=y.get('local_distance_m',float('inf'))<=.8:raise ValueError('outside local ACT handoff range')
             for ref in x['rgb']:
                 original=owned_image(source,ref)
                 if ref['path'] not in images:

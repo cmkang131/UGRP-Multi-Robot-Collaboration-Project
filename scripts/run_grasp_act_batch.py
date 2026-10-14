@@ -137,7 +137,7 @@ def main():
     p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true')
     p.add_argument('--start-index',type=int,default=0);p.add_argument('--speed-gate-from',type=Path)
     p.add_argument('--episode-indices',type=int,nargs='+',help='explicit unchanged frozen-plan indices; never resample')
-    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='legacy')
+    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
     p.add_argument('--complete-frozen-cohort',action='store_true',help='record individual finite failures; operator still stops diagnosed shared defects')
     a=p.parse_args()
     root=a.root.resolve();require_azure(root);plan=a.plan.resolve();episodes=read(plan)['episodes']
@@ -169,7 +169,13 @@ def main():
         batch=indices[offset:offset+a.concurrency]
         rows,reason=wave(root/f'cohort-{batch[0]:03d}',plan,batch,a.cap_s,probe=False,limit=a.speed_gate_limit,
             complete_frozen_cohort=a.complete_frozen_cohort,teacher_profile=a.teacher_profile)
-        all_rows.extend(rows);write(root/'teacher-gate.json',summarize(all_rows,len(episodes)))
+        all_rows.extend(rows)
+        summary=summarize(all_rows,len(episodes))
+        summary.update(source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+            teacher_profile=a.teacher_profile,plan_sha256=hashlib.sha256(plan.read_bytes()).hexdigest(),
+            self_pose_source='issued',criteria=({'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.} if a.teacher_profile=='visible_only' else {'min_z_m':.012,'hold_s':1.}),
+            qualified=summary['N']>=40 and summary['n']/max(1,summary['N'])>=.95)
+        write(root/'teacher-gate.json',summary)
         if reason:break
 
 

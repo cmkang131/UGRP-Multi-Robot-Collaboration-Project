@@ -10,10 +10,10 @@ def episode(root,start='a',map_id='map-a',rid='r1',kind='long_beam',role='teal')
     root.mkdir();(root/'rgb').mkdir();image=root/'rgb/a.jpg';Image.new('RGB',(32,24),(20,200,100)).save(image)
     digest=hashlib.sha256(image.read_bytes()).hexdigest();obs=[];ys=[]
     for i in range(3):
-        cmd={'t':i*.1,'drive':[0.,0.,0.],'duration_s':0.,'pwm':{'1':2000 if i==0 else 1500,'3':740,'4':2320,'5':1320,'6':1500}}
+        cmd={'t':i*.1,'wheels':[0.]*4,'duration_s':[0.]*4,'pwm':{'1':2000 if i==0 else 1500,'3':740,'4':2320,'5':1320,'6':1500}}
         x={'schema':SCHEMA,'sample_id':f'{start}:{i}:{rid}','robot_id':rid,'t':i*.1,
-           'skill':'grasp','object_kind':kind,'role':role,'rgb':[{'path':'rgb/a.jpg','sha256':digest,'t':i*.1,'robot_id':rid} for _ in range(RGB_HISTORY)],'issued':[cmd]*HISTORY}
-        obs.append(x);ys.append({'sample_id':x['sample_id'],'skill':'grasp','object_kind':kind,'done':i==2,'terminal_reason':'skill_success' if i==2 else None,'clean_teacher_command':cmd})
+           'skill':'grasp','object_kind':kind,'role':role,'destination_zone':'none','skill_elapsed_s':i*.1,'pwm_elapsed_s':0.,'rgb':[{'path':'rgb/a.jpg','sha256':digest,'t':i*.1,'robot_id':rid} for _ in range(RGB_HISTORY)],'issued':[cmd]*HISTORY}
+        obs.append(x);ys.append({'sample_id':x['sample_id'],'skill':'grasp','object_kind':kind,'done':i==2,'terminal_reason':'command_sequence_complete' if i==2 else None,'clean_teacher_command':cmd})
     (root/f'student-{rid}.jsonl').write_text(''.join(json.dumps(x)+'\n' for x in obs))
     (root/f'labels-{rid}.jsonl').write_text(''.join(json.dumps(x)+'\n' for x in ys))
     meta={'teacher_admitted':True,'robots':[rid],'episode_id':start,'start_state_id':start,'initial_state_sha256':hashlib.sha256(start.encode()).hexdigest(),'map_id':map_id}

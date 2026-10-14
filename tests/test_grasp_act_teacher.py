@@ -1,7 +1,7 @@
 import math
 from sim.grasp_act_teacher import GraspTeacher, local
 from scripts.zone_teacher import FOLDED
-from harness.grasp_act_contract import command
+from harness.grasp_act_contract_v4 import command
 
 
 def truth(pose):

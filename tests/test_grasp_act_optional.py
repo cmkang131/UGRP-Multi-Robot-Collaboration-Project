@@ -9,9 +9,9 @@ from harness.grasp_act_contract import CHUNK,ACTION_DIM
 from harness.grasp_act_contract import SCHEMA, RGB_HISTORY, HISTORY
 
 def observation():
-    cmd={'t':0.,'drive':[0.,0.,0.],'duration_s':0.,'pwm':{'1':2000,'3':740,'4':2320,'5':1320,'6':1500}}
+    cmd={'t':0.,'wheels':[0.]*4,'duration_s':[0.]*4,'pwm':{'1':2000,'3':740,'4':2320,'5':1320,'6':1500}}
     return {'schema':SCHEMA,'sample_id':'smoke:0:r1','robot_id':'r1','t':0.,
-            'object_kind':'long_beam','skill':'grasp','role':'teal','issued':[cmd]*HISTORY,
+            'object_kind':'long_beam','skill':'grasp','role':'teal','destination_zone':'none','skill_elapsed_s':0.,'pwm_elapsed_s':0.,'issued':[cmd]*HISTORY,
             'rgb':[{'path':'rgb/smoke.jpg','sha256':'a'*64,'t':0.,'robot_id':'r1'} for _ in range(RGB_HISTORY)]}
 
 

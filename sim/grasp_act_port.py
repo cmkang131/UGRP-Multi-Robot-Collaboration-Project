@@ -49,3 +49,57 @@ class ContinuousActPort(CameraRobotPort):
         self._busy_until = self._drive_expires_at
         return dict(ok=True,robot_id=self.robot_id,kind='mecanum',sim_time=float(sim_time),
                     busy_until=self._busy_until,actuator_state=self._actuator_state())
+
+
+def duty_wheels(drive, period=.1):
+    """Pulse-width modulation above the real dead zone, on the 10 Hz clock.
+
+    Desired body effort is converted with the existing wheel mixing matrix.
+    0.35 means Board.py speed 35 (the board accepts signed percent, -100..100).
+    Independent pulse widths preserve diagonal/yaw ratios without commanding
+    a wheel in 1..30. This changes commands, never the physics profile.
+    """
+    desired=wheel_mix(drive);scale=max(.35,max(map(abs,desired)))
+    wheels=[];durations=[]
+    for v in desired:
+        dt=period*abs(v)/scale
+        if dt<.001: wheels.append(0.);durations.append(0.)
+        else: wheels.append(math.copysign(.35,v));durations.append(dt)
+    return wheels,durations
+
+
+class DutyActPort(CameraRobotPort):
+    """Same per-wheel pulse contract for teacher and independently running ACT."""
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self._wheel_deadlines=[None]*4
+
+    def validate_action(self,action):
+        if action.get('kind')!='wheel_pulse':return super().validate_action(action)
+        if set(action)!={'kind','wheels','duration_s'}:raise ValueError('exact wheel pulse fields required')
+        from harness.grasp_act_contract import command,SERVOS
+        command({'t':0.,'wheels':action['wheels'],'duration_s':action['duration_s'],
+                 'pwm':{str(s):1500 for s in SERVOS}})
+
+    def apply(self,action,sim_time):
+        if action.get('kind')!='wheel_pulse':return super().apply(action,sim_time)
+        self.validate_action(action)
+        if not math.isfinite(sim_time):raise ValueError('finite command time required')
+        self._command_expires_at=None
+        self._wheel_deadlines=[sim_time+d if d else None for d in action['duration_s']]
+        self._set_motors(tuple(action['wheels']))
+        self._drive_expires_at=None
+        self._busy_until=sim_time+max(action['duration_s'])
+        return {'ok':True,'robot_id':self.robot_id,'kind':'wheel_pulse','sim_time':sim_time}
+
+    def tick(self,sim_time):
+        super().tick(sim_time)
+        current=list(self._motor_commands)
+        for i,deadline in enumerate(self._wheel_deadlines):
+            if deadline is not None and sim_time>=deadline:
+                current[i]=0.;self._wheel_deadlines[i]=None
+        if tuple(current)!=tuple(self._motor_commands):self._set_motors(tuple(current))
+
+    def stop(self):
+        self._wheel_deadlines=[None]*4
+        super().stop()

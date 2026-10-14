@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.e2e18.privileged_act.v1",
-  "status": "fixed_078_teacher_gate_failed_36_of_40",
+  "status": "visible_only_implementation_checks_passed_physics_pending",
   "classification": "dev",
   "research_result": false,
   "scope_changed": "2026-10-14 one multitask ACT for local grasp/release of s1-s8 cargo; map code navigation, Gemma skill decisions, private Kaggle GPU training authorized",
@@ -1233,13 +1233,13 @@
     "independence_note": "approach and detector main share checkpoints; each 1/12 held is not two independent successful initial states. Gates are short/censored; stage-track gate1 includes HOST_ERROR."
   },
   "teacher": {
-    "started_N": 16,
-    "success_n": 11,
+    "started_N": 40,
+    "success_n": 27,
     "target_rate": 0.95,
     "gate_minimum_N": 40,
     "gate_required_n": 38,
-    "gate_n": 11,
-    "gate_N": 11,
+    "gate_n": 27,
+    "gate_N": 32,
     "interrupted_batch": {
       "path": "/home/ugrp/ugrp-sim/runs/grasp-teacher-gate-9d9b90b9",
       "excluded_N": 16,
@@ -1260,9 +1260,9 @@
         2.4963984222
       ]
     },
-    "gate_interrupted_N": 5,
+    "gate_interrupted_N": 8,
     "gate_qualified": false,
-    "latest_gate": "teacher-gate-078-verified.json.zst",
+    "latest_gate": "teacher-observe-v2-partial.json.zst",
     "continuation": {
       "baseline_sha": "078cbb45a624d64d9b8037415d5d34da18661e88",
       "n": 36,
@@ -1385,6 +1385,33 @@
       },
       "raw_and_sha256": "teacher-gate-078-verified.json.zst",
       "verification": "teacher-gate-078-verification.json"
+    },
+    "stopped_observable_v2": {
+      "object_kind": "long_beam",
+      "n": 27,
+      "N": 32,
+      "planned_N": 40,
+      "started_N": 40,
+      "joint_held_n": 27,
+      "robots": {
+        "r1": {
+          "n": 27,
+          "N": 32
+        },
+        "r2": {
+          "n": 27,
+          "N": 32
+        }
+      },
+      "failure_reasons": {
+        "episode_timeout": 9,
+        "ik_unreachable": 1
+      },
+      "host_errors": 0,
+      "interrupted": 8,
+      "record": "teacher-observe-v2-partial.json.zst",
+      "source_sha": "3a4510487dd8dcee76ae0d2014fa46ca71db9f28",
+      "gate_qualified": false
     }
   },
   "data": {
@@ -1596,8 +1623,8 @@
     "new_gate": "not started; v3 binding approved 14:25"
   },
   "current_offline_checks": {
-    "n": 38,
-    "N": 38,
-    "scope": "contract,teacher logic,export,resume; not ACT v4 forward/backward or physics"
+    "passed": 47,
+    "physics_scope": "visible_only not run yet",
+    "data_episodes": 0
   }
 }

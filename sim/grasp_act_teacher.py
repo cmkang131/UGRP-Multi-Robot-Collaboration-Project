@@ -9,7 +9,7 @@ import math
 from copy import deepcopy
 
 from harness.visual_arm_v3 import solve_grip_site_ik, tool_pose
-from harness.grasp_act_contract import command, SERVOS
+from harness.grasp_act_contract_v4 import command, SERVOS
 from scripts.zone_teacher import ArmSequence, FOLDED, plan_path, PeerDisc, proportional_drive
 from harness.static_keepouts import rect_distance
 

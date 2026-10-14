@@ -98,6 +98,33 @@ class BandVisibility:
             if b==bid:return True
         return False
 
+    def region_visible(self,data,rid,gids):
+        """Visible fraction of seven fixed surface/center probes per visual part.
+
+        A third must pass for visible_only measurements. This is a geometric
+        region approximation, not a learned recognition confidence.
+        """
+        import cv2,mujoco
+        np=self.np;cid=self.cameras[rid];gids=list(gids);target=set(gids)
+        points=[]
+        for gid in gids:
+            axes=data.geom_xmat[gid].reshape(3,3);center=data.geom_xpos[gid]
+            points.append(center.copy())
+            for axis in range(3):
+                for sign in (-1,1):points.append(center+sign*.8*self.model.geom_size[gid,axis]*axes[:,axis])
+        seen=0
+        for point in points:
+            p=((point-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])
+            if p[2]<=self.near:continue
+            uv=p[:2]/p[2]*np.diag(self.K)[:2]+self.K[:2,2]
+            raw,_=cv2.fisheye.projectPoints(p.reshape(1,1,3),np.zeros(3),np.zeros(3),self.K,self.D)
+            if not (0<=uv[0]<640 and 0<=uv[1]<480 and 0<=raw[0,0,0]<640 and 0<=raw[0,0,1]<480):continue
+            delta=point-data.cam_xpos[cid];distance=float(np.linalg.norm(delta));direction=delta/distance
+            origin=data.cam_xpos[cid]+self.near*distance/p[2]*direction;hit=np.array([-1],dtype=np.int32)
+            mujoco.mj_ray(self.model,data,origin,direction,self.groups,True,-1,hit)
+            seen+=int(hit[0]) in target
+        return int(seen),len(points)
+
 
 def stage(label,pick_t):
     phase=label['teacher_phase'];now=label['clean_teacher_command']['t']
@@ -107,7 +134,7 @@ def stage(label,pick_t):
         if dt<2.62:return 'descent'
         if dt<3.92:return 'grasp'
         return 'lift'
-    return {'approach':'approach','align':'alignment','ready':'ready','verify':'lift','done':'done'}.get(phase,phase)
+    return {'approach':'approach','align':'alignment','ready':'ready','verify':'lift','done':'done','complete':'command_complete'}.get(phase,phase)
 
 
 def summarize_recorded(root):
@@ -125,10 +152,10 @@ def summarize_recorded(root):
             if abs(cmd['t']-now)>1e-6:raise ValueError('unaligned evaluation time')
             if label['teacher_phase']=='pick' and pick_t is None:pick_t=now
             phase=stage(label,now if pick_t is None else pick_t)
-            moving=any(abs(x)>1e-8 for x in cmd['drive']) or (previous is not None and cmd['pwm']!=previous['pwm'])
+            moving=any(abs(x)>1e-8 for x in cmd.get('wheels',cmd.get('drive',[]))) or (previous is not None and cmd['pwm']!=previous['pwm'])
             previous=cmd;gap=gap+.1 if not vis['visible'] else 0.
             motion_gap=motion_gap+.1 if moving and not vis['visible'] else 0.
-            pick_gap=pick_gap+.1 if pick_t is not None and phase!='done' and not vis['visible'] else 0.
+            pick_gap=pick_gap+.1 if pick_t is not None and phase not in ('done','command_complete') and not vis['visible'] else 0.
             ever=ever or vis['visible']
             if vis['visible'] and first_seen is None:first_seen=now-truth[0]['t']
             max_gap=max(max_gap,gap);max_motion=max(max_motion,motion_gap);max_pick=max(max_pick,pick_gap)
@@ -168,7 +195,7 @@ def audit(gate,out,*,camera_binding='runtime_legacy'):
                     if abs(cmd['t']-row['t'])>1e-6:raise ValueError('truth/action time mismatch')
                     if label['teacher_phase']=='pick' and rid not in pick:pick[rid]=row['t']
                     phase=stage(label,pick.get(rid,row['t']));vis=evaluator.measure(data,rid,role)
-                    moving=any(abs(x)>1e-8 for x in cmd['drive']) or (rid in previous and cmd['pwm']!=previous[rid]['pwm'])
+                    moving=any(abs(x)>1e-8 for x in cmd.get('wheels',cmd.get('drive',[]))) or (rid in previous and cmd['pwm']!=previous[rid]['pwm'])
                     previous[rid]=cmd
                     blind[rid]=blind[rid]+.1 if moving and not vis['visible'] else 0.
                     blindgap[rid]=blindgap[rid]+.1 if not vis['visible'] else 0.
