@@ -98,3 +98,21 @@ def test_speed_gate_cannot_mix_progress_profiles(tmp_path,monkeypatch):
     monkeypatch.setattr(batch,'same_machine',lambda *a:None)
     with pytest.raises(ValueError,match='approach progress mode mismatch'):
         batch.reuse_speed_gate(prior,tmp_path/'plan.json',16,3.5,{},approach_progress='approach_progress_v1')
+
+
+def test_v3_goal_error_window_accepts_alignment_but_rejects_oscillation_and_slip():
+    from sim.grasp_act_progress import GoalProgress
+    p=GoalProgress()
+    assert p.observe_goal((0,0,0),(1,0),1.,0.) is None
+    # Heading error decreases while translation is stationary.
+    assert p.observe_goal((0,0,.1),(1,0),1.,2.9) is None
+    assert p.observe_goal((0,0,.2),(1,0),1.,5.8) is None
+    assert p.observe_goal((0,0,.1),(1,0),1.,8.8)=='replan'
+    assert p.observe_goal((0,0,.2),(1,0),1.,11.8)=='handoff'
+    p.reset()
+    # Issued odometry moves, but the observed relative distance stays 1 m.
+    # Do not credit command issuance as actual approach progress.
+    assert p.observe_goal((0,0,0),(1,0),0.,0.) is None
+    assert p.observe_goal((.2,0,0),(1.2,0),0.,3.)=='replan'
+    assert p.observe_goal((.4,0,0),(1.4,0),0.,6.)=='handoff'
+    assert p.observe_goal((.4,0,0),(1.38,0),0.,6.1) is None

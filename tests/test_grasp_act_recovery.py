@@ -197,3 +197,80 @@ def test_v2_checks_issued_pulse_and_does_not_cancel_committed_pick(monkeypatch):
     t.reacquire_since=0.;t.episode_started=0.
     value,done=t.step(CASES[0]['world'],50.)
     assert done and t.phase=='complete' and t.outcome is None
+
+
+V3='progress_view_recovery_v3'
+
+
+def test_v3_peer_visibility_needs_full_goal_stall_window_before_prefix():
+    row=next(r for r in CASES if r['episode']==32);t=make(row,V3);w=deepcopy(row['world'])
+    goal=t._geometry(w)[3];now=w['t']
+    for dt in (0.,1.,2.9):
+        assert t._peer_route(w,goal,now+dt) is None
+        assert t.peer_wait_since is None
+    value=t._peer_route(w,goal,now+3.)
+    assert any(value['wheels']) and t.peer_wait_since==now+3.
+    rad,ds,rs=constraints(w,t.rid,True)
+    assert all(segment_free(a,b,ds,rs,rad) for a,b in zip(t.peer_route,t.peer_route[1:]))
+    # Another robot moving toward its own end permits bounded waiting.
+    assert not t.ready_geometry(w)
+    value,done=t.step({'beam':None},now+15.)
+    assert not done and not any(value['wheels']) and t.outcome=='approach_blocked_handoff'
+
+
+def test_v3_peer_near_goal_during_own_progress_does_not_activate():
+    row=next(r for r in CASES if r['episode']==32);t=make(row,V3);w=deepcopy(row['world'])
+    goal=t._geometry(w)[3];p=w['robots'][t.rid]['pose'];start=p[:2]
+    for i in range(11):
+        p[:2]=[a+(b-a)*i*.015 for a,b in zip(start,goal)]
+        assert t._peer_route(w,goal,w['t']+i) is None
+    assert t.peer_wait_since is None
+
+
+@pytest.mark.parametrize('idx',[3,17])
+def test_v3_static_block_selects_same_axis_feasible_grasp_and_preserves_margins(idx):
+    row=next(r for r in CASES if r['episode']==idx);t=make(row,V3);w=deepcopy(row['world'])
+    original=deepcopy(w);audit=new_input_audit(True,'issued')
+    cmd,ready=t._approach(AuditedTeacherInput(w,audit),w['t'])
+    assert any(cmd['wheels']) and not ready and t.outcome is None
+    assert t.approach_choice[0]==0. and t.staging_distance in (.196,.198,.203,.208)
+    rad,ds,rs=constraints(w,t.rid,True);assert free(t._geometry(w)[3],ds,rs,rad)
+    assert original==w and audit['held_world_reads']==audit['invisible_measurements']==0
+
+
+def test_v3_long_loss_restores_issued_heading_then_near_first_scan():
+    t=make(CASES[0],V3);old=make(CASES[0],'off')
+    for teacher in (t,old):
+        teacher.ever_seen=True;teacher.search_since=0.;teacher.phase='search'
+        teacher.last_visible_pwm={**FOLDED,3:500,4:2500,6:1000}
+    t.last_visible_issued_yaw=.4
+    audit=new_input_audit(True,'issued')
+    w=AuditedTeacherInput({'beam':None,'visibility':{t.rid:{'visible_probes':0}},
+                           'robots':{t.rid:{'pose':[0.,0.,0.]}}},audit)
+    for i in range(144):
+        now=i/10
+        assert t._observe_stable(w,now)==old._observe_stable(w,now)
+    cmd=t._observe_stable(w,14.4)
+    assert t.sc['stage']=='restore' and any(cmd['wheels']) and t.reacquire_since==0.
+    from harness.grasp_act_visible_world import command_delta
+    assert command_delta(cmd,.1)[2]>0  # Own issued yaw selects return direction.
+    for i in range(145,245):
+        cmd=t._observe_stable(w,i/10);t.remember_applied(cmd);t.last_tick=i/10
+    assert t.sc['stage']=='turn' and cmd['pwm']['3']==500 and cmd['pwm']['4']==2500
+    assert audit['held_world_reads']==audit['invisible_measurements']==0
+    # The finite loss budget survives a brief visible glimpse.
+    t._observe_stable(CASES[0]['world'],25.)
+    t._observe_stable(w,25.1)
+    value,done=t.step(w,40.)
+    assert not done and t.outcome=='search_timeout_handoff'
+
+
+def test_v3_peer_expiry_is_not_clearance_and_stationary_pair_has_finite_stop():
+    row=next(r for r in CASES if r['episode']==32);t=make(row,V3);w=deepcopy(row['world'])
+    goal=t._geometry(w)[3];now=w['t']
+    t._peer_route(w,goal,now);t._peer_route(w,goal,now+3.)
+    del w['robots']['r1'];w['visibility']['r2']['peers']=[]
+    value=t._peer_route(w,goal,now+4.)
+    assert not any(value['wheels']) and t.peer_wait_since is not None
+    for dt in (6.,9.):value=t._peer_route(w,goal,now+dt)
+    assert t.outcome=='approach_blocked_handoff' and not any(value['wheels'])

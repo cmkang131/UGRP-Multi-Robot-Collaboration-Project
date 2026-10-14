@@ -1,0 +1,1533 @@
+{
+  "schema": "ugrp.grasp_act.search13_replay.v1",
+  "baseline_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+  "candidate_mode": "progress_view_recovery_v3",
+  "scope": "saved-input shadow replay; after divergence not a physical trajectory; no new physical results",
+  "N": 13,
+  "saved_success_n": 6,
+  "saved_handoff_n": 6,
+  "saved_host_error_n": 0,
+  "normal_commands": 4664,
+  "normal_changed_commands": 0,
+  "normal_changed_states": 0,
+  "normal_identical_episodes": 6,
+  "commands_verified": 7254,
+  "invisible_measurements": 0,
+  "held_world_reads": 0,
+  "rows": [
+    {
+      "episode": 0,
+      "seed": 71000,
+      "saved_physical_success": true,
+      "saved_handoff": false,
+      "saved_sim_s": 27.400000000048227,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 800,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 550,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "first_divergence": null,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 800,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 4.163336342344337e-17,
+      "command_sha256": [
+        "a2316bb2cc107dd7b3edc67e55bfe7ced4c24cee3ec7167c3214b780482b28d9",
+        "a2316bb2cc107dd7b3edc67e55bfe7ced4c24cee3ec7167c3214b780482b28d9",
+        "a2316bb2cc107dd7b3edc67e55bfe7ced4c24cee3ec7167c3214b780482b28d9"
+      ],
+      "candidate_goal_checks": 0,
+      "candidate_goal_rejections": 0,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-000/raw/plan.json",
+          "sha256": "92dabede583f6739ad3a466604af749ee70101942ff8d273f6881f1b4ed7b2cd",
+          "decoded_sha256": "92dabede583f6739ad3a466604af749ee70101942ff8d273f6881f1b4ed7b2cd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-000/raw/result.json",
+          "sha256": "4cd4c872ed535649c0432ae4aa3087ce9e3c37e75e365e752f616669ffffea78",
+          "decoded_sha256": "4cd4c872ed535649c0432ae4aa3087ce9e3c37e75e365e752f616669ffffea78"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-000/raw/teacher-r1.jsonl.zst",
+          "sha256": "c6b7f045ca2e4aeebe57fe230ac0f65749b47f1b525785360eca26a81a5a5093",
+          "decoded_sha256": "ffbd585b6ceec638932c9f650aad73e2d63928b1e886bb326bd924162a29b7db"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-000/raw/teacher-r2.jsonl.zst",
+          "sha256": "a7528af66255fd102aebc64bb9c1fe84bab6b14fbf688e599de56ea0cfd8f422",
+          "decoded_sha256": "5569cf721756a7dfa3cb3e5a42bd941de8364bee2a28c0deb44112b46ac3e389"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-000/raw/eval-only.jsonl.zst",
+          "sha256": "b10785e13e733fb5a6a9e85775eafb44d04aa81cc2867cd9a22cac525d565a97",
+          "decoded_sha256": "a3f01bc3561a9582c51bbc285467e22da5394e72d6effdebfc3445f8576b29d5"
+        }
+      ]
+    },
+    {
+      "episode": 1,
+      "seed": 73011,
+      "saved_physical_success": true,
+      "saved_handoff": false,
+      "saved_sim_s": 35.200000000085474,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1172,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 706,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "first_divergence": null,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1172,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 1.3053794156725473e-16,
+      "command_sha256": [
+        "4a5cafcb3275e44b8c1d2a39e78104320079812f34ebb6b5ca834d6eebe4c66d",
+        "4a5cafcb3275e44b8c1d2a39e78104320079812f34ebb6b5ca834d6eebe4c66d",
+        "4a5cafcb3275e44b8c1d2a39e78104320079812f34ebb6b5ca834d6eebe4c66d"
+      ],
+      "candidate_goal_checks": 0,
+      "candidate_goal_rejections": 0,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-001/raw/plan.json",
+          "sha256": "3f9524a9542566a17b0a0f9bb882cb83393ff45a04411a55d84b78849b761c52",
+          "decoded_sha256": "3f9524a9542566a17b0a0f9bb882cb83393ff45a04411a55d84b78849b761c52"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-001/raw/result.json",
+          "sha256": "eb01cc83b0867ae334881afd16baaf17afd169ded3539555ebef7c3b260d2cdf",
+          "decoded_sha256": "eb01cc83b0867ae334881afd16baaf17afd169ded3539555ebef7c3b260d2cdf"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-001/raw/teacher-r1.jsonl.zst",
+          "sha256": "23f9ac5b0b353f017c54460a23502f64eb770b30d4b6e3b84a15f75adaee7cf9",
+          "decoded_sha256": "c7e27b095ab3ae3fb8749d1b28a747c05d7ded44ad1baa94e48a1543918c9792"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-001/raw/teacher-r2.jsonl.zst",
+          "sha256": "f79712f22b0207e9bede4fadc2bdfd30a0b9af919cae36ef5ad71626f54e714a",
+          "decoded_sha256": "0abcefe35c56f2e4851230291a5d82f3d46f30a8c1114de1e65b1893b040a32b"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-001/raw/eval-only.jsonl.zst",
+          "sha256": "ad59a0eb5e980740c29e6360562de7f1fa842f495b1b41d6ee53a68a9e7d38ed",
+          "decoded_sha256": "39c0db117951f2dda3b92aa1bf5c944c68a4c42632bdfd2416f209bfcbf76e7b"
+        }
+      ]
+    },
+    {
+      "episode": 2,
+      "seed": 73009,
+      "saved_physical_success": true,
+      "saved_handoff": false,
+      "saved_sim_s": 51.60000000016378,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1926,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 1034,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "first_divergence": null,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1926,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 1.249000902703301e-16,
+      "command_sha256": [
+        "1ff0243b49bfdce25de0bb33652ae7e3f629e0bb16b523fe81c46390dd18fa0e",
+        "1ff0243b49bfdce25de0bb33652ae7e3f629e0bb16b523fe81c46390dd18fa0e",
+        "1ff0243b49bfdce25de0bb33652ae7e3f629e0bb16b523fe81c46390dd18fa0e"
+      ],
+      "candidate_goal_checks": 0,
+      "candidate_goal_rejections": 0,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-002/raw/plan.json",
+          "sha256": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869",
+          "decoded_sha256": "e567eb6e31e50aaac2c0a47e145807d0f55eb5ba2a510c44e173789ec3aef869"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-002/raw/result.json",
+          "sha256": "8035122e0899cb0b0ed973b1cde852613bd95bae6ee45ce4387cbb3899d75ba3",
+          "decoded_sha256": "8035122e0899cb0b0ed973b1cde852613bd95bae6ee45ce4387cbb3899d75ba3"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-002/raw/teacher-r1.jsonl.zst",
+          "sha256": "8040bc58dabca89b7ae079c8d4c64034bc449ebde1d61ca016a9643d0c3d0218",
+          "decoded_sha256": "5256256d1d290204adee91af4dfe456a33da7c47afcced9183ad81c4a6808a44"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-002/raw/teacher-r2.jsonl.zst",
+          "sha256": "fac0f94de75cdf069a34db01f3df5874cd32fc6cadc25cd2ee361236cfbe242e",
+          "decoded_sha256": "2641644ebd1badb97c2e6ab817a4ca4b52bb28059d3d70c727cd0693cee4923c"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-002/raw/eval-only.jsonl.zst",
+          "sha256": "94cf976167c78d23eeaf99c49a6eaee3381241c5feacd6200bc75cc0872032a9",
+          "decoded_sha256": "e767d703020410dda13dc48bbd35388eb5214cde013c99f9a00edf490823a366"
+        }
+      ]
+    },
+    {
+      "episode": 3,
+      "seed": 78111,
+      "saved_physical_success": true,
+      "saved_handoff": false,
+      "saved_sim_s": 30.50000000006303,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1352,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 612,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "first_divergence": null,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1352,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 5.551115123125783e-17,
+      "command_sha256": [
+        "a90b097690174a0b2e7b9f3d886689c3524fe4726dd4782068c93dadf2a7a4fe",
+        "a90b097690174a0b2e7b9f3d886689c3524fe4726dd4782068c93dadf2a7a4fe",
+        "a90b097690174a0b2e7b9f3d886689c3524fe4726dd4782068c93dadf2a7a4fe"
+      ],
+      "candidate_goal_checks": 0,
+      "candidate_goal_rejections": 0,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-003/raw/plan.json",
+          "sha256": "dc11609c7cd2f157ea9fa6dcded9f61d06155adbac8e6ca27051315108c07679",
+          "decoded_sha256": "dc11609c7cd2f157ea9fa6dcded9f61d06155adbac8e6ca27051315108c07679"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-003/raw/result.json",
+          "sha256": "a37e4d2408a625607d729f377728dbd8a64ec55a85e236f5785d9f600dac0f4f",
+          "decoded_sha256": "a37e4d2408a625607d729f377728dbd8a64ec55a85e236f5785d9f600dac0f4f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-003/raw/teacher-r1.jsonl.zst",
+          "sha256": "3408316b6816434d612bea36d761bb52b7b50f09d3ac4a7ef231900b180017d9",
+          "decoded_sha256": "26feab9f70f100c112cf41e30c48fdf8d9196b548a549f5662e6c35a1b2c5589"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-003/raw/teacher-r2.jsonl.zst",
+          "sha256": "92dbdd4e44b0c86766c13bb9e348130f70d4471f3a893d75643d569be2463067",
+          "decoded_sha256": "691b5722f328797f6e05c33b4b9eec148d7e3f0ea55e41c44019a14ddeaaf902"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-003/raw/eval-only.jsonl.zst",
+          "sha256": "3a611f2e5fa6c0593b77f48695a48a3b414bdff00a4cb88e22392c936cc90ade",
+          "decoded_sha256": "43ac0702b809d0329f11e3458a420e92cdf78d16488f45c4672291f7573ceeea"
+        }
+      ]
+    },
+    {
+      "episode": 4,
+      "seed": 78113,
+      "saved_physical_success": true,
+      "saved_handoff": false,
+      "saved_sim_s": 43.900000000127015,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1170,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 880,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "first_divergence": null,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1170,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 1.8041124150158794e-16,
+      "command_sha256": [
+        "19a99ca5aa437bb21918e4701d87d68cb852bca9faa7064868bea4a1423bacb1",
+        "19a99ca5aa437bb21918e4701d87d68cb852bca9faa7064868bea4a1423bacb1",
+        "19a99ca5aa437bb21918e4701d87d68cb852bca9faa7064868bea4a1423bacb1"
+      ],
+      "candidate_goal_checks": 0,
+      "candidate_goal_rejections": 0,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-004/raw/plan.json",
+          "sha256": "514c886d2bdc787ea61b7449522a8deb6b9457db070b98f2364423f62a96ae18",
+          "decoded_sha256": "514c886d2bdc787ea61b7449522a8deb6b9457db070b98f2364423f62a96ae18"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-004/raw/result.json",
+          "sha256": "6ed7dd25574d44ed69d30488e1c55629dbd6fdbf655e162eb4855d57af06cdef",
+          "decoded_sha256": "6ed7dd25574d44ed69d30488e1c55629dbd6fdbf655e162eb4855d57af06cdef"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-004/raw/teacher-r1.jsonl.zst",
+          "sha256": "abc3f6626862dd4d726013853a5ddbe75dcc0b570dc16fae8b71d24902b76c02",
+          "decoded_sha256": "146fc40ea5275e67acef3e07d4dd37982080c90357a51ad946dbe52c20d5cdb0"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-004/raw/teacher-r2.jsonl.zst",
+          "sha256": "40a89b4dde7359b71449db823d5a0b9968aa9770cdff4ab53873179a01621177",
+          "decoded_sha256": "661dadf54600e1f3499e29f2f7b8b8a5f86ed00c0921cef61d7e1343229ceaec"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-004/raw/eval-only.jsonl.zst",
+          "sha256": "9d988eb8699ed96ef52703eddd6f27863aa4387610e05c396bfb63cfc70e7a65",
+          "decoded_sha256": "4a0e1d9ca3df5b9249793597ef8487b867caa0770ba0ccd6a3fb44ccea7c4bda"
+        }
+      ]
+    },
+    {
+      "episode": 5,
+      "seed": 79217,
+      "saved_physical_success": true,
+      "saved_handoff": false,
+      "saved_sim_s": 44.00000000012749,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1375,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 882,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "first_divergence": null,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1375,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 1.3877787807814457e-16,
+      "command_sha256": [
+        "8078d454b1b968fc29c46f8b30f007ce0f672774a955dcfb4f4253ece879b283",
+        "8078d454b1b968fc29c46f8b30f007ce0f672774a955dcfb4f4253ece879b283",
+        "8078d454b1b968fc29c46f8b30f007ce0f672774a955dcfb4f4253ece879b283"
+      ],
+      "candidate_goal_checks": 0,
+      "candidate_goal_rejections": 0,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-005/raw/plan.json",
+          "sha256": "7d60d2fb0f46ed8d052c92004c164d7616fbce3461787952e459efc1bb22de60",
+          "decoded_sha256": "7d60d2fb0f46ed8d052c92004c164d7616fbce3461787952e459efc1bb22de60"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-005/raw/result.json",
+          "sha256": "df97b80555f0df111a1922cdb8cf048a462f8a5bbdfc4218af3f928a0e6d6363",
+          "decoded_sha256": "df97b80555f0df111a1922cdb8cf048a462f8a5bbdfc4218af3f928a0e6d6363"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-005/raw/teacher-r1.jsonl.zst",
+          "sha256": "39b430c70a79c97ed0e6b56f2dcc00b8157f4dcf5402b9c359730a55de505431",
+          "decoded_sha256": "aebcec40fbdaf83d4b37d716e6cd1957ca2f92436be60a4d9b12f0e565831171"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-005/raw/teacher-r2.jsonl.zst",
+          "sha256": "3eb08c12a406e0e26044991877b9630828e9bdf8a06b889ca2fac330c86681a4",
+          "decoded_sha256": "7d0bd3dfc4bab653365d39b9e71a515ab3ee977cc5c955b481e5bf743ae6c636"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-005/raw/eval-only.jsonl.zst",
+          "sha256": "7b5b1c12c477b4977c5151218fb6f6a66b577dec449861bc16efb614f056e6ec",
+          "decoded_sha256": "63d03e74d19b44f7891aa418513171f895013e8a3ed4de9c990688266b2ac55a"
+        }
+      ]
+    },
+    {
+      "episode": 6,
+      "seed": 79030,
+      "saved_physical_success": false,
+      "saved_handoff": true,
+      "saved_sim_s": 3.6000000000006693,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 72,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 74,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 1,
+      "first_divergence": {
+        "tick": 36,
+        "elapsed_sim_s": 3.6000000000006693,
+        "robots": [
+          "r1"
+        ],
+        "baseline": {
+          "r1": [
+            {
+              "t": 5.400000000000854,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 800,
+                "4": 2320,
+                "5": 1320,
+                "6": 1560
+              }
+            },
+            false,
+            "approach",
+            "approach_blocked_handoff"
+          ]
+        },
+        "candidate": {
+          "r1": [
+            {
+              "t": 5.400000000000854,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 800,
+                "4": 2320,
+                "5": 1320,
+                "6": 1560
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r1": [
+            {
+              "t": 4.2,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.0,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.2000000000006095,
+              "from": "search",
+              "to": "approach"
+            }
+          ]
+        },
+        "candidate_choices": {
+          "r1": [
+            0.0,
+            0.203
+          ]
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 72,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 0.0,
+      "command_sha256": [
+        "2e716d582d33ce9b023a05dd440c913ed85bafe0fd3cffac83805a8f0f97be73",
+        "2e716d582d33ce9b023a05dd440c913ed85bafe0fd3cffac83805a8f0f97be73",
+        "e7693db05208e2808f84f009dc435df1b585bdaf7afd7da52e03c6a4ca6212a9"
+      ],
+      "candidate_goal_checks": 5,
+      "candidate_goal_rejections": 5,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-006/raw/plan.json",
+          "sha256": "08c1d572e1aa2c9cd4cdd56b0366dc5899526843564587482c4bacecb05a54f3",
+          "decoded_sha256": "08c1d572e1aa2c9cd4cdd56b0366dc5899526843564587482c4bacecb05a54f3"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-006/raw/result.json",
+          "sha256": "3aa7a6a842ba828900e13e39f4efbba7fd803d81c7444be6e9de92b5a094f244",
+          "decoded_sha256": "3aa7a6a842ba828900e13e39f4efbba7fd803d81c7444be6e9de92b5a094f244"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-006/raw/teacher-r1.jsonl",
+          "sha256": "dcc4a74bfed72a17029c0bfd9cd1874f4cddee0b6b390f3b29b39c6b9a3b71c7",
+          "decoded_sha256": "dcc4a74bfed72a17029c0bfd9cd1874f4cddee0b6b390f3b29b39c6b9a3b71c7"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-006/raw/teacher-r2.jsonl",
+          "sha256": "b0cdc6c705f8a87958342259780719f5210121f2f52aae63694a74175ec95ed4",
+          "decoded_sha256": "b0cdc6c705f8a87958342259780719f5210121f2f52aae63694a74175ec95ed4"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-006/raw/eval-only.jsonl.zst",
+          "sha256": "67addc07b6da9148482d1200ae29b8033f6ce4effba05fa3db5854727804f479",
+          "decoded_sha256": "a9bd0199648662181ddea1e59813186f3e08fb9038fb12466c0525d8c4db321f"
+        }
+      ]
+    },
+    {
+      "episode": 7,
+      "seed": 87003,
+      "saved_physical_success": false,
+      "saved_handoff": true,
+      "saved_sim_s": 12.89999999998823,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 665,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 260,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 60,
+      "candidate_changed_states": 1,
+      "first_divergence": {
+        "tick": 68,
+        "elapsed_sim_s": 6.800000000002448,
+        "robots": [
+          "r1"
+        ],
+        "baseline": {
+          "r1": [
+            {
+              "t": 8.600000000002632,
+              "wheels": [
+                0.35,
+                -0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.0604481648894545,
+                0.045752956305095925,
+                0.009961329409189798,
+                0.004733879175168781
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 800,
+                "4": 2320,
+                "5": 1320,
+                "6": 940
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "candidate": {
+          "r1": [
+            {
+              "t": 8.600000000002632,
+              "wheels": [
+                0.35,
+                -0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.06632418570389505,
+                0.03694229241069668,
+                0.018771993303589047,
+                0.010609899989609328
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 800,
+                "4": 2320,
+                "5": 1320,
+                "6": 940
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r1": [
+            {
+              "t": 7.1,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 7.9,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 8.100000000003797,
+              "from": "search",
+              "to": "approach"
+            }
+          ]
+        },
+        "candidate_choices": {
+          "r1": [
+            0.0,
+            0.196
+          ]
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 665,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 0.0,
+      "command_sha256": [
+        "a50025faa740932dfee114c4ccded8c7a4a8044969fea59f05f0afdabd784af8",
+        "a50025faa740932dfee114c4ccded8c7a4a8044969fea59f05f0afdabd784af8",
+        "323031927f21cdcfda64d8a9d3ac9eb289108a0bd19606c44602abf84bd39f41"
+      ],
+      "candidate_goal_checks": 10,
+      "candidate_goal_rejections": 4,
+      "shadow_handoff_robots": 1,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-007/raw/plan.json",
+          "sha256": "9a3f9a79f0d15d7c4cc23aa2055028ca455c6683f0f8913a504ffbf826a2241a",
+          "decoded_sha256": "9a3f9a79f0d15d7c4cc23aa2055028ca455c6683f0f8913a504ffbf826a2241a"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-007/raw/result.json",
+          "sha256": "d9aefe010ccfc2f125e9dd7a1f10f5e1cc56c4bccf07a4f07c876cbf16eee3af",
+          "decoded_sha256": "d9aefe010ccfc2f125e9dd7a1f10f5e1cc56c4bccf07a4f07c876cbf16eee3af"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-007/raw/teacher-r1.jsonl.zst",
+          "sha256": "ef17f4a2f7f70d61fe24511b54a32386f9f093be52af6fa51f9f8c77d6244d10",
+          "decoded_sha256": "6dc78091c01f7f9d750d0fc1258a14a95d3d95efecfc2653b149ebe15c20d76f"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-007/raw/teacher-r2.jsonl.zst",
+          "sha256": "9831bf6c75060d228cc7f834fe5d72406ce5c61a1ab77e19fcdceb35824e9658",
+          "decoded_sha256": "40f5fbdc67278c682871903c8025054856f61aa2527c970a60543879259072fb"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-007/raw/eval-only.jsonl.zst",
+          "sha256": "cf8ec85d2fa8dc8c80ce19646a47b86a31b84653df5b056ab59ed1dc114ec953",
+          "decoded_sha256": "081511b78799775939413c23a1cc125986abb06cc0d84bdc38e809aa38041545"
+        }
+      ]
+    },
+    {
+      "episode": 8,
+      "seed": 87007,
+      "saved_physical_success": false,
+      "saved_handoff": false,
+      "saved_sim_s": 60.00000000020389,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1887,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 1200,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 185,
+      "candidate_changed_states": 75,
+      "first_divergence": {
+        "tick": 269,
+        "elapsed_sim_s": 26.90000000004584,
+        "robots": [
+          "r1"
+        ],
+        "baseline": {
+          "r1": [
+            {
+              "t": 28.700000000046025,
+              "wheels": [
+                -0.35,
+                0.35,
+                -0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.04642857142857143,
+                0.04642857142857143,
+                0.04642857142857143,
+                0.04642857142857143
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 760,
+                "4": 2380,
+                "5": 1320,
+                "6": 1780
+              }
+            },
+            false,
+            "search",
+            null
+          ]
+        },
+        "candidate": {
+          "r1": [
+            {
+              "t": 28.700000000046025,
+              "wheels": [
+                -0.35,
+                0.35,
+                -0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.04642857142857143,
+                0.04642857142857143,
+                0.04642857142857143,
+                0.04642857142857143
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 760,
+                "4": 2380,
+                "5": 1320,
+                "6": 1660
+              }
+            },
+            false,
+            "search",
+            null
+          ]
+        },
+        "reason_events": {
+          "r1": [
+            {
+              "t": 14.099999999989814,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 14.199999999989581,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 14.299999999989348,
+              "from": "approach",
+              "to": "search"
+            },
+            {
+              "t": 28.700000000046025,
+              "recovery": "last_view_then_near_scan",
+              "unseen_s": 14.400000000056677
+            }
+          ]
+        },
+        "candidate_choices": {
+          "r1": [
+            0.0,
+            0.203
+          ]
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1887,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 4.163336342344337e-17,
+      "command_sha256": [
+        "40b559d8e3fcbc070d82cdd2901583f7d67205969218031ab130fefa5369677c",
+        "40b559d8e3fcbc070d82cdd2901583f7d67205969218031ab130fefa5369677c",
+        "b5cc0c14d194957097495db77a3752104514b9cb13222f2a46fc9dd34cb52074"
+      ],
+      "candidate_goal_checks": 0,
+      "candidate_goal_rejections": 0,
+      "shadow_handoff_robots": 1,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-008/raw/plan.json",
+          "sha256": "3dca3836fd51429783db8c3cbcb9a09890691f3aae072aa1605eab653fea7abd",
+          "decoded_sha256": "3dca3836fd51429783db8c3cbcb9a09890691f3aae072aa1605eab653fea7abd"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-008/raw/result.json",
+          "sha256": "1498d7062d23143f59a006f72a328a524c51732c7e3fc222ab0c50be8fda629d",
+          "decoded_sha256": "1498d7062d23143f59a006f72a328a524c51732c7e3fc222ab0c50be8fda629d"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-008/raw/teacher-r1.jsonl.zst",
+          "sha256": "e0206d710ede77c69745848c05cf5013f31f82f2974c643e2a4429dd9641aaee",
+          "decoded_sha256": "4676b03c676cd9fa0064d9178761bef7e79d4b795f603274938c2a1552593e2e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-008/raw/teacher-r2.jsonl.zst",
+          "sha256": "ca6f5b3612bfa8515946ecc43ce05a8294df8fbdae27bd32f0d421b80702f834",
+          "decoded_sha256": "3364c68f2c4115bbba1b7aab16219d04351af8ad862931ab3c4a20ab85a00f23"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-008/raw/eval-only.jsonl.zst",
+          "sha256": "9f249ac0b02234bc90635270dbf6289f16f966b23c7ae655938d9e4ed4f4b1d5",
+          "decoded_sha256": "ad168f21f3f358cd797d67cce0ad3830f9e60ab39b11418ef9af34ace44f3416"
+        }
+      ]
+    },
+    {
+      "episode": 9,
+      "seed": 87008,
+      "saved_physical_success": false,
+      "saved_handoff": true,
+      "saved_sim_s": 10.799999999993124,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 565,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 218,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 27,
+      "candidate_changed_states": 1,
+      "first_divergence": {
+        "tick": 78,
+        "elapsed_sim_s": 7.800000000000117,
+        "robots": [
+          "r2"
+        ],
+        "baseline": {
+          "r2": [
+            {
+              "t": 9.600000000000302,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 900,
+                "4": 2500,
+                "5": 1320,
+                "6": 1396
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "candidate": {
+          "r2": [
+            {
+              "t": 9.600000000000302,
+              "wheels": [
+                0.35,
+                0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.09259078129789554,
+                0.06841517093283654,
+                0.06100595223073207,
+                0.1
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 900,
+                "4": 2500,
+                "5": 1320,
+                "6": 1396
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r2": [
+            {
+              "t": 9.600000000000302,
+              "recovery": "peer_prefix_wait",
+              "goal": [
+                1.294265978992806,
+                -0.3818365700692693
+              ]
+            },
+            {
+              "t": 9.600000000000302,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.2588531957985611,
+                -0.3963673140138527
+              ],
+              "points": 101
+            }
+          ]
+        },
+        "candidate_choices": {
+          "r2": [
+            0.0,
+            0.203
+          ]
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 565,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 6.938893903907228e-17,
+      "command_sha256": [
+        "97eab3ebf5bf82e666f563f157751cba6bf3334f2644d1cb9b2f606d3ba3089e",
+        "97eab3ebf5bf82e666f563f157751cba6bf3334f2644d1cb9b2f606d3ba3089e",
+        "2ef6cdd900da05091a506cdf16adbe84f4a57eeb7598cb17351e65f72066757e"
+      ],
+      "candidate_goal_checks": 0,
+      "candidate_goal_rejections": 0,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-009/raw/plan.json",
+          "sha256": "60671fb324ef6046044b87c959f8072f285cf15a68eba6551ef4c4d8498fea21",
+          "decoded_sha256": "60671fb324ef6046044b87c959f8072f285cf15a68eba6551ef4c4d8498fea21"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-009/raw/result.json",
+          "sha256": "560e2d8becd02e6e148b5aade62dd0c6ba35053405066369820e80d5baf7a8bc",
+          "decoded_sha256": "560e2d8becd02e6e148b5aade62dd0c6ba35053405066369820e80d5baf7a8bc"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-009/raw/teacher-r1.jsonl.zst",
+          "sha256": "322054125009528210c36d719c4a8297e71e34f9d3b7394bb5a7ff95a761d96a",
+          "decoded_sha256": "8007e1a0184c86a1525a199d07a381b6ee854cc2d19059193d2a4bbb7f1e9820"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-009/raw/teacher-r2.jsonl.zst",
+          "sha256": "791863547226da9e8cce762c2325730d8685bb57d529e8a879cb48efe6fe410f",
+          "decoded_sha256": "792b56d287529e39532926dde6bb0a316a67701125736039aff666ad9d523bd5"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-009/raw/eval-only.jsonl.zst",
+          "sha256": "d3ae0525189fa69ec48041deed279d920c5f837d608510541b3794dbe85fea20",
+          "decoded_sha256": "0a7d2020b52d2df0aed03218f77b124a4a1da77f2783ee37c75f3dd166870d71"
+        }
+      ]
+    },
+    {
+      "episode": 10,
+      "seed": 87014,
+      "saved_physical_success": false,
+      "saved_handoff": true,
+      "saved_sim_s": 19.400000000010028,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1007,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 390,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 20,
+      "candidate_changed_states": 1,
+      "first_divergence": {
+        "tick": 175,
+        "elapsed_sim_s": 17.500000000000956,
+        "robots": [
+          "r2"
+        ],
+        "baseline": {
+          "r2": [
+            {
+              "t": 19.30000000000114,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 720,
+                "4": 2440,
+                "5": 1320,
+                "6": 1560
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "candidate": {
+          "r2": [
+            {
+              "t": 19.30000000000114,
+              "wheels": [
+                0.35,
+                0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.058181296628587495,
+                0.060926961320806355,
+                0.01910825794939383,
+                0.1
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 720,
+                "4": 2440,
+                "5": 1320,
+                "6": 1560
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r2": [
+            {
+              "t": 5.2,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.400000000000854,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 18.299999999996366,
+              "approach_progress": "replan",
+              "phase": "approach",
+              "required_movement_m": 0.01,
+              "allowance_s": 3.0,
+              "planner_calls": 16,
+              "no_path_calls": 3,
+              "blocked_goal_calls": 3,
+              "reason": "no_goal_error_progress",
+              "input": "current visible goal and issued-command pose"
+            },
+            {
+              "t": 19.30000000000114,
+              "recovery": "peer_prefix_wait",
+              "goal": [
+                1.7462705540083892,
+                -0.3891624880041769
+              ]
+            },
+            {
+              "t": 19.30000000000114,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.4500000000000028,
+                -0.4499999999999993
+              ],
+              "points": 23
+            }
+          ]
+        },
+        "candidate_choices": {
+          "r2": [
+            0.0,
+            0.203
+          ]
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1007,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 8.326672684688674e-17,
+      "command_sha256": [
+        "cb08d52a0947bb54732f5927a65d3cce42d6dd4c836b2c9baebf219832cc196f",
+        "cb08d52a0947bb54732f5927a65d3cce42d6dd4c836b2c9baebf219832cc196f",
+        "c24874e4e04e5846c57b987e4e209c0f611d300b2aa2e120b67da5c943f806a4"
+      ],
+      "candidate_goal_checks": 0,
+      "candidate_goal_rejections": 0,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-010/raw/plan.json",
+          "sha256": "7032015e34a3f8c81766205bd54576cc6557d6564ca4fcb6186dfea2b346cd0e",
+          "decoded_sha256": "7032015e34a3f8c81766205bd54576cc6557d6564ca4fcb6186dfea2b346cd0e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-010/raw/result.json",
+          "sha256": "0b3f77ca6b8388f58afde7f1c216335bcd3dfc7ab5e2ae5ff7ed99353ce5fcfc",
+          "decoded_sha256": "0b3f77ca6b8388f58afde7f1c216335bcd3dfc7ab5e2ae5ff7ed99353ce5fcfc"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-010/raw/teacher-r1.jsonl.zst",
+          "sha256": "5c35ba8d2fbfcbf18073dcce26417fb69bb15abca3cb716f61750d4fde65f688",
+          "decoded_sha256": "9f5ec9282ab994505a0ce222ab506cb5c7a015715c4b6d7029648ad370dc413d"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-010/raw/teacher-r2.jsonl.zst",
+          "sha256": "4a7893141a478446d80bd15ee8af99e471a98dc4e1c0235ff36ef5aa685824df",
+          "decoded_sha256": "006099c553f28ea794ee24fb58400f6ada185cf58fbdd9cf1b645c19b03408f4"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-010/raw/eval-only.jsonl.zst",
+          "sha256": "03cddf0c7ac10f21731f2949e033a73aa655ecc9c0d91c2f5ec1af467aa278f3",
+          "decoded_sha256": "5081b25dd347fc83e046790701cf3d365c5bb91c7a86651b23810dc8e35514c2"
+        }
+      ]
+    },
+    {
+      "episode": 11,
+      "seed": 87017,
+      "saved_physical_success": false,
+      "saved_handoff": true,
+      "saved_sim_s": 6.600000000002914,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 630,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 134,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 1,
+      "candidate_changed_states": 1,
+      "first_divergence": {
+        "tick": 66,
+        "elapsed_sim_s": 6.600000000002914,
+        "robots": [
+          "r2"
+        ],
+        "baseline": {
+          "r2": [
+            {
+              "t": 8.400000000003098,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 680,
+                "4": 2380,
+                "5": 1320,
+                "6": 1600
+              }
+            },
+            false,
+            "approach",
+            "approach_blocked_handoff"
+          ]
+        },
+        "candidate": {
+          "r2": [
+            {
+              "t": 8.400000000003098,
+              "wheels": [
+                0.35,
+                0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.08162856624760549,
+                0.0436712192359038,
+                0.025299785483509286,
+                0.1
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 680,
+                "4": 2380,
+                "5": 1320,
+                "6": 1600
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r2": []
+        },
+        "candidate_choices": {
+          "r2": [
+            0.0,
+            0.198
+          ]
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 630,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 2.7755575615628914e-17,
+      "command_sha256": [
+        "b388787dd86a5421cf18e16e654854926ecafa4765330136edf0ca679124a33c",
+        "b388787dd86a5421cf18e16e654854926ecafa4765330136edf0ca679124a33c",
+        "ba38201c05ca6259c618b0808179ac0932d83302b9e657ac4677b67a3279b340"
+      ],
+      "candidate_goal_checks": 5,
+      "candidate_goal_rejections": 3,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-011/raw/plan.json",
+          "sha256": "a13baea07c69d4744bca482f267933391afaaf8f1321a5969d622a9a1a060ecc",
+          "decoded_sha256": "a13baea07c69d4744bca482f267933391afaaf8f1321a5969d622a9a1a060ecc"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-011/raw/result.json",
+          "sha256": "28f8bfd5842a15a03d6852575f810231e27950652b134d288871a090e158b358",
+          "decoded_sha256": "28f8bfd5842a15a03d6852575f810231e27950652b134d288871a090e158b358"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-011/raw/teacher-r1.jsonl.zst",
+          "sha256": "ecc78e084a44488d7658a81aa40eab7bf00a0b869a2af9a0cd5c0d212e13c590",
+          "decoded_sha256": "5fefd64d49b9bc24c52c289eb8f801b90038a8e2175f033f93fdc14750afd501"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-011/raw/teacher-r2.jsonl.zst",
+          "sha256": "6cf5445163252f8b3bccec263a8e180c7f229defdbabe5e57c93d42c394ffaee",
+          "decoded_sha256": "afc098f680c8f1d71c09d3e1279c64bd90726585e2e39f414b84bccbbe6bc1c7"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-011/raw/eval-only.jsonl.zst",
+          "sha256": "bfc774e8cef9570deb92c1ab9a4328f16cce7c75790ca346be4960a62dedac34",
+          "decoded_sha256": "71090d8ff5ff4c02747a2841a76f25c089fad0c6f7344c1446f19264663799db"
+        }
+      ]
+    },
+    {
+      "episode": 12,
+      "seed": 87032,
+      "saved_physical_success": false,
+      "saved_handoff": true,
+      "saved_sim_s": 15.599999999991883,
+      "saved_input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1046,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "source_sha": "c3d700e5d44a50a2e7044fc3eeef2e2124486f93",
+      "commands_verified": 314,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 31,
+      "candidate_changed_states": 1,
+      "first_divergence": {
+        "tick": 126,
+        "elapsed_sim_s": 12.59999999998893,
+        "robots": [
+          "r2"
+        ],
+        "baseline": {
+          "r2": [
+            {
+              "t": 14.399999999989115,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 720,
+                "4": 2440,
+                "5": 1320,
+                "6": 1560
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "candidate": {
+          "r2": [
+            {
+              "t": 14.399999999989115,
+              "wheels": [
+                0.35,
+                0.35,
+                0.35,
+                0.35
+              ],
+              "duration_s": [
+                0.05256942600355981,
+                0.07078169541437983,
+                0.038114261992883265,
+                0.08523685942505638
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 720,
+                "4": 2440,
+                "5": 1320,
+                "6": 1560
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r2": [
+            {
+              "t": 3.6,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.4,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.599999999999876,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 14.399999999989115,
+              "recovery": "peer_prefix_wait",
+              "goal": [
+                1.2656588331419993,
+                -0.3964502685319908
+              ]
+            },
+            {
+              "t": 14.399999999989115,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                0.9250000000000025,
+                -0.3749999999999982
+              ],
+              "points": 20
+            }
+          ]
+        },
+        "candidate_choices": {
+          "r2": [
+            0.0,
+            0.203
+          ]
+        }
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1046,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "max_recorded_duration_delta_s": 5.551115123125783e-17,
+      "command_sha256": [
+        "b545f9a758318b8713555f3cf1b4405943086467ab8365349686a6dcd396941d",
+        "b545f9a758318b8713555f3cf1b4405943086467ab8365349686a6dcd396941d",
+        "d4da13cbf8c5f7deaa241ae6601a1d4488f8f6585fed8a1bbd1e223b46dbf06f"
+      ],
+      "candidate_goal_checks": 0,
+      "candidate_goal_rejections": 0,
+      "shadow_handoff_robots": 0,
+      "raw_proof": [
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-012/raw/plan.json",
+          "sha256": "a71292e6a277b19a1e0f5266ed1332a910723a1e5e4b5a3edca762ac4ed0eda9",
+          "decoded_sha256": "a71292e6a277b19a1e0f5266ed1332a910723a1e5e4b5a3edca762ac4ed0eda9"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-012/raw/result.json",
+          "sha256": "2b98e324ebe84fa8ab6da5c2e02a3968d4fba857cb6e60372099f3521bf0931e",
+          "decoded_sha256": "2b98e324ebe84fa8ab6da5c2e02a3968d4fba857cb6e60372099f3521bf0931e"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-012/raw/teacher-r1.jsonl.zst",
+          "sha256": "f7e1aabd104a02dc6600bb4868f575f2035121c7779a5025835154ef82f8c6f8",
+          "decoded_sha256": "6a578710e0ecaebe2816ee3701da853ce595d8e71e0258d229ac88434d6b73c7"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-012/raw/teacher-r2.jsonl.zst",
+          "sha256": "5b03455f68815732bf1b805ef63d328ae94752e94827b46ac4b9e19c3d060f3e",
+          "decoded_sha256": "0a5f8a4022c19b2bef5ecff23bddccb6ca329359b63189b88d8b057859069854"
+        },
+        {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-a-gcp-c3d700e5/diagnostic/episode-012/raw/eval-only.jsonl.zst",
+          "sha256": "e080842e75946d600a546a537c1ec4e5b3de0cbeaae49e6fececb4b4ebcf534e",
+          "decoded_sha256": "dad0192e5a49cb98c5e1a2bc87d9cd392eea571e7c16120eadd09be533613b20"
+        }
+      ]
+    }
+  ]
+}

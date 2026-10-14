@@ -226,7 +226,7 @@ def main():
     p.add_argument('--approach-goal-set',choices=('off','approach_goal_set_v1'),default='off')
     p.add_argument('--nominal-blocked-handoff',choices=('off','nominal_blocked_handoff_v1'),default='off')
     p.add_argument('--approach-progress',choices=('off','approach_progress_v1'),default='off')
-    p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1','approach_recovery_v2'),default='off')
+    p.add_argument('--approach-recovery',choices=('off','approach_recovery_v1','approach_recovery_v2','progress_view_recovery_v3'),default='off')
     p.add_argument('--approach-coordination',choices=('off','prioritized_approach_v1','observed_blocked_priority_v2'),default='off')
     p.add_argument('--handoff-observation',choices=('off','visible_handoff_v1'),default='off')
     p.add_argument('--failure-stop-scope',choices=('first_failure','repeated_cause_v1'),default='first_failure',
@@ -248,7 +248,7 @@ def main():
     if a.approach_goal_set!='off' and (a.teacher_profile!='visible_only' or a.teacher_stability=='off'):raise ValueError('approach goal set requires visible_only and align_relook_v1')
     if a.nominal_blocked_handoff!='off' and (a.teacher_profile!='visible_only' or a.teacher_stability=='off'):raise ValueError('nominal blocked handoff requires visible_only and align_relook_v1')
     if a.approach_progress!='off' and (a.teacher_profile!='visible_only' or a.teacher_stability=='off'):raise ValueError('approach progress requires visible_only and align_relook_v1')
-    if a.approach_recovery=='approach_recovery_v2' and a.approach_goal_set=='off':raise ValueError('approach recovery v2 requires approach goal set')
+    if a.approach_recovery in ('approach_recovery_v2','progress_view_recovery_v3') and a.approach_goal_set=='off':raise ValueError('approach recovery v2 requires approach goal set')
     if a.approach_recovery!='off' and (a.teacher_profile!='visible_only' or a.approach_progress=='off' or a.teacher_search!='search_body_scan_v2'):raise ValueError('approach recovery requires visible_only, progress and search_body_scan_v2')
     root=a.root.resolve();require_run_root(root);host=identity(a.execution_host)
     if a.speed_gate_limit is None:

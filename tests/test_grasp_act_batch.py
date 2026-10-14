@@ -82,7 +82,7 @@ def test_first_failure_leaves_other_episode_running(tmp_path,fake_children):
     assert summary['clean_handoff_rate']==summary['approach_handoff_rate']==1/3
 
 
-@pytest.mark.parametrize('recovery',['approach_recovery_v1','approach_recovery_v2'])
+@pytest.mark.parametrize('recovery',['approach_recovery_v1','approach_recovery_v2','progress_view_recovery_v3'])
 def test_nominal_handoff_toggle_reaches_each_teacher_child(tmp_path,fake_children,recovery):
     fake_children[0].update({0:(0,HANDOFF,0),1:(1,SUCCESS,0)})
     rows,reason,killed=run_wave(tmp_path,fake_children,nominal_blocked_handoff='nominal_blocked_handoff_v1',
