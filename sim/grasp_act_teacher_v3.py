@@ -25,12 +25,120 @@ def propagate_owned(point,issued,dt):
 
 class VisibleOnlyGraspTeacher(GraspTeacher):
     def __init__(self,*args,**kwargs):
+        self.teacher_stability=kwargs.pop('teacher_stability','off')
+        if self.teacher_stability not in ('off','align_relook_v1'):
+            raise ValueError('unknown teacher stability mode')
         kwargs.pop('profile',None)
         super().__init__(*args,profile='observable_v2',**kwargs)
         self.phase='approach';self.handoff=False;self.local_seen=None
         self.last_command=None;self.last_tick=None;self.command_complete=False
         self.ready_revocations=0;self.skill_started=None
         self.path_goal=None;self.blocked_goal_calls=0
+        self.align_relooks=0;self.initial_search_pan=self.sink.pwm[6]
+        self._reset_alignment()
+
+
+    def _reset_alignment(self):
+        self.align_integral=[0.,0.,0.];self.align_t=None
+        self.align_active=[False]*3;self.align_sign=[0]*3
+        self.align_flips=[0]*3;self.align_best=None;self.align_progress_t=None
+
+    def _begin_relook(self,now,reason):
+        self.align_relooks+=1
+        self.events.append({'t':now,'alignment_recovery':reason})
+        self._reset_alignment();self.path=[];self.path_goal=None
+        self.local_seen=None;self.last_seen_t=None;self.search_since=now
+        if self.align_relooks>2:
+            self.outcome='alignment_no_progress'
+        else:
+            self._set('relook',now)
+        return self._hold(now),False
+
+    def _approach(self,truth,now):
+        if self.teacher_stability=='off':return super()._approach(truth,now)
+        # Only the currently visible measurement frame reaches this law.
+        if truth['beam'] is None or truth['visibility'][self.rid]['visible_probes']<5:
+            return self._hold(now),False
+        pose,g,heading,goal=self._geometry(truth)
+        if self.phase=='approach' and math.dist(pose[:2],goal)>.08:
+            return self._route(truth,goal,heading,now),False
+        if self.phase=='approach':self._set('align',now);self._reset_alignment()
+        gx,gy=local(pose,g);errors=(gx-STATION_M,gy,wrap(heading-pose[2]))
+        if self.ready_geometry(truth):
+            self.stable_since=now if self.stable_since is None else self.stable_since
+            self._reset_alignment()
+            return self._hold(now),now-self.stable_since>=.3
+        self.stable_since=None
+        # Schmitt deadbands: stop within inner, restart beyond outer. The
+        # residual still goes to the same pad IK; readiness is never relaxed.
+        inner=(.002,.012,.02);outer=(.004,.018,.04)
+        merit=max(abs(e)/b for e,b in zip(errors,inner))
+        if self.align_best is None or merit<self.align_best-.25:
+            self.align_best=merit;self.align_progress_t=now
+        elif now-self.align_progress_t>=3.:
+            return self._begin_relook(now,'no_visible_error_progress_3s')
+        for i,error in enumerate(errors):
+            if abs(error)<=inner[i]:self.align_active[i]=False
+            elif abs(error)>=outer[i]:self.align_active[i]=True
+            if not self.align_active[i]:self.align_integral[i]=0.
+        # IK may reject an x residual inside the wider restart band. Avoid
+        # accepting it as ready or accumulating tiny lateral/yaw commands.
+        try:grasp_poses((gx,gy,g[2]));reachable=True
+        except ValueError:reachable=False
+        if not reachable and abs(errors[0])>.0005:self.align_active[0]=True
+        axis=next((i for i in (2,1,0) if self.align_active[i]),None)
+        if axis is None:return self._hold(now),False
+        sign=1 if errors[axis]>0 else -1
+        old=self.align_sign[axis]
+        self.align_flips[axis]=self.align_flips[axis]+1 if old and sign!=old else 0
+        self.align_sign[axis]=sign
+        if self.align_flips[axis]>=4:return self._begin_relook(now,'alternating_error_sign_4')
+        if old and sign!=old:self.align_integral[axis]=0.
+        dt=0. if self.align_t is None else max(0.,min(.2,now-self.align_t))
+        self.align_t=now
+        for i in range(3):
+            if i!=axis:self.align_integral[i]=0.
+        limits=(.025,.025,.03);gains=(.45,.45,.4)
+        self.align_integral[axis]=max(-limits[axis],min(limits[axis],
+            self.align_integral[axis]+gains[axis]*errors[axis]*dt))
+        effort=(.9,.9,.8)[axis]*errors[axis]+self.align_integral[axis]
+        lo,hi=((- .05,.08),(-.06,.06),(-.10,.10))[axis]
+        drive=[0.,0.,0.];drive[axis]=max(lo,min(hi,effort))
+        # One axis per command keeps the four-wheel ratios intact when the
+        # bounded minimum width is applied. No new grasp motion/IK path.
+        return self._continuous(now,*drive),False
+
+    def _observe_stable(self,truth,now):
+        from sim.grasp_act_gaze import slew
+        from sim.grasp_act_visible_gaze import gaze_pose
+        visible=truth['visibility'][self.rid]['visible_probes']>=5
+        self.visibility_counts['N']+=1;self.visibility_counts['visible']+=int(visible)
+        self.blind_s=0. if visible else self.blind_s+.1
+        self.max_blind_s=max(self.max_blind_s,self.blind_s)
+        if visible:
+            g=truth['beam']['ends'][self.end];pose=truth['robots'][self.rid]['pose']
+            self.local_seen=[*local(pose,g),g[2]+.009];self.last_seen_t=now
+            self.search_since=None
+            occluders=[{'xy':local(pose,v['pose']),'radius':v.get('radius',.17),
+                'top_z_bound_m':v.get('top_z_bound_m',.32)}
+                for r,v in truth['robots'].items() if r!=self.rid]
+            occluders += [{'xy':local(pose,v['xy']),'radius':v['radius'],
+                'top_z_bound_m':v['top_z_bound_m']} for k,v in truth['objects'].items() if k!='beam_1']
+            target=gaze_pose(self.local_seen,self.sink.pwm,occluders,visible=True)
+            if self.phase=='search':self._set('approach',now);self._reset_alignment()
+        else:
+            self.search_since=now if self.search_since is None else self.search_since
+            age=now-self.search_since
+            if self.phase!='relook' and self.phase!='search':self._set('search',now)
+            # Full stationary pan/pitch sweep before turning the chassis.
+            # All targets depend on issued scan age, never a hidden pose.
+            pans=(self.initial_search_pan,1500,1000,2000,500,2500)
+            slot=int(age/.6)%(2*len(pans));near=slot%2==0
+            target={**FOLDED,3:500 if near else 820,4:2500 if near else 2320,6:pans[slot//2]}
+        self.sink.pwm.update(slew(self.sink.pwm,target));self.arm.commanded.update(self.sink.pwm)
+        if visible:return None
+        if age<7.2:return self._hold(now)
+        return self._continuous(now,0.,0.,.25)
 
     def _geometry(self,world):
         pose=world['robots'][self.rid]['pose'];g=world['beam']['ends'][self.end]
@@ -68,10 +176,14 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def _continuous(self,now,forward,left,turn):
         wheels,widths=duty_wheels([3.*forward,3.*left,.65*turn])
+        if self.teacher_stability!='off' and self.phase in ('align','search'):
+            # Candidate 40 ms floor; real-wheel response remains unmeasured.
+            widths=[max(.04,d) if w else 0. for w,d in zip(wheels,widths)]
         value=self._hold(now);value.update(wheels=wheels,duration_s=widths)
         return command(value)
 
     def _observe(self,truth,now):
+        if self.teacher_stability!='off':return self._observe_stable(truth,now)
         from sim.grasp_act_gaze import slew
         from sim.grasp_act_visible_gaze import gaze_pose
         vis=truth['visibility'][self.rid];visible=vis['visible_probes']>=5
@@ -144,7 +256,12 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.rects=truth.get('walls',[])
         self.observed_objects=deepcopy(truth.get('objects',{}))
         self.observed_peers={r:{**deepcopy(v),'seen_t':now} for r,v in truth['robots'].items() if r!=self.rid}
-        if self.phase in ('approach','align','ready'):
+        if self.teacher_stability!='off' and self.phase=='relook':
+            search=self._observe(truth,now)
+            if search is not None:return search,False
+            if now-self.phase_t>=.4:self._set('approach',now)
+            return self._hold(now),False
+        if self.phase in ('approach','align','ready','search'):
             if not arms_done:return self._hold(now),False
             search=self._observe(truth,now)
             if search is not None:
@@ -174,4 +291,5 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return {**super().diagnostic(),'profile':'visible_only','command_complete':self.command_complete,
                 'ready_revocations':self.ready_revocations,'handoff':self.handoff,
                 'blocked_goal_calls':self.blocked_goal_calls,
+                'teacher_stability':self.teacher_stability,'alignment_relooks':self.align_relooks,
                 'done_semantics':'own issued arm sequence complete; physical evaluation separate'}

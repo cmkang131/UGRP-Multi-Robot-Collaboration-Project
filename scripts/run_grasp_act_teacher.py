@@ -78,7 +78,17 @@ def compress_logs(out):
             'sha256':hashlib.sha256(compressed).hexdigest(),'decoded_sha256':hashlib.sha256(raw).hexdigest()})
 
 
-def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None):
+
+def audit_visible_input(audit,rows):
+    """Count delivered measurements, including rejected hidden rows; fail closed."""
+    audit['measurement_rows']+=len(rows)
+    bad=sum(m['visible_n']<(5 if m['kind']=='band' else max(1,math.ceil(m['probe_N']/3))) for m in rows)
+    audit['invisible_measurements']+=bad
+    if bad:raise ValueError('invisible measurement delivered to teacher')
+
+
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy",self_pose_source="issued",recording_proof=None,recording_probe=False,execution_host=None,teacher_stability="off"):
+    if teacher_stability!='off' and teacher_profile!='visible_only':raise ValueError('stability mode requires visible_only')
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use admitted execution host')
     if record_training:
         from scripts.grasp_act_host import same_machine
@@ -116,6 +126,9 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         'episode_plan_sha256':hashlib.sha256((out/'plan.json').read_bytes()).hexdigest(),
         'physical_success':False,'teacher_profile':teacher_profile,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off',
         'self_pose_source':self_pose_source,'recording_gate_proof':recording_proof,
+        'teacher_stability':teacher_stability,
+        'input_audit':{'scope':'delivered visual measurements only; evaluator reads excluded',
+            'enabled':strict,'measurement_rows':0,'invisible_measurements':0,'gt_self_pose_comparison':self_pose_source!='issued'},
         'criteria':{'min_z_m':.012,'max_tilt_deg':10.,'hold_s':3.} if strict else {'min_z_m':.012,'hold_s':1.}}
     write(out/'result.json',report)
     try:
@@ -165,7 +178,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
             pwm={str(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
             initial=command({'t':origin,'pwm':pwm,**({'wheels':[0.]*4,'duration_s':[0.]*4} if strict else {'drive':[0.]*3,'duration_s':0.})})
             previous[rid]=initial;history[rid]=deque([initial]*HISTORY,maxlen=HISTORY)
-            teachers[rid]=(VisibleOnlyGraspTeacher(rid,end,pwm,bounds=(-20,20,-20,20)) if strict else
+            teachers[rid]=(VisibleOnlyGraspTeacher(rid,end,pwm,bounds=(-20,20,-20,20),teacher_stability=teacher_stability) if strict else
                 GraspTeacher(rid,end,pwm,bounds=scene.config['static_map']['bounds_m'],rects=keepout_rects(scene.config['static_map']),profile=teacher_profile))
             if strict:models[rid]=VisibleWorld(rid,end,pose_source=self_pose_source);clocks[rid]=v5.IssuedClock()
             student=None
@@ -189,6 +202,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 truth['visible_measurements']={}
                 for rid,end in plan['roles'].items():
                     ms=measurements(world,visibility,rid,end,object_bodies)
+                    audit_visible_input(report['input_audit'],ms)
                     truth['visible_measurements'][rid]=ms
                     v=truth['visibility'][rid];v['any_probe_visible']=v['visible'];v['visible']=v['visible_probes']>=5
                     perceived[rid]=models[rid].observe(ms,now,comparison_pose=(truth['robots'][rid]['pose'] if self_pose_source=='perfect_self_comparison' else None))
@@ -315,6 +329,7 @@ def main():
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=60.)
     p.add_argument('--noise',action='store_true');p.add_argument('--probe',action='store_true')
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2','visible_only'),default='legacy')
+    p.add_argument('--teacher-stability',choices=('off','align_relook_v1'),default='off')
     p.add_argument('--self-pose-source',choices=('issued','perfect_self_comparison'),default='issued')
     p.add_argument('--execution-host',choices=('azure','gcp1'),default='azure')
     p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path)
@@ -328,16 +343,16 @@ def main():
         gate=json.loads(a.teacher_gate.read_text())
         if a.gate_plan is None:raise ValueError('frozen measured gate plan required')
         source_sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-        proof=recording_admission(gate,source_sha=source_sha,teacher_profile=a.teacher_profile,gate_plan=a.gate_plan,execution_host=host)
+        proof=recording_admission(gate,source_sha=source_sha,teacher_profile=a.teacher_profile,gate_plan=a.gate_plan,execution_host=host,teacher_stability=a.teacher_stability)
         proof['gate_sha256']=hashlib.sha256(a.teacher_gate.read_bytes()).hexdigest()
         if not a.recording_probe:
             if a.recording_check is None:raise ValueError('paired 640x480 recording-mode check required')
             check=json.loads(a.recording_check.read_text())
-            if check.get('qualified') is not True or check.get('N',0)<3 or check.get('n')!=check.get('N') or check.get('source_sha')!=source_sha or check.get('teacher_profile')!=a.teacher_profile:
+            if check.get('qualified') is not True or check.get('N',0)<3 or check.get('n')!=check.get('N') or check.get('source_sha')!=source_sha or check.get('teacher_profile')!=a.teacher_profile or check.get('teacher_stability','off')!=a.teacher_stability:
                 raise ValueError('unverified recording-mode equivalence')
             same_machine(check.get('execution_host'),host)
             proof['recording_check_sha256']=hashlib.sha256(a.recording_check.read_bytes()).hexdigest()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile,self_pose_source=a.self_pose_source,recording_proof=proof,recording_probe=a.recording_probe,execution_host=host,teacher_stability=a.teacher_stability),ensure_ascii=False))
 if __name__=='__main__':main()
