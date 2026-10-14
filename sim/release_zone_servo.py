@@ -17,7 +17,7 @@ import cv2
 import numpy as np
 
 OPTION = 'zone_center_rgb_v1'
-MODES = ('margin_v0', OPTION)
+MODES = ('margin_v0', OPTION, 'global_localized_release_v1')
 FIT_M = .04                 # RGB ground-line compatibility, not truth-fitted
 ANGLE_RAD = math.radians(20)
 CENTER_TOL_M = .05

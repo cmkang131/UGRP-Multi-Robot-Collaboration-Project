@@ -36,13 +36,13 @@ import numpy as np
 from sim.active_lookaround import OwnPose, plan_views, wrap
 
 OPTION = 'setdown_lookaround_v1'
-MODES = ('setdown_lookaround_v1', 'setdown_lookaround_v2')
+MODES = ('setdown_lookaround_v1', 'setdown_lookaround_v2', 'setdown_global_v1')
 LOOK_ARM = {3: 896, 4: 2035, 5: 1894}      # v1: harness/zone_pair_highpose.HIGH arm joints
 # v2 (3635a226 diagnostic): HIGH tilts the camera 30 deg down, the floor is seen only 0.15-0.94 m ahead (FK), so
 # walls 0.9-3 m away never enter the image and floor-tile edges were read as wall bases. The release teacher's own
 # folded pose (FOLDED_BACKOFF) tilts it 10.9 deg down: floor from 0.37 m to the horizon, walls in view.
 LOOK_ARM_V2 = {3: 820, 4: 2320, 5: 1320}
-LOOK_ARMS = {'setdown_lookaround_v1': LOOK_ARM, 'setdown_lookaround_v2': LOOK_ARM_V2}
+LOOK_ARMS = {'setdown_lookaround_v1': LOOK_ARM, 'setdown_lookaround_v2': LOOK_ARM_V2, 'setdown_global_v1': LOOK_ARM_V2}
 # v2 data association and acceptance (standard tests, references in the PR):
 # individual compatibility gate per wall point (chi2 1 dof 99 %), the point's mapped wall face must be one the
 # static map predicts visible from the prior for that view, one joint update over all views, then a joint
@@ -205,6 +205,11 @@ class LookaroundLocalizer:
         from harness.zone_solo_cyan_landmarks import MapFeatures
         self.static = static
         self.own = OwnPose(estimate, sigma_xy, sigma_yaw)
+        self.command_own = OwnPose(estimate, sigma_xy, sigma_yaw)
+        self.global_matcher = None
+        if mode == 'setdown_global_v1':
+            from sim.global_landmark_localization import GlobalLandmarkMatcher
+            self.global_matcher = GlobalLandmarkMatcher(static)
         self.profile = odometry_profile
         self.camera = Camera()
         self.landmarks = map_landmarks(static)
@@ -220,17 +225,19 @@ class LookaroundLocalizer:
         from sim.visible_belief import odometry
         if seconds > 0 and any(wheels):
             self.own.propagate(*odometry(wheels, seconds, self.profile))
+            self.command_own.propagate(*odometry(wheels, seconds, self.profile))
 
     # --- view plan ---
     def make_plan(self, start_pan_pulse=1500):
-        if not self.map_pose_known:
-            # No map-to-odometry transform is known. A local Gaussian map update would fabricate it.
-            # Fixed body-relative panorama; detections remain body-relative and cannot reanchor priors.
+        if not self.map_pose_known or self.global_matcher is not None:
+            # Start global acquisition with a body-relative panorama. The
+            # legacy unknown-pose path still only records the detections.
             self.plan = {'expected_gain_nats': None, 'rotated': False, 'expected_landmarks': [],
                          'views': [{'body_yaw_deg': 0., 'pan_deg': p, 'pan_pulse': pan_pulse(p), 'expected': []}
                                    for p in (-60., 0., 60.)],
                          'pose_estimate_at_plan': [float(z) for z in self.own.x],
-                         'pose_frame': 'arbitrary_command_start', 'map_pose_known': False}
+                         'pose_frame': 'map' if self.map_pose_known else 'arbitrary_command_start',
+                         'map_pose_known': self.map_pose_known}
             return self.plan
         start = (start_pan_pulse-1500)*PAN_DEG_PER_PULSE
         # v2: no body rotation (free-robot yaw rate unmeasured; the one rotated run lost its re-grasp)
@@ -272,6 +279,9 @@ class LookaroundLocalizer:
         from harness.zone_solo_cyan_landmarks import floor_features, door_features, ground
         rec = {'t': float(now), 'pan_pulse': int(servo[6]), 'prior': [float(z) for z in self.own.x],
                'prior_sigma': [float(math.sqrt(self.own.P[i, i])) for i in range(3)]}
+        if self.global_matcher is not None:
+            rec['command_pose'] = self.command_own.x.tolist()
+            rec['servo'] = dict(servo)
         cam, reason = self.camera.pose(servo)
         if cam is None:
             rec.update(status='camera_unqualified', reason=reason); self.views.append(rec); return rec
@@ -296,9 +306,10 @@ class LookaroundLocalizer:
         doors = door_features(und, cm, obs, np.linalg.inv(mp.K_INV), clear)
         rec.update(status='measured', wall_points=int(len(walls)), floor_lines=len(floors), doors=len(doors),
                    features=copy.deepcopy(floors+doors))
-        if not self.map_pose_known:
+        if not self.map_pose_known or self.global_matcher is not None:
             rec.update(wall_points_body=np.asarray(walls).reshape(-1, 2).tolist(), seen_groups=[],
-                       map_pose_known=False, update_skipped='map_pose_unknown')
+                       map_pose_known=self.map_pose_known,
+                       update_skipped='global_consensus_pending' if self.global_matcher is not None else 'map_pose_unknown')
             self.views.append(rec)
             return rec
         if self.v2:
@@ -363,6 +374,15 @@ class LookaroundLocalizer:
 
     def finalize(self):
         """v2: one joint update over every view's gated detections; keep the prior unless every test passes."""
+        if getattr(self, 'global_matcher', None) is not None:
+            self.decision = self.global_matcher.fit(self.views, self.command_own.x)
+            # A failed fresh observation revokes release authorization. The old
+            # map estimate may still propagate, but cannot authorize placement.
+            if self.decision['accepted']:
+                self.own.x = np.array(self.decision['proposed'])
+                self.own.P = np.diag(np.array(self.decision['sigma'])**2)
+                self.map_pose_known = True
+            return self.decision
         if not self.map_pose_known:
             self.decision = {'accepted': False, 'reason': 'map_pose_unknown', 'views_with_evidence':
                              sum(bool(v.get('wall_points', 0)+v.get('floor_lines', 0)+v.get('doors', 0)) for v in self.views)}
@@ -456,6 +476,7 @@ class LookaroundLocalizer:
 
     def record(self):
         return {'option': self.mode, 'plan': self.plan, 'views': self.views, 'odometry_profile': self.profile, 'decision': self.decision,
+                'command_pose': self.command_own.x.tolist(),
                 'map_pose_known': self.map_pose_known, 'pose_frame': 'map' if self.map_pose_known else 'arbitrary_command_start',
                 'final_estimate': [float(z) for z in self.own.x],
                 'final_sigma': [float(math.sqrt(self.own.P[i, i])) for i in range(3)],

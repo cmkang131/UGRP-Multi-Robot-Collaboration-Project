@@ -233,3 +233,38 @@ def test_release_summary_includes_failure_distances_and_missing_runs(tmp_path):
     assert result['release_success']==38 and not result['gate_pass']
     assert result['complete']==39 and result['runs'][-1]['status']=='missing'
     assert result['center_distance_m']['median']==.02 and result['center_distance_m']['max']==.6
+
+
+def test_global_release_blank_uses_active_sweeps_before_exhaustion(tmp_path,fake_backend,monkeypatch):
+    def forbidden(*args,**kwargs):raise AssertionError('truth perception')
+    monkeypatch.setattr(runner.Eyes,'classify',forbidden)
+    monkeypatch.setattr(runner.Eyes,'visible',forbidden)
+    plans=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release-command-diagnostic-plan.json').read_text())
+    profile={**plans['execution_profile'],'lookaround':'setdown_global_v1','placement':'global_localized_release_v1'}
+    result=runner.run(plans['episodes'][0],tmp_path/'global-empty',cap_s=120.,**profile)
+    assert result['release_outcome']=='active_observation_exhausted'
+    assert result['shift_steps']==0 and not result['release_success']
+    for rid in ('r1','r2'):
+        actions=[r for r in result['active_observation'] if r['robot']==rid]
+        assert [r['stage'] for r in actions]==[1,2,3]
+        assert actions[0]['action']=='pan'
+        assert all('skipped' in r['action'] for r in actions[1:])
+        assert len(result['lookaround_result'][rid]['evaluation']['sweeps'])==4
+    assert result['input_audit']['held_world_reads']==result['input_audit']['invisible_measurements']==0
+
+
+def test_global_release_message_loop_shifts_then_reobserves(tmp_path,fake_backend,monkeypatch):
+    from sim import release_global_observation as active
+    calls=[]
+    def margins(loc,teacher,now):
+        n=len(calls);calls.append(teacher.rid)
+        margin=(.05 if teacher.rid=='r1' else .75) if n<2 else .4
+        return dict(phase='observe',kind='localized_margin',margin_m=margin,
+                    expected_slack_m=.8,lateral_clearance_m=.2)
+    monkeypatch.setattr(active,'margin_report',margins)
+    plans=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release-command-diagnostic-plan.json').read_text())
+    profile={**plans['execution_profile'],'lookaround':'setdown_global_v1','placement':'global_localized_release_v1'}
+    result=runner.run(plans['episodes'][0],tmp_path/'global-move',cap_s=120.,**profile)
+    assert result['release_outcome']=='teacher_done' and result['shift_steps']==1
+    assert result['code_decisions'][1]['shift_m']==.2 and len(calls)==4
+    assert all(len(v['evaluation']['sweeps'])==2 for v in result['lookaround_result'].values())

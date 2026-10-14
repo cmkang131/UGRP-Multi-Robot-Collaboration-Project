@@ -1,0 +1,97 @@
+{
+  "source_sha": "e14fa729d1bbb80acb7706d4d53e99b19fe122ba",
+  "raw_source_sha": "cdace35e0c5bd94d0c1d348e17cd470a773cb270",
+  "scope": "saved-detection terminal-decision replay and image inventory; no RGB replay, simulation, rendering, model, or modified localizer",
+  "run_count": 40,
+  "last_decision_replayed": 80,
+  "last_decision_accepted": 0,
+  "last_decision_reasons": {
+    "map_pose_unknown": 80
+  },
+  "map_pose_known_count": 0,
+  "view_count_all_sweeps": 648,
+  "update_skipped": {
+    "map_pose_unknown": 648
+  },
+  "detection_totals_repeated_not_unique": {
+    "wall_points": 45283,
+    "floor_lines": 1871,
+    "doors": 0
+  },
+  "gate_records": 0,
+  "map_correspondence_residual": null,
+  "gate_status": "not reached; map_pose_unknown returns before _gate and _grid_update",
+  "configured_but_unused_gates": {
+    "wall_chi2_1": 6.63,
+    "joint_chi2_3": 11.34,
+    "floor_m": 0.2,
+    "floor_deg": 10.0,
+    "door_m": 0.3
+  },
+  "prior_sigma_command_frame": {
+    "x_m": {
+      "n": 648,
+      "min": 0.05018925382987877,
+      "median": 0.05070253895023411,
+      "max": 0.05169773561772321
+    },
+    "y_m": {
+      "n": 648,
+      "min": 0.05046168690712823,
+      "median": 0.05073392605956267,
+      "max": 0.05403785680303384
+    },
+    "yaw_deg": {
+      "n": 648,
+      "min": 2.000622362643824,
+      "median": 2.0023211550378655,
+      "max": 2.005659949042588
+    }
+  },
+  "evaluation_only_error": {
+    "frame": "arbitrary command origin aligned with evaluation-only spawn; NOT map localization",
+    "before_m": {
+      "n": 80,
+      "min": 0.0006464758639635774,
+      "median": 0.009335472500715286,
+      "max": 0.029548232629505816
+    },
+    "after_m": {
+      "n": 80,
+      "min": 0.0004818240271636046,
+      "median": 0.009650433140175638,
+      "max": 0.03009936443782313
+    },
+    "map_error_before_m": null,
+    "map_error_after_m": null
+  },
+  "images": {
+    "all": 282,
+    "runs": 9,
+    "own": 188,
+    "own_sizes": {
+      "320x240": 188
+    },
+    "overview": 94,
+    "native_own_640x480": 0,
+    "gate_runs_represented": 6,
+    "exact_input_rgb_replay_available": false
+  },
+  "verification": {
+    "result_hashes": 40,
+    "image_hashes": 282,
+    "source_files": {
+      "sim/lookaround_localization.py": "fd9ccb4e597ac38d8eed5034c8ac35183658911bbae7c167caf9b2bb87fbf7ec",
+      "scripts/run_grasp_act_release.py": "173e24c0663982b39c65f10e6385c93d0d3291af483d53a61175f166ed466a5d"
+    }
+  },
+  "improved_localizer": {
+    "implemented": false,
+    "accepted": null,
+    "error_improvement": null
+  },
+  "evidence": {
+    "path": "release-localization-audit-inputs.json.zst",
+    "sha256": "8d30690750383ec00c6678e87c1cdf8cc019ff49b6bc236836e868d0f79096b4"
+  }
+}

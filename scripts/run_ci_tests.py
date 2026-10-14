@@ -24,6 +24,12 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_global_landmark_localization.py",
+    "tests/test_lookaround_localization.py",
+    "tests/test_active_lookaround.py",
+    "tests/test_release_zone_servo.py",
+    "tests/test_grasp_act_release_teacher.py",
+    "tests/test_grasp_act_release_run.py",
     "tests/test_grasp_act_contract.py",
     "tests/test_grasp_act_contract_v4.py",
     "tests/test_grasp_act_visible_only.py",

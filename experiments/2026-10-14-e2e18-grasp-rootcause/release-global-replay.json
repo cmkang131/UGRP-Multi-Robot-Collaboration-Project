@@ -1,0 +1,279 @@
+{
+  "scope": "offline saved detections + separate native 320x240 review floor-line replay; no simulation/render/model",
+  "source_parent_sha": "e14fa729d1bbb80acb7706d4d53e99b19fe122ba",
+  "parameters": {
+    "line_sigma_m": 0.04,
+    "angle_sigma_rad": 0.08726646259971647,
+    "inlier_sigma": 2.5,
+    "min_lines": 3,
+    "min_views": 2,
+    "min_span_m": 0.2,
+    "wall_fit_m": 0.025,
+    "wall_min_points": 8,
+    "cluster_m": 0.15,
+    "cluster_rad": 0.13962634015954636,
+    "min_score_gap": 0.75,
+    "max_views": 18,
+    "max_refine": 16,
+    "robot_clearance_m": 0.18
+  },
+  "baseline": {
+    "n": 80,
+    "accepted": 0,
+    "reasons": {
+      "map_pose_unknown": 80
+    },
+    "map_error_m": null
+  },
+  "saved_detections": {
+    "n": 80,
+    "accepted": 77,
+    "reasons": {
+      "global_consensus": 77,
+      "ambiguous_global_landmarks": 2,
+      "no_consensus": 1
+    },
+    "accepted_segment_rms_m": {
+      "n": 77,
+      "min": 0.00697676365033571,
+      "median": 0.035400128001079036,
+      "max": 0.047187278419261916
+    },
+    "accepted_inlier_lines": {
+      "n": 77,
+      "min": 5,
+      "median": 24,
+      "max": 39
+    },
+    "hypothesis_count": {
+      "n": 80,
+      "min": 31,
+      "median": 625.0,
+      "max": 2853
+    },
+    "accepted_position_m": {
+      "n": 77,
+      "min": 0.014798896486472635,
+      "median": 0.0423217602297237,
+      "max": 0.08719178862074888
+    },
+    "accepted_yaw_deg": {
+      "n": 77,
+      "min": 3.931170970331871e-05,
+      "median": 0.45377926980765326,
+      "max": 2.9776062773784813
+    },
+    "accepted_over_15cm": 0,
+    "rejected": [
+      {
+        "case": "release-command-gate-09-cdace35e",
+        "robot": "r1",
+        "reason": "ambiguous_global_landmarks"
+      },
+      {
+        "case": "release-command-gate-16-cdace35e",
+        "robot": "r2",
+        "reason": "ambiguous_global_landmarks"
+      },
+      {
+        "case": "release-command-gate-24-cdace35e",
+        "robot": "r2",
+        "reason": "no_consensus"
+      }
+    ]
+  },
+  "e14_saved_detections": {
+    "n": 14,
+    "accepted": 13,
+    "reasons": {
+      "global_consensus": 13,
+      "ambiguous_global_landmarks": 1
+    },
+    "accepted_segment_rms_m": {
+      "n": 13,
+      "min": 0.010527718698349375,
+      "median": 0.030677107334730183,
+      "max": 0.04975775613520982
+    },
+    "accepted_inlier_lines": {
+      "n": 13,
+      "min": 8,
+      "median": 11,
+      "max": 19
+    },
+    "hypothesis_count": {
+      "n": 14,
+      "min": 106,
+      "median": 433.0,
+      "max": 1508
+    },
+    "accepted_position_m": {
+      "n": 13,
+      "min": 0.011951517036520287,
+      "median": 0.03436426925576599,
+      "max": 0.0853553963704519
+    },
+    "accepted_yaw_deg": {
+      "n": 13,
+      "min": 0.113705574816062,
+      "median": 0.5988306039999218,
+      "max": 1.6696321791924185
+    },
+    "accepted_over_15cm": 0,
+    "rejected": [
+      {
+        "case": "release-center-diagnostic-05-e14fa729",
+        "robot": "r1",
+        "reason": "ambiguous_global_landmarks"
+      }
+    ]
+  },
+  "review_rgb": {
+    "n": 18,
+    "accepted": 1,
+    "reasons": {
+      "insufficient_global_landmarks": 12,
+      "no_consensus": 3,
+      "global_consensus": 1,
+      "no_qualified_review_frame": 2
+    },
+    "accepted_segment_rms_m": {
+      "n": 1,
+      "min": 0.02647670054429692,
+      "median": 0.02647670054429692,
+      "max": 0.02647670054429692
+    },
+    "accepted_inlier_lines": {
+      "n": 1,
+      "min": 3,
+      "median": 3,
+      "max": 3
+    },
+    "hypothesis_count": {
+      "n": 4,
+      "min": 6,
+      "median": 15.0,
+      "max": 24
+    },
+    "accepted_position_m": {
+      "n": 1,
+      "min": 0.01354128469800268,
+      "median": 0.01354128469800268,
+      "max": 0.01354128469800268
+    },
+    "accepted_yaw_deg": {
+      "n": 1,
+      "min": 0.4138033865077725,
+      "median": 0.4138033865077725,
+      "max": 0.4138033865077725
+    },
+    "accepted_over_15cm": 0,
+    "rejected": [
+      {
+        "case": "release-command-diagnostic-00-cdace35e",
+        "robot": "r1",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-diagnostic-00-cdace35e",
+        "robot": "r2",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-diagnostic-01-cdace35e",
+        "robot": "r1",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-diagnostic-01-cdace35e",
+        "robot": "r2",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-diagnostic-02-cdace35e",
+        "robot": "r1",
+        "reason": "no_consensus"
+      },
+      {
+        "case": "release-command-diagnostic-02-cdace35e",
+        "robot": "r2",
+        "reason": "no_consensus"
+      },
+      {
+        "case": "release-command-gate-04-cdace35e",
+        "robot": "r1",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-gate-04-cdace35e",
+        "robot": "r2",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-gate-05-cdace35e",
+        "robot": "r1",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-gate-05-cdace35e",
+        "robot": "r2",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-gate-06-cdace35e",
+        "robot": "r1",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-gate-06-cdace35e",
+        "robot": "r2",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-gate-12-cdace35e",
+        "robot": "r1",
+        "reason": "no_consensus"
+      },
+      {
+        "case": "release-command-gate-22-cdace35e",
+        "robot": "r1",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-gate-22-cdace35e",
+        "robot": "r2",
+        "reason": "insufficient_global_landmarks"
+      },
+      {
+        "case": "release-command-gate-23-cdace35e",
+        "robot": "r1",
+        "reason": "no_qualified_review_frame"
+      },
+      {
+        "case": "release-command-gate-23-cdace35e",
+        "robot": "r2",
+        "reason": "no_qualified_review_frame"
+      }
+    ]
+  },
+  "review_inventory": {
+    "all_review_own_frames": 188,
+    "camera_unqualified": 40,
+    "processed": 32,
+    "floor_lines": 65,
+    "unsettled_commands": 116
+  },
+  "comparison": "Baseline map pose is undefined; no numeric before/after map-error reduction claim. Command-frame 9.65 mm error is a different quantity.",
+  "input_resolution": "Saved detections came from 640x480; review RGB is 320x240, different times, floor-only with scaled calibration and unchanged pixel thresholds.",
+  "evidence": {
+    "path": "release-global-replay-detail.json.zst",
+    "sha256": "505f703a2e25ef01d76d3ffae13444ef3d09acb650ad8516c5d411db13de7565",
+    "verified_files": 265
+  },
+  "source_hashes": {
+    "sim/global_landmark_localization.py": "6c0764424ce0b670b220e0e4c5fd68c83de47c428c790cdb115a356d66f76ee9",
+    "sim/lookaround_localization.py": "5ad67e2e9434f567a01962823d9da36e9abe7c919020921bc392cb6cbd069a3c",
+    "sim/release_global_observation.py": "84fd91ffaa6a41132dea446904598e332a246043150aee25f7a00b42adf8782c",
+    "scripts/run_grasp_act_release.py": "c171b61e09a017f3b2d3bb526c798fa1732efa08a69e77785991846bd323ea39"
+  }
+}
