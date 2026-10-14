@@ -17,6 +17,24 @@ from harness.grasp_act_contract_v4 import SERVOS,command   # prefix uses the pre
 from scripts.run_grasp_act_teacher import write,apply,snapshot,compress_logs
 from sim.grasp_act_release_teacher import OBSERVE_MODES,REACH_MODES
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
+# User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
+# hidden_v1: while the own gripper holds the cargo, its world pose never enters teacher/map-code inputs.
+HELD_OBJECT_MODES=("visible_v0","hidden_v1")
+
+
+class HeldAudit:
+    """Counts reads of the held cargo's world pose feeding decisions; hidden_v1 refuses them."""
+    def __init__(self,mode):
+        if mode not in HELD_OBJECT_MODES:raise ValueError(mode)
+        self.mode=mode;self.reads={}
+    def read(self,holding,site):
+        if not holding:return
+        if self.mode=='hidden_v1':raise RuntimeError(f'HELD_WORLD_READ:{site}')
+        self.reads[site]=self.reads.get(site,0)+1
+    def record(self):
+        return {'held_object':self.mode,'held_world_reads':sum(self.reads.values()),'held_world_reads_by_site':dict(self.reads),
+                'scope':'decision inputs from release start to release complete; truth stays in evaluation-only outputs; '
+                        'prefix grasp teacher stops at the held check'}
 
 SUCCESS={'settle_s':2.,'on_floor_z_m':.05,'speed_m_s':.01,'tilt_deg':3.,'open_pwm':1900,'clear_m':.04}
 DELIVERY_WAIT_S=4.
@@ -79,9 +97,10 @@ def own_end_world(world,inst,end):
 
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
-        zone_slots='floor',reach_mode='calibrated_mid_v1'):
+        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0'):
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if zone_slots not in ZONE_SLOT_MODES:raise ValueError(zone_slots)
+    audit=HeldAudit(held_object)
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
     import numpy as np
     from PIL import Image
@@ -102,7 +121,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise RuntimeError('committed source required')
     write(out/'RUN_META.json',{'class':'dev','pr':484,'branch':'claude/grasp-act-release','sha':sha,'batch':plan['batch']})
-    report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,
+    report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,'held_object':held_object,
         'weld':'off','recording_mode':'success_measurement','student_execution':False,'success_rule':SUCCESS,
         'loadavg_at_start':os.getloadavg(),'release_success':None,'prefix_held':None}
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.
@@ -193,18 +212,27 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         report['release_start']={'beam_to_zone_center_m':float(math.dist(b0.xpos[:2],rect[:2]))}
         def pose_of(rid):return [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
         def observe(rid,now,fine):
-            at=time.monotonic();data=world.data;pose=pose_of(rid)
-            b=data.body(inst.body);rot=b.xmat.reshape(3,3);axis=rot[:,0]
-            out_dir=-axis if roles[rid]=='teal' else axis;lat=np.array([-out_dir[1],out_dir[0],0.])
-            e=own_end_world(world,inst,roles[rid]);scan=[]
+            at=time.monotonic();data=world.data;pose=pose_of(rid);t=rel[rid]
+            if t.holding and held_object=='hidden_v1':
+                # Own landing end from the grasp pose (fixed offset, commands FK); the true base pose only places
+                # the camera for image formation (which floor points the pixels show), as rendering does.
+                (ex,ey),(ox,oy),_=t.end_and_outward(now);c_,s_=math.cos(pose[2]),math.sin(pose[2])
+                e=np.array([pose[0]+c_*ex-s_*ey,pose[1]+s_*ex+c_*ey,0.]);out_dir=np.array([c_*ox-s_*oy,s_*ox+c_*oy,0.])
+            else:
+                audit.read(t.holding,'scan_axis');audit.read(t.holding,'scan_end')
+                b=data.body(inst.body);rot=b.xmat.reshape(3,3);axis=rot[:,0]
+                out_dir=-axis if roles[rid]=='teal' else axis
+                e=own_end_world(world,inst,roles[rid])
+            lat=np.array([-out_dir[1],out_dir[0],0.]);scan=[]
             for s_ in np.arange(-.25,.2501,.01 if fine else .05):
                 for l_ in (-.05,.05):
                     p=e+s_*out_dir+l_*lat;p=(float(p[0]),float(p[1]),.0012)
                     c=eyes.classify(data,rid,p)
                     if c is not None:scan.append([*relative(pose,p[:2])[:2],c])
             m=band.measure(data,rid,roles[rid]);obs={'scan':scan,'own_band_visible':m['visible_probes']>=3,'band':None}
-            if obs['own_band_visible']:
-                gid=band.bands[roles[rid]];g=data.geom_xpos[gid]
+            if obs['own_band_visible'] and not (t.holding and held_object=='hidden_v1'):
+                audit.read(t.holding,'band_pose')
+                gid=band.bands[roles[rid]];g=data.geom_xpos[gid];rot=data.body(inst.body).xmat.reshape(3,3)
                 obs['band']=relative(pose,(float(g[0]),float(g[1])),math.atan2(rot[1,0],rot[0,0]))
             obs['partner_visible']=any(band.body_visible(data,rid,p+'__robot') for p in roles if p!=rid)
             timings['eyes']+=time.monotonic()-at
@@ -394,7 +422,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         raise
     finally:
         report['wall_s']=time.monotonic()-start;report['sim_s']=None if world is None else float(world.data.time)-origin
-        report['loadavg_at_end']=os.getloadavg()
+        report['loadavg_at_end']=os.getloadavg();report['input_audit']=audit.record()
         try:report['timings_s']=timings
         except NameError:pass
         write(out/'result.json',report)
@@ -410,8 +438,9 @@ def main():
     p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look')
     p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement')
     p.add_argument('--zone-slots',choices=ZONE_SLOT_MODES,default='floor',help='zone: white slot squares inside the destination (static map) count as zone')
-    p.add_argument('--reach-mode',choices=REACH_MODES,default='calibrated_mid_v1',help='pad_window_v2: approach to the measured pick-feasible IK window');a=p.parse_args()
+    p.add_argument('--reach-mode',choices=REACH_MODES,default='calibrated_mid_v1',help='pad_window_v2: approach to the measured pick-feasible IK window')
+    p.add_argument('--held-object',choices=HELD_OBJECT_MODES,default='visible_v0',help='hidden_v1: held cargo world pose never enters decisions while held');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object),ensure_ascii=False,default=str))
 if __name__=='__main__':main()

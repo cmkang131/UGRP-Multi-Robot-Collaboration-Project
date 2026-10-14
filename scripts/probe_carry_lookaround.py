@@ -141,7 +141,7 @@ def swept_space(samples,center0):
             'bbox_size_m':[max(xs)-min(xs),max(ys)-min(ys)] if xs else None}
 
 
-def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,measure_fn,frame,pwm_origin,ev):
+def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,measure_fn,frame,pwm_origin,ev,*,audit,reach_mode='calibrated_mid_v1'):
     """G2/G6 set-down-and-look cycle. Commands come only from own geometry, own
     commands and currently visible things; truth is used here for evaluation and
     to give the relative pose of the own band only while it is visible."""
@@ -153,7 +153,7 @@ def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,m
     data=world.data;R=tuple(roles);t0=float(data.time)
     for rid in R:qw[rid]=QuantizedWheels(ports[rid])
     rel={rid:ReleaseTeacher(rid,roles[rid],{s_:int(ports[rid]._servo_pulses[s_]) for s_ in SERVOS},
-        handoff_pose_estimate=[0.,0.,0.],zone_rect=(0.,0.,1.,1.)) for rid in R}   # zone priors unused here
+        handoff_pose_estimate=[0.,0.,0.],zone_rect=(0.,0.,1.,1.),reach_mode=reach_mode) for rid in R}   # zone priors unused here
     sched={rid:[] for rid in R};plan_w={rid:[] for rid in R};timeline=[]
     def pose_of(rid):return [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
     def set_servo(rid,pose,now):
@@ -183,6 +183,7 @@ def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,m
     def observe_band(rid,now):
         m=band.measure(data,rid,roles[rid])
         if m['visible_probes']>=3:
+            audit.read(rel[rid].holding,'setdown_band_pose')   # only called after the release (holding False)
             b=data.body(inst.body);rot=b.xmat.reshape(3,3);g=data.geom_xpos[band.bands[roles[rid]]]
             rel[rid].belief.observe('band',relative(pose_of(rid),(float(g[0]),float(g[1])),math.atan2(rot[1,0],rot[0,0])),now)
         return m['visible_probes']
@@ -222,7 +223,7 @@ def setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,m
     for rid,t in rel.items():
         set_servo(rid,{6:1500},now);observe_band(rid,now)
         plan_w[rid]=t.approach_plan(now)
-        if plan_w[rid]:sched[rid]=[(now,{k:int(v) for k,v in solve_grip_site_ik((MOUNT_X_M+REACH_MID_M,0.,.095)).items() if k in (3,4,5,6)})]
+        if plan_w[rid]:sched[rid]=[(now,{k:int(v) for k,v in solve_grip_site_ik((MOUNT_X_M+t.reach_mid(),0.,.095)).items() if k in (3,4,5,6)})]
     rows+=until_idle('setdown:approach',.3)
     mark('regrasp');now=float(data.time);source={};seen={}
     try:
@@ -360,7 +361,10 @@ def region_points(region,z=.002):
     return [(cx+sx*hx*.8,cy+sy*hy*.8,z) for sx in (-1,0,1) for sy in (-1,0,1)]
 
 
-def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',destination='zone_A',pair_odometry='off'):
+def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',destination='zone_A',pair_odometry='off',
+        reach_mode='calibrated_mid_v1',held_object='visible_v0'):
+    from scripts.run_grasp_act_release import HeldAudit
+    audit=HeldAudit(held_object)
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
     from sim.grasp_act_scene import make_scene
     from sim.grasp_act_teacher import GraspTeacher
@@ -374,7 +378,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):raise RuntimeError('committed source required')
     write(out/'RUN_META.json',{'class':'dev','pr':484,'branch':'claude/grasp-act-release','sha':sha,'batch':plan['batch']+'-lookaround-'+mode})
-    report={'status':'running','source_sha':sha,'mode':mode,'actor':actor,'weld':'off','pair_odometry':pair_odometry,'limits':LIMITS,
+    report={'status':'running','source_sha':sha,'mode':mode,'actor':actor,'weld':'off','pair_odometry':pair_odometry,'reach_mode':reach_mode,'held_object':held_object,'limits':LIMITS,
             'scope':'evaluation-only truth metrics; probe commands are fixed schedules, not truth-corrected',
             'loadavg_at_start':os.getloadavg()}
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[]
@@ -548,7 +552,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
             report['space']=swept_space([{'bases':[r[rid]['base_xy'] for rid in roles],'ends':r['beam_ends_xy']} for r in space_rows],c0)
             report['band_px_samples']=n_px
         elif mode=='setdown_look':
-            report['setdown']=setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,measure,frame,pwm_origin,ev)
+            report['setdown']=setdown_look(world,inst,roles,scene,plan,ports,qw,band,points,base0,window,measure,frame,pwm_origin,ev,audit=audit,reach_mode=reach_mode)
             tests.append({'fail':report['setdown']['fail']})
         elif mode=='yaw':
             for duration in YAW_DURATIONS:
@@ -581,6 +585,7 @@ def run(plan,out,*,mode,actor,grasp_cap_s=45.,teacher_profile='observable_v2',de
         raise
     finally:
         report['wall_s']=time.monotonic()-start;report['sim_s']=None if world is None else float(world.data.time)
+        report['input_audit']={**audit.record(),'probe_note':'held-phase probe commands are fixed open-loop schedules; truth only for evaluation and the physical-failure stop'}
         report['loadavg_at_end']=os.getloadavg();write(out/'result.json',report)
         for s in streams:s.close()
         if world is not None:world.close()
@@ -592,7 +597,9 @@ def main():
     p.add_argument('--out',type=Path,required=True);p.add_argument('--mode',choices=('pan','pan_repeat','yaw','setdown_look')+FORMATION_MODES,required=True)
     p.add_argument('--actor',choices=('r1','r2'),default='r1');p.add_argument('--grasp-cap-s',type=float,default=45.)
     p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1','observable_v2'),default='observable_v2')
-    p.add_argument('--pair-odometry',choices=('off','gcp_probe_v1'),default='off',help='gcp_probe_v1: pair-carry rates measured on gcp1 (sim/visible_belief.py)');a=p.parse_args()
+    p.add_argument('--pair-odometry',choices=('off','gcp_probe_v1'),default='off',help='gcp_probe_v1: pair-carry rates measured on gcp1 (sim/visible_belief.py)')
+    p.add_argument('--reach-mode',choices=('calibrated_mid_v1','pad_window_v2'),default='calibrated_mid_v1',help='setdown_look re-grasp approach target')
+    p.add_argument('--held-object',choices=('visible_v0','hidden_v1'),default='visible_v0',help='hidden_v1: held cargo world pose never enters decisions while held');a=p.parse_args()
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,mode=a.mode,actor=a.actor,grasp_cap_s=a.grasp_cap_s,teacher_profile=a.teacher_profile,pair_odometry=a.pair_odometry),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,mode=a.mode,actor=a.actor,grasp_cap_s=a.grasp_cap_s,teacher_profile=a.teacher_profile,pair_odometry=a.pair_odometry,reach_mode=a.reach_mode,held_object=a.held_object),ensure_ascii=False))
 if __name__=='__main__':main()

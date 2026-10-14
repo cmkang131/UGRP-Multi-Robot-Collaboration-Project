@@ -171,3 +171,19 @@ def test_destination_slot_geoms_selects_only_own_zone_slots():
     assert destination_slot_geoms(names, 'zone_A') == [2, 3, 4]
     assert destination_slot_geoms(names, 'zone_B') == [5]
     assert ZONE_SLOT_MODES[0] == 'floor'      # default keeps the old classification
+
+
+def test_held_audit_counts_old_profile_and_refuses_hidden_v1():
+    """User 2026-10-14: the held cargo's world pose must not reach decisions while it is held."""
+    from scripts.run_grasp_act_release import HeldAudit, HELD_OBJECT_MODES
+    assert HELD_OBJECT_MODES[0] == 'visible_v0'            # default keeps the old behaviour
+    old = HeldAudit('visible_v0')
+    old.read(True, 'scan_end'); old.read(True, 'scan_end'); old.read(False, 'band_pose')
+    assert old.record()['held_world_reads'] == 2 and old.record()['held_world_reads_by_site'] == {'scan_end': 2}
+    new = HeldAudit('hidden_v1')
+    new.read(False, 'band_pose')                           # released cargo seen by the camera: allowed
+    with pytest.raises(RuntimeError, match='HELD_WORLD_READ'):
+        new.read(True, 'scan_end')
+    assert new.record()['held_world_reads'] == 0
+    with pytest.raises(ValueError):
+        HeldAudit('x')
