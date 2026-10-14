@@ -1,0 +1,35 @@
+{
+  "unix": 1791945173.966403,
+  "processes": [
+    {
+      "role": "tunnel_watch_pid",
+      "pid": 40776,
+      "command": "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python /Users/changmin/projects/ugrp-wt/e2e18/outputs/e2e18-admin/tracking_tunnel_watch.py",
+      "ownership_verified": true,
+      "signal": "SIGINT",
+      "children": [
+        {
+          "pid": 40778,
+          "command": "ssh -T -o ConnectTimeout=10 -o ExitOnForwardFailure=yes -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -R 127.0.0.1:18093:127.0.0.1:18093 azure3 sleep 3499"
+        }
+      ]
+    },
+    {
+      "role": "relay_pid",
+      "pid": 40700,
+      "command": "/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/Resources/Python.app/Contents/MacOS/Python -m scripts.e2e_beam_track_relay --output /Users/changmin/projects/ugrp-wt/e2e18/outputs/e2e18-track-model-bodyfix --port 18093 --attempts 328 --usd 0.29124083 --wall-cap-s 3600",
+      "ownership_verified": true,
+      "signal": "SIGINT",
+      "children": []
+    }
+  ],
+  "verified_unix": 1791945382.950581,
+  "all_owned_relay_and_tunnel_pids_absent": true,
+  "verified_pids": [
+    40700,
+    40776,
+    40778,
+    27401,
+    27409
+  ]
+}

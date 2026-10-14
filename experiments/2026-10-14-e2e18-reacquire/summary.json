@@ -1,9 +1,17 @@
 {
-  "status": "cohort1_finished_v441_prepared",
+  "status": "incomplete_user_terminated",
   "pr": 483,
   "options": [
-    "v426",
-    "v440"
+    "v434",
+    "v435",
+    "v436",
+    "v437",
+    "v438",
+    "v439",
+    "v440",
+    "v441",
+    "v442",
+    "v443"
   ],
   "diagnosis": {
     "unreached_runs": 6,
@@ -26,17 +34,16 @@
   "new_stage_runs": 12,
   "vm_started": true,
   "unverified": [
-    "main physical results",
-    "representative videos for main cohort",
-    "final ARM archive and VM deallocation",
+    "v442/v443 full comparison not run; stopped before physics",
+    "tracking improvement and first-attempt grasp not established",
     "green chassis false positives and colored-end occupancy bypass remain"
   ],
-  "gate_runs": 36,
+  "gate_runs": 60,
   "gate_host_errors": 9,
   "main_plan_runs": 12,
   "source_sha": "07f41bdbf19fa501a9d7163e86f6651d2e96b88d",
   "communication_condition": "no_comm",
-  "passed_gate": "stage-track-gate3-summary.json",
+  "passed_gate": "stage-track-gate3-summary.json (superseded candidate, not final acceptance)",
   "cohort1": {
     "N": 12,
     "baseline_both_held": "1/6",
@@ -47,5 +54,45 @@
     "arm_verified": "12/12",
     "duplicate_confirmation_pair_excluded": true
   },
-  "next_candidate": "v441"
+  "next_candidate": "v441",
+  "termination_reason": "사용자 결정: 빔 추적 비교 종료, 근거리 파지는 PR #484 교사→ACT 학생 경로로 대체",
+  "terminated_kst": "2026-10-14T11:32:29+09:00",
+  "final_source_sha": "2d57788a48fd88f8bdfe6a4b7da0e2721b5c30d5",
+  "total_submitted_runs": 72,
+  "completed_gate_30sim_runs": 37,
+  "gate_host_errors_before_user_stop": 11,
+  "user_stopped_runs": 12,
+  "user_stopped_sim_s": 0,
+  "user_stopped_excluded_from_success_failure": true,
+  "main_final_fixed_comparison_submitted": 0,
+  "controller_adopted": false,
+  "user_accepted_baseline": {
+    "bundle": "v426",
+    "both_held": "1/12",
+    "scope": "prior coordinator baseline; not pooled with repeated cohort1 baseline 1/6"
+  },
+  "model": {
+    "client_attempts": 288,
+    "upstream_calls": 96,
+    "cost_usd": 0.010580059999999999,
+    "hard_attempt_cap": 600,
+    "hard_cost_cap_usd": 0.3,
+    "cohort1_v440_transport_failed_attempts": 189,
+    "cohort1_v440_scope": "fixed fallback only; not a Gemma comparison"
+  },
+  "raw_storage": {
+    "arm_verified_runs": 72,
+    "representative_copies_verified": 2,
+    "proof": "final-archive-proof.json.zst",
+    "recheck": "final-archive-recheck.json",
+    "model_ledger": "model-ledger-archives.json"
+  },
+  "vm": {
+    "host": "azure3",
+    "state": "running",
+    "deallocate_requested": false,
+    "reason": "user requested immediate next task reuse",
+    "own_active_runs": 0
+  },
+  "user_stop_raw_status_note": "gate5-03 raw default HOST_ERROR remained during signals 2/15; commands=0, physics_wall_s=null, result written 0.269 s after recorded user SIGINT; classified as user cancellation, original unchanged"
 }
