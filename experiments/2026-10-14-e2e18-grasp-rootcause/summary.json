@@ -1,0 +1,83 @@
+{
+  "schema": "ugrp.e2e18.privileged_act.v1",
+  "status": "implementation_pending_vm_release",
+  "classification": "dev",
+  "research_result": false,
+  "scope_changed": "2026-10-14 teacher -> own RGB and issued-command ACT; training authorized; GPU decision pending",
+  "source_sha": "d7f13494b3673c0205266119fe082ed92b660f73",
+  "audit": {
+    "status": "in_progress",
+    "funnel": null,
+    "errors": null,
+    "tolerances": null
+  },
+  "teacher": {
+    "started_N": 0,
+    "success_n": null,
+    "target_rate": 0.95
+  },
+  "data": {
+    "new_episodes": 0,
+    "admitted_episodes": 0
+  },
+  "training": {
+    "steps": 0,
+    "checkpoint": null
+  },
+  "evaluation": {
+    "replay_n": null,
+    "replay_N": 0,
+    "independent_student_n": null,
+    "independent_student_N": 0,
+    "dagger_episodes": 0
+  },
+  "gpu": {
+    "subscription": "88b7ee7f-f2f3-4a0d-a0ce-cf7306943676",
+    "region": "koreacentral",
+    "queried_at_utc": "2026-10-14T02:01:30.221391+00:00",
+    "family_quota_all_zero": true,
+    "linux_consumption_usd_per_hour": {
+      "Standard_NC4as_T4_v3": 0.647,
+      "Standard_NC8as_T4_v3": 0.925,
+      "Standard_NV6ads_A10_v5": 0.613
+    },
+    "resources_changed": false,
+    "price_scope": "retail list, not actual invoice; disk and network excluded"
+  },
+  "vm3": {
+    "release_required": "PR483 explicit VM3 비움 or coordinator confirmation",
+    "used_by_this_task": false
+  },
+  "raw": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/gpu-quotas-koreacentral.json",
+      "sha256": "1427398941276e2ffcc427b0ae51be544c34a2d0ee7266943ba38ada647b1f03",
+      "bytes": 54772
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/gpu-retail-prices.json",
+      "sha256": "1075b125e789a5ae7e65754bbff24114e9c65fbcd5def685a9a933c3a02a55ad",
+      "bytes": 15287
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/vm-inventory.json",
+      "sha256": "e4b96d306eced071b610b9ac885fbd544ce4d6ae8020382bd480954e070da540",
+      "bytes": 704
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/scene.xml",
+      "sha256": "f2e6787b145967e2104efa46023b0ce28426ac230a7e86741fa7dc06b043cbe3",
+      "bytes": 496311
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/scene.json",
+      "sha256": "780762785ded5c62bf8146df46fd643f638c232ae82fea574854434b5f5dd48d",
+      "bytes": 4588
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/outputs/grasp-rootcause/stage-held.jsonl",
+      "sha256": "0752570842e4a5d019cbbd61078a64ffdf3e3b430d4a7d16c81ad9d70c1f7f8e",
+      "bytes": 364223
+    }
+  ]
+}

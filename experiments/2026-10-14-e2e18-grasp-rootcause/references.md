@@ -1,0 +1,21 @@
+# 참고 자료와 적용 범위
+
+2026-10-14 열람. 다른 과제의 성공률을 봉 파지의 성능 근거로 쓰지 않는다.
+
+| 자료 | 확인 범위와 재사용 | 우리 입력 경계 |
+|---|---|---|
+| Chen et al., [Learning by Cheating](https://arxiv.org/abs/1912.12294), 2019 preprint | 초록: privileged agent로 시각 학생을 학습하는 두 단계. [공개 코드](https://github.com/bradyz/learning-by-cheating)는 웹 도구 접근 실패, 코드 미확인 | 교사만 정답 사용 원칙 적용 가능. 자동차 정책 자체를 로봇 교사로 쓰지는 않음 |
+| Lee et al., [Learning Quadrupedal Locomotion over Challenging Terrain](https://arxiv.org/abs/2010.11251), 2020 | 논문 정보/초록 확인. 교사–학생과 제한 관측 이력의 동기 참고; 상세 학습 구현 미확인 | 관절·접촉 센서를 쓰는 원 학생을 그대로 쓰지 않고 자기 RGB/명령에 제한 |
+| Zhao et al., [ALOHA / ACT](https://arxiv.org/abs/2304.13705), 2023; [저자 코드](https://github.com/tonyzhaozh/act) | 논문 정보 및 저장소 README 열람. 행동 청크·CVAE를 쓰는 공개 구현 | 측정 관절 입력은 사용할 수 없음. 명령 이력으로 바꾼 차이를 명시 |
+| [LeRobot ACT 공식 문서](https://huggingface.co/docs/lerobot/act), [고정 설정 코드](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/configuration_act.py) | 공식 문서와 저장소의 기존 adapter/CI를 확인. 네트워크를 새로 복제하지 않고 고정 ACTPolicy 재사용 | 현재/이전 자기 RGB와 자기 발행 명령만. 교사 좌표·접촉은 표적/평가로 분리 |
+| Laskey et al., [DART](https://proceedings.mlr.press/v78/laskey17a.html), 2017; [저자 해설](https://bair.berkeley.edu/blog/2017/10/26/dart/) | 초록과 저자 설명: 감독자의 행동에 잡음을 넣어 학생의 상태 분포 차이를 줄임 | 시연 전용 잡음과 원래 교사 라벨을 분리. 잡음 규모를 임의로 정하면 원 DART 재현이라고 부르지 않음 |
+| Ross et al., [DAgger](https://proceedings.mlr.press/v15/ross11a.html), 2011 | 초록: 자신의 행동이 만든 상태 분포에서 반복 학습하는 reduction | 학생 방문 상태에 교사가 라벨링. 교사 개입 평가와 독립 학생 평가를 분리 |
+| [Chaumette & Hutchinson 연구 목록](https://faculty.cc.gatech.edu/~seth/res.php?u=vs), Visual Servo Control I/II | 저자 목록 확인. PBVS/IBVS의 지각→오차→제어 분해를 감사 틀로 사용; 전문 미확인 | 정답 교사와 영상 학생을 구분하는 데 사용, 기존 시각 가드 추가의 근거로 삼지 않음 |
+| [Azure Retail Prices API](https://learn.microsoft.com/en-us/rest/api/cost-management/retail-prices/azure-retail-prices) | 공개 API 실제 응답 보존: Korea Central Linux T4 NC4as $0.647/h, NC8as $0.925/h; NV6ads A10 $0.613/h | 일반 종량제 표시 가격이며 디스크/네트워크/세금·실제 청구는 별도. 할당량/공급 가능성을 뜻하지 않음 |
+
+## 기존 저장소 근거
+
+- `experiments/2026-09-24-action-act/README.md`, `refinement.md`, `reviewed-results-v1.md`: 0/2와 종료 누락·후속 조기 종료를 구분한다. 8,000 update 완료는 성공 증거가 아니다.
+- `experiments/2026-09-16-reference-act/README.md`: 축소 ACT 물리 0/3, 종료 누락; 기존 커널 3/3. 이 결과를 현재 물리·봉 모델의 기준 성공률로 승계하지 않는다.
+- `harness/reference_act.py`, `scripts/patch_reference_act.py`, CI `reference-act-smoke`: 고정 LeRobot SHA와 두 줄 device 호환 패치를 재사용할 기반.
+- `scripts/cargo_formation_teacher.py`, `scripts/zone_teacher.py`, `harness/visual_arm_v3.py`: 정답 전용 교사·명령 IK. v2와 v3의 팔 장착 위치 및 손가락 중심 차이를 확인해야 한다.
