@@ -85,6 +85,8 @@ Codex 초안은 v1 `judge_holding_item`(고정 CARRY 영역)을 썼다. 이는 c
   교사가 얼린 "파지 전에 보였던 바닥 자리"를 다시 보고 맨 바닥이면 들어 올렸다고 본다(`judge_slot_item`). 이는 "손에 있다"보다 약한 증거다
   ("들었다"와 "치웠다"를 구별 못 함). 결과에 증거 종류(`lift_rgb_evidence_ticks`)를 남기므로 보고에서 구분한다. 물리적 들기는 평가기가 따로 채점한다.
 - **확인 안 됨**: 실제 렌더 프레임에서 yes가 나오는지(합성 프레임만 확인). 문턱은 새로 고르지 않았다.
+- **can 진단은 방법 자체의 시험이다**: 바닥 자리 대체 증거는 들어 올린 자세에서 원래 자리가 보여야 한다. 들린 can이 카메라와 자리 사이에 있으면
+  `SLOT_SURROUND_NOT_FLOOR`로 unknown이 되어 3초 뒤 `rgb_lift_unconfirmed`로 끝난다. 물리 실패와 구별해서 읽을 것.
 
 ### 3. 지형지물 인식과 set-down 둘러보기 (`sim/grasp_act_solo_lookaround.py`)
 

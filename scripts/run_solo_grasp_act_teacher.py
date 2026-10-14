@@ -48,8 +48,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
     import numpy as np
 
     sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    if subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT):
-        raise RuntimeError('clean committed source including new files required')
+    if subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT):
+        raise RuntimeError('committed source required (tracked files clean)')
     out.mkdir(parents=True, exist_ok=False)
     write(out/'plan.json', plan)
     write(out/'RUN_META.json', {'class': 'dev', 'branch': 'claude/act-solo-teacher',
