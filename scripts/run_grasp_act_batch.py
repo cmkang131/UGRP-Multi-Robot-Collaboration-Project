@@ -65,7 +65,7 @@ def summarize(rows,planned):
         'interrupted':sum(r.get('status')=='interrupted' or r.get('exit') in (-2,130) for r in rows),'rows':rows}
 
 
-def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False):
+def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False,teacher_profile="legacy"):
     jobs=[];reason=None;rows=[];monitored=0.;started=time.monotonic()
     parent=read(root.parents[0]/'RUN_META.json')
     env={**os.environ,**{k:'1' for k in ('OMP_NUM_THREADS','OPENBLAS_NUM_THREADS','MKL_NUM_THREADS','LP_NUM_THREADS')}}
@@ -74,7 +74,8 @@ def wave(root,plan,indices,cap,*,probe,limit,complete_frozen_cohort=False):
             target=root/f'episode-{index:03d}';target.mkdir(parents=True,exist_ok=False)
             write(target/'RUN_META.json',{**parent,'class':'dev','pr':484,'purpose':'speed_probe' if probe else 'teacher_gate'})
             command=[sys.executable,'-m','scripts.sim_cli','workflow','run','grasp-act-teacher','--',
-                '--plan',str(plan),'--episode',str(index),'--out',str(target/'raw'),'--cap-s',str(cap)]
+                '--plan',str(plan),'--episode',str(index),'--out',str(target/'raw'),'--cap-s',str(cap),
+                '--teacher-profile',teacher_profile]
             if probe:command.append('--probe')
             log=(target/'log.txt').open('x');at=time.monotonic()
             proc=subprocess.Popen(command,stdout=log,stderr=subprocess.STDOUT,start_new_session=True,env=env)
@@ -136,6 +137,7 @@ def main():
     p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true')
     p.add_argument('--start-index',type=int,default=0);p.add_argument('--speed-gate-from',type=Path)
     p.add_argument('--episode-indices',type=int,nargs='+',help='explicit unchanged frozen-plan indices; never resample')
+    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1'),default='legacy')
     p.add_argument('--complete-frozen-cohort',action='store_true',help='record individual finite failures; operator still stops diagnosed shared defects')
     a=p.parse_args()
     root=a.root.resolve();require_azure(root);plan=a.plan.resolve();episodes=read(plan)['episodes']
@@ -153,7 +155,7 @@ def main():
         gate,proof=reuse_speed_gate(a.speed_gate_from.resolve(),plan,a.concurrency,a.speed_gate_limit)
         write(root/'execution-continuity.json',proof)
     else:
-        rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit)
+        rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit,teacher_profile=a.teacher_profile)
         samples=[{'sim_s':r.get('sim_s'),'wall_s':r.get('wall_s'),'exit':r['exit'],
             'expected_stop':r.get('status')=='complete' and r.get('sim_s',0)>=30-1e-6,
             'finalization_complete':any((Path(r['raw'])/name).is_file() for name in ('manifest.json','manifest.json.zst')),'finalization_errors':[],
@@ -166,7 +168,7 @@ def main():
     for offset in range(0,len(indices),a.concurrency):
         batch=indices[offset:offset+a.concurrency]
         rows,reason=wave(root/f'cohort-{batch[0]:03d}',plan,batch,a.cap_s,probe=False,limit=a.speed_gate_limit,
-            complete_frozen_cohort=a.complete_frozen_cohort)
+            complete_frozen_cohort=a.complete_frozen_cohort,teacher_profile=a.teacher_profile)
         all_rows.extend(rows);write(root/'teacher-gate.json',summarize(all_rows,len(episodes)))
         if reason:break
 

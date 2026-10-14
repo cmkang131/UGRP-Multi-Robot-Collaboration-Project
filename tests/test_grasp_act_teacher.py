@@ -102,3 +102,38 @@ def test_stop_command_stops_wheels_without_cancelling_arm():
     c={'t':0.,'drive':[0.,0.,0.],'duration_s':0.,'pwm':{str(k):v for k,v in FOLDED.items()}}
     apply(port,c,0.,c)
     assert calls==['stop']
+
+
+def test_opt_in_integral_resolves_measured_71033_residual_with_bounded_commands():
+    # Saved failure: ground grip x=211.147 mm, target x=203 mm.
+    baseline=GraspTeacher('r1','teal',FOLDED,bounds=(-3,3,-3,3))
+    candidate=GraspTeacher('r1','teal',FOLDED,bounds=(-3,3,-3,3),profile='pi_geometry_v1')
+    x=truth([.73-.21114696038361666,-.0001696830990068482,0.])
+    for t in (baseline,candidate):t.started=True;t.phase='align'
+    old=[];new=[]
+    for k in range(100):
+        a,_=baseline.step(x,k*.1);b,done=candidate.step(x,k*.1)
+        old.append(a['drive'][0]);new.append(b['drive'][0]);command(b)
+        assert not done
+    assert max(old)-min(old)<1e-12
+    assert new[-1]>new[0]*2
+    assert all(abs(v)<=lim for v,lim in zip(candidate.align_integral,(.025,.025,.03)))
+    assert candidate.ik_rejections>0 and candidate.phase=='align'
+
+
+def test_low_cargo_radius_does_not_shrink_walls_unknown_objects_or_peers(monkeypatch):
+    import sim.grasp_act_teacher as module
+    captured=[]
+    monkeypatch.setattr(module,'plan_path',lambda *a,**k:captured.append((a,k)) or [])
+    t=GraspTeacher('r1','teal',FOLDED,bounds=(-3,3,-3,3),rects=[(0,2,.5,.1,0)],profile='pi_geometry_v1')
+    t.folded_ready=True;x=truth([-.5,0,0]);x['robots']['r2']={'pose':[2,2,0]}
+    x['objects']={'low':{'xy':[1,1],'radius':.02,'top_z_bound_m':.08},'unknown':{'xy':[2,1],'radius':.02}}
+    t._route(x,(.527,0),0,0)
+    args,kw=captured[0];assert kw['radius']==.13
+    assert args[2]==(-2.96,2.96,-2.96,2.96)
+    assert abs(kw['rects'][0][2]+kw['radius']-(.5+.17))<1e-12
+    assert abs(args[3][0][2]+kw['radius']-.34)<1e-12
+    assert abs(args[3][1][2]-(.02+.005))<1e-12
+    assert abs(args[3][2][2]+kw['radius']-(.02+.02+.17))<1e-12
+    t.folded_ready=False;t._route(x,(.527,0),0,1.)
+    assert captured[-1][1]['radius']==.17

@@ -39,3 +39,9 @@
 [MoveIt Grasps 공식 문서](https://moveit.picknik.ai/main/doc/examples/moveit_grasps/moveit_grasps_tutorial.html)와 [PDDLStream, ICAPS 2020](https://ojs.aaai.org/index.php/ICAPS/article/view/6739), [저자 공개 코드](https://github.com/caelan/pddlstream)를 확인했다. IK·충돌·접근 경로의 가능 조건과, 방해 물체를 치우는 작업 순서를 구분한다. 현재 교사는 기존 A*와 고정 끝 자세를 쓰며 PDDLStream을 설치하거나 작업 재배치를 구현하지 않았다. 이 자료는 원인 분류 근거이며 실패를 성공/제외로 바꾸는 근거가 아니다.
 
 이전 320×240·5Hz 수집 제안은 철회됐다. 현재 성공 관문은 자기 RGB 0장, 검토용 네 정적 카메라 모음 1Hz다. 게이트 통과 뒤 학습 수집은 실제 학생 입력 640×480·10Hz로 별도 실행한다.
+
+### 기본 off 교사 후보 pi_geometry_v1
+
+[Nav2 footprint 설정](https://docs.nav2.org/rolling/configuration_and_development/first_time_robot_setup_guide/footprint/setup_footprint/)은 원/다각형 외곽과 상태별 외곽 변경을 설명한다. [Nav2 voxel layer](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/costmap_2d/costmap_plugins/voxel/)는 3D 높이를 반영한 2D 계획 표현의 근거다. 우리 후보는 기존 A*를 유지하고, 접힌 팔보다 낮은 화물에 한해 모델에서 계산한 차체 반경을 쓴다. Nav2 전체를 도입한 것은 아니다. 벽·경계·다른 로봇·높이를 모르는 물체의 기존 총 여유는 유지한다. [수치 근거](teacher-v2-geometry-basis.json).
+
+[WPILib PID 문서](https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/pidcontroller.html)의 적분 기여 상한/정지 시 초기화를 참고한다. 기존 P·마찰 포트에도 남은 71033의 잔여 오차에만 기본 off PI 후보를 평가한다. WPILib는 더 정확한 feedforward로 해결할 수 있으면 적분을 피하라고 권하므로, 불안정/과도 동작 여부를 새 물리 진단에서 확인한다.

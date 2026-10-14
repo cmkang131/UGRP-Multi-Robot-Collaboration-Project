@@ -29,6 +29,17 @@ def local(pose, point):
     return c*dx+s*dy,-s*dx+c*dy
 
 
+def grasp_poses(target):
+    """Existing pad IK for the entire Cartesian descent and lift."""
+    x,y,z=target
+    grip=solve_grip_site_ik(target)
+    pitch=tool_pose(grip).pitch_deg
+    hover=solve_grip_site_ik((x,y,.095),preferred_pitch_deg=pitch)
+    descent=[solve_grip_site_ik((x,y,.095+(z-.095)*i/8),preferred_pitch_deg=pitch)
+             for i in range(1,9)]
+    return hover,descent
+
+
 class IssuedArm:
     """ArmSequence sink: records commands without reading a robot."""
     def __init__(self, pwm):
@@ -39,7 +50,11 @@ class IssuedArm:
 
 
 class GraspTeacher:
-    def __init__(self, rid, end, initial_pwm, *, bounds, rects=()):
+    def __init__(self, rid, end, initial_pwm, *, bounds, rects=(), profile="legacy"):
+        if profile not in ("legacy","pi_geometry_v1"):raise ValueError("unknown teacher profile")
+        self.profile=profile;self.folded_ready=False
+        self.align_integral=[0.,0.,0.];self.align_t=None
+        self.ik_rejections=0;self.last_ik_error=None;self.planning_radius=.17
         if rid not in ('r1','r2') or end not in ROLE:
             raise ValueError('explicit demo assignment required')
         self.rid, self.end = rid,end
@@ -78,12 +93,27 @@ class GraspTeacher:
         # Empty paths are cached too. Previously "or not self.path" retried
         # a failed A* ten times per SIM second.
         if now>=self.next_plan:
-            discs=[PeerDisc((*v['pose'][:2],.17)) for r,v in truth['robots'].items() if r!=self.rid]
-            discs += [(*o['xy'],o['radius']+.02) for iid,o in truth.get('objects',{}).items() if iid!='beam_1']
+            # Height-aware configuration-space radius only for the opt-in
+            # folded-arm teacher. The unchanged v3 geometry below 10 cm fits
+            # within 0.123 m; use 0.130 m plus 5 mm low-cargo padding.
+            # Tall walls, bounds, unknown/high objects and peers keep the old
+            # 0.170 m clearance. No collision/physical parameter changes.
+            fine=self.profile=='pi_geometry_v1' and self.folded_ready
+            radius=.13 if fine else .17;extra=.17-radius
+            self.planning_radius=radius
+            discs=[PeerDisc((*v['pose'][:2],.17+extra)) for r,v in truth['robots'].items() if r!=self.rid]
+            for iid,o in truth.get('objects',{}).items():
+                if iid=='beam_1':continue
+                padding=.005 if fine and o.get('top_z_bound_m',math.inf)<=.1 else .02+extra
+                discs.append((*o['xy'],o['radius']+padding))
             bx,by,ba=truth['beam']['pose']
-            # Robot disc .17 + beam thickness .02 fits the .203 m station.
             discs += [(bx+x*math.cos(ba),by+x*math.sin(ba),.02) for x in (-.27,-.135,0,.135,.27)]
-            self.path=plan_path(pose[:2],goal,self.bounds,discs,rects=self.rects) or []
+            bounds=self.bounds
+            rects=self.rects
+            if fine:
+                x0,x1,y0,y1=bounds;bounds=(x0+extra,x1-extra,y0+extra,y1-extra)
+                rects=[(x,y,hx+extra,hy+extra,a) for x,y,hx,hy,a in rects]
+            self.path=plan_path(pose[:2],goal,bounds,discs,rects=rects,radius=radius) or []
             self.planner_calls+=1;self.no_path_calls+=int(not self.path)
             self.next_plan=now+1.
         while len(self.path)>1 and math.dist(pose[:2],self.path[0])<.12:self.path.pop(0)
@@ -106,15 +136,26 @@ class GraspTeacher:
         # Reachability is checked before ready, not assumed from chassis error.
         reachable=True
         try:
-            solve_grip_site_ik((gx,gy,g[2]))
-            solve_grip_site_ik((gx,gy,.095))
-        except ValueError:reachable=False
+            if self.profile=='pi_geometry_v1':grasp_poses((gx,gy,g[2]))
+            else:
+                solve_grip_site_ik((gx,gy,g[2]))
+                solve_grip_site_ik((gx,gy,.095))
+        except ValueError as error:
+            reachable=False;self.ik_rejections+=1;self.last_ik_error=str(error)
         if abs(ea)<=YAW_TOL_RAD and math.dist(pose[:2],goal)<=XY_TOL_M and reachable:
             self.stable_since=now if self.stable_since is None else self.stable_since
+            self.align_integral=[0.,0.,0.];self.align_t=now
             return self._hold(now),now-self.stable_since>=.3
         self.stable_since=None
         # Original zone_teacher._align proportional law; retain current v3 IK.
         clip=lambda v,lo,hi:max(lo,min(hi,v))
+        if self.profile=='pi_geometry_v1':
+            dt=0. if self.align_t is None else clip(now-self.align_t,0.,.2)
+            self.align_t=now
+            for i,(error,gain,limit) in enumerate(zip((ex,ey,ea),(.45,.45,.4),(.025,.025,.03))):
+                self.align_integral[i]=clip(self.align_integral[i]+gain*error*dt,-limit,limit)
+            return self._continuous(now,clip(.9*ex+self.align_integral[0],-.05,.08),
+                clip(.9*ey+self.align_integral[1],-.06,.06),clip(.8*ea+self.align_integral[2],-.10,.10)),False
         return self._continuous(now,clip(.9*ex,-.05,.08),clip(.9*ey,-.06,.06),clip(.8*ea,-.10,.10)),False
 
     def _queue_pick(self,truth,now):
@@ -137,6 +178,7 @@ class GraspTeacher:
             self.started=True;self.phase_t=now
             self.arm.queue({**FOLDED,6:1500},now,duration=.5)
         arms_done=self.arm.tick(now)
+        self.folded_ready=arms_done and all(self.sink.pwm[k]==FOLDED[k] for k in (3,4,5))
         if self.outcome:return self._hold(now),self.outcome=='success'
         if now-self.phase_t>60:
             self.outcome='phase_timeout';return self._hold(now),False
@@ -164,7 +206,9 @@ class GraspTeacher:
         return self._hold(now),False
 
     def diagnostic(self):
-        return {'phase':self.phase,'outcome':self.outcome,'events':deepcopy(self.events),
+        return {'profile':self.profile,'planning_radius_m':self.planning_radius,
+                'ik_rejections':self.ik_rejections,'last_ik_error':self.last_ik_error,
+                'alignment_integral':list(self.align_integral),'phase':self.phase,'outcome':self.outcome,'events':deepcopy(self.events),
                 'staging_distance_m':self.staging_distance,'phase_sim_s':self.phase_durations,
                 'planner_calls':self.planner_calls,'no_path_calls':self.no_path_calls,
                 'scope':'privileged_teacher_only; single-end lift is not whole-beam lift'}

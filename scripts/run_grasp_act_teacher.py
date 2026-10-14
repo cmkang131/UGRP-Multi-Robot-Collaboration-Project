@@ -43,10 +43,12 @@ def snapshot(world,inst,roles,scene):
     for c in scene.cargo:
         b=world.data.body(c.body)
         objects[c.item_id]={'xy':list(map(float,b.xpos[:2])),
-            'radius':math.hypot(*c.spec().landing_half_extents_m)}
+            'radius':math.hypot(*c.spec().landing_half_extents_m),
+            'top_z_bound_m':max(float(world.data.geom(c.geom(p.name)).xpos[2])+float(world.model.geom_rbound[world.model.geom(c.geom(p.name)).id]) for p in c.spec().parts if p.collision)}
     for iid,c in scene.config['setup_only']['objects'].items():
         objects[iid]={'xy':list(map(float,world.data.body(c['body_name']).xpos[:2])),
-            'radius':math.hypot(*c['half_extents_m'][:2])}
+            'radius':math.hypot(*c['half_extents_m'][:2]),
+            'top_z_bound_m':float(world.data.body(c['body_name']).xpos[2])+math.sqrt(sum(float(x)**2 for x in c['half_extents_m']))}
     return {'objects':objects,'t':float(world.data.time),'beam':{'pose':[float(pos[0]),float(pos[1]),yaw],'ends':ends,
         'qpos':body.xquat.tolist(),'min_z':min_z},'robots':{rid:{'pose':[*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])],
         'xyz':list(map(float,world.robot(rid).base_xyz()))} for rid in ('r1','r2','r3')},
@@ -74,7 +76,7 @@ def compress_logs(out):
             'sha256':hashlib.sha256(compressed).hexdigest(),'decoded_sha256':hashlib.sha256(raw).hexdigest()})
 
 
-def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False):
+def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teacher_profile="legacy"):
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use released VM3')
     import mujoco
     import numpy as np
@@ -94,7 +96,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False):
     report={'status':'running','source_sha':sha,'teacher_success_n':0,'teacher_N':len(plan['roles']),
         'joint_held':None,'data_admitted':False,'assignment_source':plan['assignment_source'],
         'student_execution':False,'recording_mode':'training' if record_training else 'success_measurement',
-        'physical_success':False,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off'}
+        'physical_success':False,'teacher_profile':teacher_profile,'action_contract':SCHEMA,'loadavg_at_start':os.getloadavg(),'noise':'DART-inspired_fixed_pilot' if noise else 'off'}
     write(out/'result.json',report)
     try:
         os.environ['UGRP_SIM_OBSERVER_WIDTH']='320'
@@ -128,7 +130,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False):
             pwm={str(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
             initial=command({'t':origin,'drive':[0.,0.,0.],'duration_s':0.,'pwm':pwm})
             previous[rid]=initial;history[rid]=deque([initial]*HISTORY,maxlen=HISTORY)
-            teachers[rid]=GraspTeacher(rid,end,pwm,bounds=scene.config['static_map']['bounds_m'],rects=keepout_rects(scene.config['static_map']))
+            teachers[rid]=GraspTeacher(rid,end,pwm,bounds=scene.config['static_map']['bounds_m'],rects=keepout_rects(scene.config['static_map']),profile=teacher_profile)
             student=None
             if record_training:
                 (out/'rgb'/rid).mkdir(parents=True)
@@ -220,6 +222,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=60.)
     p.add_argument('--noise',action='store_true');p.add_argument('--probe',action='store_true')
+    p.add_argument('--teacher-profile',choices=('legacy','pi_geometry_v1'),default='legacy')
     p.add_argument('--record-training',action='store_true');p.add_argument('--teacher-gate',type=Path);a=p.parse_args()
     if a.record_training:
         if a.teacher_gate is None:raise ValueError('verified >=38/40 teacher gate required before recording')
@@ -228,5 +231,5 @@ def main():
             raise ValueError('verified >=95% with N>=40 required')
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe),ensure_ascii=False))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,noise=a.noise,record_training=a.record_training,probe=a.probe,teacher_profile=a.teacher_profile),ensure_ascii=False))
 if __name__=='__main__':main()
