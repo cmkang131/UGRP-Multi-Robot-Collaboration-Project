@@ -1,0 +1,953 @@
+{
+  "scope": "saved command + detected-landmark replay, no RGB redetection/physics/render; no counterfactual success claim",
+  "original_sha": "14ddb6ad33b7a86ad68eee0e5c98762a8771e14c",
+  "runs": [
+    {
+      "run": "release-global-diagnostic-00-14ddb6ad",
+      "seed": 74106,
+      "original_success": true,
+      "decisions": 5,
+      "changed_decisions": [],
+      "final_evaluation": {
+        "r1": {
+          "map_position_error_m": 0.05152949078695763,
+          "map_xy_error_m": [
+            0.014699901507126967,
+            -0.04938827104124943
+          ],
+          "map_yaw_error_deg": -0.14689232921673825,
+          "estimated_center_offset_m": [
+            0.06137466352398224,
+            -0.02744985182397436
+          ],
+          "estimated_center_xy_error_m": [
+            0.007393886111780823,
+            -0.038942455643866836
+          ],
+          "true_lateral_envelope_clearance_m": 0.19083187113229316,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.3752516821506545,
+            "lateral_clearance_m": 0.17845542158107427,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            -0.26120474864801824,
+            0.13845542160005372
+          ]
+        },
+        "r2": {
+          "map_position_error_m": 0.030741741869352815,
+          "map_xy_error_m": [
+            0.01223357973758965,
+            0.02820273426400277
+          ],
+          "map_yaw_error_deg": -0.9590088613521829,
+          "estimated_center_offset_m": [
+            0.06190901859487585,
+            0.024923774199362314
+          ],
+          "estimated_center_xy_error_m": [
+            0.007928241182674434,
+            0.013431170379469837
+          ],
+          "true_lateral_envelope_clearance_m": 0.19083187113229316,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.3768781974487643,
+            "lateral_clearance_m": 0.1852590476451945,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            -0.26907708490485205,
+            0.1452590477151012
+          ]
+        }
+      },
+      "beam_start_xy": [
+        4.745792334054043,
+        -0.3584062456918593
+      ],
+      "beam_final_xy": [
+        4.653980777412201,
+        0.4114926038198925
+      ],
+      "beam_displacement_m": [
+        -0.09181155664184182,
+        0.7698988495117518
+      ],
+      "issued_axial_sum_m": 0.7497900550667647,
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.05398077741220142,
+          0.011492603819892477
+        ],
+        "center_distance_m": 0.055190617613745205,
+        "yaw_error_deg": 6.762554486563491,
+        "min_end_margin_m": 0.21069272470546546,
+        "zone_long_axis": "y"
+      },
+      "success_rule": {
+        "settle_s": 2.0,
+        "on_floor_z_m": 0.05,
+        "speed_m_s": 0.01,
+        "tilt_deg": 3.0,
+        "open_pwm": 1900,
+        "clear_m": 0.04
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw_remote": "/home/ugrp/ugrp-sim/runs/release-global-diagnostic-00-14ddb6ad",
+      "status": "complete",
+      "outcome": "teacher_done"
+    },
+    {
+      "run": "release-global-diagnostic-01-14ddb6ad",
+      "seed": 74112,
+      "original_success": true,
+      "decisions": 4,
+      "changed_decisions": [],
+      "final_evaluation": {
+        "r1": {
+          "map_position_error_m": 0.06899380178428134,
+          "map_xy_error_m": [
+            0.023135300447158613,
+            -0.06499925044081975
+          ],
+          "map_yaw_error_deg": 0.9474480575794669,
+          "estimated_center_offset_m": [
+            0.08771166097898586,
+            -0.043382793621951965
+          ],
+          "estimated_center_xy_error_m": [
+            0.012528154706211936,
+            -0.07427619129997787
+          ],
+          "true_lateral_envelope_clearance_m": 0.16750968009079834,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.3597806399090627,
+            "lateral_clearance_m": 0.1488366094219795,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            -0.2842599313861853,
+            0.10883660942821535
+          ]
+        },
+        "r2": {
+          "map_position_error_m": 0.03158158966370293,
+          "map_xy_error_m": [
+            0.0012766891530802127,
+            0.03155577396440967
+          ],
+          "map_yaw_error_deg": -0.31904452017927687,
+          "estimated_center_offset_m": [
+            0.07694301734151932,
+            0.05283493497288849
+          ],
+          "estimated_center_xy_error_m": [
+            0.0017595110687453897,
+            0.02194153729486259
+          ],
+          "true_lateral_envelope_clearance_m": 0.16750968009079834,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.34967754981686916,
+            "lateral_clearance_m": 0.1643119405185229,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            -0.27819797521066625,
+            0.12431194052762937
+          ]
+        }
+      },
+      "beam_start_xy": [
+        4.751560825474972,
+        -0.13864415559861654
+      ],
+      "beam_final_xy": [
+        4.675183506272774,
+        0.4308933976780259
+      ],
+      "beam_displacement_m": [
+        -0.07637731920219881,
+        0.5695375532766425
+      ],
+      "issued_axial_sum_m": 0.5548818188023643,
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.07518350627277393,
+          0.030893397678025902
+        ],
+        "center_distance_m": 0.08128321865896362,
+        "yaw_error_deg": 7.173704968681313,
+        "min_end_margin_m": 0.1873531224232769,
+        "zone_long_axis": "y"
+      },
+      "success_rule": {
+        "settle_s": 2.0,
+        "on_floor_z_m": 0.05,
+        "speed_m_s": 0.01,
+        "tilt_deg": 3.0,
+        "open_pwm": 1900,
+        "clear_m": 0.04
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw_remote": "/home/ugrp/ugrp-sim/runs/release-global-diagnostic-01-14ddb6ad",
+      "status": "complete",
+      "outcome": "teacher_done"
+    },
+    {
+      "run": "release-global-diagnostic-02-14ddb6ad",
+      "seed": 74122,
+      "original_success": false,
+      "decisions": 5,
+      "changed_decisions": [
+        {
+          "old": {
+            "action": "stop",
+            "reason": "lateral_clearance_unresolved",
+            "t": 113.89999999903459
+          },
+          "new": {
+            "action": "shift",
+            "shift_m": 0.0,
+            "lateral_shift_m": 0.1,
+            "lateral_interval_m": [
+              0.015805546062736903,
+              0.4178234866612571
+            ],
+            "reason": "localized_lateral_correction",
+            "t": 113.89999999903459
+          }
+        }
+      ],
+      "final_evaluation": {
+        "r1": {
+          "map_position_error_m": 0.0596637792396888,
+          "map_xy_error_m": [
+            0.0204060380858353,
+            -0.05606567722592637
+          ],
+          "map_yaw_error_deg": 1.7225452113087831,
+          "estimated_center_offset_m": [
+            -0.21557856190179692,
+            -0.03045419946101091
+          ],
+          "estimated_center_xy_error_m": [
+            0.011108468770810731,
+            -0.04308256782347386
+          ],
+          "true_lateral_envelope_clearance_m": 0.01891866740861852,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.37193102549383,
+            "lateral_clearance_m": 0.026666362908259262,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            0.013333637142337623,
+            0.4178234866612571
+          ]
+        },
+        "r2": {
+          "map_position_error_m": 0.03835543738115275,
+          "map_xy_error_m": [
+            0.0011289902554878495,
+            0.03833881789652027
+          ],
+          "map_yaw_error_deg": 1.0858615338419852,
+          "estimated_center_offset_m": [
+            -0.21732214337315625,
+            0.03828068085762859
+          ],
+          "estimated_center_xy_error_m": [
+            0.009364887299451397,
+            0.02565231249516564
+          ],
+          "true_lateral_envelope_clearance_m": 0.01891866740861852,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.36419784490771867,
+            "lateral_clearance_m": 0.02419445443862474,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            0.015805546062736903,
+            0.4188387406835774
+          ]
+        }
+      },
+      "beam_start_xy": [
+        4.465555262396327,
+        -0.35500138528773517
+      ],
+      "beam_final_xy": [
+        4.373312969327392,
+        0.41262836836246297
+      ],
+      "beam_displacement_m": [
+        -0.09224229306893506,
+        0.7676297536501981
+      ],
+      "issued_axial_sum_m": 0.7515091299598842,
+      "evaluation_position_error": {
+        "center_offset_m": [
+          -0.22668703067260765,
+          0.01262836836246295
+        ],
+        "center_distance_m": 0.22703851118843651,
+        "yaw_error_deg": 6.608854995027874,
+        "min_end_margin_m": 0.03878576721534105,
+        "zone_long_axis": "y"
+      },
+      "success_rule": {
+        "settle_s": 2.0,
+        "on_floor_z_m": 0.05,
+        "speed_m_s": 0.01,
+        "tilt_deg": 3.0,
+        "open_pwm": 1900,
+        "clear_m": 0.04
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw_remote": "/home/ugrp/ugrp-sim/runs/release-global-diagnostic-02-14ddb6ad",
+      "status": "complete",
+      "outcome": "lateral_clearance_unresolved",
+      "visually_reviewed_frames": [
+        {
+          "path": "eval-overview/000000-release-look.jpg",
+          "t": 10.099999999999136
+        },
+        {
+          "path": "eval-own/r1/000000-release-look.jpg",
+          "t": 10.099999999999136
+        },
+        {
+          "path": "eval-own/r2/000000-release-look.jpg",
+          "t": 10.099999999999136
+        },
+        {
+          "path": "eval-overview/000210-release-repick.jpg",
+          "t": 31.100000000057484
+        },
+        {
+          "path": "eval-own/r1/000210-release-repick.jpg",
+          "t": 31.100000000057484
+        },
+        {
+          "path": "eval-own/r2/000210-release-repick.jpg",
+          "t": 31.100000000057484
+        },
+        {
+          "path": "eval-overview/000410-release-repick.jpg",
+          "t": 51.10000000015298
+        },
+        {
+          "path": "eval-own/r1/000410-release-repick.jpg",
+          "t": 51.10000000015298
+        },
+        {
+          "path": "eval-own/r2/000410-release-repick.jpg",
+          "t": 51.10000000015298
+        },
+        {
+          "path": "eval-overview/000620-release-repick.jpg",
+          "t": 72.10000000002303
+        },
+        {
+          "path": "eval-own/r1/000620-release-repick.jpg",
+          "t": 72.10000000002303
+        },
+        {
+          "path": "eval-own/r2/000620-release-repick.jpg",
+          "t": 72.10000000002303
+        },
+        {
+          "path": "eval-overview/000820-release-approach.jpg",
+          "t": 92.09999999955009
+        },
+        {
+          "path": "eval-own/r1/000820-release-approach.jpg",
+          "t": 92.09999999955009
+        },
+        {
+          "path": "eval-own/r2/000820-release-approach.jpg",
+          "t": 92.09999999955009
+        },
+        {
+          "path": "eval-overview/001030-release-observe.jpg",
+          "t": 113.09999999905351
+        },
+        {
+          "path": "eval-own/r1/001030-release-observe.jpg",
+          "t": 113.09999999905351
+        },
+        {
+          "path": "eval-own/r2/001030-release-observe.jpg",
+          "t": 113.09999999905351
+        }
+      ]
+    },
+    {
+      "run": "release-global-diagnostic-03-14ddb6ad",
+      "seed": 74123,
+      "original_success": true,
+      "decisions": 5,
+      "changed_decisions": [],
+      "final_evaluation": {
+        "r1": {
+          "map_position_error_m": 0.026791204992634175,
+          "map_xy_error_m": [
+            0.0080099845345174,
+            0.025565774244370898
+          ],
+          "map_yaw_error_deg": 0.010392061990025755,
+          "estimated_center_offset_m": [
+            -0.0642103930673601,
+            0.03974966795826218
+          ],
+          "estimated_center_xy_error_m": [
+            0.012813269806060568,
+            0.02454447702912349
+          ],
+          "true_lateral_envelope_clearance_m": 0.1990085877346182,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.36030047207395643,
+            "lateral_clearance_m": 0.21030494269285757,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            -0.17030494285548212,
+            0.29872572899020144
+          ]
+        },
+        "r2": {
+          "map_position_error_m": 0.049677312603907946,
+          "map_xy_error_m": [
+            0.020520199879172196,
+            -0.045241096189915786
+          ],
+          "map_yaw_error_deg": 0.4629353848963252,
+          "estimated_center_offset_m": [
+            -0.06384190624974906,
+            -0.024274031484139313
+          ],
+          "estimated_center_xy_error_m": [
+            0.013181756623671603,
+            -0.039479222413278
+          ],
+          "true_lateral_envelope_clearance_m": 0.1990085877346182,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.37582942712225664,
+            "lateral_clearance_m": 0.2082799917410811,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            -0.16827999170177296,
+            0.2959638042012711
+          ]
+        }
+      },
+      "beam_start_xy": [
+        4.53311262765179,
+        -0.2608935345329512
+      ],
+      "beam_final_xy": [
+        4.522976337126579,
+        0.4152051909291387
+      ],
+      "beam_displacement_m": [
+        -0.010136290525211145,
+        0.6760987254620899
+      ],
+      "issued_axial_sum_m": -0.6528718939096302,
+      "evaluation_position_error": {
+        "center_offset_m": [
+          -0.07702366287342066,
+          0.01520519092913869
+        ],
+        "center_distance_m": 0.07851014248891618,
+        "yaw_error_deg": 0.7581408248089735,
+        "min_end_margin_m": 0.21900683688774353,
+        "zone_long_axis": "y"
+      },
+      "success_rule": {
+        "settle_s": 2.0,
+        "on_floor_z_m": 0.05,
+        "speed_m_s": 0.01,
+        "tilt_deg": 3.0,
+        "open_pwm": 1900,
+        "clear_m": 0.04
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw_remote": "/home/ugrp/ugrp-sim/runs/release-global-diagnostic-03-14ddb6ad",
+      "status": "complete",
+      "outcome": "teacher_done"
+    },
+    {
+      "run": "release-global-diagnostic-04-14ddb6ad",
+      "seed": 74930,
+      "original_success": true,
+      "decisions": 3,
+      "changed_decisions": [],
+      "final_evaluation": {
+        "r1": {
+          "map_position_error_m": 0.054473288577095845,
+          "map_xy_error_m": [
+            0.010106808054128003,
+            -0.05352748452300532
+          ],
+          "map_yaw_error_deg": 1.0960194927022109,
+          "estimated_center_offset_m": [
+            0.17406245856111635,
+            -0.04451074953620526
+          ],
+          "estimated_center_xy_error_m": [
+            0.005590416396712428,
+            -0.04896344540941744
+          ],
+          "true_lateral_envelope_clearance_m": 0.08890866168271588,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.3563020940814359,
+            "lateral_clearance_m": 0.08386843710286991,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            -0.3919933542916352,
+            0.04386843716940156
+          ]
+        },
+        "r2": {
+          "map_position_error_m": 0.041181496519509246,
+          "map_xy_error_m": [
+            0.0027189821502657807,
+            0.04109163895067813
+          ],
+          "map_yaw_error_deg": 0.4401548120619401,
+          "estimated_center_offset_m": [
+            0.16824938685209112,
+            0.04340668702925188
+          ],
+          "estimated_center_xy_error_m": [
+            -0.00022265531231280278,
+            0.0389539911560397
+          ],
+          "true_lateral_envelope_clearance_m": 0.08890866168271588,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.35714943815410516,
+            "lateral_clearance_m": 0.0934923073406659,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            -0.3899910810829128,
+            0.053492307378731424
+          ]
+        }
+      },
+      "beam_start_xy": [
+        4.7887638207274135,
+        0.13783502108339118
+      ],
+      "beam_final_xy": [
+        4.768472042164404,
+        0.4044526958732122
+      ],
+      "beam_displacement_m": [
+        -0.0202917785630099,
+        0.266617674789821
+      ],
+      "issued_axial_sum_m": 0.2615756041741133,
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.16847204216440392,
+          0.004452695873212176
+        ],
+        "center_distance_m": 0.1685308740011278,
+        "yaw_error_deg": 4.335029969717839,
+        "min_end_margin_m": 0.10885144380350126,
+        "zone_long_axis": "y"
+      },
+      "success_rule": {
+        "settle_s": 2.0,
+        "on_floor_z_m": 0.05,
+        "speed_m_s": 0.01,
+        "tilt_deg": 3.0,
+        "open_pwm": 1900,
+        "clear_m": 0.04
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw_remote": "/home/ugrp/ugrp-sim/runs/release-global-diagnostic-04-14ddb6ad",
+      "status": "complete",
+      "outcome": "teacher_done"
+    },
+    {
+      "run": "release-global-diagnostic-05-14ddb6ad",
+      "seed": 74931,
+      "original_success": true,
+      "decisions": 2,
+      "changed_decisions": [],
+      "final_evaluation": {
+        "r1": {
+          "map_position_error_m": 0.03333581923092743,
+          "map_xy_error_m": [
+            0.01591213976645367,
+            0.029293013703781234
+          ],
+          "map_yaw_error_deg": -0.4243726256643757,
+          "estimated_center_offset_m": [
+            -0.15672338460133606,
+            0.04264661345329224
+          ],
+          "estimated_center_xy_error_m": [
+            0.015456411354831445,
+            0.030499203361602056
+          ],
+          "true_lateral_envelope_clearance_m": 0.09461266896910482,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.35756127169372653,
+            "lateral_clearance_m": 0.1121102291143898,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            -0.0721102293118043,
+            0.38555699851447733
+          ]
+        },
+        "r2": {
+          "map_position_error_m": 0.04401673126102571,
+          "map_xy_error_m": [
+            0.0012640779983446038,
+            -0.04399857654196848
+          ],
+          "map_yaw_error_deg": 0.7054288646852334,
+          "estimated_center_offset_m": [
+            -0.17212804447759034,
+            -0.02843250054040486
+          ],
+          "estimated_center_xy_error_m": [
+            5.1751478577166665e-05,
+            -0.04057991063209504
+          ],
+          "true_lateral_envelope_clearance_m": 0.09461266896910482,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.37187065627686033,
+            "lateral_clearance_m": 0.0943885513366138,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            -0.05438855133579132,
+            0.398644640290972
+          ]
+        }
+      },
+      "beam_start_xy": [
+        4.424846003759215,
+        0.6178002595773547
+      ],
+      "beam_final_xy": [
+        4.427820204043832,
+        0.4121474100916902
+      ],
+      "beam_displacement_m": [
+        0.0029742002846173676,
+        -0.20565284948566454
+      ],
+      "issued_axial_sum_m": 0.2,
+      "evaluation_position_error": {
+        "center_offset_m": [
+          -0.1721797959561675,
+          0.01214741009169018
+        ],
+        "center_distance_m": 0.17260776838671882,
+        "yaw_error_deg": 2.526986980810075,
+        "min_end_margin_m": 0.11459322027953894,
+        "zone_long_axis": "y"
+      },
+      "success_rule": {
+        "settle_s": 2.0,
+        "on_floor_z_m": 0.05,
+        "speed_m_s": 0.01,
+        "tilt_deg": 3.0,
+        "open_pwm": 1900,
+        "clear_m": 0.04
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw_remote": "/home/ugrp/ugrp-sim/runs/release-global-diagnostic-05-14ddb6ad",
+      "status": "complete",
+      "outcome": "teacher_done"
+    },
+    {
+      "run": "release-global-diagnostic-06-14ddb6ad",
+      "seed": 74932,
+      "original_success": false,
+      "decisions": 3,
+      "changed_decisions": [
+        {
+          "old": {
+            "action": "stop",
+            "reason": "lateral_clearance_unresolved",
+            "t": 68.70000000010343
+          },
+          "new": {
+            "action": "shift",
+            "shift_m": 0.0,
+            "lateral_shift_m": 0.1,
+            "lateral_interval_m": [
+              0.0066282550810970176,
+              0.4152210920507826
+            ],
+            "reason": "localized_lateral_correction",
+            "t": 68.70000000010343
+          }
+        }
+      ],
+      "final_evaluation": {
+        "r1": {
+          "map_position_error_m": 0.0393437097842343,
+          "map_xy_error_m": [
+            0.01647449880497298,
+            -0.03572839751109749
+          ],
+          "map_yaw_error_deg": 0.45322429442460593,
+          "estimated_center_offset_m": [
+            -0.20995498208613395,
+            -0.03775947473069796
+          ],
+          "estimated_center_xy_error_m": [
+            0.007420077613372378,
+            -0.03177182244974419
+          ],
+          "true_lateral_envelope_clearance_m": 0.03277679181026376,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.36425804782042465,
+            "lateral_clearance_m": 0.03531112785544961,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            0.004688872121486193,
+            0.4152210920507826
+          ]
+        },
+        "r2": {
+          "map_position_error_m": 0.025149937217035574,
+          "map_xy_error_m": [
+            -0.0066817025902272675,
+            0.02424611706060542
+          ],
+          "map_yaw_error_deg": 1.5178977907586773,
+          "estimated_center_offset_m": [
+            -0.21612397071185718,
+            0.010459517242667582
+          ],
+          "estimated_center_xy_error_m": [
+            0.0012510889876491404,
+            0.016447169523621352
+          ],
+          "true_lateral_envelope_clearance_m": 0.03277679181026376,
+          "final_report": {
+            "phase": "observe",
+            "kind": "localized_margin",
+            "margin_m": 0.39109536448194193,
+            "lateral_clearance_m": 0.03337174508958603,
+            "pose_sigma_m": 0.05,
+            "expected_slack_m": 0.7999999999999999,
+            "reason": "own_rgb_map_consensus"
+          },
+          "lateral_interval_m": [
+            0.0066282550810970176,
+            0.4256196863426174
+          ]
+        }
+      },
+      "beam_start_xy": [
+        4.424260341431014,
+        -0.011124426045790331
+      ],
+      "beam_final_xy": [
+        4.382624940300493,
+        0.39401234771904625
+      ],
+      "beam_displacement_m": [
+        -0.04163540113052111,
+        0.4051367737648366
+      ],
+      "issued_axial_sum_m": 0.4,
+      "evaluation_position_error": {
+        "center_offset_m": [
+          -0.21737505969950632,
+          -0.00598765228095377
+        ],
+        "center_distance_m": 0.2174575097788107,
+        "yaw_error_deg": 5.729199243015752,
+        "min_end_margin_m": 0.05267688831278167,
+        "zone_long_axis": "y"
+      },
+      "success_rule": {
+        "settle_s": 2.0,
+        "on_floor_z_m": 0.05,
+        "speed_m_s": 0.01,
+        "tilt_deg": 3.0,
+        "open_pwm": 1900,
+        "clear_m": 0.04
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw_remote": "/home/ugrp/ugrp-sim/runs/release-global-diagnostic-06-14ddb6ad",
+      "status": "complete",
+      "outcome": "lateral_clearance_unresolved",
+      "visually_reviewed_frames": [
+        {
+          "path": "eval-overview/000000-release-look.jpg",
+          "t": 10.099999999999136
+        },
+        {
+          "path": "eval-own/r1/000000-release-look.jpg",
+          "t": 10.099999999999136
+        },
+        {
+          "path": "eval-own/r2/000000-release-look.jpg",
+          "t": 10.099999999999136
+        },
+        {
+          "path": "eval-overview/000120-release-observe_move.jpg",
+          "t": 22.10000000001451
+        },
+        {
+          "path": "eval-own/r1/000120-release-observe_move.jpg",
+          "t": 22.10000000001451
+        },
+        {
+          "path": "eval-own/r2/000120-release-observe_move.jpg",
+          "t": 22.10000000001451
+        },
+        {
+          "path": "eval-overview/000230-release-shift.jpg",
+          "t": 33.100000000067034
+        },
+        {
+          "path": "eval-own/r1/000230-release-shift.jpg",
+          "t": 33.100000000067034
+        },
+        {
+          "path": "eval-own/r2/000230-release-shift.jpg",
+          "t": 33.100000000067034
+        },
+        {
+          "path": "eval-overview/000350-release-observe_move.jpg",
+          "t": 45.10000000012433
+        },
+        {
+          "path": "eval-own/r1/000350-release-observe_move.jpg",
+          "t": 45.10000000012433
+        },
+        {
+          "path": "eval-own/r2/000350-release-observe_move.jpg",
+          "t": 45.10000000012433
+        },
+        {
+          "path": "eval-overview/000460-release-shift.jpg",
+          "t": 56.100000000176856
+        },
+        {
+          "path": "eval-own/r1/000460-release-shift.jpg",
+          "t": 56.100000000176856
+        },
+        {
+          "path": "eval-own/r2/000460-release-shift.jpg",
+          "t": 56.100000000176856
+        },
+        {
+          "path": "eval-overview/000580-release-observe.jpg",
+          "t": 68.10000000011762
+        },
+        {
+          "path": "eval-own/r1/000580-release-observe.jpg",
+          "t": 68.10000000011762
+        },
+        {
+          "path": "eval-own/r2/000580-release-observe.jpg",
+          "t": 68.10000000011762
+        }
+      ]
+    }
+  ],
+  "original_success": 5,
+  "original_n": 7,
+  "reports_reconstructed": 54,
+  "old_decisions_exact": 27,
+  "max_report_reconstruction_error_m": 2.154522116271096e-09,
+  "success_runs_unchanged": 5,
+  "failure_terminal_decisions_changed": 2,
+  "verified_files": 71,
+  "detail": {
+    "path": "release5-replay-detail.json.zst",
+    "sha256": "ef0b7dc3ddc2a68688d204a560339898dac89851933beff86c229ff87b8a9fd6"
+  }
+}

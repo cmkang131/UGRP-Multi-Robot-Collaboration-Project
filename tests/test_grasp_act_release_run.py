@@ -268,3 +268,27 @@ def test_global_release_message_loop_shifts_then_reobserves(tmp_path,fake_backen
     assert result['release_outcome']=='teacher_done' and result['shift_steps']==1
     assert result['code_decisions'][1]['shift_m']==.2 and len(calls)==4
     assert all(len(v['evaluation']['sweeps'])==2 for v in result['lookaround_result'].values())
+
+
+def test_lateral_recovery_regrasp_pwm_setdown_and_reobserve(tmp_path,fake_backend,monkeypatch):
+    import math
+    from sim import release_global_observation as active
+    calls=[]
+    def margins(loc,teacher,now,*,lateral_recovery):
+        assert lateral_recovery=='bounded_v1'
+        loc.own.x=np.array([4.6,.4,math.pi/2+.12 if teacher.rid=='r1' else -math.pi/2+.10])
+        loc.decision={'accepted':True}
+        n=len(calls);calls.append(teacher.rid)
+        return dict(phase='observe',kind='localized_margin',margin_m=.4,expected_slack_m=.8,
+            lateral_clearance_m=.025 if n<2 else .20,lateral_shift_lo_m=.015,lateral_shift_hi_m=.43)
+    monkeypatch.setattr(active,'margin_report',margins)
+    def forbidden(*a,**kw):raise AssertionError('truth perception')
+    monkeypatch.setattr(runner.Eyes,'classify',forbidden)
+    plans=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release-command-diagnostic-plan.json').read_text())
+    profile={**plans['execution_profile'],'lookaround':'setdown_global_v1','placement':'global_localized_release_v1','lateral_recovery':'bounded_v1'}
+    result=runner.run(plans['episodes'][0],tmp_path/'side',cap_s=120.,**profile)
+    assert result['release_outcome']=='teacher_done' and result['shift_steps']==1
+    assert len(calls)==4 and result['code_decisions'][1]['lateral_shift_m']==.1
+    assert len(result['lateral_motion_commands'])==1
+    assert result['input_audit']['held_world_reads']==result['input_audit']['invisible_measurements']==0
+    assert all(len(v['evaluation']['sweeps'])==2 for v in result['lookaround_result'].values())

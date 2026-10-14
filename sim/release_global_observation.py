@@ -14,9 +14,11 @@ MAX_SHIFT_M = .20
 MAX_CORRECTIONS = 5
 MARGIN_M = .04
 CENTER_TOL_M = .05
+LATERAL_MODES = ('off', 'bounded_v1')
+MAX_LATERAL_SHIFT_M = .10
 
 
-def margin_report(localizer, teacher, now):
+def margin_report(localizer, teacher, now, *, lateral_recovery='off'):
     """Static zone bounds through the accepted own RGB pose, own release FK."""
     decision = localizer.decision or {}
     base = dict(phase='observe', kind='none', margin_m=None)
@@ -36,18 +38,39 @@ def margin_report(localizer, teacher, now):
     margin=float(half[axis]-sign*(point[axis]-center[axis]))
     other=point-.60*outward
     lateral_clearance=float(half[lateral]-max(abs(point[lateral]-center[lateral]),abs(other[lateral]-center[lateral]))-.02)
-    return dict(phase='observe',kind='localized_margin',margin_m=margin,
+    report = dict(phase='observe',kind='localized_margin',margin_m=margin,
                 lateral_clearance_m=lateral_clearance,pose_sigma_m=max(decision['sigma'][:2]),
                 expected_slack_m=2*float(half[axis])-.60,
                 reason='own_rgb_map_consensus')
+    if lateral_recovery == 'bounded_v1':
+        # Same full-beam envelope and 2 cm thickness as the existing guard.
+        # Transmit an admissible scalar displacement interval, never a pose.
+        ends = [float(point[lateral]-center[lateral]), float(other[lateral]-center[lateral])]
+        report.update(lateral_shift_lo_m=float(-half[lateral]+.02+MARGIN_M-min(ends)),
+                      lateral_shift_hi_m=float(half[lateral]-.02-MARGIN_M-max(ends)))
+    return report
 
 
-def pair_choice(reports, robots, now):
+def pair_choice(reports, robots, now, *, lateral_recovery='off'):
     """Use delivered margins only; balance ends, with a fresh look every leg."""
     rows=[reports[r] for r in robots]
     if not all(r and r.get('kind')=='localized_margin' for r in rows):
         return dict(action='observe',reason='global_pose_unobserved',t=now)
     if min(r['lateral_clearance_m'] for r in rows)<MARGIN_M:
+        if lateral_recovery == 'bounded_v1':
+            bounds = [(r.get('lateral_shift_lo_m'), r.get('lateral_shift_hi_m')) for r in rows]
+            if any(v is None or not math.isfinite(v) for pair in bounds for v in pair):
+                return dict(action='observe',reason='lateral_bounds_unobserved',t=now)
+            lo=max(p[0] for p in bounds); hi=min(p[1] for p in bounds)
+            if lo>hi:
+                return dict(action='observe',reason='lateral_bounds_disagree',t=now)
+            # Recenter the intersection rather than barely crossing a noisy
+            # threshold. A bounded leg must improve both robots' constraints.
+            shift=max(-MAX_LATERAL_SHIFT_M,min(MAX_LATERAL_SHIFT_M,(lo+hi)/2))
+            if (lo>0 and shift<=0) or (hi<0 and shift>=0):
+                return dict(action='observe',reason='lateral_direction_disagreement',t=now)
+            return dict(action='shift',shift_m=0.,lateral_shift_m=shift,
+                        lateral_interval_m=[lo,hi],reason='localized_lateral_correction',t=now)
         return dict(action='stop',reason='lateral_clearance_unresolved',t=now)
     margins=[r['margin_m'] for r in rows]
     shift=(margins[1]-margins[0])/2
@@ -61,6 +84,39 @@ def pair_choice(reports, robots, now):
         return dict(action='lower',reason='localized_margins_centered',t=now,margins_m=margins)
     return dict(action='shift',shift_m=max(-MAX_SHIFT_M,min(MAX_SHIFT_M,shift)),
                 reason='localized_margin_correction',t=now,margins_m=margins)
+
+
+def lateral_shift_plans(localizers, teachers, shift_m):
+    """Same map translation from each own RGB heading; shared 100 ms clock.
+
+    Invert the existing mecanum map with nominal command odometry. Native
+    magnitudes stay 0.35; per-wheel durations preserve the body-vector ratio.
+    The next set-down/sweep closes the loop on slip and nominal-rate error.
+    """
+    from sim.visible_belief import rates
+    from sim.grasp_act_release_teacher import check_wheels
+    ax,lat,_=rates(); required={}
+    if not math.isfinite(shift_m) or not 0<abs(shift_m)<=MAX_LATERAL_SHIFT_M+1e-9:
+        raise ValueError('bounded nonzero lateral displacement required')
+    for rid,teacher in teachers.items():
+        loc=localizers[rid]
+        if not (loc.decision or {}).get('accepted'):
+            raise ValueError('own RGB map pose required')
+        a=float(loc.own.x[2]); c,s=math.cos(a),math.sin(a)
+        _,_,hx,hy=teacher.zone_rect
+        dx,dy=(shift_m,0.) if hy>=hx else (0.,shift_m)
+        f=(c*dx+s*dy)/ax; l=(-s*dx+c*dy)/lat
+        required[rid]=[f-l,f+l,f+l,f-l]  # integrated wheel time at 0.35, yaw=0
+    periods=math.ceil(max(abs(v) for row in required.values() for v in row)/.1)
+    plans={}
+    for rid,row in required.items():
+        levels=[math.copysign(.35,v) if v else 0. for v in row]
+        durations=[abs(v)/periods for v in row]
+        if any(0<d<.04 for d in durations):
+            raise ValueError('lateral vector below effective native pulse window')
+        check_wheels(levels,durations)
+        plans[rid]=[(levels.copy(),durations.copy()) for _ in range(periods)]
+    return plans
 
 
 def recovery_script(localizer, teacher, stage, now):

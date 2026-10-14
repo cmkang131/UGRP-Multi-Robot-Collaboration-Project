@@ -92,6 +92,39 @@ def test_margins_use_own_camera_pose_and_messages_only(matcher):
     assert pair_choice({'r1':{**row,'margin_m':.4},'r2':{**row,'margin_m':.4}},('r1','r2'),0)['action']=='lower'
 
 
+def test_lateral_recovery_keeps_guard_and_rejects_conflicting_intervals():
+    robots=('r1','r2')
+    row=dict(kind='localized_margin',margin_m=.4,lateral_clearance_m=.025,
+             lateral_shift_lo_m=.015,lateral_shift_hi_m=.43)
+    reports=dict(r1=row,r2={**row,'lateral_shift_lo_m':.02})
+    assert pair_choice(reports,robots,0)['reason']=='lateral_clearance_unresolved'
+    choice=pair_choice(reports,robots,0,lateral_recovery='bounded_v1')
+    assert choice['action']=='shift' and choice['lateral_shift_m']==.1
+    assert choice['lateral_interval_m']==[.02,.43]
+    for other in ({**row,'lateral_shift_lo_m':-.4,'lateral_shift_hi_m':-.02},
+                  dict(kind='localized_margin',margin_m=.4,lateral_clearance_m=.03)):
+        assert pair_choice(dict(r1=row,r2=other),robots,0,lateral_recovery='bounded_v1')['action']=='observe'
+
+
+def test_lateral_pwm_is_same_world_translation_for_opposite_own_headings():
+    from sim.release_global_observation import lateral_shift_plans
+    from sim.visible_belief import odometry
+    angles=dict(r1=math.pi/2+.12,r2=-math.pi/2+.10)
+    locs={r:SimpleNamespace(own=SimpleNamespace(x=[0.,0.,a]),decision={'accepted':True}) for r,a in angles.items()}
+    teachers={r:SimpleNamespace(zone_rect=(4.6,.4,.3,.7)) for r in angles}
+    plans=lateral_shift_plans(locs,teachers,.1)
+    assert len(plans['r1'])==len(plans['r2'])
+    for rid,plan in plans.items():
+        got=np.zeros(3)
+        for levels,durations in plan:
+            assert all(.04<=d<=.1 for d in durations)
+            got+=odometry([w*d/.1 for w,d in zip(levels,durations)],.1)
+        a=angles[rid];c,s=math.cos(a),math.sin(a)
+        assert [c*got[0]-s*got[1],s*got[0]+c*got[1],got[2]]==pytest.approx([.1,0.,0.],abs=1e-10)
+    locs['r1'].decision={'accepted':False}
+    with pytest.raises(ValueError,match='own RGB'):lateral_shift_plans(locs,teachers,.1)
+
+
 def test_recovery_order_motion_bounds_and_no_blind_translation(matcher):
     from sim.grasp_act_release_teacher import ReleaseTeacher
     loc=SimpleNamespace(global_matcher=matcher,decision=dict(alternatives=[dict(pose=[4.6,-.5,math.pi/2])]))

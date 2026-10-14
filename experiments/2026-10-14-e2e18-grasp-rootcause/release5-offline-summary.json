@@ -1,0 +1,32 @@
+{
+  "scope": "offline only; no physics/render/model or remote execution",
+  "source_parent": "14ddb6ad33b7a86ad68eee0e5c98762a8771e14c",
+  "tests": {
+    "files": [
+      "tests/test_global_landmark_localization.py",
+      "tests/test_grasp_act_release_run.py"
+    ],
+    "passed": 20,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 10.54,
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_global_landmark_localization.py tests/test_grasp_act_release_run.py"
+  },
+  "replay": {
+    "runs": 7,
+    "baseline_success": 5,
+    "reconstructed_reports": 54,
+    "old_decisions_exact": 27,
+    "success_runs_unchanged": 5,
+    "failure_terminal_decisions_changed": 2,
+    "verified_files": 71,
+    "summary_sha256": "dc124b525930c538529d48377827dcde6c3c9f4e721a9fcd5772ddffc3a3bb03"
+  },
+  "source_hashes": {
+    "sim/release_global_observation.py": "58969520638ed00a916220763d9e5431f3a600bf03b4fce1555660c748ea1586",
+    "scripts/run_grasp_act_release.py": "222c167c5d058fcb44324bc5008b3661a287853d6270c9a96fd24ac1f14c54d0",
+    "tests/test_global_landmark_localization.py": "9415c0cd50f386d4c1af1157fddda932edf220881c71e3da92265b4f440bce87",
+    "tests/test_grasp_act_release_run.py": "9510743d70d9de4d23713eabade1e78ccff40168bc97322e8a2b716682af4599"
+  },
+  "remote_physical_success": "unmeasured; diagnostic queue only"
+}
