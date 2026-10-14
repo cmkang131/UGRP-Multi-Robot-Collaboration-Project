@@ -33,3 +33,5 @@
 
 - 교사 재사용: `scripts/zone_teacher.py:_drive_to/_grasp_targets`, `experiments/2026-09-25-zone-cargo-catalogue/README.md`. 옛 pair_beam 52.3 SIM초는 seed11 빈 바닥·구형 구동·local_contact_fine의 전체 이송 1/1이며 현재 무작위 v7 파지 성공으로 승계하지 않는다.
 - [WPILib feedforward 공식 문서](https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/feedforward.html), 2026-10-14 열람: kS 마찰 보상과 단위 일치. 본 v7 relay 대응은 고정 시뮬레이터 명령 모델에서 도출한 포트 보상이며 WPILib를 그대로 설치한 것이나 실물 보정 완료가 아니다.
+
+- 13:15 재확인: [MoveIt Grasps 공식 문서](https://moveit.picknik.ai/main/doc/examples/moveit_grasps/moveit_grasps_tutorial.html)의 전체 접근/들기 IK 검사를 기존 v3 solver로 수행한다. [WPILib PID 공식 문서](https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/pidcontroller.html)의 일정 주기 적분·적분 출력 제한을 참고해 기존 정렬 P 항에 제한된 I 항을 더한다. seed71003은 13.5mm/0.54도에서도 지면 IK 불가였고 0.1mm 더 가까우면 PWM5=2500에서 가능했다. 3cm 바깥 기준만으로 팔 도달 여유를 보장하지 않으며 물리/관절 한도는 바꾸지 않는다. 이 후보의 물리 검증은 아직 전이다.

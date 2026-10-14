@@ -29,6 +29,17 @@ def local(pose, point):
     return c*dx+s*dy,-s*dx+c*dy
 
 
+def grasp_poses(target):
+    """Existing pad IK for the entire Cartesian descent and lift."""
+    x,y,z=target
+    grip=solve_grip_site_ik(target)
+    pitch=tool_pose(grip).pitch_deg
+    hover=solve_grip_site_ik((x,y,.095),preferred_pitch_deg=pitch)
+    descent=[solve_grip_site_ik((x,y,.095+(z-.095)*i/8),preferred_pitch_deg=pitch)
+             for i in range(1,9)]
+    return hover,descent
+
+
 class IssuedArm:
     """ArmSequence sink: records commands without reading a robot."""
     def __init__(self, pwm):
@@ -52,6 +63,8 @@ class GraspTeacher:
         self.grasp_xyz=None;self.initial_end_z=None;self.started=False
         self.staging_distance=STATION_M
         self.planner_calls=0;self.no_path_calls=0;self.phase_durations={}
+        self.align_integral=[0.,0.,0.];self.align_t=None
+        self.ik_rejections=0;self.last_ik_error=None
 
     def _set(self,phase,now):
         self.phase_durations[self.phase]=self.phase_durations.get(self.phase,0.)+now-self.phase_t
@@ -106,30 +119,35 @@ class GraspTeacher:
         # Reachability is checked before ready, not assumed from chassis error.
         reachable=True
         try:
-            solve_grip_site_ik((gx,gy,g[2]))
-            solve_grip_site_ik((gx,gy,.095))
-        except ValueError:reachable=False
+            grasp_poses((gx,gy,g[2]))
+        except ValueError as error:
+            reachable=False;self.ik_rejections+=1;self.last_ik_error=str(error)
         if abs(ea)<=YAW_TOL_RAD and math.dist(pose[:2],goal)<=XY_TOL_M and reachable:
             self.stable_since=now if self.stable_since is None else self.stable_since
+            self.align_integral=[0.,0.,0.];self.align_t=now
             return self._hold(now),now-self.stable_since>=.3
         self.stable_since=None
-        # Original zone_teacher._align proportional law; retain current v3 IK.
+        # Retain zone_teacher._align P terms. Native wheel/contact resistance
+        # left a steady error just outside the physical IK envelope. Bounded
+        # integral action removes that residual without changing the port or
+        # physics. Clamp the integral contribution (anti-windup), reset at rest.
         clip=lambda v,lo,hi:max(lo,min(hi,v))
-        return self._continuous(now,clip(.9*ex,-.05,.08),clip(.9*ey,-.06,.06),clip(.8*ea,-.10,.10)),False
+        dt=0. if self.align_t is None else clip(now-self.align_t,0.,.2)
+        self.align_t=now
+        for i,(error,gain,limit) in enumerate(zip((ex,ey,ea),(.45,.45,.4),(.025,.025,.03))):
+            self.align_integral[i]=clip(self.align_integral[i]+gain*error*dt,-limit,limit)
+        return self._continuous(now,clip(.9*ex+self.align_integral[0],-.05,.08),
+            clip(.9*ey+self.align_integral[1],-.06,.06),clip(.8*ea+self.align_integral[2],-.10,.10)),False
 
     def _queue_pick(self,truth,now):
         pose=truth['robots'][self.rid]['pose'];g=truth['beam']['ends'][self.end]
         x,y=local(pose,g);self.grasp_xyz=(x,y,g[2]);self.initial_end_z=g[2]
-        grip=solve_grip_site_ik(self.grasp_xyz)
-        pitch=tool_pose(grip).pitch_deg
-        hover=solve_grip_site_ik((x,y,.095),preferred_pitch_deg=pitch)
+        hover,descent=grasp_poses(self.grasp_xyz)
         self.arm.queue({**hover,1:2000},now,duration=1.)
-        for i in range(1,9):
-            z=.095+(g[2]-.095)*i/8
-            self.arm.queue(solve_grip_site_ik((x,y,z),preferred_pitch_deg=pitch),now,duration=.15,settle=.04)
+        for pose in descent:
+            self.arm.queue(pose,now,duration=.15,settle=.04)
         self.arm.queue({1:1500},now,duration=.8,settle=.5)
-        lift=solve_grip_site_ik((x,y,.095),preferred_pitch_deg=pitch)
-        self.arm.queue(lift,now,duration=1.2,settle=.5)
+        self.arm.queue(hover,now,duration=1.2,settle=.5)
         self._set('pick',now)
 
     def step(self,truth,now,*,permit_pick=True):
@@ -167,4 +185,6 @@ class GraspTeacher:
         return {'phase':self.phase,'outcome':self.outcome,'events':deepcopy(self.events),
                 'staging_distance_m':self.staging_distance,'phase_sim_s':self.phase_durations,
                 'planner_calls':self.planner_calls,'no_path_calls':self.no_path_calls,
+                'ik_rejections':self.ik_rejections,'last_ik_error':self.last_ik_error,
+                'alignment_integral':list(self.align_integral),
                 'scope':'privileged_teacher_only; single-end lift is not whole-beam lift'}

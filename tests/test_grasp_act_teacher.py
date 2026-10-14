@@ -95,6 +95,34 @@ def test_coarse_tracking_hands_to_alignment_before_stiction_stop_band():
     assert t.phase=='align' and a['drive'][1]>.08 and not done
 
 
+def test_ik_boundary_stagnation_does_not_keep_constant_subthreshold_command():
+    # Saved seed71003: within 3cm/0.06rad but ground IK has no solution.
+    t=GraspTeacher('r1','teal',FOLDED,bounds=(-3,3,-3,3));t.started=True;t.phase='align'
+    x=truth([0.,0.,0.]);x['beam']['pose'][2]=-.0094
+    x['beam']['ends']['teal']=[.2090742657,-.0139289398,.0238922446]
+    first,_=t.step(x,0.,permit_pick=False)
+    for k in range(1,101):last,done=t.step(x,k*.1,permit_pick=False);command(last)
+    assert not done and t.phase=='align' and t.ik_rejections==101
+    assert abs(last['drive'][1])>abs(first['drive'][1])
+    assert all(abs(v)<=bound for v,bound in zip(t.align_integral,(.025,.025,.03)))
+    # Once the whole descent is reachable, integral action is reset at rest.
+    x['beam']['pose'][2]=0.;x['beam']['ends']['teal']=[.203,0.,.024]
+    t.step(x,10.1,permit_pick=False)
+    assert t.align_integral==[0.,0.,0.]
+
+
+def test_intermediate_descent_ik_is_checked_before_ready(monkeypatch):
+    import sim.grasp_act_teacher as module
+    original=module.solve_grip_site_ik
+    def blocked(target,**kwargs):
+        if .05<target[2]<.08:raise ValueError('interior trajectory unreachable')
+        return original(target,**kwargs)
+    monkeypatch.setattr(module,'solve_grip_site_ik',blocked)
+    t=GraspTeacher('r1','teal',FOLDED,bounds=(-3,3,-3,3));t.started=True;t.phase='align'
+    for now in (0.,.1,.5):t.step(truth([.527,0.,0.]),now,permit_pick=False)
+    assert t.phase=='align' and t.last_ik_error=='interior trajectory unreachable'
+
+
 def test_stop_command_stops_wheels_without_cancelling_arm():
     from scripts.run_grasp_act_teacher import apply
     from types import SimpleNamespace
@@ -102,3 +130,27 @@ def test_stop_command_stops_wheels_without_cancelling_arm():
     c={'t':0.,'drive':[0.,0.,0.],'duration_s':0.,'pwm':{str(k):v for k,v in FOLDED.items()}}
     apply(port,c,0.,c)
     assert calls==['stop']
+
+
+def test_resume_preserves_completed_failures_and_rejects_tampered_evidence(tmp_path):
+    import json,hashlib,pytest
+    from scripts.run_grasp_act_batch import resume_rows
+    def write(path,value):path.write_text(json.dumps(value))
+    prior=tmp_path/'prior';prior.mkdir();plan=tmp_path/'plan.json'
+    write(plan,{'episodes':[{'seed':1},{'seed':2}]})
+    write(prior/'RUN_META.json',{'sha':'fixed'})
+    write(prior/'resource-admission.json',{'plan_sha256':hashlib.sha256(plan.read_bytes()).hexdigest()})
+    write(prior/'speed-gate.json',{'admitted':True,'completed':16,'median_wall_per_sim':2.5})
+    ep=prior/'episode-000';ep.mkdir();raw=ep/'raw';raw.mkdir()
+    write(raw/'result.json',{'status':'complete','physical_success':False});write(raw/'plan.json',{'seed':1})
+    write(raw/'manifest.json',{});(ep/'EXIT').write_text('0\n')
+    row={'index':0,'raw':str(raw),'status':'complete','exit':0,'physical_success':False,
+         'result_sha256':hashlib.sha256((raw/'result.json').read_bytes()).hexdigest()}
+    write(prior/'teacher-gate.json',{'rows':[row,{'index':1,'status':'interrupted','exit':130}]})
+    rows,_=resume_rows(prior,plan,'fixed',16,3.5)
+    assert rows==[row] and rows[0]['physical_success'] is False
+    with pytest.raises(ValueError,match='identical source'):resume_rows(prior,plan,'changed',16,3.5)
+    write(prior/'teacher-gate.json',{'rows':[row,row]})
+    with pytest.raises(ValueError,match='duplicate'):resume_rows(prior,plan,'fixed',16,3.5)
+    write(prior/'teacher-gate.json',{'rows':[row]});write(raw/'result.json',{'physical_success':True})
+    with pytest.raises(ValueError,match='hash mismatch'):resume_rows(prior,plan,'fixed',16,3.5)

@@ -23,6 +23,34 @@ def summarize(rows,planned):
         'interrupted':sum(r.get('status')=='interrupted' or r.get('exit') in (-2,130) for r in rows),'rows':rows}
 
 
+def resume_rows(prior,plan,source_sha,concurrency,limit):
+    """Resume only after an operator has classified a stopped wave.
+
+    No success is manufactured for an interrupted child. Completed rows must
+    have original exit/result records and an identical source and frozen plan.
+    """
+    meta=read(prior/'RUN_META.json');admission=read(prior/'resource-admission.json')
+    speed=read(prior/'speed-gate.json');gate=read(prior/'teacher-gate.json')
+    if meta.get('sha')!=source_sha or admission.get('plan_sha256')!=hashlib.sha256(plan.read_bytes()).hexdigest():
+        raise ValueError('resume requires identical source and plan')
+    if not speed.get('admitted') or speed.get('completed')!=concurrency or speed.get('median_wall_per_sim',float('inf'))>limit:
+        raise ValueError('resume requires completed same-concurrency speed gate')
+    if not isinstance(gate.get('rows'),list):raise ValueError('finalized prior wave required')
+    seen=set();rows=[];episodes=read(plan)['episodes']
+    for row in gate['rows']:
+        if row.get('status')!='complete' or row.get('exit')!=0:continue
+        i=row['index'];raw=Path(row['raw'])
+        if i in seen or not 0<=i<len(episodes):raise ValueError('duplicate or invalid completed index')
+        if hashlib.sha256((raw/'result.json').read_bytes()).hexdigest()!=row['result_sha256']:
+            raise ValueError('completed result hash mismatch')
+        if read(raw/'plan.json')!=episodes[i] or (raw.parent/'EXIT').read_text().strip()!='0':
+            raise ValueError('completed episode provenance mismatch')
+        if not any((raw/n).is_file() for n in ('manifest.json','manifest.json.zst')):
+            raise ValueError('completed episode finalization missing')
+        seen.add(i);rows.append(row)
+    return rows,speed
+
+
 def wave(root,plan,indices,cap,*,probe,limit):
     jobs=[];reason=None;rows=[];monitored=0.;started=time.monotonic()
     parent=read(root.parents[0]/'RUN_META.json')
@@ -83,7 +111,8 @@ def wave(root,plan,indices,cap,*,probe,limit):
 def main():
     p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--plan',type=Path,required=True)
     p.add_argument('--concurrency',type=int,default=16);p.add_argument('--speed-gate-limit',type=float,default=3.5)
-    p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true');a=p.parse_args()
+    p.add_argument('--cap-s',type=float,default=60.);p.add_argument('--probe-only',action='store_true')
+    p.add_argument('--resume-from',type=Path);a=p.parse_args()
     root=a.root.resolve();require_azure(root);plan=a.plan.resolve();episodes=read(plan)['episodes']
     if not 1<=a.concurrency<=16 or len(episodes)<a.concurrency:raise ValueError('explicit 1..16 concurrency and enough plans required')
     if not 0<a.cap_s<=180:raise ValueError('finite simulation cap required')
@@ -92,18 +121,27 @@ def main():
     if available<6*1024**2+a.concurrency*512*1024:raise ValueError('AZURE_MEMORY_ADMISSION')
     write(root/'resource-admission.json',{'loadavg':os.getloadavg(),'memory_available_kib':available,
         'plan_sha256':hashlib.sha256(plan.read_bytes()).hexdigest(),'concurrency':a.concurrency})
-    rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit)
-    samples=[{'sim_s':r.get('sim_s'),'wall_s':r.get('wall_s'),'exit':r['exit'],
-        'expected_stop':r.get('status')=='complete' and r.get('sim_s',0)>=30-1e-6,
-        'finalization_complete':any((Path(r['raw'])/name).is_file() for name in ('manifest.json','manifest.json.zst')),'finalization_errors':[],
-        'raw':r['raw']} for r in rows]
-    gate=verdict(samples,a.concurrency,a.speed_gate_limit)
-    if reason:gate.update(status='SPEED_GATE_FAIL',admitted=False,reason=reason)
+    all_rows=[]
+    if a.resume_from:
+        if a.probe_only:raise ValueError('cannot resume a diagnostic as a cohort')
+        source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+        all_rows,gate=resume_rows(a.resume_from.resolve(),plan,source_sha,a.concurrency,a.speed_gate_limit)
+        write(root/'resume.json',{'prior':str(a.resume_from.resolve()),'completed_indices':[r['index'] for r in all_rows],
+            'prior_gate_sha256':hashlib.sha256((a.resume_from/'teacher-gate.json').read_bytes()).hexdigest()})
+    else:
+        rows,reason=wave(root/'speed',plan,range(a.concurrency),30.,probe=True,limit=a.speed_gate_limit)
+        samples=[{'sim_s':r.get('sim_s'),'wall_s':r.get('wall_s'),'exit':r['exit'],
+            'expected_stop':r.get('status')=='complete' and r.get('sim_s',0)>=30-1e-6,
+            'finalization_complete':any((Path(r['raw'])/name).is_file() for name in ('manifest.json','manifest.json.zst')),'finalization_errors':[],
+            'raw':r['raw']} for r in rows]
+        gate=verdict(samples,a.concurrency,a.speed_gate_limit)
+        if reason:gate.update(status='SPEED_GATE_FAIL',admitted=False,reason=reason)
     write(root/'speed-gate.json',gate)
     if not gate['admitted'] or a.probe_only:return
-    all_rows=[]
-    for start in range(0,len(episodes),a.concurrency):
-        rows,reason=wave(root/f'cohort-{start:03d}',plan,range(start,min(start+a.concurrency,len(episodes))),a.cap_s,probe=False,limit=a.speed_gate_limit)
+    completed={r['index'] for r in all_rows};remaining=[i for i in range(len(episodes)) if i not in completed]
+    for start in range(0,len(remaining),a.concurrency):
+        indices=remaining[start:start+a.concurrency]
+        rows,reason=wave(root/f'cohort-{indices[0]:03d}',plan,indices,a.cap_s,probe=False,limit=a.speed_gate_limit)
         all_rows.extend(rows);write(root/'teacher-gate.json',summarize(all_rows,len(episodes)))
         if reason:break
 
