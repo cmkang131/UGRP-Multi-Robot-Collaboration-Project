@@ -1,0 +1,452 @@
+{
+  "scope": "Same stored pixels/detections and issued wheels, sign-corrected registration ONLY. New inverse turns change images; no new success claim.",
+  "unchanged_nonrotating_robot_runs": [
+    {
+      "seed": 74960,
+      "robot": "r1",
+      "ticks": 399
+    },
+    {
+      "seed": 74960,
+      "robot": "r2",
+      "ticks": 399
+    },
+    {
+      "seed": 74961,
+      "robot": "r1",
+      "ticks": 393
+    },
+    {
+      "seed": 74961,
+      "robot": "r2",
+      "ticks": 393
+    },
+    {
+      "seed": 74962,
+      "robot": "r1",
+      "ticks": 846
+    },
+    {
+      "seed": 74962,
+      "robot": "r2",
+      "ticks": 846
+    },
+    {
+      "seed": 74964,
+      "robot": "r1",
+      "ticks": 1072
+    },
+    {
+      "seed": 74964,
+      "robot": "r2",
+      "ticks": 1072
+    },
+    {
+      "seed": 74965,
+      "robot": "r1",
+      "ticks": 855
+    },
+    {
+      "seed": 74965,
+      "robot": "r2",
+      "ticks": 855
+    },
+    {
+      "seed": 74966,
+      "robot": "r1",
+      "ticks": 1075
+    },
+    {
+      "seed": 74966,
+      "robot": "r2",
+      "ticks": 1075
+    }
+  ],
+  "first_rotating_sweep": [
+    {
+      "seed": 74963,
+      "robot": "r1",
+      "t": 72.90000000000411,
+      "input_count": 25,
+      "decision": {
+        "accepted": true,
+        "reason": "global_consensus",
+        "lines": 34,
+        "views_with_evidence": 14,
+        "prior_used": false,
+        "method": "exhaustive_line_consensus_huber",
+        "hypotheses": 1087,
+        "proposed": [
+          4.878245125101194,
+          1.2416424388625962,
+          -1.4517798983059422
+        ],
+        "inliers": 12,
+        "inlier_views": 7,
+        "groups": [
+          "wall_east:30",
+          "wall_north:16",
+          "zone_A:4",
+          "zone_A:6",
+          "zone_A:7",
+          "zone_C:13"
+        ],
+        "normal_rank": 2,
+        "score": 9.264442464107969,
+        "score_gap": 1.3283950835375773,
+        "normalized_inlier_rms": 1.1936371098218108,
+        "inlier_segment_rms_m": 0.037925723599142716,
+        "inlier_normal_rms_deg": 3.6255835077600342,
+        "alternatives": [
+          {
+            "pose": [
+              4.878245125101194,
+              1.2416424388625962,
+              -1.4517798983059422
+            ],
+            "score": 9.264442464107969,
+            "inliers": 12
+          },
+          {
+            "pose": [
+              4.8660214197983915,
+              1.2276537849348197,
+              -1.6771816957173662
+            ],
+            "score": 7.9360473805703915,
+            "inliers": 10
+          },
+          {
+            "pose": [
+              5.033085272125416,
+              0.5304909162931463,
+              -3.058928209764574
+            ],
+            "score": 7.260926378510807,
+            "inliers": 9
+          },
+          {
+            "pose": [
+              4.315230724535899,
+              -0.4486181713216324,
+              1.6710596270718128
+            ],
+            "score": 5.7181283176871105,
+            "inliers": 7
+          }
+        ],
+        "credible_hypotheses": [
+          {
+            "pose": [
+              4.878245125101194,
+              1.2416424388625962,
+              -1.4517798983059422
+            ],
+            "score": 9.264442464107969
+          }
+        ],
+        "sigma": [
+          0.05,
+          0.05,
+          0.05235987755982989
+        ],
+        "coordinate_frame": "map"
+      },
+      "error_xy_m": 0.02294476664232855,
+      "error_yaw_deg": 6.078120897392956,
+      "original_accepted": true,
+      "original_error_xy_m": 0.02442891696077015,
+      "original_error_yaw_deg": -173.4400014941951
+    },
+    {
+      "seed": 74963,
+      "robot": "r2",
+      "t": 72.90000000000411,
+      "input_count": 25,
+      "decision": {
+        "accepted": false,
+        "reason": "ambiguous_global_landmarks",
+        "lines": 47,
+        "views_with_evidence": 18,
+        "prior_used": false,
+        "method": "exhaustive_line_consensus_huber",
+        "hypotheses": 3220,
+        "proposed": [
+          4.729231722155385,
+          0.5265202009303888,
+          1.555254199473831
+        ],
+        "inliers": 15,
+        "inlier_views": 11,
+        "groups": [
+          "pickup:1",
+          "wall_east:30",
+          "wall_north:16",
+          "zone_A:5"
+        ],
+        "normal_rank": 2,
+        "score": 12.856404926462062,
+        "score_gap": 0.42231165012338323,
+        "normalized_inlier_rms": 0.945073866940643,
+        "inlier_segment_rms_m": 0.030498298706349264,
+        "inlier_normal_rms_deg": 2.792056697067486,
+        "alternatives": [
+          {
+            "pose": [
+              4.729231722155385,
+              0.5265202009303888,
+              1.555254199473831
+            ],
+            "score": 12.856404926462062,
+            "inliers": 15
+          },
+          {
+            "pose": [
+              4.726281647320849,
+              0.25056890392927345,
+              1.564232491244142
+            ],
+            "score": 12.434093276338679,
+            "inliers": 14
+          },
+          {
+            "pose": [
+              4.730487149673108,
+              0.023369,
+              1.557994358132676
+            ],
+            "score": 10.620289536349274,
+            "inliers": 13
+          },
+          {
+            "pose": [
+              4.725825883243599,
+              -0.5752603080165061,
+              1.5627293852319062
+            ],
+            "score": 10.552397725464903,
+            "inliers": 12
+          }
+        ],
+        "credible_hypotheses": [
+          {
+            "pose": [
+              4.729231722155385,
+              0.5265202009303888,
+              1.555254199473831
+            ],
+            "score": 12.856404926462062
+          },
+          {
+            "pose": [
+              4.726281647320849,
+              0.25056890392927345,
+              1.564232491244142
+            ],
+            "score": 12.434093276338679
+          }
+        ],
+        "sigma": [
+          0.05,
+          0.05,
+          0.05235987755982989
+        ],
+        "coordinate_frame": "map"
+      },
+      "error_xy_m": 0.2741975668825029,
+      "error_yaw_deg": 4.769338928283698,
+      "original_accepted": true,
+      "original_error_xy_m": 0.013466888649999434,
+      "original_error_yaw_deg": -174.47941662622728
+    },
+    {
+      "seed": 74940,
+      "robot": "r1",
+      "t": 72.90000000000411,
+      "input_count": 13,
+      "decision": {
+        "accepted": true,
+        "reason": "global_consensus",
+        "lines": 32,
+        "views_with_evidence": 13,
+        "prior_used": false,
+        "method": "exhaustive_line_consensus_huber",
+        "hypotheses": 1098,
+        "proposed": [
+          4.878200409191393,
+          0.02507219980551828,
+          1.7152357398781353
+        ],
+        "inliers": 13,
+        "inlier_views": 11,
+        "groups": [
+          "wall_east:30",
+          "wall_north:16",
+          "zone_A:5",
+          "zone_A:7",
+          "zone_C:13"
+        ],
+        "normal_rank": 2,
+        "score": 12.841459431154565,
+        "score_gap": 3.8934033078685495,
+        "normalized_inlier_rms": 0.27608228362127096,
+        "inlier_segment_rms_m": 0.008695994304297749,
+        "inlier_normal_rms_deg": 0.8508632269906767,
+        "alternatives": [
+          {
+            "pose": [
+              4.878200409191393,
+              0.02507219980551828,
+              1.7152357398781353
+            ],
+            "score": 12.841459431154565,
+            "inliers": 13
+          },
+          {
+            "pose": [
+              3.976598987767405,
+              -2.622960786989347,
+              0.14590984189476938
+            ],
+            "score": 8.948056123286015,
+            "inliers": 9
+          },
+          {
+            "pose": [
+              2.727039213004019,
+              -1.7265989877894432,
+              -1.424886484869307
+            ],
+            "score": 8.94805612327681,
+            "inliers": 9
+          },
+          {
+            "pose": [
+              0.3734010121685388,
+              0.9229607870009784,
+              -2.9956828116533476
+            ],
+            "score": 8.94805612327357,
+            "inliers": 9
+          }
+        ],
+        "credible_hypotheses": [
+          {
+            "pose": [
+              4.878200409191393,
+              0.02507219980551828,
+              1.7152357398781353
+            ],
+            "score": 12.841459431154565
+          }
+        ],
+        "sigma": [
+          0.05,
+          0.05,
+          0.05235987755982989
+        ],
+        "coordinate_frame": "map"
+      },
+      "error_xy_m": 0.020737824274548382,
+      "error_yaw_deg": 0.7074671064972003,
+      "original_accepted": true,
+      "original_error_xy_m": 0.020737824439107044,
+      "original_error_yaw_deg": 0.7074670967282921
+    },
+    {
+      "seed": 74940,
+      "robot": "r2",
+      "t": 72.90000000000411,
+      "input_count": 25,
+      "decision": {
+        "accepted": true,
+        "reason": "global_consensus",
+        "lines": 31,
+        "views_with_evidence": 14,
+        "prior_used": false,
+        "method": "exhaustive_line_consensus_huber",
+        "hypotheses": 1315,
+        "proposed": [
+          4.716766216603909,
+          1.1520809931257119,
+          -1.4666578458402364
+        ],
+        "inliers": 14,
+        "inlier_views": 11,
+        "groups": [
+          "wall_east:30",
+          "wall_north:16",
+          "zone_A:5",
+          "zone_A:6",
+          "zone_A:7"
+        ],
+        "normal_rank": 2,
+        "score": 9.905325611335927,
+        "score_gap": 3.0786933504121308,
+        "normalized_inlier_rms": 1.3520279722684962,
+        "inlier_segment_rms_m": 0.038585817805002316,
+        "inlier_normal_rms_deg": 4.736662334904026,
+        "alternatives": [
+          {
+            "pose": [
+              4.716766216603909,
+              1.1520809931257119,
+              -1.4666578458402364
+            ],
+            "score": 9.905325611335927,
+            "inliers": 14
+          },
+          {
+            "pose": [
+              4.726645353773833,
+              0.46280720952446947,
+              -1.4941896547112417
+            ],
+            "score": 6.826632260923796,
+            "inliers": 9
+          },
+          {
+            "pose": [
+              1.5109575219100237,
+              1.153433776032426,
+              -1.4583138754993215
+            ],
+            "score": 6.0512497508608325,
+            "inliers": 8
+          },
+          {
+            "pose": [
+              2.889042478136112,
+              -2.8534337760294277,
+              1.683278778291643
+            ],
+            "score": 6.051249750541313,
+            "inliers": 8
+          }
+        ],
+        "credible_hypotheses": [
+          {
+            "pose": [
+              4.716766216603909,
+              1.1520809931257119,
+              -1.4666578458402364
+            ],
+            "score": 9.905325611335927
+          }
+        ],
+        "sigma": [
+          0.05,
+          0.05,
+          0.05235987755982989
+        ],
+        "coordinate_frame": "map"
+      },
+      "error_xy_m": 0.02485124375203894,
+      "error_yaw_deg": -2.728046171956477,
+      "original_accepted": false,
+      "original_error_xy_m": 0.009451216470990386,
+      "original_error_yaw_deg": -1.5084394412182685
+    }
+  ],
+  "matcher_source_sha256": "6c0764424ce0b670b220e0e4c5fd68c83de47c428c790cdb115a356d66f76ee9"
+}

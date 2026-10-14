@@ -259,13 +259,13 @@ class LookaroundLocalizer:
         steps.append({'servo': look_servo((first-1500)*PAN_DEG_PER_PULSE, self.arm), 'wait': ARM_MOVE_S, 'capture': False, 'label': 'arm_to_look'})
         for v in views:
             if v['body_yaw_deg'] != yaw_now:
-                steps.append({'wheels': rotate_plan(math.radians(v['body_yaw_deg']-yaw_now)), 'wait': .3, 'capture': False,
+                steps.append({'wheels': rotate_plan(math.radians(v['body_yaw_deg']-yaw_now), self.profile), 'wait': .3, 'capture': False,
                               'label': f"rotate_{v['body_yaw_deg']:+.0f}"})
                 yaw_now = v['body_yaw_deg']
             steps.append({'servo': look_servo(v['pan_deg'], self.arm), 'wait': VIEW_SETTLE_S, 'capture': True,
                           'label': f"view_{v['body_yaw_deg']:+.0f}_{v['pan_deg']:+.0f}"})
         if yaw_now:
-            steps.append({'wheels': rotate_plan(math.radians(-yaw_now)), 'wait': .3, 'capture': False, 'label': 'rotate_back'})
+            steps.append({'wheels': rotate_plan(math.radians(-yaw_now), self.profile), 'wait': .3, 'capture': False, 'label': 'rotate_back'})
         if restore:    # v2: back to the exact pre-look arm pose, so what follows starts as without the look
             steps.append({'servo': dict(restore), 'wait': ARM_MOVE_S, 'capture': False, 'label': 'restore_arm'})
         return steps
@@ -508,10 +508,13 @@ def wall_loglik(field, px, points, sigmas=None):
     return out
 
 
-def rotate_plan(angle):
+def rotate_plan(angle, odometry_profile='off'):
     """In-place rotation by own wheel pulses (mix t = (-w0+w1-w2+w3)/4), duty 0.35, pulses <= 0.15 s."""
-    level = WHEEL if angle > 0 else -WHEEL
-    remaining = abs(angle)/YAW_RATE_RAD_S; plan = []
+    from sim.visible_belief import rates
+    rates(odometry_profile)  # reject unknown profiles; preserve older planners
+    rate = -YAW_RATE_RAD_S if odometry_profile == 'native_yaw_v1' else YAW_RATE_RAD_S
+    level = WHEEL if angle/rate > 0 else -WHEEL
+    remaining = abs(angle/rate); plan = []
     while remaining > 1e-6:
         on = min(.1, remaining); plan.append(([-level, level, -level, level], [min(PULSE_MAX_S, on)]*4)); remaining -= on
     if plan and plan[-1][1][0] < .04:

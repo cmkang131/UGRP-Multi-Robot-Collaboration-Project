@@ -75,7 +75,7 @@ Unknown clearance fails closed. Rotation always happens with the arm folded.
     for heading in (-90., 90.):
         steps.append(dict(servo=look_servo(0., LOOK_ARM_V2), wait=1., capture=False,
                           label='setdown_fold_before_turn'))
-        steps.append(dict(wheels=rotate_plan(math.radians(heading-yaw)), wait=.3,
+        steps.append(dict(wheels=rotate_plan(math.radians(heading-yaw), localizer.profile), wait=.3,
                           capture=False, label=f'setdown_turn_{heading:+.0f}'))
         yaw = heading
         for arm, name in ((LOOK_ARM_V2, 'surroundings'), (LOOK_ARM, 'floor')):
@@ -84,7 +84,7 @@ Unknown clearance fails closed. Rotation always happens with the arm folded.
                                   label=f'setdown_view_{heading:+.0f}_{name}_{pan:+.0f}'))
     steps.extend([
         dict(servo=look_servo(0., LOOK_ARM_V2), wait=1., capture=False, label='setdown_fold_before_return'),
-        dict(wheels=rotate_plan(math.radians(-yaw)), wait=.3, capture=False, label='setdown_turn_return'),
+        dict(wheels=rotate_plan(math.radians(-yaw), localizer.profile), wait=.3, capture=False, label='setdown_turn_return'),
         dict(servo=restore, wait=1., capture=False, label='restore_arm')])
     return steps, dict(entry, action=OPTION, retrace_m=BACKSTEP_M, body_headings_deg=[-90., 90.],
                        capture_count=12, hypothesis_count=len(poses), all_retained_hypotheses_clear=True,

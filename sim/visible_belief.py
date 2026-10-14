@@ -28,6 +28,12 @@ YAW_RAD_PER_S_AT_035 = .35        # replaced by the yaw probe measurement when a
 ODOMETRY_PROFILES = {
     'off': (AXIAL_M_PER_S_AT_035, LATERAL_M_PER_S_AT_035, YAW_RAD_PER_S_AT_035),
     'gcp_probe_v1': (AXIAL_M_PER_S_AT_035, .123, .588),
+    # Native v7 wheel order: (-,+,-,+) turns clockwise in the map's
+    # counterclockwise-positive SE(2) frame. release8 verifies this in all
+    # 36 rotated captures of the three stored unloaded panoramas. Correct
+    # the coordinate convention only; do NOT fit a speed to these failures.
+    # Legacy reduced-wrench and pair-carry calibration profiles stay frozen.
+    'native_yaw_v1': (AXIAL_M_PER_S_AT_035, LATERAL_M_PER_S_AT_035, -YAW_RAD_PER_S_AT_035),
 }
 
 

@@ -146,7 +146,7 @@ def script(localizer, teacher, now, *, used=()):
                           wait=.3, capture=False, label='nbv_backstep'))
     yaw = math.radians(selected['body_yaw_deg'])
     if yaw:
-        steps.append(dict(wheels=rotate_plan(yaw), wait=.3, capture=False, label='nbv_turn'))
+        steps.append(dict(wheels=rotate_plan(yaw, localizer.profile), wait=.3, capture=False, label='nbv_turn'))
     last_pan = 0.
     for v in selected['views']:
         arm = LOOK_ARM_V2 if v['arm'] == 'surroundings' else LOOK_ARM
@@ -156,6 +156,6 @@ def script(localizer, teacher, now, *, used=()):
                           label=f"nbv_{v['arm']}_{v['pan_deg']:+.0f}"))
         last_pan = v['pan_deg']
     if yaw:
-        steps.append(dict(wheels=rotate_plan(-yaw), wait=.3, capture=False, label='nbv_turn_return'))
+        steps.append(dict(wheels=rotate_plan(-yaw, localizer.profile), wait=.3, capture=False, label='nbv_turn_return'))
     steps.append(dict(servo=restore, wait=1., capture=False, label='restore_arm'))
     return steps, dict(action='map_nbv', t=now, **selected)

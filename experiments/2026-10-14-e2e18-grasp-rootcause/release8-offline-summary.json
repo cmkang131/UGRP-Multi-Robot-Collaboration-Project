@@ -1,0 +1,831 @@
+{
+  "parent_sha": "a2314b16d6d3c52d843fbde59fe7bda4eb8273bf",
+  "tests": {
+    "files": [
+      "tests/test_release_setdown_lookaround.py",
+      "tests/test_release_nbv_observation.py",
+      "tests/test_grasp_act_release_run.py"
+    ],
+    "passed": 34,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 24.039,
+    "junit_local": "outputs/release8-review/tests.xml",
+    "junit_sha256": "173c1a10aaa79f7fc76032c52430ccd107171b9e47f36c622f55344b1aaffae3"
+  },
+  "source_hashes": {
+    "scripts/run_grasp_act_release.py": "66563afca8d2d0a8acb4e0fc4a1ed30feb092ef765c43ef5133edd4c42fedd9c",
+    "sim/grasp_act_release_teacher.py": "ed81c8bbf7a6765158fd811035c9db74002e22067139b6ffc93fd79c2544b73b",
+    "sim/lookaround_localization.py": "3ad175fd9f488cce0ba8459da12afbf85057235ebc5df1534ba5d2db3b519006",
+    "sim/release_global_observation.py": "4fb8f11422cb45a39961aac6e2bfca6e2654c214a1ac92ed050a02a8bfcacd93",
+    "sim/release_nbv_observation.py": "ec6e28df5e86d39b7c58117762dd53b0c198be1fe178476fcb14154def780961",
+    "sim/release_setdown_lookaround.py": "189f129a81f694ab812433b325c1ea2065c373715209b451bab2e9ad438413b5",
+    "sim/visible_belief.py": "41b4f213f0f1707207bcaffb0a786a007597d3aa84f71c8e2204af68d07ad6c4",
+    "tests/test_grasp_act_release_run.py": "6edab3dd43c7ccaec5e73ba7576619f4bd397716c89093138a9e4e721f6a5fcc",
+    "tests/test_release_setdown_lookaround.py": "f572bda38bb146c339ce217150a72bb74ea2d92e0dc899b8fe9f87009a2acc8d",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/analyze_release8.py": "01d07bf413cb2887977751d9915807f23bc0cf078dc9a7e24df741695256eec3",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/replay_release8.py": "4da79cbf118735aee03fbac8ff0a1f49d6c0c4e25f87c7fecc081845e39b06ab",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/register_release8_queue.py": "d8bd8cc596abaa484888b30b651089e765d117ade78b1bba16523de15d651682"
+  },
+  "unchanged_matcher_sha256": "6c0764424ce0b670b220e0e4c5fd68c83de47c428c790cdb115a356d66f76ee9",
+  "artifact_hashes": {
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release8-analysis-detail.json.zst": "91ac2c4826abb56b998cab67e2609071adf91071369b2e16a72a68daff9c2f8c",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release8-analysis.json": "c7dc6ed5f37f6aabff81c5dfc033ee1be9c0b3731f421555081be88cc932afcf",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release8-diagnostic-plan.json": "515cb847a53735f7ba40981feedd1915ba7876c528457970d4a96b1cdd93980a",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release8-gate-plan.json": "90c8104e981ab42863a342ad25b5a80af7ed55ae91f3b509456ce14a2a4fb10c",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release8-replay.json": "6c171ac6935a4c1f5d86d71c6e3ddf13483f90aa2254a49460e31415726ae7b2",
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release8-seed-reservation.json": "39c31eb5e77b4847b8b582b3dec2ceb99e1bcadfcab6406fb2fa792420471d9b"
+  },
+  "scope": "Offline tests, retrieved raw hash audit, evaluation-only geometry/drift and frozen-input replay; no physics/render/remote host execution",
+  "all_runs": [
+    {
+      "run": "release7-diagnostic-00-a2314b16",
+      "seed": 74960,
+      "map_id": "zone_wide_door_geometry_v3",
+      "success": true,
+      "outcome": "teacher_done",
+      "audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "active": [],
+      "robots": {
+        "r1": {
+          "frames": 6,
+          "nonempty": 6,
+          "detections": {
+            "wall_points": 408,
+            "floor_lines": 19,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.08110396100543442,
+              "yaw_deg": -1.4212045060122458
+            },
+            {
+              "t": 44.30000000012051,
+              "accepted": true,
+              "xy_m": 0.07294258796043959,
+              "yaw_deg": 0.6086735424908842
+            }
+          ]
+        },
+        "r2": {
+          "frames": 6,
+          "nonempty": 6,
+          "detections": {
+            "wall_points": 473,
+            "floor_lines": 21,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.020561514425674596,
+              "yaw_deg": 0.6687706842435991
+            },
+            {
+              "t": 44.30000000012051,
+              "accepted": true,
+              "xy_m": 0.029189139742643835,
+              "yaw_deg": 0.9010988966413003
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run": "release7-diagnostic-01-a2314b16",
+      "seed": 74961,
+      "map_id": "zone_wide_door_geometry_v3",
+      "success": true,
+      "outcome": "teacher_done",
+      "audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "active": [],
+      "robots": {
+        "r1": {
+          "frames": 6,
+          "nonempty": 6,
+          "detections": {
+            "wall_points": 382,
+            "floor_lines": 20,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.027829673971303606,
+              "yaw_deg": -0.020648389824268483
+            },
+            {
+              "t": 43.70000000011765,
+              "accepted": true,
+              "xy_m": 0.04976206581184442,
+              "yaw_deg": 0.32969433425008016
+            }
+          ]
+        },
+        "r2": {
+          "frames": 6,
+          "nonempty": 6,
+          "detections": {
+            "wall_points": 534,
+            "floor_lines": 13,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.03550307353706299,
+              "yaw_deg": 0.2404527274958459
+            },
+            {
+              "t": 43.70000000011765,
+              "accepted": true,
+              "xy_m": 0.04172235971859607,
+              "yaw_deg": -0.28439770953049415
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run": "release7-diagnostic-02-a2314b16",
+      "seed": 74962,
+      "map_id": "zone_wide_two_doors_final_v3",
+      "success": true,
+      "outcome": "teacher_done",
+      "audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "active": [],
+      "robots": {
+        "r1": {
+          "frames": 12,
+          "nonempty": 12,
+          "detections": {
+            "wall_points": 895,
+            "floor_lines": 30,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.06648994158091244,
+              "yaw_deg": 1.0973537651809742
+            },
+            {
+              "t": 44.30000000012051,
+              "accepted": true,
+              "xy_m": 0.06767962191259856,
+              "yaw_deg": 0.5447408865938477
+            },
+            {
+              "t": 66.900000000146,
+              "accepted": true,
+              "xy_m": 0.054156569964202296,
+              "yaw_deg": 0.6387858055022566
+            },
+            {
+              "t": 88.79999999962813,
+              "accepted": true,
+              "xy_m": 0.05950177044592804,
+              "yaw_deg": 0.3635657799300241
+            }
+          ]
+        },
+        "r2": {
+          "frames": 12,
+          "nonempty": 12,
+          "detections": {
+            "wall_points": 875,
+            "floor_lines": 40,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.016634646111199386,
+              "yaw_deg": 0.2209619909883933
+            },
+            {
+              "t": 44.30000000012051,
+              "accepted": true,
+              "xy_m": 0.02552260215610228,
+              "yaw_deg": 1.95640385169301
+            },
+            {
+              "t": 66.900000000146,
+              "accepted": true,
+              "xy_m": 0.023676709091733493,
+              "yaw_deg": 0.012738502234251416
+            },
+            {
+              "t": 88.79999999962813,
+              "accepted": true,
+              "xy_m": 0.0200214714560732,
+              "yaw_deg": -1.2059912937685249
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run": "release7-diagnostic-03-a2314b16",
+      "seed": 74963,
+      "map_id": "zone_wide_door_geometry_v3",
+      "success": false,
+      "outcome": "active_observation_exhausted",
+      "audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "active": [
+        {
+          "stage": 1,
+          "action": "pan",
+          "t": 23.400000000020718,
+          "backstep_cap_m": 0.1,
+          "body_turn_rad": 0.7853981633974483,
+          "all_retained_hypotheses_clear": true,
+          "robot": "r1"
+        },
+        {
+          "stage": 1,
+          "action": "pan",
+          "t": 23.400000000020718,
+          "backstep_cap_m": 0.1,
+          "body_turn_rad": 0.7853981633974483,
+          "all_retained_hypotheses_clear": true,
+          "robot": "r2"
+        },
+        {
+          "action": "setdown_lookaround_v1",
+          "t": 35.500000000078494,
+          "retrace_m": 0.1,
+          "body_headings_deg": [
+            -90.0,
+            90.0
+          ],
+          "capture_count": 12,
+          "hypothesis_count": 1,
+          "all_retained_hypotheses_clear": true,
+          "released_beam_clearance_m": 0.22,
+          "source": "own RGB map hypotheses + own issued backoff/release commands",
+          "robot": "r1",
+          "stage": 2
+        },
+        {
+          "action": "setdown_lookaround_v1",
+          "t": 35.500000000078494,
+          "retrace_m": 0.1,
+          "body_headings_deg": [
+            -90.0,
+            90.0
+          ],
+          "capture_count": 12,
+          "hypothesis_count": 1,
+          "all_retained_hypotheses_clear": true,
+          "released_beam_clearance_m": 0.22,
+          "source": "own RGB map hypotheses + own issued backoff/release commands",
+          "robot": "r2",
+          "stage": 2
+        },
+        {
+          "stage": 1,
+          "action": "pan",
+          "t": 96.59999999944368,
+          "backstep_cap_m": 0.1,
+          "body_turn_rad": 0.7853981633974483,
+          "all_retained_hypotheses_clear": false,
+          "robot": "r1"
+        },
+        {
+          "stage": 1,
+          "action": "pan",
+          "t": 131.39999999862079,
+          "backstep_cap_m": 0.1,
+          "body_turn_rad": 0.7853981633974483,
+          "all_retained_hypotheses_clear": true,
+          "robot": "r1"
+        },
+        {
+          "robot": "r1",
+          "stage": 2,
+          "action": "setdown_lookaround_unavailable",
+          "t": 143.5999999983323,
+          "reason": "released_beam_turn_clearance"
+        }
+      ],
+      "robots": {
+        "r1": {
+          "frames": 51,
+          "nonempty": 48,
+          "detections": {
+            "wall_points": 2772,
+            "floor_lines": 86,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 1.9677998431752735,
+              "yaw_deg": -179.8362651023406
+            },
+            {
+              "t": 33.800000000070376,
+              "accepted": true,
+              "xy_m": 1.9729295564265625,
+              "yaw_deg": -179.6226438951307
+            },
+            {
+              "t": 72.90000000000411,
+              "accepted": true,
+              "xy_m": 0.02442891696077015,
+              "yaw_deg": -173.4400014941951
+            },
+            {
+              "t": 94.79999999948625,
+              "accepted": false,
+              "xy_m": 0.2862193110409004,
+              "yaw_deg": -166.9470565089645
+            },
+            {
+              "t": 106.99999999919775,
+              "accepted": true,
+              "xy_m": 2.0298201029290994,
+              "yaw_deg": -178.6484890485895
+            },
+            {
+              "t": 129.59999999866335,
+              "accepted": false,
+              "xy_m": 1.9534853923163251,
+              "yaw_deg": 178.47298333062247
+            },
+            {
+              "t": 141.79999999837486,
+              "accepted": false,
+              "xy_m": 1.9531289526950597,
+              "yaw_deg": 178.50913820326613
+            }
+          ]
+        },
+        "r2": {
+          "frames": 31,
+          "nonempty": 31,
+          "detections": {
+            "wall_points": 2218,
+            "floor_lines": 36,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.022322304029693568,
+              "yaw_deg": 0.6423428609708439
+            },
+            {
+              "t": 33.800000000070376,
+              "accepted": true,
+              "xy_m": 0.02197332655772525,
+              "yaw_deg": 0.4502500473541782
+            },
+            {
+              "t": 72.90000000000411,
+              "accepted": true,
+              "xy_m": 0.013466888649999434,
+              "yaw_deg": -174.47941662622728
+            },
+            {
+              "t": 94.79999999948625,
+              "accepted": true,
+              "xy_m": 0.3393843291142684,
+              "yaw_deg": 174.9263361244055
+            },
+            {
+              "t": 106.99999999919775,
+              "accepted": true,
+              "xy_m": 0.33933868373321574,
+              "yaw_deg": 174.9531461417625
+            },
+            {
+              "t": 129.59999999866335,
+              "accepted": true,
+              "xy_m": 0.1922934274945338,
+              "yaw_deg": -173.8319258910217
+            },
+            {
+              "t": 141.79999999837486,
+              "accepted": true,
+              "xy_m": 0.19293013153163904,
+              "yaw_deg": -173.3755536353814
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run": "release7-diagnostic-04-a2314b16",
+      "seed": 74964,
+      "map_id": "zone_wide_door_geometry_v3",
+      "success": true,
+      "outcome": "teacher_done",
+      "audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "active": [],
+      "robots": {
+        "r1": {
+          "frames": 15,
+          "nonempty": 15,
+          "detections": {
+            "wall_points": 1074,
+            "floor_lines": 37,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.06964241557019424,
+              "yaw_deg": 0.4562636793347038
+            },
+            {
+              "t": 44.30000000012051,
+              "accepted": true,
+              "xy_m": 0.06248252254017823,
+              "yaw_deg": 0.24606514111731567
+            },
+            {
+              "t": 66.900000000146,
+              "accepted": true,
+              "xy_m": 0.0701818557729887,
+              "yaw_deg": 0.2936248765386433
+            },
+            {
+              "t": 89.69999999960685,
+              "accepted": true,
+              "xy_m": 0.07372670422381673,
+              "yaw_deg": -0.0684176554463891
+            },
+            {
+              "t": 111.39999999909371,
+              "accepted": true,
+              "xy_m": 0.07128914634865265,
+              "yaw_deg": 1.0011709675649458
+            }
+          ]
+        },
+        "r2": {
+          "frames": 15,
+          "nonempty": 15,
+          "detections": {
+            "wall_points": 1156,
+            "floor_lines": 44,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.046693994509260275,
+              "yaw_deg": -1.2460558825222194
+            },
+            {
+              "t": 44.30000000012051,
+              "accepted": true,
+              "xy_m": 0.04575017682500885,
+              "yaw_deg": 1.5194690164701021
+            },
+            {
+              "t": 66.900000000146,
+              "accepted": true,
+              "xy_m": 0.0323557111580714,
+              "yaw_deg": -0.47333730912707644
+            },
+            {
+              "t": 89.69999999960685,
+              "accepted": true,
+              "xy_m": 0.02423968206034924,
+              "yaw_deg": -1.3515831192921661
+            },
+            {
+              "t": 111.39999999909371,
+              "accepted": true,
+              "xy_m": 0.023127336302848224,
+              "yaw_deg": -0.2624641884810002
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run": "release7-diagnostic-05-a2314b16",
+      "seed": 74965,
+      "map_id": "zone_wide_two_doors_final_v3",
+      "success": true,
+      "outcome": "teacher_done",
+      "audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "active": [],
+      "robots": {
+        "r1": {
+          "frames": 12,
+          "nonempty": 12,
+          "detections": {
+            "wall_points": 920,
+            "floor_lines": 36,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.01737658817445193,
+              "yaw_deg": -1.1180599712487218
+            },
+            {
+              "t": 44.30000000012051,
+              "accepted": true,
+              "xy_m": 0.020255508416325077,
+              "yaw_deg": 1.2144292375741095
+            },
+            {
+              "t": 66.900000000146,
+              "accepted": true,
+              "xy_m": 0.025767105873569483,
+              "yaw_deg": 0.4251128275961384
+            },
+            {
+              "t": 89.69999999960685,
+              "accepted": true,
+              "xy_m": 0.031434288005878226,
+              "yaw_deg": -0.6315960362298376
+            }
+          ]
+        },
+        "r2": {
+          "frames": 12,
+          "nonempty": 12,
+          "detections": {
+            "wall_points": 812,
+            "floor_lines": 30,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.07272477475679422,
+              "yaw_deg": 2.0017927684372925
+            },
+            {
+              "t": 44.30000000012051,
+              "accepted": true,
+              "xy_m": 0.05055138713367258,
+              "yaw_deg": 0.6010660834358265
+            },
+            {
+              "t": 66.900000000146,
+              "accepted": true,
+              "xy_m": 0.05793490011405487,
+              "yaw_deg": 1.0596764942302357
+            },
+            {
+              "t": 89.69999999960685,
+              "accepted": true,
+              "xy_m": 0.05806107008985342,
+              "yaw_deg": 0.16553621905141366
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run": "release7-diagnostic-06-a2314b16",
+      "seed": 74966,
+      "map_id": "zone_wide_door_geometry_v3",
+      "success": true,
+      "outcome": "teacher_done",
+      "audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "active": [],
+      "robots": {
+        "r1": {
+          "frames": 15,
+          "nonempty": 15,
+          "detections": {
+            "wall_points": 919,
+            "floor_lines": 40,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.037032054651047426,
+              "yaw_deg": 1.6809336767297463
+            },
+            {
+              "t": 44.30000000012051,
+              "accepted": true,
+              "xy_m": 0.02473424524851126,
+              "yaw_deg": 0.4887011351431409
+            },
+            {
+              "t": 66.900000000146,
+              "accepted": true,
+              "xy_m": 0.04920743845832687,
+              "yaw_deg": 2.019447868635135
+            },
+            {
+              "t": 89.69999999960685,
+              "accepted": true,
+              "xy_m": 0.05199414318955118,
+              "yaw_deg": 1.0067420976871557
+            },
+            {
+              "t": 111.69999999908661,
+              "accepted": true,
+              "xy_m": 0.05025271163177648,
+              "yaw_deg": 0.8531735401630669
+            }
+          ]
+        },
+        "r2": {
+          "frames": 15,
+          "nonempty": 15,
+          "detections": {
+            "wall_points": 1217,
+            "floor_lines": 50,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": true,
+              "xy_m": 0.018980859493748854,
+              "yaw_deg": 0.19535491584442355
+            },
+            {
+              "t": 44.30000000012051,
+              "accepted": true,
+              "xy_m": 0.015959934165553576,
+              "yaw_deg": 0.497129087817319
+            },
+            {
+              "t": 66.900000000146,
+              "accepted": true,
+              "xy_m": 0.014287467428925381,
+              "yaw_deg": 0.1613257894477296
+            },
+            {
+              "t": 89.69999999960685,
+              "accepted": true,
+              "xy_m": 0.019625929405547766,
+              "yaw_deg": -0.1253510874708576
+            },
+            {
+              "t": 111.69999999908661,
+              "accepted": true,
+              "xy_m": 0.023375939137717745,
+              "yaw_deg": 0.10458471589487309
+            }
+          ]
+        }
+      }
+    },
+    {
+      "run": "release7-diagnostic-07-a2314b16",
+      "seed": 74940,
+      "map_id": "zone_wide_door_geometry_v3",
+      "success": false,
+      "outcome": "active_observation_exhausted",
+      "audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "active": [
+        {
+          "stage": 1,
+          "action": "pan",
+          "t": 23.400000000020718,
+          "backstep_cap_m": 0.1,
+          "body_turn_rad": 0.7853981633974483,
+          "all_retained_hypotheses_clear": true,
+          "robot": "r1"
+        },
+        {
+          "stage": 1,
+          "action": "pan",
+          "t": 23.400000000020718,
+          "backstep_cap_m": 0.1,
+          "body_turn_rad": 0.7853981633974483,
+          "all_retained_hypotheses_clear": true,
+          "robot": "r2"
+        },
+        {
+          "action": "setdown_lookaround_v1",
+          "t": 35.500000000078494,
+          "retrace_m": 0.1,
+          "body_headings_deg": [
+            -90.0,
+            90.0
+          ],
+          "capture_count": 12,
+          "hypothesis_count": 1,
+          "all_retained_hypotheses_clear": true,
+          "released_beam_clearance_m": 0.22,
+          "source": "own RGB map hypotheses + own issued backoff/release commands",
+          "robot": "r2",
+          "stage": 2
+        }
+      ],
+      "robots": {
+        "r1": {
+          "frames": 13,
+          "nonempty": 13,
+          "detections": {
+            "wall_points": 894,
+            "floor_lines": 20,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": false,
+              "xy_m": 0.003578445164740026,
+              "yaw_deg": -0.6948365085130318
+            },
+            {
+              "t": 33.800000000070376,
+              "accepted": true,
+              "xy_m": 0.020749035284465204,
+              "yaw_deg": 0.702226073176706
+            },
+            {
+              "t": 72.90000000000411,
+              "accepted": true,
+              "xy_m": 0.020737824439107044,
+              "yaw_deg": 0.7074670967282921
+            }
+          ]
+        },
+        "r2": {
+          "frames": 25,
+          "nonempty": 24,
+          "detections": {
+            "wall_points": 1401,
+            "floor_lines": 35,
+            "doors": 0
+          },
+          "sweep_errors": [
+            {
+              "t": 21.7000000000126,
+              "accepted": false,
+              "xy_m": 0.0034878447096461152,
+              "yaw_deg": -0.3767803112299136
+            },
+            {
+              "t": 33.800000000070376,
+              "accepted": false,
+              "xy_m": 0.0015741800577471156,
+              "yaw_deg": -0.19585562759759362
+            },
+            {
+              "t": 72.90000000000411,
+              "accepted": false,
+              "xy_m": 0.009451216470990386,
+              "yaw_deg": -1.5084394412182685
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "remaining": [
+    "New physical success unmeasured",
+    "74963 initial alias and later rejected hypothesis unresolved",
+    "No incoming localization anchors in this diagnostic",
+    "Gate40 requires separate explicit coordinator approval"
+  ]
+}

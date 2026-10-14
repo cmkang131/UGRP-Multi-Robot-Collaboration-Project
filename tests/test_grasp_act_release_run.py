@@ -330,7 +330,8 @@ def test_nbv_runs_after_legacy_budget_then_uses_only_new_own_rgb(tmp_path,fake_b
 
 
 @pytest.mark.parametrize('recover', (False, True))
-def test_setdown_panorama_after_open_retrace_then_original_regrasp(tmp_path,fake_backend,monkeypatch,recover):
+@pytest.mark.parametrize('command_motion', ('off', 'native_yaw_v1'))
+def test_setdown_panorama_after_open_retrace_then_original_regrasp(tmp_path,fake_backend,monkeypatch,recover,command_motion):
     import math
     from sim.lookaround_localization import LookaroundLocalizer
     from sim import release_global_observation as active
@@ -360,9 +361,10 @@ def test_setdown_panorama_after_open_retrace_then_original_regrasp(tmp_path,fake
         return old_pick(self,now)
     monkeypatch.setattr(ReleaseTeacher,'pick_schedule',pick)
     plans=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release6-diagnostic-plan.json').read_text())
-    profile={**plans['execution_profile'],'active_recovery':'setdown_lookaround_v1'}
+    profile={**plans['execution_profile'],'active_recovery':'setdown_lookaround_v1','command_motion':command_motion}
     out=tmp_path/'setdown'
     result=runner.run(plans['episodes'][0],out,cap_s=180.,**profile)
+    assert result['command_motion']==command_motion
     assert result['release_outcome']==('teacher_done' if recover else 'active_observation_exhausted')
     assert result['legacy_visibility_counts_applicable'] is False
     assert result['final_map_pose_accepted']=={'r1':False,'r2':False}
@@ -376,6 +378,7 @@ def test_setdown_panorama_after_open_retrace_then_original_regrasp(tmp_path,fake
         start=actions[1]['t']
         assert first_open<start and all(not v['holding_belief'] for v in rows if start<=v['t'] and v['teacher_phase']=='lookaround')
         sweeps=result['lookaround_result'][rid]['evaluation']['sweeps']
+        assert result['lookaround_result'][rid]['localizer']['odometry_profile']==command_motion
         labels=[s['label'] for sweep in sweeps for s in sweep['script']]
         assert 'setdown_retrace_backoff_0.10m' in labels and 'setdown_turn_return' in labels
         assert len([s for s in labels if s.startswith('setdown_view')])==12

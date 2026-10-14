@@ -33,10 +33,10 @@ POSE_ANCHOR_MODES=('legacy_truth_v0','command_relative_v1')
 
 class CommandPose:
     """Own issued-wheel odometry in an arbitrary start frame, never a map pose."""
-    def __init__(self):self.x=[0.,0.,0.]
+    def __init__(self, profile='off'):self.x=[0.,0.,0.];self.profile=profile
     def propagate(self,wheels,seconds):
         from sim.visible_belief import odometry
-        dx,dy,da=odometry(wheels,seconds);c,s=math.cos(self.x[2]),math.sin(self.x[2])
+        dx,dy,da=odometry(wheels,seconds,self.profile);c,s=math.cos(self.x[2]),math.sin(self.x[2])
         self.x=[self.x[0]+c*dx-s*dy,self.x[1]+s*dx+c*dy,self.x[2]+da]
 
 
@@ -160,7 +160,7 @@ def own_end_world(world,inst,end):
 
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
-        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off'):
+        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off'):
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
     if lookaround!='off' and observe_mode!='backoff_v3':raise ValueError('lookaround runs after the backoff_v3 step back')
@@ -171,6 +171,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     if placement not in PLACEMENT_MODES:raise ValueError(placement)
     rgb_center=placement==RGB_CENTER
     global_release=placement=='global_localized_release_v1'
+    if command_motion not in ('off','native_yaw_v1'):raise ValueError(command_motion)
+    if command_motion!='off' and not global_release:raise ValueError('native command motion requires global RGB release')
     if lateral_recovery not in LATERAL_MODES:raise ValueError(lateral_recovery)
     if lateral_recovery!='off' and not global_release:raise ValueError('lateral recovery requires global release')
     if active_recovery not in ACTIVE_RECOVERY_MODES:raise ValueError(active_recovery)
@@ -205,7 +207,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     branch=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()
     write(out/'RUN_META.json',{'class':'dev','pr':491,'branch':branch,'sha':sha,'batch':plan['batch']})
     report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,'held_object':held_object,'lateral_recovery':lateral_recovery,'active_recovery':active_recovery,
-        'lookaround':lookaround,'pose_anchor':pose_anchor,'placement':placement,'map_pose_known':not relative_pose,
+        'lookaround':lookaround,'pose_anchor':pose_anchor,'placement':placement,'command_motion':command_motion,'map_pose_known':not relative_pose,
         'release_decision_inputs':'own RGB, own issued commands, static map only' if rgb_only else 'legacy visible-only teacher',
         'pose_estimate_source':'own issued wheels from arbitrary zero; map pose unknown' if relative_pose else 'legacy truth at release handoff plus frozen plan error',
         'own_camera_px':list(LOOK_RES if lookaround!='off' else (320,240)),'weld':'off','recording_mode':'success_measurement','student_execution':False,'success_rule':SUCCESS,
@@ -227,7 +229,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         rect=(*zone['center_m'],*zone['half_extents_m'])
         roles=plan['roles'];ports={rid:ContinuousActPort(world,rid,allow_reverse=True,allow_mecanum=True) for rid in roles}
         wheels={rid:QuantizedWheels(port) for rid,port in ports.items()}
-        issued_pose={rid:CommandPose() for rid in roles}
+        issued_pose={rid:CommandPose(command_motion) for rid in roles}
         # These frame origins are used only by look_truth(), never by the teachers/localizers.
         eval_origin={rid:[*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])] for rid in roles} if relative_pose else {}
         for rid,port in ports.items():port.apply({'kind':'look','pan_pulse':plan['initial_pan'][rid]},float(world.data.time))
@@ -296,7 +298,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             truth_pose=None if relative_pose else [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
             estimate=handoff_estimate(plan,rid,issued_pose[rid],pose_anchor=pose_anchor,own_pose_source=own_pose_source,truth_pose=truth_pose)
             pwm={int(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
-            rel[rid]=ReleaseTeacher(rid,end,pwm,handoff_pose_estimate=None if relative_pose else estimate,zone_rect=rect,own_pose_source=own_pose_source,reach_mode=reach_mode)
+            rel[rid]=ReleaseTeacher(rid,end,pwm,handoff_pose_estimate=None if relative_pose else estimate,zone_rect=rect,own_pose_source=own_pose_source,reach_mode=reach_mode,odometry_profile=command_motion)
         report['handoff_estimates']={rid:list(issued_pose[rid].x) for rid in roles} if relative_pose else None
         loc={}
         if lookaround!='off':
@@ -304,7 +306,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             for rid,t in rel.items():
                 truth_pose=None if relative_pose else [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
                 estimate=handoff_estimate(plan,rid,issued_pose[rid],pose_anchor=pose_anchor,own_pose_source=own_pose_source,truth_pose=truth_pose)
-                loc[rid]=LookaroundLocalizer(static,estimate,mode=lookaround,map_pose_known=not relative_pose)
+                loc[rid]=LookaroundLocalizer(static,estimate,mode=lookaround,map_pose_known=not relative_pose,odometry_profile=command_motion)
         zone_servo={}
         if rgb_center:
             from sim.release_zone_servo import ZoneCenterServo
@@ -709,6 +711,7 @@ def main():
     p.add_argument('--placement',choices=PLACEMENT_MODES,default='margin_v0',help='zone_center_rgb_v1: local RGB rectangle centering; no world anchor')
     p.add_argument('--lateral-recovery',choices=LATERAL_MODES,default='off',help='bounded_v1: recover insufficient side clearance using own RGB localization')
     p.add_argument('--active-recovery',choices=ACTIVE_RECOVERY_MODES,default='off',help='map_nbv_v1: extra map views; setdown_lookaround_v1: retrace own backoff and scan front/rear after setdown')
+    p.add_argument('--command-motion',choices=('off','native_yaw_v1'),default='off',help='native_yaw_v1: native wheel yaw sign in command integration and inverse rotation planning; speed magnitude unchanged')
     p.add_argument('--observe-mode',choices=OBSERVE_MODES,default='gaze_v2',help='backoff_v3: step back 0.15 m before the post-release look')
     p.add_argument('--render-dr',choices=('off','on_v1'),default='off',help='appearance randomization (harness/render_randomization.py); off for success measurement')
     p.add_argument('--zone-slots',choices=ZONE_SLOT_MODES,default='floor',help='zone: white slot squares inside the destination (static map) count as zone')
@@ -717,5 +720,5 @@ def main():
     p.add_argument('--lookaround',choices=LOOKAROUND_MODES,default='off',help='setdown_lookaround_v1: after the backoff step, look toward static-map landmarks chosen from the own pose estimate (640x480 own camera)');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion),ensure_ascii=False,default=str))
 if __name__=='__main__':main()

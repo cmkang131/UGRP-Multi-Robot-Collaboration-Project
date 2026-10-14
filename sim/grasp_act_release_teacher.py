@@ -159,7 +159,10 @@ class ReleaseTeacher:
     SCAN_EXACT_GAP_M = .03
 
     def __init__(self, rid, end, pwm, *, handoff_pose_estimate, zone_rect, memory_s=MEMORY_S, own_pose_source='commands',
-                 reach_mode='calibrated_mid_v1'):
+                 reach_mode='calibrated_mid_v1', odometry_profile='off'):
+        from sim.visible_belief import rates
+        rates(odometry_profile)  # validate before storing any command memory
+        self.odometry_profile = odometry_profile
         if reach_mode not in REACH_MODES:
             raise ValueError(reach_mode)
         self.reach_mode = reach_mode
@@ -210,7 +213,7 @@ class ReleaseTeacher:
 
     def dead_reckon(self, wheels, seconds):
         if seconds > 0 and any(wheels):
-            self.belief.propagate(*odometry(wheels, seconds))
+            self.belief.propagate(*odometry(wheels, seconds, self.odometry_profile))
 
     def perceive(self, obs, now):
         """obs (visible only): {'scan': [[x, y, 'zone'|'floor'], ...] body frame,

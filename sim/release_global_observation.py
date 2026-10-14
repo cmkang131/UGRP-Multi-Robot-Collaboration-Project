@@ -144,7 +144,7 @@ def recovery_script(localizer, teacher, stage, now):
         steps.append(dict(wheels=teacher.shift_plan(BACKSTEP_M,-1.),wait=.3,capture=False,label='recovery_back_0.10m'))
         action='backstep'
     elif stage==3 and safe:
-        steps.append(dict(wheels=rotate_plan(BODY_TURN_RAD),wait=.3,capture=False,label='recovery_turn_45deg'))
+        steps.append(dict(wheels=rotate_plan(BODY_TURN_RAD,localizer.profile),wait=.3,capture=False,label='recovery_turn_45deg'))
         action='body_turn'
     elif stage>1:
         action='motion_skipped_clearance_unknown_or_unsafe'
@@ -152,7 +152,7 @@ def recovery_script(localizer, teacher, stage, now):
         for i,p in enumerate((-90.,-45.,0.,45.,90.)):
             steps.append(dict(servo=look_servo(p,arm),wait=1. if i==0 else .8,capture=True,label=f'recovery_{stage}_{label}_{p:+.0f}'))
     if stage==3 and safe:
-        steps.append(dict(wheels=rotate_plan(-BODY_TURN_RAD),wait=.3,capture=False,label='recovery_turn_return'))
+        steps.append(dict(wheels=rotate_plan(-BODY_TURN_RAD,localizer.profile),wait=.3,capture=False,label='recovery_turn_return'))
     steps.append(dict(servo=restore,wait=1.,capture=False,label='restore_arm'))
     return steps,dict(stage=stage,action=action,t=now,backstep_cap_m=BACKSTEP_M,
                       body_turn_rad=BODY_TURN_RAD,all_retained_hypotheses_clear=safe)
