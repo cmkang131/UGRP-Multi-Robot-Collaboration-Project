@@ -1,6 +1,6 @@
 # gatesv5 빔 짝 관문 — NOT_READY
 
-확정 장면의 정답 교사 관문이다. 소스 `0b5faa4cfdc52f87df0fdf49e7b254bafc5b8bc0`, 고정 의존성 `26f84d0f0ada1c33473c83cca2d3415ce51bd247`. gcp2 `n4-highcpu-64`, C MuJoCo3.12.0, `walls_floor_contrast_v5_indigo110_s80` + 원본 v1 바닥 + `no_mip_v1`. `beampair_gate_valid_v2`, `beampair_wall_clear_v1`, 접근v2·피어v2·held-hidden을 켰고 경계 검출/학습/weld는 OFF다. 원래 기본값은 유지한다.
+확정 장면의 정답 교사 관문이다. 소스 `0b5faa4cfdc52f87df0fdf49e7b254bafc5b8bc0`, 고정 의존성 `26f84d0f0ada1c33473c83cca2d3415ce51bd247`. gcp2 `n4-highcpu-64`, C MuJoCo3.12.0, `walls_floor_contrast_v5_indigo110_s80` + 원본 v1 바닥 + `no_mip_v1`. `beampair_gate_valid_v2`, `beampair_wall_clear_v1`, 접근v2·피어v2·held-hidden을 켰고 새 토글 `scene_colour_transition_v1`/학습/weld는 OFF다. 기존 RGB 처리 전체를 끈다는 뜻은 아니다. 원래 기본값은 유지한다.
 
 짧은6회는6/6 통과했다. 새 gate40은16회 시작 후 성공15·cap_end1·HOST_ERROR0, 나머지24회는 감독 중단 규칙으로 미제출이다. 성공38/40을 입증하지 못해 NOT_READY다. 이전 장면·gcp1·짧은6회를 합산하지 않는다. 장면 연결 최초6건 HOST_ERROR는 별도 원장에 있다.
 
