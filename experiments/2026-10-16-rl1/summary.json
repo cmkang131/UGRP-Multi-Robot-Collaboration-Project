@@ -89,10 +89,15 @@
   "raw_locations": [
     "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-d1c6b040",
     "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-18c369ff",
-    "/home/ugrp/ugrp-sim/runs/rl1-calibration-1"
+    "/home/ugrp/ugrp-sim/runs/rl1-calibration-1",
+    "/home/ugrp/ugrp-sim/runs/rl1b-zero-46a5012d"
   ],
   "artifacts": {
-    "playback_crosscheck": "playback-crosscheck.json"
+    "playback_crosscheck": "playback-crosscheck.json",
+    "zero_residual": {
+      "path": "zero-residual-audit.json",
+      "sha256": "76cb3e56aeafe727eb08d83235114ad8b0b0d2ec1ddddc15fab66e9e05310a3e"
+    }
   },
   "remaining": [
     "warp1 completion or committed actor/reset/RGB API",
@@ -102,7 +107,7 @@
     "checkpoint release verification if produced"
   ],
   "scope": "ACT15 short signal only; ACT16w first, RL2 later",
-  "updated_utc": "2026-10-15T18:36:23.679693+00:00",
+  "updated_utc": "2026-10-15T18:56:26.980081+00:00",
   "heuristics": {
     "h1": {
       "enabled_for_pilot": true,
@@ -137,7 +142,20 @@
       "total_test_files": 669
     },
     "gpu_optimizer_steps_verified": false,
-    "frozen_ACT_client_verified": false
+    "frozen_ACT_client_verified": {
+      "scope": "GCP2 CPU saved-input zero residual only",
+      "source_sha": "46a5012d78800f6b2c2a48e0602975b55506ad09",
+      "rows_per_pass": 240,
+      "passes": 2,
+      "exact_command_byte_matches": [
+        240,
+        240
+      ],
+      "canary_mutation_command_invariance": true,
+      "canary_mutation_feature_invariance": true,
+      "forbidden_loaded_modules": [],
+      "gpu_and_new_start_verified": false
+    }
   },
   "saved_analysis": {
     "status": "complete",

@@ -239,3 +239,18 @@ straight-through 개념은 [Bengio2013 초록](https://arxiv.org/abs/1308.3432)�
 LeRobot pinned source의 feature_map interface는 gcp2 설치본 commit89236ea0에서 직접 확인했다.
 원문 GitHub raw URL 열람은 실패했으며 설치본 확인을 원격 원문 열람으로 바꾸어 쓰지 않는다.
 비물리 시험15개에는 n-step terminal/collector truncation 분리·episode 간 credit 차단·0잔차 정밀도 보존이 포함된다.
+
+### 저장 ACT15 명령의 0잔차 인수 (GCP2 CPU, 실행 소스46a5012d)
+
+실패91439의 자기 입력240행을 두 번 실제 ACT15로 추론했다. 각 회차에서 새 클라이언트의
+발행 명령240/240이 저장된 ACT15 명령과 canonical JSON 바이트까지 같았다. 서로 다른
+private canary 복사본을 두고도 명령/허용 특징 해시가 동일했다. 이 canary는 정책에 전달하지
+않았고 원본 정답 파일은 변경하지 않았다. 로드된 MuJoCo·보상·critic·환경 모듈0이다.
+ACT 원본 `b4db8ba2`의 policy/contract/data는 `3f99d58c`와 diff0이며 model SHA는
+`d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1`이다.
+
+[zero-residual-audit.json](zero-residual-audit.json)의 로컬/원격 SHA256
+`76cb3e56aeafe727eb08d83235114ad8b0b0d2ec1ddddc15fab66e9e05310a3e`를 확인했다.
+이는 CPU 저장 입력·0잔차 경로의 인수다. 실제 GPU·새 RGB·부분 reset·학습 후 정책의
+정답 불변성은 아직 검증하지 않았다. 새 rollout/학습/GPU0이며 소유 임대는 제거했다.
+배포 로더/actor-only export는 이후 정리로 분리했고 아직 산출된 잔차 가중치는 없다.

@@ -98,15 +98,6 @@ class Replay:
         return {k:v[indices].copy() for k,v in self.data.items()}
 
 
-def actor_network(torch, feature_dim):
-    nn = torch.nn
-    net = nn.Sequential(nn.Linear(feature_dim,256),nn.ReLU(),nn.Linear(256,256),
-                        nn.ReLU(),nn.Linear(256,14),nn.Tanh())
-    nn.init.zeros_(net[-2].weight)
-    nn.init.zeros_(net[-2].bias)
-    return net
-
-
 def critic_network(torch, feature_dim, critic_dim):
     nn = torch.nn
     return nn.Sequential(nn.Linear(feature_dim+critic_dim+14,256),nn.LayerNorm(256),nn.ReLU(),
@@ -123,6 +114,7 @@ class ResidualTD3:
         if host['instance'] != 'ugrp-act-l4-gcp2':
             raise RuntimeError('training requires the approved gcp2 L4')
         import torch
+        from scripts.rl_act_actor import residual_network
         if not torch.cuda.is_available():
             raise RuntimeError('CUDA required; no CPU/Mac training fallback')
         limits = np.asarray(limits,np.float64)
@@ -131,7 +123,7 @@ class ResidualTD3:
         torch.manual_seed(seed)
         self.torch, self.host = torch, host
         self.decoder, self.encoder, self.limits = decoder, encoder, limits
-        self.actor = actor_network(torch,feature_dim).cuda()
+        self.actor = residual_network(torch,feature_dim).cuda()
         self.critics = torch.nn.ModuleList([critic_network(torch,feature_dim,critic_dim) for _ in range(2)]).cuda()
         self.actor_target, self.critics_target = deepcopy(self.actor), deepcopy(self.critics)
         self.actor_target.requires_grad_(False)
@@ -225,3 +217,22 @@ class ResidualTD3:
                 actor_target=self.actor_target.state_dict(),critics_target=self.critics_target.state_dict(),
                 actor_optimizer=self.actor_optimizer.state_dict(),
                 critic_optimizer=self.critic_optimizer.state_dict()),f)
+
+    def export_actor(self, path, frozen, metadata):
+        """Only selected actor weights/config; no training truth or critic."""
+        import hashlib
+        import json
+        from safetensors.torch import save_file
+        from scripts import rl_act_actor
+        path = Path(path)
+        path.mkdir(parents=True,exist_ok=False)
+        save_file({k:v.detach().cpu().contiguous() for k,v in self.actor.state_dict().items()},
+                  str(path/'model.safetensors'))
+        adapter = dict(schema='ugrp.rl1b.residual-actor.v1',feature_dim=frozen.feature_dim,
+            base_sha256=rl_act_actor.ACT15_SHA256,limits=self.limits.tolist(),
+            actor_module_sha256=hashlib.sha256(Path(rl_act_actor.__file__).read_bytes()).hexdigest(),
+            contract_sha256=hashlib.sha256(Path(frozen.c.__file__).read_bytes()).hexdigest(),
+            provenance=metadata,optimizer_steps=self.steps)
+        (path/'adapter.json').write_text(json.dumps(adapter,indent=2)+'\n')
+        (path/'SHA256.json').write_text(json.dumps({name:hashlib.sha256((path/name).read_bytes()).hexdigest()
+            for name in ('adapter.json','model.safetensors')},indent=2)+'\n')

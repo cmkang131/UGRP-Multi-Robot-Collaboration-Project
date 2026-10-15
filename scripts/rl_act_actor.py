@@ -8,12 +8,22 @@ from __future__ import annotations
 
 from collections import deque
 import hashlib
+import json
 from pathlib import Path
 import sys
 
 import numpy as np
 
 ACT15_SHA256 = 'd90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1'
+
+
+def residual_network(torch, feature_dim):
+    nn = torch.nn
+    net = nn.Sequential(nn.Linear(feature_dim,256),nn.ReLU(),nn.Linear(256,256),
+                        nn.ReLU(),nn.Linear(256,14),nn.Tanh())
+    nn.init.zeros_(net[-2].weight)
+    nn.init.zeros_(net[-2].bias)
+    return net
 
 
 def compose(base, residual, limits, decoder):
@@ -32,6 +42,8 @@ def compose(base, residual, limits, decoder):
 class FrozenACT:
     """World-local raw chunks; actor observations only, no learned GT guard."""
     def __init__(self, source, checkpoint, nworld, *, device='cuda'):
+        if type(nworld) is not int or nworld <= 0:
+            raise ValueError('positive world count required')
         source = Path(source).resolve()
         # Caller uses a separate process from physics to preserve module roots.
         sys.path.insert(0, str(source))
@@ -129,3 +141,39 @@ class FrozenACT:
             actions.append(dict(command=command, done=bool(self.latched[i])))
             encoded.append(self.c.encode_action(command, done=bool(self.latched[i])))
         return actions, np.asarray(encoded, np.float32)
+
+
+class ResidualPolicy:
+    """Deployment actor only: no critic/reward/evaluator files or modules."""
+    def __init__(self, path, frozen, *, device='cuda'):
+        import torch
+        from safetensors.torch import load_file
+        path = Path(path)
+        hashes = json.loads((path/'SHA256.json').read_text())
+        if set(hashes) != {'adapter.json','model.safetensors'}:
+            raise ValueError('residual deployment inventory mismatch')
+        for name,digest in hashes.items():
+            if hashlib.sha256((path/name).read_bytes()).hexdigest() != digest:
+                raise ValueError('residual deployment hash mismatch')
+        adapter = json.loads((path/'adapter.json').read_text())
+        if (adapter['schema'] != 'ugrp.rl1b.residual-actor.v1'
+                or adapter['feature_dim'] != frozen.feature_dim
+                or adapter['base_sha256'] != ACT15_SHA256
+                or adapter['actor_module_sha256'] != hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+                or adapter['contract_sha256'] != hashlib.sha256(Path(frozen.c.__file__).read_bytes()).hexdigest()):
+            raise ValueError('residual deployment contract mismatch')
+        self.network = residual_network(torch,frozen.feature_dim).to(device)
+        self.network.load_state_dict(load_file(str(path/'model.safetensors')),strict=True)
+        self.network.requires_grad_(False).eval()
+        self.limits = np.asarray(adapter['limits'],np.float64)
+        if self.limits.shape != (14,) or not np.isfinite(self.limits).all() or np.any(self.limits<0):
+            raise ValueError('invalid deployment residual limits')
+        self.device = device
+
+    def select(self, features):
+        import torch
+        with torch.no_grad():
+            result = self.network(torch.as_tensor(features,dtype=torch.float32,device=self.device)).cpu().numpy()
+        if not np.isfinite(result).all():
+            raise ValueError('nonfinite deployed residual')
+        return result
