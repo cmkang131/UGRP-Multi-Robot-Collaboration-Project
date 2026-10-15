@@ -373,7 +373,7 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                      'base_xyz': list(map(float, base)), 'visible_n': visible_n, 'probe_N': probe_N,
                      'lookaround_estimate_xy': list(map(float, relook.loc.own.x[:2])) if relook.loc is not None else None})+'\n')
             last_eval_pos, last_eval_t = pos, now
-            if tick % 10 == 0:
+            if tick % 5 == 0:  # recording-only 2 Hz full timeline, 10 Hz terminal ring
                 cv2.imwrite(str(out/'review-own'/f'{tick:06d}.jpg'), cv2.resize(bgr, (320, 240)))
                 # Overview is reconstructed on gcp2 from recorded states; never a control input.
                 write(out/'progress.json', {'sim_s': now-origin, 'phase': teacher.phase, 'source_sha': sha})
@@ -419,6 +419,10 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
             report['training_candidate'] = bool(report['physical_success'] and recorder.local_started and approval)
             report['training_exclusion_reason'] = 'pending independent dataset admission' if report['training_candidate'] else 'pilot / failure / unqualified source or absent own-RGB handoff'
         write(out/'result.json', report)
+    except GeneratorExit:
+        report.update(status='setup_export_only' if not recent else 'supervisor_stop',
+                      physical_success=None, gate_eligible=False)
+        raise
     except BaseException as error:
         report.update(status='interrupted' if isinstance(error, KeyboardInterrupt) else 'HOST_ERROR',
                       error_type=type(error).__name__, error=str(error), wall_s=time.monotonic()-start,

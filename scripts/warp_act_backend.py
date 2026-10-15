@@ -238,6 +238,8 @@ class WarpTransport(Transport):
 
     def sync_render(self, contexts):
         import cv2
+        import io
+        from PIL import Image
         import mujoco
         wp,mjw=self.wp,self.mjw
         start=time.perf_counter()
@@ -257,9 +259,9 @@ class WarpTransport(Transport):
         self.rgb=[]
         for i,c in enumerate(contexts):
             rgb=cv2.remap(image[i],self.mx,self.my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
-            ok,jpg=cv2.imencode('.jpg',cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
-            if not ok:raise RuntimeError('JPEG encode failed')
-            self.rgb.append(jpg.tobytes())
+            buffer=io.BytesIO()
+            Image.fromarray(rgb).save(buffer,format='JPEG',quality=82)  # frozen World.render_jpeg default
+            self.rgb.append(buffer.getvalue())
             d=c['world'].data
             d.qpos[:]=qpos[i];d.qvel[:]=qvel[i];d.time=self.origin+self.tick*.1
             # Perception mirror only, no C physics or C contact-force reconstruction.
