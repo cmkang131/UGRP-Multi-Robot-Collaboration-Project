@@ -1,0 +1,65 @@
+{
+  "schema": "map-amcl-recording-provenance/1",
+  "reference_run": "grasp1-stage-a1-00-v375",
+  "reference_bundle_sha256": "2716b8c7ed07e21bad117884589766581a9e3fb49f5a522decc994f9b27775ee",
+  "reference_scene_sha256": "cbc62c7fbae8ba97a59d204e274584f2a67313e48c7dbbb5f837a78cd5b04ebc",
+  "reference_source_sha": "88a2a792bdfd61b606364a58bb9aeb6543c7adad",
+  "reference_is_local_text_only": true,
+  "remote_connections": 0,
+  "files": [
+    {
+      "path": "configs/zone_study_dev/e2e_one_beam_ownmap.json",
+      "current_sha256": "6a425af2323a5595a32304cb282d959eb61e1cec13798ef30a33d26ab0d56721",
+      "reference_sha256": "6a425af2323a5595a32304cb282d959eb61e1cec13798ef30a33d26ab0d56721",
+      "same_bytes": true
+    },
+    {
+      "path": "maps/zones_e2e/zone_wide_door_e2e_b80_v1.json",
+      "current_sha256": "2da6cd61a9a8289e1f46ca105a23d16a828eb610b17ede22890211c5f9461032",
+      "reference_sha256": "2da6cd61a9a8289e1f46ca105a23d16a828eb610b17ede22890211c5f9461032",
+      "same_bytes": true,
+      "reference_hash_source": "scene.json/scenario_setup/map_file_sha256"
+    },
+    {
+      "path": "harness/e2e_rgb_vo.py",
+      "current_sha256": "62d34bf4a45a59f92456bd0ffa2113ccaea394dd160f56a4db250cf777f781bf",
+      "reference_sha256": "62d34bf4a45a59f92456bd0ffa2113ccaea394dd160f56a4db250cf777f781bf",
+      "same_bytes": true
+    },
+    {
+      "path": "sim/e2e_ownmap_live.py",
+      "current_sha256": "01f1b4822eb48cc3789ee570b3d1571bfd4150340e1c5255c8c4051268e6b24b",
+      "reference_sha256": "25d28a2d9dc4555c61030e863d6dc0006ecea154bf056e2be4dbc10512432f3d",
+      "same_bytes": false
+    },
+    {
+      "path": "sim/masterpi_drive_friction_v7.py",
+      "current_sha256": "6adcfd8e2fae919df777cf7532ef2e757e3b734dfe980fb38a6b4ccb65c2c2fa",
+      "reference_sha256": "6adcfd8e2fae919df777cf7532ef2e757e3b734dfe980fb38a6b4ccb65c2c2fa",
+      "same_bytes": true
+    },
+    {
+      "path": "sim/masterpi_camera_review_v3.py",
+      "current_sha256": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+      "reference_sha256": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+      "same_bytes": true
+    }
+  ],
+  "seed_scan": {
+    "checked_json_files": 5550,
+    "roots": [
+      "configs",
+      "experiments",
+      "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue"
+    ],
+    "seed_fields_matching_65101_to_65140": [],
+    "scope": "Local JSON <=10MiB; remote execution history unverified; coordinator must check before approval"
+  },
+  "differences": [
+    "Fresh standard reset instead of historical staged grasp suffix; no old RGB/checkpoint/GT pose replay",
+    "candidate_views_v1 replaces rejected standoff_fullquad_v1 on current branch",
+    "rgb_vo_v2 retains command/RGB fusion and visual fallback; ultrasonic off instead of historical rgb_vo_us_v1",
+    "Native 640x480 cameras every 0.1s, commands every 0.2s; no image skipping, native physics speed3 off",
+    "No grasp, LLM or mission policy; only existing own-camera frontier drive diagnostic; no research success claim"
+  ]
+}

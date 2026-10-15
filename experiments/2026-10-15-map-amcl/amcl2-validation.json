@@ -1,0 +1,63 @@
+{
+  "schema": "map-amcl2-validation/1",
+  "scope": "Offline synthetic fixtures only; not GCP recording or localization accuracy",
+  "tests": {
+    "files": [
+      "tests/test_map_amcl_recording.py",
+      "tests/test_map_amcl.py",
+      "tests/test_e2e_static_rgb_localizer.py",
+      "tests/test_e2e_stage_pose_eval.py"
+    ],
+    "passed": 32,
+    "failures": 0,
+    "errors": 0,
+    "junit": "outputs/map-amcl2-validation/pytest.xml",
+    "sha256": "16c5e2964c05594c699138788f3caa72caeb31860e948fd96a550a03be74fa8b"
+  },
+  "workflow": {
+    "id": "map-amcl-replay",
+    "manifest": "/Users/changmin/projects/ugrp-wt/map-amcl/outputs/simulation-runs/20261015-114610-map-amcl-replay-ad3d8753/manifest.json",
+    "manifest_sha256": "71f7393c82025c84bc99704f09d52e1ccf98b1545025dd3e1f8d42e4a43320d6",
+    "status": "process_completed",
+    "exit_code": 0,
+    "source_changed_during_run": false,
+    "inputs_changed_during_run": false,
+    "synthetic_intervals": 2,
+    "candidates": 5,
+    "paired_evaluated_intervals": {
+      "amcl_landmarks_v1+command_delta": 2,
+      "amcl_landmarks_v1+fused_delta": 2,
+      "amcl_walls_v1+command_delta": 2,
+      "amcl_walls_v1+fused_delta": 2,
+      "off+fused_delta": 2
+    },
+    "output": "outputs/map-amcl2-validation/final-replay",
+    "summary_sha256": "081f9b89bfc59d41e69195b64d150ffb73d05e1f2df8d82f4638235f59d22542"
+  },
+  "record_workflow_plan": {
+    "path": "outputs/map-amcl2-validation/record-workflow-plan.json",
+    "sha256": "2aed38c80ae06f1c0412f32ddec9a4522406682f989b752e8053a3375b722a47",
+    "execution_started": false
+  },
+  "verified_source_sha256": {
+    "scripts/record_map_amcl.py": "c9dc2522804946974908f9fe30bc4e4750f0212ad1f7fce57b23ecf41ac4c5a6",
+    "scripts/compare_map_amcl_recording.py": "0f6db1f3dbb85245f769f867cbdee2bd30f099c04575a1c063faf5b827b2efb3",
+    "scripts/replay_map_amcl.py": "f8bdbc7041f9472c15298937f6dcab7178b589c5d286e110c258a5c73d1b23e0",
+    "scripts/extract_e2e_pose_features.py": "127f6ebc6392606b83835c7e078d7196963296269d3f444f703eb42a533cbdc7",
+    "scripts/e2e_stage_pose_eval.py": "92362630d200f8ced30da53720b5299d5e03defb8e6d6c110e15210836da1a33",
+    "tests/test_map_amcl_recording.py": "2927a04d0b8855521494395a0ed32d3a1ef5e8240d5e81346ec4d73472266dc1",
+    "configs/simulation_workflows.d/map_amcl.json": "2d017d3d958db2767e187c7af118ee3e59bfff7161a3b6356c860b17443e013d",
+    "experiments/2026-10-15-map-amcl/recording-spec.json": "0cda283d91406dd6d6a0e06b48177f9997191f89dd9f36209662d5e7b185a410"
+  },
+  "remote_connections": 0,
+  "physical_runs": 0,
+  "renders": 0,
+  "model_calls": 0,
+  "real_comparison_complete": false,
+  "automatic_promotion": false,
+  "remaining": [
+    "coordinator exact-source approval and remote seed-history check",
+    "gcp1 10Hz first30 cadence/input/speed/disk verification",
+    "fresh 40-run recording and same-host five-way offline comparison"
+  ]
+}

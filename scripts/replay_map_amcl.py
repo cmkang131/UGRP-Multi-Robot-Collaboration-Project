@@ -12,7 +12,7 @@ import subprocess
 import numpy as np
 from harness.map_amcl import Parameters, create, compose, between
 from scripts.e2e_stage_pose_eval import align, read, wrap
-from scripts.extract_e2e_pose_features import availability, extract, packets, sha256, source_file
+from scripts.extract_e2e_pose_features import availability, extract, packets, sha256, source_file, source_sha256
 
 EXPERIMENT = Path(__file__).resolve().parents[1]/'experiments/2026-10-15-map-amcl'
 CANDIDATES = tuple((o, m) for o in ('amcl_walls_v1', 'amcl_landmarks_v1')
@@ -97,26 +97,32 @@ def aggregate(rows, expected):
     return dict(expected_N=expected, evaluated_N=len(ready), unavailable_N=expected-len(ready),
         passed_pose_n=sum(r['metrics']['passed_pose'] for r in ready) if ready else None,
         passed_pr480_n=sum(r['metrics']['passed_pr480'] for r in ready) if ready else None,
-        median={k: float(np.median([r['metrics'][k] for r in ready])) for k in
+        median={k: (float(np.median([r['metrics'][k] for r in ready
+                                    if r['metrics'][k] is not None]))
+                    if any(r['metrics'][k] is not None for r in ready) else None) for k in
                 ('xy_median_m', 'yaw_median_deg', 'path_ratio')} if ready else None,
         jump_acceptable_n=sum(r['jumps']['acceptable_n'] for r in ready),
+        jump_flagged_n=sum(r['jumps']['N']-r['jumps']['acceptable_n'] for r in ready),
         jump_N=sum(r['jumps']['N'] for r in ready))
 
 
-def main():
+def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--raw-root', type=Path, required=True)
     p.add_argument('--feature-root', type=Path)
     p.add_argument('--extract-saved-rgb', action='store_true')
     p.add_argument('--map-amcl', choices=('off', 'amcl_v1'), default='off')
+    p.add_argument('--cohort', type=Path, default=EXPERIMENT/'cohort.json')
     p.add_argument('--output', type=Path, required=True)
-    a = p.parse_args()
+    a = p.parse_args(argv)
     if a.extract_saved_rgb and a.feature_root is None:
         p.error('--extract-saved-rgb needs --feature-root')
     a.output.mkdir(parents=True, exist_ok=False)
-    intervals = json.loads((EXPERIMENT/'cohort.json').read_text())['intervals']
-    if len(intervals) != 80 or len({(r['run'], r['robot']) for r in intervals}) != 80:
-        raise ValueError('EXACT_PR480_80_INTERVALS_REQUIRED')
+    cohort = json.loads(a.cohort.read_text())
+    intervals, expected = cohort['intervals'], cohort['expected_N']
+    if (expected <= 0 or len(intervals) != expected or
+            len({(r['run'], r['robot']) for r in intervals}) != expected):
+        raise ValueError('EXACT_COHORT_INTERVALS_REQUIRED')
     results, inventory, raw_hashes, artifacts = [], [], {}, {}
     for interval in intervals:
         run, rid = interval['run'], interval['robot']
@@ -124,13 +130,24 @@ def main():
         item = dict(run=run, robot=rid, N=interval['N'])
         options = [('off', 'fused_delta')]+(list(CANDIDATES) if a.map_amcl != 'off' else [])
         try:
+            if interval.get('unavailable_reason'):
+                raise ValueError(interval['unavailable_reason'])
             inputs = packets(raw, rid)
             if len(inputs) != interval['N']:
-                raise ValueError('PR480_INTERVAL_LENGTH_MISMATCH')
+                raise ValueError('INTERVAL_LENGTH_MISMATCH')
             for name in ('frames.jsonl', 'ownmap.jsonl'):
                 f = source_file(raw/f'robots/{rid}/{name}')
                 raw_hashes[str(f)] = sha256(f)
             inventory.append(dict(item, **availability(inputs)))
+            # Fresh-recording mode requires byte-verified identical frame sets
+            # for ALL five estimates. Missing RGB cannot leave a baseline-only
+            # available-case subset in the paired summary.
+            if cohort.get('paired_recording'):
+                if inventory[-1]['missing']:
+                    raise ValueError('PAIRED_RGB_MISSING')
+                for row in inputs:
+                    if sha256(row['image_path']) != row['sha256']:
+                        raise ValueError('PAIRED_RGB_HASH_MISMATCH')
             feature_dir = a.feature_root/run/rid if a.feature_root else None
             features, feature_error = None, 'SAVED_OWN_RGB_OR_VERIFIED_FEATURES_REQUIRED'
             if a.map_amcl != 'off' and feature_dir is not None:
@@ -141,13 +158,20 @@ def main():
                     f = feature_dir/f'{rid}.jsonl'
                     if (manifest['schema'] != 'saved-own-rgb-features/1' or
                             manifest['files'][f.name] != sha256(f) or
-                            manifest['static_map_sha256'] != sha256(raw/'inputs/static_map.json')):
+                            manifest['static_map_sha256'] != source_sha256(raw/'inputs/static_map.json')):
                         raise ValueError('FEATURE_MANIFEST_MISMATCH')
+                    if cohort.get('paired_recording'):
+                        for name in ('frames.jsonl', 'ownmap.jsonl'):
+                            original = source_file(raw/f'robots/{rid}/{name}')
+                            if manifest['source_hashes'].get(str(original)) != sha256(original):
+                                raise ValueError('FEATURE_LOG_HASH_MISMATCH')
                     features = validate_features(read(f, True), inputs)
                     raw_hashes[str(f)] = sha256(f)
                     raw_hashes[str(feature_dir/'summary.json')] = sha256(feature_dir/'summary.json')
                 except (OSError, ValueError, KeyError) as error:
                     feature_error = type(error).__name__+':'+str(error)[:300]
+            if cohort.get('paired_recording') and features is None:
+                raise ValueError(feature_error)
             # Generate every estimate before opening evaluator output.
             produced = []
             for option, motion in options:
@@ -159,7 +183,7 @@ def main():
                     static_path = raw/'inputs/static_map.json'
                     static = read(static_path) if option != 'off' else None
                     if static is not None:
-                        raw_hashes[str(static_path)] = sha256(static_path)
+                        raw_hashes[str(source_file(static_path))] = sha256(source_file(static_path))
                     poses, trace = replay(inputs if option == 'off' else features, option, motion, static_map=static)
                     jumps, jump_trace = jump_metrics(poses, inputs)
                     path = a.output/f'{run}-{rid}-{name}.jsonl'
@@ -184,20 +208,31 @@ def main():
                 name = option+'+'+motion
                 if not any(r['run'] == run and r['robot'] == rid and r['candidate'] == name for r in results):
                     results.append(dict(item, candidate=name, status='HOST_ERROR', error=str(error)))
-        print(json.dumps(dict(interval=run+'/'+rid, done=len(inventory), expected=80)), flush=True)
-    aggregates = {name: aggregate([r for r in results if r['candidate'] == name], 80)
+        print(json.dumps(dict(interval=run+'/'+rid, done=len(inventory), expected=expected)), flush=True)
+    # A candidate failure removes the interval from every paired aggregate,
+    # while retaining each candidate's original status and trace for diagnosis.
+    paired = []
+    for interval in intervals:
+        group = [r for r in results if (r['run'], r['robot']) == (interval['run'], interval['robot'])]
+        complete = len(group) == 5 and all(r['status'] == 'complete' for r in group)
+        paired.extend([r if complete else dict(r, status='paired_unavailable') for r in group])
+    aggregates = {name: aggregate([r for r in results if r['candidate'] == name], expected)
                   for name in sorted({r['candidate'] for r in results})}
+    paired_aggregates = {name: aggregate([r for r in paired if r['candidate'] == name], expected)
+                         for name in aggregates} if a.map_amcl != 'off' else {}
     summary = dict(schema='map-amcl-replay/1', source_sha=subprocess.check_output(
         ['git', 'rev-parse', 'HEAD'], text=True).strip(), python=platform.python_version(),
         platform=platform.platform(), numpy=np.__version__, parameters=asdict(Parameters()),
         initial_pose_source='uniform_static_free_space', seed=64001, aggregates=aggregates,
-        comparison_complete=all(r['evaluated_N'] == 80 for r in aggregates.values()) and a.map_amcl != 'off',
+        comparison_complete=all(r['evaluated_N'] == expected for r in aggregates.values()) and a.map_amcl != 'off',
+        paired_aggregates=paired_aggregates, cohort_sha256=sha256(a.cohort),
         gate_promotion_authorized_if_all_conditions_pass=False, physical_runs=0,
         inventory=inventory, rows=results, source_hashes=raw_hashes, artifact_sha256=artifacts,
-        scope='Frozen staged suffix; full interval including convergence; #480 rigid SE2 metrics; GT evaluation only',
-        caveat='40 diagnostic grasp exposures include 8 staging-invalid and 2 supervisor-censored; not a valid success cohort')
+        scope=cohort.get('scope', 'Frozen staged suffix; full interval including convergence; #480 rigid SE2 metrics; GT evaluation only'),
+        caveat=cohort.get('caveat', '40 diagnostic grasp exposures include 8 staging-invalid and 2 supervisor-censored; not a valid success cohort'))
     (a.output/'summary.json').write_text(json.dumps(summary, indent=2, allow_nan=False)+'\n')
     print(json.dumps(aggregates, indent=2))
+    return summary
 
 
 if __name__ == '__main__':

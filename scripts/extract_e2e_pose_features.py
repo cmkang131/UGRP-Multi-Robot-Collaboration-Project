@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 import numpy as np
 from scripts.e2e_stage_pose_eval import read
 
@@ -17,6 +18,18 @@ def sha256(path):
 
 def source_file(path):
     return path if path.exists() else Path(str(path)+'.zst')
+
+
+def source_sha256(path):
+    """Original bytes, including verified losslessly compressed text sources."""
+    path = Path(path)
+    if path.exists():
+        return sha256(path)
+    with subprocess.Popen(['zstd', '-qdc', str(source_file(path))], stdout=subprocess.PIPE) as proc:
+        digest = hashlib.file_digest(proc.stdout, 'sha256').hexdigest()
+        if proc.wait() != 0:
+            raise ValueError('COMPRESSED_SOURCE_READ_FAILED:'+str(path))
+    return digest
 
 
 def packets(raw, rid):
@@ -61,9 +74,9 @@ def extract(raw, static_map, output, robot_ids=('r1', 'r2')):
     from harness.self_map_closed_loop import own_measurement
     from harness.self_map_landmark_sensor import Sensor
     from harness.own_map_amcl_vendor.landmarks import MapFeatures
-    mapped = MapFeatures(json.loads(static_map.read_text()))
+    mapped = MapFeatures(read(static_map))
     output.mkdir(parents=True, exist_ok=False)
-    files, source_hashes = {}, {str(static_map): sha256(static_map)}
+    files, source_hashes = {}, {str(source_file(static_map)): sha256(source_file(static_map))}
     for rid, rows in inputs.items():
         sensor = Sensor(mapped.hues)
         last_servo, changed = None, None
@@ -95,7 +108,7 @@ def extract(raw, static_map, output, robot_ids=('r1', 'r2')):
             source = source_file(raw/f'robots/{rid}/{name}')
             source_hashes[str(source)] = sha256(source)
     manifest = dict(schema='saved-own-rgb-features/1', source_raw=str(raw),
-        static_map_sha256=sha256(static_map), frames={rid: len(rows) for rid, rows in inputs.items()},
+        static_map_sha256=source_sha256(static_map), frames={rid: len(rows) for rid, rows in inputs.items()},
         source_hashes=source_hashes, files=files,
         scope='Saved own RGB, commanded servo and command/RGB increments only; no render or eval input')
     (output/'summary.json').write_text(json.dumps(manifest, indent=2)+'\n')

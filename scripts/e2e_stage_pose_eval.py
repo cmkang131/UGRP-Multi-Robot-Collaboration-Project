@@ -5,7 +5,9 @@ import numpy as np
 
 def read(p,lines=False):
  if not p.exists():p=Path(str(p)+'.zst')
- data=subprocess.check_output(['zstd','-qdc',str(p)]).decode() if p.suffix=='.zst' else p.read_text()
+ if not p.exists():raise FileNotFoundError(p)
+ try:data=subprocess.check_output(['zstd','-qdc',str(p)]).decode() if p.suffix=='.zst' else p.read_text()
+ except subprocess.CalledProcessError as exc:raise ValueError('CORRUPT_COMPRESSED_SOURCE:'+str(p)) from exc
  return [json.loads(l) for l in data.splitlines() if l] if lines else json.loads(data)
 def wrap(x):return np.arctan2(np.sin(x),np.cos(x))
 def align(a,b):
