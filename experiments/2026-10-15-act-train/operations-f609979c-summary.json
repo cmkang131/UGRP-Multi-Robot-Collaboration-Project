@@ -5,7 +5,7 @@
   "branch": "claude/act-train",
   "pr": 504,
   "created_at": "2026-10-15T11:58:32.139188+09:00",
-  "status": "MAIN_COMPLETE_EVALUATION_STOPPED_ON_CONFIRMED_FAILURE_DELIVERY_IN_PROGRESS",
+  "status": "MAIN_COMPLETE_EVALUATION_STOPPED_ON_CONFIRMED_FAILURE",
   "coordinator_approval": {
     "stage": "main+eval",
     "steps": 10000,
@@ -506,7 +506,14 @@
     "raw_manifest_sha256": "6bcfa627b6c05b2530ee077ae10f7539211fa023eaa0968d6b69999b0ff67a26",
     "weld": "off",
     "teacher_assisted": false,
-    "research_gate_promotion": false
+    "research_gate_promotion": false,
+    "eval_only_no_finger_contact": {
+      "evaluated_samples": 900,
+      "max_left_finger_n": 0.0,
+      "max_right_finger_n": 0.0,
+      "max_clearance_m": -0.00010775542025584853,
+      "actor_input": false
+    }
   },
   "model_preservation": {
     "tag": "models-20261015-grasp-act-f609979c",
@@ -536,7 +543,50 @@
         }
       }
     ],
-    "status": "packaged_and_hash_verified_upload_pending"
+    "status": "release_redownload_and_cpu_load_verified",
+    "release_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261015-grasp-act-f609979c",
+    "verification": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/model-release/release-redownload-verification.json",
+      "sha256": "cfbb39316c68f8582a8ee06af2f42438a13f789f10905bc26591641fd0ecaa93",
+      "models": [
+        {
+          "id": "grasp-act-solo-smoke-f609979c",
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/model-release/redownload-extracted/grasp-act-solo-smoke-f609979c",
+          "verified_files": 9,
+          "verified_bytes": 207411458,
+          "archive_sha256": "bd2936a8fc2947353f5c1ffe374996deab53f07881798fcfe3c8936ddee6163d",
+          "archive_bytes": 192288207,
+          "release_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-grasp-act-f609979c/grasp-act-solo-smoke-f609979c.zip",
+          "remote": {
+            "root": "/home/ugrp/act-main-models-f609979c/release-redownload/grasp-act-solo-smoke-f609979c",
+            "files_verified": 9
+          },
+          "cpu_load_ready": true,
+          "verified_after_release_upload": true,
+          "verified_at": "2026-10-15T12:04:29.178286+09:00"
+        },
+        {
+          "id": "grasp-act-solo-main-f609979c",
+          "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/model-release/redownload-extracted/grasp-act-solo-main-f609979c",
+          "verified_files": 9,
+          "verified_bytes": 207422215,
+          "archive_sha256": "315e6752e6c8a6054966b3aac98b39e51d3f18fc0132ef4c308204caed0542c2",
+          "archive_bytes": 192341234,
+          "release_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-grasp-act-f609979c/grasp-act-solo-main-f609979c.zip",
+          "remote": {
+            "root": "/home/ugrp/act-main-models-f609979c/release-redownload/grasp-act-solo-main-f609979c",
+            "files_verified": 9
+          },
+          "cpu_load_ready": true,
+          "verified_after_release_upload": true,
+          "verified_at": "2026-10-15T12:05:02.224930+09:00"
+        }
+      ]
+    },
+    "github_metadata": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/model-release/github-release.json",
+      "sha256": "dc545fcad579268968784f3d4114da775987d0d3bc33b216dc331e2fa7135b62"
+    }
   },
   "vm": {
     "l4": {
@@ -647,14 +697,68 @@
           },
           "status": "TERMINATED"
         }
-      ]
+      ],
+      "final_state": {
+        "lastStartTimestamp": "2026-10-14T19:42:46.761-07:00",
+        "lastStopTimestamp": "2026-10-14T19:47:42.887-07:00",
+        "name": "ugrp-act-l4-pilot1",
+        "scheduling": {
+          "automaticRestart": true,
+          "instanceTerminationAction": "STOP",
+          "maxRunDuration": {
+            "nanos": 0,
+            "seconds": "28800"
+          },
+          "onHostMaintenance": "TERMINATE",
+          "preemptible": false,
+          "provisioningModel": "STANDARD"
+        },
+        "status": "TERMINATED"
+      }
     },
     "gcp1": {
       "state": "RUNNING",
-      "shutdown_verification_pending": true,
+      "shutdown_verification_pending": false,
       "was_already_running_before_own_setup": true,
       "own_setup_started_at": "2026-10-15T11:30:46.113039+09:00",
-      "other_processes_and_leases_modified": 0
+      "other_processes_and_leases_modified": 0,
+      "TERMINATED_verified": false,
+      "other_work_detected": [
+        {
+          "pid": 48800,
+          "ppid": 48709,
+          "user": "ugrp",
+          "executable": "sshd:"
+        },
+        {
+          "pid": 48802,
+          "ppid": 48800,
+          "user": "ugrp",
+          "executable": "tar"
+        }
+      ],
+      "stop_deferred_to_existing_idle_guard": true,
+      "idle_guard": "active; 1200 seconds",
+      "final_state": {
+        "lastStartTimestamp": "2026-10-14T19:02:57.851-07:00",
+        "lastStopTimestamp": "2026-10-14T16:29:31.011-07:00",
+        "name": "ugrp-sim-gcp1",
+        "scheduling": {
+          "automaticRestart": true,
+          "instanceTerminationAction": "STOP",
+          "maxRunDuration": {
+            "nanos": 0,
+            "seconds": "28800"
+          },
+          "onHostMaintenance": "MIGRATE",
+          "preemptible": false,
+          "provisioningModel": "STANDARD"
+        },
+        "status": "RUNNING"
+      },
+      "own_activity_finished_at": "2026-10-15T12:12:50.176936+09:00",
+      "historical_other_leases_preserved": 526,
+      "own_completed_lease_removed": true
     }
   },
   "cost": {
@@ -666,12 +770,16 @@
     "official_rate_evidence": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/pricing.json",
     "l4_vm_seconds_from_instance_timestamps": 2730.996,
     "l4_vm_compute_estimate_usd": 0.68860092057444,
-    "gcp1_own_activity_interval_seconds": null,
+    "gcp1_own_activity_interval_seconds": 2524.063897,
     "gcp1_shared_host_full_uptime_not_attributed_to_this_task": true,
     "actual_billed_amount": null,
     "credit_balance": null,
     "disk_network_tax": "unverified; not zero",
-    "budget_stop_signal_observed": false
+    "budget_stop_signal_observed": false,
+    "gcp1_own_activity_compute_estimate_usd": 2.205306530976558,
+    "combined_own_activity_compute_estimate_usd": 2.893907451550998,
+    "gcp1_observed_shared_uptime_seconds": 4192.325936,
+    "method": "L4 instance lastStart/lastStop summed; gcp1 ACT setup through final ownership check, shared interval, not an actual billing allocation"
   },
   "prior_attempts": [
     {
@@ -752,9 +860,26 @@
     }
   },
   "unfinished": [
-    "closed-loop seeds91101\u201391109 stopped on defect",
+    "closed-loop seeds91101\u201391109 stopped on confirmed defect; no success/generalization claim",
     "successful sample frame review unavailable (0 successes)",
-    "model release upload/redownload/reload pending",
-    "gcp1 final shutdown verification pending"
-  ]
+    "gcp1 termination delegated to existing idle guard because other task tar/SSH process was active; no other task stopped"
+  ],
+  "summary_transfer": {
+    "aggregation_inputs": "retrieved verified remote reports; per-stage source hashes retained",
+    "remote_summary_path": "gcp1:/home/ugrp/act-main-ops-f609979c/act-main-f609979c-report.json",
+    "post_shutdown_lifecycle_augmentation_pending": false,
+    "core_before_lifecycle_augmentation_sha256": "442a395194c995dcd943d34e13d8af24fd4df10508cba7b913de9446917720c3",
+    "core_transfer_receipt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/report-transfer-verified.json",
+      "sha256": "ca800c6a3acbe25bf744794bd9c73081df8e08f243ced7a28a11df960c287d96"
+    },
+    "final_lifecycle_augmentation": "Mac write_summary after verified core retrieval; gcp1 retained for detected other work",
+    "lifecycle_receipt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/vm-state-at-delivery.json",
+      "sha256": "6ec9e9b50b589ead96d0cd7182d4465326039c3adcf5ad4c74a94d60a7ac51da"
+    }
+  },
+  "delivery_complete": true,
+  "evaluation_full_10_complete": false,
+  "finalized_at": "2026-10-15T12:14:41.335661+09:00"
 }

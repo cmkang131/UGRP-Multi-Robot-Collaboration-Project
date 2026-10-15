@@ -11,4 +11,4 @@
 
 공식 서울 on-demand 단가를 재조회했다: [g2-standard-4](https://cloud.google.com/products/compute/pricing/accelerator-optimized) $0.907714004/h, [n4-highcpu-64](https://cloud.google.com/products/compute/pricing/general-purpose) $3.145365504/h. 시간과 추정액은 종합 JSON을 따른다. 크레딧 잔액·실청구·디스크/네트워크/세금은 미확인이다.
 
-모델 Release 재다운로드/로딩과 최종 종료 증거는 운영 전달 완료 시 갱신한다. 실행하지 않은9개를 실패 분모에 넣지 않으며, 교사 성공이나 오프라인 오차를 학생 성공으로 합산하지 않는다.
+모델 [Release](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/tag/models-20261015-grasp-act-f609979c)에 두 모델을 올리고 ZIP·내부18파일 재다운로드 해시·gcp1 CPU 로딩2/2를 확인했다. [배포 검증](operations-model-release-verification.json). 학습 VM은 TERMINATED. gcp1은 다른 작업의 tar/SSH 프로세스(PID48802/48800)가 있어 멈추지 않고 기존 유휴20분 가드에 맡겼다(8h STOP 유지). L4 사용45.52분·gcp1 ACT 작업구간42.07분(공유 호스트), 두 구간 compute 추정$2.8939이며 실청구는 미확인이다. 실행하지 않은9개를 실패 분모에 넣지 않으며, 교사 성공이나 오프라인 오차를 학생 성공으로 합산하지 않는다.
