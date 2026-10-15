@@ -14,7 +14,7 @@ v6 원본을 확인하니 crate는 s2 하나가 아니라 **s2·s7·s8에 각각
 
 틈은 기존 배치 검사와 같은 보수적 축 정렬 사각형 사이 거리다. 기존 `zone_environment_registry.validate`로 8개 모두 슬롯 안쪽 0.05 m·벽 0.20 m·화물 간 0.20 m 기준을 통과했고, 정지 로봇 차체와 화물이 겹치지 않는지도 확인했다. 교체 빔의 시작 자세와 목적 구역 B의 남북 방향 내려놓기 자세에서 기존 `zone_team_footprint.pose_clear`를 통과했다. B는 0.60×1.40 m이고, 0.60×0.04 m 빔을 남북 방향으로 놓으면 가장자리 여유는 x 0.28 m·y 0.40 m다. 기존 `landing_fits`와 통로 폭 검사도 재사용했다(편대 최소 폭 0.27 m, 넓은 문 1.00 m).
 
-레지스트리와 `ScenarioFinalV3Scene`은 `_v7` ID를 명시할 때만 v7을 읽는다. 기존 통합 workflow의 설명에 선택 방법을 추가했으며 실행기·workflow 버전·기본값은 유지했다. v7 주문 입력 검증은 상자 네 색과 long_beam만 허용한다. 예전 crate/can/tile/tri_frame 정의는 재생용으로 남긴다. 모든 v7 설정 해시와 resolved scene 해시는 각각 대응하는 v6과 다르며, 파일 해시와 구체적인 값은 [summary.json](summary.json)에 있다. 같은 기하의 XML은 시나리오 ID만 바뀌었다고 다른 기하 해시가 되어야 하는 것은 아니다.
+레지스트리와 `ScenarioFinalV3Scene`은 `_v7` ID를 명시할 때만 v7을 읽는다. v5·v6처럼 기존 시나리오 등록 경로를 사용하며, 고정 통합 workflow 파일의 바이트·실행기·workflow 버전·기본값은 유지한다. 설명 추가로 발생했던 CI 바이트 보존 실패와 복구는 [scenv7fix 기록](scenv7fix.md)에 남겼다. v7 주문 입력 검증은 상자 네 색과 long_beam만 허용한다. 예전 crate/can/tile/tri_frame 정의는 재생용으로 남긴다. 모든 v7 설정 해시와 resolved scene 해시는 각각 대응하는 v6과 다르며, 파일 해시와 구체적인 값은 [summary.json](summary.json)에 있다. 같은 기하의 XML은 시나리오 ID만 바뀌었다고 다른 기하 해시가 되어야 하는 것은 아니다.
 
 생성 재현(다른 내용의 기존 v7 파일은 덮어쓰지 않음):
 
