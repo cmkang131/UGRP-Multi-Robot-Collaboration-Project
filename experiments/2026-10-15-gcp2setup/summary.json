@@ -1,0 +1,427 @@
+{
+  "date": "2026-10-15",
+  "verdict": "HOST_READY",
+  "base_sha": "580f37ebc3129984c0dc07d1f73ccfe92e273202",
+  "host": "gcp2",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-b-1014",
+  "machine": "n4-highcpu-64",
+  "zone": "asia-northeast3-a",
+  "disk_gb": 400,
+  "max_run_s": 86400,
+  "budget_stop": {
+    "status": "PASS",
+    "net_budget_krw": 1000,
+    "stopping_elapsed_s": 9.019,
+    "terminated_elapsed_s": 55.517,
+    "test_vm_and_disk_deleted": true,
+    "function_source_sha256": "dea9440eac028eb37e325b71ef5a5ddb0a5b4a1af037c55c5742f30d3b58e55f"
+  },
+  "vm_configuration_verified": true,
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-1014-gcp-x86_64-with-glibc2.39",
+    "packages": {
+      "mujoco": "3.12.0",
+      "numpy": "2.5.2",
+      "opencv-python-headless": "5.0.0.93",
+      "Pillow": "12.3.0",
+      "glfw": "2.10.2",
+      "PyOpenGL": "3.1.10",
+      "websockets": "15.0.1",
+      "scipy": "1.17.1"
+    },
+    "freeze": "absl-py==2.5.1\netils==1.14.0\nfsspec==2026.9.0\nglfw==2.10.2\nmujoco==3.12.0\nnumpy==2.5.2\nopencv-python-headless==5.0.0.93\npillow==12.3.0\nPyOpenGL==3.1.10\nscipy==1.17.1\ntyping_extensions==4.16.0\nwebsockets==15.0.1\nzipp==4.1.1\n"
+  },
+  "environment_comparison_scope": "Python and MuJoCo/NumPy/OpenCV/Pillow matched saved gcp1 manifest; full gcp1 transitive lock unavailable",
+  "speed": {
+    "host": "gcp2",
+    "project": "ugrp-sim-b-1014",
+    "research_result": false,
+    "source_sha": "c1f02ac0a81f50d0235823a845c31f1d4116c9e9",
+    "plan_sha256": "f5d07562055edd77e6fedcb8c83a27bcf8d3e7de606d5906d4d1792f09a25f72",
+    "concurrency": 16,
+    "completed": 16,
+    "planned": 16,
+    "cap_end": 16,
+    "wall_s_batch": 98.59799933433533,
+    "rows": [
+      {
+        "index": 0,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 93.72798067300002,
+        "wall_per_sim": 3.1242660224270185,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-000/raw",
+        "result_sha256": "23ecc89b7ece40ed995e451f14348788e5778dbfcc6a244f0a83f7dc2f0a9631"
+      },
+      {
+        "index": 1,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 86.67486863799996,
+        "wall_per_sim": 2.889162287927492,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-001/raw",
+        "result_sha256": "29e35fc1e783eff03ae6be35a4bc66071afbb555d1ad7f236ee8cbdd8a66c5fd"
+      },
+      {
+        "index": 2,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 89.67267864399997,
+        "wall_per_sim": 2.9890892881272904,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-002/raw",
+        "result_sha256": "e2a2a4aea11fb09b395bb385ec817b0f8a1c04e80167b9505f3b2c17ad69f061"
+      },
+      {
+        "index": 3,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 85.25957588099999,
+        "wall_per_sim": 2.841985862694255,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-003/raw",
+        "result_sha256": "fb50cbe6f2b0231e2bd4749caa8b04a409ac8c84c79b3767f1b57afa0e32ea23"
+      },
+      {
+        "index": 4,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 87.12889309399998,
+        "wall_per_sim": 2.904296436460795,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-004/raw",
+        "result_sha256": "ac88babbd10798bb9a2291013933f79725d074cc0d8a3a1dbdc2d98cdcb3a8bb"
+      },
+      {
+        "index": 5,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 89.94886393999997,
+        "wall_per_sim": 2.998295464660605,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-005/raw",
+        "result_sha256": "02fea2497236bbbbe17bad04eb9bce56414809b5f806dcf649e3d02f1a26c955"
+      },
+      {
+        "index": 6,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 87.643563987,
+        "wall_per_sim": 2.9214521328940943,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-006/raw",
+        "result_sha256": "0754368cb06a3cb6269f500c019dab84d75667de7d2b39c21f28608de822371a"
+      },
+      {
+        "index": 7,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 93.670087249,
+        "wall_per_sim": 3.122336241627022,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-007/raw",
+        "result_sha256": "ace098cc95701f3cea68266ae066ebcdff627e643bba03867e969be12e993c53"
+      },
+      {
+        "index": 8,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 85.42871459099999,
+        "wall_per_sim": 2.8476238196942436,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-008/raw",
+        "result_sha256": "9a689f515c885b9abe66fbe54198aaccd9e444d526a57bff02f0da218d1fcf47"
+      },
+      {
+        "index": 9,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 87.873174724,
+        "wall_per_sim": 2.9291058241274124,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-009/raw",
+        "result_sha256": "99091b1f8604eb4deef02019b1040c498cf6362639be6e544aeeb3c11809da5d"
+      },
+      {
+        "index": 10,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 90.53037027299999,
+        "wall_per_sim": 3.0176790090938996,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-010/raw",
+        "result_sha256": "11ab52bef8fd94d31388414012db0dfaa81c31e462728973c6f71d1cad34e34a"
+      },
+      {
+        "index": 11,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 87.506691725,
+        "wall_per_sim": 2.9168897241607703,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-011/raw",
+        "result_sha256": "cec85a88ea0a09724e6e363f9cde0d69169b41f1975045f19a75549d430f4708"
+      },
+      {
+        "index": 12,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 97.255561516,
+        "wall_per_sim": 3.2418520505267803,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-012/raw",
+        "result_sha256": "c50e3a4fd4a6365404940f2f0249072558c02f226555d392a68b8e5e3cf2c721"
+      },
+      {
+        "index": 13,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 88.41512110500003,
+        "wall_per_sim": 2.9471707034940433,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-013/raw",
+        "result_sha256": "462af1392a19998549c3f1aca9ae9e5adf6d22096cc1fb542767df0822483bca"
+      },
+      {
+        "index": 14,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 86.66361614799999,
+        "wall_per_sim": 2.8887872049274934,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-014/raw",
+        "result_sha256": "6403c155c73dba19b92825e472195420b7ced9e6281c4b40aee23edae51aa340"
+      },
+      {
+        "index": 15,
+        "exit": 0,
+        "status": "complete",
+        "sim_s": 30.00000000006064,
+        "wall_s": 88.85189271699997,
+        "wall_per_sim": 2.9617297572273458,
+        "cap_end": true,
+        "raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-speed16/episode-015/raw",
+        "result_sha256": "866e2290d9fd3fa7a695035cbe769be9aa9e1b490293ebc3667c4a563f105a7f"
+      }
+    ],
+    "median_wall_per_sim": 2.938138263810728,
+    "max_wall_per_sim": 3.2418520505267803,
+    "loadavg_at_end": [
+      10.697265625,
+      4.22998046875,
+      1.56201171875
+    ],
+    "admitted": true,
+    "warning": false
+  },
+  "gcp1_comparison": {
+    "user_provided_recent_median_range": [
+      2.35,
+      2.66
+    ],
+    "same_source_saved_median": 2.486,
+    "same_source_saved_max": 2.701,
+    "relative_slowdown": 0.18187379879755738,
+    "cause": "unverified"
+  },
+  "render": {
+    "source_sha": "4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+    "gcp1_reference": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release-gate-39-4a69e6bc/raw",
+    "gcp2_raw": "/home/ugrp/ugrp-sim/runs/gcp2setup-render39/raw",
+    "compared": 16,
+    "equal": 16,
+    "local_gcp1_originals_verified": 8,
+    "rows": [
+      {
+        "path": "eval-own/r1/000000-prefix.jpg",
+        "gcp1_sha256": "78e8a92d3d33aaba7902aedccc0d9cd6a86fa3e5ef4f1534c6d57547229562e4",
+        "gcp2_sha256": "78e8a92d3d33aaba7902aedccc0d9cd6a86fa3e5ef4f1534c6d57547229562e4",
+        "equal": true,
+        "gcp1_local_original_verified": false
+      },
+      {
+        "path": "eval-own/r1/000010-prefix.jpg",
+        "gcp1_sha256": "44f31e85d377f2925305e41219f8949f824b9cb71c9e5908f2394218cdf742f4",
+        "gcp2_sha256": "44f31e85d377f2925305e41219f8949f824b9cb71c9e5908f2394218cdf742f4",
+        "equal": true,
+        "gcp1_local_original_verified": false
+      },
+      {
+        "path": "eval-own/r1/000020-prefix.jpg",
+        "gcp1_sha256": "12a41dcd1ce92efeae4dc1000804ddd273081e31f2bc6e33393d13ea1942b600",
+        "gcp2_sha256": "12a41dcd1ce92efeae4dc1000804ddd273081e31f2bc6e33393d13ea1942b600",
+        "equal": true,
+        "gcp1_local_original_verified": false
+      },
+      {
+        "path": "eval-own/r2/000000-prefix.jpg",
+        "gcp1_sha256": "68280efadfd0b155547539d7c16d2be33a5128b57acdf259b88d2878cc8770fe",
+        "gcp2_sha256": "68280efadfd0b155547539d7c16d2be33a5128b57acdf259b88d2878cc8770fe",
+        "equal": true,
+        "gcp1_local_original_verified": false
+      },
+      {
+        "path": "eval-own/r2/000010-prefix.jpg",
+        "gcp1_sha256": "7f526d22622bb2bf75dd8b814ff644472ae34670ae2ce96d948d8c0ad384b97c",
+        "gcp2_sha256": "7f526d22622bb2bf75dd8b814ff644472ae34670ae2ce96d948d8c0ad384b97c",
+        "equal": true,
+        "gcp1_local_original_verified": false
+      },
+      {
+        "path": "eval-own/r2/000020-prefix.jpg",
+        "gcp1_sha256": "bc68eef66a31bb8ad9ba5a6a6383d4370fa4ff56319c7c956578de0819a7271c",
+        "gcp2_sha256": "bc68eef66a31bb8ad9ba5a6a6383d4370fa4ff56319c7c956578de0819a7271c",
+        "equal": true,
+        "gcp1_local_original_verified": false
+      },
+      {
+        "path": "eval-overview/000000-prefix.jpg",
+        "gcp1_sha256": "3be1e3c41b9afdc363200abcace2be56fcf4290a925c254137a27b2bc8215894",
+        "gcp2_sha256": "3be1e3c41b9afdc363200abcace2be56fcf4290a925c254137a27b2bc8215894",
+        "equal": true,
+        "gcp1_local_original_verified": true
+      },
+      {
+        "path": "eval-overview/000010-prefix.jpg",
+        "gcp1_sha256": "0a39d98f8bd3e23c82923f78c29f4e4f75e66a551a88b71ca14d949e30720842",
+        "gcp2_sha256": "0a39d98f8bd3e23c82923f78c29f4e4f75e66a551a88b71ca14d949e30720842",
+        "equal": true,
+        "gcp1_local_original_verified": false
+      },
+      {
+        "path": "eval-overview/000020-prefix.jpg",
+        "gcp1_sha256": "2562f8d1ad6a28f45e0a5cd3e8412e7583e2a593aa1aa4d1e7a97fac38b31848",
+        "gcp2_sha256": "2562f8d1ad6a28f45e0a5cd3e8412e7583e2a593aa1aa4d1e7a97fac38b31848",
+        "equal": true,
+        "gcp1_local_original_verified": false
+      },
+      {
+        "path": "eval-own/r1/000000-release-look.jpg",
+        "gcp1_sha256": "c288d732065f9602c95b0e77ceda50877f16f2a7a69abae0496cfc8a162eecc1",
+        "gcp2_sha256": "c288d732065f9602c95b0e77ceda50877f16f2a7a69abae0496cfc8a162eecc1",
+        "equal": true,
+        "gcp1_local_original_verified": true
+      },
+      {
+        "path": "eval-own/r1/000060-release-look.jpg",
+        "gcp1_sha256": "5dfe9c12795033ff5b54fc71656bfe08eea0198ba853c01352687fdb0d4ee30c",
+        "gcp2_sha256": "5dfe9c12795033ff5b54fc71656bfe08eea0198ba853c01352687fdb0d4ee30c",
+        "equal": true,
+        "gcp1_local_original_verified": true
+      },
+      {
+        "path": "eval-own/r1/000100-release-lower.jpg",
+        "gcp1_sha256": "e1ca0494c2535f42a6e16fbd300d4d0010f19777d7fc1140f26348c22b05ae87",
+        "gcp2_sha256": "e1ca0494c2535f42a6e16fbd300d4d0010f19777d7fc1140f26348c22b05ae87",
+        "equal": true,
+        "gcp1_local_original_verified": true
+      },
+      {
+        "path": "eval-own/r2/000000-release-look.jpg",
+        "gcp1_sha256": "4af98c5d457874946bf159621809e618551a306923a3fa3c1be892a4a6d0b1fc",
+        "gcp2_sha256": "4af98c5d457874946bf159621809e618551a306923a3fa3c1be892a4a6d0b1fc",
+        "equal": true,
+        "gcp1_local_original_verified": true
+      },
+      {
+        "path": "eval-own/r2/000060-release-look.jpg",
+        "gcp1_sha256": "f3a9f750be7675b0e1b052fe47190b9942d31fd7150ec8b5938944f07756e0de",
+        "gcp2_sha256": "f3a9f750be7675b0e1b052fe47190b9942d31fd7150ec8b5938944f07756e0de",
+        "equal": true,
+        "gcp1_local_original_verified": true
+      },
+      {
+        "path": "eval-own/r2/000100-release-lower.jpg",
+        "gcp1_sha256": "c2d23685d87ffddff2e63eeb2e821d8ac13a8427053802e3e830d6cd1f60f3b2",
+        "gcp2_sha256": "c2d23685d87ffddff2e63eeb2e821d8ac13a8427053802e3e830d6cd1f60f3b2",
+        "equal": true,
+        "gcp1_local_original_verified": true
+      },
+      {
+        "path": "eval-overview/000360-release-done.jpg",
+        "gcp1_sha256": "a56e7fdcd27a694a4377ccda8d847094b2b12c0a4935fb0fa0eea209529b4ec2",
+        "gcp2_sha256": "a56e7fdcd27a694a4377ccda8d847094b2b12c0a4935fb0fa0eea209529b4ec2",
+        "equal": true,
+        "gcp1_local_original_verified": true
+      }
+    ],
+    "replay_status": "complete",
+    "replay_sim_s": 47.30000000014325,
+    "release_success_diagnostic_only": true,
+    "scope": "JPEG files from one frozen scene; not global renderer equivalence or permission to pool hosts"
+  },
+  "raw": {
+    "speed": "gcp2:/home/ugrp/ugrp-sim/runs/gcp2setup-speed16",
+    "render": "gcp2:/home/ugrp/ugrp-sim/runs/gcp2setup-render39/raw"
+  },
+  "raw_verification": {
+    "files": 1667,
+    "bad": [],
+    "manifest_sha256": "77e877fb1306e6e2099fbff04beba35d4f65afc4ab0d0c4fa3dc3d0f10e67025",
+    "summary_sha256": "35a96b6e67041c76ba655b2e88c4ac04e335aa157fcace975246f21c45040f65"
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/gcp-sim-host/experiments/2026-10-15-gcp2setup/evidence/speed16/funnel.json",
+  "tests": "tests/test_gcp_host.py: 7 passed",
+  "research_result": false,
+  "first_project_accessed": false,
+  "model_calls": 0,
+  "training": false,
+  "new_cohort_submitted": false,
+  "remaining": [
+    "gcp2 slower than saved gcp1 benchmark; cause unverified",
+    "Full gcp1 transitive package/OS library lock unavailable",
+    "PR review/CI/merge separate"
+  ],
+  "vm_final_state": "TERMINATED",
+  "idle_guard_verified": true,
+  "credential_path_check": {
+    "credential_paths_present": {
+      ".config/gcloud": false,
+      ".kaggle/kaggle.json": false,
+      ".env": false,
+      "ugrp-sim/ugrp/.env": false,
+      ".claude": false,
+      ".codex": false
+    },
+    "ssh_file_names": [
+      "authorized_keys"
+    ]
+  },
+  "source_clones": [
+    {
+      "source": "/home/ugrp/ugrp-sim/src/c1f02ac0a81f50d0235823a845c31f1d4116c9e9",
+      "head": "c1f02ac0a81f50d0235823a845c31f1d4116c9e9",
+      "alternates": "/home/ugrp/ugrp-sim/git-shared.git/objects",
+      "objects_bytes": 43
+    },
+    {
+      "source": "/home/ugrp/ugrp-sim/src/4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+      "head": "4a69e6bc1fb5d07ccf6b0e2e552140d9e839af9b",
+      "alternates": "/home/ugrp/ugrp-sim/git-shared.git/objects",
+      "objects_bytes": 43
+    }
+  ],
+  "pr": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/526",
+  "pr_state": "OPEN",
+  "ci_at_handoff": "pending; inspect GitHub",
+  "implementation_sha": "daafc4411ef93ca66470e7108185a6cbd76894bb"
+}
