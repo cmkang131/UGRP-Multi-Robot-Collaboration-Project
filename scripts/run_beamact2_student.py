@@ -52,6 +52,9 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
     if sha256(scenario_path) != plan['scenario_source_sha256']:
         raise ValueError('scenario mismatch')
     scenario = json.loads(scenario_path.read_text())
+    # The scene profile postdates the pinned physics dependency. Resolve its
+    # closure before package isolation, exactly as run_beampair1 does.
+    binding = scene_bindings(plan['scene_profile'])
     # All controller objects are constructed outside dependency isolation and
     # retain the frozen v6 own-input contract. Only physics/scene/protocol are
     # imported from the clean dependency; no teacher instance is constructed.
@@ -94,7 +97,6 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
             from sim.grasp_act_port import DutyActPort
             from harness.grasp_act_start_sync import GraspStartSync
             from scripts.run_grasp_act_teacher import apply, snapshot
-            binding = scene_bindings(plan['scene_profile'])
             scene = wrap(binding[0](ScenarioFinalV3Scene.from_scenario(scenario,plan['seed'])))
             scene.config['setup_only']['spawns'] = deepcopy(plan['spawns'])
             original = scene.robot_transform
