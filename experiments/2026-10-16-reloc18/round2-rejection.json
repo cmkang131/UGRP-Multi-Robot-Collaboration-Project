@@ -1,0 +1,231 @@
+{
+  "source_queue": "/home/ugrp/ugrp-sim/runs/reloc18-round2/queue.json",
+  "reproduce": "PYTHONPATH=. python /home/ugrp/ugrp-sim/analysis-tools/reloc18-summarize.py --round 2",
+  "runs": [
+    {
+      "run": "reloc18-r2-carry-candidate-93266-46dd7ec3",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r2-carry-candidate-93266-46dd7ec3/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "rejections": [
+        {
+          "category": "scene_wall_unobservable_pose_budget",
+          "N": 3,
+          "blocked_object": "pose_uncertainty_budget",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "accepted_replan",
+          "N": 3,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        }
+      ]
+    },
+    {
+      "run": "reloc18-r2-carry-candidate-93315-46dd7ec3",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r2-carry-candidate-93315-46dd7ec3/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "rejections": [
+        {
+          "category": "scene_wall_unobservable_pose_budget",
+          "N": 4,
+          "blocked_object": "pose_uncertainty_budget",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "accepted_replan",
+          "N": 3,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "t": 261.79999999553723,
+          "event": "rejection",
+          "reason": "carry_recovery_setdown_envelope_blocked",
+          "category": "route",
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.13879243810376046,
+          "gap_scope": "same margin-escape limits and wall samples as segment_free",
+          "blockers": [
+            {
+              "blocked_object": "wall_divider_1",
+              "minimum_gap_m": -0.13879243810376046
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "reloc18-r2-selfmap-candidate-93584-46dd7ec3",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r2-selfmap-candidate-93584-46dd7ec3/raw",
+      "valid": true,
+      "cumulative": {
+        "candidates": 79,
+        "accepted": 18
+      },
+      "rejections": [
+        {
+          "category": "within_chi2_gate",
+          "N": 18,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "correlated_measurement_thinned",
+          "N": 61,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        }
+      ]
+    },
+    {
+      "run": "reloc18-r2-selfmap-candidate-93583-46dd7ec3",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r2-selfmap-candidate-93583-46dd7ec3/raw",
+      "valid": true,
+      "cumulative": {
+        "candidates": 83,
+        "accepted": 21
+      },
+      "rejections": [
+        {
+          "category": "within_chi2_gate",
+          "N": 21,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "correlated_measurement_thinned",
+          "N": 62,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        }
+      ]
+    },
+    {
+      "run": "reloc18-r2-carry-command_only-93266-46dd7ec3",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r2-carry-command_only-93266-46dd7ec3/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 0,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "rejections": [
+        {
+          "category": "scene_wall_unobservable_pose_budget",
+          "N": 1,
+          "blocked_object": "pose_uncertainty_budget",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "retry_body_views",
+          "N": 11,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        }
+      ]
+    },
+    {
+      "run": "reloc18-r2-carry-command_only-93315-46dd7ec3",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r2-carry-command_only-93315-46dd7ec3/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "rejections": [
+        {
+          "category": "scene_wall_unobservable_pose_budget",
+          "N": 1,
+          "blocked_object": "pose_uncertainty_budget",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "retry_body_views",
+          "N": 6,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        }
+      ]
+    },
+    {
+      "run": "reloc18-r2-carry-legacy_failure_window-93315-46dd7ec3",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r2-carry-legacy_failure_window-93315-46dd7ec3/raw",
+      "valid": true,
+      "cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "rejections": [
+        {
+          "category": "scene_wall_unobservable_pose_budget",
+          "N": 1,
+          "blocked_object": "pose_uncertainty_budget",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        },
+        {
+          "category": "accepted_replan",
+          "N": 1,
+          "blocked_object": "own_rgb_or_route_evidence",
+          "minimum_gap_m": null,
+          "gap_scope": "not_applicable_localization_or_original_gap_missing"
+        }
+      ]
+    }
+  ]
+}

@@ -152,7 +152,7 @@ def test_global_mapper_handoff_consumes_rgb_once_and_preserves_local_origin(monk
     kw=dict(bootstrap='command_prior_v1',recovery_profile='selfmap4_recovery_v1',revision_gate='selfmap4_revision_gate_v2',
         multiframe_registration='selfmap4_multiframe_registration_v1',correction_safety='selfmap6_correction_safety_v1',
         reloc12_raw_cov_gate_v1=True,reloc13_execution_cov_v1=True,reloc13_execution_frame_v1=True,reloc13_live_r7_v1=True,
-        reloc14_continuous_tracking_v1=True,reloc15_pose_handoff_v1=True,reloc18_innovation_v1=True,reloc18_map_odom_v1=True)
+        reloc14_continuous_tracking_v1=True,reloc15_pose_handoff_v1=True,reloc18_innovation_v1=True,reloc18_map_odom_v1=True,reloc18_process_cov_v1=True)
     assert bundle('a'*40,93584,60,**kw)['options']['reloc18_map_odom_v1']
     mapper=sm.SelfMapIntegration('r1',options=sm.Options(self_map_integration=sm.OPTION,**kw),static_map=static)
     mapper.zones=template.zones;mapper.command(dict(t=0.,kind='initial_servo_command',pulses=template.servo))
@@ -169,3 +169,12 @@ def test_global_mapper_handoff_consumes_rgb_once_and_preserves_local_origin(monk
     assert row['correction_admission'] is None
     assert row['static_registration']['map_odom']['local_pose_unchanged']
     np.testing.assert_allclose(mapper.registration.map_from_own,[2,1,0])
+
+def test_process_q_uses_body_transition_and_idle_does_not_inherit_long_global_drift():
+    from harness.reloc18_process_cov import covariance
+    idle=covariance('carry',[0,0,0],.1);moving=covariance('carry',[.01,0,0],.1)
+    assert np.all(np.diag(idle)<np.diag(moving))
+    np.testing.assert_allclose(covariance('carry',[0,0,0],.2),2*idle)
+    assert np.linalg.eigvalsh(idle).min()>=0
+    with pytest.raises(ValueError):covariance('carry',[0,0,float('nan')],.1)
+    with pytest.raises(ValueError):covariance('carry',[0,0,0],-.1)

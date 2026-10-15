@@ -15,3 +15,6 @@
 
 R3 준비: 같은3파일 **46 passed** (1.63초). map→odom 계산, 같은 RGB를 한 번만 소비하는
 실제 mapper handoff, 로컬 명령 odometry 불변, DEV 예산 기록과 시각/finite 검사 보존을 추가 확인했다.
+
+전이 잔차 Q 연결 후 같은3파일 **47 passed** (2.64초). idle/moving Q의 SIM 간격 비례,
+PSD·비유한 입력 거부와 실행 번들의 명시적 전달을 확인했다.

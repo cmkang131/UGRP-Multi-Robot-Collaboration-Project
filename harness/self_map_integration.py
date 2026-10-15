@@ -55,6 +55,7 @@ class Options:
     reloc15_update_budget_v1: bool = False
     reloc18_innovation_v1: bool = False
     reloc18_map_odom_v1: bool = False
+    reloc18_process_cov_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
@@ -63,6 +64,8 @@ class Options:
             raise ValueError('reloc18 requires bool and pre-mutation correction safety')
         if type(self.reloc18_map_odom_v1) is not bool or (self.reloc18_map_odom_v1 and not (self.reloc18_innovation_v1 and self.reloc15_pose_handoff_v1)):
             raise ValueError('map-odom requires reloc18 innovation and timestamped handoff')
+        if type(self.reloc18_process_cov_v1) is not bool or (self.reloc18_process_cov_v1 and not self.reloc18_innovation_v1):
+            raise ValueError('process covariance requires innovation and bool toggle')
         for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1', 'reloc15_pose_handoff_v1', 'reloc15_update_budget_v1'):
             if type(getattr(self, name)) is not bool or (getattr(self, name) and self.multiframe_registration == 'off'):
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
@@ -220,7 +223,7 @@ class SelfMapIntegration:
         self.map_odom_filter=None
         if self.options.reloc18_map_odom_v1:
             from harness.reloc18_map_odom import MapOdomFilter
-            self.map_odom_filter=MapOdomFilter()
+            self.map_odom_filter=MapOdomFilter(process_cov_v1=self.options.reloc18_process_cov_v1)
         self.recovery = self.options.recovery_profile != 'off'
         self.registration = None
         if self.recovery:
@@ -549,6 +552,9 @@ class SelfMapIntegration:
             a=self.slam.pose[2];c,s=math.cos(a),math.sin(a)
             local_to_body=np.array([[c,s,0],[-s,c,0],[0,0,1]])
             self.Q=local_to_body@rate@local_to_body.T*max(0.,dt)
+            if self.options.reloc18_process_cov_v1:
+                from harness.reloc18_process_cov import covariance
+                self.Q=covariance('selfmap',self.delta,max(0.,dt))
             anchor=self.registration.map_from_own
             if anchor is not None:
                 a=anchor[2];c,s=math.cos(a),math.sin(a)

@@ -14,9 +14,10 @@ from harness.reloc18_innovation import calibration,fuse
 OPTION='reloc18_map_odom_v1'
 
 class MapOdomFilter:
-    def __init__(self,fit=None):
+    def __init__(self,fit=None,process_cov_v1=False):
         self.fit=fit or calibration();self.x=None;self.P=None
         self.odom=None;self.t=None;self.last_fused_t=-math.inf;self.initial_rotation=None
+        self.process_cov=process_cov_v1
 
     def step(self,*,t,odom,local_pose,world_pose,measurement_covariance,fresh,registered):
         odom,local_pose=np.asarray(odom,float),np.asarray(local_pose,float)
@@ -31,9 +32,14 @@ class MapOdomFilter:
         else:
             if t<=self.t:raise ValueError('CAUSAL_MAP_ODOM_TIME_REQUIRED')
             delta=compose(inverse(self.odom),odom);dt=t-self.t
+            if np.array_equal(self.odom,odom):delta=np.zeros(3)
             qworld=self.initial_rotation@np.asarray(self.fit['command_covariance_per_sim_s'])@self.initial_rotation.T*dt
             a=self.x[2];c,s=math.cos(a),math.sin(a);body=np.array([[c,s,0],[-s,c,0],[0,0,1]])
-            self.P=_motion_covariance(self.x,delta,self.P,body@qworld@body.T);self.x=compose(self.x,delta)
+            Q=body@qworld@body.T
+            if self.process_cov:
+                from harness.reloc18_process_cov import covariance
+                Q=covariance('selfmap',delta,dt)
+            self.P=_motion_covariance(self.x,delta,self.P,Q);self.x=compose(self.x,delta)
             decision=dict(accepted=False,reason='motion_prediction')
             if fresh and t-self.last_fused_t>=self.fit['measurement_correlation_sim_s']:
                 decision=fuse(self.x,world_pose,self.P,np.asarray(measurement_covariance)+Rfloor,threshold=self.fit['chi2_threshold'])

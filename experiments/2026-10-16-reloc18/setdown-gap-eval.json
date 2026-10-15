@@ -1,0 +1,39 @@
+{
+  "scope": "evaluation only; actual base pose and same issued15cm backoff/radius, static walls only; dynamic object clearance not scored",
+  "source": "/home/ugrp/ugrp-sim/runs/reloc18-r2-carry-candidate-93315-46dd7ec3/raw",
+  "t": 261.79999999553723,
+  "actual_static_segment_context": {
+    "category": "route",
+    "blocked_object": "wall_divider_1",
+    "minimum_gap_m": 0.7552200792019457,
+    "gap_scope": "same margin-escape limits and wall samples as segment_free",
+    "blockers": []
+  },
+  "original_rejection": [
+    {
+      "t": 261.79999999553723,
+      "event": "rejection",
+      "reason": "carry_recovery_setdown_envelope_blocked",
+      "category": "route",
+      "blocked_object": "wall_divider_1",
+      "minimum_gap_m": -0.13879243810376046,
+      "gap_scope": "same margin-escape limits and wall samples as segment_free",
+      "blockers": [
+        {
+          "blocked_object": "wall_divider_1",
+          "minimum_gap_m": -0.13879243810376046
+        }
+      ]
+    }
+  ],
+  "actual_pose": [
+    1.1597799207980546,
+    -2.0788842212232432,
+    -0.05933175565880399
+  ],
+  "estimated_pose": [
+    2.475064036238274,
+    -2.2168620080062387,
+    -0.1828291614379567
+  ]
+}

@@ -134,6 +134,7 @@ class CommandPose:
         self.last_dt = None
         self.reloc18_innovation=False
         self.reloc18_pose_budget_observe_only=False
+        self.reloc18_process_cov=False
 
     @property
     def pose(self):
@@ -160,8 +161,14 @@ class CommandPose:
             self.heading.issue(issued,(dx,dy,da))
         self.last_delta = (dx, dy, da)
         self.last_command_key = self.command_key(issued, dt)
+        prior_yaw=float(self.own.x[2])
         self.own.propagate(dx, dy, da, k_trans=0., k_rot=0.)
-        if self.reloc18_innovation:
+        if self.reloc18_process_cov:
+            import numpy as np
+            from harness.reloc18_process_cov import covariance
+            c,s=math.cos(prior_yaw),math.sin(prior_yaw);R=np.array([[c,-s,0],[s,c,0],[0,0,1]])
+            self.own.P+=R@covariance('carry',(dx,dy,da),dt)@R.T
+        elif self.reloc18_innovation:
             import numpy as np
             self.own.P+=np.asarray(self.reloc18_fit['command_covariance_per_sim_s'])*dt
         self.distance_since_fix += math.hypot(dx, dy)
@@ -277,7 +284,7 @@ class CommandPose:
 
     def sigmas(self):
         base = [math.sqrt(max(0., float(self.own.P[i, i]))) for i in range(3)]
-        if self.reloc18_innovation:
+        if self.reloc18_innovation or self.reloc18_process_cov:
             return base
         distance, turn = self.distance_since_fix, self.turn_since_fix
         if self.partial_epoch is not None:
@@ -314,6 +321,7 @@ class CommandPose:
                 'motion_error': MOTION_ERROR,
                 'carry_pose_budget_recal_v1': self.budget_recal,
                 **({'reloc18_innovation_v1':True,'covariance_semantics':'empirical DEV command covariance plus Joseph posterior; calibration is not held-out'} if self.reloc18_innovation else {}),
+                **({'reloc18_process_cov_v1':True,'process_noise_semantics':'body transition residual with empirical correlation inflation'} if self.reloc18_process_cov else {}),
                 'reloc14_carry_budget_v1': self.budget14,
                 **({'reloc15_heading':self.heading.last} if self.heading is not None else {}),
                 **({'reloc14_tracking':self.tracker.last} if self.tracker is not None else {}),

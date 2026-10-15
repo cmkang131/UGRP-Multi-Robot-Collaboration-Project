@@ -66,7 +66,9 @@ def launch(n):
                 plan=json.loads(Path(old['command'][old['command'].index('--plan')+1]).read_text())
                 plan['episodes'][0]['batch']=f'reloc18-r{n}'
                 if condition=='candidate':plan['episodes'][0]['reloc18_innovation_v1']=True
-                if n==3:plan['episodes'][0]['reloc18_pose_budget_observe_only_v1']=True
+                if n==3:
+                    plan['episodes'][0]['reloc18_pose_budget_observe_only_v1']=True
+                    plan['episodes'][0]['reloc18_process_cov_v1']=True
                 planpath=folder/'input-plan.json';planpath.write_text(json.dumps(plan,indent=2)+'\n')
                 # 94.2 was the measured catastrophic PF jump; 94.5 retains
                 # that event plus the preceding10s at10Hz via existing buffer.
@@ -75,7 +77,7 @@ def launch(n):
                 for f,v in [('--output',folder/'raw'),('--expected-source-sha',sha)]:cmd[cmd.index(f)+1]=str(v)
                 cmd+=['--reloc18-innovation-v1']
                 if n==3:
-                    cmd+=['--reloc18-map-odom-v1']
+                    cmd+=['--reloc18-map-odom-v1','--reloc18-process-cov-v1']
                     cmd[cmd.index('--cap-s')+1]='180'
             env=dict(old['environment']);env['UGRP_SCENE_COLOUR_CALIBRATION']=str(ROOT/'experiments/2026-10-16-reloc16/colour-calibration.json')
             t=dict(name=name,kind=kind,condition=condition,seed=old['seed'],command=cmd,environment=env,source_sha=sha,raw=str(folder/'raw'),rejection_table=str(rejection))

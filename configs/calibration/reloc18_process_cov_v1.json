@@ -1,0 +1,189 @@
+{
+  "schema": "ugrp.reloc18.process_cov.v1",
+  "method": "native transition residual in robot body frame; abs p95/1.96, divided by native SIM step; initial-positive-sequence ACF inflation; no initial world-pose error included",
+  "scope": "same already-seen DEV calibration, no held-out covariance certification; bias and non-Gaussian tails remain limitations",
+  "fits": {
+    "carry": {
+      "idle": {
+        "N": 1270,
+        "native_sim_step_s": 0.09999999999763531,
+        "absolute_transition_residual_p95": [
+          0.0002082067119942412,
+          0.00011771740725802781,
+          0.0012387796928475102
+        ],
+        "empirical_mean_residual": [
+          -2.78585266095622e-06,
+          -8.88113692574388e-06,
+          1.194753015724408e-05
+        ],
+        "integrated_correlation_steps": [
+          3.0559366085497475,
+          2.0745204026215527,
+          2.6377929090497902
+        ],
+        "covariance_per_sim_s": [
+          [
+            3.44855860439658e-07,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            7.48346797832216e-08,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0537380663250708e-05
+          ]
+        ]
+      },
+      "moving": {
+        "N": 1728,
+        "native_sim_step_s": 0.09999999999763531,
+        "absolute_transition_residual_p95": [
+          0.0019170756614703829,
+          0.0019831164745869093,
+          0.009832993648350816
+        ],
+        "empirical_mean_residual": [
+          -0.0002244753882938519,
+          0.000150396086941863,
+          0.0005397628153547195
+        ],
+        "integrated_correlation_steps": [
+          37.672617268235626,
+          155.70994465250595,
+          34.09680794961601
+        ],
+        "covariance_per_sim_s": [
+          [
+            0.0003604193661405408,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0015941038590575709,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.008582010837970867
+          ]
+        ]
+      }
+    },
+    "selfmap": {
+      "idle": {
+        "N": 217,
+        "native_sim_step_s": 0.20000000000000018,
+        "absolute_transition_residual_p95": [
+          0.0003687729390596153,
+          0.0002957438243133171,
+          0.002588438827464485
+        ],
+        "empirical_mean_residual": [
+          4.758707898273746e-06,
+          -3.5104772648671595e-06,
+          -4.9318715018200495e-05
+        ],
+        "integrated_correlation_steps": [
+          1.8063383753907027,
+          1.790237617734585,
+          2.1803063587021096
+        ],
+        "covariance_per_sim_s": [
+          [
+            3.1973561899985925e-07,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            2.038054859135801e-07,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.9013722674656485e-05
+          ]
+        ]
+      },
+      "moving": {
+        "N": 383,
+        "native_sim_step_s": 0.1999999999999993,
+        "absolute_transition_residual_p95": [
+          0.0010562923005998867,
+          0.0031014637845681306,
+          0.007840839471531068
+        ],
+        "empirical_mean_residual": [
+          6.345301273569281e-05,
+          0.0015671252747776405,
+          0.0003260636080181776
+        ],
+        "integrated_correlation_steps": [
+          1,
+          25.370205794836338,
+          1
+        ],
+        "covariance_per_sim_s": [
+          [
+            1.4522522255034826e-06,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0003176371137068234,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            8.002007373752223e-05
+          ]
+        ]
+      }
+    }
+  },
+  "sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93266-47670d14/raw/teacher-commands.jsonl.zst",
+      "sha256": "17c0b71901029a05d98286245278320d37571b1faffd5e691143ddba31239a0e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93266-47670d14/raw/eval-only.jsonl.zst",
+      "sha256": "126d49e31b0da8364758c9a5fee619b8a10d06cda7f8199647a8250f91f5f15e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93315-47670d14/raw/teacher-commands.jsonl.zst",
+      "sha256": "32e4775a5ee0f04cc97896382e798a9a2ebaac4c7ce8949df2dc29130314159b"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93315-47670d14/raw/eval-only.jsonl.zst",
+      "sha256": "71fb69e9a3f6aba5707ae0dbba2881a2eba080a304046e69a9bf608523994dc9"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93584-47670d14/raw/trace.jsonl.zst",
+      "sha256": "b804114b105b80c9071d9429fb9ef07798c95fa129a8c71601e32040255ed852"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93584-47670d14/raw/eval_only/trajectory.jsonl.zst",
+      "sha256": "6e519050b9fd1712cea31ff95ebf330f5fb16039f3a5b2ba61e37ef6e345ee60"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93583-47670d14/raw/trace.jsonl.zst",
+      "sha256": "061a947cbc418e4cd525d95033ee17f4936e667e16610717fb6600c29694f71d"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93583-47670d14/raw/eval_only/trajectory.jsonl.zst",
+      "sha256": "c4e1678070df4dfbfc8fe47c52ca368ddacd1e34f782c802fb4b24bbfbb4b2ac"
+    }
+  ]
+}

@@ -28,3 +28,8 @@ pose의 x/y/yaw 세 성분 관측이므로 자유도 3, 유의수준 .01(기존 
 R3의map→odom 설계는 위 프레임 분리를 따른다. 동일 RGB 지도 측정을 두 곳에 융합하지 않는다.
 DEV 위치 예산 observe-only는 새 문헌 상수가 아니라 프로젝트 AGENTS의2026-10-05
 dev_light 규칙(불확실성 정지를 would-stop으로 기록)의 명시적 별도 조건이다.
+
+R2의Q 적합은 누적 오차 기반 탐색 envelope였다. R3 `reloc18_process_cov_v1`는
+상태 전이식의 잔차를 body 프레임에서 맞춰, 초기 전역 등록 오차와 과정 잡음을 구분한다.
+원본 p95와 ACF·평균 잔차·파일 해시는 별도 process calibration JSON에 기록했다.
+긴 상관을 white Q 배율로 근사한 것이며 편향 상태를 명시적으로 학습한 모델은 아니다.
