@@ -124,3 +124,11 @@ warp3의 DISTINCT_STARTS PASS·교사≥95%/≥40·RECORD_API_READY를 확인한
 기존 watcher를 교체했으며 최초 시작 시각과13:14 KST 대기 종료는 유지했다.
 현재 서로 다른 시작 검증 보고만 받았고 교사/기록 API는 대기 중이다.
 watcher 검사11통과, 전체 신규 비물리 검사 누계25통과·torch1skip이다.
+
+대기 중 [비교 조건](comparison-protocol.json)과 [최종40개 계획](final-eval-plans.json)을
+고정했다. act16a가 제안한91620–91659 전체를 최종 평가로 예약하며 그 문서의
+개발20/확인20 구분은 사용하지 않는다. TRAIN45·validation5·DAgger TRAIN20은
+이전 분석의 시드 범위를 gcp2/MJWarp에서 새로 기록할 계획이고 아직 실행하지 않았다.
+DAgger는 같은10000스텝의 새 초기화와 D0 TRAIN 정규화 통계를 써서 추가 업데이트
+효과와 분리한다. h1/h2/h3의 손실 결합은 아직 구현하지 않았으며 실제 효과로 보고하지 않는다.
+전체 비교가8시간 안에 안 들어가면 미완료로 남기고 상한을 넘기지 않는다.
