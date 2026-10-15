@@ -56,6 +56,8 @@ def main():
     remaining={i for i in remaining if rows[i]['strict_success']};counts.append(('joint_hold_3s',len(remaining)))
     remaining={i for i in remaining if rows[i]['legacy_success'] and rows[i]['visible_eligible']};counts.append(('input_eligible_success',len(remaining)))
     manifest_files=sum((r.get('manifest_verified_files') or 0)+(r.get('adapter_manifest_files') or 0) for r in rows)
+    missing=sum(r.get('blocked_object')=='not_recorded' or r.get('gap_scope')=='source_missing_clearance_audit'
+        or not r.get('reason_category') for r in rejections)
     table=dict(episode_funnel=ordered_funnel(200,counts),candidate_populations={str(r['seed']):r['candidate_populations'] for r in rows},
         frame_populations={str(r['seed']):r['frame_funnel'] for r in rows},
         frame_funnel=ordered_funnel(frames['N'],[(k,frames[k]) for k in ('any_visible','meaningful_visible','admitted_not_held')]),
@@ -63,11 +65,11 @@ def main():
         rejection_reason_distribution=dict(reasons),blocked_object_distribution=dict(blocks),terminal_outcome_distribution=dict(outcomes),
         source_batch=str(a.batch),source_sha='72c0e83dab384b4f7d4bb73e37e440e0d1b248f6',
         reproduce=' '.join(sys.argv),analysis_sha256=sha256(__file__),
-        scope='fresh record200 only; original gate40 and two identity cohorts are excluded')
+        scope='fresh record200 only; original gate40 and two identity cohorts are excluded',missing_rejection_audit_N=missing)
     write_json(a.out/'rejection_table.json',table);write_json(a.out/'candidate-rejections.json',rejections)
     summary=dict(n=len(remaining),N=len(rows),cap_end_N=sum(r.get('cap_end',False) for r in rows),
         HOST_ERROR_N=sum(r['category']=='HOST_ERROR' for r in rows),unstarted_N=len(done['not_started']),
-        physical_success_N=sum(r['legacy_success'] for r in rows),raw_adapter_verified_files=manifest_files,
+        physical_success_N=sum(r['legacy_success'] for r in rows),raw_adapter_verified_files=manifest_files,missing_rejection_audit_N=missing,
         terminal_outcome_distribution=dict(outcomes),invisible_measurements=sum(r['audit']['invisible_measurements'] for r in rows),
         held_world_reads=sum(r['audit']['held_world_reads'] for r in rows),runs=rows,source_batch=str(a.batch))
     write_json(a.out/'summary.json',summary);compress_jsons(a.out)
