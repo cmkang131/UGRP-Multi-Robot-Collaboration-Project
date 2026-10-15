@@ -1,0 +1,50 @@
+{
+  "schema": "ugrp.scene_tex2_static_request.v1",
+  "task": "scenetex2",
+  "source_sha": "3f5feb73a87423a76685e76855dd515976298c9c",
+  "branch": "claude/scene-tex2",
+  "pr": 527,
+  "host": "gcp2",
+  "account": "changmin5781@gmail.com",
+  "project": "ugrp-sim-b-1014",
+  "instance": "ugrp-sim-gcp2",
+  "zone": "asia-northeast3-a",
+  "create_vm": false,
+  "status": "WAITING_GCP2SETUP_PASS",
+  "user_authorized_static_gate_after_PASS": true,
+  "execute": false,
+  "ready": false,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-15-scene-tex2/rejection-table.json",
+  "rejection_table_sha256": "9e168f82e0071733ce68859c976486623f6199847a8f2cda2a9e98f37ab47bcb",
+  "profiles": [
+    "floor_light_v1",
+    "floor_light_textured_v1",
+    "walls_floor_textured_v2"
+  ],
+  "planned_frames": 144,
+  "physics_steps": 0,
+  "model_calls": 0,
+  "storage_max_mib": 512,
+  "setup_poll_seconds": 300,
+  "setup_deadline_utc": "2026-10-15T17:11:06Z",
+  "command": [
+    "python",
+    "-m",
+    "scripts.probe_scene_tex2",
+    "--execute",
+    "--source-sha",
+    "3f5feb73a87423a76685e76855dd515976298c9c",
+    "--setup-proof",
+    "<copied latest gcp2setup PASS>",
+    "--output",
+    "<new persistent GCP run directory>"
+  ],
+  "guards": [
+    "gcp2setup latest line PASS required",
+    "live budget-stop not triggered",
+    "no credentials/model keys on VM",
+    "preserve other owners; stop VM only without other active runs",
+    "all gcloud explicit account and project"
+  ],
+  "pooling": "new scene and host; no mixing"
+}
