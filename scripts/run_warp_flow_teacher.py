@@ -33,6 +33,8 @@ def parser():
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--compiled-reference-v1', type=Path)
     p.add_argument('--compiled-geometry-312-v1', type=Path)
+    p.add_argument('--per-world-model-references-v1', type=Path,
+        help='Shared warp1 exact-XML C312 model reference map; required for heterogeneous six-seed batch')
     p.add_argument('--export-compiled-only', action='store_true')
     p.add_argument('--vm-hourly-usd', type=float, required=True)
     return p
@@ -70,6 +72,8 @@ def main():
     if a.mix_known_six and (a.nworld < 16 or {e['seed'] for e in plans['episodes']} != {
             8318726,8318620,8318600,8318604,8318611,8318631}):
         p.error('mixed batch needs the exact six-plan population and at least sixteen worlds')
+    if a.mix_known_six and not a.per_world_model_references_v1:
+        p.error('mixed known six require exact per-world model references; geometry/mass may not be pooled')
     import numpy as np
     import mujoco
     from warp_act_backend import CTransport, WarpTransport
@@ -105,12 +109,17 @@ def main():
             xml = a.out/'runtime-scene.xml'; xml.write_text(contexts[0]['world'].scene_xml)
             export_reference(contexts[0]['world'].model, xml, mujoco.__version__, a.out/'compiled-312.json')
             export_geometry(contexts[0]['world'].model, xml, mujoco.__version__, a.out/'compiled-geometry312.npz')
-            report.update(status='compiled_export_only', physics_steps=0)
+            report.update(status='compiled_export_only', rollout_physics_steps=0,
+                native_initialization_sim_s=[float(c['world'].data.time) for c in contexts])
             return
         if a.physics_backend == 'mjwarp_batch_v1':
+            report['native_initialization_sim_s'] = [float(c['world'].data.time) for c in contexts]
             hooks.initialize(contexts, compiled_reference=a.compiled_reference_v1,
-                compiled_geometry=a.compiled_geometry_312_v1)
-            report.update(camera=hooks.camera, compatibility=hooks.compat, capacities=hooks.capacities)
+                compiled_geometry=a.compiled_geometry_312_v1,
+                per_world_model_references=json.loads(a.per_world_model_references_v1.read_text())
+                    if a.per_world_model_references_v1 else None)
+            report.update(camera=hooks.camera, compatibility=hooks.compat, capacities=hooks.capacities,
+                model_batch_audit=hooks.model_batch_audit)
         report['setup_compile_s'] = time.perf_counter()-start
         loop_start = time.perf_counter()
         while active.any():

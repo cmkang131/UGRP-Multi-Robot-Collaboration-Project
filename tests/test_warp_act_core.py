@@ -98,3 +98,15 @@ def test_model_grouping_allows_only_free_joint_initial_pose_changes():
     assert model_key(xml)==model_key(xml.replace('body pos="1 0 0"','body pos="4 5 6"'))
     assert model_key(xml)!=model_key(xml.replace('geom pos="1 2 3"','geom pos="4 5 6"'))
     assert model_key(xml)!=model_key(xml.replace('size=".1"','size=".2"'))
+
+
+def test_heterogeneous_models_preserve_world_order_and_reject_structural_changes():
+    from scripts.warp_act_core import varying_model_arrays
+    rows=[{'mass':np.array([[1.,2.]]),'index':np.array([0,1])},
+          {'mass':np.array([[3.,4.]]),'index':np.array([0,1])}]
+    result=varying_model_arrays(rows,{'mass'})
+    assert result['mass'].tolist()==[[1.,2.],[3.,4.]]
+    assert 'index' not in result
+    rows[1]['index']=np.array([1,0])
+    with pytest.raises(ValueError,match='unbatchable model difference: index'):
+        varying_model_arrays(rows,{'mass'})

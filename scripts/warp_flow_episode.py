@@ -132,6 +132,7 @@ class Bridge:
                 for j, rid in enumerate(ports) for k, side in enumerate(('left', 'right'))}
             self.context = dict(kind='setup', world=world, ports=ports, gids=gids,
                 finger_ids=fingers, camera_size=(320, 240), origin=float(world.data.time))
+            self.context['scene_xml_path'] = self.output/'raw/scene.xml'
             if not self.hooks.native_render:
                 from scripts.cargo_formation_teacher import FormationTeacher
                 def forces(holder):
@@ -160,6 +161,7 @@ class Bridge:
 
 def make_lane(adapter_source, teacher_source, plan, out, hooks, index, cap_s):
     bridge = Bridge(hooks, index)
+    bridge.output = Path(out)
     def factory():
         path = Path(adapter_source)/'scripts/run_beampair1.py'
         spec = importlib.util.spec_from_file_location(f'_warp2_adapter_{index}', path)
