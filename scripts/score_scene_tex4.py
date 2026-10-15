@@ -15,7 +15,7 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw
 from scripts.summarize_scene_tex3 import read, write, sha, dist
-from scripts.probe_scene_tex2 import pose_pwm_mode, mask_score
+from scripts.probe_scene_tex2 import pose_pwm_mode, mask_score, ROOT
 
 ENCODINGS = ('png', 'jpeg90', 'pil82')
 BASE = ('floor_light_textured_v1', 'native')
@@ -194,7 +194,7 @@ def score(inputs, output, cached_analysis=None):
                 # support. E.g. an orange mask on a yellow zone is off-target;
                 # its reduction must not be reported as loss of the target.
                 from importlib.util import spec_from_file_location, module_from_spec
-                spec = spec_from_file_location('scene_tex2_compat', Path(__file__).resolve().parents[1]/
+                spec = spec_from_file_location('scene_tex2_compat', ROOT/
                     'experiments/2026-10-15-scene-tex2/analyze_camera_compatibility.py')
                 compat = module_from_spec(spec)
                 spec.loader.exec_module(compat)

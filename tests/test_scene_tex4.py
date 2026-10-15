@@ -25,7 +25,7 @@ def test_only_wall_materials_change(name, map_path):
     for tag in ('texture', 'material'):
         key = 'ground' if tag == 'texture' else 'groundmat'
         assert ET.tostring(before.find(f'asset/{tag}[@name="{key}"]')) == ET.tostring(after.find(f'asset/{tag}[@name="{key}"]'))
-    if not v4.PROFILES[name]['skirting_m']:
+    if not v4.PROFILES[name]['skirting_m'] and not v4.PROFILES[name].get('v1_tint'):
         expected = [c/255 for c in v4.PROFILES[name]['rgb']]+[1.]
         for geom in after.findall('worldbody/geom'):
             if geom.get('name', '').startswith('zone_wall_'):
@@ -45,3 +45,21 @@ def test_new_profile_is_explicit_and_nearclip_compatible():
     scene.transform(scene_xml())
     assert scene.manifest['render_profile']['default'] == 'off'
     assert scene.manifest['render_nearclip']['base_profile'] == name
+
+
+def test_tinted_wall_assets_keep_v1_nominal_gray_and_floor_is_not_rewritten():
+    import hashlib
+    import json
+    import cv2
+    import numpy as np
+    from PIL import Image
+    record = json.loads((v4.LUMA_ASSETS/'manifest.json').read_text())
+    assert hashlib.sha256((v4.LUMA_ASSETS/'manifest.json').read_bytes()).hexdigest() == v4.LUMA_MANIFEST_SHA256
+    for key, r in record['images'].items():
+        p = v4.LUMA_ASSETS/r['file']
+        assert hashlib.sha256(p.read_bytes()).hexdigest() == r['sha256']
+        before = np.asarray(Image.open(v4.v1.checked_file(key, v4.v1.manifest(), v4.v1.ASSETS)))
+        after = np.asarray(Image.open(p))
+        assert np.array_equal(cv2.cvtColor(before, cv2.COLOR_RGB2GRAY), cv2.cvtColor(after, cv2.COLOR_RGB2GRAY))
+        assert cv2.cvtColor(after, cv2.COLOR_RGB2HSV)[..., 1].max() < 20
+    assert 'floor' not in record['images']

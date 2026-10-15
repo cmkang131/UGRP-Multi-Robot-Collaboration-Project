@@ -9,7 +9,7 @@ prior=json.loads(lease.read_text())
 prior.update(pid=os.getpid(),phase=round_name,source_sha=sys.argv[1],expected_end='2026-10-15T20:30:00Z')
 lease.write_text(json.dumps(prior,indent=2)+'\n')
 processes=[]
-for material in ('walls_floor_contrast_v4_dark','walls_floor_contrast_v4_light','walls_floor_contrast_v4_skirt'):
+for material in (sys.argv[3:] or ['walls_floor_contrast_v4_dark','walls_floor_contrast_v4_light','walls_floor_contrast_v4_skirt']):
  for quality in ('native','no_mip_v1'):
   output=base/'runs'/(round_name+'-'+material.rsplit('_',1)[1]+'-'+quality)
   command=[str(base/'ugrp/.venv-sim/bin/python'),'-m','scripts.probe_scene_tex4','--execute','--source-sha',sys.argv[1],'--materials',material,'--qualities',quality,'--output',str(output)]
