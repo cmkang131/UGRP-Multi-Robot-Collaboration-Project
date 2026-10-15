@@ -29,6 +29,9 @@ def main():
             raw=existing(out/'eval-only.jsonl');evaluations=read_rows(raw)
             commands=read_rows(existing(out/'commands.jsonl'))
             inputs=read_rows(existing(out/'student-inputs.jsonl'))
+            from harness.beamact_replay import replay
+            protocol_replay=replay(inputs,commands,read_rows(existing(out/'chunk-predictions.jsonl')),
+                read_json(out/'initial-issued.json'),read_json(out/'start-protocol.json'))
             # Revalidate ALL serialized actor inputs, not just inference calls.
             from harness.grasp_act_rollout import InputAudit, LiftScore
             from harness import grasp_act_contract as c
@@ -56,6 +59,7 @@ def main():
             if not success:failure_stages[f.record()['failure_stage'] or 'command_completion']+=1
             cumulative.update(f.record()['cumulative_run_pass']);frame_pass.update(f.frames);frame_reject.update(f.rejected)
             row.update(physical_success=success,category=category,done_times=done,input_audit=audit.record,
+                protocol_replay=protocol_replay,
                 funnel=f.record(),raw_eval_sha256=sha256(raw),commands_sha256=sha256(existing(out/'commands.jsonl')),
                 command_rows=len(commands),max_stable_hold_s=score.max_stable_s,
                 final_target_finger_min_gap_m=evaluations[-1]['target_finger_min_gap_m'],
