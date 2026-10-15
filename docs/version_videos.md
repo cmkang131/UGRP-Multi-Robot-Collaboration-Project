@@ -116,3 +116,15 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 ## 2026-10-15 beampair3 양보 계획 만료
 
 `e645b34beb4fa693ab4ddedfe77045ae26b46388` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, 기본off `peer_rendezvous_v2`. R3 짧은 탐색6/6 공동 들기3초; 정식40회는 미제출 큐. 대표8318611 개요(평가만)+r1/r2 자기 카메라 3배속, 원본10Hz 평가 qpos 복원: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/playback-3x.mp4` (449970bytes, SHA256 `2f833a2796b7b78470a6d97872525f9e43c630a9fc9a742147c1659626d0a2b1`). [원본·프레임·ffprobe·직접 검토](../experiments/2026-10-15-beampair3/r3-visual-review.json). 전체2Hz·끝10초10Hz 검토, 카메라 보정 복원·위치차이0. 원본 own JPEG는1Hz이며 새 카메라 관측이나 학생 실행이 아니다. 학습·운반·놓기·실물 성공 아님.
+
+## 2026-10-16 beampair5 재관측 뒤 목표 막힘 — NOT_READY
+
+`1ead2bb999bbb0e9d07c7d707be727f8ad563f93` + dependency `26f84d0f`, gcp2/n4-highcpu-64,
+기본 off `beampair_wall_clear_v1`, 기존 beampair3 장면·weld OFF. 대표 실패8318626은
+26.3SIM초 감독 중단, 짧은 계획6개 중0성공·시작1·미시작5, gate40 미생성이다.
+[대표 영상](../experiments/2026-10-16-beampair5/representative-8318626.mp4)
+(193399bytes, SHA256 `e4df23eaebb790c86b9a668d7990b642894e4622687eaea45c8f42db96290b61`).
+개요(평가 전용)+r1/r2 자기 카메라3배속, 전체2Hz54장·마지막10초10Hz101장 직접 확인,
+tail은 원촬영202장이다. [원본·해시·검토](../experiments/2026-10-16-beampair5/r1-playback-review.json).
+재관측 뒤 정지와 실제 북쪽 벽에 걸린 인증 목표 집합을 보여준다. 학생·전체 파지 공간·
+다른 장면 성공으로 일반화하지 않는다. 후속 인터럽트 원장 수정은 비물리 검사만 했다.

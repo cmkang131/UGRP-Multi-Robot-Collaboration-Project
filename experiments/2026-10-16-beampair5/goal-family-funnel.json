@@ -1,0 +1,1589 @@
+{
+  "scope": "evaluation-only; fixed existing IK/jaw-certified family, not all possible robot grasps; no evaluation value enters control",
+  "source_dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+  "raw": "/home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round/diagnostic/episode-000/raw",
+  "source_sha256": "385631412e214e3747b4f758ec9aae60d27d98a80d018585f0a7d3ceb365d61b",
+  "target_end": [
+    0.77711668364325,
+    1.2635821990618659,
+    0.023892244543135432
+  ],
+  "beam_yaw_rad": 1.0869160777669233,
+  "wall_inner_edge_y_m": 1.425,
+  "band_to_wall_inner_edge_m": 0.16141780093813418,
+  "candidate_N": 91,
+  "free_goal_N": 0,
+  "best_signed_clearance_m": -0.10270889714215059,
+  "nearest_free_shift_min_m": 0.1077088971421506,
+  "candidate_funnel": [
+    {
+      "gate": "IK_and_jaw_certified",
+      "entered": 91,
+      "cumulative_passed": 91,
+      "rejected": 0
+    },
+    {
+      "gate": "north_wall_goal_clearance",
+      "entered": 91,
+      "cumulative_passed": 0,
+      "rejected": 91
+    },
+    {
+      "gate": "path",
+      "entered": 0,
+      "cumulative_passed": 0,
+      "rejected": 0
+    }
+  ],
+  "candidates": [
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.203,
+      "goal": [
+        0.8715558263476185,
+        1.44327707468514,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1373518798790665,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1423518798790665
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.2032,
+      "goal": [
+        0.8716488698379676,
+        1.4434541139714683,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13752891916539478,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14252891916539479
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.2012,
+      "goal": [
+        0.8707184349344763,
+        1.4416837211081848,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13575852630211127,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14075852630211128
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.2052,
+      "goal": [
+        0.872579304741459,
+        1.4452245068347518,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1392993120286783,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1442993120286783
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.1992,
+      "goal": [
+        0.869788000030985,
+        1.4399133282449013,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13398813343882776,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13898813343882777
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.2072,
+      "goal": [
+        0.8735097396449503,
+        1.4469948996980353,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1410697048919618,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1460697048919618
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.208,
+      "goal": [
+        0.8738819136063468,
+        1.4477030568433487,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14177786203727516,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14677786203727516
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.198,
+      "goal": [
+        0.8692297390888902,
+        1.438851092526931,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1329258977208576,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13792589772085762
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.1972,
+      "goal": [
+        0.8688575651274937,
+        1.4381429353816177,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13221774057554425,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13721774057554426
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.2092,
+      "goal": [
+        0.8744401745484416,
+        1.4487652925613186,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1428400977552451,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1478400977552451
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.19519999999999998,
+      "goal": [
+        0.8679271302240024,
+        1.4363725425183342,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13044734771226074,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13544734771226075
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.194,
+      "goal": [
+        0.8673688692819076,
+        1.435310306800364,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1293851119942906,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1343851119942906
+    },
+    {
+      "offset_deg": 0.0,
+      "distance_m": 0.19319999999999998,
+      "goal": [
+        0.866996695320511,
+        1.4346021496550507,
+        4.228508731356716
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12867695484897723,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13367695484897724
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.203,
+      "goal": [
+        0.8868578972505662,
+        1.4343623678051758,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13040165665572312,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13540165665572312
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.203,
+      "goal": [
+        0.8555350165447771,
+        1.4508241950588785,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14202828542932555,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14702828542932556
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.2032,
+      "goal": [
+        0.8869660166728394,
+        1.4345306241290607,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13056991297960807,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13556991297960808
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.2032,
+      "goal": [
+        0.8556122759860595,
+        1.451008669931782,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14221276030222896,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14721276030222896
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.2012,
+      "goal": [
+        0.8858848224501072,
+        1.4328480608902106,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12888734974075788,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1338873497407579
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.2012,
+      "goal": [
+        0.8548396815732365,
+        1.4491639212027472,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14036801157319423,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14536801157319423
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.2052,
+      "goal": [
+        0.8880472108955716,
+        1.4362131873679111,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13225247621845848,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13725247621845849
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.2052,
+      "goal": [
+        0.8563848703988824,
+        1.4528534186608164,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14405750903126346,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14905750903126347
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.1992,
+      "goal": [
+        0.884803628227375,
+        1.4311654976513601,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12720478650190747,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13220478650190748
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.1992,
+      "goal": [
+        0.8540670871604136,
+        1.4473191724737127,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13852326284415972,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14352326284415973
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.2072,
+      "goal": [
+        0.8891284051183037,
+        1.4378957506067616,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1339350394573089,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1389350394573089
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.2072,
+      "goal": [
+        0.8571574648117053,
+        1.4546981673898511,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1459022577602982,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1509022577602982
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.208,
+      "goal": [
+        0.8895608828073966,
+        1.4385687759023016,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13460806475284892,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13960806475284893
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.208,
+      "goal": [
+        0.8574665025768345,
+        1.455436066881465,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14664015725191204,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.15164015725191204
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.198,
+      "goal": [
+        0.8841549116937357,
+        1.43015595970805,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12619524855859732,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13119524855859732
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.198,
+      "goal": [
+        0.8536035305127199,
+        1.446212323236292,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13741641360673906,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14241641360673907
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.1972,
+      "goal": [
+        0.8837224340046428,
+        1.4294829344125097,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12552222326305706,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13052222326305707
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.1972,
+      "goal": [
+        0.8532944927475907,
+        1.445474423744678,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.136678514115125,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.141678514115125
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.2092,
+      "goal": [
+        0.8902095993410359,
+        1.4395783138456117,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13561760269615908,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14061760269615908
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.2092,
+      "goal": [
+        0.8579300592245283,
+        1.4565429161188856,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1477470064893327,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1527470064893327
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.19519999999999998,
+      "goal": [
+        0.8826412397819107,
+        1.4278003711736593,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12383966002420665,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.12883966002420666
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.19519999999999998,
+      "goal": [
+        0.8525218983347678,
+        1.4436296750156434,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1348337653860905,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1398337653860905
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.194,
+      "goal": [
+        0.8819925232482714,
+        1.4267908332303492,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1228301220808965,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1278301220808965
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.194,
+      "goal": [
+        0.852058341687074,
+        1.4425228257782228,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13372691614866983,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13872691614866983
+    },
+    {
+      "offset_deg": -5.0,
+      "distance_m": 0.19319999999999998,
+      "goal": [
+        0.8815600455591784,
+        1.4261178079348091,
+        4.141242268757
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12215709678535647,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.12715709678535647
+    },
+    {
+      "offset_deg": 5.0,
+      "distance_m": 0.19319999999999998,
+      "goal": [
+        0.8517493039219448,
+        1.441784926286609,
+        4.315775193956433
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13298901665705598,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13798901665705599
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.203,
+      "goal": [
+        0.9013247712544057,
+        1.4241479207211898,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12123051115468408,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1262305111546841
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.203,
+      "goal": [
+        0.8389173958782712,
+        1.4569462907832713,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14439528303657156,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14939528303657157
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.2032,
+      "goal": [
+        0.9014471437545152,
+        1.424306113550411,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12138870398390522,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.12638870398390523
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.2032,
+      "goal": [
+        0.838978283279488,
+        1.4571367972775782,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14458578953087842,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14958578953087842
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.2012,
+      "goal": [
+        0.90022341875342,
+        1.4227241852582007,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11980677569169496,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.12480677569169496
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.2012,
+      "goal": [
+        0.8383694092673203,
+        1.45523173233451,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14268072458781034,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14768072458781034
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.2052,
+      "goal": [
+        0.9026708687556103,
+        1.425888041842621,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12297063227611527,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.12797063227611527
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.2052,
+      "goal": [
+        0.8395871572916557,
+        1.4590418622206462,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1464908544739465,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1514908544739465
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.1992,
+      "goal": [
+        0.8989996937523249,
+        1.4211422569659906,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11822484739948491,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.12322484739948492
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.1992,
+      "goal": [
+        0.8377605352551526,
+        1.453326667391442,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14077565964474226,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14577565964474226
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.2072,
+      "goal": [
+        0.9038945937567054,
+        1.427469970134831,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12455256056832531,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.12955256056832531
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.2072,
+      "goal": [
+        0.8401960313038234,
+        1.460946927163714,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14839591941701435,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.15339591941701436
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.208,
+      "goal": [
+        0.9043840837571435,
+        1.4281027414517151,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12518533188520942,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13018533188520942
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.208,
+      "goal": [
+        0.8404395809086904,
+        1.4617089531409415,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14915794539424176,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.15415794539424177
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.198,
+      "goal": [
+        0.8982654587516679,
+        1.4201930999906647,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11727569042415897,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.12227569042415898
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.198,
+      "goal": [
+        0.837395210847852,
+        1.4521836284256013,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1396326206789016,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1446326206789016
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.1972,
+      "goal": [
+        0.8977759687512298,
+        1.4195603286737806,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11664291910727487,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.12164291910727487
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.1972,
+      "goal": [
+        0.8371516612429849,
+        1.451421602448374,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13887059470167418,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14387059470167418
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.2092,
+      "goal": [
+        0.9051183187578006,
+        1.429051898427041,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.12613448886053535,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13113448886053536
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.2092,
+      "goal": [
+        0.8408049053159911,
+        1.4628519921067822,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.15030098436008243,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.15530098436008244
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.19519999999999998,
+      "goal": [
+        0.8965522437501346,
+        1.4179784003815705,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11506099081506482,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.12006099081506483
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.19519999999999998,
+      "goal": [
+        0.8365427872308172,
+        1.449516537505306,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13696552975860632,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14196552975860632
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.194,
+      "goal": [
+        0.8958180087494776,
+        1.4170292434062444,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11411183383973866,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.11911183383973867
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.194,
+      "goal": [
+        0.8361774628235166,
+        1.4483734985394652,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13582249079276543,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14082249079276543
+    },
+    {
+      "offset_deg": -10.0,
+      "distance_m": 0.19319999999999998,
+      "goal": [
+        0.8953285187490395,
+        1.4163964720893603,
+        4.0539758061572835
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11347906252285456,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.11847906252285456
+    },
+    {
+      "offset_deg": 10.0,
+      "distance_m": 0.19319999999999998,
+      "goal": [
+        0.8359339132186495,
+        1.447611472562238,
+        4.403041656556149
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13506046481553824,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14006046481553824
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.203,
+      "goal": [
+        0.9148463467126304,
+        1.4127114715431428,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.10990824133090182,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.11490824133090183
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.203,
+      "goal": [
+        0.8218294344753665,
+        1.4615967690132334,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1444348584197812,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1494348584197812
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.2032,
+      "goal": [
+        0.9149820409619599,
+        1.41285839693475,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11005516672250892,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.11505516672250893
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.2032,
+      "goal": [
+        0.8218734864466296,
+        1.461791857259491,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1446299466660388,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1496299466660388
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.2012,
+      "goal": [
+        0.9136250984686655,
+        1.4113891430186782,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.10858591280643726,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.11358591280643726
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.2012,
+      "goal": [
+        0.8214329667339979,
+        1.4598409747969159,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14267906420346366,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14767906420346366
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.2052,
+      "goal": [
+        0.9163389834552542,
+        1.4143276508508218,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11152442063858081,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.11652442063858082
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.2052,
+      "goal": [
+        0.8223140061592613,
+        1.4637427397220661,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14658082912861392,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.15158082912861393
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.1992,
+      "goal": [
+        0.9122681559753711,
+        1.4099198891026066,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.10711665889036559,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1121166588903656
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.1992,
+      "goal": [
+        0.8209924470213662,
+        1.457890092334341,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14072818174088875,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14572818174088875
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.2072,
+      "goal": [
+        0.9176959259485487,
+        1.4157969047668935,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11299367455465248,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.11799367455465248
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.2072,
+      "goal": [
+        0.822754525871893,
+        1.465693622184641,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14853171159118883,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.15353171159118884
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.208,
+      "goal": [
+        0.9182387029458664,
+        1.416384606333322,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1135813761210811,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1185813761210811
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.208,
+      "goal": [
+        0.8229307337569457,
+        1.4664739751696712,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.14931206457621893,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.15431206457621893
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.198,
+      "goal": [
+        0.9114539904793945,
+        1.4090383367529635,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.10623510654072255,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.11123510654072255
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.198,
+      "goal": [
+        0.8207281351937872,
+        1.456719562856796,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.1395576522633437,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14455765226334372
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.1972,
+      "goal": [
+        0.9109112134820767,
+        1.408450635186535,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.10564740497429392,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.11064740497429393
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.1972,
+      "goal": [
+        0.8205519273087345,
+        1.4559392098717658,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13877729927831362,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14377729927831362
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.2092,
+      "goal": [
+        0.9190528684418431,
+        1.4172661586829651,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.11446292847072415,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.11946292847072415
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.2092,
+      "goal": [
+        0.8231950455845247,
+        1.4676445046472162,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.15048259405376396,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.15548259405376397
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.19519999999999998,
+      "goal": [
+        0.9095542709887823,
+        1.4069813812704632,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.10417815105822226,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.10917815105822226
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.19519999999999998,
+      "goal": [
+        0.8201114075961028,
+        1.4539883274091907,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13682641681573848,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1418264168157385
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.194,
+      "goal": [
+        0.9087401054928057,
+        1.4060998289208202,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.10329659870857921,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.10829659870857922
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.194,
+      "goal": [
+        0.8198470957685239,
+        1.4528177979316457,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13565588733819345,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.14065588733819345
+    },
+    {
+      "offset_deg": -14.999999999999998,
+      "distance_m": 0.19319999999999998,
+      "goal": [
+        0.908197328495488,
+        1.4055121273543916,
+        3.9667093435575667
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.10270889714215059,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.1077088971421506
+    },
+    {
+      "offset_deg": 14.999999999999998,
+      "distance_m": 0.19319999999999998,
+      "goal": [
+        0.8196708878834712,
+        1.4520374449466158,
+        4.490308119155865
+      ],
+      "north_inner_edge_y_m": 1.425,
+      "signed_north_clearance_m": -0.13487553435316357,
+      "gap_m": 0.0,
+      "margin_m": 0.005,
+      "reason_category": "blocked_goal",
+      "blocked_object": "zone_wall_north",
+      "min_gap_m": 0.0,
+      "nearest_free_goal_shift_m": 0.13987553435316358
+    }
+  ],
+  "reproduce": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/beampair5/audit-goal-family.py",
+  "analysis_sha256": "541b0c9600a50424cef53b418eaeb83b4d9e44a9c69dc9da6c6cd78a4e473cab"
+}

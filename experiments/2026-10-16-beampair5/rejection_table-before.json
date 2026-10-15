@@ -2002,8 +2002,48 @@
     "/home/ugrp/ugrp-sim/runs/beampair4-r3-gcp2-d72efd13/round/diagnostic/episode-001/raw/teacher-r2.jsonl.zst": "cfdd737fff94fba4daf12ce49a192ecac645f3987d998eee3a8477c808f03aec"
   },
   "reproduce": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/beampair5/analyze-before.py",
-  "analysis_sha256": "04ca82db8b3b161e87015a467202d89588d2ad2660153af0198b4baa2deeef0f",
+  "analysis_sha256": "a367980677a7d2d75e1b0286b170e1a50e721279096c3bdb7bdbe6333cd96795",
   "full_snapshots_gcp2": "/home/ugrp/ugrp-sim/ops-reviews/beampair5/rejection_table-before.json",
   "snapshot_N": 40,
-  "scope_note": "Mac summary contains four timeline snapshots; full before-edit reconstruction remains on gcp2"
+  "scope_note": "Mac summary contains four timeline snapshots; full before-edit reconstruction remains on gcp2",
+  "frame_funnel": [
+    {
+      "gate": "any_assigned_probe",
+      "entered": 552,
+      "passed": 395,
+      "rejected": 157
+    },
+    {
+      "gate": "meaningful_5_probes",
+      "entered": 395,
+      "passed": 393,
+      "rejected": 2
+    },
+    {
+      "gate": "measurement_admitted",
+      "entered": 393,
+      "passed": 393,
+      "rejected": 0
+    }
+  ],
+  "event_funnel": [
+    {
+      "gate": "ready",
+      "entered": 2,
+      "passed": 1,
+      "rejected": 1
+    },
+    {
+      "gate": "pick",
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1
+    },
+    {
+      "gate": "complete",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0
+    }
+  ]
 }

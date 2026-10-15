@@ -1,0 +1,612 @@
+{
+  "schema": "ugrp.beampair5.rejection_table.v1",
+  "source_sha": "1ead2bb999bbb0e9d07c7d707be727f8ad563f93",
+  "status": "NOT_READY",
+  "populations_never_pooled": true,
+  "pre_edit_table": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-16-beampair5/rejection_table-before.json",
+  "probe_table": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-16-beampair5/r1-rejection_table.json",
+  "certified_goal_evaluation_table": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-16-beampair5/goal-family-funnel.json",
+  "pre_edit": {
+    "source_sha": "d72efd13957ce450c5cccc3fd93a555a37dd4705",
+    "after_reobserve": {
+      "candidate_N": 6825,
+      "first_rejection_counts": {
+        "blocked_goal": 6825
+      },
+      "candidate_funnel": [
+        {
+          "gate": "ik_unreachable",
+          "entered": 6825,
+          "cumulative_passed": 6825,
+          "rejected": 0
+        },
+        {
+          "gate": "gripper_angle",
+          "entered": 6825,
+          "cumulative_passed": 6825,
+          "rejected": 0
+        },
+        {
+          "gate": "outside_bounds",
+          "entered": 6825,
+          "cumulative_passed": 6825,
+          "rejected": 0
+        },
+        {
+          "gate": "blocked_goal",
+          "entered": 6825,
+          "cumulative_passed": 0,
+          "rejected": 6825
+        },
+        {
+          "gate": "blocked_retreat",
+          "entered": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "no_path",
+          "entered": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "unsafe_body_sweep",
+          "entered": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "band_not_visible",
+          "entered": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        }
+      ],
+      "blocker_occurrences": [
+        {
+          "reason": "blocked_goal",
+          "category": "memory_margin",
+          "blocked_object": "zone_wall_west",
+          "N": 6825,
+          "min_gap_m": 1.6469401113765771,
+          "max_gap_m": 1.7219729050431438,
+          "margin_min_m": 2.0292908597768333,
+          "margin_max_m": 2.030178876586095
+        },
+        {
+          "reason": "blocked_goal",
+          "category": "current_geometry",
+          "blocked_object": "zone_wall_north",
+          "N": 6825,
+          "min_gap_m": 0.0,
+          "max_gap_m": 0.0,
+          "margin_min_m": 0.7347360530906263,
+          "margin_max_m": 0.7363510043724415
+        }
+      ]
+    },
+    "frame_funnel": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 552,
+        "passed": 395,
+        "rejected": 157
+      },
+      {
+        "gate": "meaningful_5_probes",
+        "entered": 395,
+        "passed": 393,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted",
+        "entered": 393,
+        "passed": 393,
+        "rejected": 0
+      }
+    ],
+    "event_funnel": [
+      {
+        "gate": "ready",
+        "entered": 2,
+        "passed": 1,
+        "rejected": 1
+      },
+      {
+        "gate": "pick",
+        "entered": 1,
+        "passed": 0,
+        "rejected": 1
+      },
+      {
+        "gate": "complete",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ]
+  },
+  "r1": {
+    "source_sha": "1ead2bb999bbb0e9d07c7d707be727f8ad563f93",
+    "episode_funnel": [
+      {
+        "gate": "started",
+        "entered": 6,
+        "passed": 1,
+        "rejected": 5
+      },
+      {
+        "gate": "both_align",
+        "entered": 1,
+        "passed": 0,
+        "rejected": 1
+      },
+      {
+        "gate": "both_ready",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "both_pick",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "both_command_complete",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "input_eligible_success",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "candidate_populations": {
+      "/home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round/diagnostic/episode-000/raw": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        },
+        "full_or_retained": {
+          "N": 3458,
+          "reason_distribution": {
+            "blocked_goal": 3458
+          },
+          "ordered_funnel": [
+            {
+              "gate": "ik_unreachable",
+              "entered": 3458,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 3458
+            },
+            {
+              "gate": "gripper_angle",
+              "entered": 3458,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 3458
+            },
+            {
+              "gate": "outside_bounds",
+              "entered": 3458,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 3458
+            },
+            {
+              "gate": "blocked_goal",
+              "entered": 3458,
+              "rejected": 3458,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "blocked_retreat",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "no_path",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "unsafe_body_sweep",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "band_not_visible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "arm",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "endpoint_feasible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "connector",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "planning_budget",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "feasible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            }
+          ]
+        }
+      }
+    },
+    "frame_populations": {
+      "/home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round/diagnostic/episode-000/raw": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 528,
+          "passed": 371,
+          "rejected": 157
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 371,
+          "passed": 369,
+          "rejected": 2
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 369,
+          "passed": 369,
+          "rejected": 0
+        }
+      ]
+    },
+    "event_populations": {
+      "/home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round/diagnostic/episode-000/raw": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 1,
+          "rejected": 1
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 1,
+          "passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        }
+      ]
+    },
+    "blocker_occurrences": [
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:64:-9",
+        "N": 2821,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:64:-8",
+        "N": 2821,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:64:-7",
+        "N": 2821,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:64:-6",
+        "N": 2821,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:64:-5",
+        "N": 2639,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:64:-10",
+        "N": 2184,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:64:-4",
+        "N": 2145,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:64:-11",
+        "N": 1872,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:61:64:-12",
+        "N": 1677,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:65:-3",
+        "N": 1579,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:61:63:-13",
+        "N": 1079,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:61:63:-14",
+        "N": 796,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "memory_margin",
+        "blocked_object": "zone_wall_west",
+        "N": 637,
+        "min_gap_m": 1.6469401113765771,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north",
+        "N": 637,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:61:64:-11",
+        "N": 637,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:61:64:-10",
+        "N": 637,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:65:-2",
+        "N": 624,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:64:-12",
+        "N": 520,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:61:63:-15",
+        "N": 417,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:63:-13",
+        "N": 312,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:62:63:-14",
+        "N": 216,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      },
+      {
+        "reason": "blocked_goal",
+        "category": "current_geometry",
+        "blocked_object": "zone_wall_north:grid:61:63:-16",
+        "N": 140,
+        "min_gap_m": 0.0,
+        "gap_scope": "source candidate failure/collision audit; occurrences overlap"
+      }
+    ],
+    "wall_update_funnel": {
+      "8318626": {
+        "robots": {
+          "r1": {
+            "active": false,
+            "scan_N": 0,
+            "ray_N": 0,
+            "miss_cell_updates": 0,
+            "cleared_cell_updates": 0,
+            "cleared_by_object": {},
+            "last": {
+              "t": 28.10000000004316,
+              "event": "wall_scan",
+              "ray_N": 0,
+              "miss_cell_N": 0,
+              "hit_cell_N": 0,
+              "cleared_cell_N": 0,
+              "cleared_by_object": {},
+              "occupied_cell_N": 938,
+              "active": false,
+              "reason_category": "observed_hit_miss_update",
+              "blocked_object": "wall_layer",
+              "min_gap_m": null,
+              "gap_scope": "sensor update; no clearance decision"
+            }
+          },
+          "r2": {
+            "active": true,
+            "scan_N": 30,
+            "ray_N": 79109,
+            "miss_cell_updates": 30876,
+            "cleared_cell_updates": 3,
+            "cleared_by_object": {
+              "zone_wall_north": 3
+            },
+            "last": {
+              "t": 28.10000000004316,
+              "event": "wall_scan",
+              "ray_N": 2640,
+              "miss_cell_N": 1014,
+              "hit_cell_N": 50,
+              "cleared_cell_N": 0,
+              "cleared_by_object": {},
+              "occupied_cell_N": 2421,
+              "active": true,
+              "reason_category": "observed_hit_miss_update",
+              "blocked_object": "wall_layer",
+              "min_gap_m": null,
+              "gap_scope": "sensor update; no clearance decision"
+            }
+          }
+        },
+        "visible_ray_N": 79109,
+        "held_ray_N": 0
+      }
+    }
+  },
+  "evaluation_only_family": {
+    "candidate_N": 91,
+    "free_goal_N": 0,
+    "band_to_wall_inner_edge_m": 0.16141780093813418,
+    "best_signed_clearance_m": -0.10270889714215059,
+    "nearest_free_shift_min_m": 0.1077088971421506,
+    "candidate_funnel": [
+      {
+        "gate": "IK_and_jaw_certified",
+        "entered": 91,
+        "cumulative_passed": 91,
+        "rejected": 0
+      },
+      {
+        "gate": "north_wall_goal_clearance",
+        "entered": 91,
+        "cumulative_passed": 0,
+        "rejected": 91
+      },
+      {
+        "gate": "path",
+        "entered": 0,
+        "cumulative_passed": 0,
+        "rejected": 0
+      }
+    ],
+    "scope": "evaluation-only; fixed existing IK/jaw-certified family, not all possible robot grasps; no evaluation value enters control",
+    "raw": "/home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round/diagnostic/episode-000/raw",
+    "reproduce": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/beampair5/audit-goal-family.py"
+  },
+  "raw": "/home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/beampair5/analyze-before.py",
+    "cd /home/ugrp/ugrp-sim/src/1ead2bb999bbb0e9d07c7d707be727f8ad563f93 && PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/1ead2bb999bbb0e9d07c7d707be727f8ad563f93/scripts/analyze_beampair1.py /home/ugrp/ugrp-sim/runs/beampair5-r1-1ead2bb9/round --out /home/ugrp/ugrp-sim/ops-reviews/beampair5/r1-analysis",
+    "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/beampair5/audit-goal-family.py"
+  ],
+  "note": "Candidate rows are first-rejection trials, blocker occurrence rows overlap within a candidate. HOST_ERROR/stop are separate from geometric candidate populations."
+}

@@ -75,6 +75,24 @@ def dependency_modules(root):
         sys.modules.update(saved);sys.path[:]=search
 
 
+def record_partial_candidates(record, teacher, world, rows, now):
+    """Preserve an active supervisor/cap exception through candidate finalization.
+
+    The pinned search23 fallback records in finally, but an interrupted in-flight
+    candidate has no reason yet. Do not let its KeyError mask the original stop.
+    This only labels unfinished records during exception unwinding; no action,
+    acceptance, budget or normal candidate is changed.
+    """
+    error=sys.exception()
+    if error is not None:
+        for row in rows:
+            if not row.get('reason'):
+                row.update(reason='supervisor_interrupted' if isinstance(error,KeyboardInterrupt) else 'exception_interrupted',
+                    interrupted_error_type=type(error).__name__,blocked_object='none:unfinished_candidate',
+                    min_gap_m=None,gap_scope='candidate unfinished at exception; no clearance verdict')
+    return record(teacher,world,rows,now)
+
+
 def profiles(candidate):
     values=dict(teacher_profile='visible_only',self_pose_source='issued',
         teacher_stability='align_relook_v1',teacher_search='search_body_scan_v2',
@@ -156,6 +174,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         from harness import grasp_act_visible_world as world_module
         from sim import grasp_act_teacher_v3 as teacher_module
         from harness import grasp_act_input_audit as audit_module
+        from sim import grasp_act_search22 as candidate_record_module
+        original_record_candidates=candidate_record_module.record_candidates
         original_measure=measurements_module.measurements
         original_world=world_module.VisibleWorld
         original_teacher=teacher_module.VisibleOnlyGraspTeacher
@@ -264,6 +284,9 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             return original_apply(port,value,now,previous)
         def new_audit(*a,**kw):
             audit.update(original_audit(*a,**kw));return audit
+        def record_candidates(teacher,w,rows,now):
+            return record_partial_candidates(original_record_candidates,teacher,w,rows,now)
+        candidate_record_module.record_candidates=record_candidates
         scene_module.make_scene=make_scene;measurements_module.measurements=measurements
         world_module.VisibleWorld=World;teacher_module.VisibleOnlyGraspTeacher=Teacher
         runner.apply=apply;audit_module.new_input_audit=new_audit
@@ -277,6 +300,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             world_module.VisibleWorld=original_world;teacher_module.VisibleOnlyGraspTeacher=original_teacher
             runner.apply=original_apply;audit_module.new_input_audit=original_audit
             runner.snapshot=original_snapshot
+            candidate_record_module.record_candidates=original_record_candidates
             # Separate adapter result, leaving the dependency's raw result and
             # manifest intact. Both full source SHAs are required for identity.
             adapter=out.parent/'adapter';adapter.mkdir(parents=True,exist_ok=False)
