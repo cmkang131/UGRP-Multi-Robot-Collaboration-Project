@@ -92,6 +92,9 @@ def test_real_slam_to_grid_and_frontier_proposal(monkeypatch):
     np.testing.assert_allclose(second['pose'], state['pose'], atol=1e-8)
     assert second['map_updated'] and not second['complete']
     assert 'required_zone_unconfirmed' in second['completion_blockers']
+    saved = json.loads(json.dumps(mapper.snapshot(), allow_nan=False))
+    assert saved['cells'] and saved['floor_cells']
+    assert saved['zones']['coordinate_frame'] == saved['coordinate_frame']
 
 
 def test_command_only_never_inserts_or_selects_stale_frontier(monkeypatch):

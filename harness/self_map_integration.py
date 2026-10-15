@@ -237,11 +237,13 @@ class SelfMapIntegration:
 
     def snapshot(self):
         nav = self.grid.navigation
+        zones = self.zones.snapshot()
+        zones['coordinate_frame'] = self.robot_id+'/natural_floor_origin'
         return dict(schema='ugrp.self_map_integration.v1', robot_id=self.robot_id,
                     coordinate_frame=self.robot_id+'/natural_floor_origin', mode='self_only',
                     resolution_m=nav.resolution, support_cells_counted=False,
-                    cells=[[x, y, float(v)] for (x, y), v in sorted(nav.odds.items())],
-                    floor_cells=[list(c) for c in sorted(nav.floor_frames)],
-                    wall_cells=[list(c) for c in sorted(nav.wall_frames)],
-                    rebuild_required=self.rebuild_required, zones=self.zones.snapshot(),
+                    cells=[[int(x), int(y), float(v)] for (x, y), v in sorted(nav.odds.items())],
+                    floor_cells=[[int(v) for v in c] for c in sorted(nav.floor_frames)],
+                    wall_cells=[[int(v) for v in c] for c in sorted(nav.wall_frames)],
+                    rebuild_required=self.rebuild_required, zones=zones,
                     slam=self.slam.snapshot(), latest=self.events[-1] if self.events else None)
