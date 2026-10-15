@@ -34,7 +34,7 @@ GPU 학습·저장/재로딩·ACT 검증 MAE·학생 폐루프20·실패 영상�
 - 데이터 아카이브 SHA-256 전체 일치. 원본 manifest는 `87a1b094…12fb9`, 새 분할 manifest는 `a0f5d8a1…58d6cd`다.
 - 학습166시드/60,023행·검증19시드/6,908행, 총66,931행. 동일 시드의 두 로봇은 같은 split에 있고 보류20과 중복0이다. 모든 shard의 원본 바이트 해시를 검사했다. [데이터 요약](dataset-summary.json).
 - Mac 관련 비물리 검사34pass/2skip(기존 torch 의존 검사) 및 새 workflow/입력 검사26pass/1skip. 서로 겹치는 시험이 있어 합산하지 않는다. GCP2 CPU의 opt-in 실제 ACT adapter 저장/재로딩·동일 예측과 입력 검사6pass. 임의 초기화 모델이며 optimizer0, L4 smoke는 아니다([검사](cpu-adapter-check.json)).
-- persistence는 마지막 **실제 발행** 명령을 유지하는 오프라인 기준선이다. 마스킹한 입력값을 복사하지 않는다. 검증 전체6,908행의 휠 MAE0.02312898·pulse2.9610ms·PWM8.3018, 재추론 격자913행은0.02280942·3.3832ms·8.9093이다. ACT MAE는 미측정이다([전체/단계/에피소드 지표](persistence.json)).
+- persistence는 마지막 **실제 발행** 명령을 유지하는 오프라인 기준선이다. 마스킹한 입력값을 복사하지 않는다. 검증 전체6,908행의 휠 MAE0.02312898·pulse2.9610ms·PWM8.3018, 재추론 격자913행은0.02280942·3.3832ms·8.9093이다. ACT MAE는 미측정이다([전체/단계/에피소드 지표](persistence.json.zst)).
 
 |검증 구간|행|persistence wheel MAE|pulse MAE(ms)|PWM MAE|
 |---|---:|---:|---:|---:|
@@ -68,3 +68,5 @@ PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.sim_cli wo
 
 
 자기 실행 프로세스0·beamact1 임대 제거를 확인했다. reloc18·beampair9 임대와 타 작업 계산 프로세스9개가 있어 gcp2 CPU는 정지하지 않았다([정리 기록](lease-released.json)). 두 번째 L4와 디스크는 API 조회 모두 빈 목록이며 생성 실패로 정지할 인스턴스가 없다. CI check는 아직 보고되지 않았으므로 통과로 표시하지 않는다.
+
+상세 persistence/관리 manifest의 Mac 사본은 zstd로 무손실 압축했고 해제 바이트의 SHA 일치를 확인했다([회수/압축 원장](retrieval.json)). gcp2의 원래 JSON은 그대로 보존했다.

@@ -9,27 +9,49 @@
       "match": true
     },
     {
-      "local": "experiments/2026-10-16-beamact1/persistence.json",
+      "local": "experiments/2026-10-16-beamact1/persistence.json.zst",
       "remote": "/home/ugrp/ugrp-sim/ops-reviews/beamact1/persistence-v1/summary.json",
       "sha256": "979920e20caa7f584c262fe270c95baf134c1a2ea2025172a71d6006d9e1d28e",
       "bytes": 93198,
-      "match": true
+      "match": true,
+      "sha256_is_decoded_original": true
     },
     {
-      "local": "experiments/2026-10-16-beamact1/cpu-adapter-test.log",
+      "local": "experiments/2026-10-16-beamact1/cpu-adapter-test.txt",
       "remote": "/home/ugrp/ugrp-sim/ops-reviews/beamact1/cpu-adapter-test.log",
       "sha256": "e83a51118b3677368f0b1915c79da5114b4231670d87678eab2f30dc9d3d6a58",
       "bytes": 98,
       "match": true
     },
     {
-      "local": "experiments/2026-10-16-beamact1/managed-persistence.json",
+      "local": "experiments/2026-10-16-beamact1/managed-persistence.json.zst",
       "remote": "/home/ugrp/ugrp-sim/src/5cf752b5e/outputs/simulation-runs/20261015-222425-beamact1-offline-5f037f27/manifest.json",
       "sha256": "625a60d770cba5dc9eb0654bec18d9b5140afed0b4b6735ef5271706b483364e",
       "bytes": 1585318,
-      "match": true
+      "match": true,
+      "sha256_is_decoded_original": true
     }
   ],
   "raw_dataset_on_Mac": false,
-  "full_backup": false
+  "full_backup": false,
+  "compression": [
+    {
+      "original_name": "managed-persistence.json",
+      "decoded_bytes": 1585318,
+      "decoded_sha256": "625a60d770cba5dc9eb0654bec18d9b5140afed0b4b6735ef5271706b483364e",
+      "path": "managed-persistence.json.zst",
+      "bytes": 233417,
+      "sha256": "21a64775c3e411c9dfd371b18ed06333cb4a1af0e5039a2855ee6900f3176d94",
+      "remote_original_retained": true
+    },
+    {
+      "original_name": "persistence.json",
+      "decoded_bytes": 93198,
+      "decoded_sha256": "979920e20caa7f584c262fe270c95baf134c1a2ea2025172a71d6006d9e1d28e",
+      "path": "persistence.json.zst",
+      "bytes": 9869,
+      "sha256": "ea80da1518952a7bf23776da3847eae037d2f56d5e9f03053a757e56fcadae39",
+      "remote_original_retained": true
+    }
+  ]
 }
