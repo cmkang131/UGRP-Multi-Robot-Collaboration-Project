@@ -28,3 +28,6 @@ Native 초기 상태 복사는 [MuJoCo 변경 기록의 mj_copyData/copy.copy �
 
 
 compact 수치 기록: pinned io.py1791–1797은 compact convergence tolerance를 `max(C tolerance,1e-6) * nv/nvmax_pad`로 따로 초기화한다. 따라서 wm.opt.tolerance만 보고 compact도1e-8이라고 해석하지 않도록 실제 `ctol`, `cls_tol`, `nvmax_pad`를 저장한다. 물리·task Score를 새로 맞추는 상수는 넣지 않았으며 source/no-sleep/compact 결과를 합산하지 않는다.
+
+
+남은 physics cost 조사: 설치된 pinned io.py439의 기본 broadphase는 NXN이고 types.py124–135가 SAP_TILE/SAP_SEGMENTED를 지원한다. [공식 옵션](https://mujoco.readthedocs.io/en/latest/mjwarp/index.html#options), [공식 sap_broadphase API](https://mujoco.readthedocs.io/en/latest/mjwarp/api.html), [upstream458](https://github.com/google-deepmind/mujoco_warp/issues/458)을 읽었다.458의 옛 SAP_TILE crash에서 SAP_SEGMENTED가 대조였다는 사실은 현재 장면의 보증이 아니다.1390geom의 all-pairs 병목은 가설이며, 별도 기본 off `sap_segmented_v1`로 실제 짧은 A/B를 한다. geometry·mass·friction·contact 설정과 task Score를 바꾸지 않는다. candidate pair ordering/부동소수 궤적이 달라질 수 있어 결과를 NXN과 분리한다.

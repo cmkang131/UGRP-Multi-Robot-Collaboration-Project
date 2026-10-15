@@ -159,7 +159,7 @@ class CTransport(Transport):
 
 
 class WarpTransport(Transport):
-    def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None, per_world_model_references=None, float32_solver_default_v1=False):
+    def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None, per_world_model_references=None, float32_solver_default_v1=False,sap_segmented_v1=False):
         import mujoco
         import warp as wp
         import mujoco_warp as mjw
@@ -218,6 +218,10 @@ class WarpTransport(Transport):
         else:
             self.wm=mjw.put_model(m)
             self.model_batch_audit={'mode':'same_static_model','varying_fields':[]}
+        if sap_segmented_v1:
+            self.wm.opt.broadphase=mjw.BroadphaseType.SAP_SEGMENTED
+        self.compat['broadphase']={'name':self.wm.opt.broadphase.name,'candidate':sap_segmented_v1,
+            'basis':'pinned io.py439 default NXN; types.py124-135 upstream SAP_SEGMENTED; same geometry/contact parameters'}
         upstream_tolerance=float(self.wm.opt.tolerance.numpy().item())
         if not float32_solver_default_v1:
             self.wm.opt.tolerance.fill_(float(m.opt.tolerance))

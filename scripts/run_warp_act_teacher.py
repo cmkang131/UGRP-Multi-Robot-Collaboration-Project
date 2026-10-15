@@ -39,6 +39,7 @@ def parser():
     p.add_argument('--compiled-reference-v1',type=Path)
     p.add_argument('--compiled-geometry-312-v1',type=Path)
     p.add_argument('--per-world-model-references-v1',type=Path,help='default OFF: XMLsha→exact C312 assets; preserve batchable per-world model fields')
+    p.add_argument('--sap-segmented-v1',action='store_true',help='default OFF: upstream SAP_SEGMENTED broadphase; geometry/contact settings unchanged')
     p.add_argument('--native-sleep-policy-compat-v1',action='store_true',help='default OFF: explicit native sleep scene plus exact runtime policy adapter; separate cohort')
     p.add_argument('--float32-solver-default-v1',action='store_true',help='default OFF: retain upstream float32 tolerance clamp; unchanged task success criteria')
     p.add_argument('--reset-check-v1',action='store_true',help='diagnostic only: reset selected initial state; no teacher rollout or gate')
@@ -74,6 +75,8 @@ def main():
     host=gcp2_identity()
     if a.physics_backend=='mjwarp_batch_v1' and host['instance']!='ugrp-act-l4-gcp2':
         p.error('existing gcp2 L4 required')
+    if a.sap_segmented_v1 and a.physics_backend!='mjwarp_batch_v1':
+        p.error('SAP candidate is a Warp-only broadphase option')
     if a.physics_backend=='c_pilot_v1' and a.nworld!=1:
         p.error('C pilot uses independent N1 processes for CPU concurrency')
     source=a.teacher_source.resolve()
@@ -103,7 +106,7 @@ def main():
         world_seeds=[p['seed'] for p in world_plans],unique_seeds=len({p['seed'] for p in world_plans}),cap_s=a.cap_s,
         training_rgb=False,training_recording_supported=False,student_evaluation_supported=False,
         native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1,
-        float32_solver_default_v1=a.float32_solver_default_v1,
+        float32_solver_default_v1=a.float32_solver_default_v1,sap_segmented_v1=a.sap_segmented_v1,
         teacher_vectorized=False,scope='transitional scalar frozen teacher on batched physics/commands/RGB',
         gate_eligible=False,scene_status='HOLD_SCENE',reproduce=sys.argv,
         plan_sha256=hashlib.sha256(a.plan.read_bytes()).hexdigest(),mujoco=mujoco.__version__,
@@ -136,7 +139,7 @@ def main():
             hooks.initialize(contexts,compiled_reference=a.compiled_reference_v1,
                 compiled_geometry=a.compiled_geometry_312_v1,
                 per_world_model_references=json.loads(a.per_world_model_references_v1.read_text()) if a.per_world_model_references_v1 else None,
-                float32_solver_default_v1=a.float32_solver_default_v1)
+                float32_solver_default_v1=a.float32_solver_default_v1,sap_segmented_v1=a.sap_segmented_v1)
             report.update(camera=hooks.camera,compatibility=hooks.compat,capacities=hooks.capacities,model_batch=hooks.model_batch_audit,solver_numerics=hooks.solver_numerics,sleep_compact=hooks.sleep_audit)
             initial=hooks.initial_state_proof(contexts)
             write(a.out/'initial-world-state.json',initial)
