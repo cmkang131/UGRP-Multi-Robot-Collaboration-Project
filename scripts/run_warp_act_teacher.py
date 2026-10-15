@@ -15,6 +15,9 @@ import time
 import traceback
 
 ROOT=Path(__file__).resolve().parents[1]
+# Support the standard manager's `python -m scripts...` entry as well as direct CLI.
+if str(ROOT/'scripts') not in sys.path:
+    sys.path.insert(0,str(ROOT/'scripts'))
 TEACHER_SHA='6f057f7e97c1a3aec9e8c398b8d9068e27b25df8'
 
 
