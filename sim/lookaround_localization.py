@@ -284,7 +284,10 @@ class LookaroundLocalizer:
         if ok.any():
             base = np.interp(np.arange(WIDTH), cols[ok], obs.b_lo[ok], left=-1., right=-1.)
         clear &= yy > base[None, :]                     # floor only below the detected wall base
-        floors = floor_features(und, cm, mp.K_INV, self.mapped, clear)
+        from harness.reloc16_floor_mask import floor_clear
+        floor_support,floor_audit=floor_clear(und,clear)
+        if floor_audit['option']!='off':rec['scene_floor_mask']=floor_audit
+        floors = floor_features(und, cm, mp.K_INV, self.mapped, floor_support)
         doors = door_features(und, cm, obs, np.linalg.inv(mp.K_INV), clear)
         rec.update(status='measured', wall_points=int(len(walls)), floor_lines=len(floors), doors=len(doors),
                    features=copy.deepcopy(floors+doors))

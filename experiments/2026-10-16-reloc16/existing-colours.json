@@ -1,0 +1,49 @@
+{
+  "reports": [
+    {
+      "material": "floor_light_textured_v1",
+      "quality": "native",
+      "equal": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "changes": {
+        "png": [],
+        "jpeg90": [],
+        "pil82": []
+      },
+      "pass": true
+    },
+    {
+      "material": "walls_floor_contrast_v5_indigo110_s80",
+      "quality": "no_mip_v1",
+      "equal": {
+        "png": 88,
+        "jpeg90": 88,
+        "pil82": 88
+      },
+      "changes": {
+        "png": [],
+        "jpeg90": [],
+        "pil82": []
+      },
+      "pass": true
+    }
+  ],
+  "sources": [
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r1-v1-native",
+      "verified_files": 658,
+      "summary_sha256": "106fdf90778525dbaf5edc3b4885e2a9eba577c0bc8c77096d9fba92e5d4717e"
+    },
+    {
+      "root": "/home/ugrp/ugrp-sim/runs/scenetex5-r3-indigo110_s80",
+      "verified_files": 658,
+      "summary_sha256": "bb8ca68b04fd7ab3088bec99753550a779522b1b4811953ec2ba28d307c2e9df"
+    }
+  ],
+  "script_sha256": "3db448b1dc5c0cfc3d663cc270f924a381c1f79d17e0f283084c275e78aaf0a1",
+  "scope": "actual existing visual goal A/B/C, orange obstacle, magenta peer component counts, floor_goal B patches and B complete-quad/white-island gates; numeric ranges unchanged; own RGB and own commanded camera only",
+  "other_scopes": "box/legacy dark beam already in main audit; teal/blue and archived colour rules are pixel-range support only; top camera not used"
+}

@@ -91,3 +91,20 @@ def test_vectorized_compass_preserves_cross_product_residual_ties():
             if keep.sum()>best.sum():best=keep
     got,work=best_line(uv,np.ones(len(uv),bool),np.ones(len(uv),bool),1.5,perpendicular=True)
     np.testing.assert_equal(got,best);assert work==checks
+
+
+def test_scene_floor_mask_removes_wall_signature_preserves_floor_and_default(monkeypatch):
+    import json
+    from pathlib import Path
+    from harness.reloc16_floor_mask import floor_clear,OPTION
+    from harness.scene_colour_boundary import ColourBoundaryState,RELOC16_OPTION
+    cal=json.loads((Path(__file__).parents[1]/'experiments/2026-10-16-reloc16/colour-calibration.json').read_text())
+    state=ColourBoundaryState(cal['scene_profile'],cal,option=RELOC16_OPTION)
+    # Fixed v5 wall; neutral floor; original magenta/orange/blue floor colours.
+    image=np.array([[[110,75,90],[145,145,145],[179,77,209],[60,140,210],[190,135,70]]],np.uint8)
+    clear=np.ones((1,5),bool)
+    off,_=floor_clear(image,clear,option='off');assert off is clear
+    actual,audit=floor_clear(image,clear,state=state,option=OPTION)
+    np.testing.assert_equal(actual,[[False,True,True,True,True]])
+    assert clear.all() and not audit['floor_lk_changed'] and not audit['doors_clear_changed']
+    with pytest.raises(ValueError):floor_clear(image,clear,state=SimpleNamespace(profile='other',option=RELOC16_OPTION),option=OPTION)

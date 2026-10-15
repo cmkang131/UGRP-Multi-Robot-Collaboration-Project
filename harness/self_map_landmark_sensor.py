@@ -45,6 +45,8 @@ class Sensor:
             if abs(float(cm.columns[j])-uv[0]) > 1e-6:
                 raise ValueError('FROZEN_COLUMN_ABI_MISMATCH')
             obs.b_kind[j], obs.b_lo[j] = 1, uv[1]
-        features = (lm.floor_features(image, cm, mp.K_INV, self.palette, clear) +
+        from harness.reloc16_floor_mask import floor_clear
+        floor_support,self.last_scene_floor_mask=floor_clear(image,clear)
+        features = (lm.floor_features(image, cm, mp.K_INV, self.palette, floor_support) +
                     lm.door_features(image, cm, obs, mp.K, clear))
         return features

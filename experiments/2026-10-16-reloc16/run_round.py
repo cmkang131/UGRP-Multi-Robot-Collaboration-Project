@@ -13,7 +13,7 @@ def main(round_no,launch):
     from scripts.grasp_act_host import identity
     host=identity('gcp2');sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no']):raise RuntimeError('clean committed source required')
-    rejection=RUNS/'reloc16-static-r3/rejection-table.json'
+    rejection=RUNS/(f'reloc16-round{round_no-1}/rejection-table.json' if round_no>1 else 'reloc16-static-r3/rejection-table.json')
     assert rejection.is_file(),rejection
     base=json.loads((ROOT/'experiments/2026-10-15-reloc15/gcp-commands-r1.json').read_text())
     oldcmd=next(r['command'] for r in base if r['kind']=='selfmap' and r['seed']==93584 and r['candidate'])
@@ -39,13 +39,14 @@ def main(round_no,launch):
             env.update(UGRP_SCENE_COLOUR_BOUNDARY='scene_colour_transition_v2',UGRP_SCENE_RENDER_PROFILE=PROFILE,
                 UGRP_SCENE_COLOUR_CALIBRATION=str(cal),UGRP_SCENE_COLOUR_CALIBRATION_SHA256=hashlib.sha256(cal.read_bytes()).hexdigest())
         else:env['UGRP_SCENE_COLOUR_BOUNDARY']='off'
+        if round_no>=2 and on:env['UGRP_RELOC16_FLOOR_LANDMARK_MASK']='scene_floor_landmark_mask_v1'
         if kind=='selfmap':
             cmd=selfcmd.copy()
             for flag,value in [('--output',out),('--seed',seed),('--expected-source-sha',sha),('--render-profile',PROFILE if on else 'floor_light_textured_v1')]:
                 cmd[cmd.index(flag)+1]=str(value)
         else:
             episode=json.loads(json.dumps(next(e for e in plan['episodes'] if e['seed']==seed)))
-            episode.update(batch=f'reloc16-r{round_no}',pr=None,reloc16_role='known_failure_regression',
+            episode.update(batch=f'reloc16-r{round_no}',pr=532,reloc16_role='known_failure_regression',
                 render_profile=PROFILE,scene_version=PROFILE+'/no_mip_v1',reloc16_wall_compass_v1=True,
                 reloc16_active_view_v1=True,scene_wall_tracking_v1=True,reloc15_rgb_heading_v1=False,
                 reloc15_dense_yaw_v1=False,reloc15_heading_quality_v1=False,reloc15_heading_10hz_v1=False)
@@ -56,7 +57,8 @@ def main(round_no,launch):
                 '--rgb-lift-mode','solo_lift_lookback_v1','--solo-lift-lookback-margin-v1','--solo-truth-free-lookaround-v1',
                 '--solo-carry-to-zone-v1','--cap-s','150','--failure-rgb-buffer','--review-playback']
         queue.append(dict(name=name,kind=kind,seed=seed,scene='v5' if on else 'v1',source_sha=sha,command=cmd,
-                          environment={k:v for k,v in env.items() if k.startswith('UGRP_SCENE_')},raw=str(out),rejection_table=str(rejection),ready=False,dev_only=True))
+                          environment={k:v for k,v in env.items() if k.startswith(('UGRP_SCENE_','UGRP_RELOC16_'))},raw=str(out),rejection_table=str(rejection),ready=False,dev_only=True))
+        (folder/'RUN_META.json').write_text(json.dumps(dict(task='reloc16',pr=532,branch='claude/reloc16',sha=sha,**{'class':'dev'})))
         (folder/'launch-env.json').write_text(json.dumps(queue[-1]['environment'],indent=2))
         if launch:
             leases=[]
@@ -72,6 +74,10 @@ def main(round_no,launch):
             queue[-1].update(pid=process.pid,leases_at_admission=leases,declared_host_capacity=capacity,host=host)
         (batch/'queue.json').write_text(json.dumps(dict(source_sha=sha,rejection_table=str(rejection),runs=queue),indent=2)+'\n')
         print(json.dumps(dict(name=name,pid=queue[-1].get('pid'))),flush=True)
+    if launch:
+        lease=RUNS.parent/'leases/reloc16.json';record=json.loads(lease.read_text())
+        record.update(pid=queue[0]['pid'],pids=[r['pid'] for r in queue],source_sha=sha,pr=532)
+        lease.write_text(json.dumps(record,indent=2)+'\n')
     (batch/'submitted.json').write_text(json.dumps(dict(at=datetime.datetime.now(datetime.timezone.utc).isoformat(),runs=len(queue),host=host)))
 
 if __name__=='__main__':

@@ -9,4 +9,7 @@ def configure_world(world,profile):
     from sim.scene_contrast_v5 import verify_model
     # Native dimensions/MSAA remain unchanged. no_mip is GL texture state only.
     result=world._render_executor.submit(configure_context,world.renderer,world.model,QUALITY).result(timeout=30)
-    return dict(scene=verify_model(world.model,profile),camera_quality=result,control_inputs_changed=False)
+    import os
+    return dict(scene=verify_model(world.model,profile),camera_quality=result,
+                sensor_options={k:v for k,v in os.environ.items() if k.startswith(('UGRP_SCENE_','UGRP_RELOC16_'))},
+                input_modalities_changed=False)

@@ -362,6 +362,7 @@ class StaticRegistration:
             self.last['reloc10_diagnostics'] = dict(rejection_reasons=rejection,
                 evidence_reference='issued_command_odometry',
                 feature_kinds=dict(Counter(f['kind'] for f in observation['features'])),
+                **({'scene_floor_mask':self.sensor.last_scene_floor_mask} if getattr(self.sensor,'last_scene_floor_mask',{}).get('option','off')!='off' else {}),
                 wall_segments=len(observation['segments']), raw_columns=observation.get('raw_columns'),
                 fitted_columns=observation.get('fitted_columns'),
                 wall_guard=observation.get('wall_height_guard'), sensor_reason=row.get('reason'))
