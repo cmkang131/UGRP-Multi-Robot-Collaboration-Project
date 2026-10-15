@@ -50,7 +50,7 @@ def summarize(root, output):
     # Resumed baseline records keep their original measurements. Recompute
     # segmentation from saved pixels so ALL264 use one candidate classifier,
     # including when its nominal palettes changed after R1. Never mix bounds.
-    from scripts.probe_scene_tex3 import classify
+    from scripts.probe_scene_tex3 import classify, ROOT
     from scripts.probe_scene_tex2 import mask_score
     if any(r['material'] == 'walls_floor_textured_v3' for r in rows):
         from sim.natural_scene_texture_v3 import manifest as palette_manifest
@@ -116,7 +116,7 @@ def summarize(root, output):
                 b['encodings'][enc]['semantic']['detectors']['beam_legacy_dark_band_v2'].get(k) for k in beam_keys) for r, b in pairs)
             from importlib.util import spec_from_file_location, module_from_spec
             target_support = []
-            spec = spec_from_file_location('scene_tex2_compat', Path(__file__).resolve().parents[1]/'experiments/2026-10-15-scene-tex2/analyze_camera_compatibility.py')
+            spec = spec_from_file_location('scene_tex2_compat', ROOT/'experiments/2026-10-15-scene-tex2/analyze_camera_compatibility.py')
             compat = module_from_spec(spec)
             spec.loader.exec_module(compat)
             for r, b in pairs:
