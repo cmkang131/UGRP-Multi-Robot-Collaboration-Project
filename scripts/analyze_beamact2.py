@@ -70,6 +70,7 @@ def main():
         runs.append(row)
     completed=sum(r['complete'] for r in runs);n=sum(r.get('physical_success',False) for r in runs)
     result=dict(schema='ugrp.beamact2.summary.v1',host=host,n=n,N=20,attempted=sum(r['status']!='NOT_STARTED' for r in runs),
+        independent_joint_hold_n=sum(r.get('max_stable_hold_s',0.)>=3.-1e-8 for r in runs),
         complete=completed==20,completed=completed,not_started=20-sum(r['status']!='NOT_STARTED' for r in runs),
         analysis_source_sha=analysis_source,
         verdict='READY' if n==20 and completed==20 else 'NOT_READY',source_sha=queue['source_sha'],
