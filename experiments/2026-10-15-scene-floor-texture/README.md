@@ -56,6 +56,12 @@ PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python \
 
 검토 수정 라운드의 실행 기록은 `review-r1-summary.json`에 별도로 보존한다. 재생성은 PNG 151/151과 manifest까지 152/152 파일 바이트가 일치했다. 이전 `summary.json`은 검토 전 기록이다.
 
+## PR #511 CI 수정: 고정 렌더 자산 보존
+
+`976b4ef2`에서 `tests/test_zone_e2e_manifest.py`를 단독 실행해 P03의 `sim/render_profile.py` 자산 해시 불일치를 재현했다. 해당 파일을 `origin/main` 바이트(SHA-256 `782a531a5a89d23dce2974778e26b7ab1f0b6df8cd60f83df9404079cf7290d5`)로 복원하고 질감 정의·XML 적용·manifest·모델 audit을 `sim/render_profile_textured.py`로 분리했다. `sim/render_profile_selection.for_name`은 질감 이름을 명시한 경우에만 새 모듈을 불러온다. 질감 계획 생성기도 이 선택기를 사용한다. 기존 조합 핀/번들/registry는 갱신하지 않았다.
+
+질감 프로필 해시와 대표 XML 바이트는 분리 전과 동일하다. 기존 `scripts/run_pair_stage_probes.py`도 소스 고정 대상이므로 그대로 보존한다. 이 CLI가 질감을 바로 지원한다는 앞선 안내는 정정했으며, 새 소비자는 선택기·실제 audit을 연결하고 새 소스/번들을 고정해야 한다. CI 수정의 원본 로그·해시·검증 범위는 `ci-fix-summary.json`에 별도로 기록한다. 이전 측정 기록은 덮어쓰지 않는다.
+
 ## GCP 진단 계획 (미승인·미실행)
 
 `make_scene_texture_plan.py --source-sha <확정 40자리 SHA> --output <새 파일>`이 모든 `approved`·`ready*`·`execute`·`enabled`를 false로 작성한다. 로컬 대기열 이름은 `/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-floortex-<SHA8>.json`이다. 자동 제출 명령/감시는 없다.

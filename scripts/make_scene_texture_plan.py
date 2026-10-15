@@ -8,7 +8,7 @@ from pathlib import Path
 import re
 
 from scripts.generate_scene_textures import MAPS
-from sim import render_profile as rp
+from sim.render_profile_selection import for_name
 from sim.natural_scene_texture import PROFILE, MANIFEST_SHA256
 
 
@@ -38,7 +38,7 @@ def plan(sha):
         'status':'awaiting_consumer_integration_and_coordinator_approval',
         'approved':False,'ready':False,'ready_for_submission':False,'ready_for_vm':False,
         'ready_for_execution':False,'execute':False,'enabled':False,
-        'render_profile':rp.profile_record(PROFILE),'asset_manifest_sha256':MANIFEST_SHA256,
+        'render_profile':for_name(PROFILE).profile_record(PROFILE),'asset_manifest_sha256':MANIFEST_SHA256,
         'needs':['consumer PR scene selector + compiled audits must use requested render_profile',
                  'coordinator fixes source SHA, machine type, live disk/budget and confirms no shared defect',
                  'GCP-only static gate before selfmap first30; no pending automatic submission'],

@@ -1,6 +1,6 @@
 # 렌더 프로필
 
-`sim.render_profile.install(scene, name)`은 장면 XML에 선택한 프로필을 적용하고 이름·정의 해시·전후 XML 해시를 장면 manifest에 남긴다. 생략/`shadows_v1`은 원래 XML 바이트를 유지한다. `floor_light_v1`은 기존 밝은 바둑판이며 기본 동작을 바꾸지 않는다.
+`sim.render_profile.install(scene, name)`은 기존 프로필의 이름·정의 해시·전후 XML 해시를 장면 manifest에 남긴다. 이 파일은 P03 고정 자산이므로 main과 바이트 동일하게 유지한다. 새 소비자는 `sim.render_profile_selection.for_name(name)`으로 모듈을 선택한다. `floor_light_textured_v1`을 요청할 때만 별도 `sim.render_profile_textured`를 불러오며 기존 registry를 수정하지 않는다. 생략/`shadows_v1`은 원래 XML 바이트를 유지한다. `floor_light_v1`은 기존 밝은 바둑판이며 기본 동작을 바꾸지 않는다.
 
 ## 자연 질감: floor_light_textured_v1 (기본 off)
 
@@ -19,12 +19,13 @@
 장면을 처음 구성하는 곳의 기존 `install(scene, 'floor_light_v1')`를 다음처럼 선택 가능하게 바꾼다. 기존 프로필을 설치한 인스턴스에 다른 프로필을 다시 설치하면 실패한다.
 
 ```python
-from sim.render_profile import install, verify_model
+from sim.render_profile_selection import for_name
 from sim.final_pair_highpose_nearclip import wrap, audit
 profile = bundle.get('options', {}).get('render_profile', 'floor_light_v1')
-scene = wrap(install(scene, profile))
+render_profile = for_name(profile)
+scene = wrap(render_profile.install(scene, profile))
 # GCP에서 실제 모델을 만든 뒤, 요청값과 실제 바인딩 모두 검사/보존:
-render_audit = verify_model(model, profile)
+render_audit = render_profile.verify_model(model, profile)
 nearclip_audit = audit(model, base_profile=profile)
 ```
 
@@ -34,9 +35,9 @@ nearclip_audit = audit(model, base_profile=profile)
 |---|---|
 | 자기 지도 #506, AMCL 기록 #507 | 상속된 `sim/wall_parallax_strafe.py:make_scene`의 첫 `install`과 `sim/solo_cyan_v106.py:reset`의 하드코딩된 `verify_model(..., 'floor_light_v1')`를 요청 프로필로 연결. nearclip audit에도 같은 값을 전달. 소스/번들 해시 새로 고정 |
 | 단독 운반 #505, ACT 빔/상자 교사 관문 | 해당 PR의 `sim/grasp_act_scene.py:make_scene`에서 `plan`에 고정한 프로필로 첫 `install`; 각 실행기의 실제 모델 audit 기록에 같은 값 사용 |
-| 기존 pair stage 교사 probe | 이미 지원하는 `--render-profile floor_light_textured_v1` 사용. plan-only와 실제 실행은 구분 |
+| 기존 pair stage 교사 probe | `scripts/run_pair_stage_probes.py`도 기존 소스 고정 대상이므로 수정하지 않는다. 이 실행기의 기존 CLI에는 질감 프로필이 등록되지 않는다. 질감을 쓸 새 소비자 어댑터에서 위 선택기·적용·audit을 연결하고 새 번들/소스를 고정해야 한다 |
 
-이 PR은 공통 프로필/API와 nearclip 호환을 제공한다. **#505/#506/#507의 기존 하드코딩된 실행기가 옵션 한 줄만으로 바뀌는 것은 아니다.** 각 소비자의 위 연결 변경·오프라인 검증·새 소스 고정 후 승인된 GCP 진단에 사용한다. 본 PR은 그 브랜치나 현재 대기 실행을 수정하지 않았다.
+이 PR은 별도 질감 프로필/API·지연 선택기와 nearclip 호환을 제공한다. 질감 계획 생성기는 새 선택기로 프로필을 기록한다. 기존 P03 조합 핀·실행 번들·고정 실행기는 그대로 보존한다. **#505/#506/#507의 기존 하드코딩된 실행기가 옵션 한 줄만으로 바뀌는 것은 아니다.** 각 소비자의 위 연결 변경·오프라인 검증·새 소스 고정 후 승인된 GCP 진단에 사용한다. 본 PR은 그 브랜치나 현재 대기 실행을 수정하지 않았다.
 
 [오프라인 측정·재현 명령](../experiments/2026-10-15-scene-floor-texture/README.md)과 `scripts/make_scene_texture_plan.py`를 따른다. 대기열은 `approved=false` 및 모든 `ready*`/`execute`/`enabled=false`다.
 

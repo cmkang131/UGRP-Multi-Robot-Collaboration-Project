@@ -65,16 +65,6 @@ PROFILES = {
     },
 }
 
-# Asset bytes are part of the profile identity. Existing profile hashes stay fixed.
-from sim.natural_scene_texture import MANIFEST_SHA256 as NATURAL_TEXTURE_SHA256
-PROFILES['floor_light_textured_v1'] = {
-    'summary': 'Opt-in natural grey floor/wall wear over floor_light_v1 lighting; '
-               'one nonrepeating pinned image per surface, no markers. New scene version; '
-               'camera effectiveness and physics equivalence await GCP verification.',
-    'xml_ops': [*PROFILES['floor_light_v1']['xml_ops'][:-1],
-                {'op': 'natural_surface_texture', 'manifest_sha256': NATURAL_TEXTURE_SHA256}],
-}
-
 # MuJoCo defaults for the light colours a <light> may omit (XML reference), needed to scale an omitted attribute.
 LIGHT_COLOR_DEFAULTS = {'ambient': (0., 0., 0.), 'diffuse': (.7, .7, .7), 'specular': (.3, .3, .3)}
 
@@ -142,9 +132,6 @@ def apply_xml(xml, name):
             for texture in named:
                 texture.set('rgb1', op['rgb1'])
                 texture.set('rgb2', op['rgb2'])
-        elif op['op'] == 'natural_surface_texture':
-            from sim.natural_scene_texture import apply
-            apply(root)
         else:  # pragma: no cover - registry is closed
             raise ValueError(f'unknown render profile op {op["op"]!r}')
     return ET.tostring(root, encoding='unicode')
@@ -202,15 +189,12 @@ def verify_model(model, name):
     """Fail closed when the compiled model does not carry the requested profile."""
     name = resolve(name)
     audit = audit_model(model)
-    if name in ('noshadow_v1', 'noshadow_bright_v1', 'floor_light_v1', 'floor_light_textured_v1') and (any(audit['light_castshadow']) or audit['materials_with_reflectance']):
+    if name in ('noshadow_v1', 'noshadow_bright_v1', 'floor_light_v1') and (any(audit['light_castshadow']) or audit['materials_with_reflectance']):
         raise RuntimeError(f'render profile {name} requested but the compiled model still has shadows/reflections: {audit}')
-    if name in ('noshadow_bright_v1', 'floor_light_v1', 'floor_light_textured_v1') and any(c != 180. for c in audit['light_cutoff']):
+    if name in ('noshadow_bright_v1', 'floor_light_v1') and any(c != 180. for c in audit['light_cutoff']):
         raise RuntimeError(f'render profile {name} requested but the compiled model still has spot lights: {audit}')
     if name == 'floor_light_v1':
         mean = audit['ground_texture_mean_rgb']
         if mean is None or not all(abs(m - e) <= 8 for m, e in zip(mean, (125., 122., 118.))):
             raise RuntimeError(f'render profile {name} requested but the floor texture mean is {mean}, expected about (125, 122, 118)')
-    if name == 'floor_light_textured_v1':
-        from sim.natural_scene_texture import verify_model as verify_textures
-        audit['natural_textures'] = verify_textures(model)
     return audit

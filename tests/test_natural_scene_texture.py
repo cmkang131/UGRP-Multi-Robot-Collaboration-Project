@@ -9,7 +9,8 @@ import numpy as np
 from PIL import Image
 import pytest
 
-from sim import natural_scene_texture as texture, render_profile as rp
+from sim import natural_scene_texture as texture, render_profile_textured as rp
+from sim.render_profile_selection import for_name
 from scripts.generate_scene_textures import MAPS, texture as generate_texture
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -66,12 +67,74 @@ def test_defaults_and_original_profile_hashes_stay_unchanged():
     assert rp.profile_record(texture.PROFILE)['xml_ops'][-1]['manifest_sha256']==texture.MANIFEST_SHA256
 
 
+def test_textured_definition_and_xml_bytes_survive_module_split():
+    # Captured from PR #511 HEAD 976b4ef2 before restoring the pinned module.
+    assert rp.profile_sha256(texture.PROFILE)=='45f268ab22c9c198132eef78716d614b8ee49457279b84f31b84836d765d55a3'
+    out=rp.apply_xml(scene_xml(),texture.PROFILE)
+    assert hashlib.sha256(out.encode()).hexdigest()=='7464e7901905c48ee97c0f5afcd452fcf27437da10693c2a7d5a549ff30f0aa6'
+
+
+def test_p03_render_asset_pin_and_legacy_registry_remain_unchanged():
+    from sim import render_profile as legacy
+    pin=json.loads((ROOT/'configs/vision_loc_provider_p03.json').read_text())
+    expected=pin['active']['files_sha256']['sim/render_profile.py']
+    assert hashlib.sha256((ROOT/'sim/render_profile.py').read_bytes()).hexdigest()==expected
+    assert texture.PROFILE not in legacy.PROFILES
+    with pytest.raises(ValueError,match='unknown render profile'):
+        legacy.resolve(texture.PROFILE)
+    assert for_name(texture.PROFILE) is rp
+    with pytest.raises(ValueError,match='unknown render profile'):
+        for_name('floor_light_textured_typo')
+
+
+def test_legacy_selection_never_imports_texture_extension_in_fresh_process():
+    import subprocess
+    program="""
+import importlib.abc, sys
+class NoTextures(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname in ('sim.render_profile_textured', 'sim.natural_scene_texture'):
+            raise AssertionError('legacy selection loaded texture extension')
+sys.meta_path.insert(0, NoTextures())
+from sim.render_profile_selection import for_name
+from sim import render_profile as legacy
+for name in (None, *legacy.PROFILES):
+    assert for_name(name) is legacy
+    assert for_name(name).profile_record(name)==legacy.profile_record(name)
+    assert for_name(name).apply_xml('<mujoco/>', None)=='<mujoco/>'
+"""
+    r=subprocess.run([sys.executable,'-c',program],cwd=ROOT,capture_output=True,text=True)
+    assert r.returncode==0,r.stderr
+
+
 def test_scene_record_binds_profile_and_both_xml_hashes():
     class Scene:
         def transform(self,xml): self.manifest={};return xml
     s=rp.install(Scene(),texture.PROFILE);out=s.transform(scene_xml())
     assert s.manifest['render_profile']['scene_xml_sha256_after_profile']==hashlib.sha256(out.encode()).hexdigest()
     assert s.manifest['render_profile']['name']==texture.PROFILE
+    assert rp.install(s,texture.PROFILE) is s
+    with pytest.raises(ValueError,match='already carries'):
+        rp.install(s,'floor_light_v1')
+
+
+def test_textured_model_audit_uses_lighting_and_texture_checks_without_model(monkeypatch):
+    from sim import render_profile as legacy
+    model=object()
+    calls=[]
+    def lighting(actual,name):
+        assert actual is model
+        calls.append(name)
+        return {'lighting_checked':True}
+    def bindings(actual):
+        assert actual is model
+        calls.append(texture.PROFILE)
+        return {'bindings_checked':True}
+    monkeypatch.setattr(legacy,'verify_model',lighting)
+    monkeypatch.setattr(texture,'verify_model',bindings)
+    audit=for_name(texture.PROFILE).verify_model(model,texture.PROFILE)
+    assert calls==['noshadow_bright_v1',texture.PROFILE]
+    assert audit=={'lighting_checked':True,'natural_textures':{'bindings_checked':True}}
 
 
 def test_corrupt_assets_and_changed_geometry_fail_closed(tmp_path):
@@ -163,8 +226,8 @@ class NoSimulator(importlib.abc.MetaPathFinder):
             raise AssertionError('offline path imported MuJoCo')
 sys.meta_path.insert(0, NoSimulator())
 ns=runpy.run_path('tests/test_natural_scene_texture.py')
-from sim.render_profile import apply_xml
-apply_xml(ns['scene_xml'](), 'floor_light_textured_v1')
+from sim.render_profile_selection import for_name
+for_name('floor_light_textured_v1').apply_xml(ns['scene_xml'](), 'floor_light_textured_v1')
 from scripts.make_scene_texture_plan import plan
 plan('a'*40)
 """
