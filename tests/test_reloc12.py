@@ -57,10 +57,11 @@ def test_replay_packet_reconstructs_same_hypotheses():
 def test_rotation_search_counts_as_progress_without_relaxing_pose_limits():
  from sim.solo_carry_to_zone import CarryToZone
  c=object.__new__(CarryToZone)
- c.active_recovery=True;c.reloc12_reacquire=True;c.recovery_reason=None;c.failure=None
+ c.reloc18_pose_budget_observe_only=False
+ c.active_recovery=True;c.reloc12_reacquire=True;c.reloc16_active_view=False;c.recovery_reason=None;c.failure=None
  c.recovery_count=1;c.recovery_anchor=[0,0];c.stalled_recoveries=1;c.recovery_events=[]
  c.recovery_turn_anchor=0.;c.reacquire_turn_rad=math.radians(25)
- c.loc=SimpleNamespace(pose=[0,0,0],record=lambda:{},sigmas=lambda:[.05,.05,math.radians(17)],ready=lambda t:True)
+ c.loc=SimpleNamespace(pose=[0,0,0],heading=None,record=lambda:{},sigmas=lambda:[.05,.05,math.radians(17)],ready=lambda t:True)
  assert c.needs_recovery(3.)
  assert c.recovery_count==2 and c.stalled_recoveries==0 and c.failure is None
  assert c.recovery_events[-1]['reason']=='pose_budget'

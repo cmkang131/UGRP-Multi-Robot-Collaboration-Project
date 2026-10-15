@@ -1,0 +1,34 @@
+[
+  {
+    "amount": {
+      "specifiedAmount": {
+        "currencyCode": "KRW",
+        "units": "1000"
+      }
+    },
+    "budgetFilter": {
+      "calendarPeriod": "MONTH",
+      "creditTypesTreatment": "INCLUDE_ALL_CREDITS",
+      "projects": [
+        "projects/655795919803"
+      ]
+    },
+    "displayName": "ugrp stop when credit used",
+    "etag": "1791967281341009",
+    "name": "billingAccounts/01C770-8A2F1F-63BA5F/budgets/1cc391c5-162a-43f2-892f-1c78de9279e1",
+    "notificationsRule": {
+      "pubsubTopic": "projects/ugrp-sim-b-1014/topics/budget-stop",
+      "schemaVersion": "1.0"
+    },
+    "thresholdRules": [
+      {
+        "spendBasis": "CURRENT_SPEND",
+        "thresholdPercent": 0.5
+      },
+      {
+        "spendBasis": "CURRENT_SPEND",
+        "thresholdPercent": 1.0
+      }
+    ]
+  }
+]

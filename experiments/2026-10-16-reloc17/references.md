@@ -13,3 +13,8 @@
 표준의 레이저 sigma를 단안 경계에 그대로 맞다고 가정하지 않는다. 등록 후보가 올바른
 세계 pose인지와 그 pose가 실행에 전달된 뒤 drift가 늘었는지도 별개로 비교한다.
 참고 자료 조사는 수용 문턱을 바꾸는 근거 자체가 아니다. 원본 분포를 먼저 얻는다.
+
+서보 이음부 추가 참고: [ROS2 joint_trajectory_controller의 취소·선점 정책](https://control.ros.org/rolling/doc/ros2_controllers/joint_trajectory_controller/doc/userdoc.html).
+진행 궤적 취소는 명시적인 목표 제어 동작이며 명령 접수와 완료는 다르다.
+우리는 측정 관절을 제어 입력으로 가져오지 않고, 기존 port의2000PWM/s 발행 일정으로
+정상 대기만 처리한다. ROS 제어기 전체를 이식하거나 물리 추종 정확도를 가정하는 변경이 아니다.

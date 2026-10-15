@@ -16,10 +16,17 @@ def errors(es):
 def analysis(folder):
     raw=folder/'raw';trace=rows(raw/'trace.jsonl');truth={round(r['t'],6):r for r in rows(raw/'eval_only/trajectory.jsonl')}
     actual0=None;command=[];local=[];drivecmd=[];registered=0;matches=[];angles=[];scored=[];fresh=[]
+    servos={round(r['t'],6):r for r in rows(raw/'eval_only/servo.jsonl')}
+    frames={round(r['sim_time'],6):r for r in rows(raw/'robots/r3/frames.jsonl')};pan=[];pan_updated=[]
     static,_=static_input();mapped=MapFeatures(static)
     for r in trace:
         gt=truth.get(round(r['t'],6));s=r.get('static_registration',{});packet=s.get('reloc12',{}).get('replay',{})
         if gt is None:continue
+        sr=servos.get(round(r['t'],6));fr=frames.get(round(r['t'],6))
+        if sr is not None and fr is not None:
+            pe=abs((float(fr['commanded_servo']['6'])-1500)*.09-math.degrees(sr['joints']['6']['q_rad']))
+            pan.append(pe)
+            if s.get('updated'):pan_updated.append(pe)
         actual=np.array([*gt['robot_xyz_m'][:2],gt['robot_yaw_rad']])
         if actual0 is None:actual0=actual
         def err(p):return [float(np.linalg.norm(p[:2]-actual[:2])),abs(math.degrees(wrap(p[2]-actual[2])))]
@@ -47,6 +54,7 @@ def analysis(folder):
                 d,a=min(candidates);matches.append(d);angles.append(a)
                 scored.append(dict(t=r['t'],distance_m=d,normal_error_deg=a))
     return dict(command_only_replay=errors(command),local_execution_drift=errors(local),command_only_same_drive_frames=errors(drivecmd),
+        camera_pan_evaluation=dict(all_deg=distribution(pan),PF_updates_deg=distribution(pan_updated),PF_updates_over5deg=sum(x>5 for x in pan_updated),scope='evaluation-only actual joint; no controller feedback'),
         evaluation_alignment='initial evaluator world pose used ONLY for analysis alignment, never supplied to controller; local drift and absolute registered error are separate',registered_frames=registered,
         floor_line_residuals=dict(distance_m=distribution(matches),normal_deg=distribution(angles),scope='all same-hue features; no truth-based outlier exclusion; nearest finite edge in evaluator'),
         fresh_pose_evaluation=fresh,residual_frames=scored)
@@ -63,13 +71,17 @@ def main(queuefile,output=None):
             base=selfmap(folder);extra=analysis(folder)
             (folder/'analysis-full.json').write_text(json.dumps(dict(base=base,extra=extra),indent=2)+'\n')
             r.update({k:base[k] for k in ('drive_errors','registered_errors','false_registration_events','registration_frame_funnel','known_mode_measurement_funnel','first30','input_audit','termination')})
+            fixes=base['drift']['fix_frames']
+            r['static_pose_admissions']=dict(N=len(fixes),yaw_false_over5_N=sum(e['yaw_deg']>5 for e in fixes),
+                xy_false_over10cm_N=sum(e['xy_m']>.1 for e in fixes),yaw_deg=distribution([e['yaw_deg'] for e in fixes]),
+                scope='first global registration plus actual static visual_relocalized execution frames; evaluator-only error')
             r.update({k:v for k,v in extra.items() if k not in ('fresh_pose_evaluation','residual_frames')})
             r['fresh_pose_error']=errors([e['pf_error'] for e in extra['fresh_pose_evaluation']])
         elif t['kind']=='carry' and result['status']=='complete':r.update(carry(folder,result))
         else:r.update(failure=result.get('failure'),frames=result.get('frames',0))
         r['source_hashes']={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in (Path(t['raw'])/'result.json',folder/'task.json') if p.exists()}
         reports.append(r)
-    data=dict(schema='ugrp.reloc17.analysis.v1',analysis_host='gcp2',source_queue=str(queuefile),reproduce=f'PYTHONPATH=. {__file__} --queue {queuefile}',runs=reports)
+    data=dict(schema='ugrp.reloc17.analysis.v1',analysis_host='gcp2',source_queue=str(queuefile),reproduce=f'PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python {__file__} --queue {queuefile}',runs=reports)
     out=Path(output) if output else queuefile.parent;out.mkdir(exist_ok=True,parents=True);(out/'summary.json').write_text(json.dumps(data,indent=2)+'\n')
     rejection=dict(source_queue=str(queuefile),runs=[dict(run=r['name'],raw=r['raw'],**r['registration_frame_funnel']) if 'registration_frame_funnel' in r else dict(run=r['name'],heading=r.get('heading'),failure=r.get('failure')) for r in reports])
     (out/'rejection-table.json').write_text(json.dumps(rejection,indent=2)+'\n')

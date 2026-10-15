@@ -1,0 +1,251 @@
+{
+  "at": "2026-10-15T21:12:42.396537+00:00",
+  "own_workers": [],
+  "own_lease_removed": true,
+  "removed_lease": {
+    "task": "reloc17",
+    "pid": 255161,
+    "started": "2026-10-15T20:27:17.283565+00:00",
+    "expected_end": "2026-10-16T04:00:00Z; finite investigation + max3 rounds",
+    "concurrency": 4,
+    "owner": "Mac Codex reloc17; supervisor PID updated on launch",
+    "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+    "stage": "round2",
+    "pids": [
+      255184,
+      255185,
+      255186,
+      255188
+    ]
+  },
+  "other_leases": [
+    {
+      "path": "/home/ugrp/ugrp-sim/leases/beampair8.json",
+      "task": "beampair8",
+      "pid": 260828,
+      "started": "2026-10-15T21:01:31.259565+00:00",
+      "expected_end": "finite queue; max8h per run then analysis",
+      "concurrency": 16,
+      "source_sha": "72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "batch": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/record200-72c0e83d"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/leases/release25.json",
+      "task": "release25",
+      "pid": 256732,
+      "started": "2026-10-15T20:58:55.281137+00:00",
+      "expected_end": "finite queue; per-run8h cap",
+      "concurrency": 16,
+      "source_sha": "8e81b7d96c0c73171635348c90631462adfe1eb0"
+    }
+  ],
+  "other_ugrp_processes": [
+    {
+      "pid": 256732,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "17ef96c194d75b425338f0043944b4f4ec77cc138144563a4cd739d5cfec7289"
+    },
+    {
+      "pid": 260828,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "abe157838cd97543fb9c7616b659fe364aade28fdd6d3fa6032ab34ac92c5260"
+    },
+    {
+      "pid": 280195,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "b4d56437532498416c6cca7e6b4069ac76203de6ab4669e3003f069019c7463e"
+    },
+    {
+      "pid": 284972,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "c8013bfe5a75eee5212b0e56d463e6b5df35d56dc36edda78ff400227ae9b51c"
+    },
+    {
+      "pid": 285890,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "ec550a101300f5dfd7508eddfcfeb219ea54592d5cda1cd1fa375461624753f9"
+    },
+    {
+      "pid": 286598,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "5c0727637e449f808a688abadb78ad59f50ce6d004c29e47b65e74c705e86dbe"
+    },
+    {
+      "pid": 287335,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "86eb518545e7e4c03422439cbbce09a7bd1ba55da31e175c5c196507dfa4d816"
+    },
+    {
+      "pid": 287664,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "2c5c270ef3699a01ba1b26cd0b64d894e7a492528778cef9d7272c599b1a56e9"
+    },
+    {
+      "pid": 288187,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "d7f163f8f07f1b87f505f06d7ca8d9c8528e681819eb5d3c1a5fefa749bf1fa4"
+    },
+    {
+      "pid": 288890,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "4fb3a56da9afdd57661551d7a5c5c1d564d55173761859996e98f9edcdddfe51"
+    },
+    {
+      "pid": 289372,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "613cb2f772fd364a08eb35a89908629a78b881918bb9db3ec03ab65f23c509c5"
+    },
+    {
+      "pid": 289933,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "5a706053484a0b2c5245392df8ff13d6b1e4f5aeef5f929a7bd51d07a5ac6cb8"
+    },
+    {
+      "pid": 290480,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "3aa23d02482f12ac07720a917fb0b277a62185fe8902dd68ac4d5bd2ce4c0df2"
+    },
+    {
+      "pid": 291118,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "f07f066ad8091d8cd7122908a60ecb27b2bee84cb110c0753c2135b67ec31cc4"
+    },
+    {
+      "pid": 291710,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "2d7d21ace90ab618d8cc893f054f7c29dee4ac4ad50ae941d3579a81b76d3759"
+    },
+    {
+      "pid": 292297,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "380c18be9ae4a82f10233df5c15e9666647bed2f974c1c42635723066f521838"
+    },
+    {
+      "pid": 292299,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "baa3f4b90cd408497c5978b158d8bacf5db2b42552bbbf7a44e5367ac2635278"
+    },
+    {
+      "pid": 292301,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "bd22c4ae529de945c2507d72bee286fa4acd77f9e81b4a85627c8ede9e45ca43"
+    },
+    {
+      "pid": 292303,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "2364e2afcfd66d6fdf76e433b819438d3be6636db7735b3c01f7e3e098c0701f"
+    },
+    {
+      "pid": 292305,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "85078a0286dc9ba3377b015a8eec3acc80356a48c0aaf485fb8c10dabc66ef4d"
+    },
+    {
+      "pid": 292307,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "73353ee8bbb395a33228705ef608ec63bb720f30ed216804ee186fb15d6251da"
+    },
+    {
+      "pid": 292309,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "eaf97cf21be3eaf7ff3cd8d1696c08cdaf29e4c784d1081f328f7f4d6a9a8d69"
+    },
+    {
+      "pid": 292311,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "7f1fd833fff6d1965ef83cf588232663c63b94386e5d55d259eb1a4d45dfd849"
+    },
+    {
+      "pid": 292313,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "cfc4cb110fe67adc7d20fbea9b84e33b65fc4b8c562bec64bf0923037a74368a"
+    },
+    {
+      "pid": 292315,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "fa4c0cf2ab7ae77ec543f8644eaee25acfed3c1c557cc9a48ac717823945f71b"
+    },
+    {
+      "pid": 292317,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "98564b19bcaa9146b9be9fa65a931cd9de26fd5fba8899a6fe05e41381d7a297"
+    },
+    {
+      "pid": 292319,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "ff2edf9392919ceb8eb41e21c1684bce7e55354cb44bc5c6fd94badbfedd6481"
+    },
+    {
+      "pid": 292321,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "4ef516e77ea7e1fc45ee739c0761fae10cfabdba662e083967db68f7ea55999a"
+    },
+    {
+      "pid": 292323,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "7868cf35725cbf709d43c89e7b40fb7fc993e5b1fad4a450fefcc469f3087924"
+    },
+    {
+      "pid": 292325,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "36fb1d0a2b3961ce5754b34e4528be89f9f113fc9d3621ffe614a8cb3667e5cd"
+    },
+    {
+      "pid": 292327,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "command_sha256": "f5468bb78167005bf4ee2a8e32fbdc275eaf23e95d5a5cef5afdf9e24561fdba"
+    },
+    {
+      "pid": 293385,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "631f8fb1a2eb8b4e9b7555865a0e3a3dad48b54caab2b79a00cc4be651250dea"
+    },
+    {
+      "pid": 293678,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "61fa996857942638a8a9ca6e7592f29ac5a7f0d3d403da3da4c11c158fdbf007"
+    },
+    {
+      "pid": 295296,
+      "program": "python",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "command_sha256": "c73a3b6d65281cedb97e62e501b044dee031e18b641c62a83c99429be313c3ca"
+    }
+  ],
+  "vm_action": "KEEP_RUNNING",
+  "reason": "Other lease/process prevents VM stop",
+  "source_copies": "all reference git-shared.git directly; no gc/prune/delete"
+}

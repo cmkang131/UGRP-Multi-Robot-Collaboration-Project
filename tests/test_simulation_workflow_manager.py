@@ -477,6 +477,7 @@ raise SystemExit(3 if a.fail else 0)
                 e2e18_args[e2e18_args.index('--speed5')+1] = 'lean_v2' if version == 218 else 'lean_v3'
             samples[f'e2e18-v{version}'] = list(e2e18_args)
         samples['e2e-one-beam-ownmap-inputs'] = sha
+        samples['self-map-diagnostic'] = [*sha, '--seed', '101']
         # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
         # value for this boolean. Keep its original bytes and the rejection.
         samples['e2e-rpp-lookahead-v196'] = [*e2e_args, '--dev-light']

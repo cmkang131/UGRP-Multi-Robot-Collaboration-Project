@@ -1,0 +1,1126 @@
+{
+  "schema": "ugrp.reloc17.summary.v1",
+  "verdict": "NOT_READY",
+  "created": "2026-10-15T21:16:17.209834+00:00",
+  "pr": 536,
+  "parent_pr": 532,
+  "base_sha": "5f63909becb63edc633ab3ad243a4b694fb38846",
+  "candidate_source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+  "scene": "walls_floor_contrast_v5_indigo110_s80 + v1 floor + no_mip_v1",
+  "host": "gcp2 / ugrp-sim-b-1014 / n4-highcpu-64 / C MuJoCo CPU",
+  "investigation_complete_before_controller_edit": true,
+  "controller_fix": "reloc17_servo_wait_v1 (default off), ordinary pending-servo hold replaced by existing zero-wheel primitive; terminal hold unchanged",
+  "acceptance_constants_changed": false,
+  "raw_truth_scope": "localization uses own RGB, issued commands and authored map; pose error and measured-joint checks are evaluator-only; carry teacher retains its existing visible-only/held-hidden audited boundary",
+  "runs": [
+    {
+      "name": "reloc17-decomp-a_command_only-93584-1b683ba2",
+      "stage": "decomposition",
+      "kind": "selfmap",
+      "condition": "a_command_only",
+      "seed": 93584,
+      "source_sha": "1b683ba2896e069c1ab859e3501db3ff13c64dac",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-decomp-a_command_only-93584-1b683ba2/raw",
+      "status": "RECORDED",
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "registered_frames": 0,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 7.7495929815666384,
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "command_only_replay": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "p50": 0.03821575183936553,
+          "p95": 0.09556443255278217,
+          "max": 0.11914886949515831
+        },
+        "yaw_deg": {
+          "N": 301,
+          "p50": 2.1457118805221684,
+          "p95": 5.1800178231165335,
+          "max": 6.159558663465469
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 132,
+        "xy_m": {
+          "N": 132,
+          "p50": 0.04746656805691447,
+          "p95": 0.1065726628153798,
+          "max": 0.11808901800490344
+        },
+        "yaw_deg": {
+          "N": 132,
+          "p50": 3.0591024869294228,
+          "p95": 5.555092964745881,
+          "max": 6.159558663465469
+        }
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-decomp-a_command_only-93583-1b683ba2",
+      "stage": "decomposition",
+      "kind": "selfmap",
+      "condition": "a_command_only",
+      "seed": 93583,
+      "source_sha": "1b683ba2896e069c1ab859e3501db3ff13c64dac",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-decomp-a_command_only-93583-1b683ba2/raw",
+      "status": "RECORDED",
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "registered_frames": 0,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 7.069934635800019,
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "command_only_replay": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "p50": 0.048804198527463934,
+          "p95": 0.22557744650139772,
+          "max": 0.22585940852864198
+        },
+        "yaw_deg": {
+          "N": 301,
+          "p50": 2.132059173214045,
+          "p95": 6.324897535340672,
+          "max": 6.626858677854916
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 113,
+        "xy_m": {
+          "N": 113,
+          "p50": 0.12783459609910544,
+          "p95": 0.2128706924600061,
+          "max": 0.22283719203100444
+        },
+        "yaw_deg": {
+          "N": 113,
+          "p50": 5.390931733255394,
+          "p95": 6.4857973980429575,
+          "max": 6.626858677854916
+        }
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-decomp-b_old_reloc15-93584-1b683ba2",
+      "stage": "decomposition",
+      "kind": "selfmap",
+      "condition": "b_old_reloc15",
+      "seed": 93584,
+      "source_sha": "1b683ba2896e069c1ab859e3501db3ff13c64dac",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-decomp-b_old_reloc15-93584-1b683ba2/raw",
+      "status": "RECORDED",
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "registered_frames": 216,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 6.052450050033318,
+      "drive_errors": {
+        "N": 45,
+        "bad_N": 6,
+        "xy_m": {
+          "N": 45,
+          "p50": 0.044363363319251,
+          "p95": 0.10819088664945783,
+          "max": 0.1145125959041183
+        },
+        "yaw_deg": {
+          "N": 45,
+          "p50": 1.4294013142696773,
+          "p95": 2.0266814660948596,
+          "max": 5.425359881316601
+        }
+      },
+      "command_only_replay": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "p50": 0.03451553203400327,
+          "p95": 0.06049554490865338,
+          "max": 0.08761427783086194
+        },
+        "yaw_deg": {
+          "N": 301,
+          "p50": 1.8954969641014254,
+          "p95": 4.262369025300237,
+          "max": 4.778142228055963
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 45,
+        "xy_m": {
+          "N": 45,
+          "p50": 0.040444032702870544,
+          "p95": 0.06018128074369048,
+          "max": 0.06089955040525627
+        },
+        "yaw_deg": {
+          "N": 45,
+          "p50": 0.9095024256632863,
+          "p95": 2.4141623613029224,
+          "max": 4.420455429646498
+        }
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-decomp-b_old_reloc15-93583-1b683ba2",
+      "stage": "decomposition",
+      "kind": "selfmap",
+      "condition": "b_old_reloc15",
+      "seed": 93583,
+      "source_sha": "1b683ba2896e069c1ab859e3501db3ff13c64dac",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-decomp-b_old_reloc15-93583-1b683ba2/raw",
+      "status": "RECORDED",
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "registered_frames": 219,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 5.472344845799975,
+      "drive_errors": {
+        "N": 33,
+        "bad_N": 29,
+        "xy_m": {
+          "N": 33,
+          "p50": 0.085303109645373,
+          "p95": 0.1102046720556556,
+          "max": 0.1119585144412966
+        },
+        "yaw_deg": {
+          "N": 33,
+          "p50": 6.616113094259244,
+          "p95": 7.8668007335152215,
+          "max": 7.958381622065224
+        }
+      },
+      "command_only_replay": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "p50": 0.04556957021052833,
+          "p95": 0.08763732030316483,
+          "max": 0.0918544941488481
+        },
+        "yaw_deg": {
+          "N": 301,
+          "p50": 2.2387664565908825,
+          "p95": 3.775031279997653,
+          "max": 4.3594280550233275
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 33,
+        "xy_m": {
+          "N": 33,
+          "p50": 0.08703569746385505,
+          "p95": 0.09147784417507022,
+          "max": 0.0918544941488481
+        },
+        "yaw_deg": {
+          "N": 33,
+          "p50": 3.2226731145389875,
+          "p95": 3.8935218246871846,
+          "max": 3.972981180135359
+        }
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-decomp-c_new_reloc15-93584-1b683ba2",
+      "stage": "decomposition",
+      "kind": "selfmap",
+      "condition": "c_new_reloc15",
+      "seed": 93584,
+      "source_sha": "1b683ba2896e069c1ab859e3501db3ff13c64dac",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-decomp-c_new_reloc15-93584-1b683ba2/raw",
+      "status": "HOST_ERROR",
+      "termination": {
+        "status": "HOST_ERROR",
+        "category": "selfmap4_relocalization_exhausted",
+        "reason": "selfmap4_relocalization_exhausted",
+        "elapsed_sim_s": 53.400000000000006,
+        "supervisor_stop": {},
+        "code_vs_host": "controller_budget_exhaustion"
+      },
+      "registered_frames": 0,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 8.129568893699979,
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "command_only_replay": {
+        "N": 268,
+        "xy_m": {
+          "N": 268,
+          "p50": 0.01979241298960106,
+          "p95": 0.04871412305828231,
+          "max": 0.0657107546564882
+        },
+        "yaw_deg": {
+          "N": 268,
+          "p50": 0.7284340011446782,
+          "p95": 1.9615278698861365,
+          "max": 2.451668167519744
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 18,
+        "xy_m": {
+          "N": 18,
+          "p50": 0.04230002391608327,
+          "p95": 0.06070198203622475,
+          "max": 0.06250623445319117
+        },
+        "yaw_deg": {
+          "N": 18,
+          "p50": 0.6279091693909868,
+          "p95": 1.896187879954599,
+          "max": 1.9129754362899076
+        }
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-decomp-c_new_reloc15-93583-1b683ba2",
+      "stage": "decomposition",
+      "kind": "selfmap",
+      "condition": "c_new_reloc15",
+      "seed": 93583,
+      "source_sha": "1b683ba2896e069c1ab859e3501db3ff13c64dac",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-decomp-c_new_reloc15-93583-1b683ba2/raw",
+      "status": "HOST_ERROR",
+      "termination": {
+        "status": "HOST_ERROR",
+        "category": "selfmap4_relocalization_exhausted",
+        "reason": "selfmap4_relocalization_exhausted",
+        "elapsed_sim_s": 48.400000000000006,
+        "supervisor_stop": {},
+        "code_vs_host": "controller_budget_exhaustion"
+      },
+      "registered_frames": 0,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 7.226415302999945,
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "command_only_replay": {
+        "N": 243,
+        "xy_m": {
+          "N": 243,
+          "p50": 0.03102649597409338,
+          "p95": 0.10723234081772691,
+          "max": 0.11125433858582323
+        },
+        "yaw_deg": {
+          "N": 243,
+          "p50": 0.5970707737242557,
+          "p95": 1.9633218893254405,
+          "max": 2.3581640959165453
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 1,
+        "xy_m": {
+          "N": 1,
+          "p50": 0.003538826095676096,
+          "p95": 0.003538826095676096,
+          "max": 0.003538826095676096
+        },
+        "yaw_deg": {
+          "N": 1,
+          "p50": 1.8604779837541778,
+          "p95": 1.8604779837541778,
+          "max": 1.8604779837541778
+        }
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-decomp-d_new_reloc16-93584-1b683ba2",
+      "stage": "decomposition",
+      "kind": "selfmap",
+      "condition": "d_new_reloc16",
+      "seed": 93584,
+      "source_sha": "1b683ba2896e069c1ab859e3501db3ff13c64dac",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-decomp-d_new_reloc16-93584-1b683ba2/raw",
+      "status": "RECORDED",
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "registered_frames": 0,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 5.917272698000003,
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "command_only_replay": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "p50": 0.05524101545680353,
+          "p95": 0.16682928934330313,
+          "max": 0.17372630962632413
+        },
+        "yaw_deg": {
+          "N": 301,
+          "p50": 1.6934022973186469,
+          "p95": 3.4677704670904332,
+          "max": 3.8519385568487845
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 107,
+        "xy_m": {
+          "N": 107,
+          "p50": 0.07397817714549966,
+          "p95": 0.1358119099605368,
+          "max": 0.14073989739412734
+        },
+        "yaw_deg": {
+          "N": 107,
+          "p50": 3.114399732384138,
+          "p95": 3.5830291831314693,
+          "max": 3.8519385568487845
+        }
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-decomp-d_new_reloc16-93583-1b683ba2",
+      "stage": "decomposition",
+      "kind": "selfmap",
+      "condition": "d_new_reloc16",
+      "seed": 93583,
+      "source_sha": "1b683ba2896e069c1ab859e3501db3ff13c64dac",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-decomp-d_new_reloc16-93583-1b683ba2/raw",
+      "status": "RECORDED",
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "registered_frames": 0,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 5.601674860633344,
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "command_only_replay": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "p50": 0.04583758958443605,
+          "p95": 0.1961993301850131,
+          "max": 0.22499884980798612
+        },
+        "yaw_deg": {
+          "N": 301,
+          "p50": 2.083753646962992,
+          "p95": 5.670016710061546,
+          "max": 6.234888948691788
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 140,
+        "xy_m": {
+          "N": 140,
+          "p50": 0.10350366689493613,
+          "p95": 0.20727135896717963,
+          "max": 0.2230119225504196
+        },
+        "yaw_deg": {
+          "N": 140,
+          "p50": 5.011877713110179,
+          "p95": 5.905044097224146,
+          "max": 6.234888948691788
+        }
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-r1-selfmap-93584-47670d14",
+      "stage": "round1",
+      "kind": "selfmap",
+      "condition": "servo_wait_wall_field",
+      "seed": 93584,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r1-selfmap-93584-47670d14/raw",
+      "status": "RECORDED",
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "registered_frames": 0,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 5.567508907833326,
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "command_only_replay": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "p50": 0.05524101545680353,
+          "p95": 0.16682928934330313,
+          "max": 0.17372630962632413
+        },
+        "yaw_deg": {
+          "N": 301,
+          "p50": 1.6934022973186469,
+          "p95": 3.4677704670904332,
+          "max": 3.8519385568487845
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 107,
+        "xy_m": {
+          "N": 107,
+          "p50": 0.07397817714549966,
+          "p95": 0.1358119099605368,
+          "max": 0.14073989739412734
+        },
+        "yaw_deg": {
+          "N": 107,
+          "p50": 3.114399732384138,
+          "p95": 3.5830291831314693,
+          "max": 3.8519385568487845
+        }
+      },
+      "static_pose_admissions": {
+        "N": 0,
+        "yaw_false_over5_N": 0,
+        "xy_false_over10cm_N": 0
+      },
+      "camera_pan_on_PF_updates": {
+        "N": 124,
+        "p95_deg": 0.00019217647270476586,
+        "over5_N": 0
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-r1-selfmap-93583-47670d14",
+      "stage": "round1",
+      "kind": "selfmap",
+      "condition": "servo_wait_wall_field",
+      "seed": 93583,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r1-selfmap-93583-47670d14/raw",
+      "status": "RECORDED",
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "registered_frames": 0,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 5.1862088127666235,
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "command_only_replay": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "p50": 0.045315350190599984,
+          "p95": 0.12295080759732624,
+          "max": 0.1357357616481411
+        },
+        "yaw_deg": {
+          "N": 301,
+          "p50": 0.7794963289579203,
+          "p95": 2.3416376076118857,
+          "max": 2.556523307374769
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 105,
+        "xy_m": {
+          "N": 105,
+          "p50": 0.09579359497167153,
+          "p95": 0.1317724184904966,
+          "max": 0.13497273389026154
+        },
+        "yaw_deg": {
+          "N": 105,
+          "p50": 0.8104738437257529,
+          "p95": 2.005100397656819,
+          "max": 2.164613544840507
+        }
+      },
+      "static_pose_admissions": {
+        "N": 0,
+        "yaw_false_over5_N": 0,
+        "xy_false_over10cm_N": 0
+      },
+      "camera_pan_on_PF_updates": {
+        "N": 106,
+        "p95_deg": 0.0001903015319481666,
+        "over5_N": 0
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-r1-carry-93266-47670d14",
+      "stage": "round1",
+      "kind": "carry",
+      "condition": "unchanged_carry_regression",
+      "seed": 93266,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r1-carry-93266-47670d14/raw",
+      "status": "complete",
+      "termination": "cap_end",
+      "place_verified": false,
+      "sim_s": 149.9999999981502,
+      "first30_wall_per_sim": 4.145588616758618,
+      "carry_yaw": {
+        "accepted": 8,
+        "scorable_absolute": 8,
+        "absolute_false_over5_N": 0,
+        "scorable_delta": 8,
+        "delta_false_over5_N": 0
+      },
+      "input_audit": {
+        "truth_pose_inputs": null,
+        "top_rgb_frames": null,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-r1-carry-93315-47670d14",
+      "stage": "round1",
+      "kind": "carry",
+      "condition": "unchanged_carry_regression",
+      "seed": 93315,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r1-carry-93315-47670d14/raw",
+      "status": "complete",
+      "termination": "cap_end",
+      "place_verified": false,
+      "sim_s": 149.9999999981502,
+      "first30_wall_per_sim": 4.043531476125411,
+      "carry_yaw": {
+        "accepted": 28,
+        "scorable_absolute": 28,
+        "absolute_false_over5_N": 0,
+        "scorable_delta": 28,
+        "delta_false_over5_N": 0
+      },
+      "input_audit": {
+        "truth_pose_inputs": null,
+        "top_rgb_frames": null,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-r2-selfmap-93584-47670d14",
+      "stage": "round2",
+      "kind": "selfmap",
+      "condition": "servo_wait_landmarks",
+      "seed": 93584,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93584-47670d14/raw",
+      "status": "RECORDED",
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "registered_frames": 219,
+      "false_registration_events": 0,
+      "first30_wall_per_sim": 6.204088538666656,
+      "drive_errors": {
+        "N": 86,
+        "bad_N": 7,
+        "xy_m": {
+          "N": 86,
+          "p50": 0.046474047044547905,
+          "p95": 0.10663292241518196,
+          "max": 0.11342624554310352
+        },
+        "yaw_deg": {
+          "N": 86,
+          "p50": 0.9749849444136853,
+          "p95": 1.7929953060727246,
+          "max": 3.4862005964666953
+        }
+      },
+      "command_only_replay": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "p50": 0.040526201267121274,
+          "p95": 0.06911962507436901,
+          "max": 0.07467672384395782
+        },
+        "yaw_deg": {
+          "N": 301,
+          "p50": 1.4530174506622147,
+          "p95": 2.534318984133103,
+          "max": 3.100807762348267
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 86,
+        "xy_m": {
+          "N": 86,
+          "p50": 0.06353921908529839,
+          "p95": 0.0737314627949423,
+          "max": 0.07467672384395782
+        },
+        "yaw_deg": {
+          "N": 86,
+          "p50": 1.6822289053406947,
+          "p95": 2.122095735825851,
+          "max": 2.408551067124867
+        }
+      },
+      "static_pose_admissions": {
+        "N": 94,
+        "yaw_false_over5_N": 1,
+        "xy_false_over10cm_N": 9
+      },
+      "camera_pan_on_PF_updates": {
+        "N": 129,
+        "p95_deg": 0.00020294786106554588,
+        "over5_N": 0
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-r2-selfmap-93583-47670d14",
+      "stage": "round2",
+      "kind": "selfmap",
+      "condition": "servo_wait_landmarks",
+      "seed": 93583,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93583-47670d14/raw",
+      "status": "RECORDED",
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      },
+      "registered_frames": 221,
+      "false_registration_events": 1,
+      "first30_wall_per_sim": 5.812641554166658,
+      "drive_errors": {
+        "N": 140,
+        "bad_N": 126,
+        "xy_m": {
+          "N": 140,
+          "p50": 0.1268915567916,
+          "p95": 0.17206282773752987,
+          "max": 0.17670782649926542
+        },
+        "yaw_deg": {
+          "N": 140,
+          "p50": 0.7849599767017084,
+          "p95": 6.34163951483864,
+          "max": 7.890683285896876
+        }
+      },
+      "command_only_replay": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "p50": 0.050750482416597194,
+          "p95": 0.1775100592355937,
+          "max": 0.20370275485534597
+        },
+        "yaw_deg": {
+          "N": 301,
+          "p50": 3.4003706790278447,
+          "p95": 5.460711593705011,
+          "max": 5.9224569499189945
+        }
+      },
+      "command_only_same_drive_frames": {
+        "N": 140,
+        "xy_m": {
+          "N": 140,
+          "p50": 0.09966458595266037,
+          "p95": 0.18946175476633917,
+          "max": 0.20221724999873256
+        },
+        "yaw_deg": {
+          "N": 140,
+          "p50": 4.801034466387632,
+          "p95": 5.577906766599211,
+          "max": 5.9224569499189945
+        }
+      },
+      "static_pose_admissions": {
+        "N": 87,
+        "yaw_false_over5_N": 5,
+        "xy_false_over10cm_N": 48
+      },
+      "camera_pan_on_PF_updates": {
+        "N": 120,
+        "p95_deg": 0.00023127493185768345,
+        "over5_N": 0
+      },
+      "input_audit": {
+        "truth_pose_inputs": 0,
+        "top_rgb_frames": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-r2-carry-93266-47670d14",
+      "stage": "round2",
+      "kind": "carry",
+      "condition": "unchanged_carry_regression",
+      "seed": 93266,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93266-47670d14/raw",
+      "status": "complete",
+      "termination": "cap_end",
+      "place_verified": false,
+      "sim_s": 149.9999999981502,
+      "first30_wall_per_sim": 4.322576881191536,
+      "carry_yaw": {
+        "accepted": 58,
+        "scorable_absolute": 58,
+        "absolute_false_over5_N": 0,
+        "scorable_delta": 58,
+        "delta_false_over5_N": 0
+      },
+      "input_audit": {
+        "truth_pose_inputs": null,
+        "top_rgb_frames": null,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    },
+    {
+      "name": "reloc17-r2-carry-93315-47670d14",
+      "stage": "round2",
+      "kind": "carry",
+      "condition": "unchanged_carry_regression",
+      "seed": 93315,
+      "source_sha": "47670d1428abfbb09756627c1a2be31caf650465",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc17-r2-carry-93315-47670d14/raw",
+      "status": "complete",
+      "termination": "cap_end",
+      "place_verified": false,
+      "sim_s": 149.9999999981502,
+      "first30_wall_per_sim": 4.18131299409189,
+      "carry_yaw": {
+        "accepted": 39,
+        "scorable_absolute": 39,
+        "absolute_false_over5_N": 0,
+        "scorable_delta": 39,
+        "delta_false_over5_N": 0
+      },
+      "input_audit": {
+        "truth_pose_inputs": null,
+        "top_rgb_frames": null,
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      }
+    }
+  ],
+  "rounds": 2,
+  "pairs": [
+    {
+      "seed": 93584,
+      "old_R2": {
+        "N": 63,
+        "bad_N": 62,
+        "xy_m": {
+          "N": 63,
+          "p50": 0.10152842858162031,
+          "p95": 0.10556714134696026,
+          "max": 0.10635167867757088
+        },
+        "yaw_deg": {
+          "N": 63,
+          "p50": 9.996176428016208,
+          "p95": 10.465820107156635,
+          "max": 10.745168881991345
+        }
+      },
+      "candidate": {
+        "N": 86,
+        "bad_N": 7,
+        "xy_m": {
+          "N": 86,
+          "p50": 0.046474047044547905,
+          "p95": 0.10663292241518196,
+          "max": 0.11342624554310352
+        },
+        "yaw_deg": {
+          "N": 86,
+          "p50": 0.9749849444136853,
+          "p95": 1.7929953060727246,
+          "max": 3.4862005964666953
+        }
+      },
+      "old_raw": "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93584-v5-5f8b3eb2/raw",
+      "new_raw": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93584-47670d14/raw"
+    },
+    {
+      "seed": 93583,
+      "old_R2": {
+        "N": 75,
+        "bad_N": 54,
+        "xy_m": {
+          "N": 75,
+          "p50": 0.09328587484405836,
+          "p95": 0.15629628539220614,
+          "max": 0.1669866374153491
+        },
+        "yaw_deg": {
+          "N": 75,
+          "p50": 1.8174528284047688,
+          "p95": 6.779272383263512,
+          "max": 7.890683285896876
+        }
+      },
+      "candidate": {
+        "N": 140,
+        "bad_N": 126,
+        "xy_m": {
+          "N": 140,
+          "p50": 0.1268915567916,
+          "p95": 0.17206282773752987,
+          "max": 0.17670782649926542
+        },
+        "yaw_deg": {
+          "N": 140,
+          "p50": 0.7849599767017084,
+          "p95": 6.34163951483864,
+          "max": 7.890683285896876
+        }
+      },
+      "old_raw": "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93583-v5-5f8b3eb2/raw",
+      "new_raw": "/home/ugrp/ugrp-sim/runs/reloc17-r2-selfmap-93583-47670d14/raw"
+    }
+  ],
+  "final_place": {
+    "N": 2,
+    "verified": 0
+  },
+  "speed": {
+    "round1": {
+      "status": "PASS",
+      "median_wall_per_sim": 4.665898714762621,
+      "N": 4,
+      "host_errors": [],
+      "first30": [
+        5.567508907833326,
+        5.1862088127666235,
+        4.145588616758618,
+        4.043531476125411
+      ]
+    },
+    "round2": {
+      "status": "PASS",
+      "median_wall_per_sim": 5.067609217679097,
+      "N": 4,
+      "host_errors": [],
+      "first30": [
+        6.204088538666656,
+        5.812641554166658,
+        4.322576881191536,
+        4.18131299409189
+      ]
+    }
+  },
+  "scope": {
+    "mac_physics": 0,
+    "mac_render": 0,
+    "mac_gui": 0,
+    "model_calls": 0,
+    "training": 0,
+    "weld": false,
+    "full_raw_backup": false,
+    "full_raw_download": false,
+    "physical_robot_or_ACT_student_success_not_claimed": true
+  },
+  "playback": "playback-review.md; full mission success video unavailable",
+  "records": {
+    "inventory": "inventory.json",
+    "rejection_table": "rejection-table-candidate.json",
+    "references": "references.md",
+    "constants": "constants.md",
+    "decomposition": "decomposition.md"
+  },
+  "full_summary": {
+    "path": "/home/ugrp/ugrp-sim/runs/reloc17-delivery/summary-full.json.zst",
+    "raw_bytes": 77014,
+    "raw_sha256": "0d059d15d0adbb5072866dccb2ebd512b6549bb2da7c8930dafcf2691d19250c",
+    "compressed_sha256": "416cd8f3c959efe72e85850b852a64540bf77523c81d018a70b1805efca34fa3",
+    "roundtrip_verified": true
+  }
+}

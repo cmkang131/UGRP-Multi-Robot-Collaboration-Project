@@ -19,3 +19,17 @@ selfmap 후반의 큰 벽 가림 뒤 다시 나타나는 모서리·구역을 �
 원격 `runs/reloc16-review-{selfmap93584-r3,carry93315-r1,normal-r1}/review-manifest.json`,
 회수 `outputs/e2e18-admin/playback/reloc17/` (기본 checkout).
 파일 해시·MP4 ffprobe·범위의 정확한 부동소수 시각은 별도 `playback-manifest.json`에 보존한다.
+
+## 후보 최종 93583 추가 검토
+
+`reloc17-r2-selfmap-93583-47670d14`의 detail-01/02 전체1.5–61.0 SIM초2Hz와
+last10-10hz-01/02/03 전체51.3–61.3초101장을 직접 보았다. 초반 pan으로 문기둥·벽 모서리,
+C·A 경계가 순서대로 지나간다. 중반 C 바닥이 커지고, 문기둥/벽 옆에서 B 바닥 쪽으로
+시야가 바뀐다. 후반과 마지막10초는 B/벽/질감 바닥의 비슷한 시야를 오래 유지하며 작은
+영상 변화가 이어진다. 큰 고속 왕복 회전은 보이지 않는다. 몇 장만 보면 초반 pan과
+후반의 시야 정체를 구분하기 어렵다. 영상으로 위치 정확도·접촉을 판정하지 않았고,
+13.09cm 초기 오등록과 주행 오차는 별도 평가 원장으로 계산했다.
+
+4배속15초 MP4 37,893 bytes, ffprobe 확인. [대표 영상](videos/representative-selfmap93583-servo-wait.mp4),
+[원격 manifest·해시](representative.json). 대표 run의 부모 RUN_META만 milestone/keep=raw로
+보존 지정했으며 raw 안의 원장·manifest는 고치지 않았다. 이 영상도 cap_end 실패이며 완주 성공은 아니다.
