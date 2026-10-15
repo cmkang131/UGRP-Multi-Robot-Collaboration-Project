@@ -413,6 +413,7 @@ raise SystemExit(3 if a.fail else 0)
         samples['zone-s2-unknown-start-v139'] = ['--expected-source-sha', '0'*40, '--seed', '1059']
         samples['zone-s2-active-observation-v140'] = ['--expected-source-sha', '0'*40, '--seed', '1060']
         samples['zone-s2-graduation-v141'] = ['--expected-source-sha', '0'*40, '--seed', '1065']
+        samples['grasp-act-student-pilot'] = ['--plan', str(source), '--protocol', str(source), '--model', str(source), '--actor-python', str(source)]
         samples['v7-exact-speed-benchmark'] = ['--suite', 's2', '--expected-source-sha', '0'*40]
         for name in ('controller-replay-profile', 'saved-physics-profile'):
             samples[name] = ['--kind', 's3', '--raw', str(model), '--adapter', str(model),
