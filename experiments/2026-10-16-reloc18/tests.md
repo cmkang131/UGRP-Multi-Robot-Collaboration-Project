@@ -7,3 +7,8 @@
 관문 거부·특이 행렬의 무변경, 실제 empty/nonempty static handoff 이전의 가중 융합,
 관측 상관 솎기·원본 R 바닥·기본 off·명시적 실행 번들 전달을 확인했다.
 폐루프 성능과 place 성공은 별도 실행 결과로만 판정한다.
+
+운반 경로 연결 후 `reloc18 + reloc14 + reloc13`: **35 passed**, 그리고 실제 mapper receive
+경계 검사를 추가한 `reloc18 + selfmap6 + reloc14`: **43 passed** (10.40초).
+운반 PF의 1.24m/77도 반례 거부, 작은 P의 yaw 영향, 순수 명령 대조의 fix-age·거리/회전
+예산 복원과 전체 자기 RGB/명령 입력 경계를 확인했다. 추가 검사도 전부 비물리다.

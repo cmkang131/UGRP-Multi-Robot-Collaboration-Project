@@ -98,3 +98,21 @@ def test_command_only_wrapper_restores_fix_epochs_as_well_as_pose(monkeypatch):
     before=cp.own.x.copy();cp.observe_own(np.zeros((480,640,3),np.uint8),1,camera='r1/robot_cam')
     np.testing.assert_array_equal(cp.own.x,before)
     assert cp.fixes==0 and cp.last_fix is None and cp.distance_since_fix==1. and cp.turn_since_fix==.2
+
+def test_full_mapper_receive_delivers_calibrated_gate_without_privileged_inputs(monkeypatch):
+    from harness import self_map_integration as sm,selfmap4_geometry as geometry
+    from test_self_map_integration import fixture_mapper,receive
+    template,_=fixture_mapper(monkeypatch);static,_=geometry.static_input()
+    options=sm.Options(self_map_integration=sm.OPTION,bootstrap='command_prior_v1',
+        recovery_profile='selfmap4_recovery_v1',revision_gate='selfmap4_revision_gate_v2',
+        multiframe_registration='selfmap4_multiframe_registration_v1',correction_safety='selfmap6_correction_safety_v1',reloc18_innovation_v1=True)
+    mapper=sm.SelfMapIntegration('r1',options=options,static_map=static);mapper.zones=template.zones
+    mapper.command(dict(t=0.,kind='initial_servo_command',pulses=template.servo))
+    monkeypatch.setattr(mapper.flow,'step',lambda rgb,servo,t,settled,delta,Q:(delta,Q,{}))
+    monkeypatch.setattr(geometry,'observe',lambda *a:dict(camera=[0,0],segments=[],floor_xy=[],features=[]))
+    monkeypatch.setattr(mapper.registration,'step',lambda *a,**kw:None)
+    receive(mapper,1)
+    monkeypatch.setattr(mapper.registration,'step',lambda *a,**kw:(np.array([.05,0,0]),np.eye(3)*1e-6))
+    row=receive(mapper,2)
+    assert row['correction_admission']['dof']==3 and row['correction_admission']['accepted']
+    assert 0<row['pose'][0]<.02
