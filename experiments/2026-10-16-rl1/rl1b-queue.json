@@ -1,10 +1,10 @@
 {
   "schema": "ugrp.rl1b.queue.v1",
-  "status": "GPU_SETUP",
+  "status": "PROBE_SHARED_SCENE",
   "user_authorized": true,
   "enabled": true,
   "ready": false,
-  "rejection_table": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/starts/setup-funnel.json",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/starts-shared/setup-funnel.json",
   "limits": {
     "total_gpu_seconds": 3600,
     "new_transitions": 25000,
@@ -40,5 +40,6 @@
     "playback": 1,
     "host_min_free": 8
   },
-  "runtime_admitted": false
+  "runtime_admitted": false,
+  "shared_scene_seed_v1": 919015
 }
