@@ -30,7 +30,7 @@ Refs #523. 상태: rl1b WAITING_BACKEND, 개선 여부는 아직 미측정이다
 재사용 모듈: `scripts/rl_act_reward.py`, `scripts/rl_act_curriculum.py`, `scripts/rl_act_env.py`.
 현재 env는 backend 주입용 계약 래퍼이며 **실제 MJWarp binding/부분 reset은 미검증**이다.
 기존 미커밋 env/reward 원형은 `outputs/rl1b/imported-originals/`에 보존했다(실행하지 않음).
-짧은 비물리 시험: `tests/test_rl_act_signal.py` 11개 통과; 평가에서 privileged read0,
+짧은 비물리 시험: `tests/test_rl_act_signal.py` 12개 통과; 평가에서 privileged read0,
 GT 변경 시 actor 입력 불변, h2 중복 벌점 방지, 부분 reset의 래퍼 이력 격리를 검사했다.
 이는 실제 GPU reset·actor 출력 바이트·물리 성공 검증이 아니다.
 

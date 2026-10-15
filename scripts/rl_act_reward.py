@@ -71,6 +71,25 @@ def centre_score(xy):
     return -1. if xy is None else 1. - math.hypot(*xy) / math.sqrt(2.)
 
 
+def target_centre_from_own_mask(mask):
+    """Training-only annotation from the selected target's VISIBLE pixels.
+
+    The backend must provide a target-instance mask in the same 640x480 own
+    fisheye coordinates as the actor JPEG (nearest-neighbour mask remap).
+    Never use a projected world centre through occlusion or a TOP mask. No
+    minimum-area threshold is invented: centroid of every actual target pixel.
+    Identity/occlusion are renderer annotations; the mask never reaches actor.
+    """
+    import numpy as np
+    mask = np.asarray(mask)
+    if mask.shape != (480, 640) or mask.dtype != np.bool_:
+        raise ValueError('640x480 boolean own-image target-instance mask required')
+    y, x = np.nonzero(mask)
+    if not len(x):
+        return None
+    return (float(x.mean() * 2. / 639. - 1.), float(y.mean() * 2. / 479. - 1.))
+
+
 def reward_transition(before, after, *, distance_p95, first_done, terminal,
                       heuristics=Heuristics(), gamma=GAMMA):
     """Training only; log all ON/OFF terms on the same transition.
@@ -91,7 +110,8 @@ def reward_transition(before, after, *, distance_p95, first_done, terminal,
     angle_after = -min(abs(after.alignment_rad) / math.pi, 1.)
     counterfactual = {
         'h1_center_v1': centre_score(after.target_xy) / 900.,
-        'h2_false_done_v1': -SUCCESS_REWARD if first_done and not after.stable_lift else 0.,
+        # Credit is checked at issuance, before the subsequent physics step.
+        'h2_false_done_v1': -SUCCESS_REWARD if first_done and not before.stable_lift else 0.,
         'h3_alignment_v1': gamma * (0. if terminal else angle_after) - angle_before,
     }
     terms = {k: v if asdict(heuristics)[k] else 0. for k, v in counterfactual.items()}

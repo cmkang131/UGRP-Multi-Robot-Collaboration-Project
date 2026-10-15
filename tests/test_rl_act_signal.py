@@ -7,7 +7,8 @@ import pytest
 from scripts.rl_act_curriculum import Curriculum, Start
 from scripts.rl_act_env import ActorEnv
 from scripts.rl_act_reward import (GAMMA, Heuristics, StableLift, TrainingTruth,
-                                   potential, reward_transition, shaped_reward)
+                                   potential, reward_transition, shaped_reward,
+                                   target_centre_from_own_mask)
 
 
 def truth(*, distance=1., angle=1., centre=(0., 0.), lifted=False):
@@ -29,7 +30,23 @@ def test_off_matches_base_and_h1_h2_h3_have_distinct_credit():
     out = reward_transition(before, truth(centre=None), heuristics=Heuristics(True), **flags)
     assert out['heuristic_terms']['h1_center_v1'] < 0
     lifted = reward_transition(before, truth(lifted=True), heuristics=Heuristics(True, True), **flags)
-    assert lifted['success_reward'] == 10 and lifted['heuristic_terms']['h2_false_done_v1'] == 0
+    assert lifted['success_reward'] == 10 and lifted['heuristic_terms']['h2_false_done_v1'] == -10
+    confirmed = reward_transition(truth(lifted=True), truth(lifted=True),
+                                 heuristics=Heuristics(True, True), **flags)
+    assert confirmed['heuristic_terms']['h2_false_done_v1'] == 0
+
+
+def test_visible_instance_mask_centre_and_empty_image():
+    import numpy as np
+    mask = np.zeros((480, 640), dtype=bool)
+    assert target_centre_from_own_mask(mask) is None
+    mask[239:241, 319:321] = True
+    assert target_centre_from_own_mask(mask) == pytest.approx((0., 0.))
+    mask[:] = False
+    mask[0, 639] = True
+    assert target_centre_from_own_mask(mask) == (1., -1.)
+    with pytest.raises(ValueError):
+        target_centre_from_own_mask(np.zeros((480, 640), dtype='uint8'))
 
 
 def test_potential_cycle_telescopes_including_terminal():
