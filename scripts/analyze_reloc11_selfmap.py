@@ -56,6 +56,8 @@ def analyze(folder):
         rejection_reasons=dict(rejections),visual_reason=dict(visual),pf_error=error_stats(errors),pf_resolved_error=error_stats(resolved_errors),registered_error=error_stats(registered_errors),
         timing=obj(raw/'timing.json'),retrieval='text + selected own RGB; all RGB retained on GCP persistent disk',
         text_sha256={str(p.relative_to(folder)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(folder.rglob('*')) if p.is_file() and p.suffix not in ('.jpg','.png')})
+    first_rows=[r for r in trace if trace and r['t']-trace[0]['t']<=30.+1e-7]
+    out['first30_counts']=dict(frame_N=len(first_rows),features=stats([r['features'] for r in first_rows]),matches=stats([r['matches'] for r in first_rows]),inliers=stats([r['inliers'] for r in first_rows]),registered_N=sum(bool(r.get('static_registration',{}).get('registered')) for r in first_rows))
     return out
 
 
