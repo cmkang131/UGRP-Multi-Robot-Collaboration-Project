@@ -3,7 +3,7 @@ import json
 from types import SimpleNamespace
 import numpy as np
 import pytest
-from scripts.simalt_compiled_compat import export_reference, apply_reference
+from scripts.simalt_compiled_compat import export_reference, apply_reference, export_geometry, apply_geometry
 
 
 def model():
@@ -32,3 +32,25 @@ def test_exact_compiled_copy_and_fail_closed(tmp_path):
     xml.write_text('different XML')
     with pytest.raises(ValueError, match='XML'):
         apply_reference(model(), xml, path)
+
+
+def test_geometry_transfer_checks_layout_before_any_mutation(tmp_path):
+    xml=tmp_path/'scene.xml';xml.write_text('fixed XML')
+    def geometry():
+        return SimpleNamespace(ngeom=1, geom=lambda i: SimpleNamespace(name='g'),
+            geom_type=np.array([7],dtype=np.int32), geom_quat=np.ones((1,4)),
+            mesh_vert=np.ones((2,3)), bvh_aabb=np.ones((2,6)))
+    source=geometry();path=tmp_path/'geometry.npz'
+    export_geometry(source,xml,'3.12.0',path)
+    target=geometry();target.mesh_vert[:]=2
+    target.bvh_aabb=np.ones((3,6))
+    with pytest.raises(ValueError,match='layout mismatch'):
+        apply_geometry(target,xml,path)
+    assert np.all(target.mesh_vert==2)
+    target=geometry();target.mesh_vert[:]=2
+    record=apply_geometry(target,xml,path)
+    assert np.array_equal(target.mesh_vert,source.mesh_vert)
+    assert record['changes'][0]['array']=='mesh_vert'
+    target.geom_type[0]=6
+    with pytest.raises(ValueError,match='structural'):
+        apply_geometry(target,xml,path)
