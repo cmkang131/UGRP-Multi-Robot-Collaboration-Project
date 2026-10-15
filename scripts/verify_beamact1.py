@@ -12,7 +12,7 @@ import numpy as np
 
 from harness.grasp_act_data import fit_stats, sha256, write_json
 from scripts.beamact1_runtime import require_gcp2
-from scripts.prepare_beamact1 import ARCHIVE_SHA, split_seeds
+from scripts.prepare_beamact1 import split_seeds
 
 
 def main():
@@ -60,7 +60,7 @@ def main():
         environment={k:importlib.metadata.version(k) for k in ('numpy','pillow','mujoco')},
         python=platform.python_version(),
         verifier_source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
-        analysis_source_sha=managed['source']['commit'] if 'commit' in managed['source'] else managed['source'],
+        analysis_source_sha=managed['source']['source_sha'],
         analysis_managed_record=str(record), managed_runtime_s=managed['runtime_s'],
         source_alternates=(a.analysis_source/'.git/objects/info/alternates').read_text().strip(),
         raw_root=str(a.root), raw_archive_retained=True, independent_full_backup=False,
