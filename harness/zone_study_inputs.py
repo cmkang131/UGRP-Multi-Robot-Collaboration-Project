@@ -54,6 +54,7 @@ REQUIRED_ROBOTS = {kind: len(roles) for kind, roles in FORMATIONS.items()}
 ITEM_KINDS = tuple(FORMATIONS)
 # v6 task inventory only; the legacy catalogue stays available for replay.
 V6_ITEM_KINDS = ('cyan', 'red', 'green', 'yellow', 'long_beam', 'heavy_crate')
+V7_ITEM_KINDS = ('cyan', 'red', 'green', 'yellow', 'long_beam')
 IDENTITY = ('kind_fungible', 'specific_item')
 # Development start values, identical in every condition (fairness): the same
 # observation history, the same command history and the same inbox depth.
@@ -132,6 +133,10 @@ def validate_scenario(scenario: Mapping, *, map_bundle: Mapping | None = None) -
         excluded = sorted({o['kind'] for o in normalized} - set(V6_ITEM_KINDS))
         if excluded:
             raise ContractViolation(f'v6 excludes item kinds: {excluded}')
+    if scenario_id.endswith('_v7'):
+        excluded = sorted({o['kind'] for o in normalized} - set(V7_ITEM_KINDS))
+        if excluded:
+            raise ContractViolation(f'v7 excludes item kinds: {excluded}')
     value = {'schema': SCENARIO_SCHEMA, 'scenario_id': scenario_id, 'map_id': map_id,
              'landmark_detail': scenario.get('landmark_detail', 'full'), 'seeds': [int(s) for s in seeds],
              'orders': normalized, 'eval': eval_section(scenario)}
