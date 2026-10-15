@@ -3,6 +3,7 @@ import argparse
 from copy import deepcopy
 import json
 import math
+from pathlib import Path
 import numpy as np
 import pytest
 
@@ -49,6 +50,26 @@ def test_grid_finds_detour_outside_all_sixteen_polyline_families():
     assert nav.last_path_audit['min_gap_m']>=.005
     assert nav.last_path_audit['path_length_m']>1.
     json.dumps(t.search23_log,allow_nan=False)
+
+
+def test_multi_goal_does_not_spend_the_step_on_an_unreachable_first_endpoint():
+    t,w=maze();w['walls']=[(.5,0.,.04,2.,0.)]
+    nav=BodyNavigation(t,w)
+    t.search20_budget=PlanningBudget(max_checks=100,max_s=1.)
+    path=nav.plan_paths((0.,0.),[(1.,0.),(-.4,.4)])
+    assert path[-1]==(-.4,.4) and not t.search20_budget.exhausted
+
+
+@pytest.mark.parametrize('episode',['000','002'])
+def test_frozen_budget_starvation_world_admits_a_fully_checked_stance(episode):
+    from sim.grasp_act_search19 import body_fallback
+    snapshot=json.loads((Path(__file__).parent/'fixtures'/f'grasp_act_search23_{episode}.json').read_text())
+    t=teacher();t.sink.pwm.update({int(k):v for k,v in snapshot['pwm'].items()})
+    t.search20_budget=PlanningBudget(max_checks=98304,max_s=10.)
+    selected,rows=body_fallback(t,snapshot['world'],snapshot['world']['t'])
+    assert selected is not None and any(r.get('body_sweep') and r.get('arm_sweep') for r in rows)
+    assert selected['path'][0]==tuple(snapshot['world']['robots']['r1']['pose'][:2])
+    assert selected['path'][-1]==selected['goal']
 
 
 def test_batched_geometry_matches_exact_existing_footprint():

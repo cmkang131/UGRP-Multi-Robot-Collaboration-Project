@@ -167,7 +167,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT):
         raise RuntimeError('committed source required')
     write(out/'RUN_META.json',{'class':'milestone' if record_training else 'dev','pr':484,'branch':'claude/e2e18-grasp-rootcause','sha':sha,'batch':plan['batch']})
-    scene=make_scene(plan);world=None;streams=[];start=time.monotonic()
+    scene=make_scene(plan);world=None;streams=[];teachers={};start=time.monotonic()
     timings={k:0. for k in ('physics','rgb','evaluation','teacher','io')}
     from harness.grasp_act_input_audit import AuditedTeacherInput,new_input_audit
     report={'status':'running','source_sha':sha,'teacher_success_n':0,'teacher_N':len(plan['roles']),'execution_host':execution_host,
@@ -197,7 +197,7 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         place(world,[CargoInstance('beam_1','long_beam',tuple(plan['beam_pose']))])
         (out/'scene.xml').write_text(world.scene_xml);write(out/'scene.json',scene.manifest)
         report['observation_sampling']={'rgb_size':[640,480] if record_training else None,'rgb_hz':10 if record_training else 0,
-            'review_tile_size':[320,240],'review_cameras':'four authored static top views','review_hz':1,'control_hz':10,
+            'review_tile_size':[320,240],'review_cameras':('own cameras only; top disabled' if search23!='off' else 'four authored static top views'),'review_hz':1,'control_hz':10,
             'aspect_ratio_unchanged':True,'camera_fov_and_pose_unchanged':True}
         ports={rid:(DutyActPort if strict else ContinuousActPort)(world,rid,allow_reverse=True,allow_mecanum=True) for rid in plan['roles']}
         # Setup-only pan target: no model/camera changes. All later motion is issued commands.
@@ -388,6 +388,8 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
         # Pair whole-beam clearance is deliberately a separate, not-yet-evaluated metric.
         write(out/'result.json',report)
     except BaseException as error:
+        if search23!='off':
+            report['teachers']={rid:t.diagnostic() for rid,t in teachers.items()}
         report.update(status='HOST_ERROR' if not isinstance(error,KeyboardInterrupt) else 'interrupted',error_type=type(error).__name__,error=str(error),wall_s=time.monotonic()-start)
         write(out/'result.json',report);raise
     finally:

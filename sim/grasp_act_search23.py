@@ -16,7 +16,8 @@ from sim.grasp_act_search20 import PlanningBudgetExceeded
 
 MODES = {'search23': 'search23_v1'}
 GRID_M = .025
-HEURISTIC_WEIGHT = 1.2
+HEURISTIC_WEIGHT = 2.0
+COST_MULTIPLIER = 1.0  # Smac 2D's documented speed-oriented setting
 PEER_TTL_S = 2.0
 PEER_SIGMA_RATE_M_S = .05  # design assumption, not fitted to evaluation truth
 
@@ -66,6 +67,8 @@ class BodyNavigation(Previous):
         super().__init__(t,world,admission=admission)
         self.nodes = {}; self.node_blockers = {}; self.edges = {}; self.edge_gaps = {}
         self.edge_blockers = {}; self.last_path_audit = None
+        self.endpoint_only=False;self.endpoints=[];self.preplanned={};self.candidate_rows=[]
+        self.connector_cache={}
         self.blocked = {}; self.expanded = 0
         for detail in self.details:
             m=self.world_observations.get(detail['id'])
@@ -137,16 +140,37 @@ class BodyNavigation(Previous):
         self.last_segment_gap=float((slack+np.array([d['margin_m'] for d in self.audit_details])).min())
         return bool(self.fresh_target and (slack>=0).all())
 
+    def connector_sample(self,prior,before,xy,yaw):
+        """Exact snapshot cache of the unchanged view and issued-arm checks."""
+        from sim.grasp_act_pregrasp import band_view,issued_sweep_reason
+        from sim.grasp_act_teacher import wrap
+        key=(tuple(prior),tuple(sorted(before.items())),tuple(xy),yaw)
+        if key not in self.connector_cache:
+            count,after=band_view(self.world,self.rid,self.end,(*xy,yaw),before)
+            reason=None
+            if count>=5:
+                c,s=math.cos(prior[2]),math.sin(prior[2]);dx,dy=xy[0]-prior[0],xy[1]-prior[1]
+                da=wrap(yaw-prior[2])
+                reason=issued_sweep_reason(self.world,self.rid,prior,before,after,
+                    (c*dx+s*dy,-s*dx+c*dy,da))
+            self.connector_cache[key]=(count,after,reason)
+        return self.connector_cache[key]
+
     def path_for_goal(self,start,goal,discs,rects,radius):
         # Every replan searches the current inflated map. No static route family.
+        if tuple(goal) in self.preplanned:return self.preplanned[tuple(goal)]
         return self.plan_path(start,goal,self.bounds,discs,rects=rects,radius=radius)
 
     def plan_path(self,start,goal,bounds,discs,*,rects=(),radius=.13):
+        return self.plan_paths(start,[tuple(goal)])
+
+    def plan_paths(self,start,goals):
         self.blocked={};self.expanded=0;path=None;prefix=[tuple(start)];status='no_path'
         self.best_prefix=prefix
         try:
-            if self.free(start,(),(),0.,heading=self.pose[2]) and self.free(goal,(),(),0.):
-                path,prefix=self.grid_path(tuple(start),tuple(goal))
+            if self.free(start,(),(),0.,heading=self.pose[2]):
+                goals=[tuple(g) for g in goals if self.free(g,(),(),0.)]
+                if goals:path,prefix=self.grid_path(tuple(start),goals)
             if path:status='found'
             return path
         except PlanningBudgetExceeded:
@@ -169,10 +193,11 @@ class BodyNavigation(Previous):
                     if d['id'] in self.world_observations:
                         self.teacher.search22_targets[d['id']]=self.world_observations[d['id']]
             self.teacher.search23_log.append({'t':self.world['t'],'event':'grid_plan',
-                'start':list(start),'goal':list(goal),**self.last_path_audit})
+                'start':list(start),'goals':[list(g) for g in goals],**self.last_path_audit})
 
-    def grid_path(self,start,goal):
+    def grid_path(self,start,goals):
         x0,x1,y0,y1=self.bounds;step=GRID_M
+        def heuristic(p):return min(math.dist(p,g) for g in goals)
         def point(k):return (x0+k[0]*step,y0+k[1]*step)
         nx,ny=math.floor((x1-x0)/step),math.floor((y1-y0)/step)
         def inside(k):return 0<=k[0]<=nx and 0<=k[1]<=ny
@@ -181,7 +206,7 @@ class BodyNavigation(Previous):
             if missing:
                 _,slack=self.measure([point(k) for k in missing])
                 for k,s in zip(missing,slack):
-                    self.nodes[k]=(bool((s>=0).all()),1.+2.*math.exp(-10.*max(0.,float(s.min()))))
+                    self.nodes[k]=(bool((s>=0).all()),1.+COST_MULTIPLIER*math.exp(-10.*max(0.,float(s.min()))))
                     # Exact point audits are evaluated only for rejected nodes.
                     self.node_blockers[k]=[d for d in self.last_blockers
                         if d['sample_pose'][:2]==list(point(k))]
@@ -195,31 +220,90 @@ class BodyNavigation(Previous):
                 self.edge_blockers[key]=list(self.last_blockers)
             for d in self.edge_blockers[key]:self.blocked.setdefault(d['id'],d)
             return self.edges[key]
-        if edge(start,goal):return [start,goal],[start,goal]
-        cell=(round((start[0]-x0)/step),round((start[1]-y0)/step))
-        seeds=[(cell[0]+i,cell[1]+j) for i in (-1,0,1) for j in (-1,0,1)]
-        nodes(seeds);queue=[];cost={};parent={};best=None
-        def push(k,g):heapq.heappush(queue,(g+HEURISTIC_WEIGHT*math.dist(point(k),goal),g,k))
+        for goal in sorted(goals,key=lambda g:math.dist(start,g)):
+            if edge(start,goal):return [start,goal],[start,goal]
+        # Reverse multi-source A*: escape the small stance region first,
+        # instead of filling the entire room before entering its narrow mouth.
+        queue=[];cost={};parent={};terminal={};best=None
+        def push(k,g):heapq.heappush(queue,(g+HEURISTIC_WEIGHT*math.dist(point(k),start),g,k))
         def route(k):
             result=[point(k)]
             while parent[k] is not None:k=parent[k];result.append(point(k))
-            return [start,*reversed(result)]
-        for k in seeds:
-            if k in self.nodes and self.nodes[k][0] and edge(start,point(k)):
-                cost[k]=math.dist(start,point(k))*self.nodes[k][1];parent[k]=None;push(k,cost[k])
+            return [start,*result,terminal[k]]
+        for goal in goals:
+            cell=(round((goal[0]-x0)/step),round((goal[1]-y0)/step))
+            seeds=[(cell[0]+i,cell[1]+j) for i in (-1,0,1) for j in (-1,0,1)]
+            nodes(seeds)
+            for k in seeds:
+                if k in self.nodes and self.nodes[k][0] and edge(point(k),goal):
+                    g=math.dist(goal,point(k))*self.nodes[k][1]
+                    if g>=cost.get(k,math.inf):continue
+                    cost[k]=g;parent[k]=None;terminal[k]=goal;push(k,g)
         moves=((-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1))
         expanded_cost={}
         while queue:
             self.check_budget();_,g,k=heapq.heappop(queue)
             if g!=cost[k] or g>=expanded_cost.get(k,math.inf):continue
             expanded_cost[k]=g;self.expanded+=1;p=point(k)
-            if best is None or math.dist(p,goal)<math.dist(point(best),goal):
-                best=k;self.best_prefix=route(k)
-            if math.dist(p,goal)<=step*1.5 and edge(p,goal):return [*route(k),goal],route(k)
+            if best is None or math.dist(p,start)<math.dist(point(best),start):best=k
+            # A reverse-search prefix runs from a stance toward the actual start.
+            self.best_prefix=list(reversed(route(best)[1:]))
+            if math.dist(p,start)<=step*1.5 and edge(start,p):return route(k),self.best_prefix
             adjacent=[(k[0]+i,k[1]+j) for i,j in moves];nodes(adjacent)
             for n in adjacent:
                 if n not in self.nodes or not self.nodes[n][0]:continue
                 q=point(n);ng=g+math.dist(p,q)*(self.nodes[k][1]+self.nodes[n][1])/2
-                if ng>=cost.get(n,math.inf) or not edge(p,q):continue
-                cost[n]=ng;parent[n]=k;push(n,ng)
-        return None,route(best) if best is not None else [start]
+                if ng>=cost.get(n,math.inf) or not edge(q,p):continue
+                cost[n]=ng;parent[n]=k;terminal[n]=terminal[k];push(n,ng)
+        return None,self.best_prefix
+
+
+
+def fallback(t,world,now,choices):
+    """One multi-goal search avoids starving later admissible stance endpoints."""
+    from sim.grasp_act_pregrasp import select_sampled_goal
+    from sim.grasp_act_search22 import record_candidates
+    nav=BodyNavigation(t,world,admission=True);nav.endpoint_only=True
+    t.search22_targets={};rows=[]
+    try:
+        _,rows=select_sampled_goal(world,t.rid,t.end,t.bounds,t.folded_ready,
+            t.sink.pwm,choices=choices,navigation=nav)
+        nav.endpoint_only=False
+        by_goal={tuple(e['goal']):e for e in nav.endpoints}
+        while by_goal:
+            path=nav.plan_paths(world['robots'][t.rid]['pose'][:2],list(by_goal))
+            if path is None:
+                for row in rows:
+                    if row['reason']=='endpoint_feasible':row.update(reason='no_path',path_audit=nav.last_path_audit)
+                return None,rows
+            endpoint=by_goal.pop(tuple(path[-1]));nav.preplanned[tuple(path[-1])]=path
+            selected,checked=select_sampled_goal(world,t.rid,t.end,t.bounds,t.folded_ready,
+                t.sink.pwm,choices=[endpoint['choice']],navigation=nav)
+            row=next(r for r in rows if r['offset_deg']==math.degrees(endpoint['choice'][0])
+                and r['distance_m']==endpoint['choice'][1])
+            row.update(checked[0])
+            if selected is not None:
+                t.search19_body_active=True;t.sampled_stance=True
+                return selected,rows
+            failure=row.get('connector_visibility_failure')
+            if failure:
+                heading=endpoint['heading'];goal=endpoint['goal']
+                retreat=(goal[0]-.06*math.cos(heading),goal[1]-.06*math.sin(heading))
+                route=[tuple(world['robots'][t.rid]['pose'][:2]),*path,retreat]
+                i=failure['segment_index'];a,b=route[i:i+2]
+                t.search23_log.append({'t':now,'event':'connector_visibility_replan',
+                    'edge':[a,b],**failure})
+                # Keep the unchanged >=5-probe rule: reject this failed route
+                # edge and search again for the SAME endpoint as well as others.
+                if a!=b and i<len(route)-2:
+                    nav.edges[(a,b)]=False
+                    nav.edges[(b,a)]=False
+                    by_goal[tuple(goal)]=endpoint
+        return None,rows
+    finally:
+        # Partial endpoint trials are explicitly labelled on a deadline.
+        if not rows:rows=nav.candidate_rows
+        if t.search20_budget is not None and t.search20_budget.exhausted:
+            for row in rows:
+                if row.get('reason') in (None,'endpoint_feasible'):row['reason']='planning_budget'
+        record_candidates(t,world,rows,now)

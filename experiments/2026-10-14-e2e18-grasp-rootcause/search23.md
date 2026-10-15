@@ -26,7 +26,7 @@
 
 ## 구현
 
-격자 25mm, 8이웃 cost-aware weighted A*(h 가중1.2), 실제 시작·정확한 목표 연결과 모든 edge를 2mm/0.5도 이하로 검사한다. 몸체는 실제 185×159.9mm 방향성 footprint의 Minkowski 팽창이며 search22의 장애물별 기하 패딩+k·sigma를 보존한다. 원형 circumscribed footprint로 좁은 통로를 새로 막지 않는다. 팽창 경계 밖 지수 비용(exp(-10·slack), 승수2)을 쓰고 검색공간은 기존 전체 bounds다. 시한은 기존 틱3초/98304검사를 유지하고 만료를 planning_budget으로 별도 기록한다. 시간 제한 안에 임의 연속공간·임의 yaw 해를 보장하지 않는다. 캐시는 현재 nav 관측 snapshot 내에서만 재사용한다.
+격자 25mm, 8이웃 cost-aware weighted A*(최종 후보 h 가중2.0), 실제 시작·정확한 목표 연결과 모든 edge를 2mm/0.5도 이하로 검사한다. 몸체는 실제 185×159.9mm 방향성 footprint의 Minkowski 팽창이며 search22의 장애물별 기하 패딩+k·sigma를 보존한다. 원형 circumscribed footprint로 좁은 통로를 새로 막지 않는다. 팽창 경계 밖 지수 비용(exp(-10·slack), 승수1; Smac 2D의 속도 지향 설정)을 쓰고 검색공간은 기존 전체 bounds다. 시한은 기존 틱3초/98304검사를 유지하고 만료를 planning_budget으로 별도 기록한다. 시간 제한 안에 임의 연속공간·임의 yaw 해를 보장하지 않는다. 캐시는 현재 nav 관측 snapshot 내에서만 재사용한다.
 
 상대 로봇은 현재 보이면 최신 관측, 안 보이면 sigma=sqrt(search22_sigma²+(0.05m/s·age)²), 관측 age>2 SIM초면 만료한다. 증가율·TTL은 설계 가정이며 실제 안전 보증이 아니다. 오래된 FreeSpace ghost·재관측 hint/pin도 만료해 재삽입을 막는다. 새 peer 정보나 구조화된 통신은 추가하지 않는다.
 
@@ -35,3 +35,24 @@ no_path는 검색 frontier에서 거부한 장애물 이름·gap·요구 여유�
 ## 검증과 라운드
 
 관련 오프라인72통과(물리·렌더 없음). 실제 GCP 결과와 원본 해시는 아래에 추가한다.
+
+### 라운드1 ba9ab93b: 2/6, 감독 중단4
+
+|사례|기억/현재/IK/각도/no_path 원장|계획 예산 소진 틱(두 로봇 합)|상태|
+|---|---|---:|---|
+|episode-000|미저장(unknown)|22|interrupted|
+|episode-001|미저장(unknown)|22|interrupted|
+|episode-002|미저장(unknown)|16|interrupted|
+|episode-003|미저장(unknown)|13|interrupted|
+|episode-004|0/0/0/0/0|0|complete|
+|episode-005|0/0/0/0/0|0|complete|
+
+중단4회의 후보 진단은 기존 예외 writer가 최종 teacher diagnostics를 저장하지 않아 미회수다. 0으로 채우지 않는다. 실제 발행 원장의 planning_compute를 세었고, 가장 큰 확인 원인은 **연결 후보 하나의 A*가 틱3초를 소진해 다음 자세 후보를 검사하지 못하는 계획 starvation**이다. 두8311709 마지막10틱은10/10 예산 소진, 315709도7/10이었다. 소유 batch PID597197을 확인해 SIGINT를 보냈고, 완료된 성공2회는 보존했다. 전체 VM 원본 SHA256SUMS와 로컬191파일/선택자기프레임72장 검증 완료. 소유6슬롯 해제·임대 제거.
+
+### 라운드2 제출 전 수정·분석
+
+endpoint의 IK·각도·목표/후퇴·팔 검사를 먼저 모두 수행한 뒤 그 목표들을 함께 둔 **역방향 multi-source weighted A***를 한 번 수행한다. 좁은 자세 구역에서 먼저 빠져나와 전체 방을 탐색하다 시한을 쓰는 문제를 줄인다. h 가중2, 팽창 비용 승수1(공식 Smac 2D의 속도 지향 설정)을 쓰며 기하/σ 여유·승인 조건은 그대로다. 동일 snapshot의 body edge·connector view/issued arm 검사만 정확한 입력 키로 재사용한다. 가시성 실패 edge는 그 snapshot에서 제외하고 같은 목표에도 다시 연결하며 문턱5는 유지한다. 이 edge 제외는 보수적이며 PWM까지 포함한 연속 상태공간 완전성을 주장하지 않는다.
+
+중단 원본의 자기 visible_measurements와 실제 발행 명령만 재구성한 네 snapshot에서 완전 stance 승인을 확인했다(분석용 재생, 새 물리 궤적 아님). 첫 구현이 반복3초를 쓴 반면 역방향 후보는 1.38–2.20초였다(측정 시점 수치, 호스트 부하로 달라질 수 있음). 원본−15도만의 문제가 아니라 동일 연결 지점에서 0/−10/−15도 모두 probe2/5 또는4/5로 거부될 수 있음을 확인했다. 문턱은 바꾸지 않았다. 두 snapshot을 허용 입력만의 회귀 fixture로 저장했다. 예외/감독 중단에도 후보 diagnostics를 보존하도록 writer를 보완했다.
+
+라운드1 중단4회의 자기 프레임 각12장 총48장 직접 확인: 두8311709는 같은 자기 시야에서 진전 없이 멈추고 r2는 청록 끝 앞 대기, 315709 두 경우도 r1 접근 중 r2 대기였다. top 영상은 생성·열람하지 않았다.

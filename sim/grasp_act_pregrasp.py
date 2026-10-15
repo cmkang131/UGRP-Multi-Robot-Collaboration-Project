@@ -182,6 +182,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
     if choices is None:choices = [(math.radians(a), d) for a in ANGLES_DEG for _, d in AXIAL_CHOICES]
     if current is not None:choices = [current]  # Revalidate the selected stance without oscillating.
     checked = []; feasible = []
+    if hasattr(navigation,'candidate_rows'):navigation.candidate_rows=checked
     for choice in choices:
         if navigation is not None and hasattr(navigation, 'check_budget'):navigation.check_budget()
         pose, point, heading, goal = geometry(world, rid, end, choice)
@@ -201,7 +202,8 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         retreat = (goal[0]-.06*math.cos(heading), goal[1]-.06*math.sin(heading))
         if not (x0+radius <= retreat[0] <= x1-radius and y0+radius <= retreat[1] <= y1-radius) or not segment_free(goal, retreat, discs, rects, radius):
             row['reason'] = 'blocked_retreat';continue
-        path = (navigation.path_for_goal(start,goal,discs,rects,radius)
+        endpoint_only=getattr(navigation,'endpoint_only',False)
+        path = ([tuple(start)] if endpoint_only else navigation.path_for_goal(start,goal,discs,rects,radius)
                 if navigation is not None and hasattr(navigation,'path_for_goal') else
                 [tuple(start), goal] if segment_free(start, goal, discs, rects, radius) else
                 plan_path(start, goal, bounds, discs, rects=rects, radius=radius))
@@ -221,6 +223,10 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
             xyz, radii, allowed = swept_cloud(tuple(sorted(view.items())), choice[1], point[2])
         reason = collision_reason(world, rid, base, xyz, radii, allowed)
         if reason:row['reason'] = reason;continue
+        if endpoint_only:
+            row['reason']='endpoint_feasible'
+            navigation.endpoints.append({'choice':choice,'goal':goal,'heading':heading})
+            continue
         # Connect using the same finite compact-view family. Every yaw/PWM
         # transition is swept, including the initial in-place turn and retreat.
         route = [*points, retreat]
@@ -232,7 +238,9 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
                 if navigation is not None and hasattr(navigation, 'check_budget'):navigation.check_budget()
                 xy = tuple(a[k]+(b[k]-a[k])*i/n for k in range(2))
                 yaw = math.atan2(point[1]-xy[1], point[0]-xy[0])
-                count, after = band_view(world, rid, end, (*xy,yaw), before)
+                if hasattr(navigation,'connector_sample'):
+                    count,after,cached_reason=navigation.connector_sample(prior,before,xy,yaw)
+                else:count,after=band_view(world, rid, end, (*xy,yaw), before)
                 if count < 5:
                     if navigation is not None and hasattr(navigation,'last_path_audit'):
                         row['connector_visibility_failure']={'visible_probes':count,'required':5,
@@ -242,7 +250,8 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
                 co, si = math.cos(prior[2]), math.sin(prior[2])
                 dx, dy = xy[0]-prior[0], xy[1]-prior[1]
                 delta = (co*dx+si*dy, -si*dx+co*dy, wrap(yaw-prior[2]))
-                reason = issued_sweep_reason(world,rid,prior,before,after,delta)
+                reason = (cached_reason if hasattr(navigation,'connector_sample') else
+                          issued_sweep_reason(world,rid,prior,before,after,delta))
                 if reason:break
                 before=after;prior=(*xy,yaw)
             if reason:break

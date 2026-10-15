@@ -105,6 +105,8 @@ class BodyNavigation(Search20Navigation):
 
 def fallback(t,world,now,choices):
     """Stop at the first fully checked stance; no partial plan on budget expiry."""
+    from sim.grasp_act_search23 import enabled as search23, fallback as search23_fallback
+    if search23(t):return search23_fallback(t,world,now,choices)
     from sim.grasp_act_pregrasp import select_sampled_goal
     from sim.grasp_act_search22 import enabled as search22, BodyNavigation as Search22Navigation
     nav=(Search22Navigation if search22(t) else BodyNavigation)(t,world,admission=True)
