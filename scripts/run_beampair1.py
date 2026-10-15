@@ -156,6 +156,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
     scenario=json.loads(scenario_bytes)
     if any(p['kind'] in ('heavy_crate','tile','can') for p in scenario['eval']['setup']['placements']):
         raise ValueError('v7 cargo inventory required')
+    from sim.gatesv5_scene import scene_bindings
+    scene_binding=scene_bindings(plan.get('scene_profile','off'))
     guard=HeldCargoGuard();teachers={};models={};visible={};audit={};probe_rows=[]
     selected=profiles(candidate)
     ray_rows=[];current_rays={}
@@ -167,6 +169,12 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         from sim import grasp_act_scene as scene_module
         from sim.zone_scenario_scene import ScenarioFinalV3Scene
         from sim.render_profile import install
+        from sim import masterpi_drive_friction_v7 as drive_module
+        original_build=drive_module.build_world
+        def build_world(*args,**kwargs):
+            world=original_build(*args,**kwargs)
+            if scene_binding is not None:scene_binding[1](world,out)
+            return world
         from sim.final_pair_highpose_nearclip import wrap
         from sim import masterpi_camera_review_v3 as camera
         from sim.s2_servo_stiffness import transform_xml as stiffness
@@ -192,7 +200,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             # Standard Scene API accepts an authored scenario dictionary; this
             # avoids modifying the dependency's v4/v6 registry. V7 only changes
             # cargo inventory; beam geometry/mass/contact remain byte-identical.
-            scene=wrap(install(ScenarioFinalV3Scene.from_scenario(scenario,p['seed']),'floor_light_v1'))
+            base_scene=ScenarioFinalV3Scene.from_scenario(scenario,p['seed'])
+            scene=wrap(scene_binding[0](base_scene) if scene_binding is not None else install(base_scene,'floor_light_v1'))
             scene.config['setup_only']['spawns']=deepcopy(p['spawns'])
             original=scene.robot_transform
             def transform(xml,**kw):
@@ -291,6 +300,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         world_module.VisibleWorld=World;teacher_module.VisibleOnlyGraspTeacher=Teacher
         runner.apply=apply;audit_module.new_input_audit=new_audit
         runner.snapshot=snapshot
+        drive_module.build_world=build_world
         report=None
         try:
             with recording_json(runner):
@@ -300,6 +310,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             world_module.VisibleWorld=original_world;teacher_module.VisibleOnlyGraspTeacher=original_teacher
             runner.apply=original_apply;audit_module.new_input_audit=original_audit
             runner.snapshot=original_snapshot
+            drive_module.build_world=original_build
             candidate_record_module.record_candidates=original_record_candidates
             # Separate adapter result, leaving the dependency's raw result and
             # manifest intact. Both full source SHAs are required for identity.
