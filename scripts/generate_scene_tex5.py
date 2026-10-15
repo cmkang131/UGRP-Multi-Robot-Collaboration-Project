@@ -7,7 +7,7 @@ from sim import natural_scene_texture as v1
 from sim.scene_contrast_v5 import PROFILES
 
 def main():
-    out=Path('sim/assets/scene_contrast_v5');out.mkdir(parents=True,exist_ok=False)
+    out=Path('sim/assets/scene_contrast_v5');out.mkdir(parents=True,exist_ok=True)
     record=v1.manifest();entries={}
     for name,spec in PROFILES.items():
         if not spec.get('pattern'):continue

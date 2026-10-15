@@ -19,7 +19,7 @@ class ColourBoundaryState:
         self.profile = resolve(profile)
         if (calibration.get('scene_profile') != profile or
                 calibration.get('scene_sha256') != profile_record(profile)['sha256'] or
-                calibration.get('schema') != 'ugrp.scene_colour_calibration.v1'):
+                calibration.get('schema') != 'ugrp.scene_colour_calibration.v2'):
             raise ValueError('SCENE_COLOUR_CALIBRATION_MISMATCH')
         self.calibration = copy.deepcopy(calibration)
         self.last_result = None
@@ -62,8 +62,6 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
     reasons = []
     for j, u in enumerate(cols):
         sl = slice(max(0, u-half), min(und_bgr.shape[1], u+half+1))
-        if robot[sl].any():
-            reasons.append('ROBOT_OR_ORANGE_OCCLUSION'); continue
         # Median over the existing five-pixel strip = majority vote, no new
         # fitted fraction. Use the inherited three-row support window across
         # antialias/JPEG mixtures; unknown objects never become a wall class.
@@ -74,7 +72,7 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
         found = False
         for v in y[::-1]:
             above, below = v-window, v+1+window
-            if above < 0 or below >= len(s) or not w[above] or not f[below]: continue
+            if above < 0 or below >= len(s) or not np.median(w[max(0,v-int(p['band_px'])):above+1]) or not f[below]: continue
             # Linear interpolation of the scalar colour crossing. This is a
             # measured subpixel edge, not a snapped GT boundary or line fill.
             # Brightness is deliberately separated in scene-v5: choose the
@@ -102,6 +100,27 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
             if h is not None: scan['h_lb' if vt <= p['top_edge_px'] else 'h'][j,0] = h
             found = True; break
         reasons.append('COLOUR_TRANSITION' if found else 'NO_VISIBLE_WALL_FLOOR_TRANSITION')
+    # Deterministic RANSAC, seeded ONLY by columns without orange. Observed
+    # transitions through a robot's open gaps may join a background wall line;
+    # a robot silhouette cannot seed its own wall. No missing column is filled.
+    # Tolerance = v1/native original boundary-error p95 (all encodings:1.5px),
+    # frozen raw manifest/source in the calibration, not a new admission slack.
+    tol=float(state.calibration['line_residual_px_p95'])
+    primary=np.isfinite(scan['vb'][:,0])
+    seed=primary & np.array([not robot[max(0,u-half):min(len(robot),u+half+1)].any() for u in cols])
+    remaining=primary.copy();supported_line=np.zeros(n,bool);checks=0
+    while np.count_nonzero(seed & remaining)>=2:
+        ids=np.flatnonzero(seed & remaining);best=None
+        for ia,i in enumerate(ids[:-1]):
+            for j in ids[ia+1:]:
+                slope=(scan['vb'][j,0]-scan['vb'][i,0])/(cols[j]-cols[i])
+                residual=abs(scan['vb'][:,0]-(scan['vb'][i,0]+slope*(cols-cols[i])))
+                keep=remaining & (residual<=tol);checks+=1
+                if best is None or keep.sum()>best.sum():best=keep
+        if best is None or best.sum()<p['min_run_columns']:break
+        supported_line|=best;remaining[best]=False
+    for j in np.flatnonzero(primary & ~supported_line):reasons[j]='NO_UNOCCLUDED_LINE_CONSENSUS'
+    for arr in scan.values():arr[~supported_line]=np.nan
     # Local support only; never fill occluded columns or extrapolate a line.
     segments = hfw.link_segments(scan, p)
     supported = np.zeros(n, bool)
@@ -109,6 +128,6 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
     for j in np.flatnonzero(np.isfinite(scan['vb'][:,0]) & ~supported): reasons[j] = 'NO_NEIGHBOUR_CONTINUITY'
     for arr in scan.values(): arr[~supported] = np.nan
     state.last_result = {'option':OPTION,'scene_profile':state.profile,'column_reasons':reasons,
-                         'work_budget':{'columns':n,'rows_per_column':und_bgr.shape[0]},
+                         'work_budget':{'columns':n,'rows_per_column':und_bgr.shape[0],'line_pair_checks':checks},
                          'truth_inputs':0,'interpolated_missing_columns':0}
     return scan

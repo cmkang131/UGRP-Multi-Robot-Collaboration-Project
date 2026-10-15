@@ -44,8 +44,8 @@ def calibration_for_test(profile='walls_floor_contrast_v5_violet175'):
     colours=np.uint8([[[150,150,150],[175,31,146]]])
     lab=cv2.cvtColor(colours,cv2.COLOR_BGR2LAB)[0].astype(float)
     axis=lab[1,1:]-lab[0,1:];axis/=np.linalg.norm(axis)
-    return {'schema':'ugrp.scene_colour_calibration.v1','scene_profile':profile,'scene_sha256':v5.profile_record(profile)['sha256'],
-            'axis_ab':axis.tolist(),'split':float(np.mean(lab[:,1:]@axis)),
+    return {'schema':'ugrp.scene_colour_calibration.v2','scene_profile':profile,'scene_sha256':v5.profile_record(profile)['sha256'],
+            'line_residual_px_p95':1.5,'axis_ab':axis.tolist(),'split':float(np.mean(lab[:,1:]@axis)),
             'lab':{s:{'p00':row.tolist(),'p100':row.tolist()} for s,row in zip(('floor','wall'),lab)}}
 
 def test_colour_mask_abstains_on_cargo_and_requires_explicit_scene():

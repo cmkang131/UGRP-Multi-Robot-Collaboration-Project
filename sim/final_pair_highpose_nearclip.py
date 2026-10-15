@@ -71,7 +71,8 @@ def wrap(scene):
                             'walls_floor_contrast_v4_dark', 'walls_floor_contrast_v4_light', 'walls_floor_contrast_v4_skirt',
                             'walls_floor_contrast_v4_luma', 'walls_floor_contrast_v4_flat',
                             'walls_floor_contrast_v5_violet150','walls_floor_contrast_v5_violet175','walls_floor_contrast_v5_violet195',
-                'walls_floor_contrast_v5_indigo100','walls_floor_contrast_v5_indigo85','walls_floor_contrast_v5_indigo100_flat'):
+                'walls_floor_contrast_v5_indigo100','walls_floor_contrast_v5_indigo85','walls_floor_contrast_v5_indigo100_flat',
+                'walls_floor_contrast_v5_indigo110_s80','walls_floor_contrast_v5_indigo125_s65'):
         raise ValueError(f'{ID} needs a {BASE_PROFILE} scene, got {getattr(scene, "_render_profile_name", None)!r}')
     inner = scene.transform
 

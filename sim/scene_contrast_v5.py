@@ -16,10 +16,12 @@ PROFILES = {
     'walls_floor_contrast_v5_violet195': {'rgb': [168,34,195], 'hsv': [145,210,195]},
     'walls_floor_contrast_v5_indigo100': {'rgb':[54,18,100],'hsv':[133,209,100],'pattern':'v1_common_mode'},
     'walls_floor_contrast_v5_indigo85': {'rgb':[46,15,85],'hsv':[133,210,85],'pattern':'v1_common_mode'},
+    'walls_floor_contrast_v5_indigo110_s80': {'rgb':[90,75,110],'hsv':[133,81,110],'pattern':'v1_common_mode'},
+    'walls_floor_contrast_v5_indigo125_s65': {'rgb':[107,93,125],'hsv':[133,65,125],'pattern':'v1_common_mode'},
     'walls_floor_contrast_v5_indigo100_flat': {'rgb':[54,18,100],'hsv':[133,209,100]},
 }
 
-TEXTURE_MANIFEST_SHA256='ffec5ba9a778506c46b0b557344505442ae54d4fe7a1d21b21e0192740efac64'
+TEXTURE_MANIFEST_SHA256='cf447537efe9fd66a01e18aa9f414dcabd8273f662d8dc4c96773bd2c9c96757'
 
 def resolve(name):
     if name not in PROFILES: raise ValueError('explicit v5 scene required: '+str(name))

@@ -16,10 +16,19 @@ def counts(image,pwm):
     result['visual_orange_obstacles']=len(nav._components(nav._mask(hsv,nav._ORANGE_HSV),max(100.,pixels*.0005)))
     result['visual_magenta_peers']=len(nav._components(nav._mask(hsv,nav._MAGENTA_HSV),max(70.,pixels*.0003)))
     rgb=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-    patches,_,_=detect_floor(rgb,servo=pwm,profile='camera_v3');result['floor_goal_B_patches']=len(patches)
+    try:
+        patches,_,_=detect_floor(rgb,servo=pwm,profile='camera_v3');result['floor_goal_B_patches']=len(patches)
+    except ValueError as exc:
+        if str(exc)!='loaded_or_unknown_load_not_qualified':raise
+        result['floor_goal_B_patches']=None;result['floor_goal_qualification']=str(exc)
     for option in ('off',MARKER_OPTION_V2):
-        diagnostics={};boundary(rgb,pwm,np.zeros(3),diagnostics=diagnostics,marker_detect=option)
-        result['B_quad_'+option]=diagnostics['accepted_candidates']
+        diagnostics={}
+        try:
+            boundary(rgb,pwm,np.zeros(3),diagnostics=diagnostics,marker_detect=option)
+            result['B_quad_'+option]=diagnostics['accepted_candidates']
+        except ValueError as exc:
+            if str(exc)!='loaded_or_unknown_load_not_qualified':raise
+            result['B_quad_'+option]=None;result['B_quad_qualification']=str(exc)
     return result
 
 def main(inputs,out):

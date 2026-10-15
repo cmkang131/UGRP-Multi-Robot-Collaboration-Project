@@ -41,8 +41,9 @@ def calibrate(rows,profile):
     values=(np.arange(65536)//256)*axis[0]+(np.arange(65536)%256)*axis[1]
     tails={'floor_p99':quantile(values,ab['floor'],99),'wall_p01':quantile(values,ab['wall'],1)}
     if tails['floor_p99']>=tails['wall_p01']:raise ValueError('CHROMA_DISTRIBUTIONS_NOT_SEPARATED')
-    return {'schema':'ugrp.scene_colour_calibration.v1','scene_profile':profile,'scene_sha256':profile_record(profile)['sha256'],
+    return {'schema':'ugrp.scene_colour_calibration.v2','scene_profile':profile,'scene_sha256':profile_record(profile)['sha256'],
         'wall_hsv':{'p'+str(q).zfill(2):[quantile(np.arange(256),hsv_hist[c],q) for c in range(3)] for q in (1,99)},'wall_hsv_basis':'original wall pixel p01/p99; retains hue specificity against existing blue B and purple C paint',
+        'line_residual_px_p95':1.5,'line_residual_basis':'v1/native raw original boundary residual p95 PNG/JPEG90/PIL82=1.5; scenetex5-r1-v1-native, source3b36eb9d; not changed acceptance error limit',
         'lab':labs,'axis_ab':axis.tolist(),'split':sum(tails.values())/2,'split_basis':tails,
         'basis':'midpoint of original floor p99 and wall p01 chroma; class envelopes p00/p100; no boundary-error tuning',
         'interior_kernel_px':5,'interior_kernel_basis':'existing strip_half_px=2 -> 5-pixel support',
