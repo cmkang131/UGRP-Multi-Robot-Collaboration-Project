@@ -65,3 +65,17 @@ Mac에서는 물리·모델 호출을 하지 않는다.
 중 마지막을88639로 대체한 총40 unique scene이다. A/B는 별도 n/40,
 동시16·전체≤40, full source SHA·실재 rejection_table 경로·해시를 담는다.
 대기열은 검토용으로 비활성화하며 관문 실행/학습/기록 승격과 구분한다.
+
+## DEV1 중단과 직렬화 수정
+
+소스 `4a1809e2584840499be48e7baff99024c8bd35c1`의 DEV1은 HOST_ERROR3,
+동일 결함 감독중단3이다. sweep의 NumPy 좌표에서 나온 `numpy.bool`이
+중첩 검사 원장에 남아 최종 JSON 저장이 실패했다. 첫 오류를 읽은 즉시
+소유 실행에 SUPERVISOR_STOP과 SIGINT를 보냈으며 이미 종료한 실행은 건드리지 않았다.
+최종 result/audit가 저장되지 않았으므로 완료 동작이나 `done` trace를 성공으로 복구하지 않는다.
+초기 `running` result는 원본 그대로 보존하며 최종 감사0을 주장하지 않는다.
+
+수정은 sweep의 수치 gap을 Python float로 만들고 따라서 판정도 Python bool이 되게
+하는 것뿐이다. 실제 중첩 sweep 원장을 `json.dumps(..., allow_nan=False)`로 검사한다.
+시작/끝은 비어 있지만 중간에서 막히는 얇은 벽 시험도 명시했다.
+다음 DEV2는 같은6장면·같은 토글·새 source SHA로 처음부터 측정하고 DEV1과 합산하지 않는다.

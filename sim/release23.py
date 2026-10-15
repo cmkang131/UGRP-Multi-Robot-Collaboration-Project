@@ -166,11 +166,11 @@ def sweep(localizers, teachers, plans, now, *, computation_budget='off'):
             position[:2]+=[c*dx-s*dy,s*dx+c*dy]
             robot_points+=polygon_at(position,vertices);beam_points+=polygon_at(position,beam_vertices)
         for name,points in ((rid,_hull(robot_points)),(rid+' beam from own commands',_hull(beam_points))):
-            x0,x1,y0,y1=static['bounds_m'];gap=min(min(x-x0,x1-x,y-y0,y1-y) for x,y in points)-halo
+            x0,x1,y0,y1=static['bounds_m'];gap=float(min(min(x-x0,x1-x,y-y0,y1-y) for x,y in points)-halo)
             checks.append(dict(body=name,**rejection('static_sweep','map bounds',gap),accepted=gap>0))
             for obstacle in static.get('obstacles',[]):
                 rect=(*obstacle['center_m'],*obstacle['half_extents_m'],obstacle.get('yaw_rad',0.))
-                gap=_polygon_gap(points,rect_corners(rect,margin=halo))
+                gap=float(_polygon_gap(points,rect_corners(rect,margin=halo)))
                 checks.append(dict(body=name,**rejection('static_sweep',obstacle['id'],gap),accepted=gap>0))
     worst=min(checks,key=lambda v:v['minimum_gap'])
     assert computation_budget in ('off',COMPUTE)

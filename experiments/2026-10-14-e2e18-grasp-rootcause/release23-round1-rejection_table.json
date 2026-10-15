@@ -1,0 +1,80 @@
+{
+  "schema": "ugrp.release23.rejections.v1",
+  "episode_funnel": [
+    {
+      "gate": "queued_candidate",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "terminal_original_and_hash",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "input_audit_zero",
+      "input": 6,
+      "cumulative_passed": 0,
+      "rejected": 6
+    },
+    {
+      "gate": "physical_release",
+      "input": 0,
+      "cumulative_passed": 0,
+      "rejected": 0
+    }
+  ],
+  "frame_funnel": [
+    {
+      "gate": "generated_original_own_RGB",
+      "input": 2666,
+      "cumulative_passed": 2666,
+      "rejected": 0
+    },
+    {
+      "gate": "original_hash_and_JPEG_decode",
+      "input": 2666,
+      "cumulative_passed": 2666,
+      "rejected": 0
+    }
+  ],
+  "event_funnel": [
+    {
+      "gate": "line_candidates",
+      "input": 0,
+      "cumulative_passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "line_alignment_completed",
+      "input": 0,
+      "cumulative_passed": 0,
+      "rejected": 0
+    }
+  ],
+  "event_counts": {
+    "total": 0,
+    "rejection_records": 6
+  },
+  "rejection_reason_table": [
+    {
+      "category": "supervisor_stop_same_defect",
+      "count": 3
+    },
+    {
+      "category": "result_serialization",
+      "count": 3
+    }
+  ],
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2",
+    "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2",
+    "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2",
+    "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2",
+    "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2",
+    "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2"
+  ],
+  "reproduction": "python3 /home/ugrp/ugrp-sim/ops-reviews/release23/analyze_results.py --names [\"r23d1-00-4a1809e2\", \"r23d1-01-4a1809e2\", \"r23d1-02-4a1809e2\", \"r23d1-03-4a1809e2\", \"r23d1-04-4a1809e2\", \"r23d1-05-4a1809e2\"] --out /home/ugrp/ugrp-sim/ops-reviews/release23/round1"
+}

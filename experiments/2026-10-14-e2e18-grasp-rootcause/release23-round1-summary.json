@@ -1,0 +1,820 @@
+{
+  "schema": "ugrp.release23.dev.v1",
+  "source_sha": "4a1809e2584840499be48e7baff99024c8bd35c1",
+  "counts": {
+    "completed": 6,
+    "success": 0,
+    "N": 6
+  },
+  "classification_counts": {
+    "supervisor_stop": 3,
+    "HOST_ERROR": 3
+  },
+  "verified": false,
+  "failure_seeds_solved": false,
+  "rejection_table": "/home/ugrp/ugrp-sim/ops-reviews/release23/round1/rejection_table.json",
+  "research_result": false,
+  "training_rgb": false,
+  "student_execution": false,
+  "pooling": "No pooling across old SHA, rounds, A/B, DEV or gate.",
+  "runs": [
+    {
+      "name": "r23d1-00-4a1809e2",
+      "seed": 110622,
+      "source_sha": "4a1809e2584840499be48e7baff99024c8bd35c1",
+      "classification": "supervisor_stop",
+      "status": "running",
+      "success": null,
+      "outcome": null,
+      "sim_s": null,
+      "release_sim_s": null,
+      "wall_s": null,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 2.1296023693022503
+      },
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": null,
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "supervisor_stop_same_defect",
+          "blocking_object": "release23 sweep NumPy bool result serialization",
+          "minimum_gap": null,
+          "gap_unit": "JSON scalar",
+          "gap_unknown_reason": "nongeometric artifact failure; final result/audit unavailable"
+        }
+      ],
+      "line_summary": {
+        "N": 0,
+        "done": 0,
+        "events": {},
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2",
+      "raw_result_sha256": "5cce0bd3f7bf3b781d425cb15c35ea52835fb1fc76088dacd031ebb630f42e5a",
+      "raw_manifest_sha256": "2d536bfbd919769eec442651e82200cefd58f4a7da19ecc1a356e0a9c961fa27",
+      "full_original_manifest_verified": true,
+      "original_file_N": 543,
+      "own_frame_N": 524,
+      "frame_decode_verified_N": 524,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "6f6b6b20689efc9129dfab60fc11e68951a7c1d520925632ed4f4b41fdd12920",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "2a54fc5e3fdb2317fab4b1e9e03915aba7c33cce3f179c33d900c9807c6ce03c",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r1/000220-release-line_recheck.jpg",
+          "sha256": "6fb157aa54928e47a926fd819abbfeaa132ea0be140a0e23ee7f73e8dbdf6917",
+          "elapsed_sim_s": 30.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r2/000220-release-line_recheck.jpg",
+          "sha256": "95d73a769e2747eff67d080011b904bbcb2363fbb32ba29a90eed3e53b619be6",
+          "elapsed_sim_s": 30.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r1/000530-release-observe_back.jpg",
+          "sha256": "8032d46c5a82a7e7b2d056912c87f9ef2a12cc7b95ff7af2f28dffc10e8e2c9e",
+          "elapsed_sim_s": 61.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r2/000530-release-observe_back.jpg",
+          "sha256": "e7630ddad3aa52074589a6ef0dffae126c914de594001cd17a800d467926582b",
+          "elapsed_sim_s": 61.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r1/000840-release-regrasp_check.jpg",
+          "sha256": "fca543fd25772acbfd6b1b0daef5e729298faf3b0ffea49c4b51bc16235d7316",
+          "elapsed_sim_s": 92.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r2/000840-release-regrasp_check.jpg",
+          "sha256": "0924ae0da281d59867ada11c2cb104d6931fc396053509ee519ff16c1839b383",
+          "elapsed_sim_s": 92.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r1/001150-release-line_recheck.jpg",
+          "sha256": "4d25131e205636cd4722ad0221da5b2749cab0659787b69c78608bc7b4b1b0ff",
+          "elapsed_sim_s": 123.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r2/001150-release-line_recheck.jpg",
+          "sha256": "3586129bf2955b08b38e83fe72eea2706b9d9cc1fa2bdb4aaf36eaf59aa2248a",
+          "elapsed_sim_s": 123.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r1/001460-release-open.jpg",
+          "sha256": "71ea7e460277c89c06e322fb496439198eed095072ba8a3c95001a6088eae50c",
+          "elapsed_sim_s": 154.29999999999896
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-00-4a1809e2/raw/eval-own/r2/001460-release-open.jpg",
+          "sha256": "2886821427614a95e1ea2c8082e5996e22e3f50272b2ed019f1d5389ff372084",
+          "elapsed_sim_s": 154.29999999999896
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round1/r23d1-00-4a1809e2-montage.jpg",
+        "sha256": "34e6155e5688f1c265640e20082fe41924683ac519df91ac0fdeffb09eb4e338"
+      }
+    },
+    {
+      "name": "r23d1-01-4a1809e2",
+      "seed": 88639,
+      "source_sha": "4a1809e2584840499be48e7baff99024c8bd35c1",
+      "classification": "HOST_ERROR",
+      "status": "running",
+      "success": null,
+      "outcome": null,
+      "sim_s": null,
+      "release_sim_s": null,
+      "wall_s": null,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 2.2854785478548645
+      },
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": null,
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "result_serialization",
+          "blocking_object": "release23 sweep NumPy bool result serialization",
+          "minimum_gap": null,
+          "gap_unit": "JSON scalar",
+          "gap_unknown_reason": "nongeometric artifact failure; final result/audit unavailable"
+        }
+      ],
+      "line_summary": {
+        "N": 0,
+        "done": 0,
+        "events": {},
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2",
+      "raw_result_sha256": "5434903fbb02fb4f56821efe9691b7078aa4983edcff638fdea3fdab03a82a2f",
+      "raw_manifest_sha256": "9aa3266b3ccd181962c3391ad356929c19037ea5bf85a2e743300d6864e077a2",
+      "full_original_manifest_verified": true,
+      "original_file_N": 418,
+      "own_frame_N": 400,
+      "frame_decode_verified_N": 400,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "22f658679477557b7546046f985c642bea053cf036b7811e72a91698b335aa70",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "a15f058087864bb5c3d6611b679b58bd36d9c637204582829ebff9d0ea4ee985",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r1/000150-release-lookaround.jpg",
+          "sha256": "4915230e62bc13fe4eb398069730318e14e6dd30dd670d214dc773fbc698a52b",
+          "elapsed_sim_s": 23.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r2/000150-release-lookaround.jpg",
+          "sha256": "09c25dc67b58fd91bc1586702fb3d7659bc89d826ea28391f1676cf93c5027c9",
+          "elapsed_sim_s": 23.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r1/000400-release-regrasp_check.jpg",
+          "sha256": "8ca6b3cddd7bde09c48257e0302a907b8ed044c47825250b9229a65a05957b77",
+          "elapsed_sim_s": 48.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r2/000400-release-regrasp_check.jpg",
+          "sha256": "ee51f03babe711829070f8f62f5aaa6912c6ed03ce2179bd34eea4017d59887b",
+          "elapsed_sim_s": 48.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r1/000640-release-observe.jpg",
+          "sha256": "eede2355d664db3cfb812edc650188d96cb0d5b2f8005c8545317cf62257fa00",
+          "elapsed_sim_s": 72.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r2/000640-release-observe.jpg",
+          "sha256": "3c528c710eb1ef69271cfa851d1c323f67bc60c8632158fc7fdfd68d94fe1385",
+          "elapsed_sim_s": 72.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r1/000890-release-regrasp_check.jpg",
+          "sha256": "4d3687808f6049ec5090f7f6ba5e0705ebe279d3da10a87db814d1f1aa92707a",
+          "elapsed_sim_s": 97.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r2/000890-release-regrasp_check.jpg",
+          "sha256": "c2e09e4b40971e05537fe85766b94564f2f9db2c11e126b4e44e24066d3dfa99",
+          "elapsed_sim_s": 97.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r1/001130-release-done.jpg",
+          "sha256": "083ad30c3ab77530801268f52b2cb96ef996a12aad8778aed80ba43bbeccf2a8",
+          "elapsed_sim_s": 121.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-01-4a1809e2/raw/eval-own/r2/001130-release-done.jpg",
+          "sha256": "74b495415da40ddcc059035d2ac4c3bb1aedc28e0ed49f9e5e63532dfd0aa7b0",
+          "elapsed_sim_s": 121.29999999999895
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round1/r23d1-01-4a1809e2-montage.jpg",
+        "sha256": "77b394893dfff72ee1a4d65ba6b1b282c57692ca1445485ceb7ed26127c1cfd1"
+      }
+    },
+    {
+      "name": "r23d1-02-4a1809e2",
+      "seed": 110622,
+      "source_sha": "4a1809e2584840499be48e7baff99024c8bd35c1",
+      "classification": "supervisor_stop",
+      "status": "running",
+      "success": null,
+      "outcome": null,
+      "sim_s": null,
+      "release_sim_s": null,
+      "wall_s": null,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 2.189322808394807
+      },
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": null,
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "supervisor_stop_same_defect",
+          "blocking_object": "release23 sweep NumPy bool result serialization",
+          "minimum_gap": null,
+          "gap_unit": "JSON scalar",
+          "gap_unknown_reason": "nongeometric artifact failure; final result/audit unavailable"
+        }
+      ],
+      "line_summary": {
+        "N": 0,
+        "done": 0,
+        "events": {},
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2",
+      "raw_result_sha256": "14ba97ce7864b05755481eb05f18fae2c0196d3681f3815d4bd090fd23ace19f",
+      "raw_manifest_sha256": "500787ee78706d43fc78e6a18bc0201971ba792d0f64e4f2ab1ae32c69b507ca",
+      "full_original_manifest_verified": true,
+      "original_file_N": 510,
+      "own_frame_N": 491,
+      "frame_decode_verified_N": 491,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "6f6b6b20689efc9129dfab60fc11e68951a7c1d520925632ed4f4b41fdd12920",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "2a54fc5e3fdb2317fab4b1e9e03915aba7c33cce3f179c33d900c9807c6ce03c",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r1/000200-release-line_recheck.jpg",
+          "sha256": "da0d0caf3c2f61da37faf25f2480170bb2fcf82be7e5fb8fea623573766f5012",
+          "elapsed_sim_s": 28.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r2/000200-release-line_recheck.jpg",
+          "sha256": "8344629969ac4d2d1462162cb2d5ed1afbaa4b84be2ffc6c9819acdb2525dc17",
+          "elapsed_sim_s": 28.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r1/000480-release-lower.jpg",
+          "sha256": "b116e8b761aa27d20c6a1f55801387bf3c09a6316e6a085edc6a6326f7d84d44",
+          "elapsed_sim_s": 56.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r2/000480-release-lower.jpg",
+          "sha256": "bfd0b67777e9c2d50b5288a24d2ffd2793918ac1762c188e17e77715904c1b18",
+          "elapsed_sim_s": 56.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r1/000770-release-repick.jpg",
+          "sha256": "49fe4089962a52c2cd499ba7881dde6e9a997ce762bbf0aa5e011d13ec018287",
+          "elapsed_sim_s": 85.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r2/000770-release-repick.jpg",
+          "sha256": "7cc6ce0fd0afbfa20ae3676ca8797d336707b2655ce1f363a2e7b82ed02c5888",
+          "elapsed_sim_s": 85.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r1/001050-release-lookaround.jpg",
+          "sha256": "41e907d21f8936ec4bb9ffaa7c0a724e9b7176add6ee2ee4523ec9125ff6db6f",
+          "elapsed_sim_s": 113.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r2/001050-release-lookaround.jpg",
+          "sha256": "7b52718aa6ea3d74ed592aad98a9e1d6236d9f6854aca093b0fb957c8aa5a4c3",
+          "elapsed_sim_s": 113.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r1/001340-release-regrasp_check.jpg",
+          "sha256": "5e9c659b4d237cfdd757b21b4c260a4e5a2ff4c6a4c3ac78c8bcb6403499d2d7",
+          "elapsed_sim_s": 142.29999999999896
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-02-4a1809e2/raw/eval-own/r2/001340-release-regrasp_check.jpg",
+          "sha256": "04b5481234bd3aa2d636b766910968ff40f4d19bcc0ee6c351dc5366781ea1d5",
+          "elapsed_sim_s": 142.29999999999896
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round1/r23d1-02-4a1809e2-montage.jpg",
+        "sha256": "4c97830fe10b09e37169f816c7d62d339eea8ff6b4e08b9c7b791636bbf977a6"
+      }
+    },
+    {
+      "name": "r23d1-03-4a1809e2",
+      "seed": 88639,
+      "source_sha": "4a1809e2584840499be48e7baff99024c8bd35c1",
+      "classification": "HOST_ERROR",
+      "status": "running",
+      "success": null,
+      "outcome": null,
+      "sim_s": null,
+      "release_sim_s": null,
+      "wall_s": null,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 2.395043129181394
+      },
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": null,
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "result_serialization",
+          "blocking_object": "release23 sweep NumPy bool result serialization",
+          "minimum_gap": null,
+          "gap_unit": "JSON scalar",
+          "gap_unknown_reason": "nongeometric artifact failure; final result/audit unavailable"
+        }
+      ],
+      "line_summary": {
+        "N": 0,
+        "done": 0,
+        "events": {},
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2",
+      "raw_result_sha256": "e34a4f7543796890879eb454ab6a53a1f63558a603f98503f43460d47fd91dd2",
+      "raw_manifest_sha256": "7b65b4d0ee7cb29b19442e1065804082f47738e330ca36067a7bc66eca6c521a",
+      "full_original_manifest_verified": true,
+      "original_file_N": 428,
+      "own_frame_N": 410,
+      "frame_decode_verified_N": 410,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "22f658679477557b7546046f985c642bea053cf036b7811e72a91698b335aa70",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "a15f058087864bb5c3d6611b679b58bd36d9c637204582829ebff9d0ea4ee985",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r1/000160-release-lookaround.jpg",
+          "sha256": "e4e3a3418106a65df061b7e652266ad6b48ca6a6945aadfc1ec6afca258d07b3",
+          "elapsed_sim_s": 24.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r2/000160-release-lookaround.jpg",
+          "sha256": "d2946b0ea307a19a206c88b5da947f453fb48bc07f1dc5a5b0c7ebc6ddc420aa",
+          "elapsed_sim_s": 24.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r1/000420-release-regrasp_check.jpg",
+          "sha256": "c1cb59cf1455bd844374dcab912354984b4bb15ffac2359880dd80bbccb9128b",
+          "elapsed_sim_s": 50.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r2/000420-release-regrasp_check.jpg",
+          "sha256": "0851a13a7580643418a3c4d2a54b6153b76195f1b5d4965e0bb1f3f914accaa1",
+          "elapsed_sim_s": 50.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r1/000670-release-observe.jpg",
+          "sha256": "588a71330ca7f00d974c2574123d840586e79806573133f247611bd2ad41bc58",
+          "elapsed_sim_s": 75.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r2/000670-release-observe.jpg",
+          "sha256": "19991ea370f50b5dc1af5f76ef5a75ffd4517562dd694420cd1692f2486212b2",
+          "elapsed_sim_s": 75.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r1/000930-release-regrasp_check.jpg",
+          "sha256": "072774c36437e1bb9c11e33ba36d62ce395509d0e76ce89e3a85d33e2619c37b",
+          "elapsed_sim_s": 101.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r2/000930-release-regrasp_check.jpg",
+          "sha256": "c66c8b263f01688e2877216f0de2e3d54328d0d2cf1b0daa6c67c9e06e46dbc9",
+          "elapsed_sim_s": 101.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r1/001180-release-done.jpg",
+          "sha256": "afede128ac8f7eea8c8ae6a9a2ab4bd6c742af03b21d353ad39a6f562ef0ec87",
+          "elapsed_sim_s": 126.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-03-4a1809e2/raw/eval-own/r2/001180-release-done.jpg",
+          "sha256": "5da79f4c94bfd3dd9f4263e9079e4da7ec05325f72d882027a8a2501c110f758",
+          "elapsed_sim_s": 126.29999999999895
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round1/r23d1-03-4a1809e2-montage.jpg",
+        "sha256": "a5b7bfdab18c42ddb4e79d7af4567a49bc91f2a56cf58ac7e7fd6304d795063b"
+      }
+    },
+    {
+      "name": "r23d1-04-4a1809e2",
+      "seed": 110618,
+      "source_sha": "4a1809e2584840499be48e7baff99024c8bd35c1",
+      "classification": "HOST_ERROR",
+      "status": "running",
+      "success": null,
+      "outcome": null,
+      "sim_s": null,
+      "release_sim_s": null,
+      "wall_s": null,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 2.5192376174549937
+      },
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": null,
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "result_serialization",
+          "blocking_object": "release23 sweep NumPy bool result serialization",
+          "minimum_gap": null,
+          "gap_unit": "JSON scalar",
+          "gap_unknown_reason": "nongeometric artifact failure; final result/audit unavailable"
+        }
+      ],
+      "line_summary": {
+        "N": 0,
+        "done": 0,
+        "events": {},
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2",
+      "raw_result_sha256": "9ccbc2b2276f273c32de8be75ca4a3bb2c48e2df9b39729f45b01f0bc677d0fe",
+      "raw_manifest_sha256": "a26d80d57f5ff5e508485763571e7695c11f97509d176ab6f1ce7b8c16112cfb",
+      "full_original_manifest_verified": true,
+      "original_file_N": 435,
+      "own_frame_N": 417,
+      "frame_decode_verified_N": 417,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "756737ee500b9072ee605494142fed2450b077f2a4454eacc6f20222ae012dfb",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "d8445bda24b775b40b5e013543bb9c6d901b0fb4fd0749943b89e90cfada0060",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r1/000160-release-lookaround.jpg",
+          "sha256": "d8d9c79689aa7afd1634abddcf6144bef1492ac28480e5cc26b48b92411079fa",
+          "elapsed_sim_s": 24.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r2/000160-release-lookaround.jpg",
+          "sha256": "f6cb0589636613723ca96397e7e073c918f3735a644dcf6d7d712b2431bfa8f3",
+          "elapsed_sim_s": 24.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r1/000410-release-regrasp_check.jpg",
+          "sha256": "72f50fbd3835eaa5aed1a65d8b40032a4cc730ca974fd34ce89b9a0d430c0c43",
+          "elapsed_sim_s": 49.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r2/000410-release-regrasp_check.jpg",
+          "sha256": "c698e33a8a2fc0f980339d0bf6985814654b6263e4631f82e4567e6a07044c10",
+          "elapsed_sim_s": 49.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r1/000660-release-lookaround.jpg",
+          "sha256": "212dc42bcc7a6a13cc654c9b7fe09a0ca6f31cc743e05f1778ec7f13aa7c1ad1",
+          "elapsed_sim_s": 74.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r2/000660-release-lookaround.jpg",
+          "sha256": "f4f7c60e6aa8de7660049d2d21a6208c13f91bb19a84dbb3f6849f2837a8db7b",
+          "elapsed_sim_s": 74.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r1/000910-release-regrasp_check.jpg",
+          "sha256": "2e71c933529eee2e9c9a05314edff0de38574e8399ca36f8d1468d7d52a202d9",
+          "elapsed_sim_s": 99.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r2/000910-release-regrasp_check.jpg",
+          "sha256": "40358be2ea591e7df098077df369db513987d8e5cd2dc8e0dcb3d57365870810",
+          "elapsed_sim_s": 99.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r1/001160-release-observe.jpg",
+          "sha256": "7d902fbee07f7d455b31605ecb974873076c99e65ee309fc8f411ce81a6c8b01",
+          "elapsed_sim_s": 124.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-04-4a1809e2/raw/eval-own/r2/001160-release-observe.jpg",
+          "sha256": "d67ae59fc13d95858139243dab7c1b97a022086201e02361b5bc1613a935d147",
+          "elapsed_sim_s": 124.29999999999895
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round1/r23d1-04-4a1809e2-montage.jpg",
+        "sha256": "2465f580feb60075c1888558de759caa0d2fce2c4ad8593163ed2f7ee8edf3bb"
+      }
+    },
+    {
+      "name": "r23d1-05-4a1809e2",
+      "seed": 110618,
+      "source_sha": "4a1809e2584840499be48e7baff99024c8bd35c1",
+      "classification": "supervisor_stop",
+      "status": "running",
+      "success": null,
+      "outcome": null,
+      "sim_s": null,
+      "release_sim_s": null,
+      "wall_s": null,
+      "first30": {
+        "sim_s": 30.299999999998953,
+        "wall_per_sim": 2.4017090844636746
+      },
+      "input_audit": {
+        "invisible_measurements": null,
+        "held_world_reads": null,
+        "control_top_camera_reads": null,
+        "evaluation_top_camera_reads": null
+      },
+      "evaluation_position_error": null,
+      "evaluation_settled_s": null,
+      "iterations": null,
+      "shift_steps": null,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off"
+      },
+      "code_decisions": null,
+      "leg_admissions": null,
+      "sweep_checks": [],
+      "rejection_ledger": [
+        {
+          "reason_category": "supervisor_stop_same_defect",
+          "blocking_object": "release23 sweep NumPy bool result serialization",
+          "minimum_gap": null,
+          "gap_unit": "JSON scalar",
+          "gap_unknown_reason": "nongeometric artifact failure; final result/audit unavailable"
+        }
+      ],
+      "line_summary": {
+        "N": 0,
+        "done": 0,
+        "events": {},
+        "failures": [],
+        "budget_alternatives": []
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2",
+      "raw_result_sha256": "e618cf7726707b9c55c9b3f231a79a3c16060487a6b250c79a6199a6c0b73779",
+      "raw_manifest_sha256": "3b5eb95bfbe1e15eea815856a64036f08e6961a4e0555e3c668d0f59f220093c",
+      "full_original_manifest_verified": true,
+      "original_file_N": 443,
+      "own_frame_N": 424,
+      "frame_decode_verified_N": 424,
+      "frame_review": [
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r1/000000-prefix.jpg",
+          "sha256": "756737ee500b9072ee605494142fed2450b077f2a4454eacc6f20222ae012dfb",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r2/000000-prefix.jpg",
+          "sha256": "d8445bda24b775b40b5e013543bb9c6d901b0fb4fd0749943b89e90cfada0060",
+          "elapsed_sim_s": 0.0
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r1/000160-release-observe_move.jpg",
+          "sha256": "f355caf3a58842881b8de94d9ca0cf1646b97011c08c2ee62a9c3b8948ecd507",
+          "elapsed_sim_s": 24.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r2/000160-release-observe_move.jpg",
+          "sha256": "cc9ab61a4f5320840a99b28e2a51dd854438e1e9fce560dac69e21d85fefbc8b",
+          "elapsed_sim_s": 24.299999999998953
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r1/000400-release-regrasp_check.jpg",
+          "sha256": "aa825f90108d85fc9e45f25dd3c5238f0c1407606e1e13d3cbb37f897e9fc340",
+          "elapsed_sim_s": 48.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r2/000400-release-regrasp_check.jpg",
+          "sha256": "bea2d9a7117dff1b6175278d9713799e03ccd1a72d3975c3b1af97cd99da58c7",
+          "elapsed_sim_s": 48.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r1/000650-release-line_recheck.jpg",
+          "sha256": "e2c780e191e2bcf598913e1736d712a5cbcd3da33ae0c26d8c56eeb48f7a1c7f",
+          "elapsed_sim_s": 73.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r2/000650-release-line_recheck.jpg",
+          "sha256": "0b40f42328a021d1943baeae02ef2da96e322c8d5dd1445f5508d4f152fcde68",
+          "elapsed_sim_s": 73.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r1/000890-release-regrasp_check.jpg",
+          "sha256": "5f21ecf34d2fb2c68c537e3fdf002bbaeb0e3419103ddbd828b5a24619b18e3e",
+          "elapsed_sim_s": 97.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r2/000890-release-regrasp_check.jpg",
+          "sha256": "bce51e7e4c27af30907e1f42a5c42aa3c67d1c14a1899d95417136c7c6bfaa80",
+          "elapsed_sim_s": 97.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r1/001140-release-approach.jpg",
+          "sha256": "59757e50681a53844814ff35c18d3b4a9ce106b9ab128a3b91c5dcfa5e3f5b32",
+          "elapsed_sim_s": 122.29999999999895
+        },
+        {
+          "path": "/home/ugrp/ugrp-sim/runs/r23d1-05-4a1809e2/raw/eval-own/r2/001140-release-approach.jpg",
+          "sha256": "b86b9249159c9194b82142c5de5b3a1b83843b73b28be73418a99d91dfd43ae6",
+          "elapsed_sim_s": 122.29999999999895
+        }
+      ],
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release23/round1/r23d1-05-4a1809e2-montage.jpg",
+        "sha256": "21aa3667fb913748bba13c2e0d02a90993e793a412e751299fa69fc986c5deef"
+      }
+    }
+  ]
+}

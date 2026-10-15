@@ -94,10 +94,15 @@ def test_continuous_sweep_checks_midpath_beam_and_both_robots():
           global_matcher=NS(static=static)) for i,r in enumerate(ts)}
     plans={r:t.shift_plan(.30,1.) for r,t in ts.items()}
     result=new.sweep(loc,ts,plans,0.)
+    json.dumps(result,allow_nan=False)  # actual result writer, including nested checks
     assert result['accepted'] and {c['body'].split()[0] for c in result['checks']}==set(ts)
     # This thin wall lies between start/end robot centers. Whole hull sees it.
-    static['obstacles']=[dict(id='thin_wall',center_m=[.15,0.],half_extents_m=[.002,.02])]
+    static['obstacles']=[dict(id='thin_wall',center_m=[.15,.175],half_extents_m=[.002,.002])]
+    from harness.static_keepouts import pose_clear,disc_footprint
+    wall=(.15,.175,.002,.002,0.)
+    assert all(pose_clear((x,0.,0.),disc_footprint(.18),[wall],margin=.02) for x in (0.,.30))
     result=new.sweep(loc,ts,plans,0.)
+    json.dumps(result,allow_nan=False)
     assert not result['accepted'] and result['blocking_object']=='thin_wall'
     assert result['minimum_gap']<0 and result['computation_checks']>0
     loc['r1'].decision['accepted']=False
