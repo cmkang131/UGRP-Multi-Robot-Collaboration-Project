@@ -5,6 +5,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import shlex
 import subprocess
 
 
@@ -120,6 +121,12 @@ def history(root, out):
         base=root/('native-grasp-teacher-gate-'+short)
         raws=sorted(base.glob('cohort-*/episode-*/raw'))
         entries=[recount(p) for p in raws]
+        argv=shlex.split((base/'COMMAND').read_text())
+        cap=float(argv[argv.index('--cap-s')+1]) if '--cap-s' in argv else None
+        for e in entries:
+            if cap is not None and e.get('sim_s') is not None and e['sim_s']>=cap-1e-8:
+                e.update(cap_end=True, cap_s=cap, cap_source=str(base/'COMMAND'))
+                if not e['legacy_success']:e['reason_category']='cap_end'
         counts=Counter(e['reason_category'] for e in entries)
         complete=sum(e['status']=='complete' for e in entries)
         strict=sum(e['strict_success'] for e in entries if e['status']=='complete')

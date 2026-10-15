@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "beampair1",
+    "version": "0.1.0",
+    "purpose": "Default-off GCP long_beam pair teacher gate, v7 cargo and held-cargo masking",
+    "entry": "scripts/run_beampair1.py",
+    "runner": "scripts.run_beampair1",
+    "docs": "experiments/2026-10-15-beampair1/README.md",
+    "requires": "gcp1, pinned clean teacher dependency; no Mac physics/render; training RGB disabled",
+    "output_flag": "--out",
+    "output_kind": "directory",
+    "required_inputs": ["--plan", "--episode", "--dependency-root", "--mode"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}

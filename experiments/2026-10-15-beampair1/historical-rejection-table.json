@@ -1,0 +1,74 @@
+{
+  "schema": "ugrp.beampair1.funnel.v1",
+  "cohorts": [
+    {
+      "source_short": "078cbb45",
+      "raw_root": "/home/ugrp/ugrp-sim/outputs/beampair1-historical/native-grasp-teacher-gate-078cbb45",
+      "reason_distribution": {
+        "success": 16
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 40,
+          "passed": 16,
+          "rejected": 24
+        },
+        {
+          "gate": "finalized_complete",
+          "entered": 16,
+          "passed": 16,
+          "rejected": 0
+        },
+        {
+          "gate": "strict_joint_hold_3s",
+          "entered": 16,
+          "passed": 0,
+          "rejected": 16
+        },
+        {
+          "gate": "visible_input_eligible",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        }
+      ]
+    },
+    {
+      "source_short": "1f177950",
+      "raw_root": "/home/ugrp/ugrp-sim/outputs/beampair1-historical/native-grasp-teacher-gate-1f177950",
+      "reason_distribution": {
+        "success": 11,
+        "interrupted": 4,
+        "episode_timeout": 1
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 40,
+          "passed": 16,
+          "rejected": 24
+        },
+        {
+          "gate": "finalized_complete",
+          "entered": 16,
+          "passed": 12,
+          "rejected": 4
+        },
+        {
+          "gate": "strict_joint_hold_3s",
+          "entered": 12,
+          "passed": 0,
+          "rejected": 12
+        },
+        {
+          "gate": "visible_input_eligible",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        }
+      ]
+    }
+  ],
+  "reproduce": "python3 -m scripts.audit_beampair1 --history /home/ugrp/ugrp-sim/outputs/beampair1-historical --out /home/ugrp/ugrp-sim/outputs/beampair1-analysis"
+}
