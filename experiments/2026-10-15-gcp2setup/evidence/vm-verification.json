@@ -1,0 +1,32 @@
+{
+  "instance": "ugrp-sim-gcp2",
+  "status": "TERMINATED",
+  "cpu_platform": "Unknown CPU Platform",
+  "machine_type": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/machineTypes/n4-highcpu-64",
+  "zone": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a",
+  "scheduling": {
+    "automaticRestart": true,
+    "instanceTerminationAction": "STOP",
+    "maxRunDuration": {
+      "nanos": 0,
+      "seconds": "86400"
+    },
+    "onHostMaintenance": "MIGRATE",
+    "preemptible": false,
+    "provisioningModel": "STANDARD"
+  },
+  "service_accounts": [],
+  "disk": {
+    "name": "ugrp-sim-gcp2",
+    "sizeGb": "400",
+    "type": "https://www.googleapis.com/compute/v1/projects/ugrp-sim-b-1014/zones/asia-northeast3-a/diskTypes/hyperdisk-balanced",
+    "sourceImage": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-2404-noble-amd64-v20261009",
+    "sourceImageId": "6638624561818534649",
+    "provisionedIops": "5400",
+    "provisionedThroughput": "740"
+  },
+  "block_project_ssh_keys": "true",
+  "startup_script_sha256": "48e6d92791e2dfa6abb3cac39ce6325c07a4c71336871b71105da636bbbc94d7",
+  "local_startup_script_sha256": "48e6d92791e2dfa6abb3cac39ce6325c07a4c71336871b71105da636bbbc94d7",
+  "raw_final_description_sha256": "7250c4f5f03b3fcf122501414534002bbdfcc8b6f7d34105a8f6805d631315c1"
+}

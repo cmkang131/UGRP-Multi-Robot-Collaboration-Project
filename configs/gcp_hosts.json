@@ -1,0 +1,32 @@
+{
+  "default_host": "gcp2",
+  "hosts": {
+    "gcp2": {
+      "account": "changmin5781@gmail.com",
+      "project": "ugrp-sim-b-1014",
+      "instance": "ugrp-sim-gcp2",
+      "zone": "asia-northeast3-a",
+      "machine": "n4-highcpu-64",
+      "disk_type": "hyperdisk-balanced",
+      "disk_gb": 400,
+      "max_run_duration": "24h",
+      "image_family": "ubuntu-2404-lts-amd64",
+      "image_project": "ubuntu-os-cloud",
+      "identity_file": "~/.ssh/ugrp_gcp2",
+      "lifecycle_enabled": true
+    },
+    "gcp1": {
+      "account": "kcm0127@gmail.com",
+      "project": "ugrp-act-train-1014",
+      "instance": "ugrp-sim-gcp1",
+      "zone": "asia-northeast3-a",
+      "machine": "n4-highcpu-64",
+      "disk_type": "hyperdisk-balanced",
+      "disk_gb": 400,
+      "max_run_duration": "24h",
+      "image": "ugrp-sim-bench-c1f02ac0",
+      "identity_file": "~/.ssh/ugrp_gcp1",
+      "lifecycle_enabled": false
+    }
+  }
+}
