@@ -97,6 +97,8 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
     ops = primitives()
     try:
         # Scene hardware/camera/physics are exactly the existing pair setup.
+        if getattr(hooks,'scene_v5_v1',False):
+            from warp_act_scene import make_scene
         scene = make_scene({**plan, 'end_color_scene': 'off'})
         scene.config['setup_only']['spawns'].update(plan['spawns'])
         os.environ['UGRP_SIM_OBSERVER_WIDTH'] = '320'

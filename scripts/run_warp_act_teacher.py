@@ -43,6 +43,8 @@ def parser():
     p.add_argument('--native-sleep-policy-compat-v1',action='store_true',help='default OFF: explicit native sleep scene plus exact runtime policy adapter; separate cohort')
     p.add_argument('--float32-solver-default-v1',action='store_true',help='default OFF: retain upstream float32 tolerance clamp; unchanged task success criteria')
     p.add_argument('--reset-check-v1',action='store_true',help='diagnostic only: reset selected initial state; no teacher rollout or gate')
+    p.add_argument('--scene-v5-v1',action='store_true',help='default OFF: selected indigo110_s80 walls + v1 floor + no_mip_v1')
+    p.add_argument('--initialize-only',action='store_true',help='first-state/RGB proof only; no rollout')
     p.add_argument('--export-compiled-only',action='store_true')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
@@ -88,6 +90,9 @@ def main():
     if subprocess.check_output(['git','-C',str(ROOT),'status','--porcelain','--untracked-files=no']):
         p.error('committed backend source required')
     sys.path.insert(0,str(source))
+    # Resolve new adapter-only modules alongside the frozen teacher package.
+    import sim
+    sim.__path__.append(str(ROOT/'sim'))
     import numpy as np
     import mujoco
     from warp_act_episode import episode
@@ -113,6 +118,7 @@ def main():
         hourly_usd=a.vm_hourly_usd,price_basis='user/inherited VM estimate; actual billing not measured')
     write(a.out/'summary.json',report)
     hooks=(WarpTransport if a.physics_backend=='mjwarp_batch_v1' else CTransport)(host,source_sha,a.physics_backend,a.out,native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1)
+    hooks.scene_v5_v1=a.scene_v5_v1
     generators=[];contexts=[];active=np.ones(a.nworld,bool);reports={};ticks=np.zeros(a.nworld,int)
     start=time.perf_counter();loop_start=None
     try:
@@ -144,6 +150,9 @@ def main():
             initial=hooks.initial_state_proof(contexts)
             write(a.out/'initial-world-state.json',initial)
             report['initial_world_state']=initial
+            if a.initialize_only:
+                report.update(status='initialization_complete',physics_rollout_steps=0)
+                return
             if a.reset_check_v1:
                 if initial['expected_unique_qpos']<2:
                     raise ValueError('distinct starts required for the reset diagnostic')

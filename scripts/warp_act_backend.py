@@ -66,6 +66,7 @@ class Transport:
         self.prototypes={}
         self.prototype_hits=0
         self.native_sleep_policy_compat_v1=native_sleep_policy_compat_v1
+        self.scene_v5_v1=False
 
     def make_world(self, plan, scene, factory, bind_camera, **kwargs):
         if self.native_sleep_policy_compat_v1:
@@ -289,6 +290,7 @@ class WarpTransport(Transport):
             mount_quat=m.cam_quat[m.camera('r1__robot_cam').id].tolist(),
             remap_sha256=hashlib.sha256(self.mx.tobytes()+self.my.tobytes()).hexdigest(),
             renderer='MJWarp batch RGB; known partial-alpha difference from C remains')
+        self.camera['quality_requested']='no_mip_v1' if self.scene_v5_v1 else 'native'
         self.capacities = dict(nconmax=ncon,njmax=njmax,naconmax=int(self.wd.naconmax),nvmax=int(self.wd.nvmax),control_steps=self.control_steps,graph_chunk=self.graph_chunk,graph_repeats=self.graph_repeats)
         self.build_lookup(contexts[0]['world'].robot('r1'))
         self.sync_render(contexts)
