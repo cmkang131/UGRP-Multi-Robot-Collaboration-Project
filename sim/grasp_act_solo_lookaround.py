@@ -58,6 +58,7 @@ class SoloLookaround:
                                                odometry_profile=self.profile)
                 # One belief, propagated once by carry.issue; never a scene pose.
                 self.loc.own = self.command_pose.own
+                self.loc.require_fix_acceptance = True
             return
         self.loc = self.make_localizer(self.static, [float(v) for v in estimate],
                                        odometry_profile=self.profile)
@@ -114,15 +115,23 @@ class SoloLookaround:
                 self.events.append({'t': at, 'event': 'view', 'status': 'captured_only',
                     'pan_pulse': servo[6], 'rgb_sha256': hashlib.sha256(frame.tobytes()).hexdigest()})
                 return
+            if self.command_pose is not None:
+                import numpy as np
+                prior_x, prior_P = self.loc.own.x.copy(), self.loc.own.P.copy()
+                # Include the accumulated command-error budget in this update.
+                self.loc.own.P = np.diag(np.square(self.command_pose.sigmas()))
             rec = self.loc.observe(at, own_rgb(), dict(servo))
             if rec.get('status') == 'measured':
                 self.measured_views += 1
-            if self.command_pose is not None and rec.get('grid'):
-                self.command_pose.last_fix = float(at)
-                self.command_pose.fixes += 1
+            if self.command_pose is not None:
+                if rec.get('fix_acceptance', {}).get('accepted') is True:
+                    self.command_pose.accepted_fix(at)
+                else:
+                    self.loc.own.x, self.loc.own.P = prior_x, prior_P
             self.events.append({'t': at, 'event': 'view', 'status': rec.get('status'),
                                 'wall_points': rec.get('wall_points'), 'floor_lines': rec.get('floor_lines'),
-                                'doors': rec.get('doors'), 'seen_groups': rec.get('seen_groups')})
+                                'doors': rec.get('doors'), 'seen_groups': rec.get('seen_groups'),
+                                **({'fix_acceptance': rec.get('fix_acceptance')} if self.command_pose is not None else {})})
 
         self.runner.tick(now, set_servo=set_servo, set_wheels=set_wheels,
                          wheels_idle=lambda: not self.pulses, capture=capture)
@@ -140,9 +149,9 @@ class SoloLookaround:
                     'predictions_are_observations': False}
         if self.loc is None:
             return {'armed': False}
-        return {'armed': True, 'truth_free_v1': self.truth_free_v1,
-                'self_pose_source': 'task_start_issued_commands' if self.command_pose is not None else 'caller_estimate',
-                'localization_verified': False, 'events': self.events, 'measured_views': self.measured_views,
+        return {'armed': True, 'events': self.events, 'measured_views': self.measured_views,
+                **({'truth_free_v1': True, 'self_pose_source': 'task_start_issued_commands',
+                    'localization_verified': False} if self.command_pose is not None else {}),
                 'localizer': self.loc.record(),
                 'predictions_are_observations': False,
                 'pose_error': 'evaluation output only; unknown here'}

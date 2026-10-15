@@ -26,6 +26,64 @@ POSE_ERROR = (.05, math.radians(2.))
 START_RANGE_M = (.6, 1.1)
 FACING_JITTER = math.radians(25.)
 FREE_ROBOT_M = .18
+PARK_CLEARANCE_M = .15
+
+
+def carry_parking_constraints(static, start, station, zone):
+    """Scene construction only: reserve pickup, zones, passages and map routes.
+
+    These authored corridors are never forwarded to a controller. In particular
+    the carry controller must discover movable cargo from its own RGB.
+    """
+    from scripts.zone_teacher import plan_path
+    if static.get('passages') and max(p.get('width_m', 0.) for p in static['passages']) < .52:
+        raise ValueError('authored passages narrower than the unchanged carry envelope')
+    rects = keepout_rects(static, perimeter=True)
+    regions = [r for key, r in static['regions'].items()
+               if key == 'pickup' or key.startswith('zone_')]
+    forbidden = [(r['center_m'][0], r['center_m'][1], *r['half_extents_m'], 0.) for r in regions]
+    for p in static.get('passages', []):
+        forbidden.append((*p['center_m'], p.get('width_m', .6)/2, .6, 0.))
+    paths = []
+    r = static['regions']['zone_'+zone]
+    cx, cy = r['center_m']; hx, hy = r['half_extents_m']
+    goals = [(cx+sx*max(0., hx-.20)-.35, cy+sy*max(0., hy-.20))
+             for sx, sy in ((0, 0), (-1, 0), (1, 0), (0, -1), (0, 1))]
+    for i, (a, b) in enumerate([(start, station), *[(station, g) for g in goals]]):
+        path = plan_path(a, b, static['bounds_m'], [], rects=rects, radius=.26)
+        if i == 0 and not path:
+            raise ValueError('no static pickup approach for parking')
+        if path:
+            compact = []
+            for point in [list(a), *path, list(b)]:
+                if compact and math.dist(compact[-1], point) < 1e-12:
+                    continue
+                while len(compact) >= 2:
+                    u = [compact[-1][k]-compact[-2][k] for k in (0, 1)]
+                    v = [point[k]-compact[-1][k] for k in (0, 1)]
+                    if abs(u[0]*v[1]-u[1]*v[0]) > 1e-12 or sum(u[k]*v[k] for k in (0, 1)) < 0:
+                        break
+                    compact.pop()  # exact collinear compression, no shortcut
+                compact.append(list(point))
+            paths.append(compact)
+    if len(paths) < 2:
+        raise ValueError('no static pickup/delivery corridor for parking')
+    return {'profile': 'carry_parking_static_v1', 'forbidden_rects': forbidden,
+            'paths': paths, 'path_clearance_m': .26+FREE_ROBOT_M+PARK_CLEARANCE_M,
+            'region_clearance_m': FREE_ROBOT_M+PARK_CLEARANCE_M}
+
+
+def parking_clear(point, constraints):
+    if any(rect_distance(point, r) < constraints['region_clearance_m']
+           for r in constraints['forbidden_rects']):
+        return False
+    for path in constraints['paths']:
+        for a, b in zip(path, path[1:]):
+            dx, dy = b[0]-a[0], b[1]-a[1]
+            u = max(0., min(1., ((point[0]-a[0])*dx+(point[1]-a[1])*dy)/max(dx*dx+dy*dy, 1e-12)))
+            if math.dist(point, (a[0]+u*dx, a[1]+u*dy)) < constraints['path_clearance_m']:
+                return False
+    return True
 
 
 def line_of_sight(start, cargo_xy, rects, others, *, step=.02, clear_m=.05):
@@ -56,7 +114,7 @@ def candidates(kind, scenarios=SCENARIOS):
     return out
 
 
-def episode(i, kind, seed, split, *, scenarios=SCENARIOS):
+def episode(i, kind, seed, split, *, scenarios=SCENARIOS, carry_layout=False):
     rng = random.Random(seed)
     pool = candidates(kind, scenarios)
     rejects = Counter()
@@ -88,11 +146,31 @@ def episode(i, kind, seed, split, *, scenarios=SCENARIOS):
             rejects['target_hidden_from_start'] += 1
             continue
         yaw = math.atan2(cy-start[1], cx-start[0])+rng.uniform(-FACING_JITTER, FACING_JITTER)
+        parking_constraints = None
+        if carry_layout:
+            from sim.solo_carry_pose import task_start
+            x, y, yaw = task_start(static)['pose_m_rad']
+            start = (x+rng.uniform(-.02, .02), y+rng.uniform(-.02, .02))
+            yaw += rng.uniform(-math.radians(2.), math.radians(2.))
+            if not free(start) or any(math.dist(start, q['pose_m'][:2]) < .35 for q in others):
+                rejects['task_start_blocked'] += 1
+                continue
+            if not line_of_sight(start, (cx, cy), rects, others):
+                rejects['task_target_hidden'] += 1
+                continue
+            order = next(o for o in scenario['orders'] if o['order_id'] == placement['order_id'])
+            try:
+                parking_constraints = carry_parking_constraints(static, start, final, order['destination_zone'])
+            except ValueError:
+                rejects['no_static_carry_corridor'] += 1
+                continue
+            r = math.dist(start, (cx, cy))
         parking = []
         for _ in range(2):
             for _try in range(2000):
                 p = (rng.uniform(bounds[0]+.2, bounds[1]-.2), rng.uniform(bounds[2]+.2, bounds[3]-.2))
-                if free(p) and all(math.dist(p, q) > .7 for q in [start, final, (cx, cy), *parking]) \
+                if free(p) and (parking_constraints is None or parking_clear(p, parking_constraints)) \
+                        and all(math.dist(p, q) > .7 for q in [start, final, (cx, cy), *parking]) \
                         and all(math.dist(p, q['pose_m'][:2]) > .35 for q in others):
                     parking.append(p)
                     break
@@ -106,7 +184,8 @@ def episode(i, kind, seed, split, *, scenarios=SCENARIOS):
                 'robot_id': 'r1', 'cargo_pose_m': [cx, cy, placement['pose_m'][2]],
                 'spawns': {'r1': [*start, BASE_Z, yaw], 'r2': [*parking[0], BASE_Z, 0.], 'r3': [*parking[1], BASE_Z, 0.]},
                 'handoff_pose_error': err, 'start_to_cargo_m': r, 'proposal_attempts': attempt+1,
-                'rejects': dict(rejects)}
+                'rejects': dict(rejects),
+                **({'parking_check': parking_constraints} if carry_layout else {})}
     raise ValueError(f'no admissible start for {kind} index {i}: {dict(rejects)}')
 
 

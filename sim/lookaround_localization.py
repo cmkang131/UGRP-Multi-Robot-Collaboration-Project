@@ -194,6 +194,7 @@ class LookaroundLocalizer:
         self.gates = contract.own_image_gates()
         self.field = Field(static); self.mapped = MapFeatures(static)
         self.views, self.plan = [], None
+        self.require_fix_acceptance = False  # opt-in carry; legacy byte output unchanged
 
     # --- own motion ---
     def propagate(self, wheels, seconds):
@@ -264,12 +265,90 @@ class LookaroundLocalizer:
         rec.update(status='measured', wall_points=int(len(walls)), floor_lines=len(floors), doors=len(doors),
                    features=copy.deepcopy(floors+doors))
         if len(walls)+len(floors)+len(doors):
+            prior, covariance = self.own.x.copy(), self.own.P.copy()
             self._grid_update(walls, floors+doors, rec)
+            if self.require_fix_acceptance:
+                rec['fix_acceptance'] = self.fix_acceptance(walls, floors, doors, prior, covariance)
+                if not rec['fix_acceptance']['accepted']:
+                    self.own.x, self.own.P = prior, covariance
         rec['posterior'] = [float(z) for z in self.own.x]
         rec['posterior_sigma'] = [float(math.sqrt(self.own.P[i, i])) for i in range(3)]
         rec['seen_groups'] = self.seen_groups(walls, floors, doors)
         self.views.append(rec)
         return rec
+
+    def fix_acceptance(self, walls, floors, doors, prior, covariance):
+        """Gate a proposed grid posterior using the existing map feature models.
+
+        A grid is a computation, not evidence. Reuse the localizer's wall/zone/
+        door residuals and OwnPose's 99% scalar chi-square gate. Require at least
+        two independent feature groups and full pose rank; a lone wall cannot
+        renew a complete SE(2) fix. Caller rolls back a rejected posterior.
+        """
+        from sim.active_lookaround import GATE_CHI2_1, MIN_GAIN
+        from harness.zone_solo_cyan_landmarks import PARAMS
+        x, y, a = self.own.x; c, s = math.cos(a), math.sin(a)
+        rot = np.array([[c, -s], [s, c]])
+        rows, errors, groups = [], [], set()
+
+        def line_row(point, normal):
+            q = rot @ np.asarray(point)
+            return [*normal, float(np.asarray(normal) @ [-q[1], q[0]])]
+
+        for q in np.asarray(walls).reshape(-1, 2):
+            world = np.array([x, y])+rot@q
+            matches = [(abs((world-np.asarray(l['xy']))@l['normal'])+
+                        .2*max(0., math.dist(world, l['xy'])-SAMPLE_WALL_M), i)
+                       for i, l in enumerate(self.landmarks) if l['type'] == 'wall']
+            if not matches:
+                errors.append(math.inf); continue
+            distance, i = min(matches); lm = self.landmarks[i]
+            error = (distance/SIGMA_WALL_M)**2; errors.append(error)
+            if error <= GATE_CHI2_1:
+                rows.append(line_row(q, lm['normal'])); groups.add(lm['group'])
+        for f in floors:
+            points = np.asarray(f['endpoints']); world = np.array([x, y])+points@rot.T
+            angle = a+math.atan2(f['normal'][1], f['normal'][0])
+            matches = []
+            for i, edge in enumerate(self.mapped.edges):
+                hd = abs(edge['hue']-f['hue'])
+                if min(hd, 180-hd) > PARAMS['hue_tolerance']:
+                    continue
+                vec = edge['b']-edge['a']
+                u = np.clip((world-edge['a'])@vec/(vec@vec), 0., 1.)
+                distance = float(np.sqrt(np.mean(np.sum((world-edge['a']-u[:, None]*vec)**2, axis=1))))
+                da = wrap(angle-math.atan2(edge['normal'][1], edge['normal'][0]))
+                e = [(distance/PARAMS['sigma_line_m'])**2, (da/PARAMS['sigma_line_angle_rad'])**2]
+                matches.append((sum(e), i, e))
+            if not matches:
+                errors.append(math.inf); continue
+            _, i, e = min(matches); edge = self.mapped.edges[i]; errors.extend(e)
+            if max(e) <= GATE_CHI2_1:
+                rows.extend([line_row(points.mean(0), edge['normal']), [0., 0., 1.]])
+                groups.add('floor:'+str(i))
+        for f in doors:
+            q = np.asarray(f['center']); world = np.array([x, y])+rot@q
+            matches = [(math.dist(world, d['center']), i) for i, d in enumerate(self.mapped.doors)]
+            if not matches:
+                errors.append(math.inf); continue
+            distance, i = min(matches)
+            e = [(distance/PARAMS['sigma_range_m'])**2,
+                 ((f['width']-self.mapped.doors[i]['width'])/PARAMS['sigma_width_m'])**2]
+            errors.extend(e)
+            if max(e) <= GATE_CHI2_1:
+                rows.extend([line_row(q, (1., 0.)), line_row(q, (0., 1.))]); groups.add('door:'+str(i))
+        shift = self.own.x-prior; shift[2] = wrap(shift[2])
+        finite = bool(np.isfinite(self.own.x).all() and np.isfinite(self.own.P).all())
+        chi2 = float(shift @ np.linalg.solve(covariance+self.own.P, shift)) if finite else math.inf
+        gain = float(np.linalg.slogdet(covariance)[1]-np.linalg.slogdet(self.own.P)[1]) if finite else -math.inf
+        rank = int(np.linalg.matrix_rank(np.asarray(rows))) if rows else 0
+        fraction = sum(e <= GATE_CHI2_1 for e in errors)/max(1, len(errors))
+        accepted = (finite and len(errors) >= 3 and len(groups) >= 2 and rank == 3
+                    and fraction >= .8 and chi2 <= 11.345 and gain >= MIN_GAIN)
+        return {'accepted': bool(accepted), 'residual_count': len(errors), 'inlier_fraction': fraction,
+                'groups': sorted(groups), 'pose_rank': rank, 'innovation_chi2': chi2,
+                'innovation_chi2_limit': 11.345, 'residual_chi2_limit': GATE_CHI2_1,
+                'information_gain': gain, 'minimum_information_gain': MIN_GAIN}
 
     def _grid_update(self, walls, features, rec):
         from harness.zone_solo_cyan_landmarks import landmark_likelihood

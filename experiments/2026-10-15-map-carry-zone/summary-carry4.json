@@ -1,0 +1,118 @@
+{
+  "schema": "ugrp.solo_carry4.offline_summary.v1",
+  "base_source_sha": "de8c24125c8bc8966ec82fb3935e7e0eb5005053",
+  "candidate_source": "commit containing this file; full SHA pinned in post-push disabled queue",
+  "branch": "claude/map-carry-zone",
+  "pr": 505,
+  "status": "offline_checks_passed_not_submitted",
+  "research_result": false,
+  "coordinator_approved": false,
+  "counts": {
+    "tests_passed": 121,
+    "final_recheck_passed": 13,
+    "planned": 8,
+    "submitted": 0,
+    "completed_physical": 0,
+    "HOST_ERROR": 0,
+    "model_calls": 0,
+    "new_physics": 0,
+    "new_render": 0
+  },
+  "runs": [
+    {
+      "seed": 93220,
+      "kind": "cyan",
+      "scenario": "s2_unmapped_blockage_v6",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null
+    },
+    {
+      "seed": 93221,
+      "kind": "red",
+      "scenario": "s7_pair_with_solo_v6",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null
+    },
+    {
+      "seed": 93222,
+      "kind": "green",
+      "scenario": "s2_unmapped_blockage_v6",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null
+    },
+    {
+      "seed": 93223,
+      "kind": "yellow",
+      "scenario": "s8_mixed_tiers_v6",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null
+    },
+    {
+      "seed": 93224,
+      "kind": "cyan",
+      "scenario": "s2_unmapped_blockage_v6",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null
+    },
+    {
+      "seed": 93225,
+      "kind": "red",
+      "scenario": "s7_pair_with_solo_v6",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null
+    },
+    {
+      "seed": 93226,
+      "kind": "green",
+      "scenario": "s2_unmapped_blockage_v6",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null
+    },
+    {
+      "seed": 93227,
+      "kind": "yellow",
+      "scenario": "s8_mixed_tiers_v6",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null
+    }
+  ],
+  "geometry": {
+    "fov_n": 8,
+    "N": 8,
+    "jitter_fov_n": 64,
+    "jitter_N": 64,
+    "cell_centres_in_frame": 28,
+    "body_movement_needed_in_tested_geometry": false
+  },
+  "default_off_fixture": {
+    "source_commit": "4e387d394dbd1e81d1e7bdf4725df1c2d5616819",
+    "source": "pre-carry default-off full successful command lifecycle plus diagnostic/context bytes",
+    "byte_count": 291918,
+    "sha256": "6bdae7091532a70049fea9ea00f56b38b32f264c73cce4ae8e42450f258bed9e",
+    "lookaround_record": "{\"armed\": true, \"events\": [], \"measured_views\": 0, \"localizer\": {\"test\": \"legacy\"}, \"predictions_are_observations\": false, \"pose_error\": \"evaluation output only; unknown here\"}"
+  },
+  "artifact_sha256": {
+    "carry4.md": "2e65fc0c0f11e68d1b4d9b042dc8691ea29a319934f00aa3607155b6209b6b0c",
+    "diagnostic-plan-v4.json": "81927cea27c4ad9dbd0d15311e3cf07f79b354bbcc7a46a994d1a5cd6883ae3e",
+    "carry4-geometry.json": "a564cf89a730b0726e0b42374a0b6fc41d457149f538e10aa5ccf580e37c16e3",
+    "carry4-command-budget.json": "6bb707dd579149108c54a98a612ff670736be992645f22b9f4d1ade3ed7d55c4",
+    "carry4-seed-check.json": "810df9baf8eaba15e934b977ea3ff38d5452763746f1ca0abeda77b0fab6b1fa",
+    "offline-tests-carry4.txt": "a4c5c80abdaec1bbc8f5734fed777128077eed4f3d19383df060029ce38312df",
+    "offline-final-carry4.txt": "6fc2dac461852fdc9ebc86947a68c6465629662e645c868bd5a138b0e18dd3e4"
+  },
+  "remote_unused_verified": false,
+  "remaining": [
+    "independent review and exact SHA approval",
+    "VM seed/cost/storage/speed admission",
+    "same-host loaded error calibration and RGB obstacle validation",
+    "physical pickup/carry/release and localization sufficiency unverified"
+  ]
+}

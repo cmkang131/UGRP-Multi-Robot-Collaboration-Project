@@ -399,6 +399,15 @@ def test_zone_carry_real_runner_with_stub_world_never_uses_held_truth_or_legacy_
         return decode(raw, flags)
     monkeypatch.setattr(cv2, 'imdecode', own_decode)
     monkeypatch.setattr(cm.CarryToZone, 'place_visible', lambda *a: True)
+    obstacle_refreshes = []
+    refresh = cm.CarryToZone.refresh_obstacles
+    def tracked_refresh(self, bgr, pwm, now, **kw):
+        obstacle_refreshes.append((now, kw['holding']))
+        return refresh(self, bgr, pwm, now, **kw)
+    monkeypatch.setattr(cm.CarryToZone, 'refresh_obstacles', tracked_refresh)
+    # Irregular fake backend clock: timestamps must be integrated as observed.
+    monkeypatch.setattr(world, '_physics_step_for', lambda robot: setattr(world.data, 'time', world.data.time+.013))
+
     out = runs/'carry'
     report = runner.run(p, out, execution_host='gcp1', profile='solo_visible_only_v1',
         hidden=True, look=True, cap_s=14., rgb_lift_mode='solo_lift_lookback_v1',
@@ -406,11 +415,16 @@ def test_zone_carry_real_runner_with_stub_world_never_uses_held_truth_or_legacy_
     assert report['status'] == 'complete'
     assert not report['physical_success']  # fixture cargo never actually lifted
     assert report['destination_zone'] == p['destination_zone']
+    assert sum(held for _, held in obstacle_refreshes) >= 3
     assert report['input_audit']['held_world_reads'] == 0
     assert report['input_audit']['blocked_held'] > 0
     assert report['lookaround']['localizer']['truth_free_v1']
     trace = [json.loads(s) for s in (out/'teacher-commands.jsonl').read_text().splitlines()]
     assert all(r['map_pose']['own_frame']['camera'] == 'r1/robot_cam' for r in trace)
+    for a, b in zip(trace, trace[1:]):
+        assert b['map_pose']['last_dt_s'] == pytest.approx(b['t']-a['t'])
+    assert any(abs(r['map_pose']['last_dt_s']-.1) > .001 for r in trace[1:])
+    assert all('carry_obstacles' in r for r in trace)
     assert not (out/'map-rgb').exists()
     assert all(p.read_bytes() == sentinel for p in (out/'review-top').glob('*.jpg'))
     assert {'zone_place_view', 'zone_place_advance', 'lower', 'open', 'backoff'} <= {r['phase'] for r in trace}

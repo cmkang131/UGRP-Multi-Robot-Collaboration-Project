@@ -197,8 +197,21 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         def route(goal, context):
             # Current visible wall measurements remain in the body frame;
             # an uncertain map prior cannot fabricate a registered self pose.
-            path = plan_path((0., 0.), goal[:2], (-2., 2., -2., 2.), observed_discs,
-                             rects=observed_rects, radius=.17)
+            discs, rects = observed_discs, observed_rects
+            if carry is not None:
+                x, y, a = carry.loc.pose; c, s = math.cos(a), math.sin(a)
+                from scripts.zone_teacher import PeerDisc
+                discs = [PeerDisc((c*(ox-x)+s*(oy-y), -s*(ox-x)+c*(oy-y), r))
+                         for ox, oy, r in carry.obstacles.discs(carry.loc.now)]
+                # The local teacher already has this currently visible target.
+                # Its relative measurement is never forwarded to map memory.
+                if teacher.target is not None:
+                    tx, ty = teacher.target['xyz'][:2]
+                    discs = [d for d in discs if math.dist(d[:2], (tx, ty)) > .12]
+                rects = [(c*(ox-x)+s*(oy-y), -s*(ox-x)+c*(oy-y), hx, hy, angle-a)
+                         for ox, oy, hx, hy, angle in carry.rects]
+            path = plan_path((0., 0.), goal[:2], (-2., 2., -2., 2.), discs,
+                             rects=rects, radius=.17)
             if not path:
                 return 0., 0., 0.
             point = next((p for p in path if math.hypot(*p) >= .06), goal[:2])
@@ -309,7 +322,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             map_evidence = None
             if carry is not None:
                 if tick:
-                    carry.issue(previous, .1)
+                    carry.issue(previous, now-float(previous['t']))
                 carry.observe_own(bgr, now, camera=rid+'/robot_cam')
                 map_evidence = {'t': now, **carry.loc.record()}
             if recorder is not None:
@@ -336,7 +349,13 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                     g = truth_pose(); pose_error = plan['handoff_pose_error']
                     relook.arm([g[0]+pose_error[0], g[1]+pose_error[1], g[2]+pose_error[2]])
                     look_eval['before'] = look_truth(); look_eval['armed_t'] = now
-            if tick % 5 == 0 and (carry is None or not teacher.holding):
+            if carry is not None and (tick % 5 == 0 or teacher.holding != carry.obstacles.holding):
+                # Carry sees own RGB only, including while holding. No scene
+                # visibility gate or truth coordinates enter this memory.
+                grasp_pwm = {1: 1500, **teacher.low} if teacher.low is not None else None
+                carry.refresh_obstacles(bgr, teacher.sink.pwm, now, holding=teacher.holding,
+                                        kind=plan['kind'], grasp_pwm=grasp_pwm)
+            if tick % 5 == 0 and carry is None:
                 # Currently visible obstacles only (same one-third gate as the target),
                 # refreshed at 2 Hz: it feeds the route planner, never a pose or a label.
                 refresh_obstacles()
@@ -375,6 +394,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 'student_context': teacher.context(now), 'rgb_confirmation': rgb_result,
                 **({'map_pose': map_evidence, 'destination_floor_visible': place_visible,
                     'pickup_search': teacher.pickup_search.record(),
+                    'carry_obstacles': carry.obstacles.record(),
                     'phase_before': phase_before} if carry is not None else {})})+'\n')
 
             # Full truth owner, written only to eval-only.jsonl / Score.

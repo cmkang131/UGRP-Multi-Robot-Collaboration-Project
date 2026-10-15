@@ -644,10 +644,9 @@ class SoloTeacher:
             'negative_probe': self.negative_probe,
             'solo_lift_negative_probe_v1': self.negative_probe,
             'solo_lift_lookback_margin_v1': self.lookback_margin,
-            'solo_carry_to_zone_v1': self.carry is not None,
-            'pickup_search': ({**self.pickup_search.record(), 'views': self.pickup_search.views}
-                              if self.pickup_search is not None else None),
-            'carry': self.carry.record() if self.carry is not None else None,
+            **({'solo_carry_to_zone_v1': True,
+                'pickup_search': {**self.pickup_search.record(), 'views': self.pickup_search.views},
+                'carry': self.carry.record()} if self.carry is not None else {}),
             'gate_eligible': not self.negative_probe and self.carry is None,
             'lookback_commanded_backoff_m': self.lookback_m,
             'lookback_commanded_return_m': self.lookback_return_m,

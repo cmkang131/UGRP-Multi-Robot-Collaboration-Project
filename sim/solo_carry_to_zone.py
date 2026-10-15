@@ -160,6 +160,8 @@ class CarryToZone:
         self.rects = keepout_rects(static, perimeter=True)
         self.radius = .26  # chassis + upright small box/arm envelope + clearance
         self.path = None
+        from sim.solo_carry_obstacles import RGBObstacleMemory
+        self.obstacles = RGBObstacleMemory()
         self.slot = self.goal = None
         self.started = None
         self.arrived = None
@@ -184,6 +186,11 @@ class CarryToZone:
     def observe_own(self, bgr, now, *, camera):
         self.loc.observe_own(bgr, now, camera=camera)
 
+    def refresh_obstacles(self, bgr, pwm, now, *, holding, kind, grasp_pwm):
+        self.obstacles.observe(bgr, pwm, self.loc.pose, now, holding=holding,
+                               kind=kind, grasp_pwm=grasp_pwm)
+        self.last_plan = -math.inf  # a newly visible obstacle invalidates the route
+
     def start(self, now, grip_xy):
         self.started = now
         self.grip_xy = tuple(grip_xy)
@@ -192,6 +199,7 @@ class CarryToZone:
             return
         # Fixed map slot candidates, nearest reachable stand-off first. No
         # pickup position or current cargo world position is consulted.
+        discs = self.obstacles.discs(now)
         cx, cy = self.region['center_m']; hx, hy = self.region['half_extents_m']
         candidates = [(cx+sx*max(0., hx-.20), cy+sy*max(0., hy-.20))
                       for sx, sy in ((0, 0), (-1, 0), (1, 0), (0, -1), (0, 1))]
@@ -200,11 +208,11 @@ class CarryToZone:
             goal = (slot[0]-grip_xy[0]-self.advance_m, slot[1]-grip_xy[1])
             final = (goal[0]+self.advance_m, goal[1])
             retreat = (final[0]-.15, final[1])
-            if not (free(goal, [], self.rects, self.radius) and
-                    segment_free(goal, final, [], self.rects, self.radius) and
-                    segment_free(final, retreat, [], self.rects, self.radius)):
+            if not (free(goal, discs, self.rects, self.radius) and
+                    segment_free(goal, final, discs, self.rects, self.radius) and
+                    segment_free(final, retreat, discs, self.rects, self.radius)):
                 continue
-            path = plan_path(self.loc.pose[:2], goal, self.static['bounds_m'], [], rects=self.rects, radius=self.radius)
+            path = plan_path(self.loc.pose[:2], goal, self.static['bounds_m'], discs, rects=self.rects, radius=self.radius)
             if path:
                 self.slot, self.goal, self.path = slot, goal, path
                 break
@@ -217,6 +225,9 @@ class CarryToZone:
         if not self.loc.ready(now):
             return (0., 0., 0.), False, 'carry_self_pose_stale'
         pose = self.loc.pose
+        discs = self.obstacles.discs(now)
+        if not free(self.goal, discs, self.rects, self.radius):
+            return (0., 0., 0.), False, 'carry_goal_obstructed'
         distance = math.dist(pose[:2], self.goal)
         if distance <= .025 and abs(wrap(pose[2])) <= .04:
             self.arrived = now
@@ -224,9 +235,9 @@ class CarryToZone:
         if distance <= .025:
             return (0., 0., max(-.1, min(.1, -.6*wrap(pose[2])))), False, None
         if now-self.last_plan >= 1.:
-            self.path = plan_path(pose[:2], self.goal, self.static['bounds_m'], [], rects=self.rects, radius=self.radius)
+            self.path = plan_path(pose[:2], self.goal, self.static['bounds_m'], discs, rects=self.rects, radius=self.radius)
             self.last_plan = now
-        target = waypoint(pose[:2], self.path, [], self.rects, self.radius)
+        target = waypoint(pose[:2], self.path, discs, self.rects, self.radius)
         if target is None:
             return (0., 0., 0.), False, 'carry_no_static_route'
         cmd = proportional_drive(pose, self.goal, target, 0.)
@@ -260,5 +271,5 @@ class CarryToZone:
                 'stand_off_xy': self.goal, 'radius_m': self.radius, 'map_sha256': self.map_sha256,
                 'self_pose': self.loc.record(), 'carry_started_t': self.started,
                 'map_arrival_estimated_t': self.arrived, 'failure': self.failure,
-                'path': self.path, 'static_route_only': True,
+                'path': self.path, 'static_route_only': False, 'obstacles': self.obstacles.record(),
                 'held_world_reads': 0, 'physical_success': None}

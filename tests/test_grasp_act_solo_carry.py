@@ -206,10 +206,10 @@ def test_fresh_plan_and_queue_are_v6_balanced_disabled_and_truth_free():
     from harness.grasp_act_seed_splits import registry, split_of
     p = prepare(); q = queue(p, 'f'*40, 123)
     old = json.loads(Path('experiments/2026-10-15-map-carry-zone/diagnostic-plan-v2.json').read_text())
-    assert [e['seed'] for e in p['episodes']] == list(range(93210, 93218))
+    assert [e['seed'] for e in p['episodes']] == list(range(93220, 93228))
     for fresh, previous in zip(p['episodes'], old['episodes']):
-        for key in ('scenario_id', 'cargo_pose_m', 'spawns', 'task_start'):
-            assert fresh[key] == previous[key]
+        assert fresh['spawns'] != previous['spawns']
+        assert fresh['parking_check']['profile'] == 'carry_parking_static_v1'
     assert p['distribution'] == dict.fromkeys(('cyan', 'red', 'green', 'yellow'), 2)
     for e in p['episodes']:
         assert e['scenario_id'].endswith('_v6') and 'handoff_pose_error' not in e

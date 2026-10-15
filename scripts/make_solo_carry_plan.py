@@ -16,7 +16,7 @@ from harness.zone_environment_registry import load_scenario
 from harness.zone_final_environment import resolve, digest
 
 ROOT = Path(__file__).resolve().parents[1]
-PLAN = 'experiments/2026-10-15-map-carry-zone/diagnostic-plan-v3.json'
+PLAN = 'experiments/2026-10-15-map-carry-zone/diagnostic-plan-v4.json'
 SCENARIOS = ('s1_normal_mixed_v6', 's2_unmapped_blockage_v6', 's3_late_rendezvous_v6',
              's5_moved_dropped_item_v6', 's6_novel_relation_v6', 's7_pair_with_solo_v6', 's8_mixed_tiers_v6')
 
@@ -52,18 +52,29 @@ def prepare_legacy_v2():
 
 
 def prepare():
-    """Keep all eight frozen conditions; allocate fresh execution seeds only."""
+    """Fresh layout generated against the actual task start and static corridors."""
     from sim.solo_pickup_search import PROFILE
-    check_range('solo_carry_diagnostic_v1', 93210, 8)
-    plan = json.loads((ROOT/'experiments/2026-10-15-map-carry-zone/diagnostic-plan-v2.json').read_text())
-    plan.update(schema='ugrp.solo_carry_plan.v3',
-                reused_condition_plan='diagnostic-plan-v2.json',
-                prior_seeds_used=list(range(93200, 93208)))
-    for i, p in enumerate(plan['episodes']):
-        p.update(condition_source_seed=p['seed'], seed=93210+i,
-                 episode_id=f'solo_carry_diagnostic_v1-{93210+i}', batch='solo-carry-zone-v3',
-                 pickup_search_profile=PROFILE)
-    return plan
+    check_range('solo_carry_diagnostic_v1', 93220, 8)
+    episodes = []
+    for i, kind in enumerate(BOX_KINDS*2):
+        p = episode(i//4, kind, 93220+i, 'solo_carry_diagnostic_v1',
+                    scenarios=SCENARIOS, carry_layout=True)
+        scenario = load_scenario(p['scenario_id'])
+        placement = next(x for x in scenario['eval']['setup']['placements'] if x['item_id'] == p['item_id'])
+        order = next(x for x in scenario['orders'] if x['order_id'] == placement['order_id'])
+        static = resolve(p['map_id'])[0]
+        p.pop('handoff_pose_error')
+        p.update(task_start=task_start(static), carry_pose_profile='own_command_v2', amcl_option='off',
+                 start_setup_profile='task_start_jitter_2cm_2deg_v2', pickup_search_profile=PROFILE,
+                 solo_carry_to_zone_v1=True, destination_zone=order['destination_zone'],
+                 static_map_sha256=digest(static), negative_probe=False, gate_eligible=False,
+                 training_eligible=False, batch='solo-carry-zone-v4', training_rgb=False)
+        episodes.append(p)
+    return {'schema': 'ugrp.solo_carry_plan.v4', 'episodes': episodes,
+            'distribution': dict(Counter(e['kind'] for e in episodes)),
+            'prior_seeds_used_or_reserved': [*range(93200, 93208), *range(93210, 93218)],
+            'research_result': False, 'training_rgb': False, 'gate_eligible': False,
+            'gate_promotion_authorized_if_all_conditions_pass': False}
 
 
 def queue(plan, sha, pr):
@@ -82,16 +93,16 @@ def queue(plan, sha, pr):
                 '--solo-truth-free-lookaround-v1', '--solo-carry-to-zone-v1',
                 '--plan', PLAN, '--episode', str(i), '--cap-s', '300',
                 '--out', f'/home/ugrp/ugrp-sim/runs/{name}/raw']})
-    return {'schema': 'ugrp.solo_carry_queue.v3', 'branch': 'claude/map-carry-zone', 'pr': pr,
+    return {'schema': 'ugrp.solo_carry_queue.v4', 'branch': 'claude/map-carry-zone', 'pr': pr,
         'sha': sha, 'host': 'gcp1', 'machine_type': 'n4-highcpu-64', 'project': 'ugrp-act-train-1014',
         'source_worktree': str(ROOT), 'runner_cwd': '/Users/changmin/projects/ugrp',
         'status': 'prepared_not_submitted', 'ready': False, 'runs_enabled': False,
         'coordinator_approval': {'approved': False, 'source_sha': sha, 'review': None},
         'gate_promotion_authorized_if_all_conditions_pass': False, 'gate_eligible': False,
         'training_rgb': False, 'top_rgb_control_allowed': False, 'amcl_option': 'off',
-        'supersedes_blocked_queue': '20261015-solo-carry-84a1b7b8.json', 'run_count': 8, 'runs': runs, 'max_parallel': 1,
+        'supersedes_blocked_queue': '20261015-solo-carry-de8c2412.json', 'run_count': 8, 'runs': runs, 'max_parallel': 1,
         'plan_sha256': hashlib.sha256((ROOT/PLAN).read_bytes()).hexdigest(),
-        'seed_reservation': {'split': 'solo_carry_diagnostic_v1', 'range': [93210, 93217],
+        'seed_reservation': {'split': 'solo_carry_diagnostic_v1', 'range': [93220, 93227],
                              'remote_unused_verified': False},
         'storage_budget_mib': {'per_run': 256, 'total': 2048, 'measured': False},
         'preconditions': [
@@ -116,7 +127,8 @@ def main():
         plan = prepare()
         a.plan_out.parent.mkdir(parents=True, exist_ok=True)
         with a.plan_out.open('x') as f:
-            json.dump(plan, f, indent=2); f.write('\n')
+            # Compact static corridor arrays keep the frozen plan below 64 KiB.
+            json.dump(plan, f, separators=(',', ':')); f.write('\n')
     if a.queue_out:
         if not a.pr:
             p.error('--pr required for queue')

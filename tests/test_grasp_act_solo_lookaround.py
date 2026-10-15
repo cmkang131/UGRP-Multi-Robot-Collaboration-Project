@@ -170,7 +170,7 @@ def test_carry_relook_shares_only_command_belief_and_counts_real_updates(static)
         if len(seen) == 1:
             return {'status': 'measured', 'wall_points': 0, 'floor_lines': 0, 'doors': 0}
         pose.own.x[0] += .001  # detector substitute, no backend/evaluation
-        return {'status': 'measured', 'grid': {'poses': 3}, 'wall_points': 2,
+        return {'status': 'measured', 'grid': {'poses': 3}, 'fix_acceptance': {'accepted': True}, 'wall_points': 2,
                 'floor_lines': 0, 'doors': 0, 'seen_groups': ['wall_west:e']}
     look.loc.observe = observe
     look.start(.1, 1500)

@@ -16,6 +16,10 @@ START_PROFILE = 'solo_carry_task_start_v2'
 AMCL_SOURCE = 'own_rgb_static_map_amcl_v1'
 START_KEYS = {'profile', 'source', 'pose_m_rad', 'sigma_xy_m', 'sigma_yaw_rad',
               'instruction', 'is_observation'}
+MOTION_ERROR = {'translation_fraction': .25, 'rotation_fraction': .25,
+                'yaw_rad_per_m': .10, 'max_xy_m': .5, 'max_yaw_rad': math.radians(20.),
+                'basis': 'uncalibrated conservative accumulated slip budget; carry4.md',
+                'profile': 'correlated_command_error_v1'}
 
 
 def task_start(static):
@@ -55,16 +59,29 @@ class CommandPose:
         self.last_amcl_t = None
         self.own_frame = None
         self.fixes = 0
+        self.distance_since_fix = self.turn_since_fix = 0.
+        self.last_dt = None
 
     @property
     def pose(self):
         return self.own.x.tolist()
 
     def issue(self, issued, dt):
-        if not math.isfinite(dt) or not 0 < dt <= .15+1e-8:
+        if not math.isfinite(dt) or not 0 < dt <= 1.+1e-8:
             raise ValueError('bounded command integration required')
-        self.own.propagate(*command_delta(issued, dt))
+        if abs(float(issued['t'])-self.now) > 1e-6:
+            raise ValueError('command integration must follow the actual tick clock')
+        dx, dy, da = command_delta(issued, dt)
+        self.own.propagate(dx, dy, da, k_trans=0., k_rot=0.)
+        self.distance_since_fix += math.hypot(dx, dy)
+        self.turn_since_fix += abs(da)
+        self.last_dt = float(dt)
         self.now = float(issued['t'])+dt
+
+    def accepted_fix(self, now):
+        self.last_fix = float(now)
+        self.fixes += 1
+        self.distance_since_fix = self.turn_since_fix = 0.
 
     def observe_own(self, frame, now, *, camera):
         if camera != self.robot_id+'/robot_cam':
@@ -98,17 +115,23 @@ class CommandPose:
             raise ValueError('AMCL report must be extrapolated to current command epoch')
         updated = OwnPose(pose, sx, sa)
         self.own.x, self.own.P = updated.x, updated.P  # preserve shared re-look belief
-        self.last_amcl_t = self.last_fix = at
-        self.fixes += 1
+        self.last_amcl_t = at
+        self.accepted_fix(at)
 
     def ready(self, now):
         sigma = self.sigmas()
         return (math.isfinite(now) and -.001 <= now-self.now <= .2+1e-8
                 and all(math.isfinite(v) for v in self.pose+sigma)
-                and max(sigma[:2]) <= .5 and sigma[2] <= math.radians(20.))
+                and max(sigma[:2]) <= MOTION_ERROR['max_xy_m'] and sigma[2] <= MOTION_ERROR['max_yaw_rad'])
 
     def sigmas(self):
-        return [math.sqrt(max(0., float(self.own.P[i, i]))) for i in range(3)]
+        base = [math.sqrt(max(0., float(self.own.P[i, i]))) for i in range(3)]
+        xy = MOTION_ERROR['translation_fraction']*self.distance_since_fix
+        yaw = (MOTION_ERROR['rotation_fraction']*self.turn_since_fix+
+               MOTION_ERROR['yaw_rad_per_m']*self.distance_since_fix)
+        # Correlated bias grows with total issued motion, not sqrt(tick count).
+        # This budget is deliberately NOT described as a calibrated covariance.
+        return [base[0]+xy, base[1]+xy, base[2]+yaw]
 
     def record(self):
         return {'pose_estimate': self.pose, 'source': 'task_start_then_issued_commands_own_rgb_relook',
@@ -118,4 +141,8 @@ class CommandPose:
                 'command_only_age_s': self.now-(self.started if self.last_fix is None else self.last_fix),
                 'rgb_fixes': self.fixes, 'own_frame': self.own_frame,
                 'amcl_option': self.amcl_option, 'localization_verified': False,
+                'motion_error': MOTION_ERROR, 'last_dt_s': self.last_dt,
+                'error_bound_semantics': 'covariance sigma plus correlated command bias; not calibrated sigma',
+                'issued_distance_since_fix_m': self.distance_since_fix,
+                'issued_turn_since_fix_rad': self.turn_since_fix,
                 'uncertainty_calibrated': False, 'top_rgb_control_allowed': False}
