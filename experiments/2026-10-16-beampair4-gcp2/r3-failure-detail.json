@@ -1,0 +1,618 @@
+{
+  "analysis_host": "gcp2",
+  "source_scope": "post-R3 failure analysis; never baseline evidence",
+  "episode_funnel": [
+    {
+      "gate": "submitted",
+      "entered": 1,
+      "cumulative_passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "both_align_and_joint_hold",
+      "entered": 1,
+      "cumulative_passed": 0,
+      "rejected": 1
+    }
+  ],
+  "candidate_first_rejections": {
+    "blocked_goal": 6916
+  },
+  "blocker_occurrences": [
+    {
+      "reason": "blocked_goal",
+      "category": "memory_margin",
+      "blocked_object": "zone_wall_west",
+      "N": 6916
+    },
+    {
+      "reason": "blocked_goal",
+      "category": "current_geometry",
+      "blocked_object": "zone_wall_north",
+      "N": 6916
+    }
+  ],
+  "approach_frame_distributions": {
+    "success_runs": {
+      "N": 0,
+      "command_actual_cosine": null,
+      "observed_distance_m": null,
+      "direction_opposed_N": 0,
+      "command_away_band_N": 0,
+      "actual_away_band_N": 0
+    },
+    "failure_runs": {
+      "N": 136,
+      "command_actual_cosine": {
+        "N": 38,
+        "min": 0.989002340975391,
+        "p05": 0.9986204824357251,
+        "p50": 0.9999075966305253,
+        "p95": 0.9999970625793153,
+        "max": 0.999999655406427
+      },
+      "observed_distance_m": {
+        "N": 122,
+        "min": 0.967260515704098,
+        "p05": 0.9674320079013968,
+        "p50": 1.001525228071276,
+        "p95": 1.3645621817384115,
+        "max": 1.424701539166821
+      },
+      "direction_opposed_N": 0,
+      "command_away_band_N": 0,
+      "actual_away_band_N": 32
+    }
+  },
+  "failures": [
+    {
+      "seed": 8318626,
+      "last6": {
+        "r1": {
+          "N": 61,
+          "range": [
+            21.500000000020055,
+            27.500000000048704
+          ],
+          "observed_distance": [
+            0.20273005127688873,
+            0.20270530611949078
+          ],
+          "evaluator_displacement_m": 2.799859534061999e-05,
+          "command_delta_sum": [
+            0.0,
+            0.0
+          ],
+          "command_actual_cosine": null,
+          "observed_ids_counts": {
+            "band_teal": 61
+          },
+          "nonzero_wheel_rows": 0,
+          "physical_contact_rows": 0,
+          "physical_contact_names": {},
+          "peer_distance_m": {
+            "N": 61,
+            "min": 0.5286361121019119,
+            "p05": 0.5286398842208054,
+            "p50": 0.5287498167666376,
+            "p95": 0.5287591000295434,
+            "max": 0.5287979539325092
+          },
+          "beam_displacement_m": 0.0
+        },
+        "r2": {
+          "N": 61,
+          "range": [
+            21.500000000020055,
+            27.500000000048704
+          ],
+          "observed_distance": [
+            1.0014644433861029,
+            1.0015157322303059
+          ],
+          "evaluator_displacement_m": 0.00010261812216116276,
+          "command_delta_sum": [
+            0.0,
+            0.0
+          ],
+          "command_actual_cosine": null,
+          "observed_ids_counts": {
+            "band_blue": 61
+          },
+          "nonzero_wheel_rows": 0,
+          "physical_contact_rows": 0,
+          "physical_contact_names": {},
+          "peer_distance_m": {
+            "N": 61,
+            "min": 0.5286361121019119,
+            "p05": 0.5286398842208054,
+            "p50": 0.5287498167666376,
+            "p95": 0.5287591000295434,
+            "max": 0.5287979539325092
+          },
+          "beam_displacement_m": 0.0
+        }
+      }
+    }
+  ],
+  "note": "blocker occurrences may overlap within a candidate; directions per issued pulse and subsequent saved-state interval; qpos contacts are geometric snapshots only",
+  "reproduce": "PYTHONPATH=/home/ugrp/ugrp-sim/src/d72efd13957ce450c5cccc3fd93a555a37dd4705 python3 /home/ugrp/ugrp-sim/src/d72efd13957ce450c5cccc3fd93a555a37dd4705/scripts/analyze_beampair4.py --root /home/ugrp/ugrp-sim/runs --out NEW_OUTPUT --pattern 'beampair4-r3-gcp2-d72efd13/round/diagnostic/episode-001/raw' --host gcp2 --planned-n 1",
+  "analysis_sha256": "712a70c55e5e54169b368aee5e598f70fda976ca79c1127be00c776994192fd6",
+  "source_sha": "d72efd13957ce450c5cccc3fd93a555a37dd4705",
+  "run": {
+    "seed": 8318626,
+    "raw": "/home/ugrp/ugrp-sim/runs/beampair4-r3-gcp2-d72efd13/round/diagnostic/episode-001/raw",
+    "success": false,
+    "sim_s": 27.500000000048704,
+    "roles": {
+      "r1": "teal",
+      "r2": "blue"
+    },
+    "cap_end": false,
+    "outcomes": {
+      "r1": "peer_approach_handoff",
+      "r2": "approach_blocked_handoff"
+    },
+    "phases": {
+      "r1": "ready",
+      "r2": "approach"
+    },
+    "approach_sample_N": 136,
+    "source_hashes": {
+      "/home/ugrp/ugrp-sim/runs/beampair4-r3-gcp2-d72efd13/round/diagnostic/episode-001/raw/result.json.zst": "c7b2c15facbc2f153fbe77d6c0e963fdfc24f32725c2e9585ef6cf0c77405941",
+      "/home/ugrp/ugrp-sim/runs/beampair4-r3-gcp2-d72efd13/round/diagnostic/episode-001/raw/plan.json": "f44807aea859ad91e42ad34503782fc049ede08e0f274014207a9571aeaaff90",
+      "/home/ugrp/ugrp-sim/runs/beampair4-r3-gcp2-d72efd13/round/diagnostic/episode-001/raw/eval-only.jsonl.zst": "14db821e75d4c5e79733b94d0747156edeef9361eaf7d5e035bf358b8b272132",
+      "/home/ugrp/ugrp-sim/runs/beampair4-r3-gcp2-d72efd13/round/diagnostic/episode-001/raw/teacher-r1.jsonl.zst": "dcb43b9cf509396c552db90d7d5d91a303ab8d5093d1f8b4e3101e748fe08472",
+      "/home/ugrp/ugrp-sim/runs/beampair4-r3-gcp2-d72efd13/round/diagnostic/episode-001/raw/teacher-r2.jsonl.zst": "cfdd737fff94fba4daf12ce49a192ecac645f3987d998eee3a8477c808f03aec"
+    },
+    "frame_funnel": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 552,
+        "passed": 395,
+        "rejected": 157
+      },
+      {
+        "gate": "meaningful_5_probes",
+        "entered": 395,
+        "passed": 393,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 393,
+        "passed": 393,
+        "rejected": 0
+      }
+    ],
+    "event_funnel": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 1,
+        "rejected": 1
+      },
+      {
+        "gate": "own_pick_go_ack",
+        "entered": 1,
+        "passed": 0,
+        "rejected": 1
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ]
+  },
+  "failure_tail": {
+    "recording_only": true,
+    "controller_input": false,
+    "hz": 10,
+    "window_sim_s": 10,
+    "failed_or_interrupted": true,
+    "total_captured_frames": 552,
+    "peak_buffer_bytes": 1309397,
+    "stored_bytes": 1309397
+  },
+  "repairs": {
+    "r1": [],
+    "r2": [
+      {
+        "t": 18.89999999999923,
+        "event": "stale_blocker_reobserve",
+        "reason_category": "stale_blocker_requires_fresh_measurement",
+        "blocked_object": "zone_wall_west",
+        "min_gap_m": 1.7133028955315264,
+        "margin_m": 1.8049789594146677,
+        "gap_scope": "original_candidate_check",
+        "seen_t": 2.4999999999999742
+      },
+      {
+        "t": 18.89999999999923,
+        "event": "stale_blocker_reobserve",
+        "reason_category": "stale_blocker_requires_fresh_measurement",
+        "blocked_object": "zone_wall_north",
+        "min_gap_m": 0.0,
+        "margin_m": 0.02468695024071473,
+        "gap_scope": "original_candidate_check",
+        "seen_t": 18.699999999998276
+      }
+    ]
+  },
+  "reobserve": {
+    "r1": [],
+    "r2": [
+      {
+        "t": 17.79999999999398,
+        "event": "reobserve_start",
+        "kind": "obstacle",
+        "encounter": 1,
+        "targets": {
+          "zone_wall_north": {
+            "id": "zone_wall_north",
+            "kind": "wall",
+            "xyz": [
+              1.459914413137937,
+              -1.5012004977645161,
+              0.2
+            ],
+            "yaw": -1.6658013007929697,
+            "radius": 3.2500961524238017,
+            "half_extents": [
+              3.25,
+              0.025
+            ],
+            "top_z_bound_m": 3.4562440019138614,
+            "visible_n": 5,
+            "probe_N": 7,
+            "seen_t": 16.89999999998968,
+            "uncertainty": {
+              "observation_covariance_m2": [
+                [
+                  3.561513364260616e-05,
+                  0.0
+                ],
+                [
+                  0.0,
+                  3.561513364260616e-05
+                ]
+              ],
+              "command_covariance": [
+                [
+                  1.0084165592437417e-05,
+                  1.9074411354964053e-06,
+                  0.0
+                ],
+                [
+                  1.9074411354964053e-06,
+                  1.7034044075625847e-06,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.019037368444213467
+                ]
+              ],
+              "issued_pose": [
+                0.0,
+                0.0,
+                0.4271658496949695
+              ],
+              "model": "CSM M1 50ms velocity + 1s correlated scale; 2px/2mm observation floor",
+              "frame_yaw": -1.1113120405567414
+            }
+          }
+        },
+        "input": "own visible history and issued-command pose only"
+      },
+      {
+        "t": 17.79999999999398,
+        "event": "reobserve_attempt",
+        "kind": "obstacle",
+        "attempt": 0,
+        "stage": "view",
+        "bearing_rad": -0.26481163522024626
+      },
+      {
+        "t": 18.399999999996844,
+        "event": "reobserve_attempt",
+        "kind": "obstacle",
+        "attempt": 1,
+        "stage": "view",
+        "bearing_rad": -0.26481163522024626
+      },
+      {
+        "t": 18.699999999998276,
+        "event": "reobserve_measurements",
+        "kind": "obstacle",
+        "before": {
+          "zone_wall_north": {
+            "id": "zone_wall_north",
+            "kind": "wall",
+            "xyz": [
+              1.459914413137937,
+              -1.5012004977645161,
+              0.2
+            ],
+            "yaw": -1.6658013007929697,
+            "radius": 3.2500961524238017,
+            "half_extents": [
+              3.25,
+              0.025
+            ],
+            "top_z_bound_m": 3.4562440019138614,
+            "visible_n": 5,
+            "probe_N": 7,
+            "seen_t": 16.89999999998968,
+            "uncertainty": {
+              "observation_covariance_m2": [
+                [
+                  3.561513364260616e-05,
+                  0.0
+                ],
+                [
+                  0.0,
+                  3.561513364260616e-05
+                ]
+              ],
+              "command_covariance": [
+                [
+                  1.0084165592437417e-05,
+                  1.9074411354964053e-06,
+                  0.0
+                ],
+                [
+                  1.9074411354964053e-06,
+                  1.7034044075625847e-06,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.019037368444213467
+                ]
+              ],
+              "issued_pose": [
+                0.0,
+                0.0,
+                0.4271658496949695
+              ],
+              "model": "CSM M1 50ms velocity + 1s correlated scale; 2px/2mm observation floor",
+              "frame_yaw": -1.1113120405567414
+            }
+          }
+        },
+        "after": {
+          "zone_wall_north": {
+            "id": "zone_wall_north",
+            "kind": "wall",
+            "xyz": [
+              1.4531672104028557,
+              -1.507631286266069,
+              0.2
+            ],
+            "yaw": -1.6711702512818443,
+            "radius": 3.2500961524238017,
+            "half_extents": [
+              3.25,
+              0.025
+            ],
+            "top_z_bound_m": 3.4562440019138614,
+            "visible_n": 5,
+            "probe_N": 7,
+            "seen_t": 18.699999999998276,
+            "uncertainty": {
+              "observation_covariance_m2": [
+                [
+                  3.566290099039627e-05,
+                  0.0
+                ],
+                [
+                  0.0,
+                  3.566290099039627e-05
+                ]
+              ],
+              "command_covariance": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              ],
+              "issued_pose": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "model": "CSM M1 50ms velocity + 1s correlated scale; 2px/2mm observation floor",
+              "frame_yaw": -0.7695793608007664
+            }
+          }
+        }
+      },
+      {
+        "t": 18.699999999998276,
+        "event": "reobserve_end",
+        "kind": "obstacle",
+        "reason": "fresh_measurements_replan",
+        "elapsed_s": 0.9000000000042974
+      },
+      {
+        "t": 18.89999999999923,
+        "event": "reobserve_start",
+        "kind": "obstacle",
+        "encounter": 2,
+        "targets": {
+          "zone_wall_west": {
+            "id": "zone_wall_west",
+            "kind": "wall",
+            "xyz": [
+              -0.36406265587561853,
+              1.9887560449090398,
+              0.2
+            ],
+            "yaw": -1.7382279512521597,
+            "radius": 2.300135865552294,
+            "half_extents": [
+              0.025,
+              2.3
+            ],
+            "top_z_bound_m": 2.5088146309307726,
+            "visible_n": 4,
+            "probe_N": 7,
+            "seen_t": 2.4999999999999742,
+            "uncertainty": {
+              "observation_covariance_m2": [
+                [
+                  4.624023696567056e-05,
+                  0.0
+                ],
+                [
+                  0.0,
+                  4.624023696567056e-05
+                ]
+              ],
+              "command_covariance": [
+                [
+                  0.0030818385726802005,
+                  -0.0002453768432466207,
+                  3.5217241312114434e-05
+                ],
+                [
+                  -0.00024537684324662054,
+                  0.00027709120851248574,
+                  0.0001967733826791592
+                ],
+                [
+                  3.5217241312114434e-05,
+                  0.0001967733826791592,
+                  0.07098081854343258
+                ]
+              ],
+              "issued_pose": [
+                0.4409896975407768,
+                -0.07948775781504182,
+                -0.7695793608007662
+              ],
+              "model": "CSM M1 50ms velocity + 1s correlated scale; 2px/2mm observation floor",
+              "frame_yaw": 0.0
+            }
+          },
+          "zone_wall_north": {
+            "id": "zone_wall_north",
+            "kind": "wall",
+            "xyz": [
+              1.4531672104028557,
+              -1.507631286266069,
+              0.2
+            ],
+            "yaw": -1.6711702512818443,
+            "radius": 3.2500961524238017,
+            "half_extents": [
+              3.25,
+              0.025
+            ],
+            "top_z_bound_m": 3.4562440019138614,
+            "visible_n": 5,
+            "probe_N": 7,
+            "seen_t": 18.699999999998276,
+            "uncertainty": {
+              "observation_covariance_m2": [
+                [
+                  3.566290099039627e-05,
+                  0.0
+                ],
+                [
+                  0.0,
+                  3.566290099039627e-05
+                ]
+              ],
+              "command_covariance": [
+                [
+                  2.365444e-06,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  2.54016e-07,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  1.9768360000000004e-06
+                ]
+              ],
+              "issued_pose": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "model": "CSM M1 50ms velocity + 1s correlated scale; 2px/2mm observation floor",
+              "frame_yaw": -0.7695793608007664
+            }
+          }
+        },
+        "input": "own visible history and issued-command pose only"
+      },
+      {
+        "t": 18.89999999999923,
+        "event": "reobserve_attempt",
+        "kind": "obstacle",
+        "attempt": 0,
+        "stage": "view",
+        "bearing_rad": -0.1846515813629077
+      },
+      {
+        "t": 19.500000000002096,
+        "event": "reobserve_attempt",
+        "kind": "obstacle",
+        "attempt": 1,
+        "stage": "view",
+        "bearing_rad": 2.711575762748432
+      },
+      {
+        "t": 20.10000000000496,
+        "event": "reobserve_attempt",
+        "kind": "obstacle",
+        "attempt": 2,
+        "stage": "view",
+        "bearing_rad": 2.466229223436449
+      },
+      {
+        "t": 20.700000000007826,
+        "event": "reobserve_attempt",
+        "kind": "obstacle",
+        "attempt": 3,
+        "stage": "retreat",
+        "bearing_rad": 2.220882684124467
+      },
+      {
+        "t": 21.30000000001069,
+        "event": "reobserve_end",
+        "kind": "obstacle",
+        "reason": "retreat_bounded_replan",
+        "elapsed_s": 2.4000000000114596
+      }
+    ]
+  },
+  "terminal_reasons": {
+    "r1": true,
+    "r2": false
+  },
+  "timeline_analysis_sha256": "e904915d9ebce64096318c612a726a5bb4f2eb64ea128f66b54980edda5a765b"
+}

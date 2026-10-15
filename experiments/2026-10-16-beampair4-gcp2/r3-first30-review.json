@@ -1,0 +1,97 @@
+{
+  "source_sha": "d72efd13957ce450c5cccc3fd93a555a37dd4705",
+  "host": "gcp2",
+  "seed": 8318620,
+  "range_sim_s": [
+    0,
+    30
+  ],
+  "model_calls": 0,
+  "prompt_tokens": 0,
+  "tokens_per_sim_s": 0,
+  "input_audit_snapshot_sim_s": 35.00000000008452,
+  "input_audit": {
+    "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+    "enabled": true,
+    "measurement_rows": 1249,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "gt_self_pose_comparison": false
+  },
+  "commands": {
+    "r1": {
+      "N": 300,
+      "phase_distribution": {
+        "approach": 175,
+        "search": 125
+      },
+      "terminal_reasons": {},
+      "nonzero_wheel_rows": 171,
+      "planning_budget_kinds": {
+        "checks": 300
+      }
+    },
+    "r2": {
+      "N": 300,
+      "phase_distribution": {
+        "approach": 218,
+        "search": 68,
+        "align": 14
+      },
+      "terminal_reasons": {},
+      "nonzero_wheel_rows": 225,
+      "planning_budget_kinds": {
+        "checks": 300
+      }
+    }
+  },
+  "progress_at_read": {
+    "sim_s": 35.00000000008452,
+    "wall_s": 129.0113044279999,
+    "phases": {
+      "r1": "approach",
+      "r2": "ready"
+    },
+    "sample": 350,
+    "timings_s": {
+      "physics": 81.43222204399979,
+      "rgb": 3.3533032609993825,
+      "evaluation": 36.65911566000045,
+      "teacher": 3.2162404560019695,
+      "io": 0.0
+    }
+  },
+  "snapshot_diagnostics": {
+    "r1": {
+      "phase": "approach",
+      "outcome": null,
+      "approach_progress_log": [],
+      "rendezvous_log": [],
+      "approach_repair_log": []
+    },
+    "r2": {
+      "phase": "ready",
+      "outcome": null,
+      "approach_progress_log": [],
+      "rendezvous_log": [],
+      "approach_repair_log": []
+    }
+  },
+  "observed_first30_progress": {
+    "sim_s": 30.00000000006064,
+    "wall_s": 111.618988823,
+    "phases": {
+      "r1": "approach",
+      "r2": "align"
+    },
+    "sample": 300,
+    "timings_s": {
+      "physics": 69.69929525600014,
+      "rgb": 2.964807274998975,
+      "evaluation": 32.12925939200011,
+      "teacher": 2.616575198001783,
+      "io": 0.0
+    }
+  },
+  "observed_first30_progress_provenance": "Live progress.json opened at SIM30; captured tool output, no historical file hash available. Separate later audit snapshot is labelled SIM35."
+}

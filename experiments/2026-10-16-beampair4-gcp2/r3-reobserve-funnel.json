@@ -1,0 +1,44 @@
+{
+  "before_north_refresh": {
+    "events": 0,
+    "candidates": 0,
+    "first_rejection": {}
+  },
+  "during_named_reobserve": {
+    "events": 1,
+    "candidates": 91,
+    "first_rejection": {
+      "blocked_goal": 91
+    }
+  },
+  "after_named_reobserve": {
+    "events": 75,
+    "candidates": 6825,
+    "first_rejection": {
+      "blocked_goal": 6825
+    }
+  },
+  "last_search": {
+    "world_t": 29.30000000004889,
+    "elapsed_sim_s": 27.50000000004889,
+    "candidate_N": 91,
+    "first_candidate_blockers": [
+      {
+        "id": "zone_wall_west",
+        "fresh": false,
+        "margin_m": 2.030178876586095,
+        "gap_m": 1.682755133203853,
+        "blocked": true,
+        "category": "memory_margin"
+      },
+      {
+        "id": "zone_wall_north",
+        "fresh": false,
+        "margin_m": 0.7363510043724415,
+        "gap_m": 0.0,
+        "blocked": true,
+        "category": "current_geometry"
+      }
+    ]
+  }
+}
