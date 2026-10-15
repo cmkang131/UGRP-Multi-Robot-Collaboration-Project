@@ -16,14 +16,32 @@ from pathlib import Path
 import platform
 import subprocess
 import sys
+from types import SimpleNamespace
 
 from harness.beampair_teacher import (MODE, DEPENDENCY_SHA, HeldCargoGuard, validate_plan,
                                     perturb_model, defer_ready_during_probe, PairRecoveryPerturb)
 from harness.grasp_act_data import write_json
+from harness.json_encoding import dumps
 from harness.grasp_act_peer_rendezvous import PeerRendezvous, RendezvousTeacherMixin, MODE as RENDEZVOUS_MODE
 
 ROOT=Path(__file__).resolve().parents[1]
 EXP=ROOT/'experiments/2026-10-15-beampair1'
+
+
+@contextmanager
+def recording_json(runner):
+    """Bind every pinned-runner JSON/JSONL sink to the same strict encoder.
+
+    The dependency remains clean and pinned. Replace only its module reference,
+    never json.dumps globally, and restore both bindings even on HOST_ERROR.
+    """
+    original_json, original_write = runner.json, runner.write
+    runner.json = SimpleNamespace(**{**vars(original_json), 'dumps': dumps})
+    runner.write = write_json
+    try:
+        yield
+    finally:
+        runner.json, runner.write = original_json, original_write
 
 
 @contextmanager
@@ -95,7 +113,7 @@ def setup_admission(plan,scenario):
         gap=body_clearance(pose,[],rects,bounds=static['bounds_m'])
         rows.append(dict(robot=rid,blocked_object='static_map',min_gap_m=gap,
             reason_category='setup_overlap' if gap<0 else 'setup_clear'))
-    if any(r['min_gap_m']<0 for r in rows):raise ValueError('setup overlap: '+json.dumps([r for r in rows if r['min_gap_m']<0]))
+    if any(r['min_gap_m']<0 for r in rows):raise ValueError('setup overlap: '+dumps([r for r in rows if r['min_gap_m']<0]))
     return rows
 
 
@@ -205,7 +223,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         runner.apply=apply;audit_module.new_input_audit=new_audit
         report=None
         try:
-            report=runner.run(plan,out,cap_s=cap_s,record_training=False,noise=False,execution_host=host,**selected)
+            with recording_json(runner):
+                report=runner.run(plan,out,cap_s=cap_s,record_training=False,noise=False,execution_host=host,**selected)
         finally:
             scene_module.make_scene=original_make_scene;measurements_module.measurements=original_measure
             world_module.VisibleWorld=original_world;teacher_module.VisibleOnlyGraspTeacher=original_teacher
@@ -228,7 +247,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
                 'probe_burst_ticks':{r:t.pair_perturb.ticks for r,t in teachers.items()},
                 'probe_executed_ticks':{r:sum(x['robot_id']==r and x['disturbance'] is not None for x in probe_rows) for r in teachers}})
             ledger=adapter/'beampair1-commands.jsonl'
-            ledger.write_text(''.join(json.dumps(r,allow_nan=False)+'\n' for r in probe_rows))
+            ledger.write_text(''.join(dumps(r)+'\n' for r in probe_rows))
             runner.compress_logs(adapter)
     return report
 

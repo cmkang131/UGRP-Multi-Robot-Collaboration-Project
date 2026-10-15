@@ -76,3 +76,74 @@ def test_candidate_and_event_populations_are_explicit_even_without_a_yield():
         'N':0,'ordered_funnel':[
             {'gate':'current_and_predicted_clear_path','entered':0,'passed':0,'rejected':0},
             {'gate':'nonrepeated_selected_wait','entered':0,'passed':0,'rejected':0}]}
+
+
+def test_all_recording_sinks_accept_numpy_before_execution(tmp_path):
+    import json
+    import numpy as np
+    from harness.grasp_act_data import write_json
+    from harness.json_encoding import dumps
+    from scripts.run_beampair1 import recording_json
+    row={'blocked':np.bool_(True),'count':np.int64(3),'gap':np.float32(.25),
+         'path':np.array([[np.float64(.5),1.]]),
+         'nested':[{'accepted':np.bool_(False),'mask':np.array([True,False])}]}
+    expected={'blocked':True,'count':3,'gap':.25,'path':[[.5,1.]],
+              'nested':[{'accepted':False,'mask':[True,False]}]}
+    old_write=lambda *a:None
+    runner=SimpleNamespace(json=json,write=old_write)
+    with recording_json(runner):
+        for name in ('diagnostic-snapshot.json','result.json','progress.json',
+                     'start-protocol.json'):
+            runner.write(tmp_path/name,{'teachers':{'r1':{'rendezvous_log':[row]}}})
+            assert json.loads((tmp_path/name).read_text())['teachers']['r1']['rendezvous_log']==[expected]
+        for name in ('eval-only.jsonl','teacher-r1.jsonl'):
+            (tmp_path/name).write_text(runner.json.dumps(row)+'\n')
+            assert json.loads((tmp_path/name).read_text())==expected
+        assert json.dumps is not dumps
+    assert runner.json is json and runner.write is old_write
+    write_json(tmp_path/'beampair1-result.json',row)
+    (tmp_path/'beampair1-commands.jsonl').write_text(dumps(row)+'\n')
+    assert json.loads((tmp_path/'beampair1-result.json').read_text())==expected
+    assert json.loads((tmp_path/'beampair1-commands.jsonl').read_text())==expected
+
+
+def test_recording_encoder_stays_strict_and_restores_on_error(tmp_path):
+    import json
+    import numpy as np
+    from harness.grasp_act_data import write_json
+    from scripts.run_beampair1 import recording_json
+    runner=SimpleNamespace(json=json,write=lambda *a:None)
+    original=runner.write
+    with pytest.raises(TypeError):
+        with recording_json(runner):
+            runner.write(tmp_path/'result.json',{'unsupported':object()})
+    assert runner.json is json and runner.write is original
+    for bad in (np.float64(float('nan')),np.array([float('inf')])):
+        with pytest.raises(ValueError):write_json(tmp_path/'bad.json',{'value':bad})
+    assert not (tmp_path/'bad.json').exists()
+
+
+def test_second_regression_failure_prevents_filling_the_round(tmp_path,monkeypatch):
+    import json
+    import scripts.run_beampair1_batch as batch
+    monkeypatch.setattr(batch.sys,'platform','linux')
+    monkeypatch.setattr(batch,'python_processes',lambda:0)
+    monkeypatch.setattr(batch.subprocess,'check_output',lambda *a,**kw:'a'*40)
+    launched=[]
+    class Process:
+        pid=123
+        def __init__(self,cmd,**kwargs):
+            launched.append(cmd[cmd.index('--episode')+1])
+            self.code=0 if len(launched)==1 else 1
+        def wait(self):return self.code
+        def poll(self):return self.code
+    monkeypatch.setattr(batch.subprocess,'Popen',Process)
+    monkeypatch.setattr(batch,'final_adapter_result',lambda p:{'result':{'physical_success':True}})
+    plan=tmp_path/'plan.json';plan.write_text(json.dumps({'episodes':[{}]*6}))
+    root=tmp_path/'round'
+    batch.run(SimpleNamespace(plan=plan,root=root,dependency_root=tmp_path,
+        candidate='baseline',rendezvous=MODE,first_episode_first=False,first_episodes=2))
+    assert launched==['0','1']
+    stop=json.loads((root/'SUPERVISOR_STOP.json').read_text())
+    assert stop['episode']=='episode-001' and stop['reason']=='sentinel_seed_failed'
+    assert json.loads((root/'batch-result.json').read_text())['supervisor_stopped']

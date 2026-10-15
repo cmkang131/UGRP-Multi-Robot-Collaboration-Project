@@ -47,14 +47,14 @@ def run(args):
             cmd += ['--rendezvous',args.rendezvous]
             process=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT)
             children.append((process,d,log));write_json(d/'PROCESS.json',dict(pid=process.pid,command=cmd))
-            if i==0 and args.first_episode_first:
+            if i<getattr(args,'first_episodes',0) or (i==0 and args.first_episode_first):
                 code=process.wait()
                 report_path=d/'adapter/beampair1-result.json'
                 adapter=final_adapter_result(report_path)
                 report=adapter['result'] if adapter else None
                 if code or not report or not report['physical_success']:
                     stopped=True
-                    write_json(root/'SUPERVISOR_STOP.json',dict(episode=d.name,reason='first_seed_failed',exit=code))
+                    write_json(root/'SUPERVISOR_STOP.json',dict(episode=d.name,reason='sentinel_seed_failed',exit=code))
                     break
         while any(p.poll() is None for p,d,l in children):
             failure=None
@@ -90,4 +90,6 @@ if __name__=='__main__':
     p.add_argument('--candidate',choices=['baseline','soft'],default='baseline')
     p.add_argument('--rendezvous',choices=['off','peer_rendezvous_v1'],default='off')
     p.add_argument('--first-episode-first',action='store_true')
+    p.add_argument('--first-episodes',type=int,choices=range(7),default=0,
+                   help='Run this many leading regression sentinels serially before filling')
     run(p.parse_args())

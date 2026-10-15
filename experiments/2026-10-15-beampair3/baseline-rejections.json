@@ -1,0 +1,165 @@
+{
+  "source_sha": "f84b2c8a436feff9775758876248c3054ff3553b",
+  "attempted_N": 18,
+  "episode_funnel": [
+    {
+      "gate": "started",
+      "entered": 40,
+      "cumulative_passed": 18,
+      "rejected": 22
+    },
+    {
+      "gate": "final_result_complete",
+      "entered": 18,
+      "cumulative_passed": 14,
+      "rejected": 4
+    },
+    {
+      "gate": "both_align",
+      "entered": 14,
+      "cumulative_passed": 14,
+      "rejected": 0
+    },
+    {
+      "gate": "both_ready",
+      "entered": 14,
+      "cumulative_passed": 14,
+      "rejected": 0
+    },
+    {
+      "gate": "both_pick",
+      "entered": 14,
+      "cumulative_passed": 14,
+      "rejected": 0
+    },
+    {
+      "gate": "both_complete",
+      "entered": 14,
+      "cumulative_passed": 14,
+      "rejected": 0
+    },
+    {
+      "gate": "strict_joint_hold_3s",
+      "entered": 14,
+      "cumulative_passed": 14,
+      "rejected": 0
+    },
+    {
+      "gate": "input_eligible_success",
+      "entered": 14,
+      "cumulative_passed": 14,
+      "rejected": 0
+    }
+  ],
+  "rejection_table": [
+    {
+      "reason": "peer_goal",
+      "blocked_object": "r2",
+      "count": 74
+    }
+  ],
+  "blocking_reason_table": [
+    {
+      "reason": "peer_goal",
+      "population": "rejection_ledger_events",
+      "blocked_object": "r2",
+      "count": 74
+    },
+    {
+      "reason": "safe_prefix",
+      "population": "recovery_events_symptom",
+      "blocked_object": "not_recorded",
+      "count": 8
+    },
+    {
+      "reason": "blocked_goal_calls",
+      "population": "planner_calls_may_overlap",
+      "blocked_object": "not_recorded",
+      "count": 5
+    },
+    {
+      "reason": "no_path_calls",
+      "population": "planner_calls_may_overlap",
+      "blocked_object": "not_recorded",
+      "count": 5
+    },
+    {
+      "reason": "supervisor_stop_shared_serialization_defect",
+      "population": "terminal_episode",
+      "blocked_object": "not_geometric",
+      "count": 3
+    },
+    {
+      "reason": "peer_prefix_wait",
+      "population": "recovery_events_symptom",
+      "blocked_object": "not_recorded",
+      "count": 1
+    },
+    {
+      "reason": "last_view_then_near_scan",
+      "population": "recovery_events_symptom",
+      "blocked_object": "not_recorded",
+      "count": 1
+    },
+    {
+      "reason": "json_bool_serialization_exception",
+      "population": "terminal_episode",
+      "blocked_object": "not_geometric",
+      "count": 1
+    }
+  ],
+  "candidate_population_note": "No per-candidate search22_log rows recorded in these source runs; missing candidates are unobservable, not zero rejections. Separate rendezvous events are counted as events.",
+  "frame_funnel_total": [
+    {
+      "gate": "any_assigned_probe",
+      "entered": 12718,
+      "cumulative_passed": 8179,
+      "rejected": 4539
+    },
+    {
+      "gate": "meaningful_region_5_of_15",
+      "entered": 8179,
+      "cumulative_passed": 8062,
+      "rejected": 117
+    },
+    {
+      "gate": "measurement_admitted_not_held",
+      "entered": 8062,
+      "cumulative_passed": 8062,
+      "rejected": 0
+    }
+  ],
+  "rendezvous_event_distribution": [
+    {
+      "event": "peer_wait",
+      "reason": "peer_goal",
+      "blocked_object": "r2",
+      "count": 72
+    },
+    {
+      "event": "peer_wait",
+      "reason": "cargo_goal",
+      "blocked_object": "beam_1",
+      "count": 1
+    },
+    {
+      "event": "encounter_deadline_replan",
+      "reason": "peer_goal",
+      "blocked_object": "r2",
+      "count": 1
+    },
+    {
+      "event": "moving_peer_replan",
+      "reason": "peer_goal",
+      "blocked_object": "r2",
+      "count": 1
+    }
+  ],
+  "raw_root": "/home/ugrp/ugrp-sim/runs",
+  "reproduce": "ssh gcp1 /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/beampair2-f84b2c8a/tables_remote.py",
+  "schema": "ugrp.beampair3.baseline.v1",
+  "original_funnel": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/beampair2-f84b2c8a-ops/remote-analysis/funnel.json",
+  "original_funnel_sha256": "c4b0ef14eda037d0fcb23fdb692c12de6fc9007dbb2e9a77a886da20e1e48607",
+  "primary_fix": "numpy bool JSON serialization: snapshot write followed by exception result write; no physical failure inferred",
+  "not_pooled": true
+}

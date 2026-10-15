@@ -108,6 +108,7 @@ def analyze(root,out):
         decoded,_,_=read_bytes(raw/'eval-only.jsonl')
         frames=[json.loads(line) for line in decoded.splitlines() if line.strip()]
         plan=read(raw/'plan.json')
+        entry['seed']=plan['seed']
         frame_N=len(frames)*2
         any_visible=sum(row['visibility'][rid]['visible_probes']>0 for row in frames for rid in ('r1','r2'))
         region_visible=sum(row['visibility'][rid]['visible_probes']>=5 for row in frames for rid in ('r1','r2'))
