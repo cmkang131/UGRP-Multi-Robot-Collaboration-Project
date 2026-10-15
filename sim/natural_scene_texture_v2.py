@@ -15,7 +15,7 @@ from sim.wall_texture import walls_from_xml
 PROFILE = 'walls_floor_textured_v2'
 ASSETS = Path(__file__).resolve().parent / 'assets' / PROFILE
 TEXTURE_DIR = Path('sim/assets') / PROFILE  # relative to the repository scene root
-MANIFEST_SHA256 = 'ea58773c500dd9bc5dbf3ede4edf5419535c306d3f9c3c11de935a5089af9858'
+MANIFEST_SHA256 = '9d986b0a4dffd681c2049ebce621893dd86f25c16f863d97d748280a36cf48cd'
 FLOOR_SIZE = (8., 8., .1)
 
 
@@ -23,8 +23,11 @@ def wall_key(name, size):
     return name + '_' + '_'.join(str(round(float(v)*10000)) for v in size)
 
 
-# MuJoCo cube faces: right/left X, up/down Y, front/back Z.
-CUBE_FACES = (('fileright', 1, 2), ('fileleft', 1, 2), ('fileup', 0, 2),
+# MuJoCo: right/left X, up/down Y, front/back Z. OpenGL ARB_texture_cube_map
+# maps +/-X face s to -/+Z and t to -Y, so the PNG width is Z, height Y.
+# +/-Y uses X/Z; +/-Z uses X/Y (sign flips do not change physical aspect).
+# https://registry.khronos.org/OpenGL/extensions/ARB/ARB_texture_cube_map.txt
+CUBE_FACES = (('fileright', 2, 1), ('fileleft', 2, 1), ('fileup', 0, 2),
               ('filedown', 0, 2), ('filefront', 0, 1), ('fileback', 0, 1))
 
 

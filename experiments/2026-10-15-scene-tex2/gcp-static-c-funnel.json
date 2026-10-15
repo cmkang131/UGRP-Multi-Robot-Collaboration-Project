@@ -1,0 +1,54 @@
+{
+  "schema": "ugrp.scene_tex2_funnel.v1",
+  "planned_frames": 264,
+  "recorded_frame_events": 264,
+  "stages": [
+    {
+      "stage": "frame_rendered",
+      "input_n": 264,
+      "cumulative_pass_n": 264,
+      "rejected_n": 0,
+      "rejections": []
+    },
+    {
+      "stage": "frame_analysed",
+      "input_n": 264,
+      "cumulative_pass_n": 264,
+      "rejected_n": 0,
+      "rejections": []
+    },
+    {
+      "stage": "physics_identical",
+      "input_n": 264,
+      "cumulative_pass_n": 264,
+      "rejected_n": 0,
+      "rejections": []
+    },
+    {
+      "stage": "camera_identical",
+      "input_n": 264,
+      "cumulative_pass_n": 264,
+      "rejected_n": 0,
+      "rejections": []
+    }
+  ],
+  "scope": "static camera audit, not a teacher gate or task-success funnel",
+  "raw_path": "/home/ugrp/ugrp-sim/runs/scenetex2-f6acdbd5-static-c",
+  "reproduction_command": [
+    "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python",
+    "-m",
+    "scripts.probe_scene_tex2",
+    "--execute",
+    "--source-sha",
+    "f6acdbd53551290f61ca07b6dc5af152cdafb117",
+    "--setup-proof",
+    "/home/ugrp/ugrp-sim/scenetex2-setup-proof.md",
+    "--output",
+    "/home/ugrp/ugrp-sim/runs/scenetex2-f6acdbd5-static-c",
+    "--profiles",
+    "floor_light_v1",
+    "floor_light_textured_v1",
+    "walls_floor_textured_v2"
+  ],
+  "unexecuted": []
+}

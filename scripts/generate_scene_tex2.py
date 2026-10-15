@@ -11,9 +11,16 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 from scripts.generate_scene_textures import MAPS, ROOT
-from sim.natural_scene_texture import CUBE_FACES, wall_key
+from sim.natural_scene_texture_v2 import CUBE_FACES, wall_key
 
 SEED = 2026101502
+# C camera montages show the 512-square cube's long wall faces averaging
+# 512 px/m source chips into weak grain (e.g. 6.5 m spans only 512 texels).
+# D authors coarser irregular plaster wear at 64 source px/m, preserving face
+# aspect down to 8 px instead of stretching thin dimensions to 128 px.
+# These are material-design scales, not perception acceptance thresholds.
+WALL_SOURCE_PX_PER_M = 64
+MIN_SOURCE_FACE_PX = 8
 # Material design bounds, not detector acceptance thresholds. The existing
 # all-hue paint mask starts at S=20; white_markers starts at V>180; relative
 # peer-dark's largest possible V is .38*255=96.9. Stay inside that free interval.
@@ -63,11 +70,12 @@ def generate(directory):
             for attr, ui, vi in CUBE_FACES:
                 face = key+'_'+attr
                 walls[key][attr] = face
-                specs[face] = (max(128, round(2*size[ui]*512)), max(128, round(2*size[vi]*512)), False)
+                specs[face] = (max(MIN_SOURCE_FACE_PX, round(2*size[ui]*WALL_SOURCE_PX_PER_M)),
+                               max(MIN_SOURCE_FACE_PX, round(2*size[vi]*WALL_SOURCE_PX_PER_M)), False)
     record = {'schema': 'ugrp.natural_surface_assets.v2', 'seed': SEED,
               'generator': 'scripts/generate_scene_tex2.py', 'palettes_hsv': PALETTES,
-              'floor_extent_m': [16, 16], 'wall_source_pixels_per_m': 512,
-              'cube_face_pixels': 512, 'wall_texuniform': False, 'minimum_source_face_dimension_px': 128, 'walls': walls,
+              'floor_extent_m': [16, 16], 'wall_source_pixels_per_m': WALL_SOURCE_PX_PER_M,
+              'cube_face_pixels': 512, 'wall_texuniform': False, 'minimum_source_face_dimension_px': MIN_SOURCE_FACE_PX, 'walls': walls,
               'maps': {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in MAPS}, 'images': {}}
     for key, (width, height, floor) in sorted(specs.items()):
         im = texture(key, width, height, floor=floor)

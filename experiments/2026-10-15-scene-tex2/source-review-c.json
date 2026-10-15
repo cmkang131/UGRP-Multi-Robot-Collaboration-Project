@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.scene_tex2_source_review.v1",
+  "source_sha": "f6acdbd53551290f61ca07b6dc5af152cdafb117",
+  "reviewer": "color_detector_audit",
+  "mode": "read-only source and SHA comparison; no test, model, render or remote execution",
+  "confirmed_P0": 0,
+  "confirmed_P1": 0,
+  "checked": [
+    "texuniform=false matches material, profile definition hash and compiled-model audit expectation",
+    "151 assets, maps and 48 pinned colour source files have matching SHA256",
+    "C PNG tables each contain 108 ranges with zero fixed foreground overlap",
+    "contextual/support masks are excluded from texture-wide zero-overlap claims",
+    "perception adapter requires explicit v2 profile and remains a camera-unvalidated candidate"
+  ],
+  "limits": [
+    "not a camera or physical validation",
+    "B occluded wall ORB=0 is not evidence of C success"
+  ]
+}

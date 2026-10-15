@@ -75,3 +75,11 @@ GCP에서 ffmpeg으로 만든 24장 비교 몽타주를 파일로 직접 봤다.
 C는 이 검토 뒤 수정한 **새 해시 후보**다. `texuniform=false`로 개별 면의 unit-box PNG를 매핑하고 재질 채도는 S16→8로 낮췄다. [MuJoCo 3.12.0 공식 렌더 코드](https://github.com/google-deepmind/mujoco/blob/3.12.0/src/render/classic/render_gl3.c#L225)는 true일 때 cube TexGen에 geom size를 곱한다. 얇은 벽에서는 실제 면과 다른 cube 면이 선택돼 방사형 늘어짐이 생긴다. 기존 v1은 재생용으로 그대로 두고 v2만 고쳤다. [C 설계·PNG 결과](candidate-c.json)의 manifest는 `ea58773c500dd9bc5dbf3ede4edf5419535c306d3f9c3c11de935a5089af9858`, 프로필은 `f6d825b6a52b2c86a80b6a02ed697b1337888224d49aad47325691e8d44d710d`다. [C 전체 색 표](png-audit-c/color-ranges.md)는 108범위 겹침0이며 기존 B/C를 합산하지 않는다.
 
 C의 새 정적 비교는 기존144조건에 실제 상자4색·빔 끝2색·구역A/B/C를 보는120조건을 더한264프레임이다. 추가 자세는 FOLDED와 원래 카메라/물리/색을 쓰고 객체 freejoint의 setup 위치만 평가용으로 배치한다. 미노출은 미검증으로 기록한다. 프레임의 full detector dictionary 차이는 추정/debug 수치까지 포함하므로 의미적 색/물체 검출 실패와 구분한다. 아직 실제 C 관문은 실행 전이며 최종 결과는 summary.json에 후속 기록한다.
+
+## C 카메라 검토 뒤 D 비교
+
+C는 264/264 프레임·원본 5,322파일/42,155,049 bytes와 압축267기록의 복원 SHA까지 확인했다. [C 원격 요약](gcp-static-c-summary.json), [분석 요약](gcp-analysis-c-summary.json), [거부 사유](camera-c-rejection-table.json)를 보존한다. C PNG88프레임 중 벽 내부 ORB가 남는 프레임은9, JPEG는8이고, 가림16프레임의 벽은 모두 보이지 않았다. C의 v2 벽띠 adapter도 주행 JPEG16프레임에서 모두 기권해 사용할 수 없다.
+
+직접 본 C 몽타주의 가로 늘어짐은 ±X cube면의 PNG 폭/높이를 Y/Z로 저작한 문제와 일치했다. [Khronos 공식 cube map 규격](https://registry.khronos.org/OpenGL/extensions/ARB/ARB_texture_cube_map.txt)의 ±X면은 s=∓Z, t=−Y이므로 v2만 Z/Y로 고친다. 또한 6.5m 벽 전체를 512 texel로 내리는 동안 4–23mm 반경의 마모가 소실돼, D는 같은 불규칙 마모를 저작64px/m(반경31–188mm)로 비교한다. 실물 치수/수용 기준이 아닌 재질 설계이며 카메라 검증이 필요하다. 기존 v1 자산·축·코드는 유지한다.
+
+D의 정사각 cube면 PNG 원본 ORB는150면 모두0이다. 비율을 복원한 실제 벽 화면과 다르므로 이 0을 숨기거나 충분한 특징으로 판정하지 않는다. 바닥은 C와 바이트 동일(640×480 ORB767–793), 108대상 범위 겹침0이다. D의 GCP 정적 비교 뒤 실제 특징으로 최종 선택한다.
