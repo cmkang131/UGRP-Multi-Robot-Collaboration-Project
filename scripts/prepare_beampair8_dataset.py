@@ -7,6 +7,7 @@ from pathlib import Path
 import platform
 import shutil
 import subprocess
+import tarfile
 
 import numpy as np
 from PIL import Image, ImageDraw
@@ -73,6 +74,36 @@ def make_montage(items,path):
     out.save(path,quality=86)
 
 
+def archive_dataset(folder):
+    """Lossless dataset compression; verify every decoded member before removal.
+
+    Existing ACT consumes plain JSON metadata. Archive the complete directory
+    rather than silently changing that format to individually compressed JSON.
+    The native loader was exercised before archival; decoded bytes are exact.
+    """
+    expected={str(p.relative_to(folder.parent)):sha256(p) for p in folder.rglob('*') if p.is_file()}
+    archive=folder.with_suffix('.tar.zst')
+    subprocess.run(['tar','--zstd','-cf',str(archive),'-C',str(folder.parent),folder.name],check=True)
+    decoder=subprocess.Popen(['zstd','-qdc',str(archive)],stdout=subprocess.PIPE)
+    verified={}
+    with tarfile.open(fileobj=decoder.stdout,mode='r|') as tar:
+        for member in tar:
+            if not member.isfile():continue
+            assert member.name in expected
+            h=hashlib.sha256()
+            with tar.extractfile(member) as stream:
+                for block in iter(lambda:stream.read(1024*1024),b''):h.update(block)
+            verified[member.name]=h.hexdigest()
+    assert decoder.wait()==0 and verified==expected
+    write_json(folder.parent/'dataset-archive-members.json',verified)
+    result=dict(path=str(archive),sha256=sha256(archive),bytes=archive.stat().st_size,
+        verified_members=len(verified),every_decoded_file_sha256_verified=True,
+        restore=f'tar --zstd -xf {archive} -C NEW_EMPTY_DIRECTORY',
+        manifest_sha256=expected['dataset/manifest.json'])
+    shutil.rmtree(folder)  # derived copy only, complete verified archive retained
+    return result
+
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--batch',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--heldout',type=Path,required=True)
@@ -126,12 +157,15 @@ def main():
         report['dataset']=dict(path=str(a.output/'dataset'),manifest_sha256=sha256(a.output/'dataset/manifest.json'),
             actor_episodes=len(dataset['episodes']),rows=len(loaded),load_verified=True,
             normalization='fresh training seeds only; heldout20 absent',tensor_keys=sorted(TRAIN_KEYS))
+        del loaded
+        report['dataset']['archive']=archive_dataset(a.output/'dataset')
+        report['dataset']['path']=report['dataset']['archive']['path']
     # Unique-inode footprint separates hardlinked images from logical bytes.
     seen=set();physical=0;logical=0;manifest=[]
     roots=[Path(r['path']) for r in done['completed']]
-    if a.convert:roots.append(a.output/'dataset')
+    if a.convert:roots.append(a.output/'dataset.tar.zst')
     for root in roots:
-        for file in sorted(root.rglob('*')):
+        for file in ([root] if root.is_file() else sorted(root.rglob('*'))):
             if not file.is_file():continue
             st=file.stat();logical+=st.st_size
             inode=(st.st_dev,st.st_ino)
@@ -148,7 +182,13 @@ def main():
         disk_free_bytes=shutil.disk_usage(a.output).free)
     write_json(a.output/'RUN_META.json',dict(**{'class':'milestone'},pr=537,branch='claude/beampair8',
         sha=(Path(accepted[0]['path'])/'SOURCE_SHA').read_text().strip(),batch=a.batch.name))
-    write_json(a.output/'summary.json',report)
+    write_json(a.output/'data-audit.json',report)
+    compact={k:v for k,v in report.items() if k not in ('runs','failures')}
+    compact['runs']=[dict(seed=r['seed'],path=r['path'],category=r['category'],admitted=r['admitted']) for r in done['completed']]
+    compact['failures']=report['failures']
+    compact['detailed_audit']=str(a.output/'data-audit.json')
+    write_json(a.output/'summary.json',compact)
+    compress_jsons(a.output)
 
 
 if __name__=='__main__':main()

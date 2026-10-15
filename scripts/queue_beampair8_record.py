@@ -50,6 +50,7 @@ def run(config):
         assert read_json(cfg['storage_budget'])['ok']
     batch=Path(cfg['batch']);batch.mkdir(exist_ok=False)
     write_json(batch/'RUN_META.json',dict(**{'class':'dev'},pr=cfg.get('pr'),branch='claude/beampair8',sha=sha,batch=batch.name))
+    write_json(batch/'supervisor-source.json',dict(path=__file__,sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()))
     lease=ROOT/'leases/beampair8.json';started=now()
     def claim(concurrency):
         write_json(lease,dict(task=TASK,pid=os.getpid(),started=started,expected_end='finite queue; max8h per run then analysis',
@@ -102,7 +103,8 @@ def run(config):
                     row['identity']=command_identity(before,d);write_json(d/'identity.json',row['identity'])
                     if not row['identity']['passed']:stop(dict(category='recording_changes_commands',seed=item['seed']))
                 if category=='HOST_ERROR':stop(dict(category=category,seed=item['seed']))
-                if category=='teacher_failure' and cfg['stage']=='record':stop(dict(category=category,seed=item['seed'],note='inspect failure before more submission; active finite runs finish'))
+                if category=='teacher_failure' and cfg['stage']=='record' and not cfg.get('continue_on_teacher_failure',False):
+                    stop(dict(category=category,seed=item['seed'],note='inspect failure before more submission; active finite runs finish'))
                 done.append(row);active.remove(item)
             if not wave_passed and launched>=cfg['max_parallel'] and not active:
                 speeds=[]
