@@ -31,7 +31,7 @@ def main():
     graph+=';[x0][x1][x2]hstack=inputs=3,drawtext=text=\'SIM %{pts\\:hms}\':x=4:y=4:fontsize=16:fontcolor=white:box=1:boxcolor=black@0.6'
     video=a.output/'playback-3x.mp4'
     ff([*inputs,'-filter_complex_threads','1','-filter_complex',graph+',setpts=PTS/3[v]',
-        '-map','[v]','-an','-c:v','libx264','-crf','28','-preset','fast','-movflags','+faststart',str(video)])
+        '-map','[v]','-r','6','-an','-c:v','libx264','-crf','28','-preset','fast','-movflags','+faststart',str(video)])
     if video.stat().st_size>8*1024**2:raise ValueError('video exceeds8MiB')
     # The 3x video contains every original2Hz SIM frame. At6fps its strips
     # recover the complete2Hz SIM sequence, not a sparse overview selection.

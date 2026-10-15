@@ -13,3 +13,7 @@ ACT14차원에 READY head가 없어 자기 집게 닫기 proposal을 READY로 �
 실패 전10SIM초10Hz 자기 카메라 ring은 기록 전용으로 켠다. 전체2Hz overview/r1/r2를 보존하고 gcp2에서 영상·프레임 띠를 만든다. Mac GUI는 열지 않는다. 아직 학습/평가/Release 완료를 주장하지 않는다.
 
 참고: [ACT 공식 코드](https://github.com/tonyzhaozh/act)의 chunk 예측/closed-loop 실행·batch8/lr1e-5 구조와 기존 프로젝트 adapter를 재사용했다(2026-10-16 확인). [원 논문](https://arxiv.org/abs/2304.13705)은 이번 웹 재조회 실패이며 기존 beamact1의 참고자료다. READY proposal 연결은 프로젝트의 출력 제약에 필요한 설계이며 ACT 논문이 보증하는 성능이 아니다.
+
+## 검증된 smoke300
+
+소스 `ee1e2275bc5cb4a15278220214ebf1861d131fe7`, 기존 L4에서 실제 optimizer300step 완료. 저장/재로딩 후 TRAIN probe chunk의 `torch.equal`을 확인했다. wall303.400초, 최대 할당1,549,413,888B·예약2,057,306,112B이며 warp3 공유 부하이므로 속도 수용 판정에 쓰지 않는다. [원본 요약](smoke-summary.json). 학생 물리 성공을 뜻하지 않는다. main은 이 smoke의 정확한 source/data/mask/summary 해시에 묶어 총10000step까지 optimizer/RNG를 복원한다.
