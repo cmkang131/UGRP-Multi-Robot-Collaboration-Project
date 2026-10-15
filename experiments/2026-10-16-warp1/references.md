@@ -22,3 +22,6 @@ Native 초기 상태 복사는 [MuJoCo 변경 기록의 mj_copyData/copy.copy �
 
 
 실행 결과로 범위를 정정한다. `sleep-prefix-n1`(`49b436ce`)은 pinned types.py320–332가 명시적 `NEVER/ALLOWED/INIT`를 미지원하므로 `put_model`에서 HOST_ERROR였다. 최신 문서의 sleep 지원만으로 명시 정책 지원을 가정한 후보는 채택하지 않았고 최종 CLI에서 제거했다. 다른 자동 sleep 정책의 지원까지 부정하는 결과는 아니다. 고정 환경을 갈아끼우거나 정책 enum을 근사하지 않았다. 서로 다른 실제 source seed의 모델 결합도 `dof_length`가 world-batch 필드가 아니어서 거부했다. 질량·기하·파생 모델 필드를 임의 공유해 통과시키지 않는다.
+
+
+추가 조사로 별도 후보 `native_sleep_policy_compat_v1`를 만든다. [MuJoCo3.16 engine_sleep.c125–126](https://github.com/google-deepmind/mujoco/blob/3.16.0/src/engine/engine_sleep.c#L125)은 NEVER와 AUTO_NEVER를 같은 sleep 금지 predicate로 검사하고, ALLOWED/AUTO_ALLOWED는 같은 나머지 경로다. [pinned MJWarp sleep.py290–292](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/sleep.py#L290)은 AUTO_NEVER만 검사한다. 따라서 컴파일 이후 NEVER→AUTO_NEVER, ALLOWED→AUTO_ALLOWED를 정확히 옮기는 별도 호환 adapter를 시험한다. INIT는 초기화 의미가 따로 있어 계속 거부한다. 설치된 pinned package 전체에서 tree_sleep_policy의 실행 읽기는 이 predicate뿐임을 grep으로 확인했다(io의 admission/types/test 제외). package 자체나 버전은 바꾸지 않는다. [공식 body sleep](https://mujoco.readthedocs.io/en/latest/XMLreference.html#body-sleep)의 자동/명시 override 설명을 함께 읽었다. 이 근거는 작은 후보의 검증 시작점이며 실제 성공/속도/초기 sleep 상태는 새 실행에서 따로 확인한다.

@@ -176,3 +176,14 @@ def test_resource_interrupt_and_supervision_have_distinct_outcomes(tmp_path,mark
     assert row['status']==expected
     assert row['resource_cap_end']==(expected=='cap_end')
     assert row['reason']
+
+
+def test_runtime_sleep_policy_preserves_never_predicate_and_rejects_init():
+    from scripts.warp_act_core import runtime_sleep_policy
+    source=np.array([0,1,2,3,4],dtype=np.int32)
+    kwargs=dict(auto=0,auto_never=1,auto_allowed=2,never=3,allowed=4)
+    result=runtime_sleep_policy(source,**kwargs)
+    # C runtime can-sleep starts with NEVER or AUTO_NEVER; GPU AUTO_NEVER.
+    assert np.array_equal((source==1)|(source==3),result==1)
+    assert result.tolist()==[0,1,2,1,2] and source.tolist()==[0,1,2,3,4]
+    with pytest.raises(ValueError,match='reset semantics'):runtime_sleep_policy(np.array([5]),**kwargs)

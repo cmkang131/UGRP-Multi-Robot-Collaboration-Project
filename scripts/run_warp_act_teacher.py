@@ -39,6 +39,7 @@ def parser():
     p.add_argument('--compiled-reference-v1',type=Path)
     p.add_argument('--compiled-geometry-312-v1',type=Path)
     p.add_argument('--per-world-model-references-v1',type=Path,help='default OFF: XMLsha→exact C312 assets; preserve batchable per-world model fields')
+    p.add_argument('--native-sleep-policy-compat-v1',action='store_true',help='default OFF: explicit native sleep scene plus exact runtime policy adapter; separate cohort')
     p.add_argument('--float32-solver-default-v1',action='store_true',help='default OFF: retain upstream float32 tolerance clamp; unchanged task success criteria')
     p.add_argument('--reset-check-v1',action='store_true',help='diagnostic only: reset selected initial state; no teacher rollout or gate')
     p.add_argument('--export-compiled-only',action='store_true')
@@ -106,7 +107,7 @@ def main():
         plan_sha256=hashlib.sha256(a.plan.read_bytes()).hexdigest(),mujoco=mujoco.__version__,
         hourly_usd=a.vm_hourly_usd,price_basis='user/inherited VM estimate; actual billing not measured')
     write(a.out/'summary.json',report)
-    hooks=(WarpTransport if a.physics_backend=='mjwarp_batch_v1' else CTransport)(host,source_sha,a.physics_backend,a.out)
+    hooks=(WarpTransport if a.physics_backend=='mjwarp_batch_v1' else CTransport)(host,source_sha,a.physics_backend,a.out,native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1)
     generators=[];contexts=[];active=np.ones(a.nworld,bool);reports={};ticks=np.zeros(a.nworld,int)
     start=time.perf_counter();loop_start=None
     try:
