@@ -1,0 +1,35 @@
+{
+  "full_failure_range_sim_s": [
+    0,
+    59.9
+  ],
+  "full_failure_hz": 2,
+  "full_failure_sheets": 6,
+  "tail_failure_range_sim_s": [
+    49.9,
+    59.9
+  ],
+  "tail_failure_hz": 10,
+  "native_tail_frames_used": 202,
+  "success_range_sim_s": [
+    0,
+    38
+  ],
+  "success_hz": 2,
+  "success_sheets": 4,
+  "viewed_directly": true,
+  "rendering": "saved evaluator qpos, original camera K/mount + raw fisheye remap and actor geomgroup masks + no_mip_v1; native original failure-tail JPEGs for last10s; no physics steps",
+  "timeline": [
+    "0-8: initial scan then approaches",
+    "8-20: bodies converge near the beam",
+    "20-49.9: r1 camera largely filled by nearby robot, r2 retains teal-end view; both remain in approach/search",
+    "49.9-53.4: native10Hz confirms sustained occlusion and little progress",
+    "53.4-57: native10Hz shows rapid repeated camera sweeps, search/approach toggling",
+    "57-59.9: camera briefly clears then obstruction returns; neither robot reaches align/READY/pick"
+  ],
+  "difference_from_sparse_review": "10Hz separates rapid pan/relook changes from prolonged obstruction. Reissued movement does not imply realized progress.",
+  "confirmed": "sustained approach stall with close active peers and visual occlusion",
+  "unresolved": "specific path/issued-odometry/peer-wait code subcause; no wall/floor colour-detector failure demonstrated",
+  "root_cause_evidence": "beam-8318711-proximity-analysis.json",
+  "preliminary_playback": "Earlier helper omitted fisheye remap; preserved in local playback, final representative videos use the corrected projection."
+}
