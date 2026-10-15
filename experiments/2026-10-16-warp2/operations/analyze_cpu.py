@@ -46,7 +46,7 @@ result=dict(schema='ugrp.warp2.cpu_comparison.v1',source_sha='70553d2f4235b28648
     sha256_check=dict(files=files,mismatches=failures),
     commands_equal_original_gcp2_N=sum(r['command_bytes_equal_original_gcp2'] for r in records),
     command_prefix_equal_original_gcp2_N=sum(r['command_prefix_equal_original_gcp2'] for r in records),
-    records=records,raw=str(ROOT),reproduce='python3 '+str(Path(__file__).resolve()),
+    records=records,raw=str(ROOT),reproduce='python3 '+str(Path(__file__).resolve())+' '+str(ROOT),
     pooling=False,scope='new C backend comparison; repeated seeds are not independent trials; GPU results separate')
 (ROOT/'analysis.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps({k:v for k,v in result.items() if k!='records'},indent=2))

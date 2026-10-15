@@ -1,0 +1,45 @@
+{
+  "leases_before_release": {
+    "warp2.json": "{\n  \"task\": \"warp2\",\n  \"pid\": 15876,\n  \"started_utc\": \"2026-10-15T19:28:48.133997+00:00\",\n  \"expected_end\": \"2026-10-15T21:24:38.739602+00:00\",\n  \"source\": \"521f258508ccc7d24d667a158a2b26a1b3740ee9\",\n  \"round\": \"r3-521f2585\"\n}\n",
+    "warp1.json": "{\"task\": \"warp1\", \"pid\": 1388, \"owner\": \"Mac orchestration; finite per-command subprocesses\", \"started\": \"2026-10-15T18:03:10.957821+00:00\", \"expected_end\": \"2026-10-15T22:02:37Z\", \"max_l4_hours\": 4, \"stage\": \"N1 qualitative rollout\", \"active_pids\": [4552, 4553], \"process_concurrency\": 1, \"batch_worlds\": 1}\n",
+    "rl1b.json": "{\n  \"task\": \"rl1b\",\n  \"pid\": 27571,\n  \"started_epoch_s\": 1792093019.297395,\n  \"deadline_epoch_s\": 1792096619.297395,\n  \"project\": \"ugrp-sim-b-1014\",\n  \"account\": \"changmin5781@gmail.com\",\n  \"budget_scope\": \"setup+JIT+probe+train+evaluation\",\n  \"instance\": \"ugrp-act-l4-gcp2\",\n  \"started_utc\": \"2026-10-15T19:36:59.297407+00:00\",\n  \"stage\": \"probe-r2\",\n  \"batch_worlds\": 8,\n  \"source\": \"b2fbac47\",\n  \"expected_end_epoch_s\": 1792096619.297395\n}\n"
+  },
+  "processes": [
+    {
+      "pid": 716,
+      "executable": "/usr/bin/python3"
+    },
+    {
+      "pid": 808,
+      "executable": "/usr/bin/python3"
+    },
+    {
+      "pid": 4553,
+      "executable": "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python"
+    },
+    {
+      "pid": 13965,
+      "executable": "python3"
+    },
+    {
+      "pid": 15876,
+      "executable": "python3"
+    },
+    {
+      "pid": 26602,
+      "executable": "python3"
+    },
+    {
+      "pid": 27482,
+      "executable": "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python"
+    },
+    {
+      "pid": 27630,
+      "executable": "/home/ugrp/ugrp-rl1b-act-env/bin/python"
+    }
+  ],
+  "own_child_remaining": false,
+  "vm_stop_attempted": false,
+  "reason": "leave shared VM running; other task leases/processes may remain",
+  "wall_s": 947.8646676540375
+}

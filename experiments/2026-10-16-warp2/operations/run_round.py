@@ -131,8 +131,9 @@ try:
         # N64/256 are bounded throughput prefixes, not success trials. The 10
         # SIM second window matches the existing recording-ring span (100
         # native control ticks); cap_end is reported, never called success.
-        # Final-round prefixes use exactly 4000 existing 0.25ms physics steps
-        # (one SIM second, ten native control ticks). They measure startup and
+        # Final-round caps are one TEACHER SIM second (4000 physics steps),
+        # plus the frozen 0.5s prelude (2000 steps): 15 transport ticks total.
+        # Constructor C initialization is separately reported. They measure startup and
         # prefix throughput only; they never qualify grasp success or steady
         # state performance. The full mixed-six trial follows separately.
         if validation and result['counts']['physical_success']!=n:

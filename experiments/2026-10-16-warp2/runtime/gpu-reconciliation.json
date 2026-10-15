@@ -1,0 +1,829 @@
+{
+  "schema": "ugrp.warp2.gpu_reconciliation.v1",
+  "records": [
+    {
+      "round": "r1-70553d2f",
+      "job": "export",
+      "status": "complete",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/export",
+      "command": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/c-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp2-70553d2f/scripts/run_warp_flow_teacher.py",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/warp2-26f84d0f",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921/experiments/2026-10-16-beampair6/short6-plan.json",
+        "--vm-hourly-usd",
+        "1.096",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/export",
+        "--physics-backend",
+        "c_pilot_v1",
+        "--export-compiled-only",
+        "--nworld",
+        "1"
+      ],
+      "exit": 0,
+      "summary_sha256": "ac39bfccfc55365e9b052d800deda8618b08255c1612c124232e32e33ab04d91",
+      "kind": "initialization_only",
+      "raw_status": "compiled_export_only",
+      "source_sha": "70553d2f4235b28648c188b26f9b2a03fa32a19d",
+      "backend": "c_pilot_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "counts": {
+        "planned": 1,
+        "started": 1,
+        "completed": 0,
+        "physical_success": 0,
+        "cap_end": 0,
+        "HOST_ERROR": 0,
+        "unstarted": 0
+      },
+      "worlds": [],
+      "aggregate_completed_sim_s": 0,
+      "summary_wall_s": 7.3441103279999425,
+      "timing": {},
+      "scope": null,
+      "native_initialization_sim_s": null,
+      "rollout_physics_steps": null,
+      "sha256_check": {
+        "files": 17,
+        "mismatches": [],
+        "scope": "completed file manifest only"
+      }
+    },
+    {
+      "round": "r1-70553d2f",
+      "job": "n1",
+      "status": "supervisor_stop_or_HOST_ERROR",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/n1",
+      "command": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp2-70553d2f/scripts/run_warp_flow_teacher.py",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/warp2-26f84d0f",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921/experiments/2026-10-16-beampair6/short6-plan.json",
+        "--vm-hourly-usd",
+        "1.096",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/n1",
+        "--physics-backend",
+        "mjwarp_batch_v1",
+        "--nworld",
+        "1",
+        "--cap-s",
+        "60",
+        "--compiled-reference-v1",
+        "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/export/compiled-312.json",
+        "--compiled-geometry-312-v1",
+        "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/export/compiled-geometry312.npz"
+      ],
+      "exit": null,
+      "summary_sha256": "9bf336023fdc1af30aa97c226061796329ba1722cc4e911b1ccd38367f68718d",
+      "kind": "full_teacher",
+      "raw_status": "HOST_ERROR",
+      "source_sha": "70553d2f4235b28648c188b26f9b2a03fa32a19d",
+      "backend": "mjwarp_batch_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "counts": {
+        "planned": 1,
+        "started": 1,
+        "completed": 0,
+        "physical_success": 0,
+        "cap_end": 0,
+        "HOST_ERROR": 1,
+        "unstarted": 0
+      },
+      "worlds": [],
+      "aggregate_completed_sim_s": 0,
+      "summary_wall_s": 326.9437750279999,
+      "timing": {
+        "render": 0.15753149000033773,
+        "readback_remap_jpeg_kinematics": 0.31601913499957845,
+        "teacher_visibility_eval_recording": 1.0393837689996417,
+        "command_decode_upload": 3.7177602920007757,
+        "physics": 291.64975529799926
+      },
+      "scope": null,
+      "native_initialization_sim_s": null,
+      "rollout_physics_steps": null,
+      "sha256_check": {
+        "files": 86,
+        "mismatches": [],
+        "scope": "completed file manifest only"
+      }
+    },
+    {
+      "round": "r2-54563a38",
+      "job": "export-seed5",
+      "status": "complete",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/export-seed5",
+      "command": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/c-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp2-54563a38/scripts/run_warp_flow_teacher.py",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/warp2-26f84d0f",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921/experiments/2026-10-16-beampair6/short6-plan.json",
+        "--vm-hourly-usd",
+        "1.096",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/export-seed5",
+        "--physics-backend",
+        "c_pilot_v1",
+        "--export-compiled-only",
+        "--nworld",
+        "1",
+        "--episode",
+        "5"
+      ],
+      "exit": 0,
+      "summary_sha256": "b74719f848c37493253d49d05083949799099f501cd07b8fbcbb63cbf22e3255",
+      "kind": "initialization_only",
+      "raw_status": "compiled_export_only",
+      "source_sha": "54563a38ecd9c08523401e5c231667fef19ec08d",
+      "backend": "c_pilot_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "counts": {
+        "planned": 1,
+        "started": 1,
+        "completed": 0,
+        "physical_success": 0,
+        "cap_end": 0,
+        "HOST_ERROR": 0,
+        "unstarted": 0
+      },
+      "worlds": [],
+      "aggregate_completed_sim_s": 0,
+      "summary_wall_s": 6.400485894999747,
+      "timing": {},
+      "scope": null,
+      "native_initialization_sim_s": null,
+      "rollout_physics_steps": null,
+      "sha256_check": {
+        "files": 17,
+        "mismatches": [],
+        "scope": "completed file manifest only"
+      }
+    },
+    {
+      "round": "r2-54563a38",
+      "job": "n1",
+      "status": "complete",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/n1",
+      "command": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp2-54563a38/scripts/run_warp_flow_teacher.py",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/warp2-26f84d0f",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921/experiments/2026-10-16-beampair6/short6-plan.json",
+        "--vm-hourly-usd",
+        "1.096",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/n1",
+        "--physics-backend",
+        "mjwarp_batch_v1",
+        "--nworld",
+        "1",
+        "--cap-s",
+        "60",
+        "--episode",
+        "5",
+        "--compiled-reference-v1",
+        "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/export-seed5/compiled-312.json",
+        "--compiled-geometry-312-v1",
+        "/home/ugrp/ugrp-sim/runs/warp2/r2-54563a38/export-seed5/compiled-geometry312.npz"
+      ],
+      "exit": null,
+      "summary_sha256": "54144ddba3c0e11934b97824469a5118f21f153117a156bdd6cf5cbdf882062c",
+      "kind": "full_teacher",
+      "raw_status": "complete",
+      "source_sha": "54563a38ecd9c08523401e5c231667fef19ec08d",
+      "backend": "mjwarp_batch_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "counts": {
+        "planned": 1,
+        "started": 1,
+        "completed": 1,
+        "physical_success": 1,
+        "cap_end": 0,
+        "HOST_ERROR": 0,
+        "unstarted": 0
+      },
+      "worlds": [
+        {
+          "world": 0,
+          "seed": 8318631,
+          "physical_success": true,
+          "cap_end": false,
+          "sim_s": 27.700000000000003,
+          "joint_held": true,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 661,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        }
+      ],
+      "aggregate_completed_sim_s": 27.700000000000003,
+      "summary_wall_s": 2769.8502484459996,
+      "timing": {
+        "render": 0.5812338660084606,
+        "readback_remap_jpeg_kinematics": 2.009104826992825,
+        "teacher_visibility_eval_recording": 8.042678030995376,
+        "command_decode_upload": 32.35840961399572,
+        "physics": 2710.196957357999
+      },
+      "scope": null,
+      "native_initialization_sim_s": null,
+      "rollout_physics_steps": null,
+      "sha256_check": {
+        "files": 79,
+        "mismatches": [],
+        "scope": "completed file manifest only"
+      },
+      "time_basis": "final summary file persistence minus coordinator job start; coordinator canceled after this completed child",
+      "batch_wall_s": 2770.3376820087433,
+      "sim_s_per_wall_s": 0.009998781079971096,
+      "sim_s_per_usd_estimate": 32.842711576547394,
+      "price_hourly_usd": 1.096,
+      "price_basis": "explicit VM hourly estimate; billing and independent cost attribution unverified"
+    },
+    {
+      "round": "r3-521f2585",
+      "job": "prefix-n16",
+      "status": "complete",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-521f2585/prefix-n16",
+      "command": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp2-521f2585/scripts/run_warp_flow_teacher.py",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/warp2-26f84d0f",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921/experiments/2026-10-16-beampair6/short6-plan.json",
+        "--vm-hourly-usd",
+        "1.096",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp2/r3-521f2585/prefix-n16",
+        "--physics-backend",
+        "mjwarp_batch_v1",
+        "--nworld",
+        "16",
+        "--cap-s",
+        "1",
+        "--episode",
+        "5",
+        "--exact-model-groups-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/model-references.json",
+        "--compiled-reference-v1",
+        "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-5/compiled-312.json",
+        "--compiled-geometry-312-v1",
+        "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-5/compiled-geometry312.npz"
+      ],
+      "exit": 0,
+      "summary_sha256": "9a44aed382467ce502dc7de1a68a211611b67de85cc085d77a9e5f91d727afff",
+      "kind": "fixed_work_prefix",
+      "raw_status": "complete",
+      "source_sha": "521f258508ccc7d24d667a158a2b26a1b3740ee9",
+      "backend": "mjwarp_batch_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "counts": {
+        "planned": 16,
+        "started": 16,
+        "completed": 16,
+        "physical_success": 0,
+        "cap_end": 16,
+        "HOST_ERROR": 0,
+        "unstarted": 0,
+        "teacher_rollouts_started": 16
+      },
+      "worlds": [
+        {
+          "world": 0,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 1,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 2,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 3,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 4,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 5,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 6,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 7,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 8,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 9,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 10,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 11,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 12,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 13,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 14,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        },
+        {
+          "world": 15,
+          "seed": 8318631,
+          "physical_success": false,
+          "cap_end": true,
+          "sim_s": 0.9999999999999998,
+          "joint_held": false,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 21,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          }
+        }
+      ],
+      "aggregate_completed_sim_s": 15.999999999999996,
+      "summary_wall_s": 263.6737673080006,
+      "timing": {
+        "teacher_visibility_eval_recording": 3.862258728998313,
+        "shared_transport_step_wall": 136.09193333700023,
+        "group_timings_inclusive": {
+          "0": {
+            "render": 0.13777957599904767,
+            "readback_remap_jpeg_kinematics": 0.9044586779991732,
+            "command_decode_upload": 1.7893988780015206,
+            "physics": 133.4002659020016
+          }
+        }
+      },
+      "scope": null,
+      "native_initialization_sim_s": [
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178
+      ],
+      "rollout_physics_steps": null,
+      "sha256_check": {
+        "files": 660,
+        "mismatches": [],
+        "scope": "completed file manifest only"
+      },
+      "time_basis": "coordinator process return",
+      "batch_wall_s": 270.2413535118103,
+      "sim_s_per_wall_s": 0.0592063346045251,
+      "sim_s_per_usd_estimate": 194.47336183968096,
+      "price_hourly_usd": 1.096,
+      "price_basis": "explicit VM hourly estimate; billing and independent cost attribution unverified"
+    },
+    {
+      "round": "r3-521f2585",
+      "job": "prefix-n64",
+      "status": "supervisor_stop_or_HOST_ERROR",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-521f2585/prefix-n64",
+      "command": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "/home/ugrp/ugrp-sim/src/warp2-521f2585/scripts/run_warp_flow_teacher.py",
+        "--adapter-source",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921",
+        "--teacher-source",
+        "/home/ugrp/ugrp-sim/src/warp2-26f84d0f",
+        "--plan",
+        "/home/ugrp/ugrp-sim/src/warp2-08f12921/experiments/2026-10-16-beampair6/short6-plan.json",
+        "--vm-hourly-usd",
+        "1.096",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/warp2/r3-521f2585/prefix-n64",
+        "--physics-backend",
+        "mjwarp_batch_v1",
+        "--nworld",
+        "64",
+        "--cap-s",
+        "1",
+        "--episode",
+        "5",
+        "--exact-model-groups-v1",
+        "--per-world-model-references-v1",
+        "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/model-references.json",
+        "--compiled-reference-v1",
+        "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-5/compiled-312.json",
+        "--compiled-geometry-312-v1",
+        "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-5/compiled-geometry312.npz"
+      ],
+      "exit": null,
+      "summary_sha256": "7dc07b7c47589b2d5a52ac698b55778fe82862fa1c9a7771a80b723582f16670",
+      "supervisor": {
+        "reason_category": "single_shared_model_not_batchable",
+        "blocked_object": "dof_length",
+        "min_gap_m": null,
+        "gap_scope": "unsupported per-world model field, not geometry",
+        "stopped_utc": "2026-10-15T19:44:31.839623+00:00",
+        "coordinator_pid": 15876,
+        "job": "prefix-n64",
+        "physical_failure_claim": false,
+        "raw_HOST_ERROR_retained": true,
+        "evidence": [
+          "r3-references-14fbdf6a/preflight.log",
+          "r3-521f2585/prefix-n16/summary.json"
+        ],
+        "decision": "stop additional beam-pair GPU work: six exact model fields cannot be combined under current upstream contract; one-model N16 fixed-work throughput is below measured C; retain exact-group prototype default-off"
+      },
+      "physical_failure_claim": false,
+      "kind": "fixed_work_prefix",
+      "raw_status": "HOST_ERROR",
+      "source_sha": "521f258508ccc7d24d667a158a2b26a1b3740ee9",
+      "backend": "mjwarp_batch_v1",
+      "host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "counts": {
+        "planned": 64,
+        "started": 64,
+        "completed": 0,
+        "physical_success": 0,
+        "cap_end": 0,
+        "HOST_ERROR": 1,
+        "unstarted": 0,
+        "teacher_rollouts_started": 64
+      },
+      "worlds": [],
+      "aggregate_completed_sim_s": 0,
+      "summary_wall_s": 674.1604711520004,
+      "timing": {
+        "teacher_visibility_eval_recording": 4.956325246000233,
+        "shared_transport_step_wall": 156.034777287,
+        "group_timings_inclusive": {
+          "0": {
+            "render": 0.23245906600004673,
+            "readback_remap_jpeg_kinematics": 2.3723313729997244,
+            "command_decode_upload": 1.01634201700017,
+            "physics": 152.99082886799988
+          }
+        }
+      },
+      "scope": null,
+      "native_initialization_sim_s": [
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178,
+        1.3000000000000178
+      ],
+      "rollout_physics_steps": null,
+      "sha256_check": {
+        "files": 1541,
+        "mismatches": [],
+        "scope": "completed file manifest only"
+      }
+    },
+    {
+      "round": "r3-521f2585",
+      "job": "prefix-n256",
+      "status": "unstarted",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-521f2585/prefix-n256",
+      "physical_failure_claim": false
+    },
+    {
+      "round": "r3-521f2585",
+      "job": "known-six-n16",
+      "status": "unstarted",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-521f2585/known-six-n16",
+      "physical_failure_claim": false
+    }
+  ],
+  "backends_pooled": false,
+  "allocation": {
+    "started_unix": 1792088678.739602,
+    "max_wall_s": 10800,
+    "source": "first warp2 L4 lease; later rounds do not reset the three hour cap"
+  },
+  "scope": "completed full teacher trials, completed fixed-work prefixes, initialization exports and supervised interruptions are separate populations; VM price estimates are not billing"
+}

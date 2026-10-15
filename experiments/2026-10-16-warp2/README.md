@@ -1,18 +1,20 @@
 # warp2 — ACT 외 흐름의 MJWarp 배치 이동
 
-2026-10-16 사용자 요청, Refs #523. **A: 소스 열람·설계 완료 / B: 공통 백엔드 재사용 구현, 유한 gcp2 검증 중**. [실행 결과](runtime.md)는 CPU/GPU·시드 반복·초기화·cap_end를 구분한다. A 완료 당시의 무실행 기록은 설계 시점의 범위다. 장면/관문 대기열은 HOLD_SCENE, 미승인·미제출이다.
+2026-10-16 사용자 요청, Refs #523. **A: 소스 열람·설계 완료 / B: 공통 백엔드 재사용 구현·유한 실험 종료, NOT_READY**. [실행 결과](runtime.md)는 CPU/GPU·시드 반복·초기화·cap_end를 구분한다. A 완료 당시의 무실행 기록은 설계 시점의 범위다. 장면/관문 대기열은 HOLD_SCENE, 미승인·미제출이다.
 
 - [우선순위·공수·기대 이득](priority.md)
 - [MjData·카메라·명령·입력 감사·성공 판정 경계](inventory.md), [행별 목록](access-inventory.csv)
 - [LLM 대기 세계의 정지·리셋·비동기 묶음 설계](llm-batching.md)
-- [전체 요약](summary.json), [누적 관문·거부표](rejection_table.json)
+- [전체 요약](summary.json), [누적 관문·거부표](rejection_table.json), [실행 기록](operations.md), [영상 검토](playback.md)
 - [소스 SHA·파일 해시](source-manifest.json), [기존 CPU 근거](baseline-evidence.json)
+
+현재 채택 판정: **빔 짝 교사는 C CPU 유지**. GPU 전체 교사 성공은 알려진 시드1/6만 확인했고, N16 짧은 구간 처리량은 CPU보다 낮았다. N64 감독 중단·N256 미시작·혼합6 N16 미시작을 성공/완료로 세지 않는다. 여섯 정확한 모델의 `dof_length`는 현재 upstream의 세계별 배열 계약으로 합칠 수 없다. 정확한 모델별 공통 실행기 위임 프로토타입은 기본 off로 남긴다.
 
 ## 구현 순서와 공통 백엔드 계약
 
 1순위는 LLM 없는 **빔 짝 교사 beampair6**다. `claude/warp-act`가 제공하는 배치 엔진·상태 동기화·렌더/접촉 공급자를 그대로 쓴다. 별도 `put_model/make_data/step` 엔진이나 독립적인 접촉 변환기를 만들지 않는다. 작업 worktree는 `warp-flows`, 브랜치는 `claude/warp-flows`이며 설계 기록을 위해 공통 조상 `142dbf04c2128c3d7ca1c3ceb03ee3b651d9a7e5`에서 먼저 만들었다. 구현 전 warp1의 **커밋된** API를 반영한다. 작성 중 파일은 실행·복사하지 않는다.
 
-의존 API 요구는 다음과 같다. 세계별 setup/advance 경계에서 고정 제어 tick을 양보하고, 공통 배치 엔진이 물리 substep마다 기존 port deadline·v7 입력 릴레이를 적용한다. host MjData는 같은 세계·같은 SIM 시각의 동기화된 뷰다. ray/FOV용 운동학 뷰와 **GPU에서 계산한** 접촉/force 평가를 구분한다. CPU에서 새로 접촉을 풀어 GPU 파지 성공을 판정하면 안 된다. 기본 `physics_backend`는 기존 C 경로이며 `mjwarp_batch_v1`은 명시적으로 켜야 한다.
+의존 API 요구는 다음과 같다. 세계별 setup/advance 경계에서 고정 제어 tick을 양보하고, 공통 배치 엔진이 물리 substep마다 기존 port deadline·v7 입력 릴레이를 적용한다. host MjData는 같은 세계·같은 SIM 시각의 동기화된 뷰다. ray/FOV용 운동학 뷰와 **GPU에서 계산한** 접촉/force 평가를 구분한다. CPU에서 새로 접촉을 풀어 GPU 파지 성공을 판정하면 안 된다. 프로젝트의 기존 C 경로를 유지한다. 새 파일럿 실행기의 기본값은 `off`이며, `c_pilot_v1` 또는 `mjwarp_batch_v1`을 명시적으로 켜야 한다.
 
 각 lane은 별도의 교사·보이는 물체 기억·HeldCargoGuard·READY/GO/ACK·RNG·port·감사 원장·기록기를 가진다. 두 로봇의 관측을 먼저 취득한 뒤 명령을 발행하는 기존 순서를 유지한다. 한 lane의 양쪽 로봇은 같은 물리 세계에 있고, 다른 lane과 통신하지 않는다. 기존 adapter의 모듈 monkeypatch와 전역 closure는 lane별 `sys.modules` 문맥으로 격리한다. 각 generator를 진행/종료할 때 자기 `harness/sim/scripts` 문맥만 설치하고 원래 문맥을 복구한다. `teachers/models/guard` closure를 lane 사이에 공유하지 않는다.
 
@@ -26,7 +28,7 @@
 
 N16/64/256 처리량은 완료된 유효 세계의 SIM초 합 / 배치 wall초로 기록한다. compile/setup·CPU↔GPU 동기화·교사·RGB·기록을 포함한 end-to-end와 순수 physics를 따로 낸다. GPU 비동기 작업은 동기화 후 wall 시각을 읽는다. `SIM초/$ = 3600 × throughput / VM_hourly_price`; 가격의 지역·시각·근거와 VM 전체 요금/증분 비용을 표시한다. 새로운 CPU 짝 비교가 없으면 과거 wall/SIM에 N을 곱해 N16 처리량으로 발표하지 않는다.
 
-R2 N1 성공 뒤 마지막 R3는 N16/64/256의 각 1 SIM초 고정 작업량(prefix: 기존 0.25ms 물리 4000 step·10 control tick)을 먼저 재고, 여섯 시드를 섞은 N16의 전체 교사 실행을 따로 수행한다. prefix는 초기화 비용을 포함한 짧은 구간이며 장기 정상 상태 속도나 집기 성공으로 해석하지 않는다. 실패면 수정 전 거부 분포를 먼저 만든다. 원인을 주장할 경우 gcp2에서 실패 1–2개와 성공 1개의 개요+r1+r2 영상을 3배속으로 만들고 전체 2Hz·마지막 10 SIM초 10Hz 프레임띠를 파일로 본다. Mac GUI/물리/렌더는 금지다. 실패 직전 자기 카메라 10Hz ring은 기록 전용이며 control frame_id/RNG/관측 호출을 바꾸면 안 된다. 학습 카메라·학습·LLM E2E는 이번 B에서 실행하지 않는다.
+R2 N1 성공 뒤 마지막 R3는 N16/64/256의 각 1 SIM초 고정 작업량(prefix: 교사0.25ms 물리4000 step에 기존0.5 SIM초 prelude2000 step을 더한 총15 control tick)을 먼저 재고, 여섯 시드를 섞은 N16의 전체 교사 실행을 따로 수행한다. prefix는 초기화 비용을 포함한 짧은 구간이며 장기 정상 상태 속도나 집기 성공으로 해석하지 않는다. 실패면 수정 전 거부 분포를 먼저 만든다. 원인을 주장할 경우 gcp2에서 실패 1–2개와 성공 1개의 개요+r1+r2 영상을 3배속으로 만들고 전체 2Hz·마지막 10 SIM초 10Hz 프레임띠를 파일로 본다. Mac GUI/물리/렌더는 금지다. 실패 직전 자기 카메라 10Hz ring은 기록 전용이며 control frame_id/RNG/관측 호출을 바꾸면 안 된다. 학습 카메라·학습·LLM E2E는 이번 B에서 실행하지 않는다.
 
 ## 참고 자료와 확인 범위
 
@@ -40,3 +42,5 @@ R2 N1 성공 뒤 마지막 R3는 N16/64/256의 각 1 SIM초 고정 작업량(pre
 - [Isaac Lab DirectRLEnv @86042738](https://github.com/isaac-sim/IsaacLab/blob/86042738bbf79b894df1825bbfe342625cd74f1b/source/isaaclab/isaaclab/envs/direct_rl_env.py#L662): reset buffer→env_ids, `_reset_idx(env_ids)`; [PhysX articulation](https://github.com/isaac-sim/IsaacLab/blob/86042738bbf79b894df1825bbfe342625cd74f1b/source/isaaclab_physx/isaaclab_physx/assets/articulation/articulation.py#L453)의 선택된 상태 쓰기. 선택 reset이 전체 sim.step에서의 세계별 pause를 보증하지 않는다.
 
 기존 물리의 5mm 동등성 관문을 새로 적용하지 않는다. 2026-10-16 단계적 이동 결정에 따라 MJWarp 자체의 성공식/입력 관문으로 평가하되, C와의 관측·궤적·성공 차이는 별도 기록한다. 장면 채택과 40회 관문 승인은 남는다.
+
+B에서 설치본 MuJoCo/MJWarp3.16.0·Warp1.15.0을 확인했고, 실제 설치된 MJWarp `io.py/types.py/forward.py`3개 파일 SHA256은 위 공식 commit57b4692f 원문과 모두 일치했다([환경](runtime/l4-environment.json), [검증](verification/record-integrity.json)).

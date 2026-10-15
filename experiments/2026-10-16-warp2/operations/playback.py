@@ -6,10 +6,10 @@ import mujoco
 from PIL import Image,ImageDraw
 import cv2
 from sim.masterpi_camera_profile import raw_fisheye_remap
-p=argparse.ArgumentParser();p.add_argument('job',type=Path);p.add_argument('out',type=Path);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('job',type=Path);p.add_argument('out',type=Path);p.add_argument('--states',type=Path);a=p.parse_args()
 assert sys.platform=='linux' and Path('/home/ugrp/ugrp-sim').exists()
 job=a.job;out=a.out;out.mkdir(parents=True,exist_ok=False);raw=job/'world-000/raw'
-states=np.load(job/'world0-states.npz');ticks=states['ticks'].astype(int)
+states=np.load(a.states or job/'world0-states.npz');ticks=states['ticks'].astype(int)
 m=mujoco.MjModel.from_xml_path(str(raw/'scene.xml'));d=mujoco.MjData(m)
 cameras=json.loads((raw/'camera-runtime.json').read_text())['cameras']
 for rid,c in cameras.items():

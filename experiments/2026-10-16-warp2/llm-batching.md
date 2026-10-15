@@ -38,3 +38,11 @@ pending→ready 전환은 해당 세계의 정지 SIM 시각에서만 일어난�
 3. 응답 역순/중복/timeout/비정상 종료/epoch 교체: 잘못된 세계로 action/message가 가는 횟수0, 비용 원장은 보존. 모델을 쓰지 않는 고정 응답 fixture로 먼저 검사한다.
 4. pause 전후의 전체 상태 복원이 scalar 이어달리기와 일치하는지 검사한다. qpos만 맞고 warmstart/act/ctrl/mocap/applied force/port가 다른 상태는 통과가 아니다. 허용 오차를 임의로 새로 만들지 않고 공통 백엔드의 표현별 계약과 기존 성공식으로 보고한다.
 5. 실제 모델 사용은 별도 승인 범위와 endpoint alert 확인·동시 부하 점검 뒤 진행한다. active fraction, physics 낭비율, gather/scatter, host sync, RGB, LLM 대기/429, first-response, end-to-end SIM초/초·SIM초/$를 분리한다. 계산하지 않은 pending SIM초는 처리량 분자에 넣지 않는다.
+
+## B에서 확인한 공통 백엔드의 현재 한계
+
+실행 소스 `521f258508ccc7d24d667a158a2b26a1b3740ee9`의 `WarpTransport.prepare_step/launch_step/sync_render`에서는 active 배열이 교사/명령의 진행을 구분하지만, 캡처한 `mjw.step`은 모델 묶음의 모든 세계를 진행하고 readback도 모든 세계의 시각을 갱신한다. **active=False를 세계별 물리 정지로 사용할 수 없다.** 완료된 교사 lane의 결과는 종료 시 저장하며, 이번 교사 실험은 LLM 응답 대기 세계를 포함하지 않는다.
+
+`ExactModelGroups`의 stream 분리는 정확한 모델 묶음을 제출하는 방식이며 세계별 pause 검증을 대신하지 않는다. 전체 상태 snapshot/restore의 누락 필드·접촉 workspace·warmstart·RNG·시간·port deadline·기록 clock에 대한 재개 동등성 검증을 하지 않았다. 따라서 E2E는 이 구현의 토글만 켜서 이식할 수 없다. A의 비동기 cohort 설계와 세계별 정지 관문을 별도로 구현·검증해야 한다.
+
+B의 단일 세계 물리 시간이 지배적이고 원본 RGB와 C의 바닥 재질 차이도 남는다. 다른 흐름의 코루틴 이식보다 공통 백엔드의 물리 처리량과 원본 RGB 특성을 먼저 해결하는 것이 현재 측정에 근거한 후속 순서다. 모델 호출 대기와 GPU 이득을 합산한 예상 배수를 발표하지 않는다.

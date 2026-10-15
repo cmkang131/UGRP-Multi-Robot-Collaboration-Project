@@ -1,0 +1,16 @@
+{
+  "reason_category": "single_shared_model_not_batchable",
+  "blocked_object": "dof_length",
+  "min_gap_m": null,
+  "gap_scope": "unsupported per-world model field, not geometry",
+  "stopped_utc": "2026-10-15T19:44:31.839623+00:00",
+  "coordinator_pid": 15876,
+  "job": "prefix-n64",
+  "physical_failure_claim": false,
+  "raw_HOST_ERROR_retained": true,
+  "evidence": [
+    "r3-references-14fbdf6a/preflight.log",
+    "r3-521f2585/prefix-n16/summary.json"
+  ],
+  "decision": "stop additional beam-pair GPU work: six exact model fields cannot be combined under current upstream contract; one-model N16 fixed-work throughput is below measured C; retain exact-group prototype default-off"
+}

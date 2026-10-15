@@ -1,0 +1,28 @@
+{
+  "leases_before_release": {
+    "warp2.json": "{\n  \"task\": \"warp2\",\n  \"pid\": 9052,\n  \"started_utc\": \"2026-10-15T18:37:55.669518+00:00\",\n  \"expected_end\": \"2026-10-15T21:24:38.739602+00:00\",\n  \"source\": \"54563a38ecd9c08523401e5c231667fef19ec08d\",\n  \"round\": \"r2-54563a38\"\n}\n",
+    "warp1.json": "{\"task\": \"warp1\", \"pid\": 1388, \"owner\": \"Mac orchestration; finite per-command subprocesses\", \"started\": \"2026-10-15T18:03:10.957821+00:00\", \"expected_end\": \"2026-10-15T22:02:37Z\", \"max_l4_hours\": 4, \"stage\": \"N1 qualitative rollout\", \"active_pids\": [4552, 4553], \"process_concurrency\": 1, \"batch_worlds\": 1}\n"
+  },
+  "processes": [
+    {
+      "pid": 716,
+      "executable": "/usr/bin/python3"
+    },
+    {
+      "pid": 808,
+      "executable": "/usr/bin/python3"
+    },
+    {
+      "pid": 4553,
+      "executable": "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python"
+    },
+    {
+      "pid": 9052,
+      "executable": "python3"
+    }
+  ],
+  "own_child_remaining": false,
+  "vm_stop_attempted": false,
+  "reason": "leave shared VM running; other task leases/processes may remain",
+  "wall_s": 2780.6782896518707
+}
