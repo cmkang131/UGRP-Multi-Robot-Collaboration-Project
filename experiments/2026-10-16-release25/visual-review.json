@@ -1,0 +1,71 @@
+{
+  "scope": "Direct image-file review in this release25 session; Mac GUI/physics/rendering zero",
+  "failure": "gv5-release-gate-current_A-110633-a41781dd-retry1",
+  "success": "gv5-release-gate-current_B-110600-a41781dd-retry1",
+  "failure_full_sim_range": [
+    0,
+    56.1
+  ],
+  "failure_native_event_world_range": [
+    45.5,
+    55.5
+  ],
+  "failure_native_tail_hz": 10,
+  "full_hz": 2,
+  "failure_full_sheets": [
+    "full-01.jpg",
+    "full-02.jpg",
+    "full-03.jpg",
+    "full-04.jpg",
+    "full-05.jpg"
+  ],
+  "native_tail_sheets": [
+    "tail-01.jpg",
+    "tail-02.jpg",
+    "tail-03.jpg",
+    "tail-04.jpg",
+    "tail-05.jpg"
+  ],
+  "success_full_sheets": [
+    "full-01.jpg",
+    "full-02.jpg",
+    "full-03.jpg"
+  ],
+  "timeline_world_s": [
+    {
+      "t": 10.9,
+      "event": "lower chosen"
+    },
+    {
+      "t": 16,
+      "event": "first panorama starts"
+    },
+    {
+      "t": 20.5,
+      "event": "r1 northward backoff 0.15/0.10/0.05m rejected; r2 rear 0.15m"
+    },
+    {
+      "t": 23,
+      "event": "second panorama; camera pan only"
+    },
+    {
+      "t": 29.2,
+      "event": "southward30cm shift chosen"
+    },
+    {
+      "t": 35.5,
+      "event": "repick begins"
+    },
+    {
+      "t": 55.5,
+      "event": "sweep rejects before issued translation"
+    }
+  ],
+  "dense_vs_sparse": "No rapid oscillation or northward base motion in the native final10seconds. Both cameras are mostly filled by beam during own-RGB lift checks. The final2.4seconds of full replay are evaluator settling, not the immediate failure event.",
+  "limits": "Success own-camera views are reconstructed from saved qpos/calibration, not native10Hz originals (success ring intentionally not retained). Failure final202 own views are native; earlier overview/own views are evaluation reconstruction. Script logs show pan only; no body turn radius was used.",
+  "paths": {
+    "failure": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/release25-baseline-failure",
+    "success": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/release25-baseline-success",
+    "native_event": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/release25-baseline-event"
+  }
+}

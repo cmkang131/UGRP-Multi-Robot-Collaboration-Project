@@ -57,6 +57,16 @@ def test_rotation_and_unlocalized_inputs_are_not_translation_escape():
     assert check((loc,ts,plans))['reason_category']=='sweep_pose_unknown'
 
 
+def test_accepted_negative_gap_cannot_hide_another_rejected_obstacle():
+    loc,ts,plans=case()
+    # North escape is accepted at roughly -0.095m. Another wall clips ONLY
+    # the uncertainty sweep at -0.052m and must own the terminal rejection.
+    loc['r1'].global_matcher.static['obstacles'].append(dict(id='side_wall',center_m=[.23,1.04],half_extents_m=[.002,.002]))
+    result=check((loc,ts,plans))
+    assert not result['accepted'] and result['blocking_object']=='side_wall'
+    assert result['reason_category']=='static_sweep'
+
+
 def test_default_off_and_dependencies():
     assert inspect.signature(run).parameters['release_sweep_wall_aware'].default=='off'
     with pytest.raises(ValueError):release25.validate(dict(release_sweep_wall_aware=release25.MODE))

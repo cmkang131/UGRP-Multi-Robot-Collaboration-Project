@@ -53,7 +53,7 @@ def run(cfg_path):
   assert hashlib.sha256(pathlib.Path(cfg['rejection_table']).read_bytes()).hexdigest()==cfg['rejection_table_sha256']
  batch=OPS/(kind+'-'+stage+'-'+sha[:8]+('' if cfg.get('attempt',1)==1 else '-attempt'+str(cfg['attempt'])));batch.mkdir(exist_ok=False)
  (batch/'supervisor-source.py').write_bytes(pathlib.Path(__file__).read_bytes())
- write(batch/'RUN_META.json',dict(**{'class':'dev'},pr=522 if kind=='beampair' else 491,sha=sha,batch=batch.name,host='gcp2'))
+ write(batch/'RUN_META.json',dict(**{'class':'dev'},pr=522 if kind=='beampair' else 535,sha=sha,batch=batch.name,host='gcp2'))
  lease=ROOT/'leases/release25.json';write(lease,dict(task='release25',pid=os.getpid(),started=datetime.datetime.now(datetime.timezone.utc).isoformat(),expected_end='finite queue; per-run8h cap',concurrency=cfg['max_parallel'],source_sha=sha))
  env={**os.environ,'MUJOCO_GL':'osmesa','OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MKL_NUM_THREADS':'1','LP_NUM_THREADS':'1','PYTHONPATH':str(src)}
  running=[];completed=[];stopped=False;first_wave_passed=stage!='gate';started_N=0
@@ -84,7 +84,7 @@ def run(cfg_path):
   assert shutil.disk_usage(ROOT).free>8*1024**3+(len(pending)+len(running)+1)*256*1024**2
   assert next(int(l.split()[1]) for l in pathlib.Path('/proc/meminfo').read_text().splitlines() if l.startswith('MemAvailable:'))>6*1024**2
   d=ROOT/'runs'/r['name'];d.mkdir(exist_ok=False)
-  write(d/'RUN_META.json',dict(**{'class':'dev'},pr=522 if kind=='beampair' else 491,branch='claude/release25',sha=sha,batch=batch.name,host='gcp2'))
+  write(d/'RUN_META.json',dict(**{'class':'dev'},pr=522 if kind=='beampair' else 535,branch='claude/release25',sha=sha,batch=batch.name,host='gcp2'))
   common='import json,sys;from pathlib import Path;plan=json.loads(Path(sys.argv[1]).read_text())["episodes"][int(sys.argv[2])];'
   if kind=='beampair':
    code=common+'from scripts.run_beampair1 import run;run(plan,Path(sys.argv[3]),sys.argv[4],mode="beampair1_v1",candidate="baseline",cap_s=60,rendezvous="peer_rendezvous_v2",approach_repair="beampair_approach_v2",wall_layer="beampair_wall_clear_v1",failure_tail=True)'

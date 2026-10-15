@@ -193,7 +193,9 @@ def sweep(localizers, teachers, plans, now, *, computation_budget='off', release
                     certificate=release25.obstacle_escape(shapes,rect_corners(rect,margin=halo),nominal) if gap<=0 else None
                     checks[-1].update(nominal_swept_gap_m=nominal,uncertainty_escape=certificate,halo_m=halo)
                     if certificate:checks[-1].update(accepted=True,reason_category='uncertainty_escape')
-    worst=min(checks,key=lambda v:v['minimum_gap'])
+    # An accepted uncertainty escape may retain a negative diagnostic gap.
+    # Never let it hide the name/gap of a DIFFERENT rejected obstacle.
+    worst=min([c for c in checks if not c['accepted']] or checks,key=lambda v:v['minimum_gap'])
     assert computation_budget in ('off',COMPUTE)
     if computation_budget==COMPUTE and len(checks)>budget:raise RuntimeError('sweep_computation_budget')
     return dict(accepted=all(c['accepted'] for c in checks),checks=checks,

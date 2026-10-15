@@ -1,0 +1,129 @@
+{
+  "population_funnel": "/home/ugrp/ugrp-sim/ops-reviews/release25/release-short-analysis-08cf9d0a/population-funnels.json",
+  "population_funnel_sha256": "e1f00862d2c9fe1c47d38635cb309f8d1db881dfdaa1e029b0008e1a6f9c1086",
+  "cohorts": {
+    "current_A": {
+      "N": 3,
+      "success": 3,
+      "categories": {
+        "success": 3
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        }
+      ]
+    },
+    "current_B": {
+      "N": 3,
+      "success": 3,
+      "categories": {
+        "success": 3
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "reason_distribution": {},
+  "outcome_rejections": {},
+  "rejection_ledger": [],
+  "raw_sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110633-08cf9d0a/raw/result.json.zst",
+      "sha256": "220171f321603560a8b8f95ecabb82cc18c5561ebd77214377e4a13b7560cd49"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-110633-08cf9d0a/raw/result.json.zst",
+      "sha256": "4d78bac93ea3a4b5699e66b4f64904442299895e91cf698367c4aced972e6340"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110622-08cf9d0a/raw/result.json.zst",
+      "sha256": "1fccf08e5e8bcd0556f356790d03e90e8ca18cf7ee673047c3c7c5ac9eef8960"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-88639-08cf9d0a/raw/result.json.zst",
+      "sha256": "6e50de65a915ff7805df54475248c8239b839c9f29bac4126ad83edd5165b482"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-110600-08cf9d0a/raw/result.json.zst",
+      "sha256": "117399dda6668fb5793251830c74aef7a11cc7a765437ab6850fe2166ed7798f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110602-08cf9d0a/raw/result.json.zst",
+      "sha256": "96b8459f8105946a6b2c9659fb7ece73c0de326965244665949bb949ca62ee31"
+    }
+  ],
+  "reproduce": "python3 /home/ugrp/ugrp-sim/ops-reviews/release25/analyze_release.py /home/ugrp/ugrp-sim/ops-reviews/release25/short-config.json",
+  "candidate_funnels": "/home/ugrp/ugrp-sim/ops-reviews/release25/release-short-analysis-08cf9d0a/candidate-funnels.json",
+  "candidate_funnels_sha256": "a1d0d845fa6f963f6ba3209ee276fabab77cadff9ac0c2269084a7c00ee58ce9",
+  "candidate_funnels_script_sha256": "2ab38b8605a76a008094e7e7d31022db5feada72a5827c737752a1daad6ab922"
+}
