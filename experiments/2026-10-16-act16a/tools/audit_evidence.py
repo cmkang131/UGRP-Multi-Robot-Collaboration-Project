@@ -14,6 +14,7 @@ from scripts.analyze_grasp_act_act16a import require_cpu
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--batch',type=Path,help='reconciled batch with retry paths')
     a=p.parse_args();host=require_cpu();a.output.mkdir(exist_ok=False,parents=True)
     original=Path('/home/ugrp/ugrp-sim/act15-1535c8a3/dataset')
     files=[original/'manifest.json',original/'normalization.json']
@@ -33,10 +34,11 @@ def main():
         status='GCP1-only original raw/dataset remain unavailable and prohibited; GCP2 outputs are new provenance',
         retrieval_policy='Mac receives summary/montage/failure frames only; full raw remains GCP2, no complete independent backup'))
     review=read_json(a.source/'experiments/2026-10-15-act-train/act15-frame-review.json')
+    raw_paths={r['seed']:Path(r['raw']) for r in read_json(a.batch/'batch-summary.json')['results']} if a.batch else {}
     comparisons=[]
     for record in review['runs']:
         seed=int(record['run'].split('-')[2])
-        raw=Path(f'/home/ugrp/ugrp-sim/runs/act16a-gcp2-{seed}-b4db8ba2/raw')
+        raw=raw_paths.get(seed,Path(f'/home/ugrp/ugrp-sim/runs/act16a-gcp2-{seed}-b4db8ba2/raw'))
         for frame in record['frames']:
             f=raw/'rgb/r1'/Path(frame['source']).name
             comparisons.append(dict(seed=seed,t=frame['t'],original_sha256=frame['sha256'],
