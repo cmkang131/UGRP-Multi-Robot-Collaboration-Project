@@ -491,3 +491,57 @@ def test_setdown_panorama_after_open_retrace_then_original_regrasp(tmp_path,fake
             assert len(result['lookaround_result'][rid]['localizer']['views'])==25
             assert not result['lookaround_result'][rid]['localizer']['decision']['accepted']
     assert result['input_audit']['held_world_reads']==result['input_audit']['invisible_measurements']==0
+
+
+@pytest.mark.parametrize('direction_visible', (True, False))
+def test_release14_real_scheduler_preback_and_prepost_approach_barriers(tmp_path,fake_backend,monkeypatch,direction_visible):
+    from sim import release14,release_regrasp,release_global_observation as active
+    from sim.lookaround_localization import LookaroundLocalizer
+    from tests.test_release_regrasp import stripe
+    original=LookaroundLocalizer.finalize
+    def fitted(self):
+        original(self)
+        self.map_pose_known=True
+        self.own.x=np.array([4.6,.4,math.pi/2])
+        self.own.P=np.eye(3)*.0001
+        self.decision={'accepted':True}
+        return self.decision
+    import math
+    monkeypatch.setattr(LookaroundLocalizer,'finalize',fitted)
+    calls=[]
+    def margins(loc,t,now,**kwargs):
+        calls.append(t.rid)
+        return dict(phase='observe',kind='localized_margin',margin_m=.4,expected_slack_m=.8,
+            lateral_clearance_m=.025 if len(calls)<=2 else .2,lateral_shift_lo_m=.015,lateral_shift_hi_m=.43)
+    monkeypatch.setattr(active,'margin_report',margins)
+    extract=release14.line_features
+    monkeypatch.setattr(release14,'line_features',lambda f:extract(stripe(288 if direction_visible else 630)))
+    monkeypatch.setattr(release_regrasp,'lift_evidence',lambda *a,**kw:dict(answer='yes',reason='fixture_RGB'))
+    monkeypatch.setattr(release_regrasp,'continuity',lambda *a,**kw:dict(answer='yes',reason='fixture_RGB'))
+    def forbidden(*a,**kw):raise AssertionError('GT perception used for release14')
+    monkeypatch.setattr(runner.Eyes,'classify',forbidden)
+    monkeypatch.setattr(runner.Eyes,'visible',forbidden)
+    monkeypatch.setattr(runner,'own_end_world',forbidden)
+    plan=json.loads((runner.ROOT/'experiments/2026-10-14-e2e18-grasp-rootcause/release9-diagnostic-plan.json').read_text())
+    profile={**plan['execution_profile'],**release14.SAFE,'release_profile':release14.PROFILE}
+    out=tmp_path/'release14'
+    result=runner.run(plan['episodes'][0],out,cap_s=180.,**profile)
+    assert result['training_exclusions']['prefix']['included'] is False
+    checks=result['line_rechecks'];back=result['map_backoff_checks']
+    assert back and result['input_audit']['held_world_reads']==0
+    rows=[json.loads(line) for line in (out/'teacher-r1.jsonl').read_text().splitlines()]
+    assert all(row['training_eligible'] is False for row in rows)
+    first_motion=next(row['t'] for row in rows if any(row['wheels']))
+    assert result['lookaround_result']['r1']['localizer']['views'][0]['t']<first_motion
+    if direction_visible:
+        assert result['release_outcome']=='teacher_done'
+        assert len(checks)==4 and all(c['state']=='done' for c in checks)
+        approach=next(row['t'] for row in rows if row['teacher_phase']=='approach')
+        pick=next(row['t'] for row in rows if row['teacher_phase']=='repick')
+        assert max(c['events'][-1]['t'] for c in checks[:2])<=approach
+        assert approach<min(c['events'][0]['t'] for c in checks[2:])
+        assert max(c['events'][-1]['t'] for c in checks[2:])<=pick
+    else:
+        assert result['release_outcome']=='release14_direction_search_cap'
+        assert not any(row['teacher_phase']=='repick' for row in rows)
+        assert result['shift_steps']==0

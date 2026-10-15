@@ -1,0 +1,177 @@
+{
+  "schema": "ugrp.release14.summary.v1",
+  "baseline_sha": "97942a8285b498a2e7896dc8dccc88e067b77cc7",
+  "measurement_commit": "024d1ca4",
+  "profile": "release14_line_v1",
+  "test_result": "61 passed in 49.65s",
+  "tests": [
+    "tests/test_release14.py",
+    "tests/test_release_regrasp.py",
+    "tests/test_grasp_act_release_run.py"
+  ],
+  "physics_executions": 0,
+  "simulator_render_calls": 0,
+  "provider_calls": 0,
+  "remote_runs_submitted": 0,
+  "jpeg_sha256_verified": 151,
+  "payload_sha256_verified": 6,
+  "runs": [
+    {
+      "name": "r12d-01-97942a82",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r12d-01-97942a82/raw",
+      "source_sha": "97942a8285b498a2e7896dc8dccc88e067b77cc7",
+      "new_execution_status": "not_run",
+      "first_branch": {
+        "world_t": 14.89999999998795,
+        "action": "stationary own-RGB panorama BEFORE rear motion; input at this new view not in old run"
+      },
+      "payload_sha256": {
+        "result.json.zst": "0d8122469025e981245ab426a5a43b2a93dcad5d76a5a3e69b29276ba62a4eda",
+        "teacher-r1.jsonl.zst": "4b9569f9448574447e9e409287fbe2323b66612aac672e9d8d7e8ddfddce32fc",
+        "teacher-r2.jsonl.zst": "50ba596b3b0ccb8f3f91eb1f6e10371a2a8b8373ea8e98f7bef4bffbe2864a4d"
+      },
+      "challenges": [
+        {
+          "robot": "r1",
+          "epoch": 1,
+          "attempt": 1,
+          "old": {
+            "no": 21
+          },
+          "new": {
+            "no": 21
+          },
+          "restore": {
+            "answer": "no",
+            "reason": "own_rgb_hold_lost"
+          }
+        }
+      ]
+    },
+    {
+      "name": "release11-diag-08-c9ba20a6",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release11-diag-08-c9ba20a6/raw",
+      "source_sha": "c9ba20a605c1c4117d553550268c20fa6ac2c3a3",
+      "new_execution_status": "not_run",
+      "first_branch": {
+        "world_t": 14.89999999998795,
+        "action": "stationary own-RGB panorama BEFORE rear motion; input at this new view not in old run"
+      },
+      "payload_sha256": {
+        "result.json.zst": "060c486ff97a011e34c6243ae2523cb82ebca8d64d9ef926d99e5f58e95ecbc5",
+        "teacher-r1.jsonl.zst": "b9876980eb69861ab52c97942d59479c81eb26a0c8849f15052e2abbfb450f1a",
+        "teacher-r2.jsonl.zst": "94d48b8cc3aa6eb06587d7ad7a7c73fab74e4dc6c42b4db4c8d31de138b15bf8"
+      },
+      "challenges": [
+        {
+          "robot": "r1",
+          "epoch": 1,
+          "attempt": 1,
+          "old": {
+            "yes": 11
+          },
+          "new": {
+            "yes": 11
+          },
+          "restore": {
+            "answer": "yes",
+            "reason": "own_rgb_retained"
+          }
+        },
+        {
+          "robot": "r2",
+          "epoch": 1,
+          "attempt": 1,
+          "old": {
+            "yes": 11
+          },
+          "new": {
+            "yes": 11
+          },
+          "restore": {
+            "answer": "yes",
+            "reason": "own_rgb_retained"
+          }
+        },
+        {
+          "robot": "r1",
+          "epoch": 2,
+          "attempt": 1,
+          "old": {
+            "no": 21
+          },
+          "new": {
+            "no": 21
+          },
+          "restore": {
+            "answer": "yes",
+            "reason": "own_rgb_retained"
+          }
+        },
+        {
+          "robot": "r1",
+          "epoch": 2,
+          "attempt": 2,
+          "old": {
+            "no": 21
+          },
+          "new": {
+            "yes": 21
+          },
+          "restore": {
+            "answer": "yes",
+            "reason": "own_rgb_retained"
+          }
+        },
+        {
+          "robot": "r1",
+          "epoch": 2,
+          "attempt": 3,
+          "old": {
+            "no": 21
+          },
+          "new": {
+            "yes": 21
+          },
+          "restore": {
+            "answer": "yes",
+            "reason": "own_rgb_retained"
+          }
+        }
+      ]
+    }
+  ],
+  "clipped_line_branch": {
+    "N": 27,
+    "yaw_search": 27,
+    "lateral_zero": 27,
+    "first_world_t": 43.30000000011574
+  },
+  "coordinator_approval": {
+    "approved": false
+  },
+  "gate40": {
+    "approved": false,
+    "scheduled": false
+  },
+  "recording_status": "safe configuration guard; prefix excluded; actual training writer/new gate still unavailable",
+  "physical_effect": "unverified; stored post-divergence frames are NOT new-policy rollouts",
+  "artifacts": {
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release14-replay.json.zst": {
+      "sha256": "59a28f4aff2b283fc5dd20b69b908a482effba279171ed8b2a56a3b62f3b6f39",
+      "decoded_sha256": "894616a2f24153a6b9ebce5eb33502d2f89893c9be0eddba6c2f19cacf4062ef"
+    },
+    "experiments/2026-10-14-e2e18-grasp-rootcause/release14-diagnostic-plan.json": {
+      "sha256": "ca1fc60bf3b71913d12c40b202ce0d1a5562f9e72af861932a2dd61a553358f2"
+    },
+    "outputs/release14/pytest.log": {
+      "sha256": "9109d5a1c0ed07a566dbe27261cd046ca3eb12c1e7fb26761c2aefc00fe1d9b3"
+    }
+  },
+  "source_file_sha256": {
+    "sim/release14.py": "93eb8bcfeebdb38a1f6ad8d879c54908379da9a984cf9a4b398717d588273af5",
+    "sim/release_regrasp.py": "3d0316d3dfe1a9b8991f6fcd6fe93fd9d0e19f9fc4565e11ad8e8b97c249d439",
+    "scripts/run_grasp_act_release.py": "093339d40172ab0bec1f49770608086beb11ca940fd270fd9c098ea931b46547",
+    "scripts/replay_release14.py": "8d8d26d797b6809eaac11fb6c41ee31204621636b2778edca9c75946719d1b87"
+  }
+}

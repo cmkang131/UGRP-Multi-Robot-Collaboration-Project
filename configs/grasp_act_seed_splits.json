@@ -13,15 +13,17 @@
     "heldout_start": [[91000, 91999]],
     "heldout_map": [[92000, 92999]],
     "release_gate_command_relative_v1": [[74100, 74139]],
-    "release_gate_zone_center_rgb_v1": [[74200, 74239]]
+    "release_gate_zone_center_rgb_v1": [[74200, 74239]],
+    "release14_diagnostic": [[76000, 76006]]
   },
-  "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "release_gate_command_relative_v1", "release_gate_zone_center_rgb_v1"],
+  "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "release_gate_command_relative_v1", "release_gate_zone_center_rgb_v1", "release14_diagnostic"],
   "heldout_maps": ["zone_wide_corridor_final_v3"],
   "notes": {
     "grasp_gate_078": "teacher 078cbb45 gate 36/40 (seen)",
     "grasp_gate_v2": "observable_v2 3a451048 gate, stopped 27/32 (seen)",
     "grasp_gate_v3": "Codex new grasp gate, reserved in PR #484 comment",
     "carry_probe": "loaded-motion probes (G1 rotation, G7 carry, G2/G6 set-down-look), claude/grasp-act-release",
+    "release14_diagnostic": "release14_line_v1 fresh7; main/open PR heads + local VM3 queue checked; remote-history preflight pending. Never train; gate40 unapproved.",
     "heldout_maps": "s4_narrow_door_standoff_v4 map, HELDOUT in scripts/make_grasp_act_plan.py",
     "release_gate_command_relative_v1": "PR #491 continuation on claude/grasp-act-probes: held hidden_v1 + setdown_lookaround_v2 + command_relative_v1; new profile, no pooling with 74000-74039",
     "release_record_first50": "train seeds 88000-88049 reserved for the first 50 release recordings; approval and new-profile >=38/40 gate required; no gate or diagnostic seeds",

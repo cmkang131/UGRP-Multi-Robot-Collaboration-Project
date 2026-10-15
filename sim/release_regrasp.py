@@ -33,35 +33,54 @@ def beam_mask(frame):
             & _usable_region(frame.shape[1], frame.shape[0]))
 
 
-def near_grip(frame):
+def assigned_beam_mask(frame, end=None):
+    """release14: shaft OR assigned end colour, never the partner's band.
+
+    HSV bounds are the existing grasp_act_teal_blue_v1 probe calibration.
+    Colour alone cannot confirm grip: all lift/settle/retention checks remain.
+    """
+    if end is None:
+        return beam_mask(frame)
+    import cv2
+    from harness.zone_own_perception import _usable_region
+    bounds = {'teal': ((70,120,90),(90,255,255)),
+              'blue': ((110,120,60),(130,255,255))}
+    lo, hi = bounds[end]
+    band = cv2.inRange(cv2.cvtColor(frame, cv2.COLOR_BGR2HSV), np.array(lo), np.array(hi)) > 0
+    return beam_mask(frame) | (band & _usable_region(frame.shape[1], frame.shape[0]))
+
+
+def near_grip(frame, end=None):
     """Reject the distant/edge shaft seen by the empty r1 wrist in release10.
 
     A central shaft is necessary, never sufficient: a sequential lift challenge
     and a fresh sustained comparison are also mandatory. No camera/FOV change.
     """
-    mask = beam_mask(frame)
+    mask = assigned_beam_mask(frame, end)
     h, w = mask.shape
     fraction = float(mask[h//5:4*h//5, w//4:3*w//4].mean())
     return dict(qualified=fraction >= .60, central_fraction=fraction,
                 threshold=.60, scope='provisional own wrist near-field shaft')
 
 
-def lift_evidence(before, after, settled, commands):
+def lift_evidence(before, after, settled, commands, *, end=None):
     record = confirm_parts_v3(before, after, commands=commands,
-        masks=lambda frame: (beam_mask(frame),), names=('beam',),
+        masks=lambda frame: (assigned_beam_mask(frame, end),), names=('beam',),
         settled=settled, rule=OPTION)
-    proximity = [near_grip(f) for f in (before, after, settled)]
+    proximity = [near_grip(f, end) for f in (before, after, settled)]
     record['near_grip'] = proximity
+    if end is not None:
+        record.update(colour_profile='assigned_end_union_v1', assigned_end=end)
     if not all(p['qualified'] for p in proximity):
         record.update(verdict='not_confirmed', reason='own_grip_shaft_not_framed')
     record['answer'] = {'confirmed':'yes', 'not_confirmed':'no', 'undetermined':'unknown'}[record['verdict']]
     return record
 
 
-def continuity(reference, frame):
+def continuity(reference, frame, *, end=None):
     """Fresh retention check, usable only AFTER that robot's own challenge."""
-    b, a = shape(beam_mask(reference)), shape(beam_mask(frame))
-    ok = (near_grip(frame)['qualified'] and a is not None and b is not None
+    b, a = shape(assigned_beam_mask(reference, end)), shape(assigned_beam_mask(frame, end))
+    ok = (near_grip(frame, end)['qualified'] and a is not None and b is not None
           and .70 <= a['fraction']/b['fraction'] <= 1.40
           and max(abs(x-y) for x,y in zip(a['center'], b['center'])) <= .06
           and max(abs(x-y) for x,y in zip(a['extent'], b['extent'])) <= .10)
@@ -76,7 +95,7 @@ class RegraspBarrier:
     shared motion waits for both code ACKs. An opt-in failed-grip recovery may
     move only the opened robot, with peer commands fixed and confirmations reset.
     """
-    def __init__(self, teachers, epoch, now, *, wheel_commands, recovery_factory=None):
+    def __init__(self, teachers, epoch, now, *, wheel_commands, recovery_factory=None, assigned_end_evidence=False):
         self.teachers = teachers
         self.robots = tuple(teachers)
         self.epoch = epoch
@@ -97,6 +116,10 @@ class RegraspBarrier:
         self.recovery_factory = recovery_factory
         self.recovery = None
         self.recoveries = []
+        self.assigned_end_evidence = assigned_end_evidence
+
+    def evidence_options(self, rid):
+        return {'end': self.teachers[rid].end} if self.assigned_end_evidence else {}
 
     def command(self, rid, now):
         return dict(t=now, pwm=dict(self.teachers[rid].pwm), wheels=list(self.wheel_commands(rid)))
@@ -117,7 +140,7 @@ class RegraspBarrier:
                 return rid, 'own_rgb_unconfirmed'
             if dict(self.teachers[rid].pwm) != self.expected[rid]:
                 return rid, 'confirmed_command_changed'
-            rec = continuity(self.references[rid], capture(rid, now, 'barrier'))
+            rec = continuity(self.references[rid], capture(rid, now, 'barrier'), **self.evidence_options(rid))
             self.samples.append(dict(t=now, robot=rid, epoch=self.epoch, **rec))
             if rec['answer'] != 'yes':
                 return rid, rec['reason']
@@ -229,7 +252,7 @@ class RegraspBarrier:
             self.state, self.until = 'verify', now+SETTLE_S
         elif self.state == 'verify':
             frame = capture(rid, now, 'settled_test')
-            rec = lift_evidence(self.before, self.after, frame, self.commands)
+            rec = lift_evidence(self.before, self.after, frame, self.commands, **self.evidence_options(rid))
             if dict(self.teachers[rid].pwm) != self.commands[-1]['pwm']:
                 rec.update(answer='unknown', reason='test_command_changed')
             self.samples.append(dict(t=now, robot=rid, epoch=self.epoch,
@@ -243,7 +266,7 @@ class RegraspBarrier:
                 self.state, self.until = 'restore', now+MOVE_S
         elif self.state == 'restore':
             frame = capture(rid, now, 'restored_test')
-            retained = continuity(self.before, frame)
+            retained = continuity(self.before, frame, **self.evidence_options(rid))
             if self.verdict['answer']=='yes' and retained['answer']=='yes':
                 self.confirmed[rid] = True
                 self.references[rid] = frame.copy()
