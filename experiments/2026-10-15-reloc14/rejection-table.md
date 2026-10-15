@@ -2,10 +2,10 @@
 
 원본은 gcp1에서 분석. evaluator 정답은 이 오프라인 분석에만 사용. 자세 10cm/5° 기준 유지.
 
-|조건|등록→전달→삽입→주행|xy 오류|yaw 오류|동시 오류|첫 등록 xy cm/yaw °|
+|조건|등록→전달→삽입→주행|xy 오류|yaw 오류|동시 오류|첫 PF 등록 xy cm/yaw °|
 |---|---|---:|---:|---:|---|
-|reloc13-r1-selfmap-texture-93571-aa1f4661|81→81→80→32|0/0|0/0|0|0.00/0.00|
-|reloc13-r1-selfmap-texture-93585-aa1f4661|68→68→66→20|0/0|0/0|0|0.00/0.00|
+|reloc13-r1-selfmap-texture-93571-aa1f4661|81→81→80→32|6/81|81/81|6|3.49/0.10|
+|reloc13-r1-selfmap-texture-93585-aa1f4661|68→68→66→20|0/68|68/68|0|5.26/0.52|
 |reloc13-r2-selfmap-texture-93571-6abd9527|313→313→312→130|215/313|190/313|190|3.49/0.10|
 |reloc13-r2-selfmap-texture-93583-6abd9527|366→366→360→118|225/366|8/366|1|9.85/2.48|
 |reloc13-r2-selfmap-texture-93584-6abd9527|364→364→345→65|26/364|7/364|0|8.72/1.56|
@@ -686,7 +686,7 @@
 |90–180|33|5.51/6.21|10.71/11.01|
 |180–None|4|5.65/6.25|10.77/11.44|
 
-전체 분석·원본 해시·재현 명령: baseline-summary.json. R1은 실행 프레임 분리 전이므로 등록/드리프트의 원본 오류149/149를 reloc13 표에서 별도 유지(새 실행 프레임 오차 산식은 적용 불가).
+전체 분석·원본 해시·재현 명령: baseline-summary.json. R1의 두 실행은 실행 프레임 분리 전이다. baseline-summary-v2.json은 기존 command anchor로 복원해 149/149 제어 오류를 별도 보존한다. 첫 PF 등록 오차와 실행 프레임 오차를 구분한다.
 위치 관문 막은 대상=static_registration_or_map_evidence, 물리 최소 틈=null(해당 없음). 운반 기존 최대 원인은 pose_budget/재탐색 및 own_rgb:heavy_crate:4(최소 틈 -0.07273354264836535m).
 
 ## R1: 첫 폐루프 (6c9fa728)
@@ -732,3 +732,46 @@
 |map_inserted:camera_unsettled|1|
 
 운반2회 모두 loaded_or_unknown_load_not_qualified HOST_ERROR. 카메라 FK의 미검증 하중 외부파라미터 호출이 원인이며 물리 무게 판독이 아니다. 지도는 floor_line0/wall_segment1인39.3초에도 전역 복구로 갔다. 종료 전 소유 PID를 찾았으나 모두 이미 종료돼 SIGINT 대상0(확인 기록 stop-r2.json). 원본10/10 manifest 검증(integrity-r2.json).
+
+## R3 최종 물리 (f3d0640829abede9f84c1b05cbc1ff877d78b8fe)
+
+|실행|등록→전달→삽입→주행|10cm/5° 오류|xy 오류|yaw 오류|종료|
+|---|---|---|---|---|---|
+|reloc14-r3-selfmap-texture-93571-f3d06408|84→84→84→9|0/84|0|0|selfmap4_relocalization_exhausted|
+|reloc14-r3-selfmap-texture-93583-f3d06408|149→149→90→0|27/149|27|0|selfmap4_relocalization_exhausted|
+|reloc14-r3-selfmap-texture-93584-f3d06408|364→364→157→61|245/364|42|230|cap_end|
+|reloc14-r3-selfmap-texture-93585-f3d06408|66→66→66→41|12/65|12|0|controller_error:ValueError|
+
+총 등록663→전달663→삽입397→주행111. 평가와 동시각으로 짝지은 자세662개 중 오류284개. 마지막93585 41.5초 trace1개는0.06초 명령 거부 전에 기록됐고 동시각 평가가 없어 정확도 분모에서 제외했다. 첫등록4/4·첫오등록0/4를 유지했지만 등록 뒤 자세 정확도 관문은 실패했다. 이전R3(282/626)와 새궤적을 합산하지 않으며, 수치상 비율이 비슷한 것을 정확도 개선으로 주장하지 않는다.
+
+|최종 거부 범주(단위별 중복 가능)|수|
+|---|---:|
+|registered:not_yet_registered|446|
+|insertion:registered_r7_unconfirmed|246|
+|control_drive_used:stage:active_reloc8|175|
+|map_inserted:registered_r7_unconfirmed|170|
+|insertion:pose_uncertain|82|
+|control_drive_used:stage:spin|80|
+|map_inserted:registered_r7_unconfirmed;pose_uncertain|66|
+|control_drive_used:stage:pan|23|
+|insertion:camera_unsettled|18|
+|map_inserted:pose_uncertain|12|
+|map_inserted:registered_r7_unconfirmed;camera_unsettled|7|
+|map_inserted:camera_unsettled|7|
+|control_drive_used:stage:select|6|
+|map_inserted:registered_r7_unconfirmed;camera_unsettled;pose_uncertain|3|
+|control_drive_used:stage:stopped|2|
+|map_inserted:camera_unsettled;pose_uncertain|1|
+
+|운반seed|들기/운반진입|목적지관측/놓기|종료|막은대상·최소틈|
+|---|---|---|---|---|
+|93266|1/1|0/0|244.1 SIM초까지 기록 후 supervisor_stop, 물리성공null|공통 예산 결함, 물리틈해당없음|
+|93315|1/1|0/0|124.4 SIM초 carry_recovery_setdown_envelope_blocked|wall_divider_1, -0.01016918123938812m|
+
+위 틈은 자기 추정 자세·자기 RGB 장애물 원장의 margin-escape 경로로 재현한 값이다(carry-blockers.json). 실제 충돌이나 실제 물체 사이 틈을 의미하지 않는다. v7 연구화물 heavy_crate0을 생성몸체·장면해시로 확인했다. 공통 고정소품 warehouse_wood_crate는 별도로 표시한다.
+
+93315는 실제yaw≥20°106틱 중 예산1틱만 작동(105누락), 최대67.76°. 마지막fix뒤 명령이동2.4099m·회전.1121rad인데 예산yaw6.83°였다. 하중중병진의회전오차가 기존pure-turn보정/단일계수 예산의 범위 밖임을 확인했다. 같은 예산을 쓰는 남은93266도 SIGINT로 정지했다(stop-r3.json). 목적지 놓기 확인0/2, 승격불가다.
+
+추가v7계수맞춤은93315의106/106을같은궤적에서잡지만,이미열람한 out-of-fit93266 상계포괄이xy2262/2441·yaw2305/2441여서runtime미적용이다(v7-budget-diagnostic.json). 이후 공분산/추적상태와native펄스계약 수정은 비물리회귀만 통과했으며 새물리검증0이다.
+
+전체 원본manifest16/16·선택RGB96장/몽타주16개 해시검증 및 직접검토. 원본경로·각라운드재현명령·전역/추적/지도/운반뷰관문 누적/첫거부 수는 rejection-table.json에 모았다. 관측상관 프레임이므로 독립시행 성공률이 아니다.

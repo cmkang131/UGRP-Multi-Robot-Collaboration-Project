@@ -1,0 +1,112 @@
+{
+  "schema": "ugrp.reloc14.summary.v1",
+  "ready": false,
+  "status": "NOT_READY",
+  "round_count": 3,
+  "round_sizes": [
+    6,
+    4,
+    6
+  ],
+  "physical_run_N": 16,
+  "physical_source_sha": "f3d0640829abede9f84c1b05cbc1ff877d78b8fe",
+  "post_round3_new_physics_N": 0,
+  "R3": {
+    "first_registration_N": 4,
+    "false_registration_N": 0,
+    "funnel": {
+      "registered": 663,
+      "execution_pose_delivered": 663,
+      "map_inserted": 397,
+      "control_drive_used": 111
+    },
+    "execution_bad_N": 284,
+    "execution_scored_N": 662,
+    "unscored_registered_N": 1,
+    "destination_release_verified_N": 0,
+    "carry_run_N": 2,
+    "termination_counts": {
+      "selfmap4_relocalization_exhausted": 2,
+      "cap_end": 1,
+      "controller_error:ValueError": 1
+    }
+  },
+  "input_audit_zero": true,
+  "verified_original_manifests": 16,
+  "review_montage_N": 16,
+  "review_selected_own_frames_N": 96,
+  "local_tests": {
+    "unique_passed": 55,
+    "files": 5,
+    "logs": [
+      "pytest-final.txt",
+      "pytest-native.txt"
+    ],
+    "scope": "offline, no Mac physics/render/model"
+  },
+  "first30": [
+    {
+      "round": 1,
+      "kind": "selfmap",
+      "N": 4,
+      "wall_per_sim_median": 4.171131127983335,
+      "incomplete_N": 0
+    },
+    {
+      "round": 1,
+      "kind": "carry",
+      "N": 2,
+      "wall_per_sim_median": 2.44218028804526,
+      "incomplete_N": 0
+    },
+    {
+      "round": 2,
+      "kind": "selfmap",
+      "N": 2,
+      "wall_per_sim_median": 4.262337106383332,
+      "incomplete_N": 0
+    },
+    {
+      "round": 2,
+      "kind": "carry",
+      "N": 2,
+      "wall_per_sim_median": null,
+      "incomplete_N": 1
+    },
+    {
+      "round": 3,
+      "kind": "selfmap",
+      "N": 4,
+      "wall_per_sim_median": 4.167675123166676,
+      "incomplete_N": 0
+    },
+    {
+      "round": 3,
+      "kind": "carry",
+      "N": 2,
+      "wall_per_sim_median": 2.8689370736277615,
+      "incomplete_N": 0
+    }
+  ],
+  "failure_budget": {
+    "seed": 93315,
+    "positive_N": 106,
+    "triggered_N": 1,
+    "missed_N": 105,
+    "max_yaw_deg": 67.76063074791482,
+    "closed_loop_recalibration": "FAILED",
+    "later_loaded_regime_fit_runtime_applied": false
+  },
+  "model_calls": 0,
+  "training_runs": 0,
+  "weld": "off",
+  "google_drive_used": false,
+  "original_storage": "GCP persistent disk; no full separate backup",
+  "blockers": [
+    "remaining control pose errors",
+    "recovery exhaustion",
+    "physical destination release not verified",
+    "carry budget undercoverage",
+    "post-round3 code fixes lack new closed-loop validation"
+  ]
+}
