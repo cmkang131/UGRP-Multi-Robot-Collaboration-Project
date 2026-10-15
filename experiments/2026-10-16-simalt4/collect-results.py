@@ -106,7 +106,7 @@ def main():
               'run':j['name'],'reason':j['error'],'blocking_object':'MJWarp constraint workspace' if category=='constraint_buffer_overflow' else j['name'],
               'minimum_gap_m':None,'minimum_gap_status':'not_geometric','raw_path':j['raw_result']})
     for name,c in comparisons.items():
-        if name.startswith('final-') and c.get('hold'):
+        if name.startswith('final-') and '-c312-' in name and c.get('hold'):
             h=c['hold']
             if h['candidate_bilateral']<h['samples']:
                 distributions.append({'category':'loaded_hold_bilateral_contact_absent',
