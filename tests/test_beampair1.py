@@ -3,7 +3,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from harness.beampair_teacher import HeldCargoGuard, validate_plan, perturb_model, defer_ready_during_probe
+from harness.beampair_teacher import HeldCargoGuard, validate_plan, perturb_model, defer_ready_during_probe, PairRecoveryPerturb
 from harness.grasp_act_perturb import RecoveryPerturb
 
 
@@ -70,3 +70,17 @@ def test_ready_transition_cannot_truncate_an_active_twelve_tick_burst():
         if record:issued.append(record['tick'])
     assert issued==list(range(1,13))
     assert teacher.phase=='ready'
+
+
+def test_loss_to_search_does_not_shorten_requested_burst_but_pick_cancels():
+    m=perturb_model(12);m.update(probability_per_eligible_tick=1.,minimum_eligible_ticks=1)
+    probe=PairRecoveryPerturb(m,seed=7);issued=[]
+    for i in range(13):
+        before='approach' if i<4 else 'search';after='approach' if i<3 else 'search'
+        _,d=probe.apply(command(),phase_before=before,phase_after=after,holding=False,visible=i<3)
+        if d:issued.append(d['tick'])
+    assert issued==list(range(1,13))
+    probe=PairRecoveryPerturb(m,seed=7)
+    probe.apply(command(),phase_before='align',phase_after='align',holding=False,visible=True)
+    _,d=probe.apply(command(1500),phase_before='align',phase_after='pick',holding=True,visible=False)
+    assert d is None and not probe.active

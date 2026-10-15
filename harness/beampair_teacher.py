@@ -1,5 +1,6 @@
 """Default-off pair-gate contracts; command history, never simulator inputs."""
 from copy import deepcopy
+from harness.grasp_act_perturb import RecoveryPerturb
 
 MODE = 'beampair1_v1'
 DEPENDENCY_SHA = '26f84d0f0ada1c33473c83cca2d3415ce51bd247'
@@ -75,3 +76,19 @@ def defer_ready_during_probe(teacher, previous_phase, previous_phase_t, active):
     if active and teacher.phase=='ready' and previous_phase in ('approach','align'):
         teacher.phase=previous_phase;teacher.phase_t=previous_phase_t
         if teacher.events and teacher.events[-1].get('to')=='ready':teacher.events.pop()
+
+
+class PairRecoveryPerturb(RecoveryPerturb):
+    """Finish an already issued burst across visible-loss recovery transitions.
+
+    Trigger eligibility stays approach/align with own visible target. Search
+    is the response being tested, so it must not shorten that exogenous burst.
+    Holding/pick/completion still cancel it. Limits and wheel values are the
+    unchanged RecoveryPerturb contract; only the requested duration is fixed.
+    """
+    def apply(self, clean, *, phase_before, phase_after, holding, visible):
+        recovery=('approach','align','search','relook','ready')
+        if self.active and not holding and phase_before in recovery and phase_after in recovery:
+            phase_before=phase_after='approach'
+        return super().apply(clean,phase_before=phase_before,phase_after=phase_after,
+                             holding=holding,visible=visible)

@@ -18,8 +18,7 @@ import subprocess
 import sys
 
 from harness.beampair_teacher import (MODE, DEPENDENCY_SHA, HeldCargoGuard, validate_plan,
-                                    perturb_model, defer_ready_during_probe)
-from harness.grasp_act_perturb import RecoveryPerturb
+                                    perturb_model, defer_ready_during_probe, PairRecoveryPerturb)
 from harness.grasp_act_data import write_json
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -173,7 +172,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.):
             def __init__(self,rid,*a,**kw):
                 super().__init__(rid,*a,**kw);teachers[rid]=self
                 ticks=plan['burst_ticks'] if rid=='r1' else 13-plan['burst_ticks']
-                self.pair_perturb=RecoveryPerturb(perturb_model(ticks),seed=plan['seed']+(rid=='r2'))
+                self.pair_perturb=PairRecoveryPerturb(perturb_model(ticks),seed=plan['seed']+(rid=='r2'))
             def step(self,w,now,**kw):
                 if guard.active:
                     self.local_seen=None;self.last_seen_t=None
