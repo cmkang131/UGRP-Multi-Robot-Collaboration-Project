@@ -1,0 +1,278 @@
+{
+  "schema": "ugrp.actgpu1.summary.v1",
+  "class": "dev",
+  "research_result": false,
+  "status": "complete",
+  "source_sha": "9dc44d905c7c1c54833417c2da86bb1dbc56a869",
+  "remote_root": "ugrp-act-l4-pilot1:/mnt/act-source/actgpu1-9dc44d90",
+  "raw_source": "/home/ugrp/actgpu1-source-9dc44d90",
+  "dataset": {
+    "root": "/mnt/act-source/act-main-f609979c/dataset",
+    "manifest_sha256": "da651587d3cbe51f418f63fda55642b53e985a1fe1551db98909517065ba058b",
+    "episodes": 50,
+    "training_episodes": 45,
+    "validation_episodes": 5,
+    "training_rows": 16018,
+    "validation_rows": 1833,
+    "all_files_verified": 200,
+    "scope": "existing original50, not recovery data; no synthetic batch; no new simulation"
+  },
+  "run": {
+    "status": "complete",
+    "class": "dev",
+    "research_result": false,
+    "steps_requested": 300,
+    "steps_completed": 300,
+    "wall_s": 94.11843333899998,
+    "gpu": "NVIDIA L4",
+    "cuda": "13.0",
+    "host": {
+      "project": "ugrp-act-train-1014",
+      "instance": "ugrp-act-l4-pilot1",
+      "machine_type": "g2-standard-4",
+      "zone": "asia-northeast3-a"
+    },
+    "seed": 20261015,
+    "done_loss": "balanced_bce_v1",
+    "done_loss_weight": 1.0,
+    "command_history_dropout": 0.2,
+    "batch_size": 8,
+    "readback_verified": true,
+    "environment": {
+      "torch": "2.11.0",
+      "torchvision": "0.26.0",
+      "lerobot": "0.6.2",
+      "numpy": "2.2.6"
+    },
+    "peak_training_gpu_bytes": 1549413888,
+    "peak_training_gpu_reserved_bytes": 2057306112
+  },
+  "outer_execution": {
+    "class": "dev",
+    "research_result": false,
+    "source_sha": "9dc44d905c7c1c54833417c2da86bb1dbc56a869",
+    "argv": [
+      "/home/ugrp/ugrp-act-env/bin/python",
+      "-m",
+      "scripts.train_grasp_act",
+      "--dataset",
+      "/mnt/act-source/act-main-f609979c/dataset",
+      "--output",
+      "/mnt/act-source/actgpu1-9dc44d90/smoke",
+      "--stage",
+      "smoke",
+      "--steps",
+      "300",
+      "--max-wall-s",
+      "840",
+      "--seed",
+      "20261015",
+      "--done-loss",
+      "balanced_bce_v1",
+      "--done-loss-weight",
+      "1",
+      "--command-history-dropout",
+      "0.2",
+      "--run-class",
+      "dev",
+      "--profile-timing"
+    ],
+    "started_at": "2026-10-15T07:15:02.234402+00:00",
+    "max_outer_wall_s": 900,
+    "status": "exited",
+    "exit_code": 0,
+    "finished_at": "2026-10-15T07:16:44.550396+00:00"
+  },
+  "measurement": {
+    "dataset_load_s": 21.439872397999977,
+    "setup_s": 30.163197501000013,
+    "checkpoints": [
+      {
+        "step": 100,
+        "save_s": 2.409634338999979,
+        "bytes": 622002224
+      },
+      {
+        "step": 200,
+        "save_s": 2.286894576999998,
+        "bytes": 622002224
+      },
+      {
+        "step": 300,
+        "save_s": 2.272109041999954,
+        "bytes": 622002224
+      }
+    ],
+    "method": "CUDA synchronized step including batch load, H2D, forward, backward, optimizer; excludes checkpoint/log",
+    "checkpoint_load_s": 1.2064442399999962,
+    "inference_s": 0.010122147000004134,
+    "step_mean_s": 0.1839632353833334,
+    "step_median_s": 0.17081971800001838,
+    "step_p95_s": 0.19487550100001272
+  },
+  "batch_load_mean_s": 0.02576527052666885,
+  "batch_load_median_s": 0.018884488499992358,
+  "input_audit": {
+    "keys": [
+      "observation.images.own_history",
+      "observation.state"
+    ],
+    "shapes": {
+      "observation.images.own_history": [
+        1,
+        3,
+        480,
+        640
+      ],
+      "observation.state": [
+        1,
+        252
+      ]
+    },
+    "whitelist_verified": true,
+    "teacher_input_fields": 0,
+    "scope": "saved training input; own RGB history and contract context only; not closed-loop validation"
+  },
+  "raw_context_exact_match_probes": 6,
+  "postflight": {
+    "checkpoint_artifacts_verified": 20,
+    "disk_free_bytes": 30945169408,
+    "source_clean": true,
+    "active_gpu_processes": "",
+    "idle_guard": "active"
+  },
+  "checkpoint": {
+    "each_bytes": 622002224,
+    "original_artifact_hashes_verified": 20,
+    "final_model_sha256": "8314b27feec59fef4371f2dfb1289fa95f2fb99ccafbd9bf2b442b544a921c84",
+    "selected_for_research": false,
+    "retention": "test-only checkpoints retained on existing GCP persistent disk; not a deployed model"
+  },
+  "price": {
+    "official_on_demand_usd_per_hour": 0.907714004,
+    "region": "asia-northeast3",
+    "machine": "g2-standard-4 including one L4,4vCPU,16GiB",
+    "source": "https://cloud.google.com/products/compute/pricing/accelerator-optimized",
+    "evidence": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/pricing-extraction.json",
+    "page_sha256": "31e8c7183e020837eaa8d96e5ebca56362a842f7f6cefd58afc5a676b8953966",
+    "credit_balance": null,
+    "actual_billed_amount": null,
+    "excludes": "disk, network, tax, credit accounting"
+  },
+  "projection_for_curated_50_including_recovery": {
+    "scope": "fixed 10k total steps incl smoke300, batch8; same shapes, 45 train +5 fresh validation; recovery row counts unmeasured; no convergence or task success prediction",
+    "formula": "10000 * step_s + 2 * setup_s + 23 * mean_checkpoint_save_s + 2 * (checkpoint_load_s + 2 * inference_s)",
+    "estimates": [
+      {
+        "method": "mean",
+        "wall_s": 1955.838350248,
+        "wall_min": 32.59730583746667,
+        "compute_usd": 0.4931505166889907,
+        "two_arms_wall_s": 3911.676700496,
+        "two_arms_compute_usd": 0.9863010333779814
+      },
+      {
+        "method": "p95_step_sensitivity",
+        "wall_s": 2064.9610064147932,
+        "wall_min": 34.41601677357989,
+        "compute_usd": 0.5206650064546227,
+        "two_arms_wall_s": 4129.9220128295865,
+        "two_arms_compute_usd": 1.0413300129092453
+      }
+    ],
+    "checkpoints_per_arm": 23,
+    "checkpoint_bytes_per_arm": 14306051152,
+    "checkpoint_two_arms_gib": 26.647096782922745,
+    "reserved_two_arm_wall_s": 46800,
+    "reserved_two_arm_compute_usd": 11.800282052,
+    "checkpoint_reservation_gib": 32,
+    "full_two_arm_disk_preflight": "current free <32GiB reservation +8GiB floor; queue remains blocked; no disk/VM created or resized"
+  },
+  "queue": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act-train-ready-9dc44d90.json",
+    "sha256": "05818f4223b19aa0a77c147c62400badaa4d2aa7cc031232b5a683b01adfd2a0",
+    "all_boolean_flags_false": true,
+    "future_smoke_must_use_new_data": true
+  },
+  "validation": {
+    "local_test": "tests/test_grasp_act_pilot.py",
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "initial_test_environment_missing_pytest": ".venv-dev; corrected to existing .venv-sim-worker-mac; no new env created",
+    "gpu_errors": 0,
+    "new_physics_runs": 0,
+    "mac_training_or_inference": 0,
+    "other_vm_operations": 0
+  },
+  "evidence": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/source-pack.json",
+      "sha256": "fb407fb8baf9f371453dfe59ca47999616f16eaaeb3e552332a41ca005d71165"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/vm-before.json",
+      "sha256": "964a992885f4e9d8a0bbed0f2e0c4696bf85747b1b4ccbc4b6fe8ce1a10cbfda"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/function-before.json",
+      "sha256": "a477c4914d0293e2d9dba14f24cafc29625aa6a6b789604859ad75f3d9b5d9d2"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/budget-logs-before.json",
+      "sha256": "053933afeeebf17690538c4acb10b0cdafddfabccf50000771ec0bf49b8d8135"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/pricing-extraction.json",
+      "sha256": "6eb8ec1affb9636a3379fbd7793c46ccfd77284c9f17f47cb9dc602cbce07998"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/local-tests.xml",
+      "sha256": "e4445bb4eee2796e16c270a417e338bb0b5330c11c40685d9cd30d9545225fd5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/lite.tar",
+      "sha256": "25997947d5d7c6a5bc07abe909e6a93760a768aca5b2046b5c5569146153be3a"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/retrieved/smoke/summary.json",
+      "sha256": "4b0d03835bc31e23f2d90a38c30329a7a8120508d7fefb625aeef7d560b6905d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/retrieved/data-input-audit.json",
+      "sha256": "bedf60261d80720af5575db659396d09fb1449db17393b963bc7e8a0df03e641"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/retrieved/SHA256SUMS",
+      "sha256": "d5e30d21c1200f8ccdfa5da2cd2f11e1c8d238f62ea9c1ce7b1e33bdb6d319e7"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/vm-after.json",
+      "sha256": "dda84fa55e8f18d9d8deb131ef8999588f4953caa4113e0651c7f70e24497212"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/actgpu1-ec0bd628/budget-alert-check-after.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ],
+  "vm_final": {
+    "status": "TERMINATED",
+    "last_start": "2026-10-15T00:10:33.980-07:00",
+    "last_stop": "2026-10-15T00:19:20.716-07:00",
+    "max_run_s": "28800",
+    "termination_action": "STOP"
+  },
+  "budget": {
+    "function_before": "ACTIVE",
+    "last_observed_net_cost_krw": 0,
+    "last_cost_timestamp_utc": "2026-10-15T06:47:40.721095Z",
+    "post_test_threshold_or_error_logs": 0,
+    "historical_test_excluded": "2026-10-14T07:36–07:41Z known functional test (latest deployment/operational baseline afterward); no live credit balance API confirmation",
+    "credit_balance_verified": false
+  },
+  "actual_vm_interval": {
+    "seconds": 526.736,
+    "compute_estimate_usd": 0.1328126787808178,
+    "method": "instance lastStartTimestamp to lastStopTimestamp; whole setup/audit/training interval; no disk/network/tax/credits"
+  }
+}
