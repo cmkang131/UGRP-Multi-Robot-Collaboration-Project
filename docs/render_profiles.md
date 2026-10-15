@@ -1,6 +1,32 @@
 # 렌더 프로필
 
-`sim.render_profile.install(scene, name)`은 기존 프로필의 이름·정의 해시·전후 XML 해시를 장면 manifest에 남긴다. 이 파일은 P03 고정 자산이므로 main과 바이트 동일하게 유지한다. 새 소비자는 `sim.render_profile_selection.for_name(name)`으로 모듈을 선택한다. `floor_light_textured_v1`을 요청할 때만 별도 `sim.render_profile_textured`를 불러오며 기존 registry를 수정하지 않는다. 생략/`shadows_v1`은 원래 XML 바이트를 유지한다. `floor_light_v1`은 기존 밝은 바둑판이며 기본 동작을 바꾸지 않는다.
+`sim.render_profile.install(scene, name)`은 기존 프로필의 이름·정의 해시·전후 XML 해시를 장면 manifest에 남긴다. 이 파일은 P03 고정 자산이므로 main과 바이트 동일하게 유지한다. 새 소비자는 `sim.render_profile_selection.for_name(name)`으로 모듈을 선택한다. `floor_light_textured_v1` 또는 `walls_floor_textured_v2`를 요청할 때만 별도 `sim.render_profile_textured`를 불러오며 기존 registry를 수정하지 않는다. 생략/`shadows_v1`은 원래 XML 바이트를 유지한다. `floor_light_v1`은 기존 밝은 바둑판이며 기본 동작을 바꾸지 않는다.
+
+## 벽·바닥 구분 자연 질감: walls_floor_textured_v2 (기본 off)
+
+2026-10-15 사용자: “벽에도 넣고, 벽 / 바닥 색 다르게 해. 쉽게 구분할 수 있도록. 그렇게 시뮬 바꾼 뒤에 그 상황에 효율적일 수 있는 알고리즘으로 다시 설계 ㄱ(첨부터 다시는 말고, 이거에 맞는 방식으로 하면 좋을듯)”, “일단, 시뮬 환경 먼저 세팅하고 / 그 환경에 맞춰서 다 병렬처리로 진행하면 좋을듯”. 아래는 이 요청의 별도 장면 버전이며 v1·과거 호스트 결과와 합산하지 않는다.
+
+낮은 채도의 푸른 회색 벽과 밝은 따뜻한 회색 바닥에 서로 독립적인 얼룩·불규칙 마모·미세 입자를 넣었다. 반복 타일·인공 마커·AprilTag는 없다. 기존 조명, 벽/바닥 충돌 형상·마찰·카메라/FOV·화물·색 표식은 그대로이며 재질만 바꾼다. 16×16 m 바닥 PNG 1장과 각 벽의 독립 cube face PNG 150장을 manifest와 전체 SHA-256으로 고정했다.
+
+| PNG 원본 | 벽 | 바닥 |
+|---|---|---|
+| 실제 HSV 범위 (OpenCV) | H110–116 / S16–18 / V98–134 | H16–18 / S16–17 / V146–180 |
+| ORB (nfeatures=800) | 150면: 5–791, 중앙값 168 | 640×480 독립 창 4개: 738–785 |
+| 먼 descriptor 유사 비율 | 중앙값 0, 최대 2.30% | 전체 PNG/창별 값은 실험 JSON |
+| 동일 32×32 패치 비율 | 150면 전부 0 | 0 |
+
+색 범위는 포괄 페인트의 S≥20, 상대 검정의 최대 V=.38×255=96.9, 흰 표식의 V>180을 피하도록 정했다. PNG 원본의 **108개 고정/상위집합 HSV·RGB·PIL 대상 범위는 모두 겹침 0**이다. 벽–바닥 V 간격은 12이고 Lab L 범위도 겹치지 않는다. 회색 로봇 지지 마스크·주변 대비·ROI·형상 조건은 최종 문맥 검출이므로 전체 픽셀 침범 0이라는 주장에 포함하지 않고 별도 목록과 카메라 비교로 다룬다. 조명/JPEG를 거친 0건은 아직 입증하지 않았다.
+
+`harness.scene_tex2_perception`은 이 프로필을 명시한 경우에만 쓰는 **PNG 보정 후보**다. 기존 벽띠의 균일성 std≤3을 전역으로 바꾸지 않는다. 새 벽띠 후보는 PNG 휘도·B−R 범위에서 계산한 분산 상한(범위²/4)을 사용하고, 기존 기하·모호성 거부를 유지하며 벽→바닥 명도 구간 전이를 추가 확인한다. 명목 구간을 벗어나면 기권한다. 기존 `own_image_gates` 보정 승계나 조명에 대한 허용 오차 확대는 하지 않았다. 실제 렌더에서 기존/후보 검출기의 정답·오검출·기권을 비교해야 사용할 수 있다.
+
+```python
+from sim.render_profile_selection import for_name
+name = 'walls_floor_textured_v2'
+scene = for_name(name).install(scene, name)
+# 필요한 기존 HIGH 경로에서는 같은 nearclip wrapper를 이어 적용한다.
+```
+
+이 선택기 연결은 기존 고정 실행기를 자동 변경하지 않는다. 각 소비자의 첫 install/실제 모델 audit에 요청 프로필을 연결하고 새로운 소스·번들을 고정해야 한다. 네 지도 정적 관문은 `scripts/probe_scene_tex2.py`로 gcp2에서만 수행한다. [실험·원본·재현·검증 경계](../experiments/2026-10-15-scene-tex2/README.md)를 따른다. 기본 off, 기존 v1 프로필 정의/XML 해시와 P03 렌더 파일은 보존한다.
 
 ## 자연 질감: floor_light_textured_v1 (기본 off)
 

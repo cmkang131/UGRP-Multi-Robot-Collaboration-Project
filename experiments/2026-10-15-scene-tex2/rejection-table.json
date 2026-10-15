@@ -1,0 +1,50 @@
+{
+  "schema": "ugrp.scene_tex2_funnel.v1",
+  "scope": "PNG-level gates plus pending remote gate; no physical success",
+  "stages": [
+    {
+      "stage": "published_pngs",
+      "input": 151,
+      "cumulative_pass": 151,
+      "rejected": 0
+    },
+    {
+      "stage": "manifest_and_pixel_sha256",
+      "input": 151,
+      "cumulative_pass": 151,
+      "rejected": 0
+    },
+    {
+      "stage": "fixed_foreground_color_nonoverlap",
+      "input": 151,
+      "cumulative_pass": 151,
+      "rejected": 0
+    },
+    {
+      "stage": "nonblank_ORB",
+      "input": 151,
+      "cumulative_pass": 151,
+      "rejected": 0
+    },
+    {
+      "stage": "gcp2setup_pass",
+      "input": 1,
+      "cumulative_pass": 0,
+      "rejected": 0,
+      "pending": 1,
+      "reason_category": "HOST_SETUP_PENDING",
+      "blocking_object": "gcp2setup PASS record",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "host readiness is not geometry"
+    }
+  ],
+  "prior_rejection_table": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-15-scene-tex2/prior-rejection-table.json",
+  "raw_path": "/Users/changmin/projects/ugrp-wt/scene-tex2/experiments/2026-10-15-scene-tex2/png-audit-final",
+  "reproduction_command": "python -m scripts.audit_scene_tex2 --output <new-directory>",
+  "source_files_sha256": {
+    "experiments/2026-10-15-scene-tex2/png-audit-final/offline-audit.json": "8e7975a988a4adb6d09bb147480173dd6188f3a0160b7ced16b1e3d1aab04483",
+    "experiments/2026-10-15-scene-tex2/png-audit-final/image-metrics.json": "3dc0a620896977b410fc66d3ee77c2d0830db1dc92f81daff4c16a55a28a2f68",
+    "experiments/2026-10-15-scene-tex2/png-audit-final/color-hits-floor.json": "73a11befd2576aebd898f116a2fcea606cd3c7df8a0405e7cb27ec72fccfdbe7",
+    "experiments/2026-10-15-scene-tex2/png-audit-final/color-hits-walls.json": "ae5345a93493682681d0bec0745b614127252ec443ae90fd011b40f57666baa0"
+  }
+}
