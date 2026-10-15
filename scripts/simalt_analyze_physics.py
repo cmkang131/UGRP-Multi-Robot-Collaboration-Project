@@ -11,11 +11,13 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('fixture','reference','candidate','out'):
         p.add_argument('--'+name,type=Path,required=True)
+    p.add_argument('--asset-source',type=Path,required=True)
     a=p.parse_args()
     if socket.gethostname().split('.')[0]!='ugrp-sim-gcp1':p.error('gcp1 analysis only')
     import mujoco
     import numpy as np
-    m=mujoco.MjModel.from_xml_path(str(a.fixture/'scene.xml'))
+    xml=(a.fixture/'scene.xml').read_text().replace('/tmp/simalt1/source/',str(a.asset_source.resolve())+'/')
+    m=mujoco.MjModel.from_xml_string(xml)
     meta=json.loads((a.fixture/'fixture.json').read_text())
     rr=json.loads((a.reference/'result.json').read_text());cc=json.loads((a.candidate/'result.json').read_text())
     r=np.load(a.reference/'states.npz');c=np.load(a.candidate/'states.npz')
