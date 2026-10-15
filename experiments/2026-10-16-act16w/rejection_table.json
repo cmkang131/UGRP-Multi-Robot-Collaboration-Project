@@ -1,0 +1,47 @@
+{
+  "schema": "ugrp.act16w.rejection_table.v1",
+  "status": "WAIT_SIGNALS",
+  "scope": "preflight only; no simulation attempts",
+  "funnel": [
+    {
+      "gate": "required_signals",
+      "candidates_N": 2,
+      "passed": 0,
+      "rejected": 2,
+      "reasons": [
+        "warp1 result absent",
+        "coordinator scene decision absent"
+      ]
+    },
+    {
+      "gate": "queue_and_source_admission",
+      "passed": 0,
+      "rejected": 0,
+      "not_evaluated": true
+    },
+    {
+      "gate": "teacher_attempts",
+      "passed": 0,
+      "rejected": 0,
+      "not_evaluated": true
+    }
+  ],
+  "rejections": [
+    {
+      "category": "prerequisite_pending",
+      "reason": "warp1 result absent",
+      "blocking_object": "not_applicable_non_geometric",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_non_geometric"
+    },
+    {
+      "category": "prerequisite_pending",
+      "reason": "coordinator ACT scene decision absent",
+      "blocking_object": "not_applicable_non_geometric",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_non_geometric"
+    }
+  ],
+  "raw": "outputs/act16w-wait/prerequisite-checks.jsonl",
+  "reproduce": "python3 scripts/act16w_prerequisites.py --ops-alert /Users/changmin/projects/ugrp/outputs/e2e18-admin/ops-alert.md --out outputs/act16w-wait"
+}

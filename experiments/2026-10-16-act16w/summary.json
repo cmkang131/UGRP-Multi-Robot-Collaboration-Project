@@ -1,0 +1,55 @@
+{
+  "schema": "ugrp.act16w.summary.v1",
+  "status": "WAIT_SIGNALS",
+  "complete": false,
+  "authorization": "2026-10-16 user: autonomous MJWarp ACT16 record/train/evaluate after warp1 and scene signals",
+  "source_base": "06870b6d1ad9233c6e5d63eee2c8c7b81efc66f5",
+  "act_library_source": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+  "prerequisites": {
+    "poll_s": 300,
+    "max_wait_s": 36000,
+    "state": "outputs/act16w-wait/wait-state.json",
+    "warp1": null,
+    "scene_decision": null
+  },
+  "teacher_gate": {
+    "attempted": 0,
+    "success": 0,
+    "qualified": false,
+    "rounds": 0
+  },
+  "data": {
+    "recorded_episodes": 0,
+    "admitted": false
+  },
+  "training": {
+    "optimizer_steps": 0,
+    "gpu_wall_s": 0,
+    "gpu_budget_s": 28800
+  },
+  "evaluation": {
+    "attempted": 0,
+    "success": 0,
+    "research_result": false
+  },
+  "release": {
+    "status": "not_started",
+    "assets": []
+  },
+  "checks": {
+    "nonphysics_passed": 10,
+    "skipped": 1,
+    "skip_reason": "torch not installed on Mac; no environment created"
+  },
+  "rejection_table": "experiments/2026-10-16-act16w/rejection_table.json",
+  "remaining": [
+    "warp1 readiness and actual gate queue",
+    "coordinator ACT scene decision",
+    "MJWarp teacher gate",
+    "data and DAgger labels",
+    "fixed A/B training and curriculum/DAgger comparisons",
+    "new40 evaluation and playback",
+    "Release hash/loading verification",
+    "PR final results"
+  ]
+}
