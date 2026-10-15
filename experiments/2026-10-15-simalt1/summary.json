@@ -153,7 +153,7 @@
       "budgetAmount": 1000,
       "currency": "KRW"
     },
-    "guard_status": "8h STOP and idle20min preserved; no stop event observed; existing act15 PID1670 left alive"
+    "guard_status": "8h STOP / idle20min configuration untouched; budget log cost=0; later user-account stop API observed after completed retrieval"
   },
   "raw_paths": [
     "ugrp-act-l4-pilot1:/home/changmin/ugrp-sim/runs/simalt1",
@@ -188,13 +188,35 @@
     "plan.json": "d6fdf92b4b7733a08a3d3207e26f8072c5e0bea2a046cfd44e738c388575cc07",
     "coverage-first.json": "71d94b647ad82884c5aeabab4d7f91b10054b6948cc9024136c3de8c109858a3",
     "playback-review.json": "7902cddb4c816eb0319c73cf196bc3365effad9ec7fdc6ae4bc5b48d29d3ca0a",
+    "final-host-status.json": "bd48004022bde2f5884d05704453622b54beafadf1cbe4704ee56296e1953ce4",
     "snapshot-selection.json": "f023282bbf74ea87da4bf4c36b5a0f0e7eb6f1fa46c4c0a52be78d379a3c4cea",
-    "README.md": "fb7787dcbd41ecd4a36edf194e89608f23904e014d323a16ea08c482aa04e511",
+    "README.md": "7306ae2ac61d8b99098197abc48ac6b84964ef206e1ab27c902c779c0dbb15c5",
     "l4-results.json": "429f19f0da24d86149dd23ff48a4259101acb8c6838361bf81049e9b1c8e36bc",
     "state-comparison.json": "2eeda0df19d08248ab65c11850a0e70c7545326f7c1655959397f051423a0909",
     "render-comparison.json": "7aae7fa065375e0d1f143a06838be682f2925b642cdde3a35e0e829868645a3f",
     "protocol.json": "0438589e089699409da3f1efea38c911244c113fd985f078d73676fad178050e",
     "trace.jsonl": "7804eb370cde180fdebbe4c4c24a60cf9281f10315b64a3fb56b7851f954d6ed",
     "gcp1-reference.json": "605d84e090033a0f7a0c2e70573c5740136f5be96e91c92fe3b6ab0e2978a7b5"
+  },
+  "latest_host_state": {
+    "observed_utc": "2026-10-15T13:35:13Z",
+    "host": "ugrp-act-l4-pilot1",
+    "status": "TERMINATED",
+    "max_run_duration_s": 28800,
+    "termination_action": "STOP",
+    "audit_stop_API_timestamps": [
+      "2026-10-15T13:32:30.543574Z",
+      "2026-10-15T13:33:22.945898Z"
+    ],
+    "audit_method": "v1.compute.instances.stop",
+    "audit_caller_kind": "user account; not budget-stop service account",
+    "stop_command_issued_by_simalt1": false,
+    "final_SSH": "failed because VM terminated; no restart or retry",
+    "retrieval_before_stop": "L4 611/611 manifest verified and results bundle retrieved before stop; raw remains on persistent VM disk",
+    "act15_server_evidence": "PID1670 alive at 13:30:10Z measurement end; not claimed alive after VM stop"
+  },
+  "operational_errors": {
+    "final_SSH_after_VM_stop": 1,
+    "experimental_attempts_unchanged": true
   }
 }
