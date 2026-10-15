@@ -42,6 +42,9 @@ ODOMETRY_PROFILES = {
     # The tuple holds rad/s AT WHEEL LEVEL 0.35, i.e. 3.0*0.35 = 1.05, not 3.0.
     # The release8 comment above (sign "verified") is superseded by that unwrapped re-reading.
     'yaw_cal_v1': (AXIAL_M_PER_S_AT_035, LATERAL_M_PER_S_AT_035, YAW_CAL_RAD_PER_LEVEL_S*.35),
+    # release23: R05 audit .08*1.515=.1212 and independent pair probe .123.
+    # Lateral only; retain yaw_cal_v1 sign and 1.05 rad/s magnitude.
+    'lateral_rate_cal_v1': (AXIAL_M_PER_S_AT_035, .122, YAW_CAL_RAD_PER_LEVEL_S*.35),
 }
 
 

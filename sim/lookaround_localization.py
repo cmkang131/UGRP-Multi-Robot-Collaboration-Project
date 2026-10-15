@@ -522,7 +522,7 @@ def rotate_plan(angle, odometry_profile='off'):
     """In-place rotation by own wheel pulses (mix t = (-w0+w1-w2+w3)/4), duty 0.35, pulses <= 0.15 s."""
     from sim.visible_belief import rates
     rates(odometry_profile)  # reject unknown profiles; preserve older planners
-    if odometry_profile == 'yaw_cal_v1':
+    if odometry_profile in ('yaw_cal_v1', 'lateral_rate_cal_v1'):
         rate = rates(odometry_profile)[2]  # release17: calibrated sign and ~3x magnitude
     else:
         rate = -YAW_RATE_RAD_S if odometry_profile == 'native_yaw_v1' else YAW_RATE_RAD_S
@@ -532,7 +532,7 @@ def rotate_plan(angle, odometry_profile='off'):
         on = min(.1, remaining); plan.append(([-level, level, -level, level], [min(PULSE_MAX_S, on)]*4)); remaining -= on
     if plan and plan[-1][1][0] < .04:
         # yaw_cal_v1: a tail under 20 ms is dropped (dead band, <= 0.021 rad); else one 40 ms pulse, never shorter
-        plan[-1] = (plan[-1][0], [.04]*4) if odometry_profile != 'yaw_cal_v1' or plan[-1][1][0] >= .02 else None
+        plan[-1] = (plan[-1][0], [.04]*4) if odometry_profile not in ('yaw_cal_v1', 'lateral_rate_cal_v1') or plan[-1][1][0] >= .02 else None
         plan = [p for p in plan if p is not None]
     return plan
 

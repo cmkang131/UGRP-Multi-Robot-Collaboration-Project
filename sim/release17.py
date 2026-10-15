@@ -35,6 +35,7 @@ PROFILES = (*release16.PROFILES, PROFILE)
 FOV_STEP = 'release_fov_step_pulse_v1'
 FOV_STEPS = ('off', FOV_STEP)
 YAW_CAL = 'yaw_cal_v1'
+YAW_CAL_PROFILES = (YAW_CAL, 'lateral_rate_cal_v1')
 SAFE = release16.SAFE
 BASE_PERIOD_S = .1
 ESCALATED_PERIOD_S = .15
@@ -92,7 +93,7 @@ def floor_pulse(wheels, durations, floor=YAW_FLOOR_S, deadband=YAW_DEADBAND_S):
 def yaw_pulse_for(dx, dy, yaw, profile):
     """release14.pulse_for, plus the 40 ms floor for yaw-bearing pulses under yaw_cal_v1 only."""
     wheels, durations = release14.pulse_for(dx, dy, yaw, profile)
-    if profile != YAW_CAL or abs(yaw) <= 1e-9:
+    if profile not in YAW_CAL_PROFILES or abs(yaw) <= 1e-9:
         return wheels, durations, None
     return floor_pulse(wheels, durations)
 
@@ -221,7 +222,7 @@ class LineAlign(release16.LineAlign):
         super().__init__(teacher, now, camera=camera, undistort=undistort, wheel_command=wheel_command,
                          clearance=clearance, pick_audit=pick_audit)
         self.fov_step = fov_step
-        self.sign_state = 'unchecked' if teacher.odometry_profile == YAW_CAL else 'not_applicable'
+        self.sign_state = 'unchecked' if teacher.odometry_profile in YAW_CAL_PROFILES else 'not_applicable'
         self.sign_pending = None; self.pending = None; self.stall = 0
 
     def fail(self, reason):
@@ -339,7 +340,9 @@ class LineAlign(release16.LineAlign):
         if step['merit'] < self.best-.1: self.best = step['merit']; self.progress = now
         elif now-self.progress >= 3.: return self.fail('no_'+self.mode+'_progress_3s')
         floor = None
-        if one_pulse:
+        if step.get('allocated_pulse') is not None:
+            w, d = step['allocated_pulse']
+        elif one_pulse:
             w, d = step['wheels'], step['durations']
         else:
             w, d, floor = yaw_pulse_for(step['forward'], step['left'], step['yaw'], self.teacher.odometry_profile)

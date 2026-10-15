@@ -23,6 +23,7 @@ from sim.release_regrasp import MODES as REGRASP_CHECK_MODES
 from sim.release_regrasp_recovery import MODES as REGRASP_RECOVERY_MODES
 from sim import release14, release15, release16, release17, release18, release19, release20
 from sim import release21 as release21_control
+from sim import release23 as release23_control
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 # User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
 # hidden_v1: while the own gripper holds the cargo, its world pose never enters teacher/map-code inputs.
@@ -167,8 +168,12 @@ def own_end_world(world,inst,end):
 
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
-        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',release_fov_step='off',release_settle_reuse='off',release_goal_region='off',release20_settle='off',release21='off',review_top='on',record_training=False):
-    release21_control.validate(release_profile,record_training,locals(),plan)
+        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',release_fov_step='off',release_settle_reuse='off',release_goal_region='off',release20_settle='off',release21='off',review_top='on',record_training=False,
+        margin_common_mode='off',release_leg_budget='off',lateral_rate_cal='off',release_yaw_budget='off',release_plan_budget='off'):
+    release23_control.validate(release_profile,record_training,locals(),plan)
+    release23_options=dict(margin_common_mode=margin_common_mode,release_leg_budget=release_leg_budget,
+        lateral_rate_cal=lateral_rate_cal,release_yaw_budget=release_yaw_budget,release_plan_budget=release_plan_budget)
+    motion_profile=release23_control.LATERAL if lateral_rate_cal==release23_control.LATERAL else command_motion
     if review_top not in ('on', 'off'):raise ValueError('unknown review_top')
     release19_enabled=release_profile==release19.PROFILE
     release18_enabled=release_profile in (release18.PROFILE,release19.PROFILE)
@@ -177,6 +182,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     line_control=release18 if release18_enabled else release17 if release_profile==release17.PROFILE else (release16 if release_profile==release16.PROFILE else (release15 if fov_guard else release14))
     if release20_settle == release20.SETTLE: line_control = release20
     if release21 == release21_control.MODE: line_control = release21_control
+    if release_yaw_budget == release23_control.YAW: line_control = release23_control
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
     if lookaround!='off' and observe_mode!='backoff_v3':raise ValueError('lookaround runs after the backoff_v3 step back')
@@ -240,6 +246,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         'training_exclusions':{'prefix':{'included':False,'reason':'truth contact/height termination; scene preparation only'},
             'release':{'included':False,'reason':'success measurement; no student writer or gate admission'}},
         'loadavg_at_start':os.getloadavg(),'release_success':None,'prefix_held':None}
+    if any(v!='off' for v in release23_options.values()):
+        report.update(release23_options,teacher_version='release23',effective_motion_profile=motion_profile,
+                      planning_budget_basis='finite computation checks and SIM seconds; no wall deadline')
     if not line_guard:
         report.pop('release_profile');report.pop('training_exclusions')
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.
@@ -260,7 +269,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         rect=(*zone['center_m'],*zone['half_extents_m'])
         roles=plan['roles'];ports={rid:ContinuousActPort(world,rid,allow_reverse=True,allow_mecanum=True) for rid in roles}
         wheels={rid:QuantizedWheels(port) for rid,port in ports.items()}
-        issued_pose={rid:CommandPose(command_motion) for rid in roles}
+        issued_pose={rid:CommandPose(motion_profile) for rid in roles}
         # These frame origins are used only by look_truth(), never by the teachers/localizers.
         eval_origin={rid:[*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])] for rid in roles} if relative_pose else {}
         for rid,port in ports.items():port.apply({'kind':'look','pan_pulse':plan['initial_pan'][rid]},float(world.data.time))
@@ -334,7 +343,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             truth_pose=None if relative_pose else [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
             estimate=handoff_estimate(plan,rid,issued_pose[rid],pose_anchor=pose_anchor,own_pose_source=own_pose_source,truth_pose=truth_pose)
             pwm={int(s):int(ports[rid]._servo_pulses[s]) for s in SERVOS}
-            rel[rid]=ReleaseTeacher(rid,end,pwm,handoff_pose_estimate=None if relative_pose else estimate,zone_rect=rect,own_pose_source=own_pose_source,reach_mode=reach_mode,odometry_profile=command_motion)
+            rel[rid]=ReleaseTeacher(rid,end,pwm,handoff_pose_estimate=None if relative_pose else estimate,zone_rect=rect,own_pose_source=own_pose_source,reach_mode=reach_mode,odometry_profile=motion_profile)
         report['handoff_estimates']={rid:list(issued_pose[rid].x) for rid in roles} if relative_pose else None
         loc={}
         if lookaround!='off':
@@ -342,7 +351,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             for rid,t in rel.items():
                 truth_pose=None if relative_pose else [*map(float,world.robot(rid).base_xyz()[:2]),float(world.robot(rid).base_rpy()[2])]
                 estimate=handoff_estimate(plan,rid,issued_pose[rid],pose_anchor=pose_anchor,own_pose_source=own_pose_source,truth_pose=truth_pose)
-                loc[rid]=LookaroundLocalizer(static,estimate,mode=lookaround,map_pose_known=not relative_pose,odometry_profile=command_motion,localization_support=localization_support)
+                loc[rid]=LookaroundLocalizer(static,estimate,mode=lookaround,map_pose_known=not relative_pose,odometry_profile=motion_profile,localization_support=localization_support)
         zone_servo={}
         if rgb_center:
             from sim.release_zone_servo import ZoneCenterServo
@@ -467,11 +476,17 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                     angle_rad=st['choice']['axis_turn_rad'],plans=copy.deepcopy(st['plan'])))
             elif lateral is not None:
                 from sim.release_global_observation import lateral_shift_plans
-                st['plan']=lateral_shift_plans(loc,rel,lateral)
+                st['plan']=lateral_shift_plans(loc,rel,lateral,**({'profile':motion_profile} if lateral_rate_cal!='off' else {}))
                 report.setdefault('lateral_motion_commands',[]).append(dict(t=now,shift_m=lateral,
                     plans=copy.deepcopy(st['plan']),scope='own RGB headings + issued commands; nominal motion only'))
             else:
                 st['plan']={rid:t.shift_plan(s,1. if rid==R[0] else -1.) for rid,t in rel.items()}
+            if release_leg_budget==release23_control.LEG and (st['choice'] or {}).get('action')!='axis_correct':
+                check=release23_control.sweep(loc,rel,st['plan'],now,computation_budget=release_plan_budget)
+                report.setdefault('release23_sweep_checks',[]).append(dict(t=now,**check))
+                if not check['accepted']:
+                    st['plan']={rid:[] for rid in rel}
+                    raise ValueError('release23_sweep_blocked:'+check['blocking_object'])
             st['steps']+=1
             st.update(phase='shift',since=now,go=now+.2)
         def regrasp_capture(rid,now,label):
@@ -624,6 +639,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                     reports={rid:margin_report(loc[rid],t,now,
                         **({'lateral_recovery':lateral_recovery} if lateral_recovery!='off' else {}),
                         **({'axis_recovery':True} if checked_regrasp else {})) for rid,t in rel.items()}
+                    if margin_common_mode==release23_control.MARGIN:
+                        for r in reports.values():r.update(observation_epoch=st['iter'],observed_at=now,
+                            zone_axis_width_m=2*max(rect[2:]))
                     for rid,t in rel.items():t.last_report=reports[rid]
                     if checked_regrasp:
                         for rid,r in reports.items():
@@ -646,9 +664,10 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             elif ph=='await_observe' and ready('observe',now):
                 if global_release:
                     from sim.release_global_observation import pair_choice
-                    chooser=release18.pair_choice if release18_enabled else pair_choice
+                    chooser=release23_control.pair_choice if release18_enabled else pair_choice
                     choice=chooser(code.delivered,R,now,lateral_recovery=lateral_recovery,
                         **({'goal_region':release_goal_region} if release18_enabled else {}),
+                        **({'margin_common_mode':margin_common_mode,'release_leg_budget':release_leg_budget} if release18_enabled else {}),
                         **({'axis_recovery':True} if checked_regrasp else {}));code.log.append(choice)
                 elif rgb_center:
                     from sim.release_zone_servo import pair_choice
@@ -685,11 +704,18 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                     st['plan']={rid:t.shift_plan(BACKOFF_M,-1.) for rid,t in rel.items()}
                     st.update(phase='back_off',since=now,go=now+.6)
                 else:
+                    if release_leg_budget==release23_control.LEG:
+                        admission=release23_control.leg_admission(cap_s-(now-origin),st['iter'])
+                        report.setdefault('release23_leg_admissions',[]).append(dict(t=now,**admission))
+                        if not admission['accepted']:
+                            outcome='cap_end' if admission['reason_category']=='insufficient_leg_time' else 'release_iteration_cap'
+                            break
                     st['iter']+=1
                     from sim.release_zone_servo import MAX_CORRECTIONS
                     limit=MAX_CORRECTIONS if rgb_center else 3
                     if global_release:
                         from sim.release_global_observation import MAX_CORRECTIONS as limit
+                    if release_leg_budget==release23_control.LEG:limit=release23_control.MAX_CORRECTIONS
                     if st['iter']>limit:outcome='release_iteration_cap';break
                     recovery_stage={rid:0 for rid in roles}
                     nbv_history={rid:[] for rid in roles}
@@ -823,6 +849,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 'robots':{r:truth['robots'][r] for r in roles}})+'\n')
         steps=st['steps']
         report['release_outcome']=outcome or 'release_timeout'
+        if any(v!='off' for v in release23_options.values()):
+            report['termination_category']='cap_end' if report['release_outcome'] in ('cap_end','release_timeout') else report['release_outcome']
         # ---------------- evaluation (truth) ----------------
         checks=[]
         for j in range(int((SUCCESS['settle_s']+.5)/.1)):
@@ -881,6 +909,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             report['regrasp_verification']=[b.record() for b in locals().get('regrasp_barriers',[])]
             report['regrasp_input_frames']=locals().get('regrasp_inputs',[])
             report['release_rejection_reasons']=locals().get('rejection_counts',{})
+        if any(v!='off' for v in release23_options.values()):
+            report['rejection_ledger']=release23_control.rejection_ledger(report)
         if isinstance(report.get('teachers'),dict):   # copied from the teachers' own diagnostics (no recomputation)
             report['input_audit']['visibility_by_phase']={r:t.get('visible_counts_by_phase') for r,t in report['teachers'].items()}
             report['input_audit']['max_destination_blind_s_by_phase']={r:t.get('max_destination_blind_s_by_phase') for r,t in report['teachers'].items()}
@@ -896,6 +926,8 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=90.)
     p.add_argument('--release21',choices=release21_control.MODES,default='off')
+    for key,mode in release23_control.OPTIONS.items():
+        p.add_argument('--'+key.replace('_','-'),choices=('off',mode),default='off')
     p.add_argument('--review-top',choices=('on','off'),default='on')
     p.add_argument('--release20-settle',choices=release20.MODES,default='off')
     p.add_argument('--release-profile',choices=release19.PROFILES,default='off')
@@ -920,5 +952,5 @@ def main():
     p.add_argument('--lookaround',choices=LOOKAROUND_MODES,default='off',help='setdown_lookaround_v1: after the backoff step, look toward static-map landmarks chosen from the own pose estimate (640x480 own camera)');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,release_fov_step=a.release_fov_step,release_settle_reuse=a.release_settle_reuse,release_goal_region=a.release_goal_region,release20_settle=a.release20_settle,release21=a.release21,review_top=a.review_top,record_training=a.record_training),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,release_fov_step=a.release_fov_step,release_settle_reuse=a.release_settle_reuse,release_goal_region=a.release_goal_region,release20_settle=a.release20_settle,release21=a.release21,review_top=a.review_top,record_training=a.record_training,**{k:getattr(a,k) for k in release23_control.OPTIONS}),ensure_ascii=False,default=str))
 if __name__=='__main__':main()

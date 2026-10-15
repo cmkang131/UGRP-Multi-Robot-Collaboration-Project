@@ -94,7 +94,7 @@ def pair_choice(reports, robots, now, *, lateral_recovery='off', axis_recovery=F
                 reason='localized_margin_correction',t=now,margins_m=margins)
 
 
-def lateral_shift_plans(localizers, teachers, shift_m):
+def lateral_shift_plans(localizers, teachers, shift_m, *, profile='off'):
     """Same map translation from each own RGB heading; shared 100 ms clock.
 
     Invert the existing mecanum map with nominal command odometry. Native
@@ -103,7 +103,7 @@ def lateral_shift_plans(localizers, teachers, shift_m):
     """
     from sim.visible_belief import rates
     from sim.grasp_act_release_teacher import check_wheels
-    ax,lat,_=rates(); required={}
+    ax,lat,_=rates(profile); required={}
     if not math.isfinite(shift_m) or not 0<abs(shift_m)<=MAX_LATERAL_SHIFT_M+1e-9:
         raise ValueError('bounded nonzero lateral displacement required')
     for rid,teacher in teachers.items():

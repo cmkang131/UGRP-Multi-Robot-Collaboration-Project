@@ -1,0 +1,88 @@
+{
+  "schema": "ugrp.release23.calibration.v1",
+  "scope": "offline saved evidence; correlated A/B, not independent trials",
+  "source_shas": [
+    "46afd8b095e74954439f98b28f2aa52af3eaea01",
+    "f476338533b7608bab25422b360491d5795f6fde"
+  ],
+  "samples_N": 194,
+  "eligible_N": 194,
+  "error_bound_m": 0.04704375885875689,
+  "error_bound_policy": "maximum absolute corrected-minus-true end-center residual on eligible saved same-round observations; empirical, no distribution-free guarantee",
+  "differential_error_abs_quantiles_m": {
+    "0.5": 0.01402575300926251,
+    "0.95": 0.02680648826562526,
+    "0.99": 0.03584852865072846,
+    "1": 0.04704375885875689
+  },
+  "leg_cost_p95_s": 48.29999999885786,
+  "leg_cost30_p95_s": 49.07519379730747,
+  "tail_max_s": 6.699999999843726,
+  "cycle_N": 115,
+  "rejection_reason_table": [
+    {
+      "category": "release21_fov_blocked",
+      "count": 4,
+      "blocking_object": "own camera FOV boundary",
+      "minimum_gap": null,
+      "unit": "pixel",
+      "unknown_reason": "legacy event omits numeric gap"
+    },
+    {
+      "category": "cap_end",
+      "count": 2,
+      "blocking_object": "episode SIM cap",
+      "minimum_gap": null,
+      "unit": "SIM s",
+      "unknown_reason": "legacy event omits numeric gap"
+    },
+    {
+      "category": "release17_motion_cap",
+      "count": 1,
+      "blocking_object": "cumulative issued yaw budget 18deg",
+      "minimum_gap": -0.0008407346410206351,
+      "unit": "rad",
+      "unknown_reason": null
+    }
+  ],
+  "episode_funnel": [
+    {
+      "gate": "attempted",
+      "cumulative_passed": 81,
+      "rejected": 0
+    },
+    {
+      "gate": "audit_zero",
+      "cumulative_passed": 81,
+      "rejected": 0
+    },
+    {
+      "gate": "success",
+      "cumulative_passed": 78,
+      "rejected": 3
+    }
+  ],
+  "observation_funnel": [
+    {
+      "gate": "same_round_localized_pair",
+      "cumulative_passed": 194,
+      "rejected": 0
+    },
+    {
+      "gate": "common_mode_residual_domain",
+      "cumulative_passed": 194,
+      "rejected": 0
+    }
+  ],
+  "event_funnel": {
+    "candidate": 471,
+    "done": 470,
+    "events": 9384
+  },
+  "reproduce": "ssh gcp1 /home/ugrp/ugrp-sim/src/46afd8b095e74954439f98b28f2aa52af3eaea01/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release23/analyze_baseline.py --out /home/ugrp/ugrp-sim/ops-reviews/release23",
+  "false_accepts_after_bound": 0,
+  "full_calibration": {
+    "remote": "gcp1:/home/ugrp/ugrp-sim/ops-reviews/release23/calibration.json.zst",
+    "sha256": "18ced54559b20b7c2ddab6ed4dc387e28ccda726927194aa55b0d06d5abef441"
+  }
+}
