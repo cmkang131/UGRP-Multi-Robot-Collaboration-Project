@@ -162,3 +162,17 @@ def test_lease_audit_does_not_own_foreign_teacher_source_reference():
     assert not owns_output(['python','--teacher-source','/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot','--out','/home/ugrp/ugrp-sim/runs/rl1b/probe'],'warp1')
     assert owns_output(['python','--out','/home/ugrp/ugrp-sim/runs/warp1/qual'],'warp1')
     assert not owns_output(['python','--out','/home/ugrp/ugrp-sim/runs/warp1-foreign/qual'],'warp1')
+
+
+@pytest.mark.parametrize('marker,expected',[
+    ({'reason':'resource_cap4h','category':'cap_end'},'cap_end'),
+    ({'reason':'superseded recording profile'},'supervisor_stop'),
+    (None,'interrupted')])
+def test_resource_interrupt_and_supervision_have_distinct_outcomes(tmp_path,marker,expected):
+    import json
+    from scripts.run_warp_act_teacher import interruption_outcome
+    if marker is not None:(tmp_path/'SUPERVISOR_STOP.json').write_text(json.dumps(marker))
+    row=interruption_outcome(tmp_path)
+    assert row['status']==expected
+    assert row['resource_cap_end']==(expected=='cap_end')
+    assert row['reason']

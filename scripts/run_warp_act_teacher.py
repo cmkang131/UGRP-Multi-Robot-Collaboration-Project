@@ -46,6 +46,18 @@ def parser():
     return p
 
 
+
+def interruption_outcome(out):
+    marker=out/'SUPERVISOR_STOP.json'
+    if not marker.exists():
+        return dict(status='interrupted',resource_cap_end=False,
+            reason='unmarked external interrupt; task success not inferred')
+    stop=json.loads(marker.read_text())
+    cap=stop.get('category')=='cap_end' or stop.get('reason')=='resource_cap4h'
+    return dict(status='cap_end' if cap else 'supervisor_stop',resource_cap_end=cap,
+        reason=stop.get('reason') or 'explicit supervisor marker without detail')
+
+
 def main():
     p=parser();a=p.parse_args()
     if a.physics_backend=='off' or platform.system()!='Linux':
@@ -159,8 +171,7 @@ def main():
             result=r['teacher']['command_result'],sim_s=r['sim_s'],input_audit=r['input_audit'])
             for i,r in sorted(reports.items())])
     except KeyboardInterrupt:
-        report.update(status='supervisor_stop' if (a.out/'SUPERVISOR_STOP.json').exists() else 'cap_end',
-            interrupted=True,reason='explicit supervisor stop or external resource cap; no task success inferred')
+        report.update(interruption_outcome(a.out),interrupted=True,interrupted_worlds=int(active.sum()))
     except BaseException as error:
         report.update(status='HOST_ERROR',error_type=type(error).__name__,error=str(error),
             traceback=traceback.format_exc())
@@ -189,6 +200,7 @@ def main():
             useful_completed_sim_s_per_usd=sum(r.get('sim_s',0.) for r in reports.values() if r.get('physical_success'))/(wall*a.vm_hourly_usd/3600))
         rejection=Counter(r.get('teacher',{}).get('command_result') or 'cap_end' for r in reports.values() if not r.get('physical_success'))
         if report['status']=='HOST_ERROR':rejection[report.get('error_type','HOST_ERROR')]+=1
+        if report.get('interrupted'):rejection[report['status']]+=int(active.sum())
         write(a.out/'rejection_table.json',dict(funnel=[dict(gate='requested',passed=a.nworld,rejected=0),
             dict(gate='returned',passed=len(reports),rejected=a.nworld-len(reports)),
             dict(gate='physical_success',passed=report['physical_success'],rejected=len(reports)-report['physical_success'])],
