@@ -57,6 +57,7 @@ def main():
             row.update(physical_success=success,category=category,done_times=done,input_audit=audit.record,
                 funnel=f.record(),raw_eval_sha256=sha256(raw),commands_sha256=sha256(existing(out/'commands.jsonl')),
                 command_rows=len(commands),max_stable_hold_s=score.max_stable_s,
+                final_target_finger_min_gap_m=evaluations[-1]['target_finger_min_gap_m'],
                 raw_independent_stage_frames={s:sum(e['passed'][s] for e in evaluations) for s in STAGES})
         else:
             row['category']='HOST_ERROR';reasons['HOST_ERROR']+=1
@@ -71,8 +72,8 @@ def main():
     write_json(a.root/'summary.json',result)
     write_json(a.root/'rejection_table.json',dict(source_sha=queue['source_sha'],funnel=result['funnel'],
         reasons=dict(reasons),runs=[dict(seed=r['seed'],reason_category=r.get('category','not_started'),
-            blocked_object='none_inferred:evaluation_only',min_gap_m=None,
-            gap_scope='student has no geometric rejection gate; no collision cause inferred',raw=r.get('raw')) for r in runs],
+            blocked_object='beam_1:target_not_inferred_blocker',min_gap_m=r.get('final_target_finger_min_gap_m'),
+            gap_scope='evaluation-only target-finger signed gap; no obstruction cause inferred',raw=r.get('raw')) for r in runs],
         reproduce='python -m scripts.analyze_beamact2 --root '+str(a.root)))
     print('beamact2',n,'/20',result['verdict'],result['funnel'])
 

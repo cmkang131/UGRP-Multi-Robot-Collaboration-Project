@@ -65,6 +65,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
     barriers = {r:StudentBarrier() for r in plan['roles']}
     funnel, score = Funnel(), LiftScore()
     done_times = {}
+    target_gap = None
     latencies = []
     report['input_audit'] = {r:a.record for r,a in audits.items()}
     try:
@@ -97,6 +98,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
             from sim.grasp_act_port import DutyActPort
             from harness.grasp_act_start_sync import GraspStartSync
             from scripts.run_grasp_act_teacher import apply, snapshot
+            import mujoco
             scene = wrap(binding[0](ScenarioFinalV3Scene.from_scenario(scenario,plan['seed'])))
             scene.config['setup_only']['spawns'] = deepcopy(plan['spawns'])
             original = scene.robot_transform
@@ -140,6 +142,9 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
             delays={r:(0. if k==0 else float(rng.uniform(0,1.5))) for k,r in enumerate(ports)}
             sync=GraspStartSync(ports,delays)
             inst=next(x for x in scene.cargo if x.item_id=='beam_1')
+            target_geoms=[world.model.geom(inst.geom(p.name)).id for p in inst.spec().parts if p.collision]
+            finger_geoms=[world.model.geom(rid+'__'+side+'_finger').id
+                for rid in ports for side in ('left','right')]
             inputs=(output/'student-inputs.jsonl').open('x')
             commands=(output/'commands.jsonl').open('x')
             evaluations=(output/'eval-only.jsonl').open('x')
@@ -192,8 +197,12 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
                     READY=all(b.ready for b in barriers.values()),grasp=min(forces)>=.5,
                     lift_3s=score.record()['lift_success'])
                 funnel.add(now,passed)
+                # Same evaluation-only target gap as the existing ACT student;
+                # extent is a query range, not an acceptance tolerance.
+                target_gap=min(float(mujoco.mj_geomDistance(world.model,world.data,finger,g,
+                    float(world.model.stat.extent),None)) for finger in finger_geoms for g in target_geoms)
                 evaluations.write(json.dumps(dict(t=now,sim_s=now-origin,truth=truth,geometry=geometry,
-                    passed=passed,score=score.record()))+'\n')
+                    target_finger_min_gap_m=target_gap,passed=passed,score=score.record()))+'\n')
                 if tick%5==0:  # user: complete sequence at2Hz; cameras unchanged
                     row=dict(t=now,sim_s=now-origin,own={})
                     top=scene.config['static_map']['top_cameras'][0]['name']
@@ -243,8 +252,8 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
         tail.finish(output/'failure-tail',failed=not report['physical_success'])
         report.update(wall_s=time.monotonic()-started,loadavg_at_end=os.getloadavg())
         write_json(output/'funnel.json',dict(**funnel.record(),source=str(output/'eval-only.jsonl'),
-            reason_category=report.get('termination',report['status']),blocked_object='none_inferred:evaluation_only',
-            min_gap_m=None,gap_scope='no geometric rejection by student; no cause inferred',
+            reason_category=report.get('termination',report['status']),blocked_object='beam_1:target_not_inferred_blocker',
+            min_gap_m=target_gap,gap_scope='evaluation-only target-finger signed gap; no obstruction cause inferred',
             reproduce='python -m scripts.analyze_beamact2 --root '+str(output.parent)))
         write_json(output/'result.json',report)
         from harness.beampair_recording import compress_jsons
