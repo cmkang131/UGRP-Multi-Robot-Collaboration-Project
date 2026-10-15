@@ -1,16 +1,19 @@
 """GCP-only opt-in adapter around the existing pinned solo teacher.
 
-No copied grasp path. Missing dependency modules are loaded from an explicit
-clean teacher checkout; the pair (ACT SHA, teacher SHA) identifies this build.
+No copied grasp path. Teacher packages are isolated in an explicit clean
+teacher checkout; the pair (ACT SHA, teacher SHA) identifies this build.
 Every recorded noisy state receives the original teacher's clean label.
 """
 import argparse
 from contextlib import contextmanager
 import importlib
+from importlib.machinery import PathFinder
+from importlib.util import module_from_spec
 import json
 from pathlib import Path
 import platform
 import subprocess
+import sys
 
 from harness.grasp_act_data import read_json, sha256, write_json
 from harness.grasp_act_dart import MODE, WheelNoise, recovery_hooks
@@ -20,19 +23,45 @@ from scripts.grasp_act_training_guard import source_sha
 TEACHER_SHA='6f057f7e97c1a3aec9e8c398b8d9068e27b25df8'
 
 
-@contextmanager
-def dependency_modules(root):
-    root=Path(root).resolve()
+def validate_dependency(root):
     actual=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
     if actual!=TEACHER_SHA or subprocess.check_output(['git','status','--porcelain'],cwd=root):
         raise ValueError('clean pinned solo teacher dependency required')
-    packages=[]
-    for name in ('harness','sim','scripts'):
-        package=importlib.import_module(name);path=str(root/name)
-        package.__path__.append(path);packages.append((package,path))
-    try:yield
+
+
+@contextmanager
+def dependency_modules(root):
+    """Single-run import scope: no ACT fallback, including cached submodules.
+
+    Adapter references already held by the caller remain ACT objects. All
+    imports made by the teacher resolve only inside the pinned dependency.
+    Restore the caller's packages and search path even on an import/run error.
+    This process-global scope is for the single-threaded CLI, not parallel runs.
+    """
+    root=Path(root).resolve()
+    validate_dependency(root)
+    names=('harness','sim','scripts')
+    owned=lambda name: name.split('.')[0] in names
+    saved={name:module for name,module in sys.modules.copy().items() if owned(name)}
+    search_path=sys.path[:]
+    try:
+        for name in saved:del sys.modules[name]
+        sys.path.insert(0,str(root))
+        for name in names:
+            spec=PathFinder.find_spec(name,[str(root)])
+            if spec is None or spec.submodule_search_locations is None:
+                raise ImportError(f'missing teacher package: {name}')
+            package=module_from_spec(spec)
+            sys.modules[name]=package
+            if spec.loader is not None:spec.loader.exec_module(package)
+            # Freeze namespace packages too: sys.path changes cannot add ACT.
+            package.__path__=[str(root/name)]
+        yield
     finally:
-        for package,path in packages:package.__path__.remove(path)
+        for name in list(sys.modules):
+            if owned(name):del sys.modules[name]
+        sys.modules.update(saved)
+        sys.path[:]=search_path
 
 
 def run(plan, out, *, dependency_root, noise_path, mode='off', training_rgb=False, gate_receipt=None, cap_s=90.):
