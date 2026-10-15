@@ -21,3 +21,11 @@ carry `reloc10_rotation_calibration_v1`, selfmap `reloc10_settle_v1`/`reloc10_re
 - [Borenstein & Feng1996, Measurement and Correction of Systematic Odometry Errors](https://ieeexplore.ieee.org/document/544770): UMBmark의 양방향 계수 식별 원칙을 참고. 이 실험은 사각경로 UMBmark 전체 수행이 아니며 메카넘에 차동구동 수식을 그대로 적용하지 않는다.
 - [Probabilistic Robotics, motion model chapter](https://robots.stanford.edu/probabilistic-robotics/corrections1/pg122-139.pdf): 발행명령 이동모형과 관측보정·불확실성 구분.
 - [Quantized feedback limit-cycle analysis](https://arxiv.org/abs/1701.07482), [MathWorks quantization](https://www.mathworks.com/help/fixedpoint/quantization.html): 양자화/주기진동과 deadband. 0.6/3회는 공통모듈 설계값이며 일반 안정성 정리가 아니다.
+
+## 첫 GCP 라운드(실패 포함)
+
+carry 실행소스0fb980e6, selfmap442f94eb(미push). 회전 4/4 통과: 90L1.02098/90R0.94950/180L1.04208/180R0.94614. 좌0.586523/우0.658696 계수는 이4구간에 재맞춤하지 않았다. 원장/manifest 재계산·자기RGB6장 직접 확인. 원래2구간 정지꼬리는 좌0.00741rad(0.424°)/우0.00113rad(0.065°)이며 내부회전비 좌1.062–1.068/우1.121–1.218로 경계만으로는 설명되지 않는다.
+
+selfmap은 새 정착이벤트의 reason 키 충돌을 소스에서 발견해18.8SIM초에 감독정지(HOST_ERROR). 원본189행/정적등록0/189/자연보정27/자기RGB6장 직접 확인. 키 충돌 수정과 실제 executor→dwell 회귀시험을 추가했다. carry에서는 이전 실행기의 평가TOP 검토촬영을 발견해 즉시 감독정지했다(제어입력으로는 사용하지 않음). 다음 소스의 기본off `reloc10_own_review_only_v1`을 새 계획에서 켜 TOP 촬영 자체를 없앴다. 이 두 중단을 완료 성공으로 세지 않는다.
+
+두 번째 라운드에서는 원래 smooth와 별도 texture를 같은93571로 비교한다. PR511 병합SHA db0a6858f6387e9048d4a37e78bc8eefd2ead484의 natural_scene_texture.py/152개 자산을 그대로 복사했다. 원래 render_profile API는 이 이름을 지원하지 않아, 기존 own-map 장면 인스턴스의 XML 변환 뒤에만 질감을 적용하는 어댑터를 붙였다. 자산해시/컴파일된 픽셀 검증은 GCP에서 수행하고 물리/카메라/FOV는 바꾸지 않는다. smooth와합산금지. 로컬회귀 carry9/selfmap12 통과(전부 비물리).

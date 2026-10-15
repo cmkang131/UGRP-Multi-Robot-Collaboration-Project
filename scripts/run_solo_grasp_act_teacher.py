@@ -311,7 +311,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         if training_rgb:
             recorder = SoloRecorder(out, plan, previous)
         (out/'review-own').mkdir()
-        (out/'review-top').mkdir()
+        if not plan.get('reloc10_own_review_only_v1', False):
+            (out/'review-top').mkdir()
         origin = float(data.time)
         finished_t = None
         negative_eval = {'N': 0, 'max_clearance_m': 0., 'max_pickup_offset_m': 0.}
@@ -476,7 +477,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             last_eval_pos, last_eval_t = pos, now
             if tick % 10 == 0:
                 cv2.imwrite(str(out/'review-own'/f'{tick:06d}.jpg'), cv2.resize(bgr, (320, 240)))
-                (out/'review-top'/f'{tick:06d}.jpg').write_bytes(world.render_team_jpeg(camera=static['top_cameras'][0]['name']))
+                if not plan.get('reloc10_own_review_only_v1', False):
+                    (out/'review-top'/f'{tick:06d}.jpg').write_bytes(world.render_team_jpeg(camera=static['top_cameras'][0]['name']))
                 write(out/'progress.json', {'sim_s': now-origin, 'phase': teacher.phase, 'source_sha': sha})
                 for stream in streams:
                     stream.flush()
@@ -585,7 +587,7 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
     if plan.get('carry5_profile') == 'carry5_active_localization_v1' and plan.get('drive_model_deadband_v1') is not True:
         raise ValueError('carry5 requires the merged shared drive_model_deadband_v1')
     for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1',
-                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1'):
+                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1'):
         if type(plan.get(option, False)) is not bool:
             raise ValueError(option+' must be bool')
         if plan.get(option) and plan.get('carry5_profile') != 'carry5_active_localization_v1':
