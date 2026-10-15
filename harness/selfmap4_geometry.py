@@ -151,12 +151,21 @@ class StaticRegistration:
     Unresolved hypotheses can propose look directions but cannot clip/clear maps
     or lower pose covariance. Registration has to survive three distinct views.
     """
-    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False):
+    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False):
         from harness.e2e_static_rgb_localizer import create
         from harness.self_map_landmark_sensor import Sensor
         if set(static) != {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}:
             raise ValueError('SELFMAP4_STATIC_GEOMETRY_ALLOWLIST')
-        self.pf = create(static, option='static_landmarks_v1', seed=5064)
+        if type(reloc11_wall_field_v1) is not bool:
+            raise ValueError('reloc11 wall field must be bool')
+        self.wall_field = reloc11_wall_field_v1
+        self.pf = create(static, option='static_walls_v1' if self.wall_field else 'static_landmarks_v1', seed=5064)
+        if self.wall_field:
+            # The AMCL distance field uses observed wall-floor endpoints only.
+            # Keep colored geometry for the unchanged independent admission gate;
+            # do not multiply a sparse/possibly misleading color likelihood into PF.
+            from harness.own_map_amcl_vendor.landmarks import MapFeatures
+            self.pf.landmark_map = MapFeatures(static)
         self.sensor = Sensor(self.pf.landmark_map.hues)
         self.static = static
         self.map_from_own = None
@@ -304,6 +313,11 @@ class StaticRegistration:
             self.last.update(pf_resolved=bool(row['resolved']), raw_covariance=row['covariance'],
                 covariance=cov.tolist(), pf_sensor=row['sensor'],
                 multiframe_registration=self.multiframe_registration)
+        if self.wall_field:
+            self.last['reloc11_wall_field'] = dict(model='AMCL_likelihood_field',
+                pf_particles=self.pf.n, sensor_landmarks='off',
+                wall_points=len(sample_segments(observation['segments'])),
+                geometry_and_covariance_gates='unchanged', input='own_RGB_wall_floor_segments')
         if reliable and self.map_from_own is not None:
             local = compose(inverse(self.map_from_own), row['pose'])
             c, s = math.cos(self.map_from_own[2]), math.sin(self.map_from_own[2])

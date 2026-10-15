@@ -40,7 +40,7 @@ class SelfMapExecutor:
     def __init__(self, robot_id, *, start_time=0., cap_s=180., mapper=None, sweep=None,
                  bootstrap='off', initial_sweep='off', recovery_profile='off', static_map=None, revision_gate='off', multiframe_registration='off', correction_safety='off', active_relocalization='off',
                  reloc9_rotation_calibration_v1=False, reloc9_wall_height_guard_v1=False,
-                 reloc10_settle_v1=False, reloc10_registration_v1=False):
+                 reloc10_settle_v1=False, reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc11_low_contrast_v1=False):
         if not math.isfinite(cap_s) or not 1. <= cap_s <= 300.:
             raise ValueError('FINITE_SELF_MAP_CAP_1_TO_300_REQUIRED')
         if type(reloc10_settle_v1) is not bool:
@@ -60,7 +60,9 @@ class SelfMapExecutor:
                 correction_safety=correction_safety, active_relocalization=active_relocalization,
                 reloc9_rotation_calibration_v1=reloc9_rotation_calibration_v1,
                 reloc9_wall_height_guard_v1=reloc9_wall_height_guard_v1,
-                reloc10_registration_v1=reloc10_registration_v1), static_map=static_map)
+                reloc10_registration_v1=reloc10_registration_v1,
+                reloc11_wall_field_v1=reloc11_wall_field_v1,
+                reloc11_low_contrast_v1=reloc11_low_contrast_v1), static_map=static_map)
         self.recovery = self.mapper.options.recovery_profile != 'off'
         if sweep is None:
             # Existing E2E18/egomap arrival -> bounded full-body observation sweep.

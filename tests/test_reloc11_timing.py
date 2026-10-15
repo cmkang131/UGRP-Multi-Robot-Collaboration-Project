@@ -44,3 +44,44 @@ def test_half_rate_keeps_every_selected_frame_and_terminal_time(tmp_path):
     assert result['frames'] == result['input_audit']['own_rgb_frames'] == 6
     assert result['rgb_ledger_verified'] and RecordingPlant.instances[-1].now == 2.3
     assert result['invisible_measurements'] == result['held_world_reads'] == 0
+
+
+def test_wall_field_uses_static_structure_without_color_weight_or_weaker_gate():
+    import numpy as np
+    from harness.selfmap4_geometry import static_input, StaticRegistration
+    from harness.active_camera import SEARCH
+    static,_ = static_input()
+    a = StaticRegistration(static)
+    b = StaticRegistration(static,reloc11_wall_field_v1=False)
+    c = StaticRegistration(static,reloc11_wall_field_v1=True)
+    assert a.pf.sensor_landmarks == b.pf.sensor_landmarks == 'floor_zones_doors_v1'
+    assert c.pf.sensor_landmarks == 'off' and c.pf.n == 2000
+    np.testing.assert_array_equal(a.pf.px,b.pf.px)
+    np.testing.assert_array_equal(a.pf.px,c.pf.px)
+    d = StaticRegistration(static,reloc11_wall_field_v1=True)
+    packet=dict(t=0.,points=[[1,0],[1,.2]],delta=[0,0,0],servo=SEARCH)
+    c.pf.step(**packet,features=[{'kind':'unused_color'}])
+    d.pf.step(**packet,features=[])
+    np.testing.assert_array_equal(c.pf.px,d.pf.px)
+    np.testing.assert_array_equal(c.pf.logw,d.pf.logw)
+    assert c.map_from_own is None and c.confirmations == []
+    assert c.geometry_supported(dict(features=[]),[0,0,0])[0] is False
+
+
+def test_low_contrast_extract_adds_corners_without_changing_match_gates(monkeypatch):
+    import cv2
+    import numpy as np
+    from harness import e2e_rgb_vo as vo
+    from harness.natural_floor_slam import extract, Options
+    from harness.reloc11_features import extract as low
+    image=np.full((480,640,3),120,np.uint8)
+    for x in range(40,600,30):
+        for y in range(40,440,30):
+            cv2.rectangle(image,(x,y),(x+13,y+13),(135,135,135),-1)
+    monkeypatch.setattr(vo,'image_mask',lambda *a:np.full((480,640),255,np.uint8))
+    monkeypatch.setattr(vo,'ground',lambda servo,uv:(uv/1000.,np.ones(len(uv))))
+    before=extract(image,{},frame_id=1,t=1.,sha256='a'*64)
+    after=low(image,{},frame_id=1,t=1.,sha256='a'*64)
+    assert len(after.points_body)>len(before.points_body)
+    assert after.sha256==before.sha256 and after.descriptors.shape==(len(after.points_body),32)
+    assert (Options().min_matches,Options().min_inliers,Options().global_min_inliers)==(8,6,12)

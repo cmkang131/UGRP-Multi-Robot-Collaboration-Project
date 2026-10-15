@@ -39,7 +39,9 @@ def install(timing, controller):
     from harness import self_map_integration as integration
     from harness import selfmap4_geometry as geometry
     mapper = controller.mapper
+    from harness import reloc11_features
     restores = [timing.wrap(integration, 'extract', 'feature_extract'),
+                timing.wrap(reloc11_features, 'extract', 'feature_extract'),
                 timing.wrap(mapper.slam, 'step', 'feature_tracking')]
     if mapper.registration is not None:
         restores += [timing.wrap(mapper.flow, 'step', 'plane_flow'),

@@ -42,6 +42,8 @@ class Options:
     reloc9_rotation_calibration_v1: bool = False
     reloc9_wall_height_guard_v1: bool = False
     reloc10_registration_v1: bool = False
+    reloc11_wall_field_v1: bool = False
+    reloc11_low_contrast_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
@@ -52,6 +54,10 @@ class Options:
         validate_wall(self.reloc9_wall_height_guard_v1)
         if type(self.reloc10_registration_v1) is not bool or (self.reloc10_registration_v1 and self.multiframe_registration == 'off'):
             raise ValueError('reloc10 registration requires multiframe registration')
+        if type(self.reloc11_low_contrast_v1) is not bool:
+            raise ValueError('reloc11 low contrast must be bool')
+        if type(self.reloc11_wall_field_v1) is not bool or (self.reloc11_wall_field_v1 and self.recovery_profile == 'off'):
+            raise ValueError('reloc11 wall field requires recovery and bool toggle')
         if self.reloc9_wall_height_guard_v1 and self.recovery_profile == 'off':
             raise ValueError('RELOC9_WALL_GUARD_REQUIRES_RECOVERY')
         if self.self_map_integration not in ('off', OPTION):
@@ -189,6 +195,7 @@ class SelfMapIntegration:
             self.registration = StaticRegistration(static_map,
                 multiframe_registration=self.options.multiframe_registration,
                 reloc10_registration_v1=self.options.reloc10_registration_v1,
+                reloc11_wall_field_v1=self.options.reloc11_wall_field_v1,
                 correction_safety=self.options.correction_safety,
                 active_relocalization=self.options.active_relocalization)
             self.flow = PlaneFlow()
@@ -427,7 +434,10 @@ class SelfMapIntegration:
         held = self.servo.get(1, 2000) <= 1600  # conservative issued-command state
         settled = bool(self.servo) and t-self.odom.servo_since >= (.25 if not held else 2.25)
         if settled and not held:
-            observation = extract(image, self.servo, frame_id=frame_id, t=t, sha256=sha256)
+            extractor = extract
+            if self.options.reloc11_low_contrast_v1:
+                from harness.reloc11_features import extract as extractor
+            observation = extractor(image, self.servo, frame_id=frame_id, t=t, sha256=sha256)
         else:
             observation = Observation(frame_id, t, np.empty((0, 2)), np.empty((0, 32), np.uint8), sha256)
         prior = compose(self.slam.pose, self.delta)
@@ -614,6 +624,8 @@ class SelfMapIntegration:
             result.update(correction_safety=self.options.correction_safety,
                           correction_admission=event.get('correction_gate'),
                           quarantine_release=self.quarantine_release)
+        if self.options.reloc11_low_contrast_v1:
+            result['reloc11_feature_extraction'] = dict(FAST=7,features_cap=800,min_matches=8,min_inliers=6)
         self.events.append(result)
         if self.options.bootstrap != 'off':
             result.update(mapping_pose_quality='command_prior' if prior_insertion else 'visual',
