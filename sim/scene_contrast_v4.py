@@ -72,7 +72,9 @@ def apply_xml(xml, name):
             attrs.update(texture=matname+'_tex', texuniform='false', rgba='1 1 1 1')
         ET.SubElement(asset, 'material', **attrs)
         geom.set('material', matname)
-        geom.set('rgba', '1 1 1 1')
+        # Explicit geom rgba overrides material rgba in MuJoCo. Uniform
+        # candidates therefore need the same authored colour on the geom.
+        geom.set('rgba', attrs['rgba'])
     return ET.tostring(root, encoding='unicode')
 
 
@@ -114,5 +116,9 @@ def verify_model(model, name):
     walls = [model.geom(i) for i in range(model.ngeom) if model.geom(i).name.startswith('zone_wall_')]
     if not walls or any(not model.mat(int(model.geom_matid[g.id])).name.startswith('contrast_v4_') for g in walls):
         raise RuntimeError('v4 wall material binding missing')
+    if not PROFILES[name]['skirting_m']:
+        expected = np.asarray([c/255 for c in PROFILES[name]['rgb']]+[1.], dtype=model.geom_rgba.dtype)
+        if any(not np.array_equal(model.geom_rgba[g.id], expected) for g in walls):
+            raise RuntimeError('v4 geom colour overrides the authored wall colour')
     return {**audit, 'contrast': profile_record(name), 'floor_v1_histogram_exact': True,
             'checked_walls': len(walls)}

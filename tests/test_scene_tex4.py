@@ -25,6 +25,11 @@ def test_only_wall_materials_change(name, map_path):
     for tag in ('texture', 'material'):
         key = 'ground' if tag == 'texture' else 'groundmat'
         assert ET.tostring(before.find(f'asset/{tag}[@name="{key}"]')) == ET.tostring(after.find(f'asset/{tag}[@name="{key}"]'))
+    if not v4.PROFILES[name]['skirting_m']:
+        expected = [c/255 for c in v4.PROFILES[name]['rgb']]+[1.]
+        for geom in after.findall('worldbody/geom'):
+            if geom.get('name', '').startswith('zone_wall_'):
+                assert list(map(float, geom.get('rgba').split())) == expected
 
 
 def test_new_profile_is_explicit_and_nearclip_compatible():
