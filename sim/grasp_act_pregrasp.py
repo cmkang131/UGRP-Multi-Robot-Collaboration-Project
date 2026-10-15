@@ -156,6 +156,15 @@ def band_view(world, rid, end, base, previous, *, navigation=None):
     point = world['beam']['ends'][end]
     x, y = local(base, point)
     view = gaze_pose((x, y, point[2]+.009), previous)
+    from sim.grasp_act_search26 import observed_band
+    observed=observed_band(navigation)
+    if observed is not None:
+        navigation.visibility_audit=[]
+        navigation.teacher.search23_log.append({'t':world['t'],'event':'observed_band_priority',
+            'visible_probes':observed,'predicted_gate_used':False,'target':'band_'+end,
+            'reason':'fresh_own_observation','category':'observation',
+            'blocked_object':'none:observed_band','min_gap_m':None,'gap_scope':'no geometric rejection'})
+        return observed,view
     origin, axes = (navigation.camera_extrinsics(view) if hasattr(navigation,'camera_extrinsics')
                     else camera_extrinsics(view))
     a = world['beam']['pose'][2]

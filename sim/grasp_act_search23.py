@@ -84,7 +84,8 @@ class BodyNavigation(Previous):
         self.nodes = {}; self.node_blockers = {}; self.edges = {}; self.edge_gaps = {}
         self.edge_blockers = {}; self.last_path_audit = None
         self.endpoint_only=False;self.endpoints=[];self.preplanned={};self.candidate_rows=[]
-        self.connector_cache={}
+        from sim.grasp_act_search26 import connector_cache
+        self.connector_cache=connector_cache(t,world)
         self.blocked = {}; self.expanded = 0
         for detail in self.details:
             m=self.world_observations.get(detail['id'])
@@ -186,6 +187,8 @@ class BodyNavigation(Previous):
         from sim.grasp_act_pregrasp import band_view,issued_sweep_reason
         from sim.grasp_act_teacher import wrap
         key=(tuple(prior),tuple(sorted(before.items())),tuple(xy),yaw)
+        if key in self.connector_cache:
+            if self.teacher.search20_budget is not None:self.teacher.search20_budget.hits+=1
         if key not in self.connector_cache:
             count,after=band_view(self.world,self.rid,self.end,(*xy,yaw),before,navigation=self)
             reason=None;audit=[]

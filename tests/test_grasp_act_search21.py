@@ -13,14 +13,14 @@ from sim.grasp_act_goal_set import geometry
 
 FIX=json.loads((Path(__file__).parent/'fixtures/grasp_act_search21.json').read_text())
 def teacher():
-    t=Teacher('r1','blue',{int(k):v for k,v in FIX['pwm'].items()},**KW,**{**ALL_MODES,'search25_budget':'off','search25_inflation':'off','search25_memory':'off','search25_view':'off','search24_irm':'off','search24_budget':'off','search23':'off','search22':'off','search18_footprint':'off'})
+    t=Teacher('r1','blue',{int(k):v for k,v in FIX['pwm'].items()},**KW,**{**ALL_MODES,'search26_alignment':'off','search26_observation':'off','search25_budget':'off','search25_inflation':'off','search25_memory':'off','search25_view':'off','search24_irm':'off','search24_budget':'off','search23':'off','search22':'off','search18_footprint':'off'})
     t.folded_ready=True;t.phase='approach';return t
 
 def test_default_and_dependency():
     p=argparse.ArgumentParser();add_arguments(p)
     assert options(p.parse_args([]))['search21']=='off'
     with pytest.raises(ValueError,match='requires search20'):
-        Teacher('r1','blue',FIX['pwm'],**KW,**{**ALL_MODES,'search25_budget':'off','search25_inflation':'off','search25_memory':'off','search25_view':'off','search24_irm':'off','search24_budget':'off','search23':'off','search22':'off','search18_footprint':'off','search20':'off'})
+        Teacher('r1','blue',FIX['pwm'],**KW,**{**ALL_MODES,'search26_alignment':'off','search26_observation':'off','search25_budget':'off','search25_inflation':'off','search25_memory':'off','search25_view':'off','search24_irm':'off','search24_budget':'off','search23':'off','search22':'off','search18_footprint':'off','search20':'off'})
 
 def test_fresh_geometry_admits_checked_alternative_and_stale_does_not():
     t=teacher();w=deepcopy(FIX['world']);nav=BodyNavigation(t,w,admission=True)

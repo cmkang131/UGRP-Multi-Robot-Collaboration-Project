@@ -103,6 +103,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
 
     def _reset_alignment(self):
+        self.search26_settlers=None;self.search26_errors=None
         self.align_integral=[0.,0.,0.];self.align_t=None
         self.align_active=[False]*3;self.align_sign=[0]*3
         self.align_flips=[0]*3;self.align_best=None;self.align_progress_t=None
@@ -148,6 +149,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self._reset_alignment()
             return self._hold(now),now-self.stable_since>=.3
         self.stable_since=None
+        from sim.grasp_act_search26 import enabled as search26, alignment
+        if search26(self,'search26_alignment'):
+            return alignment(self,truth,now),False
         # Schmitt deadbands: stop within inner, restart beyond outer. The
         # residual still goes to the same pad IK; readiness is never relaxed.
         inner=(.002,.012,.02);outer=(.004,.018,.04)
@@ -898,15 +902,23 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                          for mode in ('off',self.search15_modes['search17_odometry']))
             if self.search19_body_active:
                 from sim.grasp_act_search19 import body_pulse_free
-                safe=body_pulse_free(self,truth,value)
+                audit=[]
+                safe=body_pulse_free(self,truth,value,audit=audit)
+                if not safe:
+                    from sim.grasp_act_search26 import record_rejection
+                    record_rejection(self,now,'body_pose_segment','body_sweep_reject',audit)
             if not safe:
                 from sim.grasp_act_search17 import escape_command
                 value=(None if self.search19_body_active else escape_command(self,truth,now)) or self._hold(now)
         if self.sampled_stance and self.phase in ('approach','align','ready','search','relook'):
             from sim.grasp_act_pregrasp import issued_sweep_reason
             from harness.grasp_act_visible_world import command_delta
+            audit=[]
             reason=issued_sweep_reason(truth,self.rid,truth['robots'][self.rid]['pose'],
-                                       before_pwm,self.sink.pwm,command_delta(value,.1))
+                                       before_pwm,self.sink.pwm,command_delta(value,.1),audit=audit)
+            if reason:
+                from sim.grasp_act_search26 import record_rejection
+                record_rejection(self,now,'issued_arm_sweep',reason,audit)
             if reason:
                 self.sink.pwm.update(before_pwm);self.arm.commanded.update(before_pwm)
                 value=self._hold(now)
@@ -921,6 +933,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # READY waiting belongs to GO/ACK, and fine alignment has its own
         # error-progress checker. A search detour does not erase route debt.
         if self.phase in ('align','ready','pick','complete'):self.progress.reset()
+        from sim.grasp_act_search26 import remember_issued
+        remember_issued(self,value)
         self.last_command=deepcopy(value);self.last_tick=now
         return value,done
 

@@ -40,7 +40,7 @@ class BodyNavigation(Navigation):
                    for i in range(n+1))
 
 
-def body_pulse_free(teacher, world, value):
+def body_pulse_free(teacher, world, value, *, audit=None):
     from sim.grasp_act_search20 import enabled, BodyNavigation as Search20Navigation
     nav = Search20Navigation(teacher, world) if enabled(teacher) else BodyNavigation(teacher, world)
     from sim.grasp_act_search22 import enabled as search22, BodyNavigation as Search22Navigation
@@ -59,6 +59,13 @@ def body_pulse_free(teacher, world, value):
             c, s = math.cos(pose[2]), math.sin(pose[2])
             end = (pose[0]+c*x-s*y, pose[1]+s*x+c*y, pose[2]+da)
             if not nav.pose_segment(pose, end):
+                if audit is not None:
+                    audit.append({'check':'body_pose_segment','mode':mode,'from':pose,'to':end,
+                        'reason':'body_sweep_reject','category':'body_sweep',
+                        'blockers':list(getattr(nav,'last_blockers',[])),
+                        'min_gap_m':getattr(nav,'last_segment_gap',None),
+                        'gap_scope':'sampled body sweep',
+                        'blocked_object':','.join(d['id'] for d in getattr(nav,'last_blockers',[])) or 'none:body_sweep'})
                 return False
             pose = end
     return True
@@ -85,11 +92,11 @@ def body_fallback(teacher, world, now):
     return selected, checked
 
 
-def admitted(teacher, world, value, before):
+def admitted(teacher, world, value, before, *, audit=None):
     radius, discs, rects = teacher._constraints(world)
     pose = world['robots'][teacher.rid]['pose']
     if teacher.search19_body_active:
-        clear = body_pulse_free(teacher, world, value)
+        clear = body_pulse_free(teacher, world, value, audit=audit)
     else:
         clear = all(pulse_free(pose, value, discs, rects, radius, mode=m)
                     for m in ('off', teacher.search15_modes['search17_odometry']))
@@ -97,8 +104,15 @@ def admitted(teacher, world, value, before):
         return False
     if teacher.sampled_stance:
         from sim.grasp_act_pregrasp import issued_sweep_reason
-        if issued_sweep_reason(world, teacher.rid, pose, before, teacher.sink.pwm,
-                               command_delta(value, .1)):
+        arm=[] if audit is not None else None
+        reason=issued_sweep_reason(world, teacher.rid, pose, before, teacher.sink.pwm,
+                               command_delta(value, .1),audit=arm)
+        if reason:
+            if audit is not None:
+                audit.append({'check':'issued_arm_sweep','reason':reason,'category':'arm_sweep',
+                    'blockers':arm,'blocked_object':','.join(d['id'] for d in arm) or 'none:'+reason,
+                    'min_gap_m':min((d['gap_m'] for d in arm if d.get('gap_m') is not None),default=None),
+                    'gap_scope':'issued arm sweep'})
             return False
     return True
 
