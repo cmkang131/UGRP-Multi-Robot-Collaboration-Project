@@ -1,0 +1,1581 @@
+{
+  "schema": "ugrp.grasp_act.search15_replay.v1",
+  "baseline_sha": "8d9ad79a42a8a5486ce6cbf65aef87e78cd87f8e",
+  "recorded_source_sha": "abe63b9034b400c61314e76b382dea3c8f81c0ce",
+  "candidate_modes": {
+    "peer_reobserve": "peer_reobserve_v1",
+    "obstacle_reobserve": "obstacle_reobserve_v1",
+    "pregrasp_sampling": "pregrasp_sampling_v1"
+  },
+  "scope": "saved-input shadow replay; after divergence not a physical trajectory; no new physical results",
+  "N": 13,
+  "saved_success_n": 7,
+  "saved_handoff_n": 6,
+  "saved_host_error_n": 0,
+  "normal_commands": 4664,
+  "normal_changed_commands": 0,
+  "normal_changed_states": 0,
+  "normal_identical_episodes": 6,
+  "commands_verified": 7638,
+  "invisible_measurements": 0,
+  "held_world_reads": 0,
+  "implementation_sha": "b0fd360f2496cbf781781951e0473950f37f8e3d",
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_search15.py",
+      "tests/test_grasp_act_recovery.py",
+      "tests/test_grasp_act_goal_set.py"
+    ],
+    "passed": 103,
+    "result_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search15-tests.txt",
+    "sha256": "c51b344c60b64bc7406e5aba5d6793838957cafd5479c2e161504241fff020b9"
+  },
+  "raw": {
+    "raw_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search15-replay.json.zst",
+    "sha256": "275089fd6882e8daf6a2ef29c11cc60b040f912a35349c4f22097d42003deaa8",
+    "decoded_sha256": "234c23c23087dffe9aac3efa1c43d9ef9261fca6ff40a69e6e2a770c7a53fb29",
+    "bytes": 25662,
+    "decoded_bytes": 455427
+  },
+  "rows": [
+    {
+      "episode": 0,
+      "seed": 71000,
+      "saved_physical_success": true,
+      "commands_verified": 550,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 800,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {},
+      "candidate_rejection_reasons": {},
+      "max_recorded_duration_delta_s": 4.163336342344337e-17,
+      "first_divergence": null,
+      "reobserve": {
+        "r1": [],
+        "r2": []
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 1,
+      "seed": 73011,
+      "saved_physical_success": true,
+      "commands_verified": 706,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1172,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {},
+      "candidate_rejection_reasons": {},
+      "max_recorded_duration_delta_s": 1.3053794156725473e-16,
+      "first_divergence": null,
+      "reobserve": {
+        "r1": [],
+        "r2": []
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 2,
+      "seed": 73009,
+      "saved_physical_success": true,
+      "commands_verified": 1034,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1926,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {},
+      "candidate_rejection_reasons": {},
+      "max_recorded_duration_delta_s": 1.249000902703301e-16,
+      "first_divergence": null,
+      "reobserve": {
+        "r1": [],
+        "r2": []
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 3,
+      "seed": 78111,
+      "saved_physical_success": true,
+      "commands_verified": 612,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1352,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {},
+      "candidate_rejection_reasons": {},
+      "max_recorded_duration_delta_s": 5.551115123125783e-17,
+      "first_divergence": null,
+      "reobserve": {
+        "r1": [],
+        "r2": []
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 4,
+      "seed": 78113,
+      "saved_physical_success": true,
+      "commands_verified": 880,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1170,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {},
+      "candidate_rejection_reasons": {},
+      "max_recorded_duration_delta_s": 1.8041124150158794e-16,
+      "first_divergence": null,
+      "reobserve": {
+        "r1": [],
+        "r2": []
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 5,
+      "seed": 79217,
+      "saved_physical_success": true,
+      "commands_verified": 882,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1375,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {},
+      "candidate_rejection_reasons": {},
+      "max_recorded_duration_delta_s": 1.3877787807814457e-16,
+      "first_divergence": null,
+      "reobserve": {
+        "r1": [],
+        "r2": []
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 6,
+      "seed": 79030,
+      "saved_physical_success": false,
+      "commands_verified": 134,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 282,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {
+        "0.0": 30,
+        "-15.0": 15,
+        "15.0": 15,
+        "-30.0": 15,
+        "30.0": 15,
+        "-45.0": 15,
+        "45.0": 15,
+        "-60.0": 15,
+        "60.0": 15,
+        "-75.0": 15,
+        "75.0": 15,
+        "-90.0": 15,
+        "90.0": 15
+      },
+      "candidate_rejection_reasons": {
+        "blocked_goal": 48,
+        "ik_unreachable": 42,
+        "gripper_angle": 120
+      },
+      "max_recorded_duration_delta_s": 0.0,
+      "first_divergence": null,
+      "reobserve": {
+        "r1": [],
+        "r2": []
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 7,
+      "seed": 87003,
+      "saved_physical_success": false,
+      "commands_verified": 354,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 43,
+      "candidate_changed_states": 1,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 751,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {
+        "0.0": 33,
+        "-15.0": 6,
+        "15.0": 5,
+        "-30.0": 5,
+        "30.0": 5,
+        "-45.0": 5,
+        "45.0": 5,
+        "-60.0": 5,
+        "60.0": 5,
+        "-75.0": 5,
+        "75.0": 5,
+        "-90.0": 5,
+        "90.0": 5
+      },
+      "candidate_rejection_reasons": {
+        "blocked_goal": 19,
+        "feasible": 19,
+        "ik_unreachable": 16,
+        "gripper_angle": 40
+      },
+      "max_recorded_duration_delta_s": 4.85722573273506e-17,
+      "first_divergence": {
+        "tick": 134,
+        "elapsed_sim_s": 13.399999999987065,
+        "robots": [
+          "r1"
+        ],
+        "baseline": {
+          "r1": [
+            {
+              "t": 15.19999999998725,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 800,
+                "4": 2420,
+                "5": 1320,
+                "6": 1360
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "candidate": {
+          "r1": [
+            {
+              "t": 15.19999999998725,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 760,
+                "4": 2420,
+                "5": 1320,
+                "6": 1300
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r1": [
+            {
+              "t": 7.1,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 7.9,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 8.100000000003797,
+              "from": "search",
+              "to": "approach"
+            }
+          ]
+        },
+        "candidate_choices": {
+          "r1": [
+            0.0,
+            0.196
+          ]
+        }
+      },
+      "reobserve": {
+        "r1": [
+          {
+            "t": 15.19999999998725,
+            "event": "reobserve_start",
+            "kind": "obstacle",
+            "encounter": 1,
+            "targets": {
+              "green_1": {
+                "id": "green_1",
+                "kind": "cargo",
+                "xyz": [
+                  -0.30393919620434373,
+                  -1.1994410760947039,
+                  0.01589224457973925
+                ],
+                "yaw": 0.9814316850978537,
+                "radius": 0.030740852297878797,
+                "top_z_bound_m": 0.04663309687761805,
+                "visible_n": 6,
+                "probe_N": 7,
+                "seen_t": 15.099999999987483
+              }
+            },
+            "input": "own visible history and issued-command pose only"
+          },
+          {
+            "t": 15.19999999998725,
+            "event": "reobserve_attempt",
+            "kind": "obstacle",
+            "attempt": 0,
+            "stage": "view",
+            "bearing_rad": -0.6556269526203307
+          },
+          {
+            "t": 15.799999999985852,
+            "event": "reobserve_attempt",
+            "kind": "obstacle",
+            "attempt": 1,
+            "stage": "view",
+            "bearing_rad": -0.6556269526203307
+          },
+          {
+            "t": 16.399999999987294,
+            "event": "reobserve_attempt",
+            "kind": "obstacle",
+            "attempt": 2,
+            "stage": "view",
+            "bearing_rad": -0.6690370818022554
+          },
+          {
+            "t": 16.99999999999016,
+            "event": "reobserve_attempt",
+            "kind": "obstacle",
+            "attempt": 3,
+            "stage": "retreat",
+            "bearing_rad": -0.6690370818022554
+          },
+          {
+            "t": 17.599999999993024,
+            "event": "reobserve_end",
+            "kind": "obstacle",
+            "reason": "retreat_bounded_replan",
+            "elapsed_s": 2.4000000000057735
+          }
+        ],
+        "r2": []
+      },
+      "sampled_selected": {
+        "r1": [
+          {
+            "choice": [
+              -0.2617993877991494,
+              0.208
+            ],
+            "goal": [
+              -0.13467925674483155,
+              -1.1052026073622372
+            ],
+            "heading": 5.72986075100942,
+            "cost": 0.4493138009028357
+          },
+          {
+            "choice": [
+              -0.2617993877991494,
+              0.208
+            ],
+            "goal": [
+              -0.13473669257591306,
+              -1.1051814681419627
+            ],
+            "heading": 5.729716251643839,
+            "cost": 0.4493091257755322
+          }
+        ],
+        "r2": []
+      }
+    },
+    {
+      "episode": 8,
+      "seed": 87007,
+      "saved_physical_success": true,
+      "commands_verified": 974,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 0,
+      "candidate_changed_states": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1489,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {},
+      "candidate_rejection_reasons": {},
+      "max_recorded_duration_delta_s": 4.163336342344337e-17,
+      "first_divergence": null,
+      "reobserve": {
+        "r1": [],
+        "r2": []
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 9,
+      "seed": 87008,
+      "saved_physical_success": false,
+      "commands_verified": 330,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 60,
+      "candidate_changed_states": 1,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 779,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {},
+      "candidate_rejection_reasons": {},
+      "max_recorded_duration_delta_s": 6.938893903907228e-17,
+      "first_divergence": {
+        "tick": 105,
+        "elapsed_sim_s": 10.499999999993824,
+        "robots": [
+          "r2"
+        ],
+        "baseline": {
+          "r2": [
+            {
+              "t": 12.299999999994009,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 840,
+                "4": 2500,
+                "5": 1320,
+                "6": 1456
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "candidate": {
+          "r2": [
+            {
+              "t": 12.299999999994009,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 900,
+                "4": 2500,
+                "5": 1320,
+                "6": 1516
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r2": [
+            {
+              "t": 9.600000000000302,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.2588531957985611,
+                -0.3963673140138527
+              ],
+              "points": 101
+            },
+            {
+              "t": 10.699999999997738,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.2812500000000004,
+                -0.41874999999999885
+              ],
+              "points": 76
+            },
+            {
+              "t": 11.799999999995174,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.2812500000000004,
+                -0.41874999999999885
+              ],
+              "points": 61
+            }
+          ]
+        },
+        "candidate_choices": {
+          "r2": [
+            0.0,
+            0.203
+          ]
+        }
+      },
+      "reobserve": {
+        "r1": [],
+        "r2": [
+          {
+            "t": 12.299999999994009,
+            "event": "reobserve_start",
+            "kind": "peer",
+            "encounter": 1,
+            "targets": {
+              "r1": {
+                "id": "r1",
+                "kind": "robot",
+                "xyz": [
+                  1.5175876360564142,
+                  -0.14086600667484786,
+                  0.03200577750672551
+                ],
+                "yaw": 2.877621812434912,
+                "radius": 0.10488806094064505,
+                "top_z_bound_m": 0.15920535941048725,
+                "visible_n": 19,
+                "probe_N": 56,
+                "seen_t": 7.000000000002809
+              }
+            },
+            "input": "own visible history and issued-command pose only"
+          },
+          {
+            "t": 12.299999999994009,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 0,
+            "stage": "view",
+            "bearing_rad": 0.2669167895593552
+          },
+          {
+            "t": 12.89999999999261,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 1,
+            "stage": "view",
+            "bearing_rad": 0.2669167895593552
+          },
+          {
+            "t": 13.499999999991212,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 2,
+            "stage": "view",
+            "bearing_rad": 0.2669167895593552
+          },
+          {
+            "t": 14.099999999989814,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 3,
+            "stage": "retreat",
+            "bearing_rad": 0.2669167895593552
+          },
+          {
+            "t": 14.699999999988416,
+            "event": "reobserve_end",
+            "kind": "peer",
+            "reason": "retreat_bounded_replan",
+            "elapsed_s": 2.3999999999944066
+          },
+          {
+            "t": 14.799999999988183,
+            "event": "reobserve_start",
+            "kind": "peer",
+            "encounter": 2,
+            "targets": {
+              "r1": {
+                "id": "r1",
+                "kind": "robot",
+                "xyz": [
+                  1.5175876360564142,
+                  -0.14086600667484786,
+                  0.03200577750672551
+                ],
+                "yaw": 2.877621812434912,
+                "radius": 0.10488806094064505,
+                "top_z_bound_m": 0.15920535941048725,
+                "visible_n": 19,
+                "probe_N": 56,
+                "seen_t": 7.000000000002809
+              }
+            },
+            "input": "own visible history and issued-command pose only"
+          },
+          {
+            "t": 14.799999999988183,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 0,
+            "stage": "view",
+            "bearing_rad": 0.2669167895593552
+          },
+          {
+            "t": 15.399999999986784,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 1,
+            "stage": "view",
+            "bearing_rad": 0.2669167895593552
+          },
+          {
+            "t": 15.999999999985386,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 2,
+            "stage": "view",
+            "bearing_rad": 0.2669167895593552
+          },
+          {
+            "t": 16.59999999998825,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 3,
+            "stage": "retreat",
+            "bearing_rad": 0.2669167895593552
+          },
+          {
+            "t": 17.199999999991114,
+            "event": "reobserve_end",
+            "kind": "peer",
+            "reason": "retreat_bounded_replan",
+            "elapsed_s": 2.4000000000029313
+          }
+        ]
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 10,
+      "seed": 87014,
+      "saved_physical_success": false,
+      "commands_verified": 504,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 60,
+      "candidate_changed_states": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1238,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {},
+      "candidate_rejection_reasons": {},
+      "max_recorded_duration_delta_s": 8.326672684688674e-17,
+      "first_divergence": {
+        "tick": 192,
+        "elapsed_sim_s": 19.200000000009073,
+        "robots": [
+          "r2"
+        ],
+        "baseline": {
+          "r2": [
+            {
+              "t": 21.00000000000926,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 660,
+                "4": 2460,
+                "5": 1320,
+                "6": 1620
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "candidate": {
+          "r2": [
+            {
+              "t": 21.00000000000926,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 620,
+                "4": 2400,
+                "5": 1320,
+                "6": 1680
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r2": [
+            {
+              "t": 5.2,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 5.400000000000854,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 18.299999999996366,
+              "approach_progress": "replan",
+              "phase": "approach",
+              "required_movement_m": 0.01,
+              "allowance_s": 3.0,
+              "planner_calls": 16,
+              "no_path_calls": 3,
+              "blocked_goal_calls": 3,
+              "reason": "no_goal_error_progress",
+              "input": "current visible goal and issued-command pose"
+            },
+            {
+              "t": 19.30000000000114,
+              "recovery": "peer_prefix_wait",
+              "goal": [
+                1.7462705540083892,
+                -0.3891624880041769
+              ]
+            },
+            {
+              "t": 19.30000000000114,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.4500000000000028,
+                -0.4499999999999993
+              ],
+              "points": 23
+            },
+            {
+              "t": 20.300000000005916,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                1.416666666666669,
+                -0.3999999999999986
+              ],
+              "points": 6
+            }
+          ]
+        },
+        "candidate_choices": {
+          "r2": [
+            0.0,
+            0.203
+          ]
+        }
+      },
+      "reobserve": {
+        "r1": [],
+        "r2": [
+          {
+            "t": 21.00000000000926,
+            "event": "reobserve_start",
+            "kind": "peer",
+            "encounter": 1,
+            "targets": {
+              "r1": {
+                "id": "r1",
+                "kind": "robot",
+                "xyz": [
+                  1.5642996797453508,
+                  -0.08004082800649195,
+                  0.03204086486438826
+                ],
+                "yaw": -3.382799228082228,
+                "radius": 0.10488855685719019,
+                "top_z_bound_m": 0.1592723209289259,
+                "visible_n": 21,
+                "probe_N": 56,
+                "seen_t": 20.90000000000878
+              }
+            },
+            "input": "own visible history and issued-command pose only"
+          },
+          {
+            "t": 21.00000000000926,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 0,
+            "stage": "view",
+            "bearing_rad": 0.5359943838065125
+          },
+          {
+            "t": 21.600000000012123,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 1,
+            "stage": "view",
+            "bearing_rad": 0.5359943838065125
+          },
+          {
+            "t": 22.200000000014988,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 2,
+            "stage": "view",
+            "bearing_rad": 0.5359943838065125
+          },
+          {
+            "t": 22.800000000017853,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 3,
+            "stage": "retreat",
+            "bearing_rad": 0.5359943838065125
+          },
+          {
+            "t": 23.400000000020718,
+            "event": "reobserve_end",
+            "kind": "peer",
+            "reason": "retreat_bounded_replan",
+            "elapsed_s": 2.4000000000114596
+          },
+          {
+            "t": 23.500000000021195,
+            "event": "reobserve_start",
+            "kind": "peer",
+            "encounter": 2,
+            "targets": {
+              "r1": {
+                "id": "r1",
+                "kind": "robot",
+                "xyz": [
+                  1.5642996797453508,
+                  -0.08004082800649195,
+                  0.03204086486438826
+                ],
+                "yaw": -3.382799228082228,
+                "radius": 0.10488855685719019,
+                "top_z_bound_m": 0.1592723209289259,
+                "visible_n": 21,
+                "probe_N": 56,
+                "seen_t": 20.90000000000878
+              }
+            },
+            "input": "own visible history and issued-command pose only"
+          },
+          {
+            "t": 23.500000000021195,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 0,
+            "stage": "view",
+            "bearing_rad": 0.5359943838065125
+          },
+          {
+            "t": 24.10000000002406,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 1,
+            "stage": "view",
+            "bearing_rad": 0.5359943838065125
+          },
+          {
+            "t": 24.700000000026925,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 2,
+            "stage": "view",
+            "bearing_rad": 0.5359943838065125
+          },
+          {
+            "t": 25.30000000002979,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 3,
+            "stage": "retreat",
+            "bearing_rad": 0.5359943838065125
+          },
+          {
+            "t": 25.900000000032655,
+            "event": "reobserve_end",
+            "kind": "peer",
+            "reason": "retreat_bounded_replan",
+            "elapsed_s": 2.4000000000114596
+          }
+        ]
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 11,
+      "seed": 87017,
+      "saved_physical_success": false,
+      "commands_verified": 226,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 43,
+      "candidate_changed_states": 12,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 968,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {
+        "0.0": 25,
+        "-15.0": 5,
+        "15.0": 5,
+        "-30.0": 5,
+        "30.0": 5,
+        "-45.0": 5,
+        "45.0": 5,
+        "-60.0": 5,
+        "60.0": 5,
+        "-75.0": 5,
+        "75.0": 5,
+        "-90.0": 5,
+        "90.0": 5
+      },
+      "candidate_rejection_reasons": {
+        "blocked_goal": 20,
+        "feasible": 3,
+        "ik_unreachable": 17,
+        "blocked_retreat": 5,
+        "gripper_angle": 40
+      },
+      "max_recorded_duration_delta_s": 2.7755575615628914e-17,
+      "first_divergence": {
+        "tick": 70,
+        "elapsed_sim_s": 7.0000000000019815,
+        "robots": [
+          "r2"
+        ],
+        "baseline": {
+          "r2": [
+            {
+              "t": 8.800000000002166,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 680,
+                "4": 2380,
+                "5": 1320,
+                "6": 1600
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "candidate": {
+          "r2": [
+            {
+              "t": 8.800000000002166,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 740,
+                "4": 2320,
+                "5": 1320,
+                "6": 1541
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r2": []
+        },
+        "candidate_choices": {
+          "r2": [
+            0.0,
+            0.196
+          ]
+        }
+      },
+      "reobserve": {
+        "r1": [],
+        "r2": [
+          {
+            "t": 8.800000000002166,
+            "event": "reobserve_start",
+            "kind": "obstacle",
+            "encounter": 1,
+            "targets": {
+              "zone_wall_divider_2": {
+                "id": "zone_wall_divider_2",
+                "kind": "wall",
+                "xyz": [
+                  1.6345174979919415,
+                  -0.2529594041484752,
+                  0.2
+                ],
+                "yaw": -0.6613870115796484,
+                "radius": 0.5755432216610669,
+                "half_extents": [
+                  0.025,
+                  0.575
+                ],
+                "top_z_bound_m": 0.8093028803476969,
+                "visible_n": 5,
+                "probe_N": 7,
+                "seen_t": 8.300000000003331
+              }
+            },
+            "input": "own visible history and issued-command pose only"
+          },
+          {
+            "t": 8.800000000002166,
+            "event": "reobserve_attempt",
+            "kind": "obstacle",
+            "attempt": 0,
+            "stage": "view",
+            "bearing_rad": 0.060714185715895104
+          },
+          {
+            "t": 9.400000000000768,
+            "event": "reobserve_attempt",
+            "kind": "obstacle",
+            "attempt": 1,
+            "stage": "view",
+            "bearing_rad": 0.060714185715895104
+          },
+          {
+            "t": 9.99999999999937,
+            "event": "reobserve_attempt",
+            "kind": "obstacle",
+            "attempt": 2,
+            "stage": "view",
+            "bearing_rad": 0.05070045884326719
+          },
+          {
+            "t": 10.599999999997971,
+            "event": "reobserve_attempt",
+            "kind": "obstacle",
+            "attempt": 3,
+            "stage": "retreat",
+            "bearing_rad": 0.05070045884326719
+          },
+          {
+            "t": 11.199999999996573,
+            "event": "reobserve_end",
+            "kind": "obstacle",
+            "reason": "retreat_bounded_replan",
+            "elapsed_s": 2.3999999999944066
+          }
+        ]
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    },
+    {
+      "episode": 12,
+      "seed": 87032,
+      "saved_physical_success": false,
+      "commands_verified": 452,
+      "off_changed_commands": 0,
+      "candidate_changed_commands": 59,
+      "candidate_changed_states": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1319,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "candidate_angle_distribution": {},
+      "candidate_rejection_reasons": {},
+      "max_recorded_duration_delta_s": 5.551115123125783e-17,
+      "first_divergence": {
+        "tick": 167,
+        "elapsed_sim_s": 16.699999999997136,
+        "robots": [
+          "r2"
+        ],
+        "baseline": {
+          "r2": [
+            {
+              "t": 18.49999999999732,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 660,
+                "4": 2500,
+                "5": 1320,
+                "6": 1578
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "candidate": {
+          "r2": [
+            {
+              "t": 18.49999999999732,
+              "wheels": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "duration_s": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "pwm": {
+                "1": 2000,
+                "3": 700,
+                "4": 2440,
+                "5": 1320,
+                "6": 1638
+              }
+            },
+            false,
+            "approach",
+            null
+          ]
+        },
+        "reason_events": {
+          "r2": [
+            {
+              "t": 3.6,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.4,
+              "stage": "view_complete",
+              "k": 0,
+              "command_estimated_yaw_deg": 0.0,
+              "search": "view_complete"
+            },
+            {
+              "t": 4.599999999999876,
+              "from": "search",
+              "to": "approach"
+            },
+            {
+              "t": 16.49999999998777,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                0.9416666666666694,
+                -0.34999999999999787
+              ],
+              "points": 8
+            },
+            {
+              "t": 17.499999999992546,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                0.9333333333333359,
+                -0.34999999999999787
+              ],
+              "points": 7
+            },
+            {
+              "t": 18.49999999999732,
+              "recovery": "safe_prefix",
+              "endpoint": [
+                0.9333333333333359,
+                -0.34999999999999787
+              ],
+              "points": 7
+            }
+          ]
+        },
+        "candidate_choices": {
+          "r2": [
+            0.0,
+            0.203
+          ]
+        }
+      },
+      "reobserve": {
+        "r1": [],
+        "r2": [
+          {
+            "t": 18.49999999999732,
+            "event": "reobserve_start",
+            "kind": "peer",
+            "encounter": 1,
+            "targets": {
+              "r1": {
+                "id": "r1",
+                "kind": "robot",
+                "xyz": [
+                  1.144839965496366,
+                  -0.06765822577665831,
+                  0.03203376467797612
+                ],
+                "yaw": 2.834346923549396,
+                "radius": 0.1048880629951656,
+                "top_z_bound_m": 0.1592419764445957,
+                "visible_n": 19,
+                "probe_N": 56,
+                "seen_t": 18.399999999996844
+              }
+            },
+            "input": "own visible history and issued-command pose only"
+          },
+          {
+            "t": 18.49999999999732,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 0,
+            "stage": "view",
+            "bearing_rad": 0.45435816778215865
+          },
+          {
+            "t": 19.100000000000186,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 1,
+            "stage": "view",
+            "bearing_rad": 0.45435816778215865
+          },
+          {
+            "t": 19.70000000000305,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 2,
+            "stage": "view",
+            "bearing_rad": 0.45435816778215865
+          },
+          {
+            "t": 20.300000000005916,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 3,
+            "stage": "retreat",
+            "bearing_rad": 0.45435816778215865
+          },
+          {
+            "t": 20.90000000000878,
+            "event": "reobserve_end",
+            "kind": "peer",
+            "reason": "retreat_bounded_replan",
+            "elapsed_s": 2.4000000000114596
+          },
+          {
+            "t": 21.00000000000926,
+            "event": "reobserve_start",
+            "kind": "peer",
+            "encounter": 2,
+            "targets": {
+              "r1": {
+                "id": "r1",
+                "kind": "robot",
+                "xyz": [
+                  1.144839965496366,
+                  -0.06765822577665831,
+                  0.03203376467797612
+                ],
+                "yaw": 2.834346923549396,
+                "radius": 0.1048880629951656,
+                "top_z_bound_m": 0.1592419764445957,
+                "visible_n": 19,
+                "probe_N": 56,
+                "seen_t": 18.399999999996844
+              }
+            },
+            "input": "own visible history and issued-command pose only"
+          },
+          {
+            "t": 21.00000000000926,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 0,
+            "stage": "view",
+            "bearing_rad": 0.45435816778215865
+          },
+          {
+            "t": 21.600000000012123,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 1,
+            "stage": "view",
+            "bearing_rad": 0.45435816778215865
+          },
+          {
+            "t": 22.200000000014988,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 2,
+            "stage": "view",
+            "bearing_rad": 0.45435816778215865
+          },
+          {
+            "t": 22.800000000017853,
+            "event": "reobserve_attempt",
+            "kind": "peer",
+            "attempt": 3,
+            "stage": "retreat",
+            "bearing_rad": 0.45435816778215865
+          },
+          {
+            "t": 23.400000000020718,
+            "event": "reobserve_end",
+            "kind": "peer",
+            "reason": "retreat_bounded_replan",
+            "elapsed_s": 2.4000000000114596
+          }
+        ]
+      },
+      "sampled_selected": {
+        "r1": [],
+        "r2": []
+      }
+    }
+  ],
+  "source_files": {
+    "experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search15-novel-plan.json": "f754c1d754bb5b2300a12a38f107eea4c84ef278ea95fbfc21f7dfd3f775ee8d",
+    "harness/grasp_act_admission.py": "1e7f2f5dcc696033a1b382099d57b4359fbac539da539fe060259296e009de36",
+    "harness/grasp_act_visible_world.py": "f1833ca5104da2456250ca686b2f65dc7b55fc7152236df2de8881cc649da012",
+    "scripts/replay_grasp_act_search15.py": "0fc3cfede0d2c7136ebcfac05244e490ff8aaf4cc05bbae8cfb3b53e3d7ae03f",
+    "scripts/run_grasp_act_batch.py": "bf12523b642224ffc4c455a5a01c54c39e7c3c1eaed84ebbcfb46c214f2c8549",
+    "scripts/run_grasp_act_teacher.py": "519b1d06620ccabd05278b2378ca75bdbeee0d58de8a6d720bb09faf8ccb415f",
+    "sim/grasp_act_pregrasp.py": "59bb64d4703f66c8c6dcc8ae148160936f9c1f3f36050d45b2e7480244c04140",
+    "sim/grasp_act_reobserve.py": "20f87399c4e56ef1d5af7495eb7a4ceeeed7ab08fe02e39a7ba6d3937a9a9e35",
+    "sim/grasp_act_search15_modes.py": "dafb5a9b529d384976ba5f4cc0903800f3c4fbff1ed56c29a9e74d20fb95648d",
+    "sim/grasp_act_teacher_v3.py": "d0b20df58ee535ed8d49f21ae6a84a8ee6e262422e43faa8dc88dac6b402f93a",
+    "tests/test_grasp_act_search15.py": "3b5048c5fe533bf3e8240ab05194617395988cb90e060a5b98776c18da276189"
+  },
+  "raw_input_files_verified": 65,
+  "physical": {
+    "status": "NOT_STARTED",
+    "normal": {
+      "n": null,
+      "N": 6
+    },
+    "novel": {
+      "n": null,
+      "N": 6
+    },
+    "old_failure_diagnostic": {
+      "n": null,
+      "N": 6
+    },
+    "hard_diagnostic": {
+      "n": null,
+      "N": 1
+    },
+    "HOST_ERROR": null,
+    "interrupted": null
+  },
+  "predecessor_queues": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search15-predecessor-queues.json",
+    "sha256": "d873787fd7aaf94cc495c5451cc9e2bbc9407eb6ee2affffb185236fe5e1d5d7"
+  },
+  "diagnostic_pass": {
+    "normal": 6,
+    "normal_N": 6,
+    "novel": 6,
+    "novel_N": 6,
+    "old_failure_and_hard": "development diagnostics only; separate denominators",
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "speed_promotion_authorized_if_all_conditions_pass": false,
+  "outer_manifest_verification": {
+    "n": 78,
+    "N": 78,
+    "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search-diagnostic-gcp-abe63b90/SHA256SUMS",
+    "sha256": "62f9e207a8c212c4bdc1fe68673848dd40744759b7c3eb53e8be5f907c67103b"
+  }
+}
