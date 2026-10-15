@@ -109,6 +109,16 @@ def recount(raw):
                 'same_nearest_end':len(set(nearest.values()))==1,
                 'scope':'evaluator distance only; not inferred intent'})
     entry['strict_success'] = bool(result.get('status')=='complete' and entry.get('max_strict_hold_s', 0.) >= 3.-1e-8)
+    entry['saved_command_phases']={}
+    for rid in ('r1','r2'):
+        path=raw/f'teacher-{rid}.jsonl'
+        if path.exists() or Path(str(path)+'.zst').exists():
+            decoded,actual,digest=read_bytes(path)
+            labels=[json.loads(line) for line in decoded.splitlines() if line.strip()]
+            if labels:
+                entry['saved_command_phases'][rid]=dict(last_phase=labels[-1].get('teacher_phase'),
+                    phase_counts=dict(Counter(l.get('teacher_phase','missing') for l in labels)),
+                    path=str(actual),sha256=digest)
     entry['visible_eligible'] = bool(entry['strict_success'] and entry['profile']=='visible_only'
         and entry['audit'] and entry['audit'].get('enabled')
         and not entry['audit'].get('invisible_measurements') and not entry['audit'].get('held_world_reads'))

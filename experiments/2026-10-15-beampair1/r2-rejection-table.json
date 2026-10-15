@@ -1,0 +1,183 @@
+{
+  "schema": "ugrp.beampair1.funnel.v1",
+  "source_sha": "b53183b71186420734ad84d9ed7f90f7fbc87465",
+  "raw_root": "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes",
+  "episode_funnel": [
+    {
+      "gate": "started",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_align",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_ready",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_pick",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_command_complete",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "joint_hold_3s",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "input_eligible_success",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    }
+  ],
+  "reason_distribution": {},
+  "blocked_objects": {},
+  "candidate_populations": {
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-000/raw": {},
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-001/raw": {},
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-002/raw": {},
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-003/raw": {},
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-004/raw": {},
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-005/raw": {}
+  },
+  "frame_populations": {
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-000/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 748,
+        "passed": 531,
+        "rejected": 217
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 531,
+        "passed": 529,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 529,
+        "passed": 529,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-001/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 702,
+        "passed": 529,
+        "rejected": 173
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 529,
+        "passed": 527,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 527,
+        "passed": 527,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-002/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 560,
+        "passed": 351,
+        "rejected": 209
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 351,
+        "passed": 348,
+        "rejected": 3
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 348,
+        "passed": 348,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-003/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 668,
+        "passed": 414,
+        "rejected": 254
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 414,
+        "passed": 412,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 412,
+        "passed": 412,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-004/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 526,
+        "passed": 351,
+        "rejected": 175
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 351,
+        "passed": 350,
+        "rejected": 1
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 350,
+        "passed": 350,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes/diagnostic/episode-005/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 598,
+        "passed": 424,
+        "rejected": 174
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 424,
+        "passed": 422,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 422,
+        "passed": 422,
+        "rejected": 0
+      }
+    ]
+  },
+  "missing_rejection_audit_N": 0,
+  "reproduce": "python -m scripts.analyze_beampair1 /home/ugrp/ugrp-sim/runs/beampair1-r2-b53183b7/probes --out /home/ugrp/ugrp-sim/outputs/beampair1-r2-analysis"
+}

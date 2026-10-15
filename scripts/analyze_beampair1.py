@@ -93,10 +93,11 @@ def analyze(root,out):
         adapter=read(raw.parent/'adapter/beampair1-result.json')
         decoded,_,_=read_bytes(raw/'eval-only.jsonl')
         frames=[json.loads(line) for line in decoded.splitlines() if line.strip()]
+        plan=read(raw/'plan.json')
         frame_N=len(frames)*2
         any_visible=sum(row['visibility'][rid]['visible_probes']>0 for row in frames for rid in ('r1','r2'))
         region_visible=sum(row['visibility'][rid]['visible_probes']>=5 for row in frames for rid in ('r1','r2'))
-        admitted=sum(any(m['id']=='band_'+read(raw/'plan.json')['roles'][rid]
+        admitted=sum(any(m['id']=='band_'+plan['roles'][rid]
             for m in row.get('visible_measurements',{}).get(rid,[])) for row in frames for rid in ('r1','r2'))
         entry['frame_funnel']=ordered_funnel(frame_N,[('any_assigned_probe',any_visible),
             ('meaningful_region_5_of_15',region_visible),('measurement_admitted_not_held',admitted)])
@@ -116,6 +117,16 @@ def analyze(root,out):
             for stage,phases in [('both_align',('align','ready','pick','complete')),
                 ('both_ready',('ready','pick','complete')),('both_pick',('pick','complete')),
                 ('both_command_complete',('complete',))]}
+        per_role=[]
+        for rid,t in result.get('teachers',{}).items():
+            states={e.get('to') for e in t.get('events',[])}
+            cmds=entry['saved_command_phases'].get(rid,{})
+            per_role.append(dict(robot=rid,ready=bool(states & {'ready','pick','complete'}),
+                pick=bool(states & {'pick','complete'}),
+                command_complete='complete' in states))
+        entry['event_funnel']=ordered_funnel(2,[('own_ready',sum(e['ready'] for e in per_role)),
+            ('own_pick_after_go_ack',sum(e['pick'] for e in per_role)),
+            ('own_command_complete',sum(e['command_complete'] for e in per_role))])
         episodes.append(entry)
     passed=sum(e['legacy_success'] and e['strict_success'] and e.get('visible_eligible')
         and e['held_object_hidden_v1'] and e['held_world_reads']==0 for e in episodes)
@@ -139,6 +150,7 @@ def analyze(root,out):
         raw_root=str(root),episode_funnel=funnel,reason_distribution=dict(reasons),blocked_objects=dict(blocker_counts),
         candidate_populations={e['raw']:e['candidate_populations'] for e in episodes},
         frame_populations={e['raw']:e['frame_funnel'] for e in episodes},
+        event_populations={e['raw']:e['event_funnel'] for e in episodes},
         missing_rejection_audit_N=missing,reproduce=report['reproduce']))
     dump(out/'candidate-rejections.json',all_rejections)
     print(json.dumps({k:v for k,v in report.items() if k!='runs'}))

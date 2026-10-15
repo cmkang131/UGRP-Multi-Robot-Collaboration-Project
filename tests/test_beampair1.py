@@ -1,5 +1,7 @@
 from copy import deepcopy
 from types import SimpleNamespace
+import json
+from pathlib import Path
 
 import pytest
 
@@ -84,3 +86,18 @@ def test_loss_to_search_does_not_shorten_requested_burst_but_pick_cancels():
     probe.apply(command(),phase_before='align',phase_after='align',holding=False,visible=True)
     _,d=probe.apply(command(1500),phase_before='align',phase_after='pick',holding=True,visible=False)
     assert d is None and not probe.active
+
+
+def test_queue_rejects_a_missing_funnel_file(tmp_path):
+    from scripts.queue_beampair1 import validate_evidence
+    with pytest.raises(ValueError,match='rejection_table'):
+        validate_evidence({},tmp_path/'missing.json','a'*40)
+
+
+def test_queue_cannot_promote_real_r1_with_truncated_bursts(tmp_path):
+    from scripts.queue_beampair1 import validate_evidence
+    report=json.loads((Path(__file__).resolve().parents[1]/
+        'experiments/2026-10-15-beampair1/r1-summary.json').read_text())
+    table=tmp_path/'rejection-table.json';table.write_text(json.dumps({'source_sha':report['source_sha']}))
+    with pytest.raises(ValueError,match='truncated'):
+        validate_evidence(report,table,report['source_sha'])
