@@ -6,11 +6,13 @@ from pathlib import Path
 
 import numpy as np
 
+from harness import grasp_act_contract as c
 from harness.grasp_act_data import read_rows, read_json, sha256, write_json
 from scripts.analyze_grasp_act_act16a import require_cpu, existing, errors, stats, summarize_errors, reversal_events
 from scripts.analyze_grasp_act_act14 import recount
 
 STAGES=('approach','alignment','grasp','lift_confirmation')
+ROOT=Path(c.__file__).resolve().parents[1]
 
 
 def main():
@@ -59,7 +61,7 @@ def main():
             reproduce_argv=job['rollout'])
         if not s['physical_success']:rejected.append(rej)
         shadow=read_json(raw/'shadow-progress.json')
-        original=read_json(Path(__file__).resolve().parents[1]/'experiments/2026-10-15-act-train/act15-summary.json')
+        original=read_json(ROOT/'experiments/2026-10-15-act-train/act15-summary.json')
         old=next(r for r in original['primary_runs'] if r['seed']==job['seed'])
         record=dict(seed=job['seed'],status='complete',raw=str(raw),first_failed_gate=failed,
             funnel=funnel,done_times=s['done_times'],termination=s['termination'],cap_end=s['cap_end'],
@@ -117,7 +119,7 @@ def main():
             completion_gate=dict(received=prior,passed=sum(r['physical_success'] for r in group),rejected=prior-sum(r['physical_success'] for r in group)),
             cap_end=sum(r['cap_end'] for r in group),student_done=sum(r['termination']=='student_done' for r in group),
             rejection_distribution=dict(Counter(r['category'] for r in rej)),rejections=rej)
-    original_path=Path(__file__).resolve().parents[1]/'experiments/2026-10-15-act-train/act15-funnel.json'
+    original_path=ROOT/'experiments/2026-10-15-act-train/act15-funnel.json'
     old=read_json(original_path)
     old_compact={k:{field:value for field,value in v.items() if field!='runs'} for k,v in old['cohorts'].items()}
     write_json(a.output/'rejection_table.json',dict(schema='ugrp.act16a.rejection_table.v2',
