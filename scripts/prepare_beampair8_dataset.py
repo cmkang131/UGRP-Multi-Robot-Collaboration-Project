@@ -20,6 +20,17 @@ from harness.beampair_recording import existing, compress_jsons
 def audit_run(run):
     run=Path(run);raw=run/'raw';view=run/'training'
     result=read_json(existing(raw,'result.json'));plan=read_json(raw/'plan.json')
+    adapter=read_json(existing(run/'adapter','beampair1-result.json'))
+    assert result['recording_mode']=='training' and result['student_execution'] is False
+    assert result['weld']=='off' and result['self_pose_source']=='issued'
+    assert result['observation_sampling']['rgb_size']==[640,480]
+    assert result['observation_sampling']['rgb_hz']==10
+    assert adapter['held_object_hidden_v1'] and adapter['held_world_reads']==0
+    assert all(result['input_audit'][k]==0 for k in ('invisible_measurements','held_world_reads'))
+    quality=read_json(raw/'scene-quality.json')
+    assert quality['scene_profile']=='walls_floor_contrast_v5_indigo110_s80'
+    assert quality['camera_quality']=='no_mip_v1'
+    assert all(t['min']==9729 for ctx in quality['contexts'].values() for t in ctx['textures'])
     truths=read_rows(existing(raw,'eval-only.jsonl'))
     totals=[];montage=[]
     for rid in plan['roles']:
@@ -31,15 +42,20 @@ def audit_run(run):
         assert groups and sum(l['done'] for l in labels)==1
         frames=sorted((raw/'rgb'/rid).glob('*.jpg'))
         assert len(frames)==len(observations)
-        dt=[];vis=Counter();by_phase=defaultdict(Counter);held_rows=0
+        dt=[];vis=Counter();by_phase=defaultdict(Counter);image_refs=[]
+        issued_history=list(observations[0]['issued'])
         for i,(o,l,issued,truth) in enumerate(zip(observations,labels,commands,truths)):
             c.validate_observation(o)
             assert o['robot_id']==rid and o['t']==truth['t']==l['clean_teacher_command']['t']
             assert all(ref['path'].startswith(f'rgb/{rid}/') for ref in o['rgb'])
+            assert o['issued']==issued_history[-c.HISTORY:]
+            issued_history.append(issued['applied_command'])
             if i:
                 assert o['issued'][-1]==commands[i-1]['applied_command']
                 dt.append(o['t']-observations[i-1]['t'])
             ref=o['rgb'][-1];assert ref['t']==o['t']
+            image_refs.append(ref)
+            assert o['rgb']==c.image_history(image_refs,o['t'])
             p=raw/ref['path'];assert sha256(p)==ref['sha256']
             with Image.open(p) as image:
                 assert image.size==(640,480)
