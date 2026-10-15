@@ -159,6 +159,8 @@ def ship_gcp(host, worktree, sha):
     source = f'$HOME/ugrp-sim/src/{sha}'
     marker = f'{source}/.git/ugrp-source-complete'
     if subprocess.run(['ssh', '-o', 'BatchMode=yes', host, f'test -f {marker}'], capture_output=True).returncode == 0:
+        ssh(host, f'test "$(git -C {source} rev-parse HEAD)" = {sha} && '
+                  f'test "$(cat {source}/.git/objects/info/alternates)" = "{shared}/objects"')
         return
     # Serialize import/clone so simultaneous admissions do not race shared refs.
     ssh(host, f'mkdir -p ~/ugrp-sim/src; test -d {shared} || git init --bare -q {shared}; '
