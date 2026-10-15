@@ -40,6 +40,15 @@ class InputAudit:
         self.counts['issued_command_records'] += 1
         return controller.command(copy.deepcopy(row))
 
+    def static_map(self, payload, sha256):
+        allowed = {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}
+        if (set(payload) != allowed or len(sha256) != 64 or
+                any(c not in '0123456789abcdef' for c in sha256)):
+            self.counts['rejected_inputs'] += 1
+            raise ValueError('INPUT_AUDIT_STATIC_GEOMETRY_ALLOWLIST')
+        self.counts['authored_static_map_inputs'] = self.counts.get('authored_static_map_inputs', 0)+1
+        return copy.deepcopy(payload)
+
     def snapshot(self):
         return dict(schema='ugrp.selfmap_input_audit.v1', measured=True,
             scope='all delivered controller payloads at writer boundary; excludes evaluation/plant reads',

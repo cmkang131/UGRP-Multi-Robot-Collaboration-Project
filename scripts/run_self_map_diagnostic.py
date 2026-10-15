@@ -22,7 +22,7 @@ from scripts.offline_self_map import digest, dump, read, rows, score
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off'):
+def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recovery_profile='off'):
     from harness.active_camera import SEARCH
     if not math.isfinite(cap_s) or not 1 <= cap_s <= 300 or abs(cap_s*10-round(cap_s*10)) > 1e-8:
         raise ValueError('CAP_MUST_BE_0_1S_GRID_IN_1_TO_300')
@@ -49,6 +49,15 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off'):
             raise ValueError('UNKNOWN_INITIAL_SWEEP')
         result.update(execution_bundle_id='selfmap3-prior-bootstrap-v1', check='selfmap3', case='active-selfmap3')
         result['options'].update(bootstrap=bootstrap, initial_sweep=initial_sweep)
+    from harness.self_map_integration import Options
+    Options(recovery_profile=recovery_profile)
+    if recovery_profile != 'off':
+        from harness.selfmap4_geometry import static_input
+        _, sha = static_input()
+        result.update(execution_bundle_id='selfmap4_recovery_v1', check='selfmap4', case='active-selfmap4',
+                      supplied_map_to_controller=True, authored_static_map_sha256=sha)
+        result['options'].update(recovery_profile=recovery_profile)
+        result['controller_inputs'].append('authored_static_geometry')
     return result
 
 
@@ -130,9 +139,18 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         start, cap, robot = backend.now, b['case_cap_s'], b['task']['robot_id']
         loop_started = monotonic()
         backend.set_deadline(round(start+cap, 9))
+        extra = {}
+        if b['options'].get('recovery_profile', 'off') != 'off':
+            from harness.selfmap4_geometry import static_input
+            static, sha = static_input()
+            if sha != b['authored_static_map_sha256']:
+                raise ValueError('SELFMAP4_STATIC_MAP_HASH_MISMATCH')
+            extra = dict(recovery_profile=b['options']['recovery_profile'],
+                         static_map=audit.static_map(static, sha))
+            result['authored_static_map_sha256'] = sha
         controller = controller_factory(self_map_executor=OPTION, robot_id=robot,
             start_time=start, cap_s=cap, bootstrap=b['options'].get('bootstrap', 'off'),
-            initial_sweep=b['options'].get('initial_sweep', 'off'))
+            initial_sweep=b['options'].get('initial_sweep', 'off'), **extra)
         # This is the plant's issued reset-command history, never measured joints.
         audit.command(controller, dict(t=start, kind='initial_servo_command', pulses=backend.commands[robot]))
         for action in arm(b['initial_servo']):
@@ -178,7 +196,7 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                 if monotonic()-started > wall_cap_s:
                     raise TimeoutError('SELF_MAP_HOST_TIME_CAP')
                 backend.advance_to(round(start+(tick+1)*.1, 9))
-        result.update(status='RECORDED', elapsed_sim_s=backend.now-start,
+        result.update(status='HOST_ERROR' if controller.stop_reason == 'selfmap4_relocalization_exhausted' else 'RECORDED', elapsed_sim_s=backend.now-start,
             stop_reason=controller.stop_reason, complete=controller.stop_reason == 'self_map_complete')
         ledger, _ = rows(out/f'robots/{robot}/frames.jsonl')
         if len(ledger) != result['frames'] or any(
@@ -229,9 +247,11 @@ def main(argv=None):
     p.add_argument('--self-map-executor', choices=['off', OPTION], default='off')
     p.add_argument('--bootstrap', choices=['off', 'command_prior_v1'], default='off')
     p.add_argument('--initial-sweep', choices=['off', 'required_360_v1'], default='off')
+    p.add_argument('--recovery-profile', choices=['off', 'selfmap4_recovery_v1'], default='off')
     p.add_argument('--execute', action='store_true')
     a = p.parse_args(argv)
-    b = bundle(a.expected_source_sha, a.seed, a.cap_s, bootstrap=a.bootstrap, initial_sweep=a.initial_sweep)
+    b = bundle(a.expected_source_sha, a.seed, a.cap_s, bootstrap=a.bootstrap, initial_sweep=a.initial_sweep,
+               recovery_profile=a.recovery_profile)
     if not a.execute or a.self_map_executor == 'off':
         print(json.dumps(dict(status='PREPARED_NOT_EXECUTED', bundle=b, storage=storage_estimate(a.cap_s))))
         return 0

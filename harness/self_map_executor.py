@@ -1,4 +1,4 @@
-"""Opt-in single-robot own-RGB exploration; no plant/evaluator/map inputs."""
+"""Opt-in own-RGB exploration; optional authored map, never plant/evaluator inputs."""
 import math
 from collections import Counter
 
@@ -38,7 +38,7 @@ def make_executor(legacy=None, *, self_map_executor='off', **kwargs):
 
 class SelfMapExecutor:
     def __init__(self, robot_id, *, start_time=0., cap_s=180., mapper=None, sweep=None,
-                 bootstrap='off', initial_sweep='off'):
+                 bootstrap='off', initial_sweep='off', recovery_profile='off', static_map=None):
         if not math.isfinite(cap_s) or not 1. <= cap_s <= 300.:
             raise ValueError('FINITE_SELF_MAP_CAP_1_TO_300_REQUIRED')
         self.robot_id, self.started, self.cap_s = robot_id, float(start_time), float(cap_s)
@@ -49,7 +49,8 @@ class SelfMapExecutor:
         self.mapper = mapper if mapper is not None else make_mapper(robot_id=robot_id,
             start_time=start_time, options=Options(self_map_integration=MAP_OPTION,
                 pose_rebuild='refit_history_v1', navigation_support='current_footprint_v1',
-                bootstrap=bootstrap))
+                bootstrap=bootstrap, recovery_profile=recovery_profile), static_map=static_map)
+        self.recovery = self.mapper.options.recovery_profile != 'off'
         if sweep is None:
             # Existing E2E18/egomap arrival -> bounded full-body observation sweep.
             from harness.active_frontier_cycle import CycleNavigator
@@ -64,6 +65,9 @@ class SelfMapExecutor:
         self.visited, self.events = [], []
         self.attempts = Counter()
         self.last_rebuild = 0
+        self.recovery_started = None
+        self.recovery_pans = None
+        self.recovery_attempts = 0
 
     @property
     def done(self):
@@ -77,9 +81,23 @@ class SelfMapExecutor:
         self.events.append(dict(t=float(t), reason=reason, **kw))
 
     def look(self, t, reason):
+        if self.recovery and self.stage in ('pan', 'spin'):
+            return  # an in-flight observation is never restarted by a revision
         self.target = None
         self.stage, self.pan_index, self.next_pan = 'pan', 0, t
         self.event(t, 'lookaround_requested', cause=reason)
+
+    def relocalize(self, t, row, reason):
+        if not self.recovery:
+            return self.look(t, reason)
+        if self.recovery_started is None:
+            self.recovery_started = t
+        self.recovery_attempts += 1
+        candidate = row.get('recovery_candidate') or {}
+        self.recovery_pans = candidate.get('pans', [1500, 1000, 2000, 1500])
+        self.look(t, reason)
+        self.event(t, 'selfmap4_relocalization', cause=reason,
+                   pans=self.recovery_pans, attempt=self.recovery_attempts)
 
     def costmap(self, pose, *, spin=False):
         grid = self.mapper.planning_grid()
@@ -103,6 +121,16 @@ class SelfMapExecutor:
         row = self.mapper.receive(robot_id=robot_id, t=t, frame_id=frame_id, rgb=rgb, sha256=sha256)
         pose = np.asarray(row['pose'])
         command = None
+        if self.recovery and self.recovery_started is not None:
+            # A deadline belongs to the recovery episode, not each pan/rebuild.
+            if t-self.recovery_started >= 20. or self.recovery_attempts > 3:
+                self.stop_reason = 'selfmap4_relocalization_exhausted'
+                self.stage = 'stopped'
+                command = dict(t=float(t), kind='hold')
+                self.event(t, self.stop_reason, elapsed_s=t-self.recovery_started)
+                return command, dict(**row, stage=self.stage,
+                    executor_stop_reason=self.stop_reason, issued_command=command,
+                    frontier_arrivals=len(self.visited))
         # A terminal observation may arrive halfway through a calibrated pulse.
         # Let its <=0.2s interval finish before the normal completion hold.
         complete = row['complete'] and self.initial_sweep_complete and t >= self.next_control-1e-8
@@ -116,16 +144,20 @@ class SelfMapExecutor:
             if self.started+self.cap_s-t < .2-1e-8:
                 return command, dict(**row, stage=self.stage, executor_stop_reason=None,
                                      issued_command=command, frontier_arrivals=len(self.visited))
-            if row['rebuild_count'] != self.last_rebuild:
-                self.last_rebuild = row['rebuild_count']
-                self.attempts.clear()  # targets belong to the previous map revision
-                self.visited.clear()
+            revision = row.get('rebuild_commits', 0) if self.recovery else row['rebuild_count']
+            if revision != self.last_rebuild:
+                self.last_rebuild = revision
+                if not self.recovery:
+                    self.attempts.clear()  # legacy targets belong to the old revision
+                    self.visited.clear()
+                self.target = None
                 if self.initial_sweep_complete:
                     self.look(t, 'pose_map_revision')
             if self.stage == 'pan':
                 if t >= self.next_pan-1e-8:
-                    if self.pan_index < len(PANS):
-                        command = dict(t=float(t), kind='look', pan_pulse=PANS[self.pan_index])
+                    pans = self.recovery_pans or PANS
+                    if self.pan_index < len(pans):
+                        command = dict(t=float(t), kind='look', pan_pulse=pans[self.pan_index])
                         self.pan_index += 1
                         self.next_pan = t+1.
                     else:
@@ -146,6 +178,8 @@ class SelfMapExecutor:
                 if self.sweep.phase != 'sensor_sweep':
                     receipt = self.sweep.events[-1]
                     if self.initial_sweep != 'off' and receipt.get('reason') != 'sensor_sweep_completed':
+                        if self.recovery:
+                            self.stage = 'select'
                         self.look(t, 'incomplete_sweep_retry')
                     else:
                         self.initial_sweep_complete = True
@@ -155,7 +189,8 @@ class SelfMapExecutor:
                 if not self.initial_sweep_complete:
                     self.look(t, 'initial_sweep_required')
                 elif not row['map_updated']:
-                    self.look(t, 'visual_pose_unavailable')
+                    if not self.recovery or row['insertion_blockers'] != ['camera_unsettled']:
+                        self.relocalize(t, row, 'visual_pose_unavailable')
                 else:
                     if self.target is None:
                         candidates = frontier_candidates(self.mapper.planning_grid(), pose,
@@ -169,7 +204,7 @@ class SelfMapExecutor:
                             self.stage = 'drive'
                             self.event(t, 'frontier_selected', target=self.target)
                         else:
-                            self.look(t, 'no_reachable_frontier_not_completion')
+                            self.relocalize(t, row, 'no_reachable_frontier_not_completion')
                     if self.target is not None:
                         target = self.target['target_m']
                         if np.linalg.norm(pose[:2]-target) <= .05:
@@ -179,9 +214,13 @@ class SelfMapExecutor:
                         else:
                             if np.linalg.norm(pose[:2]-self.progress_xy) >= .05:
                                 self.progress_xy, self.progress_t = pose[:2].copy(), t
+                                if self.recovery:
+                                    self.recovery_started = None
+                                    self.recovery_attempts = 0
+                                    self.recovery_pans = None
                             path = self.path_to(pose, target)
                             if not path or t-self.progress_t >= 10. or t-self.goal_start >= 30.:
-                                self.look(t, 'path_blocked_or_no_progress')
+                                self.relocalize(t, row, 'path_blocked_or_no_progress')
                             else:
                                 twist = follow_twist(path, pose, self.target['heading_rad'])
                                 command, pulse = pulse_command(twist, t, costmap=self.costmap(pose),

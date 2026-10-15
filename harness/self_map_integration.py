@@ -1,6 +1,7 @@
 """Default-off natural-floor pose -> own occupancy -> frontier proposal.
 
-No simulator, supplied map, peer pose or cargo-world-position input. This is a
+No simulator, peer pose or cargo-world-position input. Authored static geometry
+is accepted only by the explicit selfmap4 profile. This is a
 mapping/navigation proposal seam, not an actuator or an ACT grasp replacement.
 PR496 is imported verbatim; design/provenance: docs/self_map_integration.md.
 """
@@ -33,6 +34,7 @@ class Options:
     pose_rebuild: str = 'off'
     navigation_support: str = 'off'
     bootstrap: str = 'off'
+    recovery_profile: str = 'off'
 
     def __post_init__(self):
         if self.self_map_integration not in ('off', OPTION):
@@ -50,6 +52,8 @@ class Options:
             raise ValueError('UNKNOWN_NAVIGATION_SUPPORT')
         if self.bootstrap not in ('off', 'command_prior_v1'):
             raise ValueError('UNKNOWN_SELF_MAP_BOOTSTRAP')
+        if self.recovery_profile not in ('off', 'selfmap4_recovery_v1'):
+            raise ValueError('UNKNOWN_SELF_MAP_RECOVERY')
 
 
 def make_mapper(legacy=None, *, options=None, **kwargs):
@@ -65,9 +69,10 @@ class PoseGrid:
     Natural features localize; they are never obstacle endpoints. Floor-only rays
     clear to their measured endpoint. One update per frame/cell, hit wins.
     """
-    def __init__(self, robot_id, resolution):
+    def __init__(self, robot_id, resolution, registration=None):
         self.occupancy = OdomGrid(robot_id, resolution_m=resolution)
         self.navigation = ObservedGrid(robot_id, resolution)
+        self.registration = registration
 
     def insert(self, *, frame_id, pose, camera, segments, floor_xy):
         grid, nav = self.occupancy, self.navigation
@@ -94,10 +99,22 @@ class PoseGrid:
         free = set()
         for p in transform(floor, pose):
             free.update(ray_cells(origin, p, grid.resolution_m))
+        before_cells = grid.cells.copy() if self.registration is not None else None
         grid.insert(origin, world_segments)
         for cell in free-wall_rays:
             grid.cells[cell] = max(grid.lo, min(grid.hi, grid.cells.get(cell, 0.)+grid.miss))
         free = (free | wall_rays)-hits
+        rejected = set()
+        if self.registration is not None and self.registration.map_from_own is not None:
+            cells = sorted(set(grid.cells) | free | hits)
+            rejected = {c for c, ok in zip(cells, self.registration.contains(cells, grid.resolution_m)) if not ok}
+            for c in rejected:
+                if c in before_cells:
+                    grid.cells[c] = before_cells[c]
+                else:
+                    grid.cells.pop(c, None)
+            free -= rejected
+            hits -= rejected
         for cells, provenance in ((free, nav.floor_frames), (hits, nav.wall_frames)):
             for cell in cells:
                 provenance.setdefault(cell, set()).add(frame_id)
@@ -105,7 +122,10 @@ class PoseGrid:
         nav.seen.add(frame_id)
         nav.view_poses[frame_id] = pose.copy()
         nav.revision += 1
-        return {'free_cells': len(free), 'hit_cells': len(hits)}
+        result = {'free_cells': len(free), 'hit_cells': len(hits)}
+        if self.registration is not None:
+            result['outside_cells_rejected'] = len(rejected)
+        return result
 
 
 def raw_frontier_count(grid, pose):
@@ -120,11 +140,21 @@ def raw_frontier_count(grid, pose):
 
 
 class SelfMapIntegration:
-    def __init__(self, robot_id, *, start_time=0., options=None):
+    def __init__(self, robot_id, *, start_time=0., options=None, static_map=None):
         self.options = options or Options()
         if self.options.self_map_integration != OPTION:
             raise ValueError('EXPLICIT_SELF_MAP_INTEGRATION_REQUIRED')
         self.robot_id = robot_id
+        self.recovery = self.options.recovery_profile != 'off'
+        self.registration = None
+        if self.recovery:
+            from harness.selfmap4_geometry import StaticRegistration, PlaneFlow
+            if static_map is None:
+                raise ValueError('SELFMAP4_AUTHORED_STATIC_MAP_REQUIRED')
+            self.registration = StaticRegistration(static_map)
+            self.flow = PlaneFlow()
+        elif static_map is not None:
+            raise ValueError('STATIC_MAP_REQUIRES_SELFMAP4_PROFILE')
         self.slam = NaturalFloorSLAM(robot_id)
         if self.options.bootstrap != 'off':
             from harness.self_map_bootstrap import PriorBootstrapSLAM
@@ -135,7 +165,7 @@ class SelfMapIntegration:
         self.odom.step_callback = self._motion
         self.delta, self.Q = np.zeros(3), np.zeros((3, 3))
         self.servo = {}
-        self.grid = PoseGrid(robot_id, self.options.resolution_m)
+        self.grid = PoseGrid(robot_id, self.options.resolution_m, self.registration)
         self.nav_options = NavigationOptions(exploration='own_frontier_v1',
                                              partial_planning='own_astar_v1')
         from harness.active_camera import goal_detector
@@ -150,6 +180,7 @@ class SelfMapIntegration:
         self.history, self.rebuilds = [], []
         self.last_rebuild_t = -math.inf
         self.prior_frames = set()
+        self.rebuild_cause = None
 
     def planning_grid(self):
         """Current body support only; never changes occupancy/coverage evidence."""
@@ -173,7 +204,21 @@ class SelfMapIntegration:
         fit keeps the previous map quarantined and completion blocked. This is
         landmark-bank refitting, not a claim of global pose-graph optimization.
         """
-        replacement = PoseGrid(self.robot_id, self.options.resolution_m)
+        if self.recovery and (len(self.rebuilds) >= 2 or t-self.last_rebuild_t < 20.):
+            return dict(t=float(t), committed=False, deferred=True,
+                        reason='selfmap4_rebuild_budget_or_cooldown')
+        if self.recovery and self.rebuild_cause == 'static_frame_correction':
+            # The ORB bank has no independent static constraint on old poses.
+            # Its self-fit cannot certify a static-frame correction. Preserve
+            # the confirmed map and request more views instead of clearing the
+            # quarantine with a circular re-fit.
+            self.last_rebuild_t = float(t)
+            receipt = dict(t=float(t), frames=len(self.history), refitted=0,
+                unresolved=[r['observation'].frame_id for r in self.history],
+                committed=False, reason='static_history_not_independently_refitted')
+            self.rebuilds.append(receipt)
+            return receipt
+        replacement = PoseGrid(self.robot_id, self.options.resolution_m, self.registration)
         poses, unresolved = [], []
         for record in self.history:
             obs = record['observation']
@@ -203,6 +248,7 @@ class SelfMapIntegration:
         for record, pose in zip(self.history, poses):
             record['pose'] = pose
         self.rebuild_required = False
+        self.rebuild_cause = None
         self.stable, self.last_states = 0, None
         # Old zone coordinates/confirmation must not survive a map revision.
         self.zones.tracks.clear()
@@ -252,7 +298,25 @@ class SelfMapIntegration:
         else:
             observation = Observation(frame_id, t, np.empty((0, 2)), np.empty((0, 32), np.uint8), sha256)
         prior = compose(self.slam.pose, self.delta)
+        wall_observation, flow_row, static_pose = None, None, None
+        if self.recovery:
+            self.delta, self.Q, flow_row = self.flow.step(image, self.servo, t,
+                settled and not held, self.delta, self.Q)
+            if settled and not held:
+                from harness.selfmap4_geometry import observe
+                wall_observation = observe(image, self.servo, self.registration.sensor)
+            else:
+                wall_observation = dict(camera=[0., 0.], segments=[], floor_xy=[], features=[])
+            static_pose = self.registration.step(wall_observation, self.delta, self.servo,
+                                                 t, compose(self.slam.pose, self.delta))
+            prior = compose(self.slam.pose, self.delta)
         event = self.slam.step(observation, command_delta=self.delta, command_covariance=self.Q)
+        if static_pose is not None:
+            self.slam.pose, self.slam.covariance = static_pose
+            event.update(status='visual_relocalized', reason='selfmap4_static_lines',
+                         pose=self.slam.pose.tolist(), covariance=self.slam.covariance.tolist())
+            self.slam.trajectory[-1].update(pose=event['pose'], covariance=event['covariance'],
+                                            source=event['status'])
         self.delta, self.Q = np.zeros(3), np.zeros((3, 3))
         pose, cov = self.slam.pose, self.slam.covariance
         sigma_xy = math.sqrt(max(0., float(np.linalg.eigvalsh(cov[:2, :2]).max())))
@@ -266,8 +330,11 @@ class SelfMapIntegration:
         if self.grid.navigation.seen and visual and (
                 innovation > self.options.resolution_m or yaw_jump > self.options.max_sigma_yaw_rad):
             self.rebuild_required = True
+            if self.recovery and self.rebuild_cause != 'static_frame_correction':
+                self.rebuild_cause = 'static_frame_correction' if static_pose is not None else 'orb_pose_revision'
         if self.rebuild_required and self.options.pose_rebuild == 'refit_history_v1' and (
-                visual and t-self.last_rebuild_t >= 5.):
+                visual and t-self.last_rebuild_t >= (20. if self.recovery else 5.)) and (
+                not self.recovery or len(self.rebuilds) < 2):
             self.rebuild(t)
         reasons = []
         if held: reasons.append('commanded_grip_closed')
@@ -280,7 +347,7 @@ class SelfMapIntegration:
         counts, candidates = {}, []
         if not reasons:
             from harness.active_wall_vision import observe
-            obs = observe(image, self.servo, body_settling=t-self.odom.servo_since)
+            obs = wall_observation if self.recovery else observe(image, self.servo, body_settling=t-self.odom.servo_since)
             counts = self.grid.insert(frame_id=frame_id, pose=pose, camera=obs['camera'],
                                       segments=obs['segments'], floor_xy=obs['floor_xy'])
             if prior_insertion:
@@ -294,6 +361,20 @@ class SelfMapIntegration:
             if counts['free_cells'] or counts['hit_cells']:
                 self.sectors.add(int((pose[2] % (2*math.pi))/(math.pi/4)))
             candidates = frontier_candidates(self.planning_grid(), pose, self.nav_options)
+        frontier_reason = None
+        if self.recovery:
+            # Diagnose actual geometry even when insertion is quarantined; do
+            # not misreport "not evaluated" as an exhausted frontier set.
+            from harness.own_map_navigation import Footprint, footprint_clearance, reachable
+            grid = self.planning_grid()
+            state, clear, _, lo = footprint_clearance(grid, Footprint(),
+                self.nav_options.pose_margin_m, yaw=pose[2])
+            start = np.asarray(grid.cell(pose[:2]))-lo
+            reach = reachable(clear, tuple(start))
+            geometric = candidates if not reasons else frontier_candidates(grid, pose, self.nav_options)
+            frontier_reason = ('pose_or_revision_quarantined' if reasons else
+                'start_footprint_blocked' if not clear[start[1], start[0]] else
+                'no_observed_frontier' if not geometric else 'reachable')
         nav = self.grid.navigation
         states = {c: nav.state(c) for c in nav.odds}
         self.stable = self.stable+1 if not reasons and states and states == self.last_states else 0
@@ -328,6 +409,15 @@ class SelfMapIntegration:
                           landmark_count=event['landmark_count'],
                           prior_landmarks_added=event['prior_landmarks_added'],
                           sigma_yaw_rad=sigma_yaw)
+        if self.recovery:
+            result.update(recovery_profile=self.options.recovery_profile,
+                plane_flow=flow_row, static_registration=self.registration.last,
+                rebuild_commits=sum(r['committed'] for r in self.rebuilds),
+                rebuild_budget_remaining=max(0, 2-len(self.rebuilds)),
+                frontier_reason=frontier_reason, geometric_candidate_count=len(geometric),
+                reachable_footprint_cells=int(reach.sum()),
+                recovery_candidate=dict(skill='relocalize',
+                    pans=self.registration.look_pans(pose)) if reasons or not candidates else None)
         return result
 
     def snapshot(self):
@@ -347,4 +437,8 @@ class SelfMapIntegration:
                 prior_cells=[[int(v) for v in c] for c in sorted(set(nav.floor_frames) | set(nav.wall_frames))
                     if (nav.floor_frames.get(c, set()) | nav.wall_frames.get(c, set())) & self.prior_frames],
                 uncertainty_note='command prior contributions; not independent visual confirmation')
+        if self.recovery:
+            result.update(recovery_profile=self.options.recovery_profile,
+                static_registration=self.registration.last,
+                map_from_own=None if self.registration.map_from_own is None else self.registration.map_from_own.tolist())
         return result

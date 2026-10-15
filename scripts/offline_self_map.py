@@ -42,7 +42,7 @@ def safe_rgb_path(root, relative, robot):
 
 
 def replay(raw, images, robot, output, motion_model, self_map_integration='off',
-           pose_rebuild='off', navigation_support='off', bootstrap='off'):
+           pose_rebuild='off', navigation_support='off', bootstrap='off', recovery_profile='off'):
     # No evaluation file is opened in this function or passed to the mapper.
     from harness.self_map_integration import Options, OPTION, make_mapper
     if self_map_integration == 'off':
@@ -56,10 +56,14 @@ def replay(raw, images, robot, output, motion_model, self_map_integration='off',
         raise ValueError('EMPTY_REPLAY_INPUT')
     output.mkdir(parents=True, exist_ok=False)
     start = min(float(frames[0]['sim_time']), float(commands[0]['t']))
+    static, static_sha = None, None
+    if recovery_profile != 'off':
+        from harness.selfmap4_geometry import static_input
+        static, static_sha = static_input()
     mapper = make_mapper(robot_id=robot, start_time=start,
                          options=Options(self_map_integration=OPTION, motion_model=motion_model,
                                          pose_rebuild=pose_rebuild, navigation_support=navigation_support,
-                                         bootstrap=bootstrap))
+                                         bootstrap=bootstrap, recovery_profile=recovery_profile), static_map=static)
     ci, missing, used, rejected = 0, [], [], []
     status = 'RECORDED'
     failure = None
@@ -119,6 +123,11 @@ def replay(raw, images, robot, output, motion_model, self_map_integration='off',
                    selected_time_range=None if not used else [used[0]['t'], used[-1]['t']],
                    scope='saved RGB subset; recorded behavior, proposals not executed',
                    artifacts={p.name: digest(p) for p in sorted(output.iterdir()) if p.is_file()})
+    if recovery_profile != 'off':
+        summary.update(recovery_profile=recovery_profile, authored_map_sha256=static_sha,
+                       static_registration=mapper.registration.last,
+                       rebuild_attempts=len(mapper.rebuilds),
+                       outside_cells_rejected=sum(e.get('outside_cells_rejected', 0) for e in mapper.events))
     dump(output/'summary.json', summary)
     return summary
 
@@ -224,6 +233,7 @@ def main():
     p.add_argument('--pose-rebuild', choices=['off', 'refit_history_v1'], default='off')
     p.add_argument('--navigation-support', choices=['off', 'current_footprint_v1'], default='off')
     p.add_argument('--bootstrap', choices=['off', 'command_prior_v1'], default='off')
+    p.add_argument('--recovery-profile', choices=['off', 'selfmap4_recovery_v1'], default='off')
     p = sub.add_parser('evaluate')
     p.add_argument('--replay-dir', type=Path, required=True)
     p.add_argument('--raw', type=Path, required=True)
