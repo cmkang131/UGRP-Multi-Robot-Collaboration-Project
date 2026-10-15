@@ -1,0 +1,47 @@
+{
+  "schema": "ugrp.search25.candidate_inventory.v1",
+  "status": "BLOCKED_PRIMARY_SHORT6_BELOW_4_OF_6",
+  "is_execution_queue": false,
+  "source_sha": "1effa9b266b44ac716b9808b95eb6aa938e42702",
+  "addendum_sha256": "a8686b1a28b9fd6c9a466fa32f4f4c959529975b0fb06e1d40931f44d3246e8b",
+  "addendum_text": "상수 감사(검색 경로, /Users/changmin/projects/ugrp/outputs/e2e18-admin/const-audit/search.json) 반영 — 모두 기본 off 토글, 같은 대기열의 후보로:\n- 집게 각도(jaw_geometry, 16.96–19.21°)와 IK 펄스 한계는 실측 하드웨어 한계다. 풀지 않는다.\n- 계획 예산: 벽시계 3초(grasp_act_teacher_v3.py:821) 대신 검사 횟수 98304를 결정적 한도로, 벽시계는 30초 안전 상한(cap_end 기록)으로만. 원본에서 98304는 한 번도 닿지 않고 항상 3초에서 끊겼다.\n- 기억 여유: K·σ(K=3.035) 대신 평평한 50 mm(평가 전용 N=5287 p90, 초과율 5.4%) 후보.\n- 시야: 18° 원뿔·5/15 프로브 대신 실제 카메라 프레임(가로 ±24°, 세로 ±18°; 640×480 반화각 27.2°/21.1°에서 3° 여유). 241건 중 229건이 4/5로 아슬아슬하게 실패. 렌더 확인 뒤에만.\n",
+  "profiles": {
+    "primary": {
+      "search25_inflation": "search25_soft_v1",
+      "search25_budget": "search25_checks_v1",
+      "search25_memory": "off",
+      "search25_view": "search25_frame_v1"
+    },
+    "budget_only": {
+      "search25_inflation": "off",
+      "search25_budget": "search25_checks_v1",
+      "search25_memory": "off",
+      "search25_view": "off"
+    },
+    "memory50": {
+      "search25_inflation": "off",
+      "search25_budget": "search25_checks_v1",
+      "search25_memory": "search25_memory50_v1",
+      "search25_view": "off"
+    },
+    "rectangular_view": {
+      "search25_inflation": "off",
+      "search25_budget": "search25_checks_v1",
+      "search25_memory": "off",
+      "search25_view": "search25_frame_v1"
+    }
+  },
+  "all_default_off": true,
+  "pooling_allowed": false,
+  "primary_physical_result": "R3 3/6; NOT_READY",
+  "independent_addendum_short6_measured": false,
+  "view_projection_N": 1813,
+  "view_projection_outside_frame_N": 0,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/e2e18-rootcause/experiments/2026-10-14-e2e18-grasp-rootcause/search25-r3-rejection-table.json",
+  "remaining": [
+    "primary >=4/6 not met; do not create/activate 32-run queue",
+    "no isolated memory50 or frame-only physical measurement",
+    "peer .17m planner circle unchanged; not the dominant raw blocker",
+    "no changes to jaw/IK hardware limits"
+  ]
+}

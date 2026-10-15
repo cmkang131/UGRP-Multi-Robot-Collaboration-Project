@@ -53,3 +53,10 @@ def segment_envelope(a,b,n):
 def in_frame(optical):
     return (optical[2]>0 and abs(optical[0])<=optical[2]*math.tan(math.radians(VIEW_HALF_X_DEG))
             and abs(optical[1])<=optical[2]*math.tan(math.radians(VIEW_HALF_Y_DEG)))
+
+
+def frame_clearance(optical):
+    """Signed rectangular optical-plane clearance, not an 18deg cone gap."""
+    return min(float(optical[2]),
+               optical[2]*math.tan(math.radians(VIEW_HALF_X_DEG))-abs(optical[0]),
+               optical[2]*math.tan(math.radians(VIEW_HALF_Y_DEG))-abs(optical[1]))

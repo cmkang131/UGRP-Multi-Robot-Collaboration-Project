@@ -65,8 +65,11 @@ def test_memory50_changes_only_remembered_envelope():
 
 
 def test_rectangular_fov_preserves_forward_and_vertical_limits():
+    from sim.grasp_act_search25 import frame_clearance
     assert in_frame(np.array([math.tan(math.radians(23)),0.,1.]))
+    assert frame_clearance(np.array([math.tan(math.radians(23)),0.,1.]))>0
     assert not in_frame(np.array([0.,math.tan(math.radians(19)),1.]))
+    assert frame_clearance(np.array([0.,math.tan(math.radians(19)),1.]))<0
     assert not in_frame(np.array([0.,0.,-1.]))
 
 
