@@ -1,6 +1,6 @@
 # 공동 작업 단계 동기화 계약 v1
 
-> 현행 규칙: top 카메라는 평가 전용(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366)). 이 문서는 기록 당시 설계다.
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 top 카메라는 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 문서의 기존 경로는 아직 `top_rgb`를 입력으로 사용한다(미이행).
 
 2026-09-16. [작업 목록 #39](https://github.com/kcm0127-dotcom/ugrp/issues/39)의
 T1과 T2 중 **팀원 연결용 입출력과 공통 단계 전환**을 구현한다.

@@ -46,7 +46,7 @@
 
 자기 RGB·공용 top RGB·자기 발행 명령을 사용하고 승인된 지도 경로에서는 정적 지도를 제공한다. 교사 정답은 학습용이며 실행 중 평가 좌표·접촉·관절 측정으로 행동을 보정하지 않는다. 카메라 배치/FOV와 weld OFF를 유지한다. 시뮬레이션 결과는 실물 MasterPi 검증과 구분한다.
 
-> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행·비교용)이다.
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다.
 
 이전 단독 운반·접근·동기화·지도 주행 결과는 [과거 검증 요약](docs/archive/validation_summary_20260917.md)에 보존했다.
 

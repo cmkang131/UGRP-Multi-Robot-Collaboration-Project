@@ -64,7 +64,7 @@
 
 - 받음: 자기 RGB, `TOP_WEST`·`TOP_EAST` RGB(`zone_wide`는 TOP 네 장), 목표·작성 지도, TOP RGB 색 검출로 만든 상자 이름(색별로 서→동, 같은 열은 남→북; `red-1` 등)과 현재 RGB 추정(적재 구역에 남은 상자, 구역별 색 개수), 팀 게시판(진행 중인 동료 작업, 실행기 영수증), 자기 작업 이력, 동료 메시지.
 
-  현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행·비교용)이다.
+  현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다.
 - 받지 않음: 시뮬레이터 위치, 심판 결과. 실행기 영수증은 "발행한 동작 순서를 끝냄/끝내지 못하고 멈춤"뿐이다(교사 내부의 정답 확인이 멈춤 여부에 쓰이므로 교사 조건 입력으로 기록한다).
 
   조정자 해석(사용자 미확인): 교사의 행동 결정도 보이는 것만 쓰는 원칙(AGENTS.md의 "근거리 실행" 항목)에 따라 top 카메라를 쓰지 않는다.
@@ -128,7 +128,7 @@
   --goal '{"A":{"long_beam":1},"B":{"heavy_crate":1,"red":1},"C":{"can":1,"green":1,"tile":1}}'
 ```
 
-> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행·비교용)이다. 아래 v2 로봇 입력 행은 TOP 원본·라벨·손잡이 위치가 아직 전달되는 구현 현황을 기록한다.
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행)이다. 아래 v2 로봇 입력 행은 TOP 원본·라벨·손잡이 위치가 아직 전달되는 구현 현황을 기록한다.
 
 | 항목 | v2 동작 |
 |---|---|
