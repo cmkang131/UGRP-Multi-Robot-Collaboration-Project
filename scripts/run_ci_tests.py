@@ -24,6 +24,7 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_beamact1.py",
     "tests/test_beampair1.py",
     "tests/test_beampair2.py",
     "tests/test_beampair4.py",

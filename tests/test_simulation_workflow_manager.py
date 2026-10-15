@@ -483,6 +483,11 @@ raise SystemExit(3 if a.fail else 0)
                                  '--dependency-root', str(model), '--mode', 'short']
         samples['beampair8-record'] = ['--plan', str(source), '--episode', '0',
                                         '--dependency-root', str(model)]
+        samples['beamact1-data'] = ['--archive', str(source), '--raw-root', str(model)]
+        samples['beamact1-train'] = ['--dataset', str(model), '--stage', 'smoke', '--steps', '300',
+            '--execution-host-profile', 'beamact1_gcp2',
+            '--history-causal-split-v1', 'wheel_pulse_train_mean']
+        samples['beamact1-offline'] = ['--dataset', str(model), '--stages', str(source)]
         # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
         # value for this boolean. Keep its original bytes and the rejection.
         samples['e2e-rpp-lookahead-v196'] = [*e2e_args, '--dev-light']

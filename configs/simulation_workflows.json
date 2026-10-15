@@ -666,7 +666,10 @@
       "description": "DRAFT memory_v3; coordinator registration required, no cohort launched",
       "runner": "scripts.run_m1_owncam_memory_v3",
       "adapter": "managed_legacy_cli",
-      "required_inputs": ["--prereg", "--condition"],
+      "required_inputs": [
+        "--prereg",
+        "--condition"
+      ],
       "output_kind": "directory"
     },
     {
@@ -768,6 +771,60 @@
         "--policy"
       ],
       "output_kind": "directory"
+    },
+    {
+      "id": "beamact1-data",
+      "purpose": "GCP2 빔 짝 ACT 데이터 분할·TRAIN 정규화; 물리/렌더 없음",
+      "entry": "scripts/prepare_beamact1.py",
+      "runner": "scripts.prepare_beamact1",
+      "required_inputs": [
+        "--archive",
+        "--raw-root"
+      ],
+      "side_effect": "local_diagnostic",
+      "version": "1.0.0",
+      "docs": "experiments/2026-10-16-beamact1/README.md",
+      "requires": "GCP2 only; CPU dataset/evaluation or explicit ugrp-act-l4-gcp2b training; no Mac compute; heldout20 excluded",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "beamact1-train",
+      "purpose": "beamact1 opt-in L4 ACT 학습; smoke readback 후 main",
+      "entry": "scripts/train_grasp_act.py",
+      "runner": "scripts.train_grasp_act",
+      "required_inputs": [
+        "--dataset",
+        "--stage",
+        "--steps",
+        "--execution-host-profile",
+        "--history-causal-split-v1"
+      ],
+      "side_effect": "training",
+      "version": "1.0.0",
+      "docs": "experiments/2026-10-16-beamact1/README.md",
+      "requires": "GCP2 only; CPU dataset/evaluation or explicit ugrp-act-l4-gcp2b training; no Mac compute; heldout20 excluded",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "adapter": "managed_legacy_cli"
+    },
+    {
+      "id": "beamact1-offline",
+      "purpose": "GCP2 validation 행동 MAE와 persistence 비교; 단계/재추론 분리",
+      "entry": "scripts/evaluate_beamact1.py",
+      "runner": "scripts.evaluate_beamact1",
+      "required_inputs": [
+        "--dataset",
+        "--stages"
+      ],
+      "side_effect": "local_diagnostic",
+      "version": "1.0.0",
+      "docs": "experiments/2026-10-16-beamact1/README.md",
+      "requires": "GCP2 only; CPU dataset/evaluation or explicit ugrp-act-l4-gcp2b training; no Mac compute; heldout20 excluded",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "adapter": "managed_legacy_cli"
     }
   ]
 }

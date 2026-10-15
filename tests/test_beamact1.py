@@ -70,3 +70,38 @@ def test_metrics_compare_same_rows_and_keep_empty_ACT_unmeasured():
     assert report['refresh_h0']['align']['persistence']['N'] == 1
     assert report['all_h0']['all']['persistence']['pulse_mae_ms'] == 150
     assert 'ACT' not in report['all_h0']['all']
+
+
+def test_masked_actor_serialization_optional(tmp_path):
+    """CPU library check only; never substitutes for L4 optimizer smoke."""
+    import os
+    import platform
+    if platform.system() != 'Linux' or os.environ.get('UGRP_BEAMACT_SERIALIZE_CHECK') != '1':
+        pytest.skip('explicit GCP2 CPU adapter check only')
+    from scripts.beamact1_runtime import require_gcp2
+    require_gcp2(training=False)
+    import io
+    import torch
+    from PIL import Image
+    from harness.beamact_input import BeamActor, save_actor
+    from harness.grasp_act_data import fit_stats
+    from harness.grasp_act_policy import make_policy, GraspActor
+    from harness.grasp_act_rollout import OwnHistory
+    torch.set_num_threads(2)
+    torch.manual_seed(20261015)
+    initial = dict(t=0., wheels=[0.]*4, duration_s=[0.]*4,
+                   pwm={str(s):2000 for s in c.SERVOS})
+    pixels = io.BytesIO();Image.new('RGB',(640,480),'gray').save(pixels,'JPEG')
+    observation,jpegs,_ = OwnHistory('r1','serialization',initial).observe(0.,pixels.getvalue(),
+        skill='grasp',object_kind='long_beam',role='teal')
+    stats = fit_stats([c.context(observation)],[c.encode_action(initial)],[1])
+    policy = make_policy(device='cpu')
+    path = tmp_path/'actor'
+    save_actor(policy,path,stats,{'scope':'random initialization serialization only'},
+               mode='wheel_pulse_train_mean')
+    original = BeamActor(GraspActor(policy,stats,device='cpu',done_mode='balanced_bce_v1'),
+                         'wheel_pulse_train_mean')
+    restored = BeamActor.load(path,device='cpu')
+    assert np.array_equal(original.predict(observation,jpegs),restored.predict(observation,jpegs))
+    with pytest.raises(ValueError):
+        GraspActor.load(path,device='cpu')  # stock loader cannot forget masking
