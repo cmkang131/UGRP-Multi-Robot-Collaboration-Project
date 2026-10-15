@@ -107,6 +107,8 @@ class BodyNavigation(Previous):
             *[{'id':self._wall_name(r,i),'fresh':self.world_observations.get(self._wall_name(r,i),{}).get('seen_t',-math.inf)>=world['t']-1e-8,
                 'margin_m':m} for i,(r,m) in enumerate(zip(self.rects,self.rect_margins))],
             {'id':'bounds','fresh':True,'margin_m':FRESH_MARGIN_M}]
+        from sim.grasp_act_search25 import configure
+        configure(self)
 
     def _wall_name(self,r,i):
         return next((k for k,m in self.world_observations.items() if m['kind']=='wall'
@@ -132,7 +134,9 @@ class BodyNavigation(Previous):
         gaps.append(np.minimum.reduce((xy[:,0]-ex-x0,x1-xy[:,0]-ex,
                                        xy[:,1]-ey-y0,y1-xy[:,1]-ey)))
         gaps=np.stack(gaps,axis=1)
-        margins=np.array([d['margin_m'] for d in self.audit_details])
+        from sim.grasp_act_search25 import hard_margins
+        margins=np.array(hard_margins(self))
+        self.last_inflation_slack=gaps-np.array([d['margin_m'] for d in self.audit_details])
         slack=gaps-margins
         self.last_blockers=[]
         for j in np.flatnonzero((slack<0).any(axis=0)):
@@ -163,6 +167,16 @@ class BodyNavigation(Previous):
         xy=np.asarray(a[:2])+u[:,None]*(np.asarray(b[:2])-a[:2])
         _,slack=self.measure(xy,a[2]+u*da)
         self.last_segment_gap=float((slack+np.array([d['margin_m'] for d in self.audit_details])).min())
+        if self.inflation_soft:
+            from sim.grasp_act_search25 import segment_envelope
+            self.last_segment_gap=float(slack.min())
+            envelope=segment_envelope(a,b,n)
+            if (slack<=envelope).any() and not self.last_blockers:
+                i,j=np.unravel_index(np.argmin(slack),slack.shape)
+                self.last_blockers=[{**self.audit_details[j],'gap_m':float(slack[i,j]),
+                    'margin_m':envelope,'category':'interpolation_envelope',
+                    'gap_scope':'body gap versus nearest-sample displacement bound'}]
+            return bool(self.fresh_target and (slack>envelope).all())
         return bool(self.fresh_target and (slack>=0).all())
 
     def connector_sample(self,prior,before,xy,yaw):
@@ -278,8 +292,11 @@ class BodyNavigation(Previous):
             missing=[k for k in keys if k not in self.nodes and inside(k)]
             if missing:
                 _,slack=self.measure([point(k) for k in missing])
-                for k,s in zip(missing,slack):
-                    self.nodes[k]=(bool((s>=0).all()),1.+COST_MULTIPLIER*math.exp(-10.*max(0.,float(s.min()))))
+                for k,s,soft in zip(missing,slack,self.last_inflation_slack):
+                    cost_slack=soft if self.inflation_soft else s
+                    # Nav2 documented cost_scaling_factor=10.0; existing
+                    # search23 COST_MULTIPLIER=1.0 is unchanged.
+                    self.nodes[k]=(bool((s>=0).all()),1.+COST_MULTIPLIER*math.exp(-10.*max(0.,float(cost_slack.min()))))
                     # Exact point audits are evaluated only for rejected nodes.
                     self.node_blockers[k]=[d for d in self.last_blockers
                         if d['sample_pose'][:2]==list(point(k))]

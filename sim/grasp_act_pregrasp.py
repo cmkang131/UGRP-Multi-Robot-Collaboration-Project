@@ -169,7 +169,10 @@ def band_view(world, rid, end, base, previous, *, navigation=None):
                  point[1]+along*math.sin(a)+across*math.cos(a), point[2]+.0092)
             x, y = local(base, q)
             optical = np.array(axes)@(np.array([x, y, q[2]])-origin)
-            if optical[2] <= 0 or np.linalg.norm(optical[:2])/optical[2] > math.tan(math.radians(18)):
+            from sim.grasp_act_search25 import enabled as search25, in_frame
+            rectangular=(hasattr(navigation,'teacher') and search25(navigation.teacher,'search25_view'))
+            accepted=in_frame(optical) if rectangular else (optical[2]>0 and np.linalg.norm(optical[:2])/optical[2]<=math.tan(math.radians(18)))
+            if not accepted:
                 if audit is not None:audit.append({'id':'camera_view_cone','gap_m':float(optical[2]*math.tan(math.radians(18))-np.linalg.norm(optical[:2])),
                     'category':'visibility','gap_scope':'signed optical cone clearance; not body gap'})
                 continue

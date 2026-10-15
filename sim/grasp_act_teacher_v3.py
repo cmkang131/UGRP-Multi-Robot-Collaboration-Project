@@ -820,7 +820,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         from sim.grasp_act_search21 import enabled as search21
         from sim.grasp_act_search24 import compute_budget
         deterministic=compute_budget(self)
-        self.search20_budget=(PlanningBudget(max_checks=98304,max_s=None) if deterministic else
+        from sim.grasp_act_search25 import enabled as search25
+        # Audit comparison: unchanged 98304 logical checks; user-requested
+        # 30s is solely a host cap_end, never an alternative candidate result.
+        self.search20_budget=(PlanningBudget(max_checks=98304,max_s=None,
+            safety_s=30. if search25(self,'search25_budget') else None) if deterministic else
             PlanningBudget(max_checks=98304,max_s=3.) if search21(self) else PlanningBudget())
         try:
             return self._search20_step(truth,now,permit_pick=permit_pick)
@@ -841,7 +845,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'body_planning_s':b.elapsed(),'checks':b.checks,'cache_hits':b.hits,'cache_size':len(self.search20_cache),
                 'budget_exhausted':b.exhausted}
             self.search20_compute.update(budget_kind='checks' if deterministic else 'checks_and_wall',
-                max_checks=b.max_checks,max_wall_s=b.max_s)
+                max_checks=b.max_checks,max_wall_s=b.max_s,max_wall_safety_s=b.safety_s)
             self.search20_budget=None
 
     def _search20_step(self,truth,now,*,permit_pick=False):

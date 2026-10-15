@@ -22,13 +22,18 @@ class PlanningBudgetExceeded(RuntimeError):
     pass
 
 
+class PlanningSafetyCap(RuntimeError):
+    """Host safety termination; never a planning-budget retry/selection."""
+
+
 def enabled(teacher):
     return teacher.search15_modes.get('search20', 'off') != 'off'
 
 
 class PlanningBudget:
-    def __init__(self, *, max_checks=MAX_CHECKS, max_s=MAX_PLANNING_S):
+    def __init__(self, *, max_checks=MAX_CHECKS, max_s=MAX_PLANNING_S, safety_s=None):
         self.max_checks=max_checks;self.max_s=max_s
+        self.safety_s=safety_s
         self.started = None
         self.checks = self.hits = 0
         self.exhausted = False
@@ -38,6 +43,8 @@ class PlanningBudget:
 
     def check(self):
         if self.started is None:self.started=time.perf_counter()
+        if self.safety_s is not None and self.elapsed()>=self.safety_s:
+            raise PlanningSafetyCap('planning host safety cap; 30 wall seconds per tick')
         if self.checks >= self.max_checks or (self.max_s is not None and self.elapsed() >= self.max_s):
             self.exhausted = True
             raise PlanningBudgetExceeded('search20 planning budget')
