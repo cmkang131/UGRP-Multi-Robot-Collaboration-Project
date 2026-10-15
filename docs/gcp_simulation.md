@@ -5,7 +5,7 @@
 ## 호스트와 안전장치
 
 - `gcp1` = 인스턴스 `ugrp-sim-gcp1`, 서울 `asia-northeast3-a`, **n4-highcpu-64**(Intel Xeon 8581C Emerald Rapids, 64 vCPU, 128 GiB), 150 GB hyperdisk-balanced. 이미지 `ugrp-sim-bench-c1f02ac0`(Ubuntu 24.04, `.venv-sim`, 소스 c1f02ac0 포함)에서 만들었다.
-- 생성은 `scripts/gcpctl.py create`가 고정한다: `--max-run-duration=8h --instance-termination-action=STOP --no-service-account --no-scopes`. VM에는 gcloud·모델·Kaggle 키가 없다(SSH 개인키는 Mac의 `~/.ssh/ugrp_gcp1`뿐).
+- 생성은 `scripts/gcpctl.py create`가 고정한다: `--max-run-duration=8h --instance-termination-action=STOP --no-service-account --no-scopes`. VM에는 gcloud·모델·Kaggle 키가 없다(SSH 개인키는 Mac의 `~/.ssh/ugrp_gcp1`뿐). 단, gcp1은 2026-10-15 사용자 결정으로 `gcloud compute instances set-scheduling ugrp-sim-gcp1 --zone asia-northeast3-a --project ugrp-act-train-1014 --max-run-duration=24h --instance-termination-action=STOP`을 적용했다(정지 상태에서만 바꿀 수 있다).
 - `scripts/gcp_idle_guard_startup.sh`(시작 스크립트): 시뮬레이션·pip·apt·rsync 프로세스가 20분 없으면 `shutdown -h now`.
 - 비용 상한은 기존 예산(순비용 1,000 KRW) → Pub/Sub `budget-stop` → Cloud Function이 프로젝트의 모든 VM을 정지하는 장치다. 이 코드는 건드리지 않는다.
 - Mac `~/.ssh/config`에 `Host gcp1` 블록이 필요하다(`python3 scripts/gcpctl.py ssh-config gcp1`이 출력). 외부 IP가 시작마다 바뀌어 `ProxyCommand`가 현재 IP를 gcloud로 찾는다. 스크립트 경로는 기본 체크아웃 기준으로 맞춘다.
