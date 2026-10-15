@@ -1,0 +1,46 @@
+{
+  "schema": "ugrp.rl1b.zero-residual-audit.v1",
+  "status": "complete",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": "46a5012d78800f6b2c2a48e0602975b55506ad09",
+  "actor_source_sha": "b4db8ba2fb155ad53b210b48f645fcc759157e7b",
+  "checkpoint_sha256": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1",
+  "passes": [
+    {
+      "repeat": 0,
+      "requests": 240,
+      "command_sha256": "8816ca2a5fdcbc4c86d759a8552550b952f55f9008714f6a38a2306200c46245",
+      "features_sha256": "319f11f8845b09b0c238c6609390aef4ba7d535c53423dc16243d7926ddc0b73",
+      "matches_saved": 240,
+      "canonical_byte_matches": 240,
+      "expected_command_sha256": "8816ca2a5fdcbc4c86d759a8552550b952f55f9008714f6a38a2306200c46245",
+      "first_mismatches": []
+    },
+    {
+      "repeat": 1,
+      "requests": 240,
+      "command_sha256": "8816ca2a5fdcbc4c86d759a8552550b952f55f9008714f6a38a2306200c46245",
+      "features_sha256": "319f11f8845b09b0c238c6609390aef4ba7d535c53423dc16243d7926ddc0b73",
+      "matches_saved": 240,
+      "canonical_byte_matches": 240,
+      "expected_command_sha256": "8816ca2a5fdcbc4c86d759a8552550b952f55f9008714f6a38a2306200c46245",
+      "first_mismatches": []
+    }
+  ],
+  "canary_mutation_command_invariance": true,
+  "canary_mutation_feature_invariance": true,
+  "forbidden_loaded_modules": [],
+  "sources": {
+    "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91439-b4db8ba2/raw/student-inputs.jsonl": "494e88ea31562b29b1ee57303866ac86e08c7f330c7d48dccfe3f1fb2fefaeec",
+    "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91439-b4db8ba2/raw/commands.jsonl": "a3c354ee0a8dc3805611b645e6fb8c89e1b15cbd587e9c6251e53daf0b1ff1b6"
+  },
+  "scope": "CPU saved own-input inference; private canary never supplied; actual Warp/GPU audit pending",
+  "physics_runs": 0,
+  "training_runs": 0,
+  "gpu_seconds": 0
+}

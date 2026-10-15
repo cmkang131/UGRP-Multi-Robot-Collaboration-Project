@@ -1,0 +1,88 @@
+{
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "worlds": [
+    {
+      "world": 0,
+      "sim_range": [
+        0.0,
+        0.7
+      ],
+      "available_frames": 8,
+      "whole_2hz_indices": [
+        0,
+        5,
+        7
+      ],
+      "ten_hz_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "video": {
+        "programs": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 960,
+            "height": 240
+          }
+        ],
+        "format": {
+          "duration": "0.400000",
+          "size": "9343"
+        }
+      }
+    },
+    {
+      "world": 1,
+      "sim_range": [
+        0.0,
+        0.7
+      ],
+      "available_frames": 8,
+      "whole_2hz_indices": [
+        0,
+        5,
+        7
+      ],
+      "ten_hz_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "video": {
+        "programs": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 960,
+            "height": 240
+          }
+        ],
+        "format": {
+          "duration": "0.400000",
+          "size": "9419"
+        }
+      }
+    }
+  ],
+  "data_gap": "probe-r3 finalization TypeError lost0.8s last frame, qpos NPZ and circular ring; overview/r2 unavailable",
+  "completed_successes_available": 0,
+  "completed_evaluation_failures_available": 0,
+  "cause_claim": "no policy failure cause claimed; backend timing and initialization only"
+}

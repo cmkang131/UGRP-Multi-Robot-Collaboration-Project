@@ -1,0 +1,84 @@
+{
+  "scope": "rl1b current-turn partial visual cross-check of existing GCP2 playback; not a new full replay audit",
+  "reviewed_utc": "2026-10-15T18:22:21.139800+00:00",
+  "rows": [
+    {
+      "run": "act16a-fail-91427",
+      "frame_strip": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16a-fail-91427/whole-2hz-00.jpg",
+      "sha256": "4a7f14d8cded04d2051170a9dff17f6828daaffbf0cbfff9af1cb7c7a10d7c80",
+      "viewed_scope": "SIM1.3-10.8 at2Hz",
+      "observation": "Yellow target exits right between2.3 and2.8; no return within this viewed page.",
+      "video": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16a-fail-91427/review-3x.mp4",
+      "video_sha256": "802229b2fc74292b35cad09da718755b4f7ec473c9e267ff6c257f9775c3275f",
+      "video_bytes": 113781,
+      "ffprobe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 960,
+            "height": 240,
+            "r_frame_rate": "30/1"
+          }
+        ],
+        "format": {
+          "duration": "18.300000"
+        }
+      }
+    },
+    {
+      "run": "act16a-fail-91439",
+      "frame_strip": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16a-fail-91439/pre-event-10hz-03.jpg",
+      "sha256": "ae6be27930f528ce4000b50254ca12de213e52beeda16dff94ecc9109d8fbf34",
+      "viewed_scope": "SIM18.1-20.0 at10Hz",
+      "observation": "Mostly floor, yellow target clearly visible again at19.8; no grasp visible on this page.",
+      "video": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16a-fail-91439/review-3x.mp4",
+      "video_sha256": "aa54a01040824c6f92222534505fd606a050182b223344b21cbdd2d5afe1b9b8",
+      "video_bytes": 57372,
+      "ffprobe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 960,
+            "height": 240,
+            "r_frame_rate": "30/1"
+          }
+        ],
+        "format": {
+          "duration": "8.000000"
+        }
+      }
+    },
+    {
+      "run": "act16a-teacher-91434",
+      "frame_strip": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16a-teacher-91434/whole-2hz-01.jpg",
+      "sha256": "cc99bb7ec086c5c9f7d5b80a48bf464b5887dcc87bb715d348ee9485702d1f05",
+      "viewed_scope": "SIM11.3-20.8 at2Hz",
+      "observation": "Green target moves below lower edge; only thin edge pixels remain later. This includes the evaluation lift interval.",
+      "video": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/act16a-teacher-91434/review-3x.mp4",
+      "video_sha256": "484577e77e8e80ffc8e34cfc178a0dea42d8dfc0aa4137798a8654c3dc154f2f",
+      "video_bytes": 90100,
+      "ffprobe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 960,
+            "height": 240,
+            "r_frame_rate": "30/1"
+          }
+        ],
+        "format": {
+          "duration": "14.300000"
+        }
+      }
+    }
+  ],
+  "previous_full_review": "/Users/changmin/projects/ugrp-wt/act16-analysis/experiments/2026-10-16-act16a/playback-review.json",
+  "new_causal_claim": false,
+  "GUI_opened": false
+}

@@ -1,0 +1,128 @@
+{
+  "schema": "ugrp.rl1b.saved-reward-audit.v1",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "source_sha": "18c369ffe30f6b24651a4e463147a9e3d4f7043e",
+  "failures": [
+    {
+      "seed": 91427,
+      "backend": "c_mujoco",
+      "saved_only": true,
+      "new_rl_rollouts": 0,
+      "steps": 550,
+      "stable_lift": false,
+      "h1_actual": "unmeasured: no instance masks",
+      "h1_undiscounted_bounds": [
+        -0.6111111111111112,
+        0.6111111111111112
+      ],
+      "h2_first_done_events": [
+        53.20000000016301
+      ],
+      "h2_sum": -10.0,
+      "h3_sum": 0.6675275652138118,
+      "h3_discounted_sum": 0.009198195875056226,
+      "success_bonus": 0.0,
+      "distance_scale_basis": "saved audit initial distance, not pilot normalization",
+      "artifact": {
+        "path": "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-18c369ff/failure-91427.jsonl.zst",
+        "bytes": 23268,
+        "sha256": "992590fef29601dff703150cbe08a8977a887fae8edc3536b677c75182fde575",
+        "decoded_sha256": "5a546667843862407c58d89e96210ac7f9b67048059f9982e31dee618edbe760"
+      }
+    },
+    {
+      "seed": 91439,
+      "backend": "c_mujoco",
+      "saved_only": true,
+      "new_rl_rollouts": 0,
+      "steps": 239,
+      "stable_lift": false,
+      "h1_actual": "unmeasured: no instance masks",
+      "h1_undiscounted_bounds": [
+        -0.26555555555555554,
+        0.26555555555555554
+      ],
+      "h2_first_done_events": [
+        22.10000000001451
+      ],
+      "h2_sum": -10.0,
+      "h3_sum": 0.45932096483500184,
+      "h3_discounted_sum": 0.3774398160499676,
+      "success_bonus": 0.0,
+      "distance_scale_basis": "saved audit initial distance, not pilot normalization",
+      "artifact": {
+        "path": "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-18c369ff/failure-91439.jsonl.zst",
+        "bytes": 10474,
+        "sha256": "5a659a7d959bbd44f3f3e50ade444c80c625b97b34c2ba2145223d4a431da5ba",
+        "decoded_sha256": "a0ce309a2ef42b5c25ebaba1dea910e2ab5d35855f2484718c14a74074b1381a"
+      }
+    }
+  ],
+  "teacher_success": {
+    "seed": 91434,
+    "role": "teacher",
+    "backend": "c_mujoco",
+    "saved_only": true,
+    "includes_release": true,
+    "stable_lift": true,
+    "first_success_t": 18.699999999998276,
+    "success_bonus": 10.0,
+    "max_stable_s": 15.700000000072832,
+    "skipped_lookaround_annotations": 6,
+    "h1_actual": "unmeasured: no target-instance masks",
+    "h1_undiscounted_bounds": [
+      -0.47888888888888886,
+      0.47888888888888886
+    ],
+    "h2": "not applicable: teacher has no student done token",
+    "h3": "unmeasured: exact station/yaw trace unavailable in this ledger",
+    "total_return_comparison": "not computable without missing annotations; no imputation"
+  },
+  "sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91427-b4db8ba2/raw/eval-only.jsonl",
+      "bytes": 191459,
+      "sha256": "0720713ba5bd5aee0cfd893eae7371f3ced94ef897fc571577c92cd9822f07fa",
+      "decoded_sha256": "0720713ba5bd5aee0cfd893eae7371f3ced94ef897fc571577c92cd9822f07fa"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91427-b4db8ba2/raw/commands.jsonl",
+      "bytes": 151627,
+      "sha256": "338813a677c62a85b6885b2c3ad4524bf24d1dc111d931c18951a20519228702",
+      "decoded_sha256": "338813a677c62a85b6885b2c3ad4524bf24d1dc111d931c18951a20519228702"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91439-b4db8ba2/raw/eval-only.jsonl",
+      "bytes": 86547,
+      "sha256": "563f25d7e568b18abb5694aaa26b75d345acc3c1d9c58fb6e6bbf3d5b716ffb0",
+      "decoded_sha256": "563f25d7e568b18abb5694aaa26b75d345acc3c1d9c58fb6e6bbf3d5b716ffb0"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-91439-b4db8ba2/raw/commands.jsonl",
+      "bytes": 61779,
+      "sha256": "a3c354ee0a8dc3805611b645e6fb8c89e1b15cbd587e9c6251e53daf0b1ff1b6",
+      "decoded_sha256": "a3c354ee0a8dc3805611b645e6fb8c89e1b15cbd587e9c6251e53daf0b1ff1b6"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/act16a-teacher-91434-b4db8ba2/raw/eval-only.jsonl.zst",
+      "bytes": 38976,
+      "sha256": "df1d0ecc2134092b4616a6e66f01362a06f5e4817a5358c42f9a0ecd3faafb12",
+      "decoded_sha256": "80a912b8eeaa0bd8be0c7641b2a7c7c5d2f48e098c2d64ca70692406f4b1cbb6"
+    }
+  ],
+  "physics_runs": 0,
+  "training_runs": 0,
+  "gpu_seconds": 0,
+  "interpretation": "reward plumbing audit only; no new-start or policy improvement evidence",
+  "missing": [
+    "h1 target-instance masks",
+    "teacher exact alignment trace",
+    "teacher ACT done label",
+    "independent heuristic policy ablations"
+  ]
+}

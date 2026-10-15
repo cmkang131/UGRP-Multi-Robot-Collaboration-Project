@@ -1,0 +1,48 @@
+{
+  "schema": "ugrp.rl1b.queue.v1",
+  "status": "BLOCKED",
+  "user_authorized": true,
+  "enabled": false,
+  "ready": false,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/rl-act/experiments/2026-10-16-rl1/runtime-funnel.json",
+  "limits": {
+    "total_gpu_seconds": 3600,
+    "new_transitions": 25000,
+    "wait_seconds": 28800,
+    "poll_seconds": 300,
+    "episode_sim_seconds": 90
+  },
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "baseline_model": "grasp-act15-dagger1-step10000-1535c8a3",
+  "heuristics": {
+    "h1_center_v1": true,
+    "h2_false_done_v1": true,
+    "h3_alignment_v1": true,
+    "h4_curriculum_v1": true,
+    "h5_dagger": false
+  },
+  "evaluation_seeds": [
+    918000,
+    918001,
+    918002,
+    918003,
+    918004,
+    918005,
+    918006,
+    918007
+  ],
+  "prior_rejection_table_scope": "ACT16a GCP2 C-only; never pooled with MJWarp",
+  "disk_budget_gib": {
+    "raw": 2,
+    "replay": 2,
+    "checkpoints": 2,
+    "playback": 1,
+    "host_min_free": 8
+  },
+  "runtime_admitted": false,
+  "shared_scene_seed_v1": 919015,
+  "setup_rejection_table": "/Users/changmin/projects/ugrp-wt/rl-act/experiments/2026-10-16-rl1/setup-funnel-shared.json",
+  "block_reason": "shared-L4 8tick wall/SIM median233.565; no learning/paired evaluation",
+  "queue_closed": true
+}
