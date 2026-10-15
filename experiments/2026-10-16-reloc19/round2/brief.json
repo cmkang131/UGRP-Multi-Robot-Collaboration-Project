@@ -1,0 +1,358 @@
+{
+  "round": 2,
+  "status": "NOT_READY",
+  "source_sha": "595b3eec3fa27b1dde2369a1e6aa7f73b977c434",
+  "place": {
+    "A": "0/2",
+    "AB": "0/2"
+  },
+  "acquisition": "0/4",
+  "runs": [
+    {
+      "name": "reloc19-r2-carry-A-93266-595b3eec",
+      "condition": "A",
+      "seed": 93266,
+      "status": "complete",
+      "termination": "cap_end",
+      "sim_s": 299.9999999946032,
+      "errors": {
+        "xy": {
+          "N": 3000,
+          "p50": 1.7834361742171696,
+          "p95": 2.8814946624057565,
+          "end": 2.7248598993886746
+        },
+        "yaw": {
+          "N": 3000,
+          "p50": 27.63302774487424,
+          "p95": 175.57946935602223,
+          "end": 38.58047982985352
+        },
+        "command_xy": {
+          "N": 3000,
+          "p50": 1.5274591346411215,
+          "p95": 1.9021999091262003,
+          "end": 1.4943061625606842
+        },
+        "command_yaw": {
+          "N": 3000,
+          "p50": 28.866159197709102,
+          "p95": 157.79118822329556,
+          "end": 158.6154533497848
+        }
+      },
+      "tracker": {
+        "candidates": 14,
+        "accepted": 14,
+        "accepted_raw_yaw_over5": 8,
+        "accepted_applied_yaw_over5": 8,
+        "reasons": {
+          "within_chi2_gate": 14
+        }
+      },
+      "heading": {
+        "accepted": 261,
+        "accepted_yaw_over5": 147,
+        "unscorable": 0
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 84,
+        "blocked_held": 2622,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 270,
+          "align": 19,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-carry-A-93266-595b3eec/raw",
+      "acquisition_frame_funnel": {
+        "recorded_acquisition_frames": 1591,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "acquisition_frame_rejections": {
+        "destination_colour_absent": 1557,
+        "destination_motion_blocked": 34
+      }
+    },
+    {
+      "name": "reloc19-r2-carry-AB-93266-595b3eec",
+      "condition": "AB",
+      "seed": 93266,
+      "status": "complete",
+      "termination": "carry_recovery_setdown_envelope_blocked",
+      "sim_s": 273.0999999952393,
+      "errors": {
+        "xy": {
+          "N": 2732,
+          "p50": 0.23387247260700067,
+          "p95": 0.4976362188989106,
+          "end": 0.4397447124864366
+        },
+        "yaw": {
+          "N": 2732,
+          "p50": 4.484416339108559,
+          "p95": 15.352724231775483,
+          "end": 0.3289623065879944
+        },
+        "command_xy": {
+          "N": 2732,
+          "p50": 0.7456908130292186,
+          "p95": 0.7936745269278491,
+          "end": 0.32657200930173724
+        },
+        "command_yaw": {
+          "N": 2732,
+          "p50": 17.16907411062625,
+          "p95": 26.526734267286674,
+          "end": 42.449783127380215
+        }
+      },
+      "tracker": {
+        "candidates": 54,
+        "accepted": 54,
+        "accepted_raw_yaw_over5": 14,
+        "accepted_applied_yaw_over5": 19,
+        "reasons": {
+          "within_chi2_gate": 54
+        }
+      },
+      "heading": {
+        "accepted": 38,
+        "accepted_yaw_over5": 0,
+        "unscorable": 0
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 1061,
+        "blocked_held": 1265,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 298,
+          "align": 89,
+          "hover": 15,
+          "carry_reacquire": 3
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-carry-AB-93266-595b3eec/raw",
+      "acquisition_frame_funnel": {
+        "recorded_acquisition_frames": 0,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "acquisition_frame_rejections": {}
+    },
+    {
+      "name": "reloc19-r2-carry-A-93315-595b3eec",
+      "condition": "A",
+      "seed": 93315,
+      "status": "complete",
+      "termination": "phase_timeout",
+      "sim_s": 255.39999999565782,
+      "errors": {
+        "xy": {
+          "N": 2555,
+          "p50": 1.2653636010031497,
+          "p95": 1.8047375707575686,
+          "end": 1.8047300900334498
+        },
+        "yaw": {
+          "N": 2555,
+          "p50": 80.05514210498768,
+          "p95": 140.81966775347777,
+          "end": 80.0896574772582
+        },
+        "command_xy": {
+          "N": 2555,
+          "p50": 1.2908014864818473,
+          "p95": 1.8074518911872834,
+          "end": 1.8074433673065677
+        },
+        "command_yaw": {
+          "N": 2555,
+          "p50": 80.38733665384846,
+          "p95": 140.82326725964592,
+          "end": 80.42191701274486
+        }
+      },
+      "tracker": {
+        "candidates": 3,
+        "accepted": 3,
+        "accepted_raw_yaw_over5": 0,
+        "accepted_applied_yaw_over5": 0,
+        "reasons": {
+          "within_chi2_gate": 3
+        }
+      },
+      "heading": {
+        "accepted": 0,
+        "accepted_yaw_over5": 0,
+        "unscorable": 0
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 22,
+        "blocked_held": 2445,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 60,
+          "align": 16,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-carry-A-93315-595b3eec/raw",
+      "acquisition_frame_funnel": {
+        "recorded_acquisition_frames": 1800,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "acquisition_frame_rejections": {
+        "destination_colour_absent": 1568,
+        "destination_component_small": 56,
+        "destination_motion_blocked": 176
+      }
+    },
+    {
+      "name": "reloc19-r2-carry-AB-93315-595b3eec",
+      "condition": "AB",
+      "seed": 93315,
+      "status": "complete",
+      "termination": "cap_end",
+      "sim_s": 299.9999999946032,
+      "errors": {
+        "xy": {
+          "N": 3000,
+          "p50": 0.09898935497363034,
+          "p95": 0.1807490749964057,
+          "end": 0.11852562269994078
+        },
+        "yaw": {
+          "N": 3000,
+          "p50": 3.4520294731466517,
+          "p95": 23.245140962984475,
+          "end": 9.827162700576936
+        },
+        "command_xy": {
+          "N": 3000,
+          "p50": 0.36456951718839825,
+          "p95": 0.4109455470154155,
+          "end": 0.38988676385985427
+        },
+        "command_yaw": {
+          "N": 3000,
+          "p50": 12.942239452927911,
+          "p95": 48.34422824439673,
+          "end": 44.66886556059954
+        }
+      },
+      "tracker": {
+        "candidates": 67,
+        "accepted": 67,
+        "accepted_raw_yaw_over5": 14,
+        "accepted_applied_yaw_over5": 24,
+        "reasons": {
+          "within_chi2_gate": 67
+        }
+      },
+      "heading": {
+        "accepted": 9,
+        "accepted_yaw_over5": 0,
+        "unscorable": 0
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 1639,
+        "blocked_held": 1106,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 96,
+          "align": 115,
+          "hover": 18,
+          "carry_reacquire": 4,
+          "carry_recover_restore": 14
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-carry-AB-93315-595b3eec/raw",
+      "acquisition_frame_funnel": {
+        "recorded_acquisition_frames": 0,
+        "colour_component_or_footprint": 0,
+        "nominal_ground_or_footprint": 0,
+        "full_footprint_rgb_gate": 0
+      },
+      "acquisition_frame_rejections": {}
+    },
+    {
+      "name": "reloc19-r2-selfmap-short_regression-93584-595b3eec",
+      "condition": "short_regression",
+      "seed": 93584,
+      "status": "HOST_ERROR",
+      "termination": "selfmap4_relocalization_exhausted",
+      "sim_s": null,
+      "errors": null,
+      "tracker": null,
+      "heading": null,
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 578,
+        "issued_command_records": 584,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-selfmap-short_regression-93584-595b3eec/raw",
+      "acquisition_frame_funnel": null,
+      "acquisition_frame_rejections": null
+    },
+    {
+      "name": "reloc19-r2-selfmap-short_regression-93583-595b3eec",
+      "condition": "short_regression",
+      "seed": 93583,
+      "status": "HOST_ERROR",
+      "termination": "selfmap4_relocalization_exhausted",
+      "sim_s": null,
+      "errors": null,
+      "tracker": null,
+      "heading": null,
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 518,
+        "issued_command_records": 524,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc19-r2-selfmap-short_regression-93583-595b3eec/raw",
+      "acquisition_frame_funnel": null,
+      "acquisition_frame_rejections": null
+    }
+  ]
+}

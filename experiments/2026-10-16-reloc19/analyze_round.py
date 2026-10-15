@@ -21,7 +21,7 @@ def main(n,media=False):
     dest=out/f'failure-{i:02d}.jpg';shutil.copyfile(p,dest);six.append(dict(t=f['t'],raw=str(p),path=str(dest),sha256=h))
    subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y','-threads','1','-framerate','1','-i',str(out/'failure-%02d.jpg'),'-vf','scale=320:240,tile=3x2:nb_frames=6','-frames:v','1',str(out/'failure-six.jpg')],check=True)
    r['failure_six']=six
-   if media and (raw/'playback/manifest.json').exists() and not (out/'playback').exists():review.make(raw.parent,out/'playback')
+   if media and ((raw/'playback/manifest.json').exists() or (raw/'playback/manifest.json.zst').exists()) and not (out/'playback').exists():review.make(raw.parent,out/'playback')
   records.append(r)
  (b/'integrity.json').write_text(json.dumps(dict(runs=records,verified=all(x['integrity']['verified'] for x in records)),indent=2)+'\n')
  manifest={str(p.relative_to(b)):dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in b.rglob('*') if p.is_file()}
