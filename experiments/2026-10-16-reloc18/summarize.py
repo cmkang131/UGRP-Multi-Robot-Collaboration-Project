@@ -47,6 +47,7 @@ def main(n):
                     headings[key]=dict(t=key,status=h.get('status'),decision=h.get('reloc18_innovation'),error_yaw_deg=he)
             phases=collections.Counter(x['phase'] for x in c);teacher=d.get('teacher',{});carry=teacher.get('carry',{})
             reasons=collections.Counter(e.get('reason',e.get('event','missing_original_reason')) for e in carry.get('recovery_events',[]))
+            terminal_rejections=[e for e in teacher.get('events',[]) if e.get('event')=='rejection']
             final=next((e for e in reversed(ev) if 'footprint_xy' in e),{})
             region=obj(raw/'carry-static-map.json')['regions']['zone_'+d.get('destination_zone',obj(raw/'plan.json')['destination_zone'])]
             cx,cy=region['center_m'];hx,hy=region['half_extents_m']
@@ -69,11 +70,11 @@ def main(n):
                     footprint_inside=d.get('final_footprint_inside_zone'),release_success=d.get('release_success'),
                     scope='evaluator only; predicates may be false because final place was never reached'),
                 would_stop_pose_budget=carry.get('would_stop_pose_budget'),
-                criteria=d.get('criteria'),failure=carry.get('failure'))
+                criteria=d.get('criteria'),failure=carry.get('failure'),terminal_rejections=terminal_rejections)
         reports.append(r)
     result=dict(round=n,analysis_host='gcp2',runs=reports,reproduce=f'PYTHONPATH=. python {__file__} --round {n}',scope='DEV; invalid and predetermined failure-window diagnostics excluded from adoption')
     (batch/'summary.json').write_text(json.dumps(result,indent=2)+'\n')
-    rejection=dict(source_queue=str(batch/'queue.json'),reproduce=result['reproduce'],runs=[dict(run=r['name'],raw=r['raw'],valid=r.get('valid_for_comparison',False),cumulative=r.get('gate_cumulative',r.get('registration_frame_funnel')),rejections=[dict(category=k,N=v,blocked_object='pose_or_route_gate',minimum_gap_m=None,gap_scope='not_applicable_localization_or_original_gap_missing') for k,v in r.get('gate_reasons',{}).items()]) for r in reports])
+    rejection=dict(source_queue=str(batch/'queue.json'),reproduce=result['reproduce'],runs=[dict(run=r['name'],raw=r['raw'],valid=r.get('valid_for_comparison',False),cumulative=r.get('gate_cumulative',r.get('registration_frame_funnel')),rejections=[dict(category=k,N=v,blocked_object='pose_uncertainty_budget' if 'budget' in k else 'own_rgb_or_route_evidence',minimum_gap_m=None,gap_scope='not_applicable_localization_or_original_gap_missing') for k,v in r.get('gate_reasons',{}).items()]+r.get('terminal_rejections',[])) for r in reports])
     (batch/'rejection-table.json').write_text(json.dumps(rejection,indent=2)+'\n')
     print(json.dumps([{k:v for k,v in r.items() if k in ('name','status','termination','valid_for_comparison','phase','sim_s','place_success','errors','tracker','drive_errors')} for r in reports],indent=2))
 if __name__=='__main__':

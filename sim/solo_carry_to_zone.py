@@ -327,7 +327,7 @@ class CarryToZone:
                 # pose/time/finite input checks still fail closed. This is a
                 # separate explicit diagnostic condition, never a new sigma
                 # threshold or a physical-success criterion.
-                self.reloc18_budget_ticks+=1
+                if self.reloc18_budget_last_t!=now:self.reloc18_budget_ticks+=1
                 if self.reloc18_budget_first_t is None:self.reloc18_budget_first_t=now
                 self.reloc18_budget_last_t=now
                 return False

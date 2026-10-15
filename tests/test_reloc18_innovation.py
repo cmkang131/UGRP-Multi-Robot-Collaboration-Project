@@ -141,6 +141,7 @@ def test_dev_light_budget_option_keeps_finite_time_checks_and_records_would_stop
     c=CarryToZone(static,'A',start=task_start(static),recovery_profile='carry5_active_localization_v1')
     c.loc=cp;c.reloc18_pose_budget_observe_only=True
     assert not c.needs_recovery(0) and c.recovery_reason is None
+    assert not c.needs_recovery(0)
     assert c.reloc18_budget_ticks==1 and c.reloc18_budget_first_t==0
 
 def test_global_mapper_handoff_consumes_rgb_once_and_preserves_local_origin(monkeypatch):
