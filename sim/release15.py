@@ -199,6 +199,9 @@ def line_step(f, camera, pwm, *, clearance):
 
 
 class LineAlign(release14.LineAlign):
+    def features(self, frame):
+        return line_features(frame, self.teacher.end)
+
     def __init__(self, teacher, now, *, camera, undistort, wheel_command, clearance, pick_audit=None):
         super().__init__(teacher, now, camera=camera, undistort=undistort,
                          wheel_command=wheel_command, clearance=clearance)
@@ -220,7 +223,7 @@ class LineAlign(release14.LineAlign):
             self.records.append(dict(t=now, event='open_then_hover'))
             return 'pending'
         if self.teacher.pwm != self.expected: return self.fail('open_hover_command_changed')
-        f = line_features(self.undistort(capture(rid, now, 'line_recheck')), self.teacher.end)
+        f = self.features(self.undistort(capture(rid, now, 'line_recheck')))
         self.records.append(dict(t=now, event='image', **f))
         try: step = line_step(f, self.camera, self.teacher.pwm, clearance=self.clearance)
         except (ValueError, np.linalg.LinAlgError) as error: return self.fail(str(error))

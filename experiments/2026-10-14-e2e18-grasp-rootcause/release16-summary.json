@@ -1,0 +1,187 @@
+{
+  "schema": "ugrp.release16.offline.v1",
+  "profile": "release16_known_shape_v1",
+  "source_base": "7379fdd31a97b29ad2edc83cb8f6df1c94a8916e",
+  "source_files_sha256": {
+    "sim/release16.py": "6f1081f08e7efa4bc2266552684c14cd01968623958700c69cfe292813b3b45d",
+    "sim/release15.py": "8b7f2bc7a0b5874ae98ca2460de94097ec5e007d076b9c238da6316c9661a0b9",
+    "scripts/replay_release16.py": "501cd80a707e6ad04f65f2cc709e6db7f5e768bc80ec74743e4994481f837505",
+    "scripts/run_grasp_act_release.py": "00fe3eddfcfc32ab5bf746a2d35fecd72bda712608e0900f8230fff0c2cc8567",
+    "scripts/run_ci_tests.py": "ff36e88e0494689a7537faa57940e56dd3c8218b648aa8507386c68a9de039e3",
+    "configs/grasp_act_seed_splits.json": "d10d34f0244dc5a1683437e352849d8db99215edb4f71f115bd4535552ce982d",
+    "tests/test_release16.py": "8161142bc75aefea4062b5afa0101f5e774a82f6fd7a01ce616bb6a40e7b3204"
+  },
+  "frame_count": 4870,
+  "copies": 498,
+  "manifest_verified": 4870,
+  "payloads_verified_against_manifest": 457,
+  "runs_with_local_frames": 43,
+  "all": {
+    "release14": {
+      "N": 4870,
+      "counts": {
+        "valid": 3495,
+        "ambiguous": 224,
+        "unobserved": 1151
+      },
+      "rates": {
+        "valid": 0.7176591375770021,
+        "ambiguous": 0.0459958932238193,
+        "unobserved": 0.23634496919917863
+      },
+      "direction_available": 1050,
+      "continuity_pairs": 639,
+      "angle_jumps_gt10deg": 0,
+      "position_jumps_gt64px": 0,
+      "direction_error_proxy_N": 653,
+      "direction_error_proxy_median_deg": 0.0646303811923365,
+      "direction_error_proxy_p90_deg": 1.133828772836356
+    },
+    "release15": {
+      "N": 4870,
+      "counts": {
+        "valid": 3495,
+        "ambiguous": 224,
+        "unobserved": 1151
+      },
+      "rates": {
+        "valid": 0.7176591375770021,
+        "ambiguous": 0.0459958932238193,
+        "unobserved": 0.23634496919917863
+      },
+      "direction_available": 1050,
+      "continuity_pairs": 639,
+      "angle_jumps_gt10deg": 0,
+      "position_jumps_gt64px": 0,
+      "direction_error_proxy_N": 653,
+      "direction_error_proxy_median_deg": 0.0646303811923365,
+      "direction_error_proxy_p90_deg": 1.133828772836356
+    },
+    "release16": {
+      "N": 4870,
+      "counts": {
+        "valid": 3726,
+        "ambiguous": 0,
+        "unobserved": 1144
+      },
+      "rates": {
+        "valid": 0.7650924024640657,
+        "ambiguous": 0.0,
+        "unobserved": 0.2349075975359343
+      },
+      "direction_available": 1229,
+      "continuity_pairs": 731,
+      "angle_jumps_gt10deg": 0,
+      "position_jumps_gt64px": 0,
+      "direction_error_proxy_N": 832,
+      "direction_error_proxy_median_deg": 0.06926358432210078,
+      "direction_error_proxy_p90_deg": 0.753036659827857
+    },
+    "band_split_frames": 219,
+    "collinear_merge_frames": 0
+  },
+  "line_rechecks": {
+    "release14": {
+      "N": 28,
+      "counts": {
+        "valid": 22,
+        "ambiguous": 4,
+        "unobserved": 2
+      },
+      "rates": {
+        "valid": 0.7857142857142857,
+        "ambiguous": 0.14285714285714285,
+        "unobserved": 0.07142857142857142
+      },
+      "direction_available": 5,
+      "continuity_pairs": 3,
+      "angle_jumps_gt10deg": 0,
+      "position_jumps_gt64px": 0,
+      "direction_error_proxy_N": 5,
+      "direction_error_proxy_median_deg": 0.008166964687871097,
+      "direction_error_proxy_p90_deg": 3.539679301761309
+    },
+    "release15": {
+      "N": 28,
+      "counts": {
+        "valid": 22,
+        "ambiguous": 4,
+        "unobserved": 2
+      },
+      "rates": {
+        "valid": 0.7857142857142857,
+        "ambiguous": 0.14285714285714285,
+        "unobserved": 0.07142857142857142
+      },
+      "direction_available": 5,
+      "continuity_pairs": 3,
+      "angle_jumps_gt10deg": 0,
+      "position_jumps_gt64px": 0,
+      "direction_error_proxy_N": 5,
+      "direction_error_proxy_median_deg": 0.008166964687871097,
+      "direction_error_proxy_p90_deg": 3.539679301761309
+    },
+    "release16": {
+      "N": 28,
+      "counts": {
+        "valid": 26,
+        "ambiguous": 0,
+        "unobserved": 2
+      },
+      "rates": {
+        "valid": 0.9285714285714286,
+        "ambiguous": 0.0,
+        "unobserved": 0.07142857142857142
+      },
+      "direction_available": 11,
+      "continuity_pairs": 8,
+      "angle_jumps_gt10deg": 0,
+      "position_jumps_gt64px": 0,
+      "direction_error_proxy_N": 11,
+      "direction_error_proxy_median_deg": 0.03586890752282202,
+      "direction_error_proxy_p90_deg": 0.4117398258526499
+    },
+    "band_split_frames": 4,
+    "collinear_merge_frames": 0
+  },
+  "common_direction_error_proxy": {
+    "release15": {
+      "N": 642,
+      "median_deg": 0.06322533402315986,
+      "p90_deg": 1.135200619919348
+    },
+    "release16": {
+      "N": 642,
+      "median_deg": 0.05555612326547859,
+      "p90_deg": 0.6019821363357019
+    }
+  },
+  "detached_band_frames": 156,
+  "tests": "59 passed in 113.05s (0:01:53)",
+  "physical_effect": "unverified",
+  "simulation_calls": 0,
+  "remote_host_connections": 0,
+  "gate40_approved": false,
+  "artifacts": {
+    "release16-frames.jsonl.zst": {
+      "sha256": "97d052d3a2be24d5b2aa0567a141880ca4ee59859ef7416b95a29d48d19feae2",
+      "decoded_sha256": "d7250bb0614d2bdeb82b9b621200d3ec94349cff9eacfc7b654916748314ede5",
+      "bytes": 888645
+    },
+    "release16-detail.json.zst": {
+      "sha256": "e5ea0ef861a92a125f38b824922754dd4dc94f0c01609f92990c9552ccc845d4",
+      "decoded_sha256": "ee8e98380c56e4ddecbdaad9f9ec20cf1a7cad85d02e575f6d6a6ccaf9e02607",
+      "bytes": 45258
+    },
+    "release16-seed-audit.json.zst": {
+      "sha256": "056ee83b6e3ea31381d8644defd98433a8d32c0db22d0157f4ac0b6ee6adcee0",
+      "decoded_sha256": "46621bb83b844ddbb70d93429d1738cd7502f02a90cc5e1ffedb55cea9c495c4",
+      "bytes": 9575
+    }
+  },
+  "raw_roots": [
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports"
+  ],
+  "scope": "all locally retrieved beam-release own JPEG files in the two roots; copies deduplicated; old-state decisions only"
+}

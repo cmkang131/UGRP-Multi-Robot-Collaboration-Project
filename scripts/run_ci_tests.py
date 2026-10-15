@@ -31,6 +31,7 @@ TEST_PATTERNS = (
     "tests/test_grasp_act_release_teacher.py",
     "tests/test_grasp_act_release_run.py",
     "tests/test_release_regrasp.py",
+    "tests/test_release16.py",
     "tests/test_grasp_act_contract.py",
     "tests/test_grasp_act_contract_v4.py",
     "tests/test_grasp_act_visible_only.py",

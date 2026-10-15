@@ -15,11 +15,13 @@
     "release_gate_command_relative_v1": [[74100, 74139]],
     "release_gate_zone_center_rgb_v1": [[74200, 74239]],
     "release14_diagnostic": [[76000, 76006]],
-    "release15_diagnostic": [[78330, 78336]]
+    "release15_diagnostic": [[78330, 78336]],
+    "release16_diagnostic": [[78460, 78466]]
   },
-  "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "release_gate_command_relative_v1", "release_gate_zone_center_rgb_v1", "release14_diagnostic", "release15_diagnostic"],
+  "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "release_gate_command_relative_v1", "release_gate_zone_center_rgb_v1", "release14_diagnostic", "release15_diagnostic", "release16_diagnostic"],
   "heldout_maps": ["zone_wide_corridor_final_v3"],
   "notes": {
+    "release16_diagnostic": "release16_known_shape_v1 fresh7; main/open PR heads + all local queues audited. Never train; gate40 unapproved; remote history not accessed.",
     "release15_diagnostic": "release15_fov_v1 fresh7; main/open PR heads + all local VM3 queues audited; remote-history preflight pending. Never train; gate40 unapproved.",
     "grasp_gate_078": "teacher 078cbb45 gate 36/40 (seen)",
     "grasp_gate_v2": "observable_v2 3a451048 gate, stopped 27/32 (seen)",

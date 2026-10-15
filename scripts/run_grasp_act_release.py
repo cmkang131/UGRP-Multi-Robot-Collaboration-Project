@@ -21,7 +21,7 @@ from sim.release_global_observation import LATERAL_MODES
 from sim.release_nbv_observation import MODES as ACTIVE_RECOVERY_MODES
 from sim.release_regrasp import MODES as REGRASP_CHECK_MODES
 from sim.release_regrasp_recovery import MODES as REGRASP_RECOVERY_MODES
-from sim import release14, release15
+from sim import release14, release15, release16
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 # User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
 # hidden_v1: while the own gripper holds the cargo, its world pose never enters teacher/map-code inputs.
@@ -167,10 +167,10 @@ def own_end_world(world,inst,end):
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
         zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',record_training=False):
-    release15.validate(release_profile,record_training,locals(),plan)
-    line_guard=release_profile in (release14.PROFILE, release15.PROFILE)
-    fov_guard=release_profile==release15.PROFILE
-    line_control=release15 if fov_guard else release14
+    release16.validate(release_profile,record_training,locals(),plan)
+    line_guard=release_profile in (release14.PROFILE, release15.PROFILE, release16.PROFILE)
+    fov_guard=release_profile in (release15.PROFILE, release16.PROFILE)
+    line_control=release16 if release_profile==release16.PROFILE else (release15 if fov_guard else release14)
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
     if lookaround!='off' and observe_mode!='backoff_v3':raise ValueError('lookaround runs after the backoff_v3 step back')
@@ -694,7 +694,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 run_sched(now)
                 peer=[r for r in R if r!=line_check.teacher.rid]
                 if any(any(wheels[r].levels) or rel[r].pwm!=line_check.peer_commands[r] for r in peer):
-                    outcome=('release15' if fov_guard else 'release14')+'_peer_motion_during_alignment';break
+                    outcome=release_profile.split('_')[0]+'_peer_motion_during_alignment';break
                 status=line_check.tick(now,regrasp_capture,schedule)
                 if status=='failed':outcome=line_check.failure;break
                 if status=='ready':
@@ -864,7 +864,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
 def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=90.)
-    p.add_argument('--release-profile',choices=release15.PROFILES,default='off')
+    p.add_argument('--release-profile',choices=release16.PROFILES,default='off')
     p.add_argument('--record-training',action='store_true',help='fail closed: safe profile and future verified gate/writer required')
     p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands')
     p.add_argument('--pose-anchor',choices=POSE_ANCHOR_MODES,default='legacy_truth_v0',help='command_relative_v1: no truth handoff anchor; map pose unknown, own-command sweep only')
