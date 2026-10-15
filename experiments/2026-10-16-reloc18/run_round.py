@@ -44,18 +44,19 @@ def worker(taskfile):
 
 def launch(n):
     assert platform.node().startswith('ugrp-sim-gcp2')
-    assert n in (1,2), 'round3 must be defined after round2 measured results'
+    assert n in (1,2,3)
     sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
     assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'])
     rejection=RUNS/'reloc18-audit/rejection-table.json';assert rejection.is_file()
-    if n==2:
-        previous=RUNS/'reloc18-round1'
+    if n>1:
+        previous=RUNS/f'reloc18-round{n-1}'
         assert (previous/'DONE').is_file() and json.loads((previous/'speed-gate.json').read_text())['status']=='PASS'
         rejection=previous/'rejection-table.json';assert rejection.is_file()
     batch=RUNS/f'reloc18-round{n}';batch.mkdir(exist_ok=False)
     prior=json.loads((RUNS/'reloc17-round2/queue.json').read_text())['runs'];tasks=[]
     specifications=([(condition,'carry') for condition in ('visual','command_only')] if n==1 else
-                    [('candidate','carry'),('candidate','selfmap'),('command_only','carry'),('legacy_failure_window','carry')])
+                    [('candidate','carry'),('candidate','selfmap'),('command_only','carry'),('legacy_failure_window','carry')] if n==2 else
+                    [('candidate','carry'),('command_only','carry'),('map_odom','selfmap')])
     for condition,kind in specifications:
         for old in prior:
             if old['kind']!=kind or (condition=='legacy_failure_window' and old['seed']!=93315):continue
@@ -65,6 +66,7 @@ def launch(n):
                 plan=json.loads(Path(old['command'][old['command'].index('--plan')+1]).read_text())
                 plan['episodes'][0]['batch']=f'reloc18-r{n}'
                 if condition=='candidate':plan['episodes'][0]['reloc18_innovation_v1']=True
+                if n==3:plan['episodes'][0]['reloc18_pose_budget_observe_only_v1']=True
                 planpath=folder/'input-plan.json';planpath.write_text(json.dumps(plan,indent=2)+'\n')
                 # 94.2 was the measured catastrophic PF jump; 94.5 retains
                 # that event plus the preceding10s at10Hz via existing buffer.
@@ -72,6 +74,9 @@ def launch(n):
             else:
                 for f,v in [('--output',folder/'raw'),('--expected-source-sha',sha)]:cmd[cmd.index(f)+1]=str(v)
                 cmd+=['--reloc18-innovation-v1']
+                if n==3:
+                    cmd+=['--reloc18-map-odom-v1']
+                    cmd[cmd.index('--cap-s')+1]='180'
             env=dict(old['environment']);env['UGRP_SCENE_COLOUR_CALIBRATION']=str(ROOT/'experiments/2026-10-16-reloc16/colour-calibration.json')
             t=dict(name=name,kind=kind,condition=condition,seed=old['seed'],command=cmd,environment=env,source_sha=sha,raw=str(folder/'raw'),rejection_table=str(rejection))
             taskfile=folder/'task.json';taskfile.write_text(json.dumps(t,indent=2)+'\n');t['task_file']=str(taskfile);tasks.append(t)
@@ -85,7 +90,7 @@ def launch(n):
     (batch/'queue.json').write_text(json.dumps(queue,indent=2)+'\n')
     lock=threading.Lock()
     def execute(t):
-        if n==2 and tasks.index(t)>=4:
+        if n>1 and tasks.index(t)>=4:
             missing=[str(Path(x['raw'])/'first30.json') for x in tasks[:4] if not (Path(x['raw'])/'first30.json').is_file()]
             if missing:
                 (RUNS/t['name']/'WITHHELD.json').write_text(json.dumps(dict(status='SPEED_GATE_FAIL',reason='first30_missing',paths=missing))+'\n');return

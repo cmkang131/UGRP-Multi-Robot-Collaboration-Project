@@ -12,3 +12,6 @@
 경계 검사를 추가한 `reloc18 + selfmap6 + reloc14`: **43 passed** (10.40초).
 운반 PF의 1.24m/77도 반례 거부, 작은 P의 yaw 영향, 순수 명령 대조의 fix-age·거리/회전
 예산 복원과 전체 자기 RGB/명령 입력 경계를 확인했다. 추가 검사도 전부 비물리다.
+
+R3 준비: 같은3파일 **46 passed** (1.63초). map→odom 계산, 같은 RGB를 한 번만 소비하는
+실제 mapper handoff, 로컬 명령 odometry 불변, DEV 예산 기록과 시각/finite 검사 보존을 추가 확인했다.

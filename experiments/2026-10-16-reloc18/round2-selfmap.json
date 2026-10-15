@@ -1,0 +1,407 @@
+{
+  "status": "COMPLETE",
+  "runs": [
+    {
+      "run": "reloc18-r2-selfmap-candidate-93584-46dd7ec3",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r2-selfmap-candidate-93584-46dd7ec3/raw",
+      "source_sha": "46dd7ec3048a50a5443b2d61b0dece462e43b763",
+      "local_command": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "min": 0.0,
+          "p50": 0.04661503214150941,
+          "p90": 0.0947511350150836,
+          "p95": 0.11757978829013876,
+          "p99": 0.12344930273754881,
+          "max": 0.12394824248740367
+        },
+        "yaw_deg": {
+          "N": 301,
+          "min": 0.0,
+          "p50": 2.6638456150393797,
+          "p90": 3.5747120971953468,
+          "p95": 3.778647482462322,
+          "p99": 4.186764286670235,
+          "max": 4.370886195930794
+        }
+      },
+      "local_candidate": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "min": 0.0,
+          "p50": 0.042047847531724046,
+          "p90": 0.08294985912444088,
+          "p95": 0.10193395906778402,
+          "p99": 0.10677916227893668,
+          "max": 0.10805710164439954
+        },
+        "yaw_deg": {
+          "N": 301,
+          "min": 0.0,
+          "p50": 1.307732511573197,
+          "p90": 2.510560098646351,
+          "p95": 2.5307125461912983,
+          "p99": 2.6312381035809707,
+          "max": 2.8083554270213353
+        }
+      },
+      "absolute_drive": {
+        "N": 45,
+        "bad_N": 43,
+        "within15cm5_N": 14,
+        "within30cm10_N": 45,
+        "xy_m": {
+          "N": 45,
+          "min": 0.09047036545463567,
+          "p50": 0.15123085321802895,
+          "p90": 0.1555317777617076,
+          "p95": 0.15577420924520782,
+          "p99": 0.15634826766791163,
+          "max": 0.15645693618211068
+        },
+        "yaw_deg": {
+          "N": 45,
+          "min": 0.024901186335507232,
+          "p50": 0.7859103771511153,
+          "p90": 1.1173901373596604,
+          "p95": 1.2411190477900746,
+          "p99": 2.210248180184291,
+          "max": 2.2772432183258426
+        }
+      },
+      "absolute_registered": {
+        "N": 219,
+        "bad_N": 177,
+        "xy_m": {
+          "N": 219,
+          "min": 0.06863578564137413,
+          "p50": 0.14585536320098286,
+          "p90": 0.1813521179400429,
+          "p95": 0.1918958846010125,
+          "p99": 0.19480794661946163,
+          "max": 0.19516418069206956
+        },
+        "yaw_deg": {
+          "N": 219,
+          "min": 0.01827623479305142,
+          "p50": 1.3174195365193138,
+          "p90": 2.3029847765029268,
+          "p95": 2.7265520392474647,
+          "p99": 3.427922723808485,
+          "max": 3.6308699685383683
+        }
+      },
+      "static_admissions": {
+        "N": 18,
+        "xy_bad_N": 12,
+        "yaw_bad_N": 0,
+        "both_bad_N": 0,
+        "xy_m": {
+          "N": 18,
+          "min": 0.06863578564137413,
+          "p50": 0.11671686339289833,
+          "p90": 0.15141494390065552,
+          "p95": 0.15293487284136065,
+          "p99": 0.1547182722478001,
+          "max": 0.15516412209940997
+        },
+        "yaw_deg": {
+          "N": 18,
+          "min": 0.25575239300336233,
+          "p50": 1.3047339848320103,
+          "p90": 2.455912060540457,
+          "p95": 2.570427870592179,
+          "p99": 2.839835870990459,
+          "max": 2.90718787109003
+        },
+        "pf_xy_m": {
+          "N": 18,
+          "min": 0.00806432025191058,
+          "p50": 0.06582931666493383,
+          "p90": 0.09784767132368448,
+          "p95": 0.10228432088720264,
+          "p99": 0.10429143694791473,
+          "max": 0.10479321596309275
+        },
+        "pf_yaw_deg": {
+          "N": 18,
+          "min": 0.0019276032279308074,
+          "p50": 1.6454800088961279,
+          "p90": 5.66858264906804,
+          "p95": 5.9105214497789,
+          "p99": 6.301994183797647,
+          "max": 6.399862367302335
+        }
+      },
+      "funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 144,
+          "sensor_update": 73,
+          "pf_resolved": 52,
+          "dominant_mode": 52,
+          "raw_covariance": 52,
+          "independent_axes": 43,
+          "global_unique": 28,
+          "three_views": 1,
+          "registered": 1
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 71,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 27,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 21,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 15,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "independent_axes",
+            "N": 9,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      }
+    },
+    {
+      "run": "reloc18-r2-selfmap-candidate-93583-46dd7ec3",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r2-selfmap-candidate-93583-46dd7ec3/raw",
+      "source_sha": "46dd7ec3048a50a5443b2d61b0dece462e43b763",
+      "local_command": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "min": 0.0,
+          "p50": 0.049465086950835575,
+          "p90": 0.1248735260217698,
+          "p95": 0.14103162873346903,
+          "p99": 0.14693710320222095,
+          "max": 0.14756479267606568
+        },
+        "yaw_deg": {
+          "N": 301,
+          "min": 2.5444437451708134e-14,
+          "p50": 2.5311069770470525,
+          "p90": 4.512396869573021,
+          "p95": 4.918238390770255,
+          "p99": 5.184948936363243,
+          "max": 5.305091831224917
+        }
+      },
+      "local_candidate": {
+        "N": 301,
+        "xy_m": {
+          "N": 301,
+          "min": 0.0,
+          "p50": 0.04122341834396723,
+          "p90": 0.10000084891564945,
+          "p95": 0.11464336857218761,
+          "p99": 0.12037259220290632,
+          "max": 0.12059487307553983
+        },
+        "yaw_deg": {
+          "N": 301,
+          "min": 2.5444437451708134e-14,
+          "p50": 1.5401392831837606,
+          "p90": 3.171076150976846,
+          "p95": 3.3626012918659915,
+          "p99": 3.525993084987212,
+          "max": 3.543508647644683
+        }
+      },
+      "absolute_drive": {
+        "N": 43,
+        "bad_N": 43,
+        "within15cm5_N": 2,
+        "within30cm10_N": 43,
+        "xy_m": {
+          "N": 43,
+          "min": 0.11890738045131517,
+          "p50": 0.17989152218258828,
+          "p90": 0.18299574862126236,
+          "p95": 0.18344400602469582,
+          "p99": 0.1835056860908813,
+          "max": 0.183518679072834
+        },
+        "yaw_deg": {
+          "N": 43,
+          "min": 0.013603576165466867,
+          "p50": 1.1078183725520387,
+          "p90": 1.7248145846662093,
+          "p95": 1.7811924409225863,
+          "p99": 1.805747931676291,
+          "max": 1.8197088825280279
+        }
+      },
+      "absolute_registered": {
+        "N": 221,
+        "bad_N": 218,
+        "xy_m": {
+          "N": 221,
+          "min": 0.09945183645348167,
+          "p50": 0.17987307210652378,
+          "p90": 0.21554775713824562,
+          "p95": 0.22489777641812445,
+          "p99": 0.228914082290366,
+          "max": 0.22959314785079454
+        },
+        "yaw_deg": {
+          "N": 221,
+          "min": 0.013603576165466867,
+          "p50": 1.6016905173814207,
+          "p90": 3.310923498457251,
+          "p95": 3.557315608382481,
+          "p99": 3.8454217807718973,
+          "max": 3.970806794590255
+        }
+      },
+      "static_admissions": {
+        "N": 21,
+        "xy_bad_N": 20,
+        "yaw_bad_N": 0,
+        "both_bad_N": 0,
+        "xy_m": {
+          "N": 21,
+          "min": 0.09987800527875197,
+          "p50": 0.1475508432757369,
+          "p90": 0.18167115416277313,
+          "p95": 0.18255759415034228,
+          "p99": 0.20571890805413862,
+          "max": 0.21150923653008766
+        },
+        "yaw_deg": {
+          "N": 21,
+          "min": 0.08405057051658017,
+          "p50": 0.9061767557207976,
+          "p90": 1.7851295784005778,
+          "p95": 2.0045620375463216,
+          "p99": 3.038176592089046,
+          "max": 3.2965802307247256
+        },
+        "pf_xy_m": {
+          "N": 21,
+          "min": 0.015155321008005635,
+          "p50": 0.07742418166252862,
+          "p90": 0.11053466677698084,
+          "p95": 0.1257634422743724,
+          "p99": 0.13551898568788898,
+          "max": 0.1379578715412681
+        },
+        "pf_yaw_deg": {
+          "N": 21,
+          "min": 0.04893650462297726,
+          "p50": 2.249449326853032,
+          "p90": 6.362637540372888,
+          "p95": 6.847058374286913,
+          "p99": 7.855594457456782,
+          "max": 8.107728478249248
+        }
+      },
+      "funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 135,
+          "sensor_update": 71,
+          "pf_resolved": 59,
+          "dominant_mode": 59,
+          "raw_covariance": 59,
+          "independent_axes": 44,
+          "global_unique": 28,
+          "three_views": 2,
+          "registered": 2
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 64,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 26,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 16,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "independent_axes",
+            "N": 15,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 12,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 301,
+        "issued_command_records": 307,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      }
+    }
+  ],
+  "scope": "local drift aligned once at initial evaluator pose for scoring only; absolute map errors are separate; each command comparison uses the same executed trajectory",
+  "reproduce": "PYTHONPATH=. python /home/ugrp/ugrp-sim/analysis-tools/reloc18-selfmaps.py /home/ugrp/ugrp-sim/src/46dd7ec3048a50a5443b2d61b0dece462e43b763"
+}

@@ -116,3 +116,55 @@ def test_full_mapper_receive_delivers_calibrated_gate_without_privileged_inputs(
     row=receive(mapper,2)
     assert row['correction_admission']['dof']==3 and row['correction_admission']['accepted']
     assert 0<row['pose'][0]<.02
+
+def test_map_transform_updates_without_rewriting_local_odometry():
+    from harness.reloc18_map_odom import MapOdomFilter
+    from harness.natural_floor_slam import compose
+    f=MapOdomFilter();local=np.zeros(3)
+    a,d=f.step(t=0,odom=local,local_pose=local,world_pose=[2,1,0],measurement_covariance=np.eye(3)*.001,fresh=True,registered=True)
+    np.testing.assert_allclose(compose(a,local),[2,1,0])
+    local=np.array([.1,0,0]);before=local.copy()
+    a,d=f.step(t=2,odom=local,local_pose=local,world_pose=[2.2,1,0],measurement_covariance=np.eye(3)*.001,fresh=True,registered=True)
+    assert d['decision']['accepted'] and 2.1<d['world_pose'][0]<2.2
+    np.testing.assert_array_equal(local,before)
+    np.testing.assert_allclose(compose(a,local),d['world_pose'])
+    with pytest.raises(ValueError):f.step(t=2,odom=local,local_pose=local,world_pose=[2,1,0],measurement_covariance=np.eye(3),fresh=True,registered=True)
+
+def test_dev_light_budget_option_keeps_finite_time_checks_and_records_would_stop():
+    from harness.selfmap4_geometry import static_input
+    from sim.solo_carry_pose import CommandPose,task_start
+    from sim.solo_carry_to_zone import CarryToZone
+    static,_=static_input();cp=CommandPose(task_start(static));cp.own.P=np.eye(3)*1.
+    assert not cp.ready(0)
+    cp.reloc18_pose_budget_observe_only=True
+    assert cp.ready(0) and not cp.ready(1)  # timestamp admission is unchanged
+    c=CarryToZone(static,'A',start=task_start(static),recovery_profile='carry5_active_localization_v1')
+    c.loc=cp;c.reloc18_pose_budget_observe_only=True
+    assert not c.needs_recovery(0) and c.recovery_reason is None
+    assert c.reloc18_budget_ticks==1 and c.reloc18_budget_first_t==0
+
+def test_global_mapper_handoff_consumes_rgb_once_and_preserves_local_origin(monkeypatch):
+    from harness import self_map_integration as sm,selfmap4_geometry as geometry
+    from test_self_map_integration import fixture_mapper,receive
+    from scripts.run_self_map_diagnostic import bundle
+    template,_=fixture_mapper(monkeypatch);static,_=geometry.static_input()
+    kw=dict(bootstrap='command_prior_v1',recovery_profile='selfmap4_recovery_v1',revision_gate='selfmap4_revision_gate_v2',
+        multiframe_registration='selfmap4_multiframe_registration_v1',correction_safety='selfmap6_correction_safety_v1',
+        reloc12_raw_cov_gate_v1=True,reloc13_execution_cov_v1=True,reloc13_execution_frame_v1=True,reloc13_live_r7_v1=True,
+        reloc14_continuous_tracking_v1=True,reloc15_pose_handoff_v1=True,reloc18_innovation_v1=True,reloc18_map_odom_v1=True)
+    assert bundle('a'*40,93584,60,**kw)['options']['reloc18_map_odom_v1']
+    mapper=sm.SelfMapIntegration('r1',options=sm.Options(self_map_integration=sm.OPTION,**kw),static_map=static)
+    mapper.zones=template.zones;mapper.command(dict(t=0.,kind='initial_servo_command',pulses=template.servo))
+    monkeypatch.setattr(mapper.flow,'step',lambda rgb,servo,t,settled,delta,Q:(delta,Q,{}))
+    monkeypatch.setattr(geometry,'observe',lambda *a:dict(camera=[0,0],segments=[],floor_xy=[[.3,0]],features=[]))
+    def registered(*a,**k):
+        mapper.registration.map_from_own=np.array([2.,1.,0.]);mapper.registration.execution_r7_admitted=True
+        mapper.registration.last=dict(updated=True,registered=True,world_pose=[2.,1.,0.],raw_covariance=(np.eye(3)*.001).tolist(),
+            geometry={},reloc12=dict(map_from_execution=[2,1,0]))
+        return (np.array([.1,0,0]),np.eye(3)*.001)
+    monkeypatch.setattr(mapper.registration,'step',registered)
+    row=receive(mapper,1)
+    np.testing.assert_allclose(row['pose'],[0,0,0])
+    assert row['correction_admission'] is None
+    assert row['static_registration']['map_odom']['local_pose_unchanged']
+    np.testing.assert_allclose(mapper.registration.map_from_own,[2,1,0])

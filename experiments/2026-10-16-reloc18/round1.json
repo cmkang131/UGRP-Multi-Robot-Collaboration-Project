@@ -1,0 +1,1197 @@
+{
+  "round": 1,
+  "analysis_host": "gcp2",
+  "runs": [
+    {
+      "name": "reloc18-r1-visual-93266-a045584c",
+      "kind": "carry",
+      "condition": "visual",
+      "seed": 93266,
+      "source_sha": "a045584cf98c7ad0a723063c6afea2e6d43629f8",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r1-visual-93266-a045584c/raw",
+      "status": "complete",
+      "termination": "cap_end",
+      "valid_for_comparison": true,
+      "exit_code": "0",
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-visual-93266-a045584c/task.json": "da1501d8dac4e441c898489f2f3f068de5d1a0a787753a07431833b6697a1dce",
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-visual-93266-a045584c/raw/result.json.zst": "351a0136eb20f6915360b530ab45afad6e0717f960e67dc02f6cc55548a4d8c8",
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-visual-93266-a045584c/raw/manifest.json.zst": "2541cf60697a7faa7904200ac298ba2528dee64af3bd0378eee3d9c3b351e5b0"
+      },
+      "place_success": false,
+      "lift": true,
+      "phase": "carry_reobserve",
+      "sim_s": 299.9999999946032,
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 157.08238095399975,
+        "wall_per_sim": 5.236079379256494,
+        "top_capture": false
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 1912,
+        "blocked_held": 759,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 278,
+          "align": 41,
+          "hover": 8,
+          "carry_reacquire": 1
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "phases": {
+        "fold": 6,
+        "pickup_search": 59,
+        "approach": 278,
+        "align": 41,
+        "hover": 19,
+        "descent": 32,
+        "close": 23,
+        "lift": 31,
+        "lift_settle": 64,
+        "lookback_pose": 23,
+        "lookback": 50,
+        "lookback_settle": 10,
+        "verify_lift": 22,
+        "hold": 60,
+        "carry_prepare": 21,
+        "carry_to_zone": 417,
+        "carry_recover_lower": 22,
+        "carry_recover_open": 16,
+        "carry_recover_retract": 38,
+        "carry_recover_backoff": 50,
+        "carry_reobserve": 793,
+        "carry_recover_restore": 33,
+        "carry_reacquire": 892
+      },
+      "gate_reasons": {
+        "scene_wall_unobservable_pose_budget": 2,
+        "accepted_replan": 3,
+        "pose_budget": 2
+      },
+      "gate_cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "errors": {
+        "xy": {
+          "N": 3000,
+          "p50": 0.30234002240142965,
+          "p95": 2.877713679677311,
+          "end": 2.76899244013368
+        },
+        "yaw": {
+          "N": 3000,
+          "p50": 23.28515816415191,
+          "p95": 178.86871416465772,
+          "end": 179.7061880538409
+        },
+        "command_xy": {
+          "N": 3000,
+          "p50": 0.4616731017488075,
+          "p95": 0.7180769017384583,
+          "end": 0.46156221483517595
+        },
+        "command_yaw": {
+          "N": 3000,
+          "p50": 39.06244639375634,
+          "p95": 106.2099236010179,
+          "end": 117.30732619997309
+        }
+      },
+      "drift_bins": [
+        {
+          "sim_interval": [
+            0,
+            50
+          ],
+          "errors": {
+            "xy": {
+              "N": 500,
+              "p50": 0.19916325387371525,
+              "p95": 0.3088629063193501,
+              "end": 0.3009725811043926
+            },
+            "yaw": {
+              "N": 500,
+              "p50": 2.598004475377695,
+              "p95": 5.002482664509178,
+              "end": 5.283697013801282
+            },
+            "command_xy": {
+              "N": 500,
+              "p50": 0.2759411889636649,
+              "p95": 0.4925449418654148,
+              "end": 0.46029368992176284
+            },
+            "command_yaw": {
+              "N": 500,
+              "p50": 8.842269423114654,
+              "p95": 16.831141416228228,
+              "end": 17.11235576552033
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            50,
+            100
+          ],
+          "errors": {
+            "xy": {
+              "N": 501,
+              "p50": 0.29906022163673457,
+              "p95": 0.3162966768720908,
+              "end": 0.2247055193072594
+            },
+            "yaw": {
+              "N": 501,
+              "p50": 2.7397846169174334,
+              "p95": 7.128084820465856,
+              "end": 1.7021263780506966
+            },
+            "command_xy": {
+              "N": 501,
+              "p50": 0.7107637703288802,
+              "p95": 0.7382229156634934,
+              "end": 0.7116804677281957
+            },
+            "command_yaw": {
+              "N": 501,
+              "p50": 8.705698466306814,
+              "p95": 17.47139259991526,
+              "end": 1.1553443983621872
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            100,
+            150
+          ],
+          "errors": {
+            "xy": {
+              "N": 500,
+              "p50": 0.19055430928810313,
+              "p95": 0.2240508773108758,
+              "end": 0.2077205383222339
+            },
+            "yaw": {
+              "N": 500,
+              "p50": 2.050122366484955,
+              "p95": 22.006018645246545,
+              "end": 0.1308685466743192
+            },
+            "command_xy": {
+              "N": 500,
+              "p50": 0.6192322044368281,
+              "p95": 0.711025449113205,
+              "end": 0.42421783543374086
+            },
+            "command_yaw": {
+              "N": 500,
+              "p50": 7.929414250420395,
+              "p95": 38.921901990460185,
+              "end": 40.88867583509919
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            150,
+            200
+          ],
+          "errors": {
+            "xy": {
+              "N": 500,
+              "p50": 0.28451101096911324,
+              "p95": 2.881835282022392,
+              "end": 2.8818502635265695
+            },
+            "yaw": {
+              "N": 500,
+              "p50": 57.42002962822574,
+              "p95": 179.40564975501368,
+              "end": 178.02326736495345
+            },
+            "command_xy": {
+              "N": 500,
+              "p50": 0.4161095976831064,
+              "p95": 0.45478080905165413,
+              "end": 0.46235239687219065
+            },
+            "command_yaw": {
+              "N": 500,
+              "p50": 54.84121407883623,
+              "p95": 67.26390293985449,
+              "end": 67.60726921085269
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            200,
+            250
+          ],
+          "errors": {
+            "xy": {
+              "N": 500,
+              "p50": 2.8757704925679994,
+              "p95": 2.882110723534335,
+              "end": 2.877857766626276
+            },
+            "yaw": {
+              "N": 500,
+              "p50": 173.42339761868948,
+              "p95": 175.10769441100192,
+              "end": 173.74969141210752
+            },
+            "command_xy": {
+              "N": 500,
+              "p50": 0.4737121956680477,
+              "p95": 0.4751233161225976,
+              "end": 0.4751626086303406
+            },
+            "command_yaw": {
+              "N": 500,
+              "p50": 78.06511387208627,
+              "p95": 78.58038496992762,
+              "end": 77.77591181579508
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            250,
+            300
+          ],
+          "errors": {
+            "xy": {
+              "N": 499,
+              "p50": 2.7904770712851934,
+              "p95": 2.875077823986938,
+              "end": 2.76899244013368
+            },
+            "yaw": {
+              "N": 499,
+              "p50": 173.4118407735144,
+              "p95": 179.8789057618211,
+              "end": 179.7061880538409
+            },
+            "command_xy": {
+              "N": 499,
+              "p50": 0.4449659517775247,
+              "p95": 0.4697073931656449,
+              "end": 0.46156221483517595
+            },
+            "command_yaw": {
+              "N": 499,
+              "p50": 104.09898181376624,
+              "p95": 115.06933201817739,
+              "end": 117.30732619997309
+            }
+          }
+        }
+      ],
+      "tracker": {
+        "candidates": 84,
+        "accepted": 81,
+        "accepted_raw_yaw_over5": 59,
+        "accepted_applied_yaw_over5": 59,
+        "reasons": {
+          "legacy_without_innovation": 84
+        }
+      },
+      "heading_statuses": {
+        "unknown_servo_settle": 407,
+        "unknown_yaw_observability": 399,
+        "unknown_static_support": 381,
+        "unknown_spatial_revalidation": 186,
+        "pending_next_rgb": 13,
+        "accepted": 109,
+        "unknown_repeated_rgb": 1,
+        "unknown_axis_ambiguity": 4
+      },
+      "criteria": {
+        "min_clearance_m": 0.012,
+        "max_tilt_deg": 10.0,
+        "lift_hold_s": 3.0,
+        "finger_min_n": 0.5,
+        "release_settle_s": 2.0,
+        "release_speed_m_s": 0.01,
+        "release_max_tilt_deg": 3.0,
+        "release_clearance_m": 0.005,
+        "weld": "off",
+        "placement": "every collision-box corner inside destination zone",
+        "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+        "detached": "no cargo/finger contact and open command",
+        "scope": "evaluation only; sub-100 ms drops not resolved"
+      },
+      "failure": null
+    },
+    {
+      "name": "reloc18-r1-visual-93315-a045584c",
+      "kind": "carry",
+      "condition": "visual",
+      "seed": 93315,
+      "source_sha": "a045584cf98c7ad0a723063c6afea2e6d43629f8",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r1-visual-93315-a045584c/raw",
+      "status": "complete",
+      "termination": "carry_reacquire_unconfirmed",
+      "valid_for_comparison": true,
+      "exit_code": "0",
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-visual-93315-a045584c/task.json": "98cff3a182685754813676b695ef5e6734a56ab344c93de62edb1064dfe43902",
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-visual-93315-a045584c/raw/result.json.zst": "e8dceaca1566f0099629587ea8b39a7a08a79dd714623fd369bbdf92e9acae3e",
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-visual-93315-a045584c/raw/manifest.json.zst": "2392606d917a3d2b7944277f04f8222453dd06cbf140b82c2d57f236b0ce6b74"
+      },
+      "place_success": false,
+      "lift": true,
+      "phase": "failed",
+      "sim_s": 190.89999999718304,
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 154.26300347600045,
+        "wall_per_sim": 5.1421001425899915,
+        "top_capture": false
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 1456,
+        "blocked_held": 366,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 60,
+          "align": 16,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "phases": {
+        "fold": 6,
+        "pickup_search": 1,
+        "approach": 60,
+        "align": 16,
+        "hover": 10,
+        "descent": 16,
+        "close": 12,
+        "lift": 16,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 10,
+        "carry_to_zone": 197,
+        "carry_recover_lower": 10,
+        "carry_recover_open": 7,
+        "carry_recover_retract": 18,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 382,
+        "carry_recover_restore": 11,
+        "carry_reacquire": 998,
+        "failed": 1
+      },
+      "gate_reasons": {
+        "scene_wall_unobservable_pose_budget": 1,
+        "accepted_replan": 1
+      },
+      "gate_cumulative": {
+        "started": 1,
+        "lift_success": 1,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "errors": {
+        "xy": {
+          "N": 1910,
+          "p50": 1.2364172953047334,
+          "p95": 1.357099563670056,
+          "end": 1.2502318801137486
+        },
+        "yaw": {
+          "N": 1910,
+          "p50": 68.96067638075732,
+          "p95": 95.11202839638767,
+          "end": 97.42886781018721
+        },
+        "command_xy": {
+          "N": 1910,
+          "p50": 0.2104837292582193,
+          "p95": 0.26033250452323686,
+          "end": 0.2434429351138554
+        },
+        "command_yaw": {
+          "N": 1910,
+          "p50": 16.436688016438588,
+          "p95": 44.867332076238945,
+          "end": 45.30508384646793
+        }
+      },
+      "drift_bins": [
+        {
+          "sim_interval": [
+            0,
+            50
+          ],
+          "errors": {
+            "xy": {
+              "N": 500,
+              "p50": 0.04424873603483348,
+              "p95": 0.2042895531752515,
+              "end": 0.18011784716829998
+            },
+            "yaw": {
+              "N": 500,
+              "p50": 1.2793021353000147,
+              "p95": 2.136436236692312,
+              "end": 1.0230240289960988
+            },
+            "command_xy": {
+              "N": 500,
+              "p50": 0.06203572509899817,
+              "p95": 0.29599902334079664,
+              "end": 0.2773872610407638
+            },
+            "command_yaw": {
+              "N": 500,
+              "p50": 1.2100685073440576,
+              "p95": 1.8906138474204153,
+              "end": 0.8881405655218926
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            50,
+            100
+          ],
+          "errors": {
+            "xy": {
+              "N": 501,
+              "p50": 0.0989167229545637,
+              "p95": 1.3939483286551058,
+              "end": 1.359508791926289
+            },
+            "yaw": {
+              "N": 501,
+              "p50": 7.7760947101288815,
+              "p95": 83.4384861114459,
+              "end": 72.93637620843229
+            },
+            "command_xy": {
+              "N": 501,
+              "p50": 0.1545652829901382,
+              "p95": 0.20359200607086556,
+              "end": 0.20755887459634603
+            },
+            "command_yaw": {
+              "N": 501,
+              "p50": 33.64363140757516,
+              "p95": 48.211261820333334,
+              "end": 18.205486938692907
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            100,
+            150
+          ],
+          "errors": {
+            "xy": {
+              "N": 500,
+              "p50": 1.3028893472315586,
+              "p95": 1.3567759579584278,
+              "end": 1.2995313457091335
+            },
+            "yaw": {
+              "N": 500,
+              "p50": 77.82763821026447,
+              "p95": 78.06881170936721,
+              "end": 77.09582263619824
+            },
+            "command_xy": {
+              "N": 500,
+              "p50": 0.21138258419021466,
+              "p95": 0.21256432852648743,
+              "end": 0.2110321337385298
+            },
+            "command_yaw": {
+              "N": 500,
+              "p50": 16.433872904734997,
+              "p95": 16.524970427097983,
+              "end": 15.5462461466294
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            150,
+            200
+          ],
+          "errors": {
+            "xy": {
+              "N": 409,
+              "p50": 1.2945847618419952,
+              "p95": 1.312401389316816,
+              "end": 1.2502318801137486
+            },
+            "yaw": {
+              "N": 409,
+              "p50": 82.73712121065444,
+              "p95": 98.65518553705438,
+              "end": 97.42886781018721
+            },
+            "command_xy": {
+              "N": 409,
+              "p50": 0.23401431784311633,
+              "p95": 0.26063321945515533,
+              "end": 0.2434429351138554
+            },
+            "command_yaw": {
+              "N": 409,
+              "p50": 19.404886311597945,
+              "p95": 40.82029859150391,
+              "end": 45.30508384646793
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            200,
+            250
+          ],
+          "errors": {
+            "xy": {
+              "N": 0
+            },
+            "yaw": {
+              "N": 0
+            },
+            "command_xy": {
+              "N": 0
+            },
+            "command_yaw": {
+              "N": 0
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            250,
+            300
+          ],
+          "errors": {
+            "xy": {
+              "N": 0
+            },
+            "yaw": {
+              "N": 0
+            },
+            "command_xy": {
+              "N": 0
+            },
+            "command_yaw": {
+              "N": 0
+            }
+          }
+        }
+      ],
+      "tracker": {
+        "candidates": 72,
+        "accepted": 59,
+        "accepted_raw_yaw_over5": 55,
+        "accepted_applied_yaw_over5": 55,
+        "reasons": {
+          "legacy_without_innovation": 72
+        }
+      },
+      "heading_statuses": {
+        "unknown_servo_settle": 330,
+        "unknown_yaw_observability": 381,
+        "unknown_static_support": 164,
+        "pending_next_rgb": 5,
+        "accepted": 40,
+        "unknown_spatial_revalidation": 35
+      },
+      "criteria": {
+        "min_clearance_m": 0.012,
+        "max_tilt_deg": 10.0,
+        "lift_hold_s": 3.0,
+        "finger_min_n": 0.5,
+        "release_settle_s": 2.0,
+        "release_speed_m_s": 0.01,
+        "release_max_tilt_deg": 3.0,
+        "release_clearance_m": 0.005,
+        "weld": "off",
+        "placement": "every collision-box corner inside destination zone",
+        "retention": "every 10 Hz carry sample: clearance >=12 mm and both fingers >=0.5 N",
+        "detached": "no cargo/finger contact and open command",
+        "scope": "evaluation only; sub-100 ms drops not resolved"
+      },
+      "failure": null
+    },
+    {
+      "name": "reloc18-r1-command_only-93266-a045584c",
+      "kind": "carry",
+      "condition": "command_only",
+      "seed": 93266,
+      "source_sha": "a045584cf98c7ad0a723063c6afea2e6d43629f8",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r1-command_only-93266-a045584c/raw",
+      "status": "interrupted",
+      "termination": null,
+      "valid_for_comparison": false,
+      "exit_code": "-2",
+      "invalid_reason": {
+        "category": "instrumentation_error",
+        "reason": "pose restored but tracker accepted_fix counters and distance epoch were not restored; invalid command-only control",
+        "supervisor_stop": "SIGINT task-owned timeout PID",
+        "pid": 324762,
+        "time": "2026-10-15T21:30:18.665817+00:00"
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-command_only-93266-a045584c/task.json": "1a120e0a1aa4b32f9557ed2acd37c8d28ef771a076b54054ebe51aff9241071a",
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-command_only-93266-a045584c/raw/result.json": "5150e9e65411823fbc9106e7f865d6108fd6aa7ba9889197b095f18aa7956b6e",
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-command_only-93266-a045584c/raw/manifest.json.zst": "1cb4333aa69ed0ef6881309205647adfb08161f85b57e9ed47c1097e68f3aac0"
+      },
+      "place_success": false,
+      "lift": null,
+      "phase": null,
+      "sim_s": null,
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 156.25500359299986,
+        "wall_per_sim": 5.208500132423173,
+        "top_capture": false
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 244,
+        "blocked_held": 379,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 269,
+          "align": 27,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "phases": {
+        "fold": 6,
+        "pickup_search": 58,
+        "approach": 269,
+        "align": 27,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 10,
+        "carry_to_zone": 210,
+        "carry_recover_lower": 11,
+        "carry_recover_open": 8,
+        "carry_recover_retract": 19,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 116
+      },
+      "gate_reasons": {},
+      "gate_cumulative": {
+        "started": 1,
+        "lift_success": 0,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "errors": {
+        "xy": {
+          "N": 924,
+          "p50": 0.422868371094847,
+          "p95": 0.6144234156494719,
+          "end": 0.3972042861579014
+        },
+        "yaw": {
+          "N": 924,
+          "p50": 10.028273110166811,
+          "p95": 22.308732526749694,
+          "end": 6.262820421893147
+        },
+        "command_xy": {
+          "N": 924,
+          "p50": 0.42286837109484754,
+          "p95": 0.6144234156494721,
+          "end": 0.39720428615790276
+        },
+        "command_yaw": {
+          "N": 924,
+          "p50": 10.028273110166811,
+          "p95": 22.308732526749694,
+          "end": 6.262820421893147
+        }
+      },
+      "drift_bins": [
+        {
+          "sim_interval": [
+            0,
+            50
+          ],
+          "errors": {
+            "xy": {
+              "N": 500,
+              "p50": 0.36191569821090575,
+              "p95": 0.6166118021811982,
+              "end": 0.5781809810671068
+            },
+            "yaw": {
+              "N": 500,
+              "p50": 17.714124937628416,
+              "p95": 22.961424863477372,
+              "end": 21.736997958772108
+            },
+            "command_xy": {
+              "N": 500,
+              "p50": 0.36191569821090547,
+              "p95": 0.6166118021811986,
+              "end": 0.5781809810671071
+            },
+            "command_yaw": {
+              "N": 500,
+              "p50": 17.714124937628416,
+              "p95": 22.961424863477372,
+              "end": 21.736997958772108
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            50,
+            100
+          ],
+          "errors": {
+            "xy": {
+              "N": 424,
+              "p50": 0.4559503052102767,
+              "p95": 0.5781829529047687,
+              "end": 0.3972042861579014
+            },
+            "yaw": {
+              "N": 424,
+              "p50": 4.375760201733644,
+              "p95": 21.730728800317827,
+              "end": 6.262820421893147
+            },
+            "command_xy": {
+              "N": 424,
+              "p50": 0.4559503052102776,
+              "p95": 0.5781829529047691,
+              "end": 0.39720428615790276
+            },
+            "command_yaw": {
+              "N": 424,
+              "p50": 4.375760201733644,
+              "p95": 21.730728800317827,
+              "end": 6.262820421893147
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            100,
+            150
+          ],
+          "errors": {
+            "xy": {
+              "N": 0
+            },
+            "yaw": {
+              "N": 0
+            },
+            "command_xy": {
+              "N": 0
+            },
+            "command_yaw": {
+              "N": 0
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            150,
+            200
+          ],
+          "errors": {
+            "xy": {
+              "N": 0
+            },
+            "yaw": {
+              "N": 0
+            },
+            "command_xy": {
+              "N": 0
+            },
+            "command_yaw": {
+              "N": 0
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            200,
+            250
+          ],
+          "errors": {
+            "xy": {
+              "N": 0
+            },
+            "yaw": {
+              "N": 0
+            },
+            "command_xy": {
+              "N": 0
+            },
+            "command_yaw": {
+              "N": 0
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            250,
+            300
+          ],
+          "errors": {
+            "xy": {
+              "N": 0
+            },
+            "yaw": {
+              "N": 0
+            },
+            "command_xy": {
+              "N": 0
+            },
+            "command_yaw": {
+              "N": 0
+            }
+          }
+        }
+      ],
+      "tracker": {
+        "candidates": 20,
+        "accepted": 0,
+        "accepted_raw_yaw_over5": 0,
+        "accepted_applied_yaw_over5": 0,
+        "reasons": {
+          "legacy_without_innovation": 20
+        }
+      },
+      "heading_statuses": {
+        "reloc18_command_only": 462
+      },
+      "criteria": null,
+      "failure": null
+    },
+    {
+      "name": "reloc18-r1-command_only-93315-a045584c",
+      "kind": "carry",
+      "condition": "command_only",
+      "seed": 93315,
+      "source_sha": "a045584cf98c7ad0a723063c6afea2e6d43629f8",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc18-r1-command_only-93315-a045584c/raw",
+      "status": "interrupted",
+      "termination": null,
+      "valid_for_comparison": false,
+      "exit_code": "-2",
+      "invalid_reason": {
+        "category": "instrumentation_error",
+        "reason": "pose restored but tracker accepted_fix counters and distance epoch were not restored; invalid command-only control",
+        "supervisor_stop": "SIGINT task-owned timeout PID",
+        "pid": 324764,
+        "time": "2026-10-15T21:30:18.666014+00:00"
+      },
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-command_only-93315-a045584c/task.json": "070772fb969aac4e2bb368b21f3bcf0237ca8bf6fd893152c5982e59210568c4",
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-command_only-93315-a045584c/raw/result.json": "f214e260f8b0a734924010693e82be03b97772cabcecf0e7377aa30c83322768",
+        "/home/ugrp/ugrp-sim/runs/reloc18-r1-command_only-93315-a045584c/raw/manifest.json.zst": "2af65efb5a9b6f969b52ef69cbc9631964555b31f8a51e401a3fef275caf3231"
+      },
+      "place_success": false,
+      "lift": null,
+      "phase": null,
+      "sim_s": null,
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 154.85250589000134,
+        "wall_per_sim": 5.161750216789988,
+        "top_capture": false
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 445,
+        "blocked_held": 365,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 60,
+          "align": 16,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "phases": {
+        "fold": 6,
+        "pickup_search": 1,
+        "approach": 60,
+        "align": 16,
+        "hover": 10,
+        "descent": 16,
+        "close": 12,
+        "lift": 16,
+        "lift_settle": 32,
+        "lookback_pose": 11,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 10,
+        "carry_to_zone": 196,
+        "carry_recover_lower": 10,
+        "carry_recover_open": 7,
+        "carry_recover_retract": 18,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 332,
+        "carry_recover_restore": 11,
+        "carry_reacquire": 37
+      },
+      "gate_reasons": {},
+      "gate_cumulative": {
+        "started": 1,
+        "lift_success": 0,
+        "travel_entered": 1,
+        "authored_arrival": 0,
+        "place_view": 0,
+        "place_advance": 0,
+        "lower": 0,
+        "open": 0,
+        "place_success": 0
+      },
+      "errors": {
+        "xy": {
+          "N": 897,
+          "p50": 0.2951230638283976,
+          "p95": 0.37243654533448256,
+          "end": 0.31838130126413067
+        },
+        "yaw": {
+          "N": 897,
+          "p50": 1.7464008239255702,
+          "p95": 11.132618678853037,
+          "end": 11.453799446255863
+        },
+        "command_xy": {
+          "N": 897,
+          "p50": 0.295123063828393,
+          "p95": 0.3724365453344776,
+          "end": 0.3183813012641258
+        },
+        "command_yaw": {
+          "N": 897,
+          "p50": 1.7464008239255702,
+          "p95": 11.132618678853037,
+          "end": 11.453799446255863
+        }
+      },
+      "drift_bins": [
+        {
+          "sim_interval": [
+            0,
+            50
+          ],
+          "errors": {
+            "xy": {
+              "N": 500,
+              "p50": 0.06203572509899817,
+              "p95": 0.38112170348208235,
+              "end": 0.3749017236096969
+            },
+            "yaw": {
+              "N": 500,
+              "p50": 1.241450067545172,
+              "p95": 3.349569626577312,
+              "end": 2.5628609242871363
+            },
+            "command_xy": {
+              "N": 500,
+              "p50": 0.06203572509899817,
+              "p95": 0.3811217034820774,
+              "end": 0.37490172360969193
+            },
+            "command_yaw": {
+              "N": 500,
+              "p50": 1.241450067545172,
+              "p95": 3.349569626577312,
+              "end": 2.5628609242871363
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            50,
+            100
+          ],
+          "errors": {
+            "xy": {
+              "N": 397,
+              "p50": 0.341759176821265,
+              "p95": 0.3630960336707501,
+              "end": 0.31838130126413067
+            },
+            "yaw": {
+              "N": 397,
+              "p50": 7.456165980064498,
+              "p95": 11.855068326462426,
+              "end": 11.453799446255863
+            },
+            "command_xy": {
+              "N": 397,
+              "p50": 0.34175917682126006,
+              "p95": 0.36309603367074517,
+              "end": 0.3183813012641258
+            },
+            "command_yaw": {
+              "N": 397,
+              "p50": 7.456165980064498,
+              "p95": 11.855068326462426,
+              "end": 11.453799446255863
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            100,
+            150
+          ],
+          "errors": {
+            "xy": {
+              "N": 0
+            },
+            "yaw": {
+              "N": 0
+            },
+            "command_xy": {
+              "N": 0
+            },
+            "command_yaw": {
+              "N": 0
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            150,
+            200
+          ],
+          "errors": {
+            "xy": {
+              "N": 0
+            },
+            "yaw": {
+              "N": 0
+            },
+            "command_xy": {
+              "N": 0
+            },
+            "command_yaw": {
+              "N": 0
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            200,
+            250
+          ],
+          "errors": {
+            "xy": {
+              "N": 0
+            },
+            "yaw": {
+              "N": 0
+            },
+            "command_xy": {
+              "N": 0
+            },
+            "command_yaw": {
+              "N": 0
+            }
+          }
+        },
+        {
+          "sim_interval": [
+            250,
+            300
+          ],
+          "errors": {
+            "xy": {
+              "N": 0
+            },
+            "yaw": {
+              "N": 0
+            },
+            "command_xy": {
+              "N": 0
+            },
+            "command_yaw": {
+              "N": 0
+            }
+          }
+        }
+      ],
+      "tracker": {
+        "candidates": 21,
+        "accepted": 0,
+        "accepted_raw_yaw_over5": 0,
+        "accepted_applied_yaw_over5": 0,
+        "reasons": {
+          "legacy_without_innovation": 21
+        }
+      },
+      "heading_statuses": {
+        "reloc18_command_only": 449
+      },
+      "criteria": null,
+      "failure": null
+    }
+  ],
+  "reproduce": "PYTHONPATH=. python /home/ugrp/ugrp-sim/analysis-tools/reloc18-summarize.py --round 1",
+  "scope": "DEV; invalid and predetermined failure-window diagnostics excluded from adoption"
+}

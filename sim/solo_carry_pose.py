@@ -133,6 +133,7 @@ class CommandPose:
             self.heading = Heading(sample_s=.1 if reloc15_heading_10hz_v1 else .2,dense_v1=reloc15_dense_yaw_v1,quality_v1=reloc15_heading_quality_v1)
         self.last_dt = None
         self.reloc18_innovation=False
+        self.reloc18_pose_budget_observe_only=False
 
     @property
     def pose(self):
@@ -264,7 +265,8 @@ class CommandPose:
         sigma = self.sigmas()
         return (math.isfinite(now) and -.001 <= now-self.now <= .2+1e-8
                 and all(math.isfinite(v) for v in self.pose+sigma)
-                and max(sigma[:2]) <= MOTION_ERROR['max_xy_m'] and sigma[2] <= self.yaw_budget_limit())
+                and (self.reloc18_pose_budget_observe_only or
+                     (max(sigma[:2]) <= MOTION_ERROR['max_xy_m'] and sigma[2] <= self.yaw_budget_limit())))
 
     def yaw_budget_limit(self):
         # A correlated command envelope is not actual angular error. The 41deg

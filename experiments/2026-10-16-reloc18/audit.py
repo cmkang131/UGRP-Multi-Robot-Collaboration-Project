@@ -49,11 +49,14 @@ def audit():
             travel_samples=travel,
             source_hashes={str(f):hashlib.sha256(f.read_bytes()).hexdigest() for f in (p/'result.json',p/'result.json.zst',p/'teacher-commands.jsonl',p/'teacher-commands.jsonl.zst',p/'eval-only.jsonl',p/'eval-only.jsonl.zst') if f.exists()})
         reports.append(r)
+        r['cumulative_runs']=dict(started=1,lift_success=int(d['lift_success']),travel_entered=int(phases['carry_to_zone']>0),
+            authored_arrival=int(carry.get('map_arrival_estimated_t') is not None),place_view=int(phases['zone_place_view']>0),
+            place_advance=int(phases['zone_place_advance']>0),lower=int(phases['lower']>0),open=int(phases['open']>0),place_success=int(d['zone_placement_success']))
     data=dict(analysis_host='gcp2',scope='evaluation only; stage counts are ticks, not independent success trials',runs=reports,reproduce=f'python {__file__}')
     (OUT/'audit-full.json').write_text(json.dumps(data,indent=2)+'\n')
     lite=[{k:v for k,v in r.items() if k not in ('recovery_events','travel_samples')} for r in reports]
     (OUT/'audit.json').write_text(json.dumps(dict(data,runs=lite),indent=2)+'\n')
-    reject=dict(source=str(OUT/'audit-full.json'),reproduce=data['reproduce'],runs=[dict(run=r['run'],raw=r['raw'],cumulative=r['cumulative'],rejections=[dict(category=k,N=n,blocked_object='pose_uncertainty_budget' if 'budget' in k else 'original_recovery_event',minimum_gap_m=None,gap_scope='not_applicable_localization_or_missing_in_original') for k,n in r['rejection_reasons'].items()]) for r in reports])
+    reject=dict(source=str(OUT/'audit-full.json'),reproduce=data['reproduce'],runs=[dict(run=r['run'],raw=r['raw'],cumulative=r['cumulative_runs'],stage_tick_counts=r['cumulative'],rejections=[dict(category=k,N=n,blocked_object='pose_uncertainty_budget' if 'budget' in k else 'original_recovery_event',minimum_gap_m=None,gap_scope='not_applicable_localization_or_missing_in_original') for k,n in r['rejection_reasons'].items()]) for r in reports])
     (OUT/'rejection-table.json').write_text(json.dumps(reject,indent=2)+'\n')
     lines=['|run|travel ticks|place view/advance|lower/open|end|zone margin m|xy error m|reasons|','|---|---:|---:|---:|---|---:|---:|---|']
     for r in reports:

@@ -54,12 +54,15 @@ class Options:
     reloc15_pose_handoff_v1: bool = False
     reloc15_update_budget_v1: bool = False
     reloc18_innovation_v1: bool = False
+    reloc18_map_odom_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
         if type(self.reloc18_innovation_v1) is not bool or (self.reloc18_innovation_v1 and self.correction_safety=='off'):
             raise ValueError('reloc18 requires bool and pre-mutation correction safety')
+        if type(self.reloc18_map_odom_v1) is not bool or (self.reloc18_map_odom_v1 and not (self.reloc18_innovation_v1 and self.reloc15_pose_handoff_v1)):
+            raise ValueError('map-odom requires reloc18 innovation and timestamped handoff')
         for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1', 'reloc15_pose_handoff_v1', 'reloc15_update_budget_v1'):
             if type(getattr(self, name)) is not bool or (getattr(self, name) and self.multiframe_registration == 'off'):
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
@@ -214,6 +217,10 @@ class SelfMapIntegration:
             raise ValueError('EXPLICIT_SELF_MAP_INTEGRATION_REQUIRED')
         self.robot_id = robot_id
         self.reloc18_previous_t=float(start_time)
+        self.map_odom_filter=None
+        if self.options.reloc18_map_odom_v1:
+            from harness.reloc18_map_odom import MapOdomFilter
+            self.map_odom_filter=MapOdomFilter()
         self.recovery = self.options.recovery_profile != 'off'
         self.registration = None
         if self.recovery:
@@ -546,6 +553,10 @@ class SelfMapIntegration:
             if anchor is not None:
                 a=anchor[2];c,s=math.cos(a),math.sin(a)
                 self.correction_gate.rotation=np.array([[c,s,0],[-s,c,0],[0,0,1]])
+        if self.map_odom_filter is not None:
+            # Each RGB map measurement is consumed ONCE by the global filter.
+            # Local command odometry and the local landmark grid stay continuous.
+            static_pose=None
         predicted_covariance = _motion_covariance(self.slam.pose, self.delta, self.slam.covariance, self.Q)
         if self.options.revision_gate != 'off':
             from harness.selfmap5_revision import issued_distance
@@ -597,6 +608,18 @@ class SelfMapIntegration:
             self.slam.trajectory[-1].update(pose=event['pose'], covariance=event['covariance'],
                                             source=event['status'])
         self.delta, self.Q = np.zeros(3), np.zeros((3, 3))
+        if self.map_odom_filter is not None and self.registration.map_from_own is not None:
+            reg=self.registration.last
+            anchor,detail=self.map_odom_filter.step(t=t,odom=self.odom.pose,local_pose=self.slam.pose,
+                world_pose=reg['world_pose'],measurement_covariance=reg['raw_covariance'],
+                fresh=bool(reg['updated'] and self.registration.execution_r7_admitted),
+                registered=bool(reg['registered'] and self.registration.execution_r7_admitted))
+            if anchor is not None:
+                self.registration.map_from_own=anchor
+                self.registration.execution_handoff=True
+                reg['reloc12']['map_from_execution']=anchor.tolist()
+                reg['filtered_world_pose']=detail['world_pose']
+                reg['map_odom']=detail
         pose, cov = self.slam.pose, self.slam.covariance
         sigma_xy = math.sqrt(max(0., float(np.linalg.eigvalsh(cov[:2, :2]).max())))
         sigma_yaw = math.sqrt(max(0., float(cov[2, 2])))

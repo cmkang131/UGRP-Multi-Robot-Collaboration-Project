@@ -19,3 +19,12 @@ pose의 x/y/yaw 세 성분 관측이므로 자유도 3, 유의수준 .01(기존 
 이는 반복 융합 완화용 설계이며 완전한 독립성은 **미확인**이다.
 
 근거리 파지 경로·place 판정 조건·카메라·물리·질감은 바꾸지 않는다.
+
+## 지도/odometry 분리 참고
+
+- [ROS REP105 공식 소스](https://raw.githubusercontent.com/ros-infrastructure/rep/master/rep-0105.rst): odom은 연속적이나 장기 드리프트가 가능하고 map은 전역 위치를 제공하는 프레임 의미를 확인했다. ros.org 렌더링 페이지는 접근 차단되어 공식 저장소 원문으로 확인했다.
+- [Nav2 AMCL 공식 구현](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/amcl_node.cpp): `calculateMaptoOdomTransform`·`sendMapToOdomTransform`에서 map→base 추정과 odom→base로 map→odom을 계산하는 부분 확인. 우리 수용기에서의 관측 독립성/정확도를 이 코드가 보장하지는 않는다.
+
+R3의map→odom 설계는 위 프레임 분리를 따른다. 동일 RGB 지도 측정을 두 곳에 융합하지 않는다.
+DEV 위치 예산 observe-only는 새 문헌 상수가 아니라 프로젝트 AGENTS의2026-10-05
+dev_light 규칙(불확실성 정지를 would-stop으로 기록)의 명시적 별도 조건이다.

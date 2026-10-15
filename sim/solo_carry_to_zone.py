@@ -183,6 +183,10 @@ class CarryToZone:
         self.recovery_reason = None
         self.recovery_events = []
         self.recovery_count = 0
+        self.reloc18_pose_budget_observe_only=False
+        self.reloc18_budget_ticks=0
+        self.reloc18_budget_first_t=None
+        self.reloc18_budget_last_t=None
         self.recovery_anchor = None
         self.stalled_recoveries = 0
         if zone not in ('A', 'B', 'C') or 'zone_'+zone not in static['regions']:
@@ -317,6 +321,16 @@ class CarryToZone:
         sigma = self.loc.sigmas()
         # Reserve 20% of unchanged hard limits for stopping/setdown/backoff.
         if not self.loc.ready(now) or self.needs_budget():
+            if self.reloc18_pose_budget_observe_only and self.loc.ready(now):
+                # Existing AGENTS dev_light (2026-10-05): uncertainty stops
+                # record where they would stop and continue. The unchanged
+                # pose/time/finite input checks still fail closed. This is a
+                # separate explicit diagnostic condition, never a new sigma
+                # threshold or a physical-success criterion.
+                self.reloc18_budget_ticks+=1
+                if self.reloc18_budget_first_t is None:self.reloc18_budget_first_t=now
+                self.reloc18_budget_last_t=now
+                return False
             # Missing wall RGB retains command prediction until the EXISTING budget
             # requires setdown/relook. No loaded arm sweep or new timeout.
             heading=self.loc.heading
@@ -422,6 +436,10 @@ class CarryToZone:
                 'path': self.path, 'static_route_only': False, 'obstacles': self.obstacles.record(),
                 'rejection_context': self.rejection_context,
                 'held_world_reads': 0, 'physical_success': None,
+                **({'reloc18_pose_budget_observe_only_v1':True,'would_stop_pose_budget':dict(
+                    N=self.reloc18_budget_ticks,first_t=self.reloc18_budget_first_t,last_t=self.reloc18_budget_last_t,
+                    category='pose_uncertainty',blocked_object='own_command_pose_budget',minimum_gap_m=None,
+                    gap_scope='not_applicable_localization_gate',thresholds_changed=False)} if self.reloc18_pose_budget_observe_only else {}),
                 **({'reloc12_carry_reacquire_v1': True, 'reacquire_turn_rad': self.reacquire_turn_rad}
                    if self.reloc12_reacquire else {}),
                 **({'carry7_robust_recovery_v1': True} if self.robust_recovery_v1 else {}),

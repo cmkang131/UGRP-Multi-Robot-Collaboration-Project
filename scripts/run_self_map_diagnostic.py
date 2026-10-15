@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recovery_profile='off',
            revision_gate='off', multiframe_registration='off', render_profile='floor_light_v1', correction_safety='off', active_relocalization='off',
            reloc9_rotation_calibration_v1=False, reloc9_wall_height_guard_v1=False,
-           reloc10_settle_v1=False, reloc10_registration_v1=False, reloc11_timing_v1=False, reloc11_half_rate_v1=False, reloc11_wall_field_v1=False, reloc11_low_contrast_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False, reloc13_live_r7_v1=False, reloc14_continuous_tracking_v1=False, reloc14_compute_budget_v1=False, reloc15_pose_handoff_v1=False, reloc15_update_budget_v1=False, reloc17_servo_wait_v1=False, reloc18_innovation_v1=False):
+           reloc10_settle_v1=False, reloc10_registration_v1=False, reloc11_timing_v1=False, reloc11_half_rate_v1=False, reloc11_wall_field_v1=False, reloc11_low_contrast_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False, reloc13_live_r7_v1=False, reloc14_continuous_tracking_v1=False, reloc14_compute_budget_v1=False, reloc15_pose_handoff_v1=False, reloc15_update_budget_v1=False, reloc17_servo_wait_v1=False, reloc18_innovation_v1=False,reloc18_map_odom_v1=False):
     from harness.active_camera import SEARCH
     if not math.isfinite(cap_s) or not 1 <= cap_s <= 300 or abs(cap_s*10-round(cap_s*10)) > 1e-8:
         raise ValueError('CAP_MUST_BE_0_1S_GRID_IN_1_TO_300')
@@ -126,6 +126,8 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
             reloc18_innovation_v1=reloc18_innovation_v1)
     if reloc18_innovation_v1:
         result['options']['reloc18_innovation_v1']=True
+    Options(recovery_profile=recovery_profile,revision_gate=revision_gate,multiframe_registration=multiframe_registration,correction_safety=correction_safety,**reloc12,reloc18_innovation_v1=reloc18_innovation_v1,reloc18_map_odom_v1=reloc18_map_odom_v1)
+    if reloc18_map_odom_v1:result['options']['reloc18_map_odom_v1']=True
     Options(recovery_profile=recovery_profile, reloc11_wall_field_v1=reloc11_wall_field_v1,
             reloc11_low_contrast_v1=reloc11_low_contrast_v1)
     if reloc11_wall_field_v1:
@@ -258,7 +260,7 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         for option in ('revision_gate', 'multiframe_registration', 'correction_safety', 'active_relocalization'):
             if b['options'].get(option, 'off') != 'off':
                 extra[option] = b['options'][option]
-        for option in ('reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc10_settle_v1', 'reloc10_registration_v1', 'reloc11_wall_field_v1', 'reloc11_low_contrast_v1', 'reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1', 'reloc15_pose_handoff_v1', 'reloc15_update_budget_v1', 'reloc17_servo_wait_v1', 'reloc18_innovation_v1'):
+        for option in ('reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc10_settle_v1', 'reloc10_registration_v1', 'reloc11_wall_field_v1', 'reloc11_low_contrast_v1', 'reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1', 'reloc15_pose_handoff_v1', 'reloc15_update_budget_v1', 'reloc17_servo_wait_v1', 'reloc18_innovation_v1','reloc18_map_odom_v1'):
             if b['options'].get(option, False):
                 extra[option] = True
         controller = controller_factory(self_map_executor=OPTION, robot_id=robot,
@@ -400,6 +402,7 @@ def main(argv=None):
     p.add_argument('--failure-rgb-buffer', action='store_true', help='record-only 10Hz last 10 SIM seconds')
     p.add_argument('--reloc17-servo-wait-v1', action='store_true')
     p.add_argument('--reloc18-innovation-v1',action='store_true')
+    p.add_argument('--reloc18-map-odom-v1',action='store_true')
     p.add_argument('--reloc14-compute-budget-v1', action='store_true')
     p.add_argument('--reloc14-continuous-tracking-v1', action='store_true')
     p.add_argument('--reloc13-live-r7-v1', action='store_true')
@@ -434,7 +437,7 @@ def main(argv=None):
                reloc15_pose_handoff_v1=a.reloc15_pose_handoff_v1,
                reloc15_update_budget_v1=a.reloc15_update_budget_v1,
                reloc17_servo_wait_v1=a.reloc17_servo_wait_v1,
-               reloc18_innovation_v1=a.reloc18_innovation_v1,
+               reloc18_innovation_v1=a.reloc18_innovation_v1,reloc18_map_odom_v1=a.reloc18_map_odom_v1,
                reloc11_wall_field_v1=a.reloc11_wall_field_v1, reloc11_low_contrast_v1=a.reloc11_low_contrast_v1,
                reloc9_rotation_calibration_v1=a.reloc9_rotation_calibration_v1,
                reloc9_wall_height_guard_v1=a.reloc9_wall_height_guard_v1)
