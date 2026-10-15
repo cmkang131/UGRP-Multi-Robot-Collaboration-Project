@@ -222,6 +222,12 @@ class WarpTransport(Transport):
             self.model_batch_audit={'mode':'same_static_model','varying_fields':[]}
         if sap_segmented_v1:
             self.wm.opt.broadphase=mjw.BroadphaseType.SAP_SEGMENTED
+        if getattr(self,'batch_sleep_v1',False):
+            from warp_act_sleep import install
+            lengths=np.concatenate([model.dof_length for model in models]).astype(np.float32)
+            self.wm.dof_length=wp.array(lengths,dtype=float)
+            self.model_batch_audit['world_sleep']=install(int(m.nv),self.out)
+            self.model_batch_audit['world_sleep']['length_sha256']=hashlib.sha256(lengths.tobytes()).hexdigest()
         self.compat['broadphase']={'name':self.wm.opt.broadphase.name,'candidate':sap_segmented_v1,
             'basis':'pinned io.py439 default NXN; types.py124-135 upstream SAP_SEGMENTED; same geometry/contact parameters'}
         upstream_tolerance=float(self.wm.opt.tolerance.numpy().item())
@@ -293,6 +299,9 @@ class WarpTransport(Transport):
         self.camera['quality_requested']='no_mip_v1' if self.scene_v5_v1 else 'native'
         self.capacities = dict(nconmax=ncon,njmax=njmax,naconmax=int(self.wd.naconmax),nvmax=int(self.wd.nvmax),control_steps=self.control_steps,graph_chunk=self.graph_chunk,graph_repeats=self.graph_repeats)
         self.build_lookup(contexts[0]['world'].robot('r1'))
+        if getattr(self,'numpy_teacher_v1',False):
+            from warp_act_visibility import BatchVisibility
+            self.visibility=BatchVisibility(self,contexts)
         self.sync_render(contexts)
 
     def copy_initial_state(self, contexts):
@@ -380,6 +389,7 @@ class WarpTransport(Transport):
             return result,locations,scalar
         for obj in converted:
             arr,loc,scalar=flatten(obj);arrays.append(arr);objects.append(loc);scalars.append(scalar)
+            if getattr(self,'batch_sleep_v1',False):arr.pop('dof_length')
         if any(scalar!=scalars[0] for scalar in scalars[1:]):
             raise ValueError('converted model scalar/topology/options differ')
         changed=varying_model_arrays(arrays,batchable)
@@ -506,6 +516,10 @@ class WarpTransport(Transport):
         start=time.perf_counter()
         image=np.clip(self.device_rgb.numpy()*255,0,255).astype(np.uint8)
         qpos,qvel=self.wd.qpos.numpy(),self.wd.qvel.numpy()
+        transforms=None
+        if getattr(self,'numpy_teacher_v1',False):
+            transforms={name:getattr(self.wd,name).numpy() for name in ('xpos','xmat','geom_xpos','geom_xmat','cam_xpos','cam_xmat')}
+            self.visibility.update(transforms)
         if not np.isfinite(qpos).all() or not np.isfinite(qvel).all():
             raise RuntimeError('nonfinite Warp state')
         self.rgb=[]
@@ -517,8 +531,11 @@ class WarpTransport(Transport):
             d=c['world'].data
             d.qpos[:]=qpos[i];d.qvel[:]=qvel[i];d.time=self.origin+self.tick*.1
             # Perception mirror only, no C physics or C contact-force reconstruction.
-            mujoco.mj_kinematics(c['world'].model,d)
-            mujoco.mj_camlight(c['world'].model,d)
+            if transforms is None:
+                mujoco.mj_kinematics(c['world'].model,d)
+                mujoco.mj_camlight(c['world'].model,d)
+            else:
+                for name,value in transforms.items():getattr(d,name)[:]=value[i].reshape(getattr(d,name).shape)
         self.seconds['readback_remap_jpeg_kinematics']+=time.perf_counter()-start
         self.force_out.zero_()
         d=self.wd

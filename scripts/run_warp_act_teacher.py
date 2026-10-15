@@ -45,6 +45,8 @@ def parser():
     p.add_argument('--reset-check-v1',action='store_true',help='diagnostic only: reset selected initial state; no teacher rollout or gate')
     p.add_argument('--scene-v5-v1',action='store_true',help='default OFF: selected indigo110_s80 walls + v1 floor + no_mip_v1')
     p.add_argument('--initialize-only',action='store_true',help='first-state/RGB proof only; no rollout')
+    p.add_argument('--numpy-teacher-v1',action='store_true',help='default OFF: NumPy IK, GPU batched visibility and direct GPU transforms')
+    p.add_argument('--batch-sleep-v1',action='store_true',help='default OFF: exact world-indexed dof lengths for pinned upstream sleep')
     p.add_argument('--export-compiled-only',action='store_true')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
@@ -119,8 +121,13 @@ def main():
     write(a.out/'summary.json',report)
     hooks=(WarpTransport if a.physics_backend=='mjwarp_batch_v1' else CTransport)(host,source_sha,a.physics_backend,a.out,native_sleep_policy_compat_v1=a.native_sleep_policy_compat_v1)
     hooks.scene_v5_v1=a.scene_v5_v1
+    hooks.numpy_teacher_v1=a.numpy_teacher_v1
+    hooks.batch_sleep_v1=a.batch_sleep_v1
+    report.update(numpy_teacher_v1=a.numpy_teacher_v1,batch_sleep_v1=a.batch_sleep_v1,
+        teacher_scheduling='independent per-world Python state machines',
+        teacher_numerics='NumPy 51-pitch IK + GPU batched rays/transforms' if a.numpy_teacher_v1 else 'frozen scalar')
     generators=[];contexts=[];active=np.ones(a.nworld,bool);reports={};ticks=np.zeros(a.nworld,int)
-    start=time.perf_counter();loop_start=None
+    start=time.perf_counter();loop_start=None;native_guards={}
     try:
         for i in range(a.nworld):
             gen=episode(world_plans[i],a.out/f'world-{i:03d}',hooks=hooks,world_index=i,execution_host='gcp2',
@@ -166,6 +173,14 @@ def main():
                 report.update(status='reset_diagnostic_complete',reset_proof=reset,physics_rollout_steps=0)
                 return
         report['setup_compile_s']=time.perf_counter()-start
+        if a.numpy_teacher_v1:
+            if a.physics_backend!='mjwarp_batch_v1':raise ValueError('NumPy teacher transport is Warp-only')
+            def forbidden_native(*args,**kwargs):
+                raise RuntimeError('scalar C ray/kinematics forbidden during numpy_teacher_v1 rollout')
+            for name in ('mj_ray','mj_kinematics','mj_camlight'):
+                native_guards[name]=getattr(mujoco,name)
+                setattr(mujoco,name,forbidden_native)
+            report['runtime_native_ray_kinematics_guard']=True
         loop_start=time.perf_counter()
         while active.any():
             decision_start=time.perf_counter()
@@ -192,6 +207,7 @@ def main():
             traceback=traceback.format_exc())
         raise
     finally:
+        for name,value in native_guards.items():setattr(mujoco,name,value)
         for gen in generators:gen.close()
         hooks.save_states()
         if hasattr(hooks,'solver_samples'):

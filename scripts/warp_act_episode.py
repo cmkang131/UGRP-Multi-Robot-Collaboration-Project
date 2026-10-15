@@ -95,6 +95,9 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
     start = time.monotonic()
     audit, visibility_stats, score = InputAudit(), VisibilityStats(), Score()
     ops = primitives()
+    if getattr(hooks,'numpy_teacher_v1',False):
+        from warp_act_numpy import solve_grip_site_ik
+        ops.ik=solve_grip_site_ik
     try:
         # Scene hardware/camera/physics are exactly the existing pair setup.
         if getattr(hooks,'scene_v5_v1',False):
@@ -137,11 +140,17 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                 self.body_gids = {}
 
         eyes = ObjectEyes()
+        if getattr(hooks,'numpy_teacher_v1',False):
+            eyes.region_visible=lambda data,rid,gids: hooks.visibility.region_visible(world_index,gids)
         bid = model.body(body_name).id
         gids = [g for g in range(model.ngeom) if model.geom_bodyid[g] == bid and model.geom_contype[g]]
         if not gids:
             raise ValueError('production cargo collision geoms required')
         target_set = set(gids)
+        visibility_gids=set(gids)
+        if getattr(hooks,'numpy_teacher_v1',False):
+            for body in range(model.nbody):visibility_gids.update(eyes._body_geoms(body))
+            visibility_gids.update(g for g in range(model.ngeom) if 'wall' in (model.geom(g).name or ''))
         finger_ids = {model.geom(rid+'__'+s+'_finger').id: i for i, s in enumerate(('left', 'right'))}
         initial_xy = data.body(body_name).xpos[:2].copy()  # EVALUATION ONLY
         last_eval_pos, last_eval_t = None, None
@@ -277,7 +286,8 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
         negative_eval = {'N': 0, 'max_clearance_m': 0., 'max_pickup_offset_m': 0.}
         tick = 0
         yield {'kind': 'setup', 'world': world, 'port': port, 'gids': gids,
-               'finger_ids': finger_ids, 'body_name': body_name, 'origin': origin}
+               'finger_ids': finger_ids, 'body_name': body_name, 'origin': origin,
+               'visibility_gids':sorted(visibility_gids)}
         while float(data.time)-origin < cap_s-1e-8:
             if (out/'SUPERVISOR_STOP.json').exists():
                 raise KeyboardInterrupt('supervisor stopped this run')
