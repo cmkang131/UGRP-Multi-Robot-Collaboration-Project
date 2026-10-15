@@ -27,3 +27,14 @@ def test_wall_only(name,map_path):
 def test_default_unchanged():
     assert for_name(None).resolve(None) is None
     with pytest.raises(ValueError):v5.resolve(None)
+
+@pytest.mark.parametrize('name',list(v5.PROFILES))
+def test_nearclip_binding(name):
+    from sim.final_pair_highpose_nearclip import wrap
+    class Scene:
+        def transform(self,xml):
+            self.manifest={}
+            return xml
+    scene=wrap(v5.install(Scene(),name))
+    scene.transform(scene_xml())
+    assert scene.manifest['render_nearclip']['base_profile']==name
