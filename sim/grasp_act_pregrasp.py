@@ -215,6 +215,10 @@ def band_view(world, rid, end, base, previous, *, navigation=None):
     return count, view
 
 
+def passed(row, stage):
+    if 'passed_gates' in row:row['passed_gates'].append(stage)
+
+
 def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=None, choices=None, navigation=None):
     from sim.grasp_act_goal_set import geometry, ANGLES_DEG
     from sim.grasp_act_recovery import AXIAL_CHOICES
@@ -233,6 +237,9 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         pose, point, heading, goal = geometry(world, rid, end, choice)
         row = {'offset_deg': math.degrees(choice[0]), 'distance_m': choice[1], 'goal': goal}
         if hasattr(navigation,'body_dependency'):row['checker_dependencies']={'body':navigation.body_dependency,'connector':navigation.connector_dependency}
+        from sim.grasp_act_search27 import enabled as search27
+        if hasattr(navigation,'teacher') and search27(navigation.teacher):
+            row.update(population='endpoint' if getattr(navigation,'endpoint_only',False) else 'full',passed_gates=[])
         checked.append(row)
         try:
             if hasattr(navigation,'teacher') and navigation.teacher.search15_modes.get('search24_irm','off')!='off':
@@ -240,19 +247,24 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
                 hover,descent=certified_poses(choice[1],point[2])
             else:hover,descent=grasp_poses((choice[1],0.,point[2]))
         except ValueError:row['reason'] = 'ik_unreachable';continue
+        passed(row,'IRM')
         row['jaw_geometry'] = jaw_geometry(choice[0], descent[-1])
         if not row['jaw_geometry']['allowed']:row['reason'] = 'gripper_angle';continue
+        passed(row,'jaw')
         x0, x1, y0, y1 = bounds
         if not (x0+radius <= goal[0] <= x1-radius and y0+radius <= goal[1] <= y1-radius):
             row['reason'] = 'outside_bounds';continue
+        passed(row,'bounds')
         clear=free(goal,discs,rects,radius)
         if navigation is not None and hasattr(navigation,'candidate_audit'):
             row['collision_audit']=navigation.candidate_audit(goal,heading)
         if not clear:row['reason']='blocked_goal';continue
+        passed(row,'goal')
         retreat = (goal[0]-.06*math.cos(heading), goal[1]-.06*math.sin(heading))
         if not (x0+radius <= retreat[0] <= x1-radius and y0+radius <= retreat[1] <= y1-radius) or not segment_free(goal, retreat, discs, rects, radius):
             if hasattr(navigation,'last_blockers'):row['failure_audit']=list(navigation.last_blockers)
             row['reason'] = 'blocked_retreat';continue
+        passed(row,'retreat')
         endpoint_only=getattr(navigation,'endpoint_only',False)
         path = ([tuple(start)] if endpoint_only else navigation.path_for_goal(start,goal,discs,rects,radius)
                 if navigation is not None and hasattr(navigation,'path_for_goal') else
@@ -261,6 +273,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         if navigation is not None and hasattr(navigation,'last_path_audit'):
             row['path_audit']=navigation.last_path_audit
         if not path:row['reason'] = 'no_path';continue
+        if not endpoint_only:passed(row,'path')
         points = [tuple(start), *path]
         from sim.grasp_act_search27 import enabled as search27
         command_feasible=hasattr(navigation,'teacher') and search27(navigation.teacher)
@@ -270,6 +283,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         if not (endpoint_only and command_feasible) and not all(segment_free(a, b, discs, rects, radius) for a, b in zip(points, points[1:])):
             if hasattr(navigation,'last_blockers'):row['failure_audit']=list(navigation.last_blockers)
             row['reason'] = 'unsafe_body_sweep';continue
+        if not endpoint_only:passed(row,'body_path')
         base = (*goal, heading)
         visible, view = band_view(world, rid, end, base, previous, navigation=navigation)
         from sim.grasp_act_search26 import observed_band
@@ -282,6 +296,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         if visible < 5:
             if hasattr(navigation,'visibility_audit'):row['failure_audit']=list(navigation.visibility_audit)
             row['reason'] = 'band_not_visible';continue
+        passed(row,'view')
         if hasattr(navigation,'pick_cloud'):
             xyz,radii,allowed=navigation.pick_cloud(view,choice[1],point[2])
         elif navigation is not None and hasattr(navigation,'check_budget'):
@@ -292,7 +307,9 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         reason = collision_reason(world, rid, base, xyz, radii, allowed,audit=arm_audit)
         if arm_audit:row['failure_audit']=arm_audit
         if reason:row['reason'] = reason;continue
+        passed(row,'pick_arm')
         if endpoint_only:
+            passed(row,'endpoint')
             row['reason']='endpoint_feasible'
             navigation.endpoints.append({'choice':choice,'goal':goal,'heading':heading})
             continue
@@ -328,6 +345,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
                 before=after;prior=(*xy,yaw)
             if reason:break
         if reason:row['reason'] = 'connector_'+reason;continue
+        passed(row,'connector')
         if command_feasible:
             from sim.grasp_act_search27 import first_command
             ok,certificate=first_command(navigation,path,goal,point,previous)
@@ -336,6 +354,8 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
                 row['reason']='first_command_invalid'
                 row['failure_audit']=[d for c in certificate.get('checks',[]) for d in c.get('blockers',[])]
                 continue
+        passed(row,'first_command')
+        passed(row,'feasible')
         cost = sum(math.dist(a, b) for a, b in zip(points, points[1:]))+.06+.02*abs(wrap(heading-pose[2]))
         row.update(reason='feasible', cost=cost, arm_sweep=True, body_sweep=True, retreat=retreat)
         feasible.append({'choice': choice, 'goal': goal, 'heading': heading, 'path': path, 'cost': cost})

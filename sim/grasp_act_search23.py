@@ -399,10 +399,15 @@ def fallback(t,world,now,choices):
     nav=BodyNavigation(t,world,admission=True);nav.endpoint_only=True
     from sim.grasp_act_search24 import enabled as irm, choices_for_world
     if irm(t):choices=choices_for_world(t,world)
+    from sim.grasp_act_search27 import enabled as search27
+    detailed=search27(t);endpoint_logged=False
     t.search22_targets={};rows=[]
     try:
         _,rows=select_sampled_goal(world,t.rid,t.end,t.bounds,t.folded_ready,
             t.sink.pwm,choices=choices,navigation=nav)
+        if detailed:
+            from copy import deepcopy
+            record_candidates(t,world,deepcopy(rows),now);endpoint_logged=True
         nav.endpoint_only=False
         by_goal={tuple(e['goal']):e for e in nav.endpoints}
         while by_goal:
@@ -414,6 +419,7 @@ def fallback(t,world,now,choices):
             endpoint=by_goal.pop(tuple(path[-1]));nav.preplanned[tuple(path[-1])]=path
             selected,checked=select_sampled_goal(world,t.rid,t.end,t.bounds,t.folded_ready,
                 t.sink.pwm,choices=[endpoint['choice']],navigation=nav)
+            if detailed:record_candidates(t,world,checked,now)
             row=next(r for r in rows if r['offset_deg']==math.degrees(endpoint['choice'][0])
                 and r['distance_m']==endpoint['choice'][1])
             row.update(checked[0])
@@ -441,4 +447,15 @@ def fallback(t,world,now,choices):
         if t.search20_budget is not None and t.search20_budget.exhausted:
             for row in rows:
                 if row.get('reason') in (None,'endpoint_feasible'):row['reason']='planning_budget'
-        record_candidates(t,world,rows,now)
+        if not detailed:
+            record_candidates(t,world,rows,now)
+        else:
+            import sys
+            error=sys.exc_info()[1]
+            if error is not None or not endpoint_logged:
+                partial=nav.candidate_rows
+                from sim.grasp_act_search20 import PlanningSafetyCap
+                reason='cap_end' if isinstance(error,PlanningSafetyCap) else 'budget_incomplete'
+                for row in partial:
+                    if row.get('reason') is None:row['reason']=reason
+                if partial:record_candidates(t,world,partial,now)

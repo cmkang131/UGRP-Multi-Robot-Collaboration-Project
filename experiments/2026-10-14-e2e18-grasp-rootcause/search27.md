@@ -61,3 +61,14 @@ rejection_table 필수. 교사95%/40 관문·본 연구·실물 성공과 별개
 - https://ompl.kavrakilab.org/classompl_1_1geometric_1_1LazyPRM.html
   LazyPRM 유효성/graph 분리. 새 관측에서 validity 재개방, 정확한 의존성만 재사용.
 위 방법의 외부 성능을 우리 성공률·물리 안전 보장으로 옮기지 않는다.
+
+## R1 — 초기화 HOST_ERROR, 물리 분모 없음
+
+실행41f8b652e1726a85d2b0b90876226c9ff473bc57,
+`gcp1:/home/ugrp/ugrp-sim/runs/search27-r1-short6-41f8b652`.
+성공8312300의 v6 복사에 scenario ID/hash가 base로 남아 초기화에서 거부됐다.
+HOST_ERROR1·감독중단5, 완료0·물리0·후보/프레임0. 외곽EXIT0은 성공 판정이 아니다.
+먼저 만든 `search27-r1-rejection-table.json`은 이0개 관문과 전체 manifest 검증을 남긴다.
+계획의 별도v6 ID/hash를 고치고 비물리 사전검사에6장면 전부를 추가했다.
+R2부터는 endpoint와 full 검사 로그를 병합하지 않고 실제 passed_gates를 단계마다
+기록한다. budget/cap으로 중단된 불완전 행은 이미 통과한 관문만 남긴다.

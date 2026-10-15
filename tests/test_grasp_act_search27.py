@@ -82,3 +82,13 @@ def test_actual_frame_asymmetric_intrinsics():
     assert in_frame((-(CAMERA_CX_PX-1)/CAMERA_FX_PX,0.,1.))
     assert not in_frame((-(CAMERA_CX_PX+1)/CAMERA_FX_PX,0.,1.))
     assert not in_frame((0.,0.,-1.))
+
+
+def test_short_plan_all_six_scenario_hashes_validate_before_submission():
+    import json
+    from pathlib import Path
+    from sim.grasp_act_scene import validate_cargo_scene
+    plan=json.loads((Path(__file__).parents[1]/'experiments/2026-10-14-e2e18-grasp-rootcause/teacher-search27-short6-plan.json').read_text())
+    assert [(r['seed'],r.get('cargo_scene','off')) for r in plan['episodes']]==[
+        (315709,'off'),(315709,'cargo_v6'),(8311709,'off'),(8311709,'cargo_v6'),(8312300,'off'),(8312300,'cargo_v6')]
+    for row in plan['episodes']:validate_cargo_scene(row)
