@@ -35,7 +35,7 @@ def test_fresh_geometry_admits_checked_alternative_and_stale_does_not():
     assert not BodyNavigation(t,stale,admission=True).free(selected['goal'],[],[],.13)
 
 def test_empty_set_has_checked_motion_then_real_camera_scan_and_finite_replan():
-    t=teacher();w=deepcopy(FIX['world']);now=FIX['t'];schedule(t,w,now)
+    t=teacher();w=deepcopy(FIX['world']);now=FIX['t'];schedule(t,w,now,force=True)
     before=dict(t.sink.pwm);value,done=recovery_step(t,w,now+.1,before)
     assert any(value['wheels']) and not done and admitted(t,w,value,before)
     previous=t.sink.pwm[6]
@@ -43,5 +43,13 @@ def test_empty_set_has_checked_motion_then_real_camera_scan_and_finite_replan():
     assert t.sink.pwm[6]!=previous
     recovery_step(t,w,now+1.5,dict(t.sink.pwm))
     assert t.search21_recovery is None and not t.approach_plan_valid
-    schedule(t,w,now+2);t.search21_recovery=None;schedule(t,w,now+4)
+    schedule(t,w,now+2,force=True);t.search21_recovery=None;schedule(t,w,now+4,force=True)
     assert t.search21_encounters==2 and t.search21_recovery is None
+
+
+def test_transient_empty_set_does_not_disrupt_existing_motion():
+    t=teacher();t.approach_blocked_since=FIX['t']
+    schedule(t,FIX['world'],FIX['t']+.1)
+    assert t.search21_recovery is None
+    schedule(t,FIX['world'],FIX['t']+2.)
+    assert t.search21_recovery is not None

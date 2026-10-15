@@ -813,7 +813,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self.sink.pwm.update(before);self.arm.commanded.update(before)
             self.approach_plan_valid=False
             if self.approach_blocked_since is None:self.approach_blocked_since=now
-            if now-self.approach_blocked_since>=self.APPROACH_BLOCKED_LIMIT_S:self._approach_handoff(now)
+            from sim.grasp_act_search21 import schedule
+            schedule(self,truth,now,force=True)
+            if self.approach_blocked_since is not None and now-self.approach_blocked_since>=self.APPROACH_BLOCKED_LIMIT_S:self._approach_handoff(now)
             self.next_plan=now+1.
             self.search20_log.append({'t':now,'event':'planning_budget_hold'})
             value=self._hold(now);self.last_command=deepcopy(value);self.last_tick=now

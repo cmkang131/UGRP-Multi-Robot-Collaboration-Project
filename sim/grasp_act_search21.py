@@ -62,6 +62,25 @@ class BodyNavigation(Search20Navigation):
             heading=a[2]+da*i/n) for i in range(n+1))
 
 
+    def plan_path(self,start,goal,bounds,discs,*,rects=(),radius=.13):
+        if not self.admission:return super().plan_path(start,goal,bounds,discs,rects=rects,radius=radius)
+        # Visibility-graph connectors before the grid search. Each complete
+        # polyline is swept with exactly the same body/arm/view checks.
+        heading=self.heading(goal);dx=goal[0]-start[0];dy=goal[1]-start[1]
+        norm=max(math.hypot(dx,dy),1e-9);normal=(-dy/norm,dx/norm)
+        routes=[[tuple(start),tuple(goal)]]
+        for back in (.15,.30,.45):
+            entry=(goal[0]-back*math.cos(heading),goal[1]-back*math.sin(heading))
+            for side in (0.,-.25,.25,-.5,.5):
+                mid=((start[0]+entry[0])/2+side*normal[0],(start[1]+entry[1])/2+side*normal[1])
+                routes.append([tuple(start),mid,entry,tuple(goal)])
+        for route in routes:
+            if all(self.segment_free(a,b,discs,rects,radius) for a,b in zip(route,route[1:])):
+                return route
+        # Keep work finite; the recovery skill handles an empty connector set.
+        return None
+
+
 def fallback(t,world,now,choices):
     """Stop at the first fully checked stance; no partial plan on budget expiry."""
     from sim.grasp_act_pregrasp import select_sampled_goal
@@ -80,11 +99,13 @@ def fallback(t,world,now,choices):
     return None,checked
 
 
-def schedule(t, world, now):
+def schedule(t, world, now, *, force=False):
     """Keep an executable reobserve skill after an empty stance set, twice only."""
     if not enabled(t) or t.outcome is not None or t.reobserver.active is not None:
         return
     if t.search21_recovery is not None or t.search21_encounters >= 2:
+        return
+    if not force and (t.approach_blocked_since is None or now-t.approach_blocked_since < 2.):
         return
     t.search21_encounters += 1
     t.search21_recovery = {'start':now,'origin':tuple(world['robots'][t.rid]['pose'][:2]),
