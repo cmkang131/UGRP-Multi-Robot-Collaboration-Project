@@ -1,0 +1,1090 @@
+{
+  "population_funnel": "/home/ugrp/ugrp-sim/ops-reviews/gatesv5/release-gate-analysis-a41781dd-attempt3/population-funnels.json",
+  "population_funnel_sha256": "fbfc4fd033361ccf5edb86e55e5b82dc401c161e0ae6904acd504d213cbf8a03",
+  "cohorts": {
+    "current_A": {
+      "N": 40,
+      "success": 31,
+      "categories": {
+        "success": 31,
+        "supervisor_stop": 7,
+        "failure": 1,
+        "not_started": 1
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 40,
+          "cumulative_passed": 39,
+          "rejected": 1
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 39,
+          "cumulative_passed": 39,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 39,
+          "cumulative_passed": 31,
+          "rejected": 8
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        }
+      ]
+    },
+    "current_B": {
+      "N": 40,
+      "success": 31,
+      "categories": {
+        "success": 31,
+        "supervisor_stop": 8,
+        "not_started": 1
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 40,
+          "cumulative_passed": 39,
+          "rejected": 1
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 39,
+          "cumulative_passed": 39,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 39,
+          "cumulative_passed": 31,
+          "rejected": 8
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "reason_distribution": {
+    "release21_fov_blocked": 3,
+    "execution_exception": 15,
+    "static_sweep": 2
+  },
+  "outcome_rejections": {
+    "supervisor_stop:KeyboardInterrupt": 14,
+    "failure:release23_sweep_blocked:wall_north": 1,
+    "supervisor_stop:release23_sweep_blocked:wall_north": 1
+  },
+  "rejection_ledger": [
+    {
+      "run": "gv5-release-gate-current_B-110622-a41781dd-retry1",
+      "t": 122.79999999882413,
+      "event": "release21_fov_blocked",
+      "count": 1,
+      "proposed_motion": [
+        0.0,
+        0.002276037445267669,
+        -0.0218163092193045
+      ],
+      "attempts": {
+        "recenter": 0,
+        "backoff": 0,
+        "reverse": 0
+      },
+      "robot": "r1",
+      "reason_category": "release21_fov_blocked",
+      "blocking_object": "own camera FOV boundary",
+      "minimum_gap": null,
+      "gap_unit": "pixel",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_A-110618-a41781dd-retry1",
+      "t": 31.400000000058917,
+      "event": "release21_fov_blocked",
+      "count": 1,
+      "proposed_motion": [
+        0.0,
+        0.0002953701883075986,
+        -0.007424941570933564
+      ],
+      "attempts": {
+        "recenter": 0,
+        "backoff": 0,
+        "reverse": 0
+      },
+      "robot": "r1",
+      "reason_category": "release21_fov_blocked",
+      "blocking_object": "own camera FOV boundary",
+      "minimum_gap": null,
+      "gap_unit": "pixel",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_A-110623-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_B-110623-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_A-110626-a41781dd-retry1",
+      "t": 34.300000000072764,
+      "event": "release21_fov_blocked",
+      "count": 1,
+      "proposed_motion": [
+        0.0,
+        -0.001663955817504465,
+        0.013727369822534773
+      ],
+      "attempts": {
+        "recenter": 0,
+        "backoff": 0,
+        "reverse": 0
+      },
+      "robot": "r2",
+      "reason_category": "release21_fov_blocked",
+      "blocking_object": "own camera FOV boundary",
+      "minimum_gap": null,
+      "gap_unit": "pixel",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_A-110630-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_B-110630-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_A-110631-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_B-110631-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_A-110633-a41781dd-retry1",
+      "t": 55.50000000017399,
+      "accepted": false,
+      "checks": [
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "map bounds",
+          "minimum_gap": -0.07428832630531082,
+          "gap_unit": "m",
+          "accepted": false
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": -0.09928832630531081,
+          "gap_unit": "m",
+          "accepted": false
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_south",
+          "minimum_gap": 3.7847988263464125,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_west",
+          "minimum_gap": 5.479699345019987,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.3432920430834949,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_1",
+          "minimum_gap": 2.4578084639988225,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_2",
+          "minimum_gap": 2.229699345019987,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "map bounds",
+          "minimum_gap": 0.2762920478946461,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": 0.2512920478946461,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_south",
+          "minimum_gap": 3.195950035683844,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_west",
+          "minimum_gap": 5.649116717960485,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.46893063357483555,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_1",
+          "minimum_gap": 2.4510657878132727,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_2",
+          "minimum_gap": 2.399116717960485,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "map bounds",
+          "minimum_gap": 0.3211260960062702,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": 0.8914604265097577,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_south",
+          "minimum_gap": 2.7905051089481323,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_west",
+          "minimum_gap": 5.521293869266965,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.2961260960062706,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_1",
+          "minimum_gap": 2.287952637960113,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_2",
+          "minimum_gap": 2.2712938692669646,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "map bounds",
+          "minimum_gap": 0.32790069904849706,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": 0.30290069904849704,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_south",
+          "minimum_gap": 3.1410749924029786,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_west",
+          "minimum_gap": 5.642185087822261,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.46680999964276015,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_1",
+          "minimum_gap": 2.447952637960113,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_2",
+          "minimum_gap": 2.3921850878222606,
+          "gap_unit": "m",
+          "accepted": true
+        }
+      ],
+      "reason_category": "static_sweep",
+      "blocking_object": "wall_north",
+      "minimum_gap": -0.09928832630531081,
+      "gap_unit": "m",
+      "computation_checks": 28,
+      "computation_budget": 28,
+      "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+    },
+    {
+      "run": "gv5-release-gate-current_B-110633-a41781dd-retry1",
+      "t": 53.90000000016635,
+      "accepted": false,
+      "checks": [
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "map bounds",
+          "minimum_gap": -0.07036089714876562,
+          "gap_unit": "m",
+          "accepted": false
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": -0.09536089714876561,
+          "gap_unit": "m",
+          "accepted": false
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_south",
+          "minimum_gap": 3.780761655218238,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_west",
+          "minimum_gap": 5.476480730400797,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.34552975133336883,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_1",
+          "minimum_gap": 2.453767901354304,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_2",
+          "minimum_gap": 2.226480730400797,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "map bounds",
+          "minimum_gap": 0.2802167215170196,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": 0.2552167215170196,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_south",
+          "minimum_gap": 3.1920343781870866,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_west",
+          "minimum_gap": 5.64644433302121,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.46912471685067914,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_1",
+          "minimum_gap": 2.451107752360617,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r1 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_2",
+          "minimum_gap": 2.3964443330212104,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "map bounds",
+          "minimum_gap": 0.32149213108577,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": 0.8922494219242043,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_south",
+          "minimum_gap": 2.7897770757167923,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_west",
+          "minimum_gap": 5.521511215782112,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.29649213108577044,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_1",
+          "minimum_gap": 2.2877252952598264,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_2",
+          "minimum_gap": 2.271511215782111,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "map bounds",
+          "minimum_gap": 0.32861302862912656,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": 0.30361302862912654,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_south",
+          "minimum_gap": 3.140351030857533,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_west",
+          "minimum_gap": 5.643624157692999,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_east",
+          "minimum_gap": 0.46685089124136514,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_1",
+          "minimum_gap": 2.4477252952598274,
+          "gap_unit": "m",
+          "accepted": true
+        },
+        {
+          "body": "r2 beam from own commands",
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_divider_2",
+          "minimum_gap": 2.3936241576929986,
+          "gap_unit": "m",
+          "accepted": true
+        }
+      ],
+      "reason_category": "static_sweep",
+      "blocking_object": "wall_north",
+      "minimum_gap": -0.09536089714876561,
+      "gap_unit": "m",
+      "computation_checks": 28,
+      "computation_budget": 28,
+      "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+    },
+    {
+      "run": "gv5-release-gate-current_B-110633-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_A-110634-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_B-110634-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_A-110635-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_B-110635-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_A-110636-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_B-110636-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_A-110637-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-gate-current_B-110637-a41781dd-retry1",
+      "reason_category": "execution_exception",
+      "blocking_object": "KeyboardInterrupt: ",
+      "minimum_gap": null,
+      "gap_unit": "nongeometric",
+      "gap_unknown_reason": "not observable from permitted input"
+    }
+  ],
+  "raw_sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110622-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "3d21e33a88ab41ca8912c39245fe54548759f8153a28b73f6f47fcec96759f3f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110622-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "5937e77c9ec69380e6dd68278f9aeb058120a9d36b8f058cea0bf202cb98fd87"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-88639-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "9db175cb2b161e68f43daec4df5e86300a140d926d3df4d8022dabcc3ce7270a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-88639-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "83d5ec92f353ab0f10035f4cdab53342cd70b2e70a2ac874665d7db83de330ec"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110600-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "85ea6a6e8578a175ed77e01fc08ef85de2c289c74fad631bd05110bd226dde22"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110600-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "e7445eab0f9267114b2dcd20db7b78818b499237c2fab6b7ee80949f57f1e7f4"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110601-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "5bf9cee78cdae6b86a8ca0a37eb5a7c77fbf53ac95ad977618a16817f3998329"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110601-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "8fb4e2356daecc21b60c507decb3faf546bb4e314c8604f28ba9e96a69a9ff15"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110602-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "9acdcaeb336b592518035864d6657b8e494e36c9075e721e2cc2d7d3b96e66ee"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110602-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "dab98118379e2ed2757d4e448dfa4614ef3947dc98b8c7fe0bd369e5dea67a9f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110603-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "eb305264a74a184afa2246bdd686497857a9aec09c279768427f4865cbd8f5e1"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110603-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "1a26b00e9f1a068ff0b7412c441b4b3eac63d048fd02a02c23d91721f54fb397"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110604-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "cd4cc3aaf8177f0a99f7462b5b42f9330f87f4a1c76cfa65cd5d53137cf18c5d"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110604-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "83715865543ae820b9b596306863a32ec373afa50411a6235d5421101e5829f5"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110605-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "50211a6e187dc8e472e2230b5fcbfeadfee4e038b76fdbef8eb18389c25e8026"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110605-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "02cf677a2be7336bb5a93ee6a06d5d1c831cfbc6ea38d91042a5047880db87c0"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110606-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "e9694f980ee9de0b9e395ad366dde57115d390b696bc56f2d69c63ca9bd6e369"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110606-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "dcfcccfe3aeb05b4591ea19ea0bf20782f515996aebf46fbf1c9287a4df5e212"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110607-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "7f3040acd0352fa949871c50dc9f66f87fdf91fef4f9ad9706a24faea8df5ba3"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110607-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "164479bb874baccb9ba29b50b3576b2f13924a59cacc52abf72f238dadf39847"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110608-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "4dde4d0ac2d07e679a53b48158f14d3b55fdfe78ecd064982704ff53fc924d40"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110608-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "73f3f853b22d1684f6f80cc98ae52f9c7a6f660b69de328e99a6f7509f5b65d4"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110609-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "99579a422aab947df8e807aefa2669215d0375762bd575086d5dcf4319a47e9c"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110609-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "9a711a280a676f46b587c39ddba7a0509e3395031e9905c357ef3a6b149fdb5f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110610-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "9b2045ef86c90e5da7449779d684fe614720317cc951484cb959c504c0b84a54"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110610-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "57a46da84c9d2e9f70eae567b8aa1161080538a7437798c3b0f478f099eeb07e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110611-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "2b07fe062bf3b1ba98f483d8016e6e4c18970421cbe1cf887d81939854d00ec6"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110611-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "ceaba72d5b04f3978bfbdcb2efd3702b56e681b805a78b7c9e8493c05861224d"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110612-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "b453e267f1fc910edb63ca30acf4b4c7594b0f382a52ec5120c6babeb0ad68b7"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110612-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "9759f787c18be4db7ed3befaa875f35f6eb4e58b76d4e41d7c21ff378df54993"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110613-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "282727cb25de46be85d15034ecc84e5c22ab27e621e7565db61b5905316036ad"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110613-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "8e32221f726c59c483a813707cde579ddc5107d0a4e518048caec373d154343e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110614-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "28b98f8fd6ac9632abf9eaa403db8537494847c709730de082e3100e9d342b0f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110614-a41781dd-retry1-retry2/raw/result.json.zst",
+      "sha256": "53c510d0c9d1e57031d64dd211992fffd78389d56813661ad5f0845fba85d49d"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110615-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "94210f26297210aa1c700b2ffd6af1f0cbecaf454aedde6c1912b07b7a575a1c"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110615-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "8dc2ad8e22e790980a68e5e0568aad863dd962d437befc184b0ef0b82877cf5b"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110616-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "5262669fd49f3554f5bcc97ae84c99a4ef8020be653fbea99a2b85d5258dee35"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110616-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "f38040c3773fdbb8dc9b529ca007748d83dac925ee88d836c18480be71904421"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110617-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "1fa53fc9f8e3b3e99e2d105cd4eed6e3f7df626231cc7d295d9ccb7ad068fb69"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110617-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "6149b2683bd68c85df8fc894267680e70d510e8dfca8a90aa49fbbe765280da1"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110618-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "3fdb676f11825df31b2e49905d326cdaed4ebabda9889edfae8965e79204a825"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110618-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "83a6a2f4caee1585f939911e2ae5af270cb00301a529b40563ac6c8fa6244935"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110619-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "368b10a5b935d611919234a928099c590150cb2a36182938a58163434d130d91"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110619-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "9da1a519e04ff155b7fbbc35258e37e781c6a1cd69f1d9fc7fbaa93669fba921"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110620-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "8decd30692a87223361868873337473f5fd970da49d23ae00e32218c098ba7ce"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110620-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "815503c82ec971eddb6604ca7eacb9e33e3bd6663ee5d0209c8b4c5600779eb1"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110621-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "24fe7e86ed5582dcc4e4225f71e22a9bcd44cfeb5fe17c6c8f2692ef0e6c59f4"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110621-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "f15ab11f2d44bc26a7c099e2b0ab547c972bcbe226c61fd7b0be76207067c8ed"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110623-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "2efb3dd28df9b7314d3fc12808472dc9dfa1c891cc89da775d99b6c7e18a0910"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110623-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "44decec3d9aeba937d97b1237f66089a5f92889f09e6587d9155d5571aea8487"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110624-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "3e38e052d696b54c62cf02b7f626235bb555814de5a226035996efe771f1848a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110624-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "8664bca550c281ab9efb17b4b9a0f081cba62f762f7e82bd8dc345c367f4fd31"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110625-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "68ed86208272af455b755f05bc40ba431864c7d44e707330b398457593024232"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110625-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "dae0ce404841dc71f1aa1f3e39ba19b3d4f80f738da2cfa7a4b3e369a1bc1370"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110626-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "c823e257cfd80fc2b97b6c5c817b736d30cf5ebbd41f3be225f008c9054ede7d"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110626-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "5ce8f31e76c25772f77b397a8adf5c6e6c3f32b0f3d0becddb48678ceed2bb94"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110627-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "c284ca0ea4f982dbe64a2bdba84230202fe6d84597a1a7a8464d0be8e59fee2f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110627-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "25473c813478b47f378fa8441b9125a11cd10f61b2638d60554d4288bc4b960a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110628-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "97c88dcd10decdc9477ddb6efb98e42efe47f013e86b2eddf2106e45256d1083"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110628-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "9ade5e2794b41bc188e5040190c7a1e79f65ddf493d82d9d73294082c2855611"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110629-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "09cf652d3a1145d96cf4aadf1e779782b6f06967045835c2bd9cf4c4033542e0"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110629-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "e6b334873fdfc25006d953c3afbec7d5ba10db614e9ba1e16beaf2c7eb34a4d5"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110630-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "4cf4bf9973ec32bda443857e4d2faab3600859ce9071c810a966862e0290dbe0"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110630-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "3d19fac9098abb3f345c3c39001556bc5a595b3f46cc55f6b7e50bfe5c524da0"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110631-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "33b9441aea02280705f2a5f292f1b995963bdf4fe5a4e91a852bd44b7875c454"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110631-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "c730958d6d7b4ed951f2f805df895ab8068288338305fdac756bb0c194c0e632"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110632-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "525801cff0cdf6eae84f54ccd4f38a881c730074caca249055bc8186be2b2396"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110632-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "275f29e98292c78dbb4276a8d03e34cb2fac0b21dc0428a0bac32ee34118536b"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110633-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "ae7aa07616a38567d2789e0585a98a0efeb5f161514d26961e72075c38de7a0e"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110633-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "d0e0054d24e0225953a11cce48eaee5cb1e7cc421cae140a6f5787db682d2f7a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110634-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "b86c677bcd68bcdc52cda7942783976dae6468b728ffa3a30c57289d4dcb1ead"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110634-a41781dd-retry1/raw/result.json.zst",
+      "sha256": "56872db57d0c88bc6f6d22a543376976a9e0d539fbdad9d8a7d197089e7953c9"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110635-a41781dd-retry1/raw/result.json",
+      "sha256": "153e254cb088024e0ef39ec6fa618171942d1e3b3a8a4a281fae035e2246ff4f"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110635-a41781dd-retry1/raw/result.json",
+      "sha256": "e1c3da569a72f2ee68f80fb82fe9abe49374e59828f9a5a497bd36e329da5c25"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110636-a41781dd-retry1/raw/result.json",
+      "sha256": "d0c1781b0c33446a4cf3e5310b29964cc6674e28595230efe942464513f770ef"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110636-a41781dd-retry1/raw/result.json",
+      "sha256": "1a41ee5e56e73f3597dfee1507309f74d2da6851d9a4a7e9661f68ebf451d7bc"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110637-a41781dd-retry1/raw/result.json",
+      "sha256": "51c0517869f023ef9682c3d8e6c703985bd70cb0feca1960565a1efa642dc34a"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110637-a41781dd-retry1/raw/result.json",
+      "sha256": "433a8dfd750315bf2ffbdb2428df600e304588f6582e2fb84416cd97cf166e8d"
+    }
+  ],
+  "reproduce": "python3 /home/ugrp/ugrp-sim/ops-reviews/gatesv5/analyze_release.py /home/ugrp/ugrp-sim/ops-reviews/gatesv5/release-gate-config.json"
+}

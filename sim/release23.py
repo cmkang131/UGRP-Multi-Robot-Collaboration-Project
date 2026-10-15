@@ -134,7 +134,7 @@ def _polygon_gap(a,b):
                    min(x*ax+y*ay for x,y in a)-max(x*ax+y*ay for x,y in b)) for ax,ay in (*_axes(a),*_axes(b)))
 
 
-def sweep(localizers, teachers, plans, now, *, computation_budget='off'):
+def sweep(localizers, teachers, plans, now, *, computation_budget='off', release_sweep_wall_aware='off'):
     """Exact convex translation sweeps, both robots and both beam hypotheses.
 
     Each hypothesis uses its own RGB pose and issued FK end; .60 x .04 m
@@ -143,6 +143,9 @@ def sweep(localizers, teachers, plans, now, *, computation_budget='off'):
     No partner RGB/pose is fed to a robot and no held-object world read occurs.
     """
     from harness.static_keepouts import disc_footprint, polygon_at, rect_corners
+    from sim import release25
+    if release_sweep_wall_aware not in ('off',release25.MODE):raise ValueError('unknown release_sweep_wall_aware')
+    wall_aware=release_sweep_wall_aware==release25.MODE
     checks=[]
     # An authored finite problem, not a load-dependent wall deadline. On mode
     # audits exactly two shapes per robot against bounds + every obstacle.
@@ -161,6 +164,7 @@ def sweep(localizers, teachers, plans, now, *, computation_budget='off'):
         for along in (-.30,.30):
             for width in (-.02,.02):beam_vertices.append(tuple(center+along*np.array([ox,oy])+width*normal))
         position=pose.copy(); robot_points=polygon_at(position,vertices); beam_points=polygon_at(position,beam_vertices)
+        robot_shapes=[robot_points.copy()];beam_shapes=[beam_points.copy()]
         for wheels,durations in plans[rid]:
             motion=odometry([w*d/.1 for w,d in zip(wheels,durations)],.1,t.odometry_profile)
             # This guard covers translations. Axis turns keep their existing
@@ -169,14 +173,26 @@ def sweep(localizers, teachers, plans, now, *, computation_budget='off'):
                 return dict(accepted=False,checks=checks,**rejection('sweep_nontranslation',rid+' issued yaw',-abs(motion[2]),'rad'))
             c,s=math.cos(position[2]),math.sin(position[2]);dx,dy=motion[:2]
             position[:2]+=[c*dx-s*dy,s*dx+c*dy]
-            robot_points+=polygon_at(position,vertices);beam_points+=polygon_at(position,beam_vertices)
-        for name,points in ((rid,_hull(robot_points)),(rid+' beam from own commands',_hull(beam_points))):
+            rshape=polygon_at(position,vertices);bshape=polygon_at(position,beam_vertices)
+            robot_points+=rshape;beam_points+=bshape
+            robot_shapes.append(rshape);beam_shapes.append(bshape)
+        for name,points,shapes in ((rid,_hull(robot_points),robot_shapes),(rid+' beam from own commands',_hull(beam_points),beam_shapes)):
             x0,x1,y0,y1=static['bounds_m'];gap=float(min(min(x-x0,x1-x,y-y0,y1-y) for x,y in points)-halo)
             checks.append(dict(body=name,**rejection('static_sweep','map bounds',gap),accepted=gap>0))
+            if wall_aware:
+                nominal=gap+halo
+                certificate=release25.bounds_escape(shapes,static['bounds_m'],halo,nominal) if gap<=0 else None
+                checks[-1].update(nominal_swept_gap_m=nominal,uncertainty_escape=certificate,halo_m=halo)
+                if certificate:checks[-1].update(accepted=True,reason_category='uncertainty_escape')
             for obstacle in static.get('obstacles',[]):
                 rect=(*obstacle['center_m'],*obstacle['half_extents_m'],obstacle.get('yaw_rad',0.))
                 gap=float(_polygon_gap(points,rect_corners(rect,margin=halo)))
                 checks.append(dict(body=name,**rejection('static_sweep',obstacle['id'],gap),accepted=gap>0))
+                if wall_aware:
+                    nominal=float(_polygon_gap(points,rect_corners(rect)))
+                    certificate=release25.obstacle_escape(shapes,rect_corners(rect,margin=halo),nominal) if gap<=0 else None
+                    checks[-1].update(nominal_swept_gap_m=nominal,uncertainty_escape=certificate,halo_m=halo)
+                    if certificate:checks[-1].update(accepted=True,reason_category='uncertainty_escape')
     worst=min(checks,key=lambda v:v['minimum_gap'])
     assert computation_budget in ('off',COMPUTE)
     if computation_budget==COMPUTE and len(checks)>budget:raise RuntimeError('sweep_computation_budget')

@@ -25,6 +25,7 @@ from sim import release14, release15, release16, release17, release18, release19
 from sim import release21 as release21_control
 from sim import release23 as release23_control
 from sim import release24 as release24_control
+from sim import release25 as release25_control
 from sim.failure_rgb_recording import FailureRGB
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 # User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
@@ -172,9 +173,10 @@ def own_end_world(world,inst,end):
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
         zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',release_fov_step='off',release_settle_reuse='off',release_goal_region='off',release20_settle='off',release21='off',review_top='on',record_training=False,
         margin_common_mode='off',release_leg_budget='off',lateral_rate_cal='off',release_yaw_budget='off',release_plan_budget='off',
-        axis_fusion='off',axis_disagree_reobserve='off',axis_observation_window='off',failure_rgb_recording='own_rgb_last10_10hz_v1'):
+        axis_fusion='off',axis_disagree_reobserve='off',axis_observation_window='off',release_sweep_wall_aware='off',failure_rgb_recording='own_rgb_last10_10hz_v1'):
     release23_control.validate(release_profile,record_training,locals(),plan)
     release24_control.validate(locals())
+    release25_control.validate(locals())
     failure_rgb=FailureRGB(failure_rgb_recording)
     release23_options=dict(margin_common_mode=margin_common_mode,release_leg_budget=release_leg_budget,
         lateral_rate_cal=lateral_rate_cal,release_yaw_budget=release_yaw_budget,release_plan_budget=release_plan_budget)
@@ -256,6 +258,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                       planning_budget_basis='finite computation checks and SIM seconds; no wall deadline')
     if axis_fusion!='off':
         report.update(teacher_version='release24',axis_fusion=axis_fusion,axis_disagree_reobserve=axis_disagree_reobserve,axis_observation_window=axis_observation_window)
+    if release_sweep_wall_aware!='off':
+        report.update(teacher_version='release25',release_sweep_wall_aware=release_sweep_wall_aware)
     if not line_guard:
         report.pop('release_profile');report.pop('training_exclusions')
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.
@@ -499,7 +503,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             else:
                 st['plan']={rid:t.shift_plan(s,1. if rid==R[0] else -1.) for rid,t in rel.items()}
             if release_leg_budget==release23_control.LEG and (st['choice'] or {}).get('action')!='axis_correct':
-                check=release23_control.sweep(loc,rel,st['plan'],now,computation_budget=release_plan_budget)
+                check=release23_control.sweep(loc,rel,st['plan'],now,computation_budget=release_plan_budget,release_sweep_wall_aware=release_sweep_wall_aware)
                 report.setdefault('release23_sweep_checks',[]).append(dict(t=now,**check))
                 if not check['accepted']:
                     st['plan']={rid:[] for rid in rel}
@@ -969,7 +973,7 @@ def main():
     p.add_argument('--release21',choices=release21_control.MODES,default='off')
     for key,mode in release23_control.OPTIONS.items():
         p.add_argument('--'+key.replace('_','-'),choices=('off',mode),default='off')
-    for key,mode in release24_control.OPTIONS.items():
+    for key,mode in {**release24_control.OPTIONS,**release25_control.OPTIONS}.items():
         p.add_argument('--'+key.replace('_','-'),choices=('off',mode),default='off')
     p.add_argument('--failure-rgb-recording',choices=('own_rgb_last10_10hz_v1',),default='own_rgb_last10_10hz_v1')
     p.add_argument('--review-top',choices=('on','off'),default='on')
@@ -996,5 +1000,5 @@ def main():
     p.add_argument('--lookaround',choices=LOOKAROUND_MODES,default='off',help='setdown_lookaround_v1: after the backoff step, look toward static-map landmarks chosen from the own pose estimate (640x480 own camera)');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,release_fov_step=a.release_fov_step,release_settle_reuse=a.release_settle_reuse,release_goal_region=a.release_goal_region,release20_settle=a.release20_settle,release21=a.release21,review_top=a.review_top,record_training=a.record_training,**{k:getattr(a,k) for k in (*release23_control.OPTIONS,*release24_control.OPTIONS)},failure_rgb_recording=a.failure_rgb_recording),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,release_fov_step=a.release_fov_step,release_settle_reuse=a.release_settle_reuse,release_goal_region=a.release_goal_region,release20_settle=a.release20_settle,release21=a.release21,review_top=a.review_top,record_training=a.record_training,**{k:getattr(a,k) for k in (*release23_control.OPTIONS,*release24_control.OPTIONS,*release25_control.OPTIONS)},failure_rgb_recording=a.failure_rgb_recording),ensure_ascii=False,default=str))
 if __name__=='__main__':main()
