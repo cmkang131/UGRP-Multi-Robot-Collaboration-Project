@@ -89,7 +89,8 @@ runner.run(plan,Path(sys.argv[3]),cap_s=180,**json.loads(sys.argv[4]))
     code=item['p'].poll()
     if code is None:continue
     item['log'].close();d=item['dir'];result=read(d/'raw/result.json')
-    success=bool(result and result.get('status')=='complete' and result.get('physical_success' if kind=='beampair' else 'release_success'))
+    success=bool(result and result.get('status')=='complete' and result.get('physical_success' if kind=='beampair' else 'release_success') and all((result.get('input_audit') or {}).get(k)==0 for k in ['invisible_measurements','held_world_reads']))
+    if kind=='release':success=success and (result.get('input_audit') or {}).get('control_top_camera_reads')==0
     category=('success' if success else 'HOST_ERROR' if code and (not result or result.get('status')=='HOST_ERROR') else 'supervisor_stop' if (d/'SUPERVISOR_STOP.json').exists() else 'cap_end' if result and (result.get('cap_end') or result.get('termination_category')=='cap_end') else 'failure')
     row=dict(**item['config'],raw=str(d/'raw'),exit=code,category=category,wall_s=time.time()-item['started'],status=result.get('status') if result else 'missing_result')
     write(d/'EXIT.json',row);completed.append(row);running.remove(item)

@@ -1,0 +1,171 @@
+{
+  "cohorts": {
+    "current_A": {
+      "N": 3,
+      "success": 3,
+      "categories": {
+        "success": 3
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        }
+      ]
+    },
+    "current_B": {
+      "N": 3,
+      "success": 3,
+      "categories": {
+        "success": 3
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "reason_distribution": {
+    "release21_fov_blocked": 2
+  },
+  "outcome_rejections": {},
+  "rejection_ledger": [
+    {
+      "run": "gv5-release-short-current_B-110622-a41781dd",
+      "t": 122.79999999882413,
+      "event": "release21_fov_blocked",
+      "count": 1,
+      "proposed_motion": [
+        0.0,
+        0.002276037445267669,
+        -0.0218163092193045
+      ],
+      "attempts": {
+        "recenter": 0,
+        "backoff": 0,
+        "reverse": 0
+      },
+      "robot": "r1",
+      "reason_category": "release21_fov_blocked",
+      "blocking_object": "own camera FOV boundary",
+      "minimum_gap": null,
+      "gap_unit": "pixel",
+      "gap_unknown_reason": "not observable from permitted input"
+    },
+    {
+      "run": "gv5-release-short-current_A-110618-a41781dd",
+      "t": 31.400000000058917,
+      "event": "release21_fov_blocked",
+      "count": 1,
+      "proposed_motion": [
+        0.0,
+        0.0002953701883075986,
+        -0.007424941570933564
+      ],
+      "attempts": {
+        "recenter": 0,
+        "backoff": 0,
+        "reverse": 0
+      },
+      "robot": "r1",
+      "reason_category": "release21_fov_blocked",
+      "blocking_object": "own camera FOV boundary",
+      "minimum_gap": null,
+      "gap_unit": "pixel",
+      "gap_unknown_reason": "not observable from permitted input"
+    }
+  ],
+  "raw_sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_A-110622-a41781dd/raw/result.json.zst",
+      "sha256": "325025ff8a3187c3445974416cd72fbc74668e57946dbda7781760d276574590"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_B-88639-a41781dd/raw/result.json.zst",
+      "sha256": "258654310f1e0329513809e9c1992e436590248dae45b464321dbf9a2b71fba5"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_B-110622-a41781dd/raw/result.json.zst",
+      "sha256": "778e8517319486359b66451275d99b9f420a8b77e733c51a63c43a36f15047c8"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_A-88639-a41781dd/raw/result.json.zst",
+      "sha256": "38d3e06ba5fb94dbd14e50e273088f71bfe5dbabb0e652cefea4a0468802c942"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_A-110618-a41781dd/raw/result.json.zst",
+      "sha256": "cce6de970a605b5447e6bd41c31ad987a49c7548594966c0fc6103afd268b147"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_B-110618-a41781dd/raw/result.json.zst",
+      "sha256": "9d07b302c79f699bb1c85cc277fda96f7bbefe524c76c2fd9360ab4e18011ba5"
+    }
+  ],
+  "reproduce": "python3 /home/ugrp/ugrp-sim/ops-reviews/gatesv5/analyze_release.py /home/ugrp/ugrp-sim/ops-reviews/gatesv5/release-short-config.json"
+}

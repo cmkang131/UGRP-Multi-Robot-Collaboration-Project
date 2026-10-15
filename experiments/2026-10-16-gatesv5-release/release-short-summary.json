@@ -1,0 +1,411 @@
+{
+  "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+  "host": "gcp2",
+  "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+  "camera_quality": "no_mip_v1",
+  "stage": "short",
+  "cohorts": {
+    "current_A": {
+      "N": 3,
+      "success": 3,
+      "categories": {
+        "success": 3
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        }
+      ]
+    },
+    "current_B": {
+      "N": 3,
+      "success": 3,
+      "categories": {
+        "success": 3
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "runs": [
+    {
+      "name": "gv5-release-short-current_A-110622-a41781dd",
+      "seed": 110622,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_A-110622-a41781dd/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 177.29999999749265,
+      "wall_s": 702.8734414910004,
+      "iteration": 3,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 3332,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    },
+    {
+      "name": "gv5-release-short-current_B-88639-a41781dd",
+      "seed": 88639,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_B-88639-a41781dd/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 126.19999999870099,
+      "wall_s": 507.88738065599955,
+      "iteration": 2,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 2310,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    },
+    {
+      "name": "gv5-release-short-current_B-110622-a41781dd",
+      "seed": 110622,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_B-110622-a41781dd/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 175.09999999754467,
+      "wall_s": 691.1539799660004,
+      "iteration": 3,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 3288,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    },
+    {
+      "name": "gv5-release-short-current_A-88639-a41781dd",
+      "seed": 88639,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_A-88639-a41781dd/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 130.9999999985875,
+      "wall_s": 530.9213267000005,
+      "iteration": 2,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 2406,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    },
+    {
+      "name": "gv5-release-short-current_A-110618-a41781dd",
+      "seed": 110618,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_A-110618-a41781dd/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 85.49999999966342,
+      "wall_s": 344.21294702900013,
+      "iteration": 1,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 1496,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    },
+    {
+      "name": "gv5-release-short-current_B-110618-a41781dd",
+      "seed": 110618,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_B-110618-a41781dd/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 79.19999999981239,
+      "wall_s": 320.0740178270007,
+      "iteration": 1,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 1370,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    }
+  ],
+  "false_accepts": 0,
+  "manifest_files_verified": 2534,
+  "hash_errors": [],
+  "reason_distribution": {
+    "release21_fov_blocked": 2
+  },
+  "outcome_rejections": {},
+  "sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_A-110622-a41781dd/raw/result.json.zst",
+      "sha256": "325025ff8a3187c3445974416cd72fbc74668e57946dbda7781760d276574590"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_B-88639-a41781dd/raw/result.json.zst",
+      "sha256": "258654310f1e0329513809e9c1992e436590248dae45b464321dbf9a2b71fba5"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_B-110622-a41781dd/raw/result.json.zst",
+      "sha256": "778e8517319486359b66451275d99b9f420a8b77e733c51a63c43a36f15047c8"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_A-88639-a41781dd/raw/result.json.zst",
+      "sha256": "38d3e06ba5fb94dbd14e50e273088f71bfe5dbabb0e652cefea4a0468802c942"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_A-110618-a41781dd/raw/result.json.zst",
+      "sha256": "cce6de970a605b5447e6bd41c31ad987a49c7548594966c0fc6103afd268b147"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/gv5-release-short-current_B-110618-a41781dd/raw/result.json.zst",
+      "sha256": "9d07b302c79f699bb1c85cc277fda96f7bbefe524c76c2fd9360ab4e18011ba5"
+    }
+  ],
+  "first30": [],
+  "first30_wall_per_sim_median": null,
+  "settle_verification_scope": "Final saved evaluation values and independently recomputed zone fit. Original short runner did not save every settle check; duration uses its original evaluation_settled_s. Gate launcher additionally records evaluator snapshots.",
+  "training_rgb": false,
+  "model_calls": 0,
+  "pooling": "A/B, short/gate, source, scene and host never pooled",
+  "reproduce": "python3 /home/ugrp/ugrp-sim/ops-reviews/gatesv5/analyze_release.py /home/ugrp/ugrp-sim/ops-reviews/gatesv5/release-short-config.json"
+}
