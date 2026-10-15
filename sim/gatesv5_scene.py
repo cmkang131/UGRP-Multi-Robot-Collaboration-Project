@@ -12,9 +12,10 @@ def scene_bindings(name='off'):
         raise ValueError('gatesv5 requires the coordinator-pinned scene')
     from sim import scene_contrast_v5 as profile
     from sim import camera_render_quality as quality
+    from sim.final_pair_highpose_nearclip import wrap as nearclip
 
     def install(scene):
-        return profile.install(scene, name)
+        return nearclip(profile.install(scene, name))
 
     def configure(world, out):
         # no_mip_v1 changes GL sampling only; scale=1 and sample count unchanged.
