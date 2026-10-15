@@ -43,7 +43,14 @@ def inverse(p):
     return a
 
 
-def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=(),motion_model='off',translation_policy='off'):
+def native_profile_valid(p):
+    """Existing RealPrimitivePort contract (sim/s2_real_output.py:24-27)."""
+    axis,u,d=p['axis'],abs(p['u']),p['duration_s']
+    return (.10<=d<=.80 and ((axis in ('forward','turn') and u==.35) or
+        (axis=='left' and u==.65 and d>=.65)))
+
+
+def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=(),motion_model='off',translation_policy='off',native_primitives=False):
     """Finite calibrated motion lattice approximates a 0.2s twist request.
 
     Select nearest endpoint in SE(2), yaw scaled by wheelbase .24m. Include zero.
@@ -55,8 +62,18 @@ def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=(),motion_mo
     target=twist*.2
     scale=np.array([1.,1.,.24])
     best=(float(np.linalg.norm(target*scale)),None)
+    native_rejections=[]
     for key,p in selected_model(motion_model)['profiles'].items():
         if not key.startswith('0:') or p['times'][-1]>.2+1e-8:continue
+        if native_primitives:
+            # Actual R3 93585 t41.5 selected .06s, rejected by the unchanged
+            # RealPrimitivePort. These are its existing software contract values
+            # (sim/s2_real_output.py:24-27), not new physical robot specs. Never
+            # stretch a calibrated pulse to a duration it was not fitted for.
+            if not native_profile_valid(p):
+                native_rejections.append(dict(profile=key,category='native_primitive_contract',
+                    blocked_object='RealPrimitivePort',minimum_gap_m=None,gap_status='not_applicable_command_contract'))
+                continue
         if translation_policy=='forward_only_v1' and p['axis']!='turn' and not (p['axis']=='forward' and p['u']>0):continue
         end=response(p,.2)
         if costmap is not None and not all(costmap.pose_clear(compose(pose,response(p,s))) for s in np.arange(0,.20001,.025)):
@@ -67,8 +84,9 @@ def pulse_command(twist,t,*,costmap=None,pose=None,core=None,points=(),motion_mo
         distance=float(np.linalg.norm((target-end)*scale))
         if distance<best[0]:best=(distance,p)
     p=best[1]
-    if p is None:return dict(t=float(t),kind='hold'),dict(reason='zero_or_blocked',predicted_delta=[0.,0.,0.])
-    return dict(t=float(t),kind='mecanum',duration_s=p['duration_s'],**{**dict(forward=0.,left=0.,turn=0.),p['axis']:p['u']}),dict(reason='calibrated_pulse',predicted_delta=response(p,.2).tolist())
+    audit=dict(native_contract_enforced=True,native_profile_rejections=native_rejections) if native_primitives else {}
+    if p is None:return dict(t=float(t),kind='hold'),dict(reason='zero_or_blocked',predicted_delta=[0.,0.,0.],**audit)
+    return dict(t=float(t),kind='mecanum',duration_s=p['duration_s'],**{**dict(forward=0.,left=0.,turn=0.),p['axis']:p['u']}),dict(reason='calibrated_pulse',predicted_delta=response(p,.2).tolist(),**audit)
 
 
 class ActiveMapper:

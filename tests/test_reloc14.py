@@ -129,3 +129,49 @@ def test_existing_carry_bgr_port_converts_to_rgb_once():
     bgr=np.zeros((480,640,3),np.uint8);bgr[0,0]=[255,0,0]
     c.observe_own(bgr,0.,camera='r1/robot_cam')
     assert captured[0][0,0].tolist()==[0,0,255]
+
+
+def test_queue_requires_real_table_and_keeps_blocked_runs_disabled(tmp_path):
+    from scripts.prepare_reloc14_queues import queues
+    with pytest.raises(ValueError,match='REJECTION_TABLE_REQUIRED'):
+        queues('a'*40,tmp_path,tmp_path/'missing',[],[])
+    table=tmp_path/'funnel.json';table.write_text('{}')
+    qs=queues('a'*40,tmp_path,table,[],[])
+    assert [q['run_count'] for q in qs]==[8,11]
+    for q in qs:
+        assert q['max_parallel']==16 and q['status']=='BLOCKED'
+        assert q['rejection_table']==str(table)
+        assert all(r['source_sha']=='a'*40 and not r['execute'] and not r['approved'] for r in q['runs'])
+    assert qs[1]['runs'][0]['seed']==93266 and qs[1]['runs'][1]['seed']==93315
+
+
+def test_supported_uncertain_tracking_retains_mode_and_full_covariance(monkeypatch):
+    from harness.selfmap5_registration import MultiFrameEvidence
+    monkeypatch.setattr(MultiFrameEvidence,'supported',lambda *a:(False,dict(supported_floor_lines=1)))
+    r=registration();measurement=row();measurement['resolved']=False
+    measurement['covariance']=np.diag([.04**2,.04**2,math.radians(5.02)**2]).tolist()
+    result,handled=track(r,measurement,dict(features=[],segments=[]),np.zeros(3),1.)
+    assert handled and r.tracking_state=='TRACKING' and r.execution_r7_admitted
+    assert not r.last['resolved'] and not r.last['tracking']['precision_admitted']
+    assert result[1][2,2]>math.radians(5)**2  # unchanged map/drive uncertainty gate sees it
+
+
+def test_saved_93585_short_pulse_is_filtered_before_native_output():
+    from harness.active_wall_mapping import pulse_command
+    from harness.self_pulse_rotation import OPTION
+    request=np.array([.037779776768443775,0.,0.])
+    legacy,_=pulse_command(request,41.5,motion_model=OPTION,translation_policy='forward_only_v1')
+    assert legacy['duration_s']==.06  # actual failing R3 calibrated response
+    fixed,receipt=pulse_command(request,41.5,motion_model=OPTION,translation_policy='forward_only_v1',native_primitives=True)
+    assert fixed['kind']=='hold' or fixed['duration_s']>=.10
+    assert receipt['native_profile_rejections']
+
+
+def test_native_turn_settler_uses_only_the_same_supported_lattice():
+    from harness.reloc10_settle import settle_turn,turn_quantum
+    from harness.self_pulse_rotation import OPTION
+    from sim.settle_pulse import PulseSettler
+    assert turn_quantum(OPTION,native_primitives=True)>=turn_quantum(OPTION)
+    c,r=settle_turn(PulseSettler(math.radians(2)),.2,0.,costmap=SimpleNamespace(pose_clear=lambda p:True),
+        pose=np.zeros(3),motion_model=OPTION,native_primitives=True)
+    assert c['kind']=='hold' or c['duration_s']>=.10

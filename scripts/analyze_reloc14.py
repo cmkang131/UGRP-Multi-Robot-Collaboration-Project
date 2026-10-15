@@ -27,6 +27,11 @@ def summary(es):
 
 def selfmap(folder):
     base=funnel(folder); raw=folder/'raw'; trace=rows(raw/'trace.jsonl')
+    result=obj(raw/'result.json')
+    if result.get('failure'):
+        base['termination']['failure']=result['failure']
+        if not base['termination']['reason']:
+            base['termination'].update(category='controller_error:'+result['failure']['type'],reason=result['failure']['message'])
     truth={round(r['t'],6):r for r in rows(raw/'eval_only/trajectory.jsonl')}
     epochs=[]; es=[]; fixes=[]; increments=[]; previous=None; registered=False
     for r in trace:
@@ -65,6 +70,39 @@ def selfmap(folder):
         bins[name]=[dict(lo=lo,hi=None if math.isinf(hi) else hi,**summary([e for e in es if lo<=e[name]<hi]))
             for lo,hi in zip(bounds,bounds[1:])]
     turning=[e for e in increments if abs(e['command_yaw_rad'])>1e-6 and not e['static_fix']]
+    gate_counts=Counter();gate_rejections=Counter();known_counts=Counter();known_rejections=Counter()
+    for r in trace:
+        s=r.get('static_registration',{});tr=s.get('tracking',{})
+        # Global and known-mode updates have different requirements. Do not
+        # invent a full global-uniqueness test on a known-mode partial update.
+        known=tr.get('global_confirmations_required') is False
+        if known:
+            geo=s.get('geometry',{});P=np.asarray(s['raw_covariance'])
+            checks=[('frames',True),('sensor_update',s['updated']),
+                ('covariance',np.linalg.eigvalsh(P[:2,:2]).max()<=.15**2 and P[2,2]<=math.radians(5)**2),
+                ('partial_geometry',geo.get('supported_floor_lines',0)>0 or geo.get('supported_wall_field_points',0)>0),
+                ('live_tracking',s.get('execution_r7_admitted') is True),
+                ('execution_correction',r.get('pose_source')=='visual_relocalized'),
+                ('map_inserted',bool(r.get('map_updated')))]
+            counts,rejects=known_counts,known_rejections
+        else:
+            if not s:continue
+            P=np.asarray(s.get('raw_covariance',s.get('covariance')));geo=s.get('geometry',{})
+            checks=[('frames',True),('sensor_update',bool(s.get('updated'))),
+                ('pf_resolved',bool(s.get('pf_resolved'))),('dominant_mode',s.get('cluster',{}).get('mass',0)>=.9),
+                ('raw_covariance',np.linalg.eigvalsh(P[:2,:2]).max()<=.15**2 and P[2,2]<=math.radians(5)**2),
+                ('independent_axes',bool(geo.get('independent_line_axes'))),
+                ('global_unique',bool(geo.get('ambiguity',{}).get('unique'))),
+                ('three_views',s.get('confirmations',0)>=3),('registered',bool(s.get('registered')))]
+            counts,rejects=gate_counts,gate_rejections
+        alive=True
+        for name,ok in checks:
+            if alive and not ok:rejects[name]+=1
+            alive=alive and bool(ok);counts[name]+=int(alive)
+    base['registration_frame_funnel']=dict(unit='ordered global/relocalization frames, not independent trials',
+        cumulative=dict(gate_counts),first_rejections=[dict(category=k,N=v,blocked_object='static_registration_evidence',minimum_gap_m=None,gap_status='not_applicable_localization_gate') for k,v in gate_rejections.most_common()])
+    base['known_mode_measurement_funnel']=dict(unit='known-mode frames; prediction frames stop at sensor_update and are not failed absolute measurements',
+        cumulative=dict(known_counts),first_rejections=[dict(category=k,N=v,blocked_object='own_rgb_tracking_evidence',minimum_gap_m=None,gap_status='not_applicable_localization_gate') for k,v in known_rejections.most_common()])
     return dict(**base, drift=dict(all=summary(es),fixes=summary(fixes),first_registration=summary([e for e in es if e['initial_fix']]),
         bins=bins,epochs=epochs,fix_frames=fixes,frames=es,
         increment_regression=dict(N=len(turning),actual_per_command=(sum(e['actual_yaw_rad']*e['command_yaw_rad'] for e in turning)/sum(e['command_yaw_rad']**2 for e in turning)) if turning else None,

@@ -45,7 +45,13 @@ def track(reg, row, observation, own_pose, t):
     # Fresh invalid evidence causes LOST, never a renewed global confirmation
     # count from repeated sensor-less frames. Motion-gated PF prediction is not
     # represented as a new absolute measurement.
-    if row['updated'] and not good:
+    # R3 93583 t23.1 had nine consistent wall points, no injection, and yaw
+    # sigma 5.02deg: uncertainty crossed the task gate but tracking was still
+    # supported. Nav2 publishes the posterior with its covariance; an accuracy
+    # requirement is not feature-tracking failure. Keep the mode and its full P;
+    # the existing insertion/drive sigma gate still blocks uncertain motion.
+    mode_compatible=row['cluster']['mass']>=.9 and supported
+    if row['updated'] and not mode_compatible:
         reg.tracking_state='LOST';reg.execution_r7_admitted=False
         reg.confirmations.clear();reg.confirmation_views.clear()
         reg.last_tracking_failure=dict(t=t,category='tracking_evidence_lost',
@@ -62,6 +68,7 @@ def track(reg, row, observation, own_pose, t):
         execution_covariance=(R@cov@R.T).tolist(),cluster=row['cluster'],pf_sensor=row.get('sensor'),
         feature_count=len(observation['features']),geometry=geometry,
         tracking=dict(state='TRACKING',measurement=bool(row['updated']),
+            precision_admitted=bool(good),
             motion_model='calibrated_issued_commands',global_confirmations_required=False,
             update_min_d_m=.25,update_min_a_rad=.2,budget_kind='finite_PF_particles_and_line_checks'),
         reloc12=dict(registered_world_pose=compose(reg.command_registration_anchor,own_pose).tolist(),

@@ -172,7 +172,8 @@ class SelfMapExecutor:
                 from harness.reloc10_settle import settle_turn
                 command, receipt = settle_turn(self.turn_settler, error, t,
                     costmap=self.costmap(pose, spin=True), pose=pose,
-                    motion_model=self.mapper.options.motion_model)
+                    motion_model=self.mapper.options.motion_model,
+                    native_primitives=self.mapper.options.reloc14_continuous_tracking_v1)
                 self.event(t, 'reloc10_settle', settle_reason=receipt.get('reason'),
                            **{k:v for k,v in receipt.items() if k != 'reason'})
                 if not receipt['settled']:
@@ -180,7 +181,8 @@ class SelfMapExecutor:
             elif abs(error) > math.radians(2):
                 costmap = self.costmap(pose, spin=True)
                 command, _ = pulse_command(np.array([0., 0., math.copysign(.35, error)]), t,
-                    costmap=costmap, pose=pose, motion_model=self.mapper.options.motion_model)
+                    costmap=costmap, pose=pose, motion_model=self.mapper.options.motion_model,
+                    native_primitives=self.mapper.options.reloc14_continuous_tracking_v1)
                 return command
             self.active_stage = 'dwell'; self.active_until = t+.8
             return hold
@@ -271,7 +273,8 @@ class SelfMapExecutor:
                 request = self.sweep.command(sweep_frame, spin_pose, {}, t)
                 twist = issued_twist(request)
                 command, _ = pulse_command(twist, t, costmap=costmap,
-                    pose=pose, motion_model=self.mapper.options.motion_model)
+                    pose=pose, motion_model=self.mapper.options.motion_model,
+                    native_primitives=self.mapper.options.reloc14_continuous_tracking_v1)
                 if self.sweep.phase != 'sensor_sweep':
                     if self.mapper.options.multiframe_registration != 'off':
                         self.mapper.registration.end_sweep()
@@ -324,6 +327,7 @@ class SelfMapExecutor:
                                 twist = follow_twist(path, pose, self.target['heading_rad'])
                                 command, pulse = pulse_command(twist, t, costmap=self.costmap(pose),
                                     pose=pose, motion_model=self.mapper.options.motion_model,
+                                    native_primitives=self.mapper.options.reloc14_continuous_tracking_v1,
                                     translation_policy='forward_only_v1')
                                 row['executed_path_m'], row['pulse'] = path, pulse
         if self.initial_sweep != 'off':
