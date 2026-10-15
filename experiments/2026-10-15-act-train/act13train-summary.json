@@ -1,0 +1,312 @@
+{
+  "schema": "ugrp.act13train.summary.v1",
+  "class": "dev",
+  "research_result": false,
+  "student_success": false,
+  "source_sha": "961aa7517b29f187f6869e2624ed848ee2c32cfd",
+  "teacher_source_sha": "1fce11554754d4609470e4fe4b172f9a583bc026",
+  "rotation_calibration": "act8_yaw_gain_v1",
+  "training_main_started": false,
+  "main_approved": false,
+  "independent_recording_recount": "coordinator-owned; pending receipt",
+  "dataset": {
+    "schema": "ugrp.grasp_act.dataset_audit.v1",
+    "class": "dev",
+    "dataset_manifest_sha256": "9ed3f155c87c8b53631ae89480bb0a6d868cc2a4c12341ff1e0579541deff925",
+    "files_verified": 202,
+    "episodes": 50,
+    "rows_selected": 18086,
+    "raw_rows_audited": 22938,
+    "split_rows": {
+      "train": 16275,
+      "validation": 1811
+    },
+    "split_episodes": {
+      "train": 45,
+      "validation": 5
+    },
+    "successful_recovery_episodes": 50,
+    "normalization_recomputed_train_only": true,
+    "all_raw_contexts_commands_clocks_reconstructed": true,
+    "input_keys": [
+      "observation.images.own_history",
+      "observation.state"
+    ],
+    "forbidden_input_fields": 0,
+    "teacher_input_fields": 0,
+    "research_result": false,
+    "student_success": false
+  },
+  "dataset_manifest_sha256": "9ed3f155c87c8b53631ae89480bb0a6d868cc2a4c12341ff1e0579541deff925",
+  "normalization_sha256": "e03b53f779a55c9ffc5b6d82f92ea365d38c55a6160adc9a8ab28937333137b2",
+  "remote_dataset": "ugrp-act-l4-pilot1:/mnt/act-source/act13train-961aa751/dataset",
+  "gcp1_dataset": "gcp1:/home/ugrp/act13train-961aa751/dataset",
+  "raw_source": "gcp1:/home/ugrp/ugrp-sim/runs/act12-record-*-1fce1155",
+  "raw_full_independent_backup": false,
+  "archive": {
+    "archive_sha256": "12bd25224c3854408377718c3e930ebd55ea538d30202ca9f7e9a333ae635926",
+    "archive_bytes": 225457505,
+    "bucket": "gs://ugrp-act-train-1014-runs/act13train-961aa751/dataset.tar.zst",
+    "GCS_readback_sha256_verified": true,
+    "L4_archive_sha256_verified": true,
+    "L4_dataset_files_verified": 202,
+    "dataset_manifest_sha256": "9ed3f155c87c8b53631ae89480bb0a6d868cc2a4c12341ff1e0579541deff925",
+    "method": "existing GCS bucket archive; Mac gcloud upload/readback, SSH file copy to existing L4; original raw retained on gcp1; no credentials on VM",
+    "first_readback": "storage cp CRC error; storage cat full SHA256 passed"
+  },
+  "arms": {
+    "p0": {
+      "dropout": 0.0,
+      "status": "complete",
+      "round": 1,
+      "steps": 300,
+      "exit_code": 0,
+      "loss_first": 94.35465240478516,
+      "loss_last": 3.1530416011810303,
+      "first10_logged_loss_mean": 16.611931324005127,
+      "last10_logged_loss_mean": 3.512257981300354,
+      "finite_loss_and_gradient_verified": true,
+      "readback_exact": true,
+      "wall_s": 83.264197989,
+      "timing": {
+        "dataset_load_s": 11.370079664000002,
+        "setup_s": 20.044427911999975,
+        "method": "CUDA synchronized step including batch load, H2D, forward, backward, optimizer; excludes checkpoint/log",
+        "checkpoint_load_s": 1.199177179000003,
+        "inference_s": 0.009895640999957322,
+        "step_mean_s": 0.19827147533999825,
+        "step_median_s": 0.1923827535000271,
+        "step_p95_s": 0.19429488999998057
+      },
+      "checkpoint_bytes": 622002255,
+      "peak_training_gpu_bytes": 1549413888,
+      "peak_training_gpu_reserved_bytes": 2057306112,
+      "summary": {
+        "local": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/retrieved/p0/smoke/summary.json",
+        "remote": "/mnt/act-source/act13train-961aa751/p0/smoke/summary.json",
+        "sha256": "a08674f1d1d6c54d8ddc7573fa63954b20f150d95685881112fe5ecd59ecdba1"
+      },
+      "projection_total_10k_including_smoke": {
+        "wall_s": 2032.3497771269824,
+        "compute_usd": 0.512442318220845
+      }
+    },
+    "p02": {
+      "dropout": 0.2,
+      "status": "complete",
+      "round": 1,
+      "steps": 300,
+      "exit_code": 0,
+      "loss_first": 90.66122436523438,
+      "loss_last": 3.216277599334717,
+      "first10_logged_loss_mean": 16.539220523834228,
+      "last10_logged_loss_mean": 3.61960711479187,
+      "finite_loss_and_gradient_verified": true,
+      "readback_exact": true,
+      "wall_s": 78.57381935800004,
+      "timing": {
+        "dataset_load_s": 11.381835972000033,
+        "setup_s": 15.81774345399998,
+        "method": "CUDA synchronized step including batch load, H2D, forward, backward, optimizer; excludes checkpoint/log",
+        "checkpoint_load_s": 1.1944422470000404,
+        "inference_s": 0.009798326000009183,
+        "step_mean_s": 0.19664744430666684,
+        "step_median_s": 0.19331882499997732,
+        "step_p95_s": 0.1952993109999852
+      },
+      "checkpoint_bytes": 622002255,
+      "peak_training_gpu_bytes": 1549413888,
+      "peak_training_gpu_reserved_bytes": 2057306112,
+      "summary": {
+        "local": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/retrieved/p02/smoke/summary.json",
+        "remote": "/mnt/act-source/act13train-961aa751/p02/smoke/summary.json",
+        "sha256": "9706e053c89925ecacc8e402cb5e49bbbce9f8803b94482de1878f79e67edfd6"
+      },
+      "projection_total_10k_including_smoke": {
+        "wall_s": 2007.6277880416687,
+        "compute_usd": 0.506208847220682
+      }
+    }
+  },
+  "training_failures": 0,
+  "HOST_ERROR": 0,
+  "transfer_errors": [
+    {
+      "stage": "GCS readback via storage cp",
+      "status": "CRC_READBACK_ERROR",
+      "error": "Source hash 0tQw8g== does not match destination hash AAAAAA==",
+      "next": "storage cat; independent full sha256; no checksum bypass on training data"
+    }
+  ],
+  "disk_plan": {
+    "method": "opt-in checkpoint-every=5000; default0 preserves smoke100/main500; never prune",
+    "free_before_smokes_bytes": 24033165312,
+    "dataset_bytes": 4378144568,
+    "archive_bytes": 225457505,
+    "checkpoint_reference_bytes": 622002255,
+    "smoke_checkpoint_steps": [
+      300
+    ],
+    "main_checkpoint_steps": [
+      5000,
+      10000
+    ],
+    "arms": 2,
+    "total_checkpoint_N": 6,
+    "projected_checkpoint_bytes": 3732013530,
+    "checkpoint_reservation_bytes": 5368709120,
+    "disk_floor_bytes": 8589934592,
+    "unreserved_after_reservation_and_floor_bytes": 10074521600,
+    "source_and_dataset_already_accounted_in_free": true,
+    "originals_deleted": false,
+    "recheck_before_each_main_window": true,
+    "free_after_smokes_bytes": 22788874240,
+    "remaining_main_checkpoint_bytes": 2488009020,
+    "projected_free_after_main_bytes": 20300865220
+  },
+  "runtime_after": {
+    "source_sha": "961aa7517b29f187f6869e2624ed848ee2c32cfd",
+    "source_status": "",
+    "disk_free_bytes": 22788874240,
+    "idle_active": "active",
+    "gpu_processes": "",
+    "time_epoch": 1792056353.8803186,
+    "class": "dev",
+    "research_result": false
+  },
+  "artifact_manifest": {
+    "remote": "ugrp-act-l4-pilot1:/mnt/act-source/act13train-961aa751/artifacts.json",
+    "sha256": "ba704a3d953163cac0627035da6323119a10a2f8f69bbaeb51d460003b483f32",
+    "remote_files_hashed": 27,
+    "retrieved_hashes_verified": 23,
+    "lite_sha256": "2555b265f72f775e7047ff3ed6938d251a620e5f8c09b613641796e5b3c172ef"
+  },
+  "local_tests": {
+    "passed": 34,
+    "xml": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/tests-final.xml",
+    "sha256": "fd1de965e146abdc5222cb6a45dc7f5ea6981bcd429025f328188ca3ae47becb"
+  },
+  "hourly_usd": 0.907714,
+  "price_basis": "user-specified official G2 Seoul rate; compute only; disk/network/tax/credit excluded",
+  "projection_method": "total10k includes smoke300; max(mean,p95) step time, setup2, saves3, reload/inference2; observed mean exceeds p95 due to early outliers",
+  "two_arms_projected_wall_s": 4039.9775651686514,
+  "two_arms_projected_compute_usd": 1.018651165441527,
+  "vm_final_status": "TERMINATED",
+  "vm_final": {
+    "lastStartTimestamp": "2026-10-15T02:18:03.513-07:00",
+    "lastStopTimestamp": "2026-10-15T02:27:07.532-07:00",
+    "machineType": "https://www.googleapis.com/compute/v1/projects/ugrp-act-train-1014/zones/asia-northeast3-a/machineTypes/g2-standard-4",
+    "name": "ugrp-act-l4-pilot1",
+    "scheduling": {
+      "automaticRestart": true,
+      "instanceTerminationAction": "STOP",
+      "maxRunDuration": {
+        "nanos": 0,
+        "seconds": "28800"
+      },
+      "onHostMaintenance": "TERMINATE",
+      "preemptible": false,
+      "provisioningModel": "STANDARD"
+    },
+    "status": "TERMINATED"
+  },
+  "budget_stop": {
+    "state": "ACTIVE",
+    "triggered_since_setup_test": false,
+    "latest": {
+      "timestamp": "2026-10-15T08:48:24.228312Z",
+      "payload": {
+        "budgetAmount": 1000,
+        "costAmount": 0,
+        "currency": "KRW"
+      }
+    },
+    "credit_balance_verified": false,
+    "actual_billing_verified": false
+  },
+  "vm_compute_estimate": {
+    "lifecycle_wall_s": 544.019,
+    "usd": 0.1371704618238889,
+    "scope": "GCP lastStartTimestamp to lastStopTimestamp; compute-only estimate, not actual invoice"
+  },
+  "remaining_main_projection": {
+    "wall_s": 3878.1395478216514,
+    "note": "subtract completed smoke trainer wall; resume optimizer restore and VM boot/transfer overhead not directly measured",
+    "compute_usd": 0.9778448781976062
+  },
+  "evidence": {
+    "vm-before.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/vm-before.json",
+      "sha256": "dda84fa55e8f18d9d8deb131ef8999588f4953caa4113e0651c7f70e24497212"
+    },
+    "vm-prestart.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/vm-prestart.json",
+      "sha256": "5d7853d399b37fbe1a7f9037c735b046a2e55810ee9905899b3ab2a0f24b38ba"
+    },
+    "vm-start.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/vm-start.json",
+      "sha256": "ac479fa05740e19231b1509f5e59978ebc782b2ae6861f2050c48abd1ea30c5e"
+    },
+    "vm-after.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/vm-after.json",
+      "sha256": "ef005b5c77e78afc1aa4a273f01f9b7eb0222d2bfd3690e5b2838d797a51fd6e"
+    },
+    "function-before.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/function-before.json",
+      "sha256": "a477c4914d0293e2d9dba14f24cafc29625aa6a6b789604859ad75f3d9b5d9d2"
+    },
+    "function-after.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/function-after.json",
+      "sha256": "8556b14d90c83a04727b88973bb0b85fbe5878895039718c719a202f3dd46df2"
+    },
+    "budget-before.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/budget-before.json",
+      "sha256": "6b6d17ef8e542d17762ec30dcc303be80437168f5d06b605d017f708c271c3b7"
+    },
+    "budget-prestart.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/budget-prestart.json",
+      "sha256": "6b6d17ef8e542d17762ec30dcc303be80437168f5d06b605d017f708c271c3b7"
+    },
+    "budget-during.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/budget-during.json",
+      "sha256": "6b6d17ef8e542d17762ec30dcc303be80437168f5d06b605d017f708c271c3b7"
+    },
+    "budget-after.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/budget-after.json",
+      "sha256": "6b6d17ef8e542d17762ec30dcc303be80437168f5d06b605d017f708c271c3b7"
+    },
+    "source-pack.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/source-pack.json",
+      "sha256": "d139ab6ece8b78dcb0c92b737e9c74b86ea329da54bb331e9c81578d68735a5c"
+    },
+    "l4-runtime-preflight.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/l4-runtime-preflight.json",
+      "sha256": "2a4f9e301c29f9e30f29c739c5e23dec37020ad59073aed75297e9673bf0d49f"
+    },
+    "transfer-receipt.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/transfer-receipt.json",
+      "sha256": "17d564df5fc4272779ae5c7f7467f7423ff4b3c1a12a414162f0876a1033f4be"
+    },
+    "gcs-object.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/gcs-object.json",
+      "sha256": "1c2f17ca2b41be679c44a8d0c551021bd30ad12ba94ec5267fef8da9224481c9"
+    },
+    "pilot-gate-receipt.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/pilot-gate-receipt.json",
+      "sha256": "be69c1dcd9df5e16f5d127580975c80c4612a12c7b6d72f2ed6249ac27a49861"
+    },
+    "recording-gate-receipt.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/recording-gate-receipt.json",
+      "sha256": "e2f58daa332e1a3d70f5031433a65016fbeafa8abd5c5cc9a5e8a3f8116a0cdb"
+    },
+    "collect-receipt.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/act-train/outputs/act13train-ops/collect-receipt.json",
+      "sha256": "3344f38dc0fd68269fcb42a3d959ceec26006c68325982d41e3e88ba240d54ed"
+    }
+  },
+  "queue": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-act13-train-961aa751.json",
+    "sha256": "5bc3930a2f6d8308eb5c987ad3594a0802b7f62ea8246f4e33ff6d3351dc859f",
+    "all_boolean_flags_false": true
+  }
+}
