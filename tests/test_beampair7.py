@@ -62,3 +62,37 @@ def test_teal_leader_unchanged_and_rotation_covariant(monkeypatch):
     import math
     w['beam']['pose']=[1.,2.,math.pi/2];w['beam']['ends']['teal']=[1.,1.73,.02]
     assert reserved_teal_stance(w,'r1','blue',False,.203)==pytest.approx((1.,1.527,.17))
+
+
+def queue_fixture(tmp_path,monkeypatch):
+    import json
+    import scripts.queue_beampair7 as q
+    source='a'*40
+    plan=(q.ROOT/q.PLAN).read_bytes()
+    monkeypatch.setattr(q.subprocess,'check_output',lambda args,**kw:source+'\n' if args[1]=='rev-parse' else plan)
+    table=tmp_path/'rejection_table.json';table.write_text(json.dumps(dict(source_sha=source)))
+    proof=dict(source_sha=source,N=5,n=5,runs=[dict(seed=s,adapter_sha=source,
+        peer_yield=MODE,strict_success=True,visible_eligible=True,held_object_hidden_v1=True,
+        audit=dict(enabled=True,invisible_measurements=0,held_world_reads=0)) for s in q.SHORT])
+    evidence=tmp_path/'summary.json';evidence.write_text(json.dumps(proof))
+    return q,source,table,evidence,proof
+
+
+def test_gate_requires_existing_funnel_and_pins_sentinel_first(tmp_path,monkeypatch):
+    q,source,table,evidence,proof=queue_fixture(tmp_path,monkeypatch)
+    value=q.build(source,'gate',table,evidence)
+    assert value['status']=='APPROVED_PINNED' and value['max_parallel']==16
+    assert value['review_detail']=='REVIEW_SKIPPED_BY_USER (10/15 run-first rule)'
+    assert len(value['runs'])==40 and value['runs'][0]['seed']==8318711
+    table.unlink()
+    with pytest.raises(ValueError,match='rejection_table'):q.build(source,'gate',table,evidence)
+
+
+@pytest.mark.parametrize('corrupt',('strict_success','held_world_reads'))
+def test_summary_count_cannot_override_failed_or_forbidden_raw_row(tmp_path,monkeypatch,corrupt):
+    import json
+    q,source,table,evidence,proof=queue_fixture(tmp_path,monkeypatch)
+    if corrupt=='strict_success':proof['runs'][0]['strict_success']=False
+    else:proof['runs'][0]['audit']['held_world_reads']=1
+    evidence.write_text(json.dumps(proof))
+    with pytest.raises(ValueError,match='five exact-source'):q.build(source,'gate',table,evidence)

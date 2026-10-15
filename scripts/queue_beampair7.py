@@ -14,6 +14,7 @@ REMOTE=Path('/home/ugrp/ugrp-sim/ops-reviews/beampair7')
 def build(source, stage, table, evidence=None, round_id='r1'):
     table=Path(table).resolve()
     if not table.is_file():raise ValueError('existing absolute rejection_table required')
+    source=subprocess.check_output(['git','rev-parse','--verify',source+'^{commit}'],cwd=ROOT,text=True).strip()
     data=subprocess.check_output(['git','show',f'{source}:{PLAN}'],cwd=ROOT)
     plan=json.loads(data)
     if len(plan['episodes'])!=40 or len({e['seed'] for e in plan['episodes']})!=40:
@@ -23,11 +24,20 @@ def build(source, stage, table, evidence=None, round_id='r1'):
     if stage=='gate':
         if evidence is None:raise ValueError('short raw recount required')
         proof=json.loads(Path(evidence).read_bytes())
+        funnel=json.loads(table.read_bytes())
         if (proof.get('source_sha')!=source or proof.get('N')!=len(SHORT)
                 or proof.get('n')!=len(SHORT) or proof.get('cap_end_N') or proof.get('incomplete_N')
+                or proof.get('HOST_ERROR_N') or proof.get('analysis_incomplete')
                 or proof.get('held_world_reads') or proof.get('invisible_measurements')
+                or funnel.get('source_sha')!=source
+                or len(proof.get('runs',[]))!=len(SHORT)
                 or {r['seed'] for r in proof['runs']}!=set(SHORT)
-                or any(r['adapter_sha']!=source or r.get('peer_yield')!='beampair_peer_yield_v1' for r in proof['runs'])):
+                or any(r['adapter_sha']!=source or r.get('peer_yield')!='beampair_peer_yield_v1'
+                    or not r.get('strict_success') or not r.get('visible_eligible')
+                    or not r.get('held_object_hidden_v1')
+                    or (r.get('audit') or {}).get('enabled') is not True
+                    or any((r.get('audit') or {}).get(k)!=0 for k in ('invisible_measurements','held_world_reads'))
+                    for r in proof['runs'])):
             raise ValueError('all five exact-source raw successes required')
     episodes=list(enumerate(plan['episodes']))
     if stage=='short':episodes=[next(p for p in episodes if p[1]['seed']==s) for s in SHORT]

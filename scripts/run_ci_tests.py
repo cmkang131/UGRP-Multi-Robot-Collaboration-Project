@@ -27,6 +27,7 @@ TEST_PATTERNS = (
     "tests/test_beampair1.py",
     "tests/test_beampair2.py",
     "tests/test_beampair4.py",
+    "tests/test_beampair7.py",
     "tests/test_grasp_act_data.py",
     "tests/test_grasp_act_policy.py",
     "tests/test_grasp_act_pilot.py",

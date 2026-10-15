@@ -1,0 +1,627 @@
+{
+  "schema": "ugrp.beampair1.funnel.v1",
+  "source_sha": "ef284e92510ca4283f1db5de9aecd1dac5c17b0b",
+  "raw_root": "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1",
+  "episode_funnel": [
+    {
+      "gate": "started",
+      "entered": 5,
+      "passed": 5,
+      "rejected": 0
+    },
+    {
+      "gate": "both_align",
+      "entered": 5,
+      "passed": 5,
+      "rejected": 0
+    },
+    {
+      "gate": "both_ready",
+      "entered": 5,
+      "passed": 5,
+      "rejected": 0
+    },
+    {
+      "gate": "both_pick",
+      "entered": 5,
+      "passed": 5,
+      "rejected": 0
+    },
+    {
+      "gate": "both_command_complete",
+      "entered": 5,
+      "passed": 5,
+      "rejected": 0
+    },
+    {
+      "gate": "joint_hold_3s",
+      "entered": 5,
+      "passed": 5,
+      "rejected": 0
+    },
+    {
+      "gate": "input_eligible_success",
+      "entered": 5,
+      "passed": 5,
+      "rejected": 0
+    }
+  ],
+  "reason_distribution": {
+    "peer_goal": 173,
+    "cargo_goal": 2
+  },
+  "blocked_objects": {
+    "r1": 40,
+    "r3": 55,
+    "beam_1": 2,
+    "r2": 78
+  },
+  "candidate_populations": {
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-000/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-001/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-002/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-003/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 1,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 1,
+            "passed": 1,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 1,
+            "passed": 1,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-004/raw": {
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    }
+  },
+  "reservation_state_populations": {
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-000/raw": {
+      "r1": {
+        "N": 243,
+        "ordered_funnel": [
+          {
+            "gate": "outside_reserved_teal_destination",
+            "entered": 243,
+            "passed": 228,
+            "rejected": 15
+          }
+        ],
+        "scope": "constraint-query states; not candidate rejections or physical peer positions"
+      },
+      "r2": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "outside_reserved_teal_destination",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "scope": "constraint-query states; not candidate rejections or physical peer positions"
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-001/raw": {
+      "r1": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "outside_reserved_teal_destination",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "scope": "constraint-query states; not candidate rejections or physical peer positions"
+      },
+      "r2": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "outside_reserved_teal_destination",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "scope": "constraint-query states; not candidate rejections or physical peer positions"
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-002/raw": {
+      "r1": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "outside_reserved_teal_destination",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "scope": "constraint-query states; not candidate rejections or physical peer positions"
+      },
+      "r2": {
+        "N": 239,
+        "ordered_funnel": [
+          {
+            "gate": "outside_reserved_teal_destination",
+            "entered": 239,
+            "passed": 239,
+            "rejected": 0
+          }
+        ],
+        "scope": "constraint-query states; not candidate rejections or physical peer positions"
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-003/raw": {
+      "r1": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "outside_reserved_teal_destination",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "scope": "constraint-query states; not candidate rejections or physical peer positions"
+      },
+      "r2": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "outside_reserved_teal_destination",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "scope": "constraint-query states; not candidate rejections or physical peer positions"
+      }
+    },
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-004/raw": {
+      "r1": {
+        "N": 321,
+        "ordered_funnel": [
+          {
+            "gate": "outside_reserved_teal_destination",
+            "entered": 321,
+            "passed": 321,
+            "rejected": 0
+          }
+        ],
+        "scope": "constraint-query states; not candidate rejections or physical peer positions"
+      },
+      "r2": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "outside_reserved_teal_destination",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ],
+        "scope": "constraint-query states; not candidate rejections or physical peer positions"
+      }
+    }
+  },
+  "frame_populations": {
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-000/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 930,
+        "passed": 628,
+        "rejected": 302
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 628,
+        "passed": 624,
+        "rejected": 4
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 624,
+        "passed": 624,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-001/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 542,
+        "passed": 395,
+        "rejected": 147
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 395,
+        "passed": 392,
+        "rejected": 3
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 392,
+        "passed": 392,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-002/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 760,
+        "passed": 543,
+        "rejected": 217
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 543,
+        "passed": 541,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 541,
+        "passed": 541,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-003/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 732,
+        "passed": 565,
+        "rejected": 167
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 565,
+        "passed": 563,
+        "rejected": 2
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 563,
+        "passed": 563,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-004/raw": [
+      {
+        "gate": "any_assigned_probe",
+        "entered": 1136,
+        "passed": 869,
+        "rejected": 267
+      },
+      {
+        "gate": "meaningful_region_5_of_15",
+        "entered": 869,
+        "passed": 850,
+        "rejected": 19
+      },
+      {
+        "gate": "measurement_admitted_not_held",
+        "entered": 850,
+        "passed": 850,
+        "rejected": 0
+      }
+    ]
+  },
+  "event_populations": {
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-000/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-001/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-002/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-003/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-004/raw": [
+      {
+        "gate": "own_ready",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_pick_after_go_ack",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      },
+      {
+        "gate": "own_command_complete",
+        "entered": 2,
+        "passed": 2,
+        "rejected": 0
+      }
+    ]
+  },
+  "rendezvous_event_populations": {
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-000/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-001/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-002/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 0,
+        "passed": 0,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-003/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      }
+    ],
+    "/home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1/diagnostic/episode-004/raw": [
+      {
+        "gate": "deadline_replanned",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "own_align_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "own_complete_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      },
+      {
+        "gate": "joint_hold_3s_after_retry",
+        "entered": 1,
+        "passed": 1,
+        "rejected": 0
+      }
+    ]
+  },
+  "analysis_script_sha256": "51a49dbebf2476ec75276c39664f63407940c77e377c02afd83ad3059562eee7",
+  "missing_rejection_audit_N": 0,
+  "reproduce": "cd /home/ugrp/ugrp-sim/src/ef284e92510ca4283f1db5de9aecd1dac5c17b0b && PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/ef284e92510ca4283f1db5de9aecd1dac5c17b0b/scripts/analyze_beampair1.py /home/ugrp/ugrp-sim/ops-reviews/beampair7/input-short-r1 --out /home/ugrp/ugrp-sim/ops-reviews/beampair7/analysis-short-r1"
+}

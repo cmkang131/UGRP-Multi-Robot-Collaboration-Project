@@ -1,0 +1,33 @@
+[
+  {
+    "stage": "post-success evaluation playback",
+    "category": "analysis_setup_error",
+    "error": "saved scene relative texture path not found because review cwd was not source root",
+    "simulation_attempt": false,
+    "resolution": "Run in the pinned source root and retain retry output in short-r1-8318711-v2; do not overwrite failed directory"
+  },
+  {
+    "stage": "post-success evaluation playback",
+    "category": "analysis_setup_error",
+    "error": "scripts package unavailable after cwd-only correction; explicit PYTHONPATH was missing",
+    "simulation_attempt": false,
+    "resolution": "Set both pinned source cwd and PYTHONPATH; retry output directory had not been created by this failed import"
+  },
+  {
+    "stage": "gate40 capacity admission attempt1",
+    "category": "capacity_rejected_before_start",
+    "simulation_attempt": false,
+    "started_N": 0,
+    "unstarted_N": 40,
+    "reason": "Other lease declarations reached40 after the short cohort; a partial queue pop lost the sentinel from supervisor pending metadata, but no run directory/physics was created.",
+    "resolution": "Preserve original DONE and independently reconcile all40 names against run directories; v2 waits for a full16-slot wave and pops only after successful launch. Same source/configuration and all40 seeds retained."
+  },
+  {
+    "stage": "gate40 supervisor attempt2 pre-start",
+    "category": "analysis_setup_error",
+    "simulation_attempt": false,
+    "started_N": 0,
+    "error": "v2 batch-name replacement did not match inherited attempt-aware supervisor line; existing attempt1 directory was correctly not overwritten",
+    "resolution": "Set explicit batch_name lookup; keep failed driver log and restart with separate retry1 driver log. No run directory existed."
+  }
+]

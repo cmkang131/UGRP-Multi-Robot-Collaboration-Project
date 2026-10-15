@@ -23,7 +23,7 @@ r1 blue/r2 teal로 맡은 끝은 다르다. 24초 이후 r1은 r2 몸체에 시�
 
 [허용 입력 재구성](allowed-world-summary.json), 재현은 [GCP 분석 스크립트](operations/replay_observations.py).
 `sim/grasp_act_search23.py:23`의 `PEER_TTL_S=2.0`을
-`harness/grasp_act_visible_world.py:75-77`이 적용한다(고정 의존성 SHA 기준).
+`harness/grasp_act_visible_world.py:67-69`이 적용한다(고정 의존성 SHA 기준).
 마지막 신선한 상대 관측은 r1=15.9초, r2=12.1초이고 모델의 상대는 각각17.8/14.1초까지만 남았다.
 그 뒤 새 관측 없이 상대가 모델에서 사라진다. `grasp_act_peer_rendezvous.PeerRendezvous.retry()`는
 12초 재시도에서 peer_wait_ids를 지우고, `_peer_route()`는 상대가 없는 제약으로 접근을 다시 허용한다.
@@ -53,7 +53,7 @@ blue가 양보하는 순서는 기존 `grasp_act_priority`의 blue-parks/teal-fi
 절대경로 rejection_table/해시를 필수로 둔다. 과거15/16·짧은5개와 합산하지 않는다.
 첫30 SIM초 wall/SIM은 기록하며 중앙>3.5 경고,>6.0 또는 HOST_ERROR는 새 제출을 중단한다.
 실패/감독 중단 직전10초 자기 카메라10Hz 링은 기존 기록 전용 옵션을 켠다.
-현재 상태는 후보 검증 전 NOT_READY다. 관련 비물리24개 PASS; 물리 성공은 아직 미측정이다.
+실행 제어 소스는 `ef284e92510ca4283f1db5de9aecd1dac5c17b0b`로 고정했다. 관련 비물리24개 PASS, 후속 대기열 행 단위 검증7개 PASS(이 중 기존4개 중복). 후속 기록/CI 커밋은 제어 파일을 바꾸지 않는다.
 
 원본/분석은 `/home/ugrp/ugrp-sim/ops-reviews/beampair7/`, 새 실행은
 `/home/ugrp/ugrp-sim/runs/beampair7-*`. Mac에는 요약·몽타주·검토용 작은 영상만 회수한다.
@@ -68,3 +68,30 @@ blue가 양보하는 순서는 기존 `grasp_act_priority`의 blue-parks/teal-fi
 - [van den Berg et al., ORCA](https://gamma-web.iacs.umd.edu/ORCA/):
   상대 속도와 상호 충돌 회피 책임을 쓰는 표준 대안이다. 원본처럼 상대 관측 자체가 사라지는 경우를
   속도 최적화만으로 해결했다고 주장할 수 없어 이번 후보에서는 도입하지 않았다.
+
+## R1 짧은 검증 — 5/5
+
+[원본 재계수](r1-summary.json) · [거부/관문 표](r1-rejection_table.json) · [실제 장면/첫30초](r1-runtime-verification.json).
+
+|seed|공동3초 유지 성공|SIM초|
+|---:|---:|---:|
+|8318711|1/1|46.4|
+|8318701|1/1|56.7|
+|8318706|1/1|36.5|
+|8318700|1/1|27.0|
+|8318726|1/1|37.9|
+
+cap_end0·HOST_ERROR0·미시작0, invisible_measurements0·held_world_reads0, 빈 거부 사유/이름/틈 감사0이다.
+첫30초가 있는4개의 wall/SIM 중앙3.911, 최대4.439로3.5 경고이며6.0 차단 미만이다.
+모두 확정 장면·no_mip의 실제 GL_LINEAR를 확인했다. 이5개는 gate40에 합산하지 않는다.
+
+[8318711 대표 영상](representative-8318711.mp4) 390806B. 전체0–46.4 SIM초2Hz94시점을 직접 보았다.
+8–18초 파랑 담당이 청록 예약 자리를 돌아 나가고, 18–30초 청록이 정렬하는 동안 파랑은 반대 끝으로 이동한다.
+30–38초 파랑 정렬, 38초 이후 양측 READY→pick→명령 완료→공동3초 유지다. 지속적인 차체 교착이 사라졌다.
+자기 화면도 저장 qpos 재렌더이며 성공 원촬영10Hz로 주장하지 않는다. [범위/ffprobe/해시](playback-short-summary.json).
+
+[gate40 승인 원본](gate40-queue-r1.json), [용량 대기 후 재제출](gate40-queue-r1-attempt2.json).
+APPROVED_PINNED와 지정 review_detail, 동일 소스의 절대 rejection_table/해시를 연결했다.
+첫 제출은 다른 임대40 때문에 물리 시작0으로 거부됐다. 이후 다른 작업이 임대를 해제하여 다른24+자기16=40을 확인한 뒤 실제 첫16개를 시작했다.
+감독기 사전 오류의 pending 목록에서는 sentinel 한 개가 빠졌지만, 실행 폴더·PROCESS가0인 것으로40개 전부 미제출임을 별도 재구성한다.
+최종 모집단은 새 gate40만이며 진행 중 결과는 완료/READY로 보고하지 않는다. 운영 오류는 [별도 원장](operations-errors.json)에 있다.

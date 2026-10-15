@@ -132,3 +132,8 @@ tail은 원촬영202장이다. [원본·해시·검토](../experiments/2026-10-1
 ## 2026-10-16 beampair6 — v7 배치 지원 조건
 
 실행 소스 `08f129213031255dd188e20df832bb6714dfca9a`, 의존성 `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp2/n4-highcpu-64. 기본 off `beampair_gate_valid_v2`(초기화만)·`beampair_wall_clear_v1` 교사 후보. 새 배치8318726의 공동 들기 완료38.0 SIM초. [대표 영상](../experiments/2026-10-16-beampair6/representative-8318726.mp4)은 개요(평가용)+r1/r2 자기 카메라3배속, 284710bytes, SHA256 `3bd8f031066f010bf0ce168f048b197f19210cd61dce6118b7fe9dc50f0d12b5`. 전체0–38초2Hz77프레임을 직접 봤다. 자기 카메라는10Hz 저장 qpos 재렌더이며 원촬영10Hz가 아니다. [원본·ffprobe·검토](../experiments/2026-10-16-beampair6/playback-review.json). 학생·운반·놓기·실물 성공을 뜻하지 않는다.
+
+
+## 2026-10-16 beampair7 — 현재 보이는 빔의 상대 목적 자세 예약
+
+실행 소스 `ef284e92510ca4283f1db5de9aecd1dac5c17b0b`, 의존성 `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp2/n4-highcpu-64/C MuJoCo3.12. 기본 off `beampair_peer_yield_v1`. 새 장면 `walls_floor_contrast_v5_indigo110_s80`+v1 바닥+no_mip. 실패8318711의 수정 후 짧은 검증은46.4 SIM초에 공동3초 유지 성공. [대표 영상](../experiments/2026-10-16-beampair7/representative-8318711.mp4)은 개요(평가용)+r1/r2 자기 카메라3배속,390806B,SHA256 `cde6bf6cc4095dba7f671398ed0cf37d1d9183f30114978cf426847ddc10a4c1`. 전체0–46.4초2Hz94시점을 직접 확인했으며 자기 화면은 저장 qpos 재렌더다. [검토·ffprobe·출처](../experiments/2026-10-16-beampair7/playback-short-summary.json). 짧은5/5를 새 gate40·학생·운반·실물 성공으로 합산하지 않는다.
