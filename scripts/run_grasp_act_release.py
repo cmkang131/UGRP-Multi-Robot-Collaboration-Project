@@ -21,7 +21,7 @@ from sim.release_global_observation import LATERAL_MODES
 from sim.release_nbv_observation import MODES as ACTIVE_RECOVERY_MODES
 from sim.release_regrasp import MODES as REGRASP_CHECK_MODES
 from sim.release_regrasp_recovery import MODES as REGRASP_RECOVERY_MODES
-from sim import release14, release15, release16
+from sim import release14, release15, release16, release17
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 # User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
 # hidden_v1: while the own gripper holds the cargo, its world pose never enters teacher/map-code inputs.
@@ -166,11 +166,11 @@ def own_end_world(world,inst,end):
 
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
-        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',record_training=False):
-    release16.validate(release_profile,record_training,locals(),plan)
-    line_guard=release_profile in (release14.PROFILE, release15.PROFILE, release16.PROFILE)
-    fov_guard=release_profile in (release15.PROFILE, release16.PROFILE)
-    line_control=release16 if release_profile==release16.PROFILE else (release15 if fov_guard else release14)
+        zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',release_fov_step='off',record_training=False):
+    release17.validate(release_profile,record_training,locals(),plan)
+    line_guard=release_profile in (release14.PROFILE, release15.PROFILE, release16.PROFILE, release17.PROFILE)
+    fov_guard=release_profile in (release15.PROFILE, release16.PROFILE, release17.PROFILE)
+    line_control=release17 if release_profile==release17.PROFILE else (release16 if release_profile==release16.PROFILE else (release15 if fov_guard else release14))
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
     if lookaround!='off' and observe_mode!='backoff_v3':raise ValueError('lookaround runs after the backoff_v3 step back')
@@ -185,12 +185,12 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     checked_regrasp=regrasp_check!='off'
     if checked_regrasp and not global_release:raise ValueError('regrasp check requires global RGB release')
     if regrasp_recovery not in REGRASP_RECOVERY_MODES:raise ValueError(regrasp_recovery)
-    if regrasp_recovery!='off' and (not checked_regrasp or command_motion!='native_yaw_v1' or not relative_pose or held_object!='hidden_v1'):
+    if regrasp_recovery!='off' and (not checked_regrasp or command_motion not in ('native_yaw_v1','yaw_cal_v1') or not relative_pose or held_object!='hidden_v1'):
         raise ValueError('RGB realign requires checked RGB release, command-relative native motion and hidden held object')
     from sim.global_landmark_localization import SUPPORT_MODES
     if localization_support not in SUPPORT_MODES:raise ValueError(localization_support)
     if localization_support!='off' and not global_release:raise ValueError('localization support requires global RGB release')
-    if command_motion not in ('off','native_yaw_v1'):raise ValueError(command_motion)
+    if command_motion not in ('off','native_yaw_v1','yaw_cal_v1'):raise ValueError(command_motion)
     if command_motion!='off' and not global_release:raise ValueError('native command motion requires global RGB release')
     if lateral_recovery not in LATERAL_MODES:raise ValueError(lateral_recovery)
     if lateral_recovery!='off' and not global_release:raise ValueError('lateral recovery requires global release')
@@ -226,7 +226,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     branch=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()
     write(out/'RUN_META.json',{'class':'dev','pr':491,'branch':branch,'sha':sha,'batch':plan['batch']})
     report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,'held_object':held_object,'lateral_recovery':lateral_recovery,'active_recovery':active_recovery,
-        'lookaround':lookaround,'pose_anchor':pose_anchor,'placement':placement,'command_motion':command_motion,'localization_support':localization_support,'regrasp_check':regrasp_check,'regrasp_recovery':regrasp_recovery,'release_profile':release_profile,'map_pose_known':not relative_pose,
+        'lookaround':lookaround,'pose_anchor':pose_anchor,'placement':placement,'command_motion':command_motion,'localization_support':localization_support,'regrasp_check':regrasp_check,'regrasp_recovery':regrasp_recovery,'release_profile':release_profile,**({'release_fov_step':release_fov_step} if release_profile==release17.PROFILE else {}),'map_pose_known':not relative_pose,
         'release_decision_inputs':'own RGB, own issued commands, static map only' if rgb_only else 'legacy visible-only teacher',
         'pose_estimate_source':'own issued wheels from arbitrary zero; map pose unknown' if relative_pose else 'legacy truth at release handoff plus frozen plan error',
         'own_camera_px':list(LOOK_RES if lookaround!='off' else (320,240)),'weld':'off','recording_mode':'success_measurement','student_execution':False,'success_rule':SUCCESS,
@@ -472,7 +472,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 undistort=loc[teacher.rid].vl.mp.undistort,
                 wheel_command=lambda rid,w,d,at:wheels[rid].command(w,d,at),
                 clearance=lambda dx,dy,da:line_control.map_motion_clear(loc[teacher.rid],dx,dy,da),
-                **({'pick_audit':lambda at,t,xy:audit.pick('line_aligned_station',t.rid,at,t,xy=xy)} if fov_guard else {}))
+                **({'pick_audit':lambda at,t,xy:audit.pick('line_aligned_station',t.rid,at,t,xy=xy)} if fov_guard else {}),
+                **({'fov_step':release_fov_step} if release_profile==release17.PROFILE else {}))
             guard.peer_commands={r:dict(t.pwm) for r,t in rel.items() if r!=teacher.rid}
             return guard
         def regrasp_recovery_factory(teacher,now):
@@ -864,14 +865,15 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
 def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=90.)
-    p.add_argument('--release-profile',choices=release16.PROFILES,default='off')
+    p.add_argument('--release-profile',choices=release17.PROFILES,default='off')
+    p.add_argument('--release-fov-step',choices=release17.FOV_STEPS,default='off',help='release_fov_step_pulse_v1 (release17 profile only): FOV recovery by one 0.1 s level-0.35 pulse, one 0.15 s escalation, then fail')
     p.add_argument('--record-training',action='store_true',help='fail closed: safe profile and future verified gate/writer required')
     p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands')
     p.add_argument('--pose-anchor',choices=POSE_ANCHOR_MODES,default='legacy_truth_v0',help='command_relative_v1: no truth handoff anchor; map pose unknown, own-command sweep only')
     p.add_argument('--placement',choices=PLACEMENT_MODES,default='margin_v0',help='zone_center_rgb_v1: local RGB rectangle centering; no world anchor')
     p.add_argument('--lateral-recovery',choices=LATERAL_MODES,default='off',help='bounded_v1: recover insufficient side clearance using own RGB localization')
     p.add_argument('--active-recovery',choices=ACTIVE_RECOVERY_MODES,default='off',help='map_nbv_v1: extra map views; setdown_lookaround_v1: retrace own backoff and scan front/rear after setdown')
-    p.add_argument('--command-motion',choices=('off','native_yaw_v1'),default='off',help='native_yaw_v1: native wheel yaw sign in command integration and inverse rotation planning; speed magnitude unchanged')
+    p.add_argument('--command-motion',choices=('off','native_yaw_v1','yaw_cal_v1'),default='off',help='native_yaw_v1: native wheel yaw sign in command integration and inverse rotation planning; speed magnitude unchanged. yaw_cal_v1 (release17 profile only): calibrated sign (Y>0 = counter-clockwise) and ~3.0 rad/(level*s) magnitude, with an own-RGB sign check in LineAlign')
     p.add_argument('--localization-support',choices=('off','map_free_v1'),default='off',help='map_free_v1: use uninflated static-map free space for pose hypotheses; motion clearance unchanged')
     p.add_argument('--regrasp-check',choices=REGRASP_CHECK_MODES,default='off',help='own_rgb_lift_v1: sequential own-RGB lift tests, bounded own retries, code ACK barrier and distinct axis recovery')
     p.add_argument('--regrasp-recovery',choices=REGRASP_RECOVERY_MODES,default='off',help='own_rgb_realign_v1: failed own grasp opens, backs off, image-servos and retries with finite caps')
@@ -883,5 +885,5 @@ def main():
     p.add_argument('--lookaround',choices=LOOKAROUND_MODES,default='off',help='setdown_lookaround_v1: after the backoff step, look toward static-map landmarks chosen from the own pose estimate (640x480 own camera)');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,record_training=a.record_training),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,release_fov_step=a.release_fov_step,record_training=a.record_training),ensure_ascii=False,default=str))
 if __name__=='__main__':main()

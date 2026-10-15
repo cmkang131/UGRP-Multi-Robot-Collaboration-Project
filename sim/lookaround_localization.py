@@ -486,7 +486,7 @@ class LookaroundLocalizer:
                 'final_estimate': [float(z) for z in self.own.x],
                 'final_sigma': [float(math.sqrt(self.own.P[i, i])) for i in range(3)],
                 'constants': {'look_arm': self.arm, 'v2': V2 if self.v2 else None, 'view_settle_s': VIEW_SETTLE_S, 'arm_move_s': ARM_MOVE_S,
-                              'yaw_rate_rad_s': YAW_RATE_RAD_S, 'grid': GRID, 'wall_field': WALL_FIELD,
+                              'yaw_rate_rad_s': YAW_RATE_RAD_S, **({'profile_yaw_rate_rad_s': _profile_yaw_rate(self.profile)} if self.profile == 'yaw_cal_v1' else {}), 'grid': GRID, 'wall_field': WALL_FIELD,
                               'sigmas': [SIGMA_WALL_M, SIGMA_EDGE_M, SIGMA_DOOR_M]},
                 'own_image_gates_sha256': self.gates['sha256'],
                 'scope': 'own commands, own RGB and static map only; truth error is in the caller evaluation record'}
@@ -513,11 +513,19 @@ def wall_loglik(field, px, points, sigmas=None):
     return out
 
 
+def _profile_yaw_rate(profile):
+    from sim.visible_belief import rates
+    return rates(profile)[2]
+
+
 def rotate_plan(angle, odometry_profile='off'):
     """In-place rotation by own wheel pulses (mix t = (-w0+w1-w2+w3)/4), duty 0.35, pulses <= 0.15 s."""
     from sim.visible_belief import rates
     rates(odometry_profile)  # reject unknown profiles; preserve older planners
-    rate = -YAW_RATE_RAD_S if odometry_profile == 'native_yaw_v1' else YAW_RATE_RAD_S
+    if odometry_profile == 'yaw_cal_v1':
+        rate = rates(odometry_profile)[2]  # release17: calibrated sign and ~3x magnitude
+    else:
+        rate = -YAW_RATE_RAD_S if odometry_profile == 'native_yaw_v1' else YAW_RATE_RAD_S
     level = WHEEL if angle/rate > 0 else -WHEEL
     remaining = abs(angle/rate); plan = []
     while remaining > 1e-6:

@@ -1,0 +1,8 @@
+Mac, no simulator/render/network; one pytest process at a time. Base be2d749a + release17 working tree.
+python3 -m pytest tests/test_release17.py tests/test_release14.py tests/test_release15.py tests/test_release16.py tests/test_release_setdown_lookaround.py tests/test_release_regrasp.py tests/test_grasp_act_release_run.py tests/test_grasp_act_release_teacher.py tests/test_probe_carry_lookaround.py -q
+  -> 160 passed in 517.71s (0:08:37)   [test_release17.py then had 15 tests]
+After the last edit (line_step fall-through uses release14 IBVS + one-pulse recovery; +1 test):
+python3 -m pytest tests/test_release17.py -q -x
+  -> 16 passed in 58.65s
+Replay: python3 -m scripts.replay_release17 --root /Users/changmin/projects/ugrp/outputs/gcp1-runs --out release17-replay.json (stored ledgers only, 0 simulator calls)
+160 passed (9 files) + 16 passed (release17 re-run); physical effect unverified
