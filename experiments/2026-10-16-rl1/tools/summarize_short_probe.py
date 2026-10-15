@@ -72,7 +72,9 @@ def main():
             dict(category='result_field_collision',attempt='probe-r3',count=1,blocking_object='not_applicable_recording',minimum_gap_m=None),
             dict(category='preliminary_speed_block',attempt='probe-r3/r4',count=1,blocking_object='not_attributed_shared_GPU_or_backend',minimum_gap_m=None)],
         reproduce=sys.argv,raw=str(original))
-    report=dict(status='BLOCKED',verdict='BLOCKED',host=host,phases=phases,public_actor_audit=public,probe_funnel=funnel,
+    report=dict(status='BLOCKED',verdict='BLOCKED',host=host,
+        analysis_source_sha=subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip(),
+        analysis_code_sha256=sha(Path(__file__)),actor_contract_sha256=sha(Path(c.__file__)),phases=phases,public_actor_audit=public,probe_funnel=funnel,
         first_state_audit=first_state,reset_audit=reset,reset_scope='immediate initialization-state reset only; moving reset and subsequent dynamics unverified',
         recording_fix=dict(source_sha=phases['probe-r4-reset-only']['summary']['source_sha'],close_errors=owner['close_errors'],
             qpos_archive_sha256=sha(a.raw/'probe-r4-reset-only/client/owner/warp-qpos.npz'),ring_bytes=owner['recording_ring_bytes']),
