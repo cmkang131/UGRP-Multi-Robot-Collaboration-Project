@@ -111,3 +111,8 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 ## 2026-10-15 beampair2 peer rendezvous
 
 `f84b2c8a436feff9775758876248c3054ff3553b` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, v7·색 끝·weld OFF·기본 off peer_rendezvous_v1. 짧은 탐색R2 6/6 공동 들기3초, 40회 재시작 큐 미제출. 대표 실패복구seed8318604 own r1/r2 1Hz 영상: gcp1 `/home/ugrp/ugrp-sim/outputs/beampair2/representative-f84b2c8a/beampair2-f84b2c8a-8318604.mp4`, SHA256 `57aff4d304d3a8dec9c9e869480f5dade0e23c7dc222474c961cbaad061abe6b`. [프레임·인코더·보존 기록](../experiments/2026-10-15-beampair2/representative.json). Mac에는 요약·몽타주만 회수. 근거리 교사 탐색이며 학생·운반·놓기·실물 성공은 아니다.
+
+
+## 2026-10-15 beampair3 양보 계획 만료
+
+`e645b34beb4fa693ab4ddedfe77045ae26b46388` + dependency `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp1/n4-highcpu-64, 기본off `peer_rendezvous_v2`. R3 짧은 탐색6/6 공동 들기3초; 정식40회는 미제출 큐. 대표8318611 개요(평가만)+r1/r2 자기 카메라 3배속, 원본10Hz 평가 qpos 복원: `/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/playback-3x.mp4` (449970bytes, SHA256 `2f833a2796b7b78470a6d97872525f9e43c630a9fc9a742147c1659626d0a2b1`). [원본·프레임·ffprobe·직접 검토](../experiments/2026-10-15-beampair3/r3-visual-review.json). 전체2Hz·끝10초10Hz 검토, 카메라 보정 복원·위치차이0. 원본 own JPEG는1Hz이며 새 카메라 관측이나 학생 실행이 아니다. 학습·운반·놓기·실물 성공 아님.

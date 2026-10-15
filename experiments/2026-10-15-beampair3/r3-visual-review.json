@@ -1,0 +1,82 @@
+{
+  "raw": "/home/ugrp/ugrp-sim/runs/beampair3-r3-e645b34b/probe/diagnostic/episode-000/raw",
+  "seed": 8318611,
+  "roles": {
+    "r1": "blue",
+    "r2": "teal"
+  },
+  "duration_sim_s": 48.00000000014659,
+  "saved_eval_rows": 481,
+  "max_body_xyz_error_m": 0.0,
+  "video": "/home/ugrp/ugrp-sim/ops-reviews/beampair3/r3-8318611/playback-3x.mp4",
+  "video_sha256": "2f833a2796b7b78470a6d97872525f9e43c630a9fc9a742147c1659626d0a2b1",
+  "video_bytes": 449970,
+  "ffprobe": {
+    "programs": [],
+    "streams": [
+      {
+        "width": 960,
+        "height": 272,
+        "duration": "16.033333",
+        "nb_read_frames": "481"
+      }
+    ]
+  },
+  "sources": {
+    "/home/ugrp/ugrp-sim/runs/beampair3-r3-e645b34b/probe/diagnostic/episode-000/raw/scene.xml": "802875435c00cc30b1f503de9c9cca22229631829bac891fbe78c7322ff8c251",
+    "/home/ugrp/ugrp-sim/runs/beampair3-r3-e645b34b/probe/diagnostic/episode-000/raw/camera-runtime.json": "0e3e26679926b58acf4471e2686aaab7ef5b1c5ec8e452e18d998db145558c6d",
+    "/home/ugrp/ugrp-sim/runs/beampair3-r3-e645b34b/probe/diagnostic/episode-000/raw/plan.json": "6616bd8d5709bf39fbba8c59ff14be01457b22ce28623974e2a7866f3a92400b",
+    "/home/ugrp/ugrp-sim/runs/beampair3-r3-e645b34b/probe/diagnostic/episode-000/raw/eval-only.jsonl.zst": "69e03e44687d949f2cb6067099ea86009afca96ec7d8400fe7d071c08ca505bf",
+    "/home/ugrp/ugrp-sim/runs/beampair3-r3-e645b34b/probe/diagnostic/episode-000/raw/teacher-r1.jsonl.zst": "04c79fcfff50b49ddb3eaf5c2e700ddb8ee434127015ff8bf67818552e52612f",
+    "/home/ugrp/ugrp-sim/runs/beampair3-r3-e645b34b/probe/diagnostic/episode-000/raw/teacher-r2.jsonl.zst": "dc14c264048ac541207346402da12b6b874cb4d3859c76ef7e9134786359bf7b"
+  },
+  "scope": "Evaluation saved-state rendering, no physics/controller rerun; original own JPEGs are 1Hz; qpos is 10Hz. No inferred motion frames.",
+  "direct_visual_review_completed": true,
+  "full2hz_frames": 97,
+  "tail10hz_frames": 101,
+  "local_video": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/playback-3x.mp4",
+  "local_sha256": "2f833a2796b7b78470a6d97872525f9e43c630a9fc9a742147c1659626d0a2b1",
+  "reviewed_sheets": [
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/full-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/full-02.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/full-03.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/full-04.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/full-05.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/tail-01.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/tail-02.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/tail-03.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/tail-04.jpg",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/beampair3/r3-8318611/tail-05.jpg"
+  ],
+  "timeline": [
+    {
+      "sim_s": [
+        0,
+        19.2
+      ],
+      "observation": "same early approach and scan; distinct r1 blue/r2 teal assignments"
+    },
+    {
+      "sim_s": [
+        19.2,
+        30
+      ],
+      "observation": "yield expiry at world21; r2 resumes navigation instead of shrinking pulses forever; r1 moves to blue"
+    },
+    {
+      "sim_s": [
+        30,
+        40.5
+      ],
+      "observation": "both align their own blue/teal ends and READY"
+    },
+    {
+      "sim_s": [
+        40.5,
+        48
+      ],
+      "observation": "pick and command completion; distinct ends; evaluator independently confirms joint hold3s"
+    }
+  ],
+  "scope_limit": "saved-state rendering and ffprobe playback check; no Mac screen app; not native player viewing or a new camera observation trace"
+}

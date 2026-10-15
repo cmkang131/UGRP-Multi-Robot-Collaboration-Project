@@ -1,0 +1,115 @@
+{
+  "schema": "ugrp.beampair3.summary.v1",
+  "source_sha": "e645b34beb4fa693ab4ddedfe77045ae26b46388",
+  "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "scope": "DEV short6 near-field beam teacher only; not gate40/student/transport/release/physical robot success",
+  "rounds": [
+    {
+      "round": 1,
+      "source_sha": "8864452e5dce3da9bc9ace420d6eb664b71abb52",
+      "planned_N": 6,
+      "started_N": 1,
+      "success_N": 0,
+      "administrative_interruption_N": 1,
+      "cap_end_N": 0,
+      "unstarted_N": 5,
+      "reason": "correct original8318611 perturbation from1 to12 ticks"
+    },
+    {
+      "round": 2,
+      "source_sha": "9f6caa6a8f68cd628197562fdb878843ad2a4104",
+      "planned_N": 6,
+      "started_N": 1,
+      "success_N": 0,
+      "administrative_interruption_N": 0,
+      "cap_end_N": 1,
+      "unstarted_N": 5,
+      "reason": "unbounded yield plan"
+    },
+    {
+      "round": 3,
+      "source_sha": "e645b34beb4fa693ab4ddedfe77045ae26b46388",
+      "planned_N": 6,
+      "started_N": 6,
+      "success_N": 6,
+      "cap_end_N": 0,
+      "HOST_ERROR_N": 0,
+      "unstarted_N": 0
+    }
+  ],
+  "prior_results_pooled": false,
+  "source_tests_passed": 24,
+  "strict_hold_3s_N": 6,
+  "held_world_reads": 0,
+  "invisible_measurements": 0,
+  "missing_rejection_audit_N": 0,
+  "training_camera": false,
+  "model_calls": 0,
+  "wall_per_sim_median": 1.9407969827410452,
+  "probe_workers": "two leading sentinels serial, then four concurrent; reserved6",
+  "gate40": {
+    "path": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-15-beampair3/gate40-queue.json",
+    "operational_copy": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-beampair3-e645b34b.json",
+    "source_sha": "e645b34beb4fa693ab4ddedfe77045ae26b46388",
+    "first_two_seeds": [
+      8318611,
+      8318604
+    ],
+    "max_parallel": 16,
+    "ready": false,
+    "approved": false,
+    "submitted": false,
+    "gate_measured_N": 0,
+    "rejection_table": "/Users/changmin/projects/ugrp-wt/beam-pair/experiments/2026-10-15-beampair3/r3-rejection-table.json"
+  },
+  "raw_manifests": [
+    {
+      "run": "beampair3-r1-8864452e",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-r1-8864452e",
+      "manifest_sha256": "d4fe6e34eaec0d70847505aa450ad0ced774d753a328ad49b30ed05239c5287a",
+      "exit": "130",
+      "source_sha": "8864452e5dce3da9bc9ace420d6eb664b71abb52"
+    },
+    {
+      "run": "beampair3-r2-9f6caa6a",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-r2-9f6caa6a",
+      "manifest_sha256": "66779ceeca9f2f261d6318bc46c29726ea43ff09a8394fc6b09be68e002d3ee3",
+      "exit": "0",
+      "source_sha": "9f6caa6a8f68cd628197562fdb878843ad2a4104"
+    },
+    {
+      "run": "beampair3-r3-e645b34b",
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-r3-e645b34b",
+      "manifest_sha256": "2f773c684889e5d9119041fb68a1ee7d437f7479c19d49e4decffcd1dc6f5ea6",
+      "exit": "0",
+      "source_sha": "e645b34beb4fa693ab4ddedfe77045ae26b46388"
+    }
+  ],
+  "vm_lifecycle": {
+    "owned_workers": 0,
+    "owned_admissions_released": true,
+    "owned_leases_released": true,
+    "stop_command_exit": 75,
+    "status": "RUNNING; stop deferred for other project leases/reservations",
+    "other_reserved_slots": 4,
+    "idle_guard": "active",
+    "own_command_limit": "8h",
+    "observed_vm_limit": "24h; coordinator must resolve/check before activating gate40"
+  },
+  "limitations": [
+    "R3 is6 exploratory episodes, no16-concurrent speed proof or independent40 qualification.",
+    "Robot r2 perturbations in R3 did not trigger at8318600/8318603; no claim of a full r2 envelope.",
+    "Raw on GCP persistent disk only, no independent ARM backup.",
+    "Videos rendered from saved10Hz evaluator qpos with calibrated own cameras; original review JPEGs1Hz. No Mac screen app/native player."
+  ],
+  "artifact_sha256": {
+    "r3-summary.json": "a25d832ed653a3d85b4fb9f3fe4afed47b869006f0c674a189259477f34914e4",
+    "r3-rejection-table.json": "ca7abac45039425ff84262fc8af88a087f304dda0182fd3700c90d3c3d844b61",
+    "r3-runtime.json": "196aa38021958b6b65a4a2bee32576ef3fbc091ac9f830a85ee6df69b3a3be1b",
+    "r3-visual-review.json": "337e7e294c32d7559988d018273e153e39339384d8905f73b26bef21f6432bfc",
+    "gate40-queue.json": "a9cacabd268b77ad3c8316f061b6ec970fbf41f1b67c2208dddc2c8f29817293",
+    "all-manifests.json": "b7e39179a548842aeea055adb23f255dbf2aee853ada01cde966a7275372d1b5"
+  }
+}
