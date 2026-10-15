@@ -3,12 +3,26 @@ import argparse,datetime,hashlib,json,platform,statistics,subprocess
 from pathlib import Path
 ROOT=Path('/home/ugrp/ugrp-sim/runs')
 
-def read(p):return json.loads(Path(p).read_text())
+def read(p):
+    p=Path(p)
+    return json.loads(p.read_text() if p.exists() else subprocess.check_output(['zstd','-dqc',str(p)+'.zst']))
 def write(p,x):Path(p).write_text(json.dumps(x,indent=2,ensure_ascii=False,allow_nan=False)+'\n')
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def short_errors(value):
     return {k:({a:b for a,b in v.items() if a in ('N','p50','p95','max')} if isinstance(v,dict) else v)
             for k,v in value.items() if k in ('N','bad_N','xy_m','yaw_deg')}
+def compact_run(r):
+    x={k:r[k] for k in ('name','stage','kind','condition','seed','source_sha','raw','status','termination','registered_frames','false_registration_events','place_verified','sim_s','failure') if k in r}
+    if r.get('first30'):x['first30_wall_per_sim']=r['first30'].get('wall_per_sim')
+    for k in ('drive_errors','command_only_replay','command_only_same_drive_frames'):
+        if k in r:x[k]=short_errors(r[k])
+    if 'static_pose_admissions' in r:
+        a=r['static_pose_admissions'];x['static_pose_admissions']={k:a[k] for k in ('N','yaw_false_over5_N','xy_false_over10cm_N')}
+    if 'camera_pan_evaluation' in r:
+        a=r['camera_pan_evaluation'];x['camera_pan_on_PF_updates']=dict(N=a['PF_updates_deg'].get('N'),p95_deg=a['PF_updates_deg'].get('p95'),over5_N=a['PF_updates_over5deg'])
+    if 'heading' in r:x['carry_yaw']={k:r['heading'][k] for k in ('accepted','scorable_absolute','absolute_false_over5_N','scorable_delta','delta_false_over5_N')}
+    if r.get('input_audit'):x['input_audit']={k:r['input_audit'].get(k) for k in ('truth_pose_inputs','top_rgb_frames','invisible_measurements','held_world_reads')}
+    return x
 def main(count):
     assert platform.node().startswith('ugrp-sim-gcp2')
     out=ROOT/'reloc17-delivery';out.mkdir(exist_ok=True)
@@ -39,7 +53,7 @@ def main(count):
         # Large analysis JSON/JSONL: compress losslessly, verify decompressed hash,
         # preserve the stored raw manifests untouched. Only new analysis files.
         for p in [Path(data['source_queue']).parent/'summary.json']:
-            if p.stat().st_size>65536:
+            if p.exists() and p.stat().st_size>65536:
                 z=p.with_suffix(p.suffix+'.zst');subprocess.run(['zstd','-q','-f',str(p),'-o',str(z)],check=True)
                 assert hashlib.sha256(subprocess.check_output(['zstd','-dqc',str(z)])).hexdigest()==sha(p)
                 # Keep the summary readable until the final analysis/lifecycle is
@@ -54,12 +68,18 @@ def main(count):
     summary=dict(schema='ugrp.reloc17.summary.v1',verdict=verdict,created=datetime.datetime.now(datetime.timezone.utc).isoformat(),pr=536,parent_pr=532,base_sha='5f63909becb63edc633ab3ad243a4b694fb38846',candidate_source_sha=final[0]['source_sha'],
         scene='walls_floor_contrast_v5_indigo110_s80 + v1 floor + no_mip_v1',host='gcp2 / ugrp-sim-b-1014 / n4-highcpu-64 / C MuJoCo CPU',
         investigation_complete_before_controller_edit=True,controller_fix='reloc17_servo_wait_v1 (default off), ordinary pending-servo hold replaced by existing zero-wheel primitive; terminal hold unchanged',
-        acceptance_constants_changed=False,raw_truth_scope='evaluator-only error calculation; no GT, joints or contacts supplied to controller',
+        acceptance_constants_changed=False,raw_truth_scope='localization uses own RGB, issued commands and authored map; pose error and measured-joint checks are evaluator-only; carry teacher retains its existing visible-only/held-hidden audited boundary',
         runs=lite,rounds=count,pairs=pairs,final_place=dict(N=len(carry),verified=sum(bool(r.get('place_verified')) for r in carry)),
         speed={f'round{n}':read(ROOT/f'reloc17-round{n}/speed-gate.json') for n in range(1,count+1)},
         scope=dict(mac_physics=0,mac_render=0,mac_gui=0,model_calls=0,training=0,weld=False,full_raw_backup=False,full_raw_download=False,physical_robot_or_ACT_student_success_not_claimed=True),
         playback='playback-review.md; full mission success video unavailable',records=dict(inventory='inventory.json',rejection_table='rejection-table-candidate.json',references='references.md',constants='constants.md',decomposition='decomposition.md'))
-    write(out/'summary.json',summary);write(out/'inventory.json',inventory);write(out/'rejection-table-candidate.json',dict(unit='ordered frames/events, acquisition and tracking kept separate',runs=rejections,reproduce=f'PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python {__file__} --rounds {count}'))
+    full=out/'summary-full.json';write(full,summary);z=Path(str(full)+'.zst');raw_sha=sha(full);raw_size=full.stat().st_size
+    subprocess.run(['zstd','-q','-f',str(full),'-o',str(z)],check=True)
+    assert hashlib.sha256(subprocess.check_output(['zstd','-dqc',str(z)])).hexdigest()==raw_sha
+    full.unlink()
+    short=dict(summary,runs=[compact_run(r) for r in lite],full_summary=dict(path=str(z),raw_bytes=raw_size,raw_sha256=raw_sha,compressed_sha256=sha(z),roundtrip_verified=True))
+    write(out/'summary.json',short);assert (out/'summary.json').stat().st_size<=65536
+    write(out/'inventory.json',inventory);write(out/'rejection-table-candidate.json',dict(unit='ordered frames/events, acquisition and tracking kept separate',runs=rejections,reproduce=f'PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python {__file__} --rounds {count}'))
     for n in range(1,count+1):
         src=ROOT/f'reloc17-round{n}';(out/f'round{n}.md').write_bytes((src/'table.md').read_bytes());write(out/f'round{n}-speed.json',read(src/'speed-gate.json'))
     for name in ('host.json','servo-audit.json','likelihood-audit.json','playback-manifest.json'):
