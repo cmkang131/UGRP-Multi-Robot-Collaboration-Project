@@ -25,6 +25,18 @@ def encoded_number(value):
     return value if math.isfinite(value) else str(value)
 
 
+UNUSED_EFM_FIELDS = frozenset(('efm_c', 'efm_ca', 'efm_diag', 'efm_fluid'))
+
+
+def inactive_efm_field(field, integrator, efm_active, nflex, nefmK, nefmT, nefmA):
+    # Upstream derivative.eff_build returns immediately unless DISCRETE (enum 4).
+    # Limit this adapter to the user's rigid implicitfast (enum 3) scene. Upstream
+    # io.make_data initializes precisely these workspace arrays with
+    # _create_array(None, ...), i.e. wp.zeros. Never touch contact/state/model data.
+    return (field in UNUSED_EFM_FIELDS and integrator == 3 and efm_active == 0
+            and nflex == 0 and nefmK == 0 and nefmT == 0 and nefmA == 0)
+
+
 def scan_arrays(obj, prefix, depth=0):
     import numpy as np
     arrays, offenders = [], []
@@ -66,6 +78,7 @@ def main():
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--sha', required=True)
     p.add_argument('--enabled', action='store_true')
+    p.add_argument('--unused-efm-v1', action='store_true', help='default OFF; upstream make_data zero allocation for inactive EFM workspace only')
     a = p.parse_args()
     if not a.enabled or platform.system() != 'Linux' or socket.gethostname().split('.')[0] != 'ugrp-act-l4-pilot1':
         p.error('explicit Linux/L4-only audit required')
@@ -81,7 +94,8 @@ def main():
               'mujoco_version': mujoco.__version__, 'warp_version': wp.__version__,
               'io_sha256': hashlib.sha256(Path(io.__file__).read_bytes()).hexdigest(),
               'float32_max': float(np.finfo(np.float32).max), 'threshold': 3.4e38,
-              'steps': 0, 'training': False, 'option_overrides': {}, 'status': 'running'}
+              'steps': 0, 'training': False, 'option_overrides': {}, 'status': 'running',
+              'unused_efm_v1': a.unused_efm_v1, 'zero_allocated_fields': []}
     def save():
         (a.out / 'result.json').write_text(json.dumps(report, indent=2, allow_nan=False) + '\n')
     save()
@@ -92,6 +106,12 @@ def main():
         report['fresh'] = audit(m, d)
         mujoco.mj_forward(m, d)
         report['before_put_data'] = audit(m, d)
+        report['efm_activity'] = {k: int(getattr(d, k)) for k in ('efm_active','nefmK','nefmT','nefmA')}
+        report['arena_probe'] = {}
+        for field in sorted(UNUSED_EFM_FIELDS):
+            first, second = getattr(d, field), getattr(d, field)
+            report['arena_probe'][field] = {'shares_memory_across_getters': bool(np.shares_memory(first, second)),
+                                           'owns_data': bool(first.flags.owndata), 'base_is_none': first.base is None}
         report['model_counts'] = {k: int(getattr(m, k)) for k in
                                   ('nq','nv','nu','ngeom','nbody','neq','nplugin','nhistory')}
         report['source_options'] = {f: encoded_number(getattr(m.opt, f)) for f in dir(m.opt)
@@ -99,20 +119,36 @@ def main():
         save()
         wp.init()
         wm = mjw.put_model(m)
-        report['converted_options'] = {f.name: encoded_number(getattr(wm.opt, f.name))
-                                       for f in dataclasses.fields(wm.opt)
-                                       if isinstance(getattr(wm.opt, f.name), (int, float))}
+        report['converted_options'] = {}
+        for f in dataclasses.fields(wm.opt):
+            v = getattr(wm.opt, f.name)
+            if hasattr(v, 'numpy'):
+                v = v.numpy()
+                if v.size == 1:
+                    v = v.item()
+            if isinstance(v, (int, float)):
+                report['converted_options'][f.name] = encoded_number(v)
         original = io._create_array
         def annotated(data, spec, sizes, batch_size=1):
+            caller = inspect.currentframe().f_back
+            field = caller.f_locals.get('f')
+            name = getattr(field, 'name', None)
+            if a.unused_efm_v1 and caller.f_code.co_name == 'put_data' and inactive_efm_field(
+                    name, int(m.opt.integrator), int(d.efm_active), int(m.nflex), int(d.nefmK), int(d.nefmT), int(d.nefmA)):
+                report['zero_allocated_fields'].append(name)
+                return original(None, spec, sizes, batch_size)
             try:
                 return original(data, spec, sizes, batch_size)
             except Exception:
-                caller = inspect.currentframe().f_back
-                field = caller.f_locals.get('f')
                 report['conversion_failure'] = {'field': getattr(field, 'name', None),
                                                 'caller': caller.f_code.co_name,
                                                 'caller_lineno': caller.f_lineno,
                                                 'target_dtype': str(spec.dtype)}
+                if isinstance(data, np.ndarray) and data.dtype.kind == 'f':
+                    bad = ~np.isfinite(data) | (np.abs(data) > 3.4e38)
+                    report['conversion_failure']['offenders'] = [
+                        {'index': i.tolist(), 'value': encoded_number(data[tuple(i)])}
+                        for i in np.argwhere(bad)]
                 raise
         io._create_array = annotated
         try:
