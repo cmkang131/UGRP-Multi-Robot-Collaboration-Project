@@ -46,6 +46,8 @@ def main():
         dots=np.abs(np.sum(rq*cq,axis=1))/(np.linalg.norm(rq,axis=1)*np.linalg.norm(cq,axis=1))
         angle=np.rad2deg(2*np.arccos(np.clip(dots,0,1)))
         return translation,angle
+    initial_rows=np.zeros((1,nc+m.nq+m.nv));initial_rows[0,nc:nc+m.nq]=np.load(a.fixture/'fixture.npz')['qpos']
+    support_z=float(clearance(initial_rows)[0])
     rc=clearance(r);cc=clearance(c)
     bd,br=pose_error(ba);od,orr=pose_error(box)
     def first(mask):
@@ -80,6 +82,8 @@ def main():
         summary['hold']={'samples':len(hold),'reference_bilateral':int(np.all(r[hold,3:5]>0,axis=1).sum()),
           'candidate_bilateral':int(np.all(c[hold,3:5]>0,axis=1).sum()),
           'reference_min_bottom_m':float(rc[hold].min()),'candidate_min_bottom_m':float(cc[hold].min()),
+          'initial_support_bottom_m':support_z,'reference_min_lift_clearance_m':float(rc[hold].min()-support_z),
+          'candidate_min_lift_clearance_m':float(cc[hold].min()-support_z),
           'max_abs_height_difference_m':float(np.max(np.abs(rc[hold]-cc[hold]))),
           'reference_pad_force_min_N':r[hold,7:9].min(axis=0).tolist(),
           'candidate_pad_force_min_N':c[hold,7:9].min(axis=0).tolist(),
