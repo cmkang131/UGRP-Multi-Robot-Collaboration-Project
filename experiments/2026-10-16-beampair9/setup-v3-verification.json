@@ -1,0 +1,114 @@
+{
+  "N": 40,
+  "roles": {
+    "teal": 20,
+    "blue": 20
+  },
+  "scene_generation_only": true,
+  "gate40_submitted": false,
+  "seeds": [
+    8339700,
+    8339701,
+    8339702,
+    8339703,
+    8339704,
+    8339705,
+    8339706,
+    8339707,
+    8339708,
+    8339709,
+    8339710,
+    8339711,
+    8339712,
+    8339713,
+    8339714,
+    8339715,
+    8339716,
+    8339717,
+    8339718,
+    8339719,
+    8339720,
+    8339721,
+    8339722,
+    8339723,
+    8339724,
+    8339725,
+    8339726,
+    8339727,
+    8339728,
+    8339729,
+    8339730,
+    8339731,
+    8339732,
+    8339733,
+    8339734,
+    8339735,
+    8339736,
+    8339737,
+    8339738,
+    8339739
+  ],
+  "mode": "beampair_gate_cargo_v3",
+  "k": 91,
+  "cargo_footprints_included": true,
+  "preserve_role_strata": true,
+  "funnel": [
+    {
+      "gate": "beam_static",
+      "entered": 94,
+      "passed": 94,
+      "rejected": 0
+    },
+    {
+      "gate": "beam_cargo",
+      "entered": 94,
+      "passed": 85,
+      "rejected": 9
+    },
+    {
+      "gate": "certified_end_stances",
+      "entered": 85,
+      "passed": 76,
+      "rejected": 9
+    },
+    {
+      "gate": "robot_environment",
+      "entered": 76,
+      "passed": 49,
+      "rejected": 27
+    },
+    {
+      "gate": "robot_peer",
+      "entered": 49,
+      "passed": 47,
+      "rejected": 2
+    },
+    {
+      "gate": "initial_static_los",
+      "entered": 47,
+      "passed": 40,
+      "rejected": 7
+    },
+    {
+      "gate": "parking",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    }
+  ],
+  "blocked_objects": {
+    "r2": 2,
+    "cyan_1": 5,
+    "static_wall_5": 4,
+    "static_wall_4": 9,
+    "bounds": 13,
+    "static_wall_2": 4,
+    "wall_south": 4,
+    "red_1": 8,
+    "wall_north": 2,
+    "static_wall_0": 3,
+    "static_wall_1": 2,
+    "beam_1": 1
+  },
+  "old_seed_overlap": false
+}

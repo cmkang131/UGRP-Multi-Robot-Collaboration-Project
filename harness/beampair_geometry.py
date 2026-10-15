@@ -45,12 +45,19 @@ def navigation_class(original):
                 # round1 8328152 spent>400s in a single tick's rectangle_gaps.
                 # Bounds are one additional predicate, not a fitted multiplier.
                 b.next_work=len(np.asarray(xy).reshape(-1,2))*(len(self.discs)+len(self.rects)+1)
+            # Native soft interpolation edges store gap+margin, whereas later
+            # native measure calls compare slack_m. R2 exposed that mixed
+            # audit schema as KeyError. Slack is exactly gap-margin; adding
+            # this derived audit field changes no collision predicate.
+            for key,row in list(self.blocked.items()):
+                if 'slack_m' not in row:
+                    self.blocked[key]={**row,'slack_m':row['gap_m']-row['margin_m']}
             if not self.boxes:return super().measure(xy,yaw)
             # Discard parent audit side effects from the superseded spheres;
             # this call still consumes exactly one native planning check.
             saved=self.blocked.copy()
-            gaps,_=super().measure(xy,yaw)
-            self.blocked=saved
+            try:gaps,_=super().measure(xy,yaw)
+            finally:self.blocked=saved
             xy=np.asarray(xy,dtype=float).reshape(-1,2)
             if yaw is None:
                 yaw=(np.full(len(xy),self.pose[2]) if self.target is None else

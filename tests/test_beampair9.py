@@ -23,6 +23,7 @@ def navigation(monkeypatch,mode=MODE,observations=None):
             self.details=[dict(id='cyan_1',fresh=True,margin_m=.02),dict(id='unknown_1',fresh=False,margin_m=.04)]
             self.audit_details=self.details;self.blocked={};self.pose=(0,0,0);self.target=None;self.inflation_soft=False
         def measure(self,xy,yaw=None):
+            assert all('slack_m' in row for row in self.blocked.values())
             self.blocked['cyan_1']=dict(slack_m=-.05574)
             return np.tile([-.03574,.2],(len(xy),1)),None
     t=SimpleNamespace(rid='r1',box_geometry=mode,box_geometry_log=[],search20_budget=None)
@@ -55,6 +56,13 @@ def test_confidence_rejection_still_blocks_after_box_shape_substitution(monkeypa
     _,slack=n.measure([[0,0]])
     assert slack[0,0]<0
     assert n.last_blockers[0]['id']=='cyan_1'
+
+
+def test_interpolation_blocker_gap_margin_schema_is_accepted_by_native_measure(monkeypatch):
+    n,_=navigation(monkeypatch)
+    n.blocked['unknown_1']=dict(id='unknown_1',gap_m=.001,margin_m=.002,category='interpolation_envelope')
+    n.measure([[0,0]])
+    assert n.blocked['unknown_1']['slack_m']==pytest.approx(-.001)
 
 
 

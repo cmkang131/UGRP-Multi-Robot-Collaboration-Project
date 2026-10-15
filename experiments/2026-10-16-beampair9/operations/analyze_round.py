@@ -15,8 +15,12 @@ def main():
         assert adapter['source_sha']==cfg['source_sha'] and adapter['dependency_sha']=='26f84d0f0ada1c33473c83cca2d3415ce51bd247'
         assert adapter['box_geometry']=='beampair_box_geometry_v1' and adapter['planning_boundary']==cfg.get('planning_boundary','beampair_checks_only_v1')
         assert not adapter['training_rgb'] and adapter['held_object_hidden_v1']
-        assert adapter['held_world_reads']==0 and result.get('weld')=='off'
-        entry.update(seed=item['seed'],category=item['category'],original_category=item['original_category'],
+        supervised=(raw.parent/'SUPERVISOR_STOP.json').is_file()
+        assert adapter['held_world_reads']==0
+        if 'weld' in result:assert result['weld']=='off'
+        else:assert (supervised or item['category']=='HOST_ERROR') and not result.get('physical_success')
+        entry.update(seed=item['seed'],category='supervisor_stop' if supervised else item['category'],
+            saved_supervisor_category=item['category'],weld_reported=result.get('weld'),error=result.get('error'),original_category=item['original_category'],
             adapter_sha=adapter['source_sha'],box_geometry=adapter['box_geometry'],planning_boundary=adapter['planning_boundary'],
             peer_yield=adapter['peer_yield'],adapter_manifest_files=verify_manifest(raw.parent/'adapter'))
         states=[{e.get('to') for e in t['events']} for t in result['teachers'].values()]
@@ -47,8 +51,8 @@ def main():
         if not entry['strict_success'] or item['original_category']=='known_success':
             entry['montage']=montage(raw,a.out/'montages'/f"{entry['seed']}.jpg")
         rows.append(entry)
-    N=len(cfg['runs']);left=set(range(len(rows)))
-    counts=[('started',len(rows)),('finalized_complete',sum(r['status']=='complete' for r in rows))]
+    N=len(cfg['runs']);left={i for i,r in enumerate(rows) if r['status']=='complete' and r['category']!='supervisor_stop'}
+    counts=[('started',len(rows)),('finalized_complete',len(left))]
     for key in ('both_align','both_ready','both_pick','both_command_complete'):
         left={i for i in left if rows[i]['stages'][key]};counts.append((key,len(left)))
     left={i for i in left if rows[i]['strict_success'] and rows[i]['legacy_success']};counts.append(('strict_joint_hold_3s',len(left)))
@@ -64,6 +68,7 @@ def main():
         reproduce=' '.join(sys.argv),analysis_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest())
     summary=dict(source_sha=cfg['source_sha'],candidate=cfg['candidate'],N=len(rows),planned_N=N,n=len(left),
         HOST_ERROR_N=sum(r['category']=='HOST_ERROR' for r in rows),teacher_failure_N=sum(r['category']=='teacher_failure' for r in rows),
+        supervisor_stop_N=sum(r['category']=='supervisor_stop' for r in rows),
         cap_end_N=sum(r['cap_end'] for r in rows),unstarted_N=len(done['not_started']),
         invisible_measurements=sum(r['audit']['invisible_measurements'] for r in rows),held_world_reads=sum(r['audit']['held_world_reads'] for r in rows),
         known_success_N=sum(r['strict_success'] and r['legacy_success'] and r['original_category']=='known_success' for r in rows),
