@@ -1,0 +1,3931 @@
+{
+  "schema": "ugrp.beampair6.placement_validity.v1",
+  "scope": "evaluation-only authored setup; all actual map walls/fixed obstacles incl authored inserted fixed event; no other cargo or robot/path/sweep test; no controller receives rows",
+  "scenario_source_sha": "34e5deb40caa58317ae9ec5e9ac934c8cf09a941",
+  "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+  "input_sha256": {
+    "s1_normal_mixed_v7.json": "c2668a46829d516530c0b31e7d0855c928e78df61e43d9982974cc9fbfc101c9",
+    "s2_unmapped_blockage_v7.json": "5f8547085a01d36de99e7307126bc3a60da9245002a5f8f455e2f83950ab4f07",
+    "s3_late_rendezvous_v7.json": "3134d6691a934f7c6b48e30bb3ea7514d18497cae62f01cad7e57d7912f88af1",
+    "s4_narrow_door_standoff_v7.json": "3a5140a3a713f36d9f06af39f395652d64f47f7e33072e8b71b7dcb695531136",
+    "s5_moved_dropped_item_v7.json": "cc04434cb80175fb7d5b264012e48f7f098aa606ed8c8ccb2e85cf17a7b271dc",
+    "s6_novel_relation_v7.json": "5088a5b00e2c718b4cd82429996a03b4e937bbf8827297400a8fa7b3a0cc76db",
+    "s7_pair_with_solo_v7.json": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+    "s8_mixed_tiers_v7.json": "46137e3c3a154d7ce6c05f79ed8adfeb24b231bdd278ca204c2b5001bc8b7c12",
+    "gate-plan.json": "b387f7f0506d1a7c74692669217c3b1c26a46f5641cd73a694f54ee773bf1217"
+  },
+  "analysis_sha256": "bb4926f290a4cfe5d0a855fa4fb305890e5ce0b1f1087a1ec2e12bfb47ac7f88",
+  "height_m": 0.024,
+  "padding_m": 0.005,
+  "padding_basis": "unchanged search21 FRESH_MARGIN_M",
+  "v7_unique_beams": 7,
+  "v7_seeded_ends_N": 42,
+  "v7_distribution": {
+    "91": 42
+  },
+  "gate_seeded_ends_N": 80,
+  "gate_distribution": {
+    "0": 1,
+    "91": 79
+  },
+  "branch": "A",
+  "k": 91,
+  "k_basis": "minimum (empirical percentile 0) of all v7 authored initial end counts; event phase separately checked",
+  "rows": [
+    {
+      "population": "v7",
+      "scenario": "s1_normal_mixed_v7",
+      "seed": 601,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        0.45,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7526610797321189,
+          "best_gap_m": 0.8877330301896252,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978469,
+          "best_gap_m": 0.4192997063310008,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s1_normal_mixed_v7",
+      "seed": 602,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        0.45,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7526610797321189,
+          "best_gap_m": 0.8877330301896252,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978469,
+          "best_gap_m": 0.4192997063310008,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s1_normal_mixed_v7",
+      "seed": 603,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        0.45,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7526610797321189,
+          "best_gap_m": 0.8877330301896252,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978469,
+          "best_gap_m": 0.4192997063310008,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s2_unmapped_blockage_v7",
+      "seed": 611,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446905104838609,
+          "best_gap_m": 0.8529798945821453,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s2_unmapped_blockage_v7",
+      "seed": 611,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "phase": "all_authored_fixed_events_present",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446905104838609,
+          "best_gap_m": 0.8529798945821453,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s2_unmapped_blockage_v7",
+      "seed": 612,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446905104838609,
+          "best_gap_m": 0.8529798945821453,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s2_unmapped_blockage_v7",
+      "seed": 612,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "phase": "all_authored_fixed_events_present",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446905104838609,
+          "best_gap_m": 0.8529798945821453,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s2_unmapped_blockage_v7",
+      "seed": 613,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446905104838609,
+          "best_gap_m": 0.8529798945821453,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s2_unmapped_blockage_v7",
+      "seed": 613,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "phase": "all_authored_fixed_events_present",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446905104838609,
+          "best_gap_m": 0.8529798945821453,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s3_late_rendezvous_v7",
+      "seed": 621,
+      "item": "beam_1",
+      "beam_pose": [
+        0.125,
+        0.45,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9946905104838607,
+          "best_gap_m": 1.1029798945821454,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978469,
+          "best_gap_m": 0.4192997063310008,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s3_late_rendezvous_v7",
+      "seed": 622,
+      "item": "beam_1",
+      "beam_pose": [
+        0.125,
+        0.45,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9946905104838607,
+          "best_gap_m": 1.1029798945821454,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978469,
+          "best_gap_m": 0.4192997063310008,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s3_late_rendezvous_v7",
+      "seed": 623,
+      "item": "beam_1",
+      "beam_pose": [
+        0.125,
+        0.45,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9946905104838607,
+          "best_gap_m": 1.1029798945821454,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978469,
+          "best_gap_m": 0.4192997063310008,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s4_narrow_door_standoff_v7",
+      "seed": 631,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        0.45,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446865380797522,
+          "best_gap_m": 0.8529769309217957,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978469,
+          "best_gap_m": 0.4192997063310008,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s4_narrow_door_standoff_v7",
+      "seed": 632,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        0.45,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446865380797522,
+          "best_gap_m": 0.8529769309217957,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978469,
+          "best_gap_m": 0.4192997063310008,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s4_narrow_door_standoff_v7",
+      "seed": 633,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        0.45,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446865380797522,
+          "best_gap_m": 0.8529769309217957,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978469,
+          "best_gap_m": 0.4192997063310008,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s5_moved_dropped_item_v7",
+      "seed": 641,
+      "item": null,
+      "phase": "initial",
+      "ends": {}
+    },
+    {
+      "population": "v7",
+      "scenario": "s5_moved_dropped_item_v7",
+      "seed": 642,
+      "item": null,
+      "phase": "initial",
+      "ends": {}
+    },
+    {
+      "population": "v7",
+      "scenario": "s5_moved_dropped_item_v7",
+      "seed": 643,
+      "item": null,
+      "phase": "initial",
+      "ends": {}
+    },
+    {
+      "population": "v7",
+      "scenario": "s6_novel_relation_v7",
+      "seed": 651,
+      "item": "beam_1",
+      "beam_pose": [
+        1.1,
+        -0.85,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.919686538079752,
+          "best_gap_m": 1.0279769309217957,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9196905104838607,
+          "best_gap_m": 1.0279798945821452,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s6_novel_relation_v7",
+      "seed": 652,
+      "item": "beam_1",
+      "beam_pose": [
+        1.1,
+        -0.85,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.919686538079752,
+          "best_gap_m": 1.0279769309217957,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9196905104838607,
+          "best_gap_m": 1.0279798945821452,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s6_novel_relation_v7",
+      "seed": 653,
+      "item": "beam_1",
+      "beam_pose": [
+        1.1,
+        -0.85,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.919686538079752,
+          "best_gap_m": 1.0279769309217957,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9196905104838607,
+          "best_gap_m": 1.0279798945821452,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 661,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446905104838609,
+          "best_gap_m": 0.8529798945821453,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 662,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446905104838609,
+          "best_gap_m": 0.8529798945821453,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 663,
+      "item": "beam_1",
+      "beam_pose": [
+        1.275,
+        -2.15,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7446905104838609,
+          "best_gap_m": 0.8529798945821453,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s8_mixed_tiers_v7",
+      "seed": 671,
+      "item": "beam_1",
+      "beam_pose": [
+        0.125,
+        -2.15,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9946865380797519,
+          "best_gap_m": 1.1029769309217956,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s8_mixed_tiers_v7",
+      "seed": 672,
+      "item": "beam_1",
+      "beam_pose": [
+        0.125,
+        -2.15,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9946865380797519,
+          "best_gap_m": 1.1029769309217956,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "v7",
+      "scenario": "s8_mixed_tiers_v7",
+      "seed": 673,
+      "item": "beam_1",
+      "beam_pose": [
+        0.125,
+        -2.15,
+        1.5708
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3928875923978471,
+          "best_gap_m": 0.4192997063310012,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9946865380797519,
+          "best_gap_m": 1.1029769309217956,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318600,
+      "item": "beam_1",
+      "beam_pose": [
+        1.0847712984283964,
+        -0.5410744865126378,
+        0.5034566443949664
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.343969381596997,
+          "best_gap_m": 1.4209031486881056,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.5416638559996644,
+          "best_gap_m": 0.5922988969632325,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318601,
+      "item": "beam_1",
+      "beam_pose": [
+        1.0309301780594105,
+        -1.7699699802228812,
+        0.6171112782589395
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9154562586398954,
+          "best_gap_m": 1.0244396893457592,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.613201921180398,
+          "best_gap_m": 0.6800314837544105,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318602,
+      "item": "beam_1",
+      "beam_pose": [
+        1.1740925721976172,
+        0.5063113134144817,
+        1.2582910242066523
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.0210433666297143,
+          "best_gap_m": 1.0971258355286504,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.34983051657704467,
+          "best_gap_m": 0.37846763487552193,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318603,
+      "item": "beam_1",
+      "beam_pose": [
+        0.5702785235874985,
+        -1.1269828802848774,
+        1.6796547421136712
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.391582800943584,
+          "best_gap_m": 1.4422557647831356,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.382139848118581,
+          "best_gap_m": 1.504706709960217,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318604,
+      "item": "beam_1",
+      "beam_pose": [
+        0.8997530215972525,
+        -2.2363474038416595,
+        2.3967734800464022
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.4079400266598946,
+          "best_gap_m": 0.5021377018475993,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.0476363389720276,
+          "best_gap_m": 1.1275329659802773,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318605,
+      "item": "beam_1",
+      "beam_pose": [
+        1.4525297958624175,
+        -0.8975630417354068,
+        2.6609713731181452
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.17119793331351466,
+          "best_gap_m": 0.21849348242609393,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9820284483831242,
+          "best_gap_m": 1.0584429554027854,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318606,
+      "item": "beam_1",
+      "beam_pose": [
+        0.4762750811311212,
+        -0.3366183252023087,
+        3.4869037760906862
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.1325495353322672,
+          "best_gap_m": 1.1655714534744421,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9350996975945095,
+          "best_gap_m": 0.966956540886814,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318607,
+      "item": "beam_1",
+      "beam_pose": [
+        0.6011058828414795,
+        -0.9737795196238028,
+        4.11364579058933
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.140843475895317,
+          "best_gap_m": 1.251812822541381,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.1930552415782758,
+          "best_gap_m": 1.3040245882243398,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318608,
+      "item": "beam_1",
+      "beam_pose": [
+        1.332473809524851,
+        -1.3068471134608606,
+        4.507352300760931
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.5803742172731209,
+          "best_gap_m": 0.7143527776931377,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.8005616705811937,
+          "best_gap_m": 0.8786263025074822,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318609,
+      "item": "beam_1",
+      "beam_pose": [
+        0.2445372556798533,
+        -2.193924532094134,
+        4.9488681606807
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9918660194379131,
+          "best_gap_m": 1.1293114966266398,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.35655574391342426,
+          "best_gap_m": 0.3809573192896901,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318610,
+      "item": "beam_1",
+      "beam_pose": [
+        0.9659083909812758,
+        -0.7541580184816641,
+        5.437938667037601
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.3617871164079371,
+          "best_gap_m": 1.4415985964572529,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7340998706127609,
+          "best_gap_m": 0.8306330311163724,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318611,
+      "item": "beam_1",
+      "beam_pose": [
+        0.45655306086627906,
+        -1.2924205629831875,
+        6.1882817609856975
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9006713155857725,
+          "best_gap_m": 0.9264658035465441,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.1375651938532145,
+          "best_gap_m": 1.1633596818139862,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318612,
+      "item": "beam_1",
+      "beam_pose": [
+        0.2423178203565156,
+        -2.0771650778310415,
+        0.1712539525155754
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.6891538757929419,
+          "best_gap_m": 0.7153068045574117,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9869450712274225,
+          "best_gap_m": 1.070250580632473,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318613,
+      "item": "beam_1",
+      "beam_pose": [
+        0.7350362449998784,
+        0.7996183953922706,
+        0.5992499644941132
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7355669380222313,
+          "best_gap_m": 0.8140891995480615,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.19214902068997844,
+          "best_gap_m": 0.3030640751726955,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318614,
+      "item": "beam_1",
+      "beam_pose": [
+        0.9597853165343668,
+        0.4238730928515615,
+        1.292243334022271
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.216115799671718,
+          "best_gap_m": 1.3002104731538122,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.4294800438236748,
+          "best_gap_m": 0.45540931216985037,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318615,
+      "item": "beam_1",
+      "beam_pose": [
+        0.9129994243827448,
+        -0.6059219544590548,
+        1.8430364764681455
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9670130566444209,
+          "best_gap_m": 1.1064718274568814,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.255706533154486,
+          "best_gap_m": 1.3251852123892973,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318616,
+      "item": "beam_1",
+      "beam_pose": [
+        0.710273921647798,
+        -1.435913881332101,
+        2.5254331397836896
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9336811575271854,
+          "best_gap_m": 1.000378400047189,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.2042290008227814,
+          "best_gap_m": 1.2709262433427846,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318617,
+      "item": "beam_1",
+      "beam_pose": [
+        1.5265864395177182,
+        -1.0538957232628807,
+        2.993560331077637
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.06934089230926146,
+          "best_gap_m": 0.09364833377618123,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9759649721005857,
+          "best_gap_m": 1.030001176132914,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318618,
+      "item": "beam_1",
+      "beam_pose": [
+        1.2057741350770173,
+        -1.5047561828395875,
+        3.335806649889869
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.39226691913706124,
+          "best_gap_m": 0.41708388497284077,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.2893519970515905,
+          "best_gap_m": 1.3492537743214337,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318619,
+      "item": "beam_1",
+      "beam_pose": [
+        0.8054289300363742,
+        -1.2130936015803346,
+        4.177928820212118
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9604849725118986,
+          "best_gap_m": 1.0781053875318756,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.3674749347737774,
+          "best_gap_m": 1.4226014072212307,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318620,
+      "item": "beam_1",
+      "beam_pose": [
+        0.3255052805356948,
+        -1.3367829653520489,
+        4.382359815866595
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.3651057800933293,
+          "best_gap_m": 1.4367566262455278,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.02834170474715,
+          "best_gap_m": 1.1637641106680672,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318621,
+      "item": "beam_1",
+      "beam_pose": [
+        1.1973070715424428,
+        -1.1492022958322148,
+        4.91502961236213
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9343842929534035,
+          "best_gap_m": 1.0128236413540672,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7167344088565802,
+          "best_gap_m": 0.8504433008811988,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318622,
+      "item": "beam_1",
+      "beam_pose": [
+        0.366208753860135,
+        -0.477498792553094,
+        5.375435865070631
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9359756200021173,
+          "best_gap_m": 1.039833140544546,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.3535581122818474,
+          "best_gap_m": 1.4574156328242758,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318623,
+      "item": "beam_1",
+      "beam_pose": [
+        0.35758499609003164,
+        -0.3930308394542279,
+        6.132019427545791
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.8036167366958991,
+          "best_gap_m": 0.8281739976877859,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.238446744515836,
+          "best_gap_m": 1.2630040055077227,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318624,
+      "item": "beam_1",
+      "beam_pose": [
+        0.8944869882502382,
+        -2.3911132159987183,
+        0.20368483675025137
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.472407969142563,
+          "best_gap_m": 0.6062344779281353,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.6911638880106125,
+          "best_gap_m": 0.743263439131649,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318625,
+      "item": "beam_1",
+      "beam_pose": [
+        1.1775979292303642,
+        -1.3312859805265658,
+        0.9599711731070941
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.1115669571903264,
+          "best_gap_m": 1.1902598981557952,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.5600441395199621,
+          "best_gap_m": 0.6697113841758725,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318626,
+      "item": "beam_1",
+      "beam_pose": [
+        0.6515079716704071,
+        1.0245791625157112,
+        1.0869160777669233
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.6591570325323264,
+          "best_gap_m": 0.7356480902063621,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 0,
+          "free_goal_N": 0,
+          "minimum_gap_m": 0.0,
+          "best_gap_m": 0.0,
+          "blocker_occurrences": {
+            "wall_north": 91
+          },
+          "rejected_stances": [
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.203,
+              "goal": [
+                0.871555826346103,
+                1.4432770746822563,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.2032,
+              "goal": [
+                0.8716488698364521,
+                1.4434541139685846,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.2012,
+              "goal": [
+                0.8707184349329607,
+                1.441683721105301,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.2052,
+              "goal": [
+                0.8725793047399434,
+                1.445224506831868,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.1992,
+              "goal": [
+                0.8697880000294694,
+                1.4399133282420176,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.2072,
+              "goal": [
+                0.8735097396434347,
+                1.4469948996951516,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.208,
+              "goal": [
+                0.8738819136048313,
+                1.447703056840465,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.198,
+              "goal": [
+                0.8692297390873747,
+                1.4388510925240474,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.1972,
+              "goal": [
+                0.8688575651259781,
+                1.438142935378734,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.2092,
+              "goal": [
+                0.874440174546926,
+                1.4487652925584351,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.19519999999999998,
+              "goal": [
+                0.8679271302224868,
+                1.4363725425154505,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.194,
+              "goal": [
+                0.867368869280392,
+                1.4353103067974806,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.0,
+              "distance_m": 0.19319999999999998,
+              "goal": [
+                0.8669966953189955,
+                1.434602149652167,
+                4.228508731356716
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.203,
+              "goal": [
+                0.8868578972490506,
+                1.434362367802292,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.203,
+              "goal": [
+                0.8555350165432616,
+                1.4508241950559948,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.2032,
+              "goal": [
+                0.8869660166713238,
+                1.434530624126177,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.2032,
+              "goal": [
+                0.8556122759845439,
+                1.4510086699288982,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.2012,
+              "goal": [
+                0.8858848224485916,
+                1.4328480608873269,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.2012,
+              "goal": [
+                0.854839681571721,
+                1.4491639211998635,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.2052,
+              "goal": [
+                0.888047210894056,
+                1.4362131873650275,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.2052,
+              "goal": [
+                0.8563848703973669,
+                1.4528534186579327,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.1992,
+              "goal": [
+                0.8848036282258595,
+                1.4311654976484764,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.1992,
+              "goal": [
+                0.854067087158898,
+                1.447319172470829,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.2072,
+              "goal": [
+                0.8891284051167881,
+                1.4378957506038779,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.2072,
+              "goal": [
+                0.8571574648101897,
+                1.4546981673869674,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.208,
+              "goal": [
+                0.889560882805881,
+                1.438568775899418,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.208,
+              "goal": [
+                0.857466502575319,
+                1.4554360668785813,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.198,
+              "goal": [
+                0.8841549116922202,
+                1.4301559597051663,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.198,
+              "goal": [
+                0.8536035305112043,
+                1.4462123232334083,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.1972,
+              "goal": [
+                0.8837224340031272,
+                1.429482934409626,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.1972,
+              "goal": [
+                0.8532944927460752,
+                1.4454744237417945,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.2092,
+              "goal": [
+                0.8902095993395204,
+                1.4395783138427283,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.2092,
+              "goal": [
+                0.8579300592230127,
+                1.456542916116002,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.19519999999999998,
+              "goal": [
+                0.8826412397803951,
+                1.4278003711707759,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.19519999999999998,
+              "goal": [
+                0.8525218983332522,
+                1.4436296750127597,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.194,
+              "goal": [
+                0.8819925232467558,
+                1.4267908332274655,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.194,
+              "goal": [
+                0.8520583416855585,
+                1.442522825775339,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.08726646259971647,
+              "distance_m": 0.19319999999999998,
+              "goal": [
+                0.8815600455576629,
+                1.4261178079319254,
+                4.141242268757
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.08726646259971647,
+              "distance_m": 0.19319999999999998,
+              "goal": [
+                0.8517493039204292,
+                1.4417849262837252,
+                4.315775193956433
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.203,
+              "goal": [
+                0.9013247712528901,
+                1.424147920718306,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.203,
+              "goal": [
+                0.8389173958767556,
+                1.4569462907803876,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.2032,
+              "goal": [
+                0.9014471437529996,
+                1.4243061135475272,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.2032,
+              "goal": [
+                0.8389782832779724,
+                1.4571367972746945,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.2012,
+              "goal": [
+                0.9002234187519045,
+                1.422724185255317,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.2012,
+              "goal": [
+                0.8383694092658047,
+                1.4552317323316264,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.2052,
+              "goal": [
+                0.9026708687540947,
+                1.4258880418397373,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.2052,
+              "goal": [
+                0.8395871572901401,
+                1.4590418622177626,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.1992,
+              "goal": [
+                0.8989996937508093,
+                1.421142256963107,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.1992,
+              "goal": [
+                0.837760535253637,
+                1.4533266673885583,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.2072,
+              "goal": [
+                0.9038945937551899,
+                1.4274699701319473,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.2072,
+              "goal": [
+                0.8401960313023078,
+                1.4609469271608306,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.208,
+              "goal": [
+                0.9043840837556278,
+                1.4281027414488314,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.208,
+              "goal": [
+                0.8404395809071749,
+                1.4617089531380576,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.198,
+              "goal": [
+                0.8982654587501523,
+                1.420193099987781,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.198,
+              "goal": [
+                0.8373952108463364,
+                1.4521836284227176,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.1972,
+              "goal": [
+                0.8977759687497142,
+                1.4195603286708969,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.1972,
+              "goal": [
+                0.8371516612414693,
+                1.4514216024454902,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.2092,
+              "goal": [
+                0.905118318756285,
+                1.4290518984241574,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.2092,
+              "goal": [
+                0.8408049053144755,
+                1.4628519921038985,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.19519999999999998,
+              "goal": [
+                0.8965522437486191,
+                1.4179784003786868,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.19519999999999998,
+              "goal": [
+                0.8365427872293016,
+                1.4495165375024224,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.194,
+              "goal": [
+                0.895818008747962,
+                1.4170292434033607,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.194,
+              "goal": [
+                0.836177462822001,
+                1.4483734985365815,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.17453292519943295,
+              "distance_m": 0.19319999999999998,
+              "goal": [
+                0.895328518747524,
+                1.4163964720864768,
+                4.0539758061572835
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.17453292519943295,
+              "distance_m": 0.19319999999999998,
+              "goal": [
+                0.835933913217134,
+                1.4476114725593543,
+                4.403041656556149
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.203,
+              "goal": [
+                0.9148463467111149,
+                1.4127114715402591,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.203,
+              "goal": [
+                0.8218294344738508,
+                1.4615967690103497,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.2032,
+              "goal": [
+                0.9149820409604443,
+                1.4128583969318662,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.2032,
+              "goal": [
+                0.821873486445114,
+                1.4617918572566073,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.2012,
+              "goal": [
+                0.9136250984671499,
+                1.4113891430157945,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.2012,
+              "goal": [
+                0.8214329667324823,
+                1.4598409747940322,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.2052,
+              "goal": [
+                0.9163389834537387,
+                1.4143276508479379,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.2052,
+              "goal": [
+                0.8223140061577457,
+                1.4637427397191825,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.1992,
+              "goal": [
+                0.9122681559738555,
+                1.4099198890997229,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.1992,
+              "goal": [
+                0.8209924470198506,
+                1.4578900923314573,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.2072,
+              "goal": [
+                0.9176959259470331,
+                1.4157969047640098,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.2072,
+              "goal": [
+                0.8227545258703775,
+                1.4656936221817574,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.208,
+              "goal": [
+                0.9182387029443508,
+                1.4163846063304384,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.208,
+              "goal": [
+                0.8229307337554301,
+                1.4664739751667875,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.198,
+              "goal": [
+                0.9114539904778789,
+                1.4090383367500798,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.198,
+              "goal": [
+                0.8207281351922716,
+                1.4567195628539122,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.1972,
+              "goal": [
+                0.9109112134805611,
+                1.4084506351836512,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.1972,
+              "goal": [
+                0.8205519273072189,
+                1.4559392098688821,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.2092,
+              "goal": [
+                0.9190528684403274,
+                1.4172661586800814,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.2092,
+              "goal": [
+                0.823195045583009,
+                1.4676445046443325,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.19519999999999998,
+              "goal": [
+                0.9095542709872667,
+                1.4069813812675795,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.19519999999999998,
+              "goal": [
+                0.8201114075945872,
+                1.453988327406307,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.194,
+              "goal": [
+                0.9087401054912901,
+                1.4060998289179365,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.194,
+              "goal": [
+                0.8198470957670083,
+                1.4528177979287622,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": -0.2617993877991494,
+              "distance_m": 0.19319999999999998,
+              "goal": [
+                0.9081973284939724,
+                1.4055121273515079,
+                3.9667093435575667
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            },
+            {
+              "offset_rad": 0.2617993877991494,
+              "distance_m": 0.19319999999999998,
+              "goal": [
+                0.8196708878819556,
+                1.452037444943732,
+                4.490308119155865
+              ],
+              "collision_free": false,
+              "admitted": false,
+              "blocked": [
+                {
+                  "blocked_object": "wall_north",
+                  "min_gap_m": 0.0,
+                  "reason_category": "actual_overlap"
+                }
+              ],
+              "nearest_object": "wall_north",
+              "min_gap_m": 0.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318627,
+      "item": "beam_1",
+      "beam_pose": [
+        0.32710741320225273,
+        -1.8662839872883983,
+        1.7540965209460488
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.6811463166017252,
+          "best_gap_m": 0.7068492325932819,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.100836481914128,
+          "best_gap_m": 1.2323406917207438,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318628,
+      "item": "beam_1",
+      "beam_pose": [
+        0.4784269419474672,
+        -0.4834543149219095,
+        2.198533566925229
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.2532932370557646,
+          "best_gap_m": 1.361110981577594,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.060147120950699,
+          "best_gap_m": 1.1679648654725283,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318629,
+      "item": "beam_1",
+      "beam_pose": [
+        0.026252477456962492,
+        -1.738672709960718,
+        2.9107394707598577
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.1114131870638273,
+          "best_gap_m": 1.2482482133747617,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.476425589321713,
+          "best_gap_m": 0.5003782009335537,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318630,
+      "item": "beam_1",
+      "beam_pose": [
+        1.4783245448368045,
+        -2.0531638703224226,
+        3.437269452630951
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.12648787214639992,
+          "best_gap_m": 0.15365179366593376,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7657032967724308,
+          "best_gap_m": 0.9035804951243706,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318631,
+      "item": "beam_1",
+      "beam_pose": [
+        0.608230910486067,
+        -1.578274086036207,
+        3.953621169957699
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.0820266177403906,
+          "best_gap_m": 1.174511828356571,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.0474700122506566,
+          "best_gap_m": 1.1332538374948822,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318632,
+      "item": "beam_1",
+      "beam_pose": [
+        0.4105023695812882,
+        -0.5762243675613927,
+        4.649900083620838
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.3142614925507845,
+          "best_gap_m": 1.4137651844649142,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.2467265677642168,
+          "best_gap_m": 1.3633799332796943,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318633,
+      "item": "beam_1",
+      "beam_pose": [
+        0.8458386798525201,
+        -1.302329553893609,
+        5.109890120185393
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.3680907859347875,
+          "best_gap_m": 1.4419745948528475,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.9766353810984912,
+          "best_gap_m": 1.1067740286227237,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318634,
+      "item": "beam_1",
+      "beam_pose": [
+        0.8926605987238807,
+        0.5841035641656305,
+        5.622817907412213
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3865506676080571,
+          "best_gap_m": 0.4907133139917077,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.7600217607954419,
+          "best_gap_m": 0.8350228029040997,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318635,
+      "item": "beam_1",
+      "beam_pose": [
+        1.2827392137604507,
+        -0.35527810022183903,
+        6.142610620436846
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.2209461590032775,
+          "best_gap_m": 1.273515688871691,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.3129625037094349,
+          "best_gap_m": 0.33667443763667493,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318636,
+      "item": "beam_1",
+      "beam_pose": [
+        0.9101080181908547,
+        -1.082969062777573,
+        0.2316617214673469
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.3603241547838483,
+          "best_gap_m": 1.3843413360787484,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.6901081184021388,
+          "best_gap_m": 0.7141252996970392,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318637,
+      "item": "beam_1",
+      "beam_pose": [
+        0.03708923411467491,
+        -1.2454941375975623,
+        0.9784707928885538
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.6313522710941678,
+          "best_gap_m": 0.7430066884736096,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.1698868550467578,
+          "best_gap_m": 1.2483019830931774,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318638,
+      "item": "beam_1",
+      "beam_pose": [
+        1.1118723110209567,
+        0.192606467026752,
+        1.1552073425581477
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 1.109069811678113,
+          "best_gap_m": 1.1829881030359486,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.6733131921085158,
+          "best_gap_m": 0.7126458762141608,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    },
+    {
+      "population": "gate_v1",
+      "scenario": "s7_pair_with_solo_v7",
+      "seed": 8318639,
+      "item": "beam_1",
+      "beam_pose": [
+        0.4137542598443253,
+        -2.5466868669506355,
+        2.0857109247760195
+      ],
+      "phase": "initial",
+      "ends": {
+        "teal": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.031214638452797504,
+          "best_gap_m": 0.08351547556745223,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        },
+        "blue": {
+          "certified_N": 91,
+          "collision_free_N": 91,
+          "free_goal_N": 91,
+          "minimum_gap_m": 0.8290847296338367,
+          "best_gap_m": 0.9062639444505879,
+          "blocker_occurrences": {},
+          "rejected_stances": []
+        }
+      }
+    }
+  ]
+}

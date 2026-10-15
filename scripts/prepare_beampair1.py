@@ -23,7 +23,8 @@ def segment_hits_rect(a,b,rect):
     return polygons_overlap([a,b],rect_corners(rect))
 
 
-def prepare(seed=8318600):
+def prepare(seed=8318600, *, output=None, validity=None, version='beampair1'):
+    output=EXP if output is None else Path(output)
     data=(EXP/'scenario-v7.json').read_bytes();scenario=json.loads(data)
     static,_,_=resolve(scenario['map_id']);rects=keepout_rects(static,perimeter=True)
     bounds=static['bounds_m'];cx,cy=static['regions']['pickup']['center_m']
@@ -63,6 +64,16 @@ def prepare(seed=8318600):
             obj,gap=min([(name,math.dist(pose[:2],p)-math.hypot(bhx,bhy)-r) for name,p,r in others],key=lambda x:x[1])
             if gap<0:reject('beam_cargo_overlap',obj,gap);continue
             stage_passes['beam_cargo']+=1
+            stance_report=None
+            if validity is not None:
+                stance_report=validity(pose,static)
+                if not stance_report['accepted']:
+                    for end,v in stance_report['ends'].items():
+                        if v['free_goal_N'] < stance_report['k']:
+                            reject('certified_end_stances',v['blocked_object'],v['min_gap_m'],
+                                   end=end,free_goal_N=v['free_goal_N'],required_N=stance_report['k'])
+                    continue
+                stage_passes['certified_end_stances']+=1
             r=.5+1.5*(((i+attempt)%10+rng.random())/10)
             az=a+2*math.pi*(((i*7+attempt)%12+rng.random())/12)
             own=[pose[0]+r*math.cos(az),pose[1]+r*math.sin(az)]
@@ -109,22 +120,25 @@ def prepare(seed=8318600):
             stage_passes['parking']+=1
             ownyaw=math.atan2(pose[1]-own[1],pose[0]-own[0])+rng.uniform(-math.pi/3,math.pi/3)
             peeryaw=math.atan2(pose[1]-peer[1],pose[0]-peer[0])
-            episodes.append(dict(episode_id=f'beampair1-gate-{seed+i}',batch='beampair1-gate40',seed=seed+i,
+            episodes.append(dict(episode_id=f'{version}-gate-{seed+i}',batch=version+'-gate40',seed=seed+i,
                 split='fresh_gate40',scenario_id=scenario['scenario_id'],scenario_source_sha256=hashlib.sha256(data).hexdigest(),
                 map_id=scenario['map_id'],cargo_scene='cargo_v7',beam_pose=pose,
                 spawns={'r1':[*own,.032355118817659255,ownyaw],'r2':[*peer,.032355118817659255,peeryaw],
                         'r3':[*park,.032355118817659255,0.]},roles=roles,target_item='beam_1',object_kind='long_beam',
                 assignment_source='demo_rule_color_balanced',end_color_scene='grasp_act_teal_blue_v1',peer_case=case,
                 initial_pan={r:rng.randint(500,2500) for r in roles},burst_ticks=1+i%12,proposal_attempts=attempt+1))
+            if stance_report is not None:
+                episodes[-1].update(setup_validity='beampair_gate_valid_v2',placement_validity=stance_report)
             break
         else:raise ValueError('finite setup proposal budget exhausted')
     stages=['beam_static','beam_cargo','robot_environment','robot_peer','initial_static_los','parking']
+    if validity is not None:stages.insert(2,'certified_end_stances')
     entered=attempts;funnel=[]
     for stage in stages:
         passed=stage_passes[stage];funnel.append(dict(gate=stage,entered=entered,passed=passed,rejected=entered-passed));entered=passed
-    dump(EXP/'gate-plan.json',dict(schema='ugrp.beampair1.gate_setup.v1',episodes=episodes,
+    dump(output/'gate-plan.json',dict(schema='ugrp.beampair1.gate_setup.v1',episodes=episodes,
         training_rgb=False,setup_only=True,physical_success_verified=False,proposal_count=attempts))
-    dump(EXP/'setup-funnel.json',dict(schema='ugrp.beampair1.setup_funnel.v1',funnel=funnel,rejections=rejected,
+    dump(output/'setup-funnel.json',dict(schema='ugrp.beampair1.setup_funnel.v1',funnel=funnel,rejections=rejected,
         source_scenario_sha256=hashlib.sha256(data).hexdigest(),reproduce=f'python -m scripts.prepare_beampair1 --seed {seed}',
         scope='static initialization only; finite strata and enclosures do not prove physical success'))
     print(json.dumps(dict(planned_N=len(episodes),proposals=attempts,rejections=len(rejected))))
