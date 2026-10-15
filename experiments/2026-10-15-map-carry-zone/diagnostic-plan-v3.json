@@ -1,0 +1,562 @@
+{
+  "schema": "ugrp.solo_carry_plan.v3",
+  "episodes": [
+    {
+      "episode_id": "solo_carry_diagnostic_v1-93210",
+      "batch": "solo-carry-zone-v3",
+      "seed": 93210,
+      "split": "solo_carry_diagnostic_v1",
+      "scenario_id": "s3_late_rendezvous_v6",
+      "scenario_source_sha256": "94d65065ed819bee3ccb68050bef5d5cc560b416b5db8acf5ba8b3a7ec8154ef",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.6957780981096737,
+          -0.8511353419859243,
+          0.032355118817659255,
+          -0.025752575223363522
+        ],
+        "r2": [
+          4.069836121250981,
+          -1.8574263038194951,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.320637586096327,
+          -2.246026041677685,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "start_to_cargo_m": 1.9383234598341221,
+      "proposal_attempts": 5,
+      "rejects": {
+        "start_blocked": 4
+      },
+      "task_start": {
+        "profile": "solo_carry_task_start_v2",
+        "source": "fixed_task_description.static_pickup_west",
+        "pose_m_rad": [
+          -0.7,
+          -0.85,
+          0.0
+        ],
+        "sigma_xy_m": 0.05,
+        "sigma_yaw_rad": 0.05235987755982989,
+        "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+        "is_observation": false
+      },
+      "carry_pose_profile": "own_command_v2",
+      "amcl_option": "off",
+      "start_setup_profile": "task_start_jitter_2cm_2deg_v2",
+      "solo_carry_to_zone_v1": true,
+      "destination_zone": "B",
+      "static_map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": false,
+      "training_rgb": false,
+      "condition_source_seed": 93200,
+      "pickup_search_profile": "static_pickup_scan_v1"
+    },
+    {
+      "episode_id": "solo_carry_diagnostic_v1-93211",
+      "batch": "solo-carry-zone-v3",
+      "seed": 93211,
+      "split": "solo_carry_diagnostic_v1",
+      "scenario_id": "s1_normal_mixed_v6",
+      "scenario_source_sha256": "60658759233af5b76d1556e376d4f058d759291200574aea150777165e764db1",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7048255935780314,
+          -0.8566773961996114,
+          0.032355118817659255,
+          -0.03377836362882859
+        ],
+        "r2": [
+          4.865056886364359,
+          -2.412917987115268,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.749032524406265,
+          -2.7354620795428968,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "start_to_cargo_m": 2.333475353266012,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "task_start": {
+        "profile": "solo_carry_task_start_v2",
+        "source": "fixed_task_description.static_pickup_west",
+        "pose_m_rad": [
+          -0.7,
+          -0.85,
+          0.0
+        ],
+        "sigma_xy_m": 0.05,
+        "sigma_yaw_rad": 0.05235987755982989,
+        "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+        "is_observation": false
+      },
+      "carry_pose_profile": "own_command_v2",
+      "amcl_option": "off",
+      "start_setup_profile": "task_start_jitter_2cm_2deg_v2",
+      "solo_carry_to_zone_v1": true,
+      "destination_zone": "B",
+      "static_map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": false,
+      "training_rgb": false,
+      "condition_source_seed": 93201,
+      "pickup_search_profile": "static_pickup_scan_v1"
+    },
+    {
+      "episode_id": "solo_carry_diagnostic_v1-93212",
+      "batch": "solo-carry-zone-v3",
+      "seed": 93212,
+      "split": "solo_carry_diagnostic_v1",
+      "scenario_id": "s1_normal_mixed_v6",
+      "scenario_source_sha256": "60658759233af5b76d1556e376d4f058d759291200574aea150777165e764db1",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.684212551750541,
+          -0.8499566949939086,
+          0.032355118817659255,
+          0.013846301490368716
+        ],
+        "r2": [
+          3.1315162069317477,
+          1.0654284674883479,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.16651383153554478,
+          -2.854481257398078,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "start_to_cargo_m": 1.6716229303071315,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "task_start": {
+        "profile": "solo_carry_task_start_v2",
+        "source": "fixed_task_description.static_pickup_west",
+        "pose_m_rad": [
+          -0.7,
+          -0.85,
+          0.0
+        ],
+        "sigma_xy_m": 0.05,
+        "sigma_yaw_rad": 0.05235987755982989,
+        "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+        "is_observation": false
+      },
+      "carry_pose_profile": "own_command_v2",
+      "amcl_option": "off",
+      "start_setup_profile": "task_start_jitter_2cm_2deg_v2",
+      "solo_carry_to_zone_v1": true,
+      "destination_zone": "C",
+      "static_map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": false,
+      "training_rgb": false,
+      "condition_source_seed": 93202,
+      "pickup_search_profile": "static_pickup_scan_v1"
+    },
+    {
+      "episode_id": "solo_carry_diagnostic_v1-93213",
+      "batch": "solo-carry-zone-v3",
+      "seed": 93213,
+      "split": "solo_carry_diagnostic_v1",
+      "scenario_id": "s1_normal_mixed_v6",
+      "scenario_source_sha256": "60658759233af5b76d1556e376d4f058d759291200574aea150777165e764db1",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "yellow",
+      "item_id": "yellow_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7010472163346176,
+          -0.8367442392240555,
+          0.032355118817659255,
+          0.010654590592780962
+        ],
+        "r2": [
+          4.216172278268484,
+          -2.595194664357934,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.8849362127156435,
+          -0.21450765212205125,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "start_to_cargo_m": 1.1011270080204005,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "task_start": {
+        "profile": "solo_carry_task_start_v2",
+        "source": "fixed_task_description.static_pickup_west",
+        "pose_m_rad": [
+          -0.7,
+          -0.85,
+          0.0
+        ],
+        "sigma_xy_m": 0.05,
+        "sigma_yaw_rad": 0.05235987755982989,
+        "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+        "is_observation": false
+      },
+      "carry_pose_profile": "own_command_v2",
+      "amcl_option": "off",
+      "start_setup_profile": "task_start_jitter_2cm_2deg_v2",
+      "solo_carry_to_zone_v1": true,
+      "destination_zone": "C",
+      "static_map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": false,
+      "training_rgb": false,
+      "condition_source_seed": 93203,
+      "pickup_search_profile": "static_pickup_scan_v1"
+    },
+    {
+      "episode_id": "solo_carry_diagnostic_v1-93214",
+      "batch": "solo-carry-zone-v3",
+      "seed": 93214,
+      "split": "solo_carry_diagnostic_v1",
+      "scenario_id": "s2_unmapped_blockage_v6",
+      "scenario_source_sha256": "4b90fcbfe271806eb96374be6011fa6ffd6b7592d018199f68780fb286362882",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.6813741123585147,
+          -0.8666139894486465,
+          0.032355118817659255,
+          0.033189504476903865
+        ],
+        "r2": [
+          3.7541517813706755,
+          -0.8435405578323056,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.7830059251729178,
+          1.0069167408929456,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "start_to_cargo_m": 1.686760749759733,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "task_start": {
+        "profile": "solo_carry_task_start_v2",
+        "source": "fixed_task_description.static_pickup_west",
+        "pose_m_rad": [
+          -0.7,
+          -0.85,
+          0.0
+        ],
+        "sigma_xy_m": 0.05,
+        "sigma_yaw_rad": 0.05235987755982989,
+        "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+        "is_observation": false
+      },
+      "carry_pose_profile": "own_command_v2",
+      "amcl_option": "off",
+      "start_setup_profile": "task_start_jitter_2cm_2deg_v2",
+      "solo_carry_to_zone_v1": true,
+      "destination_zone": "A",
+      "static_map_sha256": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": false,
+      "training_rgb": false,
+      "condition_source_seed": 93204,
+      "pickup_search_profile": "static_pickup_scan_v1"
+    },
+    {
+      "episode_id": "solo_carry_diagnostic_v1-93215",
+      "batch": "solo-carry-zone-v3",
+      "seed": 93215,
+      "split": "solo_carry_diagnostic_v1",
+      "scenario_id": "s3_late_rendezvous_v6",
+      "scenario_source_sha256": "94d65065ed819bee3ccb68050bef5d5cc560b416b5db8acf5ba8b3a7ec8154ef",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7037295875610308,
+          -0.8495817975390185,
+          0.032355118817659255,
+          0.007631636043955385
+        ],
+        "r2": [
+          4.218609660166258,
+          -0.9614389052878551,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.7991445446854011,
+          0.9207279354020903,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "start_to_cargo_m": 2.337527097233168,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "task_start": {
+        "profile": "solo_carry_task_start_v2",
+        "source": "fixed_task_description.static_pickup_west",
+        "pose_m_rad": [
+          -0.7,
+          -0.85,
+          0.0
+        ],
+        "sigma_xy_m": 0.05,
+        "sigma_yaw_rad": 0.05235987755982989,
+        "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+        "is_observation": false
+      },
+      "carry_pose_profile": "own_command_v2",
+      "amcl_option": "off",
+      "start_setup_profile": "task_start_jitter_2cm_2deg_v2",
+      "solo_carry_to_zone_v1": true,
+      "destination_zone": "B",
+      "static_map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": false,
+      "training_rgb": false,
+      "condition_source_seed": 93205,
+      "pickup_search_profile": "static_pickup_scan_v1"
+    },
+    {
+      "episode_id": "solo_carry_diagnostic_v1-93216",
+      "batch": "solo-carry-zone-v3",
+      "seed": 93216,
+      "split": "solo_carry_diagnostic_v1",
+      "scenario_id": "s2_unmapped_blockage_v6",
+      "scenario_source_sha256": "4b90fcbfe271806eb96374be6011fa6ffd6b7592d018199f68780fb286362882",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7044463680277042,
+          -0.8449024178434669,
+          0.032355118817659255,
+          0.02520100750939512
+        ],
+        "r2": [
+          1.5149215705175307,
+          0.25665612290406736,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.4421197222877975,
+          0.09805398197021642,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "start_to_cargo_m": 1.1044581319332252,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "task_start": {
+        "profile": "solo_carry_task_start_v2",
+        "source": "fixed_task_description.static_pickup_west",
+        "pose_m_rad": [
+          -0.7,
+          -0.85,
+          0.0
+        ],
+        "sigma_xy_m": 0.05,
+        "sigma_yaw_rad": 0.05235987755982989,
+        "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+        "is_observation": false
+      },
+      "carry_pose_profile": "own_command_v2",
+      "amcl_option": "off",
+      "start_setup_profile": "task_start_jitter_2cm_2deg_v2",
+      "solo_carry_to_zone_v1": true,
+      "destination_zone": "C",
+      "static_map_sha256": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": false,
+      "training_rgb": false,
+      "condition_source_seed": 93206,
+      "pickup_search_profile": "static_pickup_scan_v1"
+    },
+    {
+      "episode_id": "solo_carry_diagnostic_v1-93217",
+      "batch": "solo-carry-zone-v3",
+      "seed": 93217,
+      "split": "solo_carry_diagnostic_v1",
+      "scenario_id": "s1_normal_mixed_v6",
+      "scenario_source_sha256": "60658759233af5b76d1556e376d4f058d759291200574aea150777165e764db1",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "yellow",
+      "item_id": "yellow_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.717604983311809,
+          -0.8423028062331659,
+          0.032355118817659255,
+          -0.0063968288981312744
+        ],
+        "r2": [
+          2.616822940675153,
+          -1.6291488954922857,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.42719327079177,
+          -2.468000566314931,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "start_to_cargo_m": 1.1176314891390957,
+      "proposal_attempts": 3,
+      "rejects": {
+        "start_blocked": 2
+      },
+      "task_start": {
+        "profile": "solo_carry_task_start_v2",
+        "source": "fixed_task_description.static_pickup_west",
+        "pose_m_rad": [
+          -0.7,
+          -0.85,
+          0.0
+        ],
+        "sigma_xy_m": 0.05,
+        "sigma_yaw_rad": 0.05235987755982989,
+        "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+        "is_observation": false
+      },
+      "carry_pose_profile": "own_command_v2",
+      "amcl_option": "off",
+      "start_setup_profile": "task_start_jitter_2cm_2deg_v2",
+      "solo_carry_to_zone_v1": true,
+      "destination_zone": "C",
+      "static_map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": false,
+      "training_rgb": false,
+      "condition_source_seed": 93207,
+      "pickup_search_profile": "static_pickup_scan_v1"
+    }
+  ],
+  "distribution": {
+    "cyan": 2,
+    "red": 2,
+    "green": 2,
+    "yellow": 2
+  },
+  "research_result": false,
+  "training_rgb": false,
+  "gate_eligible": false,
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "reused_condition_plan": "diagnostic-plan-v2.json",
+  "prior_seeds_used": [
+    93200,
+    93201,
+    93202,
+    93203,
+    93204,
+    93205,
+    93206,
+    93207
+  ]
+}

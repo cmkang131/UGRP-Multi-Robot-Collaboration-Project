@@ -13,7 +13,7 @@
     "solo_rgb_lift_v2_gate": [[79500, 79539]],
     "solo_box_gate_v1": [[79700, 79739]],
     "solo_lift_negative_probe": [[79790, 79797]],
-    "solo_carry_diagnostic_v1": [[93200, 93207]],
+    "solo_carry_diagnostic_v1": [[93200, 93207], [93210, 93217]],
     "train": [[80000, 89999]],
     "development": [[90000, 90999]],
     "heldout_start": [[91000, 91999]],
@@ -28,7 +28,7 @@
     }
   },
   "notes": {
-    "solo_carry_diagnostic_v1": "2026-10-15 map-carry-zone: four colours x2, v6 zone carry, diagnostic only; remote-unused check pending",
+    "solo_carry_diagnostic_v1": "2026-10-15 PR505: 93200-93207 used/reserved (first failed, seven blocked); carry3 reserves fresh 93210-93217 for the same eight start conditions; diagnostic only",
     "grasp_gate_078": "teacher 078cbb45 gate 36/40 (seen)",
     "grasp_gate_v2": "observable_v2 3a451048 gate, stopped 27/32 (seen)",
     "grasp_gate_v3": "Codex new grasp gate, reserved in PR #484 comment",

@@ -205,6 +205,11 @@ def test_fresh_plan_and_queue_are_v6_balanced_disabled_and_truth_free():
     from scripts.run_solo_grasp_act_teacher import validate_carry
     from harness.grasp_act_seed_splits import registry, split_of
     p = prepare(); q = queue(p, 'f'*40, 123)
+    old = json.loads(Path('experiments/2026-10-15-map-carry-zone/diagnostic-plan-v2.json').read_text())
+    assert [e['seed'] for e in p['episodes']] == list(range(93210, 93218))
+    for fresh, previous in zip(p['episodes'], old['episodes']):
+        for key in ('scenario_id', 'cargo_pose_m', 'spawns', 'task_start'):
+            assert fresh[key] == previous[key]
     assert p['distribution'] == dict.fromkeys(('cyan', 'red', 'green', 'yellow'), 2)
     for e in p['episodes']:
         assert e['scenario_id'].endswith('_v6') and 'handoff_pose_error' not in e
@@ -215,6 +220,9 @@ def test_fresh_plan_and_queue_are_v6_balanced_disabled_and_truth_free():
             validate_carry({**e, 'carry_pose_profile': 'top_rgb'}, enabled=True, training_rgb=False,
                            truth_free=True, lift='solo_lift_lookback_v1', negative=False)
         validate_carry(e, enabled=True, training_rgb=False, truth_free=True, lift='solo_lift_lookback_v1', negative=False)
+        with pytest.raises(ValueError, match='pickup search'):
+            validate_carry({**e, 'pickup_search_profile': 'off'}, enabled=True, training_rgb=False,
+                           truth_free=True, lift='solo_lift_lookback_v1', negative=False)
         for change in ({'enabled': False}, {'training_rgb': True}, {'truth_free': False}):
             args = dict(enabled=True, training_rgb=False, truth_free=True, lift='solo_lift_lookback_v1', negative=False)
             with pytest.raises(ValueError):
@@ -222,6 +230,62 @@ def test_fresh_plan_and_queue_are_v6_balanced_disabled_and_truth_free():
     assert not q['runs_enabled'] and not q['coordinator_approval']['approved']
     assert q['gate_promotion_authorized_if_all_conditions_pass'] is False
     assert len(q['runs']) == 8 and all(not r['enabled'] and '--training-rgb' not in r['command'] for r in q['runs'])
+
+
+def test_pickup_search_reaches_each_command_then_dwells_and_fails_finitely():
+    from scripts.audit_solo_pickup_search import scan_views
+    from harness.zone_final_environment import resolve
+    from sim.solo_pickup_search import floor_cells, DWELL_S
+    s = resolve('zone_wide_door_geometry_v3')[0]
+    views = scan_views(s)
+    assert len(views) == len(floor_cells(s['regions']['pickup']))
+    assert all(v['end_t']-v['command_reached_t'] >= DWELL_S-1e-8 for v in views)
+    assert any(v['pwm'][6] < 1140 for v in views)  # failed cyan run never reached this side
+
+
+def test_pickup_search_is_map_only_and_requires_fresh_visibility_for_handoff():
+    from sim.solo_pickup_search import PickupSearch
+    from scripts.zone_teacher import FOLDED
+    m = localized_map(); other = deepcopy(m.static)
+    other.update(top_cameras={'forbidden': 'bytes'}, cargo_xyz=[99., 99., 99.], spawns={'r1': [88., 88., 88.]})
+    a = PickupSearch(m.static, m.loc, primitives()); b = PickupSearch(other, m.loc, primitives())
+    assert a.cells == b.cells
+    assert a.step(0., FOLDED) == b.step(0., FOLDED)
+    t = make_teacher(m)
+    for i in range(12):
+        now = i*.1; m.loc.now = now
+        cmd, _ = t.step(now)
+        assert not any(cmd['wheels'])
+    assert t.phase == 'pickup_search' and not t.context(now)['local_skill_sample']
+    assert t.pickup_search.index == 0  # do not skip unfinished slew every 0.6 s
+    m.loc.now = 1.2
+    t.step(1.2, measurement={'xyz': [.7, -.3, .024], 'yaw': 0.})
+    assert t.phase == 'approach'
+    assert not any(t.events[i]['to'] == 'hover' for i in range(len(t.events)))
+
+
+def test_all_eight_frozen_conditions_have_fov_and_planar_los_after_search():
+    from scripts.make_solo_carry_plan import prepare
+    from scripts.audit_solo_pickup_search import geometry_coverage
+    audit = geometry_coverage(prepare())
+    assert audit['fov_n'] == audit['fov_and_planar_los_n'] == audit['N'] == 8
+    assert all(r['jitter_corner_fov_n'] == 8 for r in audit['rows'])
+    assert max(r['full_scan_s'] for r in audit['rows']) < 60.
+
+
+def test_exhausted_or_stale_pickup_search_cannot_fall_through_to_blind_approach():
+    for stale in (False, True):
+        m = localized_map(); t = make_teacher(m)
+        for i in range(600):
+            now = i*.1
+            if not stale:
+                m.loc.now = now
+            cmd, _ = t.step(now)
+            assert not any(cmd['wheels'])
+            if t.result:
+                break
+        assert t.result == ('pickup_search_self_pose_unavailable' if stale else 'pickup_search_exhausted')
+        assert not any(e['to'] in ('approach', 'align', 'hover') for e in t.events)
 
 
 def test_recorder_destination_and_local_labels_follow_carry_boundary(tmp_path):
@@ -232,18 +296,18 @@ def test_recorder_destination_and_local_labels_follow_carry_boundary(tmp_path):
     recorder = SoloRecorder(tmp_path, p, c, handoff=lambda *a: .4)
     frame = np.full((480, 640, 3), 90, np.uint8)
     jpg = cv2.imencode('.jpg', frame)[1].tobytes()
-    phases = ('approach', 'carry_prepare', 'carry_to_zone', 'zone_place_view', 'zone_place_advance', 'lower')
+    phases = ('pickup_search', 'approach', 'carry_prepare', 'carry_to_zone', 'zone_place_view', 'zone_place_advance', 'lower')
     for i, phase in enumerate(phases):
-        skill = 'release' if i >= 3 else 'grasp'
+        skill = 'release' if i >= 4 else 'grasp'
         recorder.observe(i*.1, jpg, frame, skill=skill, phase=phase, previous=c)
         c = {**c, 't': i*.1}
         recorder.target(c, skill_after=skill, phase_after=phase, complete=False)
     recorder.close()
     labels = [json.loads(s) for s in (tmp_path/'teacher-r1.jsonl').read_text().splitlines()]
-    assert [r['local_skill_sample'] for r in labels] == [True, False, False, True, True, True]
-    assert [r['segment'] for r in labels] == ['approach', 'carry', 'carry', 'release', 'release', 'release']
+    assert [r['local_skill_sample'] for r in labels] == [False, True, False, False, True, True, True]
+    assert [r['segment'] for r in labels] == ['navigation', 'approach', 'carry', 'carry', 'release', 'release', 'release']
     rows = [json.loads(s) for s in (tmp_path/'student-r1.jsonl').read_text().splitlines()]
-    assert all(r['destination_zone'] == p['destination_zone'] for r in rows[3:])
+    assert all(r['destination_zone'] == p['destination_zone'] for r in rows[4:])
     assert all('pose_estimate' not in r and 'map_rgb' not in r for r in rows)
 
 

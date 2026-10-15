@@ -195,6 +195,10 @@ class SoloTeacher:
         if role not in self.spec.roles:
             raise ValueError('explicit compatible seat token required')
         self.role, self.ops = role, ops or primitives()
+        self.pickup_search = None
+        if self.carry is not None:
+            from sim.solo_pickup_search import PickupSearch
+            self.pickup_search = PickupSearch(self.carry.static, self.carry.loc, self.ops)
         if reach_mode == 'pad_window_v2' and kind != 'tile':
             # Reuse the release teacher's physical-pad window, not the wider
             # calibrated radius envelope. The old +/-8 mm box window reaches
@@ -341,7 +345,7 @@ class SoloTeacher:
         return {'skill': self.skill, 'object_kind': self.spec.kind, 'role': self.role,
                 'skill_elapsed_s': max(0., now-self.skill_started) if self.skill_started is not None else 0.,
                 'local_skill_sample': not self.negative_probe and self.phase not in
-                    ('start', 'lookaround', 'complete', 'failed', 'carry_prepare', 'carry_to_zone')}
+                    ('start', 'pickup_search', 'lookaround', 'complete', 'failed', 'carry_prepare', 'carry_to_zone')}
 
     def _target(self, measurement, now, dt):
         if self.target is not None and self.previous is not None:
@@ -467,7 +471,19 @@ class SoloTeacher:
             self.result = 'phase_timeout'
             self._set('failed', now)
         elif self.phase == 'fold' and idle:
-            self._set('approach', now)
+            self._set('pickup_search' if self.pickup_search is not None else 'approach', now)
+        elif self.phase == 'pickup_search':
+            if measurement is not None:
+                # Only a fresh own-camera-gated target permits local approach.
+                self._set('approach', now)
+            else:
+                pwm, failure = self.pickup_search.step(now, self.sink.pwm)
+                self.sink.pwm.update(pwm)
+                self.arm.commanded.update(pwm)
+                if failure:
+                    self.result = failure
+                    self._set('failed', now)
+                value = self._hold(now)
         elif self.phase in ('approach', 'align'):
             value = self._seek(measurement, now)
         elif self.phase == 'relook':
@@ -629,6 +645,8 @@ class SoloTeacher:
             'solo_lift_negative_probe_v1': self.negative_probe,
             'solo_lift_lookback_margin_v1': self.lookback_margin,
             'solo_carry_to_zone_v1': self.carry is not None,
+            'pickup_search': ({**self.pickup_search.record(), 'views': self.pickup_search.views}
+                              if self.pickup_search is not None else None),
             'carry': self.carry.record() if self.carry is not None else None,
             'gate_eligible': not self.negative_probe and self.carry is None,
             'lookback_commanded_backoff_m': self.lookback_m,

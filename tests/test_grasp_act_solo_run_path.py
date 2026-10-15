@@ -418,3 +418,35 @@ def test_zone_carry_real_runner_with_stub_world_never_uses_held_truth_or_legacy_
                ('zone_place_view', 'zone_place_advance', 'lower', 'open'))
     ev = [json.loads(s) for s in (out/'eval-only.jsonl').read_text().splitlines()]
     assert all('footprint_xy' in r for r in ev if 'min_z' in r)
+
+
+@pytest.mark.parametrize('acquire', [False, True])
+def test_carry_runner_searches_before_approach_and_logs_own_only_boundary(backend, monkeypatch, acquire):
+    import scripts.run_grasp_act_teacher as shared
+    from scripts.make_solo_carry_plan import prepare
+    from harness.zone_final_environment import resolve
+    runner, world, runs = backend
+    monkeypatch.setattr(shared, 'compress_logs', lambda out: None)
+    p = prepare()['episodes'][0]
+    scene = sys.modules['sim.grasp_act_scene'].make_scene({})
+    scene.config['static_map'] = resolve(p['map_id'])[0]
+    scene.config['setup_only']['objects'][p['item_id']] = {'body_name': 'cargo_body'}
+    monkeypatch.setattr(FakeVisibility, 'region_visible',
+                        lambda self, data, rid, gids: (7, 7) if acquire and data.time >= 3. else (0, 7))
+    monkeypatch.setattr(world, 'render_team_jpeg', lambda **kw: b'TOP_EVAL_ONLY')
+    out = runs/'search'
+    report = runner.run(p, out, execution_host='gcp1', profile='solo_visible_only_v1',
+        hidden=True, look=True, cap_s=4., rgb_lift_mode='solo_lift_lookback_v1',
+        solo_truth_free_lookaround_v1=True, solo_carry_to_zone_v1=True)
+    assert report['status'] == 'complete'
+    rows = [json.loads(s) for s in (out/'teacher-commands.jsonl').read_text().splitlines()]
+    searching = [r for r in rows if r['phase'] == 'pickup_search']
+    assert searching and all(not any(r['command']['wheels']) for r in searching)
+    assert all(not r['student_context']['local_skill_sample'] for r in searching)
+    assert all(r['map_pose']['own_frame']['camera'] == 'r1/robot_cam' for r in rows)
+    assert len({tuple(sorted(r['command']['pwm'].items())) for r in searching}) > 1
+    assert any(r['phase'] == 'approach' for r in rows) == acquire
+    if acquire:
+        first = next(r for r in rows if r['phase'] == 'approach')
+        assert first['visible_target'] is not None and first['t'] >= 3.
+    assert report['input_audit']['invisible_measurements'] == report['input_audit']['held_world_reads'] == 0

@@ -1,0 +1,241 @@
+{
+  "schema": "ugrp.solo_carry.carry3.v1",
+  "created_at": "2026-10-15T03:04:51.419878+00:00",
+  "branch": "claude/map-carry-zone",
+  "pr": 505,
+  "diagnosed_sha": "84a1b7b85bcbeb036ddd51a843b0908f8feb341b",
+  "new_source_sha": "commit containing this record; exact SHA pinned in new immutable queue",
+  "inspection": {
+    "N": 607,
+    "actual_visible_ticks": 0,
+    "command_fk_in_frame_ticks": 0,
+    "wheel_nonzero_ticks": 0,
+    "command_pan_range": [
+      1140,
+      2280
+    ],
+    "base_displacement_max_m": 0.0028921876617875996
+  },
+  "original_runs": [
+    {
+      "seed": 93200,
+      "kind": "cyan",
+      "status": "FAILED_PHASE_TIMEOUT",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8"
+    },
+    {
+      "seed": 93201,
+      "kind": "red",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "raw": null
+    },
+    {
+      "seed": 93202,
+      "kind": "green",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "raw": null
+    },
+    {
+      "seed": 93203,
+      "kind": "yellow",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "raw": null
+    },
+    {
+      "seed": 93204,
+      "kind": "cyan",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "raw": null
+    },
+    {
+      "seed": 93205,
+      "kind": "red",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "raw": null
+    },
+    {
+      "seed": 93206,
+      "kind": "green",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "raw": null
+    },
+    {
+      "seed": 93207,
+      "kind": "yellow",
+      "status": "BLOCKED_NOT_SUBMITTED",
+      "raw": null
+    }
+  ],
+  "geometry": {
+    "N": 8,
+    "fov_n": 8,
+    "fov_and_planar_los_n": 8,
+    "scope": "offline commanded FK, pinhole AND fisheye with 8px margin; seven probes, >=3 required; planar LOS only, not physical visibility, recognition or mission success"
+  },
+  "new_runs": [
+    {
+      "seed": 93210,
+      "kind": "cyan",
+      "condition_source_seed": 93200,
+      "status": "NOT_SUBMITTED",
+      "enabled": false,
+      "raw": null
+    },
+    {
+      "seed": 93211,
+      "kind": "red",
+      "condition_source_seed": 93201,
+      "status": "NOT_SUBMITTED",
+      "enabled": false,
+      "raw": null
+    },
+    {
+      "seed": 93212,
+      "kind": "green",
+      "condition_source_seed": 93202,
+      "status": "NOT_SUBMITTED",
+      "enabled": false,
+      "raw": null
+    },
+    {
+      "seed": 93213,
+      "kind": "yellow",
+      "condition_source_seed": 93203,
+      "status": "NOT_SUBMITTED",
+      "enabled": false,
+      "raw": null
+    },
+    {
+      "seed": 93214,
+      "kind": "cyan",
+      "condition_source_seed": 93204,
+      "status": "NOT_SUBMITTED",
+      "enabled": false,
+      "raw": null
+    },
+    {
+      "seed": 93215,
+      "kind": "red",
+      "condition_source_seed": 93205,
+      "status": "NOT_SUBMITTED",
+      "enabled": false,
+      "raw": null
+    },
+    {
+      "seed": 93216,
+      "kind": "green",
+      "condition_source_seed": 93206,
+      "status": "NOT_SUBMITTED",
+      "enabled": false,
+      "raw": null
+    },
+    {
+      "seed": 93217,
+      "kind": "yellow",
+      "condition_source_seed": 93207,
+      "status": "NOT_SUBMITTED",
+      "enabled": false,
+      "raw": null
+    }
+  ],
+  "approved": false,
+  "runs_enabled": false,
+  "new_physics_runs": 0,
+  "new_render_runs": 0,
+  "model_calls": 0,
+  "training_rgb": false,
+  "gate_eligible": false,
+  "seed_check": {
+    "new_range": [
+      93210,
+      93217
+    ],
+    "other_worktree_registries_checked": 48,
+    "local_registry_queue_collisions": 0,
+    "remote_unused_verified": false,
+    "blocker": "gcp1 SSH ProxyCommand gcloud describe could not open local credentials.db under current filesystem permissions; no VM started",
+    "remote_recheck_required": true
+  },
+  "reviewed_frames": {
+    "sim_s": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      60
+    ],
+    "views": [
+      "top",
+      "own"
+    ],
+    "N": 12,
+    "top_control_input": false
+  },
+  "top_coordinates": {
+    "camera": "cctv_top",
+    "world_positive_x": "image right",
+    "world_positive_y": "image up",
+    "r1_initial_pixel_approx": [
+      90,
+      28
+    ],
+    "cyan_pixel_approx": [
+      292,
+      323
+    ],
+    "parked_r3_pixel_approx": [
+      462,
+      285
+    ]
+  },
+  "old_queues_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-solo-carry-84a1b7b8.json": "c8742ade625fb9048c4cbfbacc9433bd9898c90afaa8a38d38bb7ec05a27380b",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-solo-carry-fc874c14.json": "4164c4a83dc65386f7b1cdcc37004868d298cced0c3b6eb12d290859ec667ef3"
+  },
+  "sha256": {
+    "experiments/2026-10-15-map-carry-zone/carry3-audit/audit.json": "e39c58718657caa019913da71cdf31f78cd5d8189d46b36e7e8e5c13337b71cd",
+    "experiments/2026-10-15-map-carry-zone/carry3-audit/ticks.csv": "bd8290eb0aaba86ad33e94968bd861d450d01650c596117e2586ee54d902e3a3",
+    "experiments/2026-10-15-map-carry-zone/diagnostic-plan-v2.json": "dbfe280da8f6b97cc5a56a4e21b035d78612880246715552fcfe25f583eed50d",
+    "experiments/2026-10-15-map-carry-zone/diagnostic-plan-v3.json": "0a7210cba08c74a2905dd0d1aee0b3e7dbd0ae5601cdf960b0a6429b6b4db475",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/run-93200-inspection.json": "a3b27516fec7c08d5421693c849c010451014df07049f00008e991d264f760ac",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/first30-inspection.json": "619db401c61c956e6413ad103dcde073cdd36250291d159f9ed1f4f13eaf16b5",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/montage-00.jpg": "8bfc2dd7853ce684807e5d6001d4518dee343085b023d1a1905c417e41c219b0",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/selection.json": "1423fea45c8173b0b2a730c4b52fef8c975870f53aae67999de3169c2f7979e4",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/own/000000.jpg": "2aba5e6423a163308d1bc8cee0a988ff865264444c6f491f5cd9040f64764b33",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/own/000120.jpg": "2724c2678891652f41eb349879eeb83d1a88be776937983a790b3c03be7f1b6f",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/own/000240.jpg": "1d9ca1b79c7c629a5516767cc7cd64935b1851b9ad3bf627d9fac361e1de649c",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/own/000360.jpg": "9c33fdb22183350764dc5a0bf455aa75c7710866b5d053b6b7c4c1885f4e7f2b",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/own/000480.jpg": "7480fac9b8af6e3675a5d15a1aebd1c58c5c228884e2e7bf4297de58f28e6fbe",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/own/000600.jpg": "339ae5cc2ee806e1901e691737dcccefeddb64a7ae484a96f968460841411bf9",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/top/000000.jpg": "5b682d99b999a63b8d5f54faa8a19034e4438f9d186b89b9ab8cec2356ecebbc",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/top/000120.jpg": "fec33999eb8356de097a7f185803c217149e341b36512087ef3f911f844530f8",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/top/000240.jpg": "c9d54919d14087a46f818fe46a099759ab9642b96e6a655ca2eb4b2c14089794",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/top/000360.jpg": "55820e3662bc43006f5905d848e209c81ceed09b34f3522a9d2aed93f3442b45",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/top/000480.jpg": "54fdd06bf5ef36181da37005f4ffb4f6626043a31538008bac0d2f300dd9ad99",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/solo-carry-84a1b7b8-ops/solo-carry-93200-84a1b7b8-review/top/000600.jpg": "4070b451ce3f6716c9257fec2cb74a23d679684befc01d262e7b1147c0635ae5",
+    "sim/solo_pickup_search.py": "8a6559954eaf3c56a585c20d01a760e3870c021a44ccc14bd87d2a5f62d35164",
+    "scripts/audit_solo_pickup_search.py": "707238fe6784c3a474b02fb09c29d1316c70ebb623d857b5cb8bb785b2f2a19d",
+    "harness/data/servo_camera_v3_chain.json": "0cced72fd129556cb1e1ecbeef63155129426e669f77b6d5a70244d3d9b269be",
+    "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+    "sim/masterpi_camera_review_v3.py": "6d8d739085c44f3196e4b4c514ca7e6c515e82394b1180a712b935df0a1b9362",
+    "experiments/2026-10-15-map-carry-zone/offline-tests-carry3.txt": "b93d90d5151b5c444f9fc1572f84cdd8724cbac2229ebf55ba28340bece4e3e0"
+  },
+  "raw_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8/raw/plan.json": "a91f50542df2b37ca859080f0c3522346d0ce77aa505c7e04d02d134dd3ebb36",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8/raw/result.json": "e7e9bdcfd9b5af2d47d6992460fbab9333c0b66c9f9a77ec0c10151f167a757c",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8/raw/teacher-commands.jsonl.zst": "55664113a4c6fde16d207d5b217230f399b2ebcec0c5801f86c1e5d19cf2be24",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8/raw/eval-only.jsonl.zst": "1dd6950727d904e78a55dfda7592710d33d6901fb7fed24b5bf4a764a3b558e6",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8/raw/scene.xml": "2efde41f56f8da814f1034276512f7565e4d42d1d1ccaf9772c0627b0952f1a3"
+  },
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_solo_carry.py",
+      "tests/test_grasp_act_solo_teacher.py",
+      "tests/test_grasp_act_solo_run_path.py"
+    ],
+    "passed": 83,
+    "duration_s": 46.16,
+    "physical_backend": "stub only"
+  }
+}

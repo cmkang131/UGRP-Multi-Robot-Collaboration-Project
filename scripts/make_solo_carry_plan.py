@@ -16,12 +16,12 @@ from harness.zone_environment_registry import load_scenario
 from harness.zone_final_environment import resolve, digest
 
 ROOT = Path(__file__).resolve().parents[1]
-PLAN = 'experiments/2026-10-15-map-carry-zone/diagnostic-plan-v2.json'
+PLAN = 'experiments/2026-10-15-map-carry-zone/diagnostic-plan-v3.json'
 SCENARIOS = ('s1_normal_mixed_v6', 's2_unmapped_blockage_v6', 's3_late_rendezvous_v6',
              's5_moved_dropped_item_v6', 's6_novel_relation_v6', 's7_pair_with_solo_v6', 's8_mixed_tiers_v6')
 
 
-def prepare():
+def prepare_legacy_v2():
     check_range('solo_carry_diagnostic_v1', 93200, 8)
     episodes = []
     for i, kind in enumerate(BOX_KINDS*2):
@@ -51,6 +51,21 @@ def prepare():
             'gate_promotion_authorized_if_all_conditions_pass': False}
 
 
+def prepare():
+    """Keep all eight frozen conditions; allocate fresh execution seeds only."""
+    from sim.solo_pickup_search import PROFILE
+    check_range('solo_carry_diagnostic_v1', 93210, 8)
+    plan = json.loads((ROOT/'experiments/2026-10-15-map-carry-zone/diagnostic-plan-v2.json').read_text())
+    plan.update(schema='ugrp.solo_carry_plan.v3',
+                reused_condition_plan='diagnostic-plan-v2.json',
+                prior_seeds_used=list(range(93200, 93208)))
+    for i, p in enumerate(plan['episodes']):
+        p.update(condition_source_seed=p['seed'], seed=93210+i,
+                 episode_id=f'solo_carry_diagnostic_v1-{93210+i}', batch='solo-carry-zone-v3',
+                 pickup_search_profile=PROFILE)
+    return plan
+
+
 def queue(plan, sha, pr):
     runs = []
     for i, p in enumerate(plan['episodes']):
@@ -67,16 +82,16 @@ def queue(plan, sha, pr):
                 '--solo-truth-free-lookaround-v1', '--solo-carry-to-zone-v1',
                 '--plan', PLAN, '--episode', str(i), '--cap-s', '300',
                 '--out', f'/home/ugrp/ugrp-sim/runs/{name}/raw']})
-    return {'schema': 'ugrp.solo_carry_queue.v2', 'branch': 'claude/map-carry-zone', 'pr': pr,
+    return {'schema': 'ugrp.solo_carry_queue.v3', 'branch': 'claude/map-carry-zone', 'pr': pr,
         'sha': sha, 'host': 'gcp1', 'machine_type': 'n4-highcpu-64', 'project': 'ugrp-act-train-1014',
         'source_worktree': str(ROOT), 'runner_cwd': '/Users/changmin/projects/ugrp',
         'status': 'prepared_not_submitted', 'ready': False, 'runs_enabled': False,
         'coordinator_approval': {'approved': False, 'source_sha': sha, 'review': None},
         'gate_promotion_authorized_if_all_conditions_pass': False, 'gate_eligible': False,
         'training_rgb': False, 'top_rgb_control_allowed': False, 'amcl_option': 'off',
-        'supersedes_rejected_queue': '20261015-solo-carry-fc874c14.json', 'run_count': 8, 'runs': runs, 'max_parallel': 1,
+        'supersedes_blocked_queue': '20261015-solo-carry-84a1b7b8.json', 'run_count': 8, 'runs': runs, 'max_parallel': 1,
         'plan_sha256': hashlib.sha256((ROOT/PLAN).read_bytes()).hexdigest(),
-        'seed_reservation': {'split': 'solo_carry_diagnostic_v1', 'range': [93200, 93207],
+        'seed_reservation': {'split': 'solo_carry_diagnostic_v1', 'range': [93210, 93217],
                              'remote_unused_verified': False},
         'storage_budget_mib': {'per_run': 256, 'total': 2048, 'measured': False},
         'preconditions': [
@@ -84,7 +99,7 @@ def queue(plan, sha, pr):
             'Use primary standard GCP remote_run.py with frozen source worktree; no Mac/other-host execution.',
             'Check live unused seeds, model endpoint alerts, project budget-stop and cost admission.',
             'Keep 8h STOP + idle20min guards; storage_budget.py --all-hosts includes other reserved writes.',
-            'Measure same-machine first30 speed at concurrency1 before further diagnostic admission; no inherited speed claim.',
+            'Record first30 wall/SIM in the first diagnostic; warn above3.5, block above6.0 or incomplete/HOST_ERROR, per coordinator 2026-10-15 policy.',
             'Inspect first30 and at least6 evenly spaced review frames (also >=1 per60 SIM s), including carry and new-zone release; top frames are evaluation only.',
             'Check declared task start versus setup in evaluation only, own-command drift/uncertainty, destination own RGB and post-release landmarks; no top RGB control or held truth reads.',
             'Report all8 including failure/HOST_ERROR; compare whole-footprint zone release, no-drop and SIM time separately.',

@@ -1,0 +1,545 @@
+{
+  "inspection": {
+    "N": 607,
+    "phase_counts": {
+      "fold": 6,
+      "approach": 600,
+      "failed": 1
+    },
+    "actual_visible_ticks": 0,
+    "command_fk_in_frame_ticks": 0,
+    "wheel_nonzero_ticks": 0,
+    "command_pan_range": [
+      1140,
+      2280
+    ],
+    "base_displacement_max_m": 0.0028921876617875996,
+    "first_tick": {
+      "tick": 0,
+      "t": 1.3000000000000178,
+      "sim_s": 0.0,
+      "phase": "fold",
+      "base_x": -0.6957551735074264,
+      "base_y": -0.8511373062512075,
+      "base_yaw_deg": -1.475707981384504,
+      "relative_x": 1.1365674439402267,
+      "relative_y": -1.570113294990242,
+      "range_m": 1.938308879856339,
+      "bearing_deg": -54.10012049584498,
+      "wheel_nonzero": false,
+      "visible_n": 0,
+      "probe_N": 7,
+      "fk_in_frame_n": 0,
+      "camera_body_yaw_deg": 0.0,
+      "camera_pitch_deg": -18.08000000000001,
+      "previous_pwm_1": 2000,
+      "previous_pwm_3": 740,
+      "previous_pwm_4": 2320,
+      "previous_pwm_5": 1320,
+      "previous_pwm_6": 1500
+    },
+    "last_tick": {
+      "tick": 606,
+      "t": 61.90000000020455,
+      "sim_s": 60.60000000020453,
+      "phase": "failed",
+      "base_x": -0.6945128109756304,
+      "base_y": -0.8535615344914024,
+      "base_yaw_deg": -1.2435451781213125,
+      "relative_x": 1.1289013422902763,
+      "relative_y": -1.5723090748705981,
+      "range_m": 1.9356068990229456,
+      "bearing_deg": -54.322051474241384,
+      "wheel_nonzero": false,
+      "visible_n": 0,
+      "probe_N": 7,
+      "fk_in_frame_n": 0,
+      "camera_body_yaw_deg": 32.39999999999999,
+      "camera_pitch_deg": -55.88000000000005,
+      "previous_pwm_1": 2000,
+      "previous_pwm_3": 500,
+      "previous_pwm_4": 2500,
+      "previous_pwm_5": 1320,
+      "previous_pwm_6": 1860
+    },
+    "plan_spawn": [
+      -0.6957780981096737,
+      -0.8511353419859243,
+      0.032355118817659255,
+      -0.025752575223363522
+    ],
+    "task_start": {
+      "profile": "solo_carry_task_start_v2",
+      "source": "fixed_task_description.static_pickup_west",
+      "pose_m_rad": [
+        -0.7,
+        -0.85,
+        0.0
+      ],
+      "sigma_xy_m": 0.05,
+      "sigma_yaw_rad": 0.05235987755982989,
+      "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+      "is_observation": false
+    },
+    "plan_jitter_xy_m": 0.00437189398276569,
+    "eval_start_vs_spawn_xy_m": 2.3008601137382e-05,
+    "input_audit": {
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "blocked_hidden": 607,
+      "blocked_held": 0,
+      "measurements_by_phase": {},
+      "scope": "decision input boundary only; evaluation excluded"
+    },
+    "raw_sha256": {
+      "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8/raw/plan.json": "a91f50542df2b37ca859080f0c3522346d0ce77aa505c7e04d02d134dd3ebb36",
+      "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8/raw/result.json": "e7e9bdcfd9b5af2d47d6992460fbab9333c0b66c9f9a77ec0c10151f167a757c",
+      "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8/raw/teacher-commands.jsonl.zst": "55664113a4c6fde16d207d5b217230f399b2ebcec0c5801f86c1e5d19cf2be24",
+      "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8/raw/eval-only.jsonl.zst": "1dd6950727d904e78a55dfda7592710d33d6901fb7fed24b5bf4a764a3b558e6",
+      "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93200-84a1b7b8/raw/scene.xml": "2efde41f56f8da814f1034276512f7565e4d42d1d1ccaf9772c0627b0952f1a3"
+    },
+    "tick_csv_sha256": "bd8290eb0aaba86ad33e94968bd861d450d01650c596117e2586ee54d902e3a3",
+    "fk_limit": "previous issued PWM + evaluation base xy/yaw; measured arm joints/base roll/pitch unavailable"
+  },
+  "geometry": {
+    "N": 8,
+    "fov_n": 8,
+    "fov_and_planar_los_n": 8,
+    "scope": "offline commanded FK, pinhole AND fisheye with 8px margin; seven probes, >=3 required; planar LOS only, not physical visibility, recognition or mission success",
+    "rows": [
+      {
+        "seed": 93210,
+        "condition_source_seed": 93200,
+        "kind": "cyan",
+        "scenario_id": "s3_late_rendezvous_v6",
+        "map_id": "zone_wide_door_geometry_v3",
+        "setup_pose": [
+          -0.6957780981096737,
+          -0.8511353419859243,
+          -0.025752575223363522
+        ],
+        "cargo_eval_xyz": [
+          0.4,
+          -2.45,
+          0.016
+        ],
+        "start_range_m": 1.9383234598341221,
+        "initial_bearing_deg": -54.09978846173912,
+        "in_search_fov": true,
+        "jitter_corner_fov_n": 8,
+        "jitter_corner_N": 8,
+        "map_and_other_cargo_planar_los": true,
+        "parked_peers_planar_clear": true,
+        "first_completed_view_witness": {
+          "index": 0,
+          "floor_xy": [
+            -0.16249999999999998,
+            -2.5214285714285714
+          ],
+          "command_reached_t": 1.3,
+          "end_t": 1.9000000000000001,
+          "pwm": {
+            "1": 2000,
+            "3": 840,
+            "4": 2320,
+            "5": 1320,
+            "6": 681
+          },
+          "in_frame_n": 7,
+          "N": 7,
+          "center_pinhole_px": [
+            73.73139545154993,
+            200.01612306654442
+          ],
+          "center_raw_px": [
+            82.66960091801529,
+            200.79652178383805
+          ],
+          "camera_body_yaw_deg": -73.71000000000001,
+          "camera_pitch_deg": -9.08
+        },
+        "full_scan_views": 28,
+        "full_scan_s": 25.700000000000003
+      },
+      {
+        "seed": 93211,
+        "condition_source_seed": 93201,
+        "kind": "red",
+        "scenario_id": "s1_normal_mixed_v6",
+        "map_id": "zone_wide_door_geometry_v3",
+        "setup_pose": [
+          -0.7048255935780314,
+          -0.8566773961996114,
+          -0.03377836362882859
+        ],
+        "cargo_eval_xyz": [
+          1.0,
+          -2.45,
+          0.016
+        ],
+        "start_range_m": 2.333475353266012,
+        "initial_bearing_deg": -41.12833807114426,
+        "in_search_fov": true,
+        "jitter_corner_fov_n": 8,
+        "jitter_corner_N": 8,
+        "map_and_other_cargo_planar_los": true,
+        "parked_peers_planar_clear": true,
+        "first_completed_view_witness": {
+          "index": 2,
+          "floor_xy": [
+            -0.16249999999999998,
+            -1.407142857142857
+          ],
+          "command_reached_t": 3.0,
+          "end_t": 3.6,
+          "pwm": {
+            "1": 2000,
+            "3": 920,
+            "4": 2500,
+            "5": 1320,
+            "6": 959
+          },
+          "in_frame_n": 7,
+          "N": 7,
+          "center_pinhole_px": [
+            209.56087611587955,
+            76.80686251911072
+          ],
+          "center_raw_px": [
+            211.4192592602974,
+            80.18190367672553
+          ],
+          "camera_body_yaw_deg": -48.690000000000005,
+          "camera_pitch_deg": -18.079999999999995
+        },
+        "full_scan_views": 28,
+        "full_scan_s": 25.700000000000003
+      },
+      {
+        "seed": 93212,
+        "condition_source_seed": 93202,
+        "kind": "green",
+        "scenario_id": "s1_normal_mixed_v6",
+        "map_id": "zone_wide_door_geometry_v3",
+        "setup_pose": [
+          -0.684212551750541,
+          -0.8499566949939086,
+          0.013846301490368716
+        ],
+        "cargo_eval_xyz": [
+          -0.2,
+          0.75,
+          0.016
+        ],
+        "start_range_m": 1.6716229303071315,
+        "initial_bearing_deg": 72.36869635047285,
+        "in_search_fov": true,
+        "jitter_corner_fov_n": 8,
+        "jitter_corner_N": 8,
+        "map_and_other_cargo_planar_los": true,
+        "parked_peers_planar_clear": true,
+        "first_completed_view_witness": {
+          "index": 5,
+          "floor_xy": [
+            -0.16249999999999998,
+            0.26428571428571423
+          ],
+          "command_reached_t": 6.9,
+          "end_t": 7.5,
+          "pwm": {
+            "1": 2000,
+            "3": 960,
+            "4": 2460,
+            "5": 1320,
+            "6": 2237
+          },
+          "in_frame_n": 7,
+          "N": 7,
+          "center_pinhole_px": [
+            200.86883923572583,
+            184.58505120558357
+          ],
+          "center_raw_px": [
+            201.56140744729922,
+            184.85716231232797
+          ],
+          "camera_body_yaw_deg": 66.33,
+          "camera_pitch_deg": -10.879999999999994
+        },
+        "full_scan_views": 28,
+        "full_scan_s": 25.700000000000003
+      },
+      {
+        "seed": 93213,
+        "condition_source_seed": 93203,
+        "kind": "yellow",
+        "scenario_id": "s1_normal_mixed_v6",
+        "map_id": "zone_wide_door_geometry_v3",
+        "setup_pose": [
+          -0.7010472163346176,
+          -0.8367442392240555,
+          0.010654590592780962
+        ],
+        "cargo_eval_xyz": [
+          0.4,
+          -0.85,
+          0.016
+        ],
+        "start_range_m": 1.1011270080204005,
+        "initial_bearing_deg": -1.3002268218722297,
+        "in_search_fov": true,
+        "jitter_corner_fov_n": 8,
+        "jitter_corner_N": 8,
+        "map_and_other_cargo_planar_los": true,
+        "parked_peers_planar_clear": true,
+        "first_completed_view_witness": {
+          "index": 3,
+          "floor_xy": [
+            -0.16249999999999998,
+            -0.8499999999999999
+          ],
+          "command_reached_t": 4.5,
+          "end_t": 5.1000000000000005,
+          "pwm": {
+            "1": 2000,
+            "3": 820,
+            "4": 2500,
+            "5": 1320,
+            "6": 1500
+          },
+          "in_frame_n": 7,
+          "N": 7,
+          "center_pinhole_px": [
+            304.0324417681483,
+            41.90430134345766
+          ],
+          "center_raw_px": [
+            303.5671055356675,
+            46.938034224449495
+          ],
+          "camera_body_yaw_deg": 0.0,
+          "camera_pitch_deg": -27.080000000000005
+        },
+        "full_scan_views": 28,
+        "full_scan_s": 25.700000000000003
+      },
+      {
+        "seed": 93214,
+        "condition_source_seed": 93204,
+        "kind": "cyan",
+        "scenario_id": "s2_unmapped_blockage_v6",
+        "map_id": "zone_wide_two_doors_final_v3",
+        "setup_pose": [
+          -0.6813741123585147,
+          -0.8666139894486465,
+          0.033189504476903865
+        ],
+        "cargo_eval_xyz": [
+          -0.2,
+          0.75,
+          0.016
+        ],
+        "start_range_m": 1.686760749759733,
+        "initial_bearing_deg": 71.51659279148862,
+        "in_search_fov": true,
+        "jitter_corner_fov_n": 8,
+        "jitter_corner_N": 8,
+        "map_and_other_cargo_planar_los": true,
+        "parked_peers_planar_clear": true,
+        "first_completed_view_witness": {
+          "index": 5,
+          "floor_xy": [
+            -0.16249999999999998,
+            0.26428571428571423
+          ],
+          "command_reached_t": 6.9,
+          "end_t": 7.5,
+          "pwm": {
+            "1": 2000,
+            "3": 960,
+            "4": 2460,
+            "5": 1320,
+            "6": 2237
+          },
+          "in_frame_n": 7,
+          "N": 7,
+          "center_pinhole_px": [
+            210.93313037045743,
+            183.65911185284415
+          ],
+          "center_raw_px": [
+            211.43417876420293,
+            183.88783164324917
+          ],
+          "camera_body_yaw_deg": 66.33,
+          "camera_pitch_deg": -10.879999999999994
+        },
+        "full_scan_views": 28,
+        "full_scan_s": 25.700000000000003
+      },
+      {
+        "seed": 93215,
+        "condition_source_seed": 93205,
+        "kind": "red",
+        "scenario_id": "s3_late_rendezvous_v6",
+        "map_id": "zone_wide_door_geometry_v3",
+        "setup_pose": [
+          -0.7037295875610308,
+          -0.8495817975390185,
+          0.007631636043955385
+        ],
+        "cargo_eval_xyz": [
+          1.0,
+          -2.45,
+          0.016
+        ],
+        "start_range_m": 2.337527097233168,
+        "initial_bearing_deg": -43.646366522919074,
+        "in_search_fov": true,
+        "jitter_corner_fov_n": 8,
+        "jitter_corner_N": 8,
+        "map_and_other_cargo_planar_los": true,
+        "parked_peers_planar_clear": true,
+        "first_completed_view_witness": {
+          "index": 1,
+          "floor_xy": [
+            -0.16249999999999998,
+            -1.9642857142857142
+          ],
+          "command_reached_t": 2.1,
+          "end_t": 2.7,
+          "pwm": {
+            "1": 2000,
+            "3": 960,
+            "4": 2460,
+            "5": 1320,
+            "6": 763
+          },
+          "in_frame_n": 7,
+          "N": 7,
+          "center_pinhole_px": [
+            29.279001990314953,
+            164.39571894528166
+          ],
+          "center_raw_px": [
+            45.40626251991856,
+            167.78462959363625
+          ],
+          "camera_body_yaw_deg": -66.33,
+          "camera_pitch_deg": -10.879999999999994
+        },
+        "full_scan_views": 28,
+        "full_scan_s": 25.700000000000003
+      },
+      {
+        "seed": 93216,
+        "condition_source_seed": 93206,
+        "kind": "green",
+        "scenario_id": "s2_unmapped_blockage_v6",
+        "map_id": "zone_wide_two_doors_final_v3",
+        "setup_pose": [
+          -0.7044463680277042,
+          -0.8449024178434669,
+          0.02520100750939512
+        ],
+        "cargo_eval_xyz": [
+          0.4,
+          -0.85,
+          0.016
+        ],
+        "start_range_m": 1.1044581319332252,
+        "initial_bearing_deg": -1.7083586782009323,
+        "in_search_fov": true,
+        "jitter_corner_fov_n": 8,
+        "jitter_corner_N": 8,
+        "map_and_other_cargo_planar_los": true,
+        "parked_peers_planar_clear": true,
+        "first_completed_view_witness": {
+          "index": 3,
+          "floor_xy": [
+            -0.16249999999999998,
+            -0.8499999999999999
+          ],
+          "command_reached_t": 4.5,
+          "end_t": 5.1000000000000005,
+          "pwm": {
+            "1": 2000,
+            "3": 820,
+            "4": 2500,
+            "5": 1320,
+            "6": 1500
+          },
+          "in_frame_n": 7,
+          "N": 7,
+          "center_pinhole_px": [
+            309.1630569412948,
+            41.490550363121855
+          ],
+          "center_raw_px": [
+            308.54507748237035,
+            46.590211068681285
+          ],
+          "camera_body_yaw_deg": 0.0,
+          "camera_pitch_deg": -27.080000000000005
+        },
+        "full_scan_views": 28,
+        "full_scan_s": 25.700000000000003
+      },
+      {
+        "seed": 93217,
+        "condition_source_seed": 93207,
+        "kind": "yellow",
+        "scenario_id": "s1_normal_mixed_v6",
+        "map_id": "zone_wide_door_geometry_v3",
+        "setup_pose": [
+          -0.717604983311809,
+          -0.8423028062331659,
+          -0.0063968288981312744
+        ],
+        "cargo_eval_xyz": [
+          0.4,
+          -0.85,
+          0.016
+        ],
+        "start_range_m": 1.1176314891390957,
+        "initial_bearing_deg": -0.028091223047212396,
+        "in_search_fov": true,
+        "jitter_corner_fov_n": 8,
+        "jitter_corner_N": 8,
+        "map_and_other_cargo_planar_los": true,
+        "parked_peers_planar_clear": true,
+        "first_completed_view_witness": {
+          "index": 3,
+          "floor_xy": [
+            -0.16249999999999998,
+            -0.8499999999999999
+          ],
+          "command_reached_t": 4.5,
+          "end_t": 5.1000000000000005,
+          "pwm": {
+            "1": 2000,
+            "3": 820,
+            "4": 2500,
+            "5": 1320,
+            "6": 1500
+          },
+          "in_frame_n": 7,
+          "N": 7,
+          "center_pinhole_px": [
+            288.0419562200071,
+            39.70880161297322
+          ],
+          "center_raw_px": [
+            288.03174840204275,
+            44.886857176148524
+          ],
+          "camera_body_yaw_deg": 0.0,
+          "camera_pitch_deg": -27.080000000000005
+        },
+        "full_scan_views": 28,
+        "full_scan_s": 25.700000000000003
+      }
+    ]
+  },
+  "new_physics_runs": 0
+}

@@ -36,6 +36,8 @@ def camera_config():
 
 
 def segment(phase, local_started=False):
+    if phase == 'pickup_search':
+        return 'navigation'
     if phase in ('start', 'fold', 'approach', 'align', 'relook'):
         return 'approach' if local_started else 'navigation'
     if phase in ('lookback', 'lookback_return', 'carry_prepare', 'carry_to_zone'):
@@ -115,7 +117,7 @@ class SoloRecorder:
             'segment': segment(phase, self.local_started), 'local_skill_sample': bool((self.local_started or
                 (self.plan.get('solo_carry_to_zone_v1', False) and phase in ('zone_place_view', 'zone_place_advance',
                     'lower', 'open', 'retract', 'backoff'))) and phase not in
-                ('start', 'fold', 'lookaround', 'complete', 'failed', 'carry_prepare', 'carry_to_zone')),
+                ('start', 'fold', 'pickup_search', 'lookaround', 'complete', 'failed', 'carry_prepare', 'carry_to_zone')),
             'handoff_source': 'own_rgb_and_issued_commands', 'handoff_distance_m': distance}
         self.label_file.write(json.dumps(label, allow_nan=False)+'\n')
         self.history.append(deepcopy(value))

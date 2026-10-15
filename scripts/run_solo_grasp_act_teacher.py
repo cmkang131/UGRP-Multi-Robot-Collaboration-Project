@@ -374,6 +374,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                    'visible_target': measurement,
                 'student_context': teacher.context(now), 'rgb_confirmation': rgb_result,
                 **({'map_pose': map_evidence, 'destination_floor_visible': place_visible,
+                    'pickup_search': teacher.pickup_search.record(),
                     'phase_before': phase_before} if carry is not None else {})})+'\n')
 
             # Full truth owner, written only to eval-only.jsonl / Score.
@@ -527,6 +528,9 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
     if (plan.get('carry_pose_profile') != 'own_command_v2' or plan.get('amcl_option') != 'off'
             or plan.get('task_start') != task_start(resolve(plan['map_id'])[0])):
         raise ValueError('carry2 requires declared task start and own commands; top RGB forbidden (#366)')
+    from sim.solo_pickup_search import PROFILE as SEARCH_PROFILE
+    if plan.get('pickup_search_profile') != SEARCH_PROFILE:
+        raise ValueError('carry3 requires explicit static pickup search profile')
     scenario = load_scenario(plan['scenario_id'])
     source = ROOT/'configs/zone_study_scenarios_v6'/f"{plan['scenario_id']}.json"
     if hashlib.sha256(source.read_bytes()).hexdigest() != plan['scenario_source_sha256']:
