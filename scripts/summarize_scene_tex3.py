@@ -10,6 +10,7 @@ import platform
 import subprocess
 
 import numpy as np
+import cv2
 from PIL import Image, ImageDraw
 
 
@@ -46,6 +47,24 @@ def summarize(root, output):
     if bad:
         raise ValueError('RAW_HASH_MISMATCH:'+repr(bad[:5]))
     rows = [read(root/e['record']) for e in read(root/'index.json')]
+    # Resumed baseline records keep their original measurements. Recompute
+    # segmentation from saved pixels so ALL264 use one candidate classifier,
+    # including when its nominal palettes changed after R1. Never mix bounds.
+    from scripts.probe_scene_tex3 import classify
+    from scripts.probe_scene_tex2 import mask_score
+    if any(r['material'] == 'walls_floor_textured_v3' for r in rows):
+        from sim.natural_scene_texture_v3 import manifest as palette_manifest
+        classifier = 'walls_floor_textured_v3'
+    else:
+        from sim.natural_scene_texture_v2 import manifest as palette_manifest
+        classifier = 'walls_floor_textured_v2'
+    palettes = palette_manifest()['palettes_hsv']
+    for r in rows:
+        stem = r['case']+'--'+r['material']+'--'+r['quality']
+        masks = {s: cv2.imread(str(root/(stem+'--mask-'+s+'.png')), cv2.IMREAD_GRAYSCALE) > 0 for s in ('floor', 'wall')}
+        for enc in r['encodings'].values():
+            predicted = classify(cv2.imread(str(root/enc['file'])), palettes)
+            enc['iou'] = {s: mask_score(predicted[s], masks[s]) for s in ('floor', 'wall')}
     grouped = defaultdict(list)
     for r in rows:
         grouped[(r['material'], r['quality'])].append(r)
@@ -53,7 +72,7 @@ def summarize(root, output):
     bright_reference = {r['case']: r for r in rows if r['material'] == 'floor_light_v1' and r['quality'] == 'native'}
     stats, arms = [], []
     for (material, quality), rr in grouped.items():
-        arm = {'material': material, 'quality': quality, 'n': len(rr), 'scopes': {}}
+        arm = {'material': material, 'quality': quality, 'n': len(rr), 'scopes': {}, 'classifier': classifier}
         for scope in ('all', 'drive'):
             sr = [r for r in rr if scope == 'all' or r['pose'] == scope]
             arm['scopes'][scope] = {enc: {
@@ -91,6 +110,23 @@ def summarize(root, output):
                     'box_equal_v1': sum(r['encodings'][enc]['semantic']['box_counts'] == b['encodings'][enc]['semantic']['box_counts'] for r, b in pairs),
                     'box_equal_bright': sum(r['case'] in bright_reference and r['encodings'][enc]['semantic']['box_counts'] ==
                          bright_reference[r['case']]['encodings'][enc]['semantic']['box_counts'] for r, b in pairs)}
+            beam_keys = ('visible', 'end_visible', 'reason', 'grip_source')
+            pair['legacy_beam_semantic_equal_v1'] = sum(all(
+                r['encodings'][enc]['semantic']['detectors']['beam_legacy_dark_band_v2'].get(k) ==
+                b['encodings'][enc]['semantic']['detectors']['beam_legacy_dark_band_v2'].get(k) for k in beam_keys) for r, b in pairs)
+            from importlib.util import spec_from_file_location, module_from_spec
+            target_support = []
+            spec = spec_from_file_location('scene_tex2_compat', Path(__file__).resolve().parents[1]/'experiments/2026-10-15-scene-tex2/analyze_camera_compatibility.py')
+            compat = module_from_spec(spec)
+            spec.loader.exec_module(compat)
+            for r, b in pairs:
+                for target, label in compat.target_ranges(r['pose']):
+                    got = r['encodings'][enc]['target_support'].get(label, {}).get(target, 0)
+                    before = b['encodings'][enc]['target_support'].get(label, {}).get(target, 0)
+                    target_support.append({'case': r['case'], 'target': target, 'range': label,
+                                           'candidate': got, 'v1': before, 'lower': got < before})
+            pair['positive_target_support'] = {'events': len(target_support), 'lower_n': sum(x['lower'] for x in target_support),
+                                              'changed': [x for x in target_support if x['candidate'] != x['v1']]}
             for surface in ('floor', 'wall'):
                 pair[surface] = {f: {'lower_n': sum(r['encodings'][enc]['surfaces'][surface][f] < b['encodings'][enc]['surfaces'][surface][f]
                         for r, b in pairs if b['encodings'][enc]['surfaces'][surface][f] is not None),
