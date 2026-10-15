@@ -8,6 +8,35 @@ assertion that the newer collider is buggy. See simalt4/rejection_table.json.
 from typing import Tuple
 
 
+def install_native_legacy_plane():
+    """C3.16 diagnostic counterpart, using its own public headers/ABI."""
+    import ctypes
+    import hashlib
+    from pathlib import Path
+    import subprocess
+    import tempfile
+    import mujoco
+    if mujoco.__version__ != '3.16.0':
+        raise RuntimeError('native legacy adapter is audited for C3.16.0 only')
+    package = Path(mujoco.__file__).parent
+    source = Path(__file__).with_name('simalt_native_plane.c')
+    folder = tempfile.TemporaryDirectory(prefix='simalt5-native-')
+    target = Path(folder.name)/'legacy.so'
+    subprocess.run(['gcc', '-shared', '-fPIC', '-O2', '-I'+str(package/'include'),
+                    str(source), '-o', str(target), '-lm'], check=True)
+    library = ctypes.CDLL(str(next(package.glob('libmujoco.so*'))))
+    adapter = ctypes.CDLL(str(target))
+    n = int(mujoco.mjtGeom.mjNGEOMTYPES)
+    table = (ctypes.c_void_p*(n*n)).in_dll(library, 'mjCOLLISIONFUNC')
+    table[0*n+7] = ctypes.cast(adapter.simalt_legacy_plane_mesh, ctypes.c_void_p).value
+    # Keep the code mapped and the temporary file alive until process exit.
+    install_native_legacy_plane.keepalive = (adapter, library, folder)
+    return {'mode': 'native-legacy-plane-v1', 'maxplanemesh': 3, 'tolplanemesh': .3,
+            'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
+            'source': 'https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966',
+            'physics_parameters_modified': False}
+
+
 def install_legacy_plane(m):
     import numpy as np
     import warp as wp

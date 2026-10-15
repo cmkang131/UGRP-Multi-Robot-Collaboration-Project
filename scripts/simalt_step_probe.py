@@ -46,8 +46,8 @@ def main():
     host = gcp2_identity()
     if a.engine == 'warp' and host['instance'] != 'ugrp-act-l4-gcp2':
         p.error('Warp requires the existing gcp2 L4')
-    if a.engine != 'warp' and a.backend_mode != 'baseline':
-        p.error('backend workaround is Warp only')
+    if a.engine != 'warp' and a.backend_mode not in ('baseline', 'legacy-plane-v1'):
+        p.error('C supports only the diagnostic legacy Plane–Mesh adapter')
     import numpy as np
     import mujoco
     if a.damping_ablation_v1 and (not a.compiled_reference_v1 or mujoco.__version__ != '3.12.0' or a.engine != 'cpu'):
@@ -60,6 +60,10 @@ def main():
         return
     compatibility = apply_reference(m, a.fixture/'scene.xml', a.compiled_reference_v1,
                                    ablation=a.damping_ablation_v1) if a.compiled_reference_v1 else None
+    native_collision = None
+    if a.engine == 'cpu' and a.backend_mode == 'legacy-plane-v1':
+        from simalt_collision_compat import install_native_legacy_plane
+        native_collision = install_native_legacy_plane()
     f = np.load(a.fixture/'fixture.npz')
     tape = f[a.case]
     dt = float(m.opt.timestep)
@@ -101,6 +105,8 @@ def main():
         ('geom_friction','pair_friction','geom_solref','geom_solimp','body_mass','body_inertia',
          'actuator_gainprm','actuator_biasprm','geom_margin','geom_gap','geom_condim')}
     metadata['compiled_compatibility'] = compatibility
+    if native_collision:
+        metadata['collision_adapter'] = native_collision
     def save():
         (a.out/'result.json').write_text(json.dumps(metadata, indent=2, allow_nan=False)+'\n')
     save()
@@ -168,6 +174,9 @@ def main():
             metadata['warp'] = wp.__version__
             metadata['warp_deterministic'] = str(getattr(wp.config,'deterministic',None))
             wm = mjw.put_model(m)
+            if compatibility:
+                np.testing.assert_array_equal(wm.actuator_biasprm.numpy()[0], m.actuator_biasprm.astype(np.float32))
+                metadata['compiled_compatibility']['put_model_bias_exact_float32'] = True
             # Pinned upstream io.py:433 adjusts to 1e-6 for float32. Match C's
             # original solver configuration; this does not change m.opt.
             wm.opt.tolerance.fill_(float(m.opt.tolerance))
