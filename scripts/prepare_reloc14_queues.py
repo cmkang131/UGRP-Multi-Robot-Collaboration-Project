@@ -45,7 +45,7 @@ def queues(sha,source,table,selfmap,carry):
                 r['command']=[x.replace(old,r['name']) for x in r['command']]
                 r['command'][r['command'].index('--seed')+1]=str(seed)
                 r['command']+=['--reloc13-execution-cov-v1','--reloc13-execution-frame-v1','--reloc13-live-r7-v1',
-                    '--reloc14-continuous-tracking-v1','--reloc14-compute-budget-v1']
+                    '--reloc14-continuous-tracking-v1','--reloc14-compute-budget-v1','--execute']
                 r['seed']=seed;q['runs'].append(r)
         else:
             plan_path='experiments/2026-10-15-reloc14/carry-texture-v7-plan-final.json'

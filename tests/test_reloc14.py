@@ -143,6 +143,8 @@ def test_queue_requires_real_table_and_keeps_blocked_runs_disabled(tmp_path):
         assert q['rejection_table']==str(table)
         assert all(r['source_sha']=='a'*40 and not r['execute'] and not r['approved'] for r in q['runs'])
     assert qs[1]['runs'][0]['seed']==93266 and qs[1]['runs'][1]['seed']==93315
+    assert all('--execute' in r['command'] for r in qs[0]['runs'])
+    assert all('--execute' not in r['command'] for r in qs[1]['runs'])
 
 
 def test_supported_uncertain_tracking_retains_mode_and_full_covariance(monkeypatch):
