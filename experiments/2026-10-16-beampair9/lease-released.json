@@ -1,0 +1,57 @@
+{
+  "task": "beampair9",
+  "at": "2026-10-15T23:01:39.817723+00:00",
+  "owned_running": [],
+  "other_leases": [
+    {
+      "path": "/home/ugrp/ugrp-sim/leases/reloc19.json",
+      "task": "reloc19",
+      "pid": 468898,
+      "concurrency": 6,
+      "stage": "round1"
+    }
+  ],
+  "other_processes": [
+    {
+      "pid": 468898,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python experiments/2026-10-16-reloc19/run_round.py --round 1 "
+    },
+    {
+      "pid": 468927,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/3da9f8d970c/experiments/2026-10-16-reloc19/run_round.py --worker /home/ugrp/ugrp-sim/runs/reloc19-r1-carry-A-93266-3da9f8d9/task.json "
+    },
+    {
+      "pid": 468929,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/3da9f8d970c/experiments/2026-10-16-reloc19/run_round.py --worker /home/ugrp/ugrp-sim/runs/reloc19-r1-carry-AB-93266-3da9f8d9/task.json "
+    },
+    {
+      "pid": 468933,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/3da9f8d970c/experiments/2026-10-16-reloc19/run_round.py --worker /home/ugrp/ugrp-sim/runs/reloc19-r1-carry-A-93315-3da9f8d9/task.json "
+    },
+    {
+      "pid": 468934,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/3da9f8d970c/experiments/2026-10-16-reloc19/run_round.py --worker /home/ugrp/ugrp-sim/runs/reloc19-r1-carry-AB-93315-3da9f8d9/task.json "
+    },
+    {
+      "pid": 468937,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/3da9f8d970c/experiments/2026-10-16-reloc19/run_round.py --worker /home/ugrp/ugrp-sim/runs/reloc19-r1-selfmap-short_regression-93584-3da9f8d9/task.json "
+    },
+    {
+      "pid": 468938,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/3da9f8d970c/experiments/2026-10-16-reloc19/run_round.py --worker /home/ugrp/ugrp-sim/runs/reloc19-r1-selfmap-short_regression-93583-3da9f8d9/task.json "
+    }
+  ],
+  "stop_attempted": false,
+  "reason": "other tasks leases/processes remain; VM left running; only own lease removed",
+  "released_lease": {
+    "task": "beampair9",
+    "pid": 459714,
+    "started": "2026-10-15T22:14:01.923605+00:00",
+    "expected_end": "finite analysis + maximum3 run-first rounds + fresh40 gate; <=16 workers; shared <=40",
+    "concurrency": 0,
+    "stage": "analysis",
+    "source_sha": "67d65d8e053179b60f6b9e8fd33f791c4e44657a",
+    "finished_batch": "round3-67d65d8e"
+  },
+  "lease_absent_after": true
+}

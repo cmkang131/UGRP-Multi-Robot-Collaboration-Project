@@ -82,5 +82,32 @@
   "limitations": [
     "No new40 gate, training/recording, student/E2E, or physical robot success",
     "Full raw evidence and original data archive stay on gcp2; no complete separate backup"
-  ]
+  ],
+  "pr": 542,
+  "pr_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/542",
+  "pr_status": "DRAFT_NOT_READY",
+  "merged": false,
+  "post_parent_merge_controller_files_equal": {
+    "scripts/run_beampair1.py": true,
+    "harness/beampair_geometry.py": true,
+    "harness/beampair_peer_yield.py": true,
+    "harness/beampair_approach.py": true,
+    "harness/beampair_wall_layer.py": true,
+    "harness/beampair_teacher.py": true,
+    "harness/grasp_act_peer_rendezvous.py": true,
+    "harness/failure_rgb_tail.py": true
+  },
+  "cleanup": {
+    "owned_running_N": 0,
+    "own_lease_removed": true,
+    "VM_stopped": false,
+    "remaining_task": "reloc19",
+    "evidence": "lease-released.json"
+  },
+  "tests": {
+    "nonphysics_unique_tests": 26,
+    "latest_related_run_passed": 22,
+    "additional_setup_tests_passed": 4,
+    "Mac_MuJoCo_physics_render_GUI": false
+  }
 }

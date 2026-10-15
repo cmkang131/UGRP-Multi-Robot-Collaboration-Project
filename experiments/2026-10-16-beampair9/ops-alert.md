@@ -1,1 +1,1 @@
-beampair9: NOT_READY | 원인 화물 충돌/기억 여유·원래 배치2개 인증 자세0/91, 재실행 전 | 토글 beampair_box_geometry_v1 + beampair_checks_only_v1 (기본off) | PR 준비 중
+beampair9: NOT_READY | 원인 화물 배치/기억 여유·정렬 원형 가드와 차체 형상 불일치; 회복0/15·성공비교5/5,3라운드 종료 | 토글 beampair_box_geometry_v1 + beampair_geometry_work_v1 + search25_soft_v1 (기본off) | PR #542 https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/542
