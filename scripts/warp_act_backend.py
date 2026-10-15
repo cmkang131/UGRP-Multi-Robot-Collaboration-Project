@@ -12,7 +12,7 @@ import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore
+from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore, sleep_scene_xml
 
 
 class PerceptionWorld:
@@ -57,7 +57,7 @@ class PerceptionWorld:
 class Transport:
     native_render = False
 
-    def __init__(self, host, source_sha, backend, out):
+    def __init__(self, host, source_sha, backend, out, *, sleep_compact_v1=False):
         self.host, self.source_sha, self.backend, self.out = host, source_sha, backend, Path(out)
         self.seconds = defaultdict(float)
         self.samples = []
@@ -65,8 +65,25 @@ class Transport:
         self.contact_forces = None
         self.prototypes={}
         self.prototype_hits=0
+        self.sleep_compact_v1=sleep_compact_v1
 
     def make_world(self, plan, scene, factory, bind_camera, **kwargs):
+        if self.sleep_compact_v1:
+            original_transform,original_setup=scene.robot_transform,scene.setup
+            def transform(xml,**settings):
+                return sleep_scene_xml(original_transform(xml,**settings),plan['robot_id'])
+            def setup(world):
+                # Native documented -0.0 wake sentinel during setup placement.
+                world.data.qfrc_applied[:]=-0.0
+                original_setup(world)
+                world.data.qfrc_applied[:]=0.0
+                # Reuse Scene.setup's existing .4s folded-settle duration.
+                # Extra quiet setup is not a success threshold or policy input.
+                for _ in range(round(.4/world.model.opt.timestep)):
+                    world._physics_step_for(world.robot(plan['robot_id']))
+            scene.robot_transform,scene.setup=transform,setup
+            scene.manifest['mjwarp_sleep_compact_v1']={'active_robot':'never sleeps','other_free_bodies':'native allowed; collision wakes normally',
+                'extra_quiet_setup_s':.4,'mass_friction_dt_unchanged':True}
         if self.native_render:
             world=factory(scene,**kwargs)
             for controller in world.controllers.values():bind_camera(controller)
@@ -82,7 +99,11 @@ class Transport:
         prototype,saved_scene=self.prototypes[key]
         world=PerceptionWorld(prototype)
         # Refresh the copied controller closures against its own native data.
+        sleep_state=prototype.data.tree_asleep.copy()
         for controller in world.controllers.values():bind_camera(controller)
+        # mj_forward/kinematics may reset native sleep bookkeeping. Preserve
+        # the actual settled state for put_data; no native stepping follows.
+        world.data.tree_asleep[:]=sleep_state
         return world,copy.deepcopy(saved_scene)
 
     def close(self):
@@ -203,8 +224,22 @@ class WarpTransport(Transport):
         # Full scene import is added; these are workspace sizes, not physics changes.
         ncon = 1 << (max(32, int(d.ncon))-1).bit_length()
         njmax = 1 << (max(256, int(d.nefc))-1).bit_length()
+        self.source_sleep=np.stack([c['world'].data.tree_asleep.copy() for c in contexts])
+        self.dof_tree=np.asarray(m.body_treeid[m.dof_bodyid])
+        native_active=np.sum(self.source_sleep[:,self.dof_tree]<0,axis=1)
+        active_bounds=[]
+        for c in contexts:
+            robot_tree=int(m.body_treeid[m.body('r1__robot').id])
+            cargo_tree=int(m.body_treeid[m.geom_bodyid[c['gids'][0]]])
+            active_bounds.append(int(np.count_nonzero(np.isin(self.dof_tree,[robot_tree,cargo_tree]))))
+        bound=max(int(native_active.max()),max(active_bounds))
+        self.nvmax=min(int(m.nv),1 << (max(1,bound)-1).bit_length()) if self.sleep_compact_v1 else None
+        self.sleep_audit={'enabled':self.sleep_compact_v1,'native_initial_active_dofs':native_active.tolist(),
+            'active_robot_plus_target_dofs':active_bounds,'nvmax':self.nvmax,
+            'capacity_basis':'next power of2 of actual native active count and static robot+target DOFs; overflow rejects unexpected activation'}
+        d.tree_asleep[:]=self.source_sleep[0]
         with unused_efm(m, d):
-            self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax)
+            self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax,nvmax=self.nvmax)
         self.copy_initial_state(contexts)
         self.origin = float(d.time)
         self.tick = 0
@@ -215,8 +250,9 @@ class WarpTransport(Transport):
         self.init_kernels(contexts)
         # Compile once, then discard the warm-up state before any rollout.
         mjw.step(self.wm,self.wd); wp.synchronize()
+        d.tree_asleep[:]=self.source_sleep[0]
         with unused_efm(m,d):
-            self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax)
+            self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax,nvmax=self.nvmax)
         self.copy_initial_state(contexts)
         # Capture exactly the 400 physics ticks, not a host wall budget.
         with wp.ScopedCapture() as capture:
@@ -236,7 +272,7 @@ class WarpTransport(Transport):
             mount_quat=m.cam_quat[m.camera('r1__robot_cam').id].tolist(),
             remap_sha256=hashlib.sha256(self.mx.tobytes()+self.my.tobytes()).hexdigest(),
             renderer='MJWarp batch RGB; known partial-alpha difference from C remains')
-        self.capacities = dict(nconmax=ncon,njmax=njmax,naconmax=int(self.wd.naconmax))
+        self.capacities = dict(nconmax=ncon,njmax=njmax,naconmax=int(self.wd.naconmax),nvmax=int(self.wd.nvmax))
         self.build_lookup(contexts[0]['world'].robot('r1'))
         self.sync_render(contexts)
 
@@ -253,6 +289,10 @@ class WarpTransport(Transport):
                 converted=wp.array(values,dtype=target.dtype)
                 wp.copy(target,converted)
                 self.initial_state[name]=converted.numpy().copy()
+        for name,values in [('tree_asleep',self.source_sleep),('tree_awake',(self.source_sleep<0).astype(np.int32))]:
+            target=getattr(self.wd,name)
+            wp.copy(target,wp.array(values,dtype=target.dtype))
+            self.initial_state[name]=target.numpy().copy()
 
     def initial_state_proof(self, contexts):
         expected=self.initial_state['qpos']
@@ -422,7 +462,8 @@ class WarpTransport(Transport):
         self.tick+=1
         niter=self.wd.solver_niter.numpy()
         self.solver_samples.append({'control_tick':self.tick,'max':int(niter.max()),
-            'mean':float(niter.mean()),'min':int(niter.min())})
+            'mean':float(niter.mean()),'min':int(niter.min()),
+            'active_dofs_sample_max':int(np.sum(self.wd.tree_awake.numpy()[:,self.dof_tree]!=0,axis=1).max())})
         self.seconds['physics']+=time.perf_counter()-start
         if np.any(self.wd.overflow.numpy()):
             raise RuntimeError('MJWarp workspace overflow '+str(self.wd.overflow.numpy().tolist()))
