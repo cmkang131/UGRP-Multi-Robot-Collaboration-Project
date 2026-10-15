@@ -117,3 +117,37 @@ def test_ransac_refreshes_on_pf_update_and_propagates_other_frames(monkeypatch):
  assert len(calls)==1 and not r.last['resolved']
  update[0]=True;r.step(dict(features=[],segments=[]),[0,0,0],{6:1500},.4,[.01,0,0])
  assert len(calls)==2
+
+
+def test_queue_blocks_absent_or_false_registration_and_clears_execution_flags():
+ from scripts.prepare_reloc12_queues import queues
+ report=dict(status='RECORDED',registration_events=[],invisible_measurements=0,held_world_reads=0,input_audit={'top_rgb_frames':0},first30={'wall_per_sim':3.})
+ for q in queues('a'*40,[report],'/pinned/source'):
+  assert q['status']=='BLOCKED' and not q['runs_enabled'] and not q['ready']
+  assert q['max_parallel']==16 and q['source_sha']=='a'*40
+  assert all(not r['enabled'] and not r['approved'] for r in q['runs'])
+  assert len({r['name'] for r in q['runs']})==len(q['runs'])
+ report['registration_events']=[dict(within_10cm_5deg=False)]
+ assert not queues('a'*40,[report],'/pinned/source')[0]['ready']
+ report['registration_events'][0]['within_10cm_5deg']=True
+ report['registered_frame_errors']=dict(N=100,false_N=1)
+ a,b=queues('a'*40,[report],'/pinned/source')
+ assert a['ready'] and b['ready'] and b['runs'][0]['seed']==93266
+ assert b['runs'][0]['candidate']!=b['runs'][1]['candidate']
+
+
+def test_registration_error_scores_actual_controller_pose_separately_from_odometry(tmp_path):
+ from scripts.analyze_reloc12_selfmap import analyze
+ raw=tmp_path/'raw';(raw/'eval_only').mkdir(parents=True)
+ # Map-from-own is +1m. Issued odometry projects to 10m, but the actual
+ # visual controller pose is own x=1m, i.e. correct world x=2m.
+ s=dict(registered=True,updated=True,pf_resolved=True,resolved=True,confirmations=3,
+  world_pose=[2,0,0],reloc10_diagnostics={'rejection_reasons':[]},geometry={'ambiguity':{'evaluated':True,'unique':True,'candidate_count':1}},
+  reloc12={'registered_world_pose':[10,0,0],'replay':{'own_odometry_pose':[9,0,0]}})
+ (raw/'trace.jsonl').write_text(json.dumps(dict(t=0,pose=[1,0,0],static_registration=s))+'\n')
+ (raw/'eval_only/trajectory.jsonl').write_text(json.dumps(dict(t=0,robot_xyz_m=[2,0,0],robot_yaw_rad=0))+'\n')
+ r=analyze(tmp_path)
+ json.dumps(r,allow_nan=False)
+ assert r['registered_frame_errors']['false_N']==0
+ assert r['registration_event_errors']['false_N']==0
+ assert r['command_odometry_anchor_error']['false_N']==1

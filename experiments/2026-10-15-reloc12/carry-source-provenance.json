@@ -42,5 +42,10 @@
     "sim/grasp_act_solo_evaluation.py",
     "scripts/run_reloc10_rotation_check.py"
   ],
-  "existing_shared_files": "kept from 3c4af5b3"
+  "existing_shared_files": "kept from 3c4af5b3",
+  "additional_dependencies": [
+    "configs/grasp_act_seed_splits.json",
+    "configs/calibration/reloc10_carry_rotation_v1.json",
+    "scripts/zone_teacher.py:proportional_drive (same function from987d033f)"
+  ]
 }
