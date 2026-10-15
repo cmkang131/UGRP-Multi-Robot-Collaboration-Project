@@ -1,0 +1,80 @@
+"""GCP2 raw recount: every seed, ordered funnel, rejection table; no rollout."""
+import argparse
+from collections import Counter
+from pathlib import Path
+
+from harness.grasp_act_data import read_json, read_rows, sha256, write_json
+from harness.beamact_pair_student import Funnel, STAGES
+from scripts.beamact1_runtime import require_gcp2
+
+
+def existing(path):
+    return path if path.exists() else Path(str(path)+'.zst')
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--root',type=Path,required=True)
+    a=p.parse_args();host=require_gcp2(training=False)
+    queue=read_json(a.root/'queue.json')
+    runs=[];frame_pass=Counter();frame_reject=Counter();cumulative=Counter();reasons=Counter()
+    for seed in range(8329000,8329020):
+        out=a.root/f'seed-{seed}';path=out/'result.json'
+        if not path.exists():
+            runs.append(dict(seed=seed,status='NOT_STARTED',complete=False));continue
+        r=read_json(path)
+        row=dict(seed=seed,raw=str(out),result_sha256=sha256(path),status=r['status'],
+            complete=r['complete'],cap_end=r['cap_end'],physical_success=False)
+        if r['complete']:
+            raw=existing(out/'eval-only.jsonl');evaluations=read_rows(raw)
+            commands=read_rows(existing(out/'commands.jsonl'))
+            inputs=read_rows(existing(out/'student-inputs.jsonl'))
+            # Revalidate ALL serialized actor inputs, not just inference calls.
+            from harness.grasp_act_rollout import InputAudit, LiftScore
+            from harness import grasp_act_contract as c
+            audit=InputAudit()
+            for obs in inputs:audit.accept(obs)
+            f=Funnel();score=LiftScore();done={};counts=Counter()
+            for cmd in commands:
+                c.command(cmd['command'])
+                if cmd['done']:done.setdefault(cmd['robot'],cmd['t'])
+                counts[cmd['robot']]+=1
+            for e in evaluations:
+                truth=e['truth']
+                forces=[v for rid in ('r1','r2') for v in truth['contacts'][rid]]
+                score.add(e['t'],clearance=truth['beam']['min_z'],tilt=truth['beam']['tilt_deg'],forces=forces,weld=False)
+                passed=dict(e['passed']);passed['lift_3s']=score.record()['lift_success']
+                f.add(e['t'],passed)
+            success=score.record()['lift_success'] and len(done)==2 and not r['cap_end']
+            assert success==r['physical_success'] and f.record()==r['funnel']
+            assert counts['r1']==counts['r2']==len(evaluations)
+            assert len(inputs)==len(commands)==2*len(evaluations)
+            assert all(v['invisible_measurements']==v['held_world_reads']==0 for v in r['input_audit'].values())
+            assert r['teacher_actions']==r['truth_corrections']==0 and r['weld']=='off'
+            category='success' if success else 'cap_end' if r['cap_end'] else f.record()['failure_stage'] or 'command_completion'
+            reasons[category]+=1
+            cumulative.update(f.record()['cumulative_run_pass']);frame_pass.update(f.frames);frame_reject.update(f.rejected)
+            row.update(physical_success=success,category=category,done_times=done,input_audit=audit.record,
+                funnel=f.record(),raw_eval_sha256=sha256(raw),commands_sha256=sha256(existing(out/'commands.jsonl')),
+                command_rows=len(commands),max_stable_hold_s=score.max_stable_s,
+                raw_independent_stage_frames={s:sum(e['passed'][s] for e in evaluations) for s in STAGES})
+        else:
+            row['category']='HOST_ERROR';reasons['HOST_ERROR']+=1
+        runs.append(row)
+    completed=sum(r['complete'] for r in runs);n=sum(r.get('physical_success',False) for r in runs)
+    result=dict(schema='ugrp.beamact2.summary.v1',host=host,n=n,N=20,attempted=sum(r['status']!='NOT_STARTED' for r in runs),
+        complete=completed==20,completed=completed,not_started=20-sum(r['status']!='NOT_STARTED' for r in runs),
+        verdict='READY' if n==20 and completed==20 else 'NOT_READY',source_sha=queue['source_sha'],
+        model_sha256=queue['model_sha256'],runs=runs,reason_distribution=dict(reasons),
+        funnel={s:dict(cumulative_runs=cumulative[s],frame_pass=frame_pass[s],frame_reject=frame_reject[s]) for s in STAGES},
+        verification='raw eval/commands/all own-input rows recounted; no teacher results merged')
+    write_json(a.root/'summary.json',result)
+    write_json(a.root/'rejection_table.json',dict(source_sha=queue['source_sha'],funnel=result['funnel'],
+        reasons=dict(reasons),runs=[dict(seed=r['seed'],reason_category=r.get('category','not_started'),
+            blocked_object='none_inferred:evaluation_only',min_gap_m=None,
+            gap_scope='student has no geometric rejection gate; no collision cause inferred',raw=r.get('raw')) for r in runs],
+        reproduce='python -m scripts.analyze_beamact2 --root '+str(a.root)))
+    print('beamact2',n,'/20',result['verdict'],result['funnel'])
+
+
+if __name__=='__main__':main()
