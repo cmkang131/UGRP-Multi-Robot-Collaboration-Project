@@ -1,104 +1,229 @@
 {
-  "schema": "ugrp.reloc15.rejection_table.v1",
-  "stage": "R2 completed before final carry quality comparison",
+  "schema": "ugrp.reloc15.rejection_table.v2",
+  "ready": false,
   "analysis_host": "gcp1",
-  "source": "reloc14/round3-full.json",
-  "source_sha256": "64fa375b4ccb006c0c5714fb17c2caae968dd608b6205038690ace4eaa3aad9b",
-  "selfmap": [
+  "portable_aggregation_host": "Mac summaries only",
+  "runs": [
     {
-      "run": "reloc14-r3-selfmap-texture-93571-f3d06408",
-      "source_sha": "f3d0640829abede9f84c1b05cbc1ff877d78b8fe",
-      "funnel": {
-        "fresh_static_fix_independent": 20,
-        "frames": 222,
-        "frames_independent": 222,
-        "registered": 84,
-        "registered_independent": 84,
-        "execution_pose_delivered": 84,
-        "execution_pose_delivered_independent": 84,
-        "map_inserted": 84,
-        "map_inserted_independent": 210,
-        "control_drive_used": 9,
-        "control_drive_used_independent": 10
-      },
-      "registered_errors": {
-        "N": 84,
-        "bad_N": 0,
-        "xy_m": {
-          "N": 84,
-          "min": 0.03489058519625246,
-          "p50": 0.06245187433630706,
-          "p90": 0.08399268404198582,
-          "p95": 0.08421082550416586,
-          "p99": 0.08675735223270552,
-          "max": 0.0874379443026223
+      "run": "reloc15-r1-carry-93266-candidate-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-carry-93266-candidate-9607de16/raw",
+      "unit": "episode",
+      "gates": [
+        {
+          "gate": "pickup_seen",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
         },
-        "yaw_deg": {
-          "N": 84,
-          "min": 0.07277352617636766,
-          "p50": 0.9699711640494323,
-          "p90": 2.195291029795412,
-          "p95": 2.395109470930902,
-          "p99": 2.5988256862914576,
-          "max": 2.602312527464853
-        }
-      },
-      "drive_errors": {
-        "N": 9,
-        "bad_N": 0,
-        "within15cm5_N": 9,
-        "within30cm10_N": 9,
-        "xy_m": {
-          "N": 9,
-          "min": 0.040015465658531306,
-          "p50": 0.08400893800456853,
-          "p90": 0.086781951946076,
-          "p95": 0.08710994812434916,
-          "p99": 0.08737234506696767,
-          "max": 0.0874379443026223
+        {
+          "gate": "aligned",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
         },
-        "yaw_deg": {
-          "N": 9,
-          "min": 0.07277352617636766,
-          "p50": 0.883202178004798,
-          "p90": 1.1404011162566228,
-          "p95": 1.4390143365342403,
-          "p99": 1.6779049127563346,
-          "max": 1.7376275568118582
+        {
+          "gate": "lifted_controller",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "zone_place_view",
+          "received": 1,
+          "cumulative_passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "release",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
         }
+      ],
+      "first_rejections": [],
+      "registration_funnel": null,
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 555,
+        "relative_rgb_yaw": 194,
+        "weak_observation": 1
       },
       "termination": {
-        "status": "HOST_ERROR",
-        "category": "selfmap4_relocalization_exhausted",
-        "reason": "selfmap4_relocalization_exhausted",
-        "elapsed_sim_s": 44.2,
-        "supervisor_stop": {},
-        "code_vs_host": "controller_budget_exhaustion"
+        "category": "cap_end",
+        "reason": "sim_cap"
+      }
+    },
+    {
+      "run": "reloc15-r1-carry-93315-baseline-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-carry-93315-baseline-9607de16/raw",
+      "unit": "episode",
+      "gates": [
+        {
+          "gate": "pickup_seen",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "aligned",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "lifted_controller",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "zone_place_view",
+          "received": 1,
+          "cumulative_passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "release",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        }
+      ],
+      "first_rejections": [],
+      "registration_funnel": null,
+      "heading_observation_counts": {
+        "off": 1
       },
-      "registration_frame_funnel": {
+      "termination": {
+        "category": "carry_recovery_setdown_envelope_blocked",
+        "reason": "carry_recovery_setdown_envelope_blocked"
+      }
+    },
+    {
+      "run": "reloc15-r1-carry-93315-candidate-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-carry-93315-candidate-9607de16/raw",
+      "unit": "episode",
+      "gates": [
+        {
+          "gate": "pickup_seen",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "aligned",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "lifted_controller",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "zone_place_view",
+          "received": 1,
+          "cumulative_passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "release",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        }
+      ],
+      "first_rejections": [],
+      "registration_funnel": null,
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 408,
+        "relative_rgb_yaw": 294,
+        "weak_observation": 2
+      },
+      "termination": {
+        "category": "carry_recovery_setdown_envelope_blocked",
+        "reason": "carry_recovery_setdown_envelope_blocked"
+      }
+    },
+    {
+      "run": "reloc15-r1-selfmap-93583-candidate-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-selfmap-93583-candidate-9607de16/raw",
+      "unit": "frames",
+      "gates": [
+        {
+          "gate": "registered",
+          "received": 234,
+          "cumulative_passed": 149,
+          "rejected": 85
+        },
+        {
+          "gate": "execution_pose_delivered",
+          "received": 149,
+          "cumulative_passed": 149,
+          "rejected": 0
+        },
+        {
+          "gate": "map_inserted",
+          "received": 149,
+          "cumulative_passed": 129,
+          "rejected": 20
+        },
+        {
+          "gate": "control_drive_used",
+          "received": 129,
+          "cumulative_passed": 0,
+          "rejected": 129
+        }
+      ],
+      "first_rejections": [
+        {
+          "category": "sensor_update",
+          "N": 99,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "execution_correction",
+          "N": 19,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "covariance",
+          "N": 3,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "registration_funnel": {
         "unit": "ordered global/relocalization frames, not independent trials",
         "cumulative": {
-          "frames": 139,
-          "sensor_update": 40,
-          "pf_resolved": 31,
-          "dominant_mode": 31,
-          "raw_covariance": 31,
-          "independent_axes": 31,
-          "global_unique": 15,
-          "three_views": 1,
-          "registered": 1
+          "frames": 93,
+          "sensor_update": 25,
+          "pf_resolved": 16,
+          "dominant_mode": 16,
+          "raw_covariance": 16,
+          "independent_axes": 16,
+          "global_unique": 16,
+          "three_views": 2,
+          "registered": 2
         },
         "first_rejections": [
           {
             "category": "sensor_update",
-            "N": 99,
-            "blocked_object": "static_registration_evidence",
-            "minimum_gap_m": null,
-            "gap_status": "not_applicable_localization_gate"
-          },
-          {
-            "category": "global_unique",
-            "N": 16,
+            "N": 68,
             "blocked_object": "static_registration_evidence",
             "minimum_gap_m": null,
             "gap_status": "not_applicable_localization_gate"
@@ -119,78 +244,7 @@
           }
         ]
       },
-      "known_mode_measurement_funnel": {
-        "unit": "known-mode frames; prediction frames stop at sensor_update and are not failed absolute measurements",
-        "cumulative": {
-          "frames": 83,
-          "sensor_update": 19,
-          "covariance": 19,
-          "partial_geometry": 19,
-          "live_tracking": 19,
-          "execution_correction": 19,
-          "map_inserted": 19
-        },
-        "first_rejections": [
-          {
-            "category": "sensor_update",
-            "N": 64,
-            "blocked_object": "own_rgb_tracking_evidence",
-            "minimum_gap_m": null,
-            "gap_status": "not_applicable_localization_gate"
-          }
-        ]
-      }
-    },
-    {
-      "run": "reloc14-r3-selfmap-texture-93583-f3d06408",
-      "source_sha": "f3d0640829abede9f84c1b05cbc1ff877d78b8fe",
-      "funnel": {
-        "fresh_static_fix_independent": 31,
-        "frames": 234,
-        "frames_independent": 234,
-        "registered": 149,
-        "registered_independent": 149,
-        "execution_pose_delivered": 149,
-        "execution_pose_delivered_independent": 149,
-        "map_inserted": 90,
-        "map_inserted_independent": 165,
-        "control_drive_used": 0,
-        "control_drive_used_independent": 0
-      },
-      "registered_errors": {
-        "N": 149,
-        "bad_N": 27,
-        "xy_m": {
-          "N": 149,
-          "min": 0.012147757774290113,
-          "p50": 0.06591457942586061,
-          "p90": 0.10050074602707766,
-          "p95": 0.10906466518982352,
-          "p99": 0.12337104047684147,
-          "max": 0.12645521627727918
-        },
-        "yaw_deg": {
-          "N": 149,
-          "min": 0.024531417126669158,
-          "p50": 0.6442131183321201,
-          "p90": 2.1262609843528675,
-          "p95": 2.2328640551908503,
-          "p99": 2.5292375758351207,
-          "max": 2.631840079843894
-        }
-      },
-      "drive_errors": {
-        "N": 0,
-        "bad_N": 0,
-        "within15cm5_N": 0,
-        "within30cm10_N": 0,
-        "xy_m": {
-          "N": 0
-        },
-        "yaw_deg": {
-          "N": 0
-        }
-      },
+      "heading_observation_counts": null,
       "termination": {
         "status": "HOST_ERROR",
         "category": "selfmap4_relocalization_exhausted",
@@ -198,174 +252,94 @@
         "elapsed_sim_s": 46.6,
         "supervisor_stop": {},
         "code_vs_host": "controller_budget_exhaustion"
-      },
-      "registration_frame_funnel": {
-        "unit": "ordered global/relocalization frames, not independent trials",
-        "cumulative": {
-          "frames": 146,
-          "sensor_update": 39,
-          "pf_resolved": 27,
-          "dominant_mode": 27,
-          "raw_covariance": 27,
-          "independent_axes": 27,
-          "global_unique": 23,
-          "three_views": 3,
-          "registered": 3
-        },
-        "first_rejections": [
-          {
-            "category": "sensor_update",
-            "N": 107,
-            "blocked_object": "static_registration_evidence",
-            "minimum_gap_m": null,
-            "gap_status": "not_applicable_localization_gate"
-          },
-          {
-            "category": "three_views",
-            "N": 20,
-            "blocked_object": "static_registration_evidence",
-            "minimum_gap_m": null,
-            "gap_status": "not_applicable_localization_gate"
-          },
-          {
-            "category": "pf_resolved",
-            "N": 12,
-            "blocked_object": "static_registration_evidence",
-            "minimum_gap_m": null,
-            "gap_status": "not_applicable_localization_gate"
-          },
-          {
-            "category": "global_unique",
-            "N": 4,
-            "blocked_object": "static_registration_evidence",
-            "minimum_gap_m": null,
-            "gap_status": "not_applicable_localization_gate"
-          }
-        ]
-      },
-      "known_mode_measurement_funnel": {
-        "unit": "known-mode frames; prediction frames stop at sensor_update and are not failed absolute measurements",
-        "cumulative": {
-          "frames": 88,
-          "sensor_update": 28,
-          "covariance": 28,
-          "partial_geometry": 28,
-          "live_tracking": 28,
-          "execution_correction": 28,
-          "map_inserted": 28
-        },
-        "first_rejections": [
-          {
-            "category": "sensor_update",
-            "N": 60,
-            "blocked_object": "own_rgb_tracking_evidence",
-            "minimum_gap_m": null,
-            "gap_status": "not_applicable_localization_gate"
-          }
-        ]
       }
     },
     {
-      "run": "reloc14-r3-selfmap-texture-93584-f3d06408",
-      "source_sha": "f3d0640829abede9f84c1b05cbc1ff877d78b8fe",
-      "funnel": {
-        "fresh_static_fix_independent": 41,
-        "frames": 451,
-        "frames_independent": 451,
-        "registered": 364,
-        "registered_independent": 364,
-        "execution_pose_delivered": 364,
-        "execution_pose_delivered_independent": 364,
-        "map_inserted": 157,
-        "map_inserted_independent": 234,
-        "control_drive_used": 61,
-        "control_drive_used_independent": 61
-      },
-      "registered_errors": {
-        "N": 364,
-        "bad_N": 245,
-        "xy_m": {
-          "N": 364,
-          "min": 0.014731453301219204,
-          "p50": 0.06538397146935916,
-          "p90": 0.10248832038519733,
-          "p95": 0.11103623279209557,
-          "p99": 0.13914193260003097,
-          "max": 0.143020649451345
+      "run": "reloc15-r1-selfmap-93584-baseline-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-selfmap-93584-baseline-9607de16/raw",
+      "unit": "frames",
+      "gates": [
+        {
+          "gate": "registered",
+          "received": 301,
+          "cumulative_passed": 214,
+          "rejected": 87
         },
-        "yaw_deg": {
-          "N": 364,
-          "min": 0.05942112744670587,
-          "p50": 7.635295658278112,
-          "p90": 14.328562907227525,
-          "p95": 14.79833764389633,
-          "p99": 15.773179817510616,
-          "max": 16.002764846093037
-        }
-      },
-      "drive_errors": {
-        "N": 61,
-        "bad_N": 50,
-        "within15cm5_N": 11,
-        "within30cm10_N": 12,
-        "xy_m": {
-          "N": 61,
-          "min": 0.03379663231541029,
-          "p50": 0.07699943789083356,
-          "p90": 0.10707684009658958,
-          "p95": 0.10913763801302147,
-          "p99": 0.11199482062217046,
-          "max": 0.1134453773550366
+        {
+          "gate": "execution_pose_delivered",
+          "received": 214,
+          "cumulative_passed": 214,
+          "rejected": 0
         },
-        "yaw_deg": {
-          "N": 61,
-          "min": 2.2576758275632596,
-          "p50": 14.347952896122484,
-          "p90": 15.460371562946573,
-          "p95": 15.788369663648623,
-          "p99": 15.959243751990524,
-          "max": 16.002764846093037
+        {
+          "gate": "map_inserted",
+          "received": 214,
+          "cumulative_passed": 131,
+          "rejected": 83
+        },
+        {
+          "gate": "control_drive_used",
+          "received": 131,
+          "cumulative_passed": 45,
+          "rejected": 86
         }
-      },
-      "termination": {
-        "status": "RECORDED",
-        "category": "cap_end",
-        "reason": "sim_time_cap",
-        "elapsed_sim_s": 90.0,
-        "supervisor_stop": {},
-        "code_vs_host": "see_reason"
-      },
-      "registration_frame_funnel": {
+      ],
+      "first_rejections": [
+        {
+          "category": "sensor_update",
+          "N": 111,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "execution_correction",
+          "N": 13,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "covariance",
+          "N": 2,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "registration_funnel": {
         "unit": "ordered global/relocalization frames, not independent trials",
         "cumulative": {
-          "frames": 279,
-          "sensor_update": 62,
-          "pf_resolved": 36,
-          "dominant_mode": 36,
-          "raw_covariance": 36,
-          "independent_axes": 36,
-          "global_unique": 22,
-          "three_views": 4,
-          "registered": 4
+          "frames": 156,
+          "sensor_update": 45,
+          "pf_resolved": 31,
+          "dominant_mode": 31,
+          "raw_covariance": 31,
+          "independent_axes": 31,
+          "global_unique": 17,
+          "three_views": 2,
+          "registered": 2
         },
         "first_rejections": [
           {
             "category": "sensor_update",
-            "N": 217,
-            "blocked_object": "static_registration_evidence",
-            "minimum_gap_m": null,
-            "gap_status": "not_applicable_localization_gate"
-          },
-          {
-            "category": "pf_resolved",
-            "N": 26,
+            "N": 111,
             "blocked_object": "static_registration_evidence",
             "minimum_gap_m": null,
             "gap_status": "not_applicable_localization_gate"
           },
           {
             "category": "three_views",
-            "N": 18,
+            "N": 15,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 14,
             "blocked_object": "static_registration_evidence",
             "minimum_gap_m": null,
             "gap_status": "not_applicable_localization_gate"
@@ -379,140 +353,813 @@
           }
         ]
       },
-      "known_mode_measurement_funnel": {
-        "unit": "known-mode frames; prediction frames stop at sensor_update and are not failed absolute measurements",
-        "cumulative": {
-          "frames": 172,
-          "sensor_update": 37,
-          "covariance": 37,
-          "partial_geometry": 37,
-          "live_tracking": 37,
-          "execution_correction": 37,
-          "map_inserted": 37
-        },
-        "first_rejections": [
-          {
-            "category": "sensor_update",
-            "N": 135,
-            "blocked_object": "own_rgb_tracking_evidence",
-            "minimum_gap_m": null,
-            "gap_status": "not_applicable_localization_gate"
-          }
-        ]
+      "heading_observation_counts": null,
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
       }
     },
     {
-      "run": "reloc14-r3-selfmap-texture-93585-f3d06408",
-      "source_sha": "f3d0640829abede9f84c1b05cbc1ff877d78b8fe",
-      "funnel": {
-        "fresh_static_fix_independent": 10,
-        "frames": 202,
-        "frames_independent": 202,
-        "registered": 66,
-        "registered_independent": 66,
-        "execution_pose_delivered": 66,
-        "execution_pose_delivered_independent": 66,
-        "map_inserted": 66,
-        "map_inserted_independent": 190,
-        "control_drive_used": 41,
-        "control_drive_used_independent": 42
-      },
-      "registered_errors": {
-        "N": 65,
-        "bad_N": 12,
-        "xy_m": {
-          "N": 65,
-          "min": 0.05257653624724778,
-          "p50": 0.0909084827983363,
-          "p90": 0.10492384458813699,
-          "p95": 0.10731378689272746,
-          "p99": 0.11044558880748646,
-          "max": 0.11135376036076292
+      "run": "reloc15-r1-selfmap-93584-candidate-9607de16",
+      "round": 1,
+      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r1-selfmap-93584-candidate-9607de16/raw",
+      "unit": "frames",
+      "gates": [
+        {
+          "gate": "registered",
+          "received": 301,
+          "cumulative_passed": 214,
+          "rejected": 87
         },
-        "yaw_deg": {
-          "N": 65,
-          "min": 0.027925831348216155,
-          "p50": 0.8931579848193797,
-          "p90": 2.274787160940681,
-          "p95": 2.528382186836575,
-          "p99": 3.1407042924842523,
-          "max": 3.35039263421654
-        }
-      },
-      "drive_errors": {
-        "N": 40,
-        "bad_N": 12,
-        "within15cm5_N": 40,
-        "within30cm10_N": 40,
-        "xy_m": {
-          "N": 40,
-          "min": 0.08740051887806292,
-          "p50": 0.09461982737789751,
-          "p90": 0.10677964909594474,
-          "p95": 0.10958919382727444,
-          "p99": 0.11080034332048508,
-          "max": 0.11135376036076292
+        {
+          "gate": "execution_pose_delivered",
+          "received": 214,
+          "cumulative_passed": 214,
+          "rejected": 0
         },
-        "yaw_deg": {
-          "N": 40,
-          "min": 0.04737195033955691,
-          "p50": 1.1836937063239454,
-          "p90": 2.4750336448397188,
-          "p95": 2.7603095242842466,
-          "p99": 3.222613800973427,
-          "max": 3.35039263421654
+        {
+          "gate": "map_inserted",
+          "received": 214,
+          "cumulative_passed": 132,
+          "rejected": 82
+        },
+        {
+          "gate": "control_drive_used",
+          "received": 132,
+          "cumulative_passed": 45,
+          "rejected": 87
         }
-      },
-      "termination": {
-        "status": "HOST_ERROR",
-        "category": "controller_error:ValueError",
-        "reason": "REAL primitive requires one axis and bounded duration",
-        "elapsed_sim_s": null,
-        "supervisor_stop": {},
-        "code_vs_host": "see_reason",
-        "failure": {
-          "type": "ValueError",
-          "message": "REAL primitive requires one axis and bounded duration"
+      ],
+      "first_rejections": [
+        {
+          "category": "sensor_update",
+          "N": 111,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "execution_correction",
+          "N": 13,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "covariance",
+          "N": 2,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
         }
-      },
-      "registration_frame_funnel": {
+      ],
+      "registration_funnel": {
         "unit": "ordered global/relocalization frames, not independent trials",
         "cumulative": {
-          "frames": 137,
-          "sensor_update": 39,
+          "frames": 156,
+          "sensor_update": 45,
           "pf_resolved": 31,
           "dominant_mode": 31,
           "raw_covariance": 31,
-          "independent_axes": 30,
+          "independent_axes": 31,
           "global_unique": 17,
-          "three_views": 1,
-          "registered": 1
+          "three_views": 2,
+          "registered": 2
         },
         "first_rejections": [
           {
             "category": "sensor_update",
-            "N": 98,
+            "N": 111,
             "blocked_object": "static_registration_evidence",
             "minimum_gap_m": null,
             "gap_status": "not_applicable_localization_gate"
           },
           {
             "category": "three_views",
-            "N": 16,
-            "blocked_object": "static_registration_evidence",
-            "minimum_gap_m": null,
-            "gap_status": "not_applicable_localization_gate"
-          },
-          {
-            "category": "global_unique",
-            "N": 13,
+            "N": 15,
             "blocked_object": "static_registration_evidence",
             "minimum_gap_m": null,
             "gap_status": "not_applicable_localization_gate"
           },
           {
             "category": "pf_resolved",
-            "N": 8,
+            "N": 14,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 14,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "heading_observation_counts": null,
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      }
+    },
+    {
+      "run": "reloc15-r2-carry-93266-candidate-e44b4987",
+      "round": 2,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93266-candidate-e44b4987/raw",
+      "unit": "episode",
+      "gates": [
+        {
+          "gate": "pickup_seen",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "aligned",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "lifted_controller",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "zone_place_view",
+          "received": 1,
+          "cumulative_passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "release",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        }
+      ],
+      "first_rejections": [],
+      "registration_funnel": null,
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 211,
+        "relative_rgb_yaw": 61
+      },
+      "termination": {
+        "category": "supervisor_stop",
+        "reason": "confirmed dense yaw accepts ill-conditioned alignment: 93315 t29.7 75deg with FB82px and sigma7.8deg; do not apply measurements exceeding existing5deg task precision; add opt-in quality admission"
+      }
+    },
+    {
+      "run": "reloc15-r2-carry-93315-baseline-e44b4987",
+      "round": 2,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93315-baseline-e44b4987/raw",
+      "unit": "episode",
+      "gates": [
+        {
+          "gate": "pickup_seen",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "aligned",
+          "received": 1,
+          "cumulative_passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "lifted_controller",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "zone_place_view",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "release",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        }
+      ],
+      "first_rejections": [],
+      "registration_funnel": null,
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 36
+      },
+      "termination": {
+        "category": "supervisor_stop",
+        "reason": "confirmed fixed-image-border consensus defect in sparse RGB yaw; stop this owned baseline and use preserved R1 comparator; dense fix only for further carry"
+      }
+    },
+    {
+      "run": "reloc15-r2-carry-93315-candidate-e44b4987",
+      "round": 2,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-carry-93315-candidate-e44b4987/raw",
+      "unit": "episode",
+      "gates": [
+        {
+          "gate": "pickup_seen",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "aligned",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "lifted_controller",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "zone_place_view",
+          "received": 1,
+          "cumulative_passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "release",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        }
+      ],
+      "first_rejections": [],
+      "registration_funnel": null,
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 348,
+        "relative_rgb_yaw": 65
+      },
+      "termination": {
+        "category": "supervisor_stop",
+        "reason": "confirmed dense yaw accepts ill-conditioned alignment: 93315 t29.7 75deg with FB82px and sigma7.8deg; do not apply measurements exceeding existing5deg task precision; add opt-in quality admission"
+      }
+    },
+    {
+      "run": "reloc15-r2-selfmap-93583-candidate-44ba1bc6",
+      "round": 2,
+      "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-selfmap-93583-candidate-44ba1bc6/raw",
+      "unit": "frames",
+      "gates": [
+        {
+          "gate": "registered",
+          "received": 301,
+          "cumulative_passed": 219,
+          "rejected": 82
+        },
+        {
+          "gate": "execution_pose_delivered",
+          "received": 219,
+          "cumulative_passed": 219,
+          "rejected": 0
+        },
+        {
+          "gate": "map_inserted",
+          "received": 219,
+          "cumulative_passed": 154,
+          "rejected": 65
+        },
+        {
+          "gate": "control_drive_used",
+          "received": 154,
+          "cumulative_passed": 33,
+          "rejected": 121
+        }
+      ],
+      "first_rejections": [
+        {
+          "category": "sensor_update",
+          "N": 54,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "registration_funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 144,
+          "sensor_update": 72,
+          "pf_resolved": 55,
+          "dominant_mode": 55,
+          "raw_covariance": 55,
+          "independent_axes": 55,
+          "global_unique": 30,
+          "three_views": 2,
+          "registered": 2
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 72,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 28,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 25,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 17,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "heading_observation_counts": null,
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      }
+    },
+    {
+      "run": "reloc15-r2-selfmap-93584-baseline-44ba1bc6",
+      "round": 2,
+      "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-selfmap-93584-baseline-44ba1bc6/raw",
+      "unit": "frames",
+      "gates": [
+        {
+          "gate": "registered",
+          "received": 301,
+          "cumulative_passed": 214,
+          "rejected": 87
+        },
+        {
+          "gate": "execution_pose_delivered",
+          "received": 214,
+          "cumulative_passed": 214,
+          "rejected": 0
+        },
+        {
+          "gate": "map_inserted",
+          "received": 214,
+          "cumulative_passed": 132,
+          "rejected": 82
+        },
+        {
+          "gate": "control_drive_used",
+          "received": 132,
+          "cumulative_passed": 45,
+          "rejected": 87
+        }
+      ],
+      "first_rejections": [
+        {
+          "category": "sensor_update",
+          "N": 111,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "execution_correction",
+          "N": 13,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "covariance",
+          "N": 2,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "registration_funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 156,
+          "sensor_update": 45,
+          "pf_resolved": 31,
+          "dominant_mode": 31,
+          "raw_covariance": 31,
+          "independent_axes": 31,
+          "global_unique": 17,
+          "three_views": 2,
+          "registered": 2
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 111,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 15,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 14,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 14,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "heading_observation_counts": null,
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      }
+    },
+    {
+      "run": "reloc15-r2-selfmap-93584-candidate-44ba1bc6",
+      "round": 2,
+      "source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r2-selfmap-93584-candidate-44ba1bc6/raw",
+      "unit": "frames",
+      "gates": [
+        {
+          "gate": "registered",
+          "received": 301,
+          "cumulative_passed": 216,
+          "rejected": 85
+        },
+        {
+          "gate": "execution_pose_delivered",
+          "received": 216,
+          "cumulative_passed": 216,
+          "rejected": 0
+        },
+        {
+          "gate": "map_inserted",
+          "received": 216,
+          "cumulative_passed": 209,
+          "rejected": 7
+        },
+        {
+          "gate": "control_drive_used",
+          "received": 209,
+          "cumulative_passed": 45,
+          "rejected": 164
+        }
+      ],
+      "first_rejections": [
+        {
+          "category": "sensor_update",
+          "N": 80,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "registration_funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 90,
+          "sensor_update": 43,
+          "pf_resolved": 34,
+          "dominant_mode": 34,
+          "raw_covariance": 34,
+          "independent_axes": 34,
+          "global_unique": 29,
+          "three_views": 2,
+          "registered": 2
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 47,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 27,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 9,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 5,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "heading_observation_counts": null,
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      }
+    },
+    {
+      "run": "reloc15-r3-carry-93266-candidate-1d7d5b26",
+      "round": 3,
+      "source_sha": "1d7d5b2639d3af413e5e2442a6b16c42bad68c30",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-carry-93266-candidate-1d7d5b26/raw",
+      "unit": "episode",
+      "gates": [
+        {
+          "gate": "pickup_seen",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "aligned",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "lifted_controller",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "zone_place_view",
+          "received": 1,
+          "cumulative_passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "release",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        }
+      ],
+      "first_rejections": [],
+      "registration_funnel": null,
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 237,
+        "relative_rgb_yaw": 59,
+        "weak_observation": 42
+      },
+      "termination": {
+        "category": "supervisor_stop",
+        "reason": "R3 confirmed false accepted RGB yaw: seed93266 t59.5 actual0.221deg versus measured12.474deg despite predicted3sigma4.837deg; shared uncertainty/admission undercoverage; three authorized rounds exhausted, stop all own same-defect carry runs"
+      }
+    },
+    {
+      "run": "reloc15-r3-carry-93313-candidate-1d7d5b26",
+      "round": 3,
+      "source_sha": "1d7d5b2639d3af413e5e2442a6b16c42bad68c30",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-carry-93313-candidate-1d7d5b26/raw",
+      "unit": "episode",
+      "gates": [
+        {
+          "gate": "pickup_seen",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "aligned",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "lifted_controller",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "zone_place_view",
+          "received": 1,
+          "cumulative_passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "release",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        }
+      ],
+      "first_rejections": [],
+      "registration_funnel": null,
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 210,
+        "relative_rgb_yaw": 55,
+        "weak_observation": 43
+      },
+      "termination": {
+        "category": "supervisor_stop",
+        "reason": "R3 confirmed false accepted RGB yaw: seed93266 t59.5 actual0.221deg versus measured12.474deg despite predicted3sigma4.837deg; shared uncertainty/admission undercoverage; three authorized rounds exhausted, stop all own same-defect carry runs"
+      }
+    },
+    {
+      "run": "reloc15-r3-carry-93315-candidate-1d7d5b26",
+      "round": 3,
+      "source_sha": "1d7d5b2639d3af413e5e2442a6b16c42bad68c30",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-carry-93315-candidate-1d7d5b26/raw",
+      "unit": "episode",
+      "gates": [
+        {
+          "gate": "pickup_seen",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "aligned",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "lifted_controller",
+          "received": 1,
+          "cumulative_passed": 1,
+          "rejected": 0
+        },
+        {
+          "gate": "zone_place_view",
+          "received": 1,
+          "cumulative_passed": 0,
+          "rejected": 1
+        },
+        {
+          "gate": "release",
+          "received": 0,
+          "cumulative_passed": 0,
+          "rejected": 0
+        }
+      ],
+      "first_rejections": [],
+      "registration_funnel": null,
+      "heading_observation_counts": {
+        "servo_unsettled_or_no_pair": 137,
+        "relative_rgb_yaw": 82,
+        "weak_observation": 72
+      },
+      "termination": {
+        "category": "supervisor_stop",
+        "reason": "R3 confirmed false accepted RGB yaw: seed93266 t59.5 actual0.221deg versus measured12.474deg despite predicted3sigma4.837deg; shared uncertainty/admission undercoverage; three authorized rounds exhausted, stop all own same-defect carry runs"
+      }
+    },
+    {
+      "run": "reloc15-r3-selfmap-93571-candidate-e44b4987",
+      "round": 3,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-selfmap-93571-candidate-e44b4987/raw",
+      "unit": "frames",
+      "gates": [
+        {
+          "gate": "registered",
+          "received": 301,
+          "cumulative_passed": 217,
+          "rejected": 84
+        },
+        {
+          "gate": "execution_pose_delivered",
+          "received": 217,
+          "cumulative_passed": 217,
+          "rejected": 0
+        },
+        {
+          "gate": "map_inserted",
+          "received": 217,
+          "cumulative_passed": 206,
+          "rejected": 11
+        },
+        {
+          "gate": "control_drive_used",
+          "received": 206,
+          "cumulative_passed": 84,
+          "rejected": 122
+        }
+      ],
+      "first_rejections": [
+        {
+          "category": "sensor_update",
+          "N": 108,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "execution_correction",
+          "N": 42,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "covariance",
+          "N": 3,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "registration_funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 90,
+          "sensor_update": 43,
+          "pf_resolved": 37,
+          "dominant_mode": 37,
+          "raw_covariance": 37,
+          "independent_axes": 36,
+          "global_unique": 29,
+          "three_views": 2,
+          "registered": 2
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 47,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 27,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 7,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 6,
             "blocked_object": "static_registration_evidence",
             "minimum_gap_m": null,
             "gap_status": "not_applicable_localization_gate"
@@ -526,44 +1173,224 @@
           }
         ]
       },
-      "known_mode_measurement_funnel": {
-        "unit": "known-mode frames; prediction frames stop at sensor_update and are not failed absolute measurements",
+      "heading_observation_counts": null,
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
+      }
+    },
+    {
+      "run": "reloc15-r3-selfmap-93583-baseline-e44b4987",
+      "round": 3,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-selfmap-93583-baseline-e44b4987/raw",
+      "unit": "frames",
+      "gates": [
+        {
+          "gate": "registered",
+          "received": 234,
+          "cumulative_passed": 149,
+          "rejected": 85
+        },
+        {
+          "gate": "execution_pose_delivered",
+          "received": 149,
+          "cumulative_passed": 149,
+          "rejected": 0
+        },
+        {
+          "gate": "map_inserted",
+          "received": 149,
+          "cumulative_passed": 129,
+          "rejected": 20
+        },
+        {
+          "gate": "control_drive_used",
+          "received": 129,
+          "cumulative_passed": 0,
+          "rejected": 129
+        }
+      ],
+      "first_rejections": [
+        {
+          "category": "sensor_update",
+          "N": 99,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "execution_correction",
+          "N": 19,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "covariance",
+          "N": 3,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "registration_funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
         "cumulative": {
-          "frames": 65,
-          "sensor_update": 9,
-          "covariance": 9,
-          "partial_geometry": 9,
-          "live_tracking": 9,
-          "execution_correction": 9,
-          "map_inserted": 9
+          "frames": 93,
+          "sensor_update": 25,
+          "pf_resolved": 16,
+          "dominant_mode": 16,
+          "raw_covariance": 16,
+          "independent_axes": 16,
+          "global_unique": 16,
+          "three_views": 2,
+          "registered": 2
         },
         "first_rejections": [
           {
             "category": "sensor_update",
-            "N": 56,
-            "blocked_object": "own_rgb_tracking_evidence",
+            "N": 68,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 14,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 9,
+            "blocked_object": "static_registration_evidence",
             "minimum_gap_m": null,
             "gap_status": "not_applicable_localization_gate"
           }
         ]
+      },
+      "heading_observation_counts": null,
+      "termination": {
+        "status": "HOST_ERROR",
+        "category": "selfmap4_relocalization_exhausted",
+        "reason": "selfmap4_relocalization_exhausted",
+        "elapsed_sim_s": 46.6,
+        "supervisor_stop": {},
+        "code_vs_host": "controller_budget_exhaustion"
+      }
+    },
+    {
+      "run": "reloc15-r3-selfmap-93585-candidate-e44b4987",
+      "round": 3,
+      "source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc15-r3-selfmap-93585-candidate-e44b4987/raw",
+      "unit": "frames",
+      "gates": [
+        {
+          "gate": "registered",
+          "received": 301,
+          "cumulative_passed": 216,
+          "rejected": 85
+        },
+        {
+          "gate": "execution_pose_delivered",
+          "received": 216,
+          "cumulative_passed": 216,
+          "rejected": 0
+        },
+        {
+          "gate": "map_inserted",
+          "received": 216,
+          "cumulative_passed": 170,
+          "rejected": 46
+        },
+        {
+          "gate": "control_drive_used",
+          "received": 170,
+          "cumulative_passed": 64,
+          "rejected": 106
+        }
+      ],
+      "first_rejections": [
+        {
+          "category": "sensor_update",
+          "N": 92,
+          "blocked_object": "own_rgb_tracking_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "registration_funnel": {
+        "unit": "ordered global/relocalization frames, not independent trials",
+        "cumulative": {
+          "frames": 123,
+          "sensor_update": 54,
+          "pf_resolved": 38,
+          "dominant_mode": 38,
+          "raw_covariance": 38,
+          "independent_axes": 32,
+          "global_unique": 28,
+          "three_views": 1,
+          "registered": 1
+        },
+        "first_rejections": [
+          {
+            "category": "sensor_update",
+            "N": 69,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "three_views",
+            "N": 27,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "pf_resolved",
+            "N": 16,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "independent_axes",
+            "N": 6,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          },
+          {
+            "category": "global_unique",
+            "N": 4,
+            "blocked_object": "static_registration_evidence",
+            "minimum_gap_m": null,
+            "gap_status": "not_applicable_localization_gate"
+          }
+        ]
+      },
+      "heading_observation_counts": null,
+      "termination": {
+        "status": "RECORDED",
+        "category": "cap_end",
+        "reason": "sim_time_cap",
+        "elapsed_sim_s": 60.0,
+        "supervisor_stop": {},
+        "code_vs_host": "see_reason"
       }
     }
   ],
-  "carry_yaw": "carry-yaw.json",
-  "ready": false,
-  "reproduce": "python3 /tmp/reloc15-baseline.py",
-  "rounds": [
-    {
-      "round": 1,
-      "summary": "round1.json",
-      "source_sha": "9607de16cfeac0a5ae1308732bab33604b8db7e7"
-    },
-    {
-      "round": 2,
-      "summary": "round2.json",
-      "selfmap_source_sha": "44ba1bc6d7aaeb8cbd9408e8dcf02f9d2d56f262",
-      "carry_source_sha": "e44b49873caf903a7bbcdf8aa054aabf88456c2e",
-      "note": "full actual source_sha is present per run; selfmap/carry sources and conditions not pooled"
-    }
-  ]
+  "integrity": "integrity.json",
+  "commands": "gcp-commands.json",
+  "raw_root": "gcp1:/home/ugrp/ugrp-sim/runs",
+  "reproduce": "tools/analyze_round.py round_number on GCP in the run source checkout; evaluation-only truth",
+  "scope": "Frame/episode gates are cumulative; prediction is not a new measurement; source cohorts not pooled"
 }

@@ -29,6 +29,7 @@ for p in sorted(R.glob(f'runs/reloc15-r{round_id}-*')):
   report['heading_observation_counts']=dict(Counter(h.get('category','off') for h in unique.values()))
   report['held_cargo_yaw']=dict(N=len(yaw),p50_p95_max_deg=np.quantile(yaw,[.5,.95,1]).tolist() if yaw else [],over20_N=sum(y>=20 for y in yaw))
   if result.get('sim_s',0)>=150.-1e-6 and not report.get('physical_success'):report['termination_category']='cap_end'
+ report['first30']=obj(raw/'first30.json')
  report['failure_rgb_buffer']=result.get('failure_rgb_buffer');report['result_status']=result.get('status');report['input_audit']=result.get('input_audit');rs.append(report)
 (out/f'round{round_id}-full.json').write_text(json.dumps(dict(runs=rs),indent=2)+'\n')
 allowed={'run','raw','source_sha','funnel','registered_errors','drive_errors','map_inserted_errors','registration_events','false_registration_events','termination','first30','input_audit','correction_reason_counts','held_cargo_yaw','heading_observation_counts','pose_error','physical_success','termination_category','termination_reason','sim_s','status','result_status','failure_rgb_buffer','registration_frame_funnel','known_mode_measurement_funnel','sha256','raw_sha256','actual_measurement_t_unique_N'}
