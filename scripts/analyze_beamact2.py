@@ -17,7 +17,7 @@ def main():
     p.add_argument('--root',type=Path,required=True)
     a=p.parse_args();host=require_gcp2(training=False)
     queue=read_json(a.root/'queue.json')
-    runs=[];frame_pass=Counter();frame_reject=Counter();cumulative=Counter();reasons=Counter()
+    runs=[];frame_pass=Counter();frame_reject=Counter();cumulative=Counter();reasons=Counter();failure_stages=Counter()
     for seed in range(8329000,8329020):
         out=a.root/f'seed-{seed}';path=out/'result.json'
         if not path.exists():
@@ -53,6 +53,7 @@ def main():
             assert r['teacher_actions']==r['truth_corrections']==0 and r['weld']=='off'
             category='success' if success else 'cap_end' if r['cap_end'] else f.record()['failure_stage'] or 'command_completion'
             reasons[category]+=1
+            if not success:failure_stages[f.record()['failure_stage'] or 'command_completion']+=1
             cumulative.update(f.record()['cumulative_run_pass']);frame_pass.update(f.frames);frame_reject.update(f.rejected)
             row.update(physical_success=success,category=category,done_times=done,input_audit=audit.record,
                 funnel=f.record(),raw_eval_sha256=sha256(raw),commands_sha256=sha256(existing(out/'commands.jsonl')),
@@ -67,11 +68,12 @@ def main():
         complete=completed==20,completed=completed,not_started=20-sum(r['status']!='NOT_STARTED' for r in runs),
         verdict='READY' if n==20 and completed==20 else 'NOT_READY',source_sha=queue['source_sha'],
         model_sha256=queue['model_sha256'],runs=runs,reason_distribution=dict(reasons),
+        failure_stage_distribution=dict(failure_stages),
         funnel={s:dict(cumulative_runs=cumulative[s],frame_pass=frame_pass[s],frame_reject=frame_reject[s]) for s in STAGES},
         verification='raw eval/commands/all own-input rows recounted; no teacher results merged')
     write_json(a.root/'summary.json',result)
     write_json(a.root/'rejection_table.json',dict(source_sha=queue['source_sha'],funnel=result['funnel'],
-        reasons=dict(reasons),runs=[dict(seed=r['seed'],reason_category=r.get('category','not_started'),
+        reasons=dict(reasons),failure_stages=dict(failure_stages),runs=[dict(seed=r['seed'],reason_category=r.get('category','not_started'),
             blocked_object='beam_1:target_not_inferred_blocker',min_gap_m=r.get('final_target_finger_min_gap_m'),
             gap_scope='evaluation-only target-finger signed gap; no obstruction cause inferred',raw=r.get('raw')) for r in runs],
         reproduce='python -m scripts.analyze_beamact2 --root '+str(a.root)))
