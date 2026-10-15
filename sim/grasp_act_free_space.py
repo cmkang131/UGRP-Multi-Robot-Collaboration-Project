@@ -16,7 +16,7 @@ UNCERTAINTY_M=.065
 DWELL_S=.3
 
 
-def ghost_visible_region(world,rid,ghost,pwm,now):
+def ghost_visible_region(world,rid,ghost,pwm,now,*,uncertainty_m=UNCERTAINTY_M):
     vis=world['visibility'][rid];obs=vis.get('observations',{})
     key=ghost['id']
     if key in vis['peers'] or obs.get(key,{}).get('seen_t',-math.inf)>=now-1e-8:
@@ -30,14 +30,14 @@ def ghost_visible_region(world,rid,ghost,pwm,now):
     eye=(pose[0]+c*origin[0]-s*origin[1],pose[1]+s*origin[0]+c*origin[1],origin[2])
     x,y=ghost['xyz'][:2];z=min(.16,ghost.get('top_z_bound_m',.32)/2)
     # Cover the whole position-error square, not just a centre ray near an edge.
-    for dx in (-UNCERTAINTY_M,0.,UNCERTAINTY_M):
-        for dy in (-UNCERTAINTY_M,0.,UNCERTAINTY_M):
+    for dx in (-uncertainty_m,0.,uncertainty_m):
+        for dy in (-uncertainty_m,0.,uncertainty_m):
             q=(x+dx,y+dy,z);lx,ly=local(pose,q)
             optical=np.asarray(axes)@(np.array([lx,ly,z])-origin)
             if (optical[2]<=0 or np.linalg.norm(optical)>RANGE_M or
                     np.linalg.norm(optical[:2])>optical[2]*math.tan(math.radians(18))):
                 return False,'outside_view_or_range'
-            obstacles=[(k,o['xy'],o['radius'],o['top_z_bound_m']) for k,o in world['objects'].items() if k!='beam_1']
+            obstacles=[(k,o['xy'],o['radius'],o['top_z_bound_m']) for k,o in world['objects'].items() if k not in ('beam_1',key)]
             obstacles += [(k,r['pose'][:2],r.get('radius',.17),r.get('top_z_bound_m',.32))
                           for k,r in world['robots'].items() if k not in (rid,key)]
             if world['beam'] is not None:

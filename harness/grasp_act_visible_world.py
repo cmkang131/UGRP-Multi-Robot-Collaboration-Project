@@ -24,10 +24,12 @@ def command_delta(issued,dt,*,mode='off'):
 
 
 class VisibleWorld:
-    def __init__(self,rid,end,*,pose_source='issued',odometry='off'):
+    def __init__(self,rid,end,*,pose_source='issued',odometry='off',search22='off'):
         if pose_source not in ('issued','perfect_self_comparison'):raise ValueError('explicit pose source required')
         if odometry not in ('off','search17_fixed_v1'):raise ValueError('unknown search17 odometry')
         if odometry!='off' and pose_source!='issued':raise ValueError('search17 requires issued pose')
+        if search22 not in ('off','search22_v1'):raise ValueError('unknown search22 mode')
+        self.search22=search22
         self.rid=rid;self.end=end;self.pose_source=pose_source;self.odometry=odometry
         self.pose=[0.,0.,0.];self.memory={};self.previous=None;self.previous_t=None
 
@@ -42,6 +44,9 @@ class VisibleWorld:
             x,y,a=command_delta(self.previous,min(.15,max(0.,now-self.previous_t)),mode=self.odometry)
             co,si=math.cos(self.pose[2]),math.sin(self.pose[2])
             self.pose=[self.pose[0]+co*x-si*y,self.pose[1]+si*x+co*y,self.pose[2]+a]
+        if self.search22!='off' and self.previous_t is not None:
+            from sim.grasp_act_search22 import propagate_memory
+            propagate_memory(self.memory,self.previous,min(.15,max(0.,now-self.previous_t)),self.odometry)
         self.previous_t=now;seen=set()
         for m in measurements:
             if set(m)-{'id','kind','xyz','yaw','radius','top_z_bound_m','visible_n','probe_N','half_extents'}:raise ValueError('visible measurement whitelist')
@@ -50,8 +55,12 @@ class VisibleWorld:
             x,y,z=m['xyz'];co,si=math.cos(self.pose[2]),math.sin(self.pose[2])
             q={**deepcopy(m),'xyz':[self.pose[0]+co*x-si*y,self.pose[1]+si*x+co*y,z],
                'yaw':self.pose[2]+m['yaw'],'seen_t':now}
+            if self.search22!='off':
+                from sim.grasp_act_search22 import measurement_uncertainty
+                q['uncertainty']=measurement_uncertainty(m)
+                q['uncertainty']['frame_yaw']=self.pose[2]
             self.memory[m['id']]=q;seen.add(m['id'])
-        self.memory={k:v for k,v in self.memory.items() if now-v['seen_t']<=MEMORY_S}
+        self.memory={k:v for k,v in self.memory.items() if now-v['seen_t']<=MEMORY_S or (self.search22!='off' and v['kind'] in ('cargo','wall','robot'))}
         band=self.memory.get('band_'+self.end);beam=None
         if band is not None:
             x,y,z=band['xyz'];a=band['yaw'];offset=-.27 if self.end=='teal' else .27

@@ -106,13 +106,18 @@ class BodyNavigation(Search20Navigation):
 def fallback(t,world,now,choices):
     """Stop at the first fully checked stance; no partial plan on budget expiry."""
     from sim.grasp_act_pregrasp import select_sampled_goal
-    nav=BodyNavigation(t,world,admission=True)
+    from sim.grasp_act_search22 import enabled as search22, BodyNavigation as Search22Navigation
+    nav=(Search22Navigation if search22(t) else BodyNavigation)(t,world,admission=True)
+    if search22(t):t.search22_targets={}
     checked=[]
     # Deterministic original choice order; jaw/IK/path/arm remain mandatory.
     for choice in sorted(choices,key=lambda q:(abs(q[0]),-q[1],q[0])):
         selected,rows=select_sampled_goal(world,t.rid,t.end,t.bounds,t.folded_ready,
             t.sink.pwm,choices=[choice],navigation=nav)
         checked+=rows
+        if search22(t):
+            from sim.grasp_act_search22 import record_candidates
+            record_candidates(t,world,rows,now)
         if selected is not None:
             t.search19_body_active=True;t.sampled_stance=True
             t.search21_log.append({'t':now,'event':'fresh_stance_admitted','choice':choice,
@@ -133,6 +138,9 @@ def schedule(t, world, now, *, force=False):
     t.search21_recovery = {'start':now,'origin':tuple(world['robots'][t.rid]['pose'][:2]),
         'direction':None,'unchanged':0,'distance':0.,'excluded':[]}
     t.approach_blocked_since = None
+    from sim.grasp_act_search22 import enabled as search22
+    if search22(t) and t.search22_targets:
+        t.search21_recovery['target']=min(t.search22_targets.items(),key=lambda kv:kv[1].get('top_z_bound_m',1.))
     t.search21_log.append({'t':now,'event':'empty_set_reobserve','encounter':t.search21_encounters})
 
 

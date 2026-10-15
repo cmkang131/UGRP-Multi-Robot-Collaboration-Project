@@ -194,7 +194,10 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         x0, x1, y0, y1 = bounds
         if not (x0+radius <= goal[0] <= x1-radius and y0+radius <= goal[1] <= y1-radius):
             row['reason'] = 'outside_bounds';continue
-        if not free(goal, discs, rects, radius):row['reason'] = 'blocked_goal';continue
+        clear=free(goal,discs,rects,radius)
+        if navigation is not None and hasattr(navigation,'candidate_audit'):
+            row['collision_audit']=navigation.candidate_audit(goal,heading)
+        if not clear:row['reason']='blocked_goal';continue
         retreat = (goal[0]-.06*math.cos(heading), goal[1]-.06*math.sin(heading))
         if not (x0+radius <= retreat[0] <= x1-radius and y0+radius <= retreat[1] <= y1-radius) or not segment_free(goal, retreat, discs, rects, radius):
             row['reason'] = 'blocked_retreat';continue

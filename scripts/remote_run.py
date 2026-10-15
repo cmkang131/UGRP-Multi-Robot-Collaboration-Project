@@ -25,7 +25,7 @@ if __package__ in (None, ''):
 from scripts.azure_api import AZURE_HOSTS
 from scripts.gcpctl import GCP_HOSTS
 
-PRIMARY = Path('/Users/changmin/projects/ugrp')
+PRIMARY = Path(os.environ.get('UGRP_RESULTS_ROOT', '/Users/changmin/projects/ugrp')).resolve()
 
 
 def ssh(host, command, **kwargs):
