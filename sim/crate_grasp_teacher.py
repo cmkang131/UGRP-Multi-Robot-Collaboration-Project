@@ -25,7 +25,7 @@ LIFT_WAIT_LIMIT_S = 20.
 class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def __init__(self, *args, profile=CRATE, crate_lift_pose='off', crate_approach_recovery='off',
                  crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off', crate_candidate_recovery='off',
-                 crate_alignment='off', crate_motion='off', crate18='off', **kwargs):
+                 crate_alignment='off', crate_motion='off', crate18='off', crate19='off', **kwargs):
         from sim.crate_alignment_v14 import MODE as ALIGNMENT
         if crate_alignment not in ('off', ALIGNMENT):
             raise ValueError('unknown crate alignment')
@@ -39,6 +39,11 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         from sim.crate_settle_v18 import MODE as SETTLE18
         if crate18 not in ('off', SETTLE18): raise ValueError('unknown crate18 mode')
         if crate18 != 'off' and crate_motion not in MOTION17: raise ValueError('crate18 requires crate17 motion')
+        from sim.crate_settle_v19 import MODE as SETTLE19
+        if crate19 not in ('off', SETTLE19): raise ValueError('unknown crate19 mode')
+        if crate19 != 'off' and crate18 == 'off': raise ValueError('crate19 requires crate18')
+        self.crate19 = crate19
+        self.crate19_reason_ledger = []
         self.crate18 = crate18
         self.settle18_states = None
         self.settle18_proposal = None
@@ -149,9 +154,16 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         super()._reset_alignment()
         if getattr(self, 'crate18', 'off') != 'off' and self.stable_since is None:
             from sim.crate_settle_v18 import settlers
-            self.settlers18 = settlers()
+            self.settlers18 = self._new_settlers()
             self.settle18_states = None
             self.settle18_proposal = None
+
+    def _new_settlers(self):
+        if self.crate19 != 'off':
+            from sim.crate_settle_v19 import settlers
+        else:
+            from sim.crate_settle_v18 import settlers
+        return settlers()
 
     def _alignment_bands(self):
         if self.crate18 != 'off':
@@ -201,7 +213,11 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             axis = next((i for i,v in enumerate((forward,left,turn)) if v), None)
             if axis is None: return self._hold(now)
             error = self.crate15_errors[axis]
-            value = pulse(self._hold(now), axis, error)
+            if self.crate19 != 'off':
+                from sim.crate_settle_v19 import compensated_pulse
+                value = compensated_pulse(self._hold(now), axis, error, self.settlers18[axis])
+            else:
+                value = pulse(self._hold(now), axis, error)
             self.settle18_proposal = (axis, error, value)
             return value
         if self.crate_motion != 'off' and self.phase in ('align', 'ready') and self.crate15_errors is not None:
@@ -224,7 +240,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def _observe_stable(self, world, now):
         if self.crate18 != 'off' and (world['beam'] is None or world['visibility'][self.rid]['visible_probes'] < 5):
             from sim.crate_settle_v18 import settlers
-            self.settlers18 = settlers(); self.settle18_states = None; self.settle18_proposal = None
+            self.settlers18 = self._new_settlers(); self.settle18_states = None; self.settle18_proposal = None
         value = super()._observe_stable(world, now)
         if self.crate_motion == 'off' or value is None or self.phase != 'search' or not self.folded_ready:
             return value
@@ -552,6 +568,10 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             nav=self._navigation(truth)
             if self.motion17:
                 safe = nav.pulse_safe(value)
+                if self.crate19 != 'off' and not safe:
+                    from sim.crate_settle_v19 import blocker_context
+                    self.crate19_reason_ledger.append(dict(t=now, reason_category='pulse_safety_rejection',
+                        **blocker_context(nav, truth, self.rid, value)))
                 if any(value['wheels']) and self.crate_motion == 'crate_motion_v17':
                     preferred = nav.preferred_escape(value)
                     if preferred is not None:
@@ -811,6 +831,8 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 'crate_lift_pose': self.crate_lift_pose, 'lift_pose_selection': self.lift_selection,
                 **({'excluded_stalled_stances': sorted(self.approach_excluded)}
                    if self.crate_lift_pose in CARTESIAN_MODES else {}),
+                **({'crate19': self.crate19, 'crate19_reason_ledger': self.crate19_reason_ledger,
+                    'planning_budget': {'kind': 'nodes_per_tick', 'maximum': 384}} if self.crate19 != 'off' else {}),
                 **({'crate18': self.crate18, 'crate18_alignment': self.settle18_history,
                     'crate18_states': self.settle18_states} if self.crate18 != 'off' else {}),
                 'done_semantics': 'own issued close+lift sequence complete after the lift barrier; physical evaluation separate'}
