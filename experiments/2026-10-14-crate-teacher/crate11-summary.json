@@ -1,0 +1,4637 @@
+{
+ "schema": "ugrp.crate11.measure_summary.v1",
+ "scope": "measure only; offline replay of saved inputs; no code/physics/render/remote; GT fields are evaluation-only",
+ "sources": {
+  "bf31840f": "bf31840fe16cd2d37631d8a8e50ff077e3d42575",
+  "49d11b8e": "49d11b8e603c54fd42e6707f735fca8f55c11a0e",
+  "5644e3dd": "5644e3dd114c34c2ee0e5e09b4bdaba10754621e"
+ },
+ "raw_runs_root": "/Users/changmin/projects/ugrp/outputs/gcp1-runs",
+ "analysis_dir": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/crate11-analysis",
+ "analysis_file_sha256": {
+  "77969-5644.jpg": "abf6505b9ed16dd07ac832ab1b4a10802b464f57f3c256e9ef26e0715ca2ea75",
+  "77969-5644.json": "39cc49c8dcce735dec284c2fffdf03e4f7a4a3d09cce0fc730c5aef947a23355",
+  "77978-bf31.jpg": "e5fc1742cb6866cafa0e91b5631ff2803e04b9c66020a89959f9f1f0008524b0",
+  "77978-bf31.json": "e03622f0dc7c6e0f8f7f8b8265f9caeb98bb610e12b7c37e9b1d66119b2a2392",
+  "77979-bf31.jpg": "67e5275eff2b6f4b6043d45835e0df81a6b8a5d542b59ff393f40cda58914905",
+  "77979-bf31.json": "4f0f958993995f7ea000695899b2d353b31fbf945e3ba016145547e7468dfd01",
+  "an.json": "05abe5c39dcf71cf18ade862057745feaddffd2ae2d0941cb6c6da48a82bff85",
+  "crate-diag-77960-5644e3dd.final.json": "d880798043db4069afd02aabcc8468fc0c3e25832d82fb0c83e3275cd251d225",
+  "crate-diag-77960-5644e3dd.trace.json": "b625e98f4d373f64bc72afc9249153ee5edc74c03cb96a569e3edeeaf51f7d37",
+  "crate-diag-77961-5644e3dd.final.json": "0aebf21f80627c414f0c68a4907b3d2115a1aa789a1ee702a23acdc173653ef7",
+  "crate-diag-77961-5644e3dd.trace.json": "a73f353cc5474b55604eabf65221c9fbd6e6c65fc3723b5f854a177eb1571cbf",
+  "crate-diag-77962-5644e3dd.final.json": "03809895c76eded08d706e5a452e8e6c33e919384a2caa057e4cb1d2245963f1",
+  "crate-diag-77962-5644e3dd.trace.json": "1cf460f3fc69de4029f0b4646b1ec5a2cc9fd0eeb86c309a0a9ebc2ce0002116",
+  "crate-diag-77963-5644e3dd.final.json": "64b998f6b97e65e007699a2f294cc072caf25cfbde0c2dc9e763146a071cef4b",
+  "crate-diag-77963-5644e3dd.trace.json": "4cbcee19fafc08aebdec961806a26fa89b8e4532aff181b972c27f9038ec99cb",
+  "crate-diag-77964-5644e3dd.final.json": "14e2a675737ab32f70a8bf23062bdf19a8448a45f6e7d5cf82628eb9995700a4",
+  "crate-diag-77964-5644e3dd.trace.json": "139dba04f73d6ac6adffa99218eab4e01c9e3fb4c6f3595c16eee9c8dd78d03f",
+  "crate-diag-77965-5644e3dd.final.json": "7b7c1a9ec347686cce50a33aaf60c84a5c5f495ba5f97dad9fa9e3fba23942ea",
+  "crate-diag-77965-5644e3dd.trace.json": "b36225ab1db5b994d4b26ece03ca8020f08d10b328b3fb5337a73960d97f3a66",
+  "crate-diag-77966-5644e3dd.final.json": "998a765ea9d8b60ca29bde4d744916d9885e681f4c4f623fba2c8aa2fbeebe36",
+  "crate-diag-77966-5644e3dd.trace.json": "a58e59c21e05120b6b97c9f170f7702283e3a3d7ff223ccc8d1350536495571c",
+  "crate-diag-77967-5644e3dd.final.json": "e9583b2b759abd2d0987a8d174f36914f735ba7d4ee2386a884535d31f5a8487",
+  "crate-diag-77967-5644e3dd.trace.json": "8283d73563c4caa38f7d5a5da993067f162f2e9775d9336298a34955b30c5b28",
+  "crate-diag-77968-5644e3dd.final.json": "c3d5521433d7f49403c2234211b59b546155d68b20a7447fb33620efb6e1392a",
+  "crate-diag-77968-5644e3dd.trace.json": "42afb4dd7bd9c19863efb88f8fe965774eab3a07e4cb8a5595dc680ed384a278",
+  "crate-diag-77969-5644e3dd.final.json": "5b72fd2e0c027270363e378480a2bc5e35804f1bea2e52c329d2616fa863a4cb",
+  "crate-diag-77969-5644e3dd.trace.json": "efd109807b07c3aecda9717e8ff85cb5c6de46f8f9d8817e6968cfc9fe5fa6ad",
+  "crate-diag-77970-bf31840f.final.json": "d21829d7b4dfc2f7cfa210de3c3362ef758765518edc5cec291c172f64985ae6",
+  "crate-diag-77970-bf31840f.trace.json": "a11d336ea2df93d125399f95908a706f1860662f6e785d892c28f3d64ea58abf",
+  "crate-diag-77971-bf31840f.final.json": "ba715efa16d6145a818c826f4972e37176c0ef0372d4046c0622590f4074bd6e",
+  "crate-diag-77971-bf31840f.trace.json": "35c104e809f6d76513d2e0927efb98789c5025f76871897902dcba97cc76fa66",
+  "crate-diag-77972-bf31840f.final.json": "675c4093ccf5e3c8358420958620b64511c2636e34ed83ad10f7a4e554fbf5fa",
+  "crate-diag-77972-bf31840f.trace.json": "ff3be0df419b184a1f5dc35afcdda638c4164dfc640ec8618621e141dc65af37",
+  "crate-diag-77973-bf31840f.final.json": "9ad720b17010592c0b0ff5ab357a6af7669547a6ff920e73628735e3393af64e",
+  "crate-diag-77973-bf31840f.trace.json": "031d9cc97ba3351b809ee67b6323c2820d0e806a0ea362876e26978be44fe30e",
+  "crate-diag-77974-bf31840f.final.json": "1356ee502604cf84a7dc1c0d2058215033a2edc3cecf494aaa363e014b8d1e4f",
+  "crate-diag-77974-bf31840f.trace.json": "fb3176f17becc631cb7b3ff2ec1cdcc5eb52a5febc344efc2910e1c873a7d68c",
+  "crate-diag-77975-bf31840f.final.json": "959d42264ea2d1173efd97467376fc9d5ae09f28b0ebcd5c5401b67eaedf4cf2",
+  "crate-diag-77975-bf31840f.trace.json": "769d527534cf59beb394097fd0df0d1a8021aeda838d3efd24eaa3f1a74abaa5",
+  "crate-diag-77976-bf31840f.final.json": "4518c8839671fa9e445b44113fb4714176d5198101b5d981aed44a3c84f5a1f0",
+  "crate-diag-77976-bf31840f.trace.json": "4af1c9643f38e74d0882ab4d088e4bc8a319442fe1022e09a66d12de9a2c4fb1",
+  "crate-diag-77977-bf31840f.final.json": "c77234985fea5603592cd1fea7f0dd594e286e98961efce2d4319010726b0274",
+  "crate-diag-77977-bf31840f.trace.json": "2b5895b8d0ed6f5093a8c1e0b13009888b4d741d88d7afc25833a5cb1ef198bc",
+  "crate-diag-77978-bf31840f.final.json": "8d815c2fa734f25203c941658d51a633e12bea5e7644bebd062b2707d229a63f",
+  "crate-diag-77978-bf31840f.trace.json": "be6a1a192b7753a1bf729eb62bb1b30736b8ad4e8faf69e0483331c345896ce4",
+  "crate-diag-77979-bf31840f.final.json": "cec9c092cfb0cf42b0ec637986eca0235b9645df2880f7985b702f757dfe582e",
+  "crate-diag-77979-bf31840f.trace.json": "ca76b084b44f8409da232454f07908fe16f2439108aaa707518df4300a9c40d2",
+  "crate-diag-77980-49d11b8e.final.json": "760fa95cc98832588601fdc4275badcfaf037cbb4fc6e0a7377a7ab398c471b1",
+  "crate-diag-77980-49d11b8e.trace.json": "37204e38b51c135a2ddfc4fb8257e7ed922832f0306371b009838650c8433f47",
+  "crate-diag-77981-49d11b8e.final.json": "cdb361fdc2b1f7f3411d45ee37f0f9501a9d45cf9277289b95d79a4de6cac0ec",
+  "crate-diag-77981-49d11b8e.trace.json": "82a29671e68460d432e35c552fb6ab788d1c8cccd851704358e19ccb3c7b1f22",
+  "crate-diag-77982-49d11b8e.final.json": "4418c21f4b6e295a15160005f0ad1c94912056db187fbaef881b69a74d6eebf3",
+  "crate-diag-77982-49d11b8e.trace.json": "45b54b1bfb50e21ad3a66ab7960743e50bf284bb49f33d5c69fc3b2b60a382d9",
+  "crate-diag-77983-49d11b8e.final.json": "1a81e50edcc7e88929620c5785d4f9c043c9a467913d00011d38eff3e12cae4b",
+  "crate-diag-77983-49d11b8e.trace.json": "93ff45759fadfddefebbc45ad4c2cd2187d96558edaa9002c4be37f3e537ea6f",
+  "crate-diag-77984-49d11b8e.final.json": "22c075a961c5b30a9c9884edfaa1d6892c0f1ff0142a1273b45e3bbeaeb96bc7",
+  "crate-diag-77984-49d11b8e.trace.json": "757e045f0976810b16d21f5ba77181184643d8c8618424079eb89c2b9f46d6b1",
+  "crate-diag-77985-49d11b8e.final.json": "9a65f37231524f28c963ce8e971e923e840921983e179fa098dd96be09cc1a63",
+  "crate-diag-77985-49d11b8e.trace.json": "5191d0d951a7326ef615831ffacb771c064d54950e79b6a3df53521e870ed3c0",
+  "crate-diag-77986-49d11b8e.final.json": "11e3bfd1d818a840fb49c54e432e5a71f5687b4ef269df785ce16a5a82d43766",
+  "crate-diag-77986-49d11b8e.trace.json": "232cf655ee162e2f04a42fe19a0578cbe007bab88c9069f4f37db7be25bd5230",
+  "crate-diag-77987-49d11b8e.final.json": "4528975f3ba270106943a948b86bcecadb49cdd055cbf17c5280cf87c42f92db",
+  "crate-diag-77987-49d11b8e.trace.json": "23e6d654697fe8df9474b5ee0ebaf04abef3344041563837141d42142b7d602f",
+  "crate-diag-77988-49d11b8e.final.json": "638625b83d2bbb5ecfdbb00ba8ca178a5012e707d847b04b4ad12a67ae524e1e",
+  "crate-diag-77988-49d11b8e.trace.json": "7390c53a3b610449c4d16bca7acf0a0986cb010ed4b6dc7d2ae50e4d18f94760",
+  "crate-diag-77989-49d11b8e.final.json": "7e206a927a78d6d0bfc90f81de4f93a6e44f8f505ef75dd9a74c404605546261",
+  "crate-diag-77989-49d11b8e.trace.json": "37300962c271c22d0dff87c0d61a7f299fe82d6aadf1916d60be479d0775b57f",
+  "crate-reproduction-77969-49d11b8e.final.json": "1c6d00f8cba6b54fb4ca0956dee7a078bcbaf7f16ad8806d06ff3299a1565b68",
+  "crate-reproduction-77969-49d11b8e.trace.json": "8caa67602c16de0e0f9b50f49bfedfebcc31fdcf924656e3934da7a789343b01",
+  "crate-reproduction-77978-49d11b8e.final.json": "b22c8ff4df1bf3a24f0798bd0f1a50bb6eadb8e952e601879b8b97a5acffdcd6",
+  "crate-reproduction-77978-49d11b8e.trace.json": "430ff8515f6f3afebce9f92646a86d9407e4ecb2d0c5cf85d9f0ba8d878176e3",
+  "crate-reproduction-77979-49d11b8e.final.json": "a0d807601390589830894cfe418c35f075f0d432b62aa1ced04a54724c6ac255",
+  "crate-reproduction-77979-49d11b8e.trace.json": "bfcdb0b0298c74af41cf946c5a3455e6a0d9a22af0cabf6abb429974c69c3768",
+  "div_join.json": "837ce4350eb2cdac3e562bec7f73d814f359a018ff247e75cf9e9bf9fe263f8d",
+  "paths.png": "61ee3b4a07e92ce614e983ca1d581923b0a315ea2e2bd9bdd28909af61fd3978",
+  "plan_audit.json": "31b485867f9affd756fdb2a257c495b077ab45bbcc5e417953d62f72a09bcfb3",
+  "t2.json": "ee7a4008eb645b8448316a7de91819054a42ccd4003dc0e03d192aa748dab2db"
+ },
+ "raw_hash_check": {
+  "runs": 43,
+  "files_checked": 258,
+  "frames_checked": 48,
+  "mismatch": [],
+  "not_in_sums": []
+ },
+ "replay_bit_exact_runs": "33 of 33 replayed runs reproduce ledger commands (t, wheels, pwm, duration<=1e-10, done, phase)",
+ "not_pooled_note": "different source SHAs / seed sets; only seeds 77969/77978/77979 are paired (diag-77978/79 bf31840f vs reproduction 49d11b8e)",
+ "success_by_sha_eval_only": {
+  "c5a76175": {
+   "all": {
+    "n": 10,
+    "success": 0
+   },
+   "near_wall": {
+    "n": 2,
+    "success": 0
+   },
+   "not_near_wall": {
+    "n": 8,
+    "success": 0
+   }
+  },
+  "5644e3dd": {
+   "all": {
+    "n": 10,
+    "success": 5
+   },
+   "near_wall": {
+    "n": 2,
+    "success": 0
+   },
+   "not_near_wall": {
+    "n": 8,
+    "success": 5
+   }
+  },
+  "bf31840f": {
+   "all": {
+    "n": 10,
+    "success": 8
+   },
+   "near_wall": {
+    "n": 2,
+    "success": 0
+   },
+   "not_near_wall": {
+    "n": 8,
+    "success": 8
+   }
+  },
+  "49d11b8e": {
+   "all": {
+    "n": 13,
+    "success": 6
+   },
+   "near_wall": {
+    "n": 5,
+    "success": 0
+   },
+   "not_near_wall": {
+    "n": 8,
+    "success": 6
+   }
+  }
+ },
+ "gate_plan_stance_audit": {
+  "gate_plan_crate10_77400.json": {
+   "episodes": 40,
+   "infeasible_stance_planner": 8,
+   "near_wall_flag": 8,
+   "flag_equals_geometry": true,
+   "infeasible_seeds": [
+    77408,
+    77409,
+    77412,
+    77413,
+    77424,
+    77425,
+    77428,
+    77429
+   ]
+  },
+  "gate_plan_77000.json": {
+   "episodes": 40,
+   "infeasible_stance_planner": 8,
+   "near_wall_flag": 8,
+   "flag_equals_geometry": true,
+   "infeasible_seeds": [
+    77008,
+    77009,
+    77012,
+    77013,
+    77024,
+    77025,
+    77028,
+    77029
+   ]
+  },
+  "diag_plan_crate10_77980.json": {
+   "episodes": 10,
+   "infeasible_stance_planner": 2,
+   "near_wall_flag": 2,
+   "flag_equals_geometry": true,
+   "infeasible_seeds": [
+    77988,
+    77989
+   ]
+  },
+  "repro_plan_crate10.json": {
+   "episodes": 3,
+   "infeasible_stance_planner": 3,
+   "near_wall_flag": 3,
+   "flag_equals_geometry": true,
+   "infeasible_seeds": [
+    77969,
+    77978,
+    77979
+   ]
+  }
+ },
+ "table1_failures": [
+  {
+   "run": "crate-diag-77978-bf31840f",
+   "robot": "r1",
+   "sha8": "bf31840f",
+   "ticks": 361,
+   "outcome": "approach_blocked_handoff",
+   "onset_tick": 330,
+   "onset_elapsed_s": 33.0,
+   "onset_ledger_t": 34.8,
+   "outcome_tick": 360,
+   "outcome_elapsed_s": 36.0,
+   "zero_run_hold_frames": [
+    [
+     [
+      "grasp_act_teacher_v3.py:_approach:89",
+      "crate_grasp_teacher.py:_approach:70"
+     ],
+     "approach",
+     30
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_step:460",
+      "crate_grasp_teacher.py:_step:179"
+     ],
+     "approach",
+     1
+    ]
+   ],
+   "phase_at_onset": "approach",
+   "visible_probes_at_onset": 12,
+   "ever_align": false,
+   "align_ticks": 0,
+   "relooks": 1,
+   "controller_view": {
+    "dist_goal_m": 0.21733401230204677,
+    "dist_end_m": 0.18000694683717253,
+    "errors_axial_lat_yaw": [
+     -0.022730222651863835,
+     0.048070128525194544,
+     1.4995139332002594
+    ],
+    "choice_offset_rad_dist_m": [
+     -0.2617993877991494,
+     0.19619999999999999
+    ],
+    "goal_free": true,
+    "radius_m": 0.13,
+    "nearest_obstacles": [
+     {
+      "id": "crate_disc:-0.07",
+      "base_clear_m": 0.00983387299285593,
+      "goal_clear_m": 0.050311603844708674
+     },
+     {
+      "id": "crate_disc:+0.00",
+      "base_clear_m": 0.027773823333531872,
+      "goal_clear_m": 0.10893429439856633
+     },
+     {
+      "id": "crate_disc:-0.10",
+      "base_clear_m": 0.030006946837172532,
+      "goal_clear_m": 0.04620000000000005
+     }
+    ],
+    "memory_ages_s": {
+     "band_blue": 2.4,
+     "crate_1": 0.0,
+     "band_teal": 0.0
+    },
+    "wall_in_memory": false,
+    "fresh_peers": []
+   },
+   "wall_in_memory_ticks": 17,
+   "blind_ticks_vis_lt5": 190,
+   "last_goal_set_row": {
+    "elapsed_s": 35.0,
+    "selected": false,
+    "candidates": [
+     {
+      "offset_deg": -15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "unsafe_segment"
+     },
+     {
+      "offset_deg": 0.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "previously_stalled"
+     },
+     {
+      "offset_deg": 15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "unsafe_segment"
+     }
+    ],
+    "n_grasp_geometry_rejected": 10
+   },
+   "guard_49d11b8e": {
+    "unsafe_pulses": {},
+    "inside_margin_unsafe": 0,
+    "first_unsafe_tick": null
+   },
+   "counterfactual_guard_on_older_code": {
+    "would_reject": 0,
+    "inside_margin_ticks": 0
+   },
+   "eval_only": {
+    "robot_xy": [
+     4.423344892131764,
+     -2.851096233781525
+    ],
+    "robot_center_to_wall_face_m": 0.273903766218475,
+    "wall": "south",
+    "assigned_lug_xy": [
+     4.603334825630579,
+     -2.8535710567494776
+    ],
+    "lug_center_to_wall_face_m": 0.27142894325052225,
+    "robot_to_lug_m": 0.18000694683714455,
+    "min_robot_center_to_wall_face_m_over_run": {
+     "m": 0.27172374745042516,
+     "wall": "south",
+     "tick": 332
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77979-bf31840f",
+   "robot": "r1",
+   "sha8": "bf31840f",
+   "ticks": 634,
+   "outcome": "approach_blocked_handoff",
+   "onset_tick": 595,
+   "onset_elapsed_s": 59.5,
+   "onset_ledger_t": 61.3,
+   "outcome_tick": 633,
+   "outcome_elapsed_s": 63.3,
+   "zero_run_hold_frames": [
+    [
+     [
+      "grasp_act_teacher_v3.py:_approach:89",
+      "crate_grasp_teacher.py:_approach:70"
+     ],
+     "approach",
+     30
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_observe_stable:150",
+      "grasp_act_teacher_v3.py:_observe:388"
+     ],
+     "search",
+     3
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_step:476",
+      "crate_grasp_teacher.py:_step:179"
+     ],
+     "relook",
+     3
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_begin_relook:72",
+      "crate_grasp_teacher.py:_begin_relook:59"
+     ],
+     "relook",
+     1
+    ]
+   ],
+   "phase_at_onset": "search",
+   "visible_probes_at_onset": 6,
+   "ever_align": false,
+   "align_ticks": 0,
+   "relooks": 2,
+   "controller_view": {
+    "dist_goal_m": 0.1666135384371188,
+    "dist_end_m": 0.1510871862726585,
+    "errors_axial_lat_yaw": [
+     -0.04907665056382354,
+     0.03438106901289901,
+     1.198607324134013
+    ],
+    "choice_offset_rad_dist_m": [
+     0.0,
+     0.19619999999999999
+    ],
+    "goal_free": true,
+    "radius_m": 0.13,
+    "nearest_obstacles": [
+     {
+      "id": "crate_disc:-0.07",
+      "base_clear_m": -0.005120344700354093,
+      "goal_clear_m": 0.05119999999999986
+     },
+     {
+      "id": "crate_disc:-0.10",
+      "base_clear_m": 0.0010871862726584969,
+      "goal_clear_m": 0.04619999999999996
+     },
+     {
+      "id": "crate_disc:+0.00",
+      "base_clear_m": 0.03845738434635412,
+      "goal_clear_m": 0.11119999999999991
+     }
+    ],
+    "memory_ages_s": {
+     "band_teal": 0.0
+    },
+    "wall_in_memory": false,
+    "fresh_peers": []
+   },
+   "wall_in_memory_ticks": 0,
+   "blind_ticks_vis_lt5": 466,
+   "last_goal_set_row": {
+    "elapsed_s": 62.3,
+    "selected": false,
+    "candidates": [
+     {
+      "offset_deg": 0.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "previously_stalled"
+     },
+     {
+      "offset_deg": -15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "previously_stalled"
+     },
+     {
+      "offset_deg": 15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "unsafe_segment"
+     }
+    ],
+    "n_grasp_geometry_rejected": 10
+   },
+   "guard_49d11b8e": {
+    "unsafe_pulses": {},
+    "inside_margin_unsafe": 0,
+    "first_unsafe_tick": null
+   },
+   "counterfactual_guard_on_older_code": {
+    "would_reject": 38,
+    "inside_margin_ticks": 37
+   },
+   "eval_only": {
+    "robot_xy": [
+     4.3990704788918595,
+     -2.9767224911161163
+    ],
+    "robot_center_to_wall_face_m": 0.1482775088838836,
+    "wall": "south",
+    "assigned_lug_xy": [
+     4.525590142715779,
+     -2.894138518568586
+    ],
+    "lug_center_to_wall_face_m": 0.23086148143141375,
+    "robot_to_lug_m": 0.1510871862728564,
+    "min_robot_center_to_wall_face_m_over_run": {
+     "m": 0.10327065035166996,
+     "wall": "south",
+     "tick": 314
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77981-49d11b8e",
+   "robot": "r1",
+   "sha8": "49d11b8e",
+   "ticks": 161,
+   "outcome": "approach_blocked_handoff",
+   "onset_tick": 100,
+   "onset_elapsed_s": 10.0,
+   "onset_ledger_t": 11.8,
+   "outcome_tick": 160,
+   "outcome_elapsed_s": 16.0,
+   "zero_run_hold_frames": [
+    [
+     [
+      "crate_grasp_teacher.py:_check_navigation_pulse:129",
+      "crate11_trace.py:_check_navigation_pulse:94"
+     ],
+     "approach",
+     54
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_step:604",
+      "crate_grasp_teacher.py:_step:241"
+     ],
+     "relook",
+     4
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_begin_relook:92",
+      "crate_grasp_teacher.py:_begin_relook:70"
+     ],
+     "relook",
+     1
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_step:604",
+      "crate_grasp_teacher.py:_step:241"
+     ],
+     "approach",
+     1
+    ]
+   ],
+   "phase_at_onset": "approach",
+   "visible_probes_at_onset": 9,
+   "ever_align": false,
+   "align_ticks": 0,
+   "relooks": 1,
+   "controller_view": {
+    "dist_goal_m": 0.15782618256906292,
+    "dist_end_m": 0.15600144274777222,
+    "errors_axial_lat_yaw": [
+     -0.05045617242684344,
+     -0.055634403598065756,
+     -1.2673646802030119
+    ],
+    "choice_offset_rad_dist_m": [
+     0.0,
+     0.19619999999999999
+    ],
+    "goal_free": true,
+    "radius_m": 0.13,
+    "nearest_obstacles": [
+     {
+      "id": "crate_disc:-0.07",
+      "base_clear_m": 0.001167217159233569,
+      "goal_clear_m": 0.05119999999999991
+     },
+     {
+      "id": "crate_disc:-0.10",
+      "base_clear_m": 0.006001442747772229,
+      "goal_clear_m": 0.04620000000000005
+     },
+     {
+      "id": "crate_disc:+0.00",
+      "base_clear_m": 0.04665616262079764,
+      "goal_clear_m": 0.11119999999999997
+     }
+    ],
+    "memory_ages_s": {
+     "band_teal": 0.0,
+     "crate_1": 0.0,
+     "zone_wall_east": 3.4
+    },
+    "wall_in_memory": true,
+    "fresh_peers": []
+   },
+   "wall_in_memory_ticks": 119,
+   "blind_ticks_vis_lt5": 0,
+   "last_goal_set_row": {
+    "elapsed_s": 16.0,
+    "selected": true,
+    "candidates": [
+     {
+      "offset_deg": 15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "feasible"
+     }
+    ],
+    "n_grasp_geometry_rejected": 0
+   },
+   "guard_49d11b8e": {
+    "unsafe_pulses": {
+     "segment": 1,
+     "turn_while_inside": 53
+    },
+    "inside_margin_unsafe": 53,
+    "first_unsafe_tick": 100
+   },
+   "counterfactual_guard_on_older_code": {
+    "would_reject": 0,
+    "inside_margin_ticks": 0
+   },
+   "eval_only": {
+    "robot_xy": [
+     4.4758909619196015,
+     -1.4668907940000417
+    ],
+    "robot_center_to_wall_face_m": 0.8991090380803989,
+    "wall": "east",
+    "assigned_lug_xy": [
+     4.605805478626346,
+     -1.553254377114148
+    ],
+    "lug_center_to_wall_face_m": 0.7691945213736545,
+    "robot_to_lug_m": 0.15600144274798905,
+    "min_robot_center_to_wall_face_m_over_run": {
+     "m": 0.8958550370850528,
+     "wall": "east",
+     "tick": 160
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77982-49d11b8e",
+   "robot": "r1",
+   "sha8": "49d11b8e",
+   "ticks": 254,
+   "outcome": "alignment_no_progress",
+   "onset_tick": 234,
+   "onset_elapsed_s": 23.4,
+   "onset_ledger_t": 25.2,
+   "outcome_tick": 253,
+   "outcome_elapsed_s": 25.3,
+   "zero_run_hold_frames": [
+    [
+     [
+      "crate_grasp_teacher.py:_check_navigation_pulse:129",
+      "crate11_trace.py:_check_navigation_pulse:94"
+     ],
+     "approach",
+     19
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_begin_relook:92",
+      "crate_grasp_teacher.py:_begin_relook:70"
+     ],
+     "approach",
+     1
+    ]
+   ],
+   "phase_at_onset": "approach",
+   "visible_probes_at_onset": 11,
+   "ever_align": false,
+   "align_ticks": 0,
+   "relooks": 3,
+   "controller_view": {
+    "dist_goal_m": 0.14532509315379938,
+    "dist_end_m": 0.14895509697398657,
+    "errors_axial_lat_yaw": [
+     -0.09395242821857766,
+     0.10831922719135617,
+     1.6415275317092883
+    ],
+    "choice_offset_rad_dist_m": [
+     0.2617993877991494,
+     0.19619999999999999
+    ],
+    "goal_free": true,
+    "radius_m": 0.13,
+    "nearest_obstacles": [
+     {
+      "id": "crate_disc:-0.10",
+      "base_clear_m": -0.0010449030260134273,
+      "goal_clear_m": 0.04619999999999999
+     },
+     {
+      "id": "crate_disc:-0.07",
+      "base_clear_m": 2.4452328164170645e-05,
+      "goal_clear_m": 0.05031160384470862
+     },
+     {
+      "id": "crate_disc:+0.00",
+      "base_clear_m": 0.05445928166463551,
+      "goal_clear_m": 0.10893429439856633
+     }
+    ],
+    "memory_ages_s": {
+     "crate_1": 0.0,
+     "band_teal": 0.0
+    },
+    "wall_in_memory": false,
+    "fresh_peers": []
+   },
+   "wall_in_memory_ticks": 0,
+   "blind_ticks_vis_lt5": 25,
+   "last_goal_set_row": {
+    "elapsed_s": 25.2,
+    "selected": true,
+    "candidates": [
+     {
+      "offset_deg": 15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "feasible"
+     }
+    ],
+    "n_grasp_geometry_rejected": 0
+   },
+   "guard_49d11b8e": {
+    "unsafe_pulses": {
+     "segment": 2,
+     "turn_while_inside": 125
+    },
+    "inside_margin_unsafe": 125,
+    "first_unsafe_tick": 116
+   },
+   "counterfactual_guard_on_older_code": {
+    "would_reject": 0,
+    "inside_margin_ticks": 0
+   },
+   "eval_only": {
+    "robot_xy": [
+     4.4548547648227785,
+     -1.98518835702512
+    ],
+    "robot_center_to_wall_face_m": 0.9201452351772218,
+    "wall": "east",
+    "assigned_lug_xy": [
+     4.582929122183275,
+     -2.0612447827977878
+    ],
+    "lug_center_to_wall_face_m": 0.7920708778167252,
+    "robot_to_lug_m": 0.1489550969742811,
+    "min_robot_center_to_wall_face_m_over_run": {
+     "m": 0.5306245498942065,
+     "wall": "east",
+     "tick": 13
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77988-49d11b8e",
+   "robot": "r1",
+   "sha8": "49d11b8e",
+   "ticks": 201,
+   "outcome": "approach_blocked_handoff",
+   "onset_tick": 135,
+   "onset_elapsed_s": 13.5,
+   "onset_ledger_t": 15.3,
+   "outcome_tick": 200,
+   "outcome_elapsed_s": 20.0,
+   "zero_run_hold_frames": [
+    [
+     [
+      "crate_grasp_teacher.py:_check_navigation_pulse:129",
+      "crate11_trace.py:_check_navigation_pulse:94"
+     ],
+     "approach",
+     60
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_step:604",
+      "crate_grasp_teacher.py:_step:241"
+     ],
+     "relook",
+     3
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_begin_relook:92",
+      "crate_grasp_teacher.py:_begin_relook:70"
+     ],
+     "relook",
+     1
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_step:604",
+      "crate_grasp_teacher.py:_step:241"
+     ],
+     "approach",
+     1
+    ]
+   ],
+   "phase_at_onset": "approach",
+   "visible_probes_at_onset": 10,
+   "ever_align": false,
+   "align_ticks": 0,
+   "relooks": 1,
+   "controller_view": {
+    "dist_goal_m": 0.153975579500065,
+    "dist_end_m": 0.15473597076388135,
+    "errors_axial_lat_yaw": [
+     -0.058754189483229496,
+     0.07107650680519384,
+     1.3563465783421358
+    ],
+    "choice_offset_rad_dist_m": [
+     0.0,
+     0.19619999999999999
+    ],
+    "goal_free": true,
+    "radius_m": 0.13,
+    "nearest_obstacles": [
+     {
+      "id": "crate_disc:-0.07",
+      "base_clear_m": 0.00039986845499545565,
+      "goal_clear_m": 0.05120000000000008
+     },
+     {
+      "id": "crate_disc:-0.10",
+      "base_clear_m": 0.004735970763881353,
+      "goal_clear_m": 0.04620000000000002
+     },
+     {
+      "id": "crate_disc:+0.00",
+      "base_clear_m": 0.04669562936649743,
+      "goal_clear_m": 0.11120000000000002
+     }
+    ],
+    "memory_ages_s": {
+     "band_teal": 0.0,
+     "crate_1": 0.0
+    },
+    "wall_in_memory": false,
+    "fresh_peers": []
+   },
+   "wall_in_memory_ticks": 0,
+   "blind_ticks_vis_lt5": 0,
+   "last_goal_set_row": {
+    "elapsed_s": 20.0,
+    "selected": true,
+    "candidates": [
+     {
+      "offset_deg": -15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "feasible"
+     }
+    ],
+    "n_grasp_geometry_rejected": 0
+   },
+   "guard_49d11b8e": {
+    "unsafe_pulses": {
+     "segment": 1,
+     "turn_while_inside": 59
+    },
+    "inside_margin_unsafe": 59,
+    "first_unsafe_tick": 135
+   },
+   "counterfactual_guard_on_older_code": {
+    "would_reject": 0,
+    "inside_margin_ticks": 0
+   },
+   "eval_only": {
+    "robot_xy": [
+     4.544694199539053,
+     -3.011157725190486
+    ],
+    "robot_center_to_wall_face_m": 0.11384227480951373,
+    "wall": "south",
+    "assigned_lug_xy": [
+     4.667793743990338,
+     -2.9174042036342502
+    ],
+    "lug_center_to_wall_face_m": 0.20759579636574968,
+    "robot_to_lug_m": 0.15473597076410403,
+    "min_robot_center_to_wall_face_m_over_run": {
+     "m": 0.11290279953802554,
+     "wall": "south",
+     "tick": 137
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77989-49d11b8e",
+   "robot": "r1",
+   "sha8": "49d11b8e",
+   "ticks": 274,
+   "outcome": "alignment_no_progress",
+   "onset_tick": 273,
+   "onset_elapsed_s": 27.3,
+   "onset_ledger_t": 29.1,
+   "outcome_tick": 273,
+   "outcome_elapsed_s": 27.3,
+   "zero_run_hold_frames": [
+    [
+     [
+      "grasp_act_teacher_v3.py:_begin_relook:92",
+      "crate_grasp_teacher.py:_begin_relook:70"
+     ],
+     "approach",
+     1
+    ]
+   ],
+   "phase_at_onset": "approach",
+   "visible_probes_at_onset": 12,
+   "ever_align": false,
+   "align_ticks": 0,
+   "relooks": 3,
+   "controller_view": {
+    "dist_goal_m": 0.08230358416022364,
+    "dist_end_m": 0.14846881921299449,
+    "errors_axial_lat_yaw": [
+     -0.13522917973805396,
+     0.13537189278091044,
+     1.54303567896432
+    ],
+    "choice_offset_rad_dist_m": [
+     0.2617993877991494,
+     0.19619999999999999
+    ],
+    "goal_free": true,
+    "radius_m": 0.13,
+    "nearest_obstacles": [
+     {
+      "id": "crate_disc:+0.10",
+      "base_clear_m": -0.0015311807870055094,
+      "goal_clear_m": 0.04619999999999999
+     },
+     {
+      "id": "crate_disc:+0.07",
+      "base_clear_m": 0.0032462081594671344,
+      "goal_clear_m": 0.050311603844708674
+     },
+     {
+      "id": "crate_disc:+0.00",
+      "base_clear_m": 0.06293559330518006,
+      "goal_clear_m": 0.10893429439856633
+     }
+    ],
+    "memory_ages_s": {
+     "band_blue": 0.0,
+     "crate_1": 0.0
+    },
+    "wall_in_memory": false,
+    "fresh_peers": []
+   },
+   "wall_in_memory_ticks": 0,
+   "blind_ticks_vis_lt5": 0,
+   "last_goal_set_row": {
+    "elapsed_s": 26.3,
+    "selected": true,
+    "candidates": [
+     {
+      "offset_deg": 15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "feasible"
+     }
+    ],
+    "n_grasp_geometry_rejected": 0
+   },
+   "guard_49d11b8e": {
+    "unsafe_pulses": {
+     "segment": 1,
+     "turn_while_inside": 142
+    },
+    "inside_margin_unsafe": 142,
+    "first_unsafe_tick": 120
+   },
+   "counterfactual_guard_on_older_code": {
+    "would_reject": 0,
+    "inside_margin_ticks": 0
+   },
+   "eval_only": {
+    "robot_xy": [
+     4.626911182222085,
+     -3.003327153237326
+    ],
+    "robot_center_to_wall_face_m": 0.1216728467626739,
+    "wall": "south",
+    "assigned_lug_xy": [
+     4.634758780963593,
+     -2.8550658788849317
+    ],
+    "lug_center_to_wall_face_m": 0.2699341211150682,
+    "robot_to_lug_m": 0.14846881921334074,
+    "min_robot_center_to_wall_face_m_over_run": {
+     "m": 0.1216728467626739,
+     "wall": "south",
+     "tick": 273
+    }
+   }
+  },
+  {
+   "run": "crate-reproduction-77969-49d11b8e",
+   "robot": "r2",
+   "sha8": "49d11b8e",
+   "ticks": 203,
+   "outcome": "approach_blocked_handoff",
+   "onset_tick": 167,
+   "onset_elapsed_s": 16.7,
+   "onset_ledger_t": 18.5,
+   "outcome_tick": 202,
+   "outcome_elapsed_s": 20.2,
+   "zero_run_hold_frames": [
+    [
+     [
+      "grasp_act_teacher_v3.py:_approach:111",
+      "crate_grasp_teacher.py:_approach:85"
+     ],
+     "approach",
+     30
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_step:604",
+      "crate_grasp_teacher.py:_step:241"
+     ],
+     "relook",
+     3
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_begin_relook:92",
+      "crate_grasp_teacher.py:_begin_relook:70"
+     ],
+     "relook",
+     1
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_step:604",
+      "crate_grasp_teacher.py:_step:241"
+     ],
+     "approach",
+     1
+    ]
+   ],
+   "phase_at_onset": "relook",
+   "visible_probes_at_onset": 9,
+   "ever_align": false,
+   "align_ticks": 0,
+   "relooks": 2,
+   "controller_view": {
+    "dist_goal_m": 0.08391318690518543,
+    "dist_end_m": 0.14888896430383947,
+    "errors_axial_lat_yaw": [
+     -0.0702021155402664,
+     0.07932500742604193,
+     0.9702019042450765
+    ],
+    "choice_offset_rad_dist_m": [
+     -0.2617993877991494,
+     0.19619999999999999
+    ],
+    "goal_free": true,
+    "radius_m": 0.13,
+    "nearest_obstacles": [
+     {
+      "id": "crate_disc:+0.07",
+      "base_clear_m": -0.0015946812031320534,
+      "goal_clear_m": 0.05031160384470856
+     },
+     {
+      "id": "crate_disc:+0.10",
+      "base_clear_m": -0.0011110356961605283,
+      "goal_clear_m": 0.04619999999999996
+     },
+     {
+      "id": "crate_disc:+0.00",
+      "base_clear_m": 0.05059752406038015,
+      "goal_clear_m": 0.10893429439856628
+     }
+    ],
+    "memory_ages_s": {
+     "band_blue": 0.0,
+     "crate_1": 0.0
+    },
+    "wall_in_memory": false,
+    "fresh_peers": []
+   },
+   "wall_in_memory_ticks": 0,
+   "blind_ticks_vis_lt5": 29,
+   "last_goal_set_row": {
+    "elapsed_s": 20.2,
+    "selected": false,
+    "candidates": [
+     {
+      "offset_deg": -15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "previously_stalled"
+     },
+     {
+      "offset_deg": 0.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "previously_stalled"
+     },
+     {
+      "offset_deg": 15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "unsafe_segment"
+     }
+    ],
+    "n_grasp_geometry_rejected": 10
+   },
+   "guard_49d11b8e": {
+    "unsafe_pulses": {
+     "turn_while_inside": 66
+    },
+    "inside_margin_unsafe": 66,
+    "first_unsafe_tick": 95
+   },
+   "counterfactual_guard_on_older_code": {
+    "would_reject": 0,
+    "inside_margin_ticks": 0
+   },
+   "eval_only": {
+    "robot_xy": [
+     4.491495709811136,
+     -3.0241151880134236
+    ],
+    "robot_center_to_wall_face_m": 0.10088481198657631,
+    "wall": "south",
+    "assigned_lug_xy": [
+     4.579075607946375,
+     -2.9037088545670073
+    ],
+    "lug_center_to_wall_face_m": 0.22129114543299258,
+    "robot_to_lug_m": 0.14888896430356552,
+    "min_robot_center_to_wall_face_m_over_run": {
+     "m": 0.10086993469267905,
+     "wall": "south",
+     "tick": 158
+    }
+   }
+  },
+  {
+   "run": "crate-reproduction-77978-49d11b8e",
+   "robot": "r1",
+   "sha8": "49d11b8e",
+   "ticks": 102,
+   "outcome": "approach_blocked_handoff",
+   "onset_tick": 0,
+   "onset_elapsed_s": 0.0,
+   "onset_ledger_t": 1.8,
+   "outcome_tick": 101,
+   "outcome_elapsed_s": 10.1,
+   "zero_run_hold_frames": [
+    [
+     [
+      "grasp_act_teacher_v3.py:_search_step_v2:268",
+      "grasp_act_teacher_v3.py:_observe_stable:192"
+     ],
+     "search",
+     91
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_step:606",
+      "crate_grasp_teacher.py:_step:241"
+     ],
+     "approach",
+     7
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_observe_stable:172",
+      "grasp_act_teacher_v3.py:_observe:498"
+     ],
+     "search",
+     3
+    ],
+    [
+     [
+      "grasp_act_teacher_v3.py:_approach:111",
+      "crate_grasp_teacher.py:_approach:85"
+     ],
+     "approach",
+     1
+    ]
+   ],
+   "phase_at_onset": "approach",
+   "visible_probes_at_onset": 4,
+   "ever_align": false,
+   "align_ticks": 0,
+   "relooks": 0,
+   "wall_in_memory_ticks": 4,
+   "blind_ticks_vis_lt5": 98,
+   "last_goal_set_row": {
+    "elapsed_s": 10.1,
+    "selected": false,
+    "candidates": [
+     {
+      "offset_deg": 0.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "blocked_goal"
+     },
+     {
+      "offset_deg": -15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "blocked_goal"
+     },
+     {
+      "offset_deg": 15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "blocked_goal"
+     }
+    ],
+    "n_grasp_geometry_rejected": 10
+   },
+   "guard_49d11b8e": {
+    "unsafe_pulses": {},
+    "inside_margin_unsafe": 0,
+    "first_unsafe_tick": null
+   },
+   "counterfactual_guard_on_older_code": {
+    "would_reject": 0,
+    "inside_margin_ticks": 0
+   },
+   "eval_only": {
+    "robot_xy": [
+     3.771452856281748,
+     -2.1197191236361586
+    ],
+    "robot_center_to_wall_face_m": 1.0052808763638414,
+    "wall": "south",
+    "assigned_lug_xy": [
+     4.603334825631363,
+     -2.853571056741132
+    ],
+    "lug_center_to_wall_face_m": 0.271428943258868,
+    "robot_to_lug_m": 1.109308915789871,
+    "min_robot_center_to_wall_face_m_over_run": {
+     "m": 1.0042812012067186,
+     "wall": "south",
+     "tick": 86
+    }
+   }
+  },
+  {
+   "run": "crate-reproduction-77979-49d11b8e",
+   "robot": "r1",
+   "sha8": "49d11b8e",
+   "ticks": 218,
+   "outcome": "alignment_no_progress",
+   "onset_tick": 217,
+   "onset_elapsed_s": 21.7,
+   "onset_ledger_t": 23.5,
+   "outcome_tick": 217,
+   "outcome_elapsed_s": 21.7,
+   "zero_run_hold_frames": [
+    [
+     [
+      "grasp_act_teacher_v3.py:_begin_relook:92",
+      "crate_grasp_teacher.py:_begin_relook:70"
+     ],
+     "approach",
+     1
+    ]
+   ],
+   "phase_at_onset": "approach",
+   "visible_probes_at_onset": 7,
+   "ever_align": false,
+   "align_ticks": 0,
+   "relooks": 3,
+   "controller_view": {
+    "dist_goal_m": 0.14109306729280047,
+    "dist_end_m": 0.14000609909007247,
+    "errors_axial_lat_yaw": [
+     -0.07777341037756945,
+     0.07467831447495062,
+     1.364813653802468
+    ],
+    "choice_offset_rad_dist_m": [
+     0.2617993877991494,
+     0.19619999999999999
+    ],
+    "goal_free": true,
+    "radius_m": 0.13,
+    "nearest_obstacles": [
+     {
+      "id": "crate_disc:-0.10",
+      "base_clear_m": -0.009993900909927536,
+      "goal_clear_m": 0.04619999999999996
+     },
+     {
+      "id": "crate_disc:-0.07",
+      "base_clear_m": -0.00855176302212056,
+      "goal_clear_m": 0.05031160384470851
+     },
+     {
+      "id": "crate_disc:+0.00",
+      "base_clear_m": 0.046544237280560063,
+      "goal_clear_m": 0.10893429439856628
+     }
+    ],
+    "memory_ages_s": {
+     "crate_1": 0.0,
+     "band_teal": 0.0
+    },
+    "wall_in_memory": false,
+    "fresh_peers": []
+   },
+   "wall_in_memory_ticks": 0,
+   "blind_ticks_vis_lt5": 22,
+   "last_goal_set_row": {
+    "elapsed_s": 21.4,
+    "selected": true,
+    "candidates": [
+     {
+      "offset_deg": 15.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "feasible"
+     }
+    ],
+    "n_grasp_geometry_rejected": 0
+   },
+   "guard_49d11b8e": {
+    "unsafe_pulses": {
+     "segment": 5,
+     "turn_while_inside": 65
+    },
+    "inside_margin_unsafe": 65,
+    "first_unsafe_tick": 89
+   },
+   "counterfactual_guard_on_older_code": {
+    "would_reject": 0,
+    "inside_margin_ticks": 0
+   },
+   "eval_only": {
+    "robot_xy": [
+     4.458647918075054,
+     -3.019493317641688
+    ],
+    "robot_center_to_wall_face_m": 0.10550668235831209,
+    "wall": "south",
+    "assigned_lug_xy": [
+     4.530315157744678,
+     -2.8992201837016522
+    ],
+    "lug_center_to_wall_face_m": 0.22577981629834767,
+    "robot_to_lug_m": 0.14000649981204794,
+    "min_robot_center_to_wall_face_m_over_run": {
+     "m": 0.10206549940038148,
+     "wall": "south",
+     "tick": 117
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77969-5644e3dd",
+   "robot": "r2",
+   "sha8": "5644e3dd",
+   "ticks": 650,
+   "outcome": "search_timeout_handoff",
+   "onset_tick": 649,
+   "onset_elapsed_s": 64.9,
+   "onset_ledger_t": 66.7,
+   "outcome_tick": 649,
+   "outcome_elapsed_s": 64.9,
+   "zero_run_hold_frames": [
+    [
+     [
+      "grasp_act_teacher_v3.py:handoff:224",
+      "grasp_act_teacher_v3.py:_search_step_v2:228"
+     ],
+     "search",
+     1
+    ]
+   ],
+   "phase_at_onset": "search",
+   "visible_probes_at_onset": 0,
+   "ever_align": false,
+   "align_ticks": 0,
+   "relooks": 0,
+   "wall_in_memory_ticks": 0,
+   "blind_ticks_vis_lt5": 571,
+   "last_goal_set_row": {
+    "elapsed_s": 10.7,
+    "selected": true,
+    "candidates": [
+     {
+      "offset_deg": 0.0,
+      "dist_m": 0.19619999999999999,
+      "reason": "feasible"
+     }
+    ],
+    "n_grasp_geometry_rejected": 0
+   },
+   "guard_49d11b8e": {
+    "unsafe_pulses": {},
+    "inside_margin_unsafe": 0,
+    "first_unsafe_tick": null
+   },
+   "counterfactual_guard_on_older_code": {
+    "would_reject": 13,
+    "inside_margin_ticks": 13
+   },
+   "eval_only": {
+    "robot_xy": [
+     4.496786233452553,
+     -3.0178006412199716
+    ],
+    "robot_center_to_wall_face_m": 0.10719935878002831,
+    "wall": "south",
+    "assigned_lug_xy": [
+     4.55047496090948,
+     -2.8906657569197893
+    ],
+    "lug_center_to_wall_face_m": 0.23433424308021059,
+    "robot_to_lug_m": 0.13800637036733124,
+    "min_robot_center_to_wall_face_m_over_run": {
+     "m": 0.1048531643030878,
+     "wall": "south",
+     "tick": 94
+    }
+   }
+  }
+ ],
+ "toggle_attribution_49d11b8e": [
+  {
+   "run": "crate-diag-77980-49d11b8e",
+   "first_diff_tick": null,
+   "diff_robots": [],
+   "first_guard_reject_tick": {
+    "r1": null,
+    "r2": null
+   },
+   "match": false,
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   }
+  },
+  {
+   "run": "crate-diag-77981-49d11b8e",
+   "first_diff_tick": 100,
+   "diff_robots": [
+    "r1"
+   ],
+   "first_guard_reject_tick": {
+    "r1": 100,
+    "r2": null
+   },
+   "match": true,
+   "outcomes": {
+    "r1": "approach_blocked_handoff",
+    "r2": "peer_approach_handoff"
+   }
+  },
+  {
+   "run": "crate-diag-77982-49d11b8e",
+   "first_diff_tick": 110,
+   "diff_robots": [
+    "r2"
+   ],
+   "first_guard_reject_tick": {
+    "r1": 116,
+    "r2": 110
+   },
+   "match": true,
+   "outcomes": {
+    "r1": "alignment_no_progress",
+    "r2": "episode_timeout"
+   }
+  },
+  {
+   "run": "crate-diag-77983-49d11b8e",
+   "first_diff_tick": null,
+   "diff_robots": [],
+   "first_guard_reject_tick": {
+    "r1": null,
+    "r2": null
+   },
+   "match": false,
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   }
+  },
+  {
+   "run": "crate-diag-77984-49d11b8e",
+   "first_diff_tick": null,
+   "diff_robots": [],
+   "first_guard_reject_tick": {
+    "r1": null,
+    "r2": null
+   },
+   "match": false,
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   }
+  },
+  {
+   "run": "crate-diag-77985-49d11b8e",
+   "first_diff_tick": 176,
+   "diff_robots": [
+    "r1"
+   ],
+   "first_guard_reject_tick": {
+    "r1": 176,
+    "r2": null
+   },
+   "match": true,
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   }
+  },
+  {
+   "run": "crate-diag-77986-49d11b8e",
+   "first_diff_tick": 147,
+   "diff_robots": [
+    "r1"
+   ],
+   "first_guard_reject_tick": {
+    "r1": 147,
+    "r2": null
+   },
+   "match": true,
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   }
+  },
+  {
+   "run": "crate-diag-77987-49d11b8e",
+   "first_diff_tick": null,
+   "diff_robots": [],
+   "first_guard_reject_tick": {
+    "r1": null,
+    "r2": null
+   },
+   "match": false,
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   }
+  },
+  {
+   "run": "crate-diag-77988-49d11b8e",
+   "first_diff_tick": 135,
+   "diff_robots": [
+    "r1"
+   ],
+   "first_guard_reject_tick": {
+    "r1": 135,
+    "r2": null
+   },
+   "match": true,
+   "outcomes": {
+    "r1": "approach_blocked_handoff",
+    "r2": "peer_approach_handoff"
+   }
+  },
+  {
+   "run": "crate-diag-77989-49d11b8e",
+   "first_diff_tick": 120,
+   "diff_robots": [
+    "r1"
+   ],
+   "first_guard_reject_tick": {
+    "r1": 120,
+    "r2": null
+   },
+   "match": true,
+   "outcomes": {
+    "r1": "alignment_no_progress",
+    "r2": "episode_timeout"
+   }
+  },
+  {
+   "run": "crate-reproduction-77969-49d11b8e",
+   "first_diff_tick": 49,
+   "diff_robots": [
+    "r1"
+   ],
+   "first_guard_reject_tick": {
+    "r1": 49,
+    "r2": 95
+   },
+   "match": true,
+   "outcomes": {
+    "r1": "peer_approach_handoff",
+    "r2": "approach_blocked_handoff"
+   }
+  },
+  {
+   "run": "crate-reproduction-77978-49d11b8e",
+   "first_diff_tick": null,
+   "diff_robots": [],
+   "first_guard_reject_tick": {
+    "r1": null,
+    "r2": null
+   },
+   "match": false,
+   "outcomes": {
+    "r1": "approach_blocked_handoff",
+    "r2": "peer_approach_handoff"
+   }
+  },
+  {
+   "run": "crate-reproduction-77979-49d11b8e",
+   "first_diff_tick": 89,
+   "diff_robots": [
+    "r1"
+   ],
+   "first_guard_reject_tick": {
+    "r1": 89,
+    "r2": null
+   },
+   "match": true,
+   "outcomes": {
+    "r1": "alignment_no_progress",
+    "r2": "episode_timeout"
+   }
+  }
+ ],
+ "table2_seed_geometry_eval_only": [
+  {
+   "run": "crate-diag-77940-c5a76175",
+   "seed": 77940,
+   "sha8": "c5a76175",
+   "crate_xy": [
+    4.531179492183146,
+    -1.774419569739454
+   ],
+   "crate_yaw_deg": -88.40863401212042,
+   "near_wall_flag": false,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.8438205078168547
+   },
+   "outcomes": {
+    "r1": "crate_lift_pose_no_candidate",
+    "r2": "episode_timeout"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.533956592705193,
+      -1.8743810008651158
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8410434072948071
+     },
+     "approach_deg": 24.38612012996708,
+     "spawn_to_lug_m": 0.4089929406300546,
+     "nominal_stance_wall_clear_m": 0.6656002902715932,
+     "best_candidate_stance_wall_clear_m": 0.7192774612867299,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "crate_lift_pose_no_candidate"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.528402391661098,
+      -1.6744581386137922
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8465976083389023
+     },
+     "approach_deg": -1.3863320611317905e-13,
+     "spawn_to_lug_m": 0.20299999999999996,
+     "nominal_stance_wall_clear_m": 0.6820407253621161,
+     "best_candidate_stance_wall_clear_m": 0.7359907504952441,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "episode_timeout"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77941-c5a76175",
+   "seed": 77941,
+   "sha8": "c5a76175",
+   "crate_xy": [
+    4.599462813340105,
+    -1.8419707994395158
+   ],
+   "crate_yaw_deg": -96.79917583928967,
+   "near_wall_flag": false,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7755371866598949
+   },
+   "outcomes": {
+    "r1": "no_stable_joint_hold_3s",
+    "r2": "no_stable_joint_hold_3s"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.587623844823839,
+      -1.9412675205559295
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7873761551761612
+     },
+     "approach_deg": -78.47166438785395,
+     "spawn_to_lug_m": 0.9417274661378001,
+     "nominal_stance_wall_clear_m": 0.6405805334680423,
+     "best_candidate_stance_wall_clear_m": 0.6946178869904645,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.611301781856372,
+      -1.742674078323102
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7636982181436286
+     },
+     "approach_deg": 92.03304310157372,
+     "spawn_to_lug_m": 1.1743257989787754,
+     "nominal_stance_wall_clear_m": 0.5704938398517474,
+     "best_candidate_stance_wall_clear_m": 0.6233679977005571,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77942-c5a76175",
+   "seed": 77942,
+   "sha8": "c5a76175",
+   "crate_xy": [
+    4.568265938661269,
+    -1.8648749975080197
+   ],
+   "crate_yaw_deg": -4.236712770177837,
+   "near_wall_flag": false,
+   "peer_case": "near_own",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.8067340613387314
+   },
+   "outcomes": {
+    "r1": "crate_lift_pose_no_candidate",
+    "r2": "episode_timeout"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.468539204213282,
+      -1.8574872755086056
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.9064607957867187
+     },
+     "approach_deg": -73.3341255104033,
+     "spawn_to_lug_m": 0.9885003535234137,
+     "nominal_stance_wall_clear_m": 0.9319251953047741,
+     "best_candidate_stance_wall_clear_m": 0.9438924034385326,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "crate_lift_pose_no_candidate"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.667992673109256,
+      -1.8722627195074337
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7070073268907441
+     },
+     "approach_deg": 113.74234608493285,
+     "spawn_to_lug_m": 1.5020563317162492,
+     "nominal_stance_wall_clear_m": 0.34154292737268865,
+     "best_candidate_stance_wall_clear_m": 0.35195089825677806,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "episode_timeout"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77943-c5a76175",
+   "seed": 77943,
+   "sha8": "c5a76175",
+   "crate_xy": [
+    4.507252558272808,
+    -1.896864446995981
+   ],
+   "crate_yaw_deg": 6.918397875543017,
+   "near_wall_flag": false,
+   "peer_case": "absent",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.8677474417271925
+   },
+   "outcomes": {
+    "r1": "episode_timeout",
+    "r2": "crate_lift_pose_no_candidate"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.606524429711798,
+      -1.8848188859463426
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7684755702882023
+     },
+     "approach_deg": -75.75476682962321,
+     "spawn_to_lug_m": 1.029360488974289,
+     "nominal_stance_wall_clear_m": 0.40390270226778147,
+     "best_candidate_stance_wall_clear_m": 0.4166431483649824,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "episode_timeout"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.407980686833818,
+      -1.9089100080456194
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.9670193131661827
+     },
+     "approach_deg": -30.96612664169787,
+     "spawn_to_lug_m": 2.1319897964568946,
+     "nominal_stance_wall_clear_m": 0.9915921811866036,
+     "best_candidate_stance_wall_clear_m": 1.0035048057592832,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "crate_lift_pose_no_candidate"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77944-c5a76175",
+   "seed": 77944,
+   "sha8": "c5a76175",
+   "crate_xy": [
+    4.633091991106486,
+    -1.5339583833567905
+   ],
+   "crate_yaw_deg": 89.3099196956138,
+   "near_wall_flag": false,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7419080088935143
+   },
+   "outcomes": {
+    "r1": "crate_lift_pose_no_candidate",
+    "r2": "episode_timeout"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.631887602884025,
+      -1.633951130338807
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7431123971159751
+     },
+     "approach_deg": -43.37789659153908,
+     "spawn_to_lug_m": 1.151863866040664,
+     "nominal_stance_wall_clear_m": 0.5754729980319981,
+     "best_candidate_stance_wall_clear_m": 0.6293626212344103,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "crate_lift_pose_no_candidate"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.634296379328947,
+      -1.433965636374774
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7407036206710534
+     },
+     "approach_deg": 6.492229350048602e-14,
+     "spawn_to_lug_m": 0.20300000000000007,
+     "nominal_stance_wall_clear_m": 0.5683430197550303,
+     "best_candidate_stance_wall_clear_m": 0.6221143100834425,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "episode_timeout"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77945-c5a76175",
+   "seed": 77945,
+   "sha8": "c5a76175",
+   "crate_xy": [
+    4.573997855364718,
+    -1.485659444362783
+   ],
+   "crate_yaw_deg": 96.59378251808435,
+   "near_wall_flag": false,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.8010021446352823
+   },
+   "outcomes": {
+    "r1": "crate_lift_pose_no_candidate",
+    "r2": "episode_timeout"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.585480790709077,
+      -1.5849979675845285
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.789519209290923
+     },
+     "approach_deg": -71.12241007185435,
+     "spawn_to_lug_m": 1.8930738890272425,
+     "nominal_stance_wall_clear_m": 0.5970126560159781,
+     "best_candidate_stance_wall_clear_m": 0.6499268081466811,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "crate_lift_pose_no_candidate"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.562514920020359,
+      -1.3863209211410377
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8124850799796416
+     },
+     "approach_deg": 72.13960523168137,
+     "spawn_to_lug_m": 0.7613623343350854,
+     "nominal_stance_wall_clear_m": 0.6649916332545864,
+     "best_candidate_stance_wall_clear_m": 0.719034000288014,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "episode_timeout"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77946-c5a76175",
+   "seed": 77946,
+   "sha8": "c5a76175",
+   "crate_xy": [
+    4.788559840640465,
+    -2.296269482608639
+   ],
+   "crate_yaw_deg": 7.073278960454448,
+   "near_wall_flag": false,
+   "peer_case": "near_own",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.5864401593595353
+   },
+   "outcomes": {
+    "r1": "no_stable_joint_hold_3s",
+    "r2": "no_stable_joint_hold_3s"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.6893208932402395,
+      -2.308583349543735
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.6856791067597608
+     },
+     "approach_deg": -59.305270803052196,
+     "spawn_to_lug_m": 1.468993686573866,
+     "nominal_stance_wall_clear_m": 0.6222814712634765,
+     "best_candidate_stance_wall_clear_m": 0.6751011972750043,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.887798788040691,
+      -2.283955615673543
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.48720121195930977
+     },
+     "approach_deg": 107.84343596877054,
+     "spawn_to_lug_m": 1.6369156569883065,
+     "nominal_stance_wall_clear_m": 0.12269287505486773,
+     "best_candidate_stance_wall_clear_m": 0.13556722994682982,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77947-c5a76175",
+   "seed": 77947,
+   "sha8": "c5a76175",
+   "crate_xy": [
+    4.76870733710859,
+    -1.8826644914959407
+   ],
+   "crate_yaw_deg": -176.78013089336704,
+   "near_wall_flag": false,
+   "peer_case": "absent",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.6062926628914104
+   },
+   "outcomes": {
+    "r1": "no_stable_joint_hold_3s",
+    "r2": "no_stable_joint_hold_3s"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.868549471737762,
+      -1.8770477172713351
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.5064505282622379
+     },
+     "approach_deg": -53.91946026868266,
+     "spawn_to_lug_m": 0.45490386330926025,
+     "nominal_stance_wall_clear_m": 0.14075994438905973,
+     "best_candidate_stance_wall_clear_m": 0.15027724649463117,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.6688652024794175,
+      -1.8882812657205463
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7061347975205828
+     },
+     "approach_deg": -77.61661993767102,
+     "spawn_to_lug_m": 2.449872063054561,
+     "nominal_stance_wall_clear_m": 0.731825381393761,
+     "best_candidate_stance_wall_clear_m": 0.7438064375492612,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77948-c5a76175",
+   "seed": 77948,
+   "sha8": "c5a76175",
+   "crate_xy": [
+    4.590208106928015,
+    -2.792812805592064
+   ],
+   "crate_yaw_deg": 84.21531858236882,
+   "near_wall_flag": true,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.3321871944079361
+   },
+   "outcomes": {
+    "r1": "episode_timeout",
+    "r2": "phase_timeout"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.580129076671278,
+      -2.892303574757267
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.23269642524273274
+     },
+     "approach_deg": -92.84707381176224,
+     "spawn_to_lug_m": 1.9644709251509223,
+     "nominal_stance_wall_clear_m": -0.1323054823210656,
+     "best_candidate_stance_wall_clear_m": -0.12054800927502168,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "episode_timeout"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.600287137184753,
+      -2.6933220364268604
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.4316779635731395
+     },
+     "approach_deg": 6.492229350048602e-14,
+     "spawn_to_lug_m": 0.20300000000000004,
+     "nominal_stance_wall_clear_m": 0.45667987113693775,
+     "best_candidate_stance_wall_clear_m": 0.46861876343676223,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "phase_timeout"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77949-c5a76175",
+   "seed": 77949,
+   "sha8": "c5a76175",
+   "crate_xy": [
+    4.6793712273586445,
+    -2.7477316961675333
+   ],
+   "crate_yaw_deg": 87.99132383135766,
+   "near_wall_flag": true,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.37726830383246657
+   },
+   "outcomes": {
+    "r1": "episode_timeout",
+    "r2": "alignment_no_progress"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.682876310535184,
+      -2.647793143086525
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.477206856913475
+     },
+     "approach_deg": 44.72686991664104,
+     "spawn_to_lug_m": 1.8790905422293729,
+     "nominal_stance_wall_clear_m": 0.5030864209522516,
+     "best_candidate_stance_wall_clear_m": 0.5148331164576148,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "episode_timeout"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.675866144182105,
+      -2.8476702492485417
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.27732975075145816
+     },
+     "approach_deg": -98.91626327903572,
+     "spawn_to_lug_m": 1.3805864957279907,
+     "nominal_stance_wall_clear_m": -0.08854981328731854,
+     "best_candidate_stance_wall_clear_m": -0.08009730172555612,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "alignment_no_progress"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77960-5644e3dd",
+   "seed": 77960,
+   "sha8": "5644e3dd",
+   "crate_xy": [
+    4.6076862282224,
+    -1.7427922146736239
+   ],
+   "crate_yaw_deg": 92.841640699121,
+   "near_wall_flag": false,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7673137717776001
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.602728662575114,
+      -1.6429151775587152
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7722713374248865
+     },
+     "approach_deg": 17.860843628416816,
+     "spawn_to_lug_m": 0.4662978551552165,
+     "nominal_stance_wall_clear_m": 0.6119881660935678,
+     "best_candidate_stance_wall_clear_m": 0.6659998751662999,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.612643793869687,
+      -1.8426692517885326
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7623562061303136
+     },
+     "approach_deg": -7.63333123551244e-14,
+     "spawn_to_lug_m": 0.20299999999999976,
+     "nominal_stance_wall_clear_m": 0.5826393774616323,
+     "best_candidate_stance_wall_clear_m": 0.6361639985836993,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77961-5644e3dd",
+   "seed": 77961,
+   "sha8": "5644e3dd",
+   "crate_xy": [
+    4.628524785912095,
+    -1.797897521821338
+   ],
+   "crate_yaw_deg": -83.79255574005909,
+   "near_wall_flag": false,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7464752140879053
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.617711933742732,
+      -1.6984838294647844
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7572880662572684
+     },
+     "approach_deg": 57.01507215656719,
+     "spawn_to_lug_m": 0.7245521925082677,
+     "nominal_stance_wall_clear_m": 0.6084812565092197,
+     "best_candidate_stance_wall_clear_m": 0.6625311720487794,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.639337638081458,
+      -1.8973112141778916
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7356623619185422
+     },
+     "approach_deg": -86.99844731847817,
+     "spawn_to_lug_m": 1.1054597556623476,
+     "nominal_stance_wall_clear_m": 0.5444691716665908,
+     "best_candidate_stance_wall_clear_m": 0.5974567089385217,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77962-5644e3dd",
+   "seed": 77962,
+   "sha8": "5644e3dd",
+   "crate_xy": [
+    4.606040661219832,
+    -2.1515017398158025
+   ],
+   "crate_yaw_deg": -179.80870921375723,
+   "near_wall_flag": false,
+   "peer_case": "near_own",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7689593387801684
+   },
+   "outcomes": {
+    "r1": "no_stable_joint_hold_3s",
+    "r2": "no_stable_joint_hold_3s"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.506041218549857,
+      -2.151835604600425
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8689587814501433
+     },
+     "approach_deg": -48.16517461045393,
+     "spawn_to_lug_m": 0.5119628976526964,
+     "nominal_stance_wall_clear_m": 0.8025100204217155,
+     "best_candidate_stance_wall_clear_m": 0.856327680420493,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.706040103889807,
+      -2.15116787503118
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.6689598961101936
+     },
+     "approach_deg": 112.2770572598106,
+     "spawn_to_lug_m": 0.8816520882302408,
+     "nominal_stance_wall_clear_m": 0.3029609884770432,
+     "best_candidate_stance_wall_clear_m": 0.30980885400979585,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77963-5644e3dd",
+   "seed": 77963,
+   "sha8": "5644e3dd",
+   "crate_xy": [
+    4.45006454696426,
+    -2.0806829759275436
+   ],
+   "crate_yaw_deg": 172.16313606299462,
+   "near_wall_flag": false,
+   "peer_case": "absent",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.9249354530357404
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.549130578605271,
+      -2.0943182747838973
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8258694213947292
+     },
+     "approach_deg": -67.83782214820782,
+     "spawn_to_lug_m": 0.5887908532109447,
+     "nominal_stance_wall_clear_m": 0.46169999937834594,
+     "best_candidate_stance_wall_clear_m": 0.4752331490516737,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.350998515323249,
+      -2.06704767707119
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 1.0240014846767518
+     },
+     "approach_deg": -96.27433403648503,
+     "spawn_to_lug_m": 2.15129228821862,
+     "nominal_stance_wall_clear_m": 0.914677508687263,
+     "best_candidate_stance_wall_clear_m": 0.9686789180227745,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77964-5644e3dd",
+   "seed": 77964,
+   "sha8": "5644e3dd",
+   "crate_xy": [
+    4.541292941120897,
+    -1.464406934761977
+   ],
+   "crate_yaw_deg": 84.59731508082017,
+   "near_wall_flag": false,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.8337070588791032
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.531877444528332,
+      -1.5639626901150223
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8431225554716683
+     },
+     "approach_deg": -41.20083121854814,
+     "spawn_to_lug_m": 1.134606424635304,
+     "nominal_stance_wall_clear_m": 0.6915769287930964,
+     "best_candidate_stance_wall_clear_m": 0.7456346769426123,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.550708437713462,
+      -1.3648511794089317
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8242915622865382
+     },
+     "approach_deg": -3.685545630634652e-14,
+     "spawn_to_lug_m": 0.20299999999999993,
+     "nominal_stance_wall_clear_m": 0.63583718896511,
+     "best_candidate_stance_wall_clear_m": 0.6889698510409252,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77965-5644e3dd",
+   "seed": 77965,
+   "sha8": "5644e3dd",
+   "crate_xy": [
+    4.563502976129979,
+    -1.55921156033479
+   ],
+   "crate_yaw_deg": 83.37586647818557,
+   "near_wall_flag": false,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.8114970238700211
+   },
+   "outcomes": {
+    "r1": "no_stable_joint_hold_3s",
+    "r2": "no_stable_joint_hold_3s"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.57503853195466,
+      -1.4598791338476873
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7999614680453403
+     },
+     "approach_deg": 38.25580839124989,
+     "spawn_to_lug_m": 1.6043933232607286,
+     "nominal_stance_wall_clear_m": 0.6073517786289664,
+     "best_candidate_stance_wall_clear_m": 0.6602600636025964,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.551967420305298,
+      -1.6585439868218927
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8230325796947019
+     },
+     "approach_deg": -121.92480373743076,
+     "spawn_to_lug_m": 1.2214811033608879,
+     "nominal_stance_wall_clear_m": 0.6756422691110757,
+     "best_candidate_stance_wall_clear_m": 0.7296839390252556,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77966-5644e3dd",
+   "seed": 77966,
+   "sha8": "5644e3dd",
+   "crate_xy": [
+    4.813567533592325,
+    -2.238628649275179
+   ],
+   "crate_yaw_deg": 176.82431217332248,
+   "near_wall_flag": false,
+   "peer_case": "near_own",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.5614324664076754
+   },
+   "outcomes": {
+    "r1": "no_stable_joint_hold_3s",
+    "r2": "no_stable_joint_hold_3s"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.9134139696816135,
+      -2.244168432688603
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.46158603031838685
+     },
+     "approach_deg": 134.36670565158988,
+     "spawn_to_lug_m": 0.6983423360165573,
+     "nominal_stance_wall_clear_m": 0.09588701558338134,
+     "best_candidate_stance_wall_clear_m": 0.10536554865466943,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.713721097503036,
+      -2.2330888658617547
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.661278902496964
+     },
+     "approach_deg": -56.10638800086346,
+     "spawn_to_lug_m": 1.0736089110246938,
+     "nominal_stance_wall_clear_m": 0.6869779172319694,
+     "best_candidate_stance_wall_clear_m": 0.6989594895626834,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77967-5644e3dd",
+   "seed": 77967,
+   "sha8": "5644e3dd",
+   "crate_xy": [
+    4.755294088647821,
+    -2.045832948611603
+   ],
+   "crate_yaw_deg": -175.70436677368806,
+   "near_wall_flag": false,
+   "peer_case": "absent",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.6197059113521796
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.655575004137718,
+      -2.0533232212679984
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7194249958622819
+     },
+     "approach_deg": 81.56289981729891,
+     "spawn_to_lug_m": 0.6086014200443843,
+     "nominal_stance_wall_clear_m": 0.7448744015020818,
+     "best_candidate_stance_wall_clear_m": 0.7568406916432944,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.855013173157923,
+      -2.0383426759552075
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.5199868268420772
+     },
+     "approach_deg": 101.03054142065473,
+     "spawn_to_lug_m": 2.201704587859662,
+     "nominal_stance_wall_clear_m": 0.15453742120227723,
+     "best_candidate_stance_wall_clear_m": 0.16499690362605815,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77968-5644e3dd",
+   "seed": 77968,
+   "sha8": "5644e3dd",
+   "crate_xy": [
+    4.563542078460996,
+    -2.747645674016485
+   ],
+   "crate_yaw_deg": 84.43974864568476,
+   "near_wall_flag": true,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.3773543259835147
+   },
+   "outcomes": {
+    "r1": "no_stable_joint_hold_3s",
+    "r2": "no_stable_joint_hold_3s"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.553852834205211,
+      -2.8471751598272323
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.27782484017276754
+     },
+     "approach_deg": -115.6960790485722,
+     "spawn_to_lug_m": 1.1719668196613866,
+     "nominal_stance_wall_clear_m": -0.08725295201629696,
+     "best_candidate_stance_wall_clear_m": -0.07569062598384874,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.573231322716781,
+      -2.648116188205738
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.47688381179426187
+     },
+     "approach_deg": -8.774433120976278e-14,
+     "spawn_to_lug_m": 0.20299999999999993,
+     "nominal_stance_wall_clear_m": 0.5019616039833263,
+     "best_candidate_stance_wall_clear_m": 0.5139051422806162,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "no_stable_joint_hold_3s"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77969-5644e3dd",
+   "seed": 77969,
+   "sha8": "5644e3dd",
+   "crate_xy": [
+    4.574950790197967,
+    -2.8037939613808556
+   ],
+   "crate_yaw_deg": -87.63598283309129,
+   "near_wall_flag": true,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.3212060386191443
+   },
+   "outcomes": {
+    "r1": "peer_search_handoff",
+    "r2": "search_timeout_handoff"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.570825972449962,
+      -2.7038790682039835
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.4211209317960164
+     },
+     "approach_deg": 85.24063456008084,
+     "spawn_to_lug_m": 1.1841087515738717,
+     "nominal_stance_wall_clear_m": 0.4469541224226854,
+     "best_candidate_stance_wall_clear_m": 0.45894390960390985,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "peer_search_handoff"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.579075607945972,
+      -2.9037088545577276
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.22129114544227227
+     },
+     "approach_deg": -96.0727987898424,
+     "spawn_to_lug_m": 0.670859228946,
+     "nominal_stance_wall_clear_m": -0.14454204518439678,
+     "best_candidate_stance_wall_clear_m": -0.1357767315027269,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "search_timeout_handoff"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77970-bf31840f",
+   "seed": 77970,
+   "sha8": "bf31840f",
+   "crate_xy": [
+    4.670768577833962,
+    -1.5938676544841701
+   ],
+   "crate_yaw_deg": -94.66806192829482,
+   "near_wall_flag": false,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7042314221660385
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.662630283251586,
+      -1.6935359451351613
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7123697167484145
+     },
+     "approach_deg": 19.216334420470194,
+     "spawn_to_lug_m": 0.5397840869784585,
+     "nominal_stance_wall_clear_m": 0.5583207741298726,
+     "best_candidate_stance_wall_clear_m": 0.6123763614717144,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.678906872416338,
+      -1.494199363833179
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.6960931275836625
+     },
+     "approach_deg": -8.774433120976278e-14,
+     "spawn_to_lug_m": 0.20299999999999996,
+     "nominal_stance_wall_clear_m": 0.5101420702022044,
+     "best_candidate_stance_wall_clear_m": 0.5633980584036486,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77971-bf31840f",
+   "seed": 77971,
+   "sha8": "bf31840f",
+   "crate_xy": [
+    4.579727462972339,
+    -1.8508924358655325
+   ],
+   "crate_yaw_deg": -83.66116574882003,
+   "near_wall_flag": false,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7952725370276615
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.590768260792578,
+      -1.9502810709476817
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.784231739207422
+     },
+     "approach_deg": -112.20402407991371,
+     "spawn_to_lug_m": 0.9211168929841601,
+     "nominal_stance_wall_clear_m": 0.5925917754797514,
+     "best_candidate_stance_wall_clear_m": 0.645554625334108,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.568686665152099,
+      -1.7515038007833834
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8063133348479011
+     },
+     "approach_deg": 28.6311124122588,
+     "spawn_to_lug_m": 1.1121434766728566,
+     "nominal_stance_wall_clear_m": 0.6579532985755716,
+     "best_candidate_stance_wall_clear_m": 0.7120009226853947,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77972-bf31840f",
+   "seed": 77972,
+   "sha8": "bf31840f",
+   "crate_xy": [
+    4.698799607811013,
+    -2.023455626353925
+   ],
+   "crate_yaw_deg": -178.82207701075433,
+   "near_wall_flag": false,
+   "peer_case": "near_own",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.6762003921889871
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.798778475682713,
+      -2.021399907722139
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.5762215243172871
+     },
+     "approach_deg": 128.94954034277947,
+     "spawn_to_lug_m": 0.6007033955841098,
+     "nominal_stance_wall_clear_m": 0.2102629432887542,
+     "best_candidate_stance_wall_clear_m": 0.21798290592009398,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.598820739939313,
+      -2.025511344985711
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.776179260060687
+     },
+     "approach_deg": -48.80576445079681,
+     "spawn_to_lug_m": 0.8184676408436189,
+     "nominal_stance_wall_clear_m": 0.8021378410892199,
+     "best_candidate_stance_wall_clear_m": 0.8141353052338236,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77973-bf31840f",
+   "seed": 77973,
+   "sha8": "bf31840f",
+   "crate_xy": [
+    4.600121502356219,
+    -1.979080853184452
+   ],
+   "crate_yaw_deg": 3.9301845658629277,
+   "near_wall_flag": false,
+   "peer_case": "absent",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7748784976437809
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.500356671499261,
+      -1.9859349413136231
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8746433285007397
+     },
+     "approach_deg": 106.00219115575209,
+     "spawn_to_lug_m": 1.0098537568941444,
+     "nominal_stance_wall_clear_m": 0.9001823969803787,
+     "best_candidate_stance_wall_clear_m": 0.9121541766832134,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.699886333213178,
+      -1.9722267650552807
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.6751136667868222
+     },
+     "approach_deg": 77.5367969139003,
+     "spawn_to_lug_m": 2.204509041894718,
+     "nominal_stance_wall_clear_m": 0.30957459830718315,
+     "best_candidate_stance_wall_clear_m": 0.3197144088413275,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77974-bf31840f",
+   "seed": 77974,
+   "sha8": "bf31840f",
+   "crate_xy": [
+    4.547277420077942,
+    -1.538856268683606
+   ],
+   "crate_yaw_deg": -82.89216028942181,
+   "near_wall_flag": false,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.8277225799220588
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.534903694564584,
+      -1.4396247670476836
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8400963054354159
+     },
+     "approach_deg": -39.04871685169358,
+     "spawn_to_lug_m": 1.1701140271049817,
+     "nominal_stance_wall_clear_m": 0.6943488074415971,
+     "best_candidate_stance_wall_clear_m": 0.748377320795002,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.559651145591299,
+      -1.6380877703195285
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8153488544087016
+     },
+     "approach_deg": -1.3863320611317905e-13,
+     "spawn_to_lug_m": 0.20299999999999993,
+     "nominal_stance_wall_clear_m": 0.6210963524025204,
+     "best_candidate_stance_wall_clear_m": 0.6739091294387098,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77975-bf31840f",
+   "seed": 77975,
+   "sha8": "bf31840f",
+   "crate_xy": [
+    4.647747073018375,
+    -1.4753273966225344
+   ],
+   "crate_yaw_deg": 85.25880131997984,
+   "near_wall_flag": false,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7272529269816251
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.656012585228746,
+      -1.3756695755150057
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7189874147712544
+     },
+     "approach_deg": 91.40327925613458,
+     "spawn_to_lug_m": 1.7218746345024787,
+     "nominal_stance_wall_clear_m": 0.5327870108389272,
+     "best_candidate_stance_wall_clear_m": 0.5860311131711049,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.6394815608080044,
+      -1.5749852177300632
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7355184391919959
+     },
+     "approach_deg": -38.65641709065064,
+     "spawn_to_lug_m": 0.9184375705697753,
+     "nominal_stance_wall_clear_m": 0.581718843124323,
+     "best_candidate_stance_wall_clear_m": 0.6357750439117071,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77976-bf31840f",
+   "seed": 77976,
+   "sha8": "bf31840f",
+   "crate_xy": [
+    4.762207635268965,
+    -2.364891952237154
+   ],
+   "crate_yaw_deg": 178.1477635012641,
+   "near_wall_flag": false,
+   "peer_case": "near_own",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.6127923647310357
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.862155386051274,
+      -2.368124151729349
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.5128446139487263
+     },
+     "approach_deg": 117.56396610248322,
+     "spawn_to_lug_m": 1.990105991507036,
+     "nominal_stance_wall_clear_m": 0.1469470224153995,
+     "best_candidate_stance_wall_clear_m": 0.1552617183597145,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.662259884486655,
+      -2.361659752744959
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7127401155133452
+     },
+     "approach_deg": -52.9509274039778,
+     "spawn_to_lug_m": 1.8938029136408092,
+     "nominal_stance_wall_clear_m": 0.5996753582597425,
+     "best_candidate_stance_wall_clear_m": 0.6536403757313713,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77977-bf31840f",
+   "seed": 77977,
+   "sha8": "bf31840f",
+   "crate_xy": [
+    4.794172336741051,
+    -2.201574178756292
+   ],
+   "crate_yaw_deg": -178.0626984868634,
+   "near_wall_flag": false,
+   "peer_case": "absent",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.5808276632589496
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.6942294948429195,
+      -2.2049547635171116
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.6807705051570808
+     },
+     "approach_deg": 57.782208697892685,
+     "spawn_to_lug_m": 0.5918166870256998,
+     "nominal_stance_wall_clear_m": 0.7066584752774185,
+     "best_candidate_stance_wall_clear_m": 0.7186516163051941,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.894115178639182,
+      -2.198193593995472
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.48088482136081845
+     },
+     "approach_deg": 84.5664463259214,
+     "spawn_to_lug_m": 2.006276229330696,
+     "nominal_stance_wall_clear_m": 0.11499685124048067,
+     "best_candidate_stance_wall_clear_m": 0.12338649301282281,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77978-bf31840f",
+   "seed": 77978,
+   "sha8": "bf31840f",
+   "crate_xy": [
+    4.6126770117299,
+    -2.754008395264413
+   ],
+   "crate_yaw_deg": 84.63950486736722,
+   "near_wall_flag": true,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.3709916047355869
+   },
+   "outcomes": {
+    "r1": "approach_blocked_handoff",
+    "r2": "peer_approach_handoff"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.6033348256320545,
+      -2.853571056734028
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.27142894326597167
+     },
+     "approach_deg": -126.07019058966515,
+     "spawn_to_lug_m": 1.1093076525848993,
+     "nominal_stance_wall_clear_m": -0.09371387321447439,
+     "best_candidate_stance_wall_clear_m": -0.08232538904465087,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "approach_blocked_handoff"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.622019197827746,
+      -2.6544457337947978
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.47055426620520213
+     },
+     "approach_deg": 1.158111684039023e-13,
+     "spawn_to_lug_m": 0.20299999999999996,
+     "nominal_stance_wall_clear_m": 0.49569708268564816,
+     "best_candidate_stance_wall_clear_m": 0.5076446020620018,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "peer_approach_handoff"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77979-bf31840f",
+   "seed": 77979,
+   "sha8": "bf31840f",
+   "crate_xy": [
+    4.529995962029929,
+    -2.799257883700317
+   ],
+   "crate_yaw_deg": 90.19110199300242,
+   "near_wall_flag": true,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.3257421162996831
+   },
+   "outcomes": {
+    "r1": "approach_blocked_handoff",
+    "r2": "peer_approach_handoff"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.530329497310021,
+      -2.8992573274698543
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.2257426725301456
+     },
+     "approach_deg": -125.68207704285753,
+     "spawn_to_lug_m": 0.6341807026767909,
+     "nominal_stance_wall_clear_m": -0.14025623725814834,
+     "best_candidate_stance_wall_clear_m": -0.13340853880477405,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "approach_blocked_handoff"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.529662426749837,
+      -2.6992584399307793
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.4257415600692206
+     },
+     "approach_deg": 21.568651668592217,
+     "spawn_to_lug_m": 0.7604137071070609,
+     "nominal_stance_wall_clear_m": 0.4517404698575145,
+     "best_candidate_stance_wall_clear_m": 0.4637404031098591,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "peer_approach_handoff"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77980-49d11b8e",
+   "seed": 77980,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.5617368581371425,
+    -1.7784375948194993
+   ],
+   "crate_yaw_deg": 89.15247670962084,
+   "near_wall_flag": false,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.8132631418628579
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.5632160113850935,
+      -1.6784485348895795
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8117839886149069
+     },
+     "approach_deg": 17.269127240828897,
+     "spawn_to_lug_m": 0.42827444024686323,
+     "nominal_stance_wall_clear_m": 0.6388848482489238,
+     "best_candidate_stance_wall_clear_m": 0.6926406556470399,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.5602577048891915,
+      -1.878426654749419
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8147422951108089
+     },
+     "approach_deg": -1.1449996853268662e-13,
+     "spawn_to_lug_m": 0.2030000000000001,
+     "nominal_stance_wall_clear_m": 0.6476414354767919,
+     "best_candidate_stance_wall_clear_m": 0.7015425718075996,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77981-49d11b8e",
+   "seed": 77981,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.6139362077193145,
+    -1.652923285212187
+   ],
+   "crate_yaw_deg": -85.33628719013142,
+   "near_wall_flag": false,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7610637922806859
+   },
+   "outcomes": {
+    "r1": "approach_blocked_handoff",
+    "r2": "peer_approach_handoff"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.605805478625111,
+      -1.5532543770993923
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7691945213748891
+     },
+     "approach_deg": 104.42384581483586,
+     "spawn_to_lug_m": 1.0769913167572078,
+     "nominal_stance_wall_clear_m": 0.6151307503995265,
+     "best_candidate_stance_wall_clear_m": 0.6691862984879438,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "approach_blocked_handoff"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.622066936813518,
+      -1.7525921933249815
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7529330631864827
+     },
+     "approach_deg": -57.293969194325506,
+     "spawn_to_lug_m": 1.2104462984951803,
+     "nominal_stance_wall_clear_m": 0.5669968341618452,
+     "best_candidate_stance_wall_clear_m": 0.6202535264299514,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "peer_approach_handoff"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77982-49d11b8e",
+   "seed": 77982,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.682885255060496,
+    -2.0582831112375977
+   ],
+   "crate_yaw_deg": 1.697160979623582,
+   "near_wall_flag": false,
+   "peer_case": "near_own",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.6921147449395043
+   },
+   "outcomes": {
+    "r1": "alignment_no_progress",
+    "r2": "episode_timeout"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.582929122174274,
+      -2.061244782798063
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.792070877825726
+     },
+     "approach_deg": -107.77247309207182,
+     "spawn_to_lug_m": 0.9431153853909762,
+     "nominal_stance_wall_clear_m": 0.8179848982827196,
+     "best_candidate_stance_wall_clear_m": 0.8299796342290666,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "alignment_no_progress"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.782841387946718,
+      -2.055321439677132
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.5921586120532826
+     },
+     "approach_deg": 81.6129056780545,
+     "spawn_to_lug_m": 1.3431558795857002,
+     "nominal_stance_wall_clear_m": 0.22624459159628899,
+     "best_candidate_stance_wall_clear_m": 0.2344226124919138,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "episode_timeout"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77983-49d11b8e",
+   "seed": 77983,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.619223700012763,
+    -2.2509085070771064
+   ],
+   "crate_yaw_deg": 179.31455555184013,
+   "near_wall_flag": false,
+   "peer_case": "absent",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.7557762999872372
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.7192165441156755,
+      -2.2521048047870025
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.6557834558843249
+     },
+     "approach_deg": -72.19822632623158,
+     "spawn_to_lug_m": 0.7078655489594957,
+     "nominal_stance_wall_clear_m": 0.28979748144261674,
+     "best_candidate_stance_wall_clear_m": 0.2970824058572801,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.519230855909851,
+      -2.2497122093672104
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8557691440901495
+     },
+     "approach_deg": -78.20086351699966,
+     "spawn_to_lug_m": 2.4814769709828166,
+     "nominal_stance_wall_clear_m": 0.7076325341441858,
+     "best_candidate_stance_wall_clear_m": 0.7615218121787672,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77984-49d11b8e",
+   "seed": 77984,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.5361115095072995,
+    -1.5092433978850783
+   ],
+   "crate_yaw_deg": 93.81523668119442,
+   "near_wall_flag": false,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.8388884904927009
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.542765433872428,
+      -1.6090217787626169
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8322345661275724
+     },
+     "approach_deg": -9.694627530190967,
+     "spawn_to_lug_m": 1.216240052412786,
+     "nominal_stance_wall_clear_m": 0.6491928743719202,
+     "best_candidate_stance_wall_clear_m": 0.7025810496974805,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.529457585142171,
+      -1.4094650170075398
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.8455424148578293
+     },
+     "approach_deg": 6.492229350048602e-14,
+     "spawn_to_lug_m": 0.20299999999999996,
+     "nominal_stance_wall_clear_m": 0.6885841066134815,
+     "best_candidate_stance_wall_clear_m": 0.7426260395720174,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77985-49d11b8e",
+   "seed": 77985,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.598746951141481,
+    -1.5654730312781617
+   ],
+   "crate_yaw_deg": 97.70039426938986,
+   "near_wall_flag": false,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.776253048858519
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.612146251608163,
+      -1.6645712590473989
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7628537483918375
+     },
+     "approach_deg": -110.49801671835641,
+     "spawn_to_lug_m": 1.8508648612094036,
+     "nominal_stance_wall_clear_m": 0.566591119477142,
+     "best_candidate_stance_wall_clear_m": 0.6192817672716686,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.5853476506748,
+      -1.4663748035089246
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7896523493252005
+     },
+     "approach_deg": 33.28596703540531,
+     "spawn_to_lug_m": 0.801282439363878,
+     "nominal_stance_wall_clear_m": 0.6459149782398959,
+     "best_candidate_stance_wall_clear_m": 0.6999221265649267,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77986-49d11b8e",
+   "seed": 77986,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.769179640932372,
+    -2.020003953777312
+   ],
+   "crate_yaw_deg": 6.2057006098902985,
+   "near_wall_flag": false,
+   "peer_case": "near_own",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.605820359067628
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.669765619560439,
+      -2.0308137805409983
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.705234380439561
+     },
+     "approach_deg": -106.06502067850806,
+     "spawn_to_lug_m": 1.5295356624147056,
+     "nominal_stance_wall_clear_m": 0.7300858623285491,
+     "best_candidate_stance_wall_clear_m": 0.7420155448931809,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.868593662304305,
+      -2.0091941270136253
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.506406337695695
+     },
+     "approach_deg": 76.13015939317285,
+     "spawn_to_lug_m": 1.89725470103353,
+     "nominal_stance_wall_clear_m": 0.14155485580670682,
+     "best_candidate_stance_wall_clear_m": 0.1536779255681993,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77987-49d11b8e",
+   "seed": 77987,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.750479403282251,
+    -2.363542575770506
+   ],
+   "crate_yaw_deg": 4.558256124298572,
+   "near_wall_flag": false,
+   "peer_case": "absent",
+   "center_wall": {
+    "wall": "east",
+    "m": 0.6245205967177497
+   },
+   "outcomes": {
+    "r1": "success",
+    "r2": "success"
+   },
+   "success": true,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.850163107709858,
+      -2.355595307586442
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.5248368922901422
+     },
+     "approach_deg": -53.78026829993015,
+     "spawn_to_lug_m": 0.5236404859465806,
+     "nominal_stance_wall_clear_m": 0.15945683161203153,
+     "best_candidate_stance_wall_clear_m": 0.17014577828987346,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "success"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.650795698854643,
+      -2.37148984395457
+     ],
+     "lug_wall": {
+      "wall": "east",
+      "m": 0.7242043011453573
+     },
+     "approach_deg": -72.5276164377536,
+     "spawn_to_lug_m": 2.4669111408732505,
+     "nominal_stance_wall_clear_m": 0.5679335104046646,
+     "best_candidate_stance_wall_clear_m": 0.6212071808234187,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.208
+     },
+     "outcome": "success"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77988-49d11b8e",
+   "seed": 77988,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.6718739976635515,
+    -2.817487480669038
+   ],
+   "crate_yaw_deg": 87.66153768159543,
+   "near_wall_flag": true,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.3075125193309617
+   },
+   "outcomes": {
+    "r1": "approach_blocked_handoff",
+    "r2": "peer_approach_handoff"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.667793743989943,
+      -2.9174042036435184
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.20759579635648154
+     },
+     "approach_deg": -111.56916329696462,
+     "spawn_to_lug_m": 1.4612156856202452,
+     "nominal_stance_wall_clear_m": -0.15824098067349962,
+     "best_candidate_stance_wall_clear_m": -0.14949815148921547,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "approach_blocked_handoff"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.67595425133716,
+      -2.717570757694558
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.40742924230544186
+     },
+     "approach_deg": 1.158111684039023e-13,
+     "spawn_to_lug_m": 0.20299999999999993,
+     "nominal_stance_wall_clear_m": 0.43326601933542297,
+     "best_candidate_stance_wall_clear_m": 0.4452560260923606,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "peer_approach_handoff"
+    }
+   }
+  },
+  {
+   "run": "crate-diag-77989-49d11b8e",
+   "seed": 77989,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.626693333373837,
+    -2.755391915545516
+   ],
+   "crate_yaw_deg": -85.37395905366456,
+   "near_wall_flag": true,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.3696080844544837
+   },
+   "outcomes": {
+    "r1": "alignment_no_progress",
+    "r2": "episode_timeout"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "blue",
+     "lug_xy": [
+      4.63475852860216,
+      -2.855066148052865
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.26993385194713493
+     },
+     "approach_deg": -107.97263643207411,
+     "spawn_to_lug_m": 1.1686828390230286,
+     "nominal_stance_wall_clear_m": -0.09542764376726892,
+     "best_candidate_stance_wall_clear_m": -0.08467950701585164,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "alignment_no_progress"
+    },
+    "r2": {
+     "end": "teal",
+     "lug_xy": [
+      4.618628138145515,
+      -2.6557176830381675
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.4692823169618324
+     },
+     "approach_deg": 41.81366819769056,
+     "spawn_to_lug_m": 0.9426355897656051,
+     "nominal_stance_wall_clear_m": 0.49464381267623625,
+     "best_candidate_stance_wall_clear_m": 0.506604720577118,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "episode_timeout"
+    }
+   }
+  },
+  {
+   "run": "crate-reproduction-77969-49d11b8e",
+   "seed": 77969,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.574950790197967,
+    -2.8037939613808556
+   ],
+   "crate_yaw_deg": -87.63598283309129,
+   "near_wall_flag": true,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.3212060386191443
+   },
+   "outcomes": {
+    "r1": "peer_approach_handoff",
+    "r2": "approach_blocked_handoff"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.570825972449962,
+      -2.7038790682039835
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.4211209317960164
+     },
+     "approach_deg": 85.24063456008084,
+     "spawn_to_lug_m": 1.1841087515738717,
+     "nominal_stance_wall_clear_m": 0.4469541224226854,
+     "best_candidate_stance_wall_clear_m": 0.45894390960390985,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "peer_approach_handoff"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.579075607945972,
+      -2.9037088545577276
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.22129114544227227
+     },
+     "approach_deg": -96.0727987898424,
+     "spawn_to_lug_m": 0.670859228946,
+     "nominal_stance_wall_clear_m": -0.14454204518439678,
+     "best_candidate_stance_wall_clear_m": -0.1357767315027269,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "approach_blocked_handoff"
+    }
+   }
+  },
+  {
+   "run": "crate-reproduction-77978-49d11b8e",
+   "seed": 77978,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.6126770117299,
+    -2.754008395264413
+   ],
+   "crate_yaw_deg": 84.63950486736722,
+   "near_wall_flag": true,
+   "peer_case": "other_end",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.3709916047355869
+   },
+   "outcomes": {
+    "r1": "approach_blocked_handoff",
+    "r2": "peer_approach_handoff"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.6033348256320545,
+      -2.853571056734028
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.27142894326597167
+     },
+     "approach_deg": -126.07019058966515,
+     "spawn_to_lug_m": 1.1093076525848993,
+     "nominal_stance_wall_clear_m": -0.09371387321447439,
+     "best_candidate_stance_wall_clear_m": -0.08232538904465087,
+     "best_candidate": {
+      "offset_deg": -14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "approach_blocked_handoff"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.622019197827746,
+      -2.6544457337947978
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.47055426620520213
+     },
+     "approach_deg": 1.158111684039023e-13,
+     "spawn_to_lug_m": 0.20299999999999996,
+     "nominal_stance_wall_clear_m": 0.49569708268564816,
+     "best_candidate_stance_wall_clear_m": 0.5076446020620018,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "peer_approach_handoff"
+    }
+   }
+  },
+  {
+   "run": "crate-reproduction-77979-49d11b8e",
+   "seed": 77979,
+   "sha8": "49d11b8e",
+   "crate_xy": [
+    4.529995962029929,
+    -2.799257883700317
+   ],
+   "crate_yaw_deg": 90.19110199300242,
+   "near_wall_flag": true,
+   "peer_case": "approaching",
+   "center_wall": {
+    "wall": "south",
+    "m": 0.3257421162996831
+   },
+   "outcomes": {
+    "r1": "alignment_no_progress",
+    "r2": "episode_timeout"
+   },
+   "success": false,
+   "robots": {
+    "r1": {
+     "end": "teal",
+     "lug_xy": [
+      4.530329497310021,
+      -2.8992573274698543
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.2257426725301456
+     },
+     "approach_deg": -125.68207704285753,
+     "spawn_to_lug_m": 0.6341807026767909,
+     "nominal_stance_wall_clear_m": -0.14025623725814834,
+     "best_candidate_stance_wall_clear_m": -0.13340853880477405,
+     "best_candidate": {
+      "offset_deg": 14.999999999999998,
+      "dist_m": 0.196
+     },
+     "outcome": "alignment_no_progress"
+    },
+    "r2": {
+     "end": "blue",
+     "lug_xy": [
+      4.529662426749837,
+      -2.6992584399307793
+     ],
+     "lug_wall": {
+      "wall": "south",
+      "m": 0.4257415600692206
+     },
+     "approach_deg": 21.568651668592217,
+     "spawn_to_lug_m": 0.7604137071070609,
+     "nominal_stance_wall_clear_m": 0.4517404698575145,
+     "best_candidate_stance_wall_clear_m": 0.4637404031098591,
+     "best_candidate": {
+      "offset_deg": 0.0,
+      "dist_m": 0.208
+     },
+     "outcome": "episode_timeout"
+    }
+   }
+  }
+ ],
+ "pinned_yaw_drift_77979_bf31840f_r1_eval_only": {
+  "ticks": [
+   96,
+   144
+  ],
+  "elapsed_s": [
+   9.6,
+   14.4
+  ],
+  "issued_yaw_change_rad": 1.6659170828380252,
+  "eval_only_true_yaw_change_rad": 0.46982846986856275
+ },
+ "frames_viewed": {
+  "77978-bf31": {
+   "run": "crate-diag-77978-bf31840f",
+   "robot": "r1",
+   "sheet": "frames/77978-bf31.jpg",
+   "frames": [
+    {
+     "tick": 0,
+     "elapsed_s_from_grasp_start": 0.0,
+     "overview": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-overview/000000-grasp.jpg",
+      "sha256": "75f57c50893be5dbd1365e6486e20cf3b99095066fda2cd1ede995ea688cd933"
+     },
+     "own": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-own/r1/000000-grasp.jpg",
+      "sha256": "4ef55b649911d46f3dfc6f22f19893df4fe568c5048a94d8163be5655c5bf750"
+     }
+    },
+    {
+     "tick": 100,
+     "elapsed_s_from_grasp_start": 10.0,
+     "overview": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-overview/000100-grasp.jpg",
+      "sha256": "a77da2168381d1003719b5c07bfb7074d3ae53e9ee4887cc4f227317475bc63f"
+     },
+     "own": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-own/r1/000100-grasp.jpg",
+      "sha256": "25b5b393376e607314dd64a6612a82dfaf9c0a14bdb4167900737b81042c6bc7"
+     }
+    },
+    {
+     "tick": 130,
+     "elapsed_s_from_grasp_start": 13.0,
+     "overview": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-overview/000130-grasp.jpg",
+      "sha256": "9a95970ff474cc1bea2fc0a13d4adf111c9de8261ecc24f39e7232411f63fe15"
+     },
+     "own": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-own/r1/000130-grasp.jpg",
+      "sha256": "6799d9f301df080f95fce0fc5eadf963d406907ed5420f01afac52b7e6516a15"
+     }
+    },
+    {
+     "tick": 240,
+     "elapsed_s_from_grasp_start": 24.0,
+     "overview": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-overview/000240-grasp.jpg",
+      "sha256": "2280bd1d5454a2a719b903e0226f0aa50d78b389fd93f80d39f9c881008d7f51"
+     },
+     "own": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-own/r1/000240-grasp.jpg",
+      "sha256": "afbb1a2f65e5867129e48970ca4fec08e60e6b96ea7566e0e42488aeed29347a"
+     }
+    },
+    {
+     "tick": 300,
+     "elapsed_s_from_grasp_start": 30.0,
+     "overview": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-overview/000300-grasp.jpg",
+      "sha256": "c4fe9ab1bf85790a99d25637b8c0659fa8951e41f101272d3a5faaa104507ee9"
+     },
+     "own": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-own/r1/000300-grasp.jpg",
+      "sha256": "7de9c16b0b4e50a3c5123779a2fc4a4c038abeadc0ec643a2561c2098f43d010"
+     }
+    },
+    {
+     "tick": 330,
+     "elapsed_s_from_grasp_start": 33.0,
+     "overview": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-overview/000330-grasp.jpg",
+      "sha256": "658fb5eced1f29806fd76dffe9ad18611923744846cc1f28e525172a0c506fce"
+     },
+     "own": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-own/r1/000330-grasp.jpg",
+      "sha256": "9846e4d3e852c8010f213f46dd7c2ed0c8b7668a52eb45760e4d2580b1da8142"
+     }
+    },
+    {
+     "tick": 350,
+     "elapsed_s_from_grasp_start": 35.0,
+     "overview": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-overview/000350-grasp.jpg",
+      "sha256": "5cda4195a92009b05929964132491b093be8b89a38b4ae952cce8dfa5caa1cdb"
+     },
+     "own": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-own/r1/000350-grasp.jpg",
+      "sha256": "7966244073a95cbe781f990a842d9972117a807c86fab8fafe12702d59a48323"
+     }
+    },
+    {
+     "tick": 360,
+     "elapsed_s_from_grasp_start": 36.0,
+     "overview": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-overview/000360-grasp.jpg",
+      "sha256": "584ca9e0c67a312aaa74e925e5632bf137adf288c5689a15666d3c27348d57d7"
+     },
+     "own": {
+      "path": "crate-diag-77978-bf31840f/raw/eval-own/r1/000360-grasp.jpg",
+      "sha256": "dae333ffb1df2b68399f002c1171b2a24e8f83ee528d17a5a969ec12fc7b4219"
+     }
+    }
+   ]
+  },
+  "77979-bf31": {
+   "run": "crate-diag-77979-bf31840f",
+   "robot": "r1",
+   "sheet": "frames/77979-bf31.jpg",
+   "frames": [
+    {
+     "tick": 0,
+     "elapsed_s_from_grasp_start": 0.0,
+     "overview": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-overview/000000-grasp.jpg",
+      "sha256": "bc823b2c59eb57b1b99e4d8b8b05aeba9a3f594d4ec57567c4f7a846d4fceaad"
+     },
+     "own": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-own/r1/000000-grasp.jpg",
+      "sha256": "7c50c52e45c5ce01f0c9230bbb3d0bf9ebacc849bdb7378f08151b8e35226a8c"
+     }
+    },
+    {
+     "tick": 90,
+     "elapsed_s_from_grasp_start": 9.0,
+     "overview": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-overview/000090-grasp.jpg",
+      "sha256": "9320151ba358b731619f0495fcdb02cd8d083ac71cdd090c2d39d42bf2c3740f"
+     },
+     "own": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-own/r1/000090-grasp.jpg",
+      "sha256": "2a0790dff2d22ede67d0d71a1e4b59351b9efef8dd69d57f2bbee24386f96307"
+     }
+    },
+    {
+     "tick": 110,
+     "elapsed_s_from_grasp_start": 11.0,
+     "overview": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-overview/000110-grasp.jpg",
+      "sha256": "c39fb21067999ccddedcd3ed567574e6db5119092c2bebe4a81ea32e0958f3a3"
+     },
+     "own": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-own/r1/000110-grasp.jpg",
+      "sha256": "eeb30367457f7814912c947277db15299a37a5db8a82294af96b297c34468178"
+     }
+    },
+    {
+     "tick": 130,
+     "elapsed_s_from_grasp_start": 13.0,
+     "overview": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-overview/000130-grasp.jpg",
+      "sha256": "bc714ac3409a9ab434a5aba596d733625d49cb384e2f4334f663d9ae1443c32a"
+     },
+     "own": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-own/r1/000130-grasp.jpg",
+      "sha256": "9ad4556dc95fdb3f5c88e5b55eb4a3be91018c5ac21a95bba9e3d458c1e80dae"
+     }
+    },
+    {
+     "tick": 150,
+     "elapsed_s_from_grasp_start": 15.0,
+     "overview": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-overview/000150-grasp.jpg",
+      "sha256": "3ae9b58bc219558fa0aed9094dcc454924f52ca23a3e3931c06d61cc9dd1fccc"
+     },
+     "own": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-own/r1/000150-grasp.jpg",
+      "sha256": "e91bdac45294d5fc675106e5a86dd420a886ab9d6191c7cd15ed502841cd16c7"
+     }
+    },
+    {
+     "tick": 300,
+     "elapsed_s_from_grasp_start": 30.0,
+     "overview": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-overview/000300-grasp.jpg",
+      "sha256": "3f09407912fb7871162c3351aea4e4ea23a23ef5fb427f86ce105d86e3f1b0f0"
+     },
+     "own": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-own/r1/000300-grasp.jpg",
+      "sha256": "ebb659e821850ef5c3b6967739e3aa24d4fd1a5d15ddf8eff064acc425472cf5"
+     }
+    },
+    {
+     "tick": 600,
+     "elapsed_s_from_grasp_start": 60.0,
+     "overview": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-overview/000600-grasp.jpg",
+      "sha256": "133b99265c1910689720ad0f16217a0c680f90305e421ffdfae6c5b3d9b9f709"
+     },
+     "own": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-own/r1/000600-grasp.jpg",
+      "sha256": "2e2532e0f2e7621ba3d05cafb19652bcb5044743a30e03218db057071640c94d"
+     }
+    },
+    {
+     "tick": 630,
+     "elapsed_s_from_grasp_start": 63.0,
+     "overview": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-overview/000630-grasp.jpg",
+      "sha256": "67167aaaf77b9af978fd00696003b25f7f010e2dd5e029182d68029610b31f5d"
+     },
+     "own": {
+      "path": "crate-diag-77979-bf31840f/raw/eval-own/r1/000630-grasp.jpg",
+      "sha256": "ef8abf61d1f33824f30f5110cbc4013fc86e1f008a8f9d455236cee193315def"
+     }
+    }
+   ]
+  },
+  "77969-5644": {
+   "run": "crate-diag-77969-5644e3dd",
+   "robot": "r2",
+   "sheet": "frames/77969-5644.jpg",
+   "frames": [
+    {
+     "tick": 0,
+     "elapsed_s_from_grasp_start": 0.0,
+     "overview": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-overview/000000-grasp.jpg",
+      "sha256": "eaba89cb3ce2a7322cbd37435ce96fd6f906bb5f57c7f19fc1eeca49929ebc64"
+     },
+     "own": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-own/r2/000000-grasp.jpg",
+      "sha256": "2d1ee2a9d5a7c8be7ac45778d98f4d2a24e8a956bef091aba4dd8f67bb4e4e4a"
+     }
+    },
+    {
+     "tick": 90,
+     "elapsed_s_from_grasp_start": 9.0,
+     "overview": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-overview/000090-grasp.jpg",
+      "sha256": "b9e0d1f93a50047069f9002c789fc92c6f503fca7cf96fbf3ba63b854c06627e"
+     },
+     "own": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-own/r2/000090-grasp.jpg",
+      "sha256": "97f14deb5e938d3b200050ab434ec9e9de09e65f80bba6e05a871b7ac1555931"
+     }
+    },
+    {
+     "tick": 160,
+     "elapsed_s_from_grasp_start": 16.0,
+     "overview": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-overview/000160-grasp.jpg",
+      "sha256": "200344fafdcb030b6ee6247e6641da38191c16f011a7353134cf09b29d179fb1"
+     },
+     "own": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-own/r2/000160-grasp.jpg",
+      "sha256": "8d0080219a21770500bcf6217de54be9a4b7adf2345aefe74173a817a97d81d8"
+     }
+    },
+    {
+     "tick": 300,
+     "elapsed_s_from_grasp_start": 30.0,
+     "overview": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-overview/000300-grasp.jpg",
+      "sha256": "3ced9eb0b2c0ddc0568e20869b3e640632cc64bc6477104f0b0821fcbd1ebfea"
+     },
+     "own": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-own/r2/000300-grasp.jpg",
+      "sha256": "f4cb0316dc95fef40a0e032e4f72a710536a080e42cb34b2fb05b2bcffedda10"
+     }
+    },
+    {
+     "tick": 450,
+     "elapsed_s_from_grasp_start": 45.0,
+     "overview": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-overview/000450-grasp.jpg",
+      "sha256": "a087614d13b14f83fa348a2799393a1554438e500b6769acb00018edea41c5f5"
+     },
+     "own": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-own/r2/000450-grasp.jpg",
+      "sha256": "6e9996700aa7c93ebd7a865af4d56483e1aec96bbaeb630a83c5c8f9d1693497"
+     }
+    },
+    {
+     "tick": 600,
+     "elapsed_s_from_grasp_start": 60.0,
+     "overview": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-overview/000600-grasp.jpg",
+      "sha256": "a6f2594d9a0e9c7738fed41750a569178967a5c6e713a45263cb11baba391d9a"
+     },
+     "own": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-own/r2/000600-grasp.jpg",
+      "sha256": "f06d92b37fa6693d8415cf619f47ad248607046441b560d9e8ed1b586f33e01e"
+     }
+    },
+    {
+     "tick": 640,
+     "elapsed_s_from_grasp_start": 64.0,
+     "overview": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-overview/000640-grasp.jpg",
+      "sha256": "7d6fbdc10ab97301a03023aaa45fbbea1f30ab17686c184719e55dbb84cadeeb"
+     },
+     "own": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-own/r2/000640-grasp.jpg",
+      "sha256": "db1790ba6536778555070a0e9c44125b77628015b5fd7096e7845b300ca24c95"
+     }
+    },
+    {
+     "tick": 640,
+     "elapsed_s_from_grasp_start": 64.0,
+     "overview": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-overview/000640-grasp.jpg",
+      "sha256": "7d6fbdc10ab97301a03023aaa45fbbea1f30ab17686c184719e55dbb84cadeeb"
+     },
+     "own": {
+      "path": "crate-diag-77969-5644e3dd/raw/eval-own/r2/000640-grasp.jpg",
+      "sha256": "db1790ba6536778555070a0e9c44125b77628015b5fd7096e7845b300ca24c95"
+     }
+    }
+   ]
+  }
+ },
+ "frames_not_viewed": "crate-diag-77981/77982/77988/77989-49d11b8e and crate-reproduction-77969/77978/77979-49d11b8e have no jpg locally; GT path plot paths.png used instead"
+}
