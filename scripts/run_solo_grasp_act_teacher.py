@@ -168,7 +168,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 carry5_trim_yaw_calibration_v1=plan.get('carry5_trim_yaw_calibration_v1', False),
                                 trim_calibration=plan.get('trim_calibration'),
                                 carry7_robust_recovery_v1=plan.get('carry7_robust_recovery_v1', False),
-                                reloc9_rotation_calibration_v1=plan.get('reloc9_rotation_calibration_v1', False))
+                                reloc9_rotation_calibration_v1=plan.get('reloc9_rotation_calibration_v1', False),
+                                reloc10_rotation_calibration_v1=plan.get('reloc10_rotation_calibration_v1', False))
             if carry.loc.drive_model_enabled:
                 ops.delta = carry.loc.cached_delta
                 ops.propagate = carry.loc.propagate_point
@@ -584,7 +585,7 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
     if plan.get('carry5_profile') == 'carry5_active_localization_v1' and plan.get('drive_model_deadband_v1') is not True:
         raise ValueError('carry5 requires the merged shared drive_model_deadband_v1')
     for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1',
-                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1'):
+                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1'):
         if type(plan.get(option, False)) is not bool:
             raise ValueError(option+' must be bool')
         if plan.get(option) and plan.get('carry5_profile') != 'carry5_active_localization_v1':

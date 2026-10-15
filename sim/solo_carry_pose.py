@@ -42,7 +42,7 @@ def task_start(static):
 class CommandPose:
     def __init__(self, start, *, now=0., robot_id='r1', map_sha256='', amcl_option='off', drive_model_deadband_v1=False,
                  carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
-                 reloc9_rotation_calibration_v1=False):
+                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False):
         if amcl_option not in ('off', 'report_v1'):
             raise ValueError('unknown carry AMCL report option')
         if (set(start) != START_KEYS
@@ -61,6 +61,12 @@ class CommandPose:
         if reloc9_rotation_calibration_v1 and not drive_model_deadband_v1:
             raise ValueError('reloc9 rotation requires shared drive model')
         self.rotation_calibration = calibration() if reloc9_rotation_calibration_v1 else None
+        if type(reloc10_rotation_calibration_v1) is not bool:
+            raise ValueError('reloc10 rotation must be bool')
+        if reloc10_rotation_calibration_v1 and (not drive_model_deadband_v1 or reloc9_rotation_calibration_v1):
+            raise ValueError('reloc10 requires drive model and excludes reloc9 gain')
+        from harness.reloc10_rotation import calibration as calibration10
+        self.rotation10 = calibration10() if reloc10_rotation_calibration_v1 else None
         if type(carry5_trim_yaw_calibration_v1) is not bool:
             raise ValueError('carry5_trim_yaw_calibration_v1 must be bool')
         self.trim_calibration = None
@@ -98,6 +104,9 @@ class CommandPose:
         if self.rotation_calibration is not None:
             from harness.reloc9_rotation import corrected_delta
             dx, dy, da = corrected_delta(issued, (dx, dy, da), self.rotation_calibration)
+        if self.rotation10 is not None:
+            from harness.reloc10_rotation import corrected_delta as corrected10
+            dx, dy, da = corrected10(issued, (dx, dy, da), self.rotation10)
         if self.trim_calibration is not None:
             from sim.solo_carry6 import calibrated_trim_delta
             dx, dy, da = calibrated_trim_delta(issued, (dx, dy, da), self.trim_calibration)
@@ -187,8 +196,9 @@ class CommandPose:
         if self.partial_epoch is not None:
             distance -= self.partial_epoch[0]; turn -= self.partial_epoch[1]
         xy = MOTION_ERROR['translation_fraction']*distance
-        fraction = (max(.40, self.rotation_calibration['residual_rotation_fraction'])
-                    if self.rotation_calibration is not None else MOTION_ERROR['rotation_fraction'])
+        fitted_rotation = self.rotation10 or self.rotation_calibration
+        fraction = (max(.40, fitted_rotation['residual_rotation_fraction'])
+                    if fitted_rotation is not None else MOTION_ERROR['rotation_fraction'])
         yaw = (fraction*turn+
                MOTION_ERROR['yaw_rad_per_m']*distance)
         # Correlated bias grows with total issued motion, not sqrt(tick count).
@@ -212,6 +222,9 @@ class CommandPose:
                     k:self.rotation_calibration[k] for k in ('schema','yaw_scale','drive_model_sha256','method')},
                     'rotation_error_fraction': max(.40, self.rotation_calibration['residual_rotation_fraction'])}
                    if self.rotation_calibration is not None else {}),
+                **({'reloc10_rotation_calibration_v1': True, 'rotation_calibration': self.rotation10,
+                    'rotation_error_fraction': max(.40, self.rotation10['residual_rotation_fraction'])}
+                   if self.rotation10 is not None else {}),
                 **({'carry5_trim_yaw_calibration_v1': True, 'trim_calibration': self.trim_calibration}
                    if self.trim_calibration is not None else {}),
                 **({'partial_budget_epoch': list(self.partial_epoch), 'partial_is_full_fix': False}
