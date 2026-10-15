@@ -38,7 +38,7 @@ def make_executor(legacy=None, *, self_map_executor='off', **kwargs):
 
 class SelfMapExecutor:
     def __init__(self, robot_id, *, start_time=0., cap_s=180., mapper=None, sweep=None,
-                 bootstrap='off', initial_sweep='off', recovery_profile='off', static_map=None):
+                 bootstrap='off', initial_sweep='off', recovery_profile='off', static_map=None, revision_gate='off', multiframe_registration='off'):
         if not math.isfinite(cap_s) or not 1. <= cap_s <= 300.:
             raise ValueError('FINITE_SELF_MAP_CAP_1_TO_300_REQUIRED')
         self.robot_id, self.started, self.cap_s = robot_id, float(start_time), float(cap_s)
@@ -49,7 +49,8 @@ class SelfMapExecutor:
         self.mapper = mapper if mapper is not None else make_mapper(robot_id=robot_id,
             start_time=start_time, options=Options(self_map_integration=MAP_OPTION,
                 pose_rebuild='refit_history_v1', navigation_support='current_footprint_v1',
-                bootstrap=bootstrap, recovery_profile=recovery_profile), static_map=static_map)
+                bootstrap=bootstrap, recovery_profile=recovery_profile,
+                revision_gate=revision_gate, multiframe_registration=multiframe_registration), static_map=static_map)
         self.recovery = self.mapper.options.recovery_profile != 'off'
         if sweep is None:
             # Existing E2E18/egomap arrival -> bounded full-body observation sweep.
@@ -123,7 +124,11 @@ class SelfMapExecutor:
         command = None
         if self.recovery and self.recovery_started is not None:
             # A deadline belongs to the recovery episode, not each pan/rebuild.
-            if t-self.recovery_started >= 20. or self.recovery_attempts > 3:
+            from harness.selfmap5_revision import RECOVERY_DEADLINE_S, RECOVERY_ATTEMPTS
+            v2 = self.mapper.options.revision_gate != 'off'
+            deadline = RECOVERY_DEADLINE_S if v2 else 20.
+            attempts = RECOVERY_ATTEMPTS if v2 else 3
+            if t-self.recovery_started >= deadline or self.recovery_attempts > attempts:
                 self.stop_reason = 'selfmap4_relocalization_exhausted'
                 self.stage = 'stopped'
                 command = dict(t=float(t), kind='hold')
@@ -164,6 +169,8 @@ class SelfMapExecutor:
                         self.stage = 'spin'
                         self.sweep.request_sweep(t, 'selfmap_observe')
                         self.sweep.start_sweep(np.asarray(self.mapper.odom.pose), t)
+                        if self.mapper.options.multiframe_registration != 'off':
+                            self.mapper.registration.begin_sweep(t)
             elif self.stage == 'spin':
                 # Rotation progress uses issued-command odometry, never SLAM jumps.
                 odom_pose = np.asarray(self.mapper.odom.pose)
@@ -176,6 +183,8 @@ class SelfMapExecutor:
                 command, _ = pulse_command(twist, t, costmap=costmap,
                     pose=pose, motion_model=self.mapper.options.motion_model)
                 if self.sweep.phase != 'sensor_sweep':
+                    if self.mapper.options.multiframe_registration != 'off':
+                        self.mapper.registration.end_sweep()
                     receipt = self.sweep.events[-1]
                     if self.initial_sweep != 'off' and receipt.get('reason') != 'sensor_sweep_completed':
                         if self.recovery:

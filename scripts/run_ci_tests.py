@@ -61,6 +61,7 @@ TEST_PATTERNS = (
     "tests/test_self_map_integration.py",
     "tests/test_self_map_executor.py",
     "tests/test_selfmap4.py",
+    "tests/test_selfmap5.py",
     "tests/test_offline_self_map.py",
     "tests/test_self_map_csm.py",
     "tests/test_self_map_csm_v2.py",

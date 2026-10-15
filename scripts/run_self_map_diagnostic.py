@@ -22,7 +22,8 @@ from scripts.offline_self_map import digest, dump, read, rows, score
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recovery_profile='off'):
+def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recovery_profile='off',
+           revision_gate='off', multiframe_registration='off', render_profile='floor_light_v1'):
     from harness.active_camera import SEARCH
     if not math.isfinite(cap_s) or not 1 <= cap_s <= 300 or abs(cap_s*10-round(cap_s*10)) > 1e-8:
         raise ValueError('CAP_MUST_BE_0_1S_GRID_IN_1_TO_300')
@@ -50,7 +51,8 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
         result.update(execution_bundle_id='selfmap3-prior-bootstrap-v1', check='selfmap3', case='active-selfmap3')
         result['options'].update(bootstrap=bootstrap, initial_sweep=initial_sweep)
     from harness.self_map_integration import Options
-    Options(recovery_profile=recovery_profile)
+    Options(recovery_profile=recovery_profile, revision_gate=revision_gate,
+            multiframe_registration=multiframe_registration)
     if recovery_profile != 'off':
         from harness.selfmap4_geometry import static_input
         _, sha = static_input()
@@ -58,6 +60,17 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
                       supplied_map_to_controller=True, authored_static_map_sha256=sha)
         result['options'].update(recovery_profile=recovery_profile)
         result['controller_inputs'].append('authored_static_geometry')
+    if render_profile not in ('floor_light_v1', 'floor_light_textured_v1'):
+        raise ValueError('UNKNOWN_SELFMAP_RENDER_PROFILE')
+    if revision_gate != 'off' or multiframe_registration != 'off' or render_profile != 'floor_light_v1':
+        result.update(execution_bundle_id='selfmap5-opt-in-v1', check='selfmap5', case='active-selfmap5',
+            pool_with_previous_results=False, scene_version=render_profile,
+            dependencies=([dict(pr=511, branch='claude/scene-floor-texture',
+                source_sha='6a73c3aab305f250d0ecd9591922b160b9c709ab',
+                required='render_profile + natural_scene_texture assets + nearclip API',
+                merged_verified=False)] if render_profile == 'floor_light_textured_v1' else []))
+        result['options'].update(revision_gate=revision_gate, multiframe_registration=multiframe_registration,
+                                 render_profile=render_profile)
     return result
 
 
@@ -126,6 +139,10 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
     audit = InputAudit(b['task']['robot_id'])
     result = dict(status='HOST_ERROR', source_sha=b['source_sha'], seed=b['task']['seed'],
         model_calls=0, complete=False, physical_success_unverified=True, frames=0)
+    if b.get('check') == 'selfmap5':
+        result.update(scene_version=b['scene_version'], render_profile=b['options']['render_profile'],
+            revision_gate=b['options']['revision_gate'],
+            multiframe_registration=b['options']['multiframe_registration'], pool_with_previous_results=False)
     try:
         if backend_factory.__module__.startswith('sim.'):
             missing = [name for name in ('scipy', 'matplotlib', 'mujoco')
@@ -134,6 +151,10 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
             if missing:
                 raise RuntimeError('MISSING_EXISTING_ENV_DEPENDENCIES: '+','.join(missing))
         from scripts.run_wall_servo_stiffness import arm
+        if backend_factory.__module__.startswith('sim.') and b['options'].get('render_profile') == 'floor_light_textured_v1':
+            # Fail closed before constructing the plant when PR511 is absent.
+            from sim.render_profile import profile_record
+            profile_record('floor_light_textured_v1')
         backend = backend_factory(b, out, seed=b['task']['seed'])
         backend.reset(5.)
         start, cap, robot = backend.now, b['case_cap_s'], b['task']['robot_id']
@@ -148,6 +169,9 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
             extra = dict(recovery_profile=b['options']['recovery_profile'],
                          static_map=audit.static_map(static, sha))
             result['authored_static_map_sha256'] = sha
+        for option in ('revision_gate', 'multiframe_registration'):
+            if b['options'].get(option, 'off') != 'off':
+                extra[option] = b['options'][option]
         controller = controller_factory(self_map_executor=OPTION, robot_id=robot,
             start_time=start, cap_s=cap, bootstrap=b['options'].get('bootstrap', 'off'),
             initial_sweep=b['options'].get('initial_sweep', 'off'), **extra)
@@ -248,10 +272,14 @@ def main(argv=None):
     p.add_argument('--bootstrap', choices=['off', 'command_prior_v1'], default='off')
     p.add_argument('--initial-sweep', choices=['off', 'required_360_v1'], default='off')
     p.add_argument('--recovery-profile', choices=['off', 'selfmap4_recovery_v1'], default='off')
+    p.add_argument('--revision-gate', choices=['off', 'selfmap4_revision_gate_v2'], default='off')
+    p.add_argument('--multiframe-registration', choices=['off', 'selfmap4_multiframe_registration_v1'], default='off')
+    p.add_argument('--render-profile', choices=['floor_light_v1', 'floor_light_textured_v1'], default='floor_light_v1')
     p.add_argument('--execute', action='store_true')
     a = p.parse_args(argv)
     b = bundle(a.expected_source_sha, a.seed, a.cap_s, bootstrap=a.bootstrap, initial_sweep=a.initial_sweep,
-               recovery_profile=a.recovery_profile)
+               recovery_profile=a.recovery_profile, revision_gate=a.revision_gate,
+               multiframe_registration=a.multiframe_registration, render_profile=a.render_profile)
     if not a.execute or a.self_map_executor == 'off':
         print(json.dumps(dict(status='PREPARED_NOT_EXECUTED', bundle=b, storage=storage_estimate(a.cap_s))))
         return 0

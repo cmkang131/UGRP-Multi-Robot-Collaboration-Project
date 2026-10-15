@@ -14,7 +14,7 @@ from pathlib import Path
 import numpy as np
 from scipy.ndimage import binary_dilation, label
 
-from harness.natural_floor_slam import NaturalFloorSLAM, Observation, compose, extract
+from harness.natural_floor_slam import NaturalFloorSLAM, Observation, compose, extract, _motion_covariance
 from harness.self_odom_grid import OdomGrid, ray_cells, transform
 from harness.own_map_navigation import ObservedGrid, NavigationOptions, frontier_candidates
 from harness.self_pulse_odom import command_odometry
@@ -35,12 +35,17 @@ class Options:
     navigation_support: str = 'off'
     bootstrap: str = 'off'
     recovery_profile: str = 'off'
+    revision_gate: str = 'off'
+    multiframe_registration: str = 'off'
+    revision_xy_threshold_m: float = .1
+    revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
         if self.self_map_integration not in ('off', OPTION):
             raise ValueError('UNKNOWN_SELF_MAP_INTEGRATION')
         if any(not math.isfinite(v) or v <= 0 for v in
-               (self.resolution_m, self.max_sigma_xy_m, self.max_sigma_yaw_rad)):
+               (self.resolution_m, self.max_sigma_xy_m, self.max_sigma_yaw_rad,
+                self.revision_xy_threshold_m, self.revision_yaw_threshold_rad)):
             raise ValueError('INVALID_SELF_MAP_OPTIONS')
         if type(self.stable_views) is not int or self.stable_views < 2:
             raise ValueError('INVALID_STABLE_VIEWS')
@@ -54,6 +59,14 @@ class Options:
             raise ValueError('UNKNOWN_SELF_MAP_BOOTSTRAP')
         if self.recovery_profile not in ('off', 'selfmap4_recovery_v1'):
             raise ValueError('UNKNOWN_SELF_MAP_RECOVERY')
+        from harness.selfmap5_revision import OPTION as REVISION
+        from harness.selfmap5_registration import OPTION as MULTIFRAME
+        if self.revision_gate not in ('off', REVISION):
+            raise ValueError('UNKNOWN_REVISION_GATE')
+        if self.multiframe_registration not in ('off', MULTIFRAME):
+            raise ValueError('UNKNOWN_MULTIFRAME_REGISTRATION')
+        if (self.revision_gate != 'off' or self.multiframe_registration != 'off') and self.recovery_profile == 'off':
+            raise ValueError('SELFMAP5_REQUIRES_RECOVERY_PROFILE')
 
 
 def make_mapper(legacy=None, *, options=None, **kwargs):
@@ -151,7 +164,8 @@ class SelfMapIntegration:
             from harness.selfmap4_geometry import StaticRegistration, PlaneFlow
             if static_map is None:
                 raise ValueError('SELFMAP4_AUTHORED_STATIC_MAP_REQUIRED')
-            self.registration = StaticRegistration(static_map)
+            self.registration = StaticRegistration(static_map,
+                multiframe_registration=self.options.multiframe_registration)
             self.flow = PlaneFlow()
         elif static_map is not None:
             raise ValueError('STATIC_MAP_REQUIRES_SELFMAP4_PROFILE')
@@ -181,6 +195,9 @@ class SelfMapIntegration:
         self.last_rebuild_t = -math.inf
         self.prior_frames = set()
         self.rebuild_cause = None
+        self.pending_revision = None
+        self.last_visual_frame_id = -1
+        self.distance_since_visual = 0.
 
     def planning_grid(self):
         """Current body support only; never changes occupancy/coverage evidence."""
@@ -204,7 +221,8 @@ class SelfMapIntegration:
         fit keeps the previous map quarantined and completion blocked. This is
         landmark-bank refitting, not a claim of global pose-graph optimization.
         """
-        if self.recovery and (len(self.rebuilds) >= 2 or t-self.last_rebuild_t < 20.):
+        cooldown = self.rebuild_cooldown()
+        if self.recovery and (len(self.rebuilds) >= 2 or t-self.last_rebuild_t < cooldown):
             return dict(t=float(t), committed=False, deferred=True,
                         reason='selfmap4_rebuild_budget_or_cooldown')
         if self.recovery and self.rebuild_cause == 'static_frame_correction':
@@ -218,6 +236,8 @@ class SelfMapIntegration:
                 committed=False, reason='static_history_not_independently_refitted')
             self.rebuilds.append(receipt)
             return receipt
+        if self.options.revision_gate != 'off':
+            return self.rebuild_segment(t)
         replacement = PoseGrid(self.robot_id, self.options.resolution_m, self.registration)
         poses, unresolved = [], []
         for record in self.history:
@@ -253,6 +273,40 @@ class SelfMapIntegration:
         # Old zone coordinates/confirmation must not survive a map revision.
         self.zones.tracks.clear()
         self.sectors.clear()  # require a fresh admitted sweep after rebuilding
+        return receipt
+
+    def rebuild_cooldown(self):
+        from harness.selfmap5_revision import REBUILD_COOLDOWN_S
+        return REBUILD_COOLDOWN_S if self.options.revision_gate != 'off' else (20. if self.recovery else 5.)
+
+    def rebuild_segment(self, t):
+        from harness.selfmap5_revision import partial_poses
+        revision = self.pending_revision
+        poses, reason = (partial_poses(self.history, revision) if revision is not None
+                         else (None, 'missing_revision_endpoint'))
+        replacement = PoseGrid(self.robot_id, self.options.resolution_m, self.registration)
+        if poses is not None:
+            for record, pose in zip(self.history, poses):
+                replacement.insert(frame_id=record['observation'].frame_id, pose=pose, **record['rays'])
+        changed = ([r['observation'].frame_id for r in self.history
+                    if r['observation'].frame_id > revision['anchor_frame_id']] if poses is not None else [])
+        receipt = dict(t=float(t), frames=len(self.history), refitted=len(changed),
+            preserved=len(self.history)-len(changed), corrected_frame_ids=changed,
+            unresolved=[] if poses is not None else [r['observation'].frame_id for r in self.history],
+            committed=poses is not None, reason=reason or 'command_segment_distance_distribution',
+            revision=copy.deepcopy(revision), feature_refits=0)
+        self.last_rebuild_t = float(t); self.rebuilds.append(receipt)
+        if poses is not None:
+            self.grid = replacement
+            for record, pose in zip(self.history, poses):
+                record['pose'] = pose
+            # Distributed command poses remain priors; do not certify completion.
+            self.rebuild_required = False; self.rebuild_cause = None; self.pending_revision = None
+            self.stable, self.last_states = 0, None
+            self.zones.tracks.clear(); self.sectors.clear()
+            if self.registration is not None and self.registration.evidence is not None:
+                # Old relative poses cannot certify new-frame multi-view evidence.
+                self.registration.begin_sweep(t) if self.registration.evidence.active else self.registration.end_sweep()
         return receipt
 
     def _motion(self, delta, variance):
@@ -310,6 +364,10 @@ class SelfMapIntegration:
             static_pose = self.registration.step(wall_observation, self.delta, self.servo,
                                                  t, compose(self.slam.pose, self.delta))
             prior = compose(self.slam.pose, self.delta)
+        predicted_covariance = _motion_covariance(self.slam.pose, self.delta, self.slam.covariance, self.Q)
+        if self.options.revision_gate != 'off':
+            from harness.selfmap5_revision import issued_distance
+            self.distance_since_visual += issued_distance(self.delta)
         event = self.slam.step(observation, command_delta=self.delta, command_covariance=self.Q)
         if static_pose is not None:
             self.slam.pose, self.slam.covariance = static_pose
@@ -327,13 +385,28 @@ class SelfMapIntegration:
         # rigidly shift old occupied cells after a discontinuous relocalization.
         innovation = np.linalg.norm(pose[:2]-prior[:2])
         yaw_jump = abs((pose[2]-prior[2]+math.pi) % (2*math.pi)-math.pi)
-        if self.grid.navigation.seen and visual and (
-                innovation > self.options.resolution_m or yaw_jump > self.options.max_sigma_yaw_rad):
+        revision_detail = None
+        if self.options.revision_gate != 'off':
+            from harness.selfmap5_revision import revision_test
+            # PriorBootstrap retains P + R already; do not double count P.
+            measurement_covariance = (cov-predicted_covariance
+                if self.options.bootstrap != 'off' and static_pose is None and visual else cov)
+            revision_detail = revision_test(prior, pose, predicted_covariance,
+                measurement_covariance=measurement_covariance)
+            revision_required = revision_detail['required']
+        else:
+            revision_required = (innovation > self.options.revision_xy_threshold_m or
+                                 yaw_jump > self.options.revision_yaw_threshold_rad)
+        if self.grid.navigation.seen and visual and revision_required:
             self.rebuild_required = True
             if self.recovery and self.rebuild_cause != 'static_frame_correction':
                 self.rebuild_cause = 'static_frame_correction' if static_pose is not None else 'orb_pose_revision'
+            if self.options.revision_gate != 'off' and self.pending_revision is None:
+                self.pending_revision = dict(anchor_frame_id=self.last_visual_frame_id,
+                    prior=prior.tolist(), corrected=pose.tolist(), distance=self.distance_since_visual,
+                    endpoint_frame_id=frame_id, t=float(t))
         if self.rebuild_required and self.options.pose_rebuild == 'refit_history_v1' and (
-                visual and t-self.last_rebuild_t >= (20. if self.recovery else 5.)) and (
+                visual and t-self.last_rebuild_t >= self.rebuild_cooldown()) and (
                 not self.recovery or len(self.rebuilds) < 2):
             self.rebuild(t)
         reasons = []
@@ -355,12 +428,17 @@ class SelfMapIntegration:
             if self.options.pose_rebuild != 'off':
                 self.history.append(dict(observation=observation, pose=pose.copy(),
                     anchor=not self.history and (bootstrap or prior_insertion),
-                    rays=copy.deepcopy({k: obs[k] for k in ('camera', 'segments', 'floor_xy')})))
+                    rays=copy.deepcopy({k: obs[k] for k in ('camera', 'segments', 'floor_xy')}),
+                    **(dict(source=event['status'], distance_since_visual=self.distance_since_visual)
+                       if self.options.revision_gate != 'off' else {})))
             self.zones.observe(image, robot_id=robot_id, frame_id=frame_id, t=t,
                                pose=pose, servo=self.servo, profile='camera_v3', settled=True)
             if counts['free_cells'] or counts['hit_cells']:
                 self.sectors.add(int((pose[2] % (2*math.pi))/(math.pi/4)))
             candidates = frontier_candidates(self.planning_grid(), pose, self.nav_options)
+        if self.options.revision_gate != 'off' and (visual or bootstrap):
+            self.last_visual_frame_id = frame_id
+            self.distance_since_visual = 0.
         frontier_reason = None
         if self.recovery:
             # Diagnose actual geometry even when insertion is quarantined; do
@@ -402,6 +480,11 @@ class SelfMapIntegration:
                       path_m=[] if proposal is None else proposal['path_m'],
                       zone_confirmed=zone_ok, observed_cells=len(states),
                       stop_reason='self_map_complete' if complete else None)
+        if self.options.revision_gate != 'off':
+            result.update(revision_gate=self.options.revision_gate, revision_innovation=revision_detail,
+                          rebuild_cooldown_s=self.rebuild_cooldown())
+        if self.options.multiframe_registration != 'off':
+            result['multiframe_registration'] = self.options.multiframe_registration
         self.events.append(result)
         if self.options.bootstrap != 'off':
             result.update(mapping_pose_quality='command_prior' if prior_insertion else 'visual',

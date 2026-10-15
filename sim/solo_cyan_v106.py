@@ -62,7 +62,7 @@ class PhysicsBackend(IntegerClock, BaseBackend):
     def reset(self, cap):
         from sim.render_profile import verify_model
         elapsed = super().reset(cap)
-        write(self.out/'eval_only/render.json', verify_model(self.world.model, 'floor_light_v1'))
+        write(self.out/'eval_only/render.json', verify_model(self.world.model, self.bundle.get('options', {}).get('render_profile', 'floor_light_v1')))
         write(self.out/'eval_only/render_nearclip.json', self.nearclip_audit)
         return elapsed
 

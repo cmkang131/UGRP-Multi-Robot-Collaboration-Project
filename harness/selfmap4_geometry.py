@@ -141,7 +141,7 @@ class StaticRegistration:
     Unresolved hypotheses can propose look directions but cannot clip/clear maps
     or lower pose covariance. Registration has to survive three distinct views.
     """
-    def __init__(self, static):
+    def __init__(self, static, *, multiframe_registration='off'):
         from harness.e2e_static_rgb_localizer import create
         from harness.self_map_landmark_sensor import Sensor
         if set(static) != {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}:
@@ -152,6 +152,24 @@ class StaticRegistration:
         self.map_from_own = None
         self.confirmations = []
         self.last = {}
+        self.multiframe_registration = multiframe_registration
+        self.evidence = None
+        self.confirmation_views = set()
+        if multiframe_registration != 'off':
+            from harness.selfmap5_registration import OPTION, RecoveryPolicy, MultiFrameEvidence
+            if multiframe_registration != OPTION:
+                raise ValueError('UNKNOWN_MULTIFRAME_REGISTRATION')
+            self.pf.policy = RecoveryPolicy()
+            self.evidence = MultiFrameEvidence()
+
+    def begin_sweep(self, t):
+        if self.evidence is not None:
+            self.evidence.begin(t)
+            self.confirmations.clear(); self.confirmation_views.clear()
+
+    def end_sweep(self):
+        if self.evidence is not None:
+            self.evidence.end()
 
     def geometry_supported(self, observation, pose):
         """PF confidence is not evidence of a correct mode in a repeated room.
@@ -189,26 +207,41 @@ class StaticRegistration:
         row = self.pf.step(t=t, points=sample_segments(observation['segments']),
                            delta=delta, servo=servo, features=observation['features'])
         cov = np.asarray(row['covariance'])
-        supported, geometry = self.geometry_supported(observation, row['pose'])
+        if self.evidence is not None:
+            from harness.selfmap5_registration import calibrated_covariance
+            cov = calibrated_covariance(cov)
+            self.evidence.add(observation, own_pose, t)
+            supported, geometry = self.evidence.supported(self.pf.landmark_map.edges,
+                row['pose'], own_pose, cov)
+            # Stale cached lines cannot count as a fresh confirming observation.
+            supported = supported and any(f['kind'] == 'floor_line' for f in observation['features'])
+        else:
+            supported, geometry = self.geometry_supported(observation, row['pose'])
         reliable = (row['updated'] and row['resolved'] and row['cluster']['mass'] >= .9
                     and np.linalg.eigvalsh(cov[:2, :2]).max() <= .15**2
                     and cov[2, 2] <= math.radians(5)**2
                     and supported)
-        if reliable:
+        view = (tuple(sorted(servo.items())), int(math.floor(own_pose[2]/math.radians(10))))
+        if reliable and (self.evidence is None or view not in self.confirmation_views):
             anchor = compose(row['pose'], inverse(own_pose))
             if self.confirmations and (np.linalg.norm(anchor[:2]-self.confirmations[-1][:2]) > .1
                     or abs(math.atan2(math.sin(anchor[2]-self.confirmations[-1][2]),
                                       math.cos(anchor[2]-self.confirmations[-1][2]))) > math.radians(5)):
-                self.confirmations.clear()
+                self.confirmations.clear(); self.confirmation_views.clear()
             self.confirmations.append(anchor)
+            self.confirmation_views.add(view)
             if len(self.confirmations) >= 3 and self.map_from_own is None:
                 self.map_from_own = anchor.copy()
-        elif row['updated']:
-            self.confirmations.clear()
+        elif row['updated'] and not reliable:
+            self.confirmations.clear(); self.confirmation_views.clear()
         self.last = dict(updated=row['updated'], resolved=bool(reliable),
             confirmations=len(self.confirmations), registered=self.map_from_own is not None,
             world_pose=row['pose'], covariance=row['covariance'], cluster=row['cluster'],
             feature_count=len(observation['features']), geometry=geometry)
+        if self.evidence is not None:
+            self.last.update(pf_resolved=bool(row['resolved']), raw_covariance=row['covariance'],
+                covariance=cov.tolist(), pf_sensor=row['sensor'],
+                multiframe_registration=self.multiframe_registration)
         if reliable and self.map_from_own is not None:
             local = compose(inverse(self.map_from_own), row['pose'])
             c, s = math.cos(self.map_from_own[2]), math.sin(self.map_from_own[2])
