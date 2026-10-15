@@ -92,17 +92,26 @@ def main():
                 active.remove(item)
                 if category=='HOST_ERROR':stopped=True
             if not first30:
-                samples=[]
+                samples=[];early=[]
                 for item in [*active,*completed]:
                     path=Path(item['path'])/'first30-speed.json'
                     if path.exists():samples.append(read_json(path))
-                if len(samples)==16:
+                    else:
+                        result_path=Path(item['path'])/'result.json'
+                        if result_path.exists():
+                            result=read_json(result_path)
+                            if result.get('complete') and result['sim_s']<30.:
+                                early.append(dict(seed=item['seed'],sim_s=result['sim_s'],
+                                    reason='natural_student_completion_before30; complete trace, no missing measurement'))
+                if len(samples)+len(early)==16:
                     import statistics
-                    median=statistics.median(x['wall_per_sim'] for x in samples)
-                    write_json(a.output/'first30.json',dict(samples=samples,median_wall_per_sim=median,
-                        warning=median>3.5,stop=median>6.,source='first full16 runs, no speed-only stage'))
+                    median=statistics.median(x['wall_per_sim'] for x in samples) if samples else None
+                    write_json(a.output/'first30.json',dict(samples=samples,natural_early_terminals=early,
+                        median_wall_per_sim=median,warning=median is not None and median>3.5,
+                        stop=median is not None and median>6.,source='first full16 runs, no speed-only stage',
+                        scope='complete natural terminals under30 are recorded separately; no fabricated30SIM measurement'))
                     first30=True
-                    if median>6.:stopped=True
+                    if median is not None and median>6.:stopped=True
             write_json(a.output/'progress.json',dict(completed=completed,running=[x['seed'] for x in active],
                 not_started=[episodes[i]['seed'] for i in pending],stopped=stopped))
             if stopped and not active:break
