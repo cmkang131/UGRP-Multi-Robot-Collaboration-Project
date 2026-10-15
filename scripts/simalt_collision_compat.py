@@ -22,9 +22,11 @@ def install_native_legacy_plane():
     source = Path(__file__).with_name('simalt_native_plane.c')
     folder = tempfile.TemporaryDirectory(prefix='simalt5-native-')
     target = Path(folder.name)/'legacy.so'
+    native = next(package.glob('libmujoco.so*'))
     subprocess.run(['gcc', '-shared', '-fPIC', '-O2', '-I'+str(package/'include'),
-                    str(source), '-o', str(target), '-lm'], check=True)
-    library = ctypes.CDLL(str(next(package.glob('libmujoco.so*'))))
+                    str(source), '-o', str(target), str(native),
+                    '-Wl,-rpath,'+str(package), '-lm'], check=True)
+    library = ctypes.CDLL(str(native))
     adapter = ctypes.CDLL(str(target))
     n = int(mujoco.mjtGeom.mjNGEOMTYPES)
     table = (ctypes.c_void_p*(n*n)).in_dll(library, 'mjCOLLISIONFUNC')

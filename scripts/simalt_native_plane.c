@@ -5,15 +5,19 @@
 #include <math.h>
 
 static mjtNum dot(const mjtNum *a, const mjtNum *b) {
-  return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+  return mju_dot3(a,b);
 }
 static void transform(mjtNum *p, const float *v, const mjtNum *r, const mjtNum *x) {
-  for (int k=0;k<3;k++) p[k]=x[k]+r[3*k]*v[0]+r[3*k+1]*v[1]+r[3*k+2]*v[2];
+  // Preserve C312's operation order: matvec first, add translation second.
+  // Adding x inside the scalar dot changed the long contact trajectory.
+  mjtNum vertex[3]={v[0],v[1],v[2]};
+  mju_mulMatVec3(p,r,vertex);mju_addTo3(p,x);
 }
 static void contact(mjPreContact *c, const mjtNum *p, const mjtNum *normal, const mjtNum *plane) {
-  mjtNum delta[3];for(int k=0;k<3;k++)delta[k]=p[k]-plane[k];
+  mjtNum delta[3];mju_sub3(delta,p,plane);
   c->dist=dot(normal,delta);
-  for(int k=0;k<3;k++) {c->pos[k]=p[k]-.5*c->dist*normal[k];c->normal[k]=normal[k];c->tangent[k]=0;}
+  mju_copy3(c->pos,p);mju_addToScl3(c->pos,normal,-.5*c->dist);
+  mju_copy3(c->normal,normal);mju_zero3(c->tangent);
 }
 int simalt_legacy_plane_mesh(const mjModel *m, mjData *d, mjPreContact *con, int g1, int g2, mjtNum margin) {
   int mesh=m->geom_dataid[g2], count=m->mesh_vertnum[mesh];
@@ -21,7 +25,8 @@ int simalt_legacy_plane_mesh(const mjModel *m, mjData *d, mjPreContact *con, int
   const mjtNum *plane=d->geom_xpos+3*g1, *x=d->geom_xpos+3*g2;
   const mjtNum *r=d->geom_xmat+9*g2, *pr=d->geom_xmat+9*g1;
   mjtNum normal[3]={pr[2],pr[5],pr[8]}, direction[3], p[3];
-  for(int k=0;k<3;k++)direction[k]=-(r[k]*normal[0]+r[3+k]*normal[1]+r[6+k]*normal[2]);
+  mjtNum negative[3]={-normal[0],-normal[1],-normal[2]};
+  mju_mulMatTVec3(direction,r,negative);
   int adr=m->mesh_graphadr[mesh], best=-1, local=0;
   mjtNum maximum=-1.e10;
   const int *edges=0,*globals=0,*neighbors=0;
@@ -57,7 +62,7 @@ int simalt_legacy_plane_mesh(const mjModel *m, mjData *d, mjPreContact *con, int
     if(dot(direction,vertex)>threshold && (adr>=0 || i!=best)) {
       transform(p,vertices+3*i,r,x);
       for(int k=0;k<3;k++)delta[k]=p[k]-con[0].pos[k];
-      if(sqrt(dot(delta,delta))>=.3*m->geom_rbound[g2])contact(con+n++,p,normal,plane);
+      if(mju_dist3(p,con[0].pos)>=.3*m->geom_rbound[g2])contact(con+n++,p,normal,plane);
     }
   }
   return n;
