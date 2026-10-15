@@ -31,7 +31,8 @@ from sim.cargo_teacher_profile import CRATE, station_xy
 
 ROOT = Path(__file__).resolve().parents[1]
 SCENARIO_SETS = {'v4': ('s2_unmapped_blockage_v4', 's8_mixed_tiers_v4'),
-                 'v5': ('s2_unmapped_blockage_v5', 's8_mixed_tiers_v5')}
+                 'v5': ('s2_unmapped_blockage_v5', 's8_mixed_tiers_v5'),
+                 'v6': ('s2_unmapped_blockage_v6', 's8_mixed_tiers_v6')}
 SCENARIOS = SCENARIO_SETS['v4']      # default (old behaviour); v5 = PR #498 set without tri_frame
 HANDOFF_MAX_M = .8
 POSE_ERROR = (.05, math.radians(2.))
@@ -52,7 +53,13 @@ def assign(own, other, crate, p=CRATE):
 
 
 def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assignment='nearest', indices=None,
-            scenario_set='v4', start_assigned_los='off'):
+            scenario_set='v4', start_assigned_los='off', near_wall_policy='include'):
+    if near_wall_policy not in ('include', 'exclude_report_v1'):
+        raise ValueError('unknown near_wall policy')
+    if near_wall_policy != 'include' and indices is not None:
+        raise ValueError('indices cannot alter the exclusion denominator')
+    if count <= 0:
+        raise ValueError('positive count required')
     if assignment not in LOUD:
         raise ValueError(assignment)
     if start_assigned_los not in ('off', 'start_assigned_los_v1'):
@@ -67,7 +74,10 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
     rejects = Counter()
     original_starts = []
     accepted_starts = []
-    for i in range(count):
+    excluded_wall = []
+    i = 0
+    while len(episodes) < count:
+        check_range(split, seed+i, 1)
         rng = random.Random(seed+i)
         scenario_id = scenarios[i % len(scenarios)]
         path = ROOT/f'configs/zone_study_scenarios_{scenario_set}'/f'{scenario_id}.json'
@@ -208,16 +218,29 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
                 episode['start_los_proposals'] = los_proposals
                 original_starts.append(original_start)
                 accepted_starts.append(report)
-            episodes.append(episode)
+            # Filter completed proposals, preserving the old stratum index/RNG.
+            # Do not redraw within a near-wall stratum or rebalance the shared bits.
+            if near_wall_policy == 'exclude_report_v1' and episode['near_wall']:
+                excluded_wall.append(episode)
+                if checker is not None:
+                    original_starts.pop(); accepted_starts.pop()
+            else:
+                episodes.append(episode)
             break
         else:
             raise ValueError(f'no admissible crate start for index {i}; {dict(rejects)}')
+        i += 1
     if indices is not None:     # keep only these generated indices (the episode seeds stay seed+index)
         episodes = [episodes[j] for j in indices]
         if checker is not None:
             original_starts = [original_starts[j] for j in indices]
             accepted_starts = [accepted_starts[j] for j in indices]
     return {'schema': 'ugrp.crate_teacher.plan.v1', 'episodes': episodes, 'rejected_proposals': dict(rejects),
+            'near_wall_filter': {'policy': near_wall_policy, 'definition': 'min rect_distance(crate center, static keepouts including perimeter) < 0.45 m (crate12 unchanged)',
+                'drawn_episode_count': i, 'excluded_count': len(excluded_wall),
+                'excluded_rate': len(excluded_wall)/i, 'accepted_count': len(episodes),
+                'excluded_episodes': excluded_wall,
+                'strata_overlap': '(i//4)%4 and (i//8)%2 share one bit; recorded, distribution unchanged'},
             **({'start_assigned_los': start_assigned_los,
                 'start_los_audit': {
                     'scope': 'demonstration start generation only; never teacher action inputs',
@@ -255,11 +278,12 @@ def main():
     p.add_argument('--assignment', choices=LOUD, default='nearest')
     p.add_argument('--scenario-set', choices=tuple(SCENARIO_SETS), default='v4')
     p.add_argument('--start-assigned-los', choices=('off', 'start_assigned_los_v1'), default='off')
+    p.add_argument('--near-wall-policy', choices=('include', 'exclude_report_v1'), default='include')
     p.add_argument('--indices', default=None, help='comma separated generated indices to keep (diagnostic subset)')
     a = p.parse_args()
     result = prepare(count=a.count, seed=a.seed, split=a.split, assignment=a.assignment,
                      indices=None if a.indices is None else [int(v) for v in a.indices.split(',')],
-                     scenario_set=a.scenario_set, start_assigned_los=a.start_assigned_los)
+                     scenario_set=a.scenario_set, start_assigned_los=a.start_assigned_los, near_wall_policy=a.near_wall_policy)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     a.out.write_text(json.dumps(result, indent=2)+'\n')
     print(json.dumps({'episodes': len(result['episodes']), 'rejected': result['rejected_proposals']}))

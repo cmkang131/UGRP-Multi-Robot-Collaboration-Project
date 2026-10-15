@@ -1,0 +1,147 @@
+{
+  "crate-diag-77990-fd724191": {
+    "world": {
+      "t": 2.4999999999999742,
+      "robots": {
+        "r1": {
+          "pose": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "r2": {
+          "pose": [
+            0.9086689213170076,
+            -0.37212408059801366,
+            1.3215933131608857
+          ],
+          "radius": 0.10488806290513643,
+          "top_z_bound_m": 0.1592233942166683
+        }
+      },
+      "objects": {
+        "crate_1": {
+          "xy": [
+            0.9832481455832017,
+            -0.0784709907651257
+          ],
+          "radius": 0.13276680956871434,
+          "top_z_bound_m": 0.12106796043725647
+        }
+      },
+      "walls": [],
+      "beam": {
+        "pose": [
+          0.9832481455851758,
+          -0.07847099075734387,
+          1.3223597726944871
+        ],
+        "ends": {
+          "teal": [
+            0.9586592640505374,
+            -0.17540079476455067,
+            0.02396362467722814
+          ],
+          "blue": [
+            1.0078370271198143,
+            0.018458813249862913,
+            0.02396362467722814
+          ]
+        },
+        "source": "visible band + known rigid shape",
+        "seen_t": 2.4999999999999742
+      },
+      "visibility": {
+        "r1": {
+          "visible_probes": 12,
+          "objects": [
+            "crate_1"
+          ],
+          "peers": [
+            "r2"
+          ]
+        }
+      },
+      "scope": "visible_only; static walls persist in issued odometry frame; dynamic memory expires"
+    },
+    "source_hashes": {
+      "result.json": "28dca2b2a42a919c36615e6c28ca7d6be0fa4e0c097560a69256281273589eb6",
+      "plan.json": "e70748960ec71a230079199fb9981c583a9bbae1baa52cf2e59c12e7a905526d",
+      "eval-only.jsonl": "a092a2fb2a4f78ccffc50718157958131492d52a7865712aa89ccdc29e604683",
+      "teacher-r1.jsonl": "d73ef7b0602667897c8f90ba33b22cd600619560ea329fdc6a271108119cae73",
+      "teacher-r2.jsonl": "81652c4261c883c78d38e746a0ca6d8255b82de7f17cb83596d83bfe64065b61"
+    }
+  },
+  "crate-reproduction-77978-fd724191": {
+    "world": {
+      "t": 11.899999999994941,
+      "robots": {
+        "r1": {
+          "pose": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "objects": {
+        "crate_1": {
+          "xy": [
+            0.6629635896803105,
+            0.8188187073047374
+          ],
+          "radius": 0.1327668095687223,
+          "top_z_bound_m": 0.12106796043725646
+        }
+      },
+      "walls": [
+        [
+          0.9708745528879179,
+          -1.6329679642049124,
+          3.25,
+          0.025,
+          1.5342193433436881
+        ]
+      ],
+      "beam": {
+        "pose": [
+          0.6629635896882797,
+          0.8188187073037022,
+          3.012437376689073
+        ],
+        "ends": {
+          "teal": [
+            0.7621306941771288,
+            0.8059390571804381,
+            0.02396362461436745
+          ],
+          "blue": [
+            0.5637964851994307,
+            0.8316983574269663,
+            0.02396362461436745
+          ]
+        },
+        "source": "visible band + known rigid shape",
+        "seen_t": 11.899999999994941
+      },
+      "visibility": {
+        "r1": {
+          "visible_probes": 5,
+          "objects": [
+            "crate_1"
+          ],
+          "peers": []
+        }
+      },
+      "scope": "visible_only; static walls persist in issued odometry frame; dynamic memory expires"
+    },
+    "source_hashes": {
+      "result.json": "b68a8cc7c45bfe4b319b085a89eb04bf617547be91d446b7b7755e2f54465528",
+      "plan.json": "2f6a73b35a53ed78a0ce1e401037afef858fb59ceb495c888444584d739e3d55",
+      "eval-only.jsonl": "02f67469089913f65272df13c673a3fb23c6319f4d423d6fa76b554dc57e150c",
+      "teacher-r1.jsonl": "99ac0ed8904446eac2e7969ed8316af7732ea51d3cc4187644eeaa1df9757bde",
+      "teacher-r2.jsonl": "5bcdf643f698334b601e71ed6c67f1d1c941b5f6e4d042d619daedc5a2fb5de7"
+    }
+  }
+}

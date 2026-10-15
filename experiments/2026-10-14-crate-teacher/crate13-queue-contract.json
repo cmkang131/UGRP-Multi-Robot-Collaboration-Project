@@ -1,0 +1,20 @@
+{
+  "branch": "claude/act-crate-teacher",
+  "pr": 500,
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "azure_allowed": false,
+  "submission_owner": "operations worker only; Codex must not submit or monitor",
+  "source_worktree": "/Users/changmin/projects/ugrp-wt/crate-teacher",
+  "runner_cwd": "/Users/changmin/projects/ugrp-wt/gcp-sim-host",
+  "runner_note": "Use PR #494 gcp1 standard runner (or merged primary); source_worktree is the frozen snapshot input.",
+  "stop_rule": "Any confirmed shared physical/control defect -> operations writes SUPERVISOR_STOP.json and stops owned same-candidate running/pending runs; preserve raw, fix as one bundle and restart; never fill the gate just for N. Unknown/unconfirmed RGB blocks release and gate.",
+  "admission": {
+    "count_scope": "all running/reserved jobs on gcp1, including other queues",
+    "available_slots": "max(0, min(10 - crate_running, 40 - total_running))",
+    "reservation": "operations must count and reserve slots under its shared admission lock before each launch; no independent check-then-launch",
+    "enforcement_verified": false
+  },
+  "max_combined_concurrency": 40,
+  "max_parallel_per_stage": 10
+}

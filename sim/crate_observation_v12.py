@@ -10,6 +10,8 @@ from harness.grasp_act_input_audit import sourced
 from sim.crate_rgb_lift import masks
 
 PROFILE = 'crate12_v1'
+CRATE13 = 'crate13_v1'
+PROFILES = (PROFILE, CRATE13)
 ASSIGNMENT = 'fixed_rgb_lugs_v1'
 LOOKAROUND = 'setdown_lookaround_own_v2'
 RELEASE = 'fixed_signals_v1'
@@ -56,8 +58,8 @@ def tagged_world(world, *, holding=False):
 
 def validate_recording(*, mode, profile, held_object, own_pose_source, lookaround, assignment, release_channel):
     if mode not in ('success_measurement','training'):raise ValueError('unknown recording mode')
-    if profile not in ('off',PROFILE):raise ValueError('unknown crate profile')
-    if profile==PROFILE or mode=='training':
+    if profile not in ('off',*PROFILES):raise ValueError('unknown crate profile')
+    if profile in PROFILES or mode=='training':
         if held_object!='hidden_v1':raise ValueError('strict/recording mode requires held_object=hidden_v1')
         if own_pose_source!='commands':raise ValueError('truth pose forbidden in strict/recording mode')
         if lookaround not in ('off',LOOKAROUND):raise ValueError('truth lookaround forbidden in strict/recording mode')

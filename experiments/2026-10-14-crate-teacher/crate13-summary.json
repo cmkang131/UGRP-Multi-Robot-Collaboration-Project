@@ -1,0 +1,743 @@
+{
+  "schema": "ugrp.crate13.offline.v1",
+  "base_sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830",
+  "profile": "crate13_v1",
+  "physical_runs": 0,
+  "prior_runs": [
+    {
+      "run": "crate-diag-77990-fd724191",
+      "source_sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw",
+      "status": "complete",
+      "operator_stopped": false,
+      "independent_failure": true,
+      "prefix_held": false,
+      "release_success": null,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "input_sha256": {
+        "plan.json": "e70748960ec71a230079199fb9981c583a9bbae1baa52cf2e59c12e7a905526d",
+        "result.json": "28dca2b2a42a919c36615e6c28ca7d6be0fa4e0c097560a69256281273589eb6",
+        "eval-only.jsonl": "a092a2fb2a4f78ccffc50718157958131492d52a7865712aa89ccdc29e604683",
+        "teacher-r1.jsonl": "d73ef7b0602667897c8f90ba33b22cd600619560ea329fdc6a271108119cae73",
+        "teacher-r2.jsonl": "81652c4261c883c78d38e746a0ca6d8255b82de7f17cb83596d83bfe64065b61"
+      }
+    },
+    {
+      "run": "crate-diag-77991-fd724191",
+      "source_sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw",
+      "status": "interrupted",
+      "operator_stopped": true,
+      "independent_failure": false,
+      "prefix_held": null,
+      "release_success": null,
+      "release_outcome": null,
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "input_sha256": {
+        "plan.json": "9ee571e73989ea488bfc1d4521b408345074fac0f1ab25e8c25245f01b164e61",
+        "result.json": "c7ea9af8f11423515518a9f6686bf521c118a1e538d09ec711a90a9b961fda33",
+        "eval-only.jsonl": "c874278424eb1b3fba6841d5756db824af4a449b817a1b6522634997263a5de6",
+        "teacher-r1.jsonl": "14c3047586373184cd2c88f998bad92d15d8824ccabea715106af2e9073f2009",
+        "teacher-r2.jsonl": "670e185940d66c620606aa3298e2766cb98be296e985f9a0a12fc989db09b075"
+      }
+    },
+    {
+      "run": "crate-diag-77992-fd724191",
+      "source_sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw",
+      "status": "interrupted",
+      "operator_stopped": true,
+      "independent_failure": false,
+      "prefix_held": null,
+      "release_success": null,
+      "release_outcome": null,
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "input_sha256": {
+        "plan.json": "d1cb35f646d9111a7517b60917fc3c3263b8860c863a8ee7b22ab0dab8c33b08",
+        "result.json": "56503e2767399642d265ec0fa4eec1a2624df37301cc06f2ad5876b3bb1e7410",
+        "eval-only.jsonl": "c03964f49384611662fea33f41be663bfd44f39dccc42a266cc8053e6cd93a4e",
+        "teacher-r1.jsonl": "87214e6fe37111921a2664efa3bbb160e77d7c7f4b3da0a2370607fa252366f5",
+        "teacher-r2.jsonl": "a039035426c410c89f1dbe54ac64ee90d859ce82fdcc08e3ec1cb3bd6c7b6f32"
+      }
+    },
+    {
+      "run": "crate-diag-77993-fd724191",
+      "source_sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw",
+      "status": "interrupted",
+      "operator_stopped": true,
+      "independent_failure": false,
+      "prefix_held": null,
+      "release_success": null,
+      "release_outcome": null,
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "input_sha256": {
+        "plan.json": "040f0d7c49a9d0e734cffbe1332307fc0ac49365d81a8f2a2364f2fafb329742",
+        "result.json": "b073d94859fc79e7701720d9c98db9f4ef6387649fd90e49a604dbca8fb3ee7c",
+        "eval-only.jsonl": "b97d467b7d32ab6e5808fea44b49c242e310f6a2d4e3944dfc9b42893e219a88",
+        "teacher-r1.jsonl": "65948662e8b52e75d8ec0ca0ca11ea10ab745eb4d7ef3092a49c0223653f2958",
+        "teacher-r2.jsonl": "5918d9d39d51d75d6d0caa25f900f991c605647435d15cd626373f906ea27667"
+      }
+    },
+    {
+      "run": "crate-reproduction-77978-fd724191",
+      "source_sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw",
+      "status": "complete",
+      "operator_stopped": false,
+      "independent_failure": true,
+      "prefix_held": false,
+      "release_success": null,
+      "release_outcome": "lift_not_confirmed_by_own_inputs",
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "input_sha256": {
+        "plan.json": "2f6a73b35a53ed78a0ce1e401037afef858fb59ceb495c888444584d739e3d55",
+        "result.json": "b68a8cc7c45bfe4b319b085a89eb04bf617547be91d446b7b7755e2f54465528",
+        "eval-only.jsonl": "02f67469089913f65272df13c673a3fb23c6319f4d423d6fa76b554dc57e150c",
+        "teacher-r1.jsonl": "99ac0ed8904446eac2e7969ed8316af7732ea51d3cc4187644eeaa1df9757bde",
+        "teacher-r2.jsonl": "5bcdf643f698334b601e71ed6c67f1d1c941b5f6e4d042d619daedc5a2fb5de7"
+      }
+    },
+    {
+      "run": "crate-reproduction-77981-fd724191",
+      "source_sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw",
+      "status": "complete",
+      "operator_stopped": false,
+      "independent_failure": true,
+      "prefix_held": true,
+      "release_success": false,
+      "release_outcome": "release_fixed_signal_insufficient",
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "input_sha256": {
+        "plan.json": "1b02c3be3961060426a7ffdc2f25b97a89bade4ba4f3ca6c953bdcbcda820407",
+        "result.json": "5c5a9a41160beca194451399b9d0ee78dbf2587114792787170a17c0c4bb9d77",
+        "eval-only.jsonl": "7ff7d3e4e049978df6ded4df7cf402a260d964b944533fe90026fa792e74dc76",
+        "teacher-r1.jsonl": "0ce74b8b7f78f48479da25008af22227d7dfd95b67aafde3b91acc9ff3e123d8",
+        "teacher-r2.jsonl": "480af8691cc322295b51eb7c2f2797866abb13e0a1e21bd7c1bded1f699ccd23"
+      }
+    },
+    {
+      "run": "crate-reproduction-77982-fd724191",
+      "source_sha": "fd724191b2e71ad411f04c18ef9cb0e62f258830",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw",
+      "status": "interrupted",
+      "operator_stopped": true,
+      "independent_failure": false,
+      "prefix_held": true,
+      "release_success": null,
+      "release_outcome": "release_fixed_signal_insufficient",
+      "input_audit": {
+        "held_world_reads": 0,
+        "invisible_measurements": 0
+      },
+      "input_sha256": {
+        "plan.json": "af360a94db94c057006ba81d0c1890eed37f85c152f7ced77a64e9f73d092394",
+        "result.json": "737e328327c404f47dce8746ed2d7ef03dcbcfc74c452a70bf8d54bdbd44e1e0",
+        "eval-only.jsonl": "4a275dca743e56162a64656731a1b77d402cc0850443dc079a33cc62e00dd92b",
+        "teacher-r1.jsonl": "89dd702cdd0fc1b188e2a0435a639a5e24c9b376b2394ac64cde3a376dc5eafd",
+        "teacher-r2.jsonl": "a629d5c9fb158c3b3fea9ee2b1ca6681ea507f0be9d6ef8d65ae99f531822e46"
+      }
+    }
+  ],
+  "independent_failures": 3,
+  "operator_stops": 4,
+  "baseline_matching_grasp_commands": 898,
+  "baseline_complete_ledger_match": true,
+  "candidate_first_divergences": [
+    {
+      "run": "crate-diag-77990-fd724191",
+      "matched_commands": 15,
+      "first_differences": [
+        {
+          "tick": 7,
+          "t": 2.4999999999999742,
+          "robot": "r1",
+          "old": {
+            "t": 2.4999999999999742,
+            "wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "pwm": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1262
+            }
+          },
+          "new": {
+            "t": 2.4999999999999742,
+            "wheels": [
+              0.35,
+              0.35,
+              0.35,
+              0.35
+            ],
+            "duration_s": [
+              0.1,
+              0.051724980819991856,
+              0.0761720590277466,
+              0.07555292179224529
+            ],
+            "pwm": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1262
+            }
+          },
+          "old_phase": "approach",
+          "new_phase": "approach",
+          "recoveries": [
+            {
+              "t": 2.4999999999999742,
+              "recovery": "collision_checked_staging_view",
+              "key": [
+                -85,
+                0.7
+              ],
+              "goal": [
+                0.2677311305427783,
+                -0.06306952428529239
+              ],
+              "target": [
+                0.2677311305427783,
+                -0.06306952428529239
+              ],
+              "ready": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "crate-reproduction-77978-fd724191",
+      "matched_commands": 203,
+      "first_differences": [
+        {
+          "tick": 101,
+          "t": 11.899999999994941,
+          "robot": "r1",
+          "old": {
+            "t": 11.899999999994941,
+            "wheels": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "duration_s": [
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "pwm": {
+              "1": 2000,
+              "3": 820,
+              "4": 2320,
+              "5": 1320,
+              "6": 1940
+            }
+          },
+          "new": {
+            "t": 11.899999999994941,
+            "wheels": [
+              0.35,
+              0.35,
+              0.35,
+              0.35
+            ],
+            "duration_s": [
+              0.0066129032428540145,
+              0.06972719288798683,
+              0.014012907173701105,
+              0.06232718895713974
+            ],
+            "pwm": {
+              "1": 2000,
+              "3": 820,
+              "4": 2320,
+              "5": 1320,
+              "6": 1940
+            }
+          },
+          "old_phase": "approach",
+          "new_phase": "approach",
+          "recoveries": [
+            {
+              "t": 11.899999999994941,
+              "recovery": "collision_checked_staging_view",
+              "key": [
+                -85,
+                0.7
+              ],
+              "goal": [
+                0.732817098549644,
+                0.10655310285236597
+              ],
+              "target": [
+                0.732817098549644,
+                0.10655310285236597
+              ],
+              "ready": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": "crate-reproduction-77981-fd724191",
+      "matched_commands": 558,
+      "first_differences": []
+    }
+  ],
+  "candidate_geometry": [
+    {
+      "run": "crate-diag-77990-fd724191",
+      "first_t": 2.4999999999999742,
+      "legal_candidates": 27,
+      "blocked_reason": "visible_peer_r2",
+      "first_nominal_gap_mm": -333.2239241348649,
+      "all_legal_gap_range_mm": [
+        -337.0232675024327,
+        -278.54567603218385
+      ],
+      "first_path_test_reached": false,
+      "planning_ticks": [
+        2.4999999999999742,
+        3.5999999999993646,
+        4.599999999999876
+      ]
+    },
+    {
+      "run": "crate-reproduction-77978-fd724191",
+      "first_t": 11.899999999994941,
+      "legal_candidates": 27,
+      "blocked_reason": "remembered_south_wall",
+      "first_nominal_gap_mm": -27.159622396044636,
+      "all_legal_gap_range_mm": [
+        -35.714623648640085,
+        -21.333974177239146
+      ],
+      "first_path_test_reached": false,
+      "planning_ticks": [
+        11.899999999994941,
+        12.999999999992378,
+        14.099999999989814
+      ]
+    }
+  ],
+  "release_replay": {
+    "run": "crate-reproduction-77981-fd724191",
+    "release_matching_robot_ticks": 14,
+    "matching_fixed_decisions": 1,
+    "original_release_observations_saved": false,
+    "input_reconstruction": "all-zero per-phase counters uniquely imply 8 empty own observations per robot; no GT used",
+    "old_branch": "release_fixed_signal_insufficient",
+    "new_branch": "return_to_pickup_for_observation",
+    "first_branch_t": 30.300000000053664,
+    "new_destination_signal": false,
+    "input_audit": {
+      "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+      "enabled": true,
+      "measurement_rows": 0,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "gt_self_pose_comparison": false,
+      "admitted_source_tags": {
+        "issued_commands": 16,
+        "known_shape": 16,
+        "visible_teacher_measurement": 16
+      }
+    },
+    "scope": "prefix only; reverse physical response and subsequent camera observations UNVERIFIED"
+  },
+  "odometry_eval_only": {
+    "robot_trajectories": 14,
+    "moving_over_0_5m_N": 7,
+    "median_path_ratio": 1.3130033645298342,
+    "per_robot": [
+      {
+        "run": "crate-diag-77990-fd724191",
+        "robot": "r1",
+        "ticks": 38,
+        "issued_path_m": 0.0,
+        "gt_path_m": 1.1281610322680565e-05,
+        "path_ratio_issued_over_gt": null,
+        "ratio_admitted_gt_path_over_0_5m": false,
+        "approach_error_median_mm": 0.002762082148511277,
+        "approach_error_max_mm": 0.006549100541510403
+      },
+      {
+        "run": "crate-diag-77990-fd724191",
+        "robot": "r2",
+        "ticks": 38,
+        "issued_path_m": 0.14105209019722753,
+        "gt_path_m": 0.10620701418816743,
+        "path_ratio_issued_over_gt": null,
+        "ratio_admitted_gt_path_over_0_5m": false,
+        "approach_error_median_mm": 36.088856524285234,
+        "approach_error_max_mm": 39.45375653120495
+      },
+      {
+        "run": "crate-diag-77991-fd724191",
+        "robot": "r1",
+        "ticks": 306,
+        "issued_path_m": 0.0,
+        "gt_path_m": 0.09969790989261168,
+        "path_ratio_issued_over_gt": null,
+        "ratio_admitted_gt_path_over_0_5m": false,
+        "approach_error_median_mm": 0.0013239214605302837,
+        "approach_error_max_mm": 0.001992491276892368
+      },
+      {
+        "run": "crate-diag-77991-fd724191",
+        "robot": "r2",
+        "ticks": 306,
+        "issued_path_m": 0.8294625825127676,
+        "gt_path_m": 0.6323187908535924,
+        "path_ratio_issued_over_gt": 1.3117791128633753,
+        "ratio_admitted_gt_path_over_0_5m": true,
+        "approach_error_median_mm": 80.72624563573177,
+        "approach_error_max_mm": 165.76905968872407
+      },
+      {
+        "run": "crate-diag-77992-fd724191",
+        "robot": "r1",
+        "ticks": 279,
+        "issued_path_m": 1.815372373049965,
+        "gt_path_m": 1.3826106026011753,
+        "path_ratio_issued_over_gt": 1.3130033645298342,
+        "ratio_admitted_gt_path_over_0_5m": true,
+        "approach_error_median_mm": 196.91580708960907,
+        "approach_error_max_mm": 399.7613338937904
+      },
+      {
+        "run": "crate-diag-77992-fd724191",
+        "robot": "r2",
+        "ticks": 279,
+        "issued_path_m": 0.0,
+        "gt_path_m": 0.08119023938341108,
+        "path_ratio_issued_over_gt": null,
+        "ratio_admitted_gt_path_over_0_5m": false,
+        "approach_error_median_mm": 0.0019482115118202225,
+        "approach_error_max_mm": 0.003490444215511133
+      },
+      {
+        "run": "crate-diag-77993-fd724191",
+        "robot": "r1",
+        "ticks": 235,
+        "issued_path_m": 0.6297252722108139,
+        "gt_path_m": 0.4774597598277151,
+        "path_ratio_issued_over_gt": null,
+        "ratio_admitted_gt_path_over_0_5m": false,
+        "approach_error_median_mm": 43.620313324060355,
+        "approach_error_max_mm": 112.51551505026691
+      },
+      {
+        "run": "crate-diag-77993-fd724191",
+        "robot": "r2",
+        "ticks": 235,
+        "issued_path_m": 2.390842903518869,
+        "gt_path_m": 1.8323161610806,
+        "path_ratio_issued_over_gt": 1.3048200710672555,
+        "ratio_admitted_gt_path_over_0_5m": true,
+        "approach_error_median_mm": 265.6707807695224,
+        "approach_error_max_mm": 552.4925245725057
+      },
+      {
+        "run": "crate-reproduction-77978-fd724191",
+        "robot": "r1",
+        "ticks": 132,
+        "issued_path_m": 0.0,
+        "gt_path_m": 0.004224692278879515,
+        "path_ratio_issued_over_gt": null,
+        "ratio_admitted_gt_path_over_0_5m": false,
+        "approach_error_median_mm": 1.1297558461521935,
+        "approach_error_max_mm": 1.1528792071410172
+      },
+      {
+        "run": "crate-reproduction-77978-fd724191",
+        "robot": "r2",
+        "ticks": 132,
+        "issued_path_m": 0.0071471232869167785,
+        "gt_path_m": 0.006188302895367193,
+        "path_ratio_issued_over_gt": null,
+        "ratio_admitted_gt_path_over_0_5m": false,
+        "approach_error_median_mm": 0.0006819599335148948,
+        "approach_error_max_mm": 0.0015386205961725181
+      },
+      {
+        "run": "crate-reproduction-77981-fd724191",
+        "robot": "r1",
+        "ticks": 279,
+        "issued_path_m": 1.5751459294814922,
+        "gt_path_m": 1.1987146627742196,
+        "path_ratio_issued_over_gt": 1.3140290833150292,
+        "ratio_admitted_gt_path_over_0_5m": true,
+        "approach_error_median_mm": 206.48473756211442,
+        "approach_error_max_mm": 361.51573594981164
+      },
+      {
+        "run": "crate-reproduction-77981-fd724191",
+        "robot": "r2",
+        "ticks": 279,
+        "issued_path_m": 1.4874945843045417,
+        "gt_path_m": 1.1414844759262637,
+        "path_ratio_issued_over_gt": 1.3031229207891823,
+        "ratio_admitted_gt_path_over_0_5m": true,
+        "approach_error_median_mm": 171.5545150078765,
+        "approach_error_max_mm": 332.8844452895755
+      },
+      {
+        "run": "crate-reproduction-77982-fd724191",
+        "robot": "r1",
+        "ticks": 324,
+        "issued_path_m": 1.4134460328969232,
+        "gt_path_m": 1.0690558387052336,
+        "path_ratio_issued_over_gt": 1.3221442526414626,
+        "ratio_admitted_gt_path_over_0_5m": true,
+        "approach_error_median_mm": 193.21006813019181,
+        "approach_error_max_mm": 322.74369009323874
+      },
+      {
+        "run": "crate-reproduction-77982-fd724191",
+        "robot": "r2",
+        "ticks": 324,
+        "issued_path_m": 1.9088215556191763,
+        "gt_path_m": 1.404694692051012,
+        "path_ratio_issued_over_gt": 1.3588871421106337,
+        "ratio_admitted_gt_path_over_0_5m": true,
+        "approach_error_median_mm": 212.65421123492385,
+        "approach_error_max_mm": 405.12248480301866
+      }
+    ],
+    "alignment": "first saved GT pose defines evaluation-only origin; approach position error per tick; full grasp path length, >0.5m GT subset as beam ratio.py",
+    "correction_implemented": false,
+    "dependency": "beam search17 diagnosis owns shared integration correction"
+  },
+  "hash_verification": {
+    "files": 155,
+    "mismatches": 0,
+    "manifest_missing": 0
+  },
+  "visual_review": [
+    {
+      "run": "crate-diag-77990-fd724191",
+      "frames": [
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-overview/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-own/r1/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-own/r2/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-overview/000010-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-own/r1/000010-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-own/r2/000010-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-overview/000020-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-own/r1/000020-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-own/r2/000020-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-overview/000030-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-own/r1/000030-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77990-fd724191/raw/eval-own/r2/000030-grasp.jpg"
+      ],
+      "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/crate-diag-77990-fd724191.jpg"
+    },
+    {
+      "run": "crate-diag-77991-fd724191",
+      "frames": [
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-overview/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r1/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r2/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-overview/000060-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r1/000060-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r2/000060-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-overview/000120-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r1/000120-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r2/000120-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-overview/000180-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r1/000180-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r2/000180-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-overview/000240-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r1/000240-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r2/000240-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-overview/000300-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r1/000300-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77991-fd724191/raw/eval-own/r2/000300-grasp.jpg"
+      ],
+      "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/crate-diag-77991-fd724191.jpg"
+    },
+    {
+      "run": "crate-diag-77992-fd724191",
+      "frames": [
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-overview/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r1/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r2/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-overview/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r1/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r2/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-overview/000110-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r1/000110-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r2/000110-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-overview/000160-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r1/000160-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r2/000160-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-overview/000220-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r1/000220-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r2/000220-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-overview/000270-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r1/000270-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77992-fd724191/raw/eval-own/r2/000270-grasp.jpg"
+      ],
+      "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/crate-diag-77992-fd724191.jpg"
+    },
+    {
+      "run": "crate-diag-77993-fd724191",
+      "frames": [
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-overview/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r1/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r2/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-overview/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r1/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r2/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-overview/000090-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r1/000090-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r2/000090-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-overview/000140-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r1/000140-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r2/000140-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-overview/000180-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r1/000180-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r2/000180-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-overview/000230-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r1/000230-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-77993-fd724191/raw/eval-own/r2/000230-grasp.jpg"
+      ],
+      "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/crate-diag-77993-fd724191.jpg"
+    },
+    {
+      "run": "crate-reproduction-77978-fd724191",
+      "frames": [
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-overview/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r1/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r2/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-overview/000030-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r1/000030-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r2/000030-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-overview/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r1/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r2/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-overview/000080-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r1/000080-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r2/000080-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-overview/000100-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r1/000100-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r2/000100-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-overview/000130-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r1/000130-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77978-fd724191/raw/eval-own/r2/000130-grasp.jpg"
+      ],
+      "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/crate-reproduction-77978-fd724191.jpg"
+    },
+    {
+      "run": "crate-reproduction-77981-fd724191",
+      "frames": [
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-overview/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r1/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r2/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-overview/000000-release-look.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r1/000000-release-look.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r2/000000-release-look.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-overview/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r1/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r2/000050-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-overview/000160-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r1/000160-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r2/000160-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-overview/000210-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r1/000210-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r2/000210-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-overview/000270-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r1/000270-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77981-fd724191/raw/eval-own/r2/000270-grasp.jpg"
+      ],
+      "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/crate-reproduction-77981-fd724191.jpg"
+    },
+    {
+      "run": "crate-reproduction-77982-fd724191",
+      "frames": [
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-overview/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r1/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r2/000000-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-overview/000000-release-look.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r1/000000-release-look.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r2/000000-release-look.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-overview/000060-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r1/000060-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r2/000060-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-overview/000190-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r1/000190-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r2/000190-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-overview/000250-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r1/000250-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r2/000250-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-overview/000320-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r1/000320-grasp.jpg",
+        "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77982-fd724191/raw/eval-own/r2/000320-grasp.jpg"
+      ],
+      "sheet": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/crate-reproduction-77982-fd724191.jpg"
+    }
+  ],
+  "tests": {
+    "files": [
+      "tests/test_crate13.py",
+      "tests/test_crate12.py",
+      "tests/test_crate_approach_recovery.py"
+    ],
+    "result": "41 passed in 1.12s"
+  },
+  "artifacts": {
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/odometry-eval-only.json": "c09ae172eb2c2d4ef15f13ec0c4adcd8a9d4a6f9072c528c6cd7a123608e17d5",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/candidate-final.json": "37fade000b0038f4d17883ed8f07ba381607f21598c45ddb6f2d2613dd989114",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/baseline-final.json": "b384ff582b4775b7649bf0fbeddeac53bbcf591069a3b60555f99770f73e7704",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/tests.xml": "7f2cce510b5fb87fc4402f0d65a6e960c4adda7e21607dfbc2639684ed5cd05a",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/tests.log": "98fe7265cd7cbfb34535b92b63571a451e8a694686ff6edaac692c0333640d11",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/release-replay.json": "48b4b670dff9444ede5d725a4b38977e30bbca9e09db759fa0e872be22637c65",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate13-audit/source-hashcheck.json": "7d2026e8930158008b960001fd95dcebac8c6df72d82c26d8bc5b52df1f88d6c"
+  },
+  "limitations": [
+    "physical staging/return/release effect unverified",
+    "release observations inferred empty from all-zero counters, not per-tick raw in fd724191",
+    "visible-relative demonstration adapter remains; strict RGB-only interpretation unconfirmed",
+    "live remote inventory not queried (prohibited); saved inventories only",
+    "gate and training not admitted"
+  ]
+}

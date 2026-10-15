@@ -80,7 +80,8 @@ class ScenarioFinalV3Scene(FinalV3Scene):
         if source:
             path = (ROOT / 'configs/zone_study_dev/e2e_one_beam_ownmap.json' if source == 'e2e_one_beam_ownmap' else
                     ROOT / DEV_CONFIG if source == 'dev_s1lite' else
-                    registry.ROOT / 'configs' / ('zone_study_scenarios_v5' if source.endswith('_v5')
+                    registry.ROOT / 'configs' / ('zone_study_scenarios_v6' if source.endswith('_v6')
+                                                  else 'zone_study_scenarios_v5' if source.endswith('_v5')
                                                   else 'zone_study_scenarios_v4') / (source + '.json'))
             scene._read(path)
         return scene

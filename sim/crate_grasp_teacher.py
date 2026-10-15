@@ -24,7 +24,7 @@ LIFT_WAIT_LIMIT_S = 20.
 
 class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def __init__(self, *args, profile=CRATE, crate_lift_pose='off', crate_approach_recovery='off',
-                 crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off', **kwargs):
+                 crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off', crate_candidate_recovery='off', **kwargs):
         from sim.crate_navigation_v12 import WALL_MODE, STANCE_MODE
         from sim.crate_approach_recovery import PULSE_MODES
         if crate_wall_footprint not in ('off',WALL_MODE) or crate_stances not in ('off',STANCE_MODE):
@@ -35,6 +35,17 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 raise ValueError('crate12 navigation requires recovery and antipodal grasp')
         if crate_wall_footprint!='off' and crate_pulse_safety=='off':
             raise ValueError('wall footprint requires swept pulse checks')
+        from sim.crate_candidate_recovery import MODE
+        if crate_candidate_recovery not in ('off', MODE):
+            raise ValueError('unknown crate candidate recovery')
+        if crate_candidate_recovery != 'off' and crate_wall_footprint == 'off':
+            raise ValueError('staging recovery requires the swept footprint profile')
+        self.crate_candidate_recovery = crate_candidate_recovery
+        self.staging_since = None
+        self.staging_excluded = set()
+        self.staging_last = None
+        self.staging_repeat = 0
+        self.staging_scan_at = -math.inf
         self.crate_wall_footprint=crate_wall_footprint
         self.crate_stances=crate_stances
         self.crate_pulse_safety=crate_pulse_safety
@@ -98,6 +109,14 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return super()._begin_relook(now, reason)
 
     def _approach(self, truth, now):
+        if (self.crate_candidate_recovery != 'off' and self.phase == 'approach'
+                and truth['beam'] is not None and truth['visibility'][self.rid]['visible_probes'] >= 5):
+            if not self._plan_approach(truth, now):
+                return self._staging_recovery(truth, now), False
+            if self.staging_since is not None:
+                self.crate_visible_progress = None
+            self.staging_since = None
+            self.staging_last = None
         if (self.crate_lift_pose in CARTESIAN_MODES and self.phase == 'approach'
                 and truth['beam'] is not None and truth['visibility'][self.rid]['visible_probes'] >= 5):
             pose, _, _, goal = self._geometry(truth)
@@ -114,6 +133,10 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
 
     def _plan_approach(self, world, now):
         valid = super()._plan_approach(world, now)
+        if self.crate_candidate_recovery != 'off':
+            # This finite staging controller owns the deadline while no grasp
+            # pose is reachable; the legacy 3 s deadline must not fire first.
+            self.approach_blocked_since = None
         if (self.crate_approach_recovery != 'off' and not valid and self.goal_set_log
                 and self.goal_set_log[-1]['t'] == now):
             candidates = self.goal_set_log[-1]['candidates']
@@ -130,6 +153,43 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 self._approach_handoff(now)
                 self.crate_recovery_log.append({'t': now, 'recovery': 'static_stances_blocked_handoff'})
         return valid
+
+    def _staging_recovery(self, world, now):
+        from sim.crate_candidate_recovery import staging_view, MAX_RECOVERY_S
+        from sim.grasp_act_visible_route import drive
+        self.staging_since = now if self.staging_since is None else self.staging_since
+        if now-self.staging_since >= MAX_RECOVERY_S-1e-8:
+            self.outcome = 'approach_blocked_handoff'
+            self.crate_recovery_log.append({'t': now, 'recovery': 'staging_exhausted_handoff'})
+            return self._hold(now)
+        pose = world['robots'][self.rid]['pose']
+        if self.staging_last is not None:
+            key, at, before = self.staging_last
+            if now-at >= 1.-1e-8:
+                self.staging_repeat = self.staging_repeat+1 if math.dist(pose[:2], before) < .01 else 0
+                self.staging_last = (key, now, tuple(pose[:2]))
+                if self.staging_repeat >= 3:
+                    self.staging_excluded.add(key)
+                    self.staging_last = None
+                    self.staging_repeat = 0
+        view = staging_view(world, self, self.staging_excluded)
+        if view is None:
+            # A blocked footprint is never overridden. Re-observe with the
+            # existing compact arm scan; the finite deadline still applies.
+            if self.arm.until <= now and now-self.staging_scan_at >= 1.-1e-8:
+                offset = 250 if int(now-self.staging_since) % 2 == 0 else -250
+                target = max(500, min(2500, self.initial_search_pan+offset))
+                self.arm.queue({**self.sink.pwm, 6: target}, now, duration=.4)
+                self.staging_scan_at = now
+            self.crate_recovery_log.append({'t': now, 'recovery': 'staging_no_safe_route_reobserve'})
+            return self._hold(now)
+        if self.staging_last is None or self.staging_last[0] != view['key']:
+            self.staging_last = (view['key'], now, tuple(pose[:2]))
+            self.staging_repeat = 0
+        self.path = view['path']
+        self.crate_recovery_log.append({'t': now, 'recovery': 'collision_checked_staging_view',
+            'key': view['key'], 'goal': view['goal'], 'target': view['target'], 'ready': False})
+        return self._continuous(now, **drive(pose, view['goal'], view['target'], world['beam']['ends'][self.end]))
 
     def _check_navigation_pulse(self, truth, value, now):
         # A held or invisible assigned lug is never read by this correction.
@@ -274,6 +334,11 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def _step(self, truth, now, *, permit_pick, permit_lift=False):
         if self.outcome is not None:
             return self._hold(now), False
+        if (self.crate_candidate_recovery != 'off' and self.staging_since is not None
+                and self.phase in ('approach', 'search', 'relook') and now-self.staging_since >= 12.-1e-8):
+            self.outcome = 'approach_blocked_handoff'
+            self.crate_recovery_log.append({'t': now, 'recovery': 'staging_exhausted_handoff'})
+            return self._hold(now), False
         if self.phase in ('closed', 'lift'):
             arms_done = self.arm.tick(now)
             if self.phase == 'closed':
@@ -300,7 +365,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 'crate_approach_recovery': self.crate_approach_recovery,
                 'crate_wall_footprint': self.crate_wall_footprint,
                 'crate_stances': self.crate_stances, 'crate_pulse_safety': self.crate_pulse_safety,
-                'crate_recovery_log': self.crate_recovery_log,
+                'crate_candidate_recovery': self.crate_candidate_recovery, 'crate_recovery_log': self.crate_recovery_log,
                 'closed_at': self.closed_at, 'lift_done': self.lift_done,
                 'crate_lift_pose': self.crate_lift_pose, 'lift_pose_selection': self.lift_selection,
                 **({'excluded_stalled_stances': sorted(self.approach_excluded)}
