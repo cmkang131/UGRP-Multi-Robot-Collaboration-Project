@@ -1,5 +1,5 @@
 """gcp2-only saved 88-pose boundary comparison; no physics, no GT control."""
-import argparse,json,platform,collections
+import argparse,json,platform,collections,subprocess
 from pathlib import Path
 import cv2,numpy as np
 from scripts.summarize_scene_tex3 import read,write,sha
@@ -57,6 +57,8 @@ def main(out,*,legacy_proposals_v1=False):
             wall_tracks=compare([a['wall_LK']['wall_tracks'] for a,b in pairs],[b['LK_tracks'] for a,b in pairs]),
             floor_channel_unchanged=True,compass_status=dict(collections.Counter(r['signals'][e]['compass']['status'] for r in candidate)))
     write(out/'cases.json',results);write(out/'summary.json',dict(report=report,sources=sources,calibration_sha256=sha(Path('experiments/2026-10-16-reloc16/colour-calibration.json')),
+        analysis_source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+        analysis_script_sha256=sha(Path(__file__)),legacy_proposals_v1=legacy_proposals_v1,
         ready=all(r['columns']['pass'] and r['error_px']['pass'] and r['existing_detector_equal']==88 for r in report.values()),
         scope='88 same static poses; wall tracks distinct from floor metric VO; no motion/localization success'))
     write(out/'rejection-table.json',dict(raw_sources=sources,reproduction=['python','-m','scripts.score_reloc16_static','--output',str(out)],

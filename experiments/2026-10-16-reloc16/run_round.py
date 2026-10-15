@@ -15,6 +15,7 @@ def main(round_no,launch):
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no']):raise RuntimeError('clean committed source required')
     rejection=RUNS/(f'reloc16-round{round_no-1}/rejection-table.json' if round_no>1 else 'reloc16-static-r3/rejection-table.json')
     assert rejection.is_file(),rejection
+    if round_no>1:assert json.loads((RUNS/f'reloc16-round{round_no-1}/summary.json').read_text())['status']=='MEASURED','prior round incomplete'
     base=json.loads((ROOT/'experiments/2026-10-15-reloc15/gcp-commands-r1.json').read_text())
     oldcmd=next(r['command'] for r in base if r['kind']=='selfmap' and r['seed']==93584 and r['candidate'])
     selfcmd=oldcmd[oldcmd.index('--')+1:]

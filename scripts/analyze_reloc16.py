@@ -74,7 +74,9 @@ def carry(folder,result):
             truth_scope='direct evaluator base yaw if present; R1 reconstruction excludes simultaneous lookaround capture ticks',
             admissions=admissions,increments=increments),
         all_pose_error=dict(xy_m=dist([e['map_pose_error_xy_m'] for e in original_errors]),yaw_deg=dist([abs(math.degrees(e['map_pose_error_yaw_rad'])) for e in original_errors])),
-        input_audit=audit,phases=dict(phases),recovery=result.get('teacher',{}).get('result'))
+        input_audit=audit,phases=dict(phases),
+        placement_rejections=[e for e in result.get('teacher',{}).get('events',[]) if e.get('event')=='rejection'],
+        recovery=result.get('teacher',{}).get('command_result'))
 
 
 def main(round_no):
@@ -95,7 +97,8 @@ def main(round_no):
         elif task['kind']=='carry' and result.get('status')=='complete':
             report.update(carry(folder,result));h=report['heading']
             funnel.append(dict(run=task['name'],raw=str(raw),cumulative=dict(exposures=h['exposures'],accepted=h['accepted'],scorable=h['scorable_absolute'],correct=h['scorable_absolute']-h['absolute_false_over5_N']),
-                rejections=[dict(category=k,N=n,blocked_object='own_rgb_static_background',minimum_gap_m=None,gap_status='not_applicable_localization_gate') for k,n in h['statuses'].items() if k!='accepted']))
+                rejections=[dict(category=k,N=n,blocked_object='own_rgb_static_background',minimum_gap_m=None,gap_status='not_applicable_localization_gate') for k,n in h['statuses'].items() if k!='accepted'] +
+                [dict(category=e.get('category','placement_rejection'),reason=e.get('reason'),N=1,blocked_object=e.get('blocked_object','unidentified_in_original'),minimum_gap_m=e.get('minimum_gap_m'),gap_scope=e.get('gap_scope','not_recorded_in_original')) for e in report['placement_rejections']]))
         else:
             report.update(status=result.get('status','UNRETRIEVED'),failure=result.get('failure'),physical_frames=result.get('frames',0))
             funnel.append(dict(run=task['name'],raw=str(raw),cumulative=dict(frames=result.get('frames',0)),rejections=[dict(category='HOST_ERROR' if result.get('status')=='HOST_ERROR' else 'INCOMPLETE',N=1,blocked_object='execution_environment',minimum_gap_m=None,gap_status='not_applicable_host_error',reason=result.get('failure') or result.get('error') or 'result not terminal')]))
