@@ -1,133 +1,146 @@
-# release25 — 새 장면의 release24 sweep 결함
+# release25 — READY A40/40 B40/40
 
-PR #491 최신 `7c752fcdef2627a6aedd3766346a1241a1788d7b` 위 `claude/release25`.
-gcp2 전용, C MuJoCo CPU 교사 관문. 장면은 확정된
-`walls_floor_contrast_v5_indigo110_s80` + 원본 v1 바닥 + `no_mip_v1`,
-`release_geometry_v1`, weld OFF, 학습 RGB·모델 호출 0. ACT 학생 검증은 아니다.
-이전 a41781dd A31/40·B31/40, 다른 호스트/장면, 짧은 실행을 새 관문과 합산하지 않는다.
+새 장면의 **내려놓기 교사 관문**을 통과했다. 실행 소스는
+`8e81b7d96c0c73171635348c90631462adfe1eb0`, PR [#535](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/535),
+기준점은 PR #491 최신 `7c752fcdef2627a6aedd3766346a1241a1788d7b`이다.
+브랜치 `claude/release25`; 이후 기록·CI 목록 커밋은 실행 제어 모듈을 바꾸지 않았다.
+**CI는 아래 4개 assertion 실패가 남아 있어 PR은 미병합이다.** 교사 관문 READY와 구분한다.
 
-## 수정 전 거부 사유와 영상
+| 새 gate80 | 성공 | 실패 | cap_end | HOST_ERROR | 감독 중단 | 미제출 |
+|---|---:|---:|---:|---:|---:|---:|
+| A / release18 |40/40|0|0|0|0|0|
+| B / release19 |40/40|0|0|0|0|0|
 
-`baseline-rejection_table.json`을 먼저 만들고 수정했다. 최종 선택 78회는
-성공62, 실패1, 감독 중단15이며 미제출2는 별도다. 사유 분포는
-`static_sweep` 2(A실패+B감독 중단에 같은 결함), 실행 예외15, 복구된 FOV 거부3이다.
-감독 SIGINT를 제어 결함 15건으로 해석하지 않는다.
+- gcp2 `n4-highcpu-64` / Xeon8581C / C MuJoCo3.12.0 CPU. 확정 장면
+  `walls_floor_contrast_v5_indigo110_s80` + 원본 v1 바닥 + `no_mip_v1`,
+  `release_geometry_v1`. 장면·바닥·GL_LINEAR 확인80/80, weldOFF.
+- 입력 감사80/80: `invisible_measurements=0`, `held_world_reads=0`,
+  `control_top_camera_reads=0`. 원본22,544파일 저장/복호화 SHA 불일치0, 오수용0.
+- 저장 evaluator qpos/contact를 `mj_forward`로 재계수했다. 물리 step 재실행은 없다.
+  구역 적합·바닥·기울기·비접촉·개방 명령·집게 거리와 안정 조건80/80 통과,
+  마지막25개 샘플 모두 통과(시간 범위2.4SIM초). 종료 코드80/80이0이다.
+- 첫16개 첫30SIM초 wall/SIM 중앙4.285490, 전체80개 첫30SIM초 중앙4.748040.
+  경고 기준3.5 초과, 차단 기준6.0 이내. 첫16개도 본관문에 포함되며 별도 속도 실행은 없다.
+- 최대16동시, 공유 호스트 입장 시 예약·실제 worker 합계40 이하를 검사했다.
+  110633 A/B →88639 A/B →110622 A/B 순으로 우선 제출했다.
+- 학습 RGB·프로젝트 모델 호출0, ACT 학생 실행0, Mac 물리·렌더·GUI0.
+  이전 a41781dd A31/40·B31/40, 짧은 실행, 다른 호스트·장면·A/B는 합산하지 않았다.
 
-실패 A110633 전체0–56.1 SIM초를2Hz, 실패 사건 직전 world45.5–55.5초를
-native 자기 RGB 10Hz 띠로 직접 확인했다. 성공 B110600 전체0–32.2초를2Hz로
-확인했다. 실패 초기/중간/끝 native 1Hz 저장 입력에서도 로봇별6장(0/9/18/27/36/45초)을 별도 몽타주로 확인했다. 각 개요+r1+r2 3배속 영상은 gcp2에서 생성된 기존 원본 재생을 재사용했다.
-실패 직전202장은 native 입력이고, 이전 시각과 성공의2Hz 뷰는 저장 qpos/보정으로 재구성된 평가용 자기 뷰라는 한계가 있다. Mac에서는 파일 이미지만 읽었으며 화면 앱·물리·렌더를 실행하지 않았다.
-실패의 처음·중간·끝을 포함한 자기 카메라 수백 장을 확인했다.
+## 원인과 영상 확인
 
-시간순: world10.9 lower 선택 → 13–14초 open/관측 준비 →16–20.5초 첫 panorama
-→23–27.5초 두 번째 panorama →29.2초 남쪽30cm shift 선택 →33–35.5초 정렬/접근
-→35.5–55.4초 재집기·자기 RGB 들기 확인 →55.5초 명령 전 sweep 거부.
-마지막10초에는 큰 진동·벽 방향 이동을 관찰하지 못했다. 듬성한 프레임에서는
-놓치기 쉬운 사실은 재집기 뒤 오랜 들기 확인 동안 빔이 화면을 거의 채운다는 점이다.
-전체 재생 끝2.4초는 평가 안정 기록이라 사건 직전 띠와 구분했다.
+수정 전에 [거부 사유 표](baseline-rejection_table.json)를 만들었다. 기존 최종78회는
+성공62·실패1·감독 중단15, 미제출2였다. `static_sweep`2건은 A실패와 B감독 중단의
+같은110633 결함이다. 실행 예외15와 복구된 FOV 거부3은 별도 범주다.
+[분포·원본 SHA](baseline-audit.json), [분포 요약](baseline-distribution-summary.json).
 
-원본 `map_backoff_checks`: r1의 북쪽 후퇴15/10/5cm는 전부 거부되어 제자리 유지,
-r2만 남쪽15cm 후퇴했다. `lookaround`는 pan −60/0/+60도이며 몸 회전은 없었다.
-따라서 이 사건에는 몸 회전 반경 계산이 적용되지 않는다. 거부된 sweep도 회전이
-아닌 남쪽 이동이다. `release23.sweep`은 yaw가 있으면 별도 거부한다.
+처음 내려놓기는 지도 위치 미확정 상태에서
+`PairReleaseCode.decide(require_seen=False)`가 현 위치를 선택했다.
+이후 자기 RGB로 위치를 잡았다. r1은 북쪽 후퇴15/10/5cm를 모두 거부해 제자리에 있었고,
+r2만 남쪽15cm 후퇴했다. 둘러보기는 pan−60/0/+60도였으며 몸 회전은 없었다.
+재집기 뒤 선택한 이동은 **북벽에서 멀어지는 남쪽30cm**였다.
 
-실패 r1 최종 자기 추정은(4.73618,1.24281,−1.52423), sigma xy≈0.050m,
-기존 halo≈0.100m. 북벽과 추정 robot footprint만의 틈은+0.000718m,
-halo 포함−0.099288m. 기존 검사는 시작점을 포함한 hull 때문에 벽에서 멀어지는
-경로도 거부했다. 평가용 마지막 panorama 오차44.9mm는 원인 비교용일 뿐 제어에
-넣지 않는다. 성공62회 중 이동 sweep이 있는46회의 북벽 최소 틈은
-최소0.125382/p05 0.247810/중앙0.393690/p95 0.541571/최대0.548516m.
-나머지16회는 이동 sweep이 없으므로 결측으로 둔다. 성공 최종124개 로봇 추정의
-halo 포함 최소 틈은−0.052497m이다. 최종 틈과 이동 경로 틈은 서로 다른 모집단이다.
-원본·재현 명령·저장 해시는 `baseline-audit.json`, `audit_baseline.py`에 있다.
+기존 sweep은 시작점을 포함한 convex hull 전체에 양의 halo 여유를 요구했다.
+r1 자기 추정(4.73618,1.24281,−1.52423), sigma≈0.05m에서 halo≈0.100007m이고,
+시작 robot footprint의 북벽 틈은 halo 제외+0.000718m, 포함−0.099288m였다.
+그래서 멀어지는 경로도 명령 전에 거부됐다. 이는 추정 불확실성 범위의 겹침이다.
+성공62회 중 이동 sweep이 있는46회의 북벽 최소 틈은 최소0.125382/중앙0.393690/
+최대0.548516m였다. 나머지16회는 sweep이 없어 결측이다. 최종 추정 틈과 이동 틈은
+다른 모집단이며 성공 최종124개 로봇의 halo 포함 최소 틈은−0.052497m였다.
 
-## 후보와 상수 근거
+북벽 안쪽 면 y=1.425m와 추정 중심 거리0.182190m에 비해 기존16각형 footprint의
+전체 회전 반경0.183526m+halo0.100007m는0.283533m다. 완전한 몸 회전을 가정하면
+여유−0.101343m이므로 새 회전 허용을 넣지 않았다([계산](rotation-diagnostic.json)).
 
-기본 OFF `release_sweep_wall_aware=release_sweep_wall_aware_v1`은 기존 경로와
-형상을 그대로 두고 **불확실성 범위에서 빠져나오는 병진 경로**만 별도 인증한다.
-모든 로봇/자기 명령으로 만든 빔 가설/정적 장애물/지도 경계를 검사한다.
-전체 명목 swept footprint가 엄격히 장애물 밖이고, 하나의 고정 분리 평면에서
-각 명령 경계의 틈이 줄지 않고 끝점이 기존 halo 밖으로 나와야 한다.
-고정 방향 병진은 경계 사이가 affine이므로 이 조건은 연속 구간에도 성립한다.
-명목 충돌·벽 방향 이동·중간 역행·미완전 탈출·미확정 위치·회전은 계속 거부한다.
-정답·평가 위치·파트너 위치/RGB를 읽지 않는다. 새 이동 후보나 근거리 파지 경로는 없다.
+실패 A110633 전체0–56.1SIM초2Hz, 실패 사건 직전 world45.5–55.5초의 native 자기 RGB
+10Hz202장을 직접 보았다. 초기/중간/끝 native1Hz 입력도 로봇별6장씩 확인했다.
+성공 B110600 전체0–32.2초2Hz도 확인했다. 시간순으로 내려놓기→두 번의 panorama→
+정렬/접근→재집기·긴 들기 확인→55.5초 sweep 거부였다. 마지막10초에서 큰 진동이나
+북벽 방향 이동은 관찰하지 못했다. 듬성한 프레임에서 놓치기 쉬운 부분은 들기 확인 동안
+두 자기 카메라를 빔이 거의 채운다는 점이다. 전체 재생 끝2.4초는 평가 안정 기록이다.
+[직접 검토 범위·타임라인](visual-review.json), [회수 SHA/ffprobe](baseline-playback-verification.json).
 
-수치 상수/성공 한계를 새로 맞추지 않았다: robot0.18m, beam0.60×0.04m,
-halo=max(0.02m,2sqrt(max eigenvalue(Pxy)))는 기존 release23 그대로다.
-0은 기하 접촉 경계이며 여유를 줄이는 epsilon은 없다. 기존180SIM초와3회 보정은
-유지한다. 계산은 발행 계획 길이×형상2개×지도 장애물 수×사각형 축4개 이내로
-유한하며 wall 시간 제한을 사용하지 않는다. 불확실성 범위 안의 제어가 안전을
-보장한다는 주장은 하지 않으며, 기존 release15의 단조 이탈 원칙을 whole-sweep과
-끝점 여유 회복 조건으로 더 엄격하게 적용한 후보다.
+새 gate110633 A는 같은55.5초 위치에서 이탈을 인증하고 남쪽 이동→재내려놓기→
+panorama→집게 후퇴·종료까지 이어졌다. 전체0–81.1SIM초2Hz를 직접 확인했다.
+[대표3배속 영상](representative.mp4)(442,555바이트·ffprobe 통과),
+[직접 검토·원본 해시](gate-110633-visual-review.json).
+고속 실패 tail 밖의 자기 뷰는 저장 qpos/원래 카메라 보정의 평가용 재구성이며,
+native 고속 입력이라고 표현하지 않는다. 재생 bodyXYZ 오차0, 제어/물리 재실행0이다.
 
-## 참고 자료
+## 수정과 상수 근거
 
-- [Nav2 Spin::isCollisionFree](https://api.nav2.org/nav2-jazzy/html/spin_8cpp_source.html)
-  — 실제 자기 pose에서 회전 전방 궤적을 유한 주기 수로 예측하고 footprint 충돌이면 정지.
-  소스162–188행을 열람했다. 회전 각도 끝점만 확인하는 방법은 채택하지 않는다.
-- [Nav2 FootprintCollisionChecker](https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/footprint_collision_checker.cpp)
-  — 지도에 footprint를 옮겨 변의 충돌 비용을 검사하는 표준 구현을 열람했다.
-  본 후보는 점·중심만 검사하지 않고 convex whole sweep을 유지한다.
-- [Nav2 Behavior Server](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/configuring_behavior_server/)
-  — BackUp/Spin과 simulate-ahead 설정을 확인했다. 대안 방향 선택은 가능한 표준 방법이나,
-  이 시드에서는 후퇴가 이미 차단되고 기존 이동이 벽 반대여서 경로 탐색 추가는 불필요하다.
+기본OFF `release_sweep_wall_aware=release_sweep_wall_aware_v1`을 새 후보에서만 켰다.
+정적 지도·자기 RGB 추정 위치·자기 발행 명령 FK만 사용한다. 조건은 다음과 같다.
 
-Nav2 문서의 속도·2초 기본값은 우리 상수 근거로 가져오지 않았다. 불확실성 단조 이탈은
-위 표준 footprint 원리와 저장 원본/기존 release15에 따른 본 프로젝트 적용이며 문헌의
-직접 보장으로 표현하지 않는다.
+1. 두 로봇과 각자의 빔 가설의 **명목 whole swept footprint**가 모든 정적 장애물·경계 밖이다.
+2. 이미 halo가 겹친 면에서는 하나의 고정 분리 평면으로 모든 명령 경계의 틈이 줄지 않는다.
+3. 끝점은 기존 halo 밖으로 나온다. 고정 방향 병진의 경계 사이가 affine이므로 연속 구간에도 성립한다.
+4. 명목 충돌·벽쪽/중간 역행·새 장애물 진입·탈출 부족·위치 미확정·회전은 계속 거부한다.
 
-## 검증과 잔여 작업
+robot0.18m, beam0.60×0.04m, halo=max(0.02m,2sqrt(max eigenvalue(Pxy)))는
+기존 release23 그대로다. 새 수치 허용 오차는 없고0은 기하 접촉 경계다.
+180SIM초·3회 보정·성공 한계·카메라·물리·근거리 파지 경로도 유지했다.
+계산은 발행 계획 길이×형상2개×지도 장애물 수×사각형 축으로 유한하며 wall 시한은 없다.
+불확실성 범위 안의 이동이 실제 안전을 보장한다는 주장은 하지 않는다.
+기존 [release15의 단조 이탈](../../sim/release15.py)을 whole-sweep·끝점 회복 조건으로 제한한 후보다.
+수용된 음수 틈이 다른 물체의 거부를 가리지 않도록 terminal 사유는 거부된 검사 중 최악값을 고른다.
 
-Mac 비물리 단위검사: release25/23/24 **39 passed**. 명목 겹침, 벽쪽/중간 역행,
-탈출 부족, 중간 장애물, 회전, 위치 미확정 반례와 기존 기본 OFF 회귀를 포함한다.
-run-first:110633 A/B + 이전 성공4개(A/B 혼합). 최대3라운드 뒤 통과한 고정 소스로
-gate80을 처음부터 실행한다. 결과와 입력 감사·cap_end·HOST_ERROR·funnel은 후속 파일에 기록한다.
+## run-first·승인·재현 기록
 
+| 구분 | 실행 SHA | A | B | 원본 해시 불일치/오수용 |
+|---|---|---:|---:|---:|
+| 1라운드 |08cf9d0ab69c47a2f4b61ffdeeb9c197f933a019|3/3|3/3|0/0|
+| 2라운드 |8e81b7d96c0c73171635348c90631462adfe1eb0|3/3|3/3|0/0|
+| 새 gate80 |8e81b7d96c0c73171635348c90631462adfe1eb0|40/40|40/40|0/0|
 
-## run-first 1라운드
+1라운드 후 원장 물체명 우선순위 반례만 보완하고2라운드를 다시 확인했다.
+최대3라운드 중2라운드 사용. 각 라운드는 별도이며 입력 감사도 각각6/6 0/0/top0이다.
+1라운드110633의 옛 중단 지점까지 로봇별 명령454/438행과 자기 카메라180장은
+원본과 바이트/SHA가 일치했다([비교](110633-before-fix-equivalence.json)).
+이후 전체 궤적 동등성을 주장하지 않는다.
 
-실행 소스 `08cf9d0ab69c47a2f4b61ffdeeb9c197f933a019`: A3/3·B3/3,
-cap_end/HOST_ERROR/감독중단0. 저장 qpos의 mj_forward 평가 재계수와 입력 감사
-6/6 0/0/top0, 명목 최종 조건·2초 안정 모두 통과. 1835파일 저장/복호화 SHA 불일치0,
-오수용0. 네 입력 모집단은 native617장/선 후보193/들기16/위치 fit56으로 분리했다.
-첫30SIM초 wall/SIM 중앙4.004159. 원본은 gcp2 `runs/release25-short-*-08cf9d0a/raw`.
-
-110633은 A/B 모두 끝까지 통과했다. A는 기존−0.099288m를 그대로 남기고
-nominal+0.000718m·끝점 halo 밖+0.202244m를 인증했다(B끝점+0.206132m).
-기존 중단 지점까지 A/B의 로봇별 명령 원본454/438행은 바이트 동일,
-저장 자기 카메라180/180 SHA 일치(`110633-before-fix-equivalence.json`).
-이후 실행은 새 인증에 따라 이어지므로 전체 궤적 동등성을 주장하지 않는다.
-
-게이트 제출 전 원장 표시의 추가 반례를 고쳤다: 수용된 음수 틈이 다른 물체의
-실제 거부를 가리지 않도록 terminal 사유는 거부된 검사 중 최악값을 고른다.
-이 반례 포함 release25 비물리9 PASS, 기존 release23/24 31 PASS.
-실행 경로의 수용/명령에는 변화가 없지만 새 고정 SHA에서2라운드를 다시 확인한다.
-1라운드와2라운드는 합산하지 않는다.
-
-
-## run-first 2라운드와 새 gate80 승인
-
-실행 소스 `8e81b7d96c0c73171635348c90631462adfe1eb0`:110633 A/B와
-기존 성공110600B·110602A·110603A·88639B를 실행했다. A3/3·B3/3,
-cap_end/HOST_ERROR/감독 중단0. 입력 감사6/6 0/0/top0, 저장 qpos의 재계수와
-2초 안정 통과, 원본1506파일 SHA 불일치0·오수용0. native478/선142/들기12/fit48은
-각각 별도 모집단이다. 첫30SIM초 wall/SIM 중앙3.997007.
-
-`gate-config.json`은 같은 소스로 A40/B40을**처음부터** 실행한다.110633 A/B,
-88639 A/B,110622 A/B 우선이며16동시·공유 호스트40 이하를 검사한다.
-`rejection_table`은 gcp2의2라운드 원본 표 절대경로이며 SHA를 확인한 뒤
+[gate-config.json](gate-config.json)에2라운드 `rejection_table` 절대경로와 SHA를 연결하고,
 `review_detail="REVIEW_SKIPPED_BY_USER (10/15 run-first rule)"`,
-`status="APPROVED_PINNED"`로 기록했다. 실행 중 소스는 바꾸지 않는다.
-승인은 독립 코드 검토 완료를 뜻하지 않는다. gate80 결과는 아직 진행 중이다.
+`status="APPROVED_PINNED"`로 승인했다. 독립 코드 검토 완료를 뜻하지 않는다.
+[최종 요약](summary.json), [원본 재계수](gate-summary.json), [거부·사례 funnel](gate-rejection_table.json),
+[프레임·이벤트 모집단](gate-population-funnels.json), [후보·fit funnel](gate-candidate-funnels.json).
+새 관문의 native 입력7536장·선 후보2478개·들기186회·fit692회는 각각 별도 모집단이다.
+기록되지 않은 optimizer 중간 생존 수는 추정하지 않았다.
 
-초기 내려놓기는 `PairReleaseCode.decide(require_seen=False)`가 미관측 구간을
-포함하는 interval에서 현 위치를 선택한 것이며, 이때 지도 위치는 미확정이다.
-이후 자기 RGB로 북벽 근처임을 추정했다. 북벽 안쪽 면 y=1.425m와 r1 추정 중심
-사이0.182190m, 기존16각형 footprint의 전체 회전 반경0.183526m+halo0.100007m라
-완전한 몸 회전을 가정하면 여유−0.101343m다(`rotation-diagnostic.json`).
-실제 스크립트는 몸을 돌리지 않고 pan−60/0/+60도만 썼다. 새로운 회전 허용이나
-내려놓기 위치의 정답 보정은 추가하지 않았다.
+원본은 gcp2 `/home/ugrp/ugrp-sim/runs/release25-*/raw`, 분석은
+`/home/ugrp/ugrp-sim/ops-reviews/release25/`이다. Mac에는 요약·몽타주·실패 프레임·작은 영상만 회수했다.
+[회수 SHA](gate-retrieval-verification.json), [실제 소스·환경](runtime-verification.json),
+[정리·공유 호스트 보존](cleanup.json). raw는 gcp2 영속디스크에 보존했으며 독립 전체 백업은 아니다.
 
-진행 중 실행 소스와 별개로 PR의 CI 목록에 release23/24/25 비물리 회귀를
-명시적으로 등록했다. 기존 CI 목록은 release16까지만 포함했었다. 이 변경은
-실행 제어 모듈을 바꾸지 않으며 gate80 소스는8e81b7d9로 유지한다.
+```sh
+# gcp2; 물리 step 없이 저장 원본 재계수
+/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release25/analyze_release.py /home/ugrp/ugrp-sim/ops-reviews/release25/gate-config.json
+/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release25/release_candidate_funnel.py /home/ugrp/ugrp-sim/ops-reviews/release25/gate-config.json
+```
+
+## 코드 검사와 CI 잔여 문제
+
+관련 비물리 release25/23/24 **40 PASS**, CI 목록/분할 검사 **68 PASS**.
+새 회귀3파일을 CI 목록에도 등록했다. 명목 겹침·벽쪽 이동·중간 역행·중간 장애물·탈출 부족·
+회전·위치 미확정·다른 거부 물체명 은폐 반례와 기본OFF 동등성을 포함한다.
+
+CI run [38806760928](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/38806760928)는
+3개 shard의4개 assertion이 실패했다. 등록 파일/교사 파일 보존 검사3개는 기준점7c752fcde에서도
+같은 실패를 재현했다(비물리3 FAIL,6.56초). 나머지는 기존74963 위치 추정의 legacy-before 오차가
+0.426748m라 진단용 `>0.5m` assertion이 실패한 CI-only 사례다. 해당 소스·시험·fixture는
+기준점과 바이트가 같으며, 기준점의 단독 Mac 검사는1 PASS였다. 플랫폼/순서 원인은 미분리다.
+봉인 해시·허용 오차를 완화하지 않았고 병합하지 않았다.
+[정확한 실패·비교·로그 SHA](ci-findings.json). 이 문제는 교사 관문 성공과 별도로 남는다.
+
+## 표준 방법 조사
+
+- [Nav2 Spin::isCollisionFree](https://api.nav2.org/nav2-jazzy/html/spin_8cpp_source.html):
+  162–188행을 열람했다. 추정 pose에서 유한 주기로 회전 궤적의 footprint를 검사한다.
+  이 사건은 몸 회전이 없어 새 회전 계획기를 추가하지 않았다.
+- [Nav2 FootprintCollisionChecker](https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/footprint_collision_checker.cpp):
+  지도상의 footprint 변을 검사하는 구현을 열람했다. 본 후보는 중심점 대신 기존 convex whole sweep을 유지한다.
+- [Nav2 Behavior Server](https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/core_servers/configuring_behavior_server/):
+  BackUp/Spin·simulate-ahead·대안 행동을 확인했다. 기존 경로가 이미 벽 반대이고 후퇴 후보는 차단되어
+  새 방향 탐색은 추가하지 않았다. 문서의 속도/2초 기본값은 우리 상수로 가져오지 않았다.
+
+단조 불확실성 이탈 인증은 표준 footprint 원리·원본 분포·기존 release15에 따른 본 프로젝트 적용이며,
+Nav2가 이 후보의 안전성을 직접 보장한다고 표현하지 않는다. ACT 학생·새 장면 일반화·실물 검증은 별개다.

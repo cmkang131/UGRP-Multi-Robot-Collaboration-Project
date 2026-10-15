@@ -1,0 +1,74 @@
+{
+  "ci_run": 38806760928,
+  "ci_commit": "2ed8822bc0ca030f76ec9913526703cd0427414c",
+  "base_sha": "7c752fcdef2627a6aedd3766346a1241a1788d7b",
+  "source_comparison": [
+    {
+      "path": "configs/simulation_workflows.json",
+      "base_sha256": "eaf8036b12a8a388c2b7dd6638724995635b8d8e2dc0b5c42abded283795bbc1",
+      "current_sha256": "eaf8036b12a8a388c2b7dd6638724995635b8d8e2dc0b5c42abded283795bbc1",
+      "equal": true
+    },
+    {
+      "path": "scripts/zone_teacher.py",
+      "base_sha256": "abb027d5ddbee34e5e6d4da235c4ab63f9f6f5790c51291050d9ead6e2217375",
+      "current_sha256": "abb027d5ddbee34e5e6d4da235c4ab63f9f6f5790c51291050d9ead6e2217375",
+      "equal": true
+    },
+    {
+      "path": "sim/global_landmark_localization.py",
+      "base_sha256": "6123a003c86ff9ba68f4f395aa5e4ea9625239734a38ecb902efb7664ecdc017",
+      "current_sha256": "6123a003c86ff9ba68f4f395aa5e4ea9625239734a38ecb902efb7664ecdc017",
+      "equal": true
+    },
+    {
+      "path": "tests/test_global_landmark_localization.py",
+      "base_sha256": "8f6cc9600ec57b454802b482da75e0a218ad394ddf45a4b0b8ba6e465199d9c6",
+      "current_sha256": "8f6cc9600ec57b454802b482da75e0a218ad394ddf45a4b0b8ba6e465199d9c6",
+      "equal": true
+    },
+    {
+      "path": "tests/fixtures/release9_map_support.json",
+      "base_sha256": "926eb90f73bb592eb6edf0762e08077431ecb8653f047b5d5a45ae0ca452ff11",
+      "current_sha256": "926eb90f73bb592eb6edf0762e08077431ecb8653f047b5d5a45ae0ca452ff11",
+      "equal": true
+    },
+    {
+      "path": "tests/test_consumer_criterion_b_v91.py",
+      "base_sha256": "8b16d1e3ef4278ecf02c918d903c56b9d6c69e1288fb099ed1307bd89c343e48",
+      "current_sha256": "8b16d1e3ef4278ecf02c918d903c56b9d6c69e1288fb099ed1307bd89c343e48",
+      "equal": true
+    },
+    {
+      "path": "tests/test_zone_final_pair_loaded.py",
+      "base_sha256": "68ab42c9f9b2cb2948adee1b1143a61fdc870e7d0c300500feb683ce1f9866a2",
+      "current_sha256": "68ab42c9f9b2cb2948adee1b1143a61fdc870e7d0c300500feb683ce1f9866a2",
+      "equal": true
+    },
+    {
+      "path": "tests/test_zone_environment_registry.py",
+      "base_sha256": "dbef0e6b9a55c9575aca8c211646bb9057c3e7c053f064d415a670a87e3b1764",
+      "current_sha256": "dbef0e6b9a55c9575aca8c211646bb9057c3e7c053f064d415a670a87e3b1764",
+      "equal": true
+    }
+  ],
+  "base_hash_tests": "3 failed in 6.56s",
+  "base_localization_test": "1 passed in 2.77s",
+  "ci_localization_failure": "Legacy before-estimate error0.42674838263683407m fails diagnostic >0.5m assertion; after-map-support assertions passed. Same source/test/fixture as base; Mac base isolated test passes, so the CI-only result is not reproduced on Mac.",
+  "remaining": "CI remains failing; no frozen hashes or test tolerances weakened, no merge.",
+  "logs": {
+    "ci-failures.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/release25/ci-failures.log",
+      "sha256": "90090f324dc26f0051d8fd0704242f41c9debfb73b653e379e8c1e7a9baa83f2"
+    },
+    "ci-base-hashes.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/release25/ci-base-hashes.log",
+      "sha256": "bcc669cdb95977af96f17dd6a8762b7bf19bd6daa51e36bed2f6f8b5267ef77b"
+    },
+    "ci-base-localization.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/release25/ci-base-localization.log",
+      "sha256": "2f1cb16c1dd9bb60a700a651b751ec6de3233db6bb10901b373ae4748a9f114f"
+    }
+  },
+  "failed_assertions": 4
+}

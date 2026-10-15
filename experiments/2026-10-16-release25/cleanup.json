@@ -1,0 +1,96 @@
+{
+  "finished_utc": "2026-10-15T21:53:31.709936+00:00",
+  "own_workers": [],
+  "own_lease_removed": true,
+  "other_leases": {
+    "beampair8.json": {
+      "task": "beampair8",
+      "pid": 405377,
+      "started": "2026-10-15T21:01:31.259565+00:00",
+      "expected_end": "bounded audit + tensor conversion + lossless archive verification",
+      "concurrency": 1,
+      "source_sha": "72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "batch": "/home/ugrp/ugrp-sim/ops-reviews/beampair8/record200-72c0e83d",
+      "stage": "offline_dataset_analysis"
+    },
+    "reloc18.json": {
+      "task": "reloc18",
+      "pid": 390487,
+      "started": "2026-10-15T21:18:36.408228+00:00",
+      "expected_end": "finite <=3 rounds, <=8 workers; analysis and retrieval",
+      "concurrency": 4,
+      "stage": "round2",
+      "source_sha": "46dd7ec3048a50a5443b2d61b0dece462e43b763",
+      "pids": [
+        390718,
+        390723,
+        390724,
+        390726,
+        413141,
+        416491
+      ]
+    }
+  },
+  "remaining_ugrp_workers": [
+    {
+      "pid": 381419,
+      "executable": "python3",
+      "script": "after-round1.py",
+      "cwd": "/home/ugrp",
+      "release25_owned": false
+    },
+    {
+      "pid": 390487,
+      "executable": "python",
+      "script": "run_round.py",
+      "cwd": "/home/ugrp/ugrp-sim/src/46dd7ec3048a50a5443b2d61b0dece462e43b763",
+      "release25_owned": false
+    },
+    {
+      "pid": 390722,
+      "executable": "python",
+      "script": "run_round.py",
+      "cwd": "/home/ugrp/ugrp-sim/src/46dd7ec3048a50a5443b2d61b0dece462e43b763",
+      "release25_owned": false
+    },
+    {
+      "pid": 390725,
+      "executable": "python",
+      "script": "run_round.py",
+      "cwd": "/home/ugrp/ugrp-sim/src/46dd7ec3048a50a5443b2d61b0dece462e43b763",
+      "release25_owned": false
+    },
+    {
+      "pid": 405377,
+      "executable": "python",
+      "script": "finalize.py",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "release25_owned": false
+    },
+    {
+      "pid": 413144,
+      "executable": "python",
+      "script": "run_round.py",
+      "cwd": "/home/ugrp/ugrp-sim/src/46dd7ec3048a50a5443b2d61b0dece462e43b763",
+      "release25_owned": false
+    },
+    {
+      "pid": 416492,
+      "executable": "python",
+      "script": "run_round.py",
+      "cwd": "/home/ugrp/ugrp-sim/src/46dd7ec3048a50a5443b2d61b0dece462e43b763",
+      "release25_owned": false
+    },
+    {
+      "pid": 417470,
+      "executable": "python",
+      "script": "prepare_dataset.py",
+      "cwd": "/home/ugrp/ugrp-sim/src/72c0e83dab384b4f7d4bb73e37e440e0d1b248f6",
+      "release25_owned": false
+    }
+  ],
+  "vm_stop_allowed": false,
+  "vm_stop_requested": false,
+  "reason": "other leases or workers remain; preserve shared gcp2 and idle/budget/runtime guards",
+  "preserved": "raw runs, source checkouts, git-shared.git and budgets unchanged"
+}

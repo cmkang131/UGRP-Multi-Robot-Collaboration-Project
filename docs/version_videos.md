@@ -130,3 +130,18 @@ GCP `/home/ugrp/ugrp-sim/representative-release21-46afd8b0/`에 원본267파일�
 전체6개 각6시각×양쪽RGB72장,문제 구간30.6/31.4/32.3/32.5/33.4/34.1초6장 직접 확인.
 1라운드b75b130f는 코드 감사로 은퇴했고 합산하지 않는다.
 [결과·검증·원본 해시](../experiments/2026-10-14-e2e18-grasp-rootcause/release21.md).
+
+
+## 2026-10-16 release25 — 새 장면 북벽 이탈 sweep 후보
+
+실행 소스`8e81b7d96c0c73171635348c90631462adfe1eb0`, 기본OFF
+`release_sweep_wall_aware_v1`, PR#535. gcp2/C MuJoCo3.12 CPU,
+indigo110_s80/v1바닥/no_mip, weldOFF·학습/모델0.
+대표110633 A [3배속 저장 상태 평가 재생](../experiments/2026-10-16-release25/representative.mp4):
+442,555바이트·960×272·27.066667초, 원본81.1SIM초/812상태, 개요+r1+r2.
+전체2Hz 프레임 파일을 직접 확인했고 ffprobe통과, bodyXYZ 재현 오차0.
+자기 뷰는 저장 qpos와 원래 카메라 보정의 재구성이며 native 고속 입력 영상이 아니다.
+실패 전 native10Hz 검토는 기존 a41781dd110633 원본과 구분한다.
+이 한 사례 영상은 전체 관문 통과를 뜻하지 않는다.
+[결과·조건·검증·원본 해시](../experiments/2026-10-16-release25/README.md),
+[영상·직접 검토 기록](../experiments/2026-10-16-release25/gate-110633-visual-review.json).
