@@ -144,6 +144,7 @@ def run(a):
     fixture = np.load(a.fixture/'fixture.npz')
     meta = json.loads((a.fixture/'fixture.json').read_text())
     report = {'sha':a.sha,'engine':a.engine,'mujoco_version':mujoco.__version__,'nworld':a.nworld,
+              'script_sha256':sha(__file__),
               'fixture_sha256':sha(a.fixture/'fixture.npz'),'xml_sha256':sha(a.fixture/'scene.xml'),
               'training':False,'renderer':'none; physics-only; state ring buffer for offline rendering',
               'status':'running','attempted':0,'completed':0,'failure':0,'HOST_ERROR':0,'cap_end':False,
@@ -218,6 +219,7 @@ def run(a):
                 'sim_s':0.,'wall_s':0.,'sample_count':0}
             report['cases'].append(cr)
             values=[];contacts=[];forces=[]
+            states[name]=values  # preserve partial failure timeline, not only completed cases
             cs=time.perf_counter()
             for begin in range(0,len(tape),400):
                 if a.engine=='cpu':
