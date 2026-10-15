@@ -51,13 +51,13 @@ def prepare_legacy_v2():
             'gate_promotion_authorized_if_all_conditions_pass': False}
 
 
-def prepare(*, carry5=False):
+def prepare(*, carry5=False, seed0=None, count=8, kind_offset=0):
     """Fresh layout generated against the actual task start and static corridors."""
     from sim.solo_pickup_search import PROFILE
-    seed0 = 93240 if carry5 else 93220
-    check_range('solo_carry_diagnostic_v1', seed0, 8)
+    seed0 = (93240 if carry5 else 93220) if seed0 is None else seed0
+    check_range('solo_carry_diagnostic_v1', seed0, count)
     episodes = []
-    for i, kind in enumerate(BOX_KINDS*2):
+    for i, kind in enumerate((BOX_KINDS*3)[kind_offset:kind_offset+count]):
         p = episode(i//4, kind, seed0+i, 'solo_carry_diagnostic_v1',
                     scenarios=SCENARIOS, carry_layout=True, carry5=carry5)
         scenario = load_scenario(p['scenario_id'])

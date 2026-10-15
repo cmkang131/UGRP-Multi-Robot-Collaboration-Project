@@ -1,0 +1,187 @@
+{
+  "schema": "ugrp.carry6_offline.v1",
+  "research_result": false,
+  "physical_runs": 0,
+  "calibration": {
+    "schema": "ugrp.carry6_trim_calibration.v1",
+    "trim_yaw_scale": 0.75692226718752,
+    "drive_model_source": "01703ed2790dadad666e53d1b276b97f2b510bda",
+    "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+    "calibration_ids": [
+      "solo-carry-93220-870c0c59:t1.3-18.4"
+    ],
+    "validation_ids": [
+      "solo-carry-93240-c6d2f5a4:t1.3-18.4"
+    ],
+    "fit_method": "aggregate yaw minus non-trim yaw / mixed-duration trim yaw",
+    "calibration_raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93220-870c0c59/raw",
+    "validation_raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4/raw",
+    "gt_usage": "offline fit and scoring only; no runtime GT",
+    "validation_scope": "retrospective separate run, same map/task; not prospective generalization",
+    "contact_loss_model_7b223e30": false
+  },
+  "calibration_score": {
+    "ticks": 171,
+    "baseline_yaw_deg": 60.205861714655626,
+    "calibrated_yaw_deg": 45.57115734703545,
+    "truth_yaw_change_deg": 45.571157347035445,
+    "baseline_error_deg": 14.634704367620195,
+    "calibrated_error_deg": 0.0
+  },
+  "validation_score": {
+    "ticks": 171,
+    "baseline_yaw_deg": -11.028899899479923,
+    "calibrated_yaw_deg": -8.348019916498554,
+    "truth_yaw_change_deg": 0.7866177917579026,
+    "baseline_error_deg": -11.815517691237822,
+    "calibrated_error_deg": -9.134637708256458
+  },
+  "C1": {
+    "estimate_input": [
+      -0.16008558323147515,
+      -1.9450119837641735,
+      -0.19249061611879847
+    ],
+    "sigma_input": [
+      0.4019730951963465,
+      0.3833375345311188,
+      0.23160668685248792
+    ],
+    "baseline": {
+      "views": [
+        {
+          "body_yaw_deg": 0.0,
+          "pan_deg": -90.0,
+          "truth_groups_margin100": [],
+          "truth_x_normal_groups": []
+        },
+        {
+          "body_yaw_deg": 0.0,
+          "pan_deg": -60.0,
+          "truth_groups_margin100": [],
+          "truth_x_normal_groups": []
+        },
+        {
+          "body_yaw_deg": 0.0,
+          "pan_deg": -45.0,
+          "truth_groups_margin100": [],
+          "truth_x_normal_groups": []
+        }
+      ],
+      "truth_minimum_eigenvalue_margin100": 0.0,
+      "truth_x_normal_visible_views": 0
+    },
+    "candidate": {
+      "views": [
+        {
+          "body_yaw_deg": 90.0,
+          "pan_deg": -60.0,
+          "truth_groups_margin100": [],
+          "truth_x_normal_groups": []
+        },
+        {
+          "body_yaw_deg": 90.0,
+          "pan_deg": 45.0,
+          "truth_groups_margin100": [
+            "pickup:e3"
+          ],
+          "truth_x_normal_groups": [
+            "pickup:e3"
+          ]
+        },
+        {
+          "body_yaw_deg": 90.0,
+          "pan_deg": 60.0,
+          "truth_groups_margin100": [
+            "pickup:e3"
+          ],
+          "truth_x_normal_groups": [
+            "pickup:e3"
+          ]
+        }
+      ],
+      "truth_minimum_eigenvalue_margin100": 0.0,
+      "truth_x_normal_visible_views": 2,
+      "planning": {
+        "profile": "carry5_rank_aware_views_v1",
+        "robust_feasible": false,
+        "minimum_eigenvalue": 0.0,
+        "nominal_minimum_eigenvalue": 0.0,
+        "minimum_eigenvalue_required": 100.0,
+        "margin_px": 100,
+        "sigma_samples": 27,
+        "passing_samples": 1,
+        "retry": 0,
+        "exploratory_body_turn": true
+      }
+    },
+    "saved_first_view_partial": {
+      "full_fix_accepted": false,
+      "shift": [
+        0.0,
+        0.20105586896591587,
+        0.177422824707115
+      ],
+      "sigma": [
+        0.4019730951963465,
+        0.1003065158301042,
+        0.08223392500222172
+      ],
+      "receipt": {
+        "applied": true,
+        "pose_rank": 2,
+        "observable_projector": [
+          [
+            1.1257724521669457e-33,
+            4.697259384128413e-18,
+            3.322210418449084e-17
+          ],
+          [
+            4.697259384128413e-18,
+            1.0,
+            7.709364324789556e-17
+          ],
+          [
+            3.322210418449084e-17,
+            7.709364324789556e-17,
+            1.0000000000000002
+          ]
+        ],
+        "null_variance_before": 0.16158236926173106,
+        "null_variance_after": 0.16158236926173106,
+        "counts_as_fix": false
+      }
+    },
+    "truth_usage": "scoring AFTER planning only; pinhole geometry, no new pixels or detection claims"
+  },
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93220-870c0c59/raw/teacher-commands.jsonl.zst",
+      "sha256": "ac1d328603d3d4f01cc3a34fcba69162b7c1db5734210ea93d9eff36ad960814"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93220-870c0c59/raw/eval-only.jsonl.zst",
+      "sha256": "c5fbc7ec4d91ee3603ff255e61f015a26115eda3c406c466b16676589f23b179"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93220-870c0c59/raw/result.json",
+      "sha256": "c13184294f0bb4adcccd1d4064671bab2358393e874bc0c391fbfca8516e04c5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4/raw/teacher-commands.jsonl.zst",
+      "sha256": "cc5835d290e5b1e258546a009140f39bb1e8ca72eadc4c006f68614875d507cc"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4/raw/eval-only.jsonl.zst",
+      "sha256": "b140f1cef49625cf074ac5aa903c07c3a6d9fda042b2d3443bdc17fd454e494b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4/raw/result.json",
+      "sha256": "c0c6c69abb622231a88b199c4707b918f2a383db300243b442f50ff6b9f92550"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4/raw/carry-static-map.json",
+      "sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    }
+  ]
+}

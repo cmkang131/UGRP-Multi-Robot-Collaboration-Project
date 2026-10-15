@@ -40,7 +40,8 @@ def task_start(static):
 
 
 class CommandPose:
-    def __init__(self, start, *, now=0., robot_id='r1', map_sha256='', amcl_option='off', drive_model_deadband_v1=False):
+    def __init__(self, start, *, now=0., robot_id='r1', map_sha256='', amcl_option='off', drive_model_deadband_v1=False,
+                 carry5_trim_yaw_calibration_v1=False, trim_calibration=None):
         if amcl_option not in ('off', 'report_v1'):
             raise ValueError('unknown carry AMCL report option')
         if (set(start) != START_KEYS
@@ -54,6 +55,16 @@ class CommandPose:
         from harness.drive_model import CommandDriveModel, validate_options
         validate_options(drive_model_deadband_v1)
         self.drive_model_enabled = drive_model_deadband_v1
+        if type(carry5_trim_yaw_calibration_v1) is not bool:
+            raise ValueError('carry5_trim_yaw_calibration_v1 must be bool')
+        self.trim_calibration = None
+        if carry5_trim_yaw_calibration_v1:
+            from sim.solo_carry6 import validate_calibration
+            if not drive_model_deadband_v1:
+                raise ValueError('trim calibration requires its shared drive model')
+            validate_calibration(trim_calibration)
+            self.trim_calibration = dict(trim_calibration)
+        self.partial_epoch = None
         self.drive_model = CommandDriveModel() if drive_model_deadband_v1 else None
         self.last_delta = None
         self.last_command_key = None
@@ -78,6 +89,9 @@ class CommandPose:
         if abs(float(issued['t'])-self.now) > 1e-6:
             raise ValueError('command integration must follow the actual tick clock')
         dx, dy, da = command_delta(issued, dt, drive_model_deadband_v1=self.drive_model_enabled, model=self.drive_model)
+        if self.trim_calibration is not None:
+            from sim.solo_carry6 import calibrated_trim_delta
+            dx, dy, da = calibrated_trim_delta(issued, (dx, dy, da), self.trim_calibration)
         self.last_delta = (dx, dy, da)
         self.last_command_key = self.command_key(issued, dt)
         self.own.propagate(dx, dy, da, k_trans=0., k_rot=0.)
@@ -107,9 +121,15 @@ class CommandPose:
         return [c*x+s*y, -s*x+c*y, z]
 
     def accepted_fix(self, now):
+        self.partial_epoch = None
         self.last_fix = float(now)
         self.fixes += 1
         self.distance_since_fix = self.turn_since_fix = 0.
+
+    def partial_fix(self):
+        # The posterior already includes the command budget. Keep its null
+        # variance; start adding NEW command uncertainty without a full fix.
+        self.partial_epoch = (self.distance_since_fix, self.turn_since_fix)
 
     def observe_own(self, frame, now, *, camera):
         if camera != self.robot_id+'/robot_cam':
@@ -154,9 +174,12 @@ class CommandPose:
 
     def sigmas(self):
         base = [math.sqrt(max(0., float(self.own.P[i, i]))) for i in range(3)]
-        xy = MOTION_ERROR['translation_fraction']*self.distance_since_fix
-        yaw = (MOTION_ERROR['rotation_fraction']*self.turn_since_fix+
-               MOTION_ERROR['yaw_rad_per_m']*self.distance_since_fix)
+        distance, turn = self.distance_since_fix, self.turn_since_fix
+        if self.partial_epoch is not None:
+            distance -= self.partial_epoch[0]; turn -= self.partial_epoch[1]
+        xy = MOTION_ERROR['translation_fraction']*distance
+        yaw = (MOTION_ERROR['rotation_fraction']*turn+
+               MOTION_ERROR['yaw_rad_per_m']*distance)
         # Correlated bias grows with total issued motion, not sqrt(tick count).
         # This budget is deliberately NOT described as a calibrated covariance.
         return [base[0]+xy, base[1]+xy, base[2]+yaw]
@@ -174,6 +197,10 @@ class CommandPose:
                 'issued_distance_since_fix_m': self.distance_since_fix,
                 'issued_turn_since_fix_rad': self.turn_since_fix,
                 'uncertainty_calibrated': False, 'top_rgb_control_allowed': False,
+                **({'carry5_trim_yaw_calibration_v1': True, 'trim_calibration': self.trim_calibration}
+                   if self.trim_calibration is not None else {}),
+                **({'partial_budget_epoch': list(self.partial_epoch), 'partial_is_full_fix': False}
+                   if self.partial_epoch is not None else {}),
                 **({'drive_model_deadband_v1': True, 'drive_model': 'shared v7 relay and confirmed damping',
                     'budget_epoch_t': self.started if self.last_fix is None else self.last_fix}
                    if self.drive_model_enabled else {})}

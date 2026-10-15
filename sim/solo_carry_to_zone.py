@@ -152,11 +152,15 @@ class RGBCommandPose:
 
 
 class CarryToZone:
-    def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off', recovery_profile='off', drive_model_deadband_v1=False):
+    def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off', recovery_profile='off', drive_model_deadband_v1=False,
+                 carry5_rank_aware_views_v1=False, carry5_trim_yaw_calibration_v1=False, trim_calibration=None):
         if recovery_profile not in ('off', 'carry5_active_localization_v1'):
             raise ValueError('unknown carry recovery profile')
         self.recovery_profile = recovery_profile
         self.active_recovery = recovery_profile != 'off'
+        if type(carry5_rank_aware_views_v1) is not bool or (carry5_rank_aware_views_v1 and not self.active_recovery):
+            raise ValueError('rank-aware views require carry5 recovery and bool toggle')
+        self.rank_aware_v1 = carry5_rank_aware_views_v1
         self.recovery_reason = None
         self.recovery_events = []
         self.recovery_count = 0
@@ -185,7 +189,9 @@ class CarryToZone:
             raise ValueError('carry requires the declared static task start; no spawn-derived prior')
         self.loc = CommandPose(start, now=now, robot_id=robot_id,
                                map_sha256=self.map_sha256, amcl_option=amcl_option,
-                               drive_model_deadband_v1=drive_model_deadband_v1)
+                               drive_model_deadband_v1=drive_model_deadband_v1,
+                               carry5_trim_yaw_calibration_v1=carry5_trim_yaw_calibration_v1,
+                               trim_calibration=trim_calibration)
 
     def issue(self, issued, dt):
         self.loc.issue(issued, dt)
@@ -308,6 +314,11 @@ class CarryToZone:
 
     def finish_recovery(self, now, fixes_before):
         if self.loc.fixes <= fixes_before or not self.loc.ready(now) or self.needs_budget():
+            if self.rank_aware_v1 and self.recovery_count < 12:
+                self.recovery_count += 1
+                self.recovery_events.append({'t': now, 'event': 'retry_body_views',
+                                             'attempt': self.recovery_count})
+                return False
             self.failure = 'carry_relocalization_unconfirmed'
             return False
         self.recovery_events.append({'t': now, 'event': 'accepted_replan', 'fixes': self.loc.fixes})
@@ -363,5 +374,7 @@ class CarryToZone:
                 'map_arrival_estimated_t': self.arrived, 'failure': self.failure,
                 'path': self.path, 'static_route_only': False, 'obstacles': self.obstacles.record(),
                 'held_world_reads': 0, 'physical_success': None,
+                **({'carry5_rank_aware_views_v1': True, 'recovery_count': self.recovery_count}
+                   if self.rank_aware_v1 else {}),
                 **({'recovery_profile': self.recovery_profile, 'recovery_reason': self.recovery_reason,
                     'recovery_events': self.recovery_events} if self.active_recovery else {})}

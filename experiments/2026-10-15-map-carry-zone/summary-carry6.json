@@ -1,0 +1,308 @@
+{
+  "schema": "ugrp.carry6_summary.v1",
+  "source_base_sha": "c6d2f5a436da4822d1c05d288604d2e542d43c82",
+  "source_revision": "commit containing this summary; exact queue SHA fixed after commit",
+  "pr": 505,
+  "physical_runs": 0,
+  "render_runs": 0,
+  "training_runs": 0,
+  "remote_server_connections": 0,
+  "research_result": false,
+  "previous_results_combinable": false,
+  "toggles_default_off": [
+    "carry5_rank_aware_views_v1",
+    "carry5_trim_yaw_calibration_v1"
+  ],
+  "plan_toggles": {
+    "carry5_rank_aware_views_v1": true,
+    "carry5_trim_yaw_calibration_v1": false
+  },
+  "C1": {
+    "geometry": {
+      "views": [
+        {
+          "body_yaw_deg": 90.0,
+          "pan_deg": -60.0,
+          "truth_groups_margin100": [],
+          "truth_x_normal_groups": []
+        },
+        {
+          "body_yaw_deg": 90.0,
+          "pan_deg": 45.0,
+          "truth_groups_margin100": [
+            "pickup:e3"
+          ],
+          "truth_x_normal_groups": [
+            "pickup:e3"
+          ]
+        },
+        {
+          "body_yaw_deg": 90.0,
+          "pan_deg": 60.0,
+          "truth_groups_margin100": [
+            "pickup:e3"
+          ],
+          "truth_x_normal_groups": [
+            "pickup:e3"
+          ]
+        }
+      ],
+      "truth_minimum_eigenvalue_margin100": 0.0,
+      "truth_x_normal_visible_views": 2,
+      "planning": {
+        "profile": "carry5_rank_aware_views_v1",
+        "robust_feasible": false,
+        "minimum_eigenvalue": 0.0,
+        "nominal_minimum_eigenvalue": 0.0,
+        "minimum_eigenvalue_required": 100.0,
+        "margin_px": 100,
+        "sigma_samples": 27,
+        "passing_samples": 1,
+        "retry": 0,
+        "exploratory_body_turn": true
+      }
+    },
+    "saved_rank2_partial": {
+      "full_fix_accepted": false,
+      "shift": [
+        0.0,
+        0.20105586896591587,
+        0.177422824707115
+      ],
+      "sigma": [
+        0.4019730951963465,
+        0.1003065158301042,
+        0.08223392500222172
+      ],
+      "receipt": {
+        "applied": true,
+        "pose_rank": 2,
+        "observable_projector": [
+          [
+            1.1257724521669457e-33,
+            4.697259384128413e-18,
+            3.322210418449084e-17
+          ],
+          [
+            4.697259384128413e-18,
+            1.0,
+            7.709364324789556e-17
+          ],
+          [
+            3.322210418449084e-17,
+            7.709364324789556e-17,
+            1.0000000000000002
+          ]
+        ],
+        "null_variance_before": 0.16158236926173106,
+        "null_variance_after": 0.16158236926173106,
+        "counts_as_fix": false
+      }
+    }
+  },
+  "C2": {
+    "calibration": {
+      "schema": "ugrp.carry6_trim_calibration.v1",
+      "trim_yaw_scale": 0.75692226718752,
+      "drive_model_source": "01703ed2790dadad666e53d1b276b97f2b510bda",
+      "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+      "calibration_ids": [
+        "solo-carry-93220-870c0c59:t1.3-18.4"
+      ],
+      "validation_ids": [
+        "solo-carry-93240-c6d2f5a4:t1.3-18.4"
+      ],
+      "fit_method": "aggregate yaw minus non-trim yaw / mixed-duration trim yaw",
+      "calibration_raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93220-870c0c59/raw",
+      "validation_raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4/raw",
+      "gt_usage": "offline fit and scoring only; no runtime GT",
+      "validation_scope": "retrospective separate run, same map/task; not prospective generalization",
+      "contact_loss_model_7b223e30": false
+    },
+    "calibration_score": {
+      "ticks": 171,
+      "baseline_yaw_deg": 60.205861714655626,
+      "calibrated_yaw_deg": 45.57115734703545,
+      "truth_yaw_change_deg": 45.571157347035445,
+      "baseline_error_deg": 14.634704367620195,
+      "calibrated_error_deg": 0.0
+    },
+    "validation_score": {
+      "ticks": 171,
+      "baseline_yaw_deg": -11.028899899479923,
+      "calibrated_yaw_deg": -8.348019916498554,
+      "truth_yaw_change_deg": 0.7866177917579026,
+      "baseline_error_deg": -11.815517691237822,
+      "calibrated_error_deg": -9.134637708256458
+    }
+  },
+  "tests": {
+    "command": "python -m pytest -q tests/test_solo_carry6.py tests/test_solo_carry5.py tests/test_solo_carry4.py tests/test_grasp_act_solo_carry.py tests/test_grasp_act_solo_teacher.py tests/test_active_lookaround.py tests/test_lookaround_localization.py tests/test_drive_model_deadband.py",
+    "final_passed": 123,
+    "seconds": 50.5,
+    "concurrent_pytest_processes": 1,
+    "initial_failed": 1,
+    "initial_passed": 121,
+    "initial_failure": "empty plan read while generator still running; generator completed before final rerun"
+  },
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93220-870c0c59/raw/teacher-commands.jsonl.zst",
+      "sha256": "ac1d328603d3d4f01cc3a34fcba69162b7c1db5734210ea93d9eff36ad960814"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93220-870c0c59/raw/eval-only.jsonl.zst",
+      "sha256": "c5fbc7ec4d91ee3603ff255e61f015a26115eda3c406c466b16676589f23b179"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93220-870c0c59/raw/result.json",
+      "sha256": "c13184294f0bb4adcccd1d4064671bab2358393e874bc0c391fbfca8516e04c5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4/raw/teacher-commands.jsonl.zst",
+      "sha256": "cc5835d290e5b1e258546a009140f39bb1e8ca72eadc4c006f68614875d507cc"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4/raw/eval-only.jsonl.zst",
+      "sha256": "b140f1cef49625cf074ac5aa903c07c3a6d9fda042b2d3443bdc17fd454e494b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4/raw/result.json",
+      "sha256": "c0c6c69abb622231a88b199c4707b918f2a383db300243b442f50ff6b9f92550"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-93240-c6d2f5a4/raw/carry-static-map.json",
+      "sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b"
+    }
+  ],
+  "analysis_sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/report.md",
+      "sha256": "065dbbc14ca4e6ad7e191af7aec23c8b00fbc06810dca2c3420dd69deb056c02"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/scripts/carry5_camera_projection.py",
+      "sha256": "968243de4e35ccd0a95719304435ceec4ccd52d815ea2b12458a33a18331f51b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/scripts/carry5_odometry_decomposition.py",
+      "sha256": "9e9a0ae01f2a280d260f93f3ce3b01d9206e29cd65d3f751d6da60e5d8dc6031"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/scripts/carry5_timeseries.py",
+      "sha256": "c48144ddd6d90014617be3a2ffff7a5574697f46261b3797f29f5b56675d6dea"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/scripts/carry5_view_geometry.py",
+      "sha256": "784511ea4890f05472574fe4dd582eee84479653e73a3026634fc9a3cd833ffa"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/logs/carry5_odometry_decomposition.txt",
+      "sha256": "870c7436334bc391d90638b8253580142dce0ea888d3a6a194a1b971d1f4c8ac"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/logs/carry5_timeseries.txt",
+      "sha256": "3d5454189d0c32149ed62a9b0adf8055249ea49fc4caa8d475a716cc8b254e89"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/relocalization-carry5-selfmap4/logs/carry5_view_geometry.txt",
+      "sha256": "7b6ef186e00bfffd5b0174e779ec8229634539edf3a019590ae9fc7c49e6b012"
+    }
+  ],
+  "seed_check": {
+    "fresh": [
+      93260,
+      93261,
+      93262,
+      93263,
+      93264,
+      93265,
+      93266
+    ],
+    "reproduction": [
+      93240
+    ],
+    "existing_queues": 103,
+    "collisions": [],
+    "remote_unused_verified": false
+  },
+  "runs": [
+    {
+      "seed": 93240,
+      "kind": "cyan",
+      "role": "reproduction",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null
+    },
+    {
+      "seed": 93260,
+      "kind": "red",
+      "role": "fresh_seed",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null
+    },
+    {
+      "seed": 93261,
+      "kind": "green",
+      "role": "fresh_seed",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null
+    },
+    {
+      "seed": 93262,
+      "kind": "yellow",
+      "role": "fresh_seed",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null
+    },
+    {
+      "seed": 93263,
+      "kind": "cyan",
+      "role": "fresh_seed",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null
+    },
+    {
+      "seed": 93264,
+      "kind": "red",
+      "role": "fresh_seed",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null
+    },
+    {
+      "seed": 93265,
+      "kind": "green",
+      "role": "fresh_seed",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null
+    },
+    {
+      "seed": 93266,
+      "kind": "yellow",
+      "role": "fresh_seed",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null
+    }
+  ],
+  "queue": {
+    "location": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-solo-carry-<carry6_sha8>.json",
+    "approved": false,
+    "enabled": false,
+    "ready": false,
+    "stage_ready": false
+  },
+  "remaining": [
+    "robust rank/margin gate infeasible at saved belief; only exploratory body views",
+    "no new own-RGB detection/fix/carry completion measured",
+    "C2 residual yaw9.13deg; disabled in queue",
+    "GCP approval/submission/retrieval/first30/video/budget/VM checks not performed"
+  ]
+}

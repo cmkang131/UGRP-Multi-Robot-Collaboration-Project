@@ -479,6 +479,8 @@ class SoloTeacher:
     def _start_carry_scan(self, now):
         if not self.lookaround.armed:
             self.lookaround.arm()
+        if self.carry.rank_aware_v1:
+            self.lookaround.rank_retry = max(0, self.carry.recovery_count-1)
         self.lookaround.start(now, self.sink.pwm[6])
         self._set('carry_reobserve', now)
 
@@ -538,7 +540,7 @@ class SoloTeacher:
             value, done = self.lookaround.step(now, self.sink.pwm, own_rgb)
             self.sink.pwm.update({int(k): v for k, v in value['pwm'].items()})
             self.arm.commanded.update(self.sink.pwm)
-            if self.carry.loc.fixes > old_fixes:
+            if self.carry.loc.fixes > old_fixes or (self.carry.rank_aware_v1 and old_pose != self.carry.loc.pose):
                 self.carry.obstacles.reanchor(old_pose, self.carry.loc.pose)
             if done:
                 if self.carry.finish_recovery(now, self.recovery_fixes):
@@ -546,6 +548,8 @@ class SoloTeacher:
                     # A held recovery has released: never restore the closed gripper.
                     self._queue({**self.recovery_pwm, 1: 2000}, now, .8, .2)
                     self._set('carry_recover_restore', now)
+                elif self.carry.rank_aware_v1 and self.carry.failure is None:
+                    self._start_carry_scan(now)
                 else:
                     self.result = self.carry.failure
                     self._set('failed', now)

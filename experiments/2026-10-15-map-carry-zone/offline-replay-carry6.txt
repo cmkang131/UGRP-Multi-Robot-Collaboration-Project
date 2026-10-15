@@ -1,0 +1,136 @@
+{
+  "calibration_score": {
+    "ticks": 171,
+    "baseline_yaw_deg": 60.205861714655626,
+    "calibrated_yaw_deg": 45.57115734703545,
+    "truth_yaw_change_deg": 45.571157347035445,
+    "baseline_error_deg": 14.634704367620195,
+    "calibrated_error_deg": 0.0
+  },
+  "validation_score": {
+    "ticks": 171,
+    "baseline_yaw_deg": -11.028899899479923,
+    "calibrated_yaw_deg": -8.348019916498554,
+    "truth_yaw_change_deg": 0.7866177917579026,
+    "baseline_error_deg": -11.815517691237822,
+    "calibrated_error_deg": -9.134637708256458
+  },
+  "C1": {
+    "estimate_input": [
+      -0.16008558323147515,
+      -1.9450119837641735,
+      -0.19249061611879847
+    ],
+    "sigma_input": [
+      0.4019730951963465,
+      0.3833375345311188,
+      0.23160668685248792
+    ],
+    "baseline": {
+      "views": [
+        {
+          "body_yaw_deg": 0.0,
+          "pan_deg": -90.0,
+          "truth_groups_margin100": [],
+          "truth_x_normal_groups": []
+        },
+        {
+          "body_yaw_deg": 0.0,
+          "pan_deg": -60.0,
+          "truth_groups_margin100": [],
+          "truth_x_normal_groups": []
+        },
+        {
+          "body_yaw_deg": 0.0,
+          "pan_deg": -45.0,
+          "truth_groups_margin100": [],
+          "truth_x_normal_groups": []
+        }
+      ],
+      "truth_minimum_eigenvalue_margin100": 0.0,
+      "truth_x_normal_visible_views": 0
+    },
+    "candidate": {
+      "views": [
+        {
+          "body_yaw_deg": 90.0,
+          "pan_deg": -60.0,
+          "truth_groups_margin100": [],
+          "truth_x_normal_groups": []
+        },
+        {
+          "body_yaw_deg": 90.0,
+          "pan_deg": 45.0,
+          "truth_groups_margin100": [
+            "pickup:e3"
+          ],
+          "truth_x_normal_groups": [
+            "pickup:e3"
+          ]
+        },
+        {
+          "body_yaw_deg": 90.0,
+          "pan_deg": 60.0,
+          "truth_groups_margin100": [
+            "pickup:e3"
+          ],
+          "truth_x_normal_groups": [
+            "pickup:e3"
+          ]
+        }
+      ],
+      "truth_minimum_eigenvalue_margin100": 0.0,
+      "truth_x_normal_visible_views": 2,
+      "planning": {
+        "profile": "carry5_rank_aware_views_v1",
+        "robust_feasible": false,
+        "minimum_eigenvalue": 0.0,
+        "nominal_minimum_eigenvalue": 0.0,
+        "minimum_eigenvalue_required": 100.0,
+        "margin_px": 100,
+        "sigma_samples": 27,
+        "passing_samples": 1,
+        "retry": 0,
+        "exploratory_body_turn": true
+      }
+    },
+    "saved_first_view_partial": {
+      "full_fix_accepted": false,
+      "shift": [
+        0.0,
+        0.20105586896591587,
+        0.177422824707115
+      ],
+      "sigma": [
+        0.4019730951963465,
+        0.1003065158301042,
+        0.08223392500222172
+      ],
+      "receipt": {
+        "applied": true,
+        "pose_rank": 2,
+        "observable_projector": [
+          [
+            1.1257724521669457e-33,
+            4.697259384128413e-18,
+            3.322210418449084e-17
+          ],
+          [
+            4.697259384128413e-18,
+            1.0,
+            7.709364324789556e-17
+          ],
+          [
+            3.322210418449084e-17,
+            7.709364324789556e-17,
+            1.0000000000000002
+          ]
+        ],
+        "null_variance_before": 0.16158236926173106,
+        "null_variance_after": 0.16158236926173106,
+        "counts_as_fix": false
+      }
+    },
+    "truth_usage": "scoring AFTER planning only; pinhole geometry, no new pixels or detection claims"
+  }
+}

@@ -147,7 +147,7 @@ class Camera:
         return self._cache[key]
 
 
-def visible_fn_for(static, camera):
+def visible_fn_for(static, camera, *, margin_px=IMAGE_MARGIN_PX):
     rects = wall_rects(static)
 
     def visible(pose, body_yaw_deg, pan_deg, lm):
@@ -168,7 +168,7 @@ def visible_fn_for(static, camera):
         if q[2] <= .05:
             return False
         u, v = (camera.K@q)[:2]/q[2]
-        if not (IMAGE_MARGIN_PX <= u <= WIDTH-IMAGE_MARGIN_PX and IMAGE_MARGIN_PX <= v <= HEIGHT-IMAGE_MARGIN_PX):
+        if not (margin_px <= u <= WIDTH-margin_px and margin_px <= v <= HEIGHT-margin_px):
             return False
         L = math.dist(cw, (lx, ly)); back = ((lx-cw[0])/L, (ly-cw[1])/L)
         end = (lx-.03*back[0], ly-.03*back[1])            # stop short of the landmark's own wall face
@@ -205,7 +205,13 @@ class LookaroundLocalizer:
     # --- view plan ---
     def make_plan(self, start_pan_pulse=1500):
         start = (start_pan_pulse-1500)*PAN_DEG_PER_PULSE
-        plan = plan_views(tuple(self.own.x), getattr(self, 'planning_covariance', self.own.P),
+        if getattr(self, 'rank_aware_v1', False):
+            from sim.solo_carry6 import rank_aware_plan, MARGIN_PX
+            plan = rank_aware_plan(tuple(self.own.x), self.planning_covariance, self.landmarks,
+                visible_fn_for(self.static, self.camera, margin_px=MARGIN_PX), start_pan=start,
+                retry=getattr(self, 'rank_retry', 0))
+        else:
+            plan = plan_views(tuple(self.own.x), getattr(self, 'planning_covariance', self.own.P),
                           self.landmarks, self.visible, start_pan=start,
                           **({'body_yaws': (0.,)} if getattr(self, 'pan_only', False) else {}))
         self.plan = {'expected_gain_nats': plan['expected_gain_nats'], 'rotated': plan['rotated'],
@@ -214,6 +220,8 @@ class LookaroundLocalizer:
                                 'expected': v['landmarks']} for v in plan['views']],
                      'pose_estimate_at_plan': [float(z) for z in self.own.x],
                      'sigma_at_plan': [float(math.sqrt(self.own.P[i, i])) for i in range(3)]}
+        if 'rank_aware' in plan:
+            self.plan['rank_aware'] = plan['rank_aware']
         return self.plan
 
     def script(self):
@@ -272,7 +280,14 @@ class LookaroundLocalizer:
             if self.require_fix_acceptance:
                 rec['fix_acceptance'] = self.fix_acceptance(walls, floors, doors, prior, covariance)
                 if not rec['fix_acceptance']['accepted']:
+                    partial = None
+                    if getattr(self, 'rank_aware_v1', False):
+                        from sim.solo_carry6 import partial_posterior
+                        partial = partial_posterior(prior, covariance, self.own.x, self.own.P,
+                                                    self._acceptance_rows, rec['fix_acceptance'])
                     self.own.x, self.own.P = prior, covariance
+                    if partial is not None:
+                        self.own.x, self.own.P, rec['partial_update'] = partial
         rec['posterior'] = [float(z) for z in self.own.x]
         rec['posterior_sigma'] = [float(math.sqrt(self.own.P[i, i])) for i in range(3)]
         rec['seen_groups'] = self.seen_groups(walls, floors, doors)
@@ -344,6 +359,8 @@ class LookaroundLocalizer:
         chi2 = float(shift @ np.linalg.solve(covariance+self.own.P, shift)) if finite else math.inf
         gain = float(np.linalg.slogdet(covariance)[1]-np.linalg.slogdet(self.own.P)[1]) if finite else -math.inf
         rank = int(np.linalg.matrix_rank(np.asarray(rows))) if rows else 0
+        if getattr(self, 'rank_aware_v1', False):
+            self._acceptance_rows = rows
         fraction = sum(e <= GATE_CHI2_1 for e in errors)/max(1, len(errors))
         accepted = (finite and len(errors) >= 3 and len(groups) >= 2 and rank == 3
                     and fraction >= .8 and chi2 <= 11.345 and gain >= MIN_GAIN)
