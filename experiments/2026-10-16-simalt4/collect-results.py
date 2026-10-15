@@ -24,6 +24,16 @@ def main():
     from simalt_host import gcp2_identity
     host=gcp2_identity()
     OUT.mkdir(exist_ok=False)
+    import importlib.metadata as md
+    import mujoco,warp,mujoco_warp
+    from mujoco_warp._src import io
+    direct=json.loads(md.distribution('mujoco-warp').read_text('direct_url.json') or '{}')
+    write(OUT/'environment.json',{'host':host,'python':sys.version,'mujoco':mujoco.__version__,
+        'warp':warp.__version__,'mujoco_warp_package':md.version('mujoco-warp'),
+        'mujoco_warp_commit':direct.get('vcs_info',{}).get('commit_id'),
+        'upstream_io_sha256':sha(Path(io.__file__)),
+        'credential_path_presence':{str(path):path.exists() for path in [Path.home()/'.config/gcloud/credentials.db',Path.home()/'.kaggle/kaggle.json',Path.home()/'.codex/auth.json',Path.home()/'.claude/.credentials.json']},
+        'idle_timer':subprocess.check_output(['systemctl','is-active','ugrp-idle-guard.timer'],text=True).strip()})
     jobs=[]
     for f in sorted(ROOT.glob('*/result.json')):
         d=json.loads(f.read_text())
