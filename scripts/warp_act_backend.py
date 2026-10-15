@@ -121,9 +121,13 @@ class WarpTransport(Transport):
         self.graph_tick = wp.zeros(1,dtype=int)
         self.force_out = wp.zeros((self.n,2),dtype=float)
         self.init_kernels(contexts)
+        # Compile once, then discard the warm-up state before any rollout.
+        mjw.step(self.wm,self.wd); wp.synchronize()
+        with unused_efm(m,d):
+            self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax)
         # Capture exactly the 400 physics ticks, not a host wall budget.
         with wp.ScopedCapture() as capture:
-            for _ in range(round(.1/self.dt)):
+            for _ in range(16):
                 wp.launch(self.command_kernel, dim=(self.n,m.nu),inputs=[self.tape,self.graph_tick,self.wd.ctrl])
                 mjw.step(self.wm,self.wd)
                 wp.launch(self.advance_kernel,dim=1,inputs=[self.graph_tick])
@@ -223,7 +227,8 @@ class WarpTransport(Transport):
         self.seconds['command_decode_upload']+=time.perf_counter()-start
         start=time.perf_counter()
         self.graph_tick.zero_()
-        wp.capture_launch(self.graph)
+        for _ in range(round(.1/self.dt)//16):
+            wp.capture_launch(self.graph)
         wp.synchronize()
         self.tick+=1
         self.seconds['physics']+=time.perf_counter()-start

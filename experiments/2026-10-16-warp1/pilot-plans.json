@@ -1,0 +1,171 @@
+{
+  "episodes": [
+    {
+      "episode_id": "act11_gate-8317100",
+      "batch": "solo-teacher-act11_gate-8317100",
+      "seed": 8317100,
+      "split": "act11_gate",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.08461501163926188,
+          -2.8103850964299326,
+          0.032355118817659255,
+          0.3124584462857013
+        ],
+        "r2": [
+          1.1729660062894829,
+          -1.371632937062341,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.698843393668465,
+          1.1355356850694096,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.0002840070395084384,
+        0.018541062152280328,
+        -0.002056504753175684
+      ],
+      "start_to_cargo_m": 0.6039280811776626,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": true,
+      "training_eligible": false,
+      "start_bearing_deg_setup_only": 18.733873766601505
+    },
+    {
+      "episode_id": "act11_gate-8317116",
+      "batch": "solo-teacher-act11_gate-8317116",
+      "seed": 8317116,
+      "split": "act11_gate",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3638072401361061,
+          -2.3897547093804117,
+          0.032355118817659255,
+          -0.45472925229929123
+        ],
+        "r2": [
+          1.4065763045569066,
+          -2.0146497067460474,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.5410075629267765,
+          -0.43427787267336804,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.0314169138113285,
+        0.001656503529449141,
+        -0.025264314334665892
+      ],
+      "start_to_cargo_m": 0.7661794797083604,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": true,
+      "training_eligible": false,
+      "start_bearing_deg_setup_only": 21.544199671212375
+    },
+    {
+      "episode_id": "act11_gate-8317102",
+      "batch": "solo-teacher-act11_gate-8317102",
+      "seed": 8317102,
+      "split": "act11_gate",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.21126120316126307,
+          -0.24189580827045554,
+          0.032355118817659255,
+          -0.7384300067565914
+        ],
+        "r2": [
+          -0.3021519412790932,
+          -2.405348281595169,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.0143397787269122,
+          -0.40007286915874607,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.03798647258821155,
+        -0.051195294003052706,
+        -0.04463697803974823
+      ],
+      "start_to_cargo_m": 0.8622244293043415,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": true,
+      "training_eligible": false,
+      "start_bearing_deg_setup_only": -2.5427352082618127
+    }
+  ],
+  "kinds": {
+    "cyan": 10,
+    "red": 10,
+    "green": 10,
+    "yellow": 10
+  },
+  "approved": false,
+  "ready": false,
+  "seed_inventory_verified": false,
+  "scope": "warp1 qualitative matched C/Warp pilot; replicated worlds are not independent gate episodes"
+}
