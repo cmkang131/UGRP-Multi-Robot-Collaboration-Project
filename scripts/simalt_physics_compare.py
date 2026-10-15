@@ -239,6 +239,9 @@ def run(a):
                 write(a.out/'result.json',report)
                 mjw.step(wm,wd);wp.synchronize();check(wd)
                 if a.batch_render_v1:
+                    # Match the C owner's _sync_real_camera_mount/mj_forward:
+                    # expose post-integration body/camera transforms to rendering.
+                    mjw.kinematics(wm,wd);mjw.camlight(wm,wd)
                     mjw.refit_bvh(wm,wd,rc);mjw.render(wm,wd,rc);mjw.get_rgb(rc,0,rgb);wp.synchronize()
                 report.update(status='first_step_pass_only',first_step_passed=True)
                 write(a.out/'result.json',report)
@@ -273,6 +276,7 @@ def run(a):
                 cr['physics_wall_s']+=time.perf_counter()-ps
                 if a.batch_render_v1:
                     rs=time.perf_counter()
+                    mjw.kinematics(wm,wd);mjw.camlight(wm,wd)
                     mjw.refit_bvh(wm,wd,rc);mjw.render(wm,wd,rc);mjw.get_rgb(rc,0,rgb);wp.synchronize()
                     cr['batch_render_wall_s']+=time.perf_counter()-rs
                     rs=time.perf_counter()

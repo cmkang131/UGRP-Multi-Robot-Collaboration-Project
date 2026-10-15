@@ -13,6 +13,7 @@ def main():
     for key in ('source','fixture','run','out'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--case',required=True)
     p.add_argument('--gcp2-v1',action='store_true')
+    p.add_argument('--failure-time-s',type=float,help='SIM time of evaluated failure; reconstruct preceding 10s at10Hz instead of episode-end window')
     a=p.parse_args()
     if a.gcp2_v1:
         from simalt_host import gcp2_identity
@@ -43,7 +44,9 @@ def main():
     top=mujoco.MjvCamera();top.type=mujoco.mjtCamera.mjCAMERA_FREE
     top.lookat[:]=[-.05,-2.4,0.];top.distance=1.5;top.azimuth=90;top.elevation=-65
     full=list(range(4,len(samples),5))  # 2Hz, at SIM .5,1.0,...
-    end=list(range(max(0,len(samples)-100),len(samples)))
+    stop=len(samples) if a.failure_time_s is None else min(len(samples),round(a.failure_time_s*10))
+    if stop<=0:p.error('review failure anchor must include a saved sample')
+    end=list(range(max(0,stop-100),stop))
     selected=sorted(set(full+end));images={}
     try:
         for i in selected:
@@ -74,6 +77,7 @@ def main():
                'renderer':'offline C3.12; not MJWarp batch-render parity or throughput',
                'camera':'unchanged v3 mount and measured K/D; r2 absent by reduced-scene contract',
                'source_states':str(a.run/'states.npz'),'reproduce':sys.argv}
+        write['failure_anchor_sim_s']=a.failure_time_s
         (a.out/'review.json').write_text(json.dumps(write,indent=2)+'\n')
     finally:renderer.close()
 
