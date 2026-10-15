@@ -16,6 +16,16 @@ while time.time() < deadline:
         break
     time.sleep(min(30, max(0, deadline-time.time())))
 else:
+    # The allocation is ours, but another lease always blocks a VM stop.
+    check = subprocess.run(['ssh', '-i', '/Users/changmin/.ssh/ugrp_gcp2',
+        '-o', 'IdentitiesOnly=yes', '-o', 'ConnectTimeout=10', 'ugrp@34.64.179.69',
+        'find /home/ugrp/ugrp-sim/leases -maxdepth 1 -type f ! -name simalt5.json -print'],
+        capture_output=True, text=True)
+    if check.returncode or check.stdout.strip():
+        (ROOT/'evidence/resource-cap-stop.json').write_text(json.dumps({
+            'cap_end': True, 'stop_blocked_by_other_lease_or_ssh_error': True,
+            'stdout': check.stdout, 'stderr': check.stderr}, indent=2)+'\n')
+        raise SystemExit('L4 stop requires lease/process ownership check')
     result = subprocess.run(GCLOUD+['stop']+FLAGS, capture_output=True, text=True)
     (ROOT/'evidence/resource-cap-stop.json').write_text(json.dumps({
         'cap_end': True, 'returncode': result.returncode,
