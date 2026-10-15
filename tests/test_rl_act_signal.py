@@ -209,6 +209,11 @@ def test_dependency_watch_does_not_mistake_teacher_transport_for_actor_reset(mon
     source += '    def reset(self): pass\n'
     signalled = watch.inspect()
     assert signalled['signal'] and not signalled['runtime_admitted']
+    source = ('class Base:\n    def reset(self): pass\n'
+              'class WarpTransport(Base):\n    def step(self): pass\n')
+    assert watch.inspect()['signal']
+    source = 'def reset(): pass\ndef step(): pass\n'
+    assert watch.inspect()['signal']
     source = 'class WarpTransport:\n    def step(self): pass\n'
     watch.ALERT.write_text('warp1: FAILED backend pilot\n')
     signalled = watch.inspect()

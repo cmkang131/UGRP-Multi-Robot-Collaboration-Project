@@ -29,7 +29,7 @@ def inspect():
             continue
         code, paths, error = git('ls-tree', '-r', '--name-only', head, '--', 'sim/', 'scripts/', 'harness/')
         backend = [p for p in paths.splitlines() if 'warp' in p.lower() and p.endswith('.py')]
-        methods = {}
+        methods, bases = {}, {}
         for path in backend:
             code, source, error = git('show', head+':'+path)
             if code:
@@ -39,10 +39,25 @@ def inspect():
                 if isinstance(node, ast.ClassDef):
                     methods[path+':'+node.name] = [n.name for n in node.body
                         if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
+                    bases[path+':'+node.name] = [path+':'+b.id for b in node.bases
+                                               if isinstance(b, ast.Name)]
+            functions = [n.name for n in tree.body
+                         if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))]
+            if functions:
+                methods[path+':<module>'] = functions
+        def inherited(name, seen=None):
+            seen = set() if seen is None else seen
+            if name in seen:
+                return set()
+            seen.add(name)
+            result = set(methods.get(name, ()))
+            for base in bases.get(name, ()):
+                result |= inherited(base, seen)
+            return result
         # Metadata trigger only, not runtime admission. A teacher-only transport
         # used to trigger the old watcher despite having no reset API.
-        reset_classes = [name for name, names in methods.items()
-                         if {'reset', 'step'} <= set(names)]
+        reset_classes = [name for name in methods
+                         if {'reset', 'step'} <= inherited(name)]
         commits.append({'ref': ref, 'sha': head, 'backend_paths': backend,
                         'class_methods': methods, 'reset_step_classes': reset_classes})
     return {'utc': dt.datetime.now(dt.timezone.utc).isoformat(),

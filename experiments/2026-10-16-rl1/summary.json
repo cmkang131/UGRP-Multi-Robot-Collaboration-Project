@@ -86,8 +86,14 @@
     "render": 0,
     "GUI": 0
   },
-  "raw_locations": [],
-  "artifacts": {},
+  "raw_locations": [
+    "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-d1c6b040",
+    "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-18c369ff",
+    "/home/ugrp/ugrp-sim/runs/rl1-calibration-1"
+  ],
+  "artifacts": {
+    "playback_crosscheck": "playback-crosscheck.json"
+  },
   "remaining": [
     "warp1 completion or committed actor/reset/RGB API",
     "real backend binding and distinct-start/partial-reset audit",
@@ -96,7 +102,7 @@
     "checkpoint release verification if produced"
   ],
   "scope": "ACT15 short signal only; ACT16w first, RL2 later",
-  "updated_utc": "2026-10-15T18:16:39.547165+00:00",
+  "updated_utc": "2026-10-15T18:36:23.679693+00:00",
   "heuristics": {
     "h1": {
       "enabled_for_pilot": true,
@@ -124,7 +130,12 @@
     "actual_warp_binding": false,
     "actual_partial_reset": false,
     "actual_actor_output_byte_invariance": false,
-    "evaluation_wrapper_privileged_reads": 0
+    "evaluation_wrapper_privileged_reads": 0,
+    "ci_shard_listing": {
+      "coverage_verified": true,
+      "new_test_occurrences": 1,
+      "total_test_files": 669
+    }
   },
   "saved_analysis": {
     "status": "complete",
@@ -136,7 +147,7 @@
     "new_rollouts": 0,
     "prior_attempts": [
       {
-        "source_sha": "d1c6b040c",
+        "source_sha": "d1c6b040c8ef8c58f4c28f66f7ff45404161a59b",
         "raw": "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-d1c6b040",
         "status": "ANALYSIS_ERROR",
         "reason": "KeyError min_z: six known lookaround annotations",
@@ -144,5 +155,12 @@
         "gpu_seconds": 0
       }
     ]
+  },
+  "dependency_wait": {
+    "status": "waiting",
+    "deadline_utc": "2026-10-16T02:11:00+00:00",
+    "poll_seconds": 300,
+    "restart_reason": "detect inherited or module reset API too; original deadline unchanged",
+    "last_known_sha": "40738e3b3f79aac957bdc64329e9a518f2e6b134"
   }
 }
