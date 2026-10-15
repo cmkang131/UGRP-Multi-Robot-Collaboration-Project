@@ -108,6 +108,10 @@ def main():
                 report['wall_per_sim_median']=float(np.median(latencies)/.1)
                 report['aggregate_sim_s_per_wall_s']=n*.1*len(latencies)/sum(latencies)
                 report['formal_30sim_speed_gate']='not measured by eight-tick correctness probe'
+                all_train=json.loads(a.training_plans.read_text())['episodes']
+                new=next(r for r in all_train if r['setup_fingerprint']!=plans[0]['setup_fingerprint'])
+                check();client.reset([new],indices=(0,))
+                report['partial_reset']='immediate integration/RGB isolation checked by owner; next-step dynamics unverified'
                 if report['wall_per_sim_median']>6.:
                     raise AdmissionBlock('PRELIMINARY_SPEED_BLOCK: eight-tick median exceeds6; do not submit learning')
                 # Resource allocation only. Seal a SIM-tick prefix BEFORE any fit
@@ -118,9 +122,6 @@ def main():
                 # one initial chunk plus first motion. This is a compute floor,
                 # not a physical success/acceptance tolerance.
                 if prefix_ticks<3*2*8:raise BudgetEnd('cannot fit three2-chunk tiers and paired evaluation')
-                all_train=json.loads(a.training_plans.read_text())['episodes']
-                new=next(r for r in all_train if r['setup_fingerprint']!=plans[0]['setup_fingerprint'])
-                client.reset([new],indices=(0,))
                 seal=dict(schema='ugrp.rl1b.prefix.v1',prefix_ticks=prefix_ticks,period_sim_s=.1,
                     full_task_cap_ticks=900,prefix_only=True,source_sha=sha,
                     probe_tick_wall_s=latencies,allocation='remaining GPU budget /4; three equal phases + update/export allowance',
