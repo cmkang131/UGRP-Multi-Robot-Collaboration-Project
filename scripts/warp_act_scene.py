@@ -13,7 +13,7 @@ def make_scene(plan):
     from sim.grasp_act_scene import colors
     from sim.scene_contrast_v5 import install, profile_record
     import hashlib
-    scene = install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'], plan['seed']), SCENE)
+    scene = install(ScenarioFinalV3Scene.from_scenario(plan['scenario_id'], plan['seed']), SCENE, extension=True)
     visual_transform = scene.transform
     def transform_visual(xml):
         before = visual_transform(xml)

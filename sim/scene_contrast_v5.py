@@ -37,10 +37,10 @@ def profile_record(name):
         spec['texture_manifest_sha256']=TEXTURE_MANIFEST_SHA256
     return {**spec,'sha256':hashlib.sha256(json.dumps(spec,sort_keys=True).encode()).hexdigest()}
 
-def apply_xml(xml,name):
+def apply_xml(xml,name,*,extension=False):
     resolve(name)
     root=ET.fromstring(base.apply_xml(xml,'noshadow_bright_v1'))
-    v1.apply(root)
+    v1.apply(root,extension=extension)
     asset=root.find('asset')
     for geom in root.findall('worldbody/geom'):
         if not geom.get('name','').startswith('zone_wall_'): continue
@@ -52,6 +52,7 @@ def apply_xml(xml,name):
             tex=asset.find(f"texture[@name='{old.get('texture')}']")
             import json
             record=json.loads((Path(__file__).parent/'assets/scene_contrast_v5/manifest.json').read_text())
+            if extension:record['images'].update(v1.extension_manifest()['colour_images'])
             for a in ('fileright','fileleft','fileup','filedown','filefront','fileback'):
                 file=tex.get(a);key=name+'/'+file
                 path=Path(__file__).parent/'assets/scene_contrast_v5'/key
@@ -62,12 +63,12 @@ def apply_xml(xml,name):
         geom.set('material',material); geom.set('rgba',attrs['rgba'])
     return ET.tostring(root,encoding='unicode')
 
-def install(scene,name):
+def install(scene,name,*,extension=False):
     resolve(name)
     if getattr(scene,'_render_profile_name',None) is not None: raise ValueError('scene already dressed')
     inner=scene.transform
     def transform(xml):
-        before=inner(xml); after=apply_xml(before,name)
+        before=inner(xml); after=apply_xml(before,name,extension=extension)
         scene.manifest['render_profile']={**profile_record(name),
             'scene_xml_sha256_before_profile':hashlib.sha256(before.encode()).hexdigest(),
             'scene_xml_sha256_after_profile':hashlib.sha256(after.encode()).hexdigest()}
