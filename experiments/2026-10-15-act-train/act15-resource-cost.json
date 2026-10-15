@@ -1,0 +1,150 @@
+{
+  "L4": {
+    "rate_usd_h": 0.907714,
+    "rate_basis": "ACT13 user-specified reference rate; compute estimate, not verified invoice",
+    "windows": [
+      {
+        "window": "training",
+        "start": "2026-10-15T05:13:15.633-07:00",
+        "stop": "2026-10-15T06:00:35.718-07:00",
+        "seconds": 2840.085,
+        "hours": 0.7889125,
+        "estimated_usd": 0.7161069210250001,
+        "final_status": "TERMINATED"
+      },
+      {
+        "window": "inference",
+        "start": "2026-10-15T06:01:45.352-07:00",
+        "stop": "2026-10-15T06:33:20.549-07:00",
+        "seconds": 1895.197,
+        "hours": 0.526443611111111,
+        "estimated_usd": 0.47786023601611105,
+        "final_status": "TERMINATED"
+      }
+    ],
+    "L4_hours": 1.315356111111111,
+    "estimated_compute_usd": 1.193967157041111,
+    "excludes": "disk/network/tax/credit; training window includes preparation/transfer",
+    "eight_hour_STOP_and_idle20m_retained": true
+  },
+  "final_resource_check": {
+    "at_utc": "2026-10-15T13:56:18.635968+00:00",
+    "L4_current_shared_reuse": {
+      "lastStartTimestamp": "2026-10-15T06:38:58.611-07:00",
+      "lastStopTimestamp": "2026-10-15T06:33:20.549-07:00",
+      "scheduling": {
+        "instanceTerminationAction": "STOP",
+        "maxRunDuration": {
+          "nanos": 0,
+          "seconds": "28800"
+        }
+      },
+      "status": "RUNNING"
+    },
+    "L4_ACT15_stop_confirmed": "TERMINATED",
+    "L4_other_task_gpu_process": {
+      "processes": [],
+      "gpu": "3844, /home/changmin/ugrp-sim/runs/simalt2/runtime/warp-env/bin/python, 308 MiB\n"
+    },
+    "L4_scope": "ACT15 windows were both verified TERMINATED; newer start13:38:58Z is simalt2 owned by another task. No ACT15 worker remains; do not stop the shared new task.",
+    "gcp1": {
+      "owned_run_names": 79,
+      "active_owned_simulations": [],
+      "owned_leases": [],
+      "owned_active_reservations": [],
+      "raw_free_bytes": 142846697472,
+      "primary_simulation_host_left_running_for_shared_tasks": true
+    }
+  },
+  "storage_budget": {
+    "schema": "ugrp.act15.storage.v1",
+    "max_observed_original_run_bytes": 19124078,
+    "dense_prediction_row_peak_bytes": 2527,
+    "dense_prediction_rows_max": 900,
+    "estimate_margin": 1.25,
+    "margin_source": "unchanged scripts/storage_budget.py estimate()",
+    "per_run_mib": 26,
+    "runs": 40,
+    "reserved_release_analysis_mib": 512,
+    "gcp_free_bytes": 22200901632,
+    "projected_bytes": 20573511680,
+    "floor_bytes": 8589934592,
+    "mac_free_bytes": 53702725632,
+    "max_parallel": 8,
+    "reason": "eight concurrent simulations, GPU batch-one; no data/physics/adoption threshold change"
+  },
+  "budget_check": {
+    "at_utc": "2026-10-15T13:56:21.259607+00:00",
+    "function": {
+      "state": "ACTIVE"
+    },
+    "latest_json_notifications": [
+      {
+        "jsonPayload": {
+          "budgetAmount": 1000,
+          "costAmount": 195.61,
+          "currency": "KRW"
+        },
+        "timestamp": "2026-10-15T13:48:01.106223Z"
+      },
+      {
+        "jsonPayload": {
+          "budgetAmount": 1000,
+          "costAmount": 0,
+          "currency": "KRW"
+        },
+        "timestamp": "2026-10-15T13:15:39.225108Z"
+      },
+      {
+        "jsonPayload": {
+          "budgetAmount": 1000,
+          "costAmount": 0,
+          "currency": "KRW"
+        },
+        "timestamp": "2026-10-15T12:48:03.798482Z"
+      },
+      {
+        "jsonPayload": {
+          "budgetAmount": 1000,
+          "costAmount": 0,
+          "currency": "KRW"
+        },
+        "timestamp": "2026-10-15T12:15:31.648703Z"
+      }
+    ],
+    "interpretation": "Lagged net cost notifications; not credit-balance or invoice verification. Stop/8h/idle guard retained.",
+    "stop_detection_scope": "Latest four JSON budget notifications; no credit balance or invoice verification"
+  },
+  "model_endpoint_check": {
+    "last_alerts_exists": false,
+    "check_failure_consecutive": 0,
+    "scope": "No LLM/provider batch used by ACT15; public paper lookups only"
+  },
+  "inference_final": {
+    "server_report": {
+      "ready": false,
+      "host": {
+        "project": "ugrp-act-train-1014",
+        "instance": "ugrp-act-l4-pilot1",
+        "machine_type": "g2-standard-4",
+        "zone": "asia-northeast3-a"
+      },
+      "source_sha": "4c1400d90701ff0704e178aa86b72b67e0cd5f2e",
+      "model_sha256": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1",
+      "contract_sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+      "batch_size": 1,
+      "deterministic_cuda": true,
+      "requests": 7443,
+      "errors": 0,
+      "teacher_fields": 0,
+      "max_wall_s": 25200
+    },
+    "owned_pid": 1670,
+    "gpu_apps": "1670, [No data]"
+  },
+  "raw_backup_scope": "All raw retained and hashes verified on original GCP persistent disk. Dataset copied and verified on L4 persistent disk. Selected model GitHub Release re-downloaded, whole archive/all files verified and CPU loaded. No independent full raw backup completed.",
+  "L4_current_reuse_process_verification": {
+    "process": "3844 changmin /home/changmin/ugrp-sim/runs/simalt2/runtime/warp-env/bin/python /home/changmin/ugrp-sim/runs/simalt2/simalt_physics_compare_counts.py run --source /home/changmin/ugrp-sim/runs/simalt2/runtime/source --fixture /home/changmin/ugrp-sim/runs/simalt2/fixture-v3 --reference /home/changmin/ugrp-sim/runs/simalt2/cpu312/result.json --out /home/changmin/ugrp-sim/runs/simalt2/warp-n1-import-counts --sha 3d6cae-counts --engine warp --enabled",
+    "scope": "other-user cwd access denied; no attempt to bypass; GPU path already identifies simalt2"
+  }
+}

@@ -1,0 +1,888 @@
+[
+  {
+    "run": "act15-replay-p0-91420-1535c8a3",
+    "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/raw",
+    "summary_sha256": "e3704a55341bb090c84b07b5ad4a1321188eceb9efc02b86d6c67f2ba837824f",
+    "summary": {
+      "status": "complete",
+      "complete": true,
+      "host": {
+        "project": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a"
+      },
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "seed": 91420,
+      "model_sha256": "b617415079a95a4bb4426fefe0d445cb288ea49eef0928278cb268212de02676",
+      "student_execution": true,
+      "teacher_assisted": false,
+      "weld": "off",
+      "teacher_start_v1": true,
+      "scope": "staged near-field solo grasp; no navigation/release/E2E claim",
+      "object_kind": "cyan",
+      "requested_sequence": "grasp",
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "execution": {
+        "actor_threads": 1,
+        "chunk_size": 8,
+        "n_action_steps": 8,
+        "temporal_ensemble_coeff": null,
+        "ensemble_mode": "off"
+      },
+      "completion_confirmation": "unknown",
+      "gate_promotion_authorized_if_all_conditions_pass": false,
+      "sim_s": 34.600000000080385,
+      "done_requested": true,
+      "done_times": {
+        "grasp": 32.8000000000656
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": null,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": null,
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "inference_latency_s": {
+        "n": 0,
+        "median": null,
+        "p95": null
+      },
+      "skill_completion_success": null,
+      "cap_end": false,
+      "termination": "student_done",
+      "failure_stage": "alignment",
+      "funnel": {
+        "frames": 347,
+        "valid_inputs": 347,
+        "actions": 347,
+        "approach": 234,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      },
+      "first_pass_sim_t": {
+        "approach": 8.900000000001933
+      },
+      "wall_s": 92.45169478400021,
+      "artifact_index": {
+        "files": 361,
+        "full_map": "retained inside original raw summary and raw hash manifests",
+        "manifest": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/SHA256SUMS-post-compression",
+        "manifest_sha256": "f67acd400ba652ed242af838ddbff2f55559ec8fd1c4744c4a610c1ed2086412"
+      }
+    },
+    "strict_input_rows": 347,
+    "own_frames": [
+      {
+        "t": 1.3000000000000178,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91420-1535c8a3/frame-00.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/raw/rgb/r1/000000.jpg",
+        "sha256": "4c1082a509f57aa5cb468dc0efb12f6ef20c3fa68177e279c43db29c13a68e17"
+      },
+      {
+        "t": 8.200000000003564,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91420-1535c8a3/frame-01.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/raw/rgb/r1/000069.jpg",
+        "sha256": "a6b0f5d69aaca67c801cb7fc088ad1336fc9a5eabf7c785e0fa529c2274cf395"
+      },
+      {
+        "t": 15.099999999987483,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91420-1535c8a3/frame-02.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/raw/rgb/r1/000138.jpg",
+        "sha256": "e9855d64368de4b991065419066ac955e136e3c9a40b5edb445da9e4564f302a"
+      },
+      {
+        "t": 22.000000000014033,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91420-1535c8a3/frame-03.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/raw/rgb/r1/000207.jpg",
+        "sha256": "5540e1783f884144cd5d2b10c0d68eea756ef0bd2019194ff74d6a1ae988c7e1"
+      },
+      {
+        "t": 28.90000000004698,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91420-1535c8a3/frame-04.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/raw/rgb/r1/000276.jpg",
+        "sha256": "4293e7f2412e969e20cd236f815cca06e97f101c60d9fcadbe30df6fab8e1ed1"
+      },
+      {
+        "t": 35.900000000080404,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91420-1535c8a3/frame-05.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3/raw/rgb/r1/000346.jpg",
+        "sha256": "8c0b87d372652874f4d0c9d68c31cc779ff9a8069785e071fa2e5526a1b210e4"
+      }
+    ],
+    "first_wheel_disagreement": {
+      "sample_id": "student-91420:0:r1",
+      "t": 1.3000000000000178,
+      "teacher_phase": "start",
+      "phase_after": "fold",
+      "label_valid": true,
+      "target_visible": true,
+      "teacher_command": {
+        "t": 1.3000000000000178,
+        "wheels": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "duration_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        }
+      },
+      "student_command": {
+        "t": 1.3000000000000178,
+        "wheels": [
+          0.3516592985967275,
+          0.3550076890289661,
+          0.344875526950161,
+          0.3599560007556593
+        ],
+        "duration_s": [
+          0.0753504008168537,
+          0.07078155882453642,
+          0.06601136421340402,
+          0.08086576046862293
+        ],
+        "pwm": {
+          "1": 2009,
+          "3": 742,
+          "4": 2327,
+          "5": 1294,
+          "6": 1522
+        }
+      },
+      "errors": {
+        "wheel_mae": 0.3528746288328785,
+        "wheel_sign_mismatch": 1.0,
+        "pulse_mae_ms": 73.25227108085426,
+        "pwm_mae": 13.2,
+        "pan_abs_error": 22,
+        "done_mismatch": 0
+      },
+      "rgb": {
+        "path": "rgb/r1/000000.jpg",
+        "sha256": "4c1082a509f57aa5cb468dc0efb12f6ef20c3fa68177e279c43db29c13a68e17",
+        "t": 1.3000000000000178,
+        "robot_id": "r1"
+      }
+    },
+    "first_above_phase_validation_p95": {
+      "sample_id": "student-91420:7:r1",
+      "t": 2.0000000000002514,
+      "teacher_phase": "approach",
+      "phase_after": "approach",
+      "label_valid": true,
+      "target_visible": true,
+      "teacher_command": {
+        "t": 2.0000000000002514,
+        "wheels": [
+          -0.35,
+          0.35,
+          0.35,
+          0.35
+        ],
+        "duration_s": [
+          0.009480055670458681,
+          0.06402829307627807,
+          0.02688543593342092,
+          0.02766280147239847
+        ],
+        "pwm": {
+          "1": 2000,
+          "3": 760,
+          "4": 2320,
+          "5": 1320,
+          "6": 1588
+        }
+      },
+      "student_command": {
+        "t": 2.0000000000002514,
+        "wheels": [
+          0.36176191141786396,
+          0.36036543176010405,
+          0.3645691360033442,
+          0.3445238686532693
+        ],
+        "duration_s": [
+          0.06913399210209359,
+          0.059216708133948553,
+          0.06031661114204881,
+          0.0713702463617127
+        ],
+        "pwm": {
+          "1": 2013,
+          "3": 733,
+          "4": 2321,
+          "5": 1306,
+          "6": 1530
+        }
+      },
+      "errors": {
+        "wheel_mae": 0.1855431526320107,
+        "wheel_sign_mismatch": 0.25,
+        "pulse_mae_ms": 35.40103536797663,
+        "pwm_mae": 22.6,
+        "pan_abs_error": 58,
+        "done_mismatch": 0
+      },
+      "rgb": {
+        "path": "rgb/r1/000007.jpg",
+        "sha256": "9178da224369b3d3c2e07bd87c6c582b640b39042218b92353554bda32f09add",
+        "t": 2.0000000000002514,
+        "robot_id": "r1"
+      },
+      "above_validation_p95_fields": [
+        "pulse_mae_ms"
+      ]
+    },
+    "labels_valid": 347,
+    "shadow": {
+      "rows": 347,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 135,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 70,
+          "align": 99,
+          "relook": 36
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "replay_rgb_and_issued_exact": true,
+      "labels_after_hover_invalid": true,
+      "teacher_actions_executed": 0
+    },
+    "replay_exact": true,
+    "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act15-replay-p0-91420-1535c8a3 --output NEW_DIR",
+    "first_state_support": {
+      "student_skill_elapsed_s": 0.0,
+      "teacher_train_first_selected_elapsed_min_s": 0.7000000000002335,
+      "teacher_train_first_selected_elapsed_max_s": 4.900000000001814,
+      "classification": "starts outside selected training phase/clock support; not proof of later-only compounding"
+    }
+  },
+  {
+    "run": "act15-replay-p0-91434-1535c8a3",
+    "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/raw",
+    "summary_sha256": "f1fd774f0fcb81405004cad4a40603ca9d6b411805da7b43977979eb6f6e3da6",
+    "summary": {
+      "status": "complete",
+      "complete": true,
+      "host": {
+        "project": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a"
+      },
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "seed": 91434,
+      "model_sha256": "b617415079a95a4bb4426fefe0d445cb288ea49eef0928278cb268212de02676",
+      "student_execution": true,
+      "teacher_assisted": false,
+      "weld": "off",
+      "teacher_start_v1": true,
+      "scope": "staged near-field solo grasp; no navigation/release/E2E claim",
+      "object_kind": "green",
+      "requested_sequence": "grasp",
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "execution": {
+        "actor_threads": 1,
+        "chunk_size": 8,
+        "n_action_steps": 8,
+        "temporal_ensemble_coeff": null,
+        "ensemble_mode": "off"
+      },
+      "completion_confirmation": "unknown",
+      "gate_promotion_authorized_if_all_conditions_pass": false,
+      "sim_s": 51.80000000016251,
+      "done_requested": true,
+      "done_times": {
+        "grasp": 50.00000000014773
+      },
+      "lift_success": true,
+      "max_stable_lift_s": 5.600000000026739,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": null,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": null,
+      "physical_success": true,
+      "failure_reason": null,
+      "inference_latency_s": {
+        "n": 0,
+        "median": null,
+        "p95": null
+      },
+      "skill_completion_success": null,
+      "cap_end": false,
+      "termination": "student_done",
+      "failure_stage": null,
+      "funnel": {
+        "frames": 519,
+        "valid_inputs": 519,
+        "actions": 519,
+        "approach": 453,
+        "alignment": 398,
+        "grasp": 398,
+        "lift_confirmation": 358
+      },
+      "first_pass_sim_t": {
+        "approach": 7.900000000003909,
+        "alignment": 13.399999999991445,
+        "grasp": 13.399999999991445,
+        "lift_confirmation": 17.39999999999207
+      },
+      "wall_s": 150.99446396999974,
+      "artifact_index": {
+        "files": 533,
+        "full_map": "retained inside original raw summary and raw hash manifests",
+        "manifest": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/SHA256SUMS-post-compression",
+        "manifest_sha256": "6af6b51b3d5b804bb5f4b5dfbd3862593ead3b55b529487e507fe796b7620775"
+      }
+    },
+    "strict_input_rows": 519,
+    "own_frames": [
+      {
+        "t": 1.3000000000000178,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91434-1535c8a3/frame-00.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/raw/rgb/r1/000000.jpg",
+        "sha256": "376c8f3566ba3e37f6f72b8a6a87ed1186b0058fafba4f56b46947c001b0be29"
+      },
+      {
+        "t": 11.59999999999564,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91434-1535c8a3/frame-01.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/raw/rgb/r1/000103.jpg",
+        "sha256": "036f23da5133e4bb29b2599521836da5c19b0680b51005dd6e06ef5f5f220fb1"
+      },
+      {
+        "t": 22.000000000014033,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91434-1535c8a3/frame-02.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/raw/rgb/r1/000207.jpg",
+        "sha256": "a94984fb694d0feb21229230ac8316a18299a8f1bfd1f3f24ca8487dbc6f8e47"
+      },
+      {
+        "t": 32.300000000063214,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91434-1535c8a3/frame-03.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/raw/rgb/r1/000310.jpg",
+        "sha256": "c6616497c86129413e4444786549a0c990acdba2cb4d3ea06c0fd4435fe5359f"
+      },
+      {
+        "t": 42.70000000011287,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91434-1535c8a3/frame-04.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/raw/rgb/r1/000414.jpg",
+        "sha256": "7c0dcd824ae22ad97c65c9c1f3e317d5bdf38cb49b32179d587c6570a3c324a5"
+      },
+      {
+        "t": 53.10000000016253,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p0-91434-1535c8a3/frame-05.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3/raw/rgb/r1/000518.jpg",
+        "sha256": "2a8f3ac2f7bcc83be4f03e86dc3f7e6fc11fd58c34ed8db6b7d7dd52e7503e59"
+      }
+    ],
+    "first_wheel_disagreement": {
+      "sample_id": "student-91434:0:r1",
+      "t": 1.3000000000000178,
+      "teacher_phase": "start",
+      "phase_after": "fold",
+      "label_valid": true,
+      "target_visible": true,
+      "teacher_command": {
+        "t": 1.3000000000000178,
+        "wheels": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "duration_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        }
+      },
+      "student_command": {
+        "t": 1.3000000000000178,
+        "wheels": [
+          0.36781283436748213,
+          0.35203368331718277,
+          0.3417270427614351,
+          0.36071075426380295
+        ],
+        "duration_s": [
+          0.06795760305021199,
+          0.07800336766703479,
+          0.06836575898243745,
+          0.07775306543586606
+        ],
+        "pwm": {
+          "1": 2005,
+          "3": 728,
+          "4": 2314,
+          "5": 1287,
+          "6": 1502
+        }
+      },
+      "errors": {
+        "wheel_mae": 0.3555710786774757,
+        "wheel_sign_mismatch": 1.0,
+        "pulse_mae_ms": 73.01994878388759,
+        "pwm_mae": 11.6,
+        "pan_abs_error": 2,
+        "done_mismatch": 0
+      },
+      "rgb": {
+        "path": "rgb/r1/000000.jpg",
+        "sha256": "376c8f3566ba3e37f6f72b8a6a87ed1186b0058fafba4f56b46947c001b0be29",
+        "t": 1.3000000000000178,
+        "robot_id": "r1"
+      }
+    },
+    "first_above_phase_validation_p95": {
+      "sample_id": "student-91434:66:r1",
+      "t": 7.900000000003909,
+      "teacher_phase": "approach",
+      "phase_after": "align",
+      "label_valid": true,
+      "target_visible": true,
+      "teacher_command": {
+        "t": 7.900000000003909,
+        "wheels": [
+          -0.35,
+          0.35,
+          -0.35,
+          0.35
+        ],
+        "duration_s": [
+          0.04,
+          0.04,
+          0.04,
+          0.04
+        ],
+        "pwm": {
+          "1": 2004,
+          "3": 642,
+          "4": 2412,
+          "5": 1326,
+          "6": 1514
+        }
+      },
+      "student_command": {
+        "t": 7.900000000003909,
+        "wheels": [
+          0.3683264736180647,
+          0.3735548057762742,
+          0.38847956468173184,
+          0.36097426325900495
+        ],
+        "duration_s": [
+          0.047655980781405184,
+          0.044257963699809805,
+          0.04440732964519443,
+          0.046810699116043145
+        ],
+        "pwm": {
+          "1": 2006,
+          "3": 638,
+          "4": 2416,
+          "5": 1324,
+          "6": 1513
+        }
+      },
+      "errors": {
+        "wheel_mae": 0.37283377683376895,
+        "wheel_sign_mismatch": 0.5,
+        "pulse_mae_ms": 5.78299331061314,
+        "pwm_mae": 2.6,
+        "pan_abs_error": 1,
+        "done_mismatch": 0
+      },
+      "rgb": {
+        "path": "rgb/r1/000066.jpg",
+        "sha256": "51a10c7e8215114d53637ab8db5482105ff1322f3b2c0420582d823dd83048fb",
+        "t": 7.900000000003909,
+        "robot_id": "r1"
+      },
+      "above_validation_p95_fields": [
+        "wheel_mae"
+      ]
+    },
+    "labels_valid": 331,
+    "shadow": {
+      "rows": 519,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 430,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 60,
+          "align": 22
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "replay_rgb_and_issued_exact": true,
+      "labels_after_hover_invalid": true,
+      "teacher_actions_executed": 0
+    },
+    "replay_exact": true,
+    "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act15-replay-p0-91434-1535c8a3 --output NEW_DIR",
+    "first_state_support": {
+      "student_skill_elapsed_s": 0.0,
+      "teacher_train_first_selected_elapsed_min_s": 0.7000000000002335,
+      "teacher_train_first_selected_elapsed_max_s": 4.900000000001814,
+      "classification": "starts outside selected training phase/clock support; not proof of later-only compounding"
+    }
+  },
+  {
+    "run": "act15-replay-p02-91420-1535c8a3",
+    "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+    "raw": "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/raw",
+    "summary_sha256": "c03bba81a9880d686ce6f1c4487c145914c38f89f03124ee437c96c53bc5a43e",
+    "summary": {
+      "status": "complete",
+      "complete": true,
+      "host": {
+        "project": "ugrp-act-train-1014",
+        "instance": "ugrp-sim-gcp1",
+        "machine_type": "n4-highcpu-64",
+        "zone": "asia-northeast3-a"
+      },
+      "source_sha": "efb90d1d9c74e1602a018afad68c87fe33886479",
+      "seed": 91420,
+      "model_sha256": "b55a72bc8cbd01fec553313375b59686bc8297ea62944283fccedd38cff58613",
+      "student_execution": true,
+      "teacher_assisted": false,
+      "weld": "off",
+      "teacher_start_v1": true,
+      "scope": "staged near-field solo grasp; no navigation/release/E2E claim",
+      "object_kind": "cyan",
+      "requested_sequence": "grasp",
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "top": 0,
+        "mechanism": "isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability"
+      },
+      "execution": {
+        "actor_threads": 1,
+        "chunk_size": 8,
+        "n_action_steps": 8,
+        "temporal_ensemble_coeff": null,
+        "ensemble_mode": "off"
+      },
+      "completion_confirmation": "unknown",
+      "gate_promotion_authorized_if_all_conditions_pass": false,
+      "sim_s": 61.90000000021074,
+      "done_requested": true,
+      "done_times": {
+        "grasp": 60.100000000195955
+      },
+      "lift_success": false,
+      "max_stable_lift_s": 0.0,
+      "criteria": {
+        "clearance_m": 0.012,
+        "tilt_deg": 10.0,
+        "finger_each_n": 0.5,
+        "hold_s": 3.0,
+        "weld": "off"
+      },
+      "release_success": null,
+      "max_stable_release_s": 0.0,
+      "drop_detected": false,
+      "release_criteria": null,
+      "physical_success": false,
+      "failure_reason": "lift_not_stable",
+      "inference_latency_s": {
+        "n": 0,
+        "median": null,
+        "p95": null
+      },
+      "skill_completion_success": null,
+      "cap_end": false,
+      "termination": "student_done",
+      "failure_stage": "alignment",
+      "funnel": {
+        "frames": 620,
+        "valid_inputs": 620,
+        "actions": 620,
+        "approach": 544,
+        "alignment": 0,
+        "grasp": 0,
+        "lift_confirmation": 0
+      },
+      "first_pass_sim_t": {
+        "approach": 8.900000000001933
+      },
+      "wall_s": 151.26436906300023,
+      "artifact_index": {
+        "files": 634,
+        "full_map": "retained inside original raw summary and raw hash manifests",
+        "manifest": "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/SHA256SUMS-post-compression",
+        "manifest_sha256": "c3941ccf3d57f186a45489f957f642cbfb3c4d584665da4a7071c8cbcc85c952"
+      }
+    },
+    "strict_input_rows": 620,
+    "own_frames": [
+      {
+        "t": 1.3000000000000178,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p02-91420-1535c8a3/frame-00.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/raw/rgb/r1/000000.jpg",
+        "sha256": "4c1082a509f57aa5cb468dc0efb12f6ef20c3fa68177e279c43db29c13a68e17"
+      },
+      {
+        "t": 13.59999999999098,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p02-91420-1535c8a3/frame-01.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/raw/rgb/r1/000123.jpg",
+        "sha256": "852d11ab23f08224ffcf6ccadc52f998b47d0ebd37cb00bbf03e40f062d71284"
+      },
+      {
+        "t": 26.000000000033133,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p02-91420-1535c8a3/frame-02.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/raw/rgb/r1/000247.jpg",
+        "sha256": "8ddcae058e6d452cd2d18d143b212e2544e9adac09b17eb28dd58d8400a2ff50"
+      },
+      {
+        "t": 38.40000000009234,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p02-91420-1535c8a3/frame-03.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/raw/rgb/r1/000371.jpg",
+        "sha256": "21dc9104e7478d4660e41df07fc3e12547aad6d69f155b8182888c508113cb31"
+      },
+      {
+        "t": 50.80000000015155,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p02-91420-1535c8a3/frame-04.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/raw/rgb/r1/000495.jpg",
+        "sha256": "2a0690067a798ba149aaaac61ad8669130cacdc7642edc79b8f4ace33e1c1046"
+      },
+      {
+        "t": 63.20000000021076,
+        "path": "/home/ugrp/ugrp-sim/act15-replay-analysis/act15-replay-p02-91420-1535c8a3/frame-05.jpg",
+        "source": "/home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3/raw/rgb/r1/000619.jpg",
+        "sha256": "023e1171ee004c14bc1ca439da4334f2115787e6254b27b46684b8c3defeec45"
+      }
+    ],
+    "first_wheel_disagreement": {
+      "sample_id": "student-91420:0:r1",
+      "t": 1.3000000000000178,
+      "teacher_phase": "start",
+      "phase_after": "fold",
+      "label_valid": true,
+      "target_visible": true,
+      "teacher_command": {
+        "t": 1.3000000000000178,
+        "wheels": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "duration_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pwm": {
+          "1": 2000,
+          "3": 740,
+          "4": 2320,
+          "5": 1320,
+          "6": 1500
+        }
+      },
+      "student_command": {
+        "t": 1.3000000000000178,
+        "wheels": [
+          0.3424501312272822,
+          0.325509509970695,
+          0.33849032344484814,
+          0.3677045248296298
+        ],
+        "duration_s": [
+          0.0849449427356397,
+          0.0625988505860662,
+          0.061531658837050855,
+          0.08328638649765108
+        ],
+        "pwm": {
+          "1": 2025,
+          "3": 748,
+          "4": 2376,
+          "5": 1274,
+          "6": 1541
+        }
+      },
+      "errors": {
+        "wheel_mae": 0.3435386223681138,
+        "wheel_sign_mismatch": 1.0,
+        "pulse_mae_ms": 73.09045966410197,
+        "pwm_mae": 35.2,
+        "pan_abs_error": 41,
+        "done_mismatch": 0
+      },
+      "rgb": {
+        "path": "rgb/r1/000000.jpg",
+        "sha256": "4c1082a509f57aa5cb468dc0efb12f6ef20c3fa68177e279c43db29c13a68e17",
+        "t": 1.3000000000000178,
+        "robot_id": "r1"
+      }
+    },
+    "first_above_phase_validation_p95": {
+      "sample_id": "student-91420:7:r1",
+      "t": 2.0000000000002514,
+      "teacher_phase": "approach",
+      "phase_after": "approach",
+      "label_valid": true,
+      "target_visible": true,
+      "teacher_command": {
+        "t": 2.0000000000002514,
+        "wheels": [
+          -0.35,
+          0.35,
+          0.35,
+          0.35
+        ],
+        "duration_s": [
+          0.009480055670458681,
+          0.06402829307627807,
+          0.02688543593342092,
+          0.02766280147239847
+        ],
+        "pwm": {
+          "1": 2000,
+          "3": 760,
+          "4": 2320,
+          "5": 1320,
+          "6": 1610
+        }
+      },
+      "student_command": {
+        "t": 2.0000000000002514,
+        "wheels": [
+          0.34940301100155013,
+          0.3281527850221967,
+          0.3430718707168984,
+          0.36786586767073937
+        ],
+        "duration_s": [
+          0.0849382637934112,
+          0.05908121728304608,
+          0.06166392926477871,
+          0.0809667762675282
+        ],
+        "pwm": {
+          "1": 2031,
+          "3": 742,
+          "4": 2377,
+          "5": 1277,
+          "6": 1552
+        }
+      },
+      "errors": {
+        "wheel_mae": 0.1865110557332986,
+        "wheel_sign_mismatch": 0.25,
+        "pulse_mae_ms": 42.121938010668,
+        "pwm_mae": 41.4,
+        "pan_abs_error": 58,
+        "done_mismatch": 0
+      },
+      "rgb": {
+        "path": "rgb/r1/000007.jpg",
+        "sha256": "56680c2516abc56c34aa2f51a8c52d9d8927dd63b0958e0eb3c6dcac0127643e",
+        "t": 2.0000000000002514,
+        "robot_id": "r1"
+      },
+      "above_validation_p95_fields": [
+        "pulse_mae_ms"
+      ]
+    },
+    "labels_valid": 347,
+    "shadow": {
+      "rows": 620,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 519,
+        "blocked_held": 0,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "approach": 70,
+          "align": 24
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "replay_rgb_and_issued_exact": true,
+      "labels_after_hover_invalid": true,
+      "teacher_actions_executed": 0
+    },
+    "replay_exact": true,
+    "reproduce": "python -m scripts.analyze_grasp_act_act14 --root /home/ugrp/ugrp-sim/runs/act15-replay-p02-91420-1535c8a3 --output NEW_DIR",
+    "first_state_support": {
+      "student_skill_elapsed_s": 0.0,
+      "teacher_train_first_selected_elapsed_min_s": 0.7000000000002335,
+      "teacher_train_first_selected_elapsed_max_s": 4.900000000001814,
+      "classification": "starts outside selected training phase/clock support; not proof of later-only compounding"
+    }
+  }
+]

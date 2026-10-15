@@ -852,6 +852,125 @@
         },
         "evaluation_source_sha": "8a43837598504e774532df463ff67836785958d6"
       }
+    },
+    {
+      "id": "grasp-act15-dagger1-step10000-1535c8a3",
+      "status": "available",
+      "description": "ACT15 fixed step10000, expert initial prefix plus one student-only DAgger round; DEV failure comparison model, no default adoption",
+      "source_sha": "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+      "training_source_sha": "1535c8a3e4e10184669304081aaaf7ce4eff3512",
+      "release": {
+        "tag": "models-20261015-act15-1535c8a3",
+        "asset": "grasp-act15-dagger1-step10000-1535c8a3.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-act15-1535c8a3/grasp-act15-dagger1-step10000-1535c8a3.zip"
+      },
+      "archive": {
+        "bytes": 192495476,
+        "sha256": "e39bf6b27f263bc699a6b3165461421c5f5062ab6fc0be5bc38f90f369fb77cf"
+      },
+      "files": [
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "de15c0e0d9d7813ab62b92495706100a0dd4ef493d06c403301f6f8763aebb97"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 15604,
+          "sha256": "a54d8c4e1721f7282b2ae067d3935b82363af6dd5e893413c73ede2bc5c431b5"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1"
+        },
+        {
+          "path": "dataset-audit.json",
+          "bytes": 272,
+          "sha256": "3f1bae6ba8d6b9a2bccea05dc68c6c2de447e2d0d4ec54877315880b426da13a"
+        },
+        {
+          "path": "deployment.json",
+          "bytes": 388,
+          "sha256": "1f129c656e0ab6ab69b25d5425ffe0df8da737ea8d9c5667f10556621c9e3c47"
+        },
+        {
+          "path": "evaluation-summary.json",
+          "bytes": 1458,
+          "sha256": "5ede825146140dd10f724251380f34f94743d8f3e94f044bd9d4f31de384b9e2"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 941,
+          "sha256": "08c3a217cdeb77891d8dbdc413b80cee42607a747d1578b8731a516fe4a5e13c"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 529534,
+          "sha256": "f55110f134dee49f5daed657a6cecb236a5de78a5a506ddc8a25a82291243d60"
+        }
+      ],
+      "entrypoints": {
+        "act": "actor"
+      },
+      "limitations": [
+        "One-robot near-field boxes; no navigation/release/E2E/real-robot claim.",
+        "Same20 completion0/20, new20 completion0/20; stable lift0/40. No adoption.",
+        "Auxiliary dense temporal-ensemble probe is separate from final n8 CPU evaluation.",
+        "Full raw and optimizer/RNG remain on GCP persistent disks; no independent complete raw backup.",
+        "No independent merge review completed."
+      ],
+      "verification_scope": {
+        "fixed_step": 10000,
+        "dagger_rounds": 1,
+        "history_dropout": 0.0,
+        "include_initial_approach_v1": true,
+        "validation_seeds": [
+          86865,
+          86866,
+          86867,
+          86868,
+          86869
+        ],
+        "release_redownload_verified": true,
+        "release_inventory_files": 10,
+        "release_cpu_load_ready": true,
+        "verification_record": "experiments/2026-10-15-act-train/act15-model-release-verification.json",
+        "verification_record_sha256": "58bfccea8554620e28743988777c17e5b296451847119bde0661ef3dd7ad0811",
+        "evaluation_source_sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+        "primary_execution": {
+          "chunk_size": 8,
+          "n_action_steps": 8,
+          "temporal_ensemble_coeff": null,
+          "actor_threads": 1
+        },
+        "closed_loop_automated": {
+          "same20": {
+            "N": 20,
+            "stable_lift": 0,
+            "completed": 0,
+            "cap_end": 8,
+            "HOST_ERROR": 0
+          },
+          "new20": {
+            "N": 20,
+            "stable_lift": 0,
+            "completed": 0,
+            "cap_end": 7,
+            "HOST_ERROR": 0
+          }
+        }
+      }
     }
   ]
 }
