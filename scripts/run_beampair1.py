@@ -36,7 +36,7 @@ EXP=ROOT/'experiments/2026-10-15-beampair1'
 
 
 @contextmanager
-def recording_json(runner):
+def recording_json(runner, run_meta=None):
     """Bind every pinned-runner JSON/JSONL sink to the same strict encoder.
 
     The dependency remains clean and pinned. Replace only its module reference,
@@ -44,7 +44,10 @@ def recording_json(runner):
     """
     original_json, original_write = runner.json, runner.write
     runner.json = SimpleNamespace(**{**vars(original_json), 'dumps': dumps})
-    runner.write = write_json
+    def write(path,value):
+        if run_meta is not None and Path(path).name=='RUN_META.json':value={**value,**run_meta}
+        return write_json(path,value)
+    runner.write = write_json if run_meta is None else write
     try:
         yield
     finally:
@@ -144,7 +147,7 @@ def setup_admission(plan,scenario):
 
 def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,rendezvous='off',
         approach_repair='off',failure_tail=True,wall_layer='off',peer_yield='off',
-        record_training=False,recording_proof=None):
+        record_training=False,recording_proof=None,recording_capture_cache='off'):
     if platform.system()!='Linux':raise RuntimeError('GCP Linux only; Mac physics/render forbidden')
     if mode!=MODE:raise ValueError('explicit beampair1_v1 opt-in required')
     if approach_repair not in ('off',APPROACH_MODE,APPROACH_BOUNDED_MODE):raise ValueError('unknown approach repair')
@@ -152,6 +155,10 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
     if peer_yield not in ('off',PEER_YIELD_MODE):raise ValueError('unknown peer yield')
     if record_training and (not recording_proof or recording_proof.get('qualified') is not True):
         raise ValueError('verified beampair7 gate proof required for recording')
+    if recording_capture_cache not in ('off','recording_capture_cache_v1'):
+        raise ValueError('unknown recording capture cache')
+    if recording_capture_cache!='off' and not record_training:
+        raise ValueError('capture cache is restricted to training recording sinks')
     validate_plan(plan)
     source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT):raise ValueError('committed source required')
@@ -165,7 +172,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
     scene_binding=scene_bindings(plan.get('scene_profile','off'))
     guard=HeldCargoGuard();teachers={};models={};visible={};audit={};probe_rows=[]
     selected=profiles(candidate)
-    ray_rows=[];current_rays={}
+    ray_rows=[];current_rays={};capture_stats=[]
+    from harness.beampair_recording import install_capture_cache
     with dependency_modules(dependency_root):
         from scripts.grasp_act_host import identity
         host=gcp2_identity(identity)
@@ -179,6 +187,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         def build_world(*args,**kwargs):
             world=original_build(*args,**kwargs)
             if scene_binding is not None:scene_binding[1](world,out)
+            if recording_capture_cache!='off':capture_stats.append(install_capture_cache(world))
             return world
         from sim.final_pair_highpose_nearclip import wrap
         from sim import masterpi_camera_review_v3 as camera
@@ -310,7 +319,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         drive_module.build_world=build_world
         report=None
         try:
-            with recording_json(runner):
+            meta={'class':'dev','pr':537,'branch':'claude/beampair8','recording_adapter_sha':source} if record_training else None
+            with recording_json(runner,meta):
                 report=runner.run(plan,out,cap_s=cap_s,record_training=record_training,
                     recording_proof=recording_proof,noise=False,execution_host=host,**selected)
         finally:
@@ -323,6 +333,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             # Separate adapter result, leaving the dependency's raw result and
             # manifest intact. Both full source SHAs are required for identity.
             adapter=out.parent/'adapter';adapter.mkdir(parents=True,exist_ok=False)
+            if capture_stats:write_json(adapter/'recording-capture-cache.json',capture_stats)
             if report is None:
                 result_path=out/'result.json'
                 if result_path.exists():report=json.loads(result_path.read_text())

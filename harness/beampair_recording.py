@@ -3,6 +3,7 @@ from copy import deepcopy
 import hashlib
 import json
 import os
+import subprocess
 from pathlib import Path
 
 from harness import grasp_act_contract as c
@@ -13,9 +14,47 @@ DEPENDENCY_SHA = '26f84d0f0ada1c33473c83cca2d3415ce51bd247'
 SCENE = 'walls_floor_contrast_v5_indigo110_s80'
 
 
+def install_capture_cache(world):
+    """Share bytes among recording sinks at the same pre-command SIM tick.
+
+    This finite runner captures the tail, review and training image before
+    each robot's command. No physics, material, camera or renderer option is
+    changed between those captures. Invalidate at every SIM-time change and
+    keep robot/camera/JPEG quality distinct. Never used for action selection.
+    See MuJoCo visualization scene-update contract and the pinned runner order.
+    """
+    original=world.render_jpeg;cache={};stamp=None
+    stats=dict(mode='recording_capture_cache_v1',recording_only=True,hits=0,misses=0)
+    def render_jpeg(*,robot_id='r1',camera='robot_cam',quality=82):
+        nonlocal stamp
+        now=float(world.data.time)
+        if now!=stamp:cache.clear();stamp=now
+        key=(robot_id,camera,quality)
+        if key not in cache:
+            cache[key]=bytes(original(robot_id=robot_id,camera=camera,quality=quality));stats['misses']+=1
+        else:stats['hits']+=1
+        return cache[key]
+    world.render_jpeg=render_jpeg
+    return stats
+
+
 def existing(root, name):
     path = Path(root)/name
     return path if path.exists() else Path(str(path)+'.zst')
+
+
+def compress_jsons(root):
+    """Existing64KiB policy, decoded SHA verification before removing text."""
+    records=[]
+    for p in sorted(Path(root).rglob('*')):
+        if p.suffix not in ('.json','.jsonl') or p.stat().st_size<=65536:continue
+        data=p.read_bytes();z=Path(str(p)+'.zst')
+        assert not z.exists()
+        z.write_bytes(subprocess.check_output(['zstd','-q','-c'],input=data))
+        assert subprocess.check_output(['zstd','-qdc',str(z)])==data
+        records.append(dict(path=str(z),sha256=sha256(z),decoded_sha256=hashlib.sha256(data).hexdigest()))
+        p.unlink()
+    if records:write_json(Path(root)/'compression.json',records)
 
 
 def gate_proof(root):

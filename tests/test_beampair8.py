@@ -91,3 +91,21 @@ def test_identity_detects_single_pwm_difference(tmp_path):
     rows[2]['clean_teacher_command']['pwm']['3']+=1
     path.write_text(''.join(json.dumps(x)+'\n' for x in rows))
     assert not command_identity(old,new)['passed']
+
+
+def test_recording_cache_keeps_tick_actor_camera_and_quality_separate():
+    from types import SimpleNamespace
+    from harness.beampair_recording import install_capture_cache
+    calls=[]
+    world=SimpleNamespace(data=SimpleNamespace(time=1.))
+    def render(**kw):
+        calls.append(kw);return str((world.data.time,kw)).encode()
+    world.render_jpeg=render;stats=install_capture_cache(world)
+    a=world.render_jpeg(robot_id='r1')
+    assert world.render_jpeg(robot_id='r1')==a and len(calls)==1
+    assert world.render_jpeg(robot_id='r2')!=a
+    assert world.render_jpeg(robot_id='r1',quality=86)!=a
+    assert world.render_jpeg(robot_id='r1',camera='nav_cam')!=a
+    world.data.time=1.1
+    assert world.render_jpeg(robot_id='r1')!=a
+    assert stats['hits']==1 and stats['misses']==5

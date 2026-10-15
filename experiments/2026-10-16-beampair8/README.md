@@ -26,3 +26,16 @@ RUN_META: 실행 dev, 첫 데이터셋 milestone. 실패 직전10SIM초 자기 �
 
 비물리 입력 격리·교란 제외·과거 명령 동기·한 PWM 차이 검출 회귀와 기존 관련 시험36개 통과.
 실제 동일성·기록·적합도 결과는 실행 후 별도 JSON에 기록한다. 학생 학습·독립 실행 성공은 범위 밖이다.
+
+## 기록 비용 점검
+
+첫 기록 후보 `ce7438b4`는 첫30SIM초3개 중앙6.099 wall/SIM(개별5.755/6.099/6.537)로
+기존6.0 차단 기준을 넘었다. 완료한 실행들은 원본 명령과 같으며 본200개는 제출하지 않았다.
+동일 tick의 실패용 링·학습 카메라가 같은 자기 JPEG를 중복 렌더하는 코드를 확인했다.
+기본 off `recording_capture_cache_v1`을 기록 경로에서만 켠다. SIM시각이 바뀌면 비우고
+로봇·카메라·JPEG quality를 나누며, 같은 pre-command tick의 bytes만 재사용한다.
+허용 입력·제어·가시 측정·물리·FOV·카메라 주기를 바꾸지 않는다.
+[MuJoCo scene update 공식 설명](https://mujoco.readthedocs.io/en/stable/programming/visualization.html)의
+model/data→scene→render 분리와 고정 runner의 capture→own command 순서를 근거로 했다.
+최신 다른 렌더러로 바꾸지 않으며, 공식 설명만으로 바이트 동등성을 가정하지 않는다.
+새 후보4개에서 원본 명령 및 uncached native JPEG SHA를 다시 비교한다.

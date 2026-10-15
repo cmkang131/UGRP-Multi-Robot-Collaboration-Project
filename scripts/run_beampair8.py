@@ -2,7 +2,7 @@
 import argparse
 from pathlib import Path
 from harness.grasp_act_data import read_json, write_json
-from harness.beampair_recording import gate_proof, make_training_view
+from harness.beampair_recording import gate_proof, make_training_view, compress_jsons
 from scripts.run_beampair1 import run
 
 
@@ -14,10 +14,11 @@ def main():
     report=run(read_json(a.plan)['episodes'][a.episode],a.out,a.dependency_root,
         mode='beampair1_v1',candidate='baseline',cap_s=60,rendezvous='peer_rendezvous_v2',
         approach_repair='beampair_approach_v2',wall_layer='beampair_wall_clear_v1',
-        peer_yield='beampair_peer_yield_v1',failure_tail=True,record_training=True,recording_proof=proof)
+        peer_yield='beampair_peer_yield_v1',failure_tail=True,record_training=True,recording_proof=proof,
+        recording_capture_cache='recording_capture_cache_v1')
     admission=make_training_view(a.out.parent)
     write_json(a.out.parent/'recording-admission.json',admission)
-    (a.out.parent/'SOURCE_SHA').write_text(admission.get('path') and read_json(Path(admission['path'])/'result.json')['source_sha'] or '')
+    if admission['admitted']:compress_jsons(a.out.parent/'training')
 
 
 if __name__=='__main__':main()
