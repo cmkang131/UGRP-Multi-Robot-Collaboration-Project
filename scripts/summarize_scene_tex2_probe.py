@@ -11,7 +11,6 @@ import argparse
 from collections import defaultdict
 import csv
 import hashlib
-import io
 import json
 import math
 from pathlib import Path
@@ -352,51 +351,54 @@ def surface_hsv_statistics(reader, frames):
 def make_montage(reader, output, frames, map_names, profiles):
     if platform.system() != 'Linux':
         raise RuntimeError('MONTAGE_GCP_LINUX_ONLY')
-    from PIL import Image, ImageDraw, ImageFont
-    # Half-native thumbnails (640x480 -> 320x240); layout/codec choices do not
-    # affect measurements, which always come from the original saved frames.
+    # The user's recording rule requires ffmpeg on GCP for review composition.
+    # Half-native thumbnails are display-only; measurements use original PNGs.
     width, height, banner = 320, 240, 76
     poses = ('drive', OCCLUDED)
-    image = Image.new('RGB', (width * len(profiles), (height + banner) * len(map_names) * len(poses)), 'white')
-    draw, font = ImageDraw.Draw(image), ImageFont.load_default()
-    chosen = []
+    command = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-nostdin',
+               '-threads', '1', '-filter_complex_threads', '1']
+    chosen, filters, layout = [], [], []
+    def escape(value):
+        return str(value).replace('\\', '\\\\').replace(':', '\\:').replace("'", "'\\''")
     for mi, map_name in enumerate(map_names):
         for pi, pose in enumerate(poses):
             y = (mi * len(poses) + pi) * (height + banner)
             for column, profile in enumerate(profiles):
-                x = column * width
-                candidates = [f for f in frames if f['map'] == map_name and f['pose'] == pose and
-                              f['robot'] == 'r1' and f['profile'] == profile]
-                candidates.sort(key=lambda f: (f['view'], f['id']))
+                i = len(chosen)
+                candidates = sorted([f for f in frames if f['map'] == map_name and f['pose'] == pose and
+                                     f['robot'] == 'r1' and f['profile'] == profile], key=lambda f: (f['view'], f['id']))
                 if not candidates:
-                    draw.text((x + 5, y + 5), f'{map_name}\n{profile}\n{pose}\nMISSING FRAME', fill='red', font=font)
+                    command += ['-f', 'lavfi', '-i', f'color=c=white:s={width}x{height}']
+                    label = f'{map_name}\n{profile}\n{pose}\nMISSING FRAME'
                     chosen.append({'map': map_name, 'profile': profile, 'pose': pose, 'reason': 'NO_MATCHING_FRAME'})
-                    continue
-                frame = candidates[0]
-                path = reader.record(frame['id'] + '.png', expected=frame['png_sha256'], kind='montage_original_png')
-                with Image.open(path) as original:
-                    thumbnail = original.convert('RGB')
-                    thumbnail.thumbnail((width, height), Image.Resampling.LANCZOS)
-                image.paste(thumbnail, (x, y))
-                metrics = frame['metrics']['png']
-                wall, floor = metrics['surfaces']['wall'], metrics['surfaces']['floor']
-                label = (f'{map_name} view{frame["view"]} r1\n{profile}\n{pose}\n'
-                         f'ORB wall={wall["orb_count"]} interior={wall.get("orb_interior_descriptor_support_count")} floor={floor["orb_count"]}\n'
-                         f'wallpx={wall["eval_visible_pixels"]} beam={metrics.get("eval_beam_pixels")} peer={metrics.get("eval_partner_pixels")}')
-                draw.multiline_text((x + 5, y + height + 3), label, fill='black', font=font, spacing=2)
-                chosen.append({'frame': frame['id'], 'source_png': path.relative_to(reader.root).as_posix(),
-                               'source_png_sha256': digest(path), 'metrics_png': label})
-    path = output / 'camera-montage.jpg'
-    # Only display compression changes if needed; no metric image is modified.
-    for quality in (85, 75, 65, 55):
-        stream = io.BytesIO()
-        image.save(stream, format='JPEG', quality=quality, optimize=True)
-        if stream.tell() <= MAX_MONTAGE_BYTES:
-            path.write_bytes(stream.getvalue())
-            return {'path': path.name, 'sha256': digest(path), 'bytes': path.stat().st_size,
-                    'jpeg_quality': quality, 'size_px': list(image.size), 'tiles': chosen,
-                    'selection': 'first measured view per map/profile/pose, r1; PNG metrics; not selected for quality'}
-    raise ValueError('MONTAGE_EXCEEDS_USER_8MB_LIMIT')
+                else:
+                    frame = candidates[0]
+                    path = reader.record(frame['id'] + '.png', expected=frame['png_sha256'], kind='montage_original_png')
+                    command += ['-threads', '1', '-i', str(path)]
+                    metrics = frame['metrics']['png']
+                    wall, floor = metrics['surfaces']['wall'], metrics['surfaces']['floor']
+                    label = (f'{map_name} view{frame["view"]} r1\n{profile}\n{pose}\n'
+                             f'ORB wall={wall["orb_count"]} interior={wall.get("orb_interior_descriptor_support_count")} floor={floor["orb_count"]}\n'
+                             f'wallpx={wall["eval_visible_pixels"]} beam={metrics.get("eval_beam_pixels")} peer={metrics.get("eval_partner_pixels")}')
+                    chosen.append({'frame': frame['id'], 'source_png': path.relative_to(reader.root).as_posix(),
+                                   'source_png_sha256': digest(path), 'metrics_png': label})
+                text = output/f'montage-label-{i:02d}.txt'
+                text.write_text(label)
+                filters.append(f"[{i}:v]scale={width}:{height}:flags=lanczos,pad={width}:{height+banner}:0:0:white,"
+                               f"drawtext=textfile='{escape(text)}':fontcolor=black:fontsize=10:x=5:y={height+3}[tile{i}]")
+                layout.append(f'{column*width}_{y}')
+    labels = ''.join(f'[tile{i}]' for i in range(len(chosen)))
+    filters.append(f"{labels}xstack=inputs={len(chosen)}:layout={'|'.join(layout)}[out]")
+    path = output/'camera-montage.jpg'
+    args = command+['-filter_complex', ';'.join(filters), '-map', '[out]', '-frames:v', '1',
+                    '-threads', '1', '-q:v', '3', '-update', '1', str(path)]
+    subprocess.run(args, check=True)
+    if path.stat().st_size > MAX_MONTAGE_BYTES:
+        raise ValueError('MONTAGE_EXCEEDS_USER_8MB_LIMIT')
+    return {'path': path.name, 'sha256': digest(path), 'bytes': path.stat().st_size,
+            'ffmpeg_version': subprocess.check_output(['ffmpeg', '-version'], text=True).splitlines()[0],
+            'command': args, 'size_px': [width*len(profiles), (height+banner)*len(map_names)*len(poses)],
+            'tiles': chosen, 'selection': 'first measured view per map/profile/pose, r1; no quality selection'}
 
 
 def run(input_dir, output):
