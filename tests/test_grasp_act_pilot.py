@@ -13,6 +13,17 @@ from scripts.run_grasp_act_student import validate_plan
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_dev_timing_cli_still_requires_real_gcp(monkeypatch, tmp_path):
+    from scripts import train_grasp_act as trainer
+    monkeypatch.setattr('sys.argv', ['train_grasp_act', '--dataset', str(tmp_path),
+        '--output', str(tmp_path / 'out'), '--stage', 'smoke', '--steps', '300',
+        '--max-wall-s', '900', '--run-class', 'dev', '--profile-timing'])
+    monkeypatch.setattr('scripts.grasp_act_training_guard.platform.system', lambda: 'Darwin')
+    with pytest.raises(RuntimeError, match='forbidden'):
+        trainer.main()
+    assert not (tmp_path / 'out').exists()
+
+
 def test_mac_guard_precedes_training_or_physics(monkeypatch):
     monkeypatch.setattr('scripts.grasp_act_training_guard.platform.system', lambda: 'Darwin')
     for training in (True, False):

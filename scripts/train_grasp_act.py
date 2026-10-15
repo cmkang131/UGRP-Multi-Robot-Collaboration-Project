@@ -7,6 +7,7 @@ import json
 import math
 from pathlib import Path
 import signal
+import statistics
 import time
 
 import sys
@@ -32,6 +33,9 @@ def main():
     p.add_argument('--approval', type=Path)
     p.add_argument('--smoke-summary', type=Path)
     p.add_argument('--blank-images', action='store_true')
+    p.add_argument('--run-class', choices=('dev', 'milestone'), default='milestone')
+    p.add_argument('--profile-timing', action='store_true',
+                   help='opt-in CUDA synchronization and pipeline timing; default off')
     p.add_argument('--done-loss', choices=DONE_MODES, default='legacy_l1')
     p.add_argument('--done-loss-weight', type=float, default=1.)
     p.add_argument('--command-history-dropout', type=float, default=0.,
@@ -62,6 +66,7 @@ def main():
                        command_history_dropout=a.command_history_dropout)
     a.output.mkdir(parents=True, exist_ok=False)
     report = {'status': 'running', 'complete': False, 'stage': a.stage,
+        'class': a.run_class, 'research_result': False if a.run_class == 'dev' else None,
         'source_sha': source, 'dataset_manifest_sha256': dataset_hash, 'host': host,
         'steps_requested': a.steps, 'steps_completed': 0, 'seed': a.seed,
         'blank_images': a.blank_images, 'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
@@ -70,7 +75,8 @@ def main():
         'gate_promotion_authorized_if_all_conditions_pass': False,
         'selection': 'fixed final step; validation never selects checkpoint'}
     write_summary(a.output / 'summary.json', report)
-    write_json(a.output / 'RUN_META.json', {'class': 'milestone', 'sha': source})
+    write_json(a.output / 'RUN_META.json', {'class': a.run_class, 'sha': source,
+        'pr': 504, 'branch': 'claude/act-train', 'batch': a.output.name})
     started, last_checkpoint = time.monotonic(), None
     stop = {'requested': False}
     def request_stop(signum, frame):
@@ -78,6 +84,7 @@ def main():
     signal.signal(signal.SIGINT, request_stop)
     signal.signal(signal.SIGTERM, request_stop)
     try:
+        setup_started = time.monotonic()
         import torch
         from harness.act_training import checkpoint_encoder
         from harness.grasp_act_policy import GraspActor, make_policy, save_actor
@@ -87,7 +94,9 @@ def main():
         torch.cuda.manual_seed_all(a.seed)
         torch.set_num_threads(4)
         torch.backends.cudnn.benchmark = False
+        data_started = time.monotonic()
         data = GraspDataset(a.dataset, 'train', blank=a.blank_images)
+        data_load_s = time.monotonic() - data_started
         priors = completion_priors(data) if a.done_loss != 'legacy_l1' else None
         report['done_class_counts'] = priors
         policy = make_policy(pretrained=not bool(a.resume), device='cuda')
@@ -128,11 +137,18 @@ def main():
         report['backbone_initialization'] = 'ResNet18_Weights.IMAGENET1K_V1; fine-tuned; no freeze/cache'
         report['activation_checkpointing'] = 'harness.act_training.checkpoint_encoder'
         initial_step = step
+        if a.profile_timing:
+            torch.cuda.synchronize()
+            report['timing'] = {'dataset_load_s': data_load_s,
+                'setup_s': time.monotonic() - setup_started, 'checkpoints': [],
+                'step_s': [], 'batch_load_s': [],
+                'method': 'CUDA synchronized step including batch load, H2D, forward, backward, optimizer; excludes checkpoint/log'}
 
         def checkpoint():
             nonlocal last_checkpoint
             if last_checkpoint is not None and last_checkpoint.name == f'step-{step:06d}':
                 return
+            checkpoint_started = time.monotonic()
             folder = a.output / f'step-{step:06d}'
             folder.mkdir()
             provenance = {'source_sha': source, 'dataset_manifest_sha256': dataset_hash,
@@ -140,6 +156,8 @@ def main():
                           'command_history_dropout': a.command_history_dropout,
                           'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
                           'done_class_counts': priors}
+            if a.run_class == 'dev':
+                provenance.update(run_class='dev', research_result=False)
             save_actor(policy, folder / 'actor', data.stats, provenance, blank=a.blank_images, done_mode=a.done_loss)
             torch.save({'optimizer': optimizer.state_dict(), 'rng': torch.get_rng_state(),
                         'cuda_rng': torch.cuda.get_rng_state_all(), 'sampler_rng': generator.get_state()},
@@ -147,6 +165,10 @@ def main():
             write_json(folder / 'resume.json', {**provenance, 'optimizer_sha256': sha256(folder / 'optimizer.pt')})
             last_checkpoint = folder
             report['last_checkpoint'] = str(folder)
+            if a.profile_timing:
+                report['timing']['checkpoints'].append({'step': step,
+                    'save_s': time.monotonic() - checkpoint_started,
+                    'bytes': sum(f.stat().st_size for f in folder.rglob('*') if f.is_file())})
 
         with (a.output / 'progress.jsonl').open('x') as log:
             while step < a.steps:
@@ -155,9 +177,14 @@ def main():
                 if (a.output / 'SUPERVISOR_STOP.json').exists():
                     stop['requested'] = True
                     break
+                if a.profile_timing:
+                    torch.cuda.synchronize()
+                    step_started = time.monotonic()
                 indices = torch.randint(len(data), (8,), generator=generator).tolist()
                 batch = torch.utils.data.default_collate([data[i] for i in indices])
                 assert_tensor_keys(batch, training=True)
+                if a.profile_timing:
+                    batch_load_s = time.monotonic() - step_started
                 batch = {k: v.to('cuda') for k, v in batch.items()}
                 batch = drop_command_history(batch, a.command_history_dropout)
                 policy.train()
@@ -172,6 +199,10 @@ def main():
                 norm = torch.nn.utils.clip_grad_norm_(policy.parameters(), 1., error_if_nonfinite=True)
                 optimizer.step()
                 step += 1
+                if a.profile_timing:
+                    torch.cuda.synchronize()
+                    report['timing']['step_s'].append(time.monotonic() - step_started)
+                    report['timing']['batch_load_s'].append(batch_load_s)
                 if step == initial_step + 1 or step % 10 == 0:
                     elapsed = time.monotonic() - started
                     row = {'step': step, 'loss': loss.item(), **metrics, 'gradient_norm': float(norm),
@@ -184,15 +215,33 @@ def main():
                 if step % (100 if a.stage == 'smoke' else 500) == 0:
                     checkpoint()
             checkpoint()
+        report['peak_training_gpu_bytes'] = torch.cuda.max_memory_allocated()
+        report['peak_training_gpu_reserved_bytes'] = torch.cuda.max_memory_reserved()
         # Verify saved weights load and reproduce a held TRAINING input chunk.
+        readback_started = time.monotonic()
         restored = GraspActor.load(last_checkpoint / 'actor', device='cuda')
+        if a.profile_timing:
+            torch.cuda.synchronize()
+            report['timing']['checkpoint_load_s'] = time.monotonic() - readback_started
         probe = data[0]
         inputs = {k: torch.from_numpy(v.copy()).unsqueeze(0).to('cuda')
                   for k, v in probe.items() if k.startswith('observation.')}
         assert_tensor_keys(inputs)
+        if a.profile_timing:
+            report['input_audit'] = {'keys': sorted(inputs),
+                'shapes': {k: list(v.shape) for k, v in inputs.items()},
+                'whitelist_verified': True, 'teacher_input_fields': 0,
+                'scope': 'saved training input; own RGB history and contract context only; not closed-loop validation'}
+        policy.eval()
         with torch.inference_mode():
             expected = policy.predict_action_chunk(inputs)
+            if a.profile_timing:
+                torch.cuda.synchronize()
+                inference_started = time.monotonic()
             actual = restored.policy.predict_action_chunk(inputs)
+            if a.profile_timing:
+                torch.cuda.synchronize()
+                report['timing']['inference_s'] = time.monotonic() - inference_started
         if not torch.equal(expected, actual):
             raise ValueError('saved model prediction readback mismatch')
         report.update(status='complete' if step == a.steps else 'interrupted' if stop['requested'] else 'WALL_CAP',
@@ -201,6 +250,11 @@ def main():
         report.update(status='HOST_ERROR', complete=False, error_type=type(exc).__name__)
         raise
     finally:
+        if a.profile_timing and report.get('timing', {}).get('step_s'):
+            values = sorted(report['timing']['step_s'])
+            report['timing'].update(step_mean_s=statistics.mean(values),
+                step_median_s=statistics.median(values),
+                step_p95_s=values[math.ceil(.95 * len(values)) - 1])
         report['wall_s'] = time.monotonic() - started
         report['artifacts'] = {str(f.relative_to(a.output)): sha256(f) for f in a.output.rglob('*')
                                if f.is_file() and f.name != 'summary.json'}
