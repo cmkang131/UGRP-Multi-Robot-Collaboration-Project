@@ -10,6 +10,8 @@
 - `sim.wall_texture.walls_from_xml`의 벽 판독을 재사용한다. 테이프나 마커를 넣지 않는다. 기존 box 벽에 서로 다른 여섯 면의 cube 재질을 입히고 `texuniform=true`로 각 면에 한 번 매핑한다. 충돌·광선 검사 대상 geom의 개수와 형상을 유지한다. 벽의 PNG는 실제 면 비율로 생성 후 cube용 정사각형으로 바꾸며, 실제 면 방향·연결·축척은 GCP 영상 검토가 남았다.
 - 카메라 위치/FOV, 로봇 외관, 빔 끝 띠, 상자/손잡이, 구역 페인트, 물리·접촉은 유지한다. RGB 채널을 같게 해 S=0으로 만들었다. [색 범위 표](../experiments/2026-10-15-scene-floor-texture/color-ranges.md)의 81개 범위에서 원본 픽셀 침범은 모두 0이다. 조명·압축 이후의 오검출/검출 손실은 아직 검증하지 않았다.
 - 자산은 `sim/assets/floor_light_textured_v1/manifest.json`과 PNG SHA-256으로 고정한다. manifest 해시가 프로필 해시에 들어가고 적용 때 manifest/사용 PNG를 검사한다. 누락·변조·미지원 벽 치수·다른 벽 무늬와의 중복 적용은 거부한다. 지원 지도는 `maps/zones_final_v3/`의 두 문, 복도, hardmaps H1/H2 네 지도다.
+- PR #511 검토 수정에서 벽의 밝기 범위를 82–86으로 낮췄다. PNG 창의 벽띠 균일성과 원근·조명·JPEG 근사의 실제 벽 검출/기존 frame gate를 [별도 감사](../experiments/2026-10-15-scene-floor-texture/README.md#pr-511-검토-수정-비색-인식과-xml-경로)로 기록한다. 바닥은 동일하며 벽 ORB는 150면 모두 0이다. 실제 카메라 호환성과 새 프로필 보정은 미검증이며 GCP 정적 관문에서 다시 잰다. 기본 검출기·보정값은 유지한다.
+- 텍스처 XML 경로는 `compiler.texturedir="sim/assets/floor_light_textured_v1"`와 파일명이다. 문자열 장면을 읽을 때 저장소 루트를 cwd로 사용한다. XML을 파일로 내보내면 XML 디렉터리를 기준으로 같은 상대 자산 구조를 함께 배치한다. XML 해시는 checkout 절대경로를 포함하지 않고 자산 해시는 별도로 기록한다.
 - **켠 실행은 새 장면 버전**이다. 이전 프로필/시드 결과와 합산하지 않는다. 학습 자료·교사 관문·학생 평가도 이 장면 버전으로 별도 수집/측정한다. 인공 마커와 색 인식 범위 침범은 금지한다.
 
 ## 켜는 방법과 소비자 연결

@@ -14,7 +14,8 @@ from sim.wall_texture import walls_from_xml
 
 PROFILE = 'floor_light_textured_v1'
 ASSETS = Path(__file__).resolve().parent / 'assets' / PROFILE
-MANIFEST_SHA256 = '4a11dd0d7984af56a731b63e521891a6abdef6f65c300ca7ab737e2755382069'
+TEXTURE_DIR = Path('sim/assets') / PROFILE  # relative to the repository scene root
+MANIFEST_SHA256 = '4a7005e2bb1d8ce966ee5877e3a0f60a79eda247a978887c9fe0e8ef246d9a08'
 FLOOR_SIZE = (8., 8., .1)
 
 
@@ -60,9 +61,19 @@ def apply(root, *, assets=ASSETS):
     if ground is None or material is None:
         raise ValueError('natural texture needs ground and groundmat')
     record = manifest(assets)
-    path = checked_file('floor', record, assets)
+    checked_file('floor', record, assets)
+    # from_xml_string resolves relative directories from the scene's cwd.
+    # Keep the repository root as that base (also when exporting scene XML).
+    compiler = root.find('compiler')
+    if compiler is None:
+        compiler = ET.Element('compiler')
+        root.insert(0, compiler)
+    if compiler.get('texturedir') or compiler.get('assetdir') or any(
+            t.get(a) for t in asset.findall('texture') for a in ('file', *(f[0] for f in CUBE_FACES))):
+        raise ValueError('natural texture requires an unambiguous repository scene asset root')
+    compiler.set('texturedir', TEXTURE_DIR.as_posix())
     ground.attrib.clear()
-    ground.attrib.update(name='ground', type='2d', file=str(path))
+    ground.attrib.update(name='ground', type='2d', file=record['images']['floor']['file'])
     # No repeat within the bounded scene. Preserve the collision floor itself.
     material.attrib.update(texture='ground', texrepeat='1 1', texuniform='false',
                            rgba='1 1 1 1', specular='0', shininess='0', reflectance='0')
@@ -71,7 +82,10 @@ def apply(root, *, assets=ASSETS):
         if key not in record['walls']:
             raise ValueError(f'no pinned natural texture for wall: {key}')
         name = 'natural_v1_' + wall['name']
-        faces = {attr: str(checked_file(k, record, assets)) for attr, k in record['walls'][key].items()}
+        faces = {}
+        for attr, k in record['walls'][key].items():
+            checked_file(k, record, assets)
+            faces[attr] = record['images'][k]['file']
         ET.SubElement(asset, 'texture', name=name+'_tex', type='cube', **faces)
         ET.SubElement(asset, 'material', name=name+'_mat', texture=name+'_tex',
                       texuniform='true', rgba='1 1 1 1', emission='0',

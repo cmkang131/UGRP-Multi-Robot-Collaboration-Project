@@ -1,4 +1,4 @@
-"""Pure XML/PNG regressions; never load MuJoCo, render or step physics."""
+"""XML/PNG regressions; never construct MuJoCo models/data, render or step physics."""
 import hashlib
 import json
 from pathlib import Path
@@ -148,6 +148,9 @@ def test_queue_is_unapproved_not_ready_and_has_six_views_per_map():
     assert len(d['static_gate']['maps'])==4
     assert all(len(m['viewpoints'])==6 for m in d['static_gate']['maps'])
     assert d['static_gate']['total_frames']==48
+    records=' '.join(d['static_gate']['record'])
+    for consumer in ('detect_boundaries', 'max_band_std=3', 'opencv_wall_observation', 'own_image_gates'):
+        assert consumer in records
 
 
 def test_profile_path_is_simulator_free_in_fresh_process():
@@ -167,3 +170,116 @@ plan('a'*40)
 """
     r=subprocess.run([sys.executable,'-c',program],cwd=ROOT,capture_output=True,text=True)
     assert r.returncode==0,r.stderr
+
+
+@pytest.fixture(scope='module')
+def production_robot_xml():
+    # The real XML builder imports MuJoCo definitions but never constructs a
+    # model, data, world or renderer. Only XML strings are produced here.
+    from sim.multi_masterpi_production import build_multi_robot_xml
+    return build_multi_robot_xml(None)
+
+
+@pytest.mark.parametrize('map_path', MAPS, ids=lambda p:p.stem)
+def test_real_build_zone_xml_profile_bindings_and_frozen_off_hash(map_path, production_robot_xml):
+    from sim.zone_arena import build_zone_xml, episode
+    config=episode('zone_wide', 11, goal={'A':{'cyan':1}})
+    config['static_map']=json.loads(map_path.read_text())
+    source,record=build_zone_xml(production_robot_xml,config)
+    pinned=json.loads((ROOT/'experiments/2026-10-15-scene-floor-texture/zone-xml-baseline.json').read_text())[map_path.stem]
+    assert record['scene_xml_sha256']==pinned['off']==hashlib.sha256(source.encode()).hexdigest()
+    assert rp.apply_xml(source,None) is source
+    assert rp.apply_xml(source,'shadows_v1') is source
+    base=rp.apply_xml(source,'floor_light_v1')
+    assert hashlib.sha256(base.encode()).hexdigest()==pinned['floor_light_v1']
+    out=ET.fromstring(rp.apply_xml(source,texture.PROFILE))
+    original=ET.fromstring(base)
+    assert out.find('compiler').get('texturedir')==texture.TEXTURE_DIR.as_posix()
+    assets=out.find('asset')
+    assert len(list(original.find('worldbody').iter()))==len(list(out.find('worldbody').iter()))
+    for a,b in zip(original.find('worldbody').iter(),out.find('worldbody').iter()):
+        aa,bb=dict(a.attrib),dict(b.attrib)
+        if a.get('name','').startswith('zone_wall_'):
+            assert b.get('material')=='natural_v1_'+a.get('name')+'_mat'
+            for k in ('rgba','material'):aa.pop(k,None);bb.pop(k,None)
+        assert (a.tag,aa)==(b.tag,bb)
+    for tag in ('option','actuator','equality','contact','sensor','tendon'):
+        a,b=original.find(tag),out.find(tag)
+        assert (None if a is None else ET.tostring(a))==(None if b is None else ET.tostring(b))
+    compiler_before=dict(original.find('compiler').attrib)
+    compiler_after=dict(out.find('compiler').attrib)
+    compiler_after.pop('texturedir')
+    assert compiler_before==compiler_after
+    assert out.find("worldbody/geom[@name='floor']").get('material')=='groundmat'
+    assert assets.find("material[@name='groundmat']").get('texture')=='ground'
+    for wall in config['static_map']['obstacles']:
+        name='natural_v1_zone_'+wall['id']
+        assert assets.find(f"material[@name='{name}_mat']").get('texture')==name+'_tex'
+        assert assets.find(f"texture[@name='{name}_tex']") is not None
+    for tex in assets.findall('texture'):
+        for attr in ('file',*(f[0] for f in texture.CUBE_FACES)):
+            if tex.get(attr):
+                assert not Path(tex.get(attr)).is_absolute()
+                assert (ROOT/texture.TEXTURE_DIR/tex.get(attr)).is_file()
+
+
+@pytest.mark.parametrize('map_path', MAPS, ids=lambda p:p.stem)
+def test_xml_bytes_are_identical_for_assets_in_another_checkout(tmp_path, map_path, production_robot_xml):
+    import shutil
+    from sim.zone_arena import build_zone_xml, episode
+    copied=tmp_path/'other-checkout'/texture.TEXTURE_DIR
+    shutil.copytree(texture.ASSETS,copied)
+    config=episode('zone_wide', 11, goal={'A':{'cyan':1}})
+    config['static_map']=json.loads(map_path.read_text())
+    source,_=build_zone_xml(production_robot_xml,config)
+    base=rp.apply_xml(source,'floor_light_v1')
+    expected=ET.tostring(texture.apply(ET.fromstring(base)))
+    relocated=ET.tostring(texture.apply(ET.fromstring(base),assets=copied))
+    assert relocated==expected
+    root=ET.fromstring(relocated)
+    for tex in root.findall('asset/texture'):
+        for attr in ('file',*(f[0] for f in texture.CUBE_FACES)):
+            if tex.get(attr):
+                assert (tmp_path/'other-checkout'/root.find('compiler').get('texturedir')/tex.get(attr)).is_file()
+
+
+def test_existing_asset_root_is_not_silently_redirected():
+    root=ET.fromstring(scene_xml())
+    ET.SubElement(root,'compiler',texturedir='other-assets')
+    with pytest.raises(ValueError,match='unambiguous'):
+        texture.apply(root)
+
+
+def test_wall_contrast_bound_preserves_original_detector_uniformity_margin():
+    record=texture.manifest()
+    assert record['wall_pixel_value_bounds']==[82,86]
+    for key in record['images']:
+        if key=='floor':continue
+        rgb=np.asarray(Image.open(texture.checked_file(key,record,texture.ASSETS)))
+        # A bounded range of 4 has std <=2 under any spatial sampling; the
+        # saved bright-light approximation gain 1.25 keeps this below 3.
+        assert rgb.min()>=82 and rgb.max()<=86
+
+
+def test_noncolor_audit_is_current_and_does_not_claim_camera_calibration():
+    from harness.own_image_gates import load
+    result=json.loads((ROOT/'experiments/2026-10-15-scene-floor-texture/own-image-audit.json').read_text())
+    assert result['current_manifest_sha256']==texture.MANIFEST_SHA256
+    assert result['gates']==load()
+    for path,digest in result['source_sha256'].items():
+        assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest()==digest
+    assert result['camera_verified'] is False
+    assert result['calibration_transferred'] is False
+    assert result['ready_for_execution'] is False
+    windows=result['wall_windows']['revised']['detector_strip_40x7']
+    assert windows['accepted']==windows['N'] and windows['std_max']<3
+    baseline=result['summary']['floor_light_v1_approx']
+    revised=result['summary']['revised_texture']
+    for encoding in ('raw_png','jpeg_q90'):
+        for consumer in ('detect_boundaries','opencv_wall_observation'):
+            before,after=baseline['encodings'][encoding][consumer],revised['encodings'][encoding][consumer]
+            assert before['N']==after['N']==after['visible_N']
+            assert after['correct']>=before['correct']
+            assert after['false']<=before['false']
+    assert revised['own_image_gates']=={'valid_frame':revised['frames'],'valid_frame_ob':revised['frames']}
+    assert all(not row['valid_frame'] and not row['valid_frame_ob'] for row in result['controls'].values())

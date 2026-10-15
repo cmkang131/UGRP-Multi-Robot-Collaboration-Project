@@ -18,6 +18,8 @@ from sim.natural_scene_texture import CUBE_FACES, wall_key
 
 ROOT = Path(__file__).resolve().parents[1]
 SEED = 20261015
+WALL_CONTRAST_SCALE = .04
+WALL_MEAN_VALUE = 84
 MAPS = tuple(sorted((ROOT / 'maps/zones_final_v3').glob('zone_*.json')))
 
 
@@ -69,6 +71,8 @@ def generate(directory):
     record = {'schema': 'ugrp.natural_surface_assets.v1', 'seed': SEED,
               'generator': 'scripts/generate_scene_textures.py', 'floor_extent_m': [16, 16],
               'wall_source_pixels_per_m': 512, 'cube_face_pixels': 512, 'walls': walls, 'rgb_channels_equal': True, 'pixel_value_bounds_before_cube_resample': [88, 198],
+              'wall_contrast_scale_after_cube_resample': WALL_CONTRAST_SCALE,
+              'wall_mean_value': WALL_MEAN_VALUE, 'wall_pixel_value_bounds': [82, 86],
               'maps': {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in MAPS},
               'images': {}}
     for key, (width, height, floor) in sorted(specs.items()):
@@ -76,6 +80,11 @@ def generate(directory):
         im = texture(key, width, height, floor=floor)
         if not floor:
             im = im.resize((512, 512), Image.Resampling.LANCZOS)
+            # Bound the full face range to 4 levels: any unlit window std <=2,
+            # leaving margin below detect_boundaries(max_band_std=3).
+            gray = np.asarray(im, dtype=float)
+            im = Image.fromarray(np.clip(np.rint(WALL_MEAN_VALUE + WALL_CONTRAST_SCALE*(gray-132)),
+                                         82, 86).astype(np.uint8))
         im.save(path, compress_level=9)
         record['images'][key] = {'file': path.name, 'width': im.width, 'height': im.height,
                                 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
