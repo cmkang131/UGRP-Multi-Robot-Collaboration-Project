@@ -12,8 +12,12 @@ def main():
     for name in ('fixture','reference','candidate','out'):
         p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--asset-source',type=Path,required=True)
+    p.add_argument('--gcp2-v1',action='store_true')
     a=p.parse_args()
-    if socket.gethostname().split('.')[0]!='ugrp-sim-gcp1':p.error('gcp1 analysis only')
+    if a.gcp2_v1:
+        from simalt_host import gcp2_identity
+        gcp2_identity()
+    elif socket.gethostname().split('.')[0]!='ugrp-sim-gcp1':p.error('gcp1 analysis only')
     import mujoco
     import numpy as np
     xml=(a.fixture/'scene.xml').read_text()

@@ -1,0 +1,54 @@
+{
+  "stage": "before_simalt3_execution",
+  "distribution": [
+    {
+      "category": "numeric_cast_overflow",
+      "count": 1,
+      "reason": "perturbed inactive EFM scratch efm_c cannot cast to float32; unused_efm_v1 only skips four inactive workspace copies",
+      "blocking_object": "MjData.efm_c",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric"
+    },
+    {
+      "category": "provider_budget_stop",
+      "count": 1,
+      "reason": "gcp1 budget stop interrupted simalt2; first project forbidden",
+      "blocking_object": "ugrp-act-train-1014",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric"
+    }
+  ],
+  "funnel": [
+    {
+      "gate": "gcp2 budget-stop setup test",
+      "entered": 1,
+      "passed": 0,
+      "rejected": 0,
+      "pending": 1
+    },
+    {
+      "gate": "put_data and first step",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "same-command 4-case physics equivalence",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "throughput N1/16/64/128 and render",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0
+    }
+  ],
+  "raw_paths": [
+    "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt2/audit-intact.json",
+    "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt2/audit-perturbed.json",
+    "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt2/audit-safe.json"
+  ],
+  "reproduction": "See plan.json; no gcp2 work submitted before setup PASS"
+}

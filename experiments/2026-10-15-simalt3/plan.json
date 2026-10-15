@@ -1,0 +1,88 @@
+{
+  "id": "2026-10-15-simalt3",
+  "base_sha": "17b19ae7f05f20aa8fdb2ff5d9390942b12c2ad2",
+  "default_enabled": false,
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "forbidden_project": "ugrp-act-train-1014",
+  "setup_gate": {
+    "file": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/ops-alert.md",
+    "required_prefix": "gcp2setup:",
+    "required_status": "PASS",
+    "poll_seconds": 300,
+    "max_wait_seconds": 10800,
+    "start_utc": "2026-10-15T14:11:44Z",
+    "stop_on": "FAIL"
+  },
+  "vm": {
+    "name": "ugrp-act-l4-gcp2",
+    "machine": "g2-standard-8",
+    "region": "asia-northeast3",
+    "accelerators": {
+      "nvidia-l4": 1
+    },
+    "max_run_duration": "8h",
+    "termination_action": "STOP",
+    "idle_stop_minutes": 20,
+    "service_account": null,
+    "scopes": []
+  },
+  "L4_wall_budget_seconds": 10800,
+  "budget_scope": "VM create/start to stop, including setup/compilation; wall only a resource cap",
+  "mjwarp_commit": "57b4692f4d3cdf4d27d916b4b8c4759ba36e9148",
+  "mujoco_reference": "3.12.0",
+  "unused_efm_v1": true,
+  "physics_overrides": {},
+  "source_solver_tolerance_preserved": true,
+  "comparison_thresholds": {
+    "endpoint_translation_m": 0.005,
+    "endpoint_rotation_deg": 2,
+    "extra_slip_3s_m": 0.002
+  },
+  "threshold_basis": "User 2026-10-15 simalt3: exploratory cause-finding proposals, not task-success or hardware bounds",
+  "throughput_n": [
+    1,
+    16,
+    64,
+    128,
+    256
+  ],
+  "throughput_256_optional": true,
+  "measure_modes": [
+    "physics-only",
+    "physics+batch RGB640x480 at10Hz, unchanged K/D fisheye remap"
+  ],
+  "adoption": {
+    "require_physics_equivalence": true,
+    "minimum_SIM_seconds_per_USD_ratio": 2,
+    "basis": "explicit user simalt3 proposed adoption threshold"
+  },
+  "historical_baseline": {
+    "machine": "n4-highcpu-64",
+    "concurrency": 16,
+    "wall_per_sim_median_range": [
+      2.35,
+      2.66
+    ],
+    "aggregate_SIM_s_per_wall_s_range": [
+      6.015037593984962,
+      6.808510638297872
+    ],
+    "price_usd_per_hour": 3.145,
+    "current_measurement": false
+  },
+  "L4_price_usd_per_hour": 1.096,
+  "price_basis": "user provided Seoul on-demand prices, billing not measured",
+  "analysis_host": "gcp2 L4 (gcp1 forbidden); no Mac physics/render/UI",
+  "training": false,
+  "production_backend_implementation": false,
+  "stop_on": [
+    "budget-stop",
+    "NaN",
+    "overflow",
+    "noslip ignored",
+    "physics workaround required",
+    "cap_end"
+  ],
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt3/rejection_table.json"
+}

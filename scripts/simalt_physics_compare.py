@@ -149,6 +149,10 @@ def run(a):
               'training':False,'renderer':'none; physics-only; state ring buffer for offline rendering',
               'status':'running','attempted':0,'completed':0,'failure':0,'HOST_ERROR':0,'cap_end':False,
               'steps_accepted':0,'cases':[],'physics_overrides':{},'rejection_table':str(a.out/'rejection_table.json')}
+    if a.gcp2_v1:
+        from simalt_host import gcp2_identity
+        report['execution_host']=gcp2_identity()
+        report['unused_efm_v1']=a.unused_efm_v1
     write(a.out/'result.json',report)
     states={}; recent=deque(maxlen=100)  # 10s x 10Hz evaluator recording, independent of training/control
     start=time.perf_counter()
@@ -163,6 +167,12 @@ def run(a):
         wm=mjw.put_model(m)
         report['warp_version']=wp.__version__
         report['backend_solver_tolerance']=float(wm.opt.tolerance.numpy().item())
+        if a.gcp2_v1:
+            # io.py:433-436 at pinned 57b4692 clamps to 1e-6 for float32.
+            # Preserve the source scene's 1e-8, rather than silently relaxing it.
+            wm.opt.tolerance.fill_(float(m.opt.tolerance))
+            report['backend_solver_tolerance_before_preservation']=report['backend_solver_tolerance']
+            report['backend_solver_tolerance']=float(wm.opt.tolerance.numpy().item())
         if wm.opt.noslip_iterations != 10:
             raise RuntimeError('noslip ignored')
         # Canonical reference maxima size buffers; round to a power of 2 for
@@ -201,8 +211,14 @@ def run(a):
                 nefc=max(nefc,2**math.ceil(math.log2(max(1,int(d.nefc)))))
                 report['capacities'].update(nconmax=ncon,njmax=nefc,
                     basis='next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts')
+                if a.gcp2_v1 and not a.unused_efm_v1:
+                    raise RuntimeError('simalt3 explicitly requires --unused-efm-v1')
                 with unused_efm(m,d): wd=mjw.put_data(m,d,nworld=a.nworld,nconmax=ncon,njmax=nefc)
+                report.update(status='compiling_first_step',put_data_passed=True)
+                write(a.out/'result.json',report)
                 mjw.step(wm,wd);wp.synchronize();check(wd)
+                report.update(status='first_step_pass_only',first_step_passed=True)
+                write(a.out/'result.json',report)
                 # Warm-up is recorded separately, and discarded before the trace.
                 with unused_efm(m,d): wd=mjw.put_data(m,d,nworld=a.nworld,nconmax=ncon,njmax=nefc)
                 wt=wp.array(tape.astype(np.float32),dtype=wp.float32)
@@ -216,18 +232,24 @@ def run(a):
                         wp.launch(advance,dim=1,inputs=[tick])
                 graph=capture.graph
             cr={'name':name,'status':'running','max_ncon':int(d.ncon),'max_nefc':int(d.nefc),
+                'physics_wall_s':0.,'evaluator_wall_s':0.,
                 'sim_s':0.,'wall_s':0.,'sample_count':0}
             report['cases'].append(cr)
             values=[];contacts=[];forces=[]
             states[name]=values  # preserve partial failure timeline, not only completed cases
             cs=time.perf_counter()
             for begin in range(0,len(tape),400):
+                ps=time.perf_counter()
                 if a.engine=='cpu':
                     for j in range(begin,begin+400):
                         d.ctrl[:]=tape[j];mujoco.mj_step(m,d)
                 else:
                     for j in range(25):wp.capture_launch(graph)
-                    wp.synchronize();check(wd)
+                    wp.synchronize()
+                cr['physics_wall_s']+=time.perf_counter()-ps
+                es=time.perf_counter()
+                if a.engine=='warp':
+                    check(wd)
                     mjw.get_data_into(d,m,wd,world_id=0)
                     mujoco.mj_kinematics(m,d)  # evaluator body poses only; no forward/contact recomputation
                 if not np.isfinite(d.qpos).all() or not np.isfinite(d.qvel).all():
@@ -245,9 +267,11 @@ def run(a):
                         if m.geom('r1__'+side+'_finger').id in c.geom:
                             finger[k]+=float(np.linalg.norm(f[:3]))
                 forces.append(finger)
+                cr['evaluator_wall_s']+=time.perf_counter()-es
                 cr.update(sim_s=(begin+400)*dt,wall_s=time.perf_counter()-cs,sample_count=len(values))
                 if (begin//400)%10==0:write(a.out/'result.json',report)
             cr.update(status='complete',wall_s=time.perf_counter()-cs,
+                      physics_only_SIM_s_per_wall_s=len(tape)*dt*a.nworld/cr['physics_wall_s'],
                       total_sim_seconds_per_wall_second=len(tape)*dt*a.nworld/(time.perf_counter()-cs),
                       per_world_sim_seconds_per_wall_second=len(tape)*dt/(time.perf_counter()-cs))
             states[name]=np.asarray(values)
@@ -288,8 +312,15 @@ def main():
     p.add_argument('--nworld',type=int,default=1)
     p.add_argument('--only')
     p.add_argument('--enabled',action='store_true')
+    p.add_argument('--gcp2-v1',action='store_true')
+    p.add_argument('--unused-efm-v1',action='store_true',help='explicit inactive-workspace adapter opt-in for simalt3')
     a=p.parse_args()
-    if not a.enabled or platform.system()!='Linux' or socket.gethostname().split('.')[0]!='ugrp-act-l4-pilot1':
+    if a.gcp2_v1:
+        from simalt_host import gcp2_identity
+        host=gcp2_identity()
+        if a.engine=='warp' and host['instance']!='ugrp-act-l4-gcp2':
+            p.error('MJWarp requires the admitted L4')
+    if not a.enabled or platform.system()!='Linux' or (not a.gcp2_v1 and socket.gethostname().split('.')[0]!='ugrp-act-l4-pilot1'):
         p.error('explicit Linux L4-only opt-in required')
     sys.path.insert(0,str(a.source))
     warnings.filterwarnings('error',message='.*overflow.*',category=RuntimeWarning)

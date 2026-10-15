@@ -12,8 +12,12 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     for key in ('source','fixture','run','out'):p.add_argument('--'+key,type=Path,required=True)
     p.add_argument('--case',required=True)
+    p.add_argument('--gcp2-v1',action='store_true')
     a=p.parse_args()
-    if socket.gethostname().split('.')[0]!='ugrp-sim-gcp1':p.error('gcp1-only review')
+    if a.gcp2_v1:
+        from simalt_host import gcp2_identity
+        gcp2_identity()
+    elif socket.gethostname().split('.')[0]!='ugrp-sim-gcp1':p.error('gcp1-only review')
     sys.path.insert(0,str(a.source))
     import cv2
     import mujoco

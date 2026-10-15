@@ -79,8 +79,14 @@ def main():
     p.add_argument('--sha', required=True)
     p.add_argument('--enabled', action='store_true')
     p.add_argument('--unused-efm-v1', action='store_true', help='default OFF; upstream make_data zero allocation for inactive EFM workspace only')
+    p.add_argument('--gcp2-v1', action='store_true', help='explicit simalt3 project/host admission')
     a = p.parse_args()
-    if not a.enabled or platform.system() != 'Linux' or socket.gethostname().split('.')[0] != 'ugrp-act-l4-pilot1':
+    if a.gcp2_v1:
+        from simalt_host import gcp2_identity
+        host = gcp2_identity()
+        if host['instance'] != 'ugrp-act-l4-gcp2':
+            p.error('numeric audit requires the admitted L4')
+    if not a.enabled or platform.system() != 'Linux' or (not a.gcp2_v1 and socket.gethostname().split('.')[0] != 'ugrp-act-l4-pilot1'):
         p.error('explicit Linux/L4-only audit required')
     a.out.mkdir(parents=True, exist_ok=False)
     import numpy as np
