@@ -26,6 +26,7 @@ def test_wrapper_preserves_result_exception_and_can_be_restored():
 def test_timing_bundle_is_default_off_and_does_not_change_control_options():
     from scripts.run_self_map_diagnostic import bundle
     old = bundle('a'*40, 93571, 90)
+    assert old == bundle('a'*40,93571,90,reloc11_low_contrast_v1=False,reloc11_wall_field_v1=False)
     assert old == bundle('a'*40, 93571, 90, reloc11_timing_v1=False)
     timed = bundle('a'*40, 93571, 90, reloc11_timing_v1=True)
     assert timed['options'].pop('reloc11_timing_v1') is True
@@ -85,3 +86,14 @@ def test_low_contrast_extract_adds_corners_without_changing_match_gates(monkeypa
     assert len(after.points_body)>len(before.points_body)
     assert after.sha256==before.sha256 and after.descriptors.shape==(len(after.points_body),32)
     assert (Options().min_matches,Options().min_inliers,Options().global_min_inliers)==(8,6,12)
+
+
+def test_carry_queue_cannot_inherit_smooth_success_or_enabled_flags():
+    from scripts.prepare_reloc11_carry_queue import prepare
+    q=prepare(dict(runs_enabled=True,operator_work_complete=True,tested_execution_source_sha='b'*40,
+        coordinator_approval={},execution_stages=[],runs=[dict(name='solo-carry-x',command=['--plan','old.json'],
+        operator_outcome='ROTATION_PASS',operator_retrieval_verified=True,approved=True)]),'a'*40)
+    assert q['status']=='BLOCKED' and q['runs_enabled'] is False
+    assert 'operator_work_complete' not in q and 'tested_execution_source_sha' not in q
+    assert not any(k.startswith('operator') for k in q['runs'][0])
+    assert q['runs'][0]['approved'] is False

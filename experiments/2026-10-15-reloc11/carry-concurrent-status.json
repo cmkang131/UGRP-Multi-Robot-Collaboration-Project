@@ -1,0 +1,13 @@
+{
+  "source_sha": "987d033f28b40aa6182c1cde0dff2982e1d546d6",
+  "status": "BLOCKED_CONFIRMED_DEFECT",
+  "existing_queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-solo-carry-987d033f.json",
+  "initial_sha256": "8d9710c5381d0c7c9a0ad51851c651c8263091939e50ce5d6b74d1b676a7aa8f",
+  "current_sha256": "d91a90ff1f081ec1db7b5e85334f960ea2913f54924dc0c5a7d5491a2d8966e5",
+  "modified_by_this_task": false,
+  "operator_stop_owner": "solo-carry-987d033f",
+  "operator_stop_at": "2026-10-15 18:38:15 KST",
+  "operator_reason": "seed93266 rotation_wall_search: 재관측 성공 후 화물 재탐색 회전이 yaw 불확실성을 다시16도 초과시켜 approach 복귀0.1초 뒤 재관측으로 되돌아감. 번역이동0인 재탐색/재관측3회로70 SIM초 carry_recovery_no_progress 종료; 자기RGB0/14/28/42/56/70초6장 직접확인. rotation에서도93266 44.0→44.1초 같은 접근즉시재관측 확인; 두 후보 공통 needs_recovery/재탐색 연결 결함(sim/grasp_act_solo_teacher.py:538-542,602-607;sim/solo_carry_to_zone.py:296-316). 진행15회 SIGINT·미제출6회차단.",
+  "scope": "existing queue changed concurrently; this task performed no write or stop on it",
+  "recorded_at": "2026-10-15T18:48:29.349043+09:00"
+}

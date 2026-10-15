@@ -11,6 +11,16 @@ FLAGS=('approved','enabled','ready','stage_ready','execute','submitted')
 
 def prepare(existing, sha):
     q=copy.deepcopy(existing)
+    def scrub(obj):
+        if isinstance(obj,dict):
+            for key in list(obj):
+                if key.startswith('operator') or key.startswith('tested_') or key == 'runtime_git_tree_fingerprint_sha256':
+                    obj.pop(key)
+                else:scrub(obj[key])
+        elif isinstance(obj,list):
+            for value in obj:scrub(value)
+    scrub(q)
+    q['runs_enabled']=False
     plan=ROOT/'experiments/2026-10-15-reloc11/carry-texture-plan.json'
     q.update(schema='ugrp.solo_carry_queue.reloc11_texture',status='BLOCKED',
              source_sha=sha,sha=sha,scene_version='floor_light_textured_v1',

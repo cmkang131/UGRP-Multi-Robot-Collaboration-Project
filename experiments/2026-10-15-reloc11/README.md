@@ -31,3 +31,11 @@ R1에서 질감 바닥의 흔적이 실제 자기 영상에 보이나 정적 색
 - [ORB-SLAM2 공식 TUM1 설정](https://github.com/raulmur/ORB_SLAM2/blob/master/Examples/Monocular/TUM1.yaml): 저대비 FAST20/7 설정과 설명을 확인(2026-10-15). 이 설정의 카메라 보정값은 사용하지 않는다.
 - [Thrun et al., Probabilistic Robotics](https://mitpress.mit.edu/9780262201629/probabilistic-robotics/): 6.4 likelihood-field 원리의 출판사 자료. 이번 열람은 도서 소개이며 본문 전체를 새로 검증했다는 뜻은 아니다.
 - [Nav2 AMCL 공식 likelihood-field 구현](https://github.com/ros-navigation/navigation2/blob/main/nav2_amcl/src/sensors/laser/likelihood_field_model.cpp): 정적 거리장·hit/random 혼합과 score 누적을 확인. RGB 교선의 거리 센서 잡음 특성이 같다는 보장은 없다.
+
+## 직접 확인 중간 결과
+
+R1 4/4 원본·해시·6장씩 확인, 등록 전부0. R2도3/3 회수·검토했고 등록0이다. R2 첫30초 wall/SIM은4.005/3.920/4.524(중앙4.005), 원본 전체 특징 중앙191.5/173/174·매칭11/13/9다. R1/R2의 동시 부하는 제출 직전 각각3–17/1–2개로 달라 속도 차이를5Hz 단독 효과로 해석하지 않는다. 5Hz+FAST7의 별도 조건에서6.0 아래 실측했다는 범위다.
+
+R2 세 번째는 제출 중 새 스크립트가 생겨 로컬 clean-source 검사에서1회 차단됐다(원격 실행0). 그 스크립트를 커밋한 `8c7586c0`로 재제출했고, 앞선 `41c0104b`와 실행 모듈9개 Git blob이 동일함을 기록했다. 실패 제출도 지우지 않았다.
+
+carry 범위 확인 답변이 없어 공식 API 패치(`git apply --check` 통과)·22개 장면 계획·23개 실행의 **BLOCKED** 대기열까지만 준비했다. carry worktree에는 적용하지 않았다. 기존 smooth 큐는 별도 소유 작업이18:43경 `BLOCKED_CONFIRMED_DEFECT`로 갱신했다. 이 작업은 기존 큐/실행을 수정·중단하지 않았다([동시 상태](carry-concurrent-status.json), [인수 기록](carry-handoff.json)). 새 큐에는 기존 성공/회수/운영 메타데이터를 승계하지 않고 모든 실행 플래그를false로 재설정했다.
