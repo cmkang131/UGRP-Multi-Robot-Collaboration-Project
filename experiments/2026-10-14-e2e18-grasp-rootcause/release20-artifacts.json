@@ -1,0 +1,124 @@
+{
+  "source_sha": "e897b0c2c96ad99cb0a3f5eb3cc255d2686bba09",
+  "runtime_components_sha256": {
+    "sim/settle_pulse.py": "a7167d2bae2b10dc93c02f84e0c5563b48241f6d996825e8b88eadd1bff7fc09",
+    "sim/release20.py": "001638cd54930145802705449aa61904c3ffdaec2196d8d219a9e9445c41c67d",
+    "sim/release17.py": "32e48865dd3125f30235e3359a8268de1c7663d27acd083bdb89a366cb6d25bd",
+    "sim/release18.py": "bb56677d70aa885dfadaaf8d8f8e36d5c9cfd7f1488aef7069b5d130de2ec5bd",
+    "sim/release19.py": "4f51663436c731cdc3777d99dd8d0b0f75a879ce1ae7fc2dddbd81fb02540f16",
+    "scripts/run_grasp_act_release.py": "10ee7854f0dfecf88e0154ff85cfbc0af464d53d30471e7b04f68d39e9d25b1f",
+    "sim/visible_belief.py": "ab701d339fa3e9edf10126cf7741289a3355c8e079cf6e018867760028206cc2",
+    "sim/release_regrasp_recovery.py": "c3d289f149723cbf9fa6543d3326076eb6fbbf66b4c5cb9b758f2b0f2fb9f4fc"
+  },
+  "operational_records": {
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/vm-guard.json": {
+      "sha256": "ec56cd195a6d6280c86c2ea95a5c5eeb6cddffd47e0d83d17bd363dca82cd1e3",
+      "bytes": 1950
+    },
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/budget-topic.json": {
+      "sha256": "95bc0281034c72981df8f05b88dfe8913ec38b7d49d3212e427525f4d31cc9f4",
+      "bytes": 64
+    },
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/budget-functions.json": {
+      "sha256": "19119e51562305e25ad51ff1ee811e3caa94c260b0d8cf2a7ffc6eb15ed61472",
+      "bytes": 568
+    },
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/preflight-manifest.json": {
+      "sha256": "6970ad395415ba6d0c55981a256056bc550908109ec69f8cebba85dc7f2f8de9",
+      "bytes": 1141
+    },
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/round2/admission.json": {
+      "sha256": "39ae98c839c3bf738ffcf3ad712daf60e22b65c9a8762d4e29b7b2cf086c9946",
+      "bytes": 1355
+    },
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/round2/postflight.json": {
+      "sha256": "f8105029dc5d4e3576afe7c8c651ff5fe42b99492828a36c3c470d3ded3923ca",
+      "bytes": 784
+    },
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/round2/lease-cleanup.json": {
+      "sha256": "640834fb1ffcdd1b6f2f741c367cb97a0d8b63fa9bef2672a42ae7e328cf1b13",
+      "bytes": 143
+    },
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/round2/representative-preservation.json": {
+      "sha256": "9fe73bf87d3ade6f813a379e73d67835ef80c94865c3982dab7601bb46906a22",
+      "bytes": 290
+    },
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/round2/video-record.json": {
+      "sha256": "2624b587cc644ba92bacaa1bebf728b5fface7e10d0d365eb57cbc24abff2eb3",
+      "bytes": 406
+    },
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/round2/submitted.json": {
+      "sha256": "ba75b4f305593837971786ec9df56a604caab2812e34be61670e092bcb598972",
+      "bytes": 10665
+    },
+    "/Users/changmin/projects/ugrp-wt/grasp-act-probes/outputs/release20/stop-round1.json": {
+      "sha256": "f61de53c924da9238599049ec2d1c620e2c82e2a1ae6b56722561b7ce8d47cc5",
+      "bytes": 349
+    }
+  },
+  "postflight": {
+    "at_unix": 1792053217.7989712,
+    "jobs": {
+      "crate17-full-reproduction-79314-4eb7d472": {
+        "pid": 402210,
+        "slots": 1
+      },
+      "crate17-no_clearance-reproduction-79314-4eb7d472": {
+        "pid": 403096,
+        "slots": 1
+      },
+      "reloc10-r1-carry-93261-0fb980e6": {
+        "pid": 403472,
+        "slots": 1
+      },
+      "crate17-full-reproduction-79317-4eb7d472": {
+        "pid": 404100,
+        "slots": 1
+      },
+      "crate17-no_clearance-reproduction-79317-4eb7d472": {
+        "pid": 405118,
+        "slots": 1
+      },
+      "crate17-full-reproduction-79451-4eb7d472": {
+        "pid": 406593,
+        "slots": 1
+      },
+      "crate17-no_clearance-reproduction-79451-4eb7d472": {
+        "pid": 407059,
+        "slots": 1
+      },
+      "act12-record-86820-1fce1155": {
+        "reservation": true,
+        "slots": 1
+      }
+    },
+    "global_slots": 8,
+    "owned_running_or_reserved": [],
+    "owned_leases": [],
+    "other_lease_count": 537,
+    "other_jobs_touched": false,
+    "stop_vm_safe": false
+  },
+  "representative": {
+    "path": "/home/ugrp/ugrp-sim/representative-release20-e897b0c2",
+    "files_verified": 557,
+    "bytes_preserved": 9242802,
+    "manifest_sha256": "bfe58f35a19b5d4d168a3c92b24e163216e1208cafad581b85d44ac42e609d2e",
+    "original_evidence_modified": false,
+    "class": "milestone",
+    "source_run_class": "dev"
+  },
+  "video": {
+    "path": "/home/ugrp/ugrp-sim/release20-review/r20d2-00-e897b0c2-review-10x.mp4",
+    "sha256": "b8fec3de141564a95f2869e423105bafbef3dfd3af021f4a428de3def023c287",
+    "bytes": 196769,
+    "frames": 128,
+    "sim_times_s": [
+      0.0,
+      126.29999999869864
+    ],
+    "fps": 10,
+    "scope": "saved evaluation RGB, no simulation/render; approximately10x with 1 SIM-second samples; evaluation top not control input"
+  },
+  "scope": "Final round2 DEV4; records do not supersede pinned execution SHA; no gate submitted"
+}

@@ -106,3 +106,14 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 ## 2026-10-14 정답 파지 교사 첫 진단
 
 [4d0161ae 영상](../experiments/2026-10-14-e2e18-grasp-rootcause/teacher-pilot-4d0161ae.mp4): seed71000, 자기 RGB r1/r2를 좌/우로 배치, 30초·300프레임. 첫 진단1회이므로 성공률 코호트 대표로 일반화하지 않는다. 공동0/1·로봇0/2, 30초 상한. 0/6/12/17.9/23.9/29.9초 직접 확인. r1 고정 사전 접근점이 차체 여유 경계 밖이어서 정지하고 r2는 파랑 끝으로 정렬했다. [원본·보관623/623 해시·영상sha256](../experiments/2026-10-14-e2e18-grasp-rootcause/teacher-pilot-4d0161ae.json).
+
+
+## 2026-10-15 release20 정착 직접 진단
+
+실행 `e897b0c2`, GCP gcp1/n4-highcpu-64 DEV4 성공4/4(관문40 아님).
+대표 seed110613: [Mac 저장 RGB 영상](/Users/changmin/projects/ugrp/outputs/representative-release20-e897b0c2/r20d2-00-e897b0c2-review-10x.mp4),
+960×504·128프레임·12.8초·약10배속. SHA256 `b8fec3de141564a95f2869e423105bafbef3dfd3af021f4a428de3def023c287`.
+원본과 영상은 GCP `/home/ugrp/ugrp-sim/representative-release20-e897b0c2/`에 별도 보존(같은 영속디스크).
+개요 카메라는 평가용이며 제어 입력이 아니다. 0–126.3 SIM초의 개요/양쪽RGB 18프레임과
+문제 r2 world_t34.2/34.3/36.0/36.1/36.2/36.3 6장 직접 확인. 기존 문제 단계0펄스/0반전 정착.
+[결과·원본·보존 해시](../experiments/2026-10-14-e2e18-grasp-rootcause/release20.md).
