@@ -156,7 +156,8 @@ def main():
     # No active writer may remain in raw evidence. Package installation trees
     # and Python caches are environment, not experimental raw outputs.
     files=[x for x in ROOT.rglob('*') if x.is_file() and not x.is_relative_to(OUT)
-           and not x.is_relative_to(ROOT/'mujoco313') and '__pycache__' not in x.parts]
+           and not x.is_relative_to(ROOT/'mujoco313') and '__pycache__' not in x.parts
+           and x.name not in ('collector.log','collector.pid')]
     manifest=[{'path':str(x),'bytes':x.stat().st_size,'sha256':sha(x)} for x in sorted(files)]
     failures=[row['path'] for row in manifest if sha(Path(row['path']))!=row['sha256']]
     write(OUT/'raw-verification.json',{'files':len(manifest),'passed':len(manifest)-len(failures),'failed':failures})
