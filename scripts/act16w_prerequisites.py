@@ -35,9 +35,12 @@ def signals(text, upstream_job='warp1'):
         distinct = [s for s in warp if re.search(r'\bDISTINCT_STARTS\b', s)]
         gates = [s for s in warp if re.search(r'\bTEACHER_GATE\b', s)]
         api = [s for s in warp if re.search(r'\bRECORD_API_READY\b', s)]
-        counts = re.search(r'\bTEACHER_GATE\s+(\d+)\s*/\s*(\d+)\b', gates[-1]) if gates else None
-        n, N = map(int, counts.groups()) if counts else (0, 0)
-        gate_pass = N >= 40 and 0 <= n <= N and n / N >= .95 and 'NOT_READY' not in gates[-1]
+        counts = re.search(r'\bTEACHER_GATE\s+(?:(PASS|READY|COMPLETE|RUNNING|FAIL|PENDING)\s+)?'
+                           r'(\d+)\s*/\s*(\d+)\b', gates[-1]) if gates else None
+        n, N = map(int, counts.groups()[1:]) if counts else (0, 0)
+        gate_pass = (N >= 40 and 0 <= n <= N and n / N >= .95
+                     and counts.group(1) not in ('RUNNING', 'FAIL', 'PENDING')
+                     and 'NOT_READY' not in gates[-1])
         distinct_pass = bool(distinct and re.search(r'\bPASS\b', distinct[-1])
                              and 'NOT_READY' not in distinct[-1])
         api_pass = bool(api and 'NOT_READY' not in api[-1])
@@ -45,6 +48,7 @@ def signals(text, upstream_job='warp1'):
         extra = {'distinct_starts': distinct[-1] if distinct else None,
                  'teacher_gate': gates[-1] if gates else None,
                  'record_api': api[-1] if api else None,
+                 'record_api_pass': api_pass,
                  'teacher_success_n': n, 'teacher_attempts_N': N}
     return {"warp1": latest_warp if upstream_job == 'warp1' else None,
             "upstream_job": upstream_job, "upstream_signal": latest_warp,
@@ -125,7 +129,7 @@ def main():
                           "upstream_signal": row['upstream_signal'],
                           "teacher_success_n": row.get('teacher_success_n'),
                           "teacher_attempts_N": row.get('teacher_attempts_N'),
-                          "record_api_ready": bool(row.get('record_api')),
+                          "record_api_ready": row.get('record_api_pass', False),
                           "scene_decision": row["scene_decision"],
                           "queue_backend_readiness": row.get('queue_backend_readiness'),
                           "rejection_table_exists": row.get('rejection_table_exists')}, ensure_ascii=False), flush=True)
