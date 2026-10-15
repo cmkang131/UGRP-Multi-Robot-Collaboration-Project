@@ -59,9 +59,19 @@ def main():
     owner=json.loads((a.raw/'probe-r4-reset-only/client/owner/owner-summary.json').read_text())
     first_state=json.loads((a.raw/'probe-r3/client/owner/initial-state-audit.json').read_text())
     speed=phases['probe-r3']['summary']
+    manifest={line.split('  ',1)[1]:line.split('  ',1)[0] for line in (a.raw/'raw-artifacts.sha256').read_text().splitlines()}
+    compressed={r['original']:r for r in json.loads((a.raw/'compression-map.json').read_text())}
+    verified=[]
+    for rel in ('probe-r3/actor-inputs.jsonl','probe-r3/client/owner/commands.jsonl','probe-r3/client/owner/evaluation.jsonl',
+            'probe-r4-reset-only/client/owner/warp-qpos.npz',str(reset_path.relative_to(a.raw)),'gpu-usage.json',
+            *[name+'/summary.json' for name in phases]):
+        expected=manifest.get(rel) or compressed[rel]['original_sha256']
+        if sha(a.raw/rel)!=expected:raise ValueError('source retrieval hash mismatch:'+rel)
+        verified.append(dict(path=rel,sha256=expected))
     public=dict(commands=64,canonical_actor_owner_command_matches=matches,validated_observations=len(actor),
         rgb_references=image_refs,distinct_rgb_files=len(image_paths),rgb_hash_mismatches=0,
         evaluation_rpc='client rejects training/private lane; no rejection during64 commands',
+        source_retrieval_verified=verified,
         forbidden_loaded_modules=[m for m in ('torch','mujoco','mujoco_warp','scripts.rl_act_learning','scripts.rl_act_reward') if m in sys.modules])
     funnel=dict(scope='probe training-start slots only; not the held-out evaluation, not completed missions',
         slots=8,distinct_initial_translations=first_state['distinct_expected_translations'],task_ticks=8,
