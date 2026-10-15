@@ -327,6 +327,9 @@ def main():
     if not a.enabled or host['instance']!='ugrp-act-l4-gcp2':p.error('explicit gcp2 L4 opt-in required')
     if subprocess.check_output(['git','-C',str(a.teacher_source),'rev-parse','HEAD'],text=True).strip()!=FROZEN:
         p.error('frozen scene/port source required')
+    for source in (a.teacher_source,a.actor_source):
+        if subprocess.check_output(['git','-C',str(source),'status','--porcelain','--untracked-files=no']):
+            p.error('clean frozen dependency source required')
     sys.path.insert(0,str(a.teacher_source))
     import os
     # Native compiler logs must not corrupt the public JSON protocol either.
@@ -344,6 +347,10 @@ def main():
             if set(request)=={'actions'}:send(env.step(request['actions']))
             elif set(request)=={'reset','indices'}:send(env.reset(request['reset'],request['indices']))
             else:raise ValueError('owner request whitelist mismatch')
+    except BaseException as exc:
+        a.out.mkdir(parents=True,exist_ok=True)
+        (a.out/'owner-error.json').write_text(json.dumps(dict(status='HOST_ERROR',exception=type(exc).__name__,message=str(exc)),indent=2)+'\n')
+        raise
     finally:
         if env is not None:env.close(reason)
 
