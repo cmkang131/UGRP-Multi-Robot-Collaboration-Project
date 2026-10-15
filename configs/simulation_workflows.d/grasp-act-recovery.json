@@ -3,12 +3,12 @@
   "workflows": [
     {
       "id": "grasp-act-recovery",
-      "version": "0.1.0",
-      "purpose": "Default-off DART recovery teacher; gate before any training RGB",
+      "version": "0.2.0",
+      "purpose": "Default-off DART recovery teacher; ACT8 effort-pulse candidate is gate-only",
       "entry": "scripts/run_grasp_act_recovery.py",
       "runner": "scripts.run_grasp_act_recovery",
-      "docs": "experiments/2026-10-15-act-train/act6.md",
-      "requires": "GCP gcp1, pinned dependency, source/noise-bound gate for recording; no Mac execution",
+      "docs": "experiments/2026-10-15-act-train/act8.md",
+      "requires": "GCP gcp1, pinned dependency; v1 requires source/noise-bound gate for recording, v2 forbids training RGB and writes separate evaluation-only diagnostics; no Mac execution",
       "output_flag": "--out",
       "output_kind": "directory",
       "required_inputs": [

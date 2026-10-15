@@ -1,0 +1,379 @@
+{
+  "schema": "ugrp.act8.summary.v1",
+  "scope": "saved raw analysis and opt-in code; no new physics execution",
+  "act7_observed": {
+    "success": 28,
+    "executed": 29,
+    "planned": 40,
+    "unsubmitted_blocked": 11
+  },
+  "failure_diagnosis": {
+    "a": "confirmed command-layer loss; the final physical stall is not causally attributed to noise alone",
+    "b": "bounded physical jitter observed; teacher clean forward/yaw do not reverse, causal cancellation unproven",
+    "c": "base/roller/non-target contact and wheel motion were not recorded; cannot exclude obstruction",
+    "d": "not an intentional deadband stop: 361/361 moving clean commands; goal error exceeds align threshold",
+    "late_t24_60": {
+      "N": 361,
+      "net_xy_m": 0.008640703805523823,
+      "path_xy_m": 0.24302899266505323,
+      "xy_bbox_m": [
+        0.010813122471969019,
+        0.010363912742883397
+      ],
+      "target_yaw_range_rad": {
+        "N": 361,
+        "0": -0.5881818836412624,
+        "50": -0.5701963913811166,
+        "90": -0.5159282397844676,
+        "95": -0.5063860243186173,
+        "99": -0.49631233390285234,
+        "100": -0.48856442145780443
+      },
+      "finger_force_max_N": [
+        0.0,
+        0.0
+      ],
+      "cargo_xy_range_m": [
+        0.0,
+        0.0
+      ],
+      "clean_zero_ticks": 0,
+      "visible_station_error_m": {
+        "N": 361,
+        "0": 0.2037259463591534,
+        "50": 0.20459083044213583,
+        "90": 0.20792819750850988,
+        "95": 0.21258548010089445,
+        "99": 0.21334602153311605,
+        "100": 0.21354835171793107
+      },
+      "clean_effort_axes": [
+        {
+          "N": 361,
+          "0": 0.0777902390140706,
+          "50": 0.0781249610669451,
+          "90": 0.08152651550667936,
+          "95": 0.11152038009062287,
+          "99": 0.23999999999999996,
+          "100": 0.23999999999999996
+        },
+        {
+          "N": 361,
+          "0": -0.1298969072164948,
+          "50": -0.05205596383160377,
+          "90": -0.051876632273795395,
+          "95": 0.0,
+          "99": 6.938893903906834e-19,
+          "100": 3.469446951953614e-18
+        },
+        {
+          "N": 361,
+          "0": -0.06500000000000003,
+          "50": -0.065,
+          "90": -0.065,
+          "95": -0.06499999999999999,
+          "99": -0.06499999999999999,
+          "100": -0.04690721649484536
+        }
+      ],
+      "applied_effort_axes": [
+        {
+          "N": 361,
+          "0": 0.0019901478839496715,
+          "50": 0.08035520631449809,
+          "90": 0.10912421144516929,
+          "95": 0.13090833213361786,
+          "99": 0.20614401673846192,
+          "100": 0.25029374893402917
+        },
+        {
+          "N": 361,
+          "0": -0.12488230092104555,
+          "50": -0.05063595992451126,
+          "90": -0.019168145205883967,
+          "95": 0.002548391217438741,
+          "99": 0.023848276455289023,
+          "100": 0.03572292972435837
+        },
+        {
+          "N": 361,
+          "0": -0.1357315763946744,
+          "50": -0.06608476587034214,
+          "90": -0.038663063235427064,
+          "95": -0.032491282581040414,
+          "99": -0.020433601989046188,
+          "100": 0.008996538737633269
+        }
+      ],
+      "relay_applied": {
+        "attempted_wheel_s": [
+          20.339000000000024,
+          4.90899999999999,
+          10.467999999999984,
+          7.2779999999999845
+        ],
+        "blocked_wheel_s": [
+          8.133000000000001,
+          1.9339999999999988,
+          4.335999999999998,
+          2.6799999999999957
+        ],
+        "blocked_fraction": [
+          0.3998721667731939,
+          0.39397025870849517,
+          0.4142147497134127,
+          0.36823303105248717
+        ],
+        "signed_effective_integral_u_s": [
+          3.59622685527466,
+          -0.7293255517949857,
+          1.8374100614637965,
+          1.3371050138659952
+        ]
+      },
+      "relay_clean_command_only": {
+        "attempted_wheel_s": [
+          20.422999999999856,
+          4.620999999999992,
+          10.76099999999998,
+          7.045000000000026
+        ],
+        "blocked_wheel_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "blocked_fraction": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "signed_effective_integral_u_s": [
+          5.4461333333333615,
+          -0.8434666666666621,
+          2.8696000000000095,
+          1.8786666666666834
+        ]
+      }
+    },
+    "clean_forward_lateral_yaw_sign_flips_approach": [
+      0,
+      3,
+      0
+    ],
+    "other_yellow_initial_position_min_base_distance_m": 0.045751301519026774,
+    "other_yellow_actual_motion_and_contacts": "unavailable; setup distance is not a contact measurement"
+  },
+  "success28": {
+    "approach_s": {
+      "N": 28,
+      "0": 6.6000000000000005,
+      "50": 12.3,
+      "90": 15.24,
+      "95": 18.139999999999997,
+      "99": 21.152,
+      "100": 21.8
+    },
+    "longest_net_stall_s": {
+      "N": 28,
+      "0": 0.0,
+      "50": 0.0,
+      "90": 0.0,
+      "95": 2.86000000000118,
+      "99": 4.473000000001914,
+      "100": 4.500000000001947
+    },
+    "runs_with_net_stall": 2,
+    "longest_active_command_stall_s": {
+      "N": 28,
+      "0": 0.0,
+      "50": 0.0,
+      "90": 0.0,
+      "95": 0.0,
+      "99": 0.0,
+      "100": 0.0
+    },
+    "runs_with_active_command_stall": 0,
+    "visibility_reacquisitions": 2,
+    "runs_with_reacquisition": 1,
+    "clean_correction_norm": {
+      "N": 4526,
+      "0": 0.0,
+      "50": 0.19776610223866978,
+      "90": 0.24226373343137622,
+      "95": 0.24757727737531904,
+      "99": 0.251015473318502,
+      "100": 0.260531333769924
+    },
+    "clean_correction_axes": [
+      {
+        "N": 4610,
+        "0": -0.13999999999999999,
+        "50": 0.14956884755585895,
+        "90": 0.24,
+        "95": 0.24,
+        "99": 0.24000000000000002,
+        "100": 0.24000000000000005
+      },
+      {
+        "N": 4610,
+        "0": -0.18,
+        "50": 0.0,
+        "90": 0.14200457390378027,
+        "95": 0.15782172442097855,
+        "99": 0.18,
+        "100": 0.18000000000000002
+      },
+      {
+        "N": 4610,
+        "0": -0.13999999999999999,
+        "50": 0.0,
+        "90": 0.04690721649484537,
+        "95": 0.06500000000000002,
+        "99": 0.13999999999999999,
+        "100": 0.13999999999999999
+      }
+    ],
+    "formal_full_baseline_state_ood_N": null,
+    "support": {
+      "N": 4526,
+      "correction_support_outside_loo99_N": 149,
+      "correction_above_p99_N": 86,
+      "correction_above_max_N": 76
+    }
+  },
+  "latent_command_loss28": {
+    "affected_runs": 28,
+    "blocked_noisy_wheel_time_fraction_quantiles": {
+      "min": 0.3040940348632658,
+      "median": 0.3427226064535489,
+      "max": 0.4092991378999387
+    }
+  },
+  "visual_review": {
+    "viewed_relative_sim_s": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      60
+    ],
+    "frames_N": 12,
+    "frame_original_hashes_verified": [
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-own__000000.jpg",
+        "sha256": "b31dfc6d1ee5273972aa9fcffe4203a615c3878af6f4e7c950acc0705afa6406",
+        "relative_sim_s": 0.0,
+        "camera": "own"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-top__000000.jpg",
+        "sha256": "a44e3a117d60dcb02976542cd03d5309cee309c513eeab551344b4fdac091fb5",
+        "relative_sim_s": 0.0,
+        "camera": "top"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-own__000120.jpg",
+        "sha256": "7a212c97283d4224d33dd4bfdb05e80a3caffe072189c38fb6d376e848c51496",
+        "relative_sim_s": 12.0,
+        "camera": "own"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-top__000120.jpg",
+        "sha256": "a29290f8b2437628e0414bd02de92867b2fbd3943771c329f9acb4658968bb8d",
+        "relative_sim_s": 12.0,
+        "camera": "top"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-own__000240.jpg",
+        "sha256": "450e4a9de0eede6741a1fe7d70f414129921c33eaa87f514421b23e8d15d2219",
+        "relative_sim_s": 24.0,
+        "camera": "own"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-top__000240.jpg",
+        "sha256": "a29290f8b2437628e0414bd02de92867b2fbd3943771c329f9acb4658968bb8d",
+        "relative_sim_s": 24.0,
+        "camera": "top"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-own__000360.jpg",
+        "sha256": "36b8a846a157097cb40e80e6522fe43b0e9ef7ebc9f922928c3231491ae3d47b",
+        "relative_sim_s": 36.0,
+        "camera": "own"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-top__000360.jpg",
+        "sha256": "a29290f8b2437628e0414bd02de92867b2fbd3943771c329f9acb4658968bb8d",
+        "relative_sim_s": 36.0,
+        "camera": "top"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-own__000480.jpg",
+        "sha256": "cf5ba1814a4b038afd68616dd8e9af35068171a5637506d10a1be462e81449b2",
+        "relative_sim_s": 48.0,
+        "camera": "own"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-top__000480.jpg",
+        "sha256": "a29290f8b2437628e0414bd02de92867b2fbd3943771c329f9acb4658968bb8d",
+        "relative_sim_s": 48.0,
+        "camera": "top"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-own__000600.jpg",
+        "sha256": "c6eca2fba20d46bab9f21e093f1b13e976d85f65d5da7462ecb0657ba213ddc5",
+        "relative_sim_s": 60.0,
+        "camera": "own"
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act7-efb002ad-ops/frames/act7-gate-8316627-efb002ad/raw__review-top__000600.jpg",
+        "sha256": "a29290f8b2437628e0414bd02de92867b2fbd3943771c329f9acb4658968bb8d",
+        "relative_sim_s": 60.0,
+        "camera": "top"
+      }
+    ],
+    "observations": "target remains in own camera, small image movement from24 to60; no visible peer convergence; top frames do not establish chassis contact absence"
+  },
+  "proposal": {
+    "toggle": "dart_effort_pulses_v2",
+    "default": "off",
+    "teacher_unchanged": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+    "pulse_u": 0.35,
+    "pulse_s": [
+      0.04,
+      0.1
+    ],
+    "noise_hold_s": 0.4,
+    "training_recording_enabled": false,
+    "new_evaluation": "separate10Hz base/roller/non-target contact and wheel GT; no feedback to teacher",
+    "limitation": "new gate required; no simulated success or recovery improvement measured"
+  },
+  "literature": {
+    "source": "https://proceedings.mlr.press/v78/laskey17a.html",
+    "read": "paper abstract and sections4-5",
+    "application": "match noise to student residuals and measure induced recovery; new projection/temporal correlation require recalibration; not iterative DART reproduction"
+  },
+  "verification": {
+    "related_suite_passed": 35,
+    "physics_steps": 0,
+    "render_calls": 0,
+    "training_steps": 0,
+    "remote_host_connections": 0
+  },
+  "remaining": [
+    "physical root-cause contact separation",
+    "full baseline OOD count unavailable with2/50 local raw originals",
+    "new gate success/recovery",
+    "live fresh-seed non-use and budget/host preflight"
+  ],
+  "artifact_sha256": {
+    "act8-audit.json": "af2fd92fa3cb14b0195dde26e654c51129ed1d36fb31015c610309119eef56c0",
+    "act8-gate-plan.json": "1711f6e3e384c5faf6982955cf73ddac233b4cc7192bb7ad71b7a263a9367b8b",
+    "act8-noise.json": "710fb6d73193e6805c89e4e77bbef4e9d522fdd6792d3ca4249801ebf0866fe1",
+    "act8-prior-inputs.json": "f2fec3a6c790c053a95303094ff820d087855ddc607b802883541744b626a6d4"
+  }
+}

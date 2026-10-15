@@ -1,0 +1,145 @@
+{
+  "schema": "ugrp.act6.dart.v1",
+  "mode": "dart_wheels_v1",
+  "default": "off",
+  "dimensions": [
+    "wheel0",
+    "wheel1",
+    "wheel2",
+    "wheel3",
+    "duration0/.15",
+    "duration1/.15",
+    "duration2/.15",
+    "duration3/.15"
+  ],
+  "covariance": [
+    [
+      0.005103826298928207,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.016800750745057238,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.015675473473008055,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.005037906597460679,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0035687597492507148,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.006471024702235448,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.005930827540275064,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0044858508618250735
+    ]
+  ],
+  "std": [
+    0.07144106871350825,
+    0.12961770999773617,
+    0.12520173111026883,
+    0.07097821213203866,
+    0.05973909732537574,
+    0.08044267960626031,
+    0.07701186623030937,
+    0.06697649484576715
+  ],
+  "mean": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "grasp_rows": 1398,
+  "all_rows": 1833,
+  "estimator": "diagonal zero-mean Gaussian MLE E[e_j^2]; not centered sample covariance",
+  "dart_scale_alpha_per_tick": 0.06307441996804047,
+  "scale_multiplier": 1.0,
+  "off_diagonal": "unavailable from absolute errors; fixed diagonal model restriction",
+  "phases": [
+    "approach",
+    "align"
+  ],
+  "held_noise": false,
+  "arm_noise": false,
+  "projection": "8D fitted residual -> local wheel impulse Jacobian -> body effort -> fixed .35 duty pulses .04..0.1s",
+  "scope": "unvalidated opt-in ACT8 candidate; same residual estimate, new physical projection and temporal correlation; separate gate required",
+  "source_timesteps_sha256": "49c23f19829fdac03be22bdabd17b7724d0541a7d2e95d72ac48717fae20ad4e",
+  "dataset_manifest_sha256": "da651587d3cbe51f418f63fda55642b53e985a1fe1551db98909517065ba058b",
+  "calibration_seeds": [
+    86045,
+    86046,
+    86047,
+    86048,
+    86049
+  ],
+  "calibration_holdout_is_now_development": true,
+  "runtime_mode": "dart_effort_pulses_v2",
+  "source_noise_sha256": "47ddf66ab770a3b00f2cb57206225d9bdf0d138bc6468625b65be10a08bd72f7",
+  "hold_ticks": 4,
+  "pulse_floor_s": 0.04
+}

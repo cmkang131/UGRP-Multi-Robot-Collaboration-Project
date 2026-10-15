@@ -99,7 +99,8 @@ def test_every_collision_resolves_to_dependency_and_cached_act_is_restored(archi
     assert importlib.import_module('scripts.zone_teacher') is old
 
 
-def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_dependency,monkeypatch,tmp_path,record_property):
+@pytest.mark.parametrize('recovery_mode',[adapter.MODE,adapter.PULSE_MODE])
+def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_dependency,monkeypatch,tmp_path,record_property,recovery_mode):
     pytest.importorskip('mujoco')
     root=archived_dependency;original=adapter.dependency_modules;seen={}
     class BeforeWorld(RuntimeError):pass
@@ -156,7 +157,7 @@ def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_depend
     plan=json.loads((RECORD/'act6-gate-plan.json').read_text())['episodes'][0]
     with pytest.raises(BeforeWorld):
         adapter.run(plan,tmp_path/'run/raw',dependency_root=root,noise_path=RECORD/'act6-noise.json',
-                    mode='dart_wheels_v1')
+                    mode=recovery_mode)
     assert seen['teacher_constructed'] and seen['world_kwargs']['seed']==8316600
     assert seen['scene'].config['setup_only']['spawns']==plan['spawns']
     assert seen['imports']['scripts.zone_teacher']=='scripts/zone_teacher.py'
@@ -165,6 +166,9 @@ def test_real_adapter_and_teacher_reach_scene_setup_before_world(archived_depend
     record_property('physics_steps',0)
     assert modules()==before and sys.path==search
     assert (tmp_path/'run/recovery-commands.jsonl').read_text()==''
+    evaluation=tmp_path/'run/recovery-eval-only.jsonl'
+    assert evaluation.exists() is (recovery_mode==adapter.PULSE_MODE)
+    if evaluation.exists():assert evaluation.read_text()==''
 
 
 def test_gate_queue_has_disabled_flags_completed_census_and_explicit_seed_reuse():

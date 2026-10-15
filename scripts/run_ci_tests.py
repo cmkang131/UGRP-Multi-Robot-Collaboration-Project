@@ -31,6 +31,7 @@ TEST_PATTERNS = (
     "tests/test_grasp_act_memory.py",
     "tests/test_grasp_act_act6.py",
     "tests/test_grasp_act_act7.py",
+    "tests/test_grasp_act_act8.py",
     "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",
     "tests/test_e2e18_cadence.py",

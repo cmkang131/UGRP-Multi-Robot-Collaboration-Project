@@ -13,6 +13,8 @@ import numpy as np
 from harness import grasp_act_contract as c
 
 MODE = 'dart_wheels_v1'
+PULSE_MODE = 'dart_effort_pulses_v2'
+MODES = ('off', MODE, PULSE_MODE)
 PHASES = ('approach', 'align')
 
 
@@ -44,7 +46,7 @@ def fit_diagonal(rows, *, expected_ids=None):
 
 class WheelNoise:
     def __init__(self, model=None, *, seed=0, mode='off'):
-        if mode not in ('off',MODE):raise ValueError('unknown recovery mode')
+        if mode not in MODES:raise ValueError('unknown recovery mode')
         self.mode=mode
         if mode=='off':self.rng=None;return
         if model.get('schema')!='ugrp.act6.dart.v1' or model.get('mode')!=MODE:
@@ -56,11 +58,56 @@ class WheelNoise:
         if vals.min() < -1e-12 or vals.max()<=0:raise ValueError('nonpositive residual covariance')
         self.factor=vecs@np.diag(np.sqrt(np.maximum(vals,0)))
         self.rng=np.random.default_rng(seed)
+        self.block = None
+        self.block_phase = None
+        self.block_remaining = 0
+
+    def effort_pulses(self, clean, phase):
+        """Perturb body effort, then emit breakaway-safe pulses (opt-in only).
+
+        Push the fitted 8D action residual through the local wheel-impulse
+        Jacobian and the fixed mecanum inverse. Hold a draw for four control
+        ticks (0.4 s); do not perturb four independent on/off clocks. The 40 ms
+        floor is the pinned teacher's existing alignment candidate, extended
+        here to approach only in this mode. Motion efficacy needs a new gate.
+        """
+        fresh = self.block_remaining == 0 or self.block_phase != phase
+        if fresh:
+            self.block = self.factor@self.rng.standard_normal(8)
+            self.block_remaining = 4
+            self.block_phase = phase
+        self.block_remaining -= 1
+        residual = self.block
+        w = np.array(clean['wheels']); d = np.array(clean['duration_s'])
+        # Expected wheel impulse per 100 ms; durations are never noised clocks.
+        average = w*np.minimum(d, .1)/.1
+        delta = (np.minimum(d,.1)*residual[:4] + w*.15*residual[4:])/.1
+        inverse = np.array([[1,1,1,1],[-1,1,1,-1],[-1,1,-1,1]])/4
+        drive = inverse@(average+delta)
+        desired = np.array(c.wheel_mix(drive))
+        peak = max(.35, float(abs(desired).max()))
+        durations = .1*abs(desired)/peak
+        moving = durations >= .001
+        pulse_floor = moving & (durations < .04)
+        wheels = np.where(moving, np.sign(desired)*.35, 0.)
+        durations = np.where(moving, np.maximum(.04,durations), 0.)
+        applied = c.command({**clean,'wheels':wheels.tolist(),'duration_s':durations.tolist()})
+        return applied, {'noise':residual.tolist(), 'new_draw':fresh,
+            'body_effort_delta':(inverse@delta).tolist(), 'pulse_floor_wheels':int(pulse_floor.sum()),
+            'effort_scaled':peak>.35, 'pulse_floor_s':.04, 'hold_ticks':4,
+            'executed_delta':(np.array(c.encode_action(applied))[:8]-np.array(c.encode_action(clean))[:8]).tolist()}
 
     def apply(self, clean, *, phase_before, phase_after, holding):
         clean=c.command(clean)
         if self.mode=='off' or holding or phase_before not in PHASES or phase_after not in PHASES:
+            self.block_remaining = 0
             return deepcopy(clean),None
+        if self.mode == PULSE_MODE:
+            # A teacher hold/stop stays a hold; noise cannot create a new move.
+            if not any(clean['wheels']):
+                self.block_remaining = 0
+                return deepcopy(clean),None
+            return self.effort_pulses(clean, phase_after)
         residual=self.factor@self.rng.standard_normal(8)
         action=np.asarray(c.encode_action(clean));action[:8]+=residual
         decoded=c.decode_action(action)

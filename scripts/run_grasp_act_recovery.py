@@ -16,8 +16,9 @@ import subprocess
 import sys
 
 from harness.grasp_act_data import read_json, sha256, write_json
-from harness.grasp_act_dart import MODE, WheelNoise, recovery_hooks
+from harness.grasp_act_dart import MODE, PULSE_MODE, MODES, WheelNoise, recovery_hooks
 from harness.grasp_act_recovery_gate import verify_gate
+from harness.grasp_act_recovery_audit import evaluation_hook
 from scripts.grasp_act_training_guard import source_sha
 
 TEACHER_SHA='6f057f7e97c1a3aec9e8c398b8d9068e27b25df8'
@@ -67,7 +68,9 @@ def dependency_modules(root):
 def run(plan, out, *, dependency_root, noise_path, mode='off', training_rgb=False, gate_receipt=None, cap_s=90.):
     # Refuse on Mac before importing a simulation runner or contacting metadata.
     if platform.system()!='Linux':raise RuntimeError('GCP Linux only; Mac execution forbidden')
-    if mode not in ('off',MODE):raise ValueError('unknown recovery toggle')
+    if mode not in MODES:raise ValueError('unknown recovery toggle')
+    if mode == PULSE_MODE and training_rgb:
+        raise ValueError('ACT8 is gate-only; no recording admission for the new mode')
     if mode=='off' and training_rgb:raise ValueError('use original teacher for default-off recordings')
     source=source_sha();noise_hash=sha256(noise_path) if mode!= 'off' else None
     model=json.loads(Path(noise_path).read_text()) if mode!='off' else None
@@ -85,14 +88,21 @@ def run(plan, out, *, dependency_root, noise_path, mode='off', training_rgb=Fals
         teacher=importlib.import_module('sim.grasp_act_solo_teacher')
         recording=importlib.import_module('harness.grasp_act_solo_recording')
         runner=importlib.import_module('scripts.run_solo_grasp_act_teacher')
+        actuator=importlib.import_module('scripts.run_grasp_act_teacher')
         noise=WheelNoise(model,seed=plan['seed'],mode=mode)
         out=Path(out)
         if out.exists():raise FileExistsError(out)
         out.parent.mkdir(parents=True,exist_ok=True)
         ledger_path=out.parent/'recovery-commands.jsonl'
+        evaluation_path=out.parent/'recovery-eval-only.jsonl' if mode==PULSE_MODE else None
         report=None
         try:
-            with ledger_path.open('x') as ledger, recovery_hooks(teacher,recording,noise,ledger):
+            from contextlib import ExitStack
+            with ExitStack() as stack:
+                ledger=stack.enter_context(ledger_path.open('x'))
+                evaluation=stack.enter_context(evaluation_path.open('x')) if evaluation_path else None
+                stack.enter_context(recovery_hooks(teacher,recording,noise,ledger))
+                stack.enter_context(evaluation_hook(actuator,evaluation,enabled=evaluation_path is not None))
                 # The original pilot writer grants no admission. Our stricter
                 # gate check above also covers the very first recording.
                 report=runner.run(plan,out,execution_host='gcp1',profile='solo_visible_only_v1',
@@ -110,6 +120,9 @@ def run(plan, out, *, dependency_root, noise_path, mode='off', training_rgb=Fals
                     recovery={'mode':mode,'seed':plan['seed'],'applied_history_clean_targets':mode!= 'off',
                               'ledger':str(ledger_path),'sha256':sha256(ledger_path)},
                     recovery_gate=approval,data_admitted=False)
+                if evaluation_path:
+                    report['recovery']['evaluation_only']={'path':str(evaluation_path),'sha256':sha256(evaluation_path),
+                        'scope':'10 Hz command boundary contacts and wheel/base GT; never returned to teacher'}
                 if training_rgb:
                     report.update(training_candidate=bool(report.get('physical_success') and approval),
                                   training_include=False,training_exclusion_reason='awaiting dataset admission')
@@ -132,7 +145,7 @@ def run(plan, out, *, dependency_root, noise_path, mode='off', training_rgb=Fals
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     for n in ('plan','out','dependency-root','noise'):p.add_argument('--'+n,type=Path,required=True)
-    p.add_argument('--recovery-mode',choices=('off',MODE),default='off')
+    p.add_argument('--recovery-mode',choices=MODES,default='off')
     p.add_argument('--training-rgb',action='store_true');p.add_argument('--gate-receipt',type=Path)
     p.add_argument('--episode',type=int,required=True);p.add_argument('--cap-s',type=float,default=90.)
     a=p.parse_args();plan=json.loads(a.plan.read_text())['episodes'][a.episode]
