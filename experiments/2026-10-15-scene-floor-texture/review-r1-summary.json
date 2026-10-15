@@ -1,0 +1,212 @@
+{
+  "schema": "ugrp.scene_texture_review_fix.v1",
+  "reviewed_sha": "6a73c3aab305f250d0ecd9591922b160b9c709ab",
+  "review_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/511#issuecomment-6184536125",
+  "source_identity": "commit containing this record; exact source SHA is in the generated local unapproved queue",
+  "preserved_worktree": {
+    "initial_changed_files": 160,
+    "status": {
+      "path": "outputs/floortex2-resume/initial-status.txt",
+      "sha256": "8e125c48ef6ce0ce591a1e77b9c8c5ad4423ddbe0bf3489b4b5a27fea94c2bc0",
+      "bytes": 13601
+    },
+    "binary_patch": {
+      "path": "outputs/floortex2-resume/initial-worktree.patch",
+      "sha256": "7b24aa6ed642d60fd1d1f16a1e062642a7a85a5897df67bc88f5f35f37757e7e",
+      "bytes": 8853339
+    },
+    "untracked_backup": "outputs/floortex2-resume/untracked; both original untracked files retained"
+  },
+  "previous_round": {
+    "record": {
+      "path": "experiments/2026-10-15-scene-floor-texture/summary.json",
+      "sha256": "6131211c62ee04c30795a0efb13ca2f559da1325bf6a9c239d2a7fb1ccc163cb",
+      "bytes": 5050
+    },
+    "scope": "historical pre-review record; use its containing commit for old asset/source/artifact bytes"
+  },
+  "fixes": {
+    "noncolor_audit": "all 150 wall faces, 40x7 raw/strip windows; 18 pinhole/light cases per arm, real detector and observer on PNG/JPEG90, fixed gate on JPEG; no thresholds changed",
+    "wall_mitigation": {
+      "contrast_scale": 0.04,
+      "mean_value": 84,
+      "bounds": [
+        82,
+        86
+      ],
+      "floor_png_unchanged": true,
+      "manifest": {
+        "path": "sim/assets/floor_light_textured_v1/manifest.json",
+        "sha256": "4a7005e2bb1d8ce966ee5877e3a0f60a79eda247a978887c9fe0e8ef246d9a08",
+        "bytes": 50108
+      },
+      "wall_orb_count_range": [
+        0,
+        0
+      ]
+    },
+    "portable_xml": "relative compiler.texturedir + file basenames; manifest and PNG hashes remain separate; ambiguous existing file asset roots rejected",
+    "production_xml": "all four actual build_multi_robot_xml -> build_zone_xml scenes: frozen off/floor_light_v1 hashes, material bindings, world/physics/camera/paint preservation, identical textured bytes with another checkout asset root; no compiled model",
+    "agents": "full conditional user quote; coordinator interpretations explicitly unconfirmed; tape_v1 scope retained"
+  },
+  "source_files": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "84708ea3488e7a8d74d565a3e750906fff2a1ec9dfc52996104f9a9fe9855134",
+      "bytes": 54595
+    },
+    {
+      "path": "scripts/generate_scene_textures.py",
+      "sha256": "63f8c0f376edaf2cbd1efb1be6d50eab5650f4f929516c62d9cd9f88da280422",
+      "bytes": 5220
+    },
+    {
+      "path": "scripts/audit_scene_texture_own_image.py",
+      "sha256": "ee4401f652555ea5dcc068a78e197c672a3cb6448697b8a2ac74b16af44b44e1",
+      "bytes": 12548
+    },
+    {
+      "path": "scripts/audit_scene_textures.py",
+      "sha256": "3d30a691b8c9b2b9376abee50a4d70cc8bf4639e070b4b528762a279932f76e5",
+      "bytes": 12829
+    },
+    {
+      "path": "scripts/make_scene_texture_plan.py",
+      "sha256": "1ca08c019edff109f04cdcbcc9db1a4467c8f09c7d8574d7e0bcd437ccb65ad6",
+      "bytes": 6288
+    },
+    {
+      "path": "sim/natural_scene_texture.py",
+      "sha256": "7fa1a97b29e28918342c790d4b5e9b624036b2f16e95642f92da67235b68ca6a",
+      "bytes": 6824
+    },
+    {
+      "path": "sim/render_profile.py",
+      "sha256": "65c8b4b3cf4349b2c399392ccc8a5f6baac971932980353dc455424786977919",
+      "bytes": 11988
+    },
+    {
+      "path": "sim/zone_arena.py",
+      "sha256": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+      "bytes": 25187
+    },
+    {
+      "path": "sim/multi_masterpi_production.py",
+      "sha256": "715bf66c7dfe0a4a328a75b3cec46541eaefedd29b8a3dd4a251eb14ed789f7e",
+      "bytes": 227346
+    },
+    {
+      "path": "tests/test_natural_scene_texture.py",
+      "sha256": "ebe719a345cf4e1c299b7296ba17b687a70fb835bd93bab10e0f710e099e6533",
+      "bytes": 14542
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/README.md",
+      "sha256": "a55559a6f0575e56691d4e36b3590eac3c8cd2e08d250bea75a8820e5dc40610",
+      "bytes": 11045
+    },
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/zone-xml-baseline.json",
+      "sha256": "f498ae008513d7c04e50c4e5d0103fbdec02d2a669dbe413357471dfad1e0d59",
+      "bytes": 834
+    },
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/own-image-audit.json",
+      "sha256": "6ec1acdffc605ceeaabccfda1352d1165c0dedda5aae6dc47a8cab8592bab2db",
+      "bytes": 9861
+    },
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/offline-audit.json",
+      "sha256": "3c8710fdb744b1f17b4948c6c7e404045644d3f08c7e4a630ccaa07bc26a8f66",
+      "bytes": 43218
+    },
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/image-metrics.json",
+      "sha256": "6ce5c4fc07db50ec26cb493800cd51853c71bcb66649ceab1a718780a3d6be00",
+      "bytes": 55324
+    },
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/color-ranges.md",
+      "sha256": "a3cad97152906c08c33418cccdfce3be9dda1d6ed39a88d57648c36bf11b5cc7",
+      "bytes": 13667
+    },
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/color-source-inventory.md",
+      "sha256": "82a32b4114363f3bbd49e0972f0b442e0cc5df9dd12431a5385e2e047ee970da",
+      "bytes": 18246
+    },
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/own-image-flat_texture_control-frames.json",
+      "sha256": "276061391fadd8a08d7531ea96b9bde14599ae97bfdf03c4a067aa975eb38288",
+      "bytes": 13946
+    },
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/own-image-floor_light_v1_approx-frames.json",
+      "sha256": "27736db3672ea9e0c67eba942c86eb2552ffec90697cb4ee1ff9254eee54b568",
+      "bytes": 13970
+    },
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/own-image-original_texture-frames.json",
+      "sha256": "4ee7714fd8e5dadaf77cab85b53eff997905263fc5d61f9715d919f57c8c1e27",
+      "bytes": 13831
+    },
+    {
+      "path": "experiments/2026-10-15-scene-floor-texture/own-image-revised_texture-frames.json",
+      "sha256": "4c2960d4e565be80f8afb0f6a6959b99a552932e1fab4b1123a4173a52a24790",
+      "bytes": 13854
+    }
+  ],
+  "tests": {
+    "passed": 54,
+    "failed": 0,
+    "errors": 0,
+    "deselected": 9,
+    "receipt": {
+      "path": "outputs/floortex2-resume/pytest-final.xml",
+      "sha256": "3cdac06f69b692b062d5052eb546d21a476aa6dec29532f69d010569848a73dc",
+      "bytes": 7736
+    },
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_natural_scene_texture.py tests/test_natural_floor_slam.py tests/test_highpose_nearclip.py tests/test_render_profile.py tests/test_own_image_gates.py -k 'not default_scene_has and not compiled and not changes_exactly and not changes_only_lights and not changes_only_the_floor and not verify and not scene_manifest and not output_pixels' --junitxml=outputs/floortex2-resume/pytest-final.xml",
+    "scope": "XML/PNG and own-image regression only; all nine compiled-model/render tests deselected"
+  },
+  "reproduction": {
+    "pngs_matched": 151,
+    "png_N": 151,
+    "files_matched": 152,
+    "files_N": 152,
+    "manifest_bytes_match": true,
+    "path": "/Users/changmin/projects/ugrp-wt/floor-texture/outputs/floortex2-resume/reproduced",
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/generate_scene_textures.py --output outputs/floortex2-resume/reproduced"
+  },
+  "noncolor_raw": {
+    "report": {
+      "path": "outputs/floortex2-resume/own-image-audit-final.json",
+      "sha256": "df95fb5f790bc2f4c02e44860a3f8fc75072f3a67f2fa15e267c29af86e2e186",
+      "bytes": 9225
+    },
+    "frame_records_verified": 72,
+    "png_and_jpeg_file_hashes_verified": 144,
+    "summary_sums_verified": true,
+    "storage": "local only; raw paths and per-file SHA-256 in audit/frame records",
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/audit_scene_texture_own_image.py --reference-assets outputs/floortex2-resume/reference/sim/assets/floor_light_textured_v1 --output outputs/floortex2-resume/own-image-audit-final.json",
+    "packaging": "split the report frames by arm into four JSON files below 64 KiB; keep raw report unchanged"
+  },
+  "simulation_runs": 0,
+  "model_compilations": 0,
+  "render_runs": 0,
+  "training_runs": 0,
+  "remote_connections": 0,
+  "model_calls": 0,
+  "camera_verified": false,
+  "calibration_transferred": false,
+  "ready_for_execution": false,
+  "queue_approved": false,
+  "remaining": [
+    "GCP actual-camera paired 48-frame static gate: exact codec, original target support, correct/false wall columns, own-image gate n/N, compiled physics and camera checks",
+    "wall_floor_lorigo, wall_floor_ulrich, vendor/lu_vp compatibility is unverified",
+    "consumer integration and separately approved same-source selfmap comparison",
+    "reduced wall texture has no measured ORB features; no wall SLAM improvement claimed"
+  ]
+}
