@@ -1,0 +1,11 @@
+{
+  "event": "EXTERNAL_VM_STOP",
+  "observed_utc": "2026-10-15T16:16:44Z",
+  "project": "ugrp-sim-b-1014",
+  "instance": "ugrp-sim-gcp2",
+  "audit_method": "v1.compute.instances.stop",
+  "audit_agent": "gcloud agent-name/claude_code",
+  "budget_function_logs_last_30m": [],
+  "source_sha": "2eaafdf754ff0f2a976fa5bd8a1e0ce9580abbbc",
+  "handling": "preserve partial raw, exclude incomplete arms from full gates, restart same seeds; user rule14 permits starting terminated gcp2"
+}

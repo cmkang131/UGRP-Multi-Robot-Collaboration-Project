@@ -14,9 +14,13 @@ from sim import natural_scene_texture as texture
 
 PROFILE = texture.PROFILE
 V2_PROFILE = 'walls_floor_textured_v2'
+V3_PROFILE = 'walls_floor_textured_v3'
 
 
 def _texture(name):
+    if name == V3_PROFILE:
+        from sim import natural_scene_texture_v3
+        return natural_scene_texture_v3
     if name == V2_PROFILE:
         from sim import natural_scene_texture_v2
         return natural_scene_texture_v2
@@ -35,6 +39,13 @@ PROFILES = {
 
 
 def _definition(name):
+    if name == V3_PROFILE:
+        t = _texture(name)
+        return {'summary': 'Opt-in physical-scale natural wear, dark cool walls and neutral light floor; '
+                           'camera quality and detector compatibility require a separate gcp2 gate.',
+                'xml_ops': [*base.PROFILES['floor_light_v1']['xml_ops'][:-1],
+                            {'op': 'natural_surface_texture_v3', 'manifest_sha256': t.MANIFEST_SHA256,
+                             'wall_texuniform': False}]}
     if name != V2_PROFILE:
         return PROFILES[name]
     t = _texture(name)
@@ -46,11 +57,11 @@ def _definition(name):
 
 
 def resolve(name):
-    return name if name in (PROFILE, V2_PROFILE) else base.resolve(name)
+    return name if name in (PROFILE, V2_PROFILE, V3_PROFILE) else base.resolve(name)
 
 
 def profile_sha256(name):
-    if name not in (PROFILE, V2_PROFILE):
+    if name not in (PROFILE, V2_PROFILE, V3_PROFILE):
         return base.profile_sha256(name)
     canon = json.dumps({'schema': base.SCHEMA, 'name': name, 'xml_ops': _definition(name)['xml_ops']},
                        sort_keys=True, separators=(',', ':'))
@@ -58,7 +69,7 @@ def profile_sha256(name):
 
 
 def profile_record(name):
-    if name not in (PROFILE, V2_PROFILE):
+    if name not in (PROFILE, V2_PROFILE, V3_PROFILE):
         return base.profile_record(name)
     return {'schema': base.SCHEMA, 'name': name, 'sha256': profile_sha256(name),
             'xml_ops': _definition(name)['xml_ops'], 'summary': _definition(name)['summary'],
@@ -66,7 +77,7 @@ def profile_record(name):
 
 
 def apply_xml(xml, name):
-    if name not in (PROFILE, V2_PROFILE):
+    if name not in (PROFILE, V2_PROFILE, V3_PROFILE):
         return base.apply_xml(xml, name)
     # The same four lighting operations as the original textured definition;
     # leave the checker edit out because the pinned PNG replaces it entirely.
@@ -76,7 +87,7 @@ def apply_xml(xml, name):
 
 
 def install(scene, name):
-    if name not in (PROFILE, V2_PROFILE):
+    if name not in (PROFILE, V2_PROFILE, V3_PROFILE):
         return base.install(scene, name)
     existing = getattr(scene, '_render_profile_name', None)
     if existing is not None:
@@ -99,7 +110,7 @@ def install(scene, name):
 
 
 def verify_model(model, name):
-    if name not in (PROFILE, V2_PROFILE):
+    if name not in (PROFILE, V2_PROFILE, V3_PROFILE):
         return base.verify_model(model, name)
     # Check the unchanged lighting contract without requiring the legacy
     # checker mean; the texture verifier checks pinned PNGs and model bindings.

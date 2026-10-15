@@ -194,6 +194,33 @@ def run(args):
                                 for rid in old.ROBOTS:
                                     case = f'{map_path.stem}--view{vi}--{pose}--{rid}'
                                     stem = case+'--'+material+'--'+quality_name
+                                    # Resume only complete same-fixture records after external VM STOP.
+                                    # This does not alter sampling, fixture positions or measurements.
+                                    # Keep originals immutable; link their media and preserve provenance.
+                                    if args.resume_from is not None:
+                                        from scripts.summarize_scene_tex3 import read
+                                        saved_path = args.resume_from/(stem+'.json')
+                                        if saved_path.is_file() or saved_path.with_name(saved_path.name+'.zst').is_file():
+                                            saved = read(saved_path)
+                                            if (saved['case'], saved['material'], saved['quality'], saved['qpos_sha256']) != (
+                                                    case, material, quality_name, old._array_digest(base_qpos)):
+                                                raise ValueError('RESUME_FIXTURE_MISMATCH')
+                                            for enc in saved['encodings'].values():
+                                                if old.sha256((args.resume_from/enc['file']).read_bytes()) != enc['sha256']:
+                                                    raise ValueError('RESUME_FRAME_HASH_MISMATCH')
+                                            required = [stem+'--next.png', stem+'--mask-floor.png', stem+'--mask-wall.png']
+                                            if any(cv2.imread(str(args.resume_from/f)) is None for f in required):
+                                                raise ValueError('RESUME_AUXILIARY_IMAGE_MISSING')
+                                            for source in args.resume_from.glob(stem+'*'):
+                                                if source.suffix in ('.png', '.jpg'):
+                                                    (args.output/source.name).symlink_to(source.resolve())
+                                            original = saved_path if saved_path.is_file() else saved_path.with_name(saved_path.name+'.zst')
+                                            saved['resume_provenance'] = {'original': str(original), 'sha256': old.sha256(original.read_bytes()),
+                                                'source_sha': json.loads((args.resume_from/'meta.json').read_text())['source_sha'],
+                                                'excluded_from_rerender_cost': True}
+                                            path = write(args.output/(stem+'.json'), saved)
+                                            rows.append({'case': case, 'material': material, 'quality': quality_name, 'record': path.name})
+                                            continue
                                     stages, masks, timing = capture(renderer, model, data, rid, groups, quality_name)
                                     # Warm timing after shaders/textures are resident. Fixed three repetitions
                                     # are measurements, never a timer-based search budget.
@@ -278,6 +305,7 @@ def main():
     p.add_argument('--qualities', nargs='+', choices=quality.PROFILES, default=list(quality.PROFILES))
     p.add_argument('--poses', nargs='+', choices=old.POSES+old.POSITIVE_POSES)
     p.add_argument('--execute', action='store_true')
+    p.add_argument('--resume-from', type=Path)
     a = p.parse_args()
     if platform.system() != 'Linux' or not a.execute or not platform.node().startswith('ugrp-sim-gcp2'):
         p.error('explicit execution on gcp2 required; Mac rendering forbidden')

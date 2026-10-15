@@ -67,7 +67,7 @@ def wrap(scene):
     if getattr(scene, '_nearclip_id', None) == ID:
         return scene
     base_profile = getattr(scene, '_render_profile_name', None)
-    if base_profile not in (BASE_PROFILE, 'floor_light_textured_v1', 'walls_floor_textured_v2'):
+    if base_profile not in (BASE_PROFILE, 'floor_light_textured_v1', 'walls_floor_textured_v2', 'walls_floor_textured_v3'):
         raise ValueError(f'{ID} needs a {BASE_PROFILE} scene, got {getattr(scene, "_render_profile_name", None)!r}')
     inner = scene.transform
 

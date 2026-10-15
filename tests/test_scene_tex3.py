@@ -41,3 +41,35 @@ def test_surface_measurements_are_json_serializable():
     json.dumps(result, allow_nan=False)
     assert result['floor']['orb20'] > 0
     assert result['wall']['laplacian_variance'] is None
+
+
+def test_v3_materials_leave_scene_physics_and_camera_xml_unchanged():
+    import xml.etree.ElementTree as ET
+    from tests.test_natural_scene_texture import scene_xml
+    from scripts.generate_scene_textures import MAPS
+    from sim.render_profile_selection import for_name
+    profile = for_name('walls_floor_textured_v3')
+    for path in MAPS:
+        before = ET.fromstring(profile.apply_xml(scene_xml(path), 'floor_light_v1'))
+        after = ET.fromstring(profile.apply_xml(scene_xml(path), 'walls_floor_textured_v3'))
+        for a, b in zip(before.find('worldbody').iter(), after.find('worldbody').iter()):
+            aa, bb = dict(a.attrib), dict(b.attrib)
+            if a.get('name', '').startswith('zone_wall_'):
+                for key in ('rgba', 'material'):
+                    aa.pop(key, None)
+                    bb.pop(key, None)
+            assert (a.tag, aa) == (b.tag, bb)
+        for tag in ('option', 'actuator'):
+            assert ET.tostring(before.find(tag)) == ET.tostring(after.find(tag))
+
+
+def test_v3_png_integrity_and_no_nominal_colour_range_intrusion():
+    from PIL import Image
+    from sim import natural_scene_texture_v3 as t
+    record = t.manifest()
+    for key in record['images']:
+        rgb = np.asarray(Image.open(t.checked_file(key, record, t.ASSETS)))
+        hsv = cv2.cvtColor(rgb, cv2.COLOR_RGB2HSV)
+        assert hsv[..., 1].max() < 20
+        assert hsv[..., 2].min() > .38*255
+        assert hsv[..., 2].max() <= 180
