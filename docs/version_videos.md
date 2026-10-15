@@ -102,3 +102,10 @@ SHA256 `384ad6944cf42b44e0238cb3650b82af413c75b97f87cebc72d20c220915c84c`;
 SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 후보722개 중 확인0·관문 실패로 새 물리0, 성공영상 없음. 회색벽/청록문은 평가용GT, 제어입력 아님.
 - 2026-10-06 S2 v117 `ef820ab2` / s1042: REAL pre-grasp 확인 뒤 hover 하강·SIM lifted=true, pickup-site ROI clipped/unknown으로 probe gate 미통과. own-RGB4배속 영상 `/Users/changmin/projects/ugrp/outputs/s2-realism-ef820ab2-analysis/views/s1042-probe/execution.mp4` (34.05s,681frames,sha256 `5ed6f0714aaab173ece3a9630964dfcb76252969e6f08fdd0ec35b0425ad2041`). full/실물 성공 증거 아님. 기록: `experiments/2026-10-06-s2-realism/completed-v117.json`.
+
+
+## 2026-10-16 warp1 — MJWarp solo 교사 DEV
+
+새 backend `mjwarp_batch_v1`(기본 off), source `4cf44ad1`, frozen teacher `6f057f7e`의 첫 사전 지정 시드8317100이다. N1 교사 파지·들기·놓기1/1(40.7SIM초), 입력 감사 두 금지 카운터0을 확인했다. [3배속 영상](../experiments/2026-10-16-warp1/videos/warp1-mjwarp-n1-8317100-3x.mp4)·[전체 해시/ffprobe/범위](../experiments/2026-10-16-warp1/video.json). 왼쪽은 저장 qpos에서 사후 재구성한 평가용 C3.16 overview, 가운데는 실제 제어 입력으로 기록된 r1 RGB2Hz다. r2는 solo 작업이라 N/A다. TOP은 제어 입력이 아니다.
+
+고른 이유는 source plan0의 첫 완료 케이스이기 때문이다. ≥40회 관문·학생·일반 성공률을 보이지 못한다. 최적화 sleep/SAP 후보와는 별도 코호트이며, N1 pause가 포함된 wall 시간은 처리량으로 쓰지 않는다. 반투명 구역의 C/Warp RGB 차이도 남아 있다. 원본/경로/한계는 [warp1 기록](../experiments/2026-10-16-warp1/README.md)에 있다.

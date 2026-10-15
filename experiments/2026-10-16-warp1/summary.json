@@ -1,0 +1,43 @@
+{
+  "status": "NOT_READY",
+  "work_status": "qualitative_running",
+  "base_sha": "142dbf04c2128c3d7ca1c3ceb03ee3b651d9a7e5",
+  "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "backend_default": "off",
+  "input_audit_policy": {
+    "invisible_measurements": 0,
+    "held_world_reads": 0
+  },
+  "C_matched_teacher": {
+    "success": 3,
+    "attempted": 3,
+    "pool_with_warp": false
+  },
+  "N16_distinct_initial_state_reset": {
+    "worlds": 16,
+    "unique_starts": 3,
+    "fields_pass": 10,
+    "untouched_preserved": true
+  },
+  "MJWarp_full_teacher": "running: no completed success claimed",
+  "gate_queue": {
+    "status": "HOLD_SCENE",
+    "approved": false,
+    "executed": false,
+    "file": "teacher-gate-queue.json"
+  },
+  "source_inventory": "mjdata-read-inventory.json",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp1/rejection_table.json",
+  "records": [
+    "cpu-results.json",
+    "l4-preliminary.json"
+  ],
+  "Mac_physics_render_training_GUI": 0,
+  "remaining": [
+    "full N1/N16 qualitative ongoing",
+    "scene approval",
+    "full NumPy teacher state machine/IK/raycast port",
+    "training recorder/student evaluation adapters",
+    "long steady-state performance on qualified teacher"
+  ]
+}

@@ -6,6 +6,19 @@ from pathlib import Path
 import sys
 
 
+def owns_output(args, task):
+    """Shared source/teacher paths do not establish process ownership."""
+    root=(Path('/home/ugrp/ugrp-sim/runs')/task).resolve()
+    if '--out' in args:
+        index=args.index('--out')+1
+        if index<len(args):
+            output=Path(args[index]).resolve()
+            return output==root or output.is_relative_to(root)
+    if args and Path(args[0]).name.startswith('ffmpeg') and len(args)>1:
+        return Path(args[-1]).resolve().is_relative_to(root)
+    return False
+
+
 def main():
     from simalt_host import gcp2_identity
     host=gcp2_identity()
@@ -22,7 +35,7 @@ def main():
             if not args or not args[0]:continue
             executable=Path(args[0].decode(errors='replace')).name
             if not executable.startswith(('python','mujoco','ffmpeg')):continue
-            owned=any(task.encode() in arg for arg in args)
+            owned=owns_output([arg.decode(errors='replace') for arg in args if arg],task)
             # Do not expose arbitrary foreign arguments or credentials.
             processes.append({'pid':int(entry.name),'executable':executable,'owned':owned,
                               'argv_sha256':hashlib.sha256(b'\0'.join(args)).hexdigest()})

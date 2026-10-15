@@ -480,6 +480,9 @@ raise SystemExit(3 if a.fail else 0)
         # v196 is the preserved HOST_ERROR catalog: it incorrectly required a
         # value for this boolean. Keep its original bytes and the rejection.
         samples['e2e-rpp-lookahead-v196'] = [*e2e_args, '--dev-light']
+        samples['warp-act-teacher'] = ['--teacher-source', str(model), '--plan', str(source),
+            '--physics-backend', 'mjwarp_batch_v1', '--vm-hourly-usd', '1.096',
+            '--compiled-reference-v1', str(source), '--compiled-geometry-312-v1', str(source)]
         retired_invalid = {'e2e-rpp-lookahead-v196'}
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):

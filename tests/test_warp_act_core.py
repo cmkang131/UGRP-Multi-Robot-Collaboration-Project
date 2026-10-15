@@ -59,3 +59,145 @@ def test_runner_mac_and_default_off_deny_before_output_or_simulator(monkeypatch,
             '--out',str(tmp_path/'out'),'--vm-hourly-usd','1.096'])
         with pytest.raises(SystemExit,match='2'):runner.main()
         assert not (tmp_path/'out').exists()
+
+
+def test_pwm_tape_matches_real_camera_port_without_physics():
+    from types import SimpleNamespace
+    from sim.camera_robot_port import CameraRobotPort
+    servos=(1,3,4,5,6)
+    class Robot:
+        servo_command_pulses={s:1500 for s in servos}
+        def __init__(self):self.setpoint={s:1500 for s in servos}
+        def set_servo_pulses(self,values):self.setpoint.update(values)
+        def set_motor_commands(self,values):pass
+    expected=[]
+    rows=[]
+    for offset in (0.,.25):
+        robot=Robot();world=SimpleNamespace(data=SimpleNamespace(time=2.),robot=lambda _:robot)
+        port=CameraRobotPort(world,'r1')
+        port._servo_applied={s:1500.+offset for s in servos}
+        port._queue_servos({1:1537,3:1461,4:1511,5:1500,6:1499},2.)
+        rows.append(dict(ctrl=np.zeros(10),wheels=[0.]*4,deadlines=[0.]*4,
+            applied=[port._servo_applied[s] for s in servos],
+            target=[port._servo_targets[s] for s in servos],servo_active=[True]*5,
+            now=2.,servo_time=port._servo_tick_time))
+        samples=[]
+        for tick in range(400):
+            port._advance_servos(2.+tick*.00025)
+            samples.append([robot.setpoint[s] for s in servos])
+        expected.append(samples)
+    tape,_=control_tape(rows,np.zeros((2,4),int),dt=.00025,steps=400,
+        lookup=np.tile(np.arange(500,2501),(5,1)),wheel_ids=[0,1,2,3],
+        servo_ids=[[4],[5],[6],[7],[8]],start_fraction=.325,kinetic_fraction=1/12,torque_cap_nm=1.)
+    assert np.array_equal(tape[:,:,4:9],np.asarray(expected).transpose(1,0,2))
+
+
+def test_model_grouping_allows_only_free_joint_initial_pose_changes():
+    from scripts.warp_act_core import model_key
+    xml='<mujoco><worldbody><body pos="1 0 0"><freejoint/><geom size=".1"/></body><geom pos="1 2 3" size=".1"/></worldbody></mujoco>'
+    assert model_key(xml)==model_key(xml.replace('body pos="1 0 0"','body pos="4 5 6"'))
+    assert model_key(xml)!=model_key(xml.replace('geom pos="1 2 3"','geom pos="4 5 6"'))
+    assert model_key(xml)!=model_key(xml.replace('size=".1"','size=".2"'))
+
+
+def test_heterogeneous_models_preserve_world_order_and_reject_structural_changes():
+    from scripts.warp_act_core import varying_model_arrays
+    rows=[{'mass':np.array([[1.,2.]]),'index':np.array([0,1])},
+          {'mass':np.array([[3.,4.]]),'index':np.array([0,1])}]
+    result=varying_model_arrays(rows,{'mass'})
+    assert result['mass'].tolist()==[[1.,2.],[3.,4.]]
+    assert 'index' not in result
+    rows[1]['index']=np.array([1,0])
+    with pytest.raises(ValueError,match='unbatchable model difference: index'):
+        varying_model_arrays(rows,{'mass'})
+
+
+def test_resource_guard_owns_output_not_shared_adapter_source(tmp_path):
+    from pathlib import Path
+    import runpy
+    ns=runpy.run_path(str(Path(__file__).resolve().parents[1]/'experiments/2026-10-16-warp1/resource_guard_v2.py'))
+    own=ns['owned_output'];root='/home/ugrp/ugrp-sim/runs/warp1'
+    assert own(['python','--teacher-source',root,'--out','/home/ugrp/ugrp-sim/runs/warp2/run']) is None
+    assert own(['python','--out',root+'/run'])==str(Path(root+'/run').resolve())
+    assert own(['python','--out',root+'-foreign/run']) is None
+    assert own(['python','--out',root+'/../warp2/run']) is None
+    assert own(['ffmpeg','-i',root+'/input.mp4','/home/ugrp/ugrp-sim/runs/warp2/output.mp4']) is None
+    actual=tmp_path/'real-task';actual.mkdir()
+    alias=tmp_path/'alias';alias.symlink_to(actual,target_is_directory=True)
+    own.__globals__['REMOTE']=str(alias)
+    assert own(['python','--out',str(alias/'result')])==str(actual/'result')
+    assert own(['python','--out',str(alias/'../foreign')]) is None
+
+
+def test_masked_reset_preserves_unselected_world_state():
+    from scripts.warp_act_core import masked_restore
+    current={'qpos':np.array([[9.,8.],[7.,6.],[5.,4.]]),'eq':np.array([[True],[False],[True]])}
+    initial={'qpos':np.array([[1.,2.],[3.,4.],[5.,6.]]),'eq':np.array([[False],[False],[False]])}
+    mask=np.array([True,False,True])
+    restored=masked_restore(current,initial,mask)
+    assert restored['qpos'].tolist()==[[1.,2.],[7.,6.],[5.,6.]]
+    assert restored['eq'].tolist()==[[False],[False],[False]]
+    assert current['qpos'][0,0]==9.
+    with pytest.raises(ValueError):masked_restore(current,initial,[0,2])
+
+
+def test_cached_perception_world_has_independent_buffers_and_commands(monkeypatch):
+    import copy
+    from pathlib import Path
+    from types import SimpleNamespace
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1]/'scripts'))
+    from warp_act_backend import PerceptionWorld
+    class Data:
+        def __init__(self):self.qpos=np.array([1.,2.]);self.ctrl=np.array([3.,4.])
+        def __copy__(self):
+            obj=Data();obj.qpos=self.qpos.copy();obj.ctrl=self.ctrl.copy();return obj
+    data=Data();controller=SimpleNamespace(model=object(),data=data,motor_command=np.zeros(4),
+        servo_command_pulses={1:1500})
+    proto=SimpleNamespace(model=controller.model,data=data,drive_parameters=object(),scene_xml='<mujoco/>',
+        seed=1,controllers={'r1':controller})
+    a,b=PerceptionWorld(proto),PerceptionWorld(proto)
+    a.data.qpos[0]=99.;a.controllers['r1'].motor_command[0]=1.;a.controllers['r1'].servo_command_pulses[1]=2000
+    assert b.data.qpos[0]==data.qpos[0]==1.
+    assert b.controllers['r1'].motor_command[0]==controller.motor_command[0]==0.
+    assert b.controllers['r1'].servo_command_pulses[1]==controller.servo_command_pulses[1]==1500
+    with pytest.raises(RuntimeError,match='C physics forbidden'):a._physics_step_for(None)
+
+
+def test_lease_audit_does_not_own_foreign_teacher_source_reference():
+    from scripts.simalt_lease_audit import owns_output
+    assert not owns_output(['python','--teacher-source','/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot','--out','/home/ugrp/ugrp-sim/runs/rl1b/probe'],'warp1')
+    assert owns_output(['python','--out','/home/ugrp/ugrp-sim/runs/warp1/qual'],'warp1')
+    assert not owns_output(['python','--out','/home/ugrp/ugrp-sim/runs/warp1-foreign/qual'],'warp1')
+    assert not owns_output(['python','--out','/home/ugrp/ugrp-sim/runs/warp1/../warp2/qual'],'warp1')
+
+
+@pytest.mark.parametrize('marker,expected',[
+    ({'reason':'resource_cap4h','category':'cap_end'},'cap_end'),
+    ({'reason':'superseded recording profile'},'supervisor_stop'),
+    (None,'interrupted')])
+def test_resource_interrupt_and_supervision_have_distinct_outcomes(tmp_path,marker,expected):
+    import json
+    from scripts.run_warp_act_teacher import interruption_outcome
+    if marker is not None:(tmp_path/'SUPERVISOR_STOP.json').write_text(json.dumps(marker))
+    row=interruption_outcome(tmp_path)
+    assert row['status']==expected
+    assert row['resource_cap_end']==(expected=='cap_end')
+    assert row['reason']
+
+
+def test_runtime_sleep_policy_preserves_never_predicate_and_rejects_init():
+    from scripts.warp_act_core import runtime_sleep_policy
+    source=np.array([0,1,2,3,4],dtype=np.int32)
+    kwargs=dict(auto=0,auto_never=1,auto_allowed=2,never=3,allowed=4)
+    result=runtime_sleep_policy(source,**kwargs)
+    # C runtime can-sleep starts with NEVER or AUTO_NEVER; GPU AUTO_NEVER.
+    assert np.array_equal((source==1)|(source==3),result==1)
+    assert result.tolist()==[0,1,2,1,2] and source.tolist()==[0,1,2,3,4]
+    with pytest.raises(ValueError,match='reset semantics'):runtime_sleep_policy(np.array([5]),**kwargs)
+
+
+def test_graph_clock_cannot_drop_remainder_physics_ticks():
+    from scripts.warp_act_core import physics_schedule
+    assert physics_schedule(.1,.00025)==(400,16,25)
+    assert physics_schedule(.1,.001)==(100,4,25)
+    with pytest.raises(ValueError,match='integral'):physics_schedule(.1,.0003)

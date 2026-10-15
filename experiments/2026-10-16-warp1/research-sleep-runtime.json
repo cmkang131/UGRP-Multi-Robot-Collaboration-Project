@@ -1,0 +1,19 @@
+{
+  "scope": "primary source research after unsupported explicit-policy candidate; runtime enum classes only; separate opt-in profile",
+  "sources": [
+    {
+      "name": "native_C_sleep",
+      "source": "https://github.com/google-deepmind/mujoco/blob/3.16.0/src/engine/engine_sleep.c#L125",
+      "sha256": "04d7c94f1e02759a1f5504cc0f6dccc10d6bcdf103c5b175aba79ade9427206b",
+      "bytes": 26771
+    },
+    {
+      "name": "pinned_MJWarp_sleep",
+      "source": "https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/sleep.py#L290",
+      "sha256": "5b50688a8949afa30df1ae6ce2195132fdf50cf6ed821746badd8e06b92d91b0",
+      "bytes": 24555
+    }
+  ],
+  "implementation": "native_sleep_policy_compat_v1; rejects INIT; never/allowed predicates preserved",
+  "verification": "pure predicate mapping test passed; actual active DOFs, overflow, teacher success and performance pending"
+}

@@ -1,0 +1,89 @@
+{
+  "scope": "direct inspection of all remote-generated2Hz full strips and10Hz terminal strips; video playback verified by ffprobe; evaluation overview posthoc, own RGB actual",
+  "cases": [
+    {
+      "case": "C n4 success seed8317104",
+      "local": "warp1-cpu-index4",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/cpu-pilot-index4",
+      "full_review_hz": 2.0,
+      "full_review_SIM_range": [
+        0.0,
+        44.0
+      ],
+      "full_frames_reviewed": 89,
+      "terminal_10Hz_frames_reviewed": 100,
+      "video_bytes": 52231,
+      "ffprobe_duration_s": "14.833333",
+      "no_screen_app": true
+    },
+    {
+      "case": "MJWarp no-sleep success seed8317100",
+      "local": "warp1-warp-n1-seed0",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/r2-warp-n1-seed0",
+      "full_review_hz": 2.0,
+      "full_review_SIM_range": [
+        0.0,
+        40.5
+      ],
+      "full_frames_reviewed": 82,
+      "terminal_10Hz_frames_reviewed": 100,
+      "video_bytes": 41548,
+      "ffprobe_duration_s": "13.666667",
+      "no_screen_app": true
+    },
+    {
+      "case": "MJWarp N16 4SIM cap_end prefix",
+      "local": "warp1-bench-n16-prefix4",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp1/bench-n16-prefix4",
+      "full_review_hz": 2.0,
+      "full_review_SIM_range": [
+        0.0,
+        3.5
+      ],
+      "full_frames_reviewed": 8,
+      "terminal_10Hz_frames_reviewed": 40,
+      "video_bytes": 11808,
+      "ffprobe_duration_s": "1.333333",
+      "no_screen_app": true
+    }
+  ],
+  "timeline": [
+    {
+      "case": "C n4 success seed8317104",
+      "range": "0-12SIMs",
+      "observation": "cyan box grows during approach then exits below own frame; overview keeps robot near box"
+    },
+    {
+      "case": "C n4 success seed8317104",
+      "range": "12.5-33.5SIMs",
+      "observation": "own camera mostly floor while gripper sequence proceeds; grasp/hold/release success is separate evaluator evidence"
+    },
+    {
+      "case": "C n4 success seed8317104",
+      "range": "34-44SIMs",
+      "observation": "backoff exposes far red box; turns show floor/wall and return toward cyan edge;10Hz shows short rotations around36.4 and39.9-41.7 omitted by sparse views"
+    },
+    {
+      "case": "MJWarp no-sleep success seed8317100",
+      "range": "0-9SIMs",
+      "observation": "approaches cyan box; own Warp view shows opaque blue zone instead of C visible checker pattern"
+    },
+    {
+      "case": "MJWarp no-sleep success seed8317100",
+      "range": "9.5-30SIMs",
+      "observation": "own frame predominantly blue floor; no gripper visibility redesign; overview is evaluation only"
+    },
+    {
+      "case": "MJWarp no-sleep success seed8317100",
+      "range": "30.5-40.7SIMs",
+      "observation": "backoff reveals red box, then actual body/pan scan exposes wall/floor at33.0-35.5 and returns to cyan edge;10Hz reveals brief blank-blue views around36.5-38.1; no persistent rapid oscillation established"
+    },
+    {
+      "case": "MJWarp N16 4SIM cap_end prefix",
+      "range": "0-3.9SIMs",
+      "observation": "continuous approach; cyan box grows and shifts downward; cap_end before grasp, not physical task failure"
+    }
+  ],
+  "physical_failure_video_status": "no completed physical task failure yet; setup HOST_ERROR has no rollout to replay. Interruption and prefix caps are not invented physical failures.",
+  "causal_limit": "observed alpha/floor difference is real, but its failure effect is not established; all reviewed full cases succeeded"
+}
