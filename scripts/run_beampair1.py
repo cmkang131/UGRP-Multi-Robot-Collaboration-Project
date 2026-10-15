@@ -20,6 +20,7 @@ import sys
 from harness.beampair_teacher import (MODE, DEPENDENCY_SHA, HeldCargoGuard, validate_plan,
                                     perturb_model, defer_ready_during_probe, PairRecoveryPerturb)
 from harness.grasp_act_data import write_json
+from harness.grasp_act_peer_rendezvous import PeerRendezvous, RendezvousTeacherMixin, MODE as RENDEZVOUS_MODE
 
 ROOT=Path(__file__).resolve().parents[1]
 EXP=ROOT/'experiments/2026-10-15-beampair1'
@@ -98,7 +99,7 @@ def setup_admission(plan,scenario):
     return rows
 
 
-def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.):
+def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,rendezvous='off'):
     if platform.system()!='Linux':raise RuntimeError('GCP Linux only; Mac physics/render forbidden')
     if mode!=MODE:raise ValueError('explicit beampair1_v1 opt-in required')
     validate_plan(plan)
@@ -168,9 +169,10 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.):
                 guard.sanitize_memory(self)
                 visible[self.rid]=any(m['id']=='band_'+self.end and m['visible_n']>=5 for m in ms)
                 return guard.sanitize_world(super().observe(ms,now,**kw))
-        class Teacher(original_teacher):
+        class Teacher(RendezvousTeacherMixin,original_teacher):
             def __init__(self,rid,*a,**kw):
                 super().__init__(rid,*a,**kw);teachers[rid]=self
+                self.rendezvous=PeerRendezvous(rendezvous)
                 ticks=plan['burst_ticks'] if rid=='r1' else 13-plan['burst_ticks']
                 self.pair_perturb=PairRecoveryPerturb(perturb_model(ticks),seed=plan['seed']+(rid=='r2'))
             def step(self,w,now,**kw):
@@ -218,6 +220,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.):
                     report=json.loads(subprocess.check_output(['zstd','-qdc',str(result_path)+'.zst']))
             write_json(adapter/'beampair1-result.json',{'schema':'ugrp.beampair1.result.v1',
                 'source_sha':source,'dependency_sha':DEPENDENCY_SHA,'candidate':candidate,
+                'peer_rendezvous':rendezvous,
                 'mode':mode,'held_object_hidden_v1':True,'held_world_reads':guard.held_world_reads,
                 'first_close_t':guard.first_close_t,'hidden_measurement_ticks':guard.hidden_measurement_ticks,
                 'input_audit':audit,'training_rgb':False,'profiles':selected,'result':report,
@@ -236,5 +239,6 @@ if __name__=='__main__':
     p.add_argument('--out',type=Path,required=True);p.add_argument('--dependency-root',type=Path,required=True)
     p.add_argument('--mode',choices=['off',MODE],default='off')
     p.add_argument('--candidate',choices=['baseline','soft'],default='baseline');p.add_argument('--cap-s',type=float,default=60.)
+    p.add_argument('--rendezvous',choices=['off',RENDEZVOUS_MODE],default='off')
     a=p.parse_args();run(json.loads(a.plan.read_text())['episodes'][a.episode],a.out,a.dependency_root,
-                         mode=a.mode,candidate=a.candidate,cap_s=a.cap_s)
+                         mode=a.mode,candidate=a.candidate,cap_s=a.cap_s,rendezvous=a.rendezvous)

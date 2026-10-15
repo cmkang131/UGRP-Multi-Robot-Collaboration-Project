@@ -18,6 +18,12 @@ def blockers(candidate):
 def rejection_rows(result):
     rows=[]
     for rid,t in result.get('teachers',{}).items():
+        for event in t.get('rendezvous_log',[]):
+            if event.get('blocked') or event.get('accepted') is False or event['event'].endswith('replan'):
+                rows.append(dict(robot=rid,t=event['t'],population='rendezvous_events',
+                    reason=event['event'],reason_category=event['reason_category'],
+                    blocked_object=event['blocked_object'],min_gap_m=event['min_gap_m'],
+                    gap_scope=event['gap_scope'],candidate=event))
         for event in t.get('search22_log',[]):
             candidates=event.get('candidates',[])
             group='endpoint' if any(c.get('reason')=='endpoint_feasible' for c in candidates) else 'full_or_retained'

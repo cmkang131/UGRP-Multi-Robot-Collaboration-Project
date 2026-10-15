@@ -37,8 +37,17 @@ def run(args):
             cmd=[sys.executable,'-m','scripts.run_beampair1','--plan',str(args.plan.resolve()),
                 '--episode',str(i),'--dependency-root',str(args.dependency_root.resolve()),'--out',str(d/'raw'),
                 '--mode',MODE,'--candidate',args.candidate,'--cap-s','60']
+            cmd += ['--rendezvous',args.rendezvous]
             process=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT)
             children.append((process,d,log));write_json(d/'PROCESS.json',dict(pid=process.pid,command=cmd))
+            if i==0 and args.first_episode_first:
+                code=process.wait()
+                report_path=d/'adapter/beampair1-result.json'
+                report=json.loads(report_path.read_text())['result'] if report_path.exists() else None
+                if code or not report or not report['physical_success']:
+                    stopped=True
+                    write_json(root/'SUPERVISOR_STOP.json',dict(episode=d.name,reason='first_seed_failed',exit=code))
+                    break
         while any(p.poll() is None for p,d,l in children):
             failure=None
             for p,d,l in children:
@@ -70,4 +79,6 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True)
     p.add_argument('--dependency-root',type=Path,required=True);p.add_argument('--root',type=Path,required=True)
     p.add_argument('--candidate',choices=['baseline','soft'],default='baseline')
+    p.add_argument('--rendezvous',choices=['off','peer_rendezvous_v1'],default='off')
+    p.add_argument('--first-episode-first',action='store_true')
     run(p.parse_args())
