@@ -1,0 +1,957 @@
+{
+  "mujoco": "3.12.0",
+  "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+  "geom_names": [
+    "floor",
+    "zone_wall_north",
+    "zone_wall_south",
+    "zone_wall_west",
+    "zone_wall_east",
+    "zone_wall_divider_1",
+    "zone_wall_divider_2",
+    "zone_pickup",
+    "zone_zone_A",
+    "zone_zone_B",
+    "zone_zone_C",
+    "zone_slot_A1",
+    "zone_slot_A2",
+    "zone_slot_A3",
+    "zone_slot_B1",
+    "zone_slot_B2",
+    "zone_slot_B3",
+    "zone_slot_C1",
+    "zone_slot_C2",
+    "zone_slot_C3",
+    "r1__base_lower_collision",
+    "r1__base_top",
+    "r1__front_plate",
+    "r1__rear_cage_collision",
+    "r1__arm_box_collision",
+    "r1__yaw_servo_collision",
+    "r1__ultrasonic_collision",
+    "r1__v3_chassis",
+    "r1__v3_chassis_front_hole_0",
+    "r1__v3_chassis_rear_hole_0",
+    "r1__v3_chassis_front_hole_1",
+    "r1__v3_chassis_rear_hole_1",
+    "r1__v3_chassis_front_hole_2",
+    "r1__v3_chassis_rear_hole_2",
+    "r1__v3_chassis_front_hole_3",
+    "r1__v3_chassis_rear_hole_3",
+    "r1__v3_chassis_front_hole_4",
+    "r1__v3_chassis_rear_hole_4",
+    "r1__v3_chassis_front_hole_5",
+    "r1__v3_chassis_rear_hole_5",
+    "r1__v3_chassis_front_hole_6",
+    "r1__v3_chassis_rear_hole_6",
+    "r1__v3_chassis_left_hslot_0",
+    "r1__v3_chassis_left_hslot_1",
+    "r1__v3_chassis_left_hslot_bar",
+    "r1__v3_chassis_left_slot_0",
+    "r1__v3_chassis_left_slot_1",
+    "r1__v3_chassis_right_hslot_0",
+    "r1__v3_chassis_right_hslot_1",
+    "r1__v3_chassis_right_hslot_bar",
+    "r1__v3_chassis_right_slot_0",
+    "r1__v3_chassis_right_slot_1",
+    "r1__v3_motor_fl",
+    "r1__v3_motor_fr",
+    "r1__v3_motor_rl",
+    "r1__v3_motor_rr",
+    "r1__v3_arm_box",
+    "r1__v3_arm_box_foot_left_front",
+    "r1__v3_arm_box_foot_right_front",
+    "r1__v3_sonar_board",
+    "r1__v3_sonar_screw_00",
+    "r1__v3_sonar_screw_01",
+    "r1__v3_sonar_screw_10",
+    "r1__v3_sonar_screw_11",
+    "r1__v3_sonar_ring_left",
+    "r1__v3_sonar_can_left",
+    "r1__v3_sonar_mesh_left",
+    "r1__v3_sonar_ring_right",
+    "r1__v3_sonar_can_right",
+    "r1__v3_sonar_mesh_right",
+    "r1__v3_sonar_led_slot",
+    "r1__v3_yaw_servo",
+    "r1__v3_yaw_servo_ears",
+    "r1__v3_yaw_servo_spline",
+    "r1__v3_pi_board",
+    "r1__v3_pi_nylon_standoff_0",
+    "r1__v3_pi_nylon_standoff_1",
+    "r1__v3_pi_nylon_standoff_2",
+    "r1__v3_pi_nylon_standoff_3",
+    "r1__v3_pi_heatsink_fan",
+    "r1__v3_pi_ethernet",
+    "r1__v3_pi_usb_0",
+    "r1__v3_pi_usb_0_tongue",
+    "r1__v3_pi_usb_1",
+    "r1__v3_pi_usb_1_tongue",
+    "r1__v3_expansion_board",
+    "r1__v3_expansion_header_0",
+    "r1__v3_expansion_header_1",
+    "r1__v3_expansion_header_2",
+    "r1__v3_expansion_header_3",
+    "r1__v3_expansion_switch",
+    "r1__v3_standoff_00",
+    "r1__v3_standoff_01",
+    "r1__v3_standoff_10",
+    "r1__v3_standoff_11",
+    "r1__v3_cover_top",
+    "r1__v3_cover_slot_0",
+    "r1__v3_cover_slot_1",
+    "r1__v3_cover_slot_2",
+    "r1__v3_cover_slot_3",
+    "r1__v3_cover_slot_4",
+    "r1__v3_cover_front_window",
+    "r1__v3_cover_screw_left_front",
+    "r1__v3_cover_screw_left_rear",
+    "r1__v3_cover_side_left",
+    "r1__v3_cover_window_left_0",
+    "r1__v3_cover_window_left_1",
+    "r1__v3_cover_window_left_2",
+    "r1__v3_cover_window_left_3",
+    "r1__v3_cover_window_left_4",
+    "r1__v3_cover_window_left_5",
+    "r1__v3_cover_screw_right_front",
+    "r1__v3_cover_screw_right_rear",
+    "r1__v3_cover_side_right",
+    "r1__v3_cover_window_right_0",
+    "r1__v3_cover_window_right_1",
+    "r1__v3_cover_window_right_2",
+    "r1__v3_cover_window_right_3",
+    "r1__v3_cover_window_right_4",
+    "r1__v3_cover_window_right_5",
+    "r1__wheel_fl",
+    "r1__v3_wheel_fl_hub",
+    "r1__v3_wheel_fl_face_a",
+    "r1__v3_wheel_fl_spoke_a_0",
+    "r1__v3_wheel_fl_spoke_a_1",
+    "r1__v3_wheel_fl_spoke_a_2",
+    "r1__v3_wheel_fl_spoke_a_3",
+    "r1__v3_wheel_fl_spoke_a_4",
+    "r1__v3_wheel_fl_spoke_a_5",
+    "r1__v3_wheel_fl_spoke_a_6",
+    "r1__v3_wheel_fl_spoke_a_7",
+    "r1__v3_wheel_fl_spoke_a_8",
+    "r1__v3_wheel_fl_spoke_a_9",
+    "r1__v3_wheel_fl_cap_a",
+    "r1__v3_wheel_fl_tooth_a_0",
+    "r1__v3_wheel_fl_tooth_a_1",
+    "r1__v3_wheel_fl_tooth_a_2",
+    "r1__v3_wheel_fl_tooth_a_3",
+    "r1__v3_wheel_fl_tooth_a_4",
+    "r1__v3_wheel_fl_tooth_a_5",
+    "r1__v3_wheel_fl_tooth_a_6",
+    "r1__v3_wheel_fl_tooth_a_7",
+    "r1__v3_wheel_fl_tooth_a_8",
+    "r1__v3_wheel_fl_face_b",
+    "r1__v3_wheel_fl_spoke_b_0",
+    "r1__v3_wheel_fl_spoke_b_1",
+    "r1__v3_wheel_fl_spoke_b_2",
+    "r1__v3_wheel_fl_spoke_b_3",
+    "r1__v3_wheel_fl_spoke_b_4",
+    "r1__v3_wheel_fl_spoke_b_5",
+    "r1__v3_wheel_fl_spoke_b_6",
+    "r1__v3_wheel_fl_spoke_b_7",
+    "r1__v3_wheel_fl_spoke_b_8",
+    "r1__v3_wheel_fl_spoke_b_9",
+    "r1__v3_wheel_fl_cap_b",
+    "r1__v3_wheel_fl_tooth_b_0",
+    "r1__v3_wheel_fl_tooth_b_1",
+    "r1__v3_wheel_fl_tooth_b_2",
+    "r1__v3_wheel_fl_tooth_b_3",
+    "r1__v3_wheel_fl_tooth_b_4",
+    "r1__v3_wheel_fl_tooth_b_5",
+    "r1__v3_wheel_fl_tooth_b_6",
+    "r1__v3_wheel_fl_tooth_b_7",
+    "r1__v3_wheel_fl_tooth_b_8",
+    "r1__v3_wheel_fl_roller_0",
+    "r1__v3_wheel_fl_roller_1",
+    "r1__v3_wheel_fl_roller_2",
+    "r1__v3_wheel_fl_roller_3",
+    "r1__v3_wheel_fl_roller_4",
+    "r1__v3_wheel_fl_roller_5",
+    "r1__v3_wheel_fl_roller_6",
+    "r1__v3_wheel_fl_roller_7",
+    "r1__v3_wheel_fl_roller_8",
+    "r1__v3_wheel_fl_roller_0_body_contact",
+    "r1__v3_wheel_fl_roller_1_body_contact",
+    "r1__v3_wheel_fl_roller_2_body_contact",
+    "r1__v3_wheel_fl_roller_3_body_contact",
+    "r1__v3_wheel_fl_roller_4_body_contact",
+    "r1__v3_wheel_fl_roller_5_body_contact",
+    "r1__v3_wheel_fl_roller_6_body_contact",
+    "r1__v3_wheel_fl_roller_7_body_contact",
+    "r1__v3_wheel_fl_roller_8_body_contact",
+    "r1__wheel_fr",
+    "r1__v3_wheel_fr_hub",
+    "r1__v3_wheel_fr_face_a",
+    "r1__v3_wheel_fr_spoke_a_0",
+    "r1__v3_wheel_fr_spoke_a_1",
+    "r1__v3_wheel_fr_spoke_a_2",
+    "r1__v3_wheel_fr_spoke_a_3",
+    "r1__v3_wheel_fr_spoke_a_4",
+    "r1__v3_wheel_fr_spoke_a_5",
+    "r1__v3_wheel_fr_spoke_a_6",
+    "r1__v3_wheel_fr_spoke_a_7",
+    "r1__v3_wheel_fr_spoke_a_8",
+    "r1__v3_wheel_fr_spoke_a_9",
+    "r1__v3_wheel_fr_cap_a",
+    "r1__v3_wheel_fr_tooth_a_0",
+    "r1__v3_wheel_fr_tooth_a_1",
+    "r1__v3_wheel_fr_tooth_a_2",
+    "r1__v3_wheel_fr_tooth_a_3",
+    "r1__v3_wheel_fr_tooth_a_4",
+    "r1__v3_wheel_fr_tooth_a_5",
+    "r1__v3_wheel_fr_tooth_a_6",
+    "r1__v3_wheel_fr_tooth_a_7",
+    "r1__v3_wheel_fr_tooth_a_8",
+    "r1__v3_wheel_fr_face_b",
+    "r1__v3_wheel_fr_spoke_b_0",
+    "r1__v3_wheel_fr_spoke_b_1",
+    "r1__v3_wheel_fr_spoke_b_2",
+    "r1__v3_wheel_fr_spoke_b_3",
+    "r1__v3_wheel_fr_spoke_b_4",
+    "r1__v3_wheel_fr_spoke_b_5",
+    "r1__v3_wheel_fr_spoke_b_6",
+    "r1__v3_wheel_fr_spoke_b_7",
+    "r1__v3_wheel_fr_spoke_b_8",
+    "r1__v3_wheel_fr_spoke_b_9",
+    "r1__v3_wheel_fr_cap_b",
+    "r1__v3_wheel_fr_tooth_b_0",
+    "r1__v3_wheel_fr_tooth_b_1",
+    "r1__v3_wheel_fr_tooth_b_2",
+    "r1__v3_wheel_fr_tooth_b_3",
+    "r1__v3_wheel_fr_tooth_b_4",
+    "r1__v3_wheel_fr_tooth_b_5",
+    "r1__v3_wheel_fr_tooth_b_6",
+    "r1__v3_wheel_fr_tooth_b_7",
+    "r1__v3_wheel_fr_tooth_b_8",
+    "r1__v3_wheel_fr_roller_0",
+    "r1__v3_wheel_fr_roller_1",
+    "r1__v3_wheel_fr_roller_2",
+    "r1__v3_wheel_fr_roller_3",
+    "r1__v3_wheel_fr_roller_4",
+    "r1__v3_wheel_fr_roller_5",
+    "r1__v3_wheel_fr_roller_6",
+    "r1__v3_wheel_fr_roller_7",
+    "r1__v3_wheel_fr_roller_8",
+    "r1__v3_wheel_fr_roller_0_body_contact",
+    "r1__v3_wheel_fr_roller_1_body_contact",
+    "r1__v3_wheel_fr_roller_2_body_contact",
+    "r1__v3_wheel_fr_roller_3_body_contact",
+    "r1__v3_wheel_fr_roller_4_body_contact",
+    "r1__v3_wheel_fr_roller_5_body_contact",
+    "r1__v3_wheel_fr_roller_6_body_contact",
+    "r1__v3_wheel_fr_roller_7_body_contact",
+    "r1__v3_wheel_fr_roller_8_body_contact",
+    "r1__wheel_rl",
+    "r1__v3_wheel_rl_hub",
+    "r1__v3_wheel_rl_face_a",
+    "r1__v3_wheel_rl_spoke_a_0",
+    "r1__v3_wheel_rl_spoke_a_1",
+    "r1__v3_wheel_rl_spoke_a_2",
+    "r1__v3_wheel_rl_spoke_a_3",
+    "r1__v3_wheel_rl_spoke_a_4",
+    "r1__v3_wheel_rl_spoke_a_5",
+    "r1__v3_wheel_rl_spoke_a_6",
+    "r1__v3_wheel_rl_spoke_a_7",
+    "r1__v3_wheel_rl_spoke_a_8",
+    "r1__v3_wheel_rl_spoke_a_9",
+    "r1__v3_wheel_rl_cap_a",
+    "r1__v3_wheel_rl_tooth_a_0",
+    "r1__v3_wheel_rl_tooth_a_1",
+    "r1__v3_wheel_rl_tooth_a_2",
+    "r1__v3_wheel_rl_tooth_a_3",
+    "r1__v3_wheel_rl_tooth_a_4",
+    "r1__v3_wheel_rl_tooth_a_5",
+    "r1__v3_wheel_rl_tooth_a_6",
+    "r1__v3_wheel_rl_tooth_a_7",
+    "r1__v3_wheel_rl_tooth_a_8",
+    "r1__v3_wheel_rl_face_b",
+    "r1__v3_wheel_rl_spoke_b_0",
+    "r1__v3_wheel_rl_spoke_b_1",
+    "r1__v3_wheel_rl_spoke_b_2",
+    "r1__v3_wheel_rl_spoke_b_3",
+    "r1__v3_wheel_rl_spoke_b_4",
+    "r1__v3_wheel_rl_spoke_b_5",
+    "r1__v3_wheel_rl_spoke_b_6",
+    "r1__v3_wheel_rl_spoke_b_7",
+    "r1__v3_wheel_rl_spoke_b_8",
+    "r1__v3_wheel_rl_spoke_b_9",
+    "r1__v3_wheel_rl_cap_b",
+    "r1__v3_wheel_rl_tooth_b_0",
+    "r1__v3_wheel_rl_tooth_b_1",
+    "r1__v3_wheel_rl_tooth_b_2",
+    "r1__v3_wheel_rl_tooth_b_3",
+    "r1__v3_wheel_rl_tooth_b_4",
+    "r1__v3_wheel_rl_tooth_b_5",
+    "r1__v3_wheel_rl_tooth_b_6",
+    "r1__v3_wheel_rl_tooth_b_7",
+    "r1__v3_wheel_rl_tooth_b_8",
+    "r1__v3_wheel_rl_roller_0",
+    "r1__v3_wheel_rl_roller_1",
+    "r1__v3_wheel_rl_roller_2",
+    "r1__v3_wheel_rl_roller_3",
+    "r1__v3_wheel_rl_roller_4",
+    "r1__v3_wheel_rl_roller_5",
+    "r1__v3_wheel_rl_roller_6",
+    "r1__v3_wheel_rl_roller_7",
+    "r1__v3_wheel_rl_roller_8",
+    "r1__v3_wheel_rl_roller_0_body_contact",
+    "r1__v3_wheel_rl_roller_1_body_contact",
+    "r1__v3_wheel_rl_roller_2_body_contact",
+    "r1__v3_wheel_rl_roller_3_body_contact",
+    "r1__v3_wheel_rl_roller_4_body_contact",
+    "r1__v3_wheel_rl_roller_5_body_contact",
+    "r1__v3_wheel_rl_roller_6_body_contact",
+    "r1__v3_wheel_rl_roller_7_body_contact",
+    "r1__v3_wheel_rl_roller_8_body_contact",
+    "r1__wheel_rr",
+    "r1__v3_wheel_rr_hub",
+    "r1__v3_wheel_rr_face_a",
+    "r1__v3_wheel_rr_spoke_a_0",
+    "r1__v3_wheel_rr_spoke_a_1",
+    "r1__v3_wheel_rr_spoke_a_2",
+    "r1__v3_wheel_rr_spoke_a_3",
+    "r1__v3_wheel_rr_spoke_a_4",
+    "r1__v3_wheel_rr_spoke_a_5",
+    "r1__v3_wheel_rr_spoke_a_6",
+    "r1__v3_wheel_rr_spoke_a_7",
+    "r1__v3_wheel_rr_spoke_a_8",
+    "r1__v3_wheel_rr_spoke_a_9",
+    "r1__v3_wheel_rr_cap_a",
+    "r1__v3_wheel_rr_tooth_a_0",
+    "r1__v3_wheel_rr_tooth_a_1",
+    "r1__v3_wheel_rr_tooth_a_2",
+    "r1__v3_wheel_rr_tooth_a_3",
+    "r1__v3_wheel_rr_tooth_a_4",
+    "r1__v3_wheel_rr_tooth_a_5",
+    "r1__v3_wheel_rr_tooth_a_6",
+    "r1__v3_wheel_rr_tooth_a_7",
+    "r1__v3_wheel_rr_tooth_a_8",
+    "r1__v3_wheel_rr_face_b",
+    "r1__v3_wheel_rr_spoke_b_0",
+    "r1__v3_wheel_rr_spoke_b_1",
+    "r1__v3_wheel_rr_spoke_b_2",
+    "r1__v3_wheel_rr_spoke_b_3",
+    "r1__v3_wheel_rr_spoke_b_4",
+    "r1__v3_wheel_rr_spoke_b_5",
+    "r1__v3_wheel_rr_spoke_b_6",
+    "r1__v3_wheel_rr_spoke_b_7",
+    "r1__v3_wheel_rr_spoke_b_8",
+    "r1__v3_wheel_rr_spoke_b_9",
+    "r1__v3_wheel_rr_cap_b",
+    "r1__v3_wheel_rr_tooth_b_0",
+    "r1__v3_wheel_rr_tooth_b_1",
+    "r1__v3_wheel_rr_tooth_b_2",
+    "r1__v3_wheel_rr_tooth_b_3",
+    "r1__v3_wheel_rr_tooth_b_4",
+    "r1__v3_wheel_rr_tooth_b_5",
+    "r1__v3_wheel_rr_tooth_b_6",
+    "r1__v3_wheel_rr_tooth_b_7",
+    "r1__v3_wheel_rr_tooth_b_8",
+    "r1__v3_wheel_rr_roller_0",
+    "r1__v3_wheel_rr_roller_1",
+    "r1__v3_wheel_rr_roller_2",
+    "r1__v3_wheel_rr_roller_3",
+    "r1__v3_wheel_rr_roller_4",
+    "r1__v3_wheel_rr_roller_5",
+    "r1__v3_wheel_rr_roller_6",
+    "r1__v3_wheel_rr_roller_7",
+    "r1__v3_wheel_rr_roller_8",
+    "r1__v3_wheel_rr_roller_0_body_contact",
+    "r1__v3_wheel_rr_roller_1_body_contact",
+    "r1__v3_wheel_rr_roller_2_body_contact",
+    "r1__v3_wheel_rr_roller_3_body_contact",
+    "r1__v3_wheel_rr_roller_4_body_contact",
+    "r1__v3_wheel_rr_roller_5_body_contact",
+    "r1__v3_wheel_rr_roller_6_body_contact",
+    "r1__v3_wheel_rr_roller_7_body_contact",
+    "r1__v3_wheel_rr_roller_8_body_contact",
+    "r1__arm_pedestal_collision",
+    "r1__v3_yaw_horn",
+    "r1__v3_shoulder_bracket_floor",
+    "r1__v3_shoulder_bracket_screw_0",
+    "r1__v3_shoulder_bracket_screw_1",
+    "r1__v3_shoulder_bracket_screw_2",
+    "r1__v3_shoulder_bracket_screw_3",
+    "r1__v3_shoulder_bracket_plate_left",
+    "r1__v3_shoulder_bracket_slot_left",
+    "r1__v3_shoulder_bracket_plate_right",
+    "r1__v3_shoulder_bracket_slot_right",
+    "r1__v3_shoulder_horn",
+    "r1__v3_shoulder_horn_screw_0",
+    "r1__v3_shoulder_horn_screw_1",
+    "r1__v3_shoulder_horn_screw_2",
+    "r1__v3_shoulder_horn_screw_3",
+    "r1__v3_shoulder_bearing",
+    "r1__upper_arm_collision",
+    "r1__v3_shoulder_servo",
+    "r1__v3_shoulder_servo_ears",
+    "r1__v3_shoulder_servo_label",
+    "r1__v3_shoulder_servo_spline",
+    "r1__v3_upper_arm_cap",
+    "r1__v3_upper_arm_rail_top_left",
+    "r1__v3_upper_arm_rail_bot_left",
+    "r1__v3_upper_arm_brace_left_0",
+    "r1__v3_upper_arm_brace_left_1",
+    "r1__v3_upper_arm_post_left_0",
+    "r1__v3_upper_arm_post_left_1",
+    "r1__v3_upper_arm_far_disc_left",
+    "r1__v3_upper_arm_far_hole_left",
+    "r1__v3_upper_arm_rail_top_right",
+    "r1__v3_upper_arm_rail_bot_right",
+    "r1__v3_upper_arm_brace_right_0",
+    "r1__v3_upper_arm_brace_right_1",
+    "r1__v3_upper_arm_post_right_0",
+    "r1__v3_upper_arm_post_right_1",
+    "r1__v3_upper_arm_far_disc_right",
+    "r1__v3_upper_arm_far_hole_right",
+    "r1__forearm_collision",
+    "r1__v3_elbow_servo",
+    "r1__v3_elbow_servo_ears",
+    "r1__v3_wrist_servo",
+    "r1__v3_wrist_servo_ears",
+    "r1__v3_elbow_horn",
+    "r1__v3_wrist_horn",
+    "r1__v3_forearm_rail_top_left",
+    "r1__v3_forearm_rail_bot_left",
+    "r1__v3_forearm_brace_left_0",
+    "r1__v3_forearm_brace_left_1",
+    "r1__v3_forearm_post_left_1",
+    "r1__v3_forearm_near_disc_left",
+    "r1__v3_forearm_near_hole_left",
+    "r1__v3_forearm_far_disc_left",
+    "r1__v3_forearm_far_hole_left",
+    "r1__v3_forearm_rail_top_right",
+    "r1__v3_forearm_rail_bot_right",
+    "r1__v3_forearm_brace_right_0",
+    "r1__v3_forearm_brace_right_1",
+    "r1__v3_forearm_post_right_1",
+    "r1__v3_forearm_near_disc_right",
+    "r1__v3_forearm_near_hole_right",
+    "r1__v3_forearm_far_disc_right",
+    "r1__v3_forearm_far_hole_right",
+    "r1__wrist_collision",
+    "r1__camera_bracket",
+    "r1__v3_wrist_bracket_left",
+    "r1__v3_wrist_bearing_left",
+    "r1__v3_wrist_bracket_right",
+    "r1__v3_wrist_bearing_right",
+    "r1__v3_gripper_base_plate",
+    "r1__v3_gripper_top_plate",
+    "r1__v3_gripper_bottom_plate",
+    "r1__v3_gripper_servo",
+    "r1__v3_gripper_servo_ears",
+    "r1__v3_gripper_gear",
+    "r1__v3_gripper_pivot_0",
+    "r1__v3_gripper_pivot_1",
+    "r1__v3_camera_lens",
+    "r1__v3_camera_lens_ring",
+    "r1__v3_camera_lens_glass",
+    "r1__v3_camera_pcb",
+    "r1__v3_camera_mount_plate",
+    "r1__v3_camera_standoff_0",
+    "r1__v3_camera_standoff_1",
+    "r1__v3_camera_standoff_2",
+    "r1__v3_camera_standoff_3",
+    "r1__v3_camera_bracket",
+    "r1__left_finger",
+    "r1__v3_left_jaw_finger_a",
+    "r1__v3_left_jaw_finger_b",
+    "r1__v3_left_jaw_finger_joint",
+    "r1__v3_left_jaw_pad",
+    "r1__v3_left_jaw_pad_tip",
+    "r1__right_finger",
+    "r1__v3_right_jaw_finger_a",
+    "r1__v3_right_jaw_finger_b",
+    "r1__v3_right_jaw_finger_joint",
+    "r1__v3_right_jaw_pad",
+    "r1__v3_right_jaw_pad_tip",
+    "cargo_cyan_2_geom"
+  ],
+  "fields": {
+    "bvh_aabb": {
+      "shape": [
+        12434,
+        6
+      ],
+      "dtype": "float64",
+      "sha256": "a0122f8c552ce5dcea4d9cdbd46e20818388db427eb1a8cc241048e6552882ca"
+    },
+    "bvh_child": {
+      "shape": [
+        12434,
+        2
+      ],
+      "dtype": "int32",
+      "sha256": "75e90ab9c06ddf348c57693b3dc00c93197de8dfac89a2e9214ce031c13763ea"
+    },
+    "bvh_depth": {
+      "shape": [
+        12434
+      ],
+      "dtype": "int32",
+      "sha256": "98fa3f5a80d70beec296e1d370a70e026c19f7477e016e2d9f57c00b15fbb02c"
+    },
+    "bvh_nodeid": {
+      "shape": [
+        12434
+      ],
+      "dtype": "int32",
+      "sha256": "b8d136c2d49cd72f0b6f1176b8062684f3608ec23c29f8446b47a347a4dc8049"
+    },
+    "geom_aabb": {
+      "shape": [
+        469,
+        6
+      ],
+      "dtype": "float64",
+      "sha256": "66b72bd5119690eacbef7b54807fb10b61d587b4196d0865784d74ebccd45ae4"
+    },
+    "geom_adhesion": {
+      "shape": [
+        469
+      ],
+      "dtype": "float64",
+      "sha256": "ee0352f75df1009fa6f5eaf323a1ed55c127cc679ac6b9de70b1b3f8dc9ece76"
+    },
+    "geom_bodyid": {
+      "shape": [
+        469
+      ],
+      "dtype": "int32",
+      "sha256": "2844f61b3c83152fd6707354bd707116a8c353f9636e3f40eaf3b33ff8c35df4"
+    },
+    "geom_conaffinity": {
+      "shape": [
+        469
+      ],
+      "dtype": "int32",
+      "sha256": "da710e0b8cda524f8026e50c60fc8aa4e01f1a2170bb58207d8c31a171c695a1"
+    },
+    "geom_condim": {
+      "shape": [
+        469
+      ],
+      "dtype": "int32",
+      "sha256": "8c2b9d80d4b611d5bc4b6f415349cc7ed4a139749bfe1bcd45083bc9d851189a"
+    },
+    "geom_contype": {
+      "shape": [
+        469
+      ],
+      "dtype": "int32",
+      "sha256": "fb6e9624ee8e042fcd00edbff907b7d05a0e75a5e8af31dc70503b92cf40f403"
+    },
+    "geom_dataid": {
+      "shape": [
+        469
+      ],
+      "dtype": "int32",
+      "sha256": "4121add766fcf62cd940e3291704fc655a2efd7c45538dd22876234fd4618220"
+    },
+    "geom_fluid": {
+      "shape": [
+        469,
+        12
+      ],
+      "dtype": "float64",
+      "sha256": "991f7db25142564ea707b1d8727314f077520c9063853cad198c7d3456e1000e"
+    },
+    "geom_friction": {
+      "shape": [
+        469,
+        3
+      ],
+      "dtype": "float64",
+      "sha256": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947"
+    },
+    "geom_gap": {
+      "shape": [
+        469
+      ],
+      "dtype": "float64",
+      "sha256": "ee0352f75df1009fa6f5eaf323a1ed55c127cc679ac6b9de70b1b3f8dc9ece76"
+    },
+    "geom_group": {
+      "shape": [
+        469
+      ],
+      "dtype": "int32",
+      "sha256": "cf0a30d40d953ef7ccce26f987411fcf30ce1bb4d6292395c26c603aa22527f5"
+    },
+    "geom_margin": {
+      "shape": [
+        469
+      ],
+      "dtype": "float64",
+      "sha256": "ee0352f75df1009fa6f5eaf323a1ed55c127cc679ac6b9de70b1b3f8dc9ece76"
+    },
+    "geom_matid": {
+      "shape": [
+        469
+      ],
+      "dtype": "int32",
+      "sha256": "1fe7f45a609e0d363ddd22a266c1aca93f2d7bdef739c87a6fb3ab2359d43b7f"
+    },
+    "geom_plugin": {
+      "shape": [
+        469
+      ],
+      "dtype": "int32",
+      "sha256": "dbc186c793bbb5ce41256e929b00e8ab19c5c08f8d651a6db04447a0ed3dd17a"
+    },
+    "geom_pos": {
+      "shape": [
+        469,
+        3
+      ],
+      "dtype": "float64",
+      "sha256": "981036c1b204f7b92cf01e71ed681682093b9eee7fc9206d1d37321508834736"
+    },
+    "geom_priority": {
+      "shape": [
+        469
+      ],
+      "dtype": "int32",
+      "sha256": "cd9281b6b30c6b823ea4e05ef5f11a69417ec8ad7cba094ccb3641a1fe49ceb7"
+    },
+    "geom_quat": {
+      "shape": [
+        469,
+        4
+      ],
+      "dtype": "float64",
+      "sha256": "89fe0fd67699ae17859dbe37f4472c0b7692cd86f44dd862408967059c36ef27"
+    },
+    "geom_rbound": {
+      "shape": [
+        469
+      ],
+      "dtype": "float64",
+      "sha256": "f9656b2878f7456391478bc64a3430017435f9e62e4d7fda2dd7451a2458875a"
+    },
+    "geom_rgba": {
+      "shape": [
+        469,
+        4
+      ],
+      "dtype": "float32",
+      "sha256": "b7b4251e354be49b3d5df9a351bf5ab4418b329efc22bd76de0a939ecb30aaa8"
+    },
+    "geom_sameframe": {
+      "shape": [
+        469
+      ],
+      "dtype": "uint8",
+      "sha256": "8a5a0f7321874d421894961dea1d9afd24ca123155aa2069d4c429d4c56a25c9"
+    },
+    "geom_size": {
+      "shape": [
+        469,
+        3
+      ],
+      "dtype": "float64",
+      "sha256": "a278c72050c28421a20bd22ae131aca69159e85c46f0d0ebcda3c78c77907a64"
+    },
+    "geom_solimp": {
+      "shape": [
+        469,
+        5
+      ],
+      "dtype": "float64",
+      "sha256": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+    },
+    "geom_solmix": {
+      "shape": [
+        469
+      ],
+      "dtype": "float64",
+      "sha256": "6030be7d68144a1bb7302e2990aaf648bf759e8ca3432a032026389ca4798a28"
+    },
+    "geom_solref": {
+      "shape": [
+        469,
+        2
+      ],
+      "dtype": "float64",
+      "sha256": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000"
+    },
+    "geom_surfacevel": {
+      "shape": [
+        469,
+        6
+      ],
+      "dtype": "float64",
+      "sha256": "774f6d63c8fac3ff6d9dc5707522bfd72d2be038d66689c91db7e67027a006f1"
+    },
+    "geom_type": {
+      "shape": [
+        469
+      ],
+      "dtype": "int32",
+      "sha256": "0b46bc67d9ac6d5bed8b1adccaaa506fe211fb9052342d6ef37a4685565871cd"
+    },
+    "geom_user": {
+      "shape": [
+        469,
+        0
+      ],
+      "dtype": "float64",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "mesh_bvhadr": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "47f3474edb8913e02b1709209edb439209b2ccaf05c34e350d9d8304ae99520f"
+    },
+    "mesh_bvhnum": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "4a3829f93c1cd24ab9cab472dddc47b45c332dc722874cdf4d9c4f017524a209"
+    },
+    "mesh_extrema": {
+      "shape": [
+        20,
+        27
+      ],
+      "dtype": "int32",
+      "sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+    },
+    "mesh_face": {
+      "shape": [
+        6192,
+        3
+      ],
+      "dtype": "int32",
+      "sha256": "6f56b39d7c7fd49f492f03780551c358a6e00348ebfd195cf05fa70263a7f0a9"
+    },
+    "mesh_faceadr": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "08158b74b67180d6cd8997e79646adce3e65026d28c36f2e6d0cac8f5cd13ab1"
+    },
+    "mesh_facenormal": {
+      "shape": [
+        6192,
+        3
+      ],
+      "dtype": "int32",
+      "sha256": "6f56b39d7c7fd49f492f03780551c358a6e00348ebfd195cf05fa70263a7f0a9"
+    },
+    "mesh_facenum": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "a53892ec865a5c531e8b39ab9d180ee083f71c09b53319dfb11e50535729b514"
+    },
+    "mesh_facetexcoord": {
+      "shape": [
+        6192,
+        3
+      ],
+      "dtype": "int32",
+      "sha256": "d0eb459f34755537667c596efa66cb9a413f447559701e062d3c9d23ee99f962"
+    },
+    "mesh_graph": {
+      "shape": [
+        43838
+      ],
+      "dtype": "int32",
+      "sha256": "546e9b1b5525b6b068625eb6d0fc8524044d852f6d186610b63b8da08b47a9fe"
+    },
+    "mesh_graphadr": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "9cbb62bdf761d7dd89929c69ed9cc39e44e65a1450bad9df0c97e41ee90c119d"
+    },
+    "mesh_normal": {
+      "shape": [
+        3968,
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+    },
+    "mesh_normaladr": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "4bed82a34b89d199cbeb229846906685b5c8ee3c964426f1db3ef826b80da8d0"
+    },
+    "mesh_normalnum": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "bcd1f847b85481f6af24180dbd764bad3ca7dbebf8f5ee0622b44a78a25c93cd"
+    },
+    "mesh_octadr": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "6d92a8ea911d0d96dad7f2d76f2647e8b612e645140157668298db20a9412d4b"
+    },
+    "mesh_octnum": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "5b6fb58e61fa475939767d68a446f97f1bff02c0e5935a3ea8bb51e6515783d8"
+    },
+    "mesh_pathadr": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "9cbb62bdf761d7dd89929c69ed9cc39e44e65a1450bad9df0c97e41ee90c119d"
+    },
+    "mesh_polyadr": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "5b6fb58e61fa475939767d68a446f97f1bff02c0e5935a3ea8bb51e6515783d8"
+    },
+    "mesh_polymap": {
+      "shape": [
+        11918
+      ],
+      "dtype": "int32",
+      "sha256": "27b7b0849500edaa088cc4f4ee771b977b830926daa19b0d398b65005ac78394"
+    },
+    "mesh_polymapadr": {
+      "shape": [
+        3968
+      ],
+      "dtype": "int32",
+      "sha256": "ae7fb31c7c9beebd6831a215d9356026c7920bbf22f78b4dee4ab090dc38b65a"
+    },
+    "mesh_polymapnum": {
+      "shape": [
+        3968
+      ],
+      "dtype": "int32",
+      "sha256": "d6d306c8be6b59d3bcef937a697ce4b4ae83684abef075d44f46c6b1279193ec"
+    },
+    "mesh_polynormal": {
+      "shape": [
+        3037,
+        3
+      ],
+      "dtype": "float64",
+      "sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+    },
+    "mesh_polynum": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "95d5a7ca79006a542b9f3c94afa602a507f7348bad1f4314d60b26ab70a79685"
+    },
+    "mesh_polyvert": {
+      "shape": [
+        11918
+      ],
+      "dtype": "int32",
+      "sha256": "c00d5e203744abcbd177c78c420b62b9ddb733a89d75d6608c35b6ec1b9b4317"
+    },
+    "mesh_polyvertadr": {
+      "shape": [
+        3037
+      ],
+      "dtype": "int32",
+      "sha256": "5e24a3e221999379c76a5e4d56a813e24615a90ebc7eb1eced1f101ef2c027b0"
+    },
+    "mesh_polyvertnum": {
+      "shape": [
+        3037
+      ],
+      "dtype": "int32",
+      "sha256": "f9ddda5175a6ac987431905c08ceda51239ed3a27f5508499d508d8675f87633"
+    },
+    "mesh_pos": {
+      "shape": [
+        20,
+        3
+      ],
+      "dtype": "float64",
+      "sha256": "2121a2d4e5edb17c3fd05576180b8134f59c8fb22598a3042e13bfc3b248a781"
+    },
+    "mesh_quat": {
+      "shape": [
+        20,
+        4
+      ],
+      "dtype": "float64",
+      "sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+    },
+    "mesh_scale": {
+      "shape": [
+        20,
+        3
+      ],
+      "dtype": "float64",
+      "sha256": "4792527dc0cfcb6bace291e6254ff49779411462a91061a5cfbabcff1e12bbea"
+    },
+    "mesh_texcoord": {
+      "shape": [
+        0,
+        2
+      ],
+      "dtype": "float32",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "mesh_texcoordadr": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "6d92a8ea911d0d96dad7f2d76f2647e8b612e645140157668298db20a9412d4b"
+    },
+    "mesh_texcoordnum": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "5b6fb58e61fa475939767d68a446f97f1bff02c0e5935a3ea8bb51e6515783d8"
+    },
+    "mesh_vert": {
+      "shape": [
+        3968,
+        3
+      ],
+      "dtype": "float32",
+      "sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+    },
+    "mesh_vertadr": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "4bed82a34b89d199cbeb229846906685b5c8ee3c964426f1db3ef826b80da8d0"
+    },
+    "mesh_vertnum": {
+      "shape": [
+        20
+      ],
+      "dtype": "int32",
+      "sha256": "bcd1f847b85481f6af24180dbd764bad3ca7dbebf8f5ee0622b44a78a25c93cd"
+    }
+  },
+  "npz_sha256": "db09a38541c2f5e792205ea9b03b872b5d638dbd74877675eb82b06eaa40191e"
+}

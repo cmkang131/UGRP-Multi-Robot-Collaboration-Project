@@ -1,0 +1,23 @@
+{
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "task": "simalt5",
+  "lease_files": [
+    "simalt5.json"
+  ],
+  "other_leases": [],
+  "processes": [
+    {
+      "pid": 9500,
+      "executable": "python3",
+      "owned": true,
+      "argv_sha256": "03cf4767d3b1abf84b05c65d6e54c5bddaa05df48822cafd768a092ed8992db3"
+    }
+  ],
+  "other_processes": [],
+  "may_stop_after_own_work_exits": true
+}

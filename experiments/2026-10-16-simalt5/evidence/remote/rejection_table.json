@@ -1,0 +1,90 @@
+{
+  "rounds": 3,
+  "distribution": [
+    {
+      "reason": "base_endpoint_over_5mm",
+      "count": 1,
+      "blocking_object": "r1__robot / floor",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric_trajectory_gate",
+      "observed_m": 0.012099249010431521
+    },
+    {
+      "reason": "unloaded_endpoint_pass",
+      "count": 3,
+      "blocking_object": "none",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "trajectory_gate"
+    },
+    {
+      "reason": "native_comparator_arithmetic_rejected",
+      "count": 4,
+      "blocking_object": "Plane\u2013Mesh transform arithmetic",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric; original math order restored in corrected controls"
+    }
+  ],
+  "funnel_tapes": [
+    {
+      "gate": "final tapes complete",
+      "entered": 4,
+      "passed": 4,
+      "rejected": 0
+    },
+    {
+      "gate": "overflow-free",
+      "entered": 4,
+      "passed": 4,
+      "rejected": 0
+    },
+    {
+      "gate": "endpoint5mm_2deg",
+      "entered": 4,
+      "passed": 3,
+      "rejected": 1
+    }
+  ],
+  "funnel_hold_time_samples": [
+    {
+      "gate": "hold samples",
+      "entered": 30,
+      "passed": 30,
+      "rejected": 0
+    },
+    {
+      "gate": "bilateral",
+      "entered": 30,
+      "passed": 30,
+      "rejected": 0
+    },
+    {
+      "gate": "height difference<=2mm",
+      "entered": 30,
+      "passed": 30,
+      "rejected": 0
+    }
+  ],
+  "funnel_profiles": [
+    {
+      "gate": "small scene all requirements",
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1
+    },
+    {
+      "gate": "beam3s",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "throughput N16/64/256",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0
+    }
+  ],
+  "threshold_basis": "user2026-10-16 proposal; no relaxation; hold30 is time samples not independent trials",
+  "raw": "/home/ugrp/ugrp-sim/runs/simalt5/warp-geometry312-grip/steps.npz",
+  "reproduce": "/home/ugrp/ugrp-sim/runs/simalt5/round3-plan.json"
+}

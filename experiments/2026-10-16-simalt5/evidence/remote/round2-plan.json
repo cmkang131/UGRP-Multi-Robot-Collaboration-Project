@@ -1,0 +1,61 @@
+{
+  "round": 2,
+  "purpose": "native version/backend controls; same Warp candidate, no tuning",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt5/rejection-before-round2.json",
+  "jobs": [
+    [
+      "c316-legacy-damping312-grip",
+      [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "-u",
+        "/home/ugrp/ugrp-sim/src/51048030/scripts/simalt_step_probe.py",
+        "--enabled",
+        "--fixture",
+        "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/simalt5/c316-legacy-damping312-grip",
+        "--engine",
+        "cpu",
+        "--case",
+        "grip",
+        "--sha",
+        "51048030",
+        "--capacity-reference",
+        "/home/ugrp/ugrp-sim/runs/simalt4/rev5/dense-capacity.json",
+        "--dense-capacity-v1",
+        "--backend-mode",
+        "legacy-plane-v1",
+        "--record-own-rgb",
+        "/home/ugrp/ugrp-sim/runs/simalt3/runtime/source",
+        "--compiled-reference-v1",
+        "/home/ugrp/ugrp-sim/runs/simalt5/compiled-312.json"
+      ]
+    ],
+    [
+      "c316-legacy-damping316-grip",
+      [
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-env/bin/python",
+        "-u",
+        "/home/ugrp/ugrp-sim/src/51048030/scripts/simalt_step_probe.py",
+        "--enabled",
+        "--fixture",
+        "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/simalt5/c316-legacy-damping316-grip",
+        "--engine",
+        "cpu",
+        "--case",
+        "grip",
+        "--sha",
+        "51048030",
+        "--capacity-reference",
+        "/home/ugrp/ugrp-sim/runs/simalt4/rev5/dense-capacity.json",
+        "--dense-capacity-v1",
+        "--backend-mode",
+        "legacy-plane-v1",
+        "--record-own-rgb",
+        "/home/ugrp/ugrp-sim/runs/simalt3/runtime/source"
+      ]
+    ]
+  ]
+}

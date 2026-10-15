@@ -1,0 +1,29 @@
+{
+  "round": 3,
+  "purpose": "validate C port against its original C312 implementation",
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt5/rejection-before-round3.json",
+  "command": [
+    "/home/ugrp/ugrp-sim/runs/simalt3/c-env/bin/python",
+    "-u",
+    "/home/ugrp/ugrp-sim/src/3bd0e1f6/scripts/simalt_step_probe.py",
+    "--enabled",
+    "--fixture",
+    "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/simalt5/c312-native-port-selfcontrol",
+    "--engine",
+    "cpu",
+    "--case",
+    "grip",
+    "--sha",
+    "3bd0e1f6e9d114bb4e156a945403ae802ca92303",
+    "--capacity-reference",
+    "/home/ugrp/ugrp-sim/runs/simalt4/rev5/dense-capacity.json",
+    "--dense-capacity-v1",
+    "--backend-mode",
+    "legacy-plane-v1",
+    "--record-own-rgb",
+    "/home/ugrp/ugrp-sim/runs/simalt3/runtime/source"
+  ],
+  "source_sha": "3bd0e1f6e9d114bb4e156a945403ae802ca92303"
+}

@@ -1,0 +1,14 @@
+{
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "C_version": "3.12.0",
+  "physics_steps": 0,
+  "method": "C312 model object directly into pinned MJWarp",
+  "status": "unsupported",
+  "error": "type object 'mujoco._enums.mjtIntegrator' has no attribute 'mjINT_DISCRETE'",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/ugrp/ugrp-sim/runs/simalt5/check-direct312.py\", line 17, in <module>\n    import mujoco_warp as mjw\n  File \"/home/ugrp/ugrp-sim/runs/simalt3/warp-env/lib/python3.12/site-packages/mujoco_warp/__init__.py\", line 26, in <module>\n    from mujoco_warp._src.forward import step as step\n  File \"/home/ugrp/ugrp-sim/runs/simalt3/warp-env/lib/python3.12/site-packages/mujoco_warp/_src/forward.py\", line 20, in <module>\n    from mujoco_warp._src import collision_driver\n  File \"/home/ugrp/ugrp-sim/runs/simalt3/warp-env/lib/python3.12/site-packages/mujoco_warp/_src/collision_driver.py\", line 20, in <module>\n    from mujoco_warp._src.collision_convex import convex_narrowphase\n  File \"/home/ugrp/ugrp-sim/runs/simalt3/warp-env/lib/python3.12/site-packages/mujoco_warp/_src/collision_convex.py\", line 20, in <module>\n    from mujoco_warp._src.collision_core import CollisionContext\n  File \"/home/ugrp/ugrp-sim/runs/simalt3/warp-env/lib/python3.12/site-packages/mujoco_warp/_src/collision_core.py\", line 23, in <module>\n    from mujoco_warp._src.math import safe_div\n  File \"/home/ugrp/ugrp-sim/runs/simalt3/warp-env/lib/python3.12/site-packages/mujoco_warp/_src/math.py\", line 20, in <module>\n    from mujoco_warp._src import types\n  File \"/home/ugrp/ugrp-sim/runs/simalt3/warp-env/lib/python3.12/site-packages/mujoco_warp/_src/types.py\", line 486, in <module>\n    class IntegratorType(enum.IntEnum):\n  File \"/home/ugrp/ugrp-sim/runs/simalt3/warp-env/lib/python3.12/site-packages/mujoco_warp/_src/types.py\", line 501, in IntegratorType\n    DISCRETE = mujoco.mjtIntegrator.mjINT_DISCRETE\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: type object 'mujoco._enums.mjtIntegrator' has no attribute 'mjINT_DISCRETE'\n"
+}

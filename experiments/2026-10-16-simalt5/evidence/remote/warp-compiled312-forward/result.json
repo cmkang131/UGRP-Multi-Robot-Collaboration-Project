@@ -1,0 +1,473 @@
+{
+  "sha": "e89ff153",
+  "script_sha256": "64f76ddd37cb8105a1c0ea10dc9a318bded782edd6c4af35489a907a59871237",
+  "engine": "warp",
+  "backend_mode": "legacy-plane-v1",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "mujoco": "3.16.0",
+  "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+  "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+  "case": "forward",
+  "dt": 0.00025,
+  "steps_planned": 16000,
+  "columns": [
+    "ncon",
+    "nefc",
+    "overflow",
+    "left_contacts",
+    "right_contacts",
+    "left_min_dist",
+    "right_min_dist",
+    "left_normal_N",
+    "right_normal_N",
+    "left_tangent_N",
+    "right_tangent_N",
+    "plane_mesh_contacts",
+    "minimum_dist",
+    "left_joint",
+    "right_joint",
+    "left_condim",
+    "right_condim"
+  ],
+  "nq": 60,
+  "nv": 58,
+  "pad_joint_qpos_indices": [
+    51,
+    52
+  ],
+  "options": {
+    "timestep": 0.00025,
+    "solver": 2.0,
+    "cone": 1.0,
+    "integrator": 3.0,
+    "iterations": 80.0,
+    "ls_iterations": 50.0,
+    "tolerance": 1e-08,
+    "noslip_iterations": 10.0,
+    "noslip_tolerance": 1e-06,
+    "ccd_iterations": 35.0,
+    "ccd_tolerance": 1e-06
+  },
+  "physics_overrides": {},
+  "status": "complete",
+  "capacities": {
+    "nconmax": 32,
+    "njmax": 256,
+    "naconmax": 32
+  },
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/e89ff153/scripts/simalt_step_probe.py",
+    "--enabled",
+    "--fixture",
+    "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/simalt5/warp-compiled312-forward",
+    "--engine",
+    "warp",
+    "--case",
+    "forward",
+    "--sha",
+    "e89ff153",
+    "--capacity-reference",
+    "/home/ugrp/ugrp-sim/runs/simalt4/rev5/dense-capacity.json",
+    "--dense-capacity-v1",
+    "--compiled-reference-v1",
+    "/home/ugrp/ugrp-sim/runs/simalt5/compiled-312.json",
+    "--backend-mode",
+    "legacy-plane-v1",
+    "--record-own-rgb",
+    "/home/ugrp/ugrp-sim/runs/simalt3/runtime/source"
+  ],
+  "initial_contacts": [
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_fl_roller_7_body_contact"
+      ],
+      "dist": -0.0005319599472082756,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_fl_roller_7_body_contact"
+      ],
+      "dist": -0.0005319565604148466,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_fl_roller_7_body_contact"
+      ],
+      "dist": -0.0005291078205450009,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_fl_roller_7_body_contact"
+      ],
+      "dist": -0.0005290574449186682,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_fr_roller_7_body_contact"
+      ],
+      "dist": -0.0005309530563522248,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_fr_roller_7_body_contact"
+      ],
+      "dist": -0.000530952003959753,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_fr_roller_7_body_contact"
+      ],
+      "dist": -0.0005308279377553961,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_fr_roller_7_body_contact"
+      ],
+      "dist": -0.0005308335529604358,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_rl_roller_7_body_contact"
+      ],
+      "dist": -0.00043928139878455456,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_rl_roller_7_body_contact"
+      ],
+      "dist": -0.0004390141122669819,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_rl_roller_7_body_contact"
+      ],
+      "dist": -0.0004390134727158034,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_rl_roller_7_body_contact"
+      ],
+      "dist": -0.00043928101575258383,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_rr_roller_7_body_contact"
+      ],
+      "dist": -0.00044341052558034225,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_rr_roller_7_body_contact"
+      ],
+      "dist": -0.0004403485018494675,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_rr_roller_7_body_contact"
+      ],
+      "dist": -0.00044027883563408157,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "r1__v3_wheel_rr_roller_7_body_contact"
+      ],
+      "dist": -0.0004433986384249286,
+      "dim": 3,
+      "friction": [
+        0.8,
+        0.8,
+        1e-05,
+        1e-05,
+        1e-05
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "cargo_cyan_2_geom"
+      ],
+      "dist": -0.00010775542026314477,
+      "dim": 3,
+      "friction": [
+        1.2,
+        1.2,
+        0.2,
+        0.01,
+        0.01
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "cargo_cyan_2_geom"
+      ],
+      "dist": -0.00010775542026314477,
+      "dim": 3,
+      "friction": [
+        1.2,
+        1.2,
+        0.2,
+        0.01,
+        0.01
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "cargo_cyan_2_geom"
+      ],
+      "dist": -0.00010775542026314477,
+      "dim": 3,
+      "friction": [
+        1.2,
+        1.2,
+        0.2,
+        0.01,
+        0.01
+      ]
+    },
+    {
+      "geoms": [
+        "floor",
+        "cargo_cyan_2_geom"
+      ],
+      "dist": -0.00010775542026314477,
+      "dim": 3,
+      "friction": [
+        1.2,
+        1.2,
+        0.2,
+        0.01,
+        0.01
+      ]
+    }
+  ],
+  "physics_hashes": {
+    "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+    "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+    "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+    "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b",
+    "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+    "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+    "actuator_gainprm": "7b638bee3ce9f9fb6eefd37b756d14fc5558a82852c213992840b28eb41c093c",
+    "actuator_biasprm": "362ba1e7b566dc523ce06ff9ebd4e9a1023ec96e53a5193731ed13d4a94ce006",
+    "geom_margin": "ee0352f75df1009fa6f5eaf323a1ed55c127cc679ac6b9de70b1b3f8dc9ece76",
+    "geom_gap": "ee0352f75df1009fa6f5eaf323a1ed55c127cc679ac6b9de70b1b3f8dc9ece76",
+    "geom_condim": "8c2b9d80d4b611d5bc4b6f415349cc7ed4a139749bfe1bcd45083bc9d851189a"
+  },
+  "compiled_compatibility": {
+    "mode": "compiled-312-v1",
+    "reference": "/home/ugrp/ugrp-sim/runs/simalt5/compiled-312.json",
+    "reference_sha256": "dad1846f0bcd7c3d267fc7baadd07f1e05beb30c7d4f29e899e396a3dc15bd2b",
+    "reference_version": "3.12.0",
+    "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+    "copied_array": "actuator_biasprm[:,2]",
+    "changes": [
+      {
+        "actuator": "r1__servo_arm_yaw",
+        "before": -0.9525326956383661,
+        "after": -1.4003999090747683
+      },
+      {
+        "actuator": "r1__servo_shoulder",
+        "before": -0.3514994573664441,
+        "after": -1.3904017267004583
+      },
+      {
+        "actuator": "r1__servo_elbow",
+        "before": -0.05706531248208201,
+        "after": -0.3104011296873109
+      },
+      {
+        "actuator": "r1__servo_wrist",
+        "before": -0.05662326423820336,
+        "after": -0.16026536692805718
+      }
+    ],
+    "other_audited_arrays_exact": true,
+    "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+    "new_physical_parameters": false
+  },
+  "recording_RGB_renderer": "C rasterizer on current engine state, evaluator only; not Warp render parity",
+  "warp": "1.15.0",
+  "warp_deterministic": "0",
+  "collision_adapter": {
+    "mode": "legacy-plane-v1",
+    "source": "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966",
+    "maxplanemesh": 3,
+    "tolplanemesh": 0.3,
+    "mesh_rbound_size_identity_verified": true,
+    "physics_parameters_modified": false
+  },
+  "backend_options": {
+    "timestep": 0.0002500000118743628,
+    "solver": 2.0,
+    "cone": 1.0,
+    "integrator": 3.0,
+    "iterations": 80.0,
+    "ls_iterations": 50.0,
+    "tolerance": 9.99999993922529e-09,
+    "noslip_iterations": 10.0,
+    "noslip_tolerance": 9.999999974752427e-07,
+    "ccd_iterations": 35.0,
+    "ccd_tolerance": 9.999999974752427e-07
+  },
+  "steps_done": 16000,
+  "sim_s": 4.0,
+  "own_RGB_ring": {
+    "frames": 40,
+    "Hz": 10,
+    "max_frames": 100,
+    "bytes": 923371,
+    "first_SIM_s": 0.1,
+    "last_SIM_s": 4.0
+  },
+  "wall_s": 42.904474357000026,
+  "steps_sha256": "5aca8e20f53e19fceaec92dc9049d7f011bdf56aad93d689d95b06b8fb1294bd",
+  "recording_only": true,
+  "online_RGB_ring": true,
+  "recording_bytes": 6560065
+}
