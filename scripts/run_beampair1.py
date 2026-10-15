@@ -176,6 +176,10 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.):
             def step(self,w,now,**kw):
                 if guard.active:
                     self.local_seen=None;self.last_seen_t=None
+                    # Inputs for both robots were captured before either
+                    # command was issued this tick. Re-sanitize the second
+                    # robot if its peer just closed on this same tick.
+                    w=guard.sanitize_world(dict(w))
                 before=self.phase
                 clean,done=super().step(w,now,**kw)
                 actual,disturbance=self.pair_perturb.apply(clean,phase_before=before,
