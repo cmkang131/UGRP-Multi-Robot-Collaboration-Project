@@ -101,7 +101,7 @@ def verify_model(model, name):
     resolve(name)
     audit = base.verify_model(model, 'noshadow_bright_v1')
     floor = model.geom('floor')
-    material = model.mat(int(floor.matid))
+    material = model.mat(int(model.geom_matid[floor.id]))
     tids = np.asarray(material.texid).reshape(-1)
     tid = next(int(t) for t in tids if t >= 0)
     n = int(model.tex_width[tid]*model.tex_height[tid]*model.tex_nchannel[tid])
@@ -112,7 +112,7 @@ def verify_model(model, name):
             np.bincount(original[:, c], minlength=256)) for c in range(3)):
         raise RuntimeError('v4 floor differs from v1')
     walls = [model.geom(i) for i in range(model.ngeom) if model.geom(i).name.startswith('zone_wall_')]
-    if not walls or any(not model.mat(int(g.matid)).name.startswith('contrast_v4_') for g in walls):
+    if not walls or any(not model.mat(int(model.geom_matid[g.id])).name.startswith('contrast_v4_') for g in walls):
         raise RuntimeError('v4 wall material binding missing')
     return {**audit, 'contrast': profile_record(name), 'floor_v1_histogram_exact': True,
             'checked_walls': len(walls)}
