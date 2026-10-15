@@ -17,13 +17,18 @@ def quant(xs):
 def main():
     assert platform.node().startswith('ugrp-sim-gcp2')
     OUT.mkdir(exist_ok=True)
-    reports=[];frame_rows=[]
+    reports=[];frame_rows=[];excluded=[]
     for n in (1,2,3):
         queue=json.loads((ROOT/f'reloc16-round{n}/queue.json').read_text())
         for task in queue['runs']:
             if task['kind']!='selfmap':continue
             raw=Path(task['raw']);result=json.loads((raw/'result.json').read_text())
-            if not result.get('frames'):continue
+            if not result.get('frames'):
+                p=raw/'result.json'
+                excluded.append(dict(run=task['name'],raw=str(raw),frames=0,status=result.get('status'),
+                    category='HOST_ERROR_before_RGB',failure=result.get('failure'),sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
+                    blocked_object='execution_environment',minimum_gap_m=None,gap_status='not_applicable_host_error'))
+                continue
             rows=read(raw/'trace.jsonl');counts=collections.Counter();reject=collections.Counter();ind=collections.Counter()
             detail=collections.defaultdict(list);files={}
             for name in ('trace.jsonl','result.json','eval_only/trajectory.jsonl'):
@@ -58,12 +63,13 @@ def main():
                 note='Sequential acquisition funnel; registered is independently latched after acquisition. Tracking frames have separate independent counts. Correspondences are instrumented separately where packet supports replay.'))
     with (OUT/'funnel-frames.csv').open('w') as f:
         writer=csv.DictWriter(f,fieldnames=list(frame_rows[0]));writer.writeheader();writer.writerows(frame_rows)
-    data=dict(schema='ugrp.reloc17.funnel.v1',analysis_host='gcp2',runs=reports,reproduction='PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python experiments/2026-10-16-reloc17/funnel.py',frame_table=str(OUT/'funnel-frames.csv'))
+    data=dict(schema='ugrp.reloc17.funnel.v1',analysis_host='gcp2',runs=reports,zero_frame_host_errors=excluded,reproduction='PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python experiments/2026-10-16-reloc17/funnel.py',frame_table=str(OUT/'funnel-frames.csv'))
     (OUT/'rejection-table.json').write_text(json.dumps(data,indent=2)+'\n')
     lines=['# reloc17 원본 프레임 관문 재집계','', '|실행|프레임→검출→갱신→PF resolved→mode→raw P→대응 NIS→기하축→유일→PF 일치→3뷰→수용|독립 registered|','|---|---|---:|']
     keys=['detected','sensor_update','pf_resolved','dominant_mode','raw_covariance','correspondence_nis','geometry_axes','global_unique','pf_geometry_agreement','three_views','registered']
     for r in reports:lines.append('|'+r['run']+'|'+str(r['cumulative']['frames'])+' → '+' → '.join(str(r['cumulative'][k]) for k in keys)+'|'+str(r['independent']['registered'])+'|')
     lines+=['','원본과 해시·사유별 거부·독립 통과 수는 rejection-table.json, 프레임별 값은 funnel-frames.csv.','기하/대응은 PF와 독립 계산되며 위 표는 비교용 순차 투영이다. PF가 막힌 뒤의 독립 통과를 수용으로 세지 않는다.']
+    lines+=['',f'별도 초기 HOST_ERROR {len(excluded)}회는 RGB0프레임으로 영상 관문 분모에 넣지 않았다. 실행명·원본·사유·result SHA256은 JSON의 zero_frame_host_errors에 보존했다.']
     (OUT/'funnel.md').write_text('\n'.join(lines)+'\n')
     print('\n'.join(lines))
 

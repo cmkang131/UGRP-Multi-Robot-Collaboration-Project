@@ -1,0 +1,27 @@
+931M	/home/ugrp/ugrp-sim/git-shared.git
+    PID     ELAPSED %CPU COMMAND
+   5230       01:02  0.1 /usr/lib/systemd/systemd --user
+   5231       01:02  0.0 (sd-pam)
+   5665       00:00  0.0 sshd: ugrp@notty
+   5666       00:00  0.0 bash -c du -sh ~/ugrp-sim/git-shared.git; ps -u ugrp -o pid,etime,pcpu,args | head -10; ~/ugrp-sim/ugrp/.venv-sim/bin/python -m pip freeze; dpkg-query -W libosmesa6 libgl1 libglfw3 python3.12; df -h /
+   5668       00:00  0.0 ps -u ugrp -o pid,etime,pcpu,args
+   5669       00:00  0.0 head -10
+absl-py==2.5.1
+etils==1.14.0
+fsspec==2026.9.0
+glfw==2.10.2
+mujoco==3.12.0
+numpy==2.5.2
+opencv-python-headless==5.0.0.93
+pillow==12.3.0
+PyOpenGL==3.1.10
+scipy==1.17.1
+typing_extensions==4.16.0
+websockets==15.0.1
+zipp==4.1.1
+libgl1:amd64	1.7.0-1build1
+libglfw3:amd64	3.3.10-1build1
+libosmesa6:amd64	25.1.7-1ubuntu2~24.04.2
+python3.12	3.12.3-1ubuntu0.17
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       387G  6.4G  381G   2% /

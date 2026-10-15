@@ -1071,6 +1071,68 @@
       "note": "Sequential acquisition funnel; registered is independently latched after acquisition. Tracking frames have separate independent counts. Correspondences are instrumented separately where packet supports replay."
     }
   ],
+  "zero_frame_host_errors": [
+    {
+      "run": "reloc16-r1-selfmap-93584-v5-93635d6e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v5-93635d6e/raw",
+      "frames": 0,
+      "status": "HOST_ERROR",
+      "category": "HOST_ERROR_before_RGB",
+      "failure": {
+        "type": "RuntimeError",
+        "message": "MISSING_EXISTING_ENV_DEPENDENCIES: matplotlib,c++"
+      },
+      "sha256": "801293b787ec6c0addf84474af28aac84c9b9e4ebb010fcff23e8111429af11c",
+      "blocked_object": "execution_environment",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable_host_error"
+    },
+    {
+      "run": "reloc16-r1-selfmap-93583-v5-93635d6e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v5-93635d6e/raw",
+      "frames": 0,
+      "status": "HOST_ERROR",
+      "category": "HOST_ERROR_before_RGB",
+      "failure": {
+        "type": "RuntimeError",
+        "message": "MISSING_EXISTING_ENV_DEPENDENCIES: matplotlib,c++"
+      },
+      "sha256": "a3ba38520324950e9094101bda4f2f1f0dd986c3f49a4f6d26fe310d148838fa",
+      "blocked_object": "execution_environment",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable_host_error"
+    },
+    {
+      "run": "reloc16-r1-selfmap-93584-v1-93635d6e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v1-93635d6e/raw",
+      "frames": 0,
+      "status": "HOST_ERROR",
+      "category": "HOST_ERROR_before_RGB",
+      "failure": {
+        "type": "RuntimeError",
+        "message": "MISSING_EXISTING_ENV_DEPENDENCIES: matplotlib,c++"
+      },
+      "sha256": "97cd619e320fcbe5c8ca357021fcd69d7c8052515f9d6b0024498a82deb392a6",
+      "blocked_object": "execution_environment",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable_host_error"
+    },
+    {
+      "run": "reloc16-r1-selfmap-93583-v1-93635d6e",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v1-93635d6e/raw",
+      "frames": 0,
+      "status": "HOST_ERROR",
+      "category": "HOST_ERROR_before_RGB",
+      "failure": {
+        "type": "RuntimeError",
+        "message": "MISSING_EXISTING_ENV_DEPENDENCIES: matplotlib,c++"
+      },
+      "sha256": "350c084de97dba1a87cd8e8901f35fc225f7c44b76f3e01dd401cebea51bfc7f",
+      "blocked_object": "execution_environment",
+      "minimum_gap_m": null,
+      "gap_status": "not_applicable_host_error"
+    }
+  ],
   "reproduction": "PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python experiments/2026-10-16-reloc17/funnel.py",
   "frame_table": "/home/ugrp/ugrp-sim/runs/reloc17-investigation/funnel-frames.csv"
 }
