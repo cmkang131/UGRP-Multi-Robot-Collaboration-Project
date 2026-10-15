@@ -22,6 +22,7 @@ if str(Path(__file__).resolve().parents[1]) not in sys.path:
 from harness import grasp_act_contract as c
 from harness.grasp_act_data import sha256, write_json, write_summary
 from harness.grasp_act_policy import ChunkExecutor
+from harness.grasp_act_inference import private_url
 from harness.grasp_act_rollout import OwnHistory, SoloSequence, SoloScore, InputAudit, evaluation_gates
 from scripts.grasp_act_training_guard import ROOT, require_gcp, source_sha
 
@@ -145,7 +146,6 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
         history = OwnHistory(rid, f'student-{plan["seed"]}', previous)
         (output / 'rgb' / rid).mkdir(parents=True)
         if actor_server_url:
-            from harness.grasp_act_inference import private_url
             report['execution']['actor_server_url']=private_url(actor_server_url)
             report['execution']['inference_device']='cuda_l4_batch1_v1'
             write_summary(output / 'summary.json', report)
