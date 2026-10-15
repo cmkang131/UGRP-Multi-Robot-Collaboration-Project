@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "beamact2-student",
+    "version": "0.1.0",
+    "purpose": "Default-off beam pair ACT student with unchanged READY/GO/ACK protocol",
+    "entry": "scripts/run_beamact2_student.py",
+    "runner": "scripts.run_beamact2_student",
+    "docs": "experiments/2026-10-16-beamact2/README.md",
+    "requires": "GCP2 CPU C MuJoCo only; reserved20; own RGB/issued only; no teacher actions; weld off",
+    "output_flag": "--output",
+    "output_kind": "directory",
+    "required_inputs": ["--plan", "--episode", "--dependency-root", "--model", "--actor-python", "--mode"],
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli"
+  }]
+}
