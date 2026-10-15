@@ -1,0 +1,129 @@
+{
+  "population_funnel": "/home/ugrp/ugrp-sim/ops-reviews/release25/release-short-analysis-8e81b7d9/population-funnels.json",
+  "population_funnel_sha256": "0c4d2f0fc3510f067ef3be15389f3af61570bd52c5b5cf0963a7cf612047fb57",
+  "cohorts": {
+    "current_A": {
+      "N": 3,
+      "success": 3,
+      "categories": {
+        "success": 3
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        }
+      ]
+    },
+    "current_B": {
+      "N": 3,
+      "success": 3,
+      "categories": {
+        "success": 3
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "reason_distribution": {},
+  "outcome_rejections": {},
+  "rejection_ledger": [],
+  "raw_sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110633-8e81b7d9/raw/result.json.zst",
+      "sha256": "1de089e9a7f5ace9a1d12da431ba1705767632fa888c797e19cac51159364054"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-110633-8e81b7d9/raw/result.json.zst",
+      "sha256": "b2f5727240d548f7d0405ba60b290fd8c29edba8b79da7a31d39b72424060183"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110603-8e81b7d9/raw/result.json.zst",
+      "sha256": "36df1333767e2f815b025fa987feb57002bdf8e22e65b05e879df4b53a67bfaa"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-88639-8e81b7d9/raw/result.json.zst",
+      "sha256": "cad308b039f591894719e01e6ebede1abfea1d90c1762bbb90ed8216d8b4b0a7"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-110600-8e81b7d9/raw/result.json.zst",
+      "sha256": "c1b0d5420165fd454b4660ef4ff37555eb832363a56d74628377b9025895dd49"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110602-8e81b7d9/raw/result.json.zst",
+      "sha256": "d3fed640e0730941f3a84a0926c2d323dc233652a7b2238b0b02944cc05c51da"
+    }
+  ],
+  "reproduce": "python3 /home/ugrp/ugrp-sim/ops-reviews/release25/analyze_release.py /home/ugrp/ugrp-sim/ops-reviews/release25/short-r2-config.json",
+  "candidate_funnels": "/home/ugrp/ugrp-sim/ops-reviews/release25/release-short-analysis-8e81b7d9/candidate-funnels.json",
+  "candidate_funnels_sha256": "117f6e3dab2dfbbce6b8e589c27f255b43d40af7ba1c86bed3a509c6d11beb24",
+  "candidate_funnels_script_sha256": "2ab38b8605a76a008094e7e7d31022db5feada72a5827c737752a1daad6ab922"
+}

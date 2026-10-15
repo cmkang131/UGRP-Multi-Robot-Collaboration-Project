@@ -1,0 +1,901 @@
+{
+  "analysis_script_sha256": "6fa9a608f073a55b08ad27f0bf018d49ea2dd5c6d707365e005ced8d170b6501",
+  "source_sha": "8e81b7d96c0c73171635348c90631462adfe1eb0",
+  "host": "gcp2",
+  "scene_profile": "walls_floor_contrast_v5_indigo110_s80",
+  "camera_quality": "no_mip_v1",
+  "stage": "short",
+  "cohorts": {
+    "current_A": {
+      "N": 3,
+      "success": 3,
+      "categories": {
+        "success": 3
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        }
+      ]
+    },
+    "current_B": {
+      "N": 3,
+      "success": 3,
+      "categories": {
+        "success": 3
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 3,
+          "cumulative_passed": 3,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "runs": [
+    {
+      "name": "release25-short-current_A-110633-8e81b7d9",
+      "seed": 110633,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110633-8e81b7d9/raw",
+      "source_sha": "8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "settle_recount": {
+        "rows": 25,
+        "best_settled_s": 2.5,
+        "all_times": [
+          80.4999999998244,
+          80.59999999982203,
+          80.69999999981967,
+          80.7999999998173,
+          80.89999999981494,
+          80.99999999981257,
+          81.09999999981021,
+          81.19999999980784,
+          81.29999999980548,
+          81.39999999980311,
+          81.49999999980075,
+          81.59999999979838,
+          81.69999999979602,
+          81.79999999979366,
+          81.89999999979129,
+          81.99999999978893,
+          82.09999999978656,
+          82.1999999997842,
+          82.29999999978183,
+          82.39999999977947,
+          82.4999999997771,
+          82.59999999977474,
+          82.69999999977237,
+          82.79999999977001,
+          82.89999999976764
+        ],
+        "source": "saved evaluator qpos+contact snapshots, mj_forward only; open issued PWM from original evaluation_last"
+      },
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 81.1999999997651,
+      "wall_s": 343.83784651300084,
+      "iteration": 1,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 1410,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    },
+    {
+      "name": "release25-short-current_B-110633-8e81b7d9",
+      "seed": 110633,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-110633-8e81b7d9/raw",
+      "source_sha": "8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "settle_recount": {
+        "rows": 25,
+        "best_settled_s": 2.5,
+        "all_times": [
+          77.29999999990007,
+          77.3999999998977,
+          77.49999999989534,
+          77.59999999989297,
+          77.69999999989061,
+          77.79999999988824,
+          77.89999999988588,
+          77.99999999988351,
+          78.09999999988115,
+          78.19999999987878,
+          78.29999999987642,
+          78.39999999987405,
+          78.49999999987169,
+          78.59999999986933,
+          78.69999999986696,
+          78.7999999998646,
+          78.89999999986223,
+          78.99999999985987,
+          79.0999999998575,
+          79.19999999985514,
+          79.29999999985277,
+          79.39999999985041,
+          79.49999999984804,
+          79.59999999984568,
+          79.69999999984331
+        ],
+        "source": "saved evaluator qpos+contact snapshots, mj_forward only; open issued PWM from original evaluation_last"
+      },
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 77.99999999984077,
+      "wall_s": 329.74061618999986,
+      "iteration": 1,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 1346,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    },
+    {
+      "name": "release25-short-current_A-110603-8e81b7d9",
+      "seed": 110603,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110603-8e81b7d9/raw",
+      "source_sha": "8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "settle_recount": {
+        "rows": 25,
+        "best_settled_s": 2.5,
+        "all_times": [
+          81.29999999980548,
+          81.39999999980311,
+          81.49999999980075,
+          81.59999999979838,
+          81.69999999979602,
+          81.79999999979366,
+          81.89999999979129,
+          81.99999999978893,
+          82.09999999978656,
+          82.1999999997842,
+          82.29999999978183,
+          82.39999999977947,
+          82.4999999997771,
+          82.59999999977474,
+          82.69999999977237,
+          82.79999999977001,
+          82.89999999976764,
+          82.99999999976528,
+          83.09999999976291,
+          83.19999999976055,
+          83.29999999975819,
+          83.39999999975582,
+          83.49999999975346,
+          83.59999999975109,
+          83.69999999974873
+        ],
+        "source": "saved evaluator qpos+contact snapshots, mj_forward only; open issued PWM from original evaluation_last"
+      },
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 81.99999999974618,
+      "wall_s": 346.38135118599894,
+      "iteration": 1,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 1426,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    },
+    {
+      "name": "release25-short-current_B-88639-8e81b7d9",
+      "seed": 88639,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-88639-8e81b7d9/raw",
+      "source_sha": "8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "settle_recount": {
+        "rows": 25,
+        "best_settled_s": 2.5,
+        "all_times": [
+          125.49999999876029,
+          125.59999999875792,
+          125.69999999875556,
+          125.7999999987532,
+          125.89999999875083,
+          125.99999999874846,
+          126.0999999987461,
+          126.19999999874373,
+          126.29999999874137,
+          126.399999998739,
+          126.49999999873664,
+          126.59999999873428,
+          126.69999999873191,
+          126.79999999872955,
+          126.89999999872718,
+          126.99999999872482,
+          127.09999999872245,
+          127.19999999872009,
+          127.29999999871772,
+          127.39999999871536,
+          127.499999998713,
+          127.59999999871063,
+          127.69999999870826,
+          127.7999999987059,
+          127.89999999870354
+        ],
+        "source": "saved evaluator qpos+contact snapshots, mj_forward only; open issued PWM from original evaluation_last"
+      },
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 126.19999999870099,
+      "wall_s": 523.1779071069996,
+      "iteration": 2,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 2310,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    },
+    {
+      "name": "release25-short-current_B-110600-8e81b7d9",
+      "seed": 110600,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-110600-8e81b7d9/raw",
+      "source_sha": "8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "settle_recount": {
+        "rows": 25,
+        "best_settled_s": 2.5,
+        "all_times": [
+          31.60000000005987,
+          31.70000000006035,
+          31.800000000060827,
+          31.900000000061304,
+          32.00000000006178,
+          32.10000000006226,
+          32.20000000006274,
+          32.300000000063214,
+          32.40000000006369,
+          32.50000000006417,
+          32.60000000006465,
+          32.700000000065124,
+          32.8000000000656,
+          32.90000000006608,
+          33.00000000006656,
+          33.100000000067034,
+          33.20000000006751,
+          33.30000000006799,
+          33.40000000006847,
+          33.500000000068944,
+          33.60000000006942,
+          33.7000000000699,
+          33.800000000070376,
+          33.900000000070854,
+          34.00000000007133
+        ],
+        "source": "saved evaluator qpos+contact snapshots, mj_forward only; open issued PWM from original evaluation_last"
+      },
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 32.30000000007163,
+      "wall_s": 132.35178912899937,
+      "iteration": 0,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 432,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    },
+    {
+      "name": "release25-short-current_A-110602-8e81b7d9",
+      "seed": 110602,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110602-8e81b7d9/raw",
+      "source_sha": "8e81b7d96c0c73171635348c90631462adfe1eb0",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "reported_success": true,
+      "recount_success": true,
+      "false_accept": false,
+      "prefix_held": true,
+      "final_conditions": {
+        "fit": true,
+        "on_floor": true,
+        "tilt": true,
+        "no_finger_contact": true,
+        "open_issued_command": true,
+        "grippers_clear": true
+      },
+      "settled_s": 2.5,
+      "settle_recount": {
+        "rows": 25,
+        "best_settled_s": 2.5,
+        "all_times": [
+          81.29999999980548,
+          81.39999999980311,
+          81.49999999980075,
+          81.59999999979838,
+          81.69999999979602,
+          81.79999999979366,
+          81.89999999979129,
+          81.99999999978893,
+          82.09999999978656,
+          82.1999999997842,
+          82.29999999978183,
+          82.39999999977947,
+          82.4999999997771,
+          82.59999999977474,
+          82.69999999977237,
+          82.79999999977001,
+          82.89999999976764,
+          82.99999999976528,
+          83.09999999976291,
+          83.19999999976055,
+          83.29999999975819,
+          83.39999999975582,
+          83.49999999975346,
+          83.59999999975109,
+          83.69999999974873
+        ],
+        "source": "saved evaluator qpos+contact snapshots, mj_forward only; open issued PWM from original evaluation_last"
+      },
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      },
+      "sim_s": 81.99999999974618,
+      "wall_s": 328.9620481940001,
+      "iteration": 1,
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 1426,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      },
+      "teacher_done": true,
+      "final_pass": true,
+      "settled_pass": true,
+      "audit_ok": true
+    }
+  ],
+  "false_accepts": 0,
+  "manifest_files_verified": 1506,
+  "hash_errors": [],
+  "reason_distribution": {},
+  "outcome_rejections": {},
+  "sources": [
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110633-8e81b7d9/raw/result.json.zst",
+      "sha256": "1de089e9a7f5ace9a1d12da431ba1705767632fa888c797e19cac51159364054"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-110633-8e81b7d9/raw/result.json.zst",
+      "sha256": "b2f5727240d548f7d0405ba60b290fd8c29edba8b79da7a31d39b72424060183"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110603-8e81b7d9/raw/result.json.zst",
+      "sha256": "36df1333767e2f815b025fa987feb57002bdf8e22e65b05e879df4b53a67bfaa"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-88639-8e81b7d9/raw/result.json.zst",
+      "sha256": "cad308b039f591894719e01e6ebede1abfea1d90c1762bbb90ed8216d8b4b0a7"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_B-110600-8e81b7d9/raw/result.json.zst",
+      "sha256": "c1b0d5420165fd454b4660ef4ff37555eb832363a56d74628377b9025895dd49"
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/runs/release25-short-current_A-110602-8e81b7d9/raw/result.json.zst",
+      "sha256": "d3fed640e0730941f3a84a0926c2d323dc233652a7b2238b0b02944cc05c51da"
+    }
+  ],
+  "first30": [
+    {
+      "run": "release25-short-current_A-110633-8e81b7d9",
+      "sim_s": 30.00000000006064,
+      "wall_s": 120.0053697580006,
+      "wall_per_sim": 4.000178991925267,
+      "origin_world_t": 1.8000000000001848,
+      "scope": "first30 SIM from initial evaluator snapshot, including model initialization wall time; recording wrapper only"
+    },
+    {
+      "run": "release25-short-current_B-110633-8e81b7d9",
+      "sim_s": 30.00000000006064,
+      "wall_s": 119.81507890099965,
+      "wall_per_sim": 3.993835963358582,
+      "origin_world_t": 1.8000000000001848,
+      "scope": "first30 SIM from initial evaluator snapshot, including model initialization wall time; recording wrapper only"
+    },
+    {
+      "run": "release25-short-current_A-110603-8e81b7d9",
+      "sim_s": 30.00000000006064,
+      "wall_s": 121.21147955300148,
+      "wall_per_sim": 4.040382651758549,
+      "origin_world_t": 1.8000000000001848,
+      "scope": "first30 SIM from initial evaluator snapshot, including model initialization wall time; recording wrapper only"
+    },
+    {
+      "run": "release25-short-current_B-88639-8e81b7d9",
+      "sim_s": 30.00000000006064,
+      "wall_s": 117.8952675169985,
+      "wall_per_sim": 3.929842250558673,
+      "origin_world_t": 1.8000000000001848,
+      "scope": "first30 SIM from initial evaluator snapshot, including model initialization wall time; recording wrapper only"
+    },
+    {
+      "run": "release25-short-current_B-110600-8e81b7d9",
+      "sim_s": 30.00000000006064,
+      "wall_s": 127.68606248499964,
+      "wall_per_sim": 4.256202082824718,
+      "origin_world_t": 1.8000000000001848,
+      "scope": "first30 SIM from initial evaluator snapshot, including model initialization wall time; recording wrapper only"
+    },
+    {
+      "run": "release25-short-current_A-110602-8e81b7d9",
+      "sim_s": 30.00000000006064,
+      "wall_s": 114.58293492399935,
+      "wall_per_sim": 3.819431164125591,
+      "origin_world_t": 1.8000000000001848,
+      "scope": "first30 SIM from initial evaluator snapshot, including model initialization wall time; recording wrapper only"
+    }
+  ],
+  "first30_wall_per_sim_median": 3.9970074776419247,
+  "settle_verification_scope": "Final saved evaluation values and independently recomputed zone fit. Per-run settle_recount reports saved-qpos mj_forward re-evaluation; only absent snapshot streams fall back to the original evaluation_settled_s. This release25 launcher records snapshots for short and gate runs.",
+  "training_rgb": false,
+  "model_calls": 0,
+  "pooling": "A/B, short/gate, source, scene and host never pooled",
+  "reproduce": "python3 /home/ugrp/ugrp-sim/ops-reviews/release25/analyze_release.py /home/ugrp/ugrp-sim/ops-reviews/release25/short-r2-config.json",
+  "release25_runtime": [
+    {
+      "run": "release25-short-current_A-110633-8e81b7d9",
+      "mode": "release_sweep_wall_aware_v1",
+      "scene": "walls_floor_contrast_v5_indigo110_s80",
+      "floor_v1_exact": true,
+      "camera_quality": "no_mip_v1",
+      "scene_colour_transition_v1": "off",
+      "no_mip_all_contexts": true
+    },
+    {
+      "run": "release25-short-current_B-110633-8e81b7d9",
+      "mode": "release_sweep_wall_aware_v1",
+      "scene": "walls_floor_contrast_v5_indigo110_s80",
+      "floor_v1_exact": true,
+      "camera_quality": "no_mip_v1",
+      "scene_colour_transition_v1": "off",
+      "no_mip_all_contexts": true
+    },
+    {
+      "run": "release25-short-current_A-110603-8e81b7d9",
+      "mode": "release_sweep_wall_aware_v1",
+      "scene": "walls_floor_contrast_v5_indigo110_s80",
+      "floor_v1_exact": true,
+      "camera_quality": "no_mip_v1",
+      "scene_colour_transition_v1": "off",
+      "no_mip_all_contexts": true
+    },
+    {
+      "run": "release25-short-current_B-88639-8e81b7d9",
+      "mode": "release_sweep_wall_aware_v1",
+      "scene": "walls_floor_contrast_v5_indigo110_s80",
+      "floor_v1_exact": true,
+      "camera_quality": "no_mip_v1",
+      "scene_colour_transition_v1": "off",
+      "no_mip_all_contexts": true
+    },
+    {
+      "run": "release25-short-current_B-110600-8e81b7d9",
+      "mode": "release_sweep_wall_aware_v1",
+      "scene": "walls_floor_contrast_v5_indigo110_s80",
+      "floor_v1_exact": true,
+      "camera_quality": "no_mip_v1",
+      "scene_colour_transition_v1": "off",
+      "no_mip_all_contexts": true
+    },
+    {
+      "run": "release25-short-current_A-110602-8e81b7d9",
+      "mode": "release_sweep_wall_aware_v1",
+      "scene": "walls_floor_contrast_v5_indigo110_s80",
+      "floor_v1_exact": true,
+      "camera_quality": "no_mip_v1",
+      "scene_colour_transition_v1": "off",
+      "no_mip_all_contexts": true
+    }
+  ],
+  "uncertainty_escape_events": [
+    {
+      "run": "release25-short-current_A-110633-8e81b7d9",
+      "t": 55.50000000017399,
+      "body": "r1",
+      "reason_category": "uncertainty_escape",
+      "blocking_object": "map bounds",
+      "minimum_gap": -0.07428832630531082,
+      "gap_unit": "m",
+      "accepted": true,
+      "nominal_swept_gap_m": 0.025718458496404528,
+      "uncertainty_escape": [
+        {
+          "axis": [
+            0.0,
+            -1.0
+          ],
+          "gaps_m": [
+            -0.0742883263053109,
+            -0.06140231097880022,
+            -0.04851629565228954,
+            -0.03563028032577886,
+            -0.022744264999268182,
+            -0.009858249672757502,
+            0.0030277656537531783,
+            0.01591378098026386,
+            0.02879979630677454,
+            0.04168581163328522,
+            0.0545718269597959,
+            0.06745784228630658,
+            0.08034385761281726,
+            0.09322987293932794,
+            0.10611588826583862,
+            0.1190019035923493,
+            0.13188791891885998,
+            0.14477393424537066,
+            0.15765994957188134,
+            0.17054596489839202,
+            0.1834319802249027,
+            0.19631799555141338,
+            0.20920401087792406,
+            0.22209002620443474,
+            0.2272444323350391
+          ]
+        }
+      ],
+      "halo_m": 0.10000678480171535
+    },
+    {
+      "run": "release25-short-current_A-110633-8e81b7d9",
+      "t": 55.50000000017399,
+      "body": "r1",
+      "reason_category": "uncertainty_escape",
+      "blocking_object": "wall_north",
+      "minimum_gap": -0.09928832630531081,
+      "gap_unit": "m",
+      "accepted": true,
+      "nominal_swept_gap_m": 0.000718458496404617,
+      "uncertainty_escape": {
+        "axis": [
+          -0.0,
+          -1.0
+        ],
+        "gaps_m": [
+          -0.09928832630531081,
+          -0.08640231097880013,
+          -0.07351629565228945,
+          -0.060630280325778774,
+          -0.04774426499926809,
+          -0.03485824967275741,
+          -0.021972234346246733,
+          -0.009086219019736053,
+          0.0037997963067746277,
+          0.016685811633285308,
+          0.029571826959795988,
+          0.04245784228630667,
+          0.05534385761281735,
+          0.06822987293932803,
+          0.08111588826583871,
+          0.09400190359234939,
+          0.10688791891886007,
+          0.11977393424537075,
+          0.13265994957188143,
+          0.1455459648983921,
+          0.1584319802249028,
+          0.17131799555141347,
+          0.18420401087792415,
+          0.19709002620443483,
+          0.2022444323350392
+        ]
+      },
+      "halo_m": 0.10000678480171535
+    },
+    {
+      "run": "release25-short-current_B-110633-8e81b7d9",
+      "t": 53.90000000016635,
+      "body": "r1",
+      "reason_category": "uncertainty_escape",
+      "blocking_object": "map bounds",
+      "minimum_gap": -0.07036089714876562,
+      "gap_unit": "m",
+      "accepted": true,
+      "nominal_swept_gap_m": 0.02964588765294973,
+      "uncertainty_escape": [
+        {
+          "axis": [
+            0.0,
+            -1.0
+          ],
+          "gaps_m": [
+            -0.0703608971487657,
+            -0.05747658640460407,
+            -0.04459227566044199,
+            -0.03170796491628036,
+            -0.018823654172118287,
+            -0.005939343427956656,
+            0.006944967316205419,
+            0.01982927806036705,
+            0.032713588804529126,
+            0.04559789954869076,
+            0.05848221029285283,
+            0.07136652103701446,
+            0.08425083178117654,
+            0.09713514252533817,
+            0.11001945326950024,
+            0.12290376401366188,
+            0.13578807475782395,
+            0.14867238550198558,
+            0.16155669624614766,
+            0.1744410069903095,
+            0.18732531773447136,
+            0.20020962847863344,
+            0.21309393922279551,
+            0.22597824996695737,
+            0.23113197426462206
+          ]
+        }
+      ],
+      "halo_m": 0.10000678480171535
+    },
+    {
+      "run": "release25-short-current_B-110633-8e81b7d9",
+      "t": 53.90000000016635,
+      "body": "r1",
+      "reason_category": "uncertainty_escape",
+      "blocking_object": "wall_north",
+      "minimum_gap": -0.09536089714876561,
+      "gap_unit": "m",
+      "accepted": true,
+      "nominal_swept_gap_m": 0.0046458876529498205,
+      "uncertainty_escape": {
+        "axis": [
+          -0.0,
+          -1.0
+        ],
+        "gaps_m": [
+          -0.09536089714876561,
+          -0.08247658640460398,
+          -0.0695922756604419,
+          -0.056707964916280273,
+          -0.0438236541721182,
+          -0.030939343427956567,
+          -0.018055032683794492,
+          -0.005170721939632861,
+          0.0077135888045292145,
+          0.020597899548690846,
+          0.03348221029285292,
+          0.04636652103701455,
+          0.05925083178117663,
+          0.07213514252533826,
+          0.08501945326950033,
+          0.09790376401366196,
+          0.11078807475782404,
+          0.12367238550198567,
+          0.13655669624614775,
+          0.1494410069903096,
+          0.16232531773447145,
+          0.17520962847863353,
+          0.1880939392227956,
+          0.20097824996695746,
+          0.20613197426462215
+        ]
+      },
+      "halo_m": 0.10000678480171535
+    }
+  ],
+  "all_release25_mode": true,
+  "all_pinned_scene": true,
+  "population_funnel": "/home/ugrp/ugrp-sim/ops-reviews/release25/release-short-analysis-8e81b7d9/population-funnels.json",
+  "population_funnel_sha256": "0c4d2f0fc3510f067ef3be15389f3af61570bd52c5b5cf0963a7cf612047fb57",
+  "population_hash_errors": [],
+  "candidate_funnels": "/home/ugrp/ugrp-sim/ops-reviews/release25/release-short-analysis-8e81b7d9/candidate-funnels.json",
+  "candidate_funnels_sha256": "117f6e3dab2dfbbce6b8e589c27f255b43d40af7ba1c86bed3a509c6d11beb24",
+  "candidate_funnels_script_sha256": "2ab38b8605a76a008094e7e7d31022db5feada72a5827c737752a1daad6ab922"
+}
