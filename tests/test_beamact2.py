@@ -81,3 +81,38 @@ def test_worker_input_rejects_hidden_state_before_inference():
     audit=InputAudit()
     with pytest.raises(ValueError):audit.accept({'teacher_phase':'ready','beam_xyz':[1,2,3]})
     assert audit.record['forbidden_input_fields']==1
+
+
+def test_raw_replay_detects_one_PWM_or_issued_history_tampering():
+    import numpy as np
+    from harness import grasp_act_contract as c
+    from harness.grasp_act_rollout import OwnHistory
+    from harness.grasp_act_policy import ChunkExecutor
+    from harness.beamact_replay import replay
+    initial={r:command(grip=2000) for r in ('r1','r2')}
+    histories={r:OwnHistory(r,'replay',v) for r,v in initial.items()}
+    students={r:StudentBarrier() for r in initial}
+    previous=deepcopy(initial);predictions=[];inputs=[];commands=[];barrier=sync()
+    def predict(obs,pictures):
+        chunk=np.tile(c.encode_action(command(grip=1500)),(c.CHUNK,1)).tolist()
+        predictions.append(dict(t=obs['t'],robot=obs['robot_id'],chunk=chunk))
+        return chunk
+    executors={r:ChunkExecutor(predict) for r in initial}
+    for i in range(16):
+        now=i*.1;permits=barrier.tick({r:s.ready for r,s in students.items()},now)
+        for rid in initial:
+            s=students[rid];waiting=s.pending is not None and not permits[rid]
+            obs,pictures,_=histories[rid].observe(now,b'no image decoding in command replay',
+                skill='wait' if waiting else 'grasp',object_kind='long_beam',role='teal' if rid=='r1' else 'blue')
+            inputs.append(obs);value=None;done=False
+            if s.pending is None:
+                value,done=executors[rid].step(obs,pictures);s.propose(value,done,previous[rid])
+            value,done=s.issue(now,previous[rid],value,done,permits[rid])
+            commands.append(dict(t=now,robot=rid,command=value,done=done,ready=s.ready,permit=permits[rid],waiting=waiting))
+            histories[rid].issue(value);previous[rid]=value
+    protocol=dict(events=barrier.events,own_events={r:s.events for r,s in students.items()},delays_s=barrier.delays)
+    assert replay(inputs,commands,predictions,initial,protocol)['command_mismatches']==0
+    changed=deepcopy(commands);changed[-1]['command']['pwm']['3']+=1
+    with pytest.raises(ValueError,match='command replay'):replay(inputs,changed,predictions,initial,protocol)
+    changed=deepcopy(inputs);changed[-1]['issued'][-1]['pwm']['3']+=1
+    with pytest.raises(ValueError,match='issued history'):replay(changed,commands,predictions,initial,protocol)
