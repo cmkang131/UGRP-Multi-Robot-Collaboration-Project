@@ -96,3 +96,41 @@ def test_summary_count_cannot_override_failed_or_forbidden_raw_row(tmp_path,monk
     else:proof['runs'][0]['audit']['held_world_reads']=1
     evidence.write_text(json.dumps(proof))
     with pytest.raises(ValueError,match='five exact-source'):q.build(source,'gate',table,evidence)
+
+
+def test_deep_reserved_start_gets_a_checked_connector_beyond_old_20cm_limit():
+    from harness.beampair_peer_yield import ReservationNavigation
+    from types import SimpleNamespace
+    import math
+    class Native:
+        def free(self,p,ds,rs,r):return all(math.dist(p,d[:2])>=d[2]+r for d in ds)
+        def segment_free(self,a,b,ds,rs,r):
+            dx,dy=b[0]-a[0],b[1]-a[1];norm=dx*dx+dy*dy
+            for x,y,z in ds:
+                initial=math.dist(a,(x,y));dot=(a[0]-x)*dx+(a[1]-y)*dy
+                if initial<z+r and dot<0:return False
+                u=max(0,min(1,-dot/norm)) if norm else 0
+                if math.hypot(a[0]+u*dx-x,a[1]+u*dy-y)<min(initial,z+r)-1e-10:return False
+            return True
+        def plan_path(self,a,b,bounds,ds,*,rects,radius):
+            if not self.free(a,ds,rects,radius):return None
+            return [a,b] if self.segment_free(a,b,ds,rects,radius) else None
+    t=SimpleNamespace(rid='r1',peer_yield_failed_anchors=set(),peer_yield_connector_log=[])
+    w=dict(t=6.,robots=dict(r1=dict(pose=[.105,0.,0.])),objects={},visibility=dict(r1=dict(observations={})))
+    disc=(0.,0.,.21);ds=[(9.,9.,.02)]*5+[disc];nav=Native()
+    proxy=ReservationNavigation(nav,t,w,disc,(.13,ds,[]))
+    path=proxy.plan_path((.105,0.),(1.,0.),(-20,20,-20,20),ds,rects=[],radius=.13)
+    assert path and math.dist(path[0],path[1])>.2
+    assert nav.free(path[1],ds,[],.13) and nav.segment_free(path[0],path[1],ds,[],.13)
+    assert t.peer_yield_connector_log[-1]['grid_population_N']<1000
+    assert all(c['reason_category'] and c['blocked_object'] for c in t.peer_yield_connector_log[-1]['candidates'])
+    # Put a real obstacle across the formerly selected outward connector.
+    # The new graph connection must go around it, without dropping that disc.
+    blocked=[(.3,0.,.02),*ds[1:]]
+    proxy=ReservationNavigation(nav,t,w,disc,(.13,blocked,[]))
+    path=proxy.plan_path((.105,0.),(1.,1.),(-20,20,-20,20),blocked,rects=[],radius=.13)
+    if path is None:
+        assert len(t.peer_yield_failed_anchors)==1
+        path=proxy.plan_path((.105,0.),(1.,1.),(-20,20,-20,20),blocked,rects=[],radius=.13)
+    assert path and path[1]!=(.35,0.)
+    assert all(nav.segment_free(a,b,blocked,[],.13) for a,b in zip(path,path[1:]))

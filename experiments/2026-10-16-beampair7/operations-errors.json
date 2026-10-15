@@ -29,5 +29,12 @@
     "started_N": 0,
     "error": "v2 batch-name replacement did not match inherited attempt-aware supervisor line; existing attempt1 directory was correctly not overwritten",
     "resolution": "Set explicit batch_name lookup; keep failed driver log and restart with separate retry1 driver log. No run directory existed."
+  },
+  {
+    "stage": "environment metadata probe",
+    "category": "analysis_setup_error",
+    "simulation_attempt": false,
+    "error": "System Python had no MuJoCo distribution metadata",
+    "resolution": "Use the exact simulation virtualenv interpreter; no installation or runtime change."
   }
 ]

@@ -7,7 +7,7 @@ import subprocess
 
 ROOT=Path(__file__).resolve().parents[1]
 PLAN='experiments/2026-10-16-beampair7/gate-plan.json'
-SHORT=(8318711,8318701,8318706,8318700,8318726)
+SHORT=(8318711,8318728,8318701,8318706,8318726)
 REMOTE=Path('/home/ugrp/ugrp-sim/ops-reviews/beampair7')
 
 
@@ -41,14 +41,14 @@ def build(source, stage, table, evidence=None, round_id='r1'):
             raise ValueError('all five exact-source raw successes required')
     episodes=list(enumerate(plan['episodes']))
     if stage=='short':episodes=[next(p for p in episodes if p[1]['seed']==s) for s in SHORT]
-    else:episodes.sort(key=lambda p:(p[1]['seed']!=SHORT[0],p[0]))
+    else:episodes.sort(key=lambda p:(0 if p[1]['seed']==8318711 else 1 if p[1]['seed']==8318728 else 2,p[0]))
     runs=[dict(episode=i,seed=e['seed'],candidate='baseline',profile={},
         name=f'beampair7-{stage}-{round_id}-{e["seed"]}-{source[:8]}',source_sha=source,
         approved=True,enabled=True,ready=True,submitted=False,stage=stage) for i,e in episodes]
     digest=hashlib.sha256(table.read_bytes()).hexdigest()
     return dict(kind='beampair',owner='beampair7',stage=stage,round=round_id,source_sha=source,
         host='gcp2',project='ugrp-sim-b-1014',account='changmin5781@gmail.com',max_parallel=16 if stage=='gate' else 4,
-        cap_s=60,sentinel_first=stage=='short',runs=runs,ready=True,approved=True,
+        cap_s=60,sentinel_first=stage=='short',serial_prefix=2 if stage=='short' else 0,runs=runs,ready=True,approved=True,
         review_passed=True,status='APPROVED_PINNED',
         review_detail='REVIEW_SKIPPED_BY_USER (10/15 run-first rule)',
         rejection_table=str(REMOTE/table.name),rejection_table_sha256=digest,

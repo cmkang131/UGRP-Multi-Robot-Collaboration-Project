@@ -257,6 +257,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
                 self.approach_repair=approach_repair;self.approach_repair_log=[]
                 self.wall_layer_mode=wall_layer
                 self.peer_yield=peer_yield;self.peer_yield_log=[]
+                self.peer_yield_connector_log=[];self.peer_yield_failed_anchors=set()
                 ticks=plan['burst_ticks'] if rid=='r1' else 13-plan['burst_ticks']
                 self.pair_perturb=PairRecoveryPerturb(perturb_model(ticks),seed=plan['seed']+(rid=='r2'))
             def _plan_approach(self,w,now):

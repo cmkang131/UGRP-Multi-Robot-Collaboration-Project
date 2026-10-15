@@ -27,12 +27,12 @@ def run(cfg_path):
  lease=ROOT/'leases'/'beampair7.json';write(lease,dict(task='beampair7',pid=os.getpid(),started=datetime.datetime.now(datetime.timezone.utc).isoformat(),expected_end='finite queue; per-run8h cap',concurrency=0,source_sha=sha))
  env={**os.environ,'MUJOCO_GL':'osmesa','OMP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MKL_NUM_THREADS':'1','LP_NUM_THREADS':'1','PYTHONPATH':str(src)}
  running=[];completed=[];stopped=False;pending=list(cfg['runs']);first_wave_passed=stage!='gate';started_N=0
- def stop(reason):
+ def stop(reason,interrupt_running=False):
   nonlocal stopped
-  if stopped:return
+  if stopped and not interrupt_running:return
   stopped=True;record=dict(reason=reason,time_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),remaining=len(pending))
   write(batch/'SUPERVISOR_STOP.json',record)
-  for item in running:
+  for item in running if interrupt_running else []:
    if item['p'].poll() is None:
     write(item['dir']/'SUPERVISOR_STOP.json',record)
     try:os.killpg(item['p'].pid,signal.SIGINT)
@@ -100,7 +100,7 @@ runner.run(plan,Path(sys.argv[3]),cap_s=180,**json.loads(sys.argv[4]))
    time.sleep(2)
   while pending or running:
    while pending and len(running)<cfg['max_parallel'] and not stopped and (first_wave_passed or started_N<cfg['max_parallel']):
-    if cfg.get('sentinel_first') and not completed and started_N>=1:break
+    if len(completed)<cfg.get('serial_prefix',1 if cfg.get('sentinel_first') else 0) and started_N>len(completed):break
     launch(pending[0]);pending.pop(0)
    for item in running[:]:
     speed=item['dir']/'FIRST30.json'
@@ -133,7 +133,7 @@ runner.run(plan,Path(sys.argv[3]),cap_s=180,**json.loads(sys.argv[4]))
    if stopped and not running:break
    time.sleep(1)
  except BaseException as e:
-  stop(dict(supervisor_exception=repr(e)))
+  stop(dict(supervisor_exception=repr(e)),interrupt_running=True)
   raise
  finally:
   for item in running:

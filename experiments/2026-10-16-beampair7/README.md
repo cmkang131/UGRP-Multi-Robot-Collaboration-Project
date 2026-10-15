@@ -95,3 +95,23 @@ APPROVED_PINNED와 지정 review_detail, 동일 소스의 절대 rejection_table
 첫 제출은 다른 임대40 때문에 물리 시작0으로 거부됐다. 이후 다른 작업이 임대를 해제하여 다른24+자기16=40을 확인한 뒤 실제 첫16개를 시작했다.
 감독기 사전 오류의 pending 목록에서는 sentinel 한 개가 빠졌지만, 실행 폴더·PROCESS가0인 것으로40개 전부 미제출임을 별도 재구성한다.
 최종 모집단은 새 gate40만이며 진행 중 결과는 완료/READY로 보고하지 않는다. 운영 오류는 [별도 원장](operations-errors.json)에 있다.
+
+## R1 gate 감독 중단 — NOT_READY
+
+[새 원본 재계수](gate-r1-summary.json), [거부/관문 표](gate-r1-rejection_table.json).
+새 소스 gate는32개 시작 중 성공16, 실제 terminal 실패1(8318728), 감독 중단15, 미제출8이다.
+cap_end0·HOST_ERROR0. 완료 입력 감사는17개까지이며15개 중단은 완료 감사로 올리지 않는다.
+첫16은16/16, 첫30초10개 중앙4.443으로6.0 차단 미만이었다. 기존0b5faa4c·짧은5개와 합산하지 않는다.
+8318723은 감독 SIGINT 뒤 렌더러 finalizer가3분 이상 멈춰 소유 PID/명령과 interrupted 원본을 확인하고 파일 해시를 남긴 뒤 해당 그룹에만 SIGTERM을 보냈다. 부분 raw와 미완 adapter 상태를 보존했다.
+
+새 실패8318728 전체0–9.9초2Hz21장과10Hz100시점(자기 원촬영200장)을 직접 봤다. r1 blue는 파랑을 보면서 출발하지 못하고, r2 teal은 접근/대기/팬을 한다. 원래8318711의 차체 교착과 다르다. [영상 근거](playback-gate-r1-8318728.json).
+r1은 예약 원 안쪽0.235m에서 시작하고61회 예약 쿼리 내내 머문다. 원래 search17.nearest_free의20cm 탐색과 search18.exact_start_path의3×3 주변5cm 연결점이 예약 밖 free cell에 닿지 않아 planner6/6 no_path,6초 무진행으로 핸드오프한다.
+
+## R2 시작 연결점 수정
+
+동일 기본 off 토글에 새 소스 후보로 넣는다. 원래 A*가 실패하고 자기 시작이 추가 예약 안쪽인 경우에만 가상 시작 연결점을 추가한다.
+격자는 기존 exact_start_path의0.05m를 유지하고, 탐색 반경/검사 수는 예약 반경+own radius+시작에서 예약 중심까지 거리와 격자 반올림1칸으로 계산한다(삼각부등식). 수용 여유와 시간 상한은 바꾸지 않는다.
+기존 free와 strict continuous segment 검사로 원·물체·벽을 전부 보존한 첫 안전 연결점을 고른 뒤 원래 유한 A*로 이어 간다. 이어지는 경로가 없으면 그 연결점을 재선택 목록에서 제외한다.
+새 검사는 격자 후보 수와 최대 두 번의 원래40000노드 A*로 유한하다. 후보의 이름/최소 틈과 bounds→endpoint→connector, connector→continuation 관문을 각각 남긴다.
+이 방식은 원래5cm 시작 그래프와 안전한 margin escape를 연결하며, Nav2의 시작 셀 처리 필요성도 참고했다. [Navfn clearRobotCell 공식 소스](https://github.com/ros-navigation/navigation2/blob/main/nav2_navfn_planner/src/navfn_planner.cpp). 시작 셀/물리 장애물을 지우지는 않는다.
+R2 짧은5개는8318711→8318728을 직렬 선행하고 성공8318701/8318706/8318726을 뒤따른다. gate는 두 실패 시드를 앞에 둔다. 실패 시 새 제출을 멈추되 이미 도는 유한 실행은 자기 상한까지 기록하게 하여 중단 finalizer 교착과 불필요한 미완 결과를 줄인다.
