@@ -134,8 +134,13 @@ def main():
         if group!='warp-v2' and key in comparisons:row['hold_10Hz_samples']=comparisons[key].get('hold')
         funnels.append(row)
     rejection={'decision':a.decision,'funnel':funnels,'distribution':distributions,
+       'physical_identity_gate':{'reference':'C3.12 compiled model','passed':not bool(damping),
+          'blocking_field':'actuator_biasprm[:,2]' if damping else None,
+          'reason':'same XML is not the same compiled joint damping across these MuJoCo versions; no value overwritten',
+          'new_profile_required_before_adoption':bool(damping)},
        'units_must_not_be_added':True,'raw_paths':[str(ROOT)],
-       'expansion':{'pair_beam_3s':'not_submitted','N16_64_256_throughput':'not_submitted'},
+       'expansion':{'pair_beam_3s':'not_submitted','N16_64_256_throughput':'not_submitted',
+          'reason':'small-scene physical identity / loaded-hold parity has not passed'},
        'reproduction':'exact argv and input hashes in each result.json and every comparison summary'}
     write(OUT/'rejection_table.json',rejection)
     write(OUT/'summary.json',{'id':'2026-10-16-simalt4','status':'complete','decision':a.decision,
