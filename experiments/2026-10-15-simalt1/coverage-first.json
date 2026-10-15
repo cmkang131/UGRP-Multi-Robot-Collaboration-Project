@@ -1,0 +1,10 @@
+{
+  "status": "diagnostic_before_coverage_revision",
+  "snapshot_candidates": 434,
+  "rendered_snapshots": 30,
+  "distribution": [
+    {"category":"target_mask_empty","count":19,"reason":"phase-stratified selection does not guarantee in-frame target","blocking_object":"outside view or occlusion not yet disambiguated","minimum_gap_m":null,"minimum_gap_status":"visibility rejection, not route clearance"},
+    {"category":"edge_not_represented_by_literal_image_edge","count":30,"reason":"raw fisheye has black outer border; literal image-edge test cannot certify optical FOV edge","blocking_object":"camera valid viewport boundary","minimum_gap_m":null,"minimum_gap_status":"image-space boundary"}
+  ],
+  "next_step":"Select edge/occlusion strata from evaluation-only frozen-state projection and ray audit; no controller or physics change"
+}

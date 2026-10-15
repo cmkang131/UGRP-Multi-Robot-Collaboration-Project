@@ -247,6 +247,10 @@ def snapshots(a):
         ids=[r['index'] for r in index['rows'] if r['phase'] in phases]
         if len(ids)<5:raise ValueError('insufficient snapshot stratum: '+name)
         picks.extend((name,int(ids[k])) for k in np.linspace(0,len(ids)-1,5).round().astype(int))
+    if a.selection:
+        picks=[(r['stratum'],r['index']) for r in json.loads(a.selection.read_text())['selection']]
+        if len(picks)!=30 or len({i for _,i in picks})!=30:
+            raise ValueError('30 unique audited snapshot states required')
     a.out.mkdir(parents=True,exist_ok=False)
     world, scene=world_for(plan,True);m,d=world.model,world.data
     results=[]
@@ -295,6 +299,7 @@ def main():
     p.add_argument('--egl-l4-v1',action='store_true',help='explicit off-by-default admission')
     p.add_argument('--sha',required=True);p.add_argument('--cap-s',type=float)
     p.add_argument('--snapshots',action='store_true');p.add_argument('--states',type=Path)
+    p.add_argument('--selection',type=Path)
     a=p.parse_args()
     if a.render_backend=='egl_l4_v1' and not a.egl_l4_v1:p.error('egl_l4_v1 is OFF by default')
     try:
