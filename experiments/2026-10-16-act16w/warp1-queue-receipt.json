@@ -1,0 +1,60 @@
+{
+  "source_path": "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp1/teacher-gate-queue.json",
+  "sha256": "8a122ccd848e5bb792bd8fecb6019f282b169dea5432afb8a06507943de93e0b",
+  "queue": {
+    "schema": "ugrp.warp1.teacher_gate_queue.v1",
+    "status": "HOLD_SCENE",
+    "approved": false,
+    "executed": false,
+    "backend": "mjwarp_batch_v1",
+    "backend_readiness": "NOT_READY",
+    "rejection_table": "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp1/rejection_table.json",
+    "plan": "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp1/all-source-plans.json",
+    "source_plan_count": 40,
+    "required_success_rate": 0.95,
+    "minimum_independent_episodes": 40,
+    "threshold_basis": "user ACT teacher rule: >=95%, >=40 episodes; no C equivalence gate",
+    "training_rgb": false,
+    "review_rgb_hz": 2,
+    "terminal_ring_hz": 10,
+    "terminal_ring_sim_s": 10,
+    "proposed_nworld": 16,
+    "scene_selection_owner": "coordinator after scenetex5; not selected by warp1",
+    "current_scene": {
+      "scenario_generation": "frozen ACT11 v4 scenario IDs",
+      "profile": "grasp_act_scene_v1",
+      "floor": "floor_light_v1",
+      "camera": "v3 runtime /640x480/10Hz/K,D,fisheye remap",
+      "drive": "native v7 /mesh roller/real_v1 stiffness",
+      "weld": "off",
+      "scenetex5": "not applied"
+    },
+    "host": {
+      "project": "ugrp-sim-b-1014",
+      "account": "changmin5781@gmail.com",
+      "instance": "ugrp-act-l4-gcp2",
+      "machine": "g2-standard-8",
+      "maximum_warp1_l4_hours": 4
+    },
+    "blockers": [
+      "scene profile not approved",
+      "scalar frozen teacher/IK/raycast loop remains; full NumPy teacher migration unfinished",
+      "training recording and ACT student evaluation adapters unfinished",
+      "heterogeneous source seeds differ in unbatchable model fields; use exact model cohorts or implement supported layout",
+      "full N1/N16 qualitative and intrinsic throughput must be qualified before any gate submission"
+    ],
+    "admission": [
+      "scene owner approves and freezes scene/hash",
+      "resolve backend blockers and regenerate exact model references",
+      "freeze >=40 independent plans and model-compatible groups; replicas do not increase N",
+      "verify rejection_table exists and approve queue explicitly",
+      "run MJWarp-only gate with training camera recording off; preserve failures and cap_end/HOST_ERROR",
+      "only after >=95%>=40 gate admit separate training recording"
+    ],
+    "cohort_rule": "C/GCP1/other numeric or sleep profiles are never pooled; no reserved ACT16 evaluation seeds used",
+    "commands": null,
+    "commands_status": "HOLD: executable gate submission intentionally absent until model grouping and scene hashes are frozen"
+  },
+  "rejection_table_exists": false,
+  "scope": "dependency queue receipt only; no run submitted"
+}

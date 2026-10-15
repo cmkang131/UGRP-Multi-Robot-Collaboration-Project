@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.act16w.summary.v1",
-  "status": "WAIT_WARP1",
+  "status": "WAIT_BACKEND_NOT_READY",
   "complete": false,
   "authorization": "2026-10-16 user: autonomous MJWarp ACT16 record/train/evaluate after warp1 and scene signals",
   "source_base": "06870b6d1ad9233c6e5d63eee2c8c7b81efc66f5",
@@ -13,7 +13,15 @@
     "scene_decision": "experiments/2026-10-16-act16w/scene-decision.json",
     "latest_check": "2026-10-15T19:34:16.696822+00:00",
     "checks": 17,
-    "queue_status": "not_found"
+    "queue_status": "exists_but_NOT_READY_commands_absent_rejection_table_missing",
+    "queue_receipt": "experiments/2026-10-16-act16w/warp1-queue-receipt.json",
+    "warp1_queue_blockers": [
+      "scene profile not approved",
+      "scalar frozen teacher/IK/raycast loop remains; full NumPy teacher migration unfinished",
+      "training recording and ACT student evaluation adapters unfinished",
+      "heterogeneous source seeds differ in unbatchable model fields; use exact model cohorts or implement supported layout",
+      "full N1/N16 qualitative and intrinsic throughput must be qualified before any gate submission"
+    ]
   },
   "teacher_gate": {
     "attempted": 0,
@@ -40,7 +48,7 @@
     "assets": []
   },
   "checks": {
-    "nonphysics_passed": 18,
+    "nonphysics_passed": 22,
     "skipped": 1,
     "skip_reason": "torch not installed on Mac; no environment created",
     "trainer_syntax_and_cli_help": "PASS; CUDA execution not tested"

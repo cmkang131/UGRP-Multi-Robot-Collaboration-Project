@@ -97,3 +97,10 @@ RGB/발행 이력은 원래 그대로 보존하며 교사의 제안으로 교체
 [공식 MJWarp render_util 소스](https://github.com/google-deepmind/mujoco_warp/blob/main/mujoco_warp/_src/render_util.py)
 의 `create_warp_texture`도 LINEAR Texture2D를 만든다. 웹 main 확인이므로 설치된
 MJWarp 소스 SHA와 실제 렌더 sampler 확인은 GCP 실행 전 별도로 한다.
+
+
+04:56 KST: warp1의 `teacher-gate-queue.json`을 찾았으나 backend_readiness는
+NOT_READY, commands는 null, 필수 rejection_table.json은 미작성 상태다.
+[대기열 원문·해시·존재 확인](warp1-queue-receipt.json). 장면 결정은 별도로
+받았지만 모델 배치 호환성·전체 교사 비용·기록/학생 통합 미완료가 남아 있다.
+이 대기열을 실행 승인으로 취급하지 않았고 GPU 사용은0이다.

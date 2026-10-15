@@ -32,15 +32,46 @@ def signals(text):
             "status": "INSPECT_QUEUE" if ready else "WAIT_NOT_READY" if not_ready else "WAIT_SIGNALS"}
 
 
-def snapshot(alert):
+def snapshot(alert, teacher_queue=None):
     raw = alert.read_bytes()
-    return {"checked_at": datetime.now(timezone.utc).isoformat(),
-            "ops_alert_sha256": hashlib.sha256(raw).hexdigest(), **signals(raw.decode())}
+    row = {"checked_at": datetime.now(timezone.utc).isoformat(),
+           "ops_alert_sha256": hashlib.sha256(raw).hexdigest(),
+           "watcher_source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+           **signals(raw.decode())}
+    if teacher_queue is not None:
+        row['teacher_queue'] = str(teacher_queue.resolve())
+        if not teacher_queue.is_file():
+            row.update(status='WAIT_QUEUE', ready_for_queue_inspection=False)
+        else:
+            try:
+                queue_raw = teacher_queue.read_bytes()
+                queue = json.loads(queue_raw)
+                table = Path(queue.get('rejection_table') or '__missing__')
+                row.update(queue_sha256=hashlib.sha256(queue_raw).hexdigest(),
+                    queue_backend_readiness=queue.get('backend_readiness'),
+                    queue_status=queue.get('status'), queue_blockers=queue.get('blockers', []),
+                    rejection_table_exists=table.is_absolute() and table.is_file())
+                if queue.get('backend_readiness') == 'NOT_READY':
+                    row.update(status='WAIT_NOT_READY', ready_for_queue_inspection=False)
+                elif not row['rejection_table_exists']:
+                    row.update(status='WAIT_REJECTION_TABLE', ready_for_queue_inspection=False)
+                elif queue.get('backend_readiness') not in ('READY', 'READY_HOLD_SCENE'):
+                    row.update(status='WAIT_QUEUE_READINESS', ready_for_queue_inspection=False)
+                elif row['signals_present'] and not row['warp_not_ready']:
+                    # The user requires a warp1 line plus its ready queue, not
+                    # an exact spelling of READY in the progress alert itself.
+                    row.update(status='INSPECT_QUEUE', ready_for_queue_inspection=True)
+            except (ValueError, TypeError, AttributeError, OSError) as error:
+                row.update(status='WAIT_QUEUE_INVALID', queue_error=str(error),
+                           ready_for_queue_inspection=False)
+    return row
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--ops-alert", type=Path, required=True)
+    p.add_argument("--teacher-queue", type=Path,
+                   help='actual warp1 queue once published; require its readiness and real rejection table')
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--watch", action="store_true")
     a = p.parse_args()
@@ -52,9 +83,11 @@ def main():
         state = {"started_epoch": time.time(), "max_wait_s": 36000, "poll_s": 300,
                  "ops_alert": str(a.ops_alert.resolve()), "checks": 0, "status": "WAIT_SIGNALS"}
     while True:
-        row = snapshot(a.ops_alert)
+        row = snapshot(a.ops_alert, a.teacher_queue)
         state.update(checks=state["checks"] + 1, latest=row,
                      elapsed_s=time.time() - state["started_epoch"], status=row["status"])
+        if a.teacher_queue:
+            state['teacher_queue'] = str(a.teacher_queue.resolve())
         with (a.out / "prerequisite-checks.jsonl").open("a") as f:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
         if state["elapsed_s"] >= state["max_wait_s"] and row["status"] != "INSPECT_QUEUE":
@@ -62,7 +95,9 @@ def main():
         state_file.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n")
         print(json.dumps({"check": state["checks"], "status": state["status"],
                           "checked_at": row["checked_at"], "warp1": row["warp1"],
-                          "scene_decision": row["scene_decision"]}, ensure_ascii=False), flush=True)
+                          "scene_decision": row["scene_decision"],
+                          "queue_backend_readiness": row.get('queue_backend_readiness'),
+                          "rejection_table_exists": row.get('rejection_table_exists')}, ensure_ascii=False), flush=True)
         if not a.watch or state["status"] in ("INSPECT_QUEUE", "WAIT_EXPIRED"):
             break
         # Short individual waits keep the interactive tool responsive. Heartbeats
