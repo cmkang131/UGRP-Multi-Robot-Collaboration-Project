@@ -51,7 +51,7 @@ def analysis(folder):
         floor_line_residuals=dict(distance_m=distribution(matches),normal_deg=distribution(angles),scope='all same-hue features; no truth-based outlier exclusion; nearest finite edge in evaluator'),
         fresh_pose_evaluation=fresh,residual_frames=scored)
 
-def main(queuefile):
+def main(queuefile,output=None):
     assert platform.node().startswith('ugrp-sim-gcp2')
     queuefile=Path(queuefile);queue=obj(queuefile);reports=[]
     for t in queue['runs']:
@@ -70,7 +70,7 @@ def main(queuefile):
         r['source_hashes']={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in (Path(t['raw'])/'result.json',folder/'task.json') if p.exists()}
         reports.append(r)
     data=dict(schema='ugrp.reloc17.analysis.v1',analysis_host='gcp2',source_queue=str(queuefile),reproduce=f'PYTHONPATH=. {__file__} --queue {queuefile}',runs=reports)
-    out=queuefile.parent;(out/'summary.json').write_text(json.dumps(data,indent=2)+'\n')
+    out=Path(output) if output else queuefile.parent;out.mkdir(exist_ok=True,parents=True);(out/'summary.json').write_text(json.dumps(data,indent=2)+'\n')
     rejection=dict(source_queue=str(queuefile),runs=[dict(run=r['name'],raw=r['raw'],**r['registration_frame_funnel']) if 'registration_frame_funnel' in r else dict(run=r['name'],heading=r.get('heading'),failure=r.get('failure')) for r in reports])
     (out/'rejection-table.json').write_text(json.dumps(rejection,indent=2)+'\n')
     lines=['# 분해/폐루프 재집계','', '|조건·시드|상태·종료|등록 프레임|절대 주행 xy 중앙/p95|동일 주행 명령만 xy 중앙/p95|명령만 전체 xy 중앙/p95|','|---|---|---:|---|---|---|']
@@ -82,4 +82,4 @@ def main(queuefile):
     print('\n'.join(lines))
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--queue',required=True);a=p.parse_args();main(a.queue)
+    p=argparse.ArgumentParser();p.add_argument('--queue',required=True);p.add_argument('--output');a=p.parse_args();main(a.queue,a.output)
