@@ -17,7 +17,8 @@ import platform
 import subprocess
 import sys
 
-from harness.beampair_teacher import MODE, DEPENDENCY_SHA, HeldCargoGuard, validate_plan, perturb_model
+from harness.beampair_teacher import (MODE, DEPENDENCY_SHA, HeldCargoGuard, validate_plan,
+                                    perturb_model, defer_ready_during_probe)
 from harness.grasp_act_perturb import RecoveryPerturb
 from harness.grasp_act_data import write_json
 
@@ -180,8 +181,9 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.):
                     # command was issued this tick. Re-sanitize the second
                     # robot if its peer just closed on this same tick.
                     w=guard.sanitize_world(dict(w))
-                before=self.phase
+                before=self.phase;before_t=self.phase_t
                 clean,done=super().step(w,now,**kw)
+                defer_ready_during_probe(self,before,before_t,self.pair_perturb.active)
                 actual,disturbance=self.pair_perturb.apply(clean,phase_before=before,
                     phase_after=self.phase,holding=guard.active,visible=visible[self.rid])
                 if disturbance:

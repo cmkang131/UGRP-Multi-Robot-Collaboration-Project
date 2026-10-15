@@ -1100,7 +1100,7 @@
       "reason_distribution": {
         "success": 11,
         "interrupted": 4,
-        "episode_timeout": 1
+        "cap_end": 1
       },
       "runs": [
         {
@@ -1229,7 +1229,7 @@
         },
         {
           "raw": "/home/ugrp/ugrp-sim/outputs/beampair1-historical/native-grasp-teacher-gate-1f177950/cohort-000/episode-002/raw",
-          "reason_category": "episode_timeout",
+          "reason_category": "cap_end",
           "blocked_object": "not_recorded",
           "min_gap_m": null,
           "gap_scope": "legacy ledger did not record a geometric blocker",
@@ -1240,7 +1240,7 @@
           "legacy_success": false,
           "source_sha": "1f1779501ab21652159dc81676647a1bbb18550d",
           "profile": "legacy",
-          "cap_end": false,
+          "cap_end": true,
           "sim_s": 60.00000000020389,
           "phases": {
             "r1": "ready",
@@ -1290,7 +1290,9 @@
             }
           ],
           "strict_success": false,
-          "visible_eligible": false
+          "visible_eligible": false,
+          "cap_s": 60.0,
+          "cap_source": "/home/ugrp/ugrp-sim/outputs/beampair1-historical/native-grasp-teacher-gate-1f177950/COMMAND"
         },
         {
           "raw": "/home/ugrp/ugrp-sim/outputs/beampair1-historical/native-grasp-teacher-gate-1f177950/cohort-000/episode-003/raw",
@@ -2148,7 +2150,7 @@
       ]
     }
   ],
-  "reproduce": "python3 -m scripts.audit_beampair1 --history /home/ugrp/ugrp-sim/outputs/beampair1-historical --out /home/ugrp/ugrp-sim/outputs/beampair1-analysis",
+  "reproduce": "python3 -m scripts.audit_beampair1 --history /home/ugrp/ugrp-sim/outputs/beampair1-historical --out /home/ugrp/ugrp-sim/outputs/beampair1-analysis-v2",
   "criteria_source": "existing visible_only gate: 12mm, 10deg, bilateral .5N, 3 SIMs; no new tolerance",
   "scope": "GCP script, historical ARM originals copied without changing them; old successes are not current gate success"
 }

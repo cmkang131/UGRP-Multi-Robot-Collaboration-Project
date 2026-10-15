@@ -91,6 +91,15 @@ def analyze(root,out):
     for raw in rawdirs:
         entry=recount(raw);result=read(raw/'result.json')
         adapter=read(raw.parent/'adapter/beampair1-result.json')
+        decoded,_,_=read_bytes(raw/'eval-only.jsonl')
+        frames=[json.loads(line) for line in decoded.splitlines() if line.strip()]
+        frame_N=len(frames)*2
+        any_visible=sum(row['visibility'][rid]['visible_probes']>0 for row in frames for rid in ('r1','r2'))
+        region_visible=sum(row['visibility'][rid]['visible_probes']>=5 for row in frames for rid in ('r1','r2'))
+        admitted=sum(any(m['id']=='band_'+read(raw/'plan.json')['roles'][rid]
+            for m in row.get('visible_measurements',{}).get(rid,[])) for row in frames for rid in ('r1','r2'))
+        entry['frame_funnel']=ordered_funnel(frame_N,[('any_assigned_probe',any_visible),
+            ('meaningful_region_5_of_15',region_visible),('measurement_admitted_not_held',admitted)])
         entry['adapter_sha']=adapter['source_sha'];entry['dependency_sha']=adapter['dependency_sha']
         entry['candidate']=adapter['candidate'];entry['held_object_hidden_v1']=adapter['held_object_hidden_v1']
         entry['hidden_measurement_ticks']=adapter['hidden_measurement_ticks']
@@ -129,6 +138,7 @@ def analyze(root,out):
     dump(out/'rejection-table.json',dict(schema='ugrp.beampair1.funnel.v1',source_sha=batch['source_sha'],
         raw_root=str(root),episode_funnel=funnel,reason_distribution=dict(reasons),blocked_objects=dict(blocker_counts),
         candidate_populations={e['raw']:e['candidate_populations'] for e in episodes},
+        frame_populations={e['raw']:e['frame_funnel'] for e in episodes},
         missing_rejection_audit_N=missing,reproduce=report['reproduce']))
     dump(out/'candidate-rejections.json',all_rejections)
     print(json.dumps({k:v for k,v in report.items() if k!='runs'}))

@@ -3,7 +3,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from harness.beampair_teacher import HeldCargoGuard, validate_plan, perturb_model
+from harness.beampair_teacher import HeldCargoGuard, validate_plan, perturb_model, defer_ready_during_probe
 from harness.grasp_act_perturb import RecoveryPerturb
 
 
@@ -54,3 +54,19 @@ def test_mixed_disturbances_have_exact_issued_length_and_stop_on_close(ticks):
     clean=command(1500)
     actual,noise=q.apply(clean,phase_before='approach',phase_after='pick',holding=True,visible=True)
     assert actual==clean and noise is None
+
+
+def test_ready_transition_cannot_truncate_an_active_twelve_tick_burst():
+    m=perturb_model(12);m.update(probability_per_eligible_tick=1.,minimum_eligible_ticks=1)
+    noise=RecoveryPerturb(m,seed=7)
+    teacher=SimpleNamespace(phase='align',phase_t=0.,events=[])
+    issued=[]
+    for tick in range(13):
+        before=teacher.phase
+        if tick:
+            teacher.phase='ready';teacher.events.append({'to':'ready'})
+        defer_ready_during_probe(teacher,before,0.,noise.active)
+        _,record=noise.apply(command(),phase_before=before,phase_after=teacher.phase,holding=False,visible=True)
+        if record:issued.append(record['tick'])
+    assert issued==list(range(1,13))
+    assert teacher.phase=='ready'

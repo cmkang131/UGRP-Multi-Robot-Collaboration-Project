@@ -1,0 +1,61 @@
+{
+  "schema": "ugrp.beampair1.funnel.v1",
+  "source_sha": "cdbdc4b0163725ccf0da4bdcb37900496acf8f49",
+  "raw_root": "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes",
+  "episode_funnel": [
+    {
+      "gate": "started",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_align",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_ready",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_pick",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "both_command_complete",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "joint_hold_3s",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "input_eligible_success",
+      "entered": 6,
+      "passed": 6,
+      "rejected": 0
+    }
+  ],
+  "reason_distribution": {},
+  "blocked_objects": {},
+  "candidate_populations": {
+    "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-000/raw": {},
+    "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-001/raw": {},
+    "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-002/raw": {},
+    "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-003/raw": {},
+    "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-004/raw": {},
+    "/home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes/diagnostic/episode-005/raw": {}
+  },
+  "missing_rejection_audit_N": 0,
+  "reproduce": "python -m scripts.analyze_beampair1 /home/ugrp/ugrp-sim/runs/beampair1-r1-cdbdc4b0/probes --out /home/ugrp/ugrp-sim/outputs/beampair1-r1-analysis"
+}

@@ -68,3 +68,10 @@ def perturb_model(ticks):
         probability_per_eligible_tick=.1,minimum_eligible_ticks=12,burst_ticks=ticks,
         max_injections_per_run=1,wheel_duty=.35,pulse_s=.1,phases=['approach','align'],
         held_noise=False,arm_noise=False,perturbation_targets_excluded=True)
+
+
+def defer_ready_during_probe(teacher, previous_phase, previous_phase_t, active):
+    """An exogenous burst must finish before a READY/GO transition is offered."""
+    if active and teacher.phase=='ready' and previous_phase in ('approach','align'):
+        teacher.phase=previous_phase;teacher.phase_t=previous_phase_t
+        if teacher.events and teacher.events[-1].get('to')=='ready':teacher.events.pop()
