@@ -22,7 +22,8 @@ from harness.beampair_teacher import (MODE, DEPENDENCY_SHA, HeldCargoGuard, vali
                                     perturb_model, defer_ready_during_probe, PairRecoveryPerturb)
 from harness.grasp_act_data import write_json
 from harness.json_encoding import dumps
-from harness.grasp_act_peer_rendezvous import PeerRendezvous, RendezvousTeacherMixin, MODE as RENDEZVOUS_MODE
+from harness.grasp_act_peer_rendezvous import (PeerRendezvous, RendezvousTeacherMixin,
+    MODE as RENDEZVOUS_MODE, BOUNDED_MODE)
 
 ROOT=Path(__file__).resolve().parents[1]
 EXP=ROOT/'experiments/2026-10-15-beampair1'
@@ -258,6 +259,6 @@ if __name__=='__main__':
     p.add_argument('--out',type=Path,required=True);p.add_argument('--dependency-root',type=Path,required=True)
     p.add_argument('--mode',choices=['off',MODE],default='off')
     p.add_argument('--candidate',choices=['baseline','soft'],default='baseline');p.add_argument('--cap-s',type=float,default=60.)
-    p.add_argument('--rendezvous',choices=['off',RENDEZVOUS_MODE],default='off')
+    p.add_argument('--rendezvous',choices=['off',RENDEZVOUS_MODE,BOUNDED_MODE],default='off')
     a=p.parse_args();run(json.loads(a.plan.read_text())['episodes'][a.episode],a.out,a.dependency_root,
                          mode=a.mode,candidate=a.candidate,cap_s=a.cap_s,rendezvous=a.rendezvous)

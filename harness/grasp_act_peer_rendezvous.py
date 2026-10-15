@@ -9,13 +9,35 @@ from copy import deepcopy
 import math
 
 MODE='peer_rendezvous_v1'
+BOUNDED_MODE='peer_rendezvous_v2'
 
 
 class PeerRendezvous:
     def __init__(self,mode='off'):
-        if mode not in ('off',MODE):raise ValueError('unknown rendezvous mode')
+        if mode not in ('off',MODE,BOUNDED_MODE):raise ValueError('unknown rendezvous mode')
         self.mode=mode;self.previous={};self.velocity={};self.events=[]
         self.yield_goal=None;self.visits={};self.retired=set();self.last_choice=None
+        self.yield_until=None
+
+    def expire_yield(self,t,world,now):
+        if (self.mode!=BOUNDED_MODE or self.yield_goal is None
+                or self.yield_until is None or now<self.yield_until):return
+        # Reuse the existing visible_route refresh/prediction horizon (1 SIMs).
+        # This invalidates an old motion plan; it never declares arrival. In
+        # 8318611 R2 the proportional drive approached the wait point forever:
+        # remaining distance always exceeded its shrinking issued pulse. See
+        # experiments/2026-10-15-beampair3/r2-yield-analysis.json. No new distance
+        # tolerance, physical success criterion or wall-clock budget is added.
+        if world.get('beam') is not None:
+            row=self.audit(t,world,now,'yield_plan_expired',self.yield_goal)
+            row['reason_category']='prediction_horizon_elapsed'
+        else:
+            self.events.append(dict(t=now,event='yield_plan_expired',robot=t.rid,
+                reason_category='prediction_horizon_elapsed',blocked_object='assigned_band_not_visible',
+                min_gap_m=None,gap_scope='not_geometric; no hidden cargo query'))
+        self.yield_goal=None;self.yield_until=None
+        t.peer_route=[];t.peer_route_next=now
+        t.path=[];t.path_goal=None;t.next_plan=now;t.progress.reset()
 
     def observe(self,world,rid,now):
         """Two admitted own RGB measurements, in the own issued-odometry frame."""
@@ -85,12 +107,14 @@ class PeerRendezvous:
             # Existing route refresh is 1 SIMs (_peer_route), reused as the
             # prediction horizon. Prediction never removes current keepouts.
             self.yield_goal=self.select_wait(t,world,now,horizon=1.)
+            self.yield_until=now+1. if self.yield_goal is not None else None
         else:
             # No hidden cargo geometry read to select a wait position.
             self.events.append(dict(t=now,event=reason,robot=t.rid,reason_category='target_not_visible',
                 blocked_object='assigned_band_not_visible',min_gap_m=None,
                 gap_scope='not_geometric; no cargo position read'))
             self.yield_goal=None
+            self.yield_until=None
         if t.reobserver.active:t.reobserver.finish(t,now,'rendezvous_replan')
         t.peer_wait_since=None;t.peer_wait_ids.clear();t.peer_clear_since=None
         t.peer_route=[];t.path=[];t.path_goal=None;t.next_plan=now;t.peer_route_next=now
@@ -141,6 +165,7 @@ class RendezvousTeacherMixin:
         rv=self.rendezvous
         if rv.mode=='off':return super()._step(world,now,permit_pick=permit_pick)
         rv.observe(world,self.rid,now)
+        rv.expire_yield(self,world,now)
         # Intercept the legacy early return *before* it can terminate the peer.
         if self.peer_wait_since is not None and now-self.peer_wait_since>=12.-1e-8:
             rv.retry(self,world,now,'encounter_deadline_replan')

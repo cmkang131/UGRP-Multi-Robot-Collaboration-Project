@@ -23,7 +23,7 @@ def build(source, evidence, table):
     for r in runs:
         old = r['name']
         r['name'] = old.replace('beampair2-', 'beampair3-', 1)
-        r['command'] = [x.replace(old, r['name']) for x in r['command']]
+        r['command'] = [x.replace(old, r['name']).replace('peer_rendezvous_v1','peer_rendezvous_v2') for x in r['command']]
     for p in ('harness/json_encoding.py', 'harness/grasp_act_data.py',
               'scripts/run_beampair1_batch.py', 'scripts/analyze_beampair1.py',
               'scripts/review_beampair3.py'):
@@ -31,6 +31,7 @@ def build(source, evidence, table):
             ['git', 'show', source + ':' + p], cwd=ROOT)).hexdigest()
     q.update(schema='ugrp.beampair3.gate40_queue.v1', owner='beampair3',
         first_two_seeds=[8318611, 8318604], max_parallel=16,
+        peer_rendezvous='peer_rendezvous_v2',
         held_object_hidden_v1=True, training_rgb=False,
         cohort_scope='Fresh all40 at beampair3 source; no beampair1/2 or short6 outcomes pooled',
         required_before_start=[

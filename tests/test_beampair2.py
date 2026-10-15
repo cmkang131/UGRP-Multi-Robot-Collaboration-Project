@@ -27,7 +27,7 @@ class Base:
 def teacher(mode):
     class T(RendezvousTeacherMixin,Base):pass
     t=T();t.rid='r1';t.peer_wait_since=8.9;t.outcome=None;t.called=False
-    t.rendezvous=SimpleNamespace(mode=mode,observe=lambda *a:None)
+    t.rendezvous=SimpleNamespace(mode=mode,observe=lambda *a:None,expire_yield=lambda *a:None)
     def retry(*a):t.peer_wait_since=None;t.outcome=None
     t.rendezvous.retry=retry
     return t
@@ -147,3 +147,28 @@ def test_second_regression_failure_prevents_filling_the_round(tmp_path,monkeypat
     stop=json.loads((root/'SUPERVISOR_STOP.json').read_text())
     assert stop['episode']=='episode-001' and stop['reason']=='sentinel_seed_failed'
     assert json.loads((root/'batch-result.json').read_text())['supervisor_stopped']
+
+
+@pytest.mark.parametrize('visible',[True,False])
+def test_asymptotic_wait_cannot_outlive_its_prediction_horizon(visible):
+    from harness.grasp_act_peer_rendezvous import BOUNDED_MODE
+    rv=PeerRendezvous(BOUNDED_MODE);rv.yield_goal=(1.,0.);rv.yield_until=21.
+    calls=[]
+    t=SimpleNamespace(rid='r2',path=['stale'],path_goal=(1.,0.),peer_route=['stale'],
+        progress=SimpleNamespace(reset=lambda:calls.append('reset')))
+    rv.audit=lambda *a: {'event':'yield_plan_expired'}
+    world={'beam':{} if visible else None}
+    # Arbitrarily close to the wait point still cannot extend plan validity.
+    rv.expire_yield(t,world,20.9)
+    assert rv.yield_goal is not None and not calls
+    rv.expire_yield(t,world,21.)
+    assert rv.yield_goal is None and rv.yield_until is None
+    assert t.path==t.peer_route==[] and t.next_plan==t.peer_route_next==21.
+    assert calls==['reset']
+    if not visible:assert rv.events[-1]['blocked_object']=='assigned_band_not_visible'
+
+
+def test_original_rendezvous_replay_keeps_its_old_yield_lifetime():
+    rv=PeerRendezvous(MODE);rv.yield_goal=(1.,0.);rv.yield_until=21.
+    rv.expire_yield(None,{},99.)
+    assert rv.yield_goal==(1.,0.)
