@@ -266,7 +266,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=cw,height=ch,render=True,
             warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
         from sim.gatesv5_scene import scene_bindings
-        scene_binding=scene_bindings(plan.get('scene_profile','off'))
+        scene_binding=scene_bindings(plan.get('scene_profile','off'),asset_extension=plan.get('scene_asset_extension','off'))
         if scene_binding is not None:report['gatesv5_scene']=scene_binding[1](world,out)
         top_audit.install(world)
         for controller in world.controllers.values():bind_camera(controller)

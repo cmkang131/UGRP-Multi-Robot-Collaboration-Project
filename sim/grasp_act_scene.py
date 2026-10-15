@@ -24,7 +24,7 @@ def colors(xml,option):
 
 def make_scene(plan):
     from sim.gatesv5_scene import scene_bindings
-    binding=scene_bindings(plan.get('scene_profile','off'))
+    binding=scene_bindings(plan.get('scene_profile','off'),asset_extension=plan.get('scene_asset_extension','off'))
     base_scene=ScenarioFinalV3Scene.from_scenario(plan['scenario_id'],plan['seed'])
     scene=wrap(binding[0](base_scene) if binding is not None else install(base_scene,'floor_light_v1'))
     scene.config['setup_only']['spawns']=plan['spawns']
