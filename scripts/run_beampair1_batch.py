@@ -46,6 +46,7 @@ def run(args):
                 '--mode',MODE,'--candidate',args.candidate,'--cap-s','60']
             cmd += ['--rendezvous',args.rendezvous]
             cmd += ['--approach-repair',getattr(args,'approach_repair','off')]
+            cmd += ['--wall-layer',getattr(args,'wall_layer','off')]
             process=subprocess.Popen(cmd,stdout=log,stderr=subprocess.STDOUT)
             children.append((process,d,log));write_json(d/'PROCESS.json',dict(pid=process.pid,command=cmd))
             if i<getattr(args,'first_episodes',0) or (i==0 and args.first_episode_first):
@@ -91,6 +92,7 @@ if __name__=='__main__':
     p.add_argument('--candidate',choices=['baseline','soft'],default='baseline')
     p.add_argument('--rendezvous',choices=['off','peer_rendezvous_v1','peer_rendezvous_v2'],default='off')
     p.add_argument('--approach-repair',choices=['off','beampair_approach_v1','beampair_approach_v2'],default='off')
+    p.add_argument('--wall-layer',choices=['off','beampair_wall_clear_v1'],default='off')
     p.add_argument('--first-episode-first',action='store_true')
     p.add_argument('--first-episodes',type=int,choices=range(7),default=0,
                    help='Run this many leading regression sentinels serially before filling')

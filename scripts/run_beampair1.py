@@ -27,6 +27,8 @@ from harness.grasp_act_peer_rendezvous import (PeerRendezvous, RendezvousTeacher
 from harness.beampair_approach import ApproachRepairMixin, MODE as APPROACH_MODE, BOUNDED_MODE as APPROACH_BOUNDED_MODE
 from harness.failure_rgb_tail import FailureRGBTail
 from harness.beampair_host import gcp2_identity
+from harness.beampair_wall_layer import WallLayer, MODE as WALL_MODE
+from harness.beampair_visible_rays import visible_rays
 
 ROOT=Path(__file__).resolve().parents[1]
 EXP=ROOT/'experiments/2026-10-15-beampair1'
@@ -122,10 +124,11 @@ def setup_admission(plan,scenario):
 
 
 def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,rendezvous='off',
-        approach_repair='off',failure_tail=True):
+        approach_repair='off',failure_tail=True,wall_layer='off'):
     if platform.system()!='Linux':raise RuntimeError('GCP Linux only; Mac physics/render forbidden')
     if mode!=MODE:raise ValueError('explicit beampair1_v1 opt-in required')
     if approach_repair not in ('off',APPROACH_MODE,APPROACH_BOUNDED_MODE):raise ValueError('unknown approach repair')
+    if wall_layer not in ('off',WALL_MODE):raise ValueError('unknown wall layer')
     validate_plan(plan)
     source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT):raise ValueError('committed source required')
@@ -137,6 +140,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         raise ValueError('v7 cargo inventory required')
     guard=HeldCargoGuard();teachers={};models={};visible={};audit={};probe_rows=[]
     selected=profiles(candidate)
+    ray_rows=[];current_rays={}
     with dependency_modules(dependency_root):
         from scripts.grasp_act_host import identity
         host=gcp2_identity(identity)
@@ -182,7 +186,13 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             scene.robot_transform=transform
             return scene
         def measurements(world,evaluator,rid,role,bodies):
-            if not guard.active:return original_measure(world,evaluator,rid,role,bodies)
+            current_rays[rid]=[]
+            if not guard.active:
+                ms=original_measure(world,evaluator,rid,role,bodies)
+                if wall_layer!='off' and models[rid].wall_layer.active:
+                    wall_tops=[2*m['xyz'][2] for m in [*ms,*models[rid].memory.values()] if m['kind']=='wall']
+                    if wall_tops:current_rays[rid]=visible_rays(world,evaluator,rid,min(wall_tops))
+                return ms
             guard.hidden_measurement_ticks+=1
             bands=evaluator.bands
             try:
@@ -192,18 +202,43 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         class World(original_world):
             def __init__(self,rid,*a,**kw):
                 super().__init__(rid,*a,**kw);models[rid]=self
+                self.wall_layer=WallLayer()
             def observe(self,ms,now,**kw):
                 guard.validate_measurements(ms)
                 guard.sanitize_memory(self)
                 visible[self.rid]=any(m['id']=='band_'+self.end and m['visible_n']>=5 for m in ms)
-                return guard.sanitize_world(super().observe(ms,now,**kw))
+                w=guard.sanitize_world(super().observe(ms,now,**kw))
+                if wall_layer!='off' and not guard.active:
+                    from sim.grasp_act_gaze import camera_extrinsics
+                    import numpy as np
+                    pwm={int(k):v for k,v in self.previous['pwm'].items()} if self.previous else teachers[self.rid].sink.pwm
+                    origin,axes=camera_extrinsics(pwm)
+                    rays=[dict(origin=origin,end=(np.asarray(origin)+np.asarray(axes).T@ray['optical_end']).tolist(),
+                               hit_wall=ray['hit_wall']) for ray in current_rays.get(self.rid,[])]
+                    ray_rows.append(dict(t=now,robot=self.rid,rays=current_rays.get(self.rid,[]),
+                        input='own visible optical endpoint + issued camera FK; no measured joints'))
+                    w=self.wall_layer.update(w,self.rid,ms,rays)
+                return w
         class Teacher(ApproachRepairMixin,RendezvousTeacherMixin,original_teacher):
             def __init__(self,rid,*a,**kw):
                 super().__init__(rid,*a,**kw);teachers[rid]=self
                 self.rendezvous=PeerRendezvous(rendezvous)
                 self.approach_repair=approach_repair;self.approach_repair_log=[]
+                self.wall_layer_mode=wall_layer
                 ticks=plan['burst_ticks'] if rid=='r1' else 13-plan['burst_ticks']
                 self.pair_perturb=PairRecoveryPerturb(perturb_model(ticks),seed=plan['seed']+(rid=='r2'))
+            def _plan_approach(self,w,now):
+                valid=super()._plan_approach(w,now)
+                if wall_layer!='off' and not valid and not models[self.rid].wall_layer.active:
+                    rows=[c for e in self.goal_set_log[-1:] for c in e.get('candidates',[])]
+                    if rows and all(c['reason']=='blocked_goal' for c in rows):
+                        models[self.rid].wall_layer.active=True
+                        self.approach_repair_log.append(dict(t=now,event='wall_layer_activate',
+                            reason_category='all_stances_blocked_goal',blocked_object='wall_layer',min_gap_m=None,
+                            gap_scope='preceding candidate ledger; full grid marked from visible history'))
+                        if self.reobserver.active:self.reobserver.finish(self,now,'wall_layer_hit_miss_replan')
+                        self.next_plan=now
+                return valid
             def step(self,w,now,**kw):
                 if guard.active:
                     self.local_seen=None;self.last_seen_t=None
@@ -253,13 +288,20 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             write_json(adapter/'beampair1-result.json',{'schema':'ugrp.beampair1.result.v1',
                 'source_sha':source,'dependency_sha':DEPENDENCY_SHA,'candidate':candidate,
                 'peer_rendezvous':rendezvous,
-                'approach_repair':approach_repair,'failure_tail_recording':failure_tail,
+                'approach_repair':approach_repair,'failure_tail_recording':failure_tail,'wall_layer':wall_layer,
                 'mode':mode,'held_object_hidden_v1':True,'held_world_reads':guard.held_world_reads,
                 'first_close_t':guard.first_close_t,'hidden_measurement_ticks':guard.hidden_measurement_ticks,
                 'input_audit':audit,'training_rgb':False,'profiles':selected,'result':report,
                 'setup_admission':setup_rows,
                 'probe_burst_ticks':{r:t.pair_perturb.ticks for r,t in teachers.items()},
                 'probe_executed_ticks':{r:sum(x['robot_id']==r and x['disturbance'] is not None for x in probe_rows) for r in teachers}})
+            if wall_layer!='off':
+                write_json(adapter/'wall-layer.json',dict(mode=wall_layer,
+                    events={rid:m.wall_layer.events for rid,m in models.items()},
+                    activated={rid:m.wall_layer.active for rid,m in models.items()},
+                    visible_ray_N=sum(len(r['rays']) for r in ray_rows),held_ray_N=0,
+                    input='own camera visible intersections + own issued FK only; perfect perception teacher, not student'))
+                (adapter/'wall-rays.jsonl').write_text(''.join(dumps(r)+'\n' for r in ray_rows))
             ledger=adapter/'beampair1-commands.jsonl'
             ledger.write_text(''.join(dumps(r)+'\n' for r in probe_rows))
             if tail is not None:
@@ -276,8 +318,9 @@ if __name__=='__main__':
     p.add_argument('--candidate',choices=['baseline','soft'],default='baseline');p.add_argument('--cap-s',type=float,default=60.)
     p.add_argument('--rendezvous',choices=['off',RENDEZVOUS_MODE,BOUNDED_MODE],default='off')
     p.add_argument('--approach-repair',choices=['off',APPROACH_MODE,APPROACH_BOUNDED_MODE],default='off')
+    p.add_argument('--wall-layer',choices=['off',WALL_MODE],default='off')
     p.add_argument('--failure-tail',action=argparse.BooleanOptionalAction,default=True,
                    help='Recording only: retain last10 SIM seconds own RGB on failure/interruption')
     a=p.parse_args();run(json.loads(a.plan.read_text())['episodes'][a.episode],a.out,a.dependency_root,
                          mode=a.mode,candidate=a.candidate,cap_s=a.cap_s,rendezvous=a.rendezvous,
-                         approach_repair=a.approach_repair,failure_tail=a.failure_tail)
+                         approach_repair=a.approach_repair,failure_tail=a.failure_tail,wall_layer=a.wall_layer)
