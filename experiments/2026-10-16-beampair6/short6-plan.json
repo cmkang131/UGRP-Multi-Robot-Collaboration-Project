@@ -1,0 +1,328 @@
+{
+  "schema": "ugrp.beampair6.probe.v1",
+  "branch": "A",
+  "episodes": [
+    {
+      "episode_id": "beampair6-short6-8318726",
+      "batch": "beampair6-short6",
+      "seed": 8318726,
+      "split": "development_v2_sentinel",
+      "scenario_id": "s7_pair_with_solo_v7",
+      "scenario_source_sha256": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "cargo_scene": "cargo_v7",
+      "beam_pose": [
+        1.0719458172584202,
+        -1.4815684470803527,
+        1.5361604225921823
+      ],
+      "spawns": {
+        "r1": [
+          -0.4680138117588355,
+          -1.3248754482255318,
+          0.032355118817659255,
+          -0.3254276121281936
+        ],
+        "r2": [
+          1.7873754775946908,
+          -2.493586954866212,
+          0.032355118817659255,
+          2.1861604225921827
+        ],
+        "r3": [
+          3.0526762462212735,
+          0.3635236497244074,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1808,
+        "r2": 604
+      },
+      "burst_ticks": 3,
+      "proposal_attempts": 1,
+      "setup_validity": "beampair_gate_valid_v2",
+      "placement_validity": {
+        "k": 91,
+        "accepted": true,
+        "ends": {
+          "teal": {
+            "certified_N": 91,
+            "free_goal_N": 91,
+            "blocked_object": "none:all_certified_stances_clear",
+            "min_gap_m": null,
+            "blocker_occurrences": {}
+          },
+          "blue": {
+            "certified_N": 91,
+            "free_goal_N": 91,
+            "blocked_object": "none:all_certified_stances_clear",
+            "min_gap_m": null,
+            "blocker_occurrences": {}
+          }
+        }
+      }
+    },
+    {
+      "episode_id": "beampair6-short6-8318620",
+      "batch": "beampair6-short6",
+      "seed": 8318620,
+      "split": "development_seen_regression",
+      "scenario_id": "s7_pair_with_solo_v7",
+      "scenario_source_sha256": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "cargo_scene": "cargo_v7",
+      "beam_pose": [
+        0.3255052805356948,
+        -1.3367829653520489,
+        4.382359815866595
+      ],
+      "spawns": {
+        "r1": [
+          -0.4121627871015589,
+          -1.1983652328616872,
+          0.032355118817659255,
+          -0.3316894202408447
+        ],
+        "r2": [
+          0.07561562813213765,
+          -0.5826427975165142,
+          0.032355118817659255,
+          -1.2508254913129915
+        ],
+        "r3": [
+          2.537180568684061,
+          0.4785601093544529,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 2332,
+        "r2": 1036
+      },
+      "burst_ticks": 9,
+      "proposal_attempts": 2
+    },
+    {
+      "episode_id": "beampair6-short6-8318600",
+      "batch": "beampair6-short6",
+      "seed": 8318600,
+      "split": "development_seen_regression",
+      "scenario_id": "s7_pair_with_solo_v7",
+      "scenario_source_sha256": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "cargo_scene": "cargo_v7",
+      "beam_pose": [
+        1.0847712984283964,
+        -0.5410744865126378,
+        0.5034566443949664
+      ],
+      "spawns": {
+        "r1": [
+          1.4259953679454525,
+          0.04168019789693045,
+          0.032355118817659255,
+          -1.7558733826124884
+        ],
+        "r2": [
+          1.499081514594953,
+          -0.3128727231977563,
+          0.032355118817659255,
+          -2.638136009194827
+        ],
+        "r3": [
+          3.53123535343267,
+          -1.7208587314132473,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "other_end",
+      "initial_pan": {
+        "r1": 2272,
+        "r2": 599
+      },
+      "burst_ticks": 1,
+      "proposal_attempts": 2
+    },
+    {
+      "episode_id": "beampair6-short6-8318604",
+      "batch": "beampair6-short6",
+      "seed": 8318604,
+      "split": "development_seen_regression",
+      "scenario_id": "s7_pair_with_solo_v7",
+      "scenario_source_sha256": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "cargo_scene": "cargo_v7",
+      "beam_pose": [
+        0.8997530215972525,
+        -2.2363474038416595,
+        2.3967734800464022
+      ],
+      "spawns": {
+        "r1": [
+          1.4735381070002262,
+          -0.3921860558683443,
+          0.032355118817659255,
+          -1.5528890413223202
+        ],
+        "r2": [
+          1.3967049081790195,
+          -2.927223349526614,
+          0.032355118817659255,
+          2.1943628118169336
+        ],
+        "r3": [
+          2.7610869130354714,
+          -1.4344821401682806,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 672,
+        "r2": 859
+      },
+      "burst_ticks": 5,
+      "proposal_attempts": 6
+    },
+    {
+      "episode_id": "beampair6-short6-8318611",
+      "batch": "beampair6-short6",
+      "seed": 8318611,
+      "split": "development_seen_regression",
+      "scenario_id": "s7_pair_with_solo_v7",
+      "scenario_source_sha256": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "cargo_scene": "cargo_v7",
+      "beam_pose": [
+        0.45655306086627906,
+        -1.2924205629831875,
+        6.1882817609856975
+      ],
+      "spawns": {
+        "r1": [
+          -0.3088566251685774,
+          -1.1873052755407205,
+          0.032355118817659255,
+          -0.23816696222371375
+        ],
+        "r2": [
+          1.148987699151076,
+          -0.8630145241680585,
+          0.032355118817659255,
+          -2.586496199783682
+        ],
+        "r3": [
+          3.8118775291964506,
+          -2.5434150836014973,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "near_own",
+      "initial_pan": {
+        "r1": 1995,
+        "r2": 2213
+      },
+      "burst_ticks": 12,
+      "proposal_attempts": 1
+    },
+    {
+      "episode_id": "beampair6-short6-8318631",
+      "batch": "beampair6-short6",
+      "seed": 8318631,
+      "split": "development_seen_regression",
+      "scenario_id": "s7_pair_with_solo_v7",
+      "scenario_source_sha256": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "cargo_scene": "cargo_v7",
+      "beam_pose": [
+        0.608230910486067,
+        -1.578274086036207,
+        3.953621169957699
+      ],
+      "spawns": {
+        "r1": [
+          0.6168722725222895,
+          -2.2316931177510013,
+          0.032355118817659255,
+          1.1986121138984354
+        ],
+        "r2": [
+          0.11924176319410473,
+          -0.6107579834810869,
+          0.032355118817659255,
+          -1.102832696792465
+        ],
+        "r3": [
+          0.6522460233600832,
+          0.009255859267600641,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "target_item": "beam_1",
+      "object_kind": "long_beam",
+      "assignment_source": "demo_rule_color_balanced",
+      "end_color_scene": "grasp_act_teal_blue_v1",
+      "peer_case": "approaching",
+      "initial_pan": {
+        "r1": 1085,
+        "r2": 2482
+      },
+      "burst_ticks": 8,
+      "proposal_attempts": 1
+    }
+  ],
+  "prior_results_pooled": false
+}

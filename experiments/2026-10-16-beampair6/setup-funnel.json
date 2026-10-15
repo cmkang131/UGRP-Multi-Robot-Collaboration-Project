@@ -1,0 +1,384 @@
+{
+  "schema": "ugrp.beampair1.setup_funnel.v1",
+  "funnel": [
+    {
+      "gate": "beam_static",
+      "entered": 73,
+      "passed": 73,
+      "rejected": 0
+    },
+    {
+      "gate": "beam_cargo",
+      "entered": 73,
+      "passed": 64,
+      "rejected": 9
+    },
+    {
+      "gate": "certified_end_stances",
+      "entered": 64,
+      "passed": 59,
+      "rejected": 5
+    },
+    {
+      "gate": "robot_environment",
+      "entered": 59,
+      "passed": 46,
+      "rejected": 13
+    },
+    {
+      "gate": "robot_peer",
+      "entered": 46,
+      "passed": 45,
+      "rejected": 1
+    },
+    {
+      "gate": "initial_static_los",
+      "entered": 45,
+      "passed": 40,
+      "rejected": 5
+    },
+    {
+      "gate": "parking",
+      "entered": 40,
+      "passed": 40,
+      "rejected": 0
+    }
+  ],
+  "rejections": [
+    {
+      "proposal": 1,
+      "population": "main_proposals",
+      "reason_category": "robot_peer_overlap",
+      "blocked_object": "r2",
+      "min_gap_m": -0.17595021645748238,
+      "robot": "r1"
+    },
+    {
+      "proposal": 3,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.0545125171867326
+    },
+    {
+      "proposal": 5,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "r1",
+      "min_gap_m": -0.03318099018872006
+    },
+    {
+      "proposal": 6,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "beam_1",
+      "min_gap_m": -0.22407246605711206
+    },
+    {
+      "proposal": 10,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.05221046031234941
+    },
+    {
+      "proposal": 11,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "r1",
+      "min_gap_m": -0.0348815652322233
+    },
+    {
+      "proposal": 12,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": -0.05476253423065251,
+      "robot": "r1"
+    },
+    {
+      "proposal": 16,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.013283998809094835
+    },
+    {
+      "proposal": 18,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.2780327421308977
+    },
+    {
+      "proposal": 19,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "beam_1",
+      "min_gap_m": -0.04131184398907646
+    },
+    {
+      "proposal": 21,
+      "population": "main_proposals",
+      "reason_category": "certified_end_stances",
+      "blocked_object": "wall_south",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 0,
+      "required_N": 91
+    },
+    {
+      "proposal": 23,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.6237623183249356,
+      "robot": "r1"
+    },
+    {
+      "proposal": 24,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.08647722410535175
+    },
+    {
+      "proposal": 26,
+      "population": "parking_trials",
+      "trial": 0,
+      "reason_category": "parking_overlap",
+      "blocked_object": "r2",
+      "min_gap_m": -0.0848028058311156
+    },
+    {
+      "proposal": 26,
+      "population": "parking_trials",
+      "trial": 1,
+      "reason_category": "parking_overlap",
+      "blocked_object": "beam_1",
+      "min_gap_m": -0.08398866482194318
+    },
+    {
+      "proposal": 27,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_5",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 28,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_0",
+      "min_gap_m": -0.12229574808635009,
+      "robot": "r1"
+    },
+    {
+      "proposal": 34,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_2",
+      "min_gap_m": -0.068862529624445,
+      "robot": "r1"
+    },
+    {
+      "proposal": 35,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.2228137487908693,
+      "robot": "r1"
+    },
+    {
+      "proposal": 37,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.07572405335224883
+    },
+    {
+      "proposal": 39,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.23117214032895875
+    },
+    {
+      "proposal": 40,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.06244045766100806
+    },
+    {
+      "proposal": 41,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.47777600507053114,
+      "robot": "r1"
+    },
+    {
+      "proposal": 42,
+      "population": "main_proposals",
+      "reason_category": "certified_end_stances",
+      "blocked_object": "wall_north",
+      "min_gap_m": 0.0,
+      "end": "blue",
+      "free_goal_N": 67,
+      "required_N": 91
+    },
+    {
+      "proposal": 45,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "cyan_1",
+      "min_gap_m": -0.2734286642333395
+    },
+    {
+      "proposal": 46,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.14718569391928932,
+      "robot": "r1"
+    },
+    {
+      "proposal": 47,
+      "population": "main_proposals",
+      "reason_category": "certified_end_stances",
+      "blocked_object": "wall_north",
+      "min_gap_m": 0.0,
+      "end": "blue",
+      "free_goal_N": 0,
+      "required_N": 91
+    },
+    {
+      "proposal": 49,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -1.195517456166204,
+      "robot": "r1"
+    },
+    {
+      "proposal": 50,
+      "population": "main_proposals",
+      "reason_category": "certified_end_stances",
+      "blocked_object": "wall_south",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 62,
+      "required_N": 91
+    },
+    {
+      "proposal": 55,
+      "population": "main_proposals",
+      "reason_category": "beam_cargo_overlap",
+      "blocked_object": "red_1",
+      "min_gap_m": -0.1741859060479766
+    },
+    {
+      "proposal": 58,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.22191946021913284,
+      "robot": "r1"
+    },
+    {
+      "proposal": 59,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.7597986865615921,
+      "robot": "r1"
+    },
+    {
+      "proposal": 60,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 61,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 62,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    },
+    {
+      "proposal": 63,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -1.4330918521080205,
+      "robot": "r1"
+    },
+    {
+      "proposal": 67,
+      "population": "main_proposals",
+      "reason_category": "certified_end_stances",
+      "blocked_object": "wall_south",
+      "min_gap_m": 0.0,
+      "end": "teal",
+      "free_goal_N": 5,
+      "required_N": 91
+    },
+    {
+      "proposal": 69,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "bounds",
+      "min_gap_m": -0.5104640334133025,
+      "robot": "r1"
+    },
+    {
+      "proposal": 70,
+      "population": "main_proposals",
+      "reason_category": "robot_environment_overlap",
+      "blocked_object": "static_wall_2",
+      "min_gap_m": -0.027977569015695078,
+      "robot": "r1"
+    },
+    {
+      "proposal": 72,
+      "population": "main_proposals",
+      "reason_category": "initial_static_los",
+      "blocked_object": "static_wall_4",
+      "min_gap_m": 0.0,
+      "robot": "r1",
+      "gap_scope": "intersecting_center_ray"
+    }
+  ],
+  "source_scenario_sha256": "6382011a64cc0eea17edbdfe8b44fbd070a54467afc6b4db547c42dbd28df6f7",
+  "reproduce": "python -m scripts.prepare_beampair6 --seed 8318700 --output /home/ugrp/ugrp-sim/ops-reviews/beampair6/generated-v2 --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --setup-validity beampair_gate_valid_v2",
+  "scope": "setup-only; positions excluded from all action selection; not physical success",
+  "setup_validity": "beampair_gate_valid_v2",
+  "default": "off",
+  "k": 91,
+  "k_basis": "v7 initial and authored fixed-event end count minimum",
+  "census_sha256": "af244a9a4675cba08ac1563a5cd1b7ddd4ef5e273fc6db17c4eedf4736ecc8fe",
+  "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247"
+}
