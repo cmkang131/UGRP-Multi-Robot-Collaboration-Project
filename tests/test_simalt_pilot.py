@@ -14,7 +14,8 @@ def test_trace_rejects_teacher_truth(tmp_path):
 
 def test_trace_requires_contiguous_control_clock(tmp_path):
     p=tmp_path/'trace.jsonl'
-    p.write_text('\n'.join(json.dumps({'t':t,'phase':'hold','command':{}}) for t in (1.,1.2)))
+    command={'t':1.,'wheels':[0]*4,'duration_s':[0]*4,'pwm':{str(k):1500 for k in (1,3,4,5,6)}}
+    p.write_text('\n'.join(json.dumps({'t':t,'phase':'hold','command':command}) for t in (1.,1.2)))
     with pytest.raises(ValueError,match='10 Hz'):
         trace_rows(p)
 
@@ -32,3 +33,10 @@ def test_defaults_keep_training_and_gpu_disabled():
     assert config['egl_l4_v1'] is False
     assert config['stage_D_training'] is False
     assert Path(config['rejection_table']).is_file()
+
+
+def test_trace_rejects_nonfinite_clock(tmp_path):
+    p=tmp_path/'trace.jsonl'
+    p.write_text(json.dumps({'t':float('nan'),'phase':'hold','command':{}}))
+    with pytest.raises(ValueError,match='finite'):
+        trace_rows(p)

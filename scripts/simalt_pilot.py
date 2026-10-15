@@ -10,6 +10,7 @@ import argparse
 from collections import Counter, defaultdict, deque
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import platform
@@ -34,6 +35,10 @@ def trace_rows(path):
     for i, row in enumerate(rows):
         if set(row) != {'t', 'phase', 'command'}:
             raise ValueError('trace may contain issued commands and phase metadata only')
+        if isinstance(row['t'], bool) or not isinstance(row['t'], (int,float)) or not math.isfinite(row['t']):
+            raise ValueError('finite issued-command clock required')
+        if set(row['command']) != {'t','wheels','duration_s','pwm'} or set(row['command']['pwm']) != {'1','3','4','5','6'}:
+            raise ValueError('nested issued-command whitelist required')
         if i and abs(row['t'] - rows[i-1]['t'] - .1) > 1e-6:
             raise ValueError('10 Hz contiguous command trace required')
     if not rows:

@@ -1,0 +1,875 @@
+{
+  "snapshots_compared": 30,
+  "reference_gl": {
+    "vendor": "Mesa",
+    "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "version": "4.5 (Compatibility Profile) Mesa 25.1.7-1ubuntu2~24.04.2"
+  },
+  "candidate_gl": {
+    "vendor": "NVIDIA Corporation",
+    "renderer": "NVIDIA L4/PCIe/SSE2",
+    "version": "4.6.0 NVIDIA 580.178.04"
+  },
+  "same_source_states": true,
+  "K_equal": true,
+  "D_equal": true,
+  "camera_SE3_exact": true,
+  "MAE_median": 0.5455099940299988,
+  "MAE_max": 1.0954632759094238,
+  "mask_IoU_median": 0.9964336992265296,
+  "mask_IoU_min": 0.991920675725303,
+  "black_xor_max_pixels": 0,
+  "identity_orientation_n": 30,
+  "identity_channels_n": 30,
+  "edge_touch_snapshots": 0,
+  "empty_target_mask_snapshots": 19,
+  "scope": "same immutable L4 states, existing renderer paths; no trained policy or live teacher result",
+  "coverage_limit": "phase-stratified 30; edge and occlusion are measured, not guaranteed five each; single cyan box has no beam end bands",
+  "acceptance": "diagnostic only; no pixel tolerance introduced, full B needs explicit edge/occlusion and band coverage review",
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/runs/simalt1-B-gcp1",
+    "/home/ugrp/ugrp-sim/outputs/simalt1-B-l4"
+  ],
+  "rows": [
+    {
+      "n": 0,
+      "stratum": "approach",
+      "MAE_RGB_255": 0.4883745610713959,
+      "orientation_mae": {
+        "identity": 0.4883745610713959,
+        "flip_vertical": 22.4323673248291,
+        "flip_horizontal": 18.77054214477539
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.4883745610713959,
+        "021": 9.494077682495117,
+        "102": 7.378724098205566,
+        "120": 16.854955673217773,
+        "201": 16.389612197875977,
+        "210": 16.86014175415039
+      },
+      "best_channels": "012",
+      "mask_IoU": 0.991920675725303,
+      "mask_union_pixels": 2723,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "a623ff5a1324823662e1d37926c617a3b23a0c8b3154dec9a9ec16f9926b9804",
+      "candidate_file_sha256": "6ba4ba458c3c3bbaa8abe2ac05431ae2feeb4cdc2810869bbee16a49d8a5b782"
+    },
+    {
+      "n": 1,
+      "stratum": "approach",
+      "MAE_RGB_255": 0.3241786062717438,
+      "orientation_mae": {
+        "identity": 0.3241786062717438,
+        "flip_vertical": 28.005807876586914,
+        "flip_horizontal": 34.98849105834961
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.3241786062717438,
+        "021": 7.725322246551514,
+        "102": 5.761932373046875,
+        "120": 13.522820472717285,
+        "201": 13.168314933776855,
+        "210": 13.528059005737305
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "783ea48996119b34e5b179c37f08ddf5b42792652235a3f31ebee1fd49867325",
+      "candidate_file_sha256": "f16138723b63afef4626ceaedd8a4aa2a610e968a26c4f550ac839d5efcaabb8"
+    },
+    {
+      "n": 2,
+      "stratum": "approach",
+      "MAE_RGB_255": 0.39701715111732483,
+      "orientation_mae": {
+        "identity": 0.39701715111732483,
+        "flip_vertical": 24.82842445373535,
+        "flip_horizontal": 16.942611694335938
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.39701715111732483,
+        "021": 12.43775463104248,
+        "102": 9.565274238586426,
+        "120": 21.959753036499023,
+        "201": 21.604995727539062,
+        "210": 21.95873260498047
+      },
+      "best_channels": "012",
+      "mask_IoU": 0.9934433164128595,
+      "mask_union_pixels": 4728,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "747c118201374adcff5bc2ece8e272076369a9b9a7521a47e98c6ac58438fa3c",
+      "candidate_file_sha256": "53534904c697bb4a2312090e71fb3fd988e6ce67f29b61bb60e4def764557586"
+    },
+    {
+      "n": 3,
+      "stratum": "approach",
+      "MAE_RGB_255": 0.4732052981853485,
+      "orientation_mae": {
+        "identity": 0.4732052981853485,
+        "flip_vertical": 32.615936279296875,
+        "flip_horizontal": 19.223495483398438
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.4732052981853485,
+        "021": 12.354580879211426,
+        "102": 10.579800605773926,
+        "120": 22.917064666748047,
+        "201": 22.46158790588379,
+        "210": 22.917476654052734
+      },
+      "best_channels": "012",
+      "mask_IoU": 0.9953703703703703,
+      "mask_union_pixels": 8856,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "dd7de4e245245353b62f4580711dded8f8c545b12061af32332906e12e565387",
+      "candidate_file_sha256": "e85d612116c6297ce8eae6b4eb21d5f929859d24dbc75a53cfbf01cdbc451137"
+    },
+    {
+      "n": 4,
+      "stratum": "approach",
+      "MAE_RGB_255": 0.34318143129348755,
+      "orientation_mae": {
+        "identity": 0.34318143129348755,
+        "flip_vertical": 27.146812438964844,
+        "flip_horizontal": 20.422822952270508
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.34318143129348755,
+        "021": 13.102215766906738,
+        "102": 13.13115406036377,
+        "120": 26.052810668945312,
+        "201": 26.107816696166992,
+        "210": 26.27043914794922
+      },
+      "best_channels": "012",
+      "mask_IoU": 0.9986716259298618,
+      "mask_union_pixels": 15056,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "d001f9644f7d9e44bffdacb82d359f765afe5c133cbd1a6c13abc36a259068a4",
+      "candidate_file_sha256": "cd6c3fba313132e128f8ea2f78e991adee5cf1cf6d1ba2adea427ac98e510277"
+    },
+    {
+      "n": 5,
+      "stratum": "align",
+      "MAE_RGB_255": 0.3416460454463959,
+      "orientation_mae": {
+        "identity": 0.3416460454463959,
+        "flip_vertical": 27.190834045410156,
+        "flip_horizontal": 20.151592254638672
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.3416460454463959,
+        "021": 13.117050170898438,
+        "102": 13.096695899963379,
+        "120": 26.027326583862305,
+        "201": 26.09670639038086,
+        "210": 26.25193214416504
+      },
+      "best_channels": "012",
+      "mask_IoU": 0.9990316109842983,
+      "mask_union_pixels": 14457,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "567e7cc67433a864dcca77717763f23b155dc6e829d00a250ea47a74c70ad732",
+      "candidate_file_sha256": "5f637fa18c888be82d00833c7cf7a6ee058a1c80d073cc3913e3fafe14fd4b6b"
+    },
+    {
+      "n": 6,
+      "stratum": "align",
+      "MAE_RGB_255": 0.27869683504104614,
+      "orientation_mae": {
+        "identity": 0.27869683504104614,
+        "flip_vertical": 16.934242248535156,
+        "flip_horizontal": 16.276756286621094
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.27869683504104614,
+        "021": 13.699141502380371,
+        "102": 14.060200691223145,
+        "120": 27.776844024658203,
+        "201": 27.48232650756836,
+        "210": 27.77852439880371
+      },
+      "best_channels": "012",
+      "mask_IoU": 0.9976521028991425,
+      "mask_union_pixels": 19592,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "61d54d297bff5eec181708c8e70b2d0de0be0fed20861b406108d153cc75e370",
+      "candidate_file_sha256": "2b349dc1bc2a11042388d3b2c621e638434dc57ac558b9920dcfbafba4ed3a9d"
+    },
+    {
+      "n": 7,
+      "stratum": "align",
+      "MAE_RGB_255": 0.38787326216697693,
+      "orientation_mae": {
+        "identity": 0.38787326216697693,
+        "flip_vertical": 20.746381759643555,
+        "flip_horizontal": 18.981924057006836
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.38787326216697693,
+        "021": 13.765642166137695,
+        "102": 14.017213821411133,
+        "120": 27.73029899597168,
+        "201": 27.439899444580078,
+        "210": 27.775217056274414
+      },
+      "best_channels": "012",
+      "mask_IoU": 0.9961768094689432,
+      "mask_union_pixels": 19094,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "d4b24eed40fccc70fe10e259129a8b7ff182317c9240951e9baf1d14f6e70d03",
+      "candidate_file_sha256": "adc0933914352d5cd0d8d4ed484b34c99c510e7d9294d5f5fd2aa63e9ae4ad21"
+    },
+    {
+      "n": 8,
+      "stratum": "align",
+      "MAE_RGB_255": 0.4553428888320923,
+      "orientation_mae": {
+        "identity": 0.4553428888320923,
+        "flip_vertical": 15.938302993774414,
+        "flip_horizontal": 17.699064254760742
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.4553428888320923,
+        "021": 13.919201850891113,
+        "102": 14.921256065368652,
+        "120": 28.5812931060791,
+        "201": 28.710506439208984,
+        "210": 28.90668487548828
+      },
+      "best_channels": "012",
+      "mask_IoU": 0.9962078119074707,
+      "mask_union_pixels": 21096,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "b825264484aa719a9345c6c565ee126f9602577dbc2587e600f2cbdadfd6e4ff",
+      "candidate_file_sha256": "e4099e961d69b4bc35a2a982baad7a9a4511aec42f04294949f2afa4ac431c23"
+    },
+    {
+      "n": 9,
+      "stratum": "align",
+      "MAE_RGB_255": 0.4591200053691864,
+      "orientation_mae": {
+        "identity": 0.4591200053691864,
+        "flip_vertical": 16.225753784179688,
+        "flip_horizontal": 17.570310592651367
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.4591200053691864,
+        "021": 13.916309356689453,
+        "102": 15.10466480255127,
+        "120": 28.77731704711914,
+        "201": 28.860763549804688,
+        "210": 29.076229095458984
+      },
+      "best_channels": "012",
+      "mask_IoU": 0.9964336992265296,
+      "mask_union_pixels": 21591,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "69e53b5a04a127db95a13f485babe88332c6d24bb06105e260b90ac3c13af963",
+      "candidate_file_sha256": "ec6402876cb9153e9511d5b4896e795409f8f7e78a043917d0e855edb8367682"
+    },
+    {
+      "n": 10,
+      "stratum": "grasp",
+      "MAE_RGB_255": 0.7438064217567444,
+      "orientation_mae": {
+        "identity": 0.7438064217567444,
+        "flip_vertical": 11.127528190612793,
+        "flip_horizontal": 7.584607124328613
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.7438064217567444,
+        "021": 14.624409675598145,
+        "102": 10.07006549835205,
+        "120": 24.450353622436523,
+        "201": 23.9508113861084,
+        "210": 24.450496673583984
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "c508cd3233e79cf1c948a88c216e4ba1be903a933d9e9084799abce88e9336b5",
+      "candidate_file_sha256": "6f49ebca48121e5f5bd946219de8ad5019ac88c687dbca8c54046a64fb63be74"
+    },
+    {
+      "n": 11,
+      "stratum": "grasp",
+      "MAE_RGB_255": 0.8796180486679077,
+      "orientation_mae": {
+        "identity": 0.8796180486679077,
+        "flip_vertical": 4.189843654632568,
+        "flip_horizontal": 6.92557954788208
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.8796180486679077,
+        "021": 14.765110969543457,
+        "102": 10.192671775817871,
+        "120": 24.625991821289062,
+        "201": 24.078163146972656,
+        "210": 24.625991821289062
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "ca54376ba75bd3dc777eb88480b74033c8c73139fb98b62b71c02bdfc7e2e5c9",
+      "candidate_file_sha256": "3c62f1ccd216aff793e7ce4c4a2692251be3852570532ad41c860f4af14d80c3"
+    },
+    {
+      "n": 12,
+      "stratum": "grasp",
+      "MAE_RGB_255": 1.079917550086975,
+      "orientation_mae": {
+        "identity": 1.079917550086975,
+        "flip_vertical": 4.385234355926514,
+        "flip_horizontal": 7.102428436279297
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 1.079917550086975,
+        "021": 14.890249252319336,
+        "102": 10.39297103881836,
+        "120": 24.751131057739258,
+        "201": 24.20330238342285,
+        "210": 24.751131057739258
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "2ccf83ace4449b9c2f41ced5894ecbe4cba41551ce6152dbbaa1fcd95c55b6c1",
+      "candidate_file_sha256": "a3be2a87a28767f9f27aa2a4cf67d73867c6da62a4485543c6691d35f79fe756"
+    },
+    {
+      "n": 13,
+      "stratum": "grasp",
+      "MAE_RGB_255": 1.0953917503356934,
+      "orientation_mae": {
+        "identity": 1.0953917503356934,
+        "flip_vertical": 4.397012710571289,
+        "flip_horizontal": 7.098931312561035
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 1.0953917503356934,
+        "021": 14.9065523147583,
+        "102": 10.408445358276367,
+        "120": 24.76743507385254,
+        "201": 24.2196044921875,
+        "210": 24.76743507385254
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "d874afcbaf438ca0023505088c191cfcb1f1706ed39f73ee7250de7e3fe883d4",
+      "candidate_file_sha256": "fc69bf978b31a79fd1309b3713ff9ed3bfaf7ddd0f1e3608a80be2d16b79970c"
+    },
+    {
+      "n": 14,
+      "stratum": "grasp",
+      "MAE_RGB_255": 1.0954632759094238,
+      "orientation_mae": {
+        "identity": 1.0954632759094238,
+        "flip_vertical": 4.396999835968018,
+        "flip_horizontal": 7.098818302154541
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 1.0954632759094238,
+        "021": 14.899569511413574,
+        "102": 10.408516883850098,
+        "120": 24.760452270507812,
+        "201": 24.212621688842773,
+        "210": 24.760452270507812
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "e1147ab81dd4c058d7a26e0aea647785d95b4042ff62bfe283eb75758b7ecacc",
+      "candidate_file_sha256": "b3287d8cbd5ac8825afc5446e2cb3fff014efe68033d670cfbb09b7a508e2cfc"
+    },
+    {
+      "n": 15,
+      "stratum": "held",
+      "MAE_RGB_255": 1.095457911491394,
+      "orientation_mae": {
+        "identity": 1.095457911491394,
+        "flip_vertical": 4.396992206573486,
+        "flip_horizontal": 7.098804473876953
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 1.095457911491394,
+        "021": 14.899383544921875,
+        "102": 10.4085111618042,
+        "120": 24.760265350341797,
+        "201": 24.21243667602539,
+        "210": 24.760265350341797
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "dd543faa1c7587902be1922e310cf3fd1598c17c2004d99bc7cadf1c0fcf3c5a",
+      "candidate_file_sha256": "396778e25d025199bbda4432354780d6603c8ac1df6c761086799495f343ce6c"
+    },
+    {
+      "n": 16,
+      "stratum": "held",
+      "MAE_RGB_255": 0.7374392151832581,
+      "orientation_mae": {
+        "identity": 0.7374392151832581,
+        "flip_vertical": 11.0660982131958,
+        "flip_horizontal": 7.513895511627197
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.7374392151832581,
+        "021": 14.631199836730957,
+        "102": 10.063895225524902,
+        "120": 24.45417594909668,
+        "201": 23.95793914794922,
+        "210": 24.454458236694336
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "56e77cf514c4de64328415adba5b211fa15c469999a2bf2f7684e95ab85c4f82",
+      "candidate_file_sha256": "c75025b40032494f603f4a5827f7da046aca7fcaa8be9b59dd5fbcd37b46343c"
+    },
+    {
+      "n": 17,
+      "stratum": "held",
+      "MAE_RGB_255": 0.5455045700073242,
+      "orientation_mae": {
+        "identity": 0.5455045700073242,
+        "flip_vertical": 3.8778722286224365,
+        "flip_horizontal": 6.611083984375
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.5455045700073242,
+        "021": 14.61160659790039,
+        "102": 9.89608383178711,
+        "120": 24.47248649597168,
+        "201": 23.9993839263916,
+        "210": 24.50968360900879
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "c72068ebd16a0e9bb590c0a4d45defd3a12f5ad3188961d965b347f5b66c01b7",
+      "candidate_file_sha256": "fd79d0b27514aad1ea43a2f6dede175d75a2f2c1bc10da79344a5adb9ebbf37e"
+    },
+    {
+      "n": 18,
+      "stratum": "held",
+      "MAE_RGB_255": 0.5455154180526733,
+      "orientation_mae": {
+        "identity": 0.5455154180526733,
+        "flip_vertical": 3.8778786659240723,
+        "flip_horizontal": 6.611064434051514
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.5455154180526733,
+        "021": 14.611604690551758,
+        "102": 9.895990371704102,
+        "120": 24.47248649597168,
+        "201": 23.99917984008789,
+        "210": 24.50958251953125
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "143f222db2c118a25a0507dca39179faec65869b1a1aad181fd9d2e23497384e",
+      "candidate_file_sha256": "946a47efef95572634c9939cd36c56de1db1d195a1b00500565db3b1d7bebc05"
+    },
+    {
+      "n": 19,
+      "stratum": "held",
+      "MAE_RGB_255": 0.5455338358879089,
+      "orientation_mae": {
+        "identity": 0.5455338358879089,
+        "flip_vertical": 3.8778820037841797,
+        "flip_horizontal": 6.611028671264648
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.5455338358879089,
+        "021": 14.611612319946289,
+        "102": 9.895824432373047,
+        "120": 24.47249412536621,
+        "201": 23.99883270263672,
+        "210": 24.509422302246094
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "f5a2d0a193c97162f577044c8ed5021f2741fff41a088cf07032232a88eed71b",
+      "candidate_file_sha256": "675aa17f36132e3e152cc627ccd7f2b03769e5d9b5ce2c8338a052fc22255d7e"
+    },
+    {
+      "n": 20,
+      "stratum": "release",
+      "MAE_RGB_255": 0.71268230676651,
+      "orientation_mae": {
+        "identity": 0.71268230676651,
+        "flip_vertical": 10.34072494506836,
+        "flip_horizontal": 7.579084396362305
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.71268230676651,
+        "021": 14.642207145690918,
+        "102": 10.03624153137207,
+        "120": 24.468685150146484,
+        "201": 23.966041564941406,
+        "210": 24.46895980834961
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "cfa5bc25a22eeed05bd701bc5f45c3ecc63b021e66df141131dc46a1e804724e",
+      "candidate_file_sha256": "0b56755e91f5359d1307438ba8a6f5a3827218c28e778170d258758e8453369f"
+    },
+    {
+      "n": 21,
+      "stratum": "release",
+      "MAE_RGB_255": 0.7338986396789551,
+      "orientation_mae": {
+        "identity": 0.7338986396789551,
+        "flip_vertical": 11.155420303344727,
+        "flip_horizontal": 7.5806565284729
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.7338986396789551,
+        "021": 14.642742156982422,
+        "102": 10.05931282043457,
+        "120": 24.462860107421875,
+        "201": 23.968372344970703,
+        "210": 24.46307373046875
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "0c3e304449c3438d9ad08aec3737b613b83777d1c9d0c2f9ec3c89e0fb4ebcd0",
+      "candidate_file_sha256": "67dc33cd6af861b735851a99a27b303e20bd1a3a5aa18ac93bc04afc3a7745e2"
+    },
+    {
+      "n": 22,
+      "stratum": "release",
+      "MAE_RGB_255": 0.817369818687439,
+      "orientation_mae": {
+        "identity": 0.817369818687439,
+        "flip_vertical": 8.091286659240723,
+        "flip_horizontal": 7.59983491897583
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.817369818687439,
+        "021": 14.714151382446289,
+        "102": 10.145247459411621,
+        "120": 24.559160232543945,
+        "201": 24.042028427124023,
+        "210": 24.559160232543945
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "3d83f60294477190bcfd49d5c0bf5e3b792c41934f1405a182491735c30d5551",
+      "candidate_file_sha256": "8ed0fdfb68a9bc34ece20491f5e77ca946c5edd8fcab94c8c8b54c4325e8f987"
+    },
+    {
+      "n": 23,
+      "stratum": "release",
+      "MAE_RGB_255": 1.0954351425170898,
+      "orientation_mae": {
+        "identity": 1.0954351425170898,
+        "flip_vertical": 4.397247314453125,
+        "flip_horizontal": 7.099360942840576
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 1.0954351425170898,
+        "021": 14.922411918640137,
+        "102": 10.408488273620605,
+        "120": 24.783294677734375,
+        "201": 24.235464096069336,
+        "210": 24.783294677734375
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "bb871a23f2ead89fe258081b24f14a52e86963929e04f18868bd248ea1d243a7",
+      "candidate_file_sha256": "e5bf4b3348a77fd0fc3e0ac802f666b47fdb0ad04e4d28ea4467c567ad5ff111"
+    },
+    {
+      "n": 24,
+      "stratum": "release",
+      "MAE_RGB_255": 1.0954209566116333,
+      "orientation_mae": {
+        "identity": 1.0954209566116333,
+        "flip_vertical": 4.397252559661865,
+        "flip_horizontal": 7.099385738372803
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 1.0954209566116333,
+        "021": 14.923988342285156,
+        "102": 10.40847396850586,
+        "120": 24.784870147705078,
+        "201": 24.237041473388672,
+        "210": 24.784870147705078
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "dc18be8cda8fef5d5b9bd2530fdf94f6423ef116b89a67708682a6ef5d71160c",
+      "candidate_file_sha256": "3a1cf332b84b517fbe6e0d071bc4b9da32d58fb148d26cb32eff428864fe080d"
+    },
+    {
+      "n": 25,
+      "stratum": "lookback_occlusion_candidate",
+      "MAE_RGB_255": 0.7386143803596497,
+      "orientation_mae": {
+        "identity": 0.7386143803596497,
+        "flip_vertical": 11.096908569335938,
+        "flip_horizontal": 7.515495777130127
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.7386143803596497,
+        "021": 14.63172435760498,
+        "102": 10.064809799194336,
+        "120": 24.454397201538086,
+        "201": 23.958154678344727,
+        "210": 24.454631805419922
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "6b0ac198c543c5f50e13c8e7a5d0390152f54f3c4a31ed6760d222cd883b381e",
+      "candidate_file_sha256": "9fdfa9b9e52fb825ca65f00413fccf52b9946d8945b2f4496b631d0492da4160"
+    },
+    {
+      "n": 26,
+      "stratum": "lookback_occlusion_candidate",
+      "MAE_RGB_255": 0.5165896415710449,
+      "orientation_mae": {
+        "identity": 0.5165896415710449,
+        "flip_vertical": 32.798301696777344,
+        "flip_horizontal": 16.137123107910156
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.5165896415710449,
+        "021": 9.842607498168945,
+        "102": 7.6885666847229,
+        "120": 17.299659729003906,
+        "201": 17.059005737304688,
+        "210": 17.34408187866211
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "ba19435f135d7b974f036f6baa893a09f24b31bd74fa394eab8c5aff1d79ea1a",
+      "candidate_file_sha256": "a2919947199c508ff46bbe7e39c55bd441c56e36d0c3a3400a3aff1dfe125a15"
+    },
+    {
+      "n": 27,
+      "stratum": "lookback_occlusion_candidate",
+      "MAE_RGB_255": 0.16334418952465057,
+      "orientation_mae": {
+        "identity": 0.16334418952465057,
+        "flip_vertical": 23.563186645507812,
+        "flip_horizontal": 18.33449935913086
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.16334418952465057,
+        "021": 6.100412368774414,
+        "102": 4.7120680809021,
+        "120": 10.798563003540039,
+        "201": 10.657808303833008,
+        "210": 10.807235717773438
+      },
+      "best_channels": "012",
+      "mask_IoU": null,
+      "mask_union_pixels": 0,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "8f58f2586137d43a222c87a33b676e63e57663d71f007e0624a126e309778bbc",
+      "candidate_file_sha256": "2dc0b6b15937c5b92dd7396eac96dcd1d07bcecf2f3d102ca2730ff290ead802"
+    },
+    {
+      "n": 28,
+      "stratum": "lookback_occlusion_candidate",
+      "MAE_RGB_255": 0.3333474397659302,
+      "orientation_mae": {
+        "identity": 0.3333474397659302,
+        "flip_vertical": 35.660072326660156,
+        "flip_horizontal": 11.190804481506348
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.3333474397659302,
+        "021": 12.16481876373291,
+        "102": 9.617613792419434,
+        "120": 21.66412353515625,
+        "201": 21.45206069946289,
+        "210": 21.66710090637207
+      },
+      "best_channels": "012",
+      "mask_IoU": 1.0,
+      "mask_union_pixels": 1650,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "eb109d757f5397cd564e3fb61664c8f13daa9118f2910b003115f8e543305280",
+      "candidate_file_sha256": "d23bf441af8c50895485c7e2e8195357bffefd3cd9d0e92b152de980554a2f72"
+    },
+    {
+      "n": 29,
+      "stratum": "lookback_occlusion_candidate",
+      "MAE_RGB_255": 0.33453884720802307,
+      "orientation_mae": {
+        "identity": 0.33453884720802307,
+        "flip_vertical": 35.83778381347656,
+        "flip_horizontal": 11.139128684997559
+      },
+      "best_orientation": "identity",
+      "channel_mae": {
+        "012": 0.33453884720802307,
+        "021": 12.157036781311035,
+        "102": 9.616804122924805,
+        "120": 21.65735626220703,
+        "201": 21.442256927490234,
+        "210": 21.66031265258789
+      },
+      "best_channels": "012",
+      "mask_IoU": 1.0,
+      "mask_union_pixels": 1689,
+      "black_xor_pixels": 0,
+      "camera_pos_max_abs_m": 0.0,
+      "camera_rot_max_abs": 0.0,
+      "rgb_sha_equal": false,
+      "reference_file_sha256": "b5821eb9f959ee21278a9d4344ae80c677051bdf3443bca3b5ed80b017aeac07",
+      "candidate_file_sha256": "b832b81050778c99e54993ba8564e5e67d7fed90552128a468236f88042b92c4"
+    }
+  ]
+}

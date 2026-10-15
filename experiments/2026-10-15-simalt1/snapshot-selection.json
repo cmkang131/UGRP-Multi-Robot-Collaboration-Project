@@ -1,0 +1,113 @@
+{
+  "selection": [
+    {
+      "stratum": "approach",
+      "index": 6
+    },
+    {
+      "stratum": "approach",
+      "index": 24
+    },
+    {
+      "stratum": "approach",
+      "index": 42
+    },
+    {
+      "stratum": "approach",
+      "index": 60
+    },
+    {
+      "stratum": "approach",
+      "index": 78
+    },
+    {
+      "stratum": "align",
+      "index": 79
+    },
+    {
+      "stratum": "align",
+      "index": 85
+    },
+    {
+      "stratum": "align",
+      "index": 91
+    },
+    {
+      "stratum": "align",
+      "index": 97
+    },
+    {
+      "stratum": "align",
+      "index": 103
+    },
+    {
+      "stratum": "grasp",
+      "index": 114
+    },
+    {
+      "stratum": "grasp",
+      "index": 121
+    },
+    {
+      "stratum": "grasp",
+      "index": 128
+    },
+    {
+      "stratum": "grasp",
+      "index": 134
+    },
+    {
+      "stratum": "grasp",
+      "index": 141
+    },
+    {
+      "stratum": "held",
+      "index": 142
+    },
+    {
+      "stratum": "held",
+      "index": 156
+    },
+    {
+      "stratum": "held",
+      "index": 239
+    },
+    {
+      "stratum": "held",
+      "index": 252
+    },
+    {
+      "stratum": "held",
+      "index": 266
+    }
+  ],
+  "evaluation_only": true,
+  "training": false,
+  "counts": {
+    "candidates": 434,
+    "edge": 3,
+    "occluded": 0,
+    "selected": 20,
+    "strata": {
+      "approach": 5,
+      "align": 5,
+      "grasp": 5,
+      "held": 5
+    }
+  },
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/outputs/simalt1-l4-states"
+  ],
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/outputs/simalt_select_snapshots.py",
+    "--source",
+    "/home/ugrp/ugrp-sim/outputs/simalt1-source",
+    "--plan",
+    "/home/ugrp/ugrp-sim/outputs/plan.json",
+    "--states",
+    "/home/ugrp/ugrp-sim/outputs/simalt1-l4-states",
+    "--out",
+    "/home/ugrp/ugrp-sim/outputs/simalt1-selection.json"
+  ],
+  "probe_basis": "same seven center/0.8-face probes as frozen BandVisibility.region_visible; inherited geometry, no new acceptance tolerance"
+}

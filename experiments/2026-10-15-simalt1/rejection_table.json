@@ -1,1 +1,109 @@
-{"status":"preregistered","funnel":[],"rejections":[],"note":"No geometric search in issued-command replay. Missing edge/occlusion coverage prevents full B admission."}
+{
+  "schema": "ugrp.simalt1.rejection.v1",
+  "raw_paths": [
+    "ugrp-act-l4-pilot1:/home/changmin/ugrp-sim/runs/simalt1",
+    "gcp1:/home/ugrp/ugrp-sim/runs/simalt1-A-gcp1-osmesa-n1",
+    "gcp1:/home/ugrp/ugrp-sim/runs/simalt1-B-gcp1",
+    "gcp1:/home/ugrp/ugrp-sim/outputs/simalt1-selection.json",
+    "gcp1:/home/ugrp/ugrp-sim/outputs/simalt1-review"
+  ],
+  "reason_distribution": [
+    {
+      "category": "A_host_renderer_configuration",
+      "n": 1,
+      "reason": "gcp1 has OSMesa/llvmpipe legacy; initial MUJOCO_GL=egl failed pre-import",
+      "blocking_object": "missing gcp1 EGL platform",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric"
+    },
+    {
+      "category": "A_speed_gt6",
+      "n": 4,
+      "reason": "N4 first30 median 8.562 > existing 6.0 stop-new-submission gate",
+      "blocking_object": "g2-standard-4 under act15 inference co-load",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric"
+    },
+    {
+      "category": "B_coverage_missing",
+      "n": 1,
+      "reason": "only 3 edge and 0 explicit occlusion candidates in 434 frozen states; insufficient five-per-stratum 30 snapshot proposal",
+      "blocking_object": "ACT11 trace camera/FOV coverage",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "image-space visibility"
+    },
+    {
+      "category": "C_float32_cast_overflow",
+      "n": 2,
+      "reason": "Warp data conversion overflow warning; repeated as fatal RuntimeError before any accepted physics step",
+      "blocking_object": "Warp float32 input array conversion",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric"
+    }
+  ],
+  "funnel": [
+    {
+      "stage": "A L4 submitted traces",
+      "input": 5,
+      "passed_cumulative": 5,
+      "rejected_at_gate": 0
+    },
+    {
+      "stage": "A trace completion",
+      "input": 5,
+      "passed_cumulative": 5,
+      "rejected_at_gate": 0
+    },
+    {
+      "stage": "A N4 first30 <=6 speed admission",
+      "input": 4,
+      "passed_cumulative": 0,
+      "rejected_at_gate": 4
+    },
+    {
+      "stage": "A N8 submission",
+      "input": 0,
+      "passed_cumulative": 0,
+      "rejected_at_gate": 0
+    },
+    {
+      "stage": "B fixed snapshots rendered both",
+      "input": 30,
+      "passed_cumulative": 30,
+      "rejected_at_gate": 0
+    },
+    {
+      "stage": "B structural orientation/channel camera check",
+      "input": 30,
+      "passed_cumulative": 30,
+      "rejected_at_gate": 0
+    },
+    {
+      "stage": "B full category coverage bundle",
+      "input": 1,
+      "passed_cumulative": 0,
+      "rejected_at_gate": 1
+    },
+    {
+      "stage": "C noslip model imports",
+      "input": 2,
+      "passed_cumulative": 2,
+      "rejected_at_gate": 0
+    },
+    {
+      "stage": "C data conversion without overflow",
+      "input": 2,
+      "passed_cumulative": 0,
+      "rejected_at_gate": 2
+    },
+    {
+      "stage": "C accepted physics steps",
+      "input": 0,
+      "passed_cumulative": 0,
+      "rejected_at_gate": 0
+    }
+  ],
+  "reproduction_document": "README.md, 재현 명령 절",
+  "prior_distribution": "coverage-first.json",
+  "next_queue_admitted": false
+}

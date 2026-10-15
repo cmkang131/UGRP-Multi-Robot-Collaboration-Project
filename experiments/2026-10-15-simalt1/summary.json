@@ -1,0 +1,200 @@
+{
+  "schema": "ugrp.simalt1.summary.v1",
+  "verdict": "NOT_ADOPTED",
+  "ready": false,
+  "engine": {
+    "A_B": "MuJoCo C 3.12.0",
+    "C": "MJWarp dev 57b4692f4d3cdf4d27d916b4b8c4759ba36e9148 + MuJoCo 3.16.0 / Warp 1.15.0, separate venv"
+  },
+  "renderer": {
+    "candidate": {
+      "vendor": "NVIDIA Corporation",
+      "renderer": "NVIDIA L4/PCIe/SSE2",
+      "version": "4.6.0 NVIDIA 580.178.04"
+    },
+    "reference": {
+      "vendor": "Mesa",
+      "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "version": "4.5 (Compatibility Profile) Mesa 25.1.7-1ubuntu2~24.04.2"
+    }
+  },
+  "host": "ugrp-act-l4-pilot1",
+  "machine": "g2-standard-4",
+  "project": "ugrp-act-train-1014",
+  "base_sha": "580f37ebc3129984c0dc07d1f73ccfe92e273202",
+  "sha": {
+    "A_n1": "211b93c3",
+    "A_n4_B": "f004a3a2",
+    "C_initial": "dd1a374d",
+    "C_warning_guard": "e7156672",
+    "coverage_audit": "6f95c7ce",
+    "review": "4acebcea",
+    "teacher": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+    "batch_orchestrator": "0022ba72"
+  },
+  "config_hash": "c179221bfd6536763b40cb4923674522c39fd7e37b08d77bfe968b4e7a99432f",
+  "configuration": {
+    "protocol_sha256": "0438589e089699409da3f1efea38c911244c113fd985f078d73676fad178050e",
+    "plan_sha256": "d6fdf92b4b7733a08a3d3207e26f8072c5e0bea2a046cfd44e738c388575cc07",
+    "trace_sha256": "7804eb370cde180fdebbe4c4c24a60cf9281f10315b64a3fb56b7851f954d6ed",
+    "teacher_source_archive_sha256": "fc80c579006302e914ea2ecee4be4bb27b3808bb9cc22b4fd2341d9c14e53d3a",
+    "physics": {
+      "timestep": 0.00025,
+      "iterations": 80.0,
+      "ls_iterations": 50.0,
+      "noslip_iterations": 10.0,
+      "solver": 2.0,
+      "integrator": 3.0,
+      "cone": 1.0
+    },
+    "scene_sha256": "b2b48399597c3f96171c4f9e0cfe806bd5e4d5e727bf217288694da6e60c9941",
+    "ACT_contract_sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+    "ACT_data_sha256": "8206d215ee14b3cc5935b9353d29ae28a2ac046061f23674dffeb3d6048d497f"
+  },
+  "attempted": {
+    "A_L4_command_trace": 5,
+    "A_gcp1_launches": 2,
+    "B_snapshots_each_renderer": 30,
+    "C_import_probes": 2
+  },
+  "completed": {
+    "A_L4_command_trace": 5,
+    "A_gcp1_command_trace": 1,
+    "B_pairs": 30,
+    "C_physics_steps": 0,
+    "live_teacher_runs": 0,
+    "C_physics_steps_scope": "completed/accepted step calls only; C0 entered compilation and partial kernel execution is unknown"
+  },
+  "failure": {
+    "A_task_failures": 0,
+    "B_full_coverage_gate": 1,
+    "C_numeric_cast_overflow": 2
+  },
+  "HOST_ERROR": {
+    "gcp1_wrong_EGL_preimport": 1
+  },
+  "cap_end": 0,
+  "stages": {
+    "A": {
+      "verdict": "N4_SPEED_REJECTED_N8_NOT_SUBMITTED",
+      "N1_first30_wall_per_sim": 4.357919975500002,
+      "N1_full_loop_wall_s": 184.1545363450001,
+      "N1_reset_s": 7.179704256000036,
+      "gcp1_N1_first30_wall_per_sim": 2.6636237975333037,
+      "gcp1_N1_full_loop_wall_s": 113.22635909199926,
+      "N4": {
+        "attempted": 4,
+        "completed": 4,
+        "failure": 0,
+        "HOST_ERROR": 0,
+        "concurrency": 4,
+        "batch_wall_s": 380.956075477,
+        "completed_traces_per_h": 37.79963341434987,
+        "first30_median_wall_per_sim": 8.56200484853333,
+        "first30_ratios": [
+          8.593814765166666,
+          8.436627302066661,
+          8.5698351552,
+          8.554174541866663
+        ],
+        "raw_paths": [
+          "/home/changmin/ugrp-sim/runs/simalt1/A-n4/worker-0",
+          "/home/changmin/ugrp-sim/runs/simalt1/A-n4/worker-1",
+          "/home/changmin/ugrp-sim/runs/simalt1/A-n4/worker-2",
+          "/home/changmin/ugrp-sim/runs/simalt1/A-n4/worker-3"
+        ],
+        "next_submission_blocked": true,
+        "gate_source": "docs/gcp_simulation.md: current record-only >3.5 warning / >6.0 block",
+        "rejection_table": "/home/changmin/ugrp-sim/runs/simalt1/A-n4/rejection_table.json"
+      },
+      "adoption_2x_gate": "NOT_EVALUABLE: only open-loop replay; no live teacher / matched full-machine completed-attempt-per-dollar reference"
+    },
+    "B": {
+      "verdict": "STRUCTURAL_DIAGNOSTIC_ONLY_COVERAGE_INCOMPLETE",
+      "pairs": 30,
+      "K_D_SE3_equal": true,
+      "identity_orientation_channels": 30,
+      "mask_IoU_median": 0.9964336992265296,
+      "mask_IoU_min": 0.991920675725303,
+      "rgb_MAE_255_median": 0.5455099940299988,
+      "black_boundary_xor_max": 0,
+      "empty_target_masks": 19,
+      "frozen_state_edge_candidates": 3,
+      "frozen_state_explicit_occlusion_candidates": 0,
+      "beam_band_coverage": "unverified / not in active single box view"
+    },
+    "C": {
+      "verdict": "STOPPED_NUMERIC_CAST_OVERFLOW_BEFORE_FIRST_PHYSICS_STEP",
+      "noslip_model_import": 10,
+      "options_changed": false,
+      "single_robot_box_trace_parity": "NOT_RUN: intact production-scene data import gate rejected before fixture reduction",
+      "endpoint_5mm_2deg_slip3s_2mm": "NOT_MEASURED; exploratory proposals only",
+      "N1_N16_N64_throughput": "NOT_RUN",
+      "first_probe_warning_guard": "initial RuntimeWarning was not fatal, owned process stopped on observation; C1 converted warning to fatal before step"
+    },
+    "D": {
+      "training": false,
+      "status": "NOT_AUTHORIZED_NOT_RUN"
+    }
+  },
+  "budget": {
+    "start_utc": "2026-10-15T13:13:35+00:00",
+    "end_utc": "2026-10-15T13:30:10.008875+00:00",
+    "L4_shared_VM_window_s": 995.008875,
+    "L4_shared_VM_window_hours": 0.27639135416666666,
+    "Seoul_g2_standard4_public_USD_per_h": 0.907714004,
+    "estimated_VM_window_USD": 0.25088430276160706,
+    "estimated_full_4h_budget_USD": 3.630856016,
+    "scope": "public on-demand shared-VM time estimate; not project bill or incremental task attribution; disk/network/tax excluded",
+    "billing_credit_remaining": "UNVERIFIED",
+    "budget_stop_latest_observed": {
+      "timestamp": "2026-10-15T13:15:39.225108Z",
+      "costAmount": 0,
+      "budgetAmount": 1000,
+      "currency": "KRW"
+    },
+    "guard_status": "8h STOP and idle20min preserved; no stop event observed; existing act15 PID1670 left alive"
+  },
+  "raw_paths": [
+    "ugrp-act-l4-pilot1:/home/changmin/ugrp-sim/runs/simalt1",
+    "gcp1:/home/ugrp/ugrp-sim/runs/simalt1-A-gcp1-osmesa-n1",
+    "gcp1:/home/ugrp/ugrp-sim/runs/simalt1-B-gcp1",
+    "gcp1:/home/ugrp/ugrp-sim/outputs/simalt1-selection.json",
+    "gcp1:/home/ugrp/ugrp-sim/outputs/simalt1-review",
+    "gcp1:/home/ugrp/ugrp-sim/outputs/simalt1-A-gcp1-n1.log"
+  ],
+  "raw_verification": {
+    "sha256sum_c": "611/611 PASS",
+    "manifest_sha256": "53a67bf78c9f4b2b7760f2460e887c3d221cf759927e56f35749636c0e94500e"
+  },
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt1/rejection_table.json",
+  "not_pooled_with_CPU_research_results": true,
+  "verification": [
+    "5 pure Mac tests; no Mac simulation/render or GUI",
+    "L4 raw manifest 611/611 sha256 PASS",
+    "434x2025 integration state replay exactly equal L4 C / gcp1 C",
+    "87 saved-state frames at 2Hz visually inspected, ffprobe-only playback confirmation, 4x clip 59761 bytes"
+  ],
+  "limitations": [
+    "A is issued-command replay, not a live teacher benchmark or physical-success remeasurement",
+    "A native timer counters include setup calls; loop wall excludes reset; N1 JPEG not timed, N4 Pillow JPEG separately timed",
+    "B 30 snapshots are phase-stratified; edge/occlusion coverage insufficient; no automatic pixel acceptance threshold",
+    "C initial scene retains 3 robot bodies, only r1 trace active in A/B; no single robot physics equivalence established",
+    "act15 inference co-tenant active; CPU and GPU resources shared; concurrency results specific to this load"
+  ],
+  "sha256": {
+    "host-error.json": "291b7319fe7339840e1f13fdfa8553b44e2c7cd4d82748f57ecc8eb2d462b1a1",
+    "rejection_table.json": "8b22d8d06c4d9b47c5973439dcde259bc1a3e25d9b43755a3d41ec5cf2d86b11",
+    "plan.json": "d6fdf92b4b7733a08a3d3207e26f8072c5e0bea2a046cfd44e738c388575cc07",
+    "coverage-first.json": "71d94b647ad82884c5aeabab4d7f91b10054b6948cc9024136c3de8c109858a3",
+    "playback-review.json": "7902cddb4c816eb0319c73cf196bc3365effad9ec7fdc6ae4bc5b48d29d3ca0a",
+    "snapshot-selection.json": "f023282bbf74ea87da4bf4c36b5a0f0e7eb6f1fa46c4c0a52be78d379a3c4cea",
+    "README.md": "fb7787dcbd41ecd4a36edf194e89608f23904e014d323a16ea08c482aa04e511",
+    "l4-results.json": "429f19f0da24d86149dd23ff48a4259101acb8c6838361bf81049e9b1c8e36bc",
+    "state-comparison.json": "2eeda0df19d08248ab65c11850a0e70c7545326f7c1655959397f051423a0909",
+    "render-comparison.json": "7aae7fa065375e0d1f143a06838be682f2925b642cdde3a35e0e829868645a3f",
+    "protocol.json": "0438589e089699409da3f1efea38c911244c113fd985f078d73676fad178050e",
+    "trace.jsonl": "7804eb370cde180fdebbe4c4c24a60cf9281f10315b64a3fb56b7851f954d6ed",
+    "gcp1-reference.json": "605d84e090033a0f7a0c2e70573c5740136f5be96e91c92fe3b6ab0e2978a7b5"
+  }
+}
