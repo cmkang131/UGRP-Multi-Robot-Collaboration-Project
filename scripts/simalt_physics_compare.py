@@ -94,7 +94,7 @@ def prepare(a):
             dt = float(m.opt.timestep)
             substeps = round(.1/dt)
             for i,row in enumerate(rows):
-                now = origin+i*.1
+                now = origin+(i*substeps)*dt
                 apply(port,{**row['command'],'t':now},now,previous)
                 previous = row['command']
                 for k in range(substeps):
