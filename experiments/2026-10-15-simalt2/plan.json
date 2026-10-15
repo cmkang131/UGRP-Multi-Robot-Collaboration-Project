@@ -1,0 +1,17 @@
+{
+  "id": "2026-10-15-simalt2",
+  "base_sha": "d93837eb",
+  "mjwarp_commit": "57b4692f4d3cdf4d27d916b4b8c4759ba36e9148",
+  "default_enabled": false,
+  "stage_D_training": false,
+  "L4_wall_budget_seconds": 7200,
+  "wall_budget_purpose": "resource cap only; no search wall deadline",
+  "stages": ["all-float-array audit and official provenance", "safe unused-sentinel conversion if justified", "one robot and box same-command physics comparison", "N1 then N16 then N64 and optional N128 throughput"],
+  "stop": ["non-sentinel numerical overflow", "NaN", "contact/constraint capacity overflow", "noslip ignored", "physics-changing workaround", "budget-stop", "resource cap_end"],
+  "physics_overrides": {},
+  "merge_with_cpu_results": false,
+  "gcp1_reference": {"machine": "n4-highcpu-64", "concurrency": 16, "usd_per_hour": 3.145, "sim_seconds_per_hour": 23167, "source": "docs/gcp_simulation.md historical measured throughput; user-specified price"},
+  "L4_reference_usd_per_hour": 0.908,
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/simalt-pilot/experiments/2026-10-15-simalt2/rejection_table.json",
+  "ready": false
+}
