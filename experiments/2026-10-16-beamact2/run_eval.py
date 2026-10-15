@@ -120,6 +120,9 @@ def main():
             time.sleep(5)
         write_json(a.output/'DONE.json',dict(completed=completed,not_started=[episodes[i]['seed'] for i in pending],
             stopped=stopped,source_sha=source,complete=len(completed)==20 and not pending))
+        # Keep this real supervisor PID/lease alive through the raw recount.
+        subprocess.run([str(PY),'-m','scripts.analyze_beamact2','--root',str(a.output)],
+            cwd=ROOT,env=env,check=True)
     finally:
         # Only our child processes can be interrupted by this supervisor.
         for item in active:

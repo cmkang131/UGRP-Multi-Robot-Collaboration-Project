@@ -75,7 +75,6 @@ print(json.dumps(dict(model_sha256=h['model.safetensors'],files=len(h))))
     # Synchronous SSH owns only this finite remote supervisor. Its lease and
     # manager clean up its descendants; no task outside beamact2 is signalled.
     subprocess.run([*CPU,command],check=True)
-    subprocess.run([*CPU,f'cd {a.cpu_source} && PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.analyze_beamact2 --root {BASE}/heldout20-v1'],check=True)
     summary=query(CPU,f'''import json,pathlib
 s=json.loads(pathlib.Path({BASE!r}+'/heldout20-v1/summary.json').read_text())
 print(json.dumps({{k:s[k] for k in ('n','N','complete','funnel','reason_distribution','failure_stage_distribution')}}))
