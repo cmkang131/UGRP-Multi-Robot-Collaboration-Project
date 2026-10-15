@@ -16,7 +16,9 @@ v6와 동일한 두 변경(schema v6, pickup_site 토큰)을 반영했다. relea
 라벨은 같은 시각의 명령 후에 저장한다. prefix는 학습에서 제외한다.
 끝나지 않은 명령·timeout은 done으로 만들지 않으며 training_include는 항상 false다.
 
-추가 렌더마다 mjSTATE_INTEGRATION 및 Python/NumPy/world/controller RNG의
+추가 렌더는 기존 SnapshotRenderBroker의 복사 렌더 방식을 따라 별도 mjModel/mjData에서 한다.
+기존 broker의 기본 mount 재설정은 적용하지 않고 bound v3 카메라 배열을 그대로 복사한다.
+렌더마다 전체 live mjData 배열·model 카메라 배열·mjSTATE_INTEGRATION 및 Python/NumPy/world/controller RNG의
 바이트 해시가 동일한지 검사한다. 복구하거나 상태를 제어기에 전달하지 않는다.
 기록은 SIM 단계·명령·제어 관측 주기를 바꾸지 않지만 렌더/I/O로 wall 비용은 증가한다.
 새 탐색/수용 상수는 없다. 기록 주기 허용 편차 0.002초는 ACT12 그대로다.
@@ -45,3 +47,8 @@ Mac 물리/렌더 0. 원본은 gcp1 영속 디스크, Mac에는 요약과 해시
 - ACT12 writer: 위 dependency SHA의 `harness/grasp_act_solo_recording.py`.
 - [MuJoCo Python 공식 문서](https://mujoco.readthedocs.io/en/stable/python.html): mjData는 참조이므로 상태 비교 시 복사한다.
 - [MuJoCo state 공식 API](https://mujoco.readthedocs.io/en/stable/APIreference/APItypes.html#mjtstate): mjSTATE_INTEGRATION 상태 집합. 렌더 순수성은 문헌 주장에 기대지 않고 실제 guard와 off/on으로 검증한다.
+
+1라운드(`9df35e49`): 두 시드 모두 명령/물리 원장은 같고 입력 감사 0/0, 864프레임이지만,
+직접 render_jpeg가 live 카메라 캐시를 갱신해 FK 진단값 48곳이 달랐다. 결과 JSON의
+정확한 동일성은 실패로 보존했다. 분포를 먼저 기록한 뒤 복사 렌더로 수정했다.
+원본: gcp1:/home/ugrp/ugrp-sim/ops-reviews/rel22adapt-round1-rejections.json.

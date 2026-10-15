@@ -50,7 +50,7 @@ def test_render_audit_rejects_mutation_without_restoring_it(monkeypatch):
     monkeypatch.setattr(audit, 'state', lambda w: w.value)
     with pytest.raises(RuntimeError, match='mutated'):
         audit.capture(world, 'r1')
-    assert world.value == 1 and audit.calls == 0
+    assert world.value == 1 and audit.calls == 0 and audit.changes == 1
 
 
 def test_native_clock_rejects_dropped_frame(tmp_path):
