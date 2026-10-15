@@ -160,13 +160,14 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             from harness.zone_final_environment import digest
             if digest(static) != plan['static_map_sha256']:
                 raise ValueError('carry static map/scene hash mismatch')
-            carry = CarryToZone(static, plan['destination_zone'])
+            carry = CarryToZone(static, plan['destination_zone'], start=plan['task_start'],
+                                now=float(data.time), robot_id=rid)
             score = ZoneScore(carry.region)
-            (out/'map-rgb').mkdir()
             write(out/'carry-static-map.json', static)
         # Legacy look-around used live truth + frozen error as a map estimate.
-        # The recording toggle replaces that path with a pose-free own-RGB scan.
-        relook = SoloLookaround(static, ops=ops, truth_free_v1=solo_truth_free_lookaround_v1)
+        # Recording uses a pose-free scan; carry2 shares only its command belief.
+        relook = SoloLookaround(static, ops=ops, truth_free_v1=solo_truth_free_lookaround_v1,
+                                command_pose=carry.loc if carry is not None else None)
         look_eval = {'views': []}
 
         def truth_pose():
@@ -309,15 +310,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             if carry is not None:
                 if tick:
                     carry.issue(previous, .1)
-                if tick % 5 == 0:
-                    tops = {c['name']: world.render_team_jpeg(camera=c['name']) for c in static['top_cameras']}
-                    carry.observe(tops, now)
-                    sources = []
-                    for name, raw in tops.items():
-                        path = out/'map-rgb'/f'{tick:06d}-{name}.jpg'
-                        path.write_bytes(raw)
-                        sources.append({'path': str(path.relative_to(out)), 'sha256': hashlib.sha256(raw).hexdigest()})
-                    map_evidence = {'t': now, 'images': sources, **carry.loc.record()}
+                carry.observe_own(bgr, now, camera=rid+'/robot_cam')
+                map_evidence = {'t': now, **carry.loc.record()}
             if recorder is not None:
                 recorder.observe(now, jpg, bgr, skill=teacher.skill, phase=teacher.phase, previous=previous)
             rgb_result = {'answer': 'unknown'}
@@ -335,7 +329,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                 lift_observer.observe(bgr, {**previous, 't': now}, complete=False, save=save_lift)
             if teacher.phase == 'lower' and not relook.armed:
                 if solo_truth_free_lookaround_v1:
-                    relook.arm()  # no setup pose, live truth or fabricated map estimate
+                    relook.arm()  # carry shares command prior; legacy scan has no global prior
                     look_eval['armed_t'] = now
                 else:
                     # Preserved legacy comparison ONLY; forbidden for recording.
@@ -379,7 +373,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             trace.write(json.dumps({'t': now, 'phase': teacher.phase, 'command': value,
                                    'visible_target': measurement,
                 'student_context': teacher.context(now), 'rgb_confirmation': rgb_result,
-                **({'map_rgb': map_evidence, 'destination_floor_visible': place_visible,
+                **({'map_pose': map_evidence, 'destination_floor_visible': place_visible,
                     'phase_before': phase_before} if carry is not None else {})})+'\n')
 
             # Full truth owner, written only to eval-only.jsonl / Score.
@@ -528,6 +522,11 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
             or plan.get('split') != 'solo_carry_diagnostic_v1' or plan['kind'] not in BOX_KINDS
             or not plan['scenario_id'].endswith('_v6') or plan.get('gate_eligible') is not False):
         raise ValueError('carry diagnostic requires v6 box, truth-free lookaround, RGB lift, training off')
+    from harness.zone_final_environment import resolve
+    from sim.solo_carry_pose import task_start
+    if (plan.get('carry_pose_profile') != 'own_command_v2' or plan.get('amcl_option') != 'off'
+            or plan.get('task_start') != task_start(resolve(plan['map_id'])[0])):
+        raise ValueError('carry2 requires declared task start and own commands; top RGB forbidden (#366)')
     scenario = load_scenario(plan['scenario_id'])
     source = ROOT/'configs/zone_study_scenarios_v6'/f"{plan['scenario_id']}.json"
     if hashlib.sha256(source.read_bytes()).hexdigest() != plan['scenario_source_sha256']:

@@ -1,8 +1,8 @@
 """Opt-in solo map carry: static map + RGB self pose + own command integration.
 
 No simulator, setup pose, cargo world pose, measured joints or score is accepted.
-Single mover only: associate the moving yellow chassis with issued displacement.
-The centroid-plane approximation is diagnostic, not a calibrated localization claim.
+Carry2 uses an authored task start and own commands. Legacy top RGB code is
+retained below for provenance only and rejects execution under issue #366.
 """
 from __future__ import annotations
 
@@ -39,6 +39,7 @@ def chassis_candidates(tops, static):
     KnownMapNavigator. Require a chassis-sized group of multiple yellow parts;
     compact yellow boxes alone are not a robot. Overlapping camera views dedupe.
     """
+    raise ValueError('top RGB forbidden for control/localization (#366); legacy code retained only')
     import cv2
     import numpy as np
     from harness.zone_perception import _decode, pixel_to_floor
@@ -86,6 +87,7 @@ class RGBCommandPose:
     Missing/ambiguous observations cannot renew the freshness clock.
     """
     def __init__(self):
+        raise ValueError('top RGB localizer forbidden (#366); use CommandPose')
         self.odom = [0., 0., 0.]
         self.pose = None
         self.last_fix = None
@@ -150,13 +152,12 @@ class RGBCommandPose:
 
 
 class CarryToZone:
-    def __init__(self, static, zone, *, localizer=None):
+    def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off'):
         if zone not in ('A', 'B', 'C') or 'zone_'+zone not in static['regions']:
             raise ValueError('destination must be an authored zone')
         self.static, self.zone = static, zone
         self.region = static['regions']['zone_'+zone]
         self.rects = keepout_rects(static, perimeter=True)
-        self.loc = localizer or RGBCommandPose()
         self.radius = .26  # chassis + upright small box/arm envelope + clearance
         self.path = None
         self.slot = self.goal = None
@@ -167,12 +168,21 @@ class CarryToZone:
         self.grip_xy = None
         self.advance_m = .15
         self.map_sha256 = hashlib.sha256(json.dumps(static, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        from sim.solo_carry_pose import CommandPose, task_start
+        expected = task_start(static)
+        if start != expected:
+            raise ValueError('carry requires the declared static task start; no spawn-derived prior')
+        self.loc = CommandPose(start, now=now, robot_id=robot_id,
+                               map_sha256=self.map_sha256, amcl_option=amcl_option)
 
     def issue(self, issued, dt):
         self.loc.issue(issued, dt)
 
     def observe(self, tops, now):
-        self.loc.observe(chassis_candidates(tops, self.static), now)
+        raise ValueError('top RGB forbidden for carry control (#366)')
+
+    def observe_own(self, bgr, now, *, camera):
+        self.loc.observe_own(bgr, now, camera=camera)
 
     def start(self, now, grip_xy):
         self.started = now

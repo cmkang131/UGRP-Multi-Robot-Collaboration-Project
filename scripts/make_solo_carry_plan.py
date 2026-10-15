@@ -3,17 +3,20 @@ import argparse
 from collections import Counter
 import hashlib
 import json
+import math
+import random
 from pathlib import Path
 import subprocess
 
-from scripts.make_solo_teacher_plan import episode
+from scripts.make_solo_teacher_plan import episode, BASE_Z
+from sim.solo_carry_pose import task_start
 from sim.grasp_act_solo_teacher import BOX_KINDS
 from harness.grasp_act_seed_splits import check_range
 from harness.zone_environment_registry import load_scenario
 from harness.zone_final_environment import resolve, digest
 
 ROOT = Path(__file__).resolve().parents[1]
-PLAN = 'experiments/2026-10-15-map-carry-zone/diagnostic-plan.json'
+PLAN = 'experiments/2026-10-15-map-carry-zone/diagnostic-plan-v2.json'
 SCENARIOS = ('s1_normal_mixed_v6', 's2_unmapped_blockage_v6', 's3_late_rendezvous_v6',
              's5_moved_dropped_item_v6', 's6_novel_relation_v6', 's7_pair_with_solo_v6', 's8_mixed_tiers_v6')
 
@@ -27,12 +30,22 @@ def prepare():
         placement = next(x for x in scenario['eval']['setup']['placements'] if x['item_id'] == p['item_id'])
         order = next(x for x in scenario['orders'] if x['order_id'] == placement['order_id'])
         static, _, _ = resolve(p['map_id'])
-        p.pop('handoff_pose_error')  # no fabricated self pose anywhere in this profile
+        p.pop('handoff_pose_error')
+        start = task_start(static)
+        # Scene owner constructs the declared task condition, never the reverse.
+        # Setup perturbations stay out of the controller prior.
+        rng = random.Random(193200+i)
+        x, y, yaw = start['pose_m_rad']
+        p['spawns']['r1'] = [x+rng.uniform(-.02, .02), y+rng.uniform(-.02, .02),
+                             BASE_Z, yaw+rng.uniform(-math.radians(2.), math.radians(2.))]
+        p['start_to_cargo_m'] = math.dist(p['spawns']['r1'][:2], p['cargo_pose_m'][:2])
+        p.update(task_start=start, carry_pose_profile='own_command_v2', amcl_option='off',
+                 start_setup_profile='task_start_jitter_2cm_2deg_v2')
         p.update(solo_carry_to_zone_v1=True, destination_zone=order['destination_zone'],
                  static_map_sha256=digest(static), negative_probe=False, gate_eligible=False,
-                 training_eligible=False, batch='solo-carry-zone-v1', training_rgb=False)
+                 training_eligible=False, batch='solo-carry-zone-v2', training_rgb=False)
         episodes.append(p)
-    return {'schema': 'ugrp.solo_carry_plan.v1', 'episodes': episodes,
+    return {'schema': 'ugrp.solo_carry_plan.v2', 'episodes': episodes,
             'distribution': dict(Counter(e['kind'] for e in episodes)),
             'research_result': False, 'training_rgb': False, 'gate_eligible': False,
             'gate_promotion_authorized_if_all_conditions_pass': False}
@@ -54,13 +67,14 @@ def queue(plan, sha, pr):
                 '--solo-truth-free-lookaround-v1', '--solo-carry-to-zone-v1',
                 '--plan', PLAN, '--episode', str(i), '--cap-s', '300',
                 '--out', f'/home/ugrp/ugrp-sim/runs/{name}/raw']})
-    return {'schema': 'ugrp.solo_carry_queue.v1', 'branch': 'claude/map-carry-zone', 'pr': pr,
+    return {'schema': 'ugrp.solo_carry_queue.v2', 'branch': 'claude/map-carry-zone', 'pr': pr,
         'sha': sha, 'host': 'gcp1', 'machine_type': 'n4-highcpu-64', 'project': 'ugrp-act-train-1014',
         'source_worktree': str(ROOT), 'runner_cwd': '/Users/changmin/projects/ugrp',
         'status': 'prepared_not_submitted', 'ready': False, 'runs_enabled': False,
         'coordinator_approval': {'approved': False, 'source_sha': sha, 'review': None},
         'gate_promotion_authorized_if_all_conditions_pass': False, 'gate_eligible': False,
-        'training_rgb': False, 'run_count': 8, 'runs': runs, 'max_parallel': 1,
+        'training_rgb': False, 'top_rgb_control_allowed': False, 'amcl_option': 'off',
+        'supersedes_rejected_queue': '20261015-solo-carry-fc874c14.json', 'run_count': 8, 'runs': runs, 'max_parallel': 1,
         'plan_sha256': hashlib.sha256((ROOT/PLAN).read_bytes()).hexdigest(),
         'seed_reservation': {'split': 'solo_carry_diagnostic_v1', 'range': [93200, 93207],
                              'remote_unused_verified': False},
@@ -71,8 +85,8 @@ def queue(plan, sha, pr):
             'Check live unused seeds, model endpoint alerts, project budget-stop and cost admission.',
             'Keep 8h STOP + idle20min guards; storage_budget.py --all-hosts includes other reserved writes.',
             'Measure same-machine first30 speed at concurrency1 before further diagnostic admission; no inherited speed claim.',
-            'Inspect first30 and at least6 evenly spaced own/top frames (also >=1 per60 SIM s), including carry and new-zone release.',
-            'Check RGB motion association identity/yaw and loaded motion, no stale self pose or held truth reads; stop common defects immediately.',
+            'Inspect first30 and at least6 evenly spaced review frames (also >=1 per60 SIM s), including carry and new-zone release; top frames are evaluation only.',
+            'Check declared task start versus setup in evaluation only, own-command drift/uncertainty, destination own RGB and post-release landmarks; no top RGB control or held truth reads.',
             'Report all8 including failure/HOST_ERROR; compare whole-footprint zone release, no-drop and SIM time separately.',
             'Preserve raw frames/commands/evaluation, retrieve manifest hashes, verify VM stopped; no automatic gate/training promotion.']}
 

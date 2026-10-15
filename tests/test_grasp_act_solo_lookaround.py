@@ -147,3 +147,42 @@ def test_unarmed_lookaround_cannot_finish_silently(static):
             value, done = t.step(i*.1, measurement=None if t.holding else target, rgb_holding='yes')
             t.remember_applied(value)
             assert not done
+
+
+def test_carry_relook_shares_only_command_belief_and_counts_real_updates(static):
+    from sim.solo_carry_pose import CommandPose, task_start
+    p = primitives()
+    pose = CommandPose(task_start(static))
+    look = SoloLookaround(static, ops=p, truth_free_v1=True, command_pose=pose)
+    with pytest.raises(ValueError, match='no pose estimate'):
+        look.arm([90., 80., 0.])
+    look.arm()
+    assert look.loc.own is pose.own
+    pulse = p.command({'t': 0., 'wheels': [.35]*4, 'duration_s': [.1]*4,
+                       'pwm': {str(s): v for s, v in p.folded.items() if s in (1, 3, 4, 5, 6)}})
+    pose.issue(pulse, .1)
+    at = pose.pose
+    look.issue(pulse, .1)
+    assert pose.pose == at  # no double propagation
+    seen = []
+    def observe(now, rgb, servo):
+        seen.append(now)
+        if len(seen) == 1:
+            return {'status': 'measured', 'wall_points': 0, 'floor_lines': 0, 'doors': 0}
+        pose.own.x[0] += .001  # detector substitute, no backend/evaluation
+        return {'status': 'measured', 'grid': {'poses': 3}, 'wall_points': 2,
+                'floor_lines': 0, 'doors': 0, 'seen_groups': ['wall_west:e']}
+    look.loc.observe = observe
+    look.start(.1, 1500)
+    pwm = dict(p.folded)
+    for i in range(600):
+        now = .2+i*.1
+        cmd, done = look.step(now, pwm, Frames())
+        pwm.update({int(k): v for k, v in cmd['pwm'].items()})
+        if len(seen) == 1:
+            assert pose.last_fix is None
+        if done:
+            break
+    assert done and len(seen) >= 2 and pose.fixes == len(seen)-1
+    assert pose.last_fix == seen[-1]
+    assert look.record()['self_pose_source'] == 'task_start_issued_commands'

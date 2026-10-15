@@ -1,0 +1,137 @@
+{
+  "schema": "ugrp.solo_carry_preparation.v2",
+  "status": "prepared_not_submitted",
+  "source_sha": "commit containing this record; exact SHA pinned in coordinator queue",
+  "base_sha": "fc874c145680f515450f4f221a77eef3ad318521",
+  "offline_validation": {
+    "passed": 89,
+    "seconds": 31.11,
+    "test_files": [
+      "tests/test_grasp_act_solo_carry.py",
+      "tests/test_grasp_act_solo_teacher.py",
+      "tests/test_grasp_act_solo_run_path.py",
+      "tests/test_grasp_act_solo_lookaround.py",
+      "tests/test_lookaround_localization.py"
+    ],
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_solo_carry.py tests/test_grasp_act_solo_teacher.py tests/test_grasp_act_solo_run_path.py tests/test_grasp_act_solo_lookaround.py tests/test_lookaround_localization.py",
+    "raw_location": "experiments/2026-10-15-map-carry-zone/offline-tests-carry2.txt",
+    "sha256": "acd162e593ef029f14126a8f728a82a5044c09573e6a558339c05bf0b5a4bb1e",
+    "physics": false,
+    "render": false,
+    "training": false,
+    "runner_backend": "stub"
+  },
+  "physical_runs_completed": 0,
+  "planned_N": 8,
+  "research_result": false,
+  "training_rgb": false,
+  "top_rgb_control_allowed": false,
+  "amcl_option": "off",
+  "coordinator_approval": {
+    "approved": false
+  },
+  "runs_enabled": false,
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "source_hashes": {
+    "sim/solo_carry_pose.py": "652670d0730e83436ff5dc51bbdad5c2b07b1f45c14eba8dba7483eb55150fd3",
+    "sim/solo_carry_to_zone.py": "0cc467e1f48e5aca3f6b87625d2eb8fc71d8c12d544ccc91cd09b14b52bc81bd",
+    "sim/grasp_act_solo_lookaround.py": "89eff59d0f95a08536cd353dfdccda7e8d9c8295037f301f027fe1074fe80b22",
+    "sim/grasp_act_solo_teacher.py": "e2b487da76f34826446585fc496dcd6df54fc92fab90ac4009521d23aba84263",
+    "sim/grasp_act_solo_evaluation.py": "785e2cb71c2818e4a99898889c6e29400834edd88946f92f59038ae090b41255",
+    "scripts/run_solo_grasp_act_teacher.py": "f5c82b145e7a3aaf45ec30b1243c737804a9d7ab9f4bd83d102cb6a5dea5e3cc",
+    "scripts/make_solo_carry_plan.py": "2371c688de1421ca0b4eab48640663d5756c7683d97b7ad143d52ec6e508db0e",
+    "tests/test_grasp_act_solo_carry.py": "08e121a3ed90574896497aca1444459ddb08cea1ce194363640c0095fd59ec40",
+    "tests/test_grasp_act_solo_teacher.py": "1f7b3e1520b1d547b887733f810d52363edcc8cdd0d88b7ffa15e507ededd72f",
+    "tests/test_grasp_act_solo_run_path.py": "d3adce9cf687a1e7276dd469a8ea4a3fa2d596420ce52e269248706b8768f1d0",
+    "tests/test_grasp_act_solo_lookaround.py": "cd6a10dc3bd52150702f0f385b3c7524d59fb5c3910aee108a8aad22391dd7d1",
+    "tests/test_lookaround_localization.py": "940d25658a7a238abe5dc1ff81d248292ee3a35555e87f28ef730597c1465817",
+    "experiments/2026-10-15-map-carry-zone/offline-tests-carry2.txt": "acd162e593ef029f14126a8f728a82a5044c09573e6a558339c05bf0b5a4bb1e",
+    "experiments/2026-10-15-map-carry-zone/diagnostic-plan-v2.json": "dbfe280da8f6b97cc5a56a4e21b035d78612880246715552fcfe25f583eed50d",
+    "experiments/2026-10-15-map-carry-zone/carry2.md": "067ef6899b75dde2e85144b109568e4c33e4c987bdc57dc137f3469e1435c41f"
+  },
+  "runs": [
+    {
+      "seed": 93200,
+      "kind": "cyan",
+      "destination_zone": "B",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93201,
+      "kind": "red",
+      "destination_zone": "B",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93202,
+      "kind": "green",
+      "destination_zone": "C",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93203,
+      "kind": "yellow",
+      "destination_zone": "C",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93204,
+      "kind": "cyan",
+      "destination_zone": "A",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93205,
+      "kind": "red",
+      "destination_zone": "B",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93206,
+      "kind": "green",
+      "destination_zone": "C",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    },
+    {
+      "seed": 93207,
+      "kind": "yellow",
+      "destination_zone": "C",
+      "status": "not_submitted",
+      "raw_location": null,
+      "raw_sha256": null,
+      "physical_success": null
+    }
+  ],
+  "seed_check": {
+    "remote_unused_verified": false,
+    "supersedes_rejected_queue": "20261015-solo-carry-fc874c14.json"
+  },
+  "rejected_queue_sha256": "4164c4a83dc65386f7b1cdcc37004868d298cced0c3b6eb12d290859ec667ef3",
+  "limitations": [
+    "declared task start differs from carry1 randomized start",
+    "uncalibrated command uncertainty; no in-transit metric RGB correction",
+    "floor colour cannot certify cargo footprint; post-release look cannot repair prior drift/drop",
+    "AMCL report port only, no provider integration or physical qualification"
+  ]
+}

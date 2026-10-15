@@ -382,14 +382,22 @@ def test_zone_carry_real_runner_with_stub_world_never_uses_held_truth_or_legacy_
             self.arm.commanded.update(self.sink.pwm)
             # Start at a permitted estimated pose; sensor substitution only.
             cx, cy = self.carry.region['center_m']
-            self.carry.loc.pose = [cx-.5, cy, 0.]
+            self.carry.loc.own.x = np.array([cx-.5, cy, 0.])
             self.carry.loc.last_fix = 0.
             self.carry.start(0., (.203, 0.))
-            self.carry.loc.pose = [*self.carry.goal, 0.]
+            self.carry.loc.own.x = np.array([*self.carry.goal, 0.])
             self.phase, self.phase_t, self.skill_started = 'carry_to_zone', 0., 0.
             self.holding = True
     monkeypatch.setattr(tm, 'SoloTeacher', CarryTeacher)
-    monkeypatch.setattr(cm.CarryToZone, 'observe', lambda self, tops, now: setattr(self.loc, 'last_fix', now))
+    # Top bytes may be written to evaluation output, but must never be decoded
+    # or passed to a controller. Exercise the real own-frame boundary.
+    sentinel = b'TOP_EVALUATION_ONLY_NOT_A_JPEG'
+    monkeypatch.setattr(world, 'render_team_jpeg', lambda **kw: sentinel)
+    decode = cv2.imdecode
+    def own_decode(raw, flags):
+        assert raw.tobytes() != sentinel, 'top RGB entered perception'
+        return decode(raw, flags)
+    monkeypatch.setattr(cv2, 'imdecode', own_decode)
     monkeypatch.setattr(cm.CarryToZone, 'place_visible', lambda *a: True)
     out = runs/'carry'
     report = runner.run(p, out, execution_host='gcp1', profile='solo_visible_only_v1',
@@ -402,7 +410,9 @@ def test_zone_carry_real_runner_with_stub_world_never_uses_held_truth_or_legacy_
     assert report['input_audit']['blocked_held'] > 0
     assert report['lookaround']['localizer']['truth_free_v1']
     trace = [json.loads(s) for s in (out/'teacher-commands.jsonl').read_text().splitlines()]
-    assert any(r['map_rgb'] and r['map_rgb']['images'] for r in trace)
+    assert all(r['map_pose']['own_frame']['camera'] == 'r1/robot_cam' for r in trace)
+    assert not (out/'map-rgb').exists()
+    assert all(p.read_bytes() == sentinel for p in (out/'review-top').glob('*.jpg'))
     assert {'zone_place_view', 'zone_place_advance', 'lower', 'open', 'backoff'} <= {r['phase'] for r in trace}
     assert all(r['visible_target'] is None for r in trace if r['phase'] in
                ('zone_place_view', 'zone_place_advance', 'lower', 'open'))

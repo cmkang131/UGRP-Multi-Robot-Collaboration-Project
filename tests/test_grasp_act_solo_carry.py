@@ -10,12 +10,14 @@ import numpy as np
 import pytest
 
 from sim.solo_carry_to_zone import CarryToZone, RGBCommandPose, TRAVEL_PHASES, chassis_candidates
+from sim.solo_carry_pose import CommandPose, task_start, AMCL_SOURCE
 from sim.grasp_act_solo_teacher import SoloTeacher, primitives, InputAudit
 from sim.grasp_act_solo_evaluation import ZoneScore
 
 
 def static():
     return {'bounds_m': [-3., 3., -3., 3.], 'obstacles': [], 'regions': {
+        'pickup': {'center_m': [0., 0.], 'half_extents_m': [.75, .5]},
         'zone_A': {'center_m': [1., 0.], 'half_extents_m': [.5, .5]}}, 'top_cameras': []}
 
 
@@ -24,57 +26,77 @@ def command(t=0., forward=.35):
             'pwm': {'1': 1500, '3': 500, '4': 2500, '5': 1500, '6': 1500}}
 
 
-def test_pose_requires_unique_rgb_motion_and_stale_fix_does_not_renew():
-    p = RGBCommandPose()
-    for i in range(6):
-        p.issue(command(), .1)
-        p.observe([(1., 1.), (2., 2.)], i*.5)
-    assert p.pose is None  # command odometry alone cannot anchor the map
-    p = RGBCommandPose()
-    for i in range(24):
-        p.issue(command(), .1)
-        p.observe([(1.+p.odom[0], 1.), (-1., -1.)], i*.1)
-    assert p.pose is not None and p.pose[2] == pytest.approx(0.)
-    assert p.ready(2.3)
-    p.observe([], 4.5)
-    assert not p.ready(4.5)
-    assert p.last_fix == pytest.approx(2.3)
-
-
-def test_two_movers_cannot_bootstrap_own_identity():
-    p = RGBCommandPose()
-    for i in range(24):
-        p.issue(command(), .1)
-        p.observe([(1.+p.odom[0], 1.), (-1.+p.odom[0], -1.)], i*.1)
-    assert p.pose is None
-
-
-def test_rgb_chassis_group_uses_calibration_and_rejects_compact_box():
-    s = static()
-    camera = {'name': 'top', 'position_m': [0., 0., 2.], 'quaternion_wxyz': [1, 0, 0, 0], 'fov_y_deg': 60.}
-    s['top_cameras'] = [camera]
+def test_top_rgb_legacy_paths_and_wrong_camera_fail_closed():
+    with pytest.raises(ValueError, match='top RGB'):
+        RGBCommandPose()
+    with pytest.raises(ValueError, match='top RGB'):
+        chassis_candidates({'top': b'anything'}, static())
+    m = localized_map()
+    with pytest.raises(ValueError, match='top RGB'):
+        m.observe({'top': b'anything'}, 0.)
     frame = np.zeros((480, 640, 3), np.uint8)
-    for x, y in ((300, 220), (340, 220), (300, 260), (340, 260)):
-        cv2.rectangle(frame, (x-4, y-4), (x+4, y+4), (0, 220, 220), -1)
-    cv2.rectangle(frame, (100, 100), (108, 110), (0, 220, 220), -1)
-    points = chassis_candidates({'top': cv2.imencode('.jpg', frame)[1].tobytes()}, s)
-    assert len(points) == 1 and math.dist(points[0], (0., 0.)) < .01
+    with pytest.raises(ValueError, match='top RGB'):
+        m.observe_own(frame, 0., camera='cctv_top')
+    with pytest.raises(ValueError, match='top bundles'):
+        m.observe_own({'top': frame}, 0., camera='r1/robot_cam')
+    m.observe_own(frame, 0., camera='r1/robot_cam')
+    assert m.loc.last_fix is None  # an image is not a metric pose fix
+
+
+def test_task_prior_is_not_spawn_or_a_visual_fix_and_commands_move_it():
+    s = static(); prior = task_start(s)
+    s.update(spawns={'r1': [91., 92., 93.]}, truth_pose=[81., 82., 83.])
+    assert task_start(s) == prior
+    p = CommandPose(prior)
+    assert p.pose == [-1., 0., 0.] and p.last_fix is None
+    p.issue(command(), .1)
+    assert p.pose[0] > -1. and p.pose[1:] == [0., 0.]
+    assert p.record()['command_only_age_s'] == pytest.approx(.1)
+    assert not p.ready(1.)
+    with pytest.raises(ValueError, match='task start'):
+        CommandPose({**prior, 'spawns': [1, 2, 3]})
+    with pytest.raises(ValueError, match='declared static task start'):
+        CarryToZone(s, 'A', start={**prior, 'pose_m_rad': [81., 82., 83.]})
+
+
+def test_amcl_port_is_off_and_rejects_stale_wrong_source_and_uncertain_reports():
+    start = task_start(static())
+    p = CommandPose(start, map_sha256='map')
+    good = dict(source=AMCL_SOURCE, robot_id='r1', map_sha256='map', pose=[-.9, 0., 0.],
+                sigma_xy_m=.08, sigma_yaw_rad=.04, t=0., age_s=0.)
+    with pytest.raises(ValueError, match='off'):
+        p.accept_amcl(good, 0.)
+    p = CommandPose(start, map_sha256='map', amcl_option='report_v1')
+    for change in ({'source': 'top_rgb'}, {'robot_id': 'r2'}, {'map_sha256': 'other'},
+                   {'age_s': 1., 't': -1.}, {'sigma_xy_m': .3}, {'pose': [float('nan'), 0, 0]},
+                   {'t': -.1, 'age_s': .1}, {'top_rgb': b'forbidden'}):
+        with pytest.raises(ValueError):
+            p.accept_amcl({**good, **change}, 0.)
+        assert p.last_fix is None
+    shared_belief = p.own
+    p.accept_amcl(good, 0.)
+    assert p.own is shared_belief
+    assert p.pose == good['pose'] and p.last_fix == 0.
+    with pytest.raises(ValueError):
+        p.accept_amcl(good, 0.)
 
 
 def localized_map():
-    m = CarryToZone(static(), 'A')
-    m.loc.pose = [-1., 0., 0.]; m.loc.last_fix = 0.
-    return m
+    s = static()
+    return CarryToZone(s, 'A', start=task_start(s))
 
 
-def test_route_stops_on_missing_pose_blocked_goal_and_stale_rgb():
-    m = CarryToZone(static(), 'A'); m.start(0., (.2, 0.))
-    assert m.step(0.)[2] == 'carry_self_pose_unavailable'
+def test_route_stops_on_missing_task_prior_blocked_goal_and_stale_command_clock():
+    with pytest.raises(ValueError, match='task start'):
+        CarryToZone(static(), 'A')
     m = localized_map(); m.start(0., (.2, 0.))
     assert m.path and m.slot is not None
-    assert m.step(2.1)[2] == 'carry_self_pose_stale'
+    assert m.step(.3)[2] == 'carry_self_pose_stale'
+    m.loc.own.P[0, 0] = 1.
+    assert m.step(0.)[2] == 'carry_self_pose_stale'
     s = static(); s['obstacles'] = [{'id': 'zone_wall', 'center_m': [1., 0.], 'half_extents_m': [1., 1.]}]
-    m = CarryToZone(s, 'A'); m.loc.pose = [-2., 0., 0.]; m.loc.last_fix = 0.
+    m = CarryToZone(s, 'A', start=task_start(s))
+    m.loc.own.x = np.array([-2., 0., 0.])
     m.start(0., (.2, 0.)); assert m.failure == 'carry_no_static_route'
 
 
@@ -117,9 +139,9 @@ def test_full_carry_to_new_zone_lifecycle_keeps_travel_out_of_local_labels():
         now = i*.1
         # Sensor substitute only: the map estimate reaches its planned stand-off.
         # No physics or evaluation success is supplied to the teacher.
-        m.loc.last_fix = now
+        m.loc.now = now
         if t.phase == 'carry_to_zone':
-            m.loc.pose = [*m.goal, 0.]
+            m.loc.own.x = np.array([*m.goal, 0.])
         _, done = t.step(now, rgb_holding='yes', place_visible=True)
         saw.add(t.phase)
         if t.phase in TRAVEL_PHASES:
@@ -145,7 +167,7 @@ def test_destination_floor_must_be_seen_before_lowering():
 @pytest.mark.parametrize('zone,hue', [('A', 12), ('B', 110), ('C', 145)])
 def test_real_own_fk_floor_mask_requires_destination_paint(zone, hue):
     s = static(); s['regions']['zone_'+zone] = s['regions']['zone_A']
-    m = CarryToZone(s, zone)
+    m = CarryToZone(s, zone, start=task_start(s))
     t = make_teacher(m)
     t.low, t.high, _ = t._pick_geometry({'xyz': [.203, 0., .024], 'yaw': 0.})
     from harness.visual_arm_v3 import forward_grip
@@ -187,6 +209,11 @@ def test_fresh_plan_and_queue_are_v6_balanced_disabled_and_truth_free():
     for e in p['episodes']:
         assert e['scenario_id'].endswith('_v6') and 'handoff_pose_error' not in e
         assert split_of(e['seed'], registry()) == 'solo_carry_diagnostic_v1'
+        assert e['task_start']['is_observation'] is False and e['amcl_option'] == 'off'
+        assert e['task_start']['pose_m_rad'] != [*e['spawns']['r1'][:2], e['spawns']['r1'][3]]
+        with pytest.raises(ValueError, match='top RGB forbidden'):
+            validate_carry({**e, 'carry_pose_profile': 'top_rgb'}, enabled=True, training_rgb=False,
+                           truth_free=True, lift='solo_lift_lookback_v1', negative=False)
         validate_carry(e, enabled=True, training_rgb=False, truth_free=True, lift='solo_lift_lookback_v1', negative=False)
         for change in ({'enabled': False}, {'training_rgb': True}, {'truth_free': False}):
             args = dict(enabled=True, training_rgb=False, truth_free=True, lift='solo_lift_lookback_v1', negative=False)
