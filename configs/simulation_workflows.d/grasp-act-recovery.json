@@ -1,0 +1,24 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "grasp-act-recovery",
+      "version": "0.1.0",
+      "purpose": "Default-off DART recovery teacher; gate before any training RGB",
+      "entry": "scripts/run_grasp_act_recovery.py",
+      "runner": "scripts.run_grasp_act_recovery",
+      "docs": "experiments/2026-10-15-act-train/act6.md",
+      "requires": "GCP gcp1, pinned dependency, source/noise-bound gate for recording; no Mac execution",
+      "output_flag": "--out",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--plan",
+        "--episode",
+        "--dependency-root",
+        "--noise"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

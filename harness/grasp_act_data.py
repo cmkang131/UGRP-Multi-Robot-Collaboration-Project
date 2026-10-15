@@ -221,7 +221,7 @@ def convert(runs_root, protocol, output, *, seeds=None):
               'protocol': protocol, 'done_label': done_label, 'image_hw': list(IMAGE_HW), 'episodes': [],
               'input_keys': sorted(INPUT_KEYS), 'normalization': None,
               'input_audit': {'forbidden_input_fields': 0, 'teacher_input_fields': 0},
-              'admission': 'user/coordinator accepted 50/50; not independently remeasured'}
+              'admission': protocol.get('admission', 'user/coordinator accepted 50/50; not independently remeasured')}
     write_json(output / 'manifest.json', report)
     train_x, train_y, train_seeds = [], [], []
     sample_ids, camera_reference = set(), None
@@ -238,6 +238,14 @@ def convert(runs_root, protocol, output, *, seeds=None):
                     or result.get('physical_success') is not True or result.get('training_rgb') is not True
                     or result.get('student_execution') is not False or result.get('recording_mode') != 'training'):
                 raise ValueError('completed successful teacher recording required')
+            if protocol.get('recovery_mode'):
+                if (result.get('recovery', {}).get('mode') != protocol['recovery_mode']
+                        or result.get('noise_sha256') != protocol['noise_sha256']
+                        or result.get('training_candidate') is not True
+                        or not result.get('recovery_gate')
+                        or result.get('input_audit', {}).get('held_world_reads') != 0
+                        or result.get('input_audit', {}).get('invisible_measurements') != 0):
+                    raise ValueError('unqualified recovery recording')
             plan = json.loads((raw / 'plan.json').read_text())
             if plan['seed'] != seed:
                 raise ValueError('plan seed mismatch')

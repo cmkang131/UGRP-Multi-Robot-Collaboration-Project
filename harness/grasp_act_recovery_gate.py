@@ -1,0 +1,36 @@
+"""Actual noisy-teacher evidence is mandatory even for the first RGB recording."""
+import json
+from pathlib import Path
+from harness.grasp_act_data import read_json, sha256
+
+
+def verify_gate(receipt, *, source, dependency, noise_hash, host, recording_seeds):
+    receipt=Path(receipt); proof=json.loads(receipt.read_text())
+    if proof.get('approved') is not True or proof.get('gate_promotion_authorized_if_all_conditions_pass') is not False:
+        raise ValueError('explicit gate review required; no automatic promotion')
+    expected={'source_sha':source,'teacher_dependency_sha':dependency,'noise_sha256':noise_hash}
+    if any(proof.get(k)!=v for k,v in expected.items()):raise ValueError('gate source/noise mismatch')
+    rows=proof.get('runs',[]);seeds=set();paths=set();success=0
+    if len(rows)!=40:raise ValueError('exactly 40 fresh noisy teacher gate results required')
+    for item in rows:
+        p=Path(item['path']);p=p if p.is_absolute() else receipt.parent/p
+        if str(p.resolve()) in paths or sha256(p)!=item['sha256']:raise ValueError('duplicate or corrupt gate result')
+        paths.add(str(p.resolve()));r=read_json(p);seed=r['recovery']['seed']
+        if seed in seeds or seed in recording_seeds:raise ValueError('gate/recording seed overlap')
+        seeds.add(seed)
+        if (r.get('status')!='complete' or r.get('training_rgb') is not False
+                or r.get('recording_mode')!='success_measurement' or r.get('weld')!='off'
+                or r.get('student_execution') is not False or r.get('execution_host')!=host
+                or r.get('gate_eligible') is not True
+                or any(r.get(k)!=v for k,v in expected.items())
+                or r.get('recovery',{}).get('mode')!='dart_wheels_v1'
+                or r.get('input_audit',{}).get('held_world_reads')!=0
+                or r.get('input_audit',{}).get('invisible_measurements')!=0
+                or r.get('teacher',{}).get('held_object_hidden_v1') is not True
+                or r.get('solo_truth_free_lookaround_v1') is not True):
+            raise ValueError('unqualified gate result / boundary / host')
+        success+=r.get('physical_success') is True
+    if success<38:raise ValueError('noisy teacher did not pass 38/40')
+    if sorted(seeds)!=sorted(proof.get('fresh_seeds',[])) or not proof.get('seed_inventory_sha256'):
+        raise ValueError('fresh gate inventory receipt required')
+    return {'path':str(receipt),'sha256':sha256(receipt),'n':success,'N':40,'seeds':sorted(seeds)}

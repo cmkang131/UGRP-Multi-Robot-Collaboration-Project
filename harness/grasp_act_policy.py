@@ -144,8 +144,8 @@ class ChunkExecutor:
         if type(n_action_steps) is not int or not 1 <= n_action_steps <= c.CHUNK:
             raise ValueError('n_action_steps must be 1..chunk_size')
         if temporal_ensemble_coeff is not None and (
-                not np.isfinite(temporal_ensemble_coeff) or temporal_ensemble_coeff < 0 or n_action_steps != 1):
-            raise ValueError('temporal ensembling requires finite nonnegative coefficient and n_action_steps=1')
+                not np.isfinite(temporal_ensemble_coeff) or temporal_ensemble_coeff < 0 or n_action_steps not in (1, 2, 3, 4)):
+            raise ValueError('temporal ensembling requires finite nonnegative coefficient and n_action_steps=1..4')
         self.predict = predict
         self.n_action_steps, self.temporal_ensemble_coeff = n_action_steps, temporal_ensemble_coeff
         self.reset()
@@ -154,6 +154,7 @@ class ChunkExecutor:
         self.pending, self.identity, self.last_t = [], None, None
         self.done_requested = False
         self.chunks = []
+        self.ensemble_ticks = 0
 
     def step(self, observation, jpegs, *, interrupt=False):
         c.validate_observation(observation)
@@ -167,23 +168,27 @@ class ChunkExecutor:
         if interrupt or self.done_requested:
             value = dict(observation['issued'][-1], t=now, wheels=[0.] * 4, duration_s=[0.] * 4)
             return value, self.done_requested
-        if not self.pending:
+        ensemble = self.temporal_ensemble_coeff is not None
+        need_prediction = (self.ensemble_ticks % self.n_action_steps == 0) if ensemble else not self.pending
+        if need_prediction:
             values = np.asarray(self.predict(observation, jpegs), dtype=float)
             if values.shape != (c.CHUNK, c.ACTION_DIM) or not np.isfinite(values).all():
                 raise ValueError('invalid action chunk')
-            # Validate the entire chunk before executing its first command.
             decoded = [c.decode_action(row) for row in values]
-            if self.temporal_ensemble_coeff is None:
+            if not ensemble:
                 self.pending = decoded[:self.n_action_steps]
             else:
-                # Same exp(-m*i), oldest first, as pinned ACTTemporalEnsembler.
-                # Keep this small serialized adapter numpy-only on the sim host.
                 self.chunks.append(values)
-                weights = np.exp(-self.temporal_ensemble_coeff * np.arange(len(self.chunks)))
-                averaged = np.average([chunk[0] for chunk in self.chunks], axis=0, weights=weights)
-                self.pending = [c.decode_action(averaged)]
-                self.chunks = [chunk[1:] for chunk in self.chunks if len(chunk) > 1]
-        action = self.pending.pop(0)
+        if ensemble:
+            # Sparse refresh is an opt-in deployment variant. Shift ALL chunks
+            # every tick, including ticks without inference, to align horizons.
+            weights = np.exp(-self.temporal_ensemble_coeff * np.arange(len(self.chunks)))
+            averaged = np.average([chunk[0] for chunk in self.chunks], axis=0, weights=weights)
+            action = c.decode_action(averaged)
+            self.chunks = [chunk[1:] for chunk in self.chunks if len(chunk) > 1]
+            self.ensemble_ticks += 1
+        else:
+            action = self.pending.pop(0)
         self.done_requested = action['done']
         if self.done_requested:
             self.pending.clear()

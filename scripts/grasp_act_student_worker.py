@@ -15,9 +15,12 @@ from harness.grasp_act_policy import GraspActor
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--model', required=True)
+    p.add_argument('--threads', type=int, choices=(1, 2, 4, 8, 16), default=1)
     a = p.parse_args()
     import torch
-    torch.set_num_threads(1)
+    torch.set_num_threads(a.threads)
+    if a.threads != 1:
+        torch.set_num_interop_threads(1)
     actor = GraspActor.load(a.model, device='cpu')
     print(json.dumps({'ready': True}), flush=True)
     for line in sys.stdin:

@@ -1,0 +1,164 @@
+{
+  "schema": "ugrp.act6.summary.v1",
+  "implementation_base_sha": "bd14057827e9d2a94c5030469808614dd86aea77",
+  "preparation_complete": true,
+  "full_teacher_stall_census_complete": false,
+  "new_physical_runs": 0,
+  "new_training_steps": 0,
+  "new_inference_calls": 0,
+  "remote_host_connections": 0,
+  "mac_inference_timing_runs": 0,
+  "student": {
+    "N": 900,
+    "zero": 755,
+    "visible": 868,
+    "visible_and_zero": 723,
+    "last_nonzero_s": 25.6,
+    "zero_at_inference_boundary": [
+      88,
+      113
+    ],
+    "late_zero_at_new_inference": [
+      80,
+      80
+    ],
+    "predictions_observation_age_s": {
+      "mean": 0.34911111111111104,
+      "max": 0.7
+    },
+    "done_requested": 0
+  },
+  "teacher_local_coverage": {
+    "available_N": 2,
+    "cohort_N": 50,
+    "missing_seeds": [
+      86002,
+      86003,
+      86004,
+      86005,
+      86006,
+      86007,
+      86008,
+      86009,
+      86010,
+      86011,
+      86012,
+      86013,
+      86014,
+      86015,
+      86016,
+      86017,
+      86018,
+      86019,
+      86020,
+      86021,
+      86022,
+      86023,
+      86024,
+      86025,
+      86026,
+      86027,
+      86028,
+      86029,
+      86030,
+      86031,
+      86032,
+      86033,
+      86034,
+      86035,
+      86036,
+      86037,
+      86038,
+      86039,
+      86040,
+      86041,
+      86042,
+      86043,
+      86044,
+      86045,
+      86046,
+      86047,
+      86048,
+      86049
+    ]
+  },
+  "teacher_local_zero_n_N": [
+    387,
+    719
+  ],
+  "verdict": "near-zero action outputs and execution deadzone explain issued stop; L1/history/chunk causal shares remain unmeasured",
+  "noise": {
+    "path": "experiments/2026-10-15-act-train/act6-noise.json",
+    "sha256": "47ddf66ab770a3b00f2cb57206225d9bdf0d138bc6468625b65be10a08bd72f7",
+    "fit_rows": 1398,
+    "calibration_inventory_rows": 1833,
+    "cross_covariance_available": false,
+    "default": "off",
+    "recording_requires_new_noisy_gate": [
+      38,
+      40
+    ]
+  },
+  "tests": {
+    "unique": {
+      "passed": 47,
+      "skipped": 3
+    },
+    "skipped": [
+      "tests.test_grasp_act_act4::test_ensemble_matches_pinned_upstream_including_zero_actions_and_expiry",
+      "tests.test_grasp_act_act4::test_checkpoint_roundtrip_preserves_completion_semantics[legacy_l1]",
+      "tests.test_grasp_act_act4::test_checkpoint_roundtrip_preserves_completion_semantics[balanced_bce_v1]"
+    ],
+    "note": "existing pinned LeRobot/draccus absent locally; synthetic torch BCE/dropout checked in existing Python, no actual optimizer/training"
+  },
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act6-bd140578",
+  "artifacts": {
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act6-bd140578/tests-act6-final.xml": "f3f8c9f163ca8e35c961440d51496e26386c802686f531282b8a7ed50b6bd3c4",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act6-bd140578/tests-act6-host.xml": "62f1bbd1ec25c6b5ca69509350c3622e6f3a92fa2f6a7e11f2a34c8b9ef01c0b",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act6-bd140578/tests-loss.xml": "2e76f447758cf88b07bf57b6d753429387ce1946238cba09a6d31198df9a7049",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act6-bd140578/tests-torch.xml": "5f895b8090d15c984a860a82146fa633dddae4e8f68259a38832c1006d03f261",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act6-bd140578/tests-workflow.xml": "0119492a43d4b74d9046382fa30b4c917024ee09679b6ad1e83bc7efbddd6b27",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act6-bd140578/tests.xml": "ca01a8d6ccd31b5a77e374430f637592b3794b9557f1935fdd22669d01b36e98",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act6-bd140578/nearest-review.jpg": "29b1d8cce17aad21615240886e742acdb6a9103321402fccf8c0b6d0b8fa7b3e",
+    "experiments/2026-10-15-act-train/act6-seed-audit.json": "22bb0f892aae75e429fc062c3e95e49bf398228bdd11a7e2ceeee567aa8484e4",
+    "experiments/2026-10-15-act-train/act6-gate-plan.json": "014e790da545283a81a57bf38dfdd18f7b1513eee6b61f6139e3776db3912cc4",
+    "experiments/2026-10-15-act-train/act6-student-plan.json": "aef2295bb384d501db259aeb951a057f0ab207d2432d2173e503c4880a530176",
+    "experiments/2026-10-15-act-train/act6-measurements.json": "5b96ee7f2e0d1278aa095ef2e9ec6bfc71282009e349971d75bcadec079fc3b1",
+    "experiments/2026-10-15-act-train/act6-noise.json": "47ddf66ab770a3b00f2cb57206225d9bdf0d138bc6468625b65be10a08bd72f7",
+    "experiments/2026-10-15-act-train/act6-record-plan.json": "edece9fe06f074a40584260b264a089723d827f6f7f7554d1f53c55aba0b7c03"
+  },
+  "teacher_dependency": {
+    "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+    "files": {
+      "/Users/changmin/projects/ugrp-wt/solo-teacher/sim/grasp_act_solo_teacher.py": "6b1cccf16d727449e059acebbba866cc4048f42918d8791ef8b1ba1729bcbdb6",
+      "/Users/changmin/projects/ugrp-wt/solo-teacher/sim/grasp_act_teacher_v3.py": "33b4c151ed4d401d1dd137ef8dea2798761cd1e6c494606be3f2396f2d39045f",
+      "/Users/changmin/projects/ugrp-wt/solo-teacher/harness/grasp_act_visible_world.py": "7195113eff657e62d504c4e63b5e2d1a10ffa7e1d35296e5ee2c29da76858a7e",
+      "/Users/changmin/projects/ugrp-wt/solo-teacher/scripts/run_solo_grasp_act_teacher.py": "520625c990adcc010a293b033ec826095438d1de845195607839da0fbaad3a51",
+      "/Users/changmin/projects/ugrp-wt/solo-teacher/harness/grasp_act_solo_recording.py": "ee3fa56d77874cd298995379c1e66d767ffa93afab5443fec8eef3e6f0504cb9"
+    },
+    "integration": "missing-module fallback plus runtime adapter; new same-composition gate required"
+  },
+  "queue": {
+    "name": "20261015-act6-<final-SHA8>.json",
+    "generator": "scripts.queue_grasp_act_act6",
+    "approved": false,
+    "ready": false,
+    "stage_ready": false,
+    "submitted": false,
+    "jobs": 14,
+    "gate_runs": 40,
+    "record_runs": 50,
+    "closed_loop_max_runs": 1,
+    "cap_sim_s": 90,
+    "old_queues_modified": false
+  },
+  "unfinished": [
+    "full teacher 48 remaining command originals absent locally; full saved-file census queued",
+    "new noisy gate and recovery coverage not run",
+    "native camera recording/admission and source transfer not done",
+    "both training arms and fresh heldout predictions not run",
+    "GCP deployment speed/first30/90s closed loop not run",
+    "live remote unused seeds, credits/prices/disks/guards unverified; every stage remains unapproved",
+    "new model Release preservation awaits actual checkpoints"
+  ]
+}

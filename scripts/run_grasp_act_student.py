@@ -50,7 +50,9 @@ def response(process, timeout=120.):
 
 
 def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_steps=c.CHUNK,
-        temporal_ensemble_coeff=None):
+        temporal_ensemble_coeff=None, actor_threads=1):
+    if actor_threads not in (1, 2, 4, 8, 16):
+        raise ValueError('bounded actor thread setting required')
     ChunkExecutor(None, n_action_steps=n_action_steps, temporal_ensemble_coeff=temporal_ensemble_coeff)
     if not 0 < cap_s <= 90.:
         raise ValueError('finite <=90 SIM seconds required')
@@ -66,8 +68,10 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                  else 'staged near-field solo grasp; no navigation/release/E2E claim',
         'object_kind': plan['object_kind'], 'requested_sequence': plan['skill'],
         'input_audit': {'forbidden_input_fields': 0, 'teacher_input_fields': 0, 'requests': 0},
-        'execution': {'chunk_size': c.CHUNK, 'n_action_steps': n_action_steps,
-                      'temporal_ensemble_coeff': temporal_ensemble_coeff},
+        'execution': {'actor_threads': actor_threads, 'chunk_size': c.CHUNK, 'n_action_steps': n_action_steps,
+                      'temporal_ensemble_coeff': temporal_ensemble_coeff,
+                      'ensemble_mode': 'off' if temporal_ensemble_coeff is None else
+                          'dense_v1' if n_action_steps == 1 else 'strided_v1'},
         'completion_confirmation': 'unknown', 'gate_promotion_authorized_if_all_conditions_pass': False}
     write_summary(output / 'summary.json', report)
     write_json(output / 'plan.json', plan)
@@ -123,7 +127,7 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
         previous['t'] = float(world.data.time)
         history = OwnHistory(rid, f'student-{plan["seed"]}', previous)
         (output / 'rgb' / rid).mkdir(parents=True)
-        worker = subprocess.Popen([actor_python, '-m', 'scripts.grasp_act_student_worker', '--model', str(model)],
+        worker = subprocess.Popen([actor_python, '-m', 'scripts.grasp_act_student_worker', '--model', str(model), '--threads', str(actor_threads)],
             cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True, bufsize=1)
         if response(worker) != {'ready': True}:
             raise RuntimeError('student worker did not load')
@@ -255,10 +259,11 @@ def main():
     p.add_argument('--cap-s', type=float, default=60.)
     p.add_argument('--n-action-steps', type=int, default=c.CHUNK)
     p.add_argument('--temporal-ensemble-coeff', type=float)
+    p.add_argument('--actor-threads', type=int, choices=(1, 2, 4, 8, 16), default=1)
     a = p.parse_args()
     run(json.loads(a.plan.read_text()), json.loads(a.protocol.read_text()), a.model, a.output,
         actor_python=a.actor_python, cap_s=a.cap_s, n_action_steps=a.n_action_steps,
-        temporal_ensemble_coeff=a.temporal_ensemble_coeff)
+        temporal_ensemble_coeff=a.temporal_ensemble_coeff, actor_threads=a.actor_threads)
 
 
 if __name__ == '__main__':
