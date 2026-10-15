@@ -1,0 +1,49 @@
+{
+  "schema": "ugrp.act.done_label.verification.v1",
+  "status": "offline_verification_complete",
+  "source_parent_sha": "7caf99447c5d7543b087722957d4d9987c22cbee",
+  "source_files_sha256": {
+    "harness/grasp_act_data.py": "629a3a28a9b8600049e39e3e3c20263de7db854b977da0e7b54c65d725709bf4",
+    "tests/test_grasp_act_data.py": "03e60d90e70045b2640ecad546efa2dddd2ea4e3d95a2afc8f516c9545b82928",
+    "tests/test_grasp_act_pilot.py": "48ebc6a1b1a51018c3e57b3f20916346b4b4c4b6355368c1a370e176041c4932"
+  },
+  "done_label": "last_local_row_v1",
+  "default_done_label": "teacher_v1",
+  "protocol_sha256": "99a0ba8557120b75a786d92a5808926abdcbb7a9aa82529d4d60dca5f2230af2",
+  "tests": {
+    "files": [
+      "tests/test_grasp_act_data.py",
+      "tests/test_grasp_act_policy.py",
+      "tests/test_grasp_act_pilot.py"
+    ],
+    "passed": 36,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 1.325,
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/act-train-done-label-v1-tests-20261015.xml",
+    "junit_sha256": "9f61372aaf2113b5ee18e0ef5b62d49a59af4d3081b3ccd3434860a9cc5eaeef"
+  },
+  "local_data_audit": "local-audit-last-local-row-v1.json",
+  "local_data_audit_sha256": "0d028d8c1ec335339c6c2507abc208fbe0de4f2c3066c860d2e381762991d2eb",
+  "verification_scope": "two local recordings, 719 selected rows; no training/physics/render/remote host access",
+  "checks": {
+    "git_diff_check": "passed",
+    "original_teacher_files": "unchanged",
+    "inspection_rows": "158 excluded",
+    "completion_positives": "one per skill per supplied episode",
+    "input_leakage": "0/0",
+    "default_teacher_behavior": "preserved",
+    "existing_queue": "hash unchanged",
+    "new_queue_created": false
+  },
+  "remaining": [
+    "full 50-episode conversion with new source/protocol",
+    "new-protocol GPU smoke and training",
+    "student release completion and RGB confirmation"
+  ],
+  "old_smoke_status": "running per user; not independently checked; source and queue remain fixed at 7caf9944",
+  "physical_runs": 0,
+  "render_runs": 0,
+  "training_runs": 0,
+  "remote_connections": 0
+}
