@@ -1,0 +1,224 @@
+{
+  "schema": "ugrp.release20.replay.v1",
+  "source_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+  "source": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-13-a3bbc90e/raw/result.json.zst",
+      "sha256": "c89efc236756ba34c4bb53afa7cf9767f68cdc9374e0292936daf03ff695a311",
+      "decoded_sha256": "911f0e5ca32669cd4f410ed469ea1c5883adb64fbcde7287351275ff5da5dd70"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-13-a3bbc90e/raw/teacher-r1.jsonl.zst",
+      "sha256": "fd967d384fbb6dde2f3b0edcfbf5b5f9b4a3b388d05ab298d5b6b943a3f951a9",
+      "decoded_sha256": "6634165132b9c24d8f21d66da28c02f903d67c27a6e220d70f1b0d55697aea7b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18g-13-a3bbc90e/raw/teacher-r2.jsonl.zst",
+      "sha256": "be211a29b2dc881a7aac9980f8d5ae8fcedeb55afa13e411cb14cab9ce66cea4",
+      "decoded_sha256": "8bbf7a5c1e7f28863981b7a00b85b67689ee7988d0c59b8a410b3d63582d8d11"
+    }
+  ],
+  "scope": "stored own-RGB feature sequence; static camera and issued command model; conditional decision replay only, no prediction of new physics or 0.3s stability",
+  "checks": [
+    {
+      "index": 0,
+      "robot": "r1",
+      "old_state": "done",
+      "old_failure": null,
+      "old_pulses": 0,
+      "old_yaw_reversals": 0,
+      "pulses_before_settle": 0,
+      "settle_declared": true,
+      "samples": [
+        {
+          "t": 31.400000000058917,
+          "center_error": -0.04781901746257207,
+          "error": [
+            0.0018855305548945572,
+            0.0010484303517827136
+          ],
+          "decision": {
+            "t": 31.400000000058917,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0018855305548945572,
+                "delta": 0.03302802955983121,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0010484303517827136,
+                "delta": 0.0016794294113512548,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "robot": "r2",
+      "old_state": "done",
+      "old_failure": null,
+      "old_pulses": 0,
+      "old_yaw_reversals": 0,
+      "pulses_before_settle": 0,
+      "settle_declared": true,
+      "samples": [
+        {
+          "t": 34.00000000007133,
+          "center_error": -0.04875870169327214,
+          "error": [
+            0.000945820177682348,
+            -7.440476176789125e-05
+          ],
+          "decision": {
+            "t": 34.00000000007133,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.000945820177682348,
+                "delta": 0.0,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -7.440476176789125e-05,
+                "delta": 0.0,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "robot": "r1",
+      "old_state": "done",
+      "old_failure": null,
+      "old_pulses": 0,
+      "old_yaw_reversals": 0,
+      "pulses_before_settle": 0,
+      "settle_declared": true,
+      "samples": [
+        {
+          "t": 35.60000000007897,
+          "center_error": -0.04937701197374036,
+          "error": [
+            0.0003275609208330324,
+            -0.0014395007421523108
+          ],
+          "decision": {
+            "t": 35.60000000007897,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.0003275609208330324,
+                "delta": 0.02489792286379564,
+                "tolerance": 0.025,
+                "acceptance_band": 0.025,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.0014395007421523108,
+                "delta": 0.012684679532081812,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "robot": "r2",
+      "old_state": "failed",
+      "old_failure": "release17_motion_cap",
+      "old_pulses": 15,
+      "old_yaw_reversals": 14,
+      "pulses_before_settle": 0,
+      "settle_declared": true,
+      "samples": [
+        {
+          "t": 36.00000000008088,
+          "center_error": -0.08140504162245162,
+          "error": [
+            -0.03169794967305522,
+            0.007946485249039447
+          ],
+          "decision": {
+            "t": 36.00000000008088,
+            "event": "release20_settle",
+            "axes": [
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": -0.03169794967305522,
+                "delta": 0.057925952423626845,
+                "tolerance": 0.034755571454176105,
+                "acceptance_band": 0.034755571454176105,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              },
+              {
+                "settled": true,
+                "reason": "quantum_deadband",
+                "error": 0.007946485249039447,
+                "delta": 0.011005250120730557,
+                "tolerance": 0.06,
+                "acceptance_band": 0.06,
+                "consecutive_reversals": 0,
+                "total_reversals": 0,
+                "pulses": 0
+              }
+            ],
+            "aligned": true,
+            "source": "own RGB polar line and issued-wheel model"
+          }
+        }
+      ]
+    }
+  ]
+}

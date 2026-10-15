@@ -280,6 +280,12 @@ class LineAlign(release16.LineAlign):
             self.sign_state = 'mismatch'
 
     # -- tick: release15.tick, with the two gated changes ------------------
+    def choose_step(self, f, period, now):
+        if self.fov_step == 'off':
+            return release15.line_step(f, self.camera, self.teacher.pwm, clearance=self.clearance)
+        return line_step(f, self.camera, self.teacher.pwm, clearance=self.clearance,
+                         profile=self.teacher.odometry_profile, period=period)
+
     def tick(self, now, capture, schedule):
         if self.fov_step == 'off' and self.sign_state == 'not_applicable':
             return super().tick(now, capture, schedule)
@@ -305,11 +311,7 @@ class LineAlign(release16.LineAlign):
                 return self.fail('no_recover_fov_progress')
         period = ESCALATED_PERIOD_S if self.stall == 1 else BASE_PERIOD_S
         try:
-            if self.fov_step == 'off':
-                step = release15.line_step(f, self.camera, self.teacher.pwm, clearance=self.clearance)
-            else:
-                step = line_step(f, self.camera, self.teacher.pwm, clearance=self.clearance,
-                                 profile=self.teacher.odometry_profile, period=period)
+            step = self.choose_step(f, period, now)
         except (ValueError, np.linalg.LinAlgError) as error: return self.fail(str(error))
         if step['kind'] == 'unobserved':
             self.stable = None
