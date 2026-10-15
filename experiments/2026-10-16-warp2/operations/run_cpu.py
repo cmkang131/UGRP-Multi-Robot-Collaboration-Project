@@ -12,9 +12,11 @@ import time
 r=Path('/home/ugrp/ugrp-sim');s=r/'src/warp2-70553d2f'
 fixed_episode=int(sys.argv[1]) if len(sys.argv)>1 else None
 cap=float(sys.argv[2]) if len(sys.argv)>2 else 60.
+world_count=int(sys.argv[3]) if len(sys.argv)>3 else 16
+assert world_count in (16,64,256)
 assert 0<cap<=60
 assert fixed_episode is None or 0<=fixed_episode<6
-out=r/'runs'/('warp2-cpu-r1-70553d2f'+('' if fixed_episode is None else '-seed'+str(fixed_episode))+('' if cap==60 else '-cap'+str(cap)))
+out=r/'runs'/('warp2-cpu-r1-70553d2f'+('' if fixed_episode is None else '-seed'+str(fixed_episode))+('' if cap==60 else '-cap'+str(cap))+('' if world_count==16 else '-n'+str(world_count)))
 lease=r/'leases/warp2.json';assert not lease.exists()
 out.mkdir(exist_ok=False);start=time.time();children=[]
 def write(p,v):p.write_text(json.dumps(v,indent=2)+'\n')
@@ -30,7 +32,11 @@ try:
  write(lease,dict(task='warp2',pid=os.getpid(),started_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
   expected_end=datetime.datetime.fromtimestamp(start+1800,datetime.timezone.utc).isoformat(),concurrency=16,source='70553d2f4235b28648c188b26f9b2a03fa32a19d'))
  write(out/'admission.json',dict(leases=leases,existing_python=existing,concurrency=16,total_limit=40,loadavg=os.getloadavg()))
- for i in range(16):
+ for i in range(world_count):
+  while sum(p.poll() is None for p,_,_ in children)>=16:
+   if time.time()-start>=1800:raise TimeoutError('finite_CPU_host_cap')
+   if any(p.poll() not in (None,0) for p,_,_ in children):raise RuntimeError('CPU_worker_HOST_ERROR')
+   time.sleep(.1)
   d=out/f'p{i:02d}';log=(out/f'p{i:02d}.log').open('w')
   cmd=[str(r/'ugrp/.venv-sim/bin/python'),str(s/'scripts/run_warp_flow_teacher.py'),
    '--physics-backend','c_pilot_v1','--adapter-source',str(r/'src/08f129213031255dd188e20df832bb6714dfca9a'),
@@ -46,7 +52,7 @@ try:
   time.sleep(5)
  records=[json.loads((d/'summary.json').read_text()) for _,_,d in children]
  write(out/'summary.json',dict(status='complete',physics_backend='c_pilot_v1',host='gcp2/n4-highcpu-64',
-  concurrency=16,records=records,wall_s=time.time()-start,
+  concurrency=16,total_worlds=world_count,records=records,wall_s=time.time()-start,
   aggregate_completed_sim_s=sum(x['aggregate_completed_sim_s'] for x in records),
   physical_success=sum(x['counts']['physical_success'] for x in records),
   cap_end=sum(x['counts']['cap_end'] for x in records),

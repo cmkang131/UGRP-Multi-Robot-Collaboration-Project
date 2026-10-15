@@ -1,0 +1,91 @@
+{
+  "schema": "ugrp.warp2.flow_recount.v1",
+  "raw": "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/n1",
+  "reports": [
+    {
+      "job": "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/n1",
+      "world": {
+        "world": 0,
+        "seed": 8318726,
+        "physical_success": false,
+        "status": "supervisor_stop"
+      },
+      "candidate_populations": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 58,
+          "passed": 29,
+          "rejected": 29
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 29,
+          "passed": 29,
+          "rejected": 0
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 29,
+          "passed": 29,
+          "rejected": 0
+        }
+      ],
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 0,
+          "rejected": 2
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "held_world_reads": 0,
+      "hidden_measurement_ticks": 0,
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/n1/world-000/raw"
+    }
+  ],
+  "reason_distribution": {
+    "HOST_ERROR": 1
+  },
+  "blocked_object_distribution": {
+    "none:HOST_ERROR": 1
+  },
+  "sha256_check": {
+    "files": 86,
+    "mismatches": []
+  },
+  "full_rejections": "/home/ugrp/ugrp-sim/runs/warp2/analysis/r1-stop/rejections-full.json",
+  "full_rejections_sha256": "c9100098aec6575a2f6da2c8e95937760c5187af61c7e51f205271dd5377c0f4",
+  "scope": "original frozen beampair6 reason definitions and sequential populations; successful or capped worlds do not remove rejected candidates",
+  "reproduce": "python3 /home/ugrp/ugrp-sim/runs/warp2-analyze-flows.py /home/ugrp/ugrp-sim/src/warp2-08f12921 /home/ugrp/ugrp-sim/runs/warp2/r1-70553d2f/n1 /home/ugrp/ugrp-sim/runs/warp2/analysis/r1-stop"
+}

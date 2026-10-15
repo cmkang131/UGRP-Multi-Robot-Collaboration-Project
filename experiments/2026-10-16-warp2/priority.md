@@ -12,4 +12,4 @@
 
 `speedup = 1 / (0.145 + 0.855 / physics_speedup)`. 85.5%·3.0%는 **이번 사용자 작업지시가 제공한 beampair3 값**이며 Mac에서 찾은 beampair3 회수 요약에는 세부 timing이 없어 원본 재집계하지 못했다. 원본이 gcp1에만 있으면 접근하지 않고 gcp2에서 새로 분해한다. 이 비율을 release/reloc/E2E나 gcp2의 현재 분해값으로 사용하지 않는다. RGB3%만 완전히 없애는 상한은1.031배이며, 관측/기록 프레임을 생략하는 최적화는 제안하지 않는다.
 
-기존 CPU 수치의 파일 경로·SHA256·측정 모집단은 baseline-evidence.json에 있다. **새 MJWarp throughput·SIM초/$는 아직 미측정(null)**. N에 따른 batching gain은 Amdahl의 물리 speedup과 같지 않으므로 실제 N16/64/256 end-to-end 값을 재야 한다.
+기존 CPU 수치의 파일 경로·SHA256·측정 모집단은 baseline-evidence.json에 있다. **A 시점에는 MJWarp 처리량이 미측정이었다. B의 새 실측은 [runtime.md](runtime.md)에 backend·반복 수·작업 길이별로 기록한다.** N에 따른 batching gain은 Amdahl의 물리 speedup과 같지 않으므로 실제 N16/64/256 end-to-end 값을 재야 한다.

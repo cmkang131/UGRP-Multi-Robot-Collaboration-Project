@@ -1,10 +1,9 @@
 {
   "schema": "ugrp.warp2.summary.v1",
-  "updated_utc": "2026-10-15T18:08:44.911144+00:00",
-  "stage": "A_COMPLETE_B_BACKEND_OBSERVED",
+  "updated_utc": "2026-10-15T19:33:52.781607+00:00",
+  "stage": "B_R3_IN_PROGRESS",
   "verdict": "NOT_READY",
   "research_result": false,
-  "scope": "read-only source design; no implementation or fresh physical result",
   "priority": [
     "beam_pair_teacher",
     "release24",
@@ -17,19 +16,16 @@
   "source_files": 57,
   "syntactic_sites": 753,
   "source_primary_base": "142dbf04c2128c3d7ca1c3ceb03ee3b651d9a7e5",
-  "warp1_observed_commit": "f62998c12f30c063c6951340b28f9aa7831ba63d",
-  "physics_runs": 0,
-  "render_runs": 0,
+  "warp1_observed_commit": "2fd1490a6f00459a0e32c4e89adc8421a8dba1a4",
   "model_calls": 0,
   "training_runs": 0,
   "mac_physics_runs": 0,
   "mac_render_runs": 0,
   "mac_gui_actions": 0,
   "backend_results_pooled": false,
-  "rounds_used": 0,
+  "rounds_used": 3,
   "rounds_max": 3,
   "l4_max_wall_s": 10800,
-  "l4_used_wall_s": 0,
   "throughput": {
     "1": null,
     "16": null,
@@ -50,9 +46,73 @@
   },
   "rejection_table": "/Users/changmin/projects/ugrp-wt/warp-flows/experiments/2026-10-16-warp2/rejection_table.json",
   "remaining": [
-    "inspect and reuse committed warp1 backend API",
-    "B adapter implementation and regression checks",
-    "gcp2 N1/N16 known seeds; N16/64/256 throughput and price evidence",
-    "HOLD_SCENE gate; no cohort admission"
+    "finish bounded R3 and reconcile each job/hash/funnel",
+    "compare fixed-work N16/64/256 against C",
+    "record playback observations and retrieval hashes",
+    "keep HOLD_SCENE; no gate queue authorization"
+  ],
+  "pr": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/531",
+  "l4_deadline_utc": "2026-10-15T21:24:38.739602+00:00",
+  "source_runtime_sha": "521f258508ccc7d24d667a158a2b26a1b3740ee9",
+  "pure_nonphysics_tests": {
+    "passed": 17,
+    "files": [
+      "tests/test_warp_act_core.py",
+      "tests/test_warp_flow_core.py"
+    ]
+  },
+  "cohorts": [
+    {
+      "name": "C_mixed6_N16",
+      "status": "complete",
+      "physical_success": 16,
+      "N": 16,
+      "unique_seeds": 6,
+      "evidence": "runtime/cpu-mixed6-analysis.json"
+    },
+    {
+      "name": "C_seed8318631_N16",
+      "status": "complete",
+      "physical_success": 16,
+      "N": 16,
+      "unique_seeds": 1,
+      "evidence": "runtime/cpu-seed8318631-analysis.json"
+    },
+    {
+      "name": "C_prefix_1SIM_N16",
+      "status": "complete",
+      "physical_success": 0,
+      "cap_end": 16,
+      "N": 16,
+      "evidence": "runtime/cpu-prefix1-analysis.json"
+    },
+    {
+      "name": "MJWarp_R1_N1",
+      "status": "supervisor_stop",
+      "HOST_ERROR": 1,
+      "physical_failure_claim": false,
+      "evidence": "runtime/gpu-r1-stop-funnels.json"
+    },
+    {
+      "name": "MJWarp_R2_N1_seed8318631",
+      "status": "complete",
+      "physical_success": 1,
+      "N": 1,
+      "unique_seeds": 1,
+      "evidence": "runtime/gpu-r2-n1-summary.json"
+    },
+    {
+      "name": "MJWarp_six_model_group_preflight",
+      "status": "initialization_complete",
+      "N": 16,
+      "teacher_rollout_steps": 0,
+      "evidence": "runtime/group-preflight-summary.json"
+    },
+    {
+      "name": "MJWarp_R3",
+      "status": "running",
+      "complete": false,
+      "scope": "fixed-work N16/64/256 prefixes then full mixed-six N16; never counted complete while running"
+    }
   ]
 }

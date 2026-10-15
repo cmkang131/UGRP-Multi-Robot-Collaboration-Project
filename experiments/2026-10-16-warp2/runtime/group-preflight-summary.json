@@ -1,0 +1,3437 @@
+{
+  "schema": "ugrp.warp2.batch.v1",
+  "status": "transport_preflight_only",
+  "source_sha": "521f258508ccc7d24d667a158a2b26a1b3740ee9",
+  "adapter_sha": "08f129213031255dd188e20df832bb6714dfca9a",
+  "teacher_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+  "physics_backend": "mjwarp_batch_v1",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "nworld": 16,
+  "seed": 8318726,
+  "world_seeds": [
+    8318726,
+    8318620,
+    8318600,
+    8318604,
+    8318611,
+    8318631,
+    8318726,
+    8318620,
+    8318600,
+    8318604,
+    8318611,
+    8318631,
+    8318726,
+    8318620,
+    8318600,
+    8318604
+  ],
+  "cap_s": 60.0,
+  "plan_sha256": "a92c19ed2636d6d2df847fe6e261ee89677cd5939b41a5ad9f63913c591a29c7",
+  "mujoco": "3.16.0",
+  "gate_eligible": false,
+  "scene_status": "HOLD_SCENE",
+  "training_rgb": false,
+  "student_execution": false,
+  "model_calls": 0,
+  "backend_results_pooled": false,
+  "hourly_usd": 1.096,
+  "price_basis": "explicit VM hourly estimate; billing and independent cost attribution unverified",
+  "reproduce": [
+    "/home/ugrp/ugrp-sim/src/warp2-521f2585/scripts/run_warp_flow_teacher.py",
+    "--physics-backend",
+    "mjwarp_batch_v1",
+    "--adapter-source",
+    "/home/ugrp/ugrp-sim/src/warp2-08f12921",
+    "--teacher-source",
+    "/home/ugrp/ugrp-sim/src/warp2-26f84d0f",
+    "--plan",
+    "/home/ugrp/ugrp-sim/src/warp2-08f12921/experiments/2026-10-16-beampair6/short6-plan.json",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/warp2/r3-group-preflight-521f2585/probe",
+    "--nworld",
+    "16",
+    "--episode",
+    "0",
+    "--mix-known-six",
+    "--per-world-model-references-v1",
+    "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/model-references.json",
+    "--compiled-reference-v1",
+    "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-0/compiled-312.json",
+    "--compiled-geometry-312-v1",
+    "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-0/compiled-geometry312.npz",
+    "--exact-model-groups-v1",
+    "--transport-preflight-only",
+    "--vm-hourly-usd",
+    "1.096"
+  ],
+  "counts": {
+    "planned": 16,
+    "started": 16,
+    "completed": 0,
+    "physical_success": 0,
+    "cap_end": 0,
+    "HOST_ERROR": 0,
+    "unstarted": 0,
+    "teacher_rollouts_started": 0
+  },
+  "native_initialization_sim_s": [
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178,
+    1.3000000000000178
+  ],
+  "camera": {
+    "resolution": [
+      320,
+      240
+    ],
+    "robots": [
+      "r1",
+      "r2"
+    ],
+    "hz": 10,
+    "K": [
+      [
+        309.7597270258616,
+        0.0,
+        143.84455304448383
+      ],
+      [
+        0.0,
+        311.0827442409374,
+        109.34843324227863
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "D": [
+      -0.0199819517209417,
+      -0.1707593617153504,
+      -0.2568318201202376,
+      0.9650933421665181
+    ],
+    "mount_pos": [
+      0.052982009925558314,
+      0.0,
+      0.028152173913043477
+    ],
+    "mount_quat": [
+      0.4545194776720437,
+      0.5416752204197018,
+      -0.5416752204197018,
+      -0.4545194776720437
+    ],
+    "remap_sha256": "4b8c58e1ba825b3c8a2fe7472978aea68b32a31a4f457dcc07336a4b9002efac",
+    "renderer": "MJWarp batch RGB; known partial-alpha difference from C remains"
+  },
+  "compatibility": {
+    "0": {
+      "0": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-0/compiled-geometry312.npz",
+          "reference_sha256": "d1736445694ea6331d34b281aa1e850676b5d0ff967163d49d18e92d64307969",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "52b94a1546d94fff48bdd5c4f55e195c4d7c2a263bf0dbf4e2b154a4a50293a7",
+              "after_sha256": "50869deff5644bc35f89dff9c844e31ee109fd372afd1cf0f67d84cf188386b6"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "fd53aa609959eb7677e79250ccf0c479d54845d8d31dc4be8ecf565daad940d7",
+              "after_sha256": "7c70cd01d8ce382897ef0846e38258bcf507deefa91c9e946b92ee75d460536a"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "5e44c643855131a54870ffd1184f4eb24e1ee7633eee9dd7d5f326a6a1694539",
+              "after_sha256": "0e4c8fc6d5c6862b35dd7411b54e5dc9b52310db1c569d25ad04b49d4bc04ccb"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-0/compiled-312.json",
+          "reference_sha256": "b4211a4061a99ba966e3fef4c365b5b43f337ea2029b1b8ce3623065573aeee3",
+          "reference_version": "3.12.0",
+          "xml_sha256": "e420db0e6b78744119421aefafdb3870fef47a502bdb6c07d8c961908ec5b6ff",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "1": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-0/compiled-geometry312.npz",
+          "reference_sha256": "d1736445694ea6331d34b281aa1e850676b5d0ff967163d49d18e92d64307969",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "52b94a1546d94fff48bdd5c4f55e195c4d7c2a263bf0dbf4e2b154a4a50293a7",
+              "after_sha256": "50869deff5644bc35f89dff9c844e31ee109fd372afd1cf0f67d84cf188386b6"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "fd53aa609959eb7677e79250ccf0c479d54845d8d31dc4be8ecf565daad940d7",
+              "after_sha256": "7c70cd01d8ce382897ef0846e38258bcf507deefa91c9e946b92ee75d460536a"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "5e44c643855131a54870ffd1184f4eb24e1ee7633eee9dd7d5f326a6a1694539",
+              "after_sha256": "0e4c8fc6d5c6862b35dd7411b54e5dc9b52310db1c569d25ad04b49d4bc04ccb"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-0/compiled-312.json",
+          "reference_sha256": "b4211a4061a99ba966e3fef4c365b5b43f337ea2029b1b8ce3623065573aeee3",
+          "reference_version": "3.12.0",
+          "xml_sha256": "e420db0e6b78744119421aefafdb3870fef47a502bdb6c07d8c961908ec5b6ff",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "2": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-0/compiled-geometry312.npz",
+          "reference_sha256": "d1736445694ea6331d34b281aa1e850676b5d0ff967163d49d18e92d64307969",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "52b94a1546d94fff48bdd5c4f55e195c4d7c2a263bf0dbf4e2b154a4a50293a7",
+              "after_sha256": "50869deff5644bc35f89dff9c844e31ee109fd372afd1cf0f67d84cf188386b6"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "fd53aa609959eb7677e79250ccf0c479d54845d8d31dc4be8ecf565daad940d7",
+              "after_sha256": "7c70cd01d8ce382897ef0846e38258bcf507deefa91c9e946b92ee75d460536a"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "5e44c643855131a54870ffd1184f4eb24e1ee7633eee9dd7d5f326a6a1694539",
+              "after_sha256": "0e4c8fc6d5c6862b35dd7411b54e5dc9b52310db1c569d25ad04b49d4bc04ccb"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-0/compiled-312.json",
+          "reference_sha256": "b4211a4061a99ba966e3fef4c365b5b43f337ea2029b1b8ce3623065573aeee3",
+          "reference_version": "3.12.0",
+          "xml_sha256": "e420db0e6b78744119421aefafdb3870fef47a502bdb6c07d8c961908ec5b6ff",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "collision": {
+        "mode": "legacy-plane-v1",
+        "source": "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966",
+        "maxplanemesh": 3,
+        "tolplanemesh": 0.3,
+        "mesh_rbound_size_identity_verified": true,
+        "physics_parameters_modified": false
+      }
+    },
+    "1": {
+      "0": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-1/compiled-geometry312.npz",
+          "reference_sha256": "ca42c2ab3126b7d7378f874e24b3fb287893121d266cfd71fa8f0a7cdf3f8828",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "9fd9e2e55707a4e996efb5fc9620898ca3adf4dc8c203a0733c9aaa27c739522",
+              "after_sha256": "8d0243dfc2f6df4d1d5410b77a512783f83e1309869c6a98c7499ef9c8b5eb10"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "3b5454312ba85b4d8feb523a85c071a7f4d5866725f56d82e03233fbdb06f033",
+              "after_sha256": "b732236c5485ff8b8a0f5ffce47fbddf3bc9b12e6b4cf6ac487bb0758f91ca1f"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "7dca653a05222c8d86b0331d09d664f429784ed7dc2f968f0f66387a98f988ab",
+              "after_sha256": "f191de1ef39874328f499c23deb1ae752c47da5fed02fd38cac93be563321cd3"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-1/compiled-312.json",
+          "reference_sha256": "360cbc90599ec536d2108312aab62a3bee4ee6d31bad6c4c2f4e9752ec5165be",
+          "reference_version": "3.12.0",
+          "xml_sha256": "45b58d59f122569e76b69492d8374cda64ca23bfe3d4af9acd26a7666ccc85c7",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "1": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-1/compiled-geometry312.npz",
+          "reference_sha256": "ca42c2ab3126b7d7378f874e24b3fb287893121d266cfd71fa8f0a7cdf3f8828",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "9fd9e2e55707a4e996efb5fc9620898ca3adf4dc8c203a0733c9aaa27c739522",
+              "after_sha256": "8d0243dfc2f6df4d1d5410b77a512783f83e1309869c6a98c7499ef9c8b5eb10"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "3b5454312ba85b4d8feb523a85c071a7f4d5866725f56d82e03233fbdb06f033",
+              "after_sha256": "b732236c5485ff8b8a0f5ffce47fbddf3bc9b12e6b4cf6ac487bb0758f91ca1f"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "7dca653a05222c8d86b0331d09d664f429784ed7dc2f968f0f66387a98f988ab",
+              "after_sha256": "f191de1ef39874328f499c23deb1ae752c47da5fed02fd38cac93be563321cd3"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-1/compiled-312.json",
+          "reference_sha256": "360cbc90599ec536d2108312aab62a3bee4ee6d31bad6c4c2f4e9752ec5165be",
+          "reference_version": "3.12.0",
+          "xml_sha256": "45b58d59f122569e76b69492d8374cda64ca23bfe3d4af9acd26a7666ccc85c7",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "2": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-1/compiled-geometry312.npz",
+          "reference_sha256": "ca42c2ab3126b7d7378f874e24b3fb287893121d266cfd71fa8f0a7cdf3f8828",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "9fd9e2e55707a4e996efb5fc9620898ca3adf4dc8c203a0733c9aaa27c739522",
+              "after_sha256": "8d0243dfc2f6df4d1d5410b77a512783f83e1309869c6a98c7499ef9c8b5eb10"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "3b5454312ba85b4d8feb523a85c071a7f4d5866725f56d82e03233fbdb06f033",
+              "after_sha256": "b732236c5485ff8b8a0f5ffce47fbddf3bc9b12e6b4cf6ac487bb0758f91ca1f"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "7dca653a05222c8d86b0331d09d664f429784ed7dc2f968f0f66387a98f988ab",
+              "after_sha256": "f191de1ef39874328f499c23deb1ae752c47da5fed02fd38cac93be563321cd3"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-1/compiled-312.json",
+          "reference_sha256": "360cbc90599ec536d2108312aab62a3bee4ee6d31bad6c4c2f4e9752ec5165be",
+          "reference_version": "3.12.0",
+          "xml_sha256": "45b58d59f122569e76b69492d8374cda64ca23bfe3d4af9acd26a7666ccc85c7",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "collision": {
+        "mode": "legacy-plane-v1",
+        "source": "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966",
+        "maxplanemesh": 3,
+        "tolplanemesh": 0.3,
+        "mesh_rbound_size_identity_verified": true,
+        "physics_parameters_modified": false
+      }
+    },
+    "2": {
+      "0": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-2/compiled-geometry312.npz",
+          "reference_sha256": "01cc010dd252a34c2606a7fc4af2ba3b7a06c60f9cc4b77c526dc9ac60ce8730",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "08f0bcd0d64ac6edece4fe4e53ad191ab08f35c5334682a66d7df0df4918cab3",
+              "after_sha256": "e622140a1611bf05a24bedfc7c9391c373bab4d9f563a08739ba539a13e0de5d"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "a996ebc75dfab1e30860ea319524f1af26a4a7fa4e44354426f6e148b8203c66",
+              "after_sha256": "e6ba7d76c28d5be4ce58e9c35724d350803d8ce29cd3da3b85a1edd014a69674"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "c87eb2935de810ca57ca81649d14eab93562cc5698e97bbb97aabe67db65e140",
+              "after_sha256": "b740269d41e916b8433461a7d79a90eb6bee3db895a23b761038f2bc59e5c72b"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-2/compiled-312.json",
+          "reference_sha256": "85dbeee4bd3f7490cf8b58dfe986e0745c5419fa877b81f21115be7669bf71c3",
+          "reference_version": "3.12.0",
+          "xml_sha256": "1a09768e7627e2eeb04ec0699bbbe5cb2ce9f8e2209d40e13d6d66f4c6bd1a2f",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "1": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-2/compiled-geometry312.npz",
+          "reference_sha256": "01cc010dd252a34c2606a7fc4af2ba3b7a06c60f9cc4b77c526dc9ac60ce8730",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "08f0bcd0d64ac6edece4fe4e53ad191ab08f35c5334682a66d7df0df4918cab3",
+              "after_sha256": "e622140a1611bf05a24bedfc7c9391c373bab4d9f563a08739ba539a13e0de5d"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "a996ebc75dfab1e30860ea319524f1af26a4a7fa4e44354426f6e148b8203c66",
+              "after_sha256": "e6ba7d76c28d5be4ce58e9c35724d350803d8ce29cd3da3b85a1edd014a69674"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "c87eb2935de810ca57ca81649d14eab93562cc5698e97bbb97aabe67db65e140",
+              "after_sha256": "b740269d41e916b8433461a7d79a90eb6bee3db895a23b761038f2bc59e5c72b"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-2/compiled-312.json",
+          "reference_sha256": "85dbeee4bd3f7490cf8b58dfe986e0745c5419fa877b81f21115be7669bf71c3",
+          "reference_version": "3.12.0",
+          "xml_sha256": "1a09768e7627e2eeb04ec0699bbbe5cb2ce9f8e2209d40e13d6d66f4c6bd1a2f",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "2": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-2/compiled-geometry312.npz",
+          "reference_sha256": "01cc010dd252a34c2606a7fc4af2ba3b7a06c60f9cc4b77c526dc9ac60ce8730",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "08f0bcd0d64ac6edece4fe4e53ad191ab08f35c5334682a66d7df0df4918cab3",
+              "after_sha256": "e622140a1611bf05a24bedfc7c9391c373bab4d9f563a08739ba539a13e0de5d"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "a996ebc75dfab1e30860ea319524f1af26a4a7fa4e44354426f6e148b8203c66",
+              "after_sha256": "e6ba7d76c28d5be4ce58e9c35724d350803d8ce29cd3da3b85a1edd014a69674"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "c87eb2935de810ca57ca81649d14eab93562cc5698e97bbb97aabe67db65e140",
+              "after_sha256": "b740269d41e916b8433461a7d79a90eb6bee3db895a23b761038f2bc59e5c72b"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-2/compiled-312.json",
+          "reference_sha256": "85dbeee4bd3f7490cf8b58dfe986e0745c5419fa877b81f21115be7669bf71c3",
+          "reference_version": "3.12.0",
+          "xml_sha256": "1a09768e7627e2eeb04ec0699bbbe5cb2ce9f8e2209d40e13d6d66f4c6bd1a2f",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "collision": {
+        "mode": "legacy-plane-v1",
+        "source": "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966",
+        "maxplanemesh": 3,
+        "tolplanemesh": 0.3,
+        "mesh_rbound_size_identity_verified": true,
+        "physics_parameters_modified": false
+      }
+    },
+    "3": {
+      "0": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-3/compiled-geometry312.npz",
+          "reference_sha256": "88d816731615e45a6e4cbaddc5e44e2bf9ef73ce3823e016706d9e3874345462",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "497885d6ea0e2711f9f4eb0a99330b3b9a30578ed9d5c82468ff35734fb7586f",
+              "after_sha256": "35885d9f1e10ee6de14fd0009f20f59f8b2d61077fe58aca4665232f1b7e5536"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "33499b04d913189398c9e2009c98d53a454bc379cde96d93e569eee7336cc505",
+              "after_sha256": "f624a41fd96d15687f6b0d5277a06f1d50038e0d0e6ca4f7899ccf578d333cb0"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "87b4f82dbddb12405ef55bb75760a1906b6f411ccdff299d7d3ee981f91c8fd4",
+              "after_sha256": "b0c61fcd0d6774c3891c15932daa35594ade3c5278e38b4373eb2b8f5d647725"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-3/compiled-312.json",
+          "reference_sha256": "70f7eb6ab83b8f09153a846e23a995b68324aeb963b3f3162137c0c3388d04f0",
+          "reference_version": "3.12.0",
+          "xml_sha256": "d111e05d0de5a94d9b8d11300191d0d44c18ce0c9e5da53b62741633a1615abe",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "1": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-3/compiled-geometry312.npz",
+          "reference_sha256": "88d816731615e45a6e4cbaddc5e44e2bf9ef73ce3823e016706d9e3874345462",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "497885d6ea0e2711f9f4eb0a99330b3b9a30578ed9d5c82468ff35734fb7586f",
+              "after_sha256": "35885d9f1e10ee6de14fd0009f20f59f8b2d61077fe58aca4665232f1b7e5536"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "33499b04d913189398c9e2009c98d53a454bc379cde96d93e569eee7336cc505",
+              "after_sha256": "f624a41fd96d15687f6b0d5277a06f1d50038e0d0e6ca4f7899ccf578d333cb0"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "87b4f82dbddb12405ef55bb75760a1906b6f411ccdff299d7d3ee981f91c8fd4",
+              "after_sha256": "b0c61fcd0d6774c3891c15932daa35594ade3c5278e38b4373eb2b8f5d647725"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-3/compiled-312.json",
+          "reference_sha256": "70f7eb6ab83b8f09153a846e23a995b68324aeb963b3f3162137c0c3388d04f0",
+          "reference_version": "3.12.0",
+          "xml_sha256": "d111e05d0de5a94d9b8d11300191d0d44c18ce0c9e5da53b62741633a1615abe",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "2": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-3/compiled-geometry312.npz",
+          "reference_sha256": "88d816731615e45a6e4cbaddc5e44e2bf9ef73ce3823e016706d9e3874345462",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "497885d6ea0e2711f9f4eb0a99330b3b9a30578ed9d5c82468ff35734fb7586f",
+              "after_sha256": "35885d9f1e10ee6de14fd0009f20f59f8b2d61077fe58aca4665232f1b7e5536"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "33499b04d913189398c9e2009c98d53a454bc379cde96d93e569eee7336cc505",
+              "after_sha256": "f624a41fd96d15687f6b0d5277a06f1d50038e0d0e6ca4f7899ccf578d333cb0"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "87b4f82dbddb12405ef55bb75760a1906b6f411ccdff299d7d3ee981f91c8fd4",
+              "after_sha256": "b0c61fcd0d6774c3891c15932daa35594ade3c5278e38b4373eb2b8f5d647725"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-3/compiled-312.json",
+          "reference_sha256": "70f7eb6ab83b8f09153a846e23a995b68324aeb963b3f3162137c0c3388d04f0",
+          "reference_version": "3.12.0",
+          "xml_sha256": "d111e05d0de5a94d9b8d11300191d0d44c18ce0c9e5da53b62741633a1615abe",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "collision": {
+        "mode": "legacy-plane-v1",
+        "source": "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966",
+        "maxplanemesh": 3,
+        "tolplanemesh": 0.3,
+        "mesh_rbound_size_identity_verified": true,
+        "physics_parameters_modified": false
+      }
+    },
+    "4": {
+      "0": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-4/compiled-geometry312.npz",
+          "reference_sha256": "25bff1666d07fdac319740ca523adf105663aeee8100f2125cf076f4ffd062c4",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "47c8bb58257848b6409dc56d3133e429e31b7d377a3a3b27ac9a3fd99d714eab",
+              "after_sha256": "79c5187f61547536eb67b6d1305eb675b7900c635ad24d32399312060e917699"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "6c4bd39ef12f0b452f604f40af329f3c3a1033c94d1144aefa9108350cd72362",
+              "after_sha256": "7ddc4ef3258160a8b3cdc163a6e51d5ac527343984e0f29c599df56281be0565"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "9bd7e98215dd48f1baf550d139dd75d3656dbe52039b4bdd226156d2e3a4f4ab",
+              "after_sha256": "1554f99a5ecc8754c87af953dd594dccc6219d79ee7ebd73fa47e581457ae9ce"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-4/compiled-312.json",
+          "reference_sha256": "ffb28fd07dac4a191775d02b3e06cf9b8b35c91d7cdacf281562bf433dbb89b1",
+          "reference_version": "3.12.0",
+          "xml_sha256": "a847e1ae270aba571bc43b547cca8b65f376252f22e887b1874c581248345d4b",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "1": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-4/compiled-geometry312.npz",
+          "reference_sha256": "25bff1666d07fdac319740ca523adf105663aeee8100f2125cf076f4ffd062c4",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "47c8bb58257848b6409dc56d3133e429e31b7d377a3a3b27ac9a3fd99d714eab",
+              "after_sha256": "79c5187f61547536eb67b6d1305eb675b7900c635ad24d32399312060e917699"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "6c4bd39ef12f0b452f604f40af329f3c3a1033c94d1144aefa9108350cd72362",
+              "after_sha256": "7ddc4ef3258160a8b3cdc163a6e51d5ac527343984e0f29c599df56281be0565"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "9bd7e98215dd48f1baf550d139dd75d3656dbe52039b4bdd226156d2e3a4f4ab",
+              "after_sha256": "1554f99a5ecc8754c87af953dd594dccc6219d79ee7ebd73fa47e581457ae9ce"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-4/compiled-312.json",
+          "reference_sha256": "ffb28fd07dac4a191775d02b3e06cf9b8b35c91d7cdacf281562bf433dbb89b1",
+          "reference_version": "3.12.0",
+          "xml_sha256": "a847e1ae270aba571bc43b547cca8b65f376252f22e887b1874c581248345d4b",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "collision": {
+        "mode": "legacy-plane-v1",
+        "source": "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966",
+        "maxplanemesh": 3,
+        "tolplanemesh": 0.3,
+        "mesh_rbound_size_identity_verified": true,
+        "physics_parameters_modified": false
+      }
+    },
+    "5": {
+      "0": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-5/compiled-geometry312.npz",
+          "reference_sha256": "a7252a6b36d19dfa8e60b9dda257d370f542c66e948fb3e80ac81b845712dffc",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "41614a9ffe1bf60e46034641e87a02d8cce7348594d47261bdf65e2ea5e211c2",
+              "after_sha256": "31803c7b7b83428f4bfef84bfbce7cba1dcee957a8ef10a675e5d5d231899617"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "a40143202078e69d95c9498475c9da16240bef071591ee5b5ba30a1e3ae8d852",
+              "after_sha256": "b866fdc98e7dbd0d95e0f0bbdf2b2cef57d7250758154128609b53227dc3c124"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "ced9113e5cb56153beb14e7e3ff74079bd8245d922bd6a6704f2c68965c4c505",
+              "after_sha256": "7362fba9991977d45548321d18780b6482354f83faf127377acbba17d11f5064"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-5/compiled-312.json",
+          "reference_sha256": "8f8b01295908e1fdd970c74f81504a52b14689d53196a1c673ac7430b924ffcf",
+          "reference_version": "3.12.0",
+          "xml_sha256": "db2c3ace9456d5f93ec9b2f9a9bb95f708d3bd8e1019fa03d981c19536742bde",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "1": {
+        "geometry": {
+          "mode": "compiled-geometry-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-5/compiled-geometry312.npz",
+          "reference_sha256": "a7252a6b36d19dfa8e60b9dda257d370f542c66e948fb3e80ac81b845712dffc",
+          "fields_copied": 65,
+          "changes": [
+            {
+              "array": "bvh_aabb",
+              "entries": 73545,
+              "before_sha256": "babf49404ea05cb3de1b6e97470bd0a0bac902a6bd7589e9fc03db667b2f3746",
+              "after_sha256": "4d5a6852fa72fd5cb56e36a59c6938ddf4e297b9cdf83f20bb012dfb84896ea2"
+            },
+            {
+              "array": "bvh_nodeid",
+              "entries": 5971,
+              "before_sha256": "cdcbd34445bb0d8f01d1d345b35e5c0bb69bf5122700184493acd16ab9bbd642",
+              "after_sha256": "66581c48a8adcf43349d75b943ff7ff773e9b4f98e3dc069a53527806d12d34c"
+            },
+            {
+              "array": "geom_aabb",
+              "entries": 927,
+              "before_sha256": "41614a9ffe1bf60e46034641e87a02d8cce7348594d47261bdf65e2ea5e211c2",
+              "after_sha256": "31803c7b7b83428f4bfef84bfbce7cba1dcee957a8ef10a675e5d5d231899617"
+            },
+            {
+              "array": "geom_quat",
+              "entries": 612,
+              "before_sha256": "b49468bd598d96f397e0fabd52176e36b3746074fa2d5a90eb81cd7ec27e84c1",
+              "after_sha256": "c75ae3104fdb7eab97f6c49788e0d9e1cb7a32ffc365a0c6450f1e919f94542b"
+            },
+            {
+              "array": "geom_rbound",
+              "entries": 156,
+              "before_sha256": "a40143202078e69d95c9498475c9da16240bef071591ee5b5ba30a1e3ae8d852",
+              "after_sha256": "b866fdc98e7dbd0d95e0f0bbdf2b2cef57d7250758154128609b53227dc3c124"
+            },
+            {
+              "array": "geom_sameframe",
+              "entries": 36,
+              "before_sha256": "251ede7b8c15ef269c0414650f75319b3c3931dea54debaeb799bd6941e46711",
+              "after_sha256": "e549cecb04fdacf1a98b7371a9197b6deeb025e8af478fced3d66b72950707e5"
+            },
+            {
+              "array": "geom_size",
+              "entries": 468,
+              "before_sha256": "ced9113e5cb56153beb14e7e3ff74079bd8245d922bd6a6704f2c68965c4c505",
+              "after_sha256": "7362fba9991977d45548321d18780b6482354f83faf127377acbba17d11f5064"
+            },
+            {
+              "array": "mesh_extrema",
+              "entries": 26,
+              "before_sha256": "c7356de6bccad32046ad4c4ca5923e7af67c66bc4f36fbca29496e23eead167d",
+              "after_sha256": "b87b9578a5aaa8f2c9f486cf09e68f37720f71f0229590b9a508392dad0194cf"
+            },
+            {
+              "array": "mesh_normal",
+              "entries": 10056,
+              "before_sha256": "1372b3c7560d04961a38cc0e27f91604fb2f8b95b1515c38121462699488d1af",
+              "after_sha256": "1185bd88161d9c2da76422e974e7c273a29564a57b6b45c4852a7fb8be6e8d23"
+            },
+            {
+              "array": "mesh_polynormal",
+              "entries": 9111,
+              "before_sha256": "dc7cc865463dc840301f0d6a49e15e7644230f910c1dc6962c1d67b2c00e16e1",
+              "after_sha256": "bcd310eeaa441c0fdcaecaf594d1156713c8ee071b6de150ce2f9510d41828a2"
+            },
+            {
+              "array": "mesh_quat",
+              "entries": 64,
+              "before_sha256": "5fa4b1ecb45d94c08a4eb5ddaefb41903588ce883ccd74ba201438fa91ae9710",
+              "after_sha256": "189788156b49a16bfbaa735e41b00ccafeeec1d1b45f78d9dc25183d69bff160"
+            },
+            {
+              "array": "mesh_vert",
+              "entries": 10279,
+              "before_sha256": "7e1cf1d091a752599029002d58f7493a46f1f3696e6e8d2279fca9d68195d0a7",
+              "after_sha256": "9053f0dc25a6d76d14a9fc147262e7b057a36eabb2e6391eb5437a070a0ba46f"
+            }
+          ],
+          "basis": "same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit",
+          "new_physical_parameters": false
+        },
+        "damping": {
+          "mode": "compiled-312-v1",
+          "reference": "/home/ugrp/ugrp-sim/runs/warp2/r3-references-14fbdf6a/export-5/compiled-312.json",
+          "reference_sha256": "8f8b01295908e1fdd970c74f81504a52b14689d53196a1c673ac7430b924ffcf",
+          "reference_version": "3.12.0",
+          "xml_sha256": "db2c3ace9456d5f93ec9b2f9a9bb95f708d3bd8e1019fa03d981c19536742bde",
+          "copied_array": "actuator_biasprm[:,2]",
+          "changes": [
+            {
+              "actuator": "r1__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r1__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r1__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r1__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r2__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r2__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r2__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r2__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            },
+            {
+              "actuator": "r3__servo_arm_yaw",
+              "before": -0.9525326956383661,
+              "after": -1.4003999090747683
+            },
+            {
+              "actuator": "r3__servo_shoulder",
+              "before": -0.3514994573664441,
+              "after": -1.3904017267004583
+            },
+            {
+              "actuator": "r3__servo_elbow",
+              "before": -0.05706531248208201,
+              "after": -0.3104011296873109
+            },
+            {
+              "actuator": "r3__servo_wrist",
+              "before": -0.05662326423820336,
+              "after": -0.16026536692805718
+            }
+          ],
+          "other_audited_arrays_exact": true,
+          "source": "https://github.com/google-deepmind/mujoco/commit/b3dd9e617",
+          "new_physical_parameters": false
+        }
+      },
+      "collision": {
+        "mode": "legacy-plane-v1",
+        "source": "https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966",
+        "maxplanemesh": 3,
+        "tolplanemesh": 0.3,
+        "mesh_rbound_size_identity_verified": true,
+        "physics_parameters_modified": false
+      }
+    }
+  },
+  "capacities": {
+    "0": {
+      "nconmax": 64,
+      "njmax": 512,
+      "naconmax": 192
+    },
+    "1": {
+      "nconmax": 64,
+      "njmax": 512,
+      "naconmax": 192
+    },
+    "2": {
+      "nconmax": 64,
+      "njmax": 512,
+      "naconmax": 192
+    },
+    "3": {
+      "nconmax": 64,
+      "njmax": 512,
+      "naconmax": 192
+    },
+    "4": {
+      "nconmax": 64,
+      "njmax": 512,
+      "naconmax": 128
+    },
+    "5": {
+      "nconmax": 64,
+      "njmax": 512,
+      "naconmax": 128
+    }
+  },
+  "model_batch_audit": {
+    "mode": "exact_xml_groups_v1",
+    "groups": [
+      {
+        "xml_sha256": "e420db0e6b78744119421aefafdb3870fef47a502bdb6c07d8c961908ec5b6ff",
+        "world_ids": [
+          0,
+          6,
+          12
+        ],
+        "N": 3,
+        "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-group-preflight-521f2585/probe/model-groups/00-e420db0e",
+        "model_batch_audit": {
+          "mode": "same_static_model",
+          "varying_fields": []
+        },
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 192
+        }
+      },
+      {
+        "xml_sha256": "45b58d59f122569e76b69492d8374cda64ca23bfe3d4af9acd26a7666ccc85c7",
+        "world_ids": [
+          1,
+          7,
+          13
+        ],
+        "N": 3,
+        "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-group-preflight-521f2585/probe/model-groups/01-45b58d59",
+        "model_batch_audit": {
+          "mode": "same_static_model",
+          "varying_fields": []
+        },
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 192
+        }
+      },
+      {
+        "xml_sha256": "1a09768e7627e2eeb04ec0699bbbe5cb2ce9f8e2209d40e13d6d66f4c6bd1a2f",
+        "world_ids": [
+          2,
+          8,
+          14
+        ],
+        "N": 3,
+        "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-group-preflight-521f2585/probe/model-groups/02-1a09768e",
+        "model_batch_audit": {
+          "mode": "same_static_model",
+          "varying_fields": []
+        },
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 192
+        }
+      },
+      {
+        "xml_sha256": "d111e05d0de5a94d9b8d11300191d0d44c18ce0c9e5da53b62741633a1615abe",
+        "world_ids": [
+          3,
+          9,
+          15
+        ],
+        "N": 3,
+        "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-group-preflight-521f2585/probe/model-groups/03-d111e05d",
+        "model_batch_audit": {
+          "mode": "same_static_model",
+          "varying_fields": []
+        },
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 192
+        }
+      },
+      {
+        "xml_sha256": "a847e1ae270aba571bc43b547cca8b65f376252f22e887b1874c581248345d4b",
+        "world_ids": [
+          4,
+          10
+        ],
+        "N": 2,
+        "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-group-preflight-521f2585/probe/model-groups/04-a847e1ae",
+        "model_batch_audit": {
+          "mode": "same_static_model",
+          "varying_fields": []
+        },
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 128
+        }
+      },
+      {
+        "xml_sha256": "db2c3ace9456d5f93ec9b2f9a9bb95f708d3bd8e1019fa03d981c19536742bde",
+        "world_ids": [
+          5,
+          11
+        ],
+        "N": 2,
+        "raw": "/home/ugrp/ugrp-sim/runs/warp2/r3-group-preflight-521f2585/probe/model-groups/05-db2c3ace",
+        "model_batch_audit": {
+          "mode": "same_static_model",
+          "varying_fields": []
+        },
+        "capacities": {
+          "nconmax": 64,
+          "njmax": 512,
+          "naconmax": 128
+        }
+      }
+    ],
+    "changing_unbatchable_fields": false,
+    "physics_implementation": "shared WarpTransport only",
+    "stream_execution": "enqueue all model graphs before host readback; one Python thread"
+  },
+  "rollout_physics_steps": 0,
+  "discarded_gpu_warmup_steps": 6,
+  "worlds": [],
+  "wall_s": 144.78252908800005,
+  "loop_wall_s": null,
+  "aggregate_completed_sim_s": 0,
+  "timing": {
+    "group_timings_inclusive": {
+      "0": {
+        "render": 0.08138588899964816,
+        "readback_remap_jpeg_kinematics": 0.023336981999818818
+      },
+      "1": {
+        "render": 0.059384381999734615,
+        "readback_remap_jpeg_kinematics": 0.011547684999641206
+      },
+      "2": {
+        "render": 0.05946931700054847,
+        "readback_remap_jpeg_kinematics": 0.011345146000167006
+      },
+      "3": {
+        "render": 0.059332566000193765,
+        "readback_remap_jpeg_kinematics": 0.011551753000276221
+      },
+      "4": {
+        "render": 0.0559686110000257,
+        "readback_remap_jpeg_kinematics": 0.008010063000256196
+      },
+      "5": {
+        "render": 0.056046869000056176,
+        "readback_remap_jpeg_kinematics": 0.008365143999981228
+      }
+    }
+  },
+  "close_errors": [],
+  "transforms": [
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ],
+    [
+      {
+        "edits": {
+          "advance_definition": 0,
+          "advance_call": 0,
+          "runner_call": 1
+        },
+        "source_sha256": "3a7bb090fe95bf4cb8f291d025e8fd5b8690c27e95b2b2f1f9ac36e359ccf58b",
+        "transformed_ast_sha256": "fa8c5f5ad174f8af1e83f715148cdb1ef017432fd99630c4e437e478f5f7a19b"
+      },
+      {
+        "edits": {
+          "advance_definition": 1,
+          "advance_call": 2,
+          "runner_call": 0
+        },
+        "source_sha256": "d3429b155d16491a86e77988d60008209b0feaeba03ee00ee33add71652115b2",
+        "transformed_ast_sha256": "5245b5dd69e9a34ba051ebbe089f80bf4cab6ff93657603ee66ed55c1c9c54c5"
+      }
+    ]
+  ],
+  "vm_cost_estimate_usd": 0.0440782366334578,
+  "sim_s_per_wall_s": null,
+  "end_to_end_sim_s_per_wall_s": 0.0,
+  "sim_s_per_usd": 0.0,
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/warp2/r3-group-preflight-521f2585/probe/rejection_table.json",
+  "sha256": {
+    "rejection_table.json": "16a2ff48d558bfdc2ac32d56330eff33917a132caa501d175dbf63ec5163296c",
+    "world-007/adapter/manifest.json": "c744c765fffeafac74b3de7155432cf2b3ea698e121727db33a31fd16c98c6af",
+    "world-007/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-007/adapter/beampair1-result.json": "9c964ae4bd99c47a61a6444ee7d2f025986c2c064891bd1d33adf359aeea6511",
+    "world-007/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-007/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-007/raw/manifest.json": "a9b1d723b19d0befaa1bd500c45515696762074f71cbf2c785f50e43db11a68b",
+    "world-007/raw/scene.json": "df504676793a34c1ac166fee48ad8b419e624b5b9a13931fa63868c257578a08",
+    "world-007/raw/scene.xml": "45b58d59f122569e76b69492d8374cda64ca23bfe3d4af9acd26a7666ccc85c7",
+    "world-007/raw/plan.json": "474b33663d68e46c617463631949b3ce456c5620977687e866f4e6c31efdae11",
+    "world-007/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-007/raw/result.json": "0e6c9619054858a867e3b4113b9e588cf7f3e9d0d7afd4b8f803192a1ed8467e",
+    "world-007/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-008/adapter/manifest.json": "fe422c25112f3f0ef5d693a6f90d9b807295bd22f14c0863d6ca21af9ec4753a",
+    "world-008/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-008/adapter/beampair1-result.json": "c4d427191014ddc9c4756dbf6ea0b82b7519a901884d5923d947ed6c1ce1912f",
+    "world-008/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-008/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-008/raw/manifest.json": "f04f442906e8e6ae4b70570a34954450595c48340b23d9a503227a815a4604a4",
+    "world-008/raw/scene.json": "b9a30ba9ab38821930a581dff118ad89459d9b129172974d08e8bf3a1ca3e765",
+    "world-008/raw/scene.xml": "1a09768e7627e2eeb04ec0699bbbe5cb2ce9f8e2209d40e13d6d66f4c6bd1a2f",
+    "world-008/raw/plan.json": "1b46f1249b3cfea5483a89390c0fc63cacd1dea189fa7d0d6020452d2d75fb98",
+    "world-008/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-008/raw/result.json": "f2a44204ea23e515f9caddf6ac38b382ee4a9e62a4a4167859ef404b909d87ba",
+    "world-008/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-002/adapter/manifest.json": "0a8c026284fefdccf65569ffbd387151530608f8374002dd2d2756e625dbef88",
+    "world-002/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-002/adapter/beampair1-result.json": "6abac916851b08e912fdf68db960d46496a83442ba14ee9f2a187b018f0b9be1",
+    "world-002/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-002/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-002/raw/manifest.json": "55d40ab7c00148ac05773e8205964b3ab76c14411b8e23e6f435adfc680e5e8d",
+    "world-002/raw/scene.json": "b9a30ba9ab38821930a581dff118ad89459d9b129172974d08e8bf3a1ca3e765",
+    "world-002/raw/scene.xml": "1a09768e7627e2eeb04ec0699bbbe5cb2ce9f8e2209d40e13d6d66f4c6bd1a2f",
+    "world-002/raw/plan.json": "1b46f1249b3cfea5483a89390c0fc63cacd1dea189fa7d0d6020452d2d75fb98",
+    "world-002/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-002/raw/result.json": "f17a70f3d53c56aed50255a6ef39cb02d0814afdbc26ce803d370ef4eba5c500",
+    "world-002/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-000/adapter/manifest.json": "218bb32e5ee5980e196620142bd3a17bf80232c361bc72f013686c413dcf4b49",
+    "world-000/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-000/adapter/beampair1-result.json": "387b482e4ee955c7b5b3b3a222e7c5dbacfdb64edc7044184904ecb536656266",
+    "world-000/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-000/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-000/raw/manifest.json": "5cbab57e3579072231168f18003cc9a4a9ff5953673499d24a5fbfc1578dab04",
+    "world-000/raw/scene.json": "309db2f61197c48899214b3fe21c60790515667f62e3ef80b47478d9d0a0ed03",
+    "world-000/raw/scene.xml": "e420db0e6b78744119421aefafdb3870fef47a502bdb6c07d8c961908ec5b6ff",
+    "world-000/raw/plan.json": "f34b4f0f53c1478d90c8b94941f1eb81d243d658c227e0d81c5a528b63006aed",
+    "world-000/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-000/raw/result.json": "9cfae634db23b9c931e756b6f8ea0048a806c1482dc0893dce0f5de42e8b078e",
+    "world-000/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-006/adapter/manifest.json": "07282de6968dba43da86006aefbab5ce4d7c6b13102bf4963cb9ea3011078a22",
+    "world-006/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-006/adapter/beampair1-result.json": "0c073ec5f6afab2d651641ffa0d0e4c7964f231002791bea200611fa2b57db6e",
+    "world-006/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-006/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-006/raw/manifest.json": "602da2bbd3e2a182a467b2d9326efb875c67317cc5b4e91404ef3fa8fd68bebe",
+    "world-006/raw/scene.json": "309db2f61197c48899214b3fe21c60790515667f62e3ef80b47478d9d0a0ed03",
+    "world-006/raw/scene.xml": "e420db0e6b78744119421aefafdb3870fef47a502bdb6c07d8c961908ec5b6ff",
+    "world-006/raw/plan.json": "f34b4f0f53c1478d90c8b94941f1eb81d243d658c227e0d81c5a528b63006aed",
+    "world-006/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-006/raw/result.json": "32555a0adac6e0ce23b04b4ec7bb6fcc6a1cb164bce67b52097da48d34f99714",
+    "world-006/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-012/adapter/manifest.json": "2e1627a73c2cfefa2f5142cfa209cf694454db7cbe5adaad211692feb0fdf4cc",
+    "world-012/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-012/adapter/beampair1-result.json": "a9a2d5dca0976656046cd259b3a4315451eb939722ad0fac53a38aaf0530bfc9",
+    "world-012/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-012/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-012/raw/manifest.json": "6cebf41da04b150d1684f69ef501421ae54318157dbb5d6ecedad764c74b3858",
+    "world-012/raw/scene.json": "309db2f61197c48899214b3fe21c60790515667f62e3ef80b47478d9d0a0ed03",
+    "world-012/raw/scene.xml": "e420db0e6b78744119421aefafdb3870fef47a502bdb6c07d8c961908ec5b6ff",
+    "world-012/raw/plan.json": "f34b4f0f53c1478d90c8b94941f1eb81d243d658c227e0d81c5a528b63006aed",
+    "world-012/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-012/raw/result.json": "d915c9bb47e2327d878521a234fc775953d8d8cb9689b7a687af2688425d7a09",
+    "world-012/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-009/adapter/manifest.json": "d323a476696452ca80113384f9ee6d291aca5b0543c3cde28640dd148498eefb",
+    "world-009/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-009/adapter/beampair1-result.json": "8fd883dc51999da66076eee7677590499cf31a5b2985b27ab7d9f17397450c3b",
+    "world-009/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-009/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-009/raw/manifest.json": "1d95cc61651b71d12bf91d4b9e954a3da5d4ef68eda0b8aafd720a9639a2f423",
+    "world-009/raw/scene.json": "68c61cc8b7d0cd9c3f1536716d138ef4e7c8a9df9826b8173337252e674a91aa",
+    "world-009/raw/scene.xml": "d111e05d0de5a94d9b8d11300191d0d44c18ce0c9e5da53b62741633a1615abe",
+    "world-009/raw/plan.json": "6cb1f5a61087817bf48802dd233cdb0b39d11c8a32d2d930240575dd4b61dab4",
+    "world-009/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-009/raw/result.json": "644770789d6751ae3432d0b3a29f9e2b6895f56f392cf188c02d34a70ea65526",
+    "world-009/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-005/adapter/manifest.json": "79765284839b217be2b2d4e5c3aec28ba29a1606001eb5b1832f1a33c5c17af4",
+    "world-005/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-005/adapter/beampair1-result.json": "707937f0efb99d8059bc0c8f4ebc999208e08f2840d813081b27ffb16f1923ae",
+    "world-005/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-005/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-005/raw/manifest.json": "c2d4e65b2b5f31cb26bc4c94dde6959d67032e8e946c63aca24170da59f96bd7",
+    "world-005/raw/scene.json": "f8bb24c8134b75bb9624e8c3cebfdb51641656f9a12e36882dcdeea14b48235c",
+    "world-005/raw/scene.xml": "db2c3ace9456d5f93ec9b2f9a9bb95f708d3bd8e1019fa03d981c19536742bde",
+    "world-005/raw/plan.json": "35d62d96eb9a6e4a9850779521b8b676008ef56e95c704d74b07c37d973f1572",
+    "world-005/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-005/raw/result.json": "a44b6b00fb86cc5d8549ba88797a5681d2cf2047991351b05c7c12ea83d6ab85",
+    "world-005/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-003/adapter/manifest.json": "ef963fa5da39ff956f7e11345d1eabf0c4ea745525f7cd288b0479c3cc3c893f",
+    "world-003/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-003/adapter/beampair1-result.json": "836ffe5454833f3337f63a117bb003960e46fff7bc772adef43787fc6123a2ea",
+    "world-003/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-003/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-003/raw/manifest.json": "7c0029082599d91f75985ddc1ab7247383b0bf3a95ef46bdde5f269dcbe626eb",
+    "world-003/raw/scene.json": "68c61cc8b7d0cd9c3f1536716d138ef4e7c8a9df9826b8173337252e674a91aa",
+    "world-003/raw/scene.xml": "d111e05d0de5a94d9b8d11300191d0d44c18ce0c9e5da53b62741633a1615abe",
+    "world-003/raw/plan.json": "6cb1f5a61087817bf48802dd233cdb0b39d11c8a32d2d930240575dd4b61dab4",
+    "world-003/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-003/raw/result.json": "57e679b17bd62f1ea517eb311da45949e222f0429645e43576c9f7cc8eb8e07b",
+    "world-003/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-004/adapter/manifest.json": "61d665c446784cbeedd9243cbc170daec668a5d0d7eb3ffcebffd85cdffd44ce",
+    "world-004/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-004/adapter/beampair1-result.json": "141a6aa783c648f27f11939ba30f19296746cbb262c81559509ea9da08f4638a",
+    "world-004/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-004/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-004/raw/manifest.json": "05e20be14a44be99805e286ea72ea8b8734b92a6803e87cfe868024a73235cda",
+    "world-004/raw/scene.json": "74727008e2de0793c3a7c755cd4b169020b3c26bad7cc4dfa2e3979fbd4f2e56",
+    "world-004/raw/scene.xml": "a847e1ae270aba571bc43b547cca8b65f376252f22e887b1874c581248345d4b",
+    "world-004/raw/plan.json": "3715bbbc67692a6211b32903b75142fc3e9c470e8605c20a36d8769ccee0888e",
+    "world-004/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-004/raw/result.json": "56c64cd5a1c924fa7147ba36e1d12643f1b5c93a78f30f06345b5f078c5ccbd5",
+    "world-004/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-001/adapter/manifest.json": "9e5e1a031b5899e58000e32223e5238e70659ce6d9aad01ffcb1aeddfe96e001",
+    "world-001/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-001/adapter/beampair1-result.json": "08bd3b0f2930a270fe0f9cb886878b5d68bbb0a563e718d514558b80290697d6",
+    "world-001/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-001/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-001/raw/manifest.json": "276914e2f60e3f53a42ffa816ebfc40f5bed8f5e7660ddfdeb71f4c6d468ba56",
+    "world-001/raw/scene.json": "df504676793a34c1ac166fee48ad8b419e624b5b9a13931fa63868c257578a08",
+    "world-001/raw/scene.xml": "45b58d59f122569e76b69492d8374cda64ca23bfe3d4af9acd26a7666ccc85c7",
+    "world-001/raw/plan.json": "474b33663d68e46c617463631949b3ce456c5620977687e866f4e6c31efdae11",
+    "world-001/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-001/raw/result.json": "9d7bc3861ed329050de3a0cd0851cce436097e154f917cebb416b6182e584549",
+    "world-001/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "model-groups/03-d111e05d/runtime-scene.xml": "d111e05d0de5a94d9b8d11300191d0d44c18ce0c9e5da53b62741633a1615abe",
+    "model-groups/04-a847e1ae/runtime-scene.xml": "a847e1ae270aba571bc43b547cca8b65f376252f22e887b1874c581248345d4b",
+    "model-groups/05-db2c3ace/runtime-scene.xml": "db2c3ace9456d5f93ec9b2f9a9bb95f708d3bd8e1019fa03d981c19536742bde",
+    "model-groups/01-45b58d59/runtime-scene.xml": "45b58d59f122569e76b69492d8374cda64ca23bfe3d4af9acd26a7666ccc85c7",
+    "model-groups/00-e420db0e/runtime-scene.xml": "e420db0e6b78744119421aefafdb3870fef47a502bdb6c07d8c961908ec5b6ff",
+    "model-groups/02-1a09768e/runtime-scene.xml": "1a09768e7627e2eeb04ec0699bbbe5cb2ce9f8e2209d40e13d6d66f4c6bd1a2f",
+    "world-013/adapter/manifest.json": "11a2b15b1e077989414c1397549ba6386db9732db6220a1a715597cac6a8a7b5",
+    "world-013/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-013/adapter/beampair1-result.json": "a1f2e6acfc9aa3e3f7028c03306ecc595703dfb08a9555a38cede25a3495a686",
+    "world-013/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-013/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-013/raw/manifest.json": "a2eeab76aad249b6973b988f89e92689ecad6c1895b7ebaa2c1c1ec75face4d8",
+    "world-013/raw/scene.json": "df504676793a34c1ac166fee48ad8b419e624b5b9a13931fa63868c257578a08",
+    "world-013/raw/scene.xml": "45b58d59f122569e76b69492d8374cda64ca23bfe3d4af9acd26a7666ccc85c7",
+    "world-013/raw/plan.json": "474b33663d68e46c617463631949b3ce456c5620977687e866f4e6c31efdae11",
+    "world-013/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-013/raw/result.json": "72c4c8185fa56535200f0e87a5d89e754f5d16a634a4696906755ed7f4fccc96",
+    "world-013/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-014/adapter/manifest.json": "4d68fa4778e04661b753076812fd8e2ef254828ba746dad41ba4bd7c70880980",
+    "world-014/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-014/adapter/beampair1-result.json": "fd9f2c4e37e8960268bbe564e28f05fbf606736c9cd98b53d3cbcfe6b6a9106a",
+    "world-014/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-014/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-014/raw/manifest.json": "78c212ec1eaa0ca7d45cf860f8916d17aae6d184ead5265799e9d28d32e4a707",
+    "world-014/raw/scene.json": "b9a30ba9ab38821930a581dff118ad89459d9b129172974d08e8bf3a1ca3e765",
+    "world-014/raw/scene.xml": "1a09768e7627e2eeb04ec0699bbbe5cb2ce9f8e2209d40e13d6d66f4c6bd1a2f",
+    "world-014/raw/plan.json": "1b46f1249b3cfea5483a89390c0fc63cacd1dea189fa7d0d6020452d2d75fb98",
+    "world-014/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-014/raw/result.json": "ecc140d993c96e2dbfd2deff531160a393fa88dacb6b064ed90b48d94c435e57",
+    "world-014/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-015/adapter/manifest.json": "2efed584b0a3604739cd9bd2cda9fd1ca67a7de7abf4eb187f71492362c4374d",
+    "world-015/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-015/adapter/beampair1-result.json": "beebddd0886da736ef21684b68e3b1a7cf9e1f026dddb2aa718f22d707451010",
+    "world-015/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-015/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-015/raw/manifest.json": "d4a7617de495b6994f9374dd0a900d6f29fd7051fb557affcdc8446c4668ecdc",
+    "world-015/raw/scene.json": "68c61cc8b7d0cd9c3f1536716d138ef4e7c8a9df9826b8173337252e674a91aa",
+    "world-015/raw/scene.xml": "d111e05d0de5a94d9b8d11300191d0d44c18ce0c9e5da53b62741633a1615abe",
+    "world-015/raw/plan.json": "6cb1f5a61087817bf48802dd233cdb0b39d11c8a32d2d930240575dd4b61dab4",
+    "world-015/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-015/raw/result.json": "bc1ed6b3904afbd32fad1f9828111e4b788b8f51019e6693bd7f319993964bc3",
+    "world-015/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-010/adapter/manifest.json": "b1ecf04e488f6506a4de09ff920ed451739123fa11c7122f7b6fd31044e061f1",
+    "world-010/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-010/adapter/beampair1-result.json": "92877732891c60dc30e866d3f5df23eea69fcbf8c9d1330bfe9fd47b428eb074",
+    "world-010/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-010/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-010/raw/manifest.json": "96c1cd28b597bb4e05c2b292c3267f71be7e785c5906150cf940906fbe08ddd6",
+    "world-010/raw/scene.json": "74727008e2de0793c3a7c755cd4b169020b3c26bad7cc4dfa2e3979fbd4f2e56",
+    "world-010/raw/scene.xml": "a847e1ae270aba571bc43b547cca8b65f376252f22e887b1874c581248345d4b",
+    "world-010/raw/plan.json": "3715bbbc67692a6211b32903b75142fc3e9c470e8605c20a36d8769ccee0888e",
+    "world-010/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-010/raw/result.json": "970906ab3de4822aa012f515120b4bcf6496b0a5e53c1a405857c84abf650865",
+    "world-010/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d",
+    "world-011/adapter/manifest.json": "047082e02f3d0a60696666a7ddbbe80d844e1cd0812c655843cc74f405e837cb",
+    "world-011/adapter/beampair1-commands.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-011/adapter/beampair1-result.json": "a7541bd8dbd677e4184e9ae6fc5fa110387e4063d42e74e473c0cef3c53eaeb2",
+    "world-011/adapter/wall-rays.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world-011/adapter/wall-layer.json": "81079b434e471d29d06d982e2040ed4281c88b1694e0c956d474b4c161945fa2",
+    "world-011/raw/manifest.json": "2dc235770db1f2e86ec184d85f91a5a08bc1b4d82209eb61b860ece59c94b688",
+    "world-011/raw/scene.json": "f8bb24c8134b75bb9624e8c3cebfdb51641656f9a12e36882dcdeea14b48235c",
+    "world-011/raw/scene.xml": "db2c3ace9456d5f93ec9b2f9a9bb95f708d3bd8e1019fa03d981c19536742bde",
+    "world-011/raw/plan.json": "35d62d96eb9a6e4a9850779521b8b676008ef56e95c704d74b07c37d973f1572",
+    "world-011/raw/RUN_META.json": "0c4bab3267a88bd050d77fbe828fb4969e7a751a0c1e25af6f708e682aef310c",
+    "world-011/raw/result.json": "5eb14d0d72c5139d5f96802da212e1a0421adaa5c650ed9ccde028035483b66b",
+    "world-011/adapter/failure-tail/manifest.json": "c39d436bdc356e76e1ad2e4e8c0d418f8e6df1c0ff15474a83d4374779c5398d"
+  }
+}
