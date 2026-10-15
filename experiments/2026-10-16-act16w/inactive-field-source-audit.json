@@ -1,0 +1,128 @@
+{
+  "scope": "static official source audit only; no simulation/GPU and no live installed-file hash verification",
+  "commit": "57b4692f4d3cdf4d27d916b4b8c4759ba36e9148",
+  "source_url": "https://codeload.github.com/google-deepmind/mujoco_warp/tar.gz/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148",
+  "archive_sha256": "5961c3015216a152988beaa4e758e47a9e5ebd2da7cf55d7a2fb60436272a8a4",
+  "python_files_scanned": 64,
+  "files_sha256": {
+    "__init__.py": "c702fc4ff8377d7ce5b729bef0b7cd457ecd8b12c009d9cf02a9cc5c4776cff9",
+    "block_cholesky.py": "0773678b85d27692d2571ebecaca3ece6573fe30531660e8c993be285407af99",
+    "broadphase_test.py": "030f3713cc2ffcc611a350b5a6ad970303321a4c80831615cd3ea24f28ee35c8",
+    "bvh.py": "123289ea3dc99c6d690b0131f22223623d96859db5350a65464df68e3df63420",
+    "bvh_test.py": "c781c766d18db2a016fb9eaa313e01e986e8d0839840b020734794a7fd95848e",
+    "cli.py": "40622f9abece56edb2e9c8d365bbceacbf0d56dc1657cdafc0a1fc8b12d2ed62",
+    "collision_convex.py": "bdd511b5bb3fddb476bfcde85ebfe63cd4d0f4688fd2b90970f69c952b5f71f1",
+    "collision_core.py": "55bfdc244254624d61c228d70d4fd4dc0d2d6af60af40c6e8ed16e47315e2ea6",
+    "collision_driver.py": "584c8aaba5ff052c85d3e8f0651f1ed7373419274e33b9c7a1a08195fec4239b",
+    "collision_driver_test.py": "243362aa196863284035f5fe5b8692595b946d9f55b41b47c4120d263da98e6a",
+    "collision_flex.py": "ac216d323e3c750a6a0e5b36772fe01eab3eabccc01d8943818d2017eba09fcb",
+    "collision_gjk.py": "aaa4de7aa26ae4e7fd8ce52eee10ad034aa5e292a2a8baa6f1ef4a53b269e1b9",
+    "collision_gjk_test.py": "e8dc7ae58f15a5f428fe3d3a73c2db2eb6b009992054cf2fbb9e61eab31c9122",
+    "collision_primitive.py": "5be65ca8b350c905a22fc08516ef32bfe31169ac72bb15c769990e6fa0f01517",
+    "collision_primitive_core.py": "0b55d6267dfa14cff75224e7c0785eed397123d306e29a38abda558db3b75bfd",
+    "collision_primitive_core_test.py": "3b620065e2fb821b63ceb6a709501c1b583a1219ddf97bf61fd5bca93ea42908",
+    "collision_sdf.py": "3a8dab0c8459dd69dc8d48464db3c4aa693dc0e37148964a380afd205fb65b53",
+    "constraint.py": "4ecc9fd9dd57d718b14a0b4185008ae761fe5dda1af735db1fa7504c9d4057e8",
+    "constraint_test.py": "8f7b141e36580e8999d9da47f54cb54063403b60f5a190d046332638aacc2482",
+    "derivative.py": "4c850f363dd5c4076c5c2d2e42f3c2cfabb439bc183ac26882a590ea3cd2c8cc",
+    "derivative_test.py": "6132a5aa86e821d2e1f18663adfb6fbaf59656d44fcfb0ed343777d509b71ae6",
+    "flex_test.py": "78006d859296495995fb8610cd2ed3680d41bd1bb839d461b1e8d3ca7a3b6ee9",
+    "forward.py": "4acce6f5737ff9edf059b85c5f302b9b87a1f54868af6be3f0d9beafd35e0be6",
+    "forward_test.py": "d2ebb3f528e71d88e35c9ee5f0050450cfed3ef66486c83c96600485296786f2",
+    "history.py": "e24b575290283218b43b15824641ea5fa2c6b1890ff3fc5c8e2782d851022ef2",
+    "history_test.py": "dd121bb475967c540af4358db135862371d2860deb352e87058df511bfd370b9",
+    "inverse.py": "a85a738134224ae102269baff2db87d03b4f5153c21ec52560ca31aaae903227",
+    "inverse_test.py": "6f416c2e117f6129a4369db5bf7e8769d939d5edd0a1ae8260f3451d9afb9cd2",
+    "io.py": "d496e51ac392731fd1b20d0cc53c573b38dcf38924dbcd04a2d5f85ffeb84310",
+    "io_jax_test.py": "64f22f50f63019e3c93549fec31019fd5ecb2d83787553227d8122b64238e733",
+    "io_test.py": "3a0e4f84c1cc611c6d844fdb26ac451577d787c486af7442d070171e4f5309be",
+    "island.py": "014a44bc3cfe6ebe448647101b7d8d8dca167ea8b08424432d65cbe3ffb851fb",
+    "island_test.py": "24119d8927741315299d69a614fbe95f9ddda2c1e0035053e65fc5bf3ea24fac",
+    "jax_test.py": "b572e63ba9cc5a85e448c88f76d1ba1b26f382c8b5425d604325741d904c6576",
+    "math.py": "7e83344f0624b761cc4d897ad5d5d87768972adc8aaa76c357bcc7c14c6e8a78",
+    "math_test.py": "ffd7fb06b74de9c8023ef16a20ee89fdb1c4a39fc22baf82af6317dda547c862",
+    "passive.py": "06428e5a0cf3c169dcb268ee232a5c08f5675e69bc056ec0fdc4c0d925da35de",
+    "passive_test.py": "8bfd613777c8e2613251d763629fafb46e59392eb8f828edcadeab87814e1f14",
+    "ray.py": "d6d16c9ed53892bed73db0881ff675904c64c48953146810afd8c1d866559a5f",
+    "ray_test.py": "e966d9add4616be5a99dd7d3b552174880fef70b7016be982234f994eef69d00",
+    "render.py": "169f08765eab2f755403af0045292c6f1fa0908eabdcc2855b3ef1fc719490c4",
+    "render_test.py": "16795eec22ecd8db3110834c99e6b4ee99f3babd0effe1543aff53c5ecf07749",
+    "render_util.py": "d4f82fb0433f4441b91816aa8426c49951e7af43e441baa9773c947e31431fe0",
+    "render_util_test.py": "2fa39226f0a0153ea02da3e6c49cbb93c60754d8f6b32e9208e944465692e00f",
+    "sensor.py": "dda71dd5ccf57f0440376db566db32d8680622a5249e18d9733362b3c33faef5",
+    "sensor_test.py": "ca36a320eb845b253c2c59d7bb644870d6aea7e704fe71d2bba107b3144e930d",
+    "set_const.py": "eb5ff8552ad795045f4ddc60d7f5f9228d7ed2a97cdc9d6d1351e5e2999af34f",
+    "set_const_test.py": "9370cd8520215ca3ac5d9b86aad28bb4d01bbc991545e09ec4245ded75881a5c",
+    "sleep.py": "5b50688a8949afa30df1ae6ce2195132fdf50cf6ed821746badd8e06b92d91b0",
+    "sleep_test.py": "5fd4e3808d8c65ce85b03af7134c2135acf7d85c6585f8f94a6e9cb784c344da",
+    "smooth.py": "77e503145e96d4c594f4332bba60b42105b2ced3986638322892a4a3c2421f1d",
+    "smooth_test.py": "c575d98668d7aed2220bb660f011c9cce306db5af9edb46fcb87ee542d24f44a",
+    "solver.py": "1ad5b77be99daad6f05a8ac8d593983c4af18b0388b2e64df6a175ad142508c6",
+    "solver_test.py": "9e94179b45d7436765e32aa9e0fd42b9676425904e57f2afd3a9cded8f0521c8",
+    "support.py": "0e7e4b5b4ad7a55b4268822d1aa4c4d0155a3751c7fe1009ef0f02b2967b7a76",
+    "support_test.py": "af1f6b9d28746ce174e19f920cac632442fe3c0c08be347ec1c0f5099e6a53d9",
+    "types.py": "4c0dc9b93d7490c8156fe335b45624f79c4801d3ef4b435a08f536b38dd743a4",
+    "types_test.py": "d3696de16df3119d4dab0e53929af0ca775e46a7ac8426bb02b31dc8341ef6d1",
+    "unroll_test.py": "1f9139353bc152c493c634e2df0e1117ec34502206fc86044541dbd1e7625e85",
+    "util_misc.py": "f6cafc15f7ac46c8a79854465d8b7ed9b1108716181dcfc0c68ff0dbdabc00af",
+    "util_misc_test.py": "8c9eb8369888d7d6c10d2976cdd3887dd38b9a9f89c25548f7a9e2b3b085da17",
+    "util_pkg.py": "a023e53be117000aa6fa921fa585e8f9ebb579672f142e321e665c32b7a26a12",
+    "util_pkg_test.py": "bf3c80bf052f0ba666ffd30492f49c664416bd822be789e9cd966d4e348b8b80",
+    "warp_util.py": "f0b8cb9dea1ee53c73ded42ed99a86e735c641677d1e92c3b89cd3b1216b3f98"
+  },
+  "dof_length_explicit_references": [
+    {
+      "file": "sleep.py",
+      "line": 277,
+      "text": "dof_length: wp.array[float],"
+    },
+    {
+      "file": "sleep.py",
+      "line": 313,
+      "text": "weight = dof_length[dof_idx]"
+    },
+    {
+      "file": "sleep.py",
+      "line": 330,
+      "text": "dof_length: wp.array[float],"
+    },
+    {
+      "file": "sleep.py",
+      "line": 352,
+      "text": "dof_length,"
+    },
+    {
+      "file": "sleep.py",
+      "line": 730,
+      "text": "m.dof_length,"
+    },
+    {
+      "file": "sleep.py",
+      "line": 828,
+      "text": "dof_length: wp.array[float],"
+    },
+    {
+      "file": "sleep.py",
+      "line": 850,
+      "text": "dof_length,"
+    },
+    {
+      "file": "sleep.py",
+      "line": 956,
+      "text": "m.dof_length,"
+    },
+    {
+      "file": "types.py",
+      "line": 1195,
+      "text": "dof_length: dof length for weighting velocity norm       (nv,)"
+    },
+    {
+      "file": "types.py",
+      "line": 1728,
+      "text": "dof_length: array(\"nv\", float)"
+    }
+  ],
+  "candidate": "ignore only dof_length in varying-model admission iff every converted model has EnableBit.SLEEP OFF; fail closed otherwise; default off; must first verify N16 state/RGB/contact invariance on gcp2",
+  "implemented": false,
+  "runtime_verified": false
+}
