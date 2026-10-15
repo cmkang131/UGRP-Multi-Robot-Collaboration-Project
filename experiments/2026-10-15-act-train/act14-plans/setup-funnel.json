@@ -1,0 +1,131 @@
+{
+  "schema": "ugrp.act14.setup_funnel.v1",
+  "counts": {
+    "candidate": 42,
+    "station_clear": 42,
+    "start_clear": 23,
+    "line_of_sight": 23,
+    "parking_clear": 23
+  },
+  "rejections": [
+    {
+      "seed": 91420,
+      "category": "start_blocked",
+      "blocking_object": "map_boundary",
+      "minimum_gap_m": -0.10145621664193549
+    },
+    {
+      "seed": 91420,
+      "category": "start_blocked",
+      "blocking_object": "cyan_1",
+      "minimum_gap_m": 0.17999705932527432
+    },
+    {
+      "seed": 91420,
+      "category": "start_blocked",
+      "blocking_object": "map_boundary",
+      "minimum_gap_m": -0.14966791414501568
+    },
+    {
+      "seed": 91420,
+      "category": "start_blocked",
+      "blocking_object": "static_rect_0",
+      "minimum_gap_m": 0.15852621240598422
+    },
+    {
+      "seed": 91421,
+      "category": "start_blocked",
+      "blocking_object": "cyan_2",
+      "minimum_gap_m": 0.15896752648340892
+    },
+    {
+      "seed": 91421,
+      "category": "start_blocked",
+      "blocking_object": "cyan_1",
+      "minimum_gap_m": 0.3008313708360579
+    },
+    {
+      "seed": 91421,
+      "category": "start_blocked",
+      "blocking_object": "cyan_1",
+      "minimum_gap_m": 0.2093863519097858
+    },
+    {
+      "seed": 91422,
+      "category": "start_blocked",
+      "blocking_object": "map_boundary",
+      "minimum_gap_m": -0.08250801530928364
+    },
+    {
+      "seed": 91423,
+      "category": "start_blocked",
+      "blocking_object": "static_rect_2",
+      "minimum_gap_m": 0.11253813902658641
+    },
+    {
+      "seed": 91428,
+      "category": "start_blocked",
+      "blocking_object": "static_rect_2",
+      "minimum_gap_m": 0.1686746299479566
+    },
+    {
+      "seed": 91429,
+      "category": "start_blocked",
+      "blocking_object": "static_rect_1",
+      "minimum_gap_m": 0.0
+    },
+    {
+      "seed": 91429,
+      "category": "start_blocked",
+      "blocking_object": "static_rect_1",
+      "minimum_gap_m": 0.10185590044361428
+    },
+    {
+      "seed": 91431,
+      "category": "start_blocked",
+      "blocking_object": "map_boundary",
+      "minimum_gap_m": -0.18288394092895754
+    },
+    {
+      "seed": 91433,
+      "category": "start_blocked",
+      "blocking_object": "red_1",
+      "minimum_gap_m": 0.1579358322347157
+    },
+    {
+      "seed": 91437,
+      "category": "start_blocked",
+      "blocking_object": "static_rect_1",
+      "minimum_gap_m": 0.0
+    },
+    {
+      "seed": 91438,
+      "category": "start_blocked",
+      "blocking_object": "static_rect_2",
+      "minimum_gap_m": 0.0
+    },
+    {
+      "seed": 91440,
+      "category": "start_blocked",
+      "blocking_object": "static_rect_1",
+      "minimum_gap_m": 0.018584210584341586
+    },
+    {
+      "seed": 91440,
+      "category": "start_blocked",
+      "blocking_object": "static_rect_1",
+      "minimum_gap_m": 0.021233220973704635
+    },
+    {
+      "seed": 91441,
+      "category": "start_blocked",
+      "blocking_object": "cyan_1",
+      "minimum_gap_m": 0.23553102424947883
+    }
+  ],
+  "rejection_distribution": {
+    "start_blocked": 19
+  },
+  "source": "/Users/changmin/projects/ugrp/outputs/act14eval-a70c1588/plans/plan.json",
+  "reproduce": "python -m scripts.prepare_grasp_act_act14 --dependency-root /Users/changmin/projects/ugrp-wt/solo-teacher --output NEW_DIR"
+}

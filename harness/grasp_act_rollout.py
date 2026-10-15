@@ -7,7 +7,9 @@ from harness import grasp_act_contract as c
 
 class InputAudit:
     def __init__(self):
-        self.record = {'forbidden_input_fields': 0, 'teacher_input_fields': 0, 'requests': 0}
+        self.record = {'forbidden_input_fields': 0, 'teacher_input_fields': 0, 'requests': 0,
+                       'invisible_measurements': 0, 'held_world_reads': 0, 'top': 0,
+                       'mechanism': 'isolated JSON worker; strict own RGB/issued/instruction allowlist; no simulator capability'}
 
     def accept(self, observation):
         try:
