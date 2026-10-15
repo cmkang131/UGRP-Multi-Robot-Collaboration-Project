@@ -229,3 +229,7 @@ hash·로딩까지 확인한다. 원본·옛 큐·옛 체크포인트는 삭제�
 - [GPU 머신 규격](https://docs.cloud.google.com/compute/docs/gpus/).
 - [VM 실행시간 상한](https://cloud.google.com/compute/docs/instances/limit-vm-runtime).
 - [기존 디스크 snapshot 생성](https://cloud.google.com/compute/docs/disks/create-snapshots).
+
+## 2026-10-15 운영 회수
+
+[실제 학습·평가 결과](operations-f609979c.md): 학습10,000step 완료, 보류5 평가 완료, 학생0/1에서 확인된 접근/정렬 실패로 잔여9개 중단. 성공/실패 분모와 원본·해시·전달 상태는 새 운영 기록을 따른다.

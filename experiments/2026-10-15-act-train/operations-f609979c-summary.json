@@ -1,0 +1,760 @@
+{
+  "schema": "ugrp.act_main_operations.v1",
+  "id": "act-main-f609979c",
+  "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+  "branch": "claude/act-train",
+  "pr": 504,
+  "created_at": "2026-10-15T11:58:32.139188+09:00",
+  "status": "MAIN_COMPLETE_EVALUATION_STOPPED_ON_CONFIRMED_FAILURE_DELIVERY_IN_PROGRESS",
+  "coordinator_approval": {
+    "stage": "main+eval",
+    "steps": 10000,
+    "main_training_runs": 1
+  },
+  "convert": {
+    "status": "complete",
+    "reused": true,
+    "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+    "dataset_manifest_sha256": "da651587d3cbe51f418f63fda55642b53e985a1fe1551db98909517065ba058b",
+    "normalization_sha256": "b7a0b271ba89461e0b5cc594a34821e068326102cc04b5e98c536bfb4d130192",
+    "done_label": "last_local_row_v1",
+    "episodes": 50,
+    "rows_selected": 17851,
+    "split": {
+      "train": 45,
+      "validation": 5
+    },
+    "skill_done": {
+      "grasp": 50,
+      "release": 50
+    },
+    "missing_done": 0,
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0
+    },
+    "hash_checks": {
+      "dataset_files": 200,
+      "source_files": 350,
+      "archive_files_match": 27960,
+      "raw_rgb_refs": 18318
+    },
+    "archive_sha256": "2917caf7ff8c8c4a429a5b840ac2223c6d4c784eaa95e0e99a11267ea64b00f8",
+    "free_bytes": 49427005440,
+    "prior_smoke_attempt": {
+      "status": "HOST_ERROR",
+      "reason": "archive lacked .git; rejected before training/output initialization",
+      "logs": [
+        "smoke.log",
+        "offline-smoke.log"
+      ]
+    }
+  },
+  "smoke": {
+    "status": "complete",
+    "complete": true,
+    "stage": "smoke",
+    "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+    "dataset_manifest_sha256": "da651587d3cbe51f418f63fda55642b53e985a1fe1551db98909517065ba058b",
+    "host": {
+      "project": "ugrp-act-train-1014",
+      "instance": "ugrp-act-l4-pilot1",
+      "machine_type": "g2-standard-4",
+      "zone": "asia-northeast3-a"
+    },
+    "steps_requested": 300,
+    "steps_completed": 300,
+    "seed": 20261015,
+    "blank_images": false,
+    "batch_size": 8,
+    "readback_verified": true,
+    "gate_promotion_authorized_if_all_conditions_pass": false,
+    "selection": "fixed final step; validation never selects checkpoint",
+    "environment": {
+      "torch": "2.11.0",
+      "torchvision": "0.26.0",
+      "lerobot": "0.6.2",
+      "numpy": "2.2.6"
+    },
+    "training_rows": 16018,
+    "gpu": "NVIDIA L4",
+    "cuda": "13.0",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "backbone_initialization": "ResNet18_Weights.IMAGENET1K_V1; fine-tuned; no freeze/cache",
+    "activation_checkpointing": "harness.act_training.checkpoint_encoder",
+    "latest": {
+      "step": 300,
+      "loss": 2.810105800628662,
+      "l1_loss": 0.4041709303855896,
+      "kld_loss": 0.24059349298477173,
+      "gradient_norm": 86.91100311279297,
+      "wall_s": 84.20293494199998,
+      "steps_per_s": 3.562821179649423,
+      "peak_gpu_bytes": 1549413888
+    },
+    "last_checkpoint": "/mnt/act-source/act-main-f609979c/smoke/step-000300",
+    "wall_s": 87.78582227800001
+  },
+  "training": {
+    "status": "complete",
+    "complete": true,
+    "stage": "main",
+    "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+    "dataset_manifest_sha256": "da651587d3cbe51f418f63fda55642b53e985a1fe1551db98909517065ba058b",
+    "host": {
+      "project": "ugrp-act-train-1014",
+      "instance": "ugrp-act-l4-pilot1",
+      "machine_type": "g2-standard-4",
+      "zone": "asia-northeast3-a"
+    },
+    "steps_requested": 10000,
+    "steps_completed": 10000,
+    "seed": 20261015,
+    "blank_images": false,
+    "batch_size": 8,
+    "readback_verified": true,
+    "gate_promotion_authorized_if_all_conditions_pass": false,
+    "selection": "fixed final step; validation never selects checkpoint",
+    "environment": {
+      "torch": "2.11.0",
+      "torchvision": "0.26.0",
+      "lerobot": "0.6.2",
+      "numpy": "2.2.6"
+    },
+    "training_rows": 16018,
+    "gpu": "NVIDIA L4",
+    "cuda": "13.0",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "backbone_initialization": "ResNet18_Weights.IMAGENET1K_V1; fine-tuned; no freeze/cache",
+    "activation_checkpointing": "harness.act_training.checkpoint_encoder",
+    "latest": {
+      "step": 10000,
+      "loss": 0.10444823652505875,
+      "l1_loss": 0.07831107825040817,
+      "kld_loss": 0.0026137158274650574,
+      "gradient_norm": 10.929485321044922,
+      "wall_s": 1615.560280022,
+      "steps_per_s": 6.004108989277646,
+      "peak_gpu_bytes": 1548071424
+    },
+    "last_checkpoint": "/mnt/act-source/act-main-f609979c/main/step-010000",
+    "wall_s": 1619.1452494589998
+  },
+  "checkpoint": {
+    "actor_model_sha256": "9f5e469439e1ea8bc7ada73dc558b6f5e7aa48edf71cc416b64b9f7b6929576a",
+    "checkpoint_steps": [
+      500,
+      1000,
+      1500,
+      2000,
+      2500,
+      3000,
+      3500,
+      4000,
+      4500,
+      5000,
+      5500,
+      6000,
+      6500,
+      7000,
+      7500,
+      8000,
+      8500,
+      9000,
+      9500,
+      10000
+    ],
+    "main_files_independently_hash_verified": 122,
+    "smoke_files_independently_hash_verified": 20,
+    "actor_files_transfer_and_cpu_load": [
+      {
+        "id": "grasp-act-solo-smoke-f609979c",
+        "archive_sha256": "bd2936a8fc2947353f5c1ffe374996deab53f07881798fcfe3c8936ddee6163d",
+        "files_verified": 9,
+        "root": "/home/ugrp/act-main-models-f609979c/grasp-act-solo-smoke-f609979c",
+        "free_bytes": 23143854080,
+        "cpu_load_ready": true,
+        "cpu_load_stderr": ""
+      },
+      {
+        "id": "grasp-act-solo-main-f609979c",
+        "archive_sha256": "315e6752e6c8a6054966b3aac98b39e51d3f18fc0132ef4c308204caed0542c2",
+        "files_verified": 9,
+        "root": "/home/ugrp/act-main-models-f609979c/grasp-act-solo-main-f609979c",
+        "free_bytes": 26411470848,
+        "cpu_load_ready": true,
+        "cpu_load_stderr": ""
+      }
+    ],
+    "original": "ugrp-act-l4-pilot1:/mnt/act-source/act-main-f609979c/main/step-010000",
+    "all_original_checkpoints_retained": true
+  },
+  "offline_main": {
+    "validation_seeds": [
+      86045,
+      86046,
+      86047,
+      86048,
+      86049
+    ],
+    "episodes": 5,
+    "aggregate": {
+      "first_action_by_skill/grasp": {
+        "valid_actions": 1398,
+        "done_positive_N": 5,
+        "done_negative_N": 1393,
+        "done_true_positive_n": 0,
+        "done_false_positive_n": 0,
+        "done_missed_n": 5,
+        "done_predicted_positive_N": 0,
+        "wheel_mae": 0.03361693650054145,
+        "pulse_width_mae_s": 0.005056585440103672,
+        "pwm_mae": 21.84331701007224,
+        "decoded_wheel_mae": 0.03629149609025967,
+        "decoded_pwm_mae": 21.109155025737902,
+        "done_precision": null,
+        "done_recall": 0.0
+      },
+      "by_skill/grasp": {
+        "valid_actions": 11044,
+        "done_positive_N": 40,
+        "done_negative_N": 11004,
+        "done_true_positive_n": 0,
+        "done_false_positive_n": 0,
+        "done_missed_n": 40,
+        "done_predicted_positive_N": 0,
+        "wheel_mae": 0.03375163215899189,
+        "pulse_width_mae_s": 0.005100818405778892,
+        "pwm_mae": 23.314763045979984,
+        "decoded_wheel_mae": 0.0356171468163932,
+        "decoded_pwm_mae": 22.457025459674856,
+        "done_precision": null,
+        "done_recall": 0.0
+      },
+      "first_action_by_skill/release": {
+        "valid_actions": 435,
+        "done_positive_N": 5,
+        "done_negative_N": 430,
+        "done_true_positive_n": 0,
+        "done_false_positive_n": 0,
+        "done_missed_n": 5,
+        "done_predicted_positive_N": 0,
+        "wheel_mae": 0.03473128473209173,
+        "pulse_width_mae_s": 0.003753867659951449,
+        "pwm_mae": 21.825769992993695,
+        "decoded_wheel_mae": 0.034061484962631505,
+        "decoded_pwm_mae": 21.008277448564364,
+        "done_precision": null,
+        "done_recall": 0.0
+      },
+      "by_skill/release": {
+        "valid_actions": 3340,
+        "done_positive_N": 40,
+        "done_negative_N": 3300,
+        "done_true_positive_n": 0,
+        "done_false_positive_n": 0,
+        "done_missed_n": 40,
+        "done_predicted_positive_N": 0,
+        "wheel_mae": 0.0241154397628642,
+        "pulse_width_mae_s": 0.002538923050631064,
+        "pwm_mae": 22.720668528308288,
+        "decoded_wheel_mae": 0.022201645262074392,
+        "decoded_pwm_mae": 21.552336321613584,
+        "done_precision": null,
+        "done_recall": 0.0
+      }
+    },
+    "by_seed_skill_task_report": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/offline-main/summary.json",
+      "sha256": "affa6d8de05e446f02ba9792f6768836947194363179bd8a9f3e98133e4468e7"
+    },
+    "physical_runs": 0
+  },
+  "closed_loop": {
+    "planned_seeds": [
+      91100,
+      91101,
+      91102,
+      91103,
+      91104,
+      91105,
+      91106,
+      91107,
+      91108,
+      91109
+    ],
+    "attempted_N": 1,
+    "completed_N": 1,
+    "physical_success_n": 0,
+    "physical_success_N": 1,
+    "HOST_ERROR_n": 0,
+    "per_kind": {
+      "cyan": {
+        "n": 0,
+        "N": 1
+      },
+      "red": {
+        "n": 0,
+        "N": 0
+      },
+      "green": {
+        "n": 0,
+        "N": 0
+      },
+      "yellow": {
+        "n": 0,
+        "N": 0
+      }
+    },
+    "runs": [
+      {
+        "status": "complete",
+        "complete": true,
+        "host": {
+          "project": "ugrp-act-train-1014",
+          "instance": "ugrp-sim-gcp1",
+          "machine_type": "n4-highcpu-64",
+          "zone": "asia-northeast3-a"
+        },
+        "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+        "seed": 91100,
+        "model_sha256": "9f5e469439e1ea8bc7ada73dc558b6f5e7aa48edf71cc416b64b9f7b6929576a",
+        "student_execution": true,
+        "teacher_assisted": false,
+        "weld": "off",
+        "scope": "staged solo grasp/lift/setdown at pickup_site; no navigation/E2E claim",
+        "object_kind": "cyan",
+        "requested_sequence": "grasp_release",
+        "input_audit": {
+          "forbidden_input_fields": 0,
+          "teacher_input_fields": 0,
+          "requests": 113
+        },
+        "completion_confirmation": "unknown",
+        "gate_promotion_authorized_if_all_conditions_pass": false,
+        "sim_s": 89.99999999954528,
+        "done_requested": false,
+        "done_times": {},
+        "lift_success": false,
+        "max_stable_lift_s": 0.0,
+        "criteria": {
+          "clearance_m": 0.012,
+          "tilt_deg": 10.0,
+          "finger_each_n": 0.5,
+          "hold_s": 3.0,
+          "weld": "off"
+        },
+        "release_success": false,
+        "max_stable_release_s": 0.0,
+        "drop_detected": false,
+        "release_criteria": {
+          "clearance_m": [
+            -0.005,
+            0.006
+          ],
+          "tilt_deg": 10.0,
+          "finger_max_n": 0.1,
+          "linear_speed_m_s": 0.02,
+          "hold_s": 3.0,
+          "airborne_unloaded_drop_clearance_m": 0.012
+        },
+        "physical_success": false,
+        "failure_reason": "grasp_done_not_requested",
+        "inference_latency_s": {
+          "n": 113,
+          "median": 0.322828336999919,
+          "p95": 0.375293767399944
+        },
+        "skill_completion_success": null,
+        "wall_s": 277.1569291380001
+      }
+    ],
+    "unsubmitted_seeds": [
+      91101,
+      91102,
+      91103,
+      91104,
+      91105,
+      91106,
+      91107,
+      91108,
+      91109
+    ],
+    "remaining_action": "stopped after confirmed approach/alignment defect; new corrected source/model required before further rollout",
+    "native_failure_reason": "grasp_done_not_requested",
+    "observed_failure_mechanism": {
+      "reviewed_at": "2026-10-15T11:54:55.868300+09:00",
+      "frames_n": 6,
+      "sim_s": [
+        0,
+        18,
+        36,
+        53.9,
+        71.9,
+        89.9
+      ],
+      "observations": [
+        "0s cyan box near image center",
+        "18s box clipped at right edge",
+        "36s only a narrow part of box at far right",
+        "53.9s,71.9s,89.9s nearly unchanged floor view and a narrow box edge at right"
+      ],
+      "failure_mechanism": "approach/alignment failed to bring target into grasp framing; no stable lift and no grasp done through 90 SIM seconds",
+      "root_training_cause": "not established; offline done detection is 0/5 for each skill",
+      "success_sample_available": false
+    },
+    "manual_full_input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 900
+    },
+    "first30": {
+      "seed": 91100,
+      "scope": "first30",
+      "origin_t": 2.300000000000085,
+      "end_t": 32.300000000063214,
+      "sim_s": 30.000000000063128,
+      "input_audit": {
+        "forbidden_input_fields": 0,
+        "teacher_input_fields": 0,
+        "requests": 301
+      },
+      "input_fields": [
+        "destination_zone",
+        "issued",
+        "object_kind",
+        "pwm_elapsed_s",
+        "rgb",
+        "robot_id",
+        "role",
+        "sample_id",
+        "schema",
+        "skill",
+        "skill_elapsed_s",
+        "t"
+      ],
+      "observations": 301,
+      "skills": {
+        "grasp": 301
+      },
+      "done_requests": 0,
+      "command_skill_counts": {
+        "grasp": 301
+      },
+      "input_prefix_sha256": "52e08936b6927f549878627523f386eea7936f044286e067b60c28c581213541",
+      "frame_interval_wall_per_sim": 3.0000075817045024,
+      "eval_only_partial": {
+        "lift": {
+          "lift_success": false,
+          "max_stable_lift_s": 0.0,
+          "criteria": {
+            "clearance_m": 0.012,
+            "tilt_deg": 10.0,
+            "finger_each_n": 0.5,
+            "hold_s": 3.0,
+            "weld": "off"
+          }
+        },
+        "drop_detected": false,
+        "max_stable_release_s": 0.0
+      },
+      "original": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw",
+      "research_result": false,
+      "direct_visual_review": {
+        "reviewed_at": "2026-10-15T11:51:39.652436+09:00",
+        "frames_n": 6,
+        "sim_s": [
+          0,
+          6,
+          12,
+          18,
+          24,
+          30
+        ],
+        "observations": [
+          "0s cyan box visible near image center",
+          "6s cyan box clipped at right edge",
+          "12s box near right edge",
+          "18s and 24s box partly clipped at right edge",
+          "30s box outside image; floor only"
+        ],
+        "assessment": "observed loss of target framing during approach; final outcome not yet available at this review"
+      }
+    },
+    "frame_review": {
+      "view_calls": 12,
+      "unique_frames": 10,
+      "sim_s": [
+        0,
+        6,
+        12,
+        18,
+        24,
+        30,
+        36,
+        53.9,
+        71.9,
+        89.9
+      ],
+      "successful_samples_available": 0,
+      "successful_samples_reviewed": 0,
+      "failed_samples_reviewed": 1
+    },
+    "raw": "gcp1:/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c",
+    "class": "milestone",
+    "raw_all_sha256_verified_on_vm": true,
+    "raw_manifest_sha256": "6bcfa627b6c05b2530ee077ae10f7539211fa023eaa0968d6b69999b0ff67a26",
+    "weld": "off",
+    "teacher_assisted": false,
+    "research_gate_promotion": false
+  },
+  "model_preservation": {
+    "tag": "models-20261015-grasp-act-f609979c",
+    "artifacts": [
+      {
+        "id": "grasp-act-solo-smoke-f609979c",
+        "release": {
+          "tag": "models-20261015-grasp-act-f609979c",
+          "asset": "grasp-act-solo-smoke-f609979c.zip",
+          "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-grasp-act-f609979c/grasp-act-solo-smoke-f609979c.zip"
+        },
+        "archive": {
+          "sha256": "bd2936a8fc2947353f5c1ffe374996deab53f07881798fcfe3c8936ddee6163d",
+          "bytes": 192288207
+        }
+      },
+      {
+        "id": "grasp-act-solo-main-f609979c",
+        "release": {
+          "tag": "models-20261015-grasp-act-f609979c",
+          "asset": "grasp-act-solo-main-f609979c.zip",
+          "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-grasp-act-f609979c/grasp-act-solo-main-f609979c.zip"
+        },
+        "archive": {
+          "sha256": "315e6752e6c8a6054966b3aac98b39e51d3f18fc0132ef4c308204caed0542c2",
+          "bytes": 192341234
+        }
+      }
+    ],
+    "status": "packaged_and_hash_verified_upload_pending"
+  },
+  "vm": {
+    "l4": {
+      "state": "TERMINATED",
+      "verified": true,
+      "cycles": [
+        {
+          "lastStartTimestamp": "2026-10-14T19:00:40.487-07:00",
+          "lastStopTimestamp": "2026-10-14T19:05:03.741-07:00",
+          "name": "ugrp-act-l4-pilot1",
+          "networkInterfaces": [
+            {
+              "accessConfigs": [
+                {
+                  "kind": "compute#accessConfig",
+                  "name": "external-nat",
+                  "networkTier": "PREMIUM",
+                  "type": "ONE_TO_ONE_NAT"
+                }
+              ],
+              "fingerprint": "MxFUqw01eO0=",
+              "kind": "compute#networkInterface",
+              "name": "nic0",
+              "network": "https://www.googleapis.com/compute/v1/projects/ugrp-act-train-1014/global/networks/default",
+              "networkIP": "10.178.0.5",
+              "stackType": "IPV4_ONLY",
+              "subnetwork": "https://www.googleapis.com/compute/v1/projects/ugrp-act-train-1014/regions/asia-northeast3/subnetworks/default"
+            }
+          ],
+          "scheduling": {
+            "automaticRestart": true,
+            "instanceTerminationAction": "STOP",
+            "maxRunDuration": {
+              "nanos": 0,
+              "seconds": "28800"
+            },
+            "onHostMaintenance": "TERMINATE",
+            "preemptible": false,
+            "provisioningModel": "STANDARD"
+          },
+          "status": "TERMINATED"
+        },
+        {
+          "lastStartTimestamp": "2026-10-14T19:05:36.412-07:00",
+          "lastStopTimestamp": "2026-10-14T19:09:36.017-07:00",
+          "name": "ugrp-act-l4-pilot1",
+          "scheduling": {
+            "automaticRestart": true,
+            "instanceTerminationAction": "STOP",
+            "maxRunDuration": {
+              "nanos": 0,
+              "seconds": "28800"
+            },
+            "onHostMaintenance": "TERMINATE",
+            "preemptible": false,
+            "provisioningModel": "STANDARD"
+          },
+          "status": "TERMINATED"
+        },
+        {
+          "lastStartTimestamp": "2026-10-14T19:09:52.249-07:00",
+          "lastStopTimestamp": "2026-10-14T19:12:11.403-07:00",
+          "name": "ugrp-act-l4-pilot1",
+          "scheduling": {
+            "automaticRestart": true,
+            "instanceTerminationAction": "STOP",
+            "maxRunDuration": {
+              "nanos": 0,
+              "seconds": "28800"
+            },
+            "onHostMaintenance": "TERMINATE",
+            "preemptible": false,
+            "provisioningModel": "STANDARD"
+          },
+          "status": "TERMINATED"
+        },
+        {
+          "lastStartTimestamp": "2026-10-14T19:12:31.423-07:00",
+          "lastStopTimestamp": "2026-10-14T19:42:24.280-07:00",
+          "name": "ugrp-act-l4-pilot1",
+          "scheduling": {
+            "automaticRestart": true,
+            "instanceTerminationAction": "STOP",
+            "maxRunDuration": {
+              "nanos": 0,
+              "seconds": "28800"
+            },
+            "onHostMaintenance": "TERMINATE",
+            "preemptible": false,
+            "provisioningModel": "STANDARD"
+          },
+          "status": "TERMINATED"
+        },
+        {
+          "lastStartTimestamp": "2026-10-14T19:42:46.761-07:00",
+          "lastStopTimestamp": "2026-10-14T19:47:42.887-07:00",
+          "name": "ugrp-act-l4-pilot1",
+          "scheduling": {
+            "automaticRestart": true,
+            "instanceTerminationAction": "STOP",
+            "maxRunDuration": {
+              "nanos": 0,
+              "seconds": "28800"
+            },
+            "onHostMaintenance": "TERMINATE",
+            "preemptible": false,
+            "provisioningModel": "STANDARD"
+          },
+          "status": "TERMINATED"
+        }
+      ]
+    },
+    "gcp1": {
+      "state": "RUNNING",
+      "shutdown_verification_pending": true,
+      "was_already_running_before_own_setup": true,
+      "own_setup_started_at": "2026-10-15T11:30:46.113039+09:00",
+      "other_processes_and_leases_modified": 0
+    }
+  },
+  "cost": {
+    "currency": "USD",
+    "official_on_demand_per_hour": {
+      "l4": 0.907714004,
+      "gcp1": 3.145365504
+    },
+    "official_rate_evidence": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/pricing.json",
+    "l4_vm_seconds_from_instance_timestamps": 2730.996,
+    "l4_vm_compute_estimate_usd": 0.68860092057444,
+    "gcp1_own_activity_interval_seconds": null,
+    "gcp1_shared_host_full_uptime_not_attributed_to_this_task": true,
+    "actual_billed_amount": null,
+    "credit_balance": null,
+    "disk_network_tax": "unverified; not zero",
+    "budget_stop_signal_observed": false
+  },
+  "prior_attempts": [
+    {
+      "stage": "smoke",
+      "status": "HOST_ERROR_before_training_output_init",
+      "reason": "archive copy lacked .git; source guard rejected before training",
+      "log": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/prior-smoke-HOST_ERROR.log",
+      "sha256": "efaea01b550f74f8c627aa5878b06f2fc9bc1792d4fe9b24b6806bc5f5a87c9c"
+    },
+    {
+      "stage": "offline-smoke",
+      "status": "HOST_ERROR_before_training_output_init",
+      "reason": "archive copy lacked .git; source guard rejected before training",
+      "log": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/prior-offline-HOST_ERROR.log",
+      "sha256": "93803f176f424dd7ce769e130da9a43adfeacc10c222de8210f1752f2886fe22"
+    }
+  ],
+  "verification": {
+    "all_final_reports_strict_json": true,
+    "Mac_training_runs": 0,
+    "Mac_simulation_runs": 0,
+    "new_VM_creations": 0,
+    "budget_billing_changes": 0,
+    "credentials_copied_to_VM": false
+  },
+  "artifacts": {
+    "convert": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/convert-verified.json",
+      "sha256": "4e181ae5c3c5b7ec296d1e834631734d431c8bc5f5f48b5d884d643994dcfc9a"
+    },
+    "dataset_manifest": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/dataset-manifest.json",
+      "sha256": "da651587d3cbe51f418f63fda55642b53e985a1fe1551db98909517065ba058b"
+    },
+    "smoke": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/smoke/summary.json",
+      "sha256": "f621dced7c1e30c5588fd963d566c207f06ddd654ef3af84d30613fd6c3bd483"
+    },
+    "offline_smoke": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/offline-smoke/summary.json",
+      "sha256": "8761bd1d8f8000e4f50be77c4807a230b648991a3f1f85a859685b0e154db5d6"
+    },
+    "main": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/main/summary.json",
+      "sha256": "7496d7e1698d25afb64bdfc19ecde6dd2efdfa118215ac90b2ee8623b7652a90"
+    },
+    "offline_main": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/offline-main/summary.json",
+      "sha256": "affa6d8de05e446f02ba9792f6768836947194363179bd8a9f3e98133e4468e7"
+    },
+    "checkpoint_inventory": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/model-release/checkpoint-inventory-verified.json",
+      "sha256": "59fe69bdb2111567c5a7d0abc1e8fb48717a94dab49b054f35c825c52136a7cb"
+    },
+    "loss_curve": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/loss-curve.json",
+      "sha256": "b66814288769023279ef331ddf38d262c72cb3b89211c418dbfde3da21b2bc4b"
+    },
+    "student": {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act-student-main-91100-f609979c/raw/summary.json",
+      "sha256": "a747fd78391b9bcd2230ced3e3128bb3a845448cceaa34c876569dc044937977"
+    },
+    "student_raw_manifest": {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act-student-main-91100-f609979c/SHA256SUMS",
+      "sha256": "6bcfa627b6c05b2530ee077ae10f7539211fa023eaa0968d6b69999b0ff67a26"
+    },
+    "first30_review": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/closed-loop/91100/first30/receipt.json",
+      "sha256": "8fbe096ee5351d6807050626df6a72f8d92d2473c2f9dce5e316c186a522fd75"
+    },
+    "final_review": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act-main-f609979c-ops/closed-loop/91100/final/receipt.json",
+      "sha256": "8c37b3cb9412cc6e53f03c5214316628b53361d1f1e8c2cec71601e4240ab4e8"
+    },
+    "stop": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/stop-act-main-f609979c-20261015.json",
+      "sha256": "d73a42ec681cefd9726fbe9cd4846804d609b1ea8a06ec981bef4e009b65d7a4"
+    }
+  },
+  "unfinished": [
+    "closed-loop seeds91101\u201391109 stopped on defect",
+    "successful sample frame review unavailable (0 successes)",
+    "model release upload/redownload/reload pending",
+    "gcp1 final shutdown verification pending"
+  ]
+}

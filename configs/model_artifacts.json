@@ -459,6 +459,195 @@
         "Model loading is not a localization or navigation success.",
         "Training data and raw renders are excluded."
       ]
+    },
+    {
+      "id": "grasp-act-solo-smoke-f609979c",
+      "status": "available",
+      "description": "Fixed smoke step 300 own-RGB solo ACT pilot; not a default controller",
+      "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+      "training_source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+      "release": {
+        "tag": "models-20261015-grasp-act-f609979c",
+        "asset": "grasp-act-solo-smoke-f609979c.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-grasp-act-f609979c/grasp-act-solo-smoke-f609979c.zip"
+      },
+      "archive": {
+        "sha256": "bd2936a8fc2947353f5c1ffe374996deab53f07881798fcfe3c8936ddee6163d",
+        "bytes": 192288207
+      },
+      "files": [
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "9cb0b705b91f87ccf06c516881e66076f57ceb5cf468b858ca412adc106ce8b7"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 14778,
+          "sha256": "0ca09f8f213ea156a9adb7d03ea1131f22935f8d694726e765c1c2153514f5ec"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "294c8178515e62a77127a4484df1fbed650d1a8786184793f0cfc53d37ac3643"
+        },
+        {
+          "path": "offline-summary.json",
+          "bytes": 24365,
+          "sha256": "8761bd1d8f8000e4f50be77c4807a230b648991a3f1f85a859685b0e154db5d6"
+        },
+        {
+          "path": "protocol.json",
+          "bytes": 2455,
+          "sha256": "fa75ef5f7a777bbd0e197ee439f267eb3395234f42d26ba26050ac9eda7563d2"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1118,
+          "sha256": "c13010d42de1e173ed8e78680b5f72aad3f2e4e1b81525da059d23a58ad5f1f9"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 3549,
+          "sha256": "f621dced7c1e30c5588fd963d566c207f06ddd654ef3af84d30613fd6c3bd483"
+        }
+      ],
+      "entrypoints": {
+        "act": "actor"
+      },
+      "limitations": [
+        "Own-RGB solo component pilot only; no gate promotion.",
+        "Model loading is distinct from closed-loop physical success.",
+        "Full raw training data and optimizer/RNG checkpoints remain on the original GCP disk."
+      ],
+      "verification_scope": {
+        "training_source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+        "gpu_saved_weight_readback": true,
+        "offline_validation_seeds": [
+          86045,
+          86046,
+          86047,
+          86048,
+          86049
+        ],
+        "student_closed_loop": {
+          "n": null,
+          "N": 0,
+          "scope": "offline-only comparison; no rollout"
+        },
+        "release_redownload_verified": false
+      }
+    },
+    {
+      "id": "grasp-act-solo-main-f609979c",
+      "status": "available",
+      "description": "Fixed main step 10000 own-RGB solo ACT pilot; not a default controller",
+      "source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+      "training_source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+      "release": {
+        "tag": "models-20261015-grasp-act-f609979c",
+        "asset": "grasp-act-solo-main-f609979c.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20261015-grasp-act-f609979c/grasp-act-solo-main-f609979c.zip"
+      },
+      "archive": {
+        "sha256": "315e6752e6c8a6054966b3aac98b39e51d3f18fc0132ef4c308204caed0542c2",
+        "bytes": 192341234
+      },
+      "files": [
+        {
+          "path": "actor/SHA256.json",
+          "bytes": 265,
+          "sha256": "d9005385c5da238e069e5ce08c08d5f342a0a73a1f1310b4703f258ae5a523f7"
+        },
+        {
+          "path": "actor/adapter.json",
+          "bytes": 14780,
+          "sha256": "324cc4c02cc814f4f72fbd1df211e8b61814649066dd29b40917f9c5cb1984a7"
+        },
+        {
+          "path": "actor/config.json",
+          "bytes": 1278,
+          "sha256": "b63bc05fb84e5c0f53329336a7a147f18ca73f297ed25279b42b968e279f571f"
+        },
+        {
+          "path": "actor/model.safetensors",
+          "bytes": 207363320,
+          "sha256": "9f5e469439e1ea8bc7ada73dc558b6f5e7aa48edf71cc416b64b9f7b6929576a"
+        },
+        {
+          "path": "offline-summary.json",
+          "bytes": 24469,
+          "sha256": "affa6d8de05e446f02ba9792f6768836947194363179bd8a9f3e98133e4468e7"
+        },
+        {
+          "path": "protocol.json",
+          "bytes": 2455,
+          "sha256": "fa75ef5f7a777bbd0e197ee439f267eb3395234f42d26ba26050ac9eda7563d2"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1119,
+          "sha256": "e0d6093ee85eaae0f0fc3ff549b7149ff7a52eed2df68c62919f3ff0a049533a"
+        },
+        {
+          "path": "requirements-reference-act.txt",
+          "bytes": 330,
+          "sha256": "fa1d4f36fe5cc2eb43c784a41e5b9e754b6a9ca2f53145242e4803a7f904793d"
+        },
+        {
+          "path": "training-summary.json",
+          "bytes": 14199,
+          "sha256": "7496d7e1698d25afb64bdfc19ecde6dd2efdfa118215ac90b2ee8623b7652a90"
+        }
+      ],
+      "entrypoints": {
+        "act": "actor"
+      },
+      "limitations": [
+        "Own-RGB solo component pilot only; no gate promotion.",
+        "Model loading is distinct from closed-loop physical success.",
+        "Full raw training data and optimizer/RNG checkpoints remain on the original GCP disk."
+      ],
+      "verification_scope": {
+        "training_source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+        "gpu_saved_weight_readback": true,
+        "offline_validation_seeds": [
+          86045,
+          86046,
+          86047,
+          86048,
+          86049
+        ],
+        "student_closed_loop": {
+          "n": 0,
+          "N": 1,
+          "seeds": [
+            91100
+          ],
+          "stopped_unsubmitted": [
+            91101,
+            91102,
+            91103,
+            91104,
+            91105,
+            91106,
+            91107,
+            91108,
+            91109
+          ]
+        },
+        "release_redownload_verified": false
+      }
     }
   ]
 }

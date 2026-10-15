@@ -1,0 +1,249 @@
+{
+  "first30": {
+    "seed": 91100,
+    "scope": "first30",
+    "origin_t": 2.300000000000085,
+    "end_t": 32.300000000063214,
+    "sim_s": 30.000000000063128,
+    "frames": [
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000000.jpg",
+        "relative_path": "rgb/r1/000000.jpg",
+        "t": 2.300000000000085,
+        "sim_s": 0.0,
+        "sha256": "9f7b2ba94d4968ea9b9a0d565fea81716ff4adf768e0275c1c1f6cf65cce1056",
+        "wall_mtime": 1792032508.9773269
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000060.jpg",
+        "relative_path": "rgb/r1/000060.jpg",
+        "t": 8.300000000003331,
+        "sim_s": 6.000000000003246,
+        "sha256": "9b3b6b31f73720bfd521c2497a4c61f91016a813f72ee9bafc8dd9c366ff9325",
+        "wall_mtime": 1792032525.999633
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000120.jpg",
+        "relative_path": "rgb/r1/000120.jpg",
+        "t": 14.299999999989348,
+        "sim_s": 11.999999999989264,
+        "sha256": "6ed1a19017ca5373aa39680c7654c404c087b43cb6012724eaed2f131069b031",
+        "wall_mtime": 1792032543.3786
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000180.jpg",
+        "relative_path": "rgb/r1/000180.jpg",
+        "t": 20.300000000005916,
+        "sim_s": 18.00000000000583,
+        "sha256": "09bb8067b0f426487a0ad7bc5cbcc795692d21c12dbbfffd8c5135ab39aaae20",
+        "wall_mtime": 1792032561.1406443
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000240.jpg",
+        "relative_path": "rgb/r1/000240.jpg",
+        "t": 26.300000000034565,
+        "sim_s": 24.00000000003448,
+        "sha256": "f29b26eb4687f79fc5892fc7eee3b0a484183a6658912ff977681f9857f6c034",
+        "wall_mtime": 1792032580.42076
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000300.jpg",
+        "relative_path": "rgb/r1/000300.jpg",
+        "t": 32.300000000063214,
+        "sim_s": 30.000000000063128,
+        "sha256": "ab94ba19c688b6c4bd7cd8211054006973d94aa88bce4b3eacf6be6ed3bcdf94",
+        "wall_mtime": 1792032598.9775543
+      }
+    ],
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 301
+    },
+    "input_fields": [
+      "destination_zone",
+      "issued",
+      "object_kind",
+      "pwm_elapsed_s",
+      "rgb",
+      "robot_id",
+      "role",
+      "sample_id",
+      "schema",
+      "skill",
+      "skill_elapsed_s",
+      "t"
+    ],
+    "observations": 301,
+    "skills": {
+      "grasp": 301
+    },
+    "done_requests": 0,
+    "command_skill_counts": {
+      "grasp": 301
+    },
+    "input_prefix_sha256": "52e08936b6927f549878627523f386eea7936f044286e067b60c28c581213541",
+    "frame_interval_wall_per_sim": 3.0000075817045024,
+    "eval_only_partial": {
+      "lift": {
+        "lift_success": false,
+        "max_stable_lift_s": 0.0,
+        "criteria": {
+          "clearance_m": 0.012,
+          "tilt_deg": 10.0,
+          "finger_each_n": 0.5,
+          "hold_s": 3.0,
+          "weld": "off"
+        }
+      },
+      "drop_detected": false,
+      "max_stable_release_s": 0.0
+    },
+    "original": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw",
+    "research_result": false,
+    "direct_visual_review": {
+      "reviewed_at": "2026-10-15T11:51:39.652436+09:00",
+      "frames_n": 6,
+      "sim_s": [
+        0,
+        6,
+        12,
+        18,
+        24,
+        30
+      ],
+      "observations": [
+        "0s cyan box visible near image center",
+        "6s cyan box clipped at right edge",
+        "12s box near right edge",
+        "18s and 24s box partly clipped at right edge",
+        "30s box outside image; floor only"
+      ],
+      "assessment": "observed loss of target framing during approach; final outcome not yet available at this review"
+    }
+  },
+  "final": {
+    "seed": 91100,
+    "scope": "final",
+    "origin_t": 2.300000000000085,
+    "end_t": 92.19999999954773,
+    "sim_s": 89.89999999954765,
+    "frames": [
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000000.jpg",
+        "relative_path": "rgb/r1/000000.jpg",
+        "t": 2.300000000000085,
+        "sim_s": 0.0,
+        "sha256": "9f7b2ba94d4968ea9b9a0d565fea81716ff4adf768e0275c1c1f6cf65cce1056",
+        "wall_mtime": 1792032508.9773269
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000180.jpg",
+        "relative_path": "rgb/r1/000180.jpg",
+        "t": 20.300000000005916,
+        "sim_s": 18.00000000000583,
+        "sha256": "09bb8067b0f426487a0ad7bc5cbcc795692d21c12dbbfffd8c5135ab39aaae20",
+        "wall_mtime": 1792032561.1406443
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000360.jpg",
+        "relative_path": "rgb/r1/000360.jpg",
+        "t": 38.30000000009186,
+        "sim_s": 36.00000000009178,
+        "sha256": "c9da06ce34b7f3bc6eed0dedaa794f617a5c2ef13a6389ea37b8dee07c11c6c0",
+        "wall_mtime": 1792032616.0326848
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000539.jpg",
+        "relative_path": "rgb/r1/000539.jpg",
+        "t": 56.20000000017733,
+        "sim_s": 53.90000000017725,
+        "sha256": "d2d60a1ba2a86782b4e732f3aef52bc3e1175a3e50219a750c93306cd053fe94",
+        "wall_mtime": 1792032671.6769192
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000719.jpg",
+        "relative_path": "rgb/r1/000719.jpg",
+        "t": 74.19999999997337,
+        "sim_s": 71.89999999997329,
+        "sha256": "f5b1088fb84579b4a49beab6006eddd7d2e744dcac065d3c12091d144487b964",
+        "wall_mtime": 1792032726.3613505
+      },
+      {
+        "path": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw/rgb/r1/000899.jpg",
+        "relative_path": "rgb/r1/000899.jpg",
+        "t": 92.19999999954773,
+        "sim_s": 89.89999999954765,
+        "sha256": "f1aa54dbc1cee86aa99d9c22fe3c07654a91e06c2da2368953375fe708eab7b3",
+        "wall_mtime": 1792032777.4696848
+      }
+    ],
+    "input_audit": {
+      "forbidden_input_fields": 0,
+      "teacher_input_fields": 0,
+      "requests": 900
+    },
+    "input_fields": [
+      "destination_zone",
+      "issued",
+      "object_kind",
+      "pwm_elapsed_s",
+      "rgb",
+      "robot_id",
+      "role",
+      "sample_id",
+      "schema",
+      "skill",
+      "skill_elapsed_s",
+      "t"
+    ],
+    "observations": 900,
+    "skills": {
+      "grasp": 900
+    },
+    "done_requests": 0,
+    "command_skill_counts": {
+      "grasp": 900
+    },
+    "input_prefix_sha256": "f2cef69b983993205b441714a9967c50f544f07c24e427bfd39a831ffe2cf8e8",
+    "frame_interval_wall_per_sim": 2.9865668294842607,
+    "eval_only_partial": {
+      "lift": {
+        "lift_success": false,
+        "max_stable_lift_s": 0.0,
+        "criteria": {
+          "clearance_m": 0.012,
+          "tilt_deg": 10.0,
+          "finger_each_n": 0.5,
+          "hold_s": 3.0,
+          "weld": "off"
+        }
+      },
+      "drop_detected": false,
+      "max_stable_release_s": 0.0
+    },
+    "original": "/home/ugrp/ugrp-sim/runs/act-student-main-91100-f609979c/raw",
+    "research_result": false,
+    "direct_visual_review": {
+      "reviewed_at": "2026-10-15T11:54:55.868300+09:00",
+      "frames_n": 6,
+      "sim_s": [
+        0,
+        18,
+        36,
+        53.9,
+        71.9,
+        89.9
+      ],
+      "observations": [
+        "0s cyan box near image center",
+        "18s box clipped at right edge",
+        "36s only a narrow part of box at far right",
+        "53.9s,71.9s,89.9s nearly unchanged floor view and a narrow box edge at right"
+      ],
+      "failure_mechanism": "approach/alignment failed to bring target into grasp framing; no stable lift and no grasp done through 90 SIM seconds",
+      "root_training_cause": "not established; offline done detection is 0/5 for each skill",
+      "success_sample_available": false
+    }
+  }
+}
