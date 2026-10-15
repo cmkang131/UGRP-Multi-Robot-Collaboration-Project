@@ -14,7 +14,7 @@ import shutil
 import numpy as np
 
 from harness import grasp_act_contract as c
-from harness.grasp_act_data import (fit_stats, image_array, read_rows, safe_path,
+from harness.grasp_act_data import (fit_stats, image_array, read_json, read_rows, safe_path,
                                     sha256, write_json, GraspDataset)
 
 
@@ -30,7 +30,7 @@ def aggregate(base, runs, output):
     new_seeds=[];audits=[]
     for run in runs:
         raw=run/'raw' if (run/'raw').exists() else run
-        report=json.loads((raw/'summary.json').read_text())
+        report=read_json(existing(raw/'summary.json'))
         if not report['complete'] or report['status']!='complete':raise ValueError('unretrieved/HOST_ERROR collection')
         seed=report['seed']
         if seed in base_seeds or seed in new_seeds:raise ValueError('seed leakage')
@@ -81,7 +81,7 @@ def aggregate(base, runs, output):
             if any(not np.array_equal(saved[k],v) for k,v in values.items()):raise ValueError('tensor readback mismatch')
         write_json(folder/'samples.json',[{k:obs[k] for k in ('sample_id','robot_id','role','object_kind','skill','t')} for obs,_ in pairs])
         write_json(folder/'rgb-provenance.json',[refs[p] for p in ordered])
-        sources=[raw/'summary.json',raw/'shadow-progress.json',existing(raw/'shadow-labels.jsonl'),
+        sources=[existing(raw/'summary.json'),raw/'shadow-progress.json',existing(raw/'shadow-labels.jsonl'),
                  existing(raw/'student-inputs.jsonl'),existing(raw/'commands.jsonl'),raw/'plan.json']
         record={'path':folder.name,'seed':seed,'split':'train','robot_id':'r1','source_root':str(run),
             'source_hashes':{str(p.relative_to(run)):sha256(p) for p in sources},
