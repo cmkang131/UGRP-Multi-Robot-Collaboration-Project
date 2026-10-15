@@ -10,6 +10,7 @@ from scripts.prepare_beampair1 import prepare
 from scripts.run_beampair1 import dependency_modules
 
 MODE='beampair_gate_valid_v2'
+CARGO_MODE='beampair_gate_cargo_v3'
 ROOT=Path(__file__).resolve().parents[1]
 EXP=ROOT/'experiments/2026-10-16-beampair6'
 
@@ -26,11 +27,11 @@ def distribution_k(report):
     return min(values)
 
 
-def validity_checker(family,body_clearance,margin,k):
+def validity_checker(family,body_clearance,margin,k,*,cargo_rects=()):
     """Authored setup geometry only. Never called by any teacher/control path."""
     import math
     def check(pose,static):
-        rects=[(o['id'],(*o['center_m'],*o['half_extents_m'],o.get('yaw_rad',0.))) for o in static['obstacles']]
+        rects=[(o['id'],(*o['center_m'],*o['half_extents_m'],o.get('yaw_rad',0.))) for o in static['obstacles']]+list(cargo_rects)
         ends={}
         for end,d in (('teal',-.27),('blue',.27)):
             x,y=pose[0]+d*math.cos(pose[2]),pose[1]+d*math.sin(pose[2]);free=0;blocks=[]
@@ -56,7 +57,7 @@ def generate(seed,output,dependency,mode):
         raise ValueError('new output directory required; previous evidence is immutable')
     if mode=='off':
         return prepare(seed,output=output)
-    if mode!=MODE:raise ValueError('unknown setup validity mode')
+    if mode not in (MODE,CARGO_MODE):raise ValueError('unknown setup validity mode')
     report_path=EXP/'placement-validity.json';report=json.loads(report_path.read_bytes());k=distribution_k(report)
     with dependency_modules(dependency):
         from sim.grasp_act_search24 import reachability_map
@@ -64,13 +65,27 @@ def generate(seed,output,dependency,mode):
         from sim.grasp_act_search21 import FRESH_MARGIN_M
         from sim.zone_cargo import kind
         family=reachability_map(kind('long_beam').grasps[0].grip_xyz[2])
-        check=validity_checker(family,body_clearance,FRESH_MARGIN_M,k)
-    prepare(seed,output=output,validity=check,version='beampair6')
+        cargo=[]
+        if mode==CARGO_MODE:
+            from sim.zone_arena import BOX_HALF,COLORS
+            scenario=json.loads((ROOT/'experiments/2026-10-15-beampair1/scenario-v7.json').read_bytes())
+            for p in scenario['eval']['setup']['placements']:
+                if p['item_id']=='beam_1':continue
+                half=BOX_HALF[:2] if p['kind'] in COLORS else kind(p['kind']).landing_half_extents_m
+                x,y,a=p['pose_m'];cargo.append((p['item_id'],(x,y,*half,a)))
+            # Setup only: original v2 checked walls but allowed 8328068 and
+            # 8328183 with0/91 cargo-clear stances. Retain k=91 and the native
+            # 5mm envelope; do not tune admission against teacher outcomes.
+        check=validity_checker(family,body_clearance,FRESH_MARGIN_M,k,cargo_rects=cargo)
+    prepare(seed,output=output,validity=check,version='beampair9' if mode==CARGO_MODE else 'beampair6')
     for name in ('gate-plan.json','setup-funnel.json'):
         path=output/name;value=json.loads(path.read_bytes())
-        value.update(setup_validity=MODE,default='off',k=k,k_basis='v7 initial and authored fixed-event end count minimum',
+        if mode==CARGO_MODE:
+            for e in value.get('episodes',[]):e['setup_validity']=mode
+        value.update(setup_validity=mode,default='off',k=k,k_basis='v7 initial and authored fixed-event end count minimum',
+            cargo_footprints_included=mode==CARGO_MODE,
             census_sha256=hashlib.sha256(report_path.read_bytes()).hexdigest(),dependency_sha=report['dependency_sha'],
-            reproduce=f'python -m scripts.prepare_beampair6 --seed {seed} --output {output} --dependency-root {dependency} --setup-validity {MODE}',
+            reproduce=f'python -m scripts.prepare_beampair6 --seed {seed} --output {output} --dependency-root {dependency} --setup-validity {mode}',
             scope='setup-only; positions excluded from all action selection; not physical success')
         path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n')
 
@@ -79,5 +94,5 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--seed',type=int,default=8318700)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--dependency-root',type=Path,required=True)
-    p.add_argument('--setup-validity',choices=['off',MODE],default='off')
+    p.add_argument('--setup-validity',choices=['off',MODE,CARGO_MODE],default='off')
     a=p.parse_args();generate(a.seed,a.output,a.dependency_root,a.setup_validity)

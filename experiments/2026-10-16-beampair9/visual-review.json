@@ -1,0 +1,48 @@
+{
+  "method": "existing GCP ffmpeg3x own+overview playback; direct entire2Hz and final10SIMs10Hz strips; no Mac GUI",
+  "runs": [
+    {
+      "seed": 8328015,
+      "full_range": [
+        0,
+        30.3
+      ],
+      "full_2hz_N": 62,
+      "tail_10hz_N": 101,
+      "observations": [
+        "r2 teal ready by2s; r1 blue approach3-18s",
+        "r1 aligns19-30.3s, repeated relook without translation; r2 stays ready",
+        "10Hz confirms stationary/error-floor behavior, no fast base oscillation seen"
+      ]
+    },
+    {
+      "seed": 8328010,
+      "full_range": [
+        0,
+        39.5
+      ],
+      "full_2hz_N": 80,
+      "tail_10hz_N": 101,
+      "observations": [
+        "0-8s close crossing and transient peer occlusion",
+        "8-29s different colored ends remain visible; r1 and r2 close on same side of beam",
+        "29-39.5s r1 fan/reacquire; r2 slowly aligns; no joint pick;10Hz shows repeated camera gaze changes"
+      ]
+    },
+    {
+      "seed": 8328003,
+      "full_range": [
+        0,
+        24.5
+      ],
+      "full_2hz_N": 50,
+      "observations": [
+        "r2 teal ready by2s",
+        "r1 approaches3-12s and aligns12-17s",
+        "both pick17-23s; complete23-24.5s; cargo fills own view"
+      ]
+    }
+  ],
+  "all15_montage_timestamps": 6,
+  "scope": "own original10Hz pixels, overview evaluator-only saved qpos; playback source beampair8, no new rendering on Mac"
+}

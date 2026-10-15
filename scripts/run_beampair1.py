@@ -30,6 +30,7 @@ from harness.beampair_host import gcp2_identity
 from harness.beampair_wall_layer import WallLayer, MODE as WALL_MODE
 from harness.beampair_visible_rays import visible_rays
 from harness.beampair_peer_yield import PeerYieldMixin, MODE as PEER_YIELD_MODE
+from harness.beampair_geometry import navigation_class, checks_only_class, MODE as BOX_MODE, CHECKS_MODE
 
 ROOT=Path(__file__).resolve().parents[1]
 EXP=ROOT/'experiments/2026-10-15-beampair1'
@@ -147,12 +148,15 @@ def setup_admission(plan,scenario):
 
 def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,rendezvous='off',
         approach_repair='off',failure_tail=True,wall_layer='off',peer_yield='off',
-        record_training=False,recording_proof=None,recording_capture_cache='off'):
+        record_training=False,recording_proof=None,recording_capture_cache='off',
+        box_geometry='off',planning_boundary='off'):
     if platform.system()!='Linux':raise RuntimeError('GCP Linux only; Mac physics/render forbidden')
     if mode!=MODE:raise ValueError('explicit beampair1_v1 opt-in required')
     if approach_repair not in ('off',APPROACH_MODE,APPROACH_BOUNDED_MODE):raise ValueError('unknown approach repair')
     if wall_layer not in ('off',WALL_MODE):raise ValueError('unknown wall layer')
     if peer_yield not in ('off',PEER_YIELD_MODE):raise ValueError('unknown peer yield')
+    if box_geometry not in ('off',BOX_MODE):raise ValueError('unknown box geometry')
+    if planning_boundary not in ('off',CHECKS_MODE):raise ValueError('unknown planning boundary')
     if record_training and (not recording_proof or recording_proof.get('qualified') is not True):
         raise ValueError('verified beampair7 gate proof required for recording')
     if recording_capture_cache not in ('off','recording_capture_cache_v1'):
@@ -197,6 +201,12 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         from sim import grasp_act_teacher_v3 as teacher_module
         from harness import grasp_act_input_audit as audit_module
         from sim import grasp_act_search22 as candidate_record_module
+        from sim import grasp_act_search23 as navigation_module
+        from sim import grasp_act_search20 as budget_module
+        original_navigation=navigation_module.BodyNavigation
+        original_budget=budget_module.PlanningBudget
+        if box_geometry!='off':navigation_module.BodyNavigation=navigation_class(original_navigation)
+        if planning_boundary!='off':budget_module.PlanningBudget=checks_only_class(original_budget)
         original_record_candidates=candidate_record_module.record_candidates
         original_measure=measurements_module.measurements
         original_world=world_module.VisibleWorld
@@ -270,8 +280,13 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
                 self.wall_layer_mode=wall_layer
                 self.peer_yield=peer_yield;self.peer_yield_log=[]
                 self.peer_yield_connector_log=[];self.peer_yield_failed_anchors=set()
+                self.box_geometry=box_geometry;self.box_geometry_log=[]
                 ticks=plan['burst_ticks'] if rid=='r1' else 13-plan['burst_ticks']
                 self.pair_perturb=PairRecoveryPerturb(perturb_model(ticks),seed=plan['seed']+(rid=='r2'))
+            def diagnostic(self):
+                d=super().diagnostic()
+                d.update(box_geometry=box_geometry,box_geometry_log=self.box_geometry_log,planning_boundary=planning_boundary)
+                return d
             def _plan_approach(self,w,now):
                 valid=super()._plan_approach(w,now)
                 if wall_layer!='off' and not valid and not models[self.rid].wall_layer.active:
@@ -330,6 +345,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             runner.snapshot=original_snapshot
             drive_module.build_world=original_build
             candidate_record_module.record_candidates=original_record_candidates
+            navigation_module.BodyNavigation=original_navigation
+            budget_module.PlanningBudget=original_budget
             # Separate adapter result, leaving the dependency's raw result and
             # manifest intact. Both full source SHAs are required for identity.
             adapter=out.parent/'adapter';adapter.mkdir(parents=True,exist_ok=False)
@@ -344,6 +361,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
                 'peer_rendezvous':rendezvous,
                 'approach_repair':approach_repair,'failure_tail_recording':failure_tail,'wall_layer':wall_layer,
                 'peer_yield':peer_yield,
+                'box_geometry':box_geometry,'planning_boundary':planning_boundary,
                 'mode':mode,'held_object_hidden_v1':True,'held_world_reads':guard.held_world_reads,
                 'first_close_t':guard.first_close_t,'hidden_measurement_ticks':guard.hidden_measurement_ticks,
                 'input_audit':audit,'training_rgb':record_training,'profiles':selected,'result':report,
@@ -375,9 +393,11 @@ if __name__=='__main__':
     p.add_argument('--approach-repair',choices=['off',APPROACH_MODE,APPROACH_BOUNDED_MODE],default='off')
     p.add_argument('--wall-layer',choices=['off',WALL_MODE],default='off')
     p.add_argument('--peer-yield',choices=['off',PEER_YIELD_MODE],default='off')
+    p.add_argument('--box-geometry',choices=['off',BOX_MODE],default='off')
+    p.add_argument('--planning-boundary',choices=['off',CHECKS_MODE],default='off')
     p.add_argument('--failure-tail',action=argparse.BooleanOptionalAction,default=True,
                    help='Recording only: retain last10 SIM seconds own RGB on failure/interruption')
     a=p.parse_args();run(json.loads(a.plan.read_text())['episodes'][a.episode],a.out,a.dependency_root,
                          mode=a.mode,candidate=a.candidate,cap_s=a.cap_s,rendezvous=a.rendezvous,
                          approach_repair=a.approach_repair,failure_tail=a.failure_tail,wall_layer=a.wall_layer,
-                         peer_yield=a.peer_yield)
+                         peer_yield=a.peer_yield,box_geometry=a.box_geometry,planning_boundary=a.planning_boundary)
