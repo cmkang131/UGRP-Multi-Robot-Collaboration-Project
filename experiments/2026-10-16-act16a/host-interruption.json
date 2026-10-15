@@ -1,0 +1,15 @@
+{
+  "schema": "ugrp.act16a.host_interruption.v1",
+  "project": "ugrp-sim-b-1014",
+  "instance": "ugrp-sim-gcp2",
+  "stop_requested_utc": "2026-10-15T16:15:49.273993Z",
+  "stop_completed_utc": "2026-10-15T16:16:44.991206Z",
+  "audit_method": "v1.compute.instances.stop",
+  "principal": "changmin5781@gmail.com",
+  "caller_agent": "claude_code on macOS gcloud",
+  "invocation_id": "6dbb229fb87045b795cfb48f002dd9d6",
+  "conclusion_scope": "Audit identifies direct Mac CLI stop; task ownership inferred only from concurrent records and not asserted.",
+  "response": "Restarted GCP2 CPU within user authorization, registered own shared lease, retained all partial attempts and resumed only missing work.",
+  "training_runs": 0,
+  "this_stop_trigger": "Direct Mac CLI, as identified by the stop operation audit; no budget-function caller in this operation."
+}

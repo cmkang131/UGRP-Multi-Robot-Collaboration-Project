@@ -1,0 +1,404 @@
+{
+  "schema": "ugrp.act16a.summary.v1",
+  "date_kst": "2026-10-16",
+  "analysis_complete": true,
+  "ready_for_adoption": false,
+  "task": "ACT15 student failure analysis only",
+  "scope": "DEV staged solo box near-field grasp, not navigation/E2E or real robot",
+  "training": {
+    "runs": 0,
+    "optimizer_steps": 0,
+    "gpu_hours": 0,
+    "approved": false,
+    "plan": "act16-training-plan.json"
+  },
+  "hosts": {
+    "analysis": "ugrp-sim-b-1014/ugrp-sim-gcp2/n4-highcpu-64",
+    "gcp1_accessed": false,
+    "gcp1_copy_or_snapshot": false,
+    "mac_training_physics_render_runs": 0,
+    "mac_GUI_opened": false,
+    "cpu_final_state": "RUNNING for other tasks",
+    "other_cpu_leases": [
+      "beampair5.json",
+      "scenetex3"
+    ],
+    "own_processes_remaining": 0,
+    "own_shared_lease_removed": true,
+    "l4_final_observed_state": "TERMINATED; ownership release unverified, ACT16a never used it"
+  },
+  "source": {
+    "act15_base": "3f99d58c5ada0862e669ef4065c0ba957f1b4547",
+    "rollout_sha": "b4db8ba2fb155ad53b210b48f645fcc759157e7b",
+    "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+    "model_sha256": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1"
+  },
+  "cohorts": {
+    "pooling": false,
+    "original_gcp1": {
+      "same20": [
+        20,
+        13,
+        2,
+        2,
+        0
+      ],
+      "new20": [
+        20,
+        12,
+        1,
+        0,
+        0
+      ]
+    },
+    "regenerated_gcp2": {
+      "same20": [
+        20,
+        13,
+        2,
+        2,
+        0
+      ],
+      "new20": [
+        20,
+        12,
+        1,
+        0,
+        0
+      ]
+    },
+    "completion_each_host": 0
+  },
+  "largest_failure": {
+    "category": "alignment_not_passed",
+    "runs": 22,
+    "denominator": 40,
+    "all_first_rejections": {
+      "alignment_not_passed": 22,
+      "approach_not_passed": 15,
+      "grasp_not_passed": 1,
+      "lift_confirmation_not_passed": 2
+    },
+    "action_symptom": "insufficient corrective change, persistent preceding wheel signs",
+    "causal_status": "history shortcut/copycat hypothesis supported for first matched A/B; not causally established"
+  },
+  "persistence": {
+    "valid_expert_rows": 12776,
+    "refresh_only_rows": 1573,
+    "issued": {
+      "n": 12776,
+      "act_wheel_mae": 0.1800033538316835,
+      "persistence_wheel_mae": 0.18084309762983453,
+      "wheel_mae_improvement_percent": 0.4643493775305041,
+      "act_sign_mismatch": 0.43411474639949904,
+      "persistence_sign_mismatch": 0.43538666249217284,
+      "act_pulse_mae_ms": 24.07774763942582,
+      "persistence_pulse_mae_ms": 24.089175158995523,
+      "act_pwm_mae": 40.60616781465247,
+      "persistence_pwm_mae": 38.211521603005636,
+      "previous_sign_agreement": 0.9714112398246713,
+      "corrective_wheels": 22250,
+      "copied_on_correction": 0.9598202247191011,
+      "matched_on_correction": 0.02840449438202247
+    },
+    "refresh_only": {
+      "n": 1573,
+      "act_wheel_mae": 0.17561473833190405,
+      "persistence_wheel_mae": 0.18097933250759862,
+      "wheel_mae_improvement_percent": 2.96420265306776,
+      "act_sign_mismatch": 0.42418944691671967,
+      "persistence_sign_mismatch": 0.431659249841068,
+      "act_pulse_mae_ms": 23.98458248822814,
+      "persistence_pulse_mae_ms": 24.362206278872062,
+      "act_pwm_mae": 48.18321678321679,
+      "persistence_pwm_mae": 38.290781945327396,
+      "previous_sign_agreement": 0.8566433566433567,
+      "corrective_wheels": 2716,
+      "copied_on_correction": 0.7941826215022091,
+      "matched_on_correction": 0.14359351988217967
+    },
+    "baseline_scope": "last own issued command as one-step predictor on fixed ACT trajectory, not a separate closed-loop rollout"
+  },
+  "reversals": {
+    "all_requiring_response": {
+      "events": 153,
+      "target_dwell_s": {
+        "n": 153,
+        "mean": 3.0339869281049863,
+        "p50": 2.4000000000109822,
+        "p95": 8.099999999993436,
+        "max": 36.10000000016408
+      },
+      "act": {
+        "matched": 29,
+        "censored": 124,
+        "matched_delay_s": {
+          "n": 29,
+          "mean": 0.8758620689656503,
+          "p50": 0.7999999999981355,
+          "p95": 1.7199999999982647,
+          "max": 2.7999999999988026
+        }
+      },
+      "persistence": {
+        "matched": 29,
+        "censored": 124,
+        "matched_delay_s": {
+          "n": 29,
+          "mean": 0.9758620689656623,
+          "p50": 0.8999999999979025,
+          "p95": 1.8199999999981737,
+          "max": 2.8999999999985695
+        }
+      }
+    },
+    "long_dwell": {
+      "stratum_min_dwell_s": 0.8,
+      "basis": "existing8-action chunk x0.1s; descriptive stratum, not an added acceptance criterion",
+      "events": 113,
+      "act": {
+        "matched": 27,
+        "censored": 86,
+        "matched_delay_s": {
+          "n": 27,
+          "mean": 0.9333333333334936,
+          "p50": 0.7999999999992005,
+          "p95": 1.7399999999976499,
+          "max": 2.7999999999988026
+        }
+      },
+      "persistence": {
+        "matched": 27,
+        "censored": 86,
+        "matched_delay_s": {
+          "n": 27,
+          "mean": 1.0333333333335106,
+          "p50": 0.8999999999989674,
+          "p95": 1.8399999999975234,
+          "max": 2.8999999999985695
+        }
+      }
+    }
+  },
+  "masking": {
+    "queries": 3139,
+    "mean_decoded_h0_change": {
+      "wheel_mae": {
+        "n": 3139,
+        "mean": 0.016533099359675393,
+        "p50": 0.0,
+        "p95": 0.08460487180979542,
+        "max": 0.4318364294961963
+      },
+      "wheel_sign_mismatch": {
+        "n": 3139,
+        "mean": 0.04388340235743868,
+        "p50": 0.0,
+        "p95": 0.25,
+        "max": 1.0
+      },
+      "pulse_mae_ms": {
+        "n": 3139,
+        "mean": 2.954891848717698,
+        "p50": 1.1947511447797508,
+        "p95": 12.306596598449062,
+        "max": 52.23326261674398
+      },
+      "pwm_mae": {
+        "n": 3139,
+        "mean": 31.355272379738768,
+        "p50": 23.8,
+        "p95": 70.01999999999998,
+        "max": 165.8
+      }
+    },
+    "done_flips": 2,
+    "stored_chunk_max_abs_error": 0.0,
+    "error_before": {
+      "wheel_mae": {
+        "n": 1573,
+        "mean": 0.17561473833190405,
+        "p50": 0.18331254351376103,
+        "p95": 0.35561247666443324,
+        "max": 0.6789057735530324
+      },
+      "wheel_sign_mismatch": {
+        "n": 1573,
+        "mean": 0.42418944691671967,
+        "p50": 0.25,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "pulse_mae_ms": {
+        "n": 1573,
+        "mean": 23.98458248822814,
+        "p50": 21.015712388295192,
+        "p95": 67.67983890747573,
+        "max": 100.0
+      },
+      "pwm_mae": {
+        "n": 1573,
+        "mean": 48.18321678321679,
+        "p50": 45.4,
+        "p95": 99.47999999999998,
+        "max": 228.0
+      }
+    },
+    "error_after": {
+      "wheel_mae": {
+        "n": 1573,
+        "mean": 0.17297400932086324,
+        "p50": 0.17737436077215946,
+        "p95": 0.36248772212411645,
+        "max": 0.6758076530452897
+      },
+      "wheel_sign_mismatch": {
+        "n": 1573,
+        "mean": 0.41354100445009534,
+        "p50": 0.25,
+        "p95": 1.0,
+        "max": 1.0
+      },
+      "pulse_mae_ms": {
+        "n": 1573,
+        "mean": 23.21023961328698,
+        "p50": 20.30373275615307,
+        "p95": 65.34265657721988,
+        "max": 100.0
+      },
+      "pwm_mae": {
+        "n": 1573,
+        "mean": 55.0893833439288,
+        "p50": 45.6,
+        "p95": 127.55999999999995,
+        "max": 211.2
+      }
+    },
+    "interpretation": "post-hoc OOD sensitivity only, no adoption or success inference"
+  },
+  "done": {
+    "requested": 26,
+    "without_stable_lift": 26,
+    "times_world_sim_s": {
+      "n": 26,
+      "mean": 49.0000000000707,
+      "p50": 56.00000000017638,
+      "p95": 82.72499999977178,
+      "max": 90.89999999957847
+    },
+    "first_failed_gate": {
+      "alignment": 11,
+      "approach": 12,
+      "lift_confirmation": 2,
+      "grasp": 1
+    }
+  },
+  "cap_end": 15,
+  "termination_student_done": 25,
+  "done_also_cap_end": 1,
+  "verification": {
+    "raw_rows": 25806,
+    "own_rgb_files": 25806,
+    "input_and_shadow_violations": 0,
+    "teacher_actions_executed": 0,
+    "saved_original_frame_fingerprints_matching": 240,
+    "saved_original_frame_fingerprints_total": 240,
+    "original_outcome_summaries_matching": 40,
+    "full_original_GCP1_trajectory_byte_comparison": "unavailable",
+    "unit_tests": {
+      "Mac": "7 passed, 1 skipped (torch absent)",
+      "GCP2": "3 passed"
+    },
+    "release_files_verified": 10,
+    "cpu_model_loaded": true
+  },
+  "playback": {
+    "failures": 2,
+    "teacher_successes": 1,
+    "pages_read": 32,
+    "speed": 3,
+    "scope": "whole2Hz plus pre-done10Hz10SIMseconds for failures; r2 N/A, overview evaluation only",
+    "record": "playback-review.json"
+  },
+  "attempt_accounting": {
+    "primary_student_runs": 40,
+    "external_stop_partial_rollouts": 11,
+    "initialization_HOST_ERROR_without_actions": 1,
+    "extra_completed_student_pilot": 1,
+    "teacher_review": 1,
+    "inference_only_recovery": 3,
+    "postprocessing_path_error": "preserved and superseded by final-analysis-v2; no rollout repeated for this error"
+  },
+  "candidate_order": [
+    "history_causal_split_v1",
+    "rgb_current_full_v1 / rgb_shift_small_v1",
+    "recovery_coverage_sampler_v1"
+  ],
+  "candidate_order_scope": "History split is supported as the first causal A/B by persistence-relative errors and masking sensitivity. RGB vs recovery ordering remains unmeasured; research-act sequence2 then3 is provisional.",
+  "new_evaluation_plan": {
+    "seeds": [
+      91620,
+      91621,
+      91622,
+      91623,
+      91624,
+      91625,
+      91626,
+      91627,
+      91628,
+      91629,
+      91630,
+      91631,
+      91632,
+      91633,
+      91634,
+      91635,
+      91636,
+      91637,
+      91638,
+      91639,
+      91640,
+      91641,
+      91642,
+      91643,
+      91644,
+      91645,
+      91646,
+      91647,
+      91648,
+      91649,
+      91650,
+      91651,
+      91652,
+      91653,
+      91654,
+      91655,
+      91656,
+      91657,
+      91658,
+      91659
+    ],
+    "new_unique_setups": 40,
+    "known_previous_plans": 120,
+    "executed": false
+  },
+  "missing": {
+    "original_dataset_required_files": 282,
+    "original_dataset_inventory_basis": "converter layout, not recovered manifest",
+    "original_eval_raw_runs": 40,
+    "original_GCP1_sources_available": false,
+    "checkpoint_and_TRAIN_stats_available": true,
+    "record": "missing-data.json"
+  },
+  "raw_root": "/home/ugrp/ugrp-sim/runs/act16a-gcp2-<seed>-b4db8ba2[-retry1]/raw",
+  "remote_analysis_root": "/home/ugrp/ugrp-sim/act16a/final-analysis-v2",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/act16-analysis/experiments/2026-10-16-act16a/rejection_table.json",
+  "remaining": [
+    "Causal A/B retraining not approved or executed.",
+    "GCP2 new teacher40 gate and separately authorized data regeneration required before training.",
+    "Original dataset/raw remain on prohibited GCP1 disks; GCP2 full raw has no independent complete backup.",
+    "RGB-vs-recovery candidate benefit/order unmeasured."
+  ],
+  "speed_record": "first30-speed-final.json",
+  "artifact_integrity": "SHA256SUMS"
+}

@@ -12,7 +12,7 @@
     "instance": "ugrp-act-l4-gcp2",
     "machine": "g2-standard-8",
     "accelerator": "L4",
-    "availability": "simalt4 owns it; no access/start/reservation/training by ACT16a",
+    "availability": "At task start simalt4 owned the L4; final cloud stateTERMINATED, ownership release not verified. No use/start/reservation by ACT16a.",
     "training_runs_this_task": 0
   },
   "data": {
@@ -59,7 +59,7 @@
     "rgb_current_full_v1 / rgb_shift_small_v1",
     "recovery_coverage_sampler_v1"
   ],
-  "order_scope": "Keep research-act priority pending full measurements; only matched retraining can resolve causal benefit. RGB-vs-sampler superiority is unmeasured.",
+  "order_scope": "History split is supported as the first causal A/B by persistence-relative errors and masking sensitivity. RGB vs recovery ordering remains unmeasured; research-act sequence2 then3 is provisional.",
   "comparisons": [
     {
       "priority": 1,
@@ -411,8 +411,20 @@
     ],
     "start_policy": "Generate fresh poses from frozen setup sampler; hash spawns/target/scenario and reject duplicates of known training/evaluation starts before use.",
     "matching": "Identical new states across arms, GCP2 CPU only, do not pool with GCP1.",
-    "plan_state": "seeds reserved in this plan only; no physical evaluation or tuning on these seeds in ACT16a",
+    "plan_state": "40 static unique starting states prepared, no rollout/optimizer run; compare selected final TRAIN manifest once regenerated before execution",
     "release_test": "choose on new development20; confirmation20 opened once after selection; no per-seed tuning",
-    "runner_limits": "90 SIM seconds; setup400 proposals/2000 parking checks unchanged; wall watchdog is resource protection only"
+    "runner_limits": "90 SIM seconds; setup400 proposals/2000 parking checks unchanged; wall watchdog is resource protection only",
+    "static_plans_file": "/Users/changmin/projects/ugrp-wt/act16-analysis/experiments/2026-10-16-act16a/eval-plans.json",
+    "setup_funnel_file": "/Users/changmin/projects/ugrp-wt/act16-analysis/experiments/2026-10-16-act16a/setup-funnel.json",
+    "static_setups_verified_unique": 40,
+    "known_previous_plans_compared": 120
+  },
+  "analysis_evidence": {
+    "metrics": "metrics.json",
+    "refresh_only_copy_on_correction": 0.7941826215022091,
+    "refresh_only_wheel_mae_improvement_over_persistence_percent": 2.96420265306776,
+    "history_mask_queries": 3139,
+    "history_mask_pwm_mae_increase": true,
+    "note": "No post-hoc mask rollout or matched retraining performed; benefits not established."
   }
 }
