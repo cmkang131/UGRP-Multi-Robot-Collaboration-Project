@@ -456,14 +456,6 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
         # Flush the same input/rejection counters on setup errors and supervision,
         # before closing/compressing traces. Completion is a separate status.
         report.update(input_audit=audit.record(),visibility=visibility_stats.record())
-        if 'input_funnel' in locals():
-            write(out/'input-funnel.json', {'counts':input_funnel,
-                'raw':str(out/('teacher-raw/commands.jsonl.zst' if training_rgb else 'teacher-commands.jsonl.zst')),
-                'scope':'frames→not-held→currently-visible→lazy relative measurement',
-                'run_status':report.get('status')})
-            write(out/'route-rejections.json', {'counts':route_counts,'rows':route_rejections,
-                'run_status':report.get('status'),
-                'budget_basis':'frozen scripts.zone_teacher.plan_path default40000 nodes; no wall-clock planning cap'})
         folder = out/'failure-rgb-buffer'
         folder.mkdir(exist_ok=True)
         for index, jpg in recent:
@@ -479,6 +471,18 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
             recorder.close()
         for stream in streams:
             stream.close()
+        if 'input_funnel' in locals():
+            trace_path=out/('teacher-raw/commands.jsonl' if training_rgb else 'teacher-commands.jsonl')
+            # Frozen run_grasp_act_teacher.compress_logs: >65536 bytes only.
+            # Streams are closed here, so this is the exact final byte size.
+            raw_path=Path(str(trace_path)+'.zst') if trace_path.stat().st_size>65536 else trace_path
+            write(out/'input-funnel.json', {'counts':input_funnel,
+                'raw':str(raw_path),
+                'scope':'frames→not-held→currently-visible→lazy relative measurement',
+                'run_status':report.get('status')})
+            write(out/'route-rejections.json', {'counts':route_counts,'rows':route_rejections,
+                'run_status':report.get('status'),
+                'budget_basis':'frozen scripts.zone_teacher.plan_path default40000 nodes; no wall-clock planning cap'})
         if world is not None:
             world.close()
         write(out/'result.json', report)
