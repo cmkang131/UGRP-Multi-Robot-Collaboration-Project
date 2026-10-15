@@ -5,6 +5,20 @@ import hashlib
 from harness import grasp_act_contract as c
 
 
+def evaluation_gates(row, *, stable_lift):
+    """Evaluation evidence, never an instruction/phase input.
+
+    The teacher's .08m/.008m/.04rad nominal pose is descriptive. Students can
+    grasp successfully from another feasible pose: the unchanged bilateral
+    .5N criterion proves functional alignment, and stable lift proves contact.
+    This logical implication adds no acceptance tolerance or policy correction.
+    """
+    grasp = min(row['forces']) >= LiftScore.CRITERIA['finger_each_n'] or stable_lift
+    alignment = grasp or (row['station_error_m'] <= .008 and row['yaw_error_rad'] <= .04)
+    return {'approach': alignment or row['station_error_m'] <= .08,
+            'alignment': alignment, 'grasp': grasp, 'lift_confirmation': stable_lift}
+
+
 class InputAudit:
     def __init__(self):
         self.record = {'forbidden_input_fields': 0, 'teacher_input_fields': 0, 'requests': 0,

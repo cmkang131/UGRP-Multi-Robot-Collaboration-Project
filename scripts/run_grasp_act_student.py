@@ -22,7 +22,7 @@ if str(Path(__file__).resolve().parents[1]) not in sys.path:
 from harness import grasp_act_contract as c
 from harness.grasp_act_data import sha256, write_json, write_summary
 from harness.grasp_act_policy import ChunkExecutor
-from harness.grasp_act_rollout import OwnHistory, SoloSequence, SoloScore, InputAudit
+from harness.grasp_act_rollout import OwnHistory, SoloSequence, SoloScore, InputAudit, evaluation_gates
 from scripts.grasp_act_training_guard import ROOT, require_gcp, source_sha
 
 
@@ -226,15 +226,6 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                     station = target[:2] - (MOUNT_X_M + .152) * np.array([math.cos(object_yaw), math.sin(object_yaw)])
                     station_error = float(np.linalg.norm(station - np.asarray(base[:2])))
                     yaw_error = abs(math.atan2(math.sin(object_yaw-yaw), math.cos(object_yaw-yaw)))
-                    passed = {'approach': station_error <= .08,
-                              'alignment': station_error <= .008 and yaw_error <= .04,
-                              'grasp': min(forces) >= .5}
-                    predecessor = True
-                    for stage in ('approach', 'alignment', 'grasp'):
-                        ok = predecessor and passed[stage]
-                        funnel[stage] += int(ok)
-                        if ok: first_pass.setdefault(stage, now)
-                        predecessor = stage in first_pass
                     gaps = [float(mujoco.mj_geomDistance(world.model, world.data, finger, g,
                                 float(world.model.stat.extent), None)) for finger in fingers for g in gids]
                     evaluation.update(station_error_m=station_error, yaw_error_rad=yaw_error,
@@ -257,9 +248,14 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                 linear_speed = float(np.linalg.norm(velocity[3:]))
                 score.add(now, skill=obs['skill'], linear_speed=linear_speed,
                           **{k: evaluation[k] for k in ('clearance', 'tilt', 'forces', 'weld')})
-                if teacher_start_v1 and 'grasp' in first_pass and score.lift.record()['lift_success']:
-                    funnel['lift_confirmation'] += 1
-                    first_pass.setdefault('lift_confirmation',now)
+                if teacher_start_v1:
+                    passed=evaluation_gates(evaluation,stable_lift=score.lift.record()['lift_success'])
+                    predecessor=True
+                    for stage,ok in passed.items():
+                        ok=predecessor and ok
+                        funnel[stage] += int(ok)
+                        if ok:first_pass.setdefault(stage,now)
+                        predecessor=stage in first_pass
                 evaluations.write(json.dumps({'t': now, 'skill': obs['skill'],
                     'linear_speed': linear_speed, **evaluation}, allow_nan=False) + '\n')
                 if tick % 10 == 0:

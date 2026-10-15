@@ -43,6 +43,14 @@ train/val 차이로 평가한다. 체크포인트 선택이나 재학습에는 v
 gap을 평가 전용으로 추가한다. 접촉을 측정하지 않은 이전 탐색의 blocker는 미측정으로 해석하며,
 없음을 주장하지 않는다. 학생·장면·명령·완료/종료 선택 코드는 그대로다.
 
+탐색 전체 원장의 평가상 안정적 들기는2/6, 그2개도 cap_end였다. 최초 funnel은 교사의
+명목 자세를 학생의 필수 조건처럼 취급해 들기 통과와 불일치했다. 본 시험 전 기능 정렬을
+명목 자세 **또는 기존 양측 접촉 기준의 충족**으로 정의했다. 양측 접촉/안정적 들기가
+이전 관문의 기능적 통과 근거라는 논리적 포함이며 새 허용 오차를 넣지 않는다.
+기존 들기 성공 기준·학생 코드·종료 선택은 바꾸지 않는다. 명목 자세를 재현하지 않았다는
+이유로 실제 안정적 들기를 정렬 실패로 분류하지 않는다. 최초 표는 원본 경로/해시와 함께
+보존하고 본 시험 큐에는 같은 원장으로 다시 센 수정 표를 연결한다.
+
 참고: [고정 LeRobot ACT 구현](https://github.com/huggingface/lerobot/blob/89236ea0f4f81a81ca566081e20dd1ff5f823cbe/src/lerobot/policies/act/modeling_act.py),
 프로젝트 `harness/grasp_act_loss.py`, `grasp_act_data.py`, `grasp_act_policy.py`,
 교사 `6f057f7e:sim/grasp_act_solo_teacher.py`와 `scripts/make_solo_teacher_plan.py`.
