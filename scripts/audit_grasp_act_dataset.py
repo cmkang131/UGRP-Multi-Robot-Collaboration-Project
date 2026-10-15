@@ -72,7 +72,8 @@ def audit(root, *, raw_check=False):
                 raise ValueError('own command clock mismatch')
             history.append(c.command(command_row['applied_command']))
         raw_rows += len(observations)
-        groups = paired_segments(observations, labels, done_label=manifest['done_label'])
+        groups = paired_segments(observations, labels, done_label=manifest['done_label'],
+            include_initial_approach_v1=protocol.get('include_initial_approach_v1', False))
         selected = [pair for group in groups for pair in group]
         metadata = read_json(folder / 'samples.json')
         provenance = read_json(folder / 'rgb-provenance.json')

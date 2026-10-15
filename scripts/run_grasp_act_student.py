@@ -22,7 +22,8 @@ if str(Path(__file__).resolve().parents[1]) not in sys.path:
 from harness import grasp_act_contract as c
 from harness.grasp_act_data import sha256, write_json, write_summary
 from harness.grasp_act_policy import ChunkExecutor
-from harness.grasp_act_rollout import OwnHistory, SoloSequence, SoloScore, InputAudit
+from harness.grasp_act_inference import private_url
+from harness.grasp_act_rollout import OwnHistory, SoloSequence, SoloScore, InputAudit, evaluation_gates
 from scripts.grasp_act_training_guard import ROOT, require_gcp, source_sha
 
 
@@ -52,8 +53,15 @@ def response(process, timeout=120.):
     return json.loads(line)
 
 
+def reached_cap(sim_s, cap_s, *, sequence_finished):
+    # Preserve the existing half-control-tick timestamp comparison. A done
+    # request alone does not complete SoloSequence's existing settle window.
+    return not sequence_finished and sim_s >= cap_s-c.PERIOD_S/2
+
+
 def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_steps=c.CHUNK,
-        temporal_ensemble_coeff=None, actor_threads=1, teacher_start_v1=False):
+        temporal_ensemble_coeff=None, actor_threads=1, teacher_start_v1=False,
+        diagnostic_observer_factory=None, actor_server_url=None):
     if actor_threads not in (1, 2, 4, 8, 16):
         raise ValueError('bounded actor thread setting required')
     ChunkExecutor(None, n_action_steps=n_action_steps, temporal_ensemble_coeff=temporal_ensemble_coeff)
@@ -137,7 +145,12 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                    for k in ('pos', 'quat', 'intrinsic', 'resolution')})
         history = OwnHistory(rid, f'student-{plan["seed"]}', previous)
         (output / 'rgb' / rid).mkdir(parents=True)
-        worker = subprocess.Popen([actor_python, '-m', 'scripts.grasp_act_student_worker', '--model', str(model), '--threads', str(actor_threads)],
+        if actor_server_url:
+            report['execution']['actor_server_url']=private_url(actor_server_url)
+            report['execution']['inference_device']='cuda_l4_batch1_v1'
+            write_summary(output / 'summary.json', report)
+        worker = subprocess.Popen([actor_python, '-m', 'scripts.grasp_act_student_worker', '--model', str(model), '--threads', str(actor_threads)]+
+            (['--server-url',actor_server_url] if actor_server_url else []),
             cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True, bufsize=1)
         if response(worker) != {'ready': True}:
             raise RuntimeError('student worker did not load')
@@ -161,18 +174,24 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
             return result['chunk']
         executor = ChunkExecutor(predict, n_action_steps=n_action_steps, temporal_ensemble_coeff=temporal_ensemble_coeff)
         score = SoloScore()
+        # Offline replay diagnostics only. The observer receives the selected
+        # command and has no return path into the executor or sequence.
+        diagnostic_observer = (diagnostic_observer_factory(world, port, obj, previous, scene)
+                               if diagnostic_observer_factory else None)
         # Evaluation-only funnel. Existing frozen teacher boundaries: approach
         # .08m, box alignment .008m/.04rad (6f057f7e SoloTeacher._seek/Cargo).
         # Finger load/lift use the unchanged LiftScore criteria. None feed policy.
         funnel = {'frames': 0, 'valid_inputs': 0, 'actions': 0, 'approach': 0,
                   'alignment': 0, 'grasp': 0, 'lift_confirmation': 0}
         first_pass = {}
+        minimum_external_contact = None
         sequence = SoloSequence(with_release)
         # Evaluation-only private handles; these never leave the simulation owner.
         body = world.model.body(obj['body_name']).id
         gids = [g for g in range(world.model.ngeom) if world.model.geom_bodyid[g] == body and world.model.geom_contype[g]]
         fingers = {world.model.geom(rid + '__' + side + '_finger').id: i for i, side in enumerate(('left', 'right'))}
         origin, tick = float(world.data.time), 0
+        sequence_finished = False
         with (output / 'student-inputs.jsonl').open('x') as inputs, (output / 'commands.jsonl').open('x') as commands, (output / 'eval-only.jsonl').open('x') as evaluations:
             while float(world.data.time) - origin < cap_s - 1e-8:
                 if (output / 'SUPERVISOR_STOP.json').exists():
@@ -190,6 +209,8 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                 funnel['valid_inputs'] += 1
                 inputs.write(json.dumps(obs) + '\n')
                 value, done = executor.step(obs, jpegs)
+                if diagnostic_observer is not None:
+                    diagnostic_observer(obs, jpeg, value, done)
                 funnel['actions'] += 1
                 commands.write(json.dumps({'command': value, 'skill': obs['skill'], 'done_requested': done}) + '\n')
                 # Match recording's independent normalized wheel pulses exactly.
@@ -225,25 +246,36 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                     station = target[:2] - (MOUNT_X_M + .152) * np.array([math.cos(object_yaw), math.sin(object_yaw)])
                     station_error = float(np.linalg.norm(station - np.asarray(base[:2])))
                     yaw_error = abs(math.atan2(math.sin(object_yaw-yaw), math.cos(object_yaw-yaw)))
-                    passed = {'approach': station_error <= .08,
-                              'alignment': station_error <= .008 and yaw_error <= .04,
-                              'grasp': min(forces) >= .5,
-                              'lift_confirmation': score.lift.record()['lift_success']}
-                    predecessor = True
-                    for stage in ('approach', 'alignment', 'grasp', 'lift_confirmation'):
-                        ok = predecessor and passed[stage]
-                        funnel[stage] += int(ok)
-                        if ok: first_pass.setdefault(stage, now)
-                        predecessor = stage in first_pass
                     gaps = [float(mujoco.mj_geomDistance(world.model, world.data, finger, g,
                                 float(world.model.stat.extent), None)) for finger in fingers for g in gids]
                     evaluation.update(station_error_m=station_error, yaw_error_rad=yaw_error,
                                       target_finger_min_gap_m=min(gaps), target_object=plan['item_id'])
+                    contacts=[]
+                    for contact in world.data.contact[:world.data.ncon]:
+                        a,b=int(contact.geom1),int(contact.geom2)
+                        names=[world.model.geom(g).name or str(g) for g in (a,b)]
+                        if sum(n.startswith(rid+'__') for n in names)!=1:continue
+                        external=names[1] if names[0].startswith(rid+'__') else names[0]
+                        if 'floor' in external or 'ground' in external:continue
+                        contacts.append({'object':external,'gap_m':float(contact.dist)})
+                    evaluation['external_contacts']=contacts
+                    if contacts:
+                        contact=min(contacts,key=lambda x:x['gap_m'])
+                        if minimum_external_contact is None or contact['gap_m']<minimum_external_contact['gap_m']:
+                            minimum_external_contact=contact
                 velocity = np.zeros(6)
                 mujoco.mj_objectVelocity(world.model, world.data, mujoco.mjtObj.mjOBJ_BODY, body, velocity, 0)
                 linear_speed = float(np.linalg.norm(velocity[3:]))
                 score.add(now, skill=obs['skill'], linear_speed=linear_speed,
                           **{k: evaluation[k] for k in ('clearance', 'tilt', 'forces', 'weld')})
+                if teacher_start_v1:
+                    passed=evaluation_gates(evaluation,stable_lift=score.lift.record()['lift_success'])
+                    predecessor=True
+                    for stage,ok in passed.items():
+                        ok=predecessor and ok
+                        funnel[stage] += int(ok)
+                        if ok:first_pass.setdefault(stage,now)
+                        predecessor=stage in first_pass
                 evaluations.write(json.dumps({'t': now, 'skill': obs['skill'],
                     'linear_speed': linear_speed, **evaluation}, allow_nan=False) + '\n')
                 if tick % 10 == 0:
@@ -254,6 +286,7 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                 # Student done + fixed clock window are the ONLY phase/stop inputs.
                 # Evaluation truth never enters the sequence or the worker.
                 if sequence.update(now, done):
+                    sequence_finished = True
                     break
                 tick += 1
                 until = origin + tick * c.PERIOD_S
@@ -265,10 +298,10 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
         report.update(status='complete', complete=True, sim_s=float(world.data.time)-origin,
             done_requested=bool(sequence.done_times), done_times=sequence.done_times,
             **score.record(sequence.done_times, with_release=with_release),
-            inference_latency_s={'n': len(latencies), 'median': float(np.median(latencies)),
-                                 'p95': float(np.percentile(latencies, 95))},
+            inference_latency_s={'n': len(latencies), 'median': float(np.median(latencies)) if latencies else None,
+                                 'p95': float(np.percentile(latencies, 95)) if latencies else None},
             skill_completion_success=None)
-        report['cap_end'] = not bool(sequence.done_times) and report['sim_s'] >= cap_s - c.PERIOD_S / 2
+        report['cap_end'] = reached_cap(report['sim_s'], cap_s, sequence_finished=sequence_finished)
         report['termination'] = 'cap_end' if report['cap_end'] else 'student_done'
         if teacher_start_v1:
             missing = next((s for s in ('approach', 'alignment', 'grasp', 'lift_confirmation') if s not in first_pass), None)
@@ -277,9 +310,11 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                 'cumulative_run_pass': {s: int(s in first_pass) for s in ('approach','alignment','grasp','lift_confirmation')},
                 'first_pass_sim_t': first_pass, 'failure_stage': missing,
                 'rejection': None if missing is None else {'category': missing+'_not_passed',
-                    'blocking_object': 'none_observed', 'target_object': plan['item_id'],
-                    'minimum_gap_m': evaluation.get('target_finger_min_gap_m'),
-                    'scope': 'target finger gap only; no collision cause inferred'},
+                    'blocking_object': minimum_external_contact['object'] if minimum_external_contact else 'none_observed',
+                    'target_object': plan['item_id'],
+                    'minimum_gap_m': minimum_external_contact['gap_m'] if minimum_external_contact else None,
+                    'target_finger_min_gap_m': evaluation.get('target_finger_min_gap_m'),
+                    'scope': 'observed non-floor external contacts; no collision cause inferred'},
                 'source': str(output / 'eval-only.jsonl'), 'reproduce': 'python -m scripts.analyze_grasp_act_act14 --root '+str(output)})
     except BaseException as exc:
         report.update(status='interrupted' if isinstance(exc, KeyboardInterrupt) else 'HOST_ERROR',
@@ -316,6 +351,7 @@ def main():
     p.add_argument('--n-action-steps', type=int, default=c.CHUNK)
     p.add_argument('--temporal-ensemble-coeff', type=float)
     p.add_argument('--actor-threads', type=int, choices=(1, 2, 4, 8, 16), default=1)
+    p.add_argument('--actor-server-url', help='opt-in private L4, own-input-only inference')
     p.add_argument('--teacher-start-v1', action='store_true')
     p.add_argument('--scene-source', type=Path, help='frozen 6f057f7e scene/physics package; no teacher policy')
     a = p.parse_args()
@@ -327,7 +363,7 @@ def main():
         run(json.loads(a.plan.read_text()), json.loads(a.protocol.read_text()), a.model, a.output,
             actor_python=a.actor_python, cap_s=a.cap_s, n_action_steps=a.n_action_steps,
             temporal_ensemble_coeff=a.temporal_ensemble_coeff, actor_threads=a.actor_threads,
-            teacher_start_v1=a.teacher_start_v1)
+            teacher_start_v1=a.teacher_start_v1, actor_server_url=a.actor_server_url)
 
 
 if __name__ == '__main__':

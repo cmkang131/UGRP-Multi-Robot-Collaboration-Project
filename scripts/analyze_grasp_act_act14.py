@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw
 
 from harness import grasp_act_contract as c
 from harness.grasp_act_data import read_json, read_rows, sha256, write_json
-from harness.grasp_act_rollout import LiftScore
+from harness.grasp_act_rollout import LiftScore, evaluation_gates
 from scripts.grasp_act_training_guard import require_gcp
 
 
@@ -25,9 +25,7 @@ def recount(rows):
         score.add(row['t'],**{k:row[k] for k in ('clearance','tilt','forces','weld')})
         # Same frozen ACT11 boundaries as the evaluator; evaluation never feeds
         # commands. These are descriptive gates, not new adoption criteria.
-        tests=[('approach',row['station_error_m']<=.08),
-               ('alignment',row['station_error_m']<=.008 and row['yaw_error_rad']<=.04),
-               ('grasp',min(row['forces'])>=.5),('lift_confirmation',score.record()['lift_success'])]
+        tests=evaluation_gates(row,stable_lift=score.record()['lift_success']).items()
         prior=True
         for stage,ok in tests:
             if prior and ok:
@@ -47,10 +45,15 @@ def analyze(root,output):
     funnel=recount(evaluations)
     stages=('approach','alignment','grasp','lift_confirmation')
     failed=next((s for s in stages if not funnel['cumulative_run_pass'][s]),None)
-    rejection=None if failed is None else {'category':failed+'_not_passed','blocking_object':'none_observed',
+    contacts=[v for r in evaluations for v in r.get('external_contacts',[])]
+    contact=min(contacts,key=lambda x:x['gap_m']) if contacts else None
+    measured=bool(evaluations) and all('external_contacts' in r for r in evaluations)
+    rejection=None if failed is None else {'category':failed+'_not_passed',
+        'blocking_object':contact['object'] if contact else 'none_observed' if measured else 'not_measured',
         'target_object':read_json(raw/'plan.json')['item_id'],
-        'minimum_gap_m':min((r['target_finger_min_gap_m'] for r in evaluations),default=None),
-        'scope':'target finger gap; no collision cause inferred'}
+        'minimum_gap_m':contact['gap_m'] if contact else None,
+        'target_finger_min_gap_m':min((r['target_finger_min_gap_m'] for r in evaluations),default=None),
+        'scope':'minimum observed non-floor external contact gap; target gap separate; no collision cause inferred'}
     frames=[]; tiles=[]
     if records:
         for j,index in enumerate(np.linspace(0,len(records)-1,min(6,len(records)),dtype=int)):

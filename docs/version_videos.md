@@ -132,3 +132,10 @@ tail은 원촬영202장이다. [원본·해시·검토](../experiments/2026-10-1
 ## 2026-10-16 beampair6 — v7 배치 지원 조건
 
 실행 소스 `08f129213031255dd188e20df832bb6714dfca9a`, 의존성 `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, gcp2/n4-highcpu-64. 기본 off `beampair_gate_valid_v2`(초기화만)·`beampair_wall_clear_v1` 교사 후보. 새 배치8318726의 공동 들기 완료38.0 SIM초. [대표 영상](../experiments/2026-10-16-beampair6/representative-8318726.mp4)은 개요(평가용)+r1/r2 자기 카메라3배속, 284710bytes, SHA256 `3bd8f031066f010bf0ce168f048b197f19210cd61dce6118b7fe9dc50f0d12b5`. 전체0–38초2Hz77프레임을 직접 봤다. 자기 카메라는10Hz 저장 qpos 재렌더이며 원촬영10Hz가 아니다. [원본·ffprobe·검토](../experiments/2026-10-16-beampair6/playback-review.json). 학생·운반·놓기·실물 성공을 뜻하지 않는다.
+## 2026-10-15 ACT15 DAgger1 근거리 학생 (실패 비교)
+
+저장된 **자기 RGB** 영상이며 정답 도식/top 카메라가 아니다.
+
+|버전·소스|대표 case|결과|영상·해시|범위와 한계|
+|---|---|---|---|---|
+|ACT15 DAgger1; 학습1535c8a3, 실행686cccb6|91420, ACT14 p0 실패와 같은 seed; 최다 거부 단계인 정렬 실패 선택|90 SIM초 cap_end, 안정 들기/완료0; 전체 같은20 0/20·새20 0/20|[자기 RGB4배속](../experiments/2026-10-15-act-train/videos/act15-91420-4x.mp4),22.5초/900프레임/169401bytes;SHA256 `e9a95fd808c256f12d37ffa5b753a29bf8e441201340100f4b5ca3d2bb3a34fd`|접근 후 목표가 화면 밖으로 빠지는 사례. 단일 원인·일반화·E2E·실물·기본 채택 아님. [원본·milestone 복제·해시](../experiments/2026-10-15-act-train/act15-video.json), [전체 결과](../experiments/2026-10-15-act-train/act15.md).|

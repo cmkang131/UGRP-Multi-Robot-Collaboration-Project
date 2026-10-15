@@ -1,0 +1,866 @@
+{
+  "status": "complete",
+  "complete": true,
+  "source_sha": "3bd9e013ed99ea0b05982bb90e2a6852529eb2a8",
+  "host": {
+    "project": "ugrp-act-train-1014",
+    "instance": "ugrp-act-l4-pilot1",
+    "machine_type": "g2-standard-4",
+    "zone": "asia-northeast3-a"
+  },
+  "manifest_sha256": "9ed3f155c87c8b53631ae89480bb0a6d868cc2a4c12341ff1e0579541deff925",
+  "arms": {
+    "p0": {
+      "model_sha256": "b617415079a95a4bb4426fefe0d445cb288ea49eef0928278cb268212de02676",
+      "splits": {
+        "validation": {
+          "rows": 1811,
+          "valid_actions": 14068,
+          "movement_l1": 0.1362102363396148,
+          "balanced_done_bce": 0.06456575361945059,
+          "action_loss": 0.20077598995906537,
+          "episodes": [
+            {
+              "seed": 86865,
+              "rows": 366,
+              "valid_actions": 2844,
+              "movement_l1": 0.15506593755193568,
+              "balanced_done_bce": 0.10285700196806347,
+              "action_loss": 0.2579229395199991
+            },
+            {
+              "seed": 86866,
+              "rows": 381,
+              "valid_actions": 2964,
+              "movement_l1": 0.1393488263357621,
+              "balanced_done_bce": 0.054931226472386664,
+              "action_loss": 0.19428005280814875
+            },
+            {
+              "seed": 86867,
+              "rows": 347,
+              "valid_actions": 2692,
+              "movement_l1": 0.13047997198953062,
+              "balanced_done_bce": 0.037068128968100515,
+              "action_loss": 0.16754810095763115
+            },
+            {
+              "seed": 86868,
+              "rows": 360,
+              "valid_actions": 2796,
+              "movement_l1": 0.11461913666061505,
+              "balanced_done_bce": 0.048697759617501085,
+              "action_loss": 0.16331689627811613
+            },
+            {
+              "seed": 86869,
+              "rows": 357,
+              "valid_actions": 2772,
+              "movement_l1": 0.14085171950573627,
+              "balanced_done_bce": 0.07829120273609118,
+              "action_loss": 0.21914292224182746
+            }
+          ]
+        },
+        "train": {
+          "rows": 16275,
+          "valid_actions": 126420,
+          "movement_l1": 0.12419295567796629,
+          "balanced_done_bce": 0.06721134711114188,
+          "action_loss": 0.19140430278910817,
+          "episodes": [
+            {
+              "seed": 86820,
+              "rows": 365,
+              "valid_actions": 2836,
+              "movement_l1": 0.1323449940251987,
+              "balanced_done_bce": 0.055004987901809646,
+              "action_loss": 0.18734998192700836
+            },
+            {
+              "seed": 86821,
+              "rows": 365,
+              "valid_actions": 2836,
+              "movement_l1": 0.1269524291040627,
+              "balanced_done_bce": 0.08321856246205055,
+              "action_loss": 0.21017099156611324
+            },
+            {
+              "seed": 86822,
+              "rows": 349,
+              "valid_actions": 2708,
+              "movement_l1": 0.12547835113378888,
+              "balanced_done_bce": 0.10102841390765917,
+              "action_loss": 0.22650676504144807
+            },
+            {
+              "seed": 86823,
+              "rows": 337,
+              "valid_actions": 2612,
+              "movement_l1": 0.12656215352893163,
+              "balanced_done_bce": 0.13057119331920197,
+              "action_loss": 0.2571333468481336
+            },
+            {
+              "seed": 86824,
+              "rows": 389,
+              "valid_actions": 3028,
+              "movement_l1": 0.12586211307833028,
+              "balanced_done_bce": 0.04720782846996076,
+              "action_loss": 0.17306994154829103
+            },
+            {
+              "seed": 86825,
+              "rows": 372,
+              "valid_actions": 2892,
+              "movement_l1": 0.15914536582413127,
+              "balanced_done_bce": 0.06777732047081035,
+              "action_loss": 0.2269226862949416
+            },
+            {
+              "seed": 86826,
+              "rows": 352,
+              "valid_actions": 2732,
+              "movement_l1": 0.11207658400273278,
+              "balanced_done_bce": 0.04689472991363643,
+              "action_loss": 0.1589713139163692
+            },
+            {
+              "seed": 86827,
+              "rows": 359,
+              "valid_actions": 2788,
+              "movement_l1": 0.11324538503374372,
+              "balanced_done_bce": 0.05602498362782856,
+              "action_loss": 0.16927036866157227
+            },
+            {
+              "seed": 86828,
+              "rows": 359,
+              "valid_actions": 2788,
+              "movement_l1": 0.12847959235399126,
+              "balanced_done_bce": 0.06301828008345522,
+              "action_loss": 0.19149787243744648
+            },
+            {
+              "seed": 86829,
+              "rows": 380,
+              "valid_actions": 2956,
+              "movement_l1": 0.12282274162518132,
+              "balanced_done_bce": 0.05223798827634915,
+              "action_loss": 0.1750607299015305
+            },
+            {
+              "seed": 86830,
+              "rows": 373,
+              "valid_actions": 2900,
+              "movement_l1": 0.13690567791755565,
+              "balanced_done_bce": 0.05782234038258421,
+              "action_loss": 0.19472801830013986
+            },
+            {
+              "seed": 86831,
+              "rows": 351,
+              "valid_actions": 2724,
+              "movement_l1": 0.13843059819875486,
+              "balanced_done_bce": 0.12474031787038824,
+              "action_loss": 0.2631709160691431
+            },
+            {
+              "seed": 86832,
+              "rows": 341,
+              "valid_actions": 2644,
+              "movement_l1": 0.11877093146113718,
+              "balanced_done_bce": 0.06103877757912651,
+              "action_loss": 0.1798097090402637
+            },
+            {
+              "seed": 86833,
+              "rows": 384,
+              "valid_actions": 2988,
+              "movement_l1": 0.1337624643062811,
+              "balanced_done_bce": 0.05084460557948354,
+              "action_loss": 0.18460706988576464
+            },
+            {
+              "seed": 86834,
+              "rows": 393,
+              "valid_actions": 3060,
+              "movement_l1": 0.12540768264722424,
+              "balanced_done_bce": 0.056212594800208716,
+              "action_loss": 0.18162027744743295
+            },
+            {
+              "seed": 86835,
+              "rows": 367,
+              "valid_actions": 2852,
+              "movement_l1": 0.12232451858321787,
+              "balanced_done_bce": 0.033609090271362774,
+              "action_loss": 0.15593360885458063
+            },
+            {
+              "seed": 86836,
+              "rows": 356,
+              "valid_actions": 2764,
+              "movement_l1": 0.11105758561707489,
+              "balanced_done_bce": 0.06599028637718986,
+              "action_loss": 0.17704787199426475
+            },
+            {
+              "seed": 86837,
+              "rows": 359,
+              "valid_actions": 2788,
+              "movement_l1": 0.11969133272696822,
+              "balanced_done_bce": 0.052943402486071635,
+              "action_loss": 0.17263473521303985
+            },
+            {
+              "seed": 86838,
+              "rows": 381,
+              "valid_actions": 2964,
+              "movement_l1": 0.1161837630219512,
+              "balanced_done_bce": 0.05353886045624883,
+              "action_loss": 0.16972262347820002
+            },
+            {
+              "seed": 86839,
+              "rows": 343,
+              "valid_actions": 2660,
+              "movement_l1": 0.12049113308448668,
+              "balanced_done_bce": 0.056289242366608934,
+              "action_loss": 0.17678037545109562
+            },
+            {
+              "seed": 86840,
+              "rows": 389,
+              "valid_actions": 3028,
+              "movement_l1": 0.11083405191976184,
+              "balanced_done_bce": 0.058756446284075885,
+              "action_loss": 0.16959049820383773
+            },
+            {
+              "seed": 86841,
+              "rows": 358,
+              "valid_actions": 2780,
+              "movement_l1": 0.11641512549303297,
+              "balanced_done_bce": 0.07055861824493614,
+              "action_loss": 0.1869737437379691
+            },
+            {
+              "seed": 86842,
+              "rows": 380,
+              "valid_actions": 2956,
+              "movement_l1": 0.12087507591749007,
+              "balanced_done_bce": 0.05591814552436309,
+              "action_loss": 0.17679322144185317
+            },
+            {
+              "seed": 86843,
+              "rows": 369,
+              "valid_actions": 2868,
+              "movement_l1": 0.12219086437853334,
+              "balanced_done_bce": 0.0769146913483952,
+              "action_loss": 0.19910555572692853
+            },
+            {
+              "seed": 86844,
+              "rows": 360,
+              "valid_actions": 2796,
+              "movement_l1": 0.1280809072490219,
+              "balanced_done_bce": 0.06076608543272246,
+              "action_loss": 0.18884699268174437
+            },
+            {
+              "seed": 86845,
+              "rows": 391,
+              "valid_actions": 3044,
+              "movement_l1": 0.13766458067187723,
+              "balanced_done_bce": 0.04283417036843152,
+              "action_loss": 0.18049875104030874
+            },
+            {
+              "seed": 86846,
+              "rows": 349,
+              "valid_actions": 2708,
+              "movement_l1": 0.11637924426365161,
+              "balanced_done_bce": 0.05702905857418299,
+              "action_loss": 0.1734083028378346
+            },
+            {
+              "seed": 86847,
+              "rows": 344,
+              "valid_actions": 2668,
+              "movement_l1": 0.1272781752089817,
+              "balanced_done_bce": 0.05429629573592919,
+              "action_loss": 0.18157447094491086
+            },
+            {
+              "seed": 86848,
+              "rows": 334,
+              "valid_actions": 2588,
+              "movement_l1": 0.1380418757777468,
+              "balanced_done_bce": 0.1776055337744585,
+              "action_loss": 0.31564740955220527
+            },
+            {
+              "seed": 86849,
+              "rows": 346,
+              "valid_actions": 2684,
+              "movement_l1": 0.140712687328112,
+              "balanced_done_bce": 0.06567248108174968,
+              "action_loss": 0.2063851684098617
+            },
+            {
+              "seed": 86850,
+              "rows": 382,
+              "valid_actions": 2972,
+              "movement_l1": 0.1315300570522632,
+              "balanced_done_bce": 0.05861125818345932,
+              "action_loss": 0.19014131523572253
+            },
+            {
+              "seed": 86851,
+              "rows": 374,
+              "valid_actions": 2908,
+              "movement_l1": 0.11066635363836096,
+              "balanced_done_bce": 0.063436669982237,
+              "action_loss": 0.17410302362059796
+            },
+            {
+              "seed": 86852,
+              "rows": 345,
+              "valid_actions": 2676,
+              "movement_l1": 0.1295716006061396,
+              "balanced_done_bce": 0.09266188837273216,
+              "action_loss": 0.22223348897887174
+            },
+            {
+              "seed": 86853,
+              "rows": 368,
+              "valid_actions": 2860,
+              "movement_l1": 0.13646893434591226,
+              "balanced_done_bce": 0.0794020294579775,
+              "action_loss": 0.21587096380388976
+            },
+            {
+              "seed": 86854,
+              "rows": 367,
+              "valid_actions": 2852,
+              "movement_l1": 0.12064749285492146,
+              "balanced_done_bce": 0.0631144118363359,
+              "action_loss": 0.18376190469125736
+            },
+            {
+              "seed": 86855,
+              "rows": 382,
+              "valid_actions": 2972,
+              "movement_l1": 0.13078840827281785,
+              "balanced_done_bce": 0.05203613786410395,
+              "action_loss": 0.18282454613692178
+            },
+            {
+              "seed": 86856,
+              "rows": 346,
+              "valid_actions": 2684,
+              "movement_l1": 0.12027135077044637,
+              "balanced_done_bce": 0.061300904518853866,
+              "action_loss": 0.18157225528930024
+            },
+            {
+              "seed": 86857,
+              "rows": 373,
+              "valid_actions": 2900,
+              "movement_l1": 0.12260883711828974,
+              "balanced_done_bce": 0.07126390839766325,
+              "action_loss": 0.193872745515953
+            },
+            {
+              "seed": 86858,
+              "rows": 311,
+              "valid_actions": 2404,
+              "movement_l1": 0.1065918982156473,
+              "balanced_done_bce": 0.045755534609097884,
+              "action_loss": 0.15234743282474517
+            },
+            {
+              "seed": 86859,
+              "rows": 361,
+              "valid_actions": 2804,
+              "movement_l1": 0.11722755644091623,
+              "balanced_done_bce": 0.054416974636788525,
+              "action_loss": 0.17164453107770475
+            },
+            {
+              "seed": 86860,
+              "rows": 334,
+              "valid_actions": 2588,
+              "movement_l1": 0.1076000723309221,
+              "balanced_done_bce": 0.0549711129020675,
+              "action_loss": 0.1625711852329896
+            },
+            {
+              "seed": 86861,
+              "rows": 356,
+              "valid_actions": 2764,
+              "movement_l1": 0.12404548069502615,
+              "balanced_done_bce": 0.056789595067336635,
+              "action_loss": 0.1808350757623628
+            },
+            {
+              "seed": 86862,
+              "rows": 350,
+              "valid_actions": 2716,
+              "movement_l1": 0.09882707297864675,
+              "balanced_done_bce": 0.061001555643021094,
+              "action_loss": 0.15982862862166786
+            },
+            {
+              "seed": 86863,
+              "rows": 379,
+              "valid_actions": 2948,
+              "movement_l1": 0.12360480737954198,
+              "balanced_done_bce": 0.14348085624642234,
+              "action_loss": 0.2670856636259643
+            },
+            {
+              "seed": 86864,
+              "rows": 352,
+              "valid_actions": 2732,
+              "movement_l1": 0.12825194554108502,
+              "balanced_done_bce": 0.045487594314868596,
+              "action_loss": 0.1737395398559536
+            }
+          ]
+        }
+      },
+      "validation_train_ratio": 1.0489627820973442
+    },
+    "p02": {
+      "model_sha256": "b55a72bc8cbd01fec553313375b59686bc8297ea62944283fccedd38cff58613",
+      "splits": {
+        "validation": {
+          "rows": 1811,
+          "valid_actions": 14068,
+          "movement_l1": 0.152455212259434,
+          "balanced_done_bce": 0.05576186151263474,
+          "action_loss": 0.20821707377206874,
+          "episodes": [
+            {
+              "seed": 86865,
+              "rows": 366,
+              "valid_actions": 2844,
+              "movement_l1": 0.17542305034831365,
+              "balanced_done_bce": 0.062274922403924786,
+              "action_loss": 0.23769797275223845
+            },
+            {
+              "seed": 86866,
+              "rows": 381,
+              "valid_actions": 2964,
+              "movement_l1": 0.1491729962658004,
+              "balanced_done_bce": 0.044248361336243276,
+              "action_loss": 0.19342135760204368
+            },
+            {
+              "seed": 86867,
+              "rows": 347,
+              "valid_actions": 2692,
+              "movement_l1": 0.13768715302773632,
+              "balanced_done_bce": 0.033480338948601675,
+              "action_loss": 0.171167491976338
+            },
+            {
+              "seed": 86868,
+              "rows": 360,
+              "valid_actions": 2796,
+              "movement_l1": 0.14567207378915256,
+              "balanced_done_bce": 0.08031883937585166,
+              "action_loss": 0.22599091316500422
+            },
+            {
+              "seed": 86869,
+              "rows": 357,
+              "valid_actions": 2772,
+              "movement_l1": 0.15358408213497263,
+              "balanced_done_bce": 0.05825948704828335,
+              "action_loss": 0.21184356918325598
+            }
+          ]
+        },
+        "train": {
+          "rows": 16275,
+          "valid_actions": 126420,
+          "movement_l1": 0.129609923044334,
+          "balanced_done_bce": 0.052163037199240744,
+          "action_loss": 0.18177296024357475,
+          "episodes": [
+            {
+              "seed": 86820,
+              "rows": 365,
+              "valid_actions": 2836,
+              "movement_l1": 0.1340643551569179,
+              "balanced_done_bce": 0.043989151826900746,
+              "action_loss": 0.17805350698381864
+            },
+            {
+              "seed": 86821,
+              "rows": 365,
+              "valid_actions": 2836,
+              "movement_l1": 0.1321697720303402,
+              "balanced_done_bce": 0.062377029404304236,
+              "action_loss": 0.19454680143464442
+            },
+            {
+              "seed": 86822,
+              "rows": 349,
+              "valid_actions": 2708,
+              "movement_l1": 0.1289620372307756,
+              "balanced_done_bce": 0.09998716847875473,
+              "action_loss": 0.2289492057095303
+            },
+            {
+              "seed": 86823,
+              "rows": 337,
+              "valid_actions": 2612,
+              "movement_l1": 0.13418726833976088,
+              "balanced_done_bce": 0.10109392615644172,
+              "action_loss": 0.2352811944962026
+            },
+            {
+              "seed": 86824,
+              "rows": 389,
+              "valid_actions": 3028,
+              "movement_l1": 0.13207330692937,
+              "balanced_done_bce": 0.02719054885437439,
+              "action_loss": 0.15926385578374438
+            },
+            {
+              "seed": 86825,
+              "rows": 372,
+              "valid_actions": 2892,
+              "movement_l1": 0.16331391013250407,
+              "balanced_done_bce": 0.04561517197048784,
+              "action_loss": 0.2089290821029919
+            },
+            {
+              "seed": 86826,
+              "rows": 352,
+              "valid_actions": 2732,
+              "movement_l1": 0.12250431689525891,
+              "balanced_done_bce": 0.04059370433401022,
+              "action_loss": 0.16309802122926914
+            },
+            {
+              "seed": 86827,
+              "rows": 359,
+              "valid_actions": 2788,
+              "movement_l1": 0.1183640352402781,
+              "balanced_done_bce": 0.04808618292483732,
+              "action_loss": 0.1664502181651154
+            },
+            {
+              "seed": 86828,
+              "rows": 359,
+              "valid_actions": 2788,
+              "movement_l1": 0.12998426006963737,
+              "balanced_done_bce": 0.05240569848245226,
+              "action_loss": 0.18238995855208961
+            },
+            {
+              "seed": 86829,
+              "rows": 380,
+              "valid_actions": 2956,
+              "movement_l1": 0.1298182718117325,
+              "balanced_done_bce": 0.036957807886176045,
+              "action_loss": 0.16677607969790853
+            },
+            {
+              "seed": 86830,
+              "rows": 373,
+              "valid_actions": 2900,
+              "movement_l1": 0.14519574799561147,
+              "balanced_done_bce": 0.044498009331010537,
+              "action_loss": 0.189693757326622
+            },
+            {
+              "seed": 86831,
+              "rows": 351,
+              "valid_actions": 2724,
+              "movement_l1": 0.1400720821578272,
+              "balanced_done_bce": 0.08623768509161849,
+              "action_loss": 0.22630976724944568
+            },
+            {
+              "seed": 86832,
+              "rows": 341,
+              "valid_actions": 2644,
+              "movement_l1": 0.12594101530495128,
+              "balanced_done_bce": 0.04209501855586107,
+              "action_loss": 0.16803603386081234
+            },
+            {
+              "seed": 86833,
+              "rows": 384,
+              "valid_actions": 2988,
+              "movement_l1": 0.14200972890644142,
+              "balanced_done_bce": 0.039289781297937316,
+              "action_loss": 0.18129951020437873
+            },
+            {
+              "seed": 86834,
+              "rows": 393,
+              "valid_actions": 3060,
+              "movement_l1": 0.13071343233160165,
+              "balanced_done_bce": 0.04975240612372123,
+              "action_loss": 0.18046583845532288
+            },
+            {
+              "seed": 86835,
+              "rows": 367,
+              "valid_actions": 2852,
+              "movement_l1": 0.12178989795233104,
+              "balanced_done_bce": 0.023390360348492203,
+              "action_loss": 0.14518025830082323
+            },
+            {
+              "seed": 86836,
+              "rows": 356,
+              "valid_actions": 2764,
+              "movement_l1": 0.11957161096790149,
+              "balanced_done_bce": 0.05172520028036384,
+              "action_loss": 0.17129681124826535
+            },
+            {
+              "seed": 86837,
+              "rows": 359,
+              "valid_actions": 2788,
+              "movement_l1": 0.12991052544686266,
+              "balanced_done_bce": 0.053562946274537206,
+              "action_loss": 0.18347347172139986
+            },
+            {
+              "seed": 86838,
+              "rows": 381,
+              "valid_actions": 2964,
+              "movement_l1": 0.12631070758649696,
+              "balanced_done_bce": 0.04731895089622049,
+              "action_loss": 0.17362965848271744
+            },
+            {
+              "seed": 86839,
+              "rows": 343,
+              "valid_actions": 2660,
+              "movement_l1": 0.1244322749136854,
+              "balanced_done_bce": 0.060043729594523525,
+              "action_loss": 0.18447600450820892
+            },
+            {
+              "seed": 86840,
+              "rows": 389,
+              "valid_actions": 3028,
+              "movement_l1": 0.11797627072713132,
+              "balanced_done_bce": 0.03712106631949416,
+              "action_loss": 0.15509733704662548
+            },
+            {
+              "seed": 86841,
+              "rows": 358,
+              "valid_actions": 2780,
+              "movement_l1": 0.1276605345362382,
+              "balanced_done_bce": 0.050102858328119775,
+              "action_loss": 0.177763392864358
+            },
+            {
+              "seed": 86842,
+              "rows": 380,
+              "valid_actions": 2956,
+              "movement_l1": 0.1323731259453488,
+              "balanced_done_bce": 0.04811081906679151,
+              "action_loss": 0.18048394501214032
+            },
+            {
+              "seed": 86843,
+              "rows": 369,
+              "valid_actions": 2868,
+              "movement_l1": 0.12207353778939058,
+              "balanced_done_bce": 0.05494986093087405,
+              "action_loss": 0.17702339872026462
+            },
+            {
+              "seed": 86844,
+              "rows": 360,
+              "valid_actions": 2796,
+              "movement_l1": 0.125364453617644,
+              "balanced_done_bce": 0.05208621731458314,
+              "action_loss": 0.17745067093222716
+            },
+            {
+              "seed": 86845,
+              "rows": 391,
+              "valid_actions": 3044,
+              "movement_l1": 0.14291513304068576,
+              "balanced_done_bce": 0.033910300004701084,
+              "action_loss": 0.17682543304538684
+            },
+            {
+              "seed": 86846,
+              "rows": 349,
+              "valid_actions": 2708,
+              "movement_l1": 0.1272357022820155,
+              "balanced_done_bce": 0.05112212084500639,
+              "action_loss": 0.1783578231270219
+            },
+            {
+              "seed": 86847,
+              "rows": 344,
+              "valid_actions": 2668,
+              "movement_l1": 0.12754732103566332,
+              "balanced_done_bce": 0.047604665447464924,
+              "action_loss": 0.17515198648312824
+            },
+            {
+              "seed": 86848,
+              "rows": 334,
+              "valid_actions": 2588,
+              "movement_l1": 0.13517745190252134,
+              "balanced_done_bce": 0.12318277518427607,
+              "action_loss": 0.2583602270867974
+            },
+            {
+              "seed": 86849,
+              "rows": 346,
+              "valid_actions": 2684,
+              "movement_l1": 0.14712716610806784,
+              "balanced_done_bce": 0.03438776730172525,
+              "action_loss": 0.18151493340979308
+            },
+            {
+              "seed": 86850,
+              "rows": 382,
+              "valid_actions": 2972,
+              "movement_l1": 0.13831555451413483,
+              "balanced_done_bce": 0.04591989359918049,
+              "action_loss": 0.18423544811331533
+            },
+            {
+              "seed": 86851,
+              "rows": 374,
+              "valid_actions": 2908,
+              "movement_l1": 0.12016737463432578,
+              "balanced_done_bce": 0.053209470156797986,
+              "action_loss": 0.17337684479112375
+            },
+            {
+              "seed": 86852,
+              "rows": 345,
+              "valid_actions": 2676,
+              "movement_l1": 0.13169153868681138,
+              "balanced_done_bce": 0.08092825709819872,
+              "action_loss": 0.2126197957850101
+            },
+            {
+              "seed": 86853,
+              "rows": 368,
+              "valid_actions": 2860,
+              "movement_l1": 0.14807585116985675,
+              "balanced_done_bce": 0.0564942752121837,
+              "action_loss": 0.20457012638204045
+            },
+            {
+              "seed": 86854,
+              "rows": 367,
+              "valid_actions": 2852,
+              "movement_l1": 0.126556936043151,
+              "balanced_done_bce": 0.0561910988423362,
+              "action_loss": 0.1827480348854872
+            },
+            {
+              "seed": 86855,
+              "rows": 382,
+              "valid_actions": 2972,
+              "movement_l1": 0.13247624123882637,
+              "balanced_done_bce": 0.038953186415009264,
+              "action_loss": 0.17142942765383562
+            },
+            {
+              "seed": 86856,
+              "rows": 346,
+              "valid_actions": 2684,
+              "movement_l1": 0.12360562926940723,
+              "balanced_done_bce": 0.049257881980703036,
+              "action_loss": 0.17286351125011026
+            },
+            {
+              "seed": 86857,
+              "rows": 373,
+              "valid_actions": 2900,
+              "movement_l1": 0.12861139025006976,
+              "balanced_done_bce": 0.0452682925216404,
+              "action_loss": 0.17387968277171018
+            },
+            {
+              "seed": 86858,
+              "rows": 311,
+              "valid_actions": 2404,
+              "movement_l1": 0.11234157142657296,
+              "balanced_done_bce": 0.036222684810390565,
+              "action_loss": 0.1485642562369635
+            },
+            {
+              "seed": 86859,
+              "rows": 361,
+              "valid_actions": 2804,
+              "movement_l1": 0.11822154257383514,
+              "balanced_done_bce": 0.042512000546712274,
+              "action_loss": 0.1607335431205474
+            },
+            {
+              "seed": 86860,
+              "rows": 334,
+              "valid_actions": 2588,
+              "movement_l1": 0.11655907600387672,
+              "balanced_done_bce": 0.04281225906079707,
+              "action_loss": 0.15937133506467377
+            },
+            {
+              "seed": 86861,
+              "rows": 356,
+              "valid_actions": 2764,
+              "movement_l1": 0.12664679138281384,
+              "balanced_done_bce": 0.03622668975992492,
+              "action_loss": 0.16287348114273875
+            },
+            {
+              "seed": 86862,
+              "rows": 350,
+              "valid_actions": 2716,
+              "movement_l1": 0.10624201930299097,
+              "balanced_done_bce": 0.05181509960272702,
+              "action_loss": 0.158057118905718
+            },
+            {
+              "seed": 86863,
+              "rows": 379,
+              "valid_actions": 2948,
+              "movement_l1": 0.12506355937078587,
+              "balanced_done_bce": 0.1007185117227848,
+              "action_loss": 0.22578207109357068
+            },
+            {
+              "seed": 86864,
+              "rows": 352,
+              "valid_actions": 2732,
+              "movement_l1": 0.13439469570845297,
+              "balanced_done_bce": 0.036204525025828715,
+              "action_loss": 0.1705992207342817
+            }
+          ]
+        }
+      },
+      "validation_train_ratio": 1.145478807700876
+    }
+  },
+  "estimator": "Fixed-checkpoint deterministic train/validation action loss, no optimizer.\n\nDeployment uses the ACT zero latent, eval dropout and complete fixed splits.\nThis excludes the training-only VAE KL and command-history augmentation. Compare\ntrain and validation under this identical estimator, keeping logged training\ntotal (with KL/dropout) separate. Balanced BCE retains TRAIN class priors.\n",
+  "physical_runs": 0,
+  "optimizer_steps": 0,
+  "wall_s": 322.668630612
+}
