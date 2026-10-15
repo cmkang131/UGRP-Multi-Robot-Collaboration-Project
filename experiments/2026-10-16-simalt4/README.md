@@ -45,7 +45,7 @@ grip의 상자 끝점은 3.2691mm / 0.3166°다. 남은 몸체 위치 차이는 
 - `--dense-capacity-v1`, `--backend-mode legacy-plane-v1`는 **기본 off**다. 이전 옵션은 baseline이다. 마찰·solref/solimp·질량·dt·noslip10·관절 이득을 변경하지 않는다. mesh rbound와 norm(size)의 정확한 일치를 확인하지 못하면 호환 경로를 거부한다.
 - 기록 전용 `--record-own-rgb`를 R2/R3에 켰다. C rasterizer가 별도 MjData에서 자기 카메라를 10Hz·최대100장 ring으로 기록하며 제어는 읽지 않는다. 각 grip 종료 ring은 100장/약1.89MB다. 실패 시점 검토에는 보존한 4kHz 상태의 C 사후 복원도 사용했다. Warp RGB 정보 동등성과 구분한다.
 - `scripts/simalt_step_analysis.py`: 같은 MuJoCo3.16 C 대 Warp와 C3.12/3.13/3.16 버전 대조를 분리한다. **25개 표, 합계 1,387,600행**을 zstd 복원 전체 SHA 확인 후 보존했다. 원본은 VM에, 발췌만 Mac/Git에 둔다.
-- 비물리 검사 **13개 고유 검사 통과**(5+8, 중복 재실행 제외), L4의 legacy kernel **컴파일 전용 검사 통과·physics step0**, 구문 검사·`git diff --check` 통과. PR은 Draft이며 CI 실행 결과는 없다.
+- 비물리 검사 **13개 고유 검사 통과**(5+8, 중복 재실행 제외), L4의 legacy kernel **컴파일 전용 검사 통과·physics step0**, 구문 검사·`git diff --check` 통과. PR은 Draft이며 전체 CI 통과는 확인하지 않았다.
 - 진단 호출26개: 완료20, HOST_ERROR6, cap_end0. HOST_ERROR는 초기 로거 형식 오류4개(step0), legacy 최초 컴파일 오류1개(step0), 새 R1 NEFC overflow1개다. 추가 설치/검토 도구 오류는 이 파지 표본과 합산하지 않았다. [전체 호출](evidence/remote/jobs.json).
 
 ## 고정 입력·소스
