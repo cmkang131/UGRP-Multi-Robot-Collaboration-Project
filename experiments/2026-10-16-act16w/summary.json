@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.act16w.summary.v1",
-  "status": "WAIT_BACKEND_NOT_READY",
+  "status": "WAIT_WARP3_GATE_AND_RECORD_API",
   "complete": false,
   "authorization": "2026-10-16 user: autonomous MJWarp ACT16 record/train/evaluate after warp1 and scene signals",
   "source_base": "06870b6d1ad9233c6e5d63eee2c8c7b81efc66f5",
@@ -11,9 +11,9 @@
     "state": "outputs/act16w-wait/wait-state.json",
     "warp1": "2026-10-15T18:51:49.347269+00:00 warp1: GPU_SHARED_TIMING | L4 warp2 PID9247 발견, warp1 N1은 paused·N16 prefix 측정 진행 | 공유부하 처리량으로 분리, 타 작업 정지/VM 정지 없음 | 독점 여부 사용자 선택 대기",
     "scene_decision": "experiments/2026-10-16-act16w/scene-decision.json",
-    "latest_check": "2026-10-15T21:40:14.315854+00:00",
-    "checks": 42,
-    "queue_status": "exists_NOT_READY_commands_absent_rejection_table_present",
+    "latest_check": "2026-10-15T22:17:42.526898+00:00",
+    "checks": 50,
+    "queue_status": "predecessor_NOT_READY; awaiting warp3 gate and RECORD_API_READY",
     "queue_receipt": "experiments/2026-10-16-act16w/warp1-queue-receipt.json",
     "warp1_queue_blockers": [
       "scene profile not approved",
@@ -25,7 +25,11 @@
     "queue_backend_readiness": "NOT_READY",
     "queue_rejection_table_exists": true,
     "queue_last_verified_at": "2026-10-15T21:44:50.399525+00:00",
-    "blocker_interpretation": "Published queue still says scene unapproved, but coordinator scene decision is received; queue has not integrated that profile. Other backend blockers remain."
+    "blocker_interpretation": "Published queue still says scene unapproved, but coordinator scene decision is received; queue has not integrated that profile. Other backend blockers remain.",
+    "upstream_job": "warp3",
+    "upstream_handoff": "upstream-handoff.json",
+    "deadline_utc": "2026-10-16T04:14:16.449463+00:00",
+    "latest_upstream_signal": "warp3: DISTINCT_STARTS PASS | source e200c1e5 | N16 start manifests16/qpos16/firstRGB16, expected=actual16/16; RGB120pairs min213766 different pixels, mean absolute channel delta>=2.9452 | montage+hash verified; independent teacher gate n=0 | experiments/2026-10-16-warp3/distinct-proof.json"
   },
   "teacher_gate": {
     "attempted": 0,
@@ -52,7 +56,7 @@
     "assets": []
   },
   "checks": {
-    "nonphysics_passed": 22,
+    "nonphysics_passed": 25,
     "skipped": 1,
     "skip_reason": "torch not installed on Mac; no environment created",
     "trainer_syntax_and_cli_help": "PASS; CUDA execution not tested"

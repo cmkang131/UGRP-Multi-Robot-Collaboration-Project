@@ -61,3 +61,30 @@ def test_explicit_ready_queue_does_not_need_ready_word_in_progress_line(tmp_path
     alert = tmp_path / 'ops-alert.md'
     alert.write_text('warp1: GPU_SHARED_TIMING\nSCENE_DECISION: v5')
     assert snapshot(alert, tmp_path / 'queue.json')['status'] == 'INSPECT_QUEUE'
+
+
+def test_warp3_handoff_needs_independent_starts_gate_and_record_api():
+    text = 'SCENE_DECISION: v5\nwarp3: DISTINCT_STARTS PASS\nwarp3: TEACHER_GATE 38/40'
+    assert not signals(text, 'warp3')['ready_for_queue_inspection']
+    ready = text + '\nwarp3: RECORD_API_READY | source=abc'
+    row = signals(ready, 'warp3')
+    assert row['status'] == 'INSPECT_QUEUE'
+    assert row['teacher_success_n'] == 38 and row['teacher_attempts_N'] == 40
+    assert not signals(ready.replace('38/40', '37/40'), 'warp3')['ready_for_queue_inspection']
+    assert not signals(ready.replace('38/40', '19/20'), 'warp3')['ready_for_queue_inspection']
+    assert not signals(ready.replace('DISTINCT_STARTS PASS', 'DISTINCT_STARTS PENDING'), 'warp3')['ready_for_queue_inspection']
+
+
+def test_warp3_failed_gate_or_later_not_ready_cannot_reuse_ready_receipts():
+    ready = ('SCENE_DECISION: v5\nwarp1: READY\nwarp3: DISTINCT_STARTS PASS\n'
+             'warp3: TEACHER_GATE 40/40\nwarp3: RECORD_API_READY')
+    assert not signals(ready + '\nwarp3: TEACHER_GATE 30/40', 'warp3')['ready_for_queue_inspection']
+    assert signals(ready + '\nwarp3: NOT_READY | camera mismatch', 'warp3')['status'] == 'WAIT_NOT_READY'
+    assert not signals('SCENE_DECISION: v5\nwarp1: READY', 'warp3')['ready_for_queue_inspection']
+
+
+def test_warp3_ready_queue_cannot_replace_gate_and_api_receipts(tmp_path):
+    queue_fixture(tmp_path, 'READY', True)
+    alert = tmp_path / 'ops-alert.md'
+    alert.write_text('warp3: DISTINCT_STARTS PASS\nSCENE_DECISION: v5')
+    assert not snapshot(alert, tmp_path / 'queue.json', 'warp3')['ready_for_queue_inspection']

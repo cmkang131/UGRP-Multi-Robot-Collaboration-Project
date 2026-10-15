@@ -118,3 +118,9 @@ RESOURCE_CAP 대신 SUPERVISOR_STOP으로 구분하도록 보고 분류를 바�
 
 06:50 KST: [draft PR #539](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/539) 생성.
 준비 코드 검토용이며 교사·학습·새40평가·Release는 미실행이다.
+
+07:18 KST: 조정자 [후속 작업 지정](upstream-handoff.json)에 따라 warp1 대신
+warp3의 DISTINCT_STARTS PASS·교사≥95%/≥40·RECORD_API_READY를 확인한다.
+기존 watcher를 교체했으며 최초 시작 시각과13:14 KST 대기 종료는 유지했다.
+현재 서로 다른 시작 검증 보고만 받았고 교사/기록 API는 대기 중이다.
+watcher 검사11통과, 전체 신규 비물리 검사 누계25통과·torch1skip이다.
