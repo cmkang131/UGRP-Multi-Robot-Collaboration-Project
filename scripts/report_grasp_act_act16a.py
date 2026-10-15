@@ -45,7 +45,7 @@ def main():
                                copied=int(((sa==sp)&needed).sum()),correct=int(((sa==sy)&needed).sum())))
         run_events=reversal_events(rows)
         events.extend(dict(seed=job['seed'],**r) for r in run_events)
-        mask=read_rows(a.batch/f'offline-{job["seed"]}'/'mask-rows.jsonl');masks.extend(mask)
+        mask=read_rows(Path(job['offline'][-1])/'mask-rows.jsonl');masks.extend(mask)
         failed=next((k for k in STAGES if not funnel['cumulative_run_pass'][k]),None)
         contacts=[v for r in ev for v in r['external_contacts']]
         contact=min(contacts,key=lambda r:r['gap_m']) if contacts else None
