@@ -9,15 +9,15 @@ _______ test_plan_and_queue_are_explicitly_separate_disabled_conditions ________
 >       plan=json.loads(Path(PLAN).read_text())
              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-tests/test_solo_carry6.py:115: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_solo_carry6.py:115:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 /opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/__init__.py:346: in loads
     return _default_decoder.decode(s)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^
 /opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/json/decoder.py:338: in decode
     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 self = <json.decoder.JSONDecoder object at 0x106b3f050>, s = '', idx = 0
 
@@ -25,10 +25,10 @@ self = <json.decoder.JSONDecoder object at 0x106b3f050>, s = '', idx = 0
         """Decode a JSON document from ``s`` (a ``str`` beginning with
         a JSON document) and return a 2-tuple of the Python
         representation and the index in ``s`` where the document ended.
-    
+
         This can be used to decode a JSON document from a string that may
         have extraneous data at the end.
-    
+
         """
         try:
             obj, end = self.scan_once(s, idx)
