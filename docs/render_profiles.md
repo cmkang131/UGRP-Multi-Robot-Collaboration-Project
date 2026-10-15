@@ -86,3 +86,19 @@ nearclip_audit = audit(model, base_profile=profile)
 - Rublee, Rabaud, Konolige, Bradski, *ORB: An efficient alternative to SIFT or SURF*, ICCV 2011, pp. 2564–2571, DOI [10.1109/ICCV.2011.6126544](https://doi.org/10.1109/ICCV.2011.6126544). [OpenCV 공식 ORB 설명](https://docs.opencv.org/4.13.0/d1/d89/tutorial_py_orb.html)에서 서지와 FAST/방향 보정 BRIEF·Hamming 사용을 확인했다. IEEE 원문은 접근 확인 화면에 막혀 읽지 못했다.
 - [*Robust RGB-D SLAM Using Point and Line Features for Low Textured Scene*, Sensors 20(17), 4984 (2020)](https://www.mdpi.com/1424-8220/20/17/4984), DOI 10.3390/s20174984. 출판사/PMC 검색 본문의 실험 설명에서 ORB-SLAM2가 `fr3_str_ntex_far/near`에서 실패한 사례를 확인했다. 전체 페이지/PDF 열람은 차단되어 표의 수치를 인용하지 않았다. RGB-D 사례이며 이번 자기 RGB 장면의 성공 근거가 아니다.
 - [MuJoCo 공식 XML reference: texture/material](https://mujoco.readthedocs.io/en/stable/XMLreference.html#asset-texture): PNG/cube 면·`texrepeat`·`texuniform` 규칙을 확인했다. GCP 실행 MuJoCo 버전에서의 실제 바인딩/영상은 별도 관문이다.
+
+## scenetex5 — 장면과 경계 단계의 동시 후보 (2026-10-16, NOT_READY)
+
+벽색/밝기를 바꾸고 v1 바닥/no_mip_v1을 유지하는 별도 기본 off 프로필과
+scene_colour_transition_v1 경계를 추가했다. 중간 채도 남보라, Lab/HSV 분할,
+컬럼별 첫 전이, 유한 2점 직선 합의가 대상이다. 96컬럼/strip2·기존 연결·PlaneFlow는 유지한다.
+
+[3라운드 결과](../experiments/2026-10-16-scene-tex5/README.md)는 NOT_READY다.
+대표 s80의 오차 중앙/p95는 .5/1.5px, 바닥 특징·매칭 분포는 통과했지만
+PNG 경계 컬럼 중앙88→78, LK 하위 분포가 미달이다. 주황 구역 A가 기존 주황 컬럼
+마스크에 걸려 직선 시드가 사라지는 반례와 s65/PIL82의 실제 벽 B 패치 오검출2개를 보존했다.
+
+공통 modules()->hfw.detect 선택 facade는 기존 API를 유지하며 기본 off에서
+원래 모듈 객체를 반환한다. 켤 때는 정확한 장면 이름·고정 보정 파일·SHA를 함께 요구한다.
+기존 소비자의 장면/화질 바인딩을 자동으로 바꾸지 않는다. 현재 후보는 재현용이며
+기존 실행기·장면·ACT 기본값에 채택하지 않는다.

@@ -1,0 +1,30 @@
+{
+  "time": "2026-10-15T18:42:22.346107+00:00",
+  "host": "gcp2",
+  "project": "ugrp-sim-b-1014",
+  "account": "changmin5781@gmail.com",
+  "own_active_python_mujoco_ffmpeg": [],
+  "other_ugrp_python_mujoco_ffmpeg": [],
+  "remaining_other_leases": [
+    "warp1.json"
+  ],
+  "own_lease_removed": true,
+  "lease_record_before_removal": {
+    "task": "scenetex5",
+    "pid": 34216,
+    "owner": "Codex SSH orchestration (between finite stages)",
+    "started": "2026-10-15T17:45:49.501455+00:00",
+    "expected_end": "2026-10-15T19:00:00Z",
+    "concurrency": 5,
+    "max_rounds": 3,
+    "raw_budget_gib": 6,
+    "mac_fetch_budget_mib": 32,
+    "stage": "final evidence verification",
+    "raw_complete": "2026-10-15T18:15:16.986440+00:00"
+  },
+  "vm_stopped": false,
+  "stop_eligible": false,
+  "reason": "other leases/processes present: do not stop shared VM; leave existing idle/budget guards unchanged",
+  "source_references": "all source clones directly reference git-shared.git/objects; no chain, no gc/prune",
+  "startup_stop": "Cloud Audit Logs match ugrp-sim-gcp2 stop calls at17:42\u201317:44UTC from Claude Code, before our lease; initially called idle but corrected; no experiment frames existed yet"
+}

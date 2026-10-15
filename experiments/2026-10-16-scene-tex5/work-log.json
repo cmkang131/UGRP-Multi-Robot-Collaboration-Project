@@ -1,0 +1,65 @@
+{
+  "task": "scenetex5",
+  "date": "2026-10-16 KST",
+  "decision": "NOT_READY",
+  "rounds_used": 3,
+  "new_rendered_pose_records": 880,
+  "encoded_RGB": 2640,
+  "technical_recoveries": [
+    {
+      "category": "HOST_ERROR",
+      "runs": 3,
+      "frames": 0,
+      "cause": "new profile absent from nearclip allow-list",
+      "raw": "scenetex5-r1-violet150/175/195",
+      "fix_source": "32e36dfe"
+    },
+    {
+      "category": "LAUNCHER_SYNTAX",
+      "frames": 0,
+      "cause": "quoting in temporary launcher before execution; corrected source run-round1b.py",
+      "evidence": "terminal transcript; initial launcher stderr was superseded by corrected driver log, not claimed as a preserved raw run"
+    },
+    {
+      "category": "ANALYSIS_QUALIFICATION_ERROR",
+      "cause": "initial extended colour audit raised on HIGH camera instead of retaining unknown status",
+      "incomplete": "scenetex5-r2-colour-audit",
+      "completed": "scenetex5-r2-colour-audit-b"
+    },
+    {
+      "category": "COLLECTOR_PATH_ERRORS",
+      "cause": "script import root then compressed-manifest filename; does not change raw data",
+      "incomplete": "scenetex5-final",
+      "completed": "scenetex5-final-v2"
+    }
+  ],
+  "confirmed_remaining": [
+    {
+      "category": "ORANGE_ZONE_A_FALSE_OCCLUSION",
+      "blocking_object": "paint_zone_A",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "static RGB rule, not physical clearance",
+      "reason": "96 colour-supported contact columns,96 orange-veto columns,0 line seeds"
+    },
+    {
+      "category": "LK_LOWER_TAIL",
+      "blocking_object": "wall/floor RGB and unchanged LK mask",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "static image-pair metric",
+      "reason": "s80 p10 inliers PNG/JPEG below v1"
+    },
+    {
+      "category": "PIL_FALSE_B_PATCH",
+      "blocking_object": "wall",
+      "minimum_gap_m": null,
+      "minimum_gap_reason": "pixel component, not physical clearance",
+      "reason": "s65 two patches,67 wall pixels each,0 floor pixels"
+    }
+  ],
+  "final_boundary_AST_matches_R3": true,
+  "tests": "56 passed in4.23s; CI shard listing contains test_scene_tex5.py",
+  "retrieval_extra_hashes_rechecked": 10,
+  "representative_manifest_verified": 729,
+  "scope": "static fixtures only; no4th algorithm round, no physical/controller/ACT success",
+  "timestamp": "2026-10-15T18:43:32.789137+00:00"
+}

@@ -333,6 +333,7 @@ TEST_PATTERNS = (
     "tests/test_natural_scene_texture.py",  # pinned PNG, pure XML; no renderer
     "tests/test_scene_tex2.py",  # v2 assets and explicit perception; no simulator
     "tests/test_scene_tex2_probe.py",  # static gate pure scoring only
+    "tests/test_scene_tex5.py",  # XML/PNG and boundary ABI only, no renderer
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
     "tests/test_stall_detector_d1.py",  # offline D1 draft reference: NumPy frames only, no controller/simulator

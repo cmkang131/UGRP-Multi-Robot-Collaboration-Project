@@ -1,0 +1,1409 @@
+{
+  "schema": "ugrp.scene_colour_calibration.v1",
+  "scene_profile": "walls_floor_contrast_v5_indigo100",
+  "scene_sha256": "c0736f2517fe004635126f0a08f4cfe1c679dd3aad37979ef691dbb605d2910a",
+  "wall_hsv": {
+    "p01": [
+      132.0,
+      194.0,
+      36.0
+    ],
+    "p99": [
+      134.0,
+      214.0,
+      104.0
+    ]
+  },
+  "wall_hsv_basis": "original wall pixel p01/p99; retains hue specificity against existing blue B and purple C paint",
+  "lab": {
+    "floor": {
+      "p00": [
+        71.0,
+        116.0,
+        114.0
+      ],
+      "p01": [
+        122.0,
+        127.0,
+        127.0
+      ],
+      "p50": [
+        151.0,
+        128.0,
+        128.0
+      ],
+      "p99": [
+        170.0,
+        129.0,
+        129.0
+      ],
+      "p100": [
+        186.0,
+        142.0,
+        142.0
+      ]
+    },
+    "wall": {
+      "p00": [
+        3.0,
+        128.0,
+        74.0
+      ],
+      "p01": [
+        10.0,
+        139.0,
+        85.0
+      ],
+      "p50": [
+        41.0,
+        164.0,
+        87.0
+      ],
+      "p99": [
+        42.0,
+        165.0,
+        112.0
+      ],
+      "p100": [
+        54.0,
+        175.0,
+        126.0
+      ]
+    }
+  },
+  "axis_ab": [
+    0.6598011732150952,
+    -0.7514402250505251
+  ],
+  "split": -1.7136502693225282,
+  "split_basis": {
+    "floor_p99": -10.318557236669392,
+    "wall_p01": 6.8912566980243355
+  },
+  "basis": "midpoint of original floor p99 and wall p01 chroma; class envelopes p00/p100; no boundary-error tuning",
+  "interior_kernel_px": 5,
+  "interior_kernel_basis": "existing strip_half_px=2 -> 5-pixel support",
+  "source_scope": "same88 poses x3 encodings exploratory, not holdout",
+  "sources": [
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--drive--r1",
+      "encoding": "png",
+      "sha256": "e57940b82341445085647c66bbdd3785754747102acf4a48ebdef4cd2c01c4d7"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--drive--r1",
+      "encoding": "jpeg90",
+      "sha256": "56e7e6b1b8ae010f87e218ea54255fbe345b86d4d32e70d804252338378e6698"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--drive--r1",
+      "encoding": "pil82",
+      "sha256": "6039bd633b1eca46edc98d12f2843cd509af2551ad0fb01f893619122935ed83"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--drive--r2",
+      "encoding": "png",
+      "sha256": "39e9f6e0d3e299cd92d20a0ae8c5fe713f5d7df83f6e42dd663ddf1825e599f3"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--drive--r2",
+      "encoding": "jpeg90",
+      "sha256": "8461e7f54a24da7e9d29899ea2bafa2bbd409f3bc3a7c1133803dd883e3d6ddf"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--drive--r2",
+      "encoding": "pil82",
+      "sha256": "c06e6bc27c2ba8d5c53299196828604fcd70c15711a42515d54c1cdbe20e5447"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high--r1",
+      "encoding": "png",
+      "sha256": "8408839dae9ab3c2d4c70a330c82cace90ce69f5d02315843d83f1223b29d1e5"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high--r1",
+      "encoding": "jpeg90",
+      "sha256": "2f757eb72d1ac120a549d8d77beccdc6d533bd17d84649498f219ccee3c52e9e"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high--r1",
+      "encoding": "pil82",
+      "sha256": "491b5a9b5f4a734a230da394dbc4bb847fd64a087274be0e812806dd926984a1"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high--r2",
+      "encoding": "png",
+      "sha256": "4dc62f844a7997c64a9851dc648797dcd2ff825bd796b93db46ce66e3224d35c"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high--r2",
+      "encoding": "jpeg90",
+      "sha256": "d0e2fbd30b5e4ebda5df667f88078943017ad6350354bc83c26856aced491d5c"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high--r2",
+      "encoding": "pil82",
+      "sha256": "c7af8a26dddfbfe71fdd97297ffda42117c9a420d248399495240d1cbee44978"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "png",
+      "sha256": "cb30b3f3f659e7565b7d4af561b2248d1b47d35bf51e249da5fa98cf30523bee"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "jpeg90",
+      "sha256": "8aaf7e275b52eaaa9815a4c0419932886ecbac87207ef08f124182dc8b2510e0"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "pil82",
+      "sha256": "9414e4337bac8b97b2236b3d419aa4b764751844ab4dec8ab1355f44b56955d6"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "png",
+      "sha256": "8fa95dd48e0e3f307f0c95f24e2b3f6dd8af9a972ec25aa6e327c8279c5a231c"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "jpeg90",
+      "sha256": "793fe499de7d148c43adc9bae8e464828f6bd21ffbab76dc13f9e540c4034917"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "pil82",
+      "sha256": "42b6c8ff7e9a4355d8ab724308c5d8e9936e151a2a8ea821dcf2f7c8c5ce7322"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--box_palette--r1",
+      "encoding": "png",
+      "sha256": "563f312f42c0c5e0172b967d5b84b1508761a4888d2d9d4d4e2b2727efcc5898"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--box_palette--r1",
+      "encoding": "jpeg90",
+      "sha256": "7bd1441a7112a85f4766eba1a9f107dccb45810841c74a2ca9b92c6b6d2a337e"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--box_palette--r1",
+      "encoding": "pil82",
+      "sha256": "03ac1a453cc42f899ce635a0b93b2b9b1dc9c6c8814a54d660280762c7936a0f"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--box_palette--r2",
+      "encoding": "png",
+      "sha256": "939f2d37a4b7d025e6fc56779fddf14aa3e4f2bb3713dda6977c0627f6a4e445"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--box_palette--r2",
+      "encoding": "jpeg90",
+      "sha256": "0d4c934f8c9c4695f3977fa07eb30f879786ff5bcd1e6e23662f62f74a446386"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--box_palette--r2",
+      "encoding": "pil82",
+      "sha256": "5261c60f2b60502d681abec1eacdc4e2eaa48c384c4f9b702b9a19ff884a1660"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r1",
+      "encoding": "png",
+      "sha256": "d6031adc6576c370ce6e6455a885db760e597f78aac514bb604f3fb4e54aede0"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r1",
+      "encoding": "jpeg90",
+      "sha256": "c2258f076d13608a5775fdaf4949769d4c932927fe004110fc61004adaa7672c"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r1",
+      "encoding": "pil82",
+      "sha256": "92e02562248118da7c850a4268428491fd60e72da2aa9aad5bc60c916c8c23ad"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r2",
+      "encoding": "png",
+      "sha256": "8e4b8d55e17689239c01b85c2823657bcae59cbf31ba74ede01a019960f53e5d"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r2",
+      "encoding": "jpeg90",
+      "sha256": "d28cac8d9154d16de74f2efb391266229e52ee844761cda2bafcd7467ac91072"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--beam_end_bands--r2",
+      "encoding": "pil82",
+      "sha256": "531a1351902c3c6955a486b0f877dbb91695536e9c3893ab052cd365cc330c36"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_A--r1",
+      "encoding": "png",
+      "sha256": "0eb5bf230a438ea25565df23fb7b426f2fccb798f76ba8959ec058031628e4b9"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_A--r1",
+      "encoding": "jpeg90",
+      "sha256": "9ebdf9b5d5c85c587f4830041380dd3478ec6863f7d39379e1062f4ffce2c1a0"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_A--r1",
+      "encoding": "pil82",
+      "sha256": "185b134901799356fc5eaf612daab2d14b1fcd95af12b2cd501f8491a4f4c303"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_A--r2",
+      "encoding": "png",
+      "sha256": "e9b20ef4590585b3cba8260222cfa9a7baf28ca56efd7304ed452f5aa9df5ae6"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_A--r2",
+      "encoding": "jpeg90",
+      "sha256": "856949d5cec57168a1ea51abacb8afaacf9e9eae83ee9577044249b3cfc6a046"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_A--r2",
+      "encoding": "pil82",
+      "sha256": "2d1f7aaae662e6be5377ef4653ad0b0cce8aacbb266917a612a36da2e5ffb4af"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_B--r1",
+      "encoding": "png",
+      "sha256": "3444429c2b522c625ca512e01a00b804d0270fcb29b5300e16a87fd7a8b9ed29"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_B--r1",
+      "encoding": "jpeg90",
+      "sha256": "75f7e1d0144291d1105bddc463854570e528a44b5b2ba56ebab9685a185a0b90"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_B--r1",
+      "encoding": "pil82",
+      "sha256": "6d12572ba50913db982c5f950e291b254cdcc297c41683a607310025000a3eb0"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_B--r2",
+      "encoding": "png",
+      "sha256": "2bb6361e2e2d4adb74bc89021899d1cca676d168f1442c06463f8001df53299d"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_B--r2",
+      "encoding": "jpeg90",
+      "sha256": "aa4deeef589a70b6bf38a3213b26afe71807ee2c5462ab8fec719f65d5a3dba8"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_B--r2",
+      "encoding": "pil82",
+      "sha256": "81077ce84fbef3a4476cd4d7409f5edeaefd9321aa6630e6eac6de390ee2954f"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_C--r1",
+      "encoding": "png",
+      "sha256": "b407d946a2cdcebe0b8598045dccc3de7face880610a1b861dc9576dd6aa8954"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_C--r1",
+      "encoding": "jpeg90",
+      "sha256": "49de7bc75432fcc209e9896f5e2b4ca2482df8fbe6c38fe6f8667c87b3062436"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_C--r1",
+      "encoding": "pil82",
+      "sha256": "0216add361652d881caeeb47ae9d90259e5e0d0c306cd4ba190b0926b7a81565"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_C--r2",
+      "encoding": "png",
+      "sha256": "2bb6361e2e2d4adb74bc89021899d1cca676d168f1442c06463f8001df53299d"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_C--r2",
+      "encoding": "jpeg90",
+      "sha256": "aa4deeef589a70b6bf38a3213b26afe71807ee2c5462ab8fec719f65d5a3dba8"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view0--paint_C--r2",
+      "encoding": "pil82",
+      "sha256": "81077ce84fbef3a4476cd4d7409f5edeaefd9321aa6630e6eac6de390ee2954f"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--drive--r1",
+      "encoding": "png",
+      "sha256": "c360c7d68e15f32d766dcccefe38b32a8a816bc29b0250df70982481abc7f8f0"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--drive--r1",
+      "encoding": "jpeg90",
+      "sha256": "9811b2a28370cb1470067584a508e383951e5d8f0970381656c1525ca527bd28"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--drive--r1",
+      "encoding": "pil82",
+      "sha256": "f7f4e92f65d0f20061ee24a3c1719964a5608fb8856d03c786d2f11b378121ad"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--drive--r2",
+      "encoding": "png",
+      "sha256": "ea299c9c35c9cff028a944815b8ce6527b047cc100fe2c3e908f3a77ecff8c85"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--drive--r2",
+      "encoding": "jpeg90",
+      "sha256": "14becc58c3e7df073a591e33e80269cbc04f1514a2b0d7bce81b2b1831bb51f5"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--drive--r2",
+      "encoding": "pil82",
+      "sha256": "a82321de57caebd417d8a535fe6738ecc6ff2bf14e66eae27a187786e425acfd"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high--r1",
+      "encoding": "png",
+      "sha256": "8b425c9f84e0eca18096b7e2818f6865fef8c3442854e6b9b34593fd84fa7bd0"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high--r1",
+      "encoding": "jpeg90",
+      "sha256": "436cdbd1f408384903d0499e07d7da53da72b65caa9cef75584c32da7222733a"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high--r1",
+      "encoding": "pil82",
+      "sha256": "9f16fb4a763dfd5b557c1952ebc24abffbdfe983ac788e69c42e8d37eb2137c0"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high--r2",
+      "encoding": "png",
+      "sha256": "247f4ba6998ca3b368bdeba776d1410bb9202aeb878fbd43c4c1c8201798af1c"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high--r2",
+      "encoding": "jpeg90",
+      "sha256": "020cf648c47b991483f2d5424b1eee54c5cabcd1cfdab5aebbf9ff42b523f25f"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high--r2",
+      "encoding": "pil82",
+      "sha256": "a3c3a28f9adc2dc13985321e640f40975ff976a1d6b64bbe66234a3c130e3dd2"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "png",
+      "sha256": "f9faf664d7222ac53b9824267dbbbc982ed96d0c45832f2b148333815df74962"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "jpeg90",
+      "sha256": "febaee38fc925be1fadba3cc3fa4472e78b547ad27632eff91738bbc77332b42"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "pil82",
+      "sha256": "393422373f659b919754e687e05a5574fe2eb6fb24e9e7564ef3fdfeb26dc5ed"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "png",
+      "sha256": "e93a007e54af19cb3429405297dcde6ea8d3f640749be500bccd33eaeb0cdad1"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "jpeg90",
+      "sha256": "78c2256155450a1bc5d95494a99b8a16daf907a9b1a27a9f35390ca510f173aa"
+    },
+    {
+      "case": "zone_hardmaps1_h1_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "pil82",
+      "sha256": "6b0f0f8b7a8d6610c59221d8117e41f92524c354937d0694a52adc0f5f24b0d1"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--drive--r1",
+      "encoding": "png",
+      "sha256": "e57940b82341445085647c66bbdd3785754747102acf4a48ebdef4cd2c01c4d7"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--drive--r1",
+      "encoding": "jpeg90",
+      "sha256": "56e7e6b1b8ae010f87e218ea54255fbe345b86d4d32e70d804252338378e6698"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--drive--r1",
+      "encoding": "pil82",
+      "sha256": "6039bd633b1eca46edc98d12f2843cd509af2551ad0fb01f893619122935ed83"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--drive--r2",
+      "encoding": "png",
+      "sha256": "6a8b03d8371f46312d6511c30853a9d0bfb2bad61660c558b00f73c2343c4dde"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--drive--r2",
+      "encoding": "jpeg90",
+      "sha256": "347939f05c7cfbaa902dac38d2b72ad125b03e29e261c7b8a9a9ae8a8f8f07fb"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--drive--r2",
+      "encoding": "pil82",
+      "sha256": "72f6937d179df613a2a528e92a25d995f78981dcbcf1dadbc142c644551a2885"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high--r1",
+      "encoding": "png",
+      "sha256": "8408839dae9ab3c2d4c70a330c82cace90ce69f5d02315843d83f1223b29d1e5"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high--r1",
+      "encoding": "jpeg90",
+      "sha256": "2f757eb72d1ac120a549d8d77beccdc6d533bd17d84649498f219ccee3c52e9e"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high--r1",
+      "encoding": "pil82",
+      "sha256": "491b5a9b5f4a734a230da394dbc4bb847fd64a087274be0e812806dd926984a1"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high--r2",
+      "encoding": "png",
+      "sha256": "4dc62f844a7997c64a9851dc648797dcd2ff825bd796b93db46ce66e3224d35c"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high--r2",
+      "encoding": "jpeg90",
+      "sha256": "d0e2fbd30b5e4ebda5df667f88078943017ad6350354bc83c26856aced491d5c"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high--r2",
+      "encoding": "pil82",
+      "sha256": "c7af8a26dddfbfe71fdd97297ffda42117c9a420d248399495240d1cbee44978"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "png",
+      "sha256": "cb30b3f3f659e7565b7d4af561b2248d1b47d35bf51e249da5fa98cf30523bee"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "jpeg90",
+      "sha256": "8aaf7e275b52eaaa9815a4c0419932886ecbac87207ef08f124182dc8b2510e0"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "pil82",
+      "sha256": "9414e4337bac8b97b2236b3d419aa4b764751844ab4dec8ab1355f44b56955d6"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "png",
+      "sha256": "8fa95dd48e0e3f307f0c95f24e2b3f6dd8af9a972ec25aa6e327c8279c5a231c"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "jpeg90",
+      "sha256": "793fe499de7d148c43adc9bae8e464828f6bd21ffbab76dc13f9e540c4034917"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "pil82",
+      "sha256": "42b6c8ff7e9a4355d8ab724308c5d8e9936e151a2a8ea821dcf2f7c8c5ce7322"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--box_palette--r1",
+      "encoding": "png",
+      "sha256": "563f312f42c0c5e0172b967d5b84b1508761a4888d2d9d4d4e2b2727efcc5898"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--box_palette--r1",
+      "encoding": "jpeg90",
+      "sha256": "7bd1441a7112a85f4766eba1a9f107dccb45810841c74a2ca9b92c6b6d2a337e"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--box_palette--r1",
+      "encoding": "pil82",
+      "sha256": "03ac1a453cc42f899ce635a0b93b2b9b1dc9c6c8814a54d660280762c7936a0f"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--box_palette--r2",
+      "encoding": "png",
+      "sha256": "e240f2b0744453dc072cb5d023c34687cb38e37e980ea9526edba6145a04c58c"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--box_palette--r2",
+      "encoding": "jpeg90",
+      "sha256": "a0085c08cd68740632aa5fe9c51095e1a95fca79a6ac2145aac5899617a9c5a2"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--box_palette--r2",
+      "encoding": "pil82",
+      "sha256": "175047cce26d5026158a4dee6bd6e84d555faa2de550117f16540ad3a9423042"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r1",
+      "encoding": "png",
+      "sha256": "d6031adc6576c370ce6e6455a885db760e597f78aac514bb604f3fb4e54aede0"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r1",
+      "encoding": "jpeg90",
+      "sha256": "c2258f076d13608a5775fdaf4949769d4c932927fe004110fc61004adaa7672c"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r1",
+      "encoding": "pil82",
+      "sha256": "92e02562248118da7c850a4268428491fd60e72da2aa9aad5bc60c916c8c23ad"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r2",
+      "encoding": "png",
+      "sha256": "7716b678c74ada56b1069b08c9cda787f729ddea901097603adb4b83aaac66b7"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r2",
+      "encoding": "jpeg90",
+      "sha256": "73ada5ae027e6a8018af4f204d6f7da750a6534f1bb407c67b90536c1cc5b5fc"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--beam_end_bands--r2",
+      "encoding": "pil82",
+      "sha256": "ced3a9ace0faa02a838d24e52fb18efca4b5827992d05c73798bc0d0286fa970"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_A--r1",
+      "encoding": "png",
+      "sha256": "59b7a2a881946ba9b763f99adff8425934cf8b52818a8cb5399843383ee0a65f"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_A--r1",
+      "encoding": "jpeg90",
+      "sha256": "b7cd7a7b7cf0196724bd8050c5b90355d1eea78fe4d032750b44eb5ecad916d3"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_A--r1",
+      "encoding": "pil82",
+      "sha256": "651511ff552fb0a77ca65107339291f4cac520385fa0b165c4b0f004e5383427"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_A--r2",
+      "encoding": "png",
+      "sha256": "8b42337d38d0eb508e1c7f66ea20703702ae1a54cdfc54b6e824d4f37e937580"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_A--r2",
+      "encoding": "jpeg90",
+      "sha256": "216087c43c4666f70851a7af02c85642da294be8996b76b6b40c8e9451428d91"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_A--r2",
+      "encoding": "pil82",
+      "sha256": "eedd653b888c3fadf891ca32f09fe1689ec1533d828cec2b17263b54877281f2"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_B--r1",
+      "encoding": "png",
+      "sha256": "3444429c2b522c625ca512e01a00b804d0270fcb29b5300e16a87fd7a8b9ed29"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_B--r1",
+      "encoding": "jpeg90",
+      "sha256": "75f7e1d0144291d1105bddc463854570e528a44b5b2ba56ebab9685a185a0b90"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_B--r1",
+      "encoding": "pil82",
+      "sha256": "6d12572ba50913db982c5f950e291b254cdcc297c41683a607310025000a3eb0"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_B--r2",
+      "encoding": "png",
+      "sha256": "b3029db0c993e631cca382eb0e7283946f011100be402dc2694c6a84b391a651"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_B--r2",
+      "encoding": "jpeg90",
+      "sha256": "49fdc16e1238ddd3d8493bbdb4470822075b6680fa5e690a324710a69ccd8dd2"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_B--r2",
+      "encoding": "pil82",
+      "sha256": "c13f2f9beb537561b2a0b6051ffa597821fdfaf95e751ad2fa2254e3316d88b2"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_C--r1",
+      "encoding": "png",
+      "sha256": "a51355a55e29cd2bdcb1fdf61b827609acc1afe1b8a668567fef81b1768b8cbf"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_C--r1",
+      "encoding": "jpeg90",
+      "sha256": "417d15522653b39e8ba3f9d3cf6fc4472b75e7dbd00b466422ea367a41180f70"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_C--r1",
+      "encoding": "pil82",
+      "sha256": "4988cab249f8760d4b77a178303e0dfc8b81b99fb3eb48a113597a1d3df383f0"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_C--r2",
+      "encoding": "png",
+      "sha256": "487dc1c0d7bcf255a127c244194c01934eff9df769f5a517efc0a296469e2c54"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_C--r2",
+      "encoding": "jpeg90",
+      "sha256": "713eda1e0308e35828388a92d794ff79045c68f24517bb037afd0188ba3beaf1"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view0--paint_C--r2",
+      "encoding": "pil82",
+      "sha256": "ad6f04f7692f5c04a7e8bed54d7f7956e9462d244a85025ee9d13eae0f216780"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--drive--r1",
+      "encoding": "png",
+      "sha256": "dcc96307dd79b657b7eb765f7b9772d1639ae09ea6a440fc7cead2692a917f63"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--drive--r1",
+      "encoding": "jpeg90",
+      "sha256": "6cdfae4095b974e66c24947e1c7d5a18b4766c03646eecc17cba2c57208bd4bb"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--drive--r1",
+      "encoding": "pil82",
+      "sha256": "d09c19586ea8078c8d2026a6ba2be055992d30dc41ed7502258971698927f9c9"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--drive--r2",
+      "encoding": "png",
+      "sha256": "b6fb9cf31ed653f593542c342f1a559b64d985e100c6d30439ac689d835543d4"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--drive--r2",
+      "encoding": "jpeg90",
+      "sha256": "469d5a4b09e0f76a55ec431261f1202199e5b3b6f45f094803d9d44d608eb4f7"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--drive--r2",
+      "encoding": "pil82",
+      "sha256": "c74d94dbe4e451a3f1e685bcbd64d51023bc16fd4c963a9c883f4f25ec7d71b3"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high--r1",
+      "encoding": "png",
+      "sha256": "9277fe58ea91d4a384d9af18c8f696cab59cb611d62351af0db1863d7d69a533"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high--r1",
+      "encoding": "jpeg90",
+      "sha256": "0c04483a9f852a3c81111e04a7161a2f39fa8ee082ff9b7c47eac6bec9ae36f6"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high--r1",
+      "encoding": "pil82",
+      "sha256": "af97b2c99d70c3892d36adcf59e96751862d6703a2b41cbc674d85bdd86e17d2"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high--r2",
+      "encoding": "png",
+      "sha256": "247f4ba6998ca3b368bdeba776d1410bb9202aeb878fbd43c4c1c8201798af1c"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high--r2",
+      "encoding": "jpeg90",
+      "sha256": "020cf648c47b991483f2d5424b1eee54c5cabcd1cfdab5aebbf9ff42b523f25f"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high--r2",
+      "encoding": "pil82",
+      "sha256": "a3c3a28f9adc2dc13985321e640f40975ff976a1d6b64bbe66234a3c130e3dd2"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "png",
+      "sha256": "0f0c30a4a49e41c38b7d90242e63c987a82e3b0ed5c215b35173d6a162d6db27"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "jpeg90",
+      "sha256": "e19bcb6a8e4dabbc4163a37e5d3242fbde6dd952cd3b61b39b2a0c1331ed36b6"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "pil82",
+      "sha256": "1ac6d72ccdab224bed3603c49df60eadebaca4e884cf38d34438ee64700b64e3"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "png",
+      "sha256": "cb635c16814cc60f3ac9d3252621cd2c0c5d671a8b10ea4535941f06bf7c2818"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "jpeg90",
+      "sha256": "c552b62349206293f5bae7b3fa360f1641a7b104bf4c541bf54dad3d2f399ce6"
+    },
+    {
+      "case": "zone_hardmaps1_h2_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "pil82",
+      "sha256": "40ae55c972ee8a1b3167511ead92a191b83a48ef610bcc1181d72fbe5ce5a1b0"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--drive--r1",
+      "encoding": "png",
+      "sha256": "e5fd0354a3e8a9ea878b62da8af5e7d1a863dacaf0b071b1769eb41e9f6b54af"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--drive--r1",
+      "encoding": "jpeg90",
+      "sha256": "670b4a9be25329098e5c6402a067e127ef4e1f5de3aba6b58b770f870584a7a0"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--drive--r1",
+      "encoding": "pil82",
+      "sha256": "2c0de37ed366d6e5a620e2fbaccb013766d52ea51aaf530435bcfde5dd1ebe28"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--drive--r2",
+      "encoding": "png",
+      "sha256": "3d6eba5a3a7b7e203f66e5b4eca7a72a4b294185e5e2475248f45d947a7d23b3"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--drive--r2",
+      "encoding": "jpeg90",
+      "sha256": "2886a690a117fed1927b4cd92f977c357119c8319bb87793b8678751143e7ed7"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--drive--r2",
+      "encoding": "pil82",
+      "sha256": "5ab76ef57171d972c667518148a528fc40a5d887a444a2ad65c282fc6f864dbc"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high--r1",
+      "encoding": "png",
+      "sha256": "474b2b37ed3c343891ab67d598d4281a8d2d22766421bca99c6ed95cbb7164d0"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high--r1",
+      "encoding": "jpeg90",
+      "sha256": "0206c38a50e056c62ae371c8ff6fb788a90187585a00e87394e91e7dce2ee6c9"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high--r1",
+      "encoding": "pil82",
+      "sha256": "ffc45a8cb21e143a353d269509df78ae6ff484a1b711eddba1a68b7fe170cfa5"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high--r2",
+      "encoding": "png",
+      "sha256": "247f4ba6998ca3b368bdeba776d1410bb9202aeb878fbd43c4c1c8201798af1c"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high--r2",
+      "encoding": "jpeg90",
+      "sha256": "020cf648c47b991483f2d5424b1eee54c5cabcd1cfdab5aebbf9ff42b523f25f"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high--r2",
+      "encoding": "pil82",
+      "sha256": "a3c3a28f9adc2dc13985321e640f40975ff976a1d6b64bbe66234a3c130e3dd2"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "png",
+      "sha256": "49fefab6e1e852b2371fabbe1c581569ba57b854af59ed08ddad606c5a0002ff"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "jpeg90",
+      "sha256": "b4aaa3388af9bbebc35cf570eae4d3d34895e25470c37ed2e11a154d79a9de86"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "pil82",
+      "sha256": "1a43b03ed9c149e69bba3d2fc8cd3692f441e20047be19444dce05caf27a1051"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "png",
+      "sha256": "f20a782d244781034d9d4d68d3aa5d65369cadcb2465561f9d9b1df767fbbd09"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "jpeg90",
+      "sha256": "26de409a9a59804c44c35a0b5b7d4eed2a8df978cad969062ec8432f9764cb2f"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "pil82",
+      "sha256": "42edd8b6868346b5c6d2ab5788a0b34c9194c89bcc42da0ec3a0010dea4d84f0"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--box_palette--r1",
+      "encoding": "png",
+      "sha256": "c3abd5723e71c7bf80472c2f6c07ae80196782bb170e89ace6a45f06bbf487f1"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--box_palette--r1",
+      "encoding": "jpeg90",
+      "sha256": "a42e80df2e0f0501aa7e0117ca99f89132b48cad4502f415e26f005adfbba74c"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--box_palette--r1",
+      "encoding": "pil82",
+      "sha256": "5a806083c11b83a49088521f8251975b543973e5cdde4ea1ae08ad48002f3769"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--box_palette--r2",
+      "encoding": "png",
+      "sha256": "f03b1e73d8eb81ca16d3bac876082b1589e7304696c3f4c8427cc6873a29a275"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--box_palette--r2",
+      "encoding": "jpeg90",
+      "sha256": "7cb92121146e7daa7bd262cf70dfe46c639b3455a3258f5b2b88d53b8d3cea49"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--box_palette--r2",
+      "encoding": "pil82",
+      "sha256": "7541edbd87086b98c36149ef288502bc34999a2dc1c6a101b8a5c47622bf6174"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--beam_end_bands--r1",
+      "encoding": "png",
+      "sha256": "3522f95412784f7d959f4b2a12acf43995e31b1a1af0570360902ee014e7e893"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--beam_end_bands--r1",
+      "encoding": "jpeg90",
+      "sha256": "822888de9f759b958e4d971d28c40e2682cfca5920e5c5c84a881db8d034e7da"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--beam_end_bands--r1",
+      "encoding": "pil82",
+      "sha256": "f4c291ea2bb5fc1904df24d8b47fc20237ade7625b93023f0d25254750d906e0"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--beam_end_bands--r2",
+      "encoding": "png",
+      "sha256": "a9933e08f4959b5c56f24d519c0d3966f38297ee7fafcb8e91057472cbb3571e"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--beam_end_bands--r2",
+      "encoding": "jpeg90",
+      "sha256": "7231af724a970d825a346eea6c00ee274cf9ada9abd3e2d489dcb2a4642c1e62"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--beam_end_bands--r2",
+      "encoding": "pil82",
+      "sha256": "14add099130e66da4d500255cffb10fc769d9ed06aecc1e5ba6be6a47ebc4ae0"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_A--r1",
+      "encoding": "png",
+      "sha256": "4d4eef3098224192d5a924dbf87127c6d3fbe9aac42ca3ea6c17a1d39aadd248"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_A--r1",
+      "encoding": "jpeg90",
+      "sha256": "a8005fb2fa348e8cc85ad16ff24fa1290a34aff6d52086592091f53fc9e7b02f"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_A--r1",
+      "encoding": "pil82",
+      "sha256": "2f7956665dbfc4665f1d9cfea78e52a5158a4ac7c863acc2a3681d529a408063"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_A--r2",
+      "encoding": "png",
+      "sha256": "3d6eba5a3a7b7e203f66e5b4eca7a72a4b294185e5e2475248f45d947a7d23b3"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_A--r2",
+      "encoding": "jpeg90",
+      "sha256": "2886a690a117fed1927b4cd92f977c357119c8319bb87793b8678751143e7ed7"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_A--r2",
+      "encoding": "pil82",
+      "sha256": "5ab76ef57171d972c667518148a528fc40a5d887a444a2ad65c282fc6f864dbc"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_B--r1",
+      "encoding": "png",
+      "sha256": "3444429c2b522c625ca512e01a00b804d0270fcb29b5300e16a87fd7a8b9ed29"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_B--r1",
+      "encoding": "jpeg90",
+      "sha256": "75f7e1d0144291d1105bddc463854570e528a44b5b2ba56ebab9685a185a0b90"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_B--r1",
+      "encoding": "pil82",
+      "sha256": "6d12572ba50913db982c5f950e291b254cdcc297c41683a607310025000a3eb0"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_B--r2",
+      "encoding": "png",
+      "sha256": "3d6eba5a3a7b7e203f66e5b4eca7a72a4b294185e5e2475248f45d947a7d23b3"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_B--r2",
+      "encoding": "jpeg90",
+      "sha256": "2886a690a117fed1927b4cd92f977c357119c8319bb87793b8678751143e7ed7"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_B--r2",
+      "encoding": "pil82",
+      "sha256": "5ab76ef57171d972c667518148a528fc40a5d887a444a2ad65c282fc6f864dbc"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_C--r1",
+      "encoding": "png",
+      "sha256": "05dee3269d7fe2a0125cce9cf7855ce327fecac18679a22491da71996da8ccf6"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_C--r1",
+      "encoding": "jpeg90",
+      "sha256": "d85d22cdba25562b5f8a518d41ec064bcda227cec7803c8a00a4e6e96ade57fe"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_C--r1",
+      "encoding": "pil82",
+      "sha256": "acc5d108e615729f0071d00fc11efb555371886b65bf6f855f7e9970c83be708"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_C--r2",
+      "encoding": "png",
+      "sha256": "3d6eba5a3a7b7e203f66e5b4eca7a72a4b294185e5e2475248f45d947a7d23b3"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_C--r2",
+      "encoding": "jpeg90",
+      "sha256": "2886a690a117fed1927b4cd92f977c357119c8319bb87793b8678751143e7ed7"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view0--paint_C--r2",
+      "encoding": "pil82",
+      "sha256": "5ab76ef57171d972c667518148a528fc40a5d887a444a2ad65c282fc6f864dbc"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--drive--r1",
+      "encoding": "png",
+      "sha256": "d53281862d65f8aad9e7cd2ba9a96704380cdf2c7864762ef71d3833198db24e"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--drive--r1",
+      "encoding": "jpeg90",
+      "sha256": "ef64274f8d6fcce0b133b80b4a2d10d9a6506e0def2d20e6b5c499e35d495554"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--drive--r1",
+      "encoding": "pil82",
+      "sha256": "10b09fa338f9f5a25f4267c9d4971d2cfb69a555e1c228f14d37b141e203d9eb"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--drive--r2",
+      "encoding": "png",
+      "sha256": "7cfbdd2f5ca6d3bffec669a95c90ef52342e0692ebeac67ad01e94007ae3299a"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--drive--r2",
+      "encoding": "jpeg90",
+      "sha256": "4aff76965d0602f6571854d98bb39b370ca082d51f13b1a019405404f6f5d42f"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--drive--r2",
+      "encoding": "pil82",
+      "sha256": "00c4177492bca32eb332e3689652fa000d50df21d016e61e535e820c12ec790a"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high--r1",
+      "encoding": "png",
+      "sha256": "aa0c21188fe9fc976430024eee717216549be66c76b0f5e6ccfcbf86135cadb6"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high--r1",
+      "encoding": "jpeg90",
+      "sha256": "d242874712751561c8cb940dfc0a1f0bc74f90cb3cd0122fc0bd3371b2b304df"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high--r1",
+      "encoding": "pil82",
+      "sha256": "e6771fa768b90b99dc5cffad79cc0ad3fe7fb097487e8cb133ec3f1d5008fd87"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high--r2",
+      "encoding": "png",
+      "sha256": "247f4ba6998ca3b368bdeba776d1410bb9202aeb878fbd43c4c1c8201798af1c"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high--r2",
+      "encoding": "jpeg90",
+      "sha256": "020cf648c47b991483f2d5424b1eee54c5cabcd1cfdab5aebbf9ff42b523f25f"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high--r2",
+      "encoding": "pil82",
+      "sha256": "a3c3a28f9adc2dc13985321e640f40975ff976a1d6b64bbe66234a3c130e3dd2"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "png",
+      "sha256": "cb30b3f3f659e7565b7d4af561b2248d1b47d35bf51e249da5fa98cf30523bee"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "jpeg90",
+      "sha256": "8aaf7e275b52eaaa9815a4c0419932886ecbac87207ef08f124182dc8b2510e0"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "pil82",
+      "sha256": "9414e4337bac8b97b2236b3d419aa4b764751844ab4dec8ab1355f44b56955d6"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "png",
+      "sha256": "8fa95dd48e0e3f307f0c95f24e2b3f6dd8af9a972ec25aa6e327c8279c5a231c"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "jpeg90",
+      "sha256": "793fe499de7d148c43adc9bae8e464828f6bd21ffbab76dc13f9e540c4034917"
+    },
+    {
+      "case": "zone_wide_corridor_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "pil82",
+      "sha256": "42b6c8ff7e9a4355d8ab724308c5d8e9936e151a2a8ea821dcf2f7c8c5ce7322"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--drive--r1",
+      "encoding": "png",
+      "sha256": "e5fd0354a3e8a9ea878b62da8af5e7d1a863dacaf0b071b1769eb41e9f6b54af"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--drive--r1",
+      "encoding": "jpeg90",
+      "sha256": "670b4a9be25329098e5c6402a067e127ef4e1f5de3aba6b58b770f870584a7a0"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--drive--r1",
+      "encoding": "pil82",
+      "sha256": "2c0de37ed366d6e5a620e2fbaccb013766d52ea51aaf530435bcfde5dd1ebe28"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--drive--r2",
+      "encoding": "png",
+      "sha256": "078c0c8767525de39589b313be30a39c1cbb6b7a447e05bdb54e462dcbe99b5a"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--drive--r2",
+      "encoding": "jpeg90",
+      "sha256": "f0ce0d5abce945995a34733dabaf50a873811ba8b4c834c506d14208e241793c"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--drive--r2",
+      "encoding": "pil82",
+      "sha256": "b75cd4bab5d320f51cab8377af1269f12c16884e04cf30e0ec115cf57582cf06"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high--r1",
+      "encoding": "png",
+      "sha256": "474b2b37ed3c343891ab67d598d4281a8d2d22766421bca99c6ed95cbb7164d0"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high--r1",
+      "encoding": "jpeg90",
+      "sha256": "0206c38a50e056c62ae371c8ff6fb788a90187585a00e87394e91e7dce2ee6c9"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high--r1",
+      "encoding": "pil82",
+      "sha256": "ffc45a8cb21e143a353d269509df78ae6ff484a1b711eddba1a68b7fe170cfa5"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high--r2",
+      "encoding": "png",
+      "sha256": "247f4ba6998ca3b368bdeba776d1410bb9202aeb878fbd43c4c1c8201798af1c"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high--r2",
+      "encoding": "jpeg90",
+      "sha256": "020cf648c47b991483f2d5424b1eee54c5cabcd1cfdab5aebbf9ff42b523f25f"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high--r2",
+      "encoding": "pil82",
+      "sha256": "a3c3a28f9adc2dc13985321e640f40975ff976a1d6b64bbe66234a3c130e3dd2"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "png",
+      "sha256": "49fefab6e1e852b2371fabbe1c581569ba57b854af59ed08ddad606c5a0002ff"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "jpeg90",
+      "sha256": "b4aaa3388af9bbebc35cf570eae4d3d34895e25470c37ed2e11a154d79a9de86"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high_beam_peer_occluded--r1",
+      "encoding": "pil82",
+      "sha256": "1a43b03ed9c149e69bba3d2fc8cd3692f441e20047be19444dce05caf27a1051"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "png",
+      "sha256": "f20a782d244781034d9d4d68d3aa5d65369cadcb2465561f9d9b1df767fbbd09"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "jpeg90",
+      "sha256": "26de409a9a59804c44c35a0b5b7d4eed2a8df978cad969062ec8432f9764cb2f"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--high_beam_peer_occluded--r2",
+      "encoding": "pil82",
+      "sha256": "42edd8b6868346b5c6d2ab5788a0b34c9194c89bcc42da0ec3a0010dea4d84f0"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--box_palette--r1",
+      "encoding": "png",
+      "sha256": "c3abd5723e71c7bf80472c2f6c07ae80196782bb170e89ace6a45f06bbf487f1"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--box_palette--r1",
+      "encoding": "jpeg90",
+      "sha256": "a42e80df2e0f0501aa7e0117ca99f89132b48cad4502f415e26f005adfbba74c"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--box_palette--r1",
+      "encoding": "pil82",
+      "sha256": "5a806083c11b83a49088521f8251975b543973e5cdde4ea1ae08ad48002f3769"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--box_palette--r2",
+      "encoding": "png",
+      "sha256": "3a5db922eaf0e18e7df467581a699d43555ee36599292c500829f76e8defa2ae"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--box_palette--r2",
+      "encoding": "jpeg90",
+      "sha256": "1f804d4ac84a87ddbef1b9a6cdd9042c04c1182b2e79e2183adeddb1091042a4"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--box_palette--r2",
+      "encoding": "pil82",
+      "sha256": "15b747508a84d7dd2b327229194f2006ef63bf43181fc1d6c07f1eb2b95019e0"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--beam_end_bands--r1",
+      "encoding": "png",
+      "sha256": "3522f95412784f7d959f4b2a12acf43995e31b1a1af0570360902ee014e7e893"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--beam_end_bands--r1",
+      "encoding": "jpeg90",
+      "sha256": "822888de9f759b958e4d971d28c40e2682cfca5920e5c5c84a881db8d034e7da"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--beam_end_bands--r1",
+      "encoding": "pil82",
+      "sha256": "f4c291ea2bb5fc1904df24d8b47fc20237ade7625b93023f0d25254750d906e0"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--beam_end_bands--r2",
+      "encoding": "png",
+      "sha256": "a377918c9ddb0fc3e347d385e9950e4e61c841783c90c2b8ea4e901fdf438899"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--beam_end_bands--r2",
+      "encoding": "jpeg90",
+      "sha256": "05da20e5daf58385e5991b0d23fb2a60526cff1152e06464e7345a416ee2342f"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--beam_end_bands--r2",
+      "encoding": "pil82",
+      "sha256": "499e7ddb25eb339ed9a3db79cb3a90166f20de70d8fbcdcdde5a5f4a4225ec2e"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_A--r1",
+      "encoding": "png",
+      "sha256": "0eb5bf230a438ea25565df23fb7b426f2fccb798f76ba8959ec058031628e4b9"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_A--r1",
+      "encoding": "jpeg90",
+      "sha256": "9ebdf9b5d5c85c587f4830041380dd3478ec6863f7d39379e1062f4ffce2c1a0"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_A--r1",
+      "encoding": "pil82",
+      "sha256": "185b134901799356fc5eaf612daab2d14b1fcd95af12b2cd501f8491a4f4c303"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_A--r2",
+      "encoding": "png",
+      "sha256": "993622f7e20b1303be6e103e5a1a6f382aed3fad36fd376bf508ad0be046eada"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_A--r2",
+      "encoding": "jpeg90",
+      "sha256": "b9131a4520bae1b83536abb42eafadbf2657d01efc504b5059f87eab83fc0bd3"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_A--r2",
+      "encoding": "pil82",
+      "sha256": "b14d65a1fea4a5e2edd052acd7a834f9c22aff5b6cfefefa0dd9c54dbb046799"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_B--r1",
+      "encoding": "png",
+      "sha256": "3444429c2b522c625ca512e01a00b804d0270fcb29b5300e16a87fd7a8b9ed29"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_B--r1",
+      "encoding": "jpeg90",
+      "sha256": "75f7e1d0144291d1105bddc463854570e528a44b5b2ba56ebab9685a185a0b90"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_B--r1",
+      "encoding": "pil82",
+      "sha256": "6d12572ba50913db982c5f950e291b254cdcc297c41683a607310025000a3eb0"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_B--r2",
+      "encoding": "png",
+      "sha256": "078c0c8767525de39589b313be30a39c1cbb6b7a447e05bdb54e462dcbe99b5a"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_B--r2",
+      "encoding": "jpeg90",
+      "sha256": "f0ce0d5abce945995a34733dabaf50a873811ba8b4c834c506d14208e241793c"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_B--r2",
+      "encoding": "pil82",
+      "sha256": "b75cd4bab5d320f51cab8377af1269f12c16884e04cf30e0ec115cf57582cf06"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_C--r1",
+      "encoding": "png",
+      "sha256": "01a4be52600a45bad396bad8fcf56a336c11665f0efe0c1028bd1e9b2edfc1ec"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_C--r1",
+      "encoding": "jpeg90",
+      "sha256": "627370e40d6658862cb2b4b16333d43923ef6cc8ad351f28f720cf785b6447a9"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_C--r1",
+      "encoding": "pil82",
+      "sha256": "5f3f39e06d4a2deba7f09b92bd1e24677151ca48e21c1607f4b5864b2d1fa115"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_C--r2",
+      "encoding": "png",
+      "sha256": "078c0c8767525de39589b313be30a39c1cbb6b7a447e05bdb54e462dcbe99b5a"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_C--r2",
+      "encoding": "jpeg90",
+      "sha256": "f0ce0d5abce945995a34733dabaf50a873811ba8b4c834c506d14208e241793c"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view0--paint_C--r2",
+      "encoding": "pil82",
+      "sha256": "b75cd4bab5d320f51cab8377af1269f12c16884e04cf30e0ec115cf57582cf06"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--drive--r1",
+      "encoding": "png",
+      "sha256": "d53281862d65f8aad9e7cd2ba9a96704380cdf2c7864762ef71d3833198db24e"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--drive--r1",
+      "encoding": "jpeg90",
+      "sha256": "ef64274f8d6fcce0b133b80b4a2d10d9a6506e0def2d20e6b5c499e35d495554"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--drive--r1",
+      "encoding": "pil82",
+      "sha256": "10b09fa338f9f5a25f4267c9d4971d2cfb69a555e1c228f14d37b141e203d9eb"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--drive--r2",
+      "encoding": "png",
+      "sha256": "67f259dd2b5501e5db74c9ff28913d54a11a050cbd151b880032100d36ecb529"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--drive--r2",
+      "encoding": "jpeg90",
+      "sha256": "dfd67ece6cfeb383d189767d62f996c2845d2236ac9fe624101e44c081f3fc7d"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--drive--r2",
+      "encoding": "pil82",
+      "sha256": "0dcea010c7a8dd1602808e6566e327afd40a08d218787652a3e7179e9dfa5f9d"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high--r1",
+      "encoding": "png",
+      "sha256": "aa0c21188fe9fc976430024eee717216549be66c76b0f5e6ccfcbf86135cadb6"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high--r1",
+      "encoding": "jpeg90",
+      "sha256": "d242874712751561c8cb940dfc0a1f0bc74f90cb3cd0122fc0bd3371b2b304df"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high--r1",
+      "encoding": "pil82",
+      "sha256": "e6771fa768b90b99dc5cffad79cc0ad3fe7fb097487e8cb133ec3f1d5008fd87"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high--r2",
+      "encoding": "png",
+      "sha256": "247f4ba6998ca3b368bdeba776d1410bb9202aeb878fbd43c4c1c8201798af1c"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high--r2",
+      "encoding": "jpeg90",
+      "sha256": "020cf648c47b991483f2d5424b1eee54c5cabcd1cfdab5aebbf9ff42b523f25f"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high--r2",
+      "encoding": "pil82",
+      "sha256": "a3c3a28f9adc2dc13985321e640f40975ff976a1d6b64bbe66234a3c130e3dd2"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "png",
+      "sha256": "cb30b3f3f659e7565b7d4af561b2248d1b47d35bf51e249da5fa98cf30523bee"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "jpeg90",
+      "sha256": "8aaf7e275b52eaaa9815a4c0419932886ecbac87207ef08f124182dc8b2510e0"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high_beam_peer_occluded--r1",
+      "encoding": "pil82",
+      "sha256": "9414e4337bac8b97b2236b3d419aa4b764751844ab4dec8ab1355f44b56955d6"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "png",
+      "sha256": "8fa95dd48e0e3f307f0c95f24e2b3f6dd8af9a972ec25aa6e327c8279c5a231c"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "jpeg90",
+      "sha256": "793fe499de7d148c43adc9bae8e464828f6bd21ffbab76dc13f9e540c4034917"
+    },
+    {
+      "case": "zone_wide_two_doors_final_v3--view1--high_beam_peer_occluded--r2",
+      "encoding": "pil82",
+      "sha256": "42b6c8ff7e9a4355d8ab724308c5d8e9936e151a2a8ea821dcf2f7c8c5ce7322"
+    }
+  ]
+}
