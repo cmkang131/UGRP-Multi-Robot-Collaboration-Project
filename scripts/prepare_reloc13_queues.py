@@ -18,6 +18,8 @@ def queues(sha, source, rejection_table, selfmap, carry):
     if any(r['false_registration_events'] for r in selfmap):blockers.append('false_first_registration')
     if not carry or any(r.get('physical_success') is not True for r in carry):blockers.append('carry_delivery_not_physically_verified')
     if any(r['registered_errors']['bad_N'] for r in selfmap):blockers.append('remaining_execution_errors_legacy_10cm_5deg')
+    if any(r.get('pose_error',{}).get('true_yaw_over20_N',0)>0 and r['pose_error'].get('trigger_recall',0)<1 for r in carry):
+        blockers.append('carry_budget_recal_missed_true_yaw_over20_ticks')
     ready=not blockers
     for kind,q in zip(('selfmap','carry-texture'),qs):
         q.update(schema='ugrp.reloc13.queue.v1',queue='reloc13-'+kind,

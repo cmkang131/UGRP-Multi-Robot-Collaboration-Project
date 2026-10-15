@@ -24,7 +24,7 @@ def analyze(folder):
     truth = {round(r['t'], 6): r for r in rows(raw/'eval_only/trajectory.jsonl')}
     result = obj(raw/'result.json')
     gates = Counter(); rejects = Counter(); classes = Counter(); errors = []; bad = []
-    r7 = Counter(); geom = []; events = []; prior_registered = False
+    r7 = Counter(); postreg = Counter(); geom = []; events = []; prior_registered = False
     for r in trace:
         s = r.get('static_registration', {})
         registered = bool(s.get('registered'))
@@ -37,8 +37,14 @@ def analyze(folder):
         for name, ok in [('frames', True), ('registered', registered), ('execution_pose_delivered', emitted),
                          ('map_inserted', inserted), ('control_drive_used', used)]:
             if cumulative and not ok:
-                reason = (';'.join(r.get('insertion_blockers', [])) if name == 'map_inserted' else
-                          str(r.get('correction_admission') or r.get('frontier_reason') or r.get('stage') or name))
+                if name == 'registered':
+                    reason = 'not_yet_registered'
+                elif name == 'execution_pose_delivered':
+                    reason = 'missing_or_nonfinite_execution_pose'
+                elif name == 'map_inserted':
+                    reason = ';'.join(r.get('insertion_blockers', [])) or 'not_inserted_requires_review'
+                else:
+                    reason = 'stage:'+str(r.get('stage') or 'unknown_requires_review')
                 rejects[name+':'+(reason or 'unknown_requires_review')] += 1
             cumulative = cumulative and ok
             gates[name] += cumulative
@@ -52,6 +58,9 @@ def analyze(folder):
         r7['pf_agreement_reliable'] += bool(s.get('resolved'))
         r7['three_confirmations'] += s.get('confirmations', 0) >= 3
         r7.update('reject:'+x for x in rej)
+        if registered and s.get('updated'):
+            postreg['fresh_frames'] += 1
+            postreg.update(rej or ['accepted'])
         replay = s.get('reloc12', {})
         t = truth.get(round(r['t'], 6))
         if t and registered and replay.get('registered_world_pose') is not None:
@@ -62,7 +71,7 @@ def analyze(folder):
             e = dict(t=r['t'], xy_m=xy, yaw_deg=yaw, source=r.get('pose_source'),
                      visual_reason=r.get('visual_reason'), updated=s.get('updated'),
                      correction=r.get('correction_admission'), stage=r.get('stage'),
-                     matches=r.get('matches'), inliers=r.get('inliers'))
+                     matches=r.get('matches'), inliers=r.get('inliers'), map_updated=inserted, drive_used=used, R7_admitted=s.get('execution_r7_admitted'))
             errors.append(e)
             if xy > .1 or yaw > 5:
                 category = ('xy_and_yaw' if xy > .1 and yaw > 5 else 'xy_only' if xy > .1 else 'yaw_only')
@@ -75,13 +84,21 @@ def analyze(folder):
         prior_registered = registered
         if s.get('updated'):
             geom.append(dict(t=r['t'], geo=s.get('geometry'), inliers=r.get('inliers'), matches=r.get('matches')))
+    def scored(es):
+        return dict(N=len(es),bad_N=sum(e['xy_m']>.1 or e['yaw_deg']>5 for e in es),
+            within15cm5_N=sum(e['xy_m']<=.15 and e['yaw_deg']<=5 for e in es),
+            within30cm10_N=sum(e['xy_m']<=.30 and e['yaw_deg']<=10 for e in es),
+            xy_m=distribution([e['xy_m'] for e in es]),yaw_deg=distribution([e['yaw_deg'] for e in es]))
     return dict(run=folder.name, raw=str(raw), source_sha=result.get('source_sha'),
         unit='ordered trace frames; events separately counted; temporal correlation retained',
         funnel=dict(gates), rejections=[dict(category=k, N=n, blocked_object='static_registration_or_map_evidence',
             minimum_gap_m=None, gap_status='not_applicable_localization_gate') for k,n in rejects.most_common()],
-        R7=dict(r7), registration_events=events, false_registration_events=sum(e['false'] for e in events),
+        R7=dict(r7),R7_postreg_fresh=dict(postreg), registration_events=events, false_registration_events=sum(e['false'] for e in events),
         registered_errors=dict(N=len(errors), bad_N=len(bad), xy_m=distribution([e['xy_m'] for e in errors]),
                                yaw_deg=distribution([e['yaw_deg'] for e in errors])),
+        map_inserted_errors=scored([e for e in errors if e['map_updated']]),
+        drive_errors=scored([e for e in errors if e['drive_used']]),
+        alternate_tolerances=scored(errors),
         bad_errors=dict(N=len(bad), xy_m=distribution([e['xy_m'] for e in bad]), yaw_deg=distribution([e['yaw_deg'] for e in bad]),
                         classification=dict(classes), frames=bad),
         termination=dict(status=result.get('status'), category=result.get('termination_category'),
@@ -91,7 +108,7 @@ def analyze(folder):
         first30=obj(raw/'first30.json'), input_audit=result.get('input_audit'),
         final_frame={k:trace[-1].get(k) for k in ('t','stage','executor_stop_reason','insertion_blockers','frontier_reason')} if trace else {},
         sha256={str(p.relative_to(folder)):hashlib.sha256(p.read_bytes()).hexdigest() for p in
-                (raw/'result.json',raw/'trace.jsonl.zst',raw/'eval_only/trajectory.jsonl.zst',folder/'EXIT') if p.exists()})
+                (raw/'result.json',raw/'result.json.zst',raw/'trace.jsonl.zst',raw/'eval_only/trajectory.jsonl.zst',folder/'EXIT') if p.exists()})
 
 
 def main():

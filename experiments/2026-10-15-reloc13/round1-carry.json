@@ -2419,13 +2419,6 @@
       ],
       "rejections": [
         {
-          "category": "unknown_requires_review",
-          "N": 6,
-          "blocked_object": "see_carry_recovery_context",
-          "minimum_gap_m": null,
-          "gap_status": "see_original"
-        },
-        {
           "category": "pose_budget",
           "N": 3,
           "blocked_object": "pose_uncertainty_budget",
@@ -3555,7 +3548,10 @@
         },
         "true_yaw_over20_N": 835,
         "trigger_recall": 0.8479041916167664,
-        "max_untriggered_yaw_deg": 52.61389700143239
+        "max_untriggered_yaw_deg": 52.61389700143239,
+        "missed_over20_by_phase": {
+          "carry_reacquire": 127
+        }
       },
       "views": [
         {
@@ -7249,7 +7245,25 @@
           "camera_fk_axis_error_deg": 0.161890359605567
         }
       ],
+      "view_funnel": {
+        "views": 18,
+        "residual_count": 18,
+        "feature_groups": 15,
+        "rank": 13,
+        "inlier_fraction": 7,
+        "innovation": 6,
+        "gain": 6,
+        "accepted": 3
+      },
+      "view_rejections": {
+        "rank": 2,
+        "accepted": 3,
+        "feature_groups": 3,
+        "inlier_fraction": 6,
+        "innovation": 1
+      },
       "sha256": {
+        "raw/result.json.zst": "fc8b82edfe11d655b412832b066009ef71fb3d20287aee581b06568485c4beb5",
         "raw/teacher-commands.jsonl.zst": "ef3c3286de577000985ed42ea67f45cd5595a8e233d0be3825b1c2c1001fa6f3",
         "raw/eval-only.jsonl.zst": "46d41e2797805d5abebe4dbbdcdc1f6326b456dd02f0facf77384c36d5576e33",
         "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
@@ -10630,13 +10644,6 @@
           "blocked_object": "pose_uncertainty_budget",
           "minimum_gap_m": null,
           "gap_status": "not_applicable_localization_gate"
-        },
-        {
-          "category": "unknown_requires_review",
-          "N": 1,
-          "blocked_object": "see_carry_recovery_context",
-          "minimum_gap_m": null,
-          "gap_status": "see_original"
         }
       ],
       "carry": {
@@ -11677,7 +11684,8 @@
         },
         "true_yaw_over20_N": 0,
         "trigger_recall": null,
-        "max_untriggered_yaw_deg": 3.964838801182313
+        "max_untriggered_yaw_deg": 3.964838801182313,
+        "missed_over20_by_phase": {}
       },
       "views": [
         {
@@ -12102,7 +12110,21 @@
           "camera_fk_axis_error_deg": 0.15421454415579242
         }
       ],
+      "view_funnel": {
+        "views": 2,
+        "residual_count": 2,
+        "feature_groups": 2,
+        "rank": 2,
+        "inlier_fraction": 2,
+        "innovation": 2,
+        "gain": 2,
+        "accepted": 1
+      },
+      "view_rejections": {
+        "accepted": 1
+      },
       "sha256": {
+        "raw/result.json.zst": "4f5e51798e747280ecb3182765b94fba9d6bdaf6bf1cb0324553be372a6d040e",
         "raw/teacher-commands.jsonl.zst": "cf3f53c0945dafe1c76bf7f86039107e0ec423e7f1ae46a3efc57fbe8b17b59f",
         "raw/eval-only.jsonl.zst": "f656d654bfdda1147a0763e862e2d21bd0da41c9007322e37c5046ecd20ee9e4",
         "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"

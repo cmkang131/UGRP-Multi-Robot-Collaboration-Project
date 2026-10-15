@@ -65,10 +65,11 @@ def analyze(folder):
         input_audit=result.get('input_audit'),visibility=result.get('visibility'),
         pose_error=dict(N=len(budget),xy_m=distribution([b['xy_m'] for b in budget]),yaw_deg=distribution([b['yaw_deg'] for b in budget]),
             true_yaw_over20_N=len(positives),trigger_recall=sum(b['trigger'] for b in positives)/len(positives) if positives else None,
-            max_untriggered_yaw_deg=max((b['yaw_deg'] for b in budget if not b['trigger']),default=None)),
+            max_untriggered_yaw_deg=max((b['yaw_deg'] for b in budget if not b['trigger']),default=None),
+            missed_over20_by_phase=dict(Counter(b['phase'] for b in positives if not b['trigger']))),
         views=views,view_funnel=dict(view_funnel),view_rejections=dict(view_rejections),
         sha256={str(p.relative_to(folder)):hashlib.sha256(p.read_bytes()).hexdigest() for p in
-                (raw/'result.json',raw/'teacher-commands.jsonl.zst',raw/'eval-only.jsonl.zst',folder/'EXIT') if p.exists()})
+                (raw/'result.json',raw/'result.json.zst',raw/'teacher-commands.jsonl.zst',raw/'eval-only.jsonl.zst',folder/'EXIT') if p.exists()})
 
 
 def main():

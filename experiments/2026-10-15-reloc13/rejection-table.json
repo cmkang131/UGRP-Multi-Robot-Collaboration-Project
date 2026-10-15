@@ -1,0 +1,981 @@
+{
+  "schema": "ugrp.reloc13.rejection_table.v1",
+  "analysis_host": "gcp1",
+  "units": "ordered frame funnel; registration events and carry run/view funnels are separate; cohorts never pooled",
+  "original_sources": [
+    {
+      "run": "reloc12-r2-ransac-texture-93571-ff1ccf27",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc12-r2-ransac-texture-93571-ff1ccf27/raw",
+      "source_sha": "ff1ccf27a43fe73d9b49dac82caf26a4584060d0",
+      "sha256": {
+        "raw/result.json": "0be4a07898f6147cfece0eeec5b7fee73f86d6074dd9968913a960d60975bfaf",
+        "raw/trace.jsonl.zst": "73ed7cbbfb9f2fb2a58386a3467639ce4079aac9d110af1f18a3c69d2ef574de",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "run": "reloc12-r2-ransac-texture-93583-ff1ccf27",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc12-r2-ransac-texture-93583-ff1ccf27/raw",
+      "source_sha": "ff1ccf27a43fe73d9b49dac82caf26a4584060d0",
+      "sha256": {
+        "raw/result.json": "a935a2f67bd2159b0210e1ae03d323de788061ac7241f3c91b53570e64147243",
+        "raw/trace.jsonl.zst": "8e200128f5e779bb3cf77f3decd91e715ac39b5f011c05243ded291dd22ad30e",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "run": "reloc12-r2-ransac-texture-93584-ff1ccf27",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc12-r2-ransac-texture-93584-ff1ccf27/raw",
+      "source_sha": "ff1ccf27a43fe73d9b49dac82caf26a4584060d0",
+      "sha256": {
+        "raw/result.json": "1e35416978e1ee934a6a3f5c4d60166f760b2ce38b779a60d8ee139f60b46ece",
+        "raw/trace.jsonl.zst": "8da891407126473f52e0dba9942ef360e2c257cb381b5f87351d4af5fb146857",
+        "raw/eval_only/trajectory.jsonl.zst": "18e0cf8515d34b4f2a1bd123a6d50c2979091e136a2e52938d2f09c95eaa1011",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "run": "reloc12-r2-ransac-texture-93585-ff1ccf27",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc12-r2-ransac-texture-93585-ff1ccf27/raw",
+      "source_sha": "ff1ccf27a43fe73d9b49dac82caf26a4584060d0",
+      "sha256": {
+        "raw/result.json": "332bbcf0d48f7882b2b25acb251b12fe7533e642c97aa399527d575e3d54dcf5",
+        "raw/trace.jsonl.zst": "aef65189efc2482215c8f215e99a1b99a4df2e39408533aab76ca03801a1074d",
+        "raw/eval_only/trajectory.jsonl.zst": "1147d6824a59b4c8bbc2ddd29f2618de73575e74e36a4add6c97ec75525911c7",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "run": "reloc13-r1-selfmap-smooth-93571-aa1f4661",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r1-selfmap-smooth-93571-aa1f4661/raw",
+      "source_sha": "aa1f46615e762b9f8319757fe8f641a46b809e47",
+      "sha256": {
+        "raw/result.json": "1808a2c2fc8dd82cc265105feb98345271a3ec457673f37be3a9f9cbcf16ac62",
+        "raw/trace.jsonl.zst": "53509b115de29c55d47e92b055aef8a1394ecad66eb753c7ee315cfd458ca7a5",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "run": "reloc13-r1-selfmap-texture-93571-aa1f4661",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r1-selfmap-texture-93571-aa1f4661/raw",
+      "source_sha": "aa1f46615e762b9f8319757fe8f641a46b809e47",
+      "sha256": {
+        "raw/result.json": "c661c90adc02fc81d88bb8e85da8ce768ad43e6987ec19dd5a1c2d058475c299",
+        "raw/trace.jsonl.zst": "250c2d642e5da9ff2503a1f61ea0be3e14fe2f96796a38ae52ffc435ebdf6b8d",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "run": "reloc13-r1-selfmap-texture-93585-aa1f4661",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r1-selfmap-texture-93585-aa1f4661/raw",
+      "source_sha": "aa1f46615e762b9f8319757fe8f641a46b809e47",
+      "sha256": {
+        "raw/result.json": "37c4738e510d2d816b555bb94a326c6d01e4ad2aa35cc3196ce2086ba74c9c39",
+        "raw/trace.jsonl.zst": "9667828ae1cc853a991a3025c9d56220202ded7ac18b9e1c6ce3e3c4c0b2412f",
+        "raw/eval_only/trajectory.jsonl.zst": "5cc1e5384edb7f4227be8e3146f27d4f92ad43a66cf9cbb36cca10c23a11acde",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "run": "reloc13-r2-selfmap-texture-93571-6abd9527",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r2-selfmap-texture-93571-6abd9527/raw",
+      "source_sha": "6abd95271f912093f487eaf4e4fd3690c41c4268",
+      "sha256": {
+        "raw/result.json": "82ed935227cd71a58177e73315d9a0d1a6aa2121459cd54d28c24eb49a615f55",
+        "raw/trace.jsonl.zst": "a14d8a2966500629dcc9104b541439fa6617bd9ab723a6396e65f9f5fdfed10e",
+        "raw/eval_only/trajectory.jsonl.zst": "24668b4ddbf54346dddd109b1b2786aae3a073b4eb9745cee96790d8044e7274",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "run": "reloc13-r2-selfmap-texture-93583-6abd9527",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r2-selfmap-texture-93583-6abd9527/raw",
+      "source_sha": "6abd95271f912093f487eaf4e4fd3690c41c4268",
+      "sha256": {
+        "raw/result.json": "85d1bc7cfb0a38a36ae36f06c5dd1ecd842f7504838bebd21daec8b041922abe",
+        "raw/trace.jsonl.zst": "cf4eef0761a7a30f28e9e18aa9014ef64fc428b0df47250e0886dc280c66c33a",
+        "raw/eval_only/trajectory.jsonl.zst": "e1db41d78aaa0415244fbff331425307e036ac3d6d606ec4e161530bd8b79cb9",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "run": "reloc13-r2-selfmap-texture-93584-6abd9527",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r2-selfmap-texture-93584-6abd9527/raw",
+      "source_sha": "6abd95271f912093f487eaf4e4fd3690c41c4268",
+      "sha256": {
+        "raw/result.json": "272d16a9e7901153bbb88ff7d19b30f32d2088e4a0ac5e91942be2c523032d60",
+        "raw/trace.jsonl.zst": "c894b2dffbc96ab98a1e18b8a8aa8573b677ad97dcb750aafb6711974bad45d6",
+        "raw/eval_only/trajectory.jsonl.zst": "882f1e1542fe62d885aebd6c760d52f616ba01c2877f265f51efc6d415258eb7",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "run": "reloc13-r2-selfmap-texture-93585-6abd9527",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r2-selfmap-texture-93585-6abd9527/raw",
+      "source_sha": "6abd95271f912093f487eaf4e4fd3690c41c4268",
+      "sha256": {
+        "raw/result.json": "68af6715f52ef1febcd0f83ab654b88e077eb80c435a884bd13a965c2ddeeabf",
+        "raw/trace.jsonl.zst": "1b0eee7ded4057ddbdc008c167241cabd8757e0a37c555546b38fe6deabe02e8",
+        "raw/eval_only/trajectory.jsonl.zst": "1e7ddf0f8a6e9917fd6ee55e5d14bc076f13e64bc8dc9737b8b9ccaa79b199d9",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "run": "reloc13-r3-selfmap-texture-93571-fc11a303",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r3-selfmap-texture-93571-fc11a303/raw",
+      "source_sha": "fc11a303b5e5b6afb4d2b1a858f3da50dd609d96",
+      "sha256": {
+        "raw/result.json": "3e5191d734cf4957e03d42ed82925975f42d06651b4b5765450c5aa23e1e3e27",
+        "raw/trace.jsonl.zst": "5c356dbdc0b0a88de8f345db361e9458711a6942e0698db1cfcd2038f0a010cf",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "run": "reloc13-r3-selfmap-texture-93583-fc11a303",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r3-selfmap-texture-93583-fc11a303/raw",
+      "source_sha": "fc11a303b5e5b6afb4d2b1a858f3da50dd609d96",
+      "sha256": {
+        "raw/result.json": "f61dd09d3234f8c90bca17e410a1234de4d488d16ddf3b62e30d45a787b30b16",
+        "raw/trace.jsonl.zst": "0022b42feac27a1fa149e6ad55571d6879b959b24d6f04511c53000af6430b1a",
+        "raw/eval_only/trajectory.jsonl.zst": "0f841e42fbea72fbef349fa08ccfa1c7d1c018930d1a613509ebaebe0f3744f2",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "run": "reloc13-r3-selfmap-texture-93584-fc11a303",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r3-selfmap-texture-93584-fc11a303/raw",
+      "source_sha": "fc11a303b5e5b6afb4d2b1a858f3da50dd609d96",
+      "sha256": {
+        "raw/result.json": "3bb79968d6fd0cdf07068216d8494978266e05e2a014467af39c433be8b3be1a",
+        "raw/trace.jsonl.zst": "cc48c5fc8544ea73f402443bf93bf1dd3b8a10bae1ac57bd6e0fd10bf021bb08",
+        "raw/eval_only/trajectory.jsonl.zst": "18e0cf8515d34b4f2a1bd123a6d50c2979091e136a2e52938d2f09c95eaa1011",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "run": "reloc13-r3-selfmap-texture-93585-fc11a303",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r3-selfmap-texture-93585-fc11a303/raw",
+      "source_sha": "fc11a303b5e5b6afb4d2b1a858f3da50dd609d96",
+      "sha256": {
+        "raw/result.json": "53e7c5ed40cc540013c96a5e68a09bbad889345039388d6a0814ea5f174aa4fd",
+        "raw/trace.jsonl.zst": "205c43791c2e84374992176cf80d07c68d06b5bd1f49997dc01af9ed174e17d2",
+        "raw/eval_only/trajectory.jsonl.zst": "cbc7918238aeca402d9a34d1e2daaa721cef04108b1eebc618ab1884310c3441",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "run": "reloc13-r1-carry-texture-93266-aa1f4661-retry1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93266-aa1f4661-retry1/raw",
+      "source_sha": "aa1f46615e762b9f8319757fe8f641a46b809e47",
+      "sha256": {
+        "raw/result.json.zst": "fc8b82edfe11d655b412832b066009ef71fb3d20287aee581b06568485c4beb5",
+        "raw/teacher-commands.jsonl.zst": "ef3c3286de577000985ed42ea67f45cd5595a8e233d0be3825b1c2c1001fa6f3",
+        "raw/eval-only.jsonl.zst": "46d41e2797805d5abebe4dbbdcdc1f6326b456dd02f0facf77384c36d5576e33",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "run": "reloc13-r1-carry-texture-93315-aa1f4661-retry1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93315-aa1f4661-retry1/raw",
+      "source_sha": "aa1f46615e762b9f8319757fe8f641a46b809e47",
+      "sha256": {
+        "raw/result.json.zst": "4f5e51798e747280ecb3182765b94fba9d6bdaf6bf1cb0324553be372a6d040e",
+        "raw/teacher-commands.jsonl.zst": "cf3f53c0945dafe1c76bf7f86039107e0ec423e7f1ae46a3efc57fbe8b17b59f",
+        "raw/eval-only.jsonl.zst": "f656d654bfdda1147a0763e862e2d21bd0da41c9007322e37c5046ecd20ee9e4",
+        "EXIT": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    }
+  ],
+  "reproduce": [
+    "PYTHONPATH=. .venv-sim/bin/python /tmp/analyze_reloc13.py /home/ugrp/ugrp-sim/runs/reloc13-rN-selfmap-* --output /tmp/reloc13-rN-selfmap.json",
+    "PYTHONPATH=. .venv-sim/bin/python /tmp/analyze_reloc13_carry.py /home/ugrp/ugrp-sim/runs/reloc13-r1-carry-*-retry1 --output /tmp/reloc13-r1-carry.json"
+  ],
+  "script_sources": [
+    "scripts/analyze_reloc13.py",
+    "scripts/analyze_reloc13_carry.py"
+  ],
+  "cohorts": {
+    "reloc12_texture": {
+      "runs": 4,
+      "source_shas": [
+        "ff1ccf27a43fe73d9b49dac82caf26a4584060d0"
+      ],
+      "funnel": {
+        "fresh_static_fix_independent": 65,
+        "frames": 892,
+        "frames_independent": 892,
+        "registered": 446,
+        "registered_independent": 446,
+        "execution_pose_delivered": 446,
+        "execution_pose_delivered_independent": 446,
+        "map_inserted": 0,
+        "map_inserted_independent": 402,
+        "control_drive_used": 0,
+        "control_drive_used_independent": 2
+      },
+      "R7": {
+        "ambiguity_evaluated": 154,
+        "unique": 121,
+        "pf_agreement_reliable": 75,
+        "three_confirmations": 220,
+        "reject:no_sensor_update": 653,
+        "reject:pf_unresolved": 286,
+        "reject:xy_covariance": 116,
+        "reject:yaw_covariance": 126,
+        "reject:geometry": 308,
+        "reject:ambiguity_pending_upstream": 738,
+        "reject:geometric_ambiguity": 33,
+        "reject:cluster_mass": 13
+      },
+      "first_registration_N": 4,
+      "first_false_registration_N": 0,
+      "registered_errors": {
+        "N": 446,
+        "bad10cm5_N": 147,
+        "bad_xy_m": {
+          "N": 147,
+          "min": 0.0038534599408092253,
+          "p50": 0.09309572813437203,
+          "p90": 0.10568692662660396,
+          "p95": 0.10668610378727542,
+          "p99": 0.1087635941809644,
+          "max": 0.10892679008379431
+        },
+        "bad_yaw_deg": {
+          "N": 147,
+          "min": 0.012976698206061501,
+          "p50": 8.728512490441009,
+          "p90": 57.26873708341273,
+          "p95": 57.5261110910081,
+          "p99": 57.61189795481405,
+          "max": 57.732952850271836
+        },
+        "classification": {
+          "yaw_only:visual_relocalized:visual_relocalized": 2,
+          "yaw_only:visual_update:visual_update": 40,
+          "yaw_only:command_only:insufficient_matches": 34,
+          "yaw_only:command_only:no_rigid_consensus": 4,
+          "xy_only:visual_update:visual_update": 20,
+          "xy_only:command_only:insufficient_matches": 11,
+          "xy_and_yaw:visual_update:visual_update": 14,
+          "yaw_only:visual_relocalized:selfmap4_static_lines": 6,
+          "xy_and_yaw:command_only:insufficient_matches": 10,
+          "xy_only:visual_relocalized:selfmap4_static_lines": 6
+        }
+      },
+      "map_inserted_error_N": 0,
+      "drive_error_N": 0,
+      "first30_wall_per_sim_median": 4.321386719250009,
+      "first30_N": 4,
+      "termination": {
+        "selfmap4_relocalization_exhausted": 4
+      },
+      "rejection_distribution": [
+        {
+          "category": "registered:not_yet_registered",
+          "N": 446,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:pose_uncertain",
+          "N": 446,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:pose_uncertain",
+          "N": 436,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:camera_unsettled;pose_uncertain",
+          "N": 10,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:camera_unsettled",
+          "N": 10,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    "R1_texture": {
+      "runs": 2,
+      "source_shas": [
+        "aa1f46615e762b9f8319757fe8f641a46b809e47"
+      ],
+      "funnel": {
+        "fresh_static_fix_independent": 0,
+        "frames": 423,
+        "frames_independent": 423,
+        "registered": 149,
+        "registered_independent": 149,
+        "execution_pose_delivered": 149,
+        "execution_pose_delivered_independent": 149,
+        "map_inserted": 146,
+        "map_inserted_independent": 396,
+        "control_drive_used": 52,
+        "control_drive_used_independent": 54
+      },
+      "R7": {
+        "ambiguity_evaluated": 68,
+        "unique": 52,
+        "pf_agreement_reliable": 28,
+        "three_confirmations": 102,
+        "reject:no_sensor_update": 312,
+        "reject:pf_unresolved": 136,
+        "reject:xy_covariance": 36,
+        "reject:yaw_covariance": 60,
+        "reject:geometry": 154,
+        "reject:ambiguity_pending_upstream": 355,
+        "reject:geometric_ambiguity": 16
+      },
+      "first_registration_N": 2,
+      "first_false_registration_N": 0,
+      "registered_errors": {
+        "N": 149,
+        "bad10cm5_N": 149,
+        "bad_xy_m": {
+          "N": 149,
+          "min": 0.008694898474534358,
+          "p50": 0.04229033923918204,
+          "p90": 0.06277139760810448,
+          "p95": 0.07930512185939359,
+          "p99": 0.107852071858834,
+          "max": 0.11031604850140503
+        },
+        "bad_yaw_deg": {
+          "N": 149,
+          "min": 10.046083459774566,
+          "p50": 11.583264209951668,
+          "p90": 12.489681406406305,
+          "p95": 12.592519291957043,
+          "p99": 12.711345125021252,
+          "max": 12.741411154520637
+        },
+        "classification": {
+          "yaw_only:command_only:pose_correction_rejected": 34,
+          "yaw_only:command_only:insufficient_matches": 31,
+          "yaw_only:visual_update:visual_update": 50,
+          "yaw_only:command_only:no_rigid_consensus": 28,
+          "xy_and_yaw:visual_update:visual_update": 2,
+          "xy_and_yaw:command_only:no_rigid_consensus": 4
+        }
+      },
+      "map_inserted_error_N": 146,
+      "drive_error_N": 52,
+      "first30_wall_per_sim_median": 4.194994212633333,
+      "first30_N": 2,
+      "termination": {
+        "supervisor_stop": 2
+      },
+      "rejection_distribution": [
+        {
+          "category": "registered:not_yet_registered",
+          "N": 274,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:active_reloc8",
+          "N": 92,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:camera_unsettled",
+          "N": 3,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:camera_unsettled",
+          "N": 3,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:select",
+          "N": 2,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    "R1_smooth": {
+      "runs": 1,
+      "source_shas": [
+        "aa1f46615e762b9f8319757fe8f641a46b809e47"
+      ],
+      "funnel": {
+        "fresh_static_fix_independent": 0,
+        "frames": 133,
+        "frames_independent": 133,
+        "registered": 0,
+        "registered_independent": 0,
+        "execution_pose_delivered": 0,
+        "execution_pose_delivered_independent": 0,
+        "map_inserted": 0,
+        "map_inserted_independent": 121,
+        "control_drive_used": 0,
+        "control_drive_used_independent": 2
+      },
+      "R7": {
+        "ambiguity_evaluated": 20,
+        "unique": 10,
+        "pf_agreement_reliable": 0,
+        "three_confirmations": 0,
+        "reject:no_sensor_update": 95,
+        "reject:pf_unresolved": 61,
+        "reject:xy_covariance": 22,
+        "reject:yaw_covariance": 28,
+        "reject:geometry": 67,
+        "reject:ambiguity_pending_upstream": 113,
+        "reject:cluster_mass": 15,
+        "reject:geometric_ambiguity": 10
+      },
+      "first_registration_N": 0,
+      "first_false_registration_N": 0,
+      "registered_errors": {
+        "N": 0,
+        "bad10cm5_N": 0,
+        "bad_xy_m": {
+          "N": 0
+        },
+        "bad_yaw_deg": {
+          "N": 0
+        },
+        "classification": {}
+      },
+      "map_inserted_error_N": 0,
+      "drive_error_N": 0,
+      "first30_wall_per_sim_median": null,
+      "first30_N": 0,
+      "termination": {
+        "supervisor_stop": 1
+      },
+      "rejection_distribution": [
+        {
+          "category": "registered:not_yet_registered",
+          "N": 133,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    "R2_texture": {
+      "runs": 4,
+      "source_shas": [
+        "6abd95271f912093f487eaf4e4fd3690c41c4268"
+      ],
+      "funnel": {
+        "fresh_static_fix_independent": 84,
+        "frames": 1708,
+        "frames_independent": 1708,
+        "registered": 1262,
+        "registered_independent": 1262,
+        "execution_pose_delivered": 1262,
+        "execution_pose_delivered_independent": 1262,
+        "map_inserted": 1233,
+        "map_inserted_independent": 1635,
+        "control_drive_used": 360,
+        "control_drive_used_independent": 362
+      },
+      "R7": {
+        "ambiguity_evaluated": 216,
+        "unique": 166,
+        "pf_agreement_reliable": 104,
+        "three_confirmations": 240,
+        "reject:no_sensor_update": 1315,
+        "reject:pf_unresolved": 513,
+        "reject:xy_covariance": 127,
+        "reject:yaw_covariance": 347,
+        "reject:geometry": 738,
+        "reject:ambiguity_pending_upstream": 1492,
+        "reject:geometric_ambiguity": 50,
+        "reject:cluster_mass": 15
+      },
+      "first_registration_N": 4,
+      "first_false_registration_N": 0,
+      "registered_errors": {
+        "N": 1262,
+        "bad10cm5_N": 644,
+        "bad_xy_m": {
+          "N": 644,
+          "min": 0.04171565204403674,
+          "p50": 0.2208265768767468,
+          "p90": 0.757900443283875,
+          "p95": 0.7579171201566788,
+          "p99": 0.7602051157336255,
+          "max": 0.7619241774022278
+        },
+        "bad_yaw_deg": {
+          "N": 644,
+          "min": 0.0010385070231769423,
+          "p50": 4.997976373116462,
+          "p90": 9.983145519222532,
+          "p95": 10.32103174250279,
+          "p99": 11.053566292600392,
+          "max": 11.259419871186093
+        },
+        "classification": {
+          "xy_only:visual_update:visual_update": 82,
+          "xy_only:command_only:no_rigid_consensus": 71,
+          "xy_only:command_only:insufficient_matches": 122,
+          "xy_and_yaw:command_only:insufficient_matches": 85,
+          "xy_and_yaw:command_only:no_rigid_consensus": 32,
+          "xy_and_yaw:visual_update:visual_update": 81,
+          "yaw_only:command_only:insufficient_matches": 49,
+          "yaw_only:command_only:no_rigid_consensus": 39,
+          "xy_only:command_only:pose_correction_rejected": 28,
+          "yaw_only:visual_relocalized:selfmap4_static_lines": 2,
+          "yaw_only:visual_update:visual_update": 31,
+          "xy_only:visual_relocalized:selfmap4_static_lines": 19,
+          "yaw_only:command_only:pose_correction_rejected": 3
+        }
+      },
+      "map_inserted_error_N": 638,
+      "drive_error_N": 269,
+      "first30_wall_per_sim_median": 4.334967297099986,
+      "first30_N": 4,
+      "termination": {
+        "cap_end": 3,
+        "selfmap4_relocalization_exhausted": 1
+      },
+      "rejection_distribution": [
+        {
+          "category": "control_drive_used:stage:active_reloc8",
+          "N": 604,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "registered:not_yet_registered",
+          "N": 446,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:spin",
+          "N": 176,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:pan",
+          "N": 76,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:camera_unsettled",
+          "N": 29,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:camera_unsettled",
+          "N": 29,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:select",
+          "N": 13,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:stopped",
+          "N": 4,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    "R3_texture": {
+      "runs": 4,
+      "source_shas": [
+        "fc11a303b5e5b6afb4d2b1a858f3da50dd609d96"
+      ],
+      "funnel": {
+        "fresh_static_fix_independent": 60,
+        "frames": 1072,
+        "frames_independent": 1072,
+        "registered": 626,
+        "registered_independent": 626,
+        "execution_pose_delivered": 626,
+        "execution_pose_delivered_independent": 626,
+        "map_inserted": 302,
+        "map_inserted_independent": 704,
+        "control_drive_used": 36,
+        "control_drive_used_independent": 38
+      },
+      "R7": {
+        "ambiguity_evaluated": 182,
+        "unique": 153,
+        "pf_agreement_reliable": 107,
+        "three_confirmations": 287,
+        "reject:no_sensor_update": 777,
+        "reject:pf_unresolved": 309,
+        "reject:xy_covariance": 116,
+        "reject:yaw_covariance": 149,
+        "reject:geometry": 373,
+        "reject:ambiguity_pending_upstream": 890,
+        "reject:geometric_ambiguity": 29,
+        "reject:cluster_mass": 13
+      },
+      "first_registration_N": 4,
+      "first_false_registration_N": 0,
+      "registered_errors": {
+        "N": 626,
+        "bad10cm5_N": 282,
+        "bad_xy_m": {
+          "N": 282,
+          "min": 0.028329802908169017,
+          "p50": 0.09304397595343764,
+          "p90": 0.12710378549518936,
+          "p95": 0.12966225793445446,
+          "p99": 0.13176943928927115,
+          "max": 0.13425081361162614
+        },
+        "bad_yaw_deg": {
+          "N": 282,
+          "min": 0.005596335457494084,
+          "p50": 7.36374680797279,
+          "p90": 10.57287131114718,
+          "p95": 10.80020787337785,
+          "p99": 10.990658535686139,
+          "max": 11.556608275872984
+        },
+        "classification": {
+          "xy_only:visual_update:visual_update": 20,
+          "yaw_only:command_only:insufficient_matches": 54,
+          "yaw_only:command_only:no_rigid_consensus": 34,
+          "xy_only:command_only:pose_correction_rejected": 7,
+          "xy_only:command_only:insufficient_matches": 32,
+          "xy_and_yaw:command_only:insufficient_matches": 6,
+          "xy_and_yaw:visual_update:visual_update": 6,
+          "xy_and_yaw:command_only:no_rigid_consensus": 1,
+          "xy_and_yaw:command_only:pose_correction_rejected": 15,
+          "xy_only:visual_relocalized:selfmap4_static_lines": 6,
+          "xy_only:command_only:no_rigid_consensus": 34,
+          "yaw_only:visual_relocalized:selfmap4_static_lines": 4,
+          "yaw_only:command_only:pose_correction_rejected": 12,
+          "yaw_only:visual_update:visual_update": 51
+        }
+      },
+      "map_inserted_error_N": 115,
+      "drive_error_N": 28,
+      "first30_wall_per_sim_median": 4.410451782949986,
+      "first30_N": 4,
+      "termination": {
+        "selfmap4_relocalization_exhausted": 2,
+        "cap_end": 2
+      },
+      "rejection_distribution": [
+        {
+          "category": "registered:not_yet_registered",
+          "N": 446,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:registered_r7_unconfirmed",
+          "N": 316,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:registered_r7_unconfirmed",
+          "N": 308,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:active_reloc8",
+          "N": 208,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:spin",
+          "N": 33,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:pan",
+          "N": 21,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:camera_unsettled",
+          "N": 16,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:camera_unsettled",
+          "N": 8,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:registered_r7_unconfirmed;camera_unsettled",
+          "N": 8,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:select",
+          "N": 3,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:stopped",
+          "N": 1,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    }
+  },
+  "carry_funnel": {
+    "runs": 2,
+    "pickup_seen": 2,
+    "aligned": 2,
+    "physical_lift": 2,
+    "carry_to_zone": 1,
+    "zone_place_view": 0,
+    "release": 0,
+    "physical_delivery": 0
+  },
+  "carry_runs": [
+    {
+      "run": "reloc13-r1-carry-texture-93266-aa1f4661-retry1",
+      "termination": "cap_end",
+      "phase_frames": {
+        "fold": 6,
+        "pickup_search": 58,
+        "approach": 274,
+        "carry_reobserve": 2082,
+        "carry_recover_restore": 21,
+        "carry_reacquire": 301,
+        "align": 19,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 32,
+        "lookback_pose": 12,
+        "lookback": 25,
+        "lookback_settle": 5,
+        "verify_lift": 11,
+        "hold": 30,
+        "carry_prepare": 1,
+        "carry_recover_lower": 20,
+        "carry_recover_open": 8,
+        "carry_recover_retract": 19,
+        "carry_recover_backoff": 25
+      },
+      "funnel": {
+        "pickup_seen": 1,
+        "aligned": 1,
+        "lifted_controller": 1,
+        "zone_place_view": 0,
+        "release": 0
+      },
+      "rejections": [
+        {
+          "category": "pose_budget",
+          "N": 3,
+          "blocked_object": "pose_uncertainty_budget",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "view_funnel": {
+        "views": 18,
+        "residual_count": 18,
+        "feature_groups": 15,
+        "rank": 13,
+        "inlier_fraction": 7,
+        "innovation": 6,
+        "gain": 6,
+        "accepted": 3
+      },
+      "view_rejections": {
+        "rank": 2,
+        "accepted": 3,
+        "feature_groups": 3,
+        "inlier_fraction": 6,
+        "innovation": 1
+      },
+      "pose_error": {
+        "N": 3000,
+        "xy_m": {
+          "N": 3000,
+          "min": 0.005258594054967327,
+          "p50": 0.07882524933901981,
+          "p90": 0.32278204174681685,
+          "p95": 0.33824297571271306,
+          "p99": 0.3484968544456416,
+          "max": 0.3553495160067302
+        },
+        "yaw_deg": {
+          "N": 3000,
+          "min": 0.004810121321023308,
+          "p50": 7.628719342478268,
+          "p90": 60.320225526470594,
+          "p95": 65.46830119058838,
+          "p99": 67.95682631407567,
+          "max": 68.5782882167407
+        },
+        "true_yaw_over20_N": 835,
+        "trigger_recall": 0.8479041916167664,
+        "max_untriggered_yaw_deg": 52.61389700143239,
+        "missed_over20_by_phase": {
+          "carry_reacquire": 127
+        }
+      }
+    },
+    {
+      "run": "reloc13-r1-carry-texture-93315-aa1f4661-retry1",
+      "termination": "carry_recovery_setdown_envelope_blocked",
+      "phase_frames": {
+        "fold": 6,
+        "pickup_search": 1,
+        "approach": 67,
+        "align": 34,
+        "hover": 19,
+        "descent": 32,
+        "close": 24,
+        "lift": 32,
+        "lift_settle": 64,
+        "lookback_pose": 23,
+        "lookback": 50,
+        "lookback_settle": 10,
+        "verify_lift": 22,
+        "hold": 60,
+        "carry_prepare": 21,
+        "carry_to_zone": 230,
+        "carry_recover_lower": 10,
+        "carry_recover_open": 7,
+        "carry_recover_retract": 18,
+        "carry_recover_backoff": 25,
+        "carry_reobserve": 173,
+        "carry_recover_restore": 10,
+        "carry_reacquire": 1,
+        "failed": 1
+      },
+      "funnel": {
+        "pickup_seen": 1,
+        "aligned": 1,
+        "lifted_controller": 1,
+        "zone_place_view": 0,
+        "release": 0
+      },
+      "rejections": [
+        {
+          "category": "pose_budget",
+          "N": 2,
+          "blocked_object": "pose_uncertainty_budget",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "view_funnel": {
+        "views": 2,
+        "residual_count": 2,
+        "feature_groups": 2,
+        "rank": 2,
+        "inlier_fraction": 2,
+        "innovation": 2,
+        "gain": 2,
+        "accepted": 1
+      },
+      "view_rejections": {
+        "accepted": 1
+      },
+      "pose_error": {
+        "N": 940,
+        "xy_m": {
+          "N": 940,
+          "min": 0.009459163740427814,
+          "p50": 0.12453240785769674,
+          "p90": 0.14562686930502328,
+          "p95": 0.14978318729151083,
+          "p99": 0.15408143165006305,
+          "max": 0.15718312897281453
+        },
+        "yaw_deg": {
+          "N": 940,
+          "min": 0.013421149443007624,
+          "p50": 1.962465097468563,
+          "p90": 3.707871184636497,
+          "p95": 4.613574718348338,
+          "p99": 6.244251201533861,
+          "max": 7.4003186750430965
+        },
+        "true_yaw_over20_N": 0,
+        "trigger_recall": null,
+        "max_untriggered_yaw_deg": 3.964838801182313,
+        "missed_over20_by_phase": {}
+      }
+    }
+  ],
+  "carry_blockers": [
+    {
+      "run": "reloc13-r1-carry-texture-93315-aa1f4661-retry1",
+      "t": 95.19999999947679,
+      "source": "saved permitted map pose and own RGB obstacle memory; no truth",
+      "category": "route",
+      "blocked_object": "own_rgb:heavy_crate:4",
+      "minimum_gap_m": -0.07273354264836535,
+      "gap_scope": "same margin-escape limits and wall samples as segment_free",
+      "blockers": [
+        {
+          "blocked_object": "own_rgb:heavy_crate:4",
+          "minimum_gap_m": -0.07273354264836535
+        }
+      ]
+    }
+  ]
+}

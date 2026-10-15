@@ -1,0 +1,644 @@
+{
+  "schema": "ugrp.reloc13.summary.v1",
+  "verdict": "NOT_READY",
+  "source_sha": "fc11a303b5e5b6afb4d2b1a858f3da50dd609d96",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/map-selfmap/experiments/2026-10-15-reloc13/rejection-table.json",
+  "physical_rounds": 3,
+  "physical_runs": 13,
+  "round_run_counts": [
+    5,
+    4,
+    4
+  ],
+  "parser_errors_before_physics": 2,
+  "local_preflight_error_before_vm": 1,
+  "cohorts": {
+    "reloc12_texture": {
+      "runs": 4,
+      "source_shas": [
+        "ff1ccf27a43fe73d9b49dac82caf26a4584060d0"
+      ],
+      "funnel": {
+        "fresh_static_fix_independent": 65,
+        "frames": 892,
+        "frames_independent": 892,
+        "registered": 446,
+        "registered_independent": 446,
+        "execution_pose_delivered": 446,
+        "execution_pose_delivered_independent": 446,
+        "map_inserted": 0,
+        "map_inserted_independent": 402,
+        "control_drive_used": 0,
+        "control_drive_used_independent": 2
+      },
+      "R7": {
+        "ambiguity_evaluated": 154,
+        "unique": 121,
+        "pf_agreement_reliable": 75,
+        "three_confirmations": 220,
+        "reject:no_sensor_update": 653,
+        "reject:pf_unresolved": 286,
+        "reject:xy_covariance": 116,
+        "reject:yaw_covariance": 126,
+        "reject:geometry": 308,
+        "reject:ambiguity_pending_upstream": 738,
+        "reject:geometric_ambiguity": 33,
+        "reject:cluster_mass": 13
+      },
+      "first_registration_N": 4,
+      "first_false_registration_N": 0,
+      "registered_errors": {
+        "N": 446,
+        "bad10cm5_N": 147,
+        "bad_xy_m": {
+          "N": 147,
+          "min": 0.0038534599408092253,
+          "p50": 0.09309572813437203,
+          "p90": 0.10568692662660396,
+          "p95": 0.10668610378727542,
+          "p99": 0.1087635941809644,
+          "max": 0.10892679008379431
+        },
+        "bad_yaw_deg": {
+          "N": 147,
+          "min": 0.012976698206061501,
+          "p50": 8.728512490441009,
+          "p90": 57.26873708341273,
+          "p95": 57.5261110910081,
+          "p99": 57.61189795481405,
+          "max": 57.732952850271836
+        },
+        "classification": {
+          "yaw_only:visual_relocalized:visual_relocalized": 2,
+          "yaw_only:visual_update:visual_update": 40,
+          "yaw_only:command_only:insufficient_matches": 34,
+          "yaw_only:command_only:no_rigid_consensus": 4,
+          "xy_only:visual_update:visual_update": 20,
+          "xy_only:command_only:insufficient_matches": 11,
+          "xy_and_yaw:visual_update:visual_update": 14,
+          "yaw_only:visual_relocalized:selfmap4_static_lines": 6,
+          "xy_and_yaw:command_only:insufficient_matches": 10,
+          "xy_only:visual_relocalized:selfmap4_static_lines": 6
+        }
+      },
+      "map_inserted_error_N": 0,
+      "drive_error_N": 0,
+      "first30_wall_per_sim_median": 4.321386719250009,
+      "first30_N": 4,
+      "termination": {
+        "selfmap4_relocalization_exhausted": 4
+      },
+      "rejection_distribution": [
+        {
+          "category": "registered:not_yet_registered",
+          "N": 446,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:pose_uncertain",
+          "N": 446,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:pose_uncertain",
+          "N": 436,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:camera_unsettled;pose_uncertain",
+          "N": 10,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:camera_unsettled",
+          "N": 10,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    "R1_texture": {
+      "runs": 2,
+      "source_shas": [
+        "aa1f46615e762b9f8319757fe8f641a46b809e47"
+      ],
+      "funnel": {
+        "fresh_static_fix_independent": 0,
+        "frames": 423,
+        "frames_independent": 423,
+        "registered": 149,
+        "registered_independent": 149,
+        "execution_pose_delivered": 149,
+        "execution_pose_delivered_independent": 149,
+        "map_inserted": 146,
+        "map_inserted_independent": 396,
+        "control_drive_used": 52,
+        "control_drive_used_independent": 54
+      },
+      "R7": {
+        "ambiguity_evaluated": 68,
+        "unique": 52,
+        "pf_agreement_reliable": 28,
+        "three_confirmations": 102,
+        "reject:no_sensor_update": 312,
+        "reject:pf_unresolved": 136,
+        "reject:xy_covariance": 36,
+        "reject:yaw_covariance": 60,
+        "reject:geometry": 154,
+        "reject:ambiguity_pending_upstream": 355,
+        "reject:geometric_ambiguity": 16
+      },
+      "first_registration_N": 2,
+      "first_false_registration_N": 0,
+      "registered_errors": {
+        "N": 149,
+        "bad10cm5_N": 149,
+        "bad_xy_m": {
+          "N": 149,
+          "min": 0.008694898474534358,
+          "p50": 0.04229033923918204,
+          "p90": 0.06277139760810448,
+          "p95": 0.07930512185939359,
+          "p99": 0.107852071858834,
+          "max": 0.11031604850140503
+        },
+        "bad_yaw_deg": {
+          "N": 149,
+          "min": 10.046083459774566,
+          "p50": 11.583264209951668,
+          "p90": 12.489681406406305,
+          "p95": 12.592519291957043,
+          "p99": 12.711345125021252,
+          "max": 12.741411154520637
+        },
+        "classification": {
+          "yaw_only:command_only:pose_correction_rejected": 34,
+          "yaw_only:command_only:insufficient_matches": 31,
+          "yaw_only:visual_update:visual_update": 50,
+          "yaw_only:command_only:no_rigid_consensus": 28,
+          "xy_and_yaw:visual_update:visual_update": 2,
+          "xy_and_yaw:command_only:no_rigid_consensus": 4
+        }
+      },
+      "map_inserted_error_N": 146,
+      "drive_error_N": 52,
+      "first30_wall_per_sim_median": 4.194994212633333,
+      "first30_N": 2,
+      "termination": {
+        "supervisor_stop": 2
+      },
+      "rejection_distribution": [
+        {
+          "category": "registered:not_yet_registered",
+          "N": 274,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:active_reloc8",
+          "N": 92,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:camera_unsettled",
+          "N": 3,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:camera_unsettled",
+          "N": 3,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:select",
+          "N": 2,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    "R1_smooth": {
+      "runs": 1,
+      "source_shas": [
+        "aa1f46615e762b9f8319757fe8f641a46b809e47"
+      ],
+      "funnel": {
+        "fresh_static_fix_independent": 0,
+        "frames": 133,
+        "frames_independent": 133,
+        "registered": 0,
+        "registered_independent": 0,
+        "execution_pose_delivered": 0,
+        "execution_pose_delivered_independent": 0,
+        "map_inserted": 0,
+        "map_inserted_independent": 121,
+        "control_drive_used": 0,
+        "control_drive_used_independent": 2
+      },
+      "R7": {
+        "ambiguity_evaluated": 20,
+        "unique": 10,
+        "pf_agreement_reliable": 0,
+        "three_confirmations": 0,
+        "reject:no_sensor_update": 95,
+        "reject:pf_unresolved": 61,
+        "reject:xy_covariance": 22,
+        "reject:yaw_covariance": 28,
+        "reject:geometry": 67,
+        "reject:ambiguity_pending_upstream": 113,
+        "reject:cluster_mass": 15,
+        "reject:geometric_ambiguity": 10
+      },
+      "first_registration_N": 0,
+      "first_false_registration_N": 0,
+      "registered_errors": {
+        "N": 0,
+        "bad10cm5_N": 0,
+        "bad_xy_m": {
+          "N": 0
+        },
+        "bad_yaw_deg": {
+          "N": 0
+        },
+        "classification": {}
+      },
+      "map_inserted_error_N": 0,
+      "drive_error_N": 0,
+      "first30_wall_per_sim_median": null,
+      "first30_N": 0,
+      "termination": {
+        "supervisor_stop": 1
+      },
+      "rejection_distribution": [
+        {
+          "category": "registered:not_yet_registered",
+          "N": 133,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    "R2_texture": {
+      "runs": 4,
+      "source_shas": [
+        "6abd95271f912093f487eaf4e4fd3690c41c4268"
+      ],
+      "funnel": {
+        "fresh_static_fix_independent": 84,
+        "frames": 1708,
+        "frames_independent": 1708,
+        "registered": 1262,
+        "registered_independent": 1262,
+        "execution_pose_delivered": 1262,
+        "execution_pose_delivered_independent": 1262,
+        "map_inserted": 1233,
+        "map_inserted_independent": 1635,
+        "control_drive_used": 360,
+        "control_drive_used_independent": 362
+      },
+      "R7": {
+        "ambiguity_evaluated": 216,
+        "unique": 166,
+        "pf_agreement_reliable": 104,
+        "three_confirmations": 240,
+        "reject:no_sensor_update": 1315,
+        "reject:pf_unresolved": 513,
+        "reject:xy_covariance": 127,
+        "reject:yaw_covariance": 347,
+        "reject:geometry": 738,
+        "reject:ambiguity_pending_upstream": 1492,
+        "reject:geometric_ambiguity": 50,
+        "reject:cluster_mass": 15
+      },
+      "first_registration_N": 4,
+      "first_false_registration_N": 0,
+      "registered_errors": {
+        "N": 1262,
+        "bad10cm5_N": 644,
+        "bad_xy_m": {
+          "N": 644,
+          "min": 0.04171565204403674,
+          "p50": 0.2208265768767468,
+          "p90": 0.757900443283875,
+          "p95": 0.7579171201566788,
+          "p99": 0.7602051157336255,
+          "max": 0.7619241774022278
+        },
+        "bad_yaw_deg": {
+          "N": 644,
+          "min": 0.0010385070231769423,
+          "p50": 4.997976373116462,
+          "p90": 9.983145519222532,
+          "p95": 10.32103174250279,
+          "p99": 11.053566292600392,
+          "max": 11.259419871186093
+        },
+        "classification": {
+          "xy_only:visual_update:visual_update": 82,
+          "xy_only:command_only:no_rigid_consensus": 71,
+          "xy_only:command_only:insufficient_matches": 122,
+          "xy_and_yaw:command_only:insufficient_matches": 85,
+          "xy_and_yaw:command_only:no_rigid_consensus": 32,
+          "xy_and_yaw:visual_update:visual_update": 81,
+          "yaw_only:command_only:insufficient_matches": 49,
+          "yaw_only:command_only:no_rigid_consensus": 39,
+          "xy_only:command_only:pose_correction_rejected": 28,
+          "yaw_only:visual_relocalized:selfmap4_static_lines": 2,
+          "yaw_only:visual_update:visual_update": 31,
+          "xy_only:visual_relocalized:selfmap4_static_lines": 19,
+          "yaw_only:command_only:pose_correction_rejected": 3
+        }
+      },
+      "map_inserted_error_N": 638,
+      "drive_error_N": 269,
+      "first30_wall_per_sim_median": 4.334967297099986,
+      "first30_N": 4,
+      "termination": {
+        "cap_end": 3,
+        "selfmap4_relocalization_exhausted": 1
+      },
+      "rejection_distribution": [
+        {
+          "category": "control_drive_used:stage:active_reloc8",
+          "N": 604,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "registered:not_yet_registered",
+          "N": 446,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:spin",
+          "N": 176,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:pan",
+          "N": 76,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:camera_unsettled",
+          "N": 29,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:camera_unsettled",
+          "N": 29,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:select",
+          "N": 13,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:stopped",
+          "N": 4,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    },
+    "R3_texture": {
+      "runs": 4,
+      "source_shas": [
+        "fc11a303b5e5b6afb4d2b1a858f3da50dd609d96"
+      ],
+      "funnel": {
+        "fresh_static_fix_independent": 60,
+        "frames": 1072,
+        "frames_independent": 1072,
+        "registered": 626,
+        "registered_independent": 626,
+        "execution_pose_delivered": 626,
+        "execution_pose_delivered_independent": 626,
+        "map_inserted": 302,
+        "map_inserted_independent": 704,
+        "control_drive_used": 36,
+        "control_drive_used_independent": 38
+      },
+      "R7": {
+        "ambiguity_evaluated": 182,
+        "unique": 153,
+        "pf_agreement_reliable": 107,
+        "three_confirmations": 287,
+        "reject:no_sensor_update": 777,
+        "reject:pf_unresolved": 309,
+        "reject:xy_covariance": 116,
+        "reject:yaw_covariance": 149,
+        "reject:geometry": 373,
+        "reject:ambiguity_pending_upstream": 890,
+        "reject:geometric_ambiguity": 29,
+        "reject:cluster_mass": 13
+      },
+      "first_registration_N": 4,
+      "first_false_registration_N": 0,
+      "registered_errors": {
+        "N": 626,
+        "bad10cm5_N": 282,
+        "bad_xy_m": {
+          "N": 282,
+          "min": 0.028329802908169017,
+          "p50": 0.09304397595343764,
+          "p90": 0.12710378549518936,
+          "p95": 0.12966225793445446,
+          "p99": 0.13176943928927115,
+          "max": 0.13425081361162614
+        },
+        "bad_yaw_deg": {
+          "N": 282,
+          "min": 0.005596335457494084,
+          "p50": 7.36374680797279,
+          "p90": 10.57287131114718,
+          "p95": 10.80020787337785,
+          "p99": 10.990658535686139,
+          "max": 11.556608275872984
+        },
+        "classification": {
+          "xy_only:visual_update:visual_update": 20,
+          "yaw_only:command_only:insufficient_matches": 54,
+          "yaw_only:command_only:no_rigid_consensus": 34,
+          "xy_only:command_only:pose_correction_rejected": 7,
+          "xy_only:command_only:insufficient_matches": 32,
+          "xy_and_yaw:command_only:insufficient_matches": 6,
+          "xy_and_yaw:visual_update:visual_update": 6,
+          "xy_and_yaw:command_only:no_rigid_consensus": 1,
+          "xy_and_yaw:command_only:pose_correction_rejected": 15,
+          "xy_only:visual_relocalized:selfmap4_static_lines": 6,
+          "xy_only:command_only:no_rigid_consensus": 34,
+          "yaw_only:visual_relocalized:selfmap4_static_lines": 4,
+          "yaw_only:command_only:pose_correction_rejected": 12,
+          "yaw_only:visual_update:visual_update": 51
+        }
+      },
+      "map_inserted_error_N": 115,
+      "drive_error_N": 28,
+      "first30_wall_per_sim_median": 4.410451782949986,
+      "first30_N": 4,
+      "termination": {
+        "selfmap4_relocalization_exhausted": 2,
+        "cap_end": 2
+      },
+      "rejection_distribution": [
+        {
+          "category": "registered:not_yet_registered",
+          "N": 446,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:registered_r7_unconfirmed",
+          "N": 316,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:registered_r7_unconfirmed",
+          "N": 308,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:active_reloc8",
+          "N": 208,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:spin",
+          "N": 33,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:pan",
+          "N": 21,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:camera_unsettled",
+          "N": 16,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:camera_unsettled",
+          "N": 8,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:registered_r7_unconfirmed;camera_unsettled",
+          "N": 8,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:select",
+          "N": 3,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:stopped",
+          "N": 1,
+          "blocked_object": "registration_or_private_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ]
+    }
+  },
+  "carry": {
+    "runs": 2,
+    "pickup_seen": 2,
+    "aligned": 2,
+    "physical_lift": 2,
+    "carry_to_zone": 1,
+    "zone_place_view": 0,
+    "release": 0,
+    "physical_delivery": 0
+  },
+  "carry_termination": {
+    "reloc13-r1-carry-texture-93266-aa1f4661-retry1": "cap_end",
+    "reloc13-r1-carry-texture-93315-aa1f4661-retry1": "carry_recovery_setdown_envelope_blocked"
+  },
+  "wall_per_sim": {
+    "carry_median": 2.4556233209618847,
+    "warning_above": 3.5,
+    "blocking_above": 6
+  },
+  "resource_admission": {
+    "aggregate_limit": 40,
+    "own_limit": 16,
+    "max_conservative_upper_bound": 20,
+    "vm_max_duration_s": 86400
+  },
+  "limits": [
+    "No mapping/transport promotion: live R7 still breaks and carry zone_place_view/release are 0/2.",
+    "Smooth was one physical reference interrupted with the confirmed R1 handoff defect; no completed smooth comparison.",
+    "Carry reacquisition -> reobserve preemption physically confirmed at265.4s; same-search resumption after that interruption remains unit-only (cap_end).",
+    "Budget fit is in-sample; fresh seed93315 has no true yaw>=20deg ticks, so high-error holdout recall remains unmeasured.",
+    "Raw originals remain on GCP persistent disk; no full separate backup.",
+    "Carry budget recall 708/835=84.8%; missed127 carry_reacquire ticks, max untriggered true yaw52.6deg. Default-off calibration not qualified."
+  ],
+  "validation": {
+    "passed": 82,
+    "skipped": 0,
+    "mac_physics": 0,
+    "mac_render": 0,
+    "model_calls": 0,
+    "simulator_import_blocked": true,
+    "log": "/Users/changmin/projects/ugrp-wt/map-selfmap/experiments/2026-10-15-reloc13/pytest.txt",
+    "sha256": "d912d2ff0cd23427a2cf97810891be86285bf4d34ab2cace1099effa3dc32e85",
+    "execution_source": "fc11a303b5e5b6afb4d2b1a858f3da50dd609d96",
+    "full_ci": "pending push; not run locally",
+    "command": "PYTHONPATH=.:tests /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-10-15-reloc12/run_offline_tests.py -q tests/test_reloc13.py tests/test_reloc12.py tests/test_selfmap4.py tests/test_selfmap5.py tests/test_selfmap6.py tests/test_reloc11_timing.py tests/test_self_map_executor.py"
+  }
+}
