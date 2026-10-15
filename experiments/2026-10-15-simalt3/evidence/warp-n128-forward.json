@@ -1,0 +1,79 @@
+{
+  "sha": "737f5a0e",
+  "engine": "warp",
+  "mujoco_version": "3.16.0",
+  "nworld": 128,
+  "script_sha256": "a51a30d5da3fc7c016224dfc16f2b0836c2e93681cb2eb3a4d8cfed241988706",
+  "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+  "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+  "training": false,
+  "renderer": "none; physics-only; state ring buffer for offline rendering",
+  "status": "complete",
+  "attempted": 1,
+  "completed": 1,
+  "failure": 0,
+  "HOST_ERROR": 0,
+  "cap_end": false,
+  "steps_accepted": 2048000,
+  "cases": [
+    {
+      "name": "forward",
+      "status": "complete",
+      "max_ncon": 20,
+      "max_nefc": 97,
+      "physics_wall_s": 121.26580694599966,
+      "evaluator_wall_s": 0.46128015400063305,
+      "batch_render_wall_s": 0.0,
+      "readback_fisheye_wall_s": 0.0,
+      "RGB_frames": 0,
+      "sim_s": 4.0,
+      "wall_s": 121.72916103800003,
+      "sample_count": 40,
+      "physics_only_SIM_s_per_wall_s": 4.222129987787873,
+      "physics_plus_RGB_SIM_s_per_wall_s": null,
+      "total_sim_seconds_per_wall_second": 4.206057478851093,
+      "per_world_sim_seconds_per_wall_second": 0.03285982387536242
+    }
+  ],
+  "physics_overrides": {},
+  "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n128-forward/rejection_table.json",
+  "execution_host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine_type": "g2-standard-8",
+    "zone": "asia-northeast3-a"
+  },
+  "unused_efm_v1": true,
+  "options": {
+    "timestep": 0.00025,
+    "iterations": 80.0,
+    "ls_iterations": 50.0,
+    "noslip_iterations": 10.0,
+    "noslip_tolerance": 1e-06,
+    "tolerance": 1e-08,
+    "integrator": 3.0,
+    "cone": 1.0,
+    "solver": 2.0
+  },
+  "physics_hashes": {
+    "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+    "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+    "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+    "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+    "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+    "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+  },
+  "warp_version": "1.15.0",
+  "backend_solver_tolerance": 9.99999993922529e-09,
+  "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+  "capacities": {
+    "nconmax": 32,
+    "njmax": 128,
+    "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+  },
+  "put_data_passed": true,
+  "first_step_passed": true,
+  "gpu_memory_end": "348, 23034, 100",
+  "wall_s": 125.416355501,
+  "rejections": []
+}

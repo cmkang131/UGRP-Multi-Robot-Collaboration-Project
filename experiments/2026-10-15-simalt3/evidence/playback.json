@@ -1,0 +1,138 @@
+[
+  {
+    "run": "review-cpu-grip",
+    "metadata": {
+      "range_sim_s": [
+        0.1,
+        43.400000000000006
+      ],
+      "whole_sample_hz": 2,
+      "last_sample_hz": 10,
+      "last_range_sim_s": [
+        33.5,
+        43.400000000000006
+      ],
+      "whole_frame_count": 86,
+      "last_frame_count": 100,
+      "ffprobe": {
+        "format": {
+          "duration": "10.750000",
+          "size": "61047"
+        }
+      },
+      "sha256": "e72e39b2db809ab3fbda121c8dd61aec2fd13a37b3cc24283d4aaf1670cb4243",
+      "renderer": "offline C3.12; not MJWarp batch-render parity or throughput",
+      "camera": "unchanged v3 mount and measured K/D; r2 absent by reduced-scene contract",
+      "source_states": "/home/ugrp/ugrp-sim/runs/simalt3/cpu-n1/states.npz",
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/diag/simalt_review_physics.py",
+        "--source",
+        "/home/ugrp/ugrp-sim/runs/simalt3/runtime/source",
+        "--fixture",
+        "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+        "--run",
+        "/home/ugrp/ugrp-sim/runs/simalt3/cpu-n1",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/simalt3/review-cpu-grip",
+        "--case",
+        "grip",
+        "--gcp2-v1"
+      ],
+      "failure_anchor_sim_s": null
+    },
+    "local_video": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/simalt3/review-cpu-grip/review-4x.mp4",
+    "local_sha256_verified": true
+  },
+  {
+    "run": "review-warp-grip",
+    "metadata": {
+      "range_sim_s": [
+        0.1,
+        43.400000000000006
+      ],
+      "whole_sample_hz": 2,
+      "last_sample_hz": 10,
+      "last_range_sim_s": [
+        15.200000000000001,
+        25.1
+      ],
+      "whole_frame_count": 86,
+      "last_frame_count": 100,
+      "ffprobe": {
+        "format": {
+          "duration": "10.750000",
+          "size": "65170"
+        }
+      },
+      "sha256": "c07b57ee739542c789fc3165c31a4b838f039083c6f09caae87dea8717dcf27b",
+      "renderer": "offline C3.12; not MJWarp batch-render parity or throughput",
+      "camera": "unchanged v3 mount and measured K/D; r2 absent by reduced-scene contract",
+      "source_states": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n1/states.npz",
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/diag/simalt_review_physics.py",
+        "--source",
+        "/home/ugrp/ugrp-sim/runs/simalt3/runtime/source",
+        "--fixture",
+        "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+        "--run",
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-n1",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/simalt3/review-warp-grip",
+        "--case",
+        "grip",
+        "--gcp2-v1",
+        "--failure-time-s",
+        "25.1"
+      ],
+      "failure_anchor_sim_s": 25.1
+    },
+    "local_video": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/simalt3/review-warp-grip/review-4x.mp4",
+    "local_sha256_verified": true
+  },
+  {
+    "run": "review-warp-turn",
+    "metadata": {
+      "range_sim_s": [
+        0.1,
+        4.0
+      ],
+      "whole_sample_hz": 2,
+      "last_sample_hz": 10,
+      "last_range_sim_s": [
+        0.1,
+        4.0
+      ],
+      "whole_frame_count": 8,
+      "last_frame_count": 40,
+      "ffprobe": {
+        "format": {
+          "duration": "1.000000",
+          "size": "10978"
+        }
+      },
+      "sha256": "4870064d615290ea8df05b8f79c62d46078ea574fcd118a62122f4cba5a7ea23",
+      "renderer": "offline C3.12; not MJWarp batch-render parity or throughput",
+      "camera": "unchanged v3 mount and measured K/D; r2 absent by reduced-scene contract",
+      "source_states": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n1/states.npz",
+      "reproduce": [
+        "/home/ugrp/ugrp-sim/runs/simalt3/diag/simalt_review_physics.py",
+        "--source",
+        "/home/ugrp/ugrp-sim/runs/simalt3/runtime/source",
+        "--fixture",
+        "/home/ugrp/ugrp-sim/runs/simalt3/fixture",
+        "--run",
+        "/home/ugrp/ugrp-sim/runs/simalt3/warp-n1",
+        "--out",
+        "/home/ugrp/ugrp-sim/runs/simalt3/review-warp-turn",
+        "--case",
+        "turn",
+        "--gcp2-v1",
+        "--failure-time-s",
+        "4.0"
+      ],
+      "failure_anchor_sim_s": 4.0
+    },
+    "local_video": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/simalt3/review-warp-turn/review-4x.mp4",
+    "local_sha256_verified": true
+  }
+]

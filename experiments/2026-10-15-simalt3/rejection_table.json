@@ -95,6 +95,15 @@
       "blocking_object": "cargo_cyan_2 / r1__left_finger / r1__right_finger",
       "minimum_gap_m": null,
       "minimum_gap_status": "not_path_clearance; no loaded hold, not low-slip success"
+    },
+    {
+      "category": "render_observation_mismatch",
+      "count": 1,
+      "reason": "Matched qpos/qvel own RGB: zone_pickup alpha0.14 obscures floor checker in MJWarp, visible through it in C3.12. Partial alpha rendering differs.",
+      "blocking_object": "zone_pickup",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric; visual information loss",
+      "evidence": "evidence/rgb-matched-state-comparison.jpg"
     }
   ]
 }
