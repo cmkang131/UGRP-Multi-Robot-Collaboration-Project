@@ -1,0 +1,38 @@
+{
+  "reviewed_sim_range_s": [
+    0,
+    0.7
+  ],
+  "source": "actual probe-r3 own RGB, worlds0/1",
+  "strips": [
+    "whole2Hz indices0/5/7",
+    "10Hz indices0through7"
+  ],
+  "timeline": [
+    {
+      "range_s": [
+        0,
+        0.3
+      ],
+      "world0": "근처 cyan 면이 왼쪽 경계에 일부 걸쳐 있고 벽/바닥이 천천히 변한다.",
+      "world1": "근처 cyan 상자가 화면 중앙보다 왼쪽에 계속 보인다."
+    },
+    {
+      "range_s": [
+        0.4,
+        0.7
+      ],
+      "world0": "가까운 cyan 면은 왼쪽 경계 근처에 남는다. 짧은 구간에서 빠른 방향 왕복은 보이지 않는다.",
+      "world1": "cyan 상자가 계속 보이며 화면상 위치가 조금 변한다. 집기/완료 판단에는 너무 짧다."
+    }
+  ],
+  "differences_from_sparse_review": "10Hz에서도 이0.7초에 빠른 왕복/화면 이탈을 추가 확인하지 못했다. 장기 실패 원인은 추론하지 않는다.",
+  "missing": [
+    "0.8s final frame",
+    "overview/r2",
+    "qpos archive from original failed close",
+    "completed success/failure evaluation"
+  ],
+  "video_check": "gcp2 ffprobe only; no Mac app opened",
+  "local_playback": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/playback/rl1b-probe-r3"
+}

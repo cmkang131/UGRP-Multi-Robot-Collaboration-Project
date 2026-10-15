@@ -1,10 +1,10 @@
 {
   "schema": "ugrp.rl1b.queue.v1",
-  "status": "PROBE_SHARED_SCENE",
+  "status": "BLOCKED",
   "user_authorized": true,
-  "enabled": true,
+  "enabled": false,
   "ready": false,
-  "rejection_table": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/starts-shared/setup-funnel.json",
+  "rejection_table": "/Users/changmin/projects/ugrp-wt/rl-act/experiments/2026-10-16-rl1/runtime-funnel.json",
   "limits": {
     "total_gpu_seconds": 3600,
     "new_transitions": 25000,
@@ -41,5 +41,8 @@
     "host_min_free": 8
   },
   "runtime_admitted": false,
-  "shared_scene_seed_v1": 919015
+  "shared_scene_seed_v1": 919015,
+  "setup_rejection_table": "/Users/changmin/projects/ugrp-wt/rl-act/experiments/2026-10-16-rl1/setup-funnel-shared.json",
+  "block_reason": "shared-L4 8tick wall/SIM median233.565; no learning/paired evaluation",
+  "queue_closed": true
 }

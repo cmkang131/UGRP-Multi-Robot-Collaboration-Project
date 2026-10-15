@@ -1,7 +1,7 @@
 {
   "schema": "ugrp.rl1.summary.v1",
-  "status": "RL1B_BINDING_IMPLEMENTED_UNVERIFIED",
-  "verdict": null,
+  "status": "RL1B_BLOCKED",
+  "verdict": "BLOCKED",
   "plan_complete": true,
   "comparison_complete": false,
   "training": {
@@ -10,7 +10,9 @@
     "gpu_hours": 0,
     "gpu_hours_limit": 1,
     "first_training_gpu_hours_limit": 1,
-    "total_gpu_accounting": "setup+JIT+probe+train+evaluation combined"
+    "total_gpu_accounting": "setup+JIT+probe+train+evaluation combined",
+    "total_gpu_host_seconds": 1424.2908515930176,
+    "total_gpu_host_hours": 0.3956363476647271
   },
   "evaluation": {
     "backend": "mjwarp",
@@ -71,8 +73,8 @@
       918039
     ],
     "comparison_complete": false,
-    "scene": "ACT15 frozen6f floor_light_v1",
-    "horizon": "prefit sealed SIM prefix; full-task90SIM contract unchanged"
+    "scene": "ACT15 frozen6f floor_light_v1 shared_scene_seed_v1=919015",
+    "horizon": "not sealed: learning and held-out evaluation not admitted"
   },
   "prior_evidence": {
     "source": "/Users/changmin/projects/ugrp-wt/act16-analysis/experiments/2026-10-16-act16a",
@@ -92,40 +94,51 @@
     "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-d1c6b040",
     "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-18c369ff",
     "/home/ugrp/ugrp-sim/runs/rl1-calibration-1",
-    "/home/ugrp/ugrp-sim/runs/rl1b-zero-46a5012d"
+    "/home/ugrp/ugrp-sim/runs/rl1b-zero-46a5012d",
+    "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826",
+    "/home/ugrp/ugrp-sim/runs/rl1b-analysis-43ec51b1/audit-verified"
   ],
   "artifacts": {
     "playback_crosscheck": "playback-crosscheck.json",
     "zero_residual": {
       "path": "zero-residual-audit.json",
       "sha256": "76cb3e56aeafe727eb08d83235114ad8b0b0d2ec1ddddc15fab66e9e05310a3e"
-    }
+    },
+    "pilot_result": {
+      "path": "pilot-result.json",
+      "sha256": "4d071aacc63cf44d54698d0159ac042087d7d8c1fb3d069f744be2d2351093e0"
+    },
+    "playback": "probe-playback.json"
   },
   "remaining": [
-    "dependency trigger met; runtime verification pending",
-    "real backend binding and distinct-start/partial-reset audit",
-    "<=1 GPU hour short training",
-    "paired new-start evaluation and playback",
-    "checkpoint release verification if produced"
+    "usable shared-MJWarp throughput and formal30SIM speed measurement before learning",
+    "moving-world partial reset and subsequent dynamics check",
+    "GPU learner/actor export remain unexecuted",
+    "ACT15 held-out paired residual signal and individual heuristic effects unmeasured; main RL2 waits ACT16",
+    "probe-r3 last0.8s frame/qpos circular archive unavailable after original finalization error; available0.0–0.7s RGB reviewed"
   ],
-  "scope": "ACT15 S1 cyan_1 matched-prefix short signal only; no scene-v5/ACT16w pooling",
-  "updated_utc": "2026-10-15T19:29:12.902974+00:00",
+  "scope": "feasibility probe only; no trained residual signal measured",
+  "updated_utc": "2026-10-15T20:05:09.962995+00:00",
   "heuristics": {
     "h1": {
-      "enabled_for_pilot": true,
-      "policy_effect": "unmeasured"
+      "enabled_for_pilot": false,
+      "policy_effect": "unmeasured; training not submitted",
+      "planned_training_on": true
     },
     "h2": {
-      "enabled_for_pilot": true,
-      "policy_effect": "unmeasured"
+      "enabled_for_pilot": false,
+      "policy_effect": "unmeasured; training not submitted",
+      "planned_training_on": true
     },
     "h3": {
-      "enabled_for_pilot": true,
-      "policy_effect": "unmeasured"
+      "enabled_for_pilot": false,
+      "policy_effect": "unmeasured; training not submitted",
+      "planned_training_on": true
     },
     "h4": {
-      "enabled_for_pilot": true,
-      "policy_effect": "unmeasured"
+      "enabled_for_pilot": false,
+      "policy_effect": "unmeasured; training not submitted",
+      "planned_training_on": true
     },
     "h5": {
       "enabled_for_pilot": false,
@@ -133,9 +146,9 @@
     }
   },
   "verification": {
-    "non_physics_tests": 16,
-    "actual_warp_binding": false,
-    "actual_partial_reset": false,
+    "non_physics_tests": 17,
+    "actual_warp_binding": "8slots x8ticks; 5distinct starts",
+    "actual_partial_reset": "at initialization only;7untouched worlds immediate11integration fields/RGB exact",
     "actual_actor_output_byte_invariance": false,
     "evaluation_wrapper_privileged_reads": 0,
     "ci_shard_listing": {
@@ -165,9 +178,14 @@
         "test_simulation_workflow_manager.py"
       ],
       "status": "passed",
-      "passed": 46,
-      "wall_seconds": 4.66
-    }
+      "passed": 47,
+      "wall_seconds": 4.3,
+      "scope": "short nonphysics regression, actual record-field collision included",
+      "source_sha": "43ec51b11473fed3143fa18edcbbe41488e5ac91"
+    },
+    "actual_public_observations_validated": 64,
+    "actual_actor_to_owner_command_matches": 64,
+    "actual_rgb_refs_sha_verified": 256
   },
   "saved_analysis": {
     "status": "complete",
@@ -189,11 +207,35 @@
     ]
   },
   "dependency_wait": {
-    "status": "triggered_not_runtime_admitted",
+    "status": "triggered; finite pilot ended BLOCKED",
     "deadline_utc": "2026-10-16T02:11:00+00:00",
     "poll_seconds": 300,
     "restart_reason": "detect inherited or module reset API too; original deadline unchanged",
     "last_known_sha": "40738e3b3f79aac957bdc64329e9a518f2e6b134",
-    "trigger": "warp1 GPU_SHARED_TIMING line observed2026-10-15T18:56:33Z"
-  }
+    "trigger": "warp1 GPU_SHARED_TIMING line observed2026-10-15T18:56:33Z",
+    "watch_running": false
+  },
+  "gpu_usage": {
+    "started_epoch_s": 1792093019.297395,
+    "ended_epoch_s": 1792094443.5882466,
+    "elapsed_seconds": 1424.2908515930176,
+    "limit_seconds": 3600,
+    "accounting": "conservative shared-L4 host wall span including setup/JIT/probe/reset/finalization; GPU active kernel time unavailable",
+    "gpu_training_updates": 0,
+    "extra_vm_created": false,
+    "own_processes_remaining": [],
+    "other_leases": [
+      "warp1.json"
+    ],
+    "vm_stop_attempted": false,
+    "estimated_hourly_usd": 1.096,
+    "estimated_gpu_host_usd": 0.43361743704054095,
+    "price_basis": "inherited estimate; current Seoul rate not independently resolved; actual shared billing, disk/network/CPU analysis unmeasured",
+    "ended_utc": "2026-10-15T20:00:43.588476+00:00"
+  },
+  "pilot_result": "pilot-result.json",
+  "runtime_funnel": "runtime-funnel.json",
+  "public_actor_audit": "public-actor-audit.json",
+  "retrieval_verification": "retrieval-verification.json",
+  "cleanup": "cleanup.json"
 }

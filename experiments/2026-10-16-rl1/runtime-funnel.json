@@ -1,0 +1,66 @@
+{
+  "scope": "probe training-start slots only; not the held-out evaluation, not completed missions",
+  "slots": 8,
+  "distinct_initial_translations": 5,
+  "task_ticks": 8,
+  "per_world_sim_s": 0.8,
+  "aggregate_sim_s": 6.4,
+  "issued_commands": 64,
+  "completed_missions": 0,
+  "gates": {
+    "approach": 0,
+    "alignment": 0,
+    "grasp": 0,
+    "lift_confirmation": 0
+  },
+  "station_error_change_m": {
+    "0": -0.00027888534405667853,
+    "1": -0.0004970250445384683,
+    "2": -0.0004890775785567625,
+    "3": -0.0004739814670408071,
+    "4": -0.0005109340740927504,
+    "5": -0.00036573947546186814,
+    "6": 0.00020322650536341857,
+    "7": -0.0003438999775919327
+  },
+  "causes": [
+    {
+      "category": "frozen_helper_import",
+      "attempt": "probe-r1",
+      "count": 1,
+      "blocking_object": "not_applicable_software_import",
+      "minimum_gap_m": null
+    },
+    {
+      "category": "static_model_mismatch",
+      "attempt": "probe-r2",
+      "count": 1,
+      "blocking_object": "warehouse_oak_plank/warehouse_steel_pipe/warehouse_wood_crate",
+      "minimum_gap_m": null
+    },
+    {
+      "category": "result_field_collision",
+      "attempt": "probe-r3",
+      "count": 1,
+      "blocking_object": "not_applicable_recording",
+      "minimum_gap_m": null
+    },
+    {
+      "category": "preliminary_speed_block",
+      "attempt": "probe-r3/r4",
+      "count": 1,
+      "blocking_object": "not_attributed_shared_GPU_or_backend",
+      "minimum_gap_m": null
+    }
+  ],
+  "reproduce": [
+    "experiments/2026-10-16-rl1/tools/summarize_short_probe.py",
+    "--raw",
+    "/home/ugrp/ugrp-sim/runs/rl1b-analysis-43ec51b1",
+    "--actor-source",
+    "/home/ugrp/ugrp-sim/src/b4db8ba2",
+    "--out",
+    "/home/ugrp/ugrp-sim/runs/rl1b-analysis-43ec51b1/audit-verified"
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826"
+}

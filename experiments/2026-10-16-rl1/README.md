@@ -1,7 +1,22 @@
 # rl1 — 고정 ACT 위 잔차 강화학습
 
-Refs #523. 상태: rl1b WAITING_BACKEND, 개선 여부는 아직 미측정이다.
-이 문서는 2026-10-16 사용자 승인에 따른 유한 DEV 시험의 사전 계획이다.
+Refs #523. 최종 상태: **rl1b BLOCKED**. 학습·짝 평가 미실행으로 개선 여부는 미측정이다.
+이 문서는 2026-10-16 유한 DEV 시험의 계획·실행·차단 기록이다. 아래 원래 rl1 계획은 이력으로 보존한다.
+
+## 실행 결과 (2026-10-16 05시 KST)
+
+- **BLOCKED**: 공유 L4에서8틱(세계별0.8 SIM초) 종단간 wall/SIM 중앙값233.565, 총량0.031608 SIM초/wall초. 정식30 SIM초 속도 관문은 미측정이다. physics/render/공유 부하의 원인 비율도 원래 종료 기록 오류로 회수하지 못했다. 새 학습·held-out 짝 평가를 제출하지 않았다.
+- 실제 ACT15 공개 입력64건 모두 스키마 통과, actor→physics owner 명령64/64 canonical byte 일치, RGB 참조256건 SHA 불일치0. 이는 원래 독립 GPU ACT15 구현과의 출력 동등성이나 학습 후 private-canary 불변성 증명이 아니다.
+- 기본 off `shared_scene_seed_v1=919015`에서8슬롯·5개 서로 다른 초기 위치를 보존(qpos/qvel float32 cast exact). 초기 정지 상태의world0 reset 직후 나머지7세계의11종 적분 상태와 RGB가 그대로였다. 이동 후 reset과 다음 동역학은 미검증이다.
+- 비물리17건과 관련 공통 시험을 합쳐**47 PASS**. 실제 관측된weld 중복 keyword 종료 오류 회귀도 포함한다. 수정 뒤0틱 reset 진단에서는qpos 저장·102,911바이트 카메라 고리·종료 오류0을 확인했다.
+- GPU 호스트 사용 구간**1,424.291초(23.738분)**: 준비/JIT/probe/reset/정리 포함, 학습 갱신0. 기존가정$1.096/h로$0.434 추정이며 현재 서울 단가·실제 공유 청구/디스크/네트워크/CPU 분석 비용은 미확정이다. [공식 가격 페이지](https://cloud.google.com/products/compute/pricing/accelerator-optimized) 검색은 했으나 지역 단가를 독립 확인하지 못했다. 추가 VM 생성0, 자기 프로세스/lease 정리, 다른 작업 VM 유지.
+- 성공률: ACT15 미측정(n=0) → 잔차 미실행(n=0). 짝 단계 변화·h1–h4 정책 효과 모두 미측정, h5 미사용. probe8슬롯의초기0.8초 관문은 모두0/8이지만 전체 과제 실패나 RL 무신호로 해석하지 않는다.
+
+[최종 JSON](pilot-result.json), [관문/거부 표](runtime-funnel.json), [공개 입력 감사](public-actor-audit.json), [회수 SHA 검증](retrieval-verification.json). L4원본255파일·JSONL lossless 압축1건은 `raw-artifacts.sha256`와 `compression-map.json`에 기록했다. 원본 전체를 Mac에 회수했다고 표시하지 않는다.
+
+첫 초기화 import 오류·다중 정적 모델 거부·결과 기록 오류(HOST_ERROR)와 수정 뒤0틱 BLOCKED 진단을 모두 보존했다. probe-r3 기록 오류로 마지막0.8초 프레임과qpos/고리 아카이브는 없다. 남은0.0–0.7초 자기 RGB를 두 세계에서전체2Hz+가능한전부10Hz로 직접 확인했다. 영상은gcp2에서 생성/ffprobe했고Mac에서는프레임 파일만 읽었다. 개요/r2/완료 성공 영상은 미확보이며 정책 실패 원인은 주장하지 않는다. 상세는 `probe-playback.json`과 `probe-playback-review.json`.
+
+재사용 모듈은 `rl_act_env.py`, `rl_act_reward.py`, `rl_act_curriculum.py`, `rl_act_actor.py`, `rl_act_learning.py`, `rl_act_warp.py`, `rl_act_rpc.py`; 모두실험용이며 GPU learner/export와 이동 후 reset은 아직 검증하지 않았다. PR530은 DRAFT로 유지한다.
 
 ## 현행 범위: rl1b (아래 원래 rl1 계획보다 우선)
 
@@ -12,9 +27,9 @@ Refs #523. 상태: rl1b WAITING_BACKEND, 개선 여부는 아직 미측정이다
 
 - 새 시작918000–918039 중 첫8개(결과를 보기 전 고정)를 기준 ACT15와 짝 비교한다.
   모델은 예산 안 마지막 체크포인트로 고정한다. 단계 진척만 증가하면 완료 신호와 구분한다.
-- h1–h3와 h4를 명시적으로 ON. 학습 신호만 사용하며 정책 관측과 GT 종료 가드는 추가하지 않는다.
+- 학습이 허용되면 h1–h3와 h4를 명시적으로 ON하는 계획이었다. 이번에는 속도 차단으로 학습 미제출이다. 정책 관측과 GT 종료 가드는 추가하지 않는다.
   h5 DAgger는 act16w/후속 ACT 작업이며 이번에는 OFF다.
-- h1: 실제 자기 왜곡 RGB에서 가림까지 확인한 대상 중심의 정규화 좌표를 사용한다.
+- h1: 학습 전용 GT 주석으로 frozen7-probe 가림 검사와 자기 왜곡 카메라 투영 중심의 정규화 좌표를 사용한다. 픽셀 인식 마스크나 actor 입력이 아니다.
   `1 - norm(x,y)/sqrt(2)`(화면 밖/가림은−1)을 900틱으로 나눈다. ACT15의90초에서 최대 절댓값1인
   학습 계수다. 중앙 영역을 나누는 임의 문턱은 없다. 성공 교사의 마지막 화면 밖 구간도 벌할 수 있다.
 - h2: 안정 들기 전 **처음 발행한** done에−10(기존 성공 보상10과 동일한 학습 척도).
@@ -28,9 +43,9 @@ Refs #523. 상태: rl1b WAITING_BACKEND, 개선 여부는 아직 미측정이다
   정책에 대한 개별 효과는 `unmeasured`다. h4 효과도 성공률 변화로 추정해 채우지 않는다.
 
 재사용 모듈: `scripts/rl_act_reward.py`, `scripts/rl_act_curriculum.py`, `scripts/rl_act_env.py`.
-현재 env는 backend 주입용 계약 래퍼이며 **실제 MJWarp binding/부분 reset은 미검증**이다.
+env의 실제 MJWarp owner/RPC를 구현했다. **검증 범위는 위8틱과 초기 정지 상태 부분 reset뿐**이다.
 기존 미커밋 env/reward 원형은 `outputs/rl1b/imported-originals/`에 보존했다(실행하지 않음).
-짧은 비물리 시험: `tests/test_rl_act_signal.py` 16개 통과; 평가에서 privileged read0,
+짧은 비물리 시험: `tests/test_rl_act_signal.py` 17개 통과; 평가에서 privileged read0,
 GT 변경 시 actor 입력 불변, h2 중복 벌점 방지, 부분 reset의 래퍼 이력 격리를 검사했다.
 이는 실제 GPU reset·actor 출력 바이트·물리 성공 검증이 아니다.
 

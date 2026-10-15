@@ -1,0 +1,482 @@
+{
+  "status": "BLOCKED",
+  "verdict": "BLOCKED",
+  "host": {
+    "project_id": "ugrp-sim-b-1014",
+    "instance": "ugrp-sim-gcp2",
+    "machine_type": "n4-highcpu-64",
+    "zone": "asia-northeast3-a"
+  },
+  "analysis_source_sha": "56d2c29dc4b9e2d3a488844bbaaf2b143427bc5b",
+  "analysis_code_sha256": "a7020f8d26fa73efc9e78881d66af1730058e268809073bbe68a636ed7170972",
+  "actor_contract_sha256": "6bc58d6f9707abd5d854c6dbbb63357ed14dab6c37bcf055ddd8d1d66d171056",
+  "phases": {
+    "probe-r1": {
+      "summary": {
+        "status": "HOST_ERROR",
+        "mode": "probe",
+        "source_sha": "620f806fc3dbf1b27a790f43088b2293d30d0ce1",
+        "host": {
+          "project_id": "ugrp-sim-b-1014",
+          "instance": "ugrp-act-l4-gcp2",
+          "machine_type": "g2-standard-8",
+          "zone": "asia-northeast3-a"
+        },
+        "nworld": 8,
+        "seed": 20261016,
+        "actor_model_sha256": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1",
+        "actor_input": "own RGB+issued history+instruction+own chunk/done memory",
+        "physics_backend": "mjwarp",
+        "scene": "ACT15 frozen6f S1 cyan_1 floor_light_v1; no scene-v5 pooling",
+        "budget": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/budget.json",
+        "gpu_deadline_epoch_s": 1792096619.297395,
+        "error_type": "RuntimeError",
+        "error": "physics owner exited; inspect /home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/probe-r1/client/owner.stderr.log",
+        "comparison_complete": false,
+        "close_error": "physics owner failed: 1",
+        "phase_wall_s": 7.864435776999926,
+        "receipt_elapsed_s": 405.6245713233948
+      },
+      "sha256": "11d8d5b85d6c09f278cfde1de09ca1ae554103607ae166a9ba41fd842ed70500",
+      "raw": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/probe-r1"
+    },
+    "probe-r2": {
+      "summary": {
+        "status": "HOST_ERROR",
+        "mode": "probe",
+        "source_sha": "b2fbac4752c51c1acc05d2714ba6d8b30db829d6",
+        "host": {
+          "project_id": "ugrp-sim-b-1014",
+          "instance": "ugrp-act-l4-gcp2",
+          "machine_type": "g2-standard-8",
+          "zone": "asia-northeast3-a"
+        },
+        "nworld": 8,
+        "seed": 20261016,
+        "actor_model_sha256": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1",
+        "actor_input": "own RGB+issued history+instruction+own chunk/done memory",
+        "physics_backend": "mjwarp",
+        "scene": "ACT15 frozen6f S1 cyan_1 floor_light_v1; no scene-v5 pooling",
+        "budget": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/budget.json",
+        "gpu_deadline_epoch_s": 1792096619.297395,
+        "error_type": "RuntimeError",
+        "error": "physics owner exited; inspect /home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/probe-r2/client/owner.stderr.log",
+        "comparison_complete": false,
+        "close_error": "physics owner failed: 1",
+        "phase_wall_s": 59.72945805099971,
+        "receipt_elapsed_s": 530.8664364814758
+      },
+      "sha256": "03800a5d1814ddae2c6a180991ac50139ed4205a9b0e859f6e52b994456d2763",
+      "raw": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/probe-r2"
+    },
+    "probe-r3": {
+      "summary": {
+        "status": "HOST_ERROR",
+        "mode": "probe",
+        "source_sha": "a40a098fe5ef7491be2ffed5e331c9c4b901b6ab",
+        "host": {
+          "project_id": "ugrp-sim-b-1014",
+          "instance": "ugrp-act-l4-gcp2",
+          "machine_type": "g2-standard-8",
+          "zone": "asia-northeast3-a"
+        },
+        "nworld": 8,
+        "seed": 20261016,
+        "actor_model_sha256": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1",
+        "actor_input": "own RGB+issued history+instruction+own chunk/done memory",
+        "physics_backend": "mjwarp",
+        "scene": "ACT15 frozen6f S1 cyan_1 floor_light_v1; no scene-v5 pooling",
+        "shared_scene_seed_v1": 919015,
+        "budget": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/budget.json",
+        "gpu_deadline_epoch_s": 1792096619.297395,
+        "wall_per_sim_median": 233.5650969900007,
+        "aggregate_sim_s_per_wall_s": 0.0316076174465791,
+        "formal_30sim_speed_gate": "not measured by eight-tick correctness probe",
+        "error_type": "RuntimeError",
+        "error": "physics owner exited; inspect /home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/probe-r3/client/owner.stderr.log",
+        "comparison_complete": false,
+        "close_error": "physics owner failed: 1",
+        "phase_wall_s": 270.68439247600054,
+        "receipt_elapsed_s": 1044.9762163162231
+      },
+      "sha256": "9b6a60e965bc2d98b3ea6ec4f5642033410a3524d53247c930eff5deb2255850",
+      "raw": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/probe-r3"
+    },
+    "probe-r4-reset-only": {
+      "summary": {
+        "status": "BLOCKED",
+        "mode": "probe",
+        "source_sha": "43ec51b11473fed3143fa18edcbbe41488e5ac91",
+        "host": {
+          "project_id": "ugrp-sim-b-1014",
+          "instance": "ugrp-act-l4-gcp2",
+          "machine_type": "g2-standard-8",
+          "zone": "asia-northeast3-a"
+        },
+        "nworld": 8,
+        "seed": 20261016,
+        "actor_model_sha256": "d90a2b545709df6cd1a5972874db2e20c264007f9a798888f1bdccac22882ed1",
+        "actor_input": "own RGB+issued history+instruction+own chunk/done memory",
+        "physics_backend": "mjwarp",
+        "scene": "ACT15 frozen6f S1 cyan_1 floor_light_v1; no scene-v5 pooling",
+        "shared_scene_seed_v1": 919015,
+        "budget": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/budget.json",
+        "gpu_deadline_epoch_s": 1792096619.297395,
+        "wall_per_sim_median": null,
+        "aggregate_sim_s_per_wall_s": null,
+        "formal_30sim_speed_gate": "not measured by eight-tick correctness probe",
+        "partial_reset": "immediate integration/RGB isolation checked by owner; next-step dynamics unverified",
+        "reason": "RESET_ONLY_COMPLETE; known prior speed block remains; no task ticks or learning admitted",
+        "comparison_complete": false,
+        "phase_wall_s": 75.49465382400012,
+        "receipt_elapsed_s": 1313.5549592971802
+      },
+      "sha256": "9d54aa1735f50637f57bbc610fc3926fac253502b23c76ca0f637b8ed8b18ff5",
+      "raw": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826/probe-r4-reset-only"
+    }
+  },
+  "public_actor_audit": {
+    "commands": 64,
+    "canonical_actor_owner_command_matches": 64,
+    "validated_observations": 64,
+    "rgb_references": 256,
+    "distinct_rgb_files": 64,
+    "rgb_hash_mismatches": 0,
+    "evaluation_rpc": "client rejects training/private lane; no rejection during64 commands",
+    "source_retrieval_verified": [
+      {
+        "path": "probe-r3/actor-inputs.jsonl",
+        "sha256": "419aeb91a539e77d31ad2f82b9f2a053e821d0d6ff024cd2a2b12b71789e7ea7"
+      },
+      {
+        "path": "probe-r3/client/owner/commands.jsonl",
+        "sha256": "47c7ec8d28a0f143597a73ff80e1504bc6d8ade344f527906dd51c109492775f"
+      },
+      {
+        "path": "probe-r3/client/owner/evaluation.jsonl",
+        "sha256": "8a0d9439dbb46526bd6e71eb8af2eba7a41258576e4bda18895f625c0f6e138c"
+      },
+      {
+        "path": "probe-r4-reset-only/client/owner/warp-qpos.npz",
+        "sha256": "413e7489a357522dcaed2a90a2947a84a3790807b7b1faf530479958b070496f"
+      },
+      {
+        "path": "probe-r4-reset-only/client/owner/reset-audit-000000-0001.json",
+        "sha256": "c95f24577d6a2d0c0ef8031c025c85e0d119fa59285c8e049c95a8c96933f5c4"
+      },
+      {
+        "path": "gpu-usage.json",
+        "sha256": "8da3996dda2eda81a66f05e790474b1dd63153e63d4f7c90003ff161ae696c59"
+      },
+      {
+        "path": "probe-r1/summary.json",
+        "sha256": "11d8d5b85d6c09f278cfde1de09ca1ae554103607ae166a9ba41fd842ed70500"
+      },
+      {
+        "path": "probe-r2/summary.json",
+        "sha256": "03800a5d1814ddae2c6a180991ac50139ed4205a9b0e859f6e52b994456d2763"
+      },
+      {
+        "path": "probe-r3/summary.json",
+        "sha256": "9b6a60e965bc2d98b3ea6ec4f5642033410a3524d53247c930eff5deb2255850"
+      },
+      {
+        "path": "probe-r4-reset-only/summary.json",
+        "sha256": "9d54aa1735f50637f57bbc610fc3926fac253502b23c76ca0f637b8ed8b18ff5"
+      }
+    ],
+    "forbidden_loaded_modules": []
+  },
+  "probe_funnel": {
+    "scope": "probe training-start slots only; not the held-out evaluation, not completed missions",
+    "slots": 8,
+    "distinct_initial_translations": 5,
+    "task_ticks": 8,
+    "per_world_sim_s": 0.8,
+    "aggregate_sim_s": 6.4,
+    "issued_commands": 64,
+    "completed_missions": 0,
+    "gates": {
+      "approach": 0,
+      "alignment": 0,
+      "grasp": 0,
+      "lift_confirmation": 0
+    },
+    "station_error_change_m": {
+      "0": -0.00027888534405667853,
+      "1": -0.0004970250445384683,
+      "2": -0.0004890775785567625,
+      "3": -0.0004739814670408071,
+      "4": -0.0005109340740927504,
+      "5": -0.00036573947546186814,
+      "6": 0.00020322650536341857,
+      "7": -0.0003438999775919327
+    },
+    "causes": [
+      {
+        "category": "frozen_helper_import",
+        "attempt": "probe-r1",
+        "count": 1,
+        "blocking_object": "not_applicable_software_import",
+        "minimum_gap_m": null
+      },
+      {
+        "category": "static_model_mismatch",
+        "attempt": "probe-r2",
+        "count": 1,
+        "blocking_object": "warehouse_oak_plank/warehouse_steel_pipe/warehouse_wood_crate",
+        "minimum_gap_m": null
+      },
+      {
+        "category": "result_field_collision",
+        "attempt": "probe-r3",
+        "count": 1,
+        "blocking_object": "not_applicable_recording",
+        "minimum_gap_m": null
+      },
+      {
+        "category": "preliminary_speed_block",
+        "attempt": "probe-r3/r4",
+        "count": 1,
+        "blocking_object": "not_attributed_shared_GPU_or_backend",
+        "minimum_gap_m": null
+      }
+    ],
+    "reproduce": [
+      "experiments/2026-10-16-rl1/tools/summarize_short_probe.py",
+      "--raw",
+      "/home/ugrp/ugrp-sim/runs/rl1b-analysis-43ec51b1",
+      "--actor-source",
+      "/home/ugrp/ugrp-sim/src/b4db8ba2",
+      "--out",
+      "/home/ugrp/ugrp-sim/runs/rl1b-analysis-43ec51b1/audit-verified"
+    ],
+    "raw": "/home/ugrp/ugrp-sim/runs/rl1b-gpu-8fc9d826"
+  },
+  "first_state_audit": {
+    "r1_translation_cast_match": true,
+    "qpos_cast_match": true,
+    "qvel_cast_match": true,
+    "max_qpos_difference": 0.0,
+    "distinct_expected_translations": 5,
+    "actual_translations": [
+      [
+        -0.8336243629455566,
+        -2.5148563385009766,
+        0.03231415897607803
+      ],
+      [
+        -0.8403924703598022,
+        -2.2361700534820557,
+        0.03231393173336983
+      ],
+      [
+        -0.8403924703598022,
+        -2.2361700534820557,
+        0.03231393173336983
+      ],
+      [
+        -0.7075290083885193,
+        -2.8291382789611816,
+        0.032314613461494446
+      ],
+      [
+        -0.8403924703598022,
+        -2.2361700534820557,
+        0.03231393173336983
+      ],
+      [
+        -0.7745451927185059,
+        -2.1424977779388428,
+        0.03231409564614296
+      ],
+      [
+        -0.735317587852478,
+        -2.7247276306152344,
+        0.03231440484523773
+      ],
+      [
+        -0.8336243629455566,
+        -2.5148563385009766,
+        0.03231415897607803
+      ]
+    ],
+    "first_rgb_sha256": [
+      "fc225d1e1cd2575478cdd32ddfe545c062d5e1b59184dfcc40d2e636bd2c3e52",
+      "7e796a344d8e7782acacb94b1fb411681b4e45dc90bc1ed290dd36b30c990778",
+      "7e796a344d8e7782acacb94b1fb411681b4e45dc90bc1ed290dd36b30c990778",
+      "9d9334c6d75c91b0e7fca20133cc8bc129beaa28b953323052bacad689827e11",
+      "7e796a344d8e7782acacb94b1fb411681b4e45dc90bc1ed290dd36b30c990778",
+      "5b47430aa3b9137ab12f5db6e125742d831e1012a8a7f87e18a0f0065aba90af",
+      "73d025c9e8760703d8f4a70e7534b47d62716a69d9ddf64d777ce0c9d9b8fe2b",
+      "fc225d1e1cd2575478cdd32ddfe545c062d5e1b59184dfcc40d2e636bd2c3e52"
+    ]
+  },
+  "reset_audit": {
+    "reset_worlds": [
+      0
+    ],
+    "untouched": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "integration_equal": {
+      "qpos": true,
+      "qvel": true,
+      "act": true,
+      "ctrl": true,
+      "qacc_warmstart": true,
+      "qfrc_applied": true,
+      "xfrc_applied": true,
+      "mocap_pos": true,
+      "mocap_quat": true,
+      "eq_active": true,
+      "time": true
+    },
+    "rgb_equal": true,
+    "scope": "immediate reset isolation; next-step dynamics still needs paired GPU verification"
+  },
+  "reset_scope": "immediate initialization-state reset only; moving reset and subsequent dynamics unverified",
+  "recording_fix": {
+    "source_sha": "43ec51b11473fed3143fa18edcbbe41488e5ac91",
+    "close_errors": [],
+    "qpos_archive_sha256": "413e7489a357522dcaed2a90a2947a84a3790807b7b1faf530479958b070496f",
+    "ring_bytes": 102911
+  },
+  "speed": {
+    "scope": "8-tick end-to-end probe on shared L4; formal30SIM gate unmeasured",
+    "wall_per_sim_median": 233.5650969900007,
+    "aggregate_sim_s_per_wall_s": 0.0316076174465791,
+    "component_timing": "probe-r3 close failure prevented owner timing archive; no physics/render/contention attribution"
+  },
+  "training": {
+    "new_transitions": 0,
+    "optimizer_steps": 0,
+    "checkpoint_produced": false
+  },
+  "evaluation": {
+    "baseline_n": 0,
+    "residual_n": 0,
+    "paired": false,
+    "baseline_success": null,
+    "residual_success": null
+  },
+  "heuristic_effects": {
+    "h1": "unmeasured; learning not submitted",
+    "h2": "unmeasured; learning not submitted",
+    "h3": "unmeasured; learning not submitted",
+    "h4": "unmeasured; learning not submitted"
+  },
+  "h5": "not used; separate ACT work",
+  "gpu_usage": {
+    "started_epoch_s": 1792093019.297395,
+    "ended_epoch_s": 1792094443.5882466,
+    "elapsed_seconds": 1424.2908515930176,
+    "limit_seconds": 3600,
+    "accounting": "conservative shared-L4 host wall span including setup/JIT/probe/reset/finalization; GPU active kernel time unavailable",
+    "gpu_training_updates": 0,
+    "extra_vm_created": false,
+    "own_processes_remaining": [],
+    "other_leases": [
+      "warp1.json"
+    ],
+    "vm_stop_attempted": false,
+    "estimated_hourly_usd": 1.096,
+    "estimated_gpu_host_usd": 0.43361743704054095,
+    "price_basis": "inherited estimate; current Seoul rate not independently resolved; actual shared billing, disk/network/CPU analysis unmeasured",
+    "ended_utc": "2026-10-15T20:00:43.588476+00:00"
+  },
+  "playback": {
+    "host": {
+      "project_id": "ugrp-sim-b-1014",
+      "instance": "ugrp-sim-gcp2",
+      "machine_type": "n4-highcpu-64",
+      "zone": "asia-northeast3-a"
+    },
+    "worlds": [
+      {
+        "world": 0,
+        "sim_range": [
+          0.0,
+          0.7
+        ],
+        "available_frames": 8,
+        "whole_2hz_indices": [
+          0,
+          5,
+          7
+        ],
+        "ten_hz_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "video": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 960,
+              "height": 240
+            }
+          ],
+          "format": {
+            "duration": "0.400000",
+            "size": "9343"
+          }
+        }
+      },
+      {
+        "world": 1,
+        "sim_range": [
+          0.0,
+          0.7
+        ],
+        "available_frames": 8,
+        "whole_2hz_indices": [
+          0,
+          5,
+          7
+        ],
+        "ten_hz_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "video": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 960,
+              "height": 240
+            }
+          ],
+          "format": {
+            "duration": "0.400000",
+            "size": "9419"
+          }
+        }
+      }
+    ],
+    "data_gap": "probe-r3 finalization TypeError lost0.8s last frame, qpos NPZ and circular ring; overview/r2 unavailable",
+    "completed_successes_available": 0,
+    "completed_evaluation_failures_available": 0,
+    "cause_claim": "no policy failure cause claimed; backend timing and initialization only"
+  }
+}

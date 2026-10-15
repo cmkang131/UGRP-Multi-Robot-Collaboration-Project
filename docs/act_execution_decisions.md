@@ -154,6 +154,9 @@
   실제90 SIM초 계약은 유지하며 prefix cap_end는 전체 과제 실패로 해석하지 않는다. 미실행·미완료는
   성공0으로 바꾸지 않는다. 신호/무신호/BLOCKED와 완료·단계 진척을 각각 기록한다.
 
+- rl1b 초기화에서 시드별 배경 물체 질량/크기로 같은 모델 배치가 거부됐다. 학습/평가 결과0인 시점에 조정자가 기본 off `shared_scene_seed_v1=919015`(첫 사전 고정 훈련 draw의 원래 장면) 조건으로 범위를 더 좁혔다. 물체/물리는 원래 그 시드의 값을 유지하고 새 로봇 시작 자세만 바꾼다. 새 시작 성능과 장면 일반화는 구분한다.
+- rl1b 최종은 BLOCKED: 공유L4 8틱 wall/SIM 중앙233.565로 학습·짝 평가 미제출. 초기 정지 reset의 즉시 격리만 확인했다. h1–h4 정책 효과와 ACT15 개선은 미측정이며 본 RL2는 ACT16 이후라는 결정은 유지한다. 상세 `experiments/2026-10-16-rl1/pilot-result.json`.
+
 ## 참고 자료
 
 참고 자료는 조정자가 2026-10-14 대화 중 열람·검색한 것이다. 2차 요약만 본 항목은 표시했다.
@@ -167,5 +170,3 @@
 - [SmolVLA](https://huggingface.co/blog/smolvla) (검색 결과 요약만 열람)
 - [allenai vla-evaluation-harness](https://github.com/allenai/vla-evaluation-harness) (검색 결과 요약만 열람)
 - [Opening Articulated Objects: modular vs end-to-end](https://arxiv.org/html/2402.17767v2) (검색 결과 요약만 열람)
-
-- rl1b 초기화에서 시드별 배경 물체 질량/크기로 같은 모델 배치가 거부됐다. 학습/평가 결과0인 시점에 조정자가 기본 off `shared_scene_seed_v1=919015`(첫 사전 고정 훈련 draw의 원래 장면) 조건으로 범위를 더 좁혔다. 물체/물리는 원래 그 시드의 값을 유지하고 새 로봇 시작 자세만 바꾼다. 새 시작 성능과 장면 일반화는 구분한다.
