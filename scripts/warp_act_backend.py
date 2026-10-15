@@ -9,7 +9,11 @@ import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape
+from warp_act_core import SERVOS, control_tape, multi_control_tape
+
+
+def ports_for(context):
+    return context.get('ports') or {'r1': context['port']}
 
 
 class Transport:
@@ -22,10 +26,10 @@ class Transport:
         self.rgb = []
         self.contact_forces = None
 
-    def capture(self, index, world):
+    def capture(self, index, world, robot_id='r1'):
         if self.native_render:
-            return world.render_jpeg(robot_id='r1', camera='robot_cam')
-        return self.rgb[index]
+            return world.render_jpeg(robot_id=robot_id, camera='robot_cam')
+        return self.rgb_by_robot[robot_id][index]
 
     def record_state(self, index, tick, world):
         if index == 0:
@@ -33,7 +37,8 @@ class Transport:
 
     def forces(self, index, model, data, targets, fingers):
         if not self.native_render:
-            return self.contact_forces[index].tolist()
+            channels = [self.finger_channels[g] for g in sorted(fingers, key=fingers.get)]
+            return self.contact_forces[index, channels].tolist()
         import mujoco
         result = [0., 0.]
         force = np.zeros(6)
@@ -59,10 +64,11 @@ class CTransport(Transport):
         start = time.perf_counter()
         for i in np.flatnonzero(active):
             row = contexts[i]
-            world, port = row['world'], row['port']
+            world, ports = row['world'], ports_for(row)
             until = float(world.data.time)+.1
             for _ in range(round(.1/world.model.opt.timestep)):
-                port.tick(float(world.data.time))
+                for port in ports.values():
+                    port.tick(float(world.data.time))
                 world._physics_step_for(world.robot('r1'))
             # The C path itself is unchanged; this transport is a new pilot caller.
         self.seconds['physics_and_command_decode'] += time.perf_counter()-start
@@ -83,6 +89,9 @@ class WarpTransport(Transport):
         self.wp, self.mjw = wp, mjw
         self.contexts = contexts
         self.n = len(contexts)
+        self.robot_ids = tuple(ports_for(contexts[0]))
+        self.camera_size = tuple(contexts[0].get('camera_size', (640, 480)))
+        self.finger_channels = dict(contexts[0]['finger_ids'])
         m, d = contexts[0]['world'].model, contexts[0]['world'].data
         self.m, self.dt = m, float(m.opt.timestep)
         xml = self.out/'runtime-scene.xml'
@@ -117,9 +126,10 @@ class WarpTransport(Transport):
         self.origin = float(d.time)
         self.tick = 0
         self.relay_state = np.zeros((self.n,4), int)
+        self.robot_relay_states = {rid: np.zeros((self.n, 4), int) for rid in self.robot_ids}
         self.tape = wp.zeros((round(.1/self.dt),self.n,m.nu),dtype=float)
         self.graph_tick = wp.zeros(1,dtype=int)
-        self.force_out = wp.zeros((self.n,2),dtype=float)
+        self.force_out = wp.zeros((self.n,len(self.finger_channels)),dtype=float)
         self.init_kernels(contexts)
         # Capture exactly the 400 physics ticks, not a host wall budget.
         with wp.ScopedCapture() as capture:
@@ -129,18 +139,22 @@ class WarpTransport(Transport):
                 wp.launch(self.advance_kernel,dim=1,inputs=[self.graph_tick])
         self.graph = capture.graph
         # Capture does not run the physics. First render uses canonical initialized state.
-        self.rc = mjw.create_render_context(m,nworld=self.n,cam_res=(640,480),
+        width, height = self.camera_size
+        self.rc = mjw.create_render_context(m,nworld=self.n,cam_res=self.camera_size,
             render_rgb=True,render_depth=False,render_seg=False,use_textures=True,
-            use_shadows=True,enabled_geom_groups=[0,1,2,3],cam_active=['r1__robot_cam'])
-        self.device_rgb = wp.zeros((self.n,480,640),dtype=wp.vec3)
-        self.mx,self.my = raw_fisheye_remap(640,480)
-        self.camera = dict(resolution=[640,480],hz=10,K=scaled_camera_matrix(640,480).tolist(),
+            use_shadows=True,enabled_geom_groups=[0,1,2,3],cam_active=[r+'__robot_cam' for r in self.robot_ids])
+        self.device_rgb = wp.zeros((self.n,height,width),dtype=wp.vec3)
+        self.mx,self.my = raw_fisheye_remap(width,height)
+        self.camera = dict(resolution=list(self.camera_size),robots=list(self.robot_ids),hz=10,K=scaled_camera_matrix(width,height).tolist(),
             D=list(CAMERA_FISHEYE_D),mount_pos=m.cam_pos[m.camera('r1__robot_cam').id].tolist(),
             mount_quat=m.cam_quat[m.camera('r1__robot_cam').id].tolist(),
             remap_sha256=hashlib.sha256(self.mx.tobytes()+self.my.tobytes()).hexdigest(),
             renderer='MJWarp batch RGB; known partial-alpha difference from C remains')
         self.capacities = dict(nconmax=ncon,njmax=njmax,naconmax=int(self.wd.naconmax))
-        self.build_lookup(contexts[0]['world'].robot('r1'))
+        self.bindings = {}
+        for rid in self.robot_ids:
+            self.build_lookup(contexts[0]['world'].robot(rid))
+            self.bindings[rid] = dict(lookup=self.lookup, wheel_ids=self.wheel_ids, servo_ids=self.servo_ids)
         self.sync_render(contexts)
 
     def init_kernels(self, contexts):
@@ -155,23 +169,24 @@ class WarpTransport(Transport):
         @wp.kernel
         def advance(tick:wp.array[int]):
             tick[0]+=1
-        target = wp.constant(contexts[0]['gids'][0])
-        if len(contexts[0]['gids']) != 1:
-            raise ValueError('warp1 evaluator currently supports the single box collision geom only')
-        fingers = sorted(contexts[0]['finger_ids'],key=contexts[0]['finger_ids'].get)
-        left,right=wp.constant(fingers[0]),wp.constant(fingers[1])
+        targets = np.zeros(contexts[0]['world'].model.ngeom, dtype=np.int32)
+        targets[contexts[0]['gids']] = 1
+        fingers = np.full(len(targets), -1, dtype=np.int32)
+        for geom, channel in self.finger_channels.items():
+            fingers[geom] = channel
+        self.target_mask = wp.array(targets, dtype=int)
+        self.finger_map = wp.array(fingers, dtype=int)
         @wp.kernel
         def evaluate(nacon:wp.array[int],worldid:wp.array[int],geom:wp.array[wp.vec2i],
                      cone:int,njmax:int,frame:wp.array[wp.mat33],friction:wp.array[vec5],
                      condim:wp.array[int],adr:wp.array2d[int],adhesion:wp.array[float],
-                     efc_force:wp.array2d[float],out:wp.array2d[float]):
+                     efc_force:wp.array2d[float],targets:wp.array[int],fingers:wp.array[int],out:wp.array2d[float]):
             i=wp.tid()
             if i<nacon[0]:
                 a,b=geom[i][0],geom[i][1]
                 k=int(-1)
-                if a==target or b==target:
-                    if a==left or b==left:k=0
-                    if a==right or b==right:k=1
+                if targets[a] != 0:k=fingers[b]
+                elif targets[b] != 0:k=fingers[a]
                 if k>=0:
                     w=worldid[i]
                     force=contact_force_fn(cone,frame,friction,condim,adr,adhesion,efc_force,njmax,nacon,w,i,False)
@@ -195,31 +210,36 @@ class WarpTransport(Transport):
     def step(self, contexts, active):
         wp,mjw=self.wp,self.mjw
         start=time.perf_counter()
-        rows=[]
-        for i,c in enumerate(contexts):
-            p,w=c['port'],c['world']
-            rows.append(dict(ctrl=w.data.ctrl.copy(),wheels=p._motor_commands if active[i] else [0.]*4,
+        robot_rows = {}
+        for rid in self.robot_ids:
+            rows=[]
+            for i,c in enumerate(contexts):
+                p,w=ports_for(c)[rid],c['world']
+                rows.append(dict(ctrl=w.data.ctrl.copy(),wheels=p._motor_commands if active[i] else [0.]*4,
                 deadlines=[v or 0. for v in p._wheel_deadlines],
                 applied=[p._servo_applied[s] for s in SERVOS],
                 target=[p._servo_targets.get(s,p._servo_applied[s]) for s in SERVOS],
                 servo_active=[s in p._servo_targets for s in SERVOS],
-                now=self.origin+self.tick*.1,servo_time=p._servo_tick_time))
+                    now=self.origin+self.tick*.1,servo_time=p._servo_tick_time))
+            robot_rows[rid] = rows
         params=contexts[0]['world'].drive_parameters
-        tape,state=control_tape(rows,self.relay_state,dt=self.dt,steps=round(.1/self.dt),
-            lookup=self.lookup,wheel_ids=self.wheel_ids,servo_ids=self.servo_ids,
+        tape,states=multi_control_tape(robot_rows,self.robot_relay_states,self.bindings,dt=self.dt,steps=round(.1/self.dt),
             start_fraction=params.start_fraction,kinetic_fraction=params.kinetic_fraction,
             torque_cap_nm=params.torque_cap_nm)
-        self.relay_state=state['relay']
+        self.robot_relay_states={rid: state['relay'] for rid, state in states.items()}
+        self.relay_state=self.robot_relay_states.get('r1')
         wp.copy(self.tape,wp.array(tape,dtype=float))
         for i,c in enumerate(contexts):
-            p,w=c['port'],c['world']
-            p._servo_applied=dict(zip(SERVOS,state['applied'][i]))
-            p._servo_targets={s:int(state['target'][i,k]) for k,s in enumerate(SERVOS) if state['servo_active'][i,k]}
-            p._servo_tick_time=float(state['servo_time'][i])
-            p._motor_commands=tuple(state['wheels'][i])
-            p._wheel_deadlines=[d if d is not None and d>p._servo_tick_time else None for d in p._wheel_deadlines]
+            w=c['world']
+            for rid, state in states.items():
+                p=ports_for(c)[rid]
+                p._servo_applied=dict(zip(SERVOS,state['applied'][i]))
+                p._servo_targets={s:int(state['target'][i,k]) for k,s in enumerate(SERVOS) if state['servo_active'][i,k]}
+                p._servo_tick_time=float(state['servo_time'][i])
+                p._motor_commands=tuple(state['wheels'][i])
+                p._wheel_deadlines=[d if d is not None and d>p._servo_tick_time else None for d in p._wheel_deadlines]
+                w.robot(rid).servo_command_pulses.update(dict(zip(SERVOS,map(int,state['pwm'][i]))))
             w.data.ctrl[:]=tape[-1,i]
-            w.robot('r1').servo_command_pulses.update(dict(zip(SERVOS,map(int,state['pwm'][i]))))
         self.seconds['command_decode_upload']+=time.perf_counter()-start
         start=time.perf_counter()
         self.graph_tick.zero_()
@@ -241,20 +261,26 @@ class WarpTransport(Transport):
         mjw.camlight(self.wm,self.wd)
         mjw.refit_bvh(self.wm,self.wd,self.rc)
         mjw.render(self.wm,self.wd,self.rc)
-        mjw.get_rgb(self.rc,0,self.device_rgb)
         wp.synchronize()
         self.seconds['render']+=time.perf_counter()-start
         start=time.perf_counter()
-        image=np.clip(self.device_rgb.numpy()*255,0,255).astype(np.uint8)
+        self.rgb_by_robot = {}
+        for camera_index, rid in enumerate(self.robot_ids):
+            mjw.get_rgb(self.rc,camera_index,self.device_rgb)
+            wp.synchronize()
+            image=np.clip(self.device_rgb.numpy()*255,0,255).astype(np.uint8)
+            encoded = []
+            for frame in image:
+                rgb=cv2.remap(frame,self.mx,self.my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
+                ok,jpg=cv2.imencode('.jpg',cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
+                if not ok:raise RuntimeError('JPEG encode failed')
+                encoded.append(jpg.tobytes())
+            self.rgb_by_robot[rid] = encoded
         qpos,qvel=self.wd.qpos.numpy(),self.wd.qvel.numpy()
         if not np.isfinite(qpos).all() or not np.isfinite(qvel).all():
             raise RuntimeError('nonfinite Warp state')
-        self.rgb=[]
+        self.rgb=self.rgb_by_robot.get('r1', [])
         for i,c in enumerate(contexts):
-            rgb=cv2.remap(image[i],self.mx,self.my,cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
-            ok,jpg=cv2.imencode('.jpg',cv2.cvtColor(rgb,cv2.COLOR_RGB2BGR))
-            if not ok:raise RuntimeError('JPEG encode failed')
-            self.rgb.append(jpg.tobytes())
             d=c['world'].data
             d.qpos[:]=qpos[i];d.qvel[:]=qvel[i];d.time=self.origin+self.tick*.1
             # Perception mirror only, no C physics or C contact-force reconstruction.
@@ -265,5 +291,5 @@ class WarpTransport(Transport):
         d=self.wd
         wp.launch(self.eval_kernel,dim=d.naconmax,inputs=[d.nacon,d.contact.worldid,d.contact.geom,
             int(self.m.opt.cone),int(d.njmax),d.contact.frame,d.contact.friction,d.contact.dim,
-            d.contact.efc_address,d.contact.adhesion,d.efc.force,self.force_out])
+            d.contact.efc_address,d.contact.adhesion,d.efc.force,self.target_mask,self.finger_map,self.force_out])
         self.contact_forces=self.force_out.numpy()

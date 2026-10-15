@@ -81,3 +81,30 @@ def control_tape(rows, relay_state, *, dt, steps, lookup, wheel_ids, servo_ids,
         previous_time = at
     return tape, dict(relay=state, wheels=wheels, applied=applied, pwm=pwm,
                       target=target, servo_active=servo_active, servo_time=previous_time)
+
+
+def multi_control_tape(robot_rows, relay_states, bindings, **clock):
+    """Compose existing command tapes on disjoint actuator columns.
+
+    Both robots share ONE world clock and physics step. No measured position,
+    velocity or contact is used. The scalar decoder and its constants are
+    unchanged; this only prevents r2's template overwriting r1's substep tape.
+    """
+    tapes, states, used = {}, {}, set()
+    for rid, rows in robot_rows.items():
+        binding = bindings[rid]
+        columns = list(binding['wheel_ids']) + [j for ids in binding['servo_ids'] for j in ids]
+        if len(set(columns)) != len(columns) or used.intersection(columns):
+            raise ValueError('robot actuator columns must be disjoint')
+        used.update(columns)
+        tape, state = control_tape(rows, relay_states[rid], **binding, **clock)
+        tapes[rid] = (tape, columns)
+        states[rid] = state
+    if not tapes:
+        raise ValueError('nonempty robot command batch required')
+    combined = next(iter(tapes.values()))[0].copy()
+    for tape, columns in tapes.values():
+        if tape.shape != combined.shape:
+            raise ValueError('robots must share world and substep dimensions')
+        combined[:, :, columns] = tape[:, :, columns]
+    return combined, states
