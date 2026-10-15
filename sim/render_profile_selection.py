@@ -4,6 +4,9 @@ from __future__ import annotations
 
 def for_name(name):
     """Load the texture extension only for its explicit, versioned profile name."""
+    if name in ('walls_floor_contrast_v5_violet150','walls_floor_contrast_v5_violet175','walls_floor_contrast_v5_violet195'):
+        from sim import scene_contrast_v5 as profile
+        return profile
     if name in ('walls_floor_contrast_v4_dark', 'walls_floor_contrast_v4_light', 'walls_floor_contrast_v4_skirt',
                 'walls_floor_contrast_v4_luma', 'walls_floor_contrast_v4_flat'):
         from sim import scene_contrast_v4 as profile
