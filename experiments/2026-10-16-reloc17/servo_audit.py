@@ -36,7 +36,11 @@ def main():
                         if a['kind']=='hold':
                             if port._servo_targets:cuts.append(dict(t=c['t'],targets=dict(port._servo_targets),applied=dict(port._servo_applied)))
                             port.hold(now)
-                        else:port.apply(a,now)
+                        elif a['kind'] in ('look','arm'):port.apply(a,now)
+                        else:
+                            # Native selfmap extends motor turn limits. Motors
+                            # do not change servo interpolation; omit wheel plant.
+                            port.stop()
                         ci+=1
                     world.data.time=now;port.tick(now);now=round(now+dt,9)
                 e=servo[round(t,6)];target=e['joints']['6']['target_rad'];requested=int(f['commanded_servo']['6']);predict=math.radians((world.r.servo_command_pulses[6]-1500)/ (2000/180))
