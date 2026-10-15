@@ -115,7 +115,7 @@ def main():
             import warp as wp
             import mujoco_warp as mjw
             from mujoco_warp._src.support import contact_force_fn
-            from mujoco_warp._src.types import Model, Data
+            from mujoco_warp._src.types import vec5
             from simalt_physics_compare import unused_efm
             wp.init()
             metadata['warp'] = wp.__version__
@@ -148,43 +148,54 @@ def main():
                 for j in range(ctrl.shape[1]):
                     ctrl[0,j]=tape[t[0],j]
             @wp.kernel
-            def record(model:Model, data:Data, t:wp.array[int], out:wp.array2d[float]):
+            def record(geom_type:wp.array[int], cone:int, naconmax:int, njmax:int,
+                       nacon:wp.array[int], nefc:wp.array[int], overflow:wp.array[int],
+                       qpos:wp.array2d[float], qvel:wp.array2d[float],
+                       geom:wp.array[wp.vec2i], dist:wp.array[float], frame:wp.array[wp.mat33],
+                       friction:wp.array[vec5], condim:wp.array[int], adr:wp.array2d[int],
+                       adhesion:wp.array[float], efc_force:wp.array2d[float],
+                       t:wp.array[int], out:wp.array2d[float]):
                 row=t[0]
-                out[row,0]=float(data.nacon[0]);out[row,1]=float(data.nefc[0])
-                out[row,2]=float(data.overflow[0])
-                out[row,13]=data.qpos[0,jl];out[row,14]=data.qpos[0,jr]
-                for i in range(wp.min(data.nacon[0],data.naconmax)):
-                    g0=data.contact.geom[i][0];g1=data.contact.geom[i][1]
-                    out[row,12]=wp.min(out[row,12],data.contact.dist[i])
-                    if ((model.geom_type[g0]==0 and model.geom_type[g1]==7) or
-                        (model.geom_type[g0]==7 and model.geom_type[g1]==0)):
+                out[row,0]=float(nacon[0]);out[row,1]=float(nefc[0])
+                out[row,2]=float(overflow[0])
+                out[row,13]=qpos[0,jl];out[row,14]=qpos[0,jr]
+                for i in range(wp.min(nacon[0],naconmax)):
+                    g0=geom[i][0];g1=geom[i][1]
+                    out[row,12]=wp.min(out[row,12],dist[i])
+                    if ((geom_type[g0]==0 and geom_type[g1]==7) or
+                        (geom_type[g0]==7 and geom_type[g1]==0)):
                         out[row,11]+=1.0
                     if g0==b or g1==b:
                         k=int(-1)
                         if g0==l or g1==l:k=0
                         if g0==rr or g1==rr:k=1
                         if k>=0:
-                            force=contact_force_fn(model.opt.cone,data.contact.frame,data.contact.friction,
-                                data.contact.dim,data.contact.efc_address,data.contact.adhesion,
-                                data.efc.force,data.njmax,data.nacon,0,i,False)
+                            force=contact_force_fn(cone,frame,friction,
+                                condim,adr,adhesion,
+                                efc_force,njmax,nacon,0,i,False)
                             out[row,3+k]+=1.0
-                            out[row,5+k]=wp.min(out[row,5+k],data.contact.dist[i])
+                            out[row,5+k]=wp.min(out[row,5+k],dist[i])
                             out[row,7+k]+=force[0]
                             out[row,9+k]+=wp.sqrt(force[1]*force[1]+force[2]*force[2])
-                            out[row,15+k]=wp.max(out[row,15+k],float(data.contact.dim[i]))
-                for j in range(data.qpos.shape[1]):out[row,nc+j]=data.qpos[0,j]
-                for j in range(data.qvel.shape[1]):out[row,nc+data.qpos.shape[1]+j]=data.qvel[0,j]
+                            out[row,15+k]=wp.max(out[row,15+k],float(condim[i]))
+                for j in range(qpos.shape[1]):out[row,nc+j]=qpos[0,j]
+                for j in range(qvel.shape[1]):out[row,nc+qpos.shape[1]+j]=qvel[0,j]
                 t[0]=row+1
+            def record_inputs(data):
+                return [wm.geom_type,wm.opt.cone,data.naconmax,data.njmax,data.nacon,data.nefc,
+                        data.overflow,data.qpos,data.qvel,data.contact.geom,data.contact.dist,
+                        data.contact.frame,data.contact.friction,data.contact.dim,
+                        data.contact.efc_address,data.contact.adhesion,data.efc.force,tick,out]
             # Warm compilation is discarded; replay starts at the same reset.
             wp.launch(command,dim=1,inputs=[wt,tick,wd.ctrl]);mjw.step(wm,wd)
-            wp.launch(record,dim=1,inputs=[wm,wd,tick,out]);wp.synchronize()
+            wp.launch(record,dim=1,inputs=record_inputs(wd));wp.synchronize()
             with unused_efm(m,d):wd=mjw.put_data(m,d,nworld=1,nconmax=ncon,njmax=njmax)
             tick.zero_();out.zero_()
             # Sixteen divides the frozen 400-step control tick; no dt/command change.
             with wp.ScopedCapture() as cap:
                 for _ in range(16):
                     wp.launch(command,dim=1,inputs=[wt,tick,wd.ctrl]);mjw.step(wm,wd)
-                    wp.launch(record,dim=1,inputs=[wm,wd,tick,out])
+                    wp.launch(record,dim=1,inputs=record_inputs(wd))
             for begin in range(0,total,400):
                 for _ in range(25):wp.capture_launch(cap.graph)
                 wp.synchronize();done=begin+400
