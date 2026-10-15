@@ -26,6 +26,7 @@ from harness.grasp_act_peer_rendezvous import (PeerRendezvous, RendezvousTeacher
     MODE as RENDEZVOUS_MODE, BOUNDED_MODE)
 from harness.beampair_approach import ApproachRepairMixin, MODE as APPROACH_MODE, BOUNDED_MODE as APPROACH_BOUNDED_MODE
 from harness.failure_rgb_tail import FailureRGBTail
+from harness.beampair_host import gcp2_identity
 
 ROOT=Path(__file__).resolve().parents[1]
 EXP=ROOT/'experiments/2026-10-15-beampair1'
@@ -138,9 +139,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
     selected=profiles(candidate)
     with dependency_modules(dependency_root):
         from scripts.grasp_act_host import identity
-        host=identity('gcp1')
-        if host['instance']!='ugrp-sim-gcp1' or host['machine_type']!='n4-highcpu-64':
-            raise ValueError('gcp1 n4-highcpu-64 only')
+        host=gcp2_identity(identity)
         setup_rows=setup_admission(plan,scenario)
         from scripts import run_grasp_act_teacher as runner
         from sim import grasp_act_scene as scene_module

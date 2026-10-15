@@ -35,7 +35,7 @@ def run(args):
     root=args.root.resolve();root.mkdir(parents=True,exist_ok=False)
     write_json(root/'batch-plan.json',dict(source_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         planned_N=count,concurrency=count,host_python_processes=existing,host_total_limit=40,
-        candidate=args.candidate,training_rgb=False,cap_s=60,loadavg=os.getloadavg()))
+        candidate=args.candidate,training_rgb=False,cap_s=60,host='gcp2',loadavg=os.getloadavg()))
     children=[];stopped=False
     try:
         for i in range(count):

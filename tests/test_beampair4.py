@@ -9,6 +9,24 @@ from harness.beampair_approach import ApproachRepairMixin, MODE, stale_blockers,
 from harness.failure_rgb_tail import FailureRGBTail
 
 
+def test_gcp2_host_port_preserves_real_metadata_and_restores_pinned_admission(monkeypatch):
+    from harness.beampair_host import gcp2_identity
+    mod = ModuleType('fixture_host')
+    mod.GCP_PROJECT = 'ugrp-act-train-1014'
+    monkeypatch.setitem(sys.modules, mod.__name__, mod)
+    def identity(_):
+        return dict(project_id=mod.GCP_PROJECT, instance='ugrp-sim-gcp2', machine_type='n4-highcpu-64')
+    identity.__module__ = mod.__name__
+    assert gcp2_identity(identity)['project_id'] == 'ugrp-sim-b-1014'
+    assert mod.GCP_PROJECT == 'ugrp-act-train-1014'
+    def wrong(_):
+        return dict(project_id=mod.GCP_PROJECT, instance='ugrp-sim-gcp1', machine_type='n4-highcpu-64')
+    wrong.__module__ = mod.__name__
+    with pytest.raises(ValueError):
+        gcp2_identity(wrong)
+    assert mod.GCP_PROJECT == 'ugrp-act-train-1014'
+
+
 def test_named_reobserve_includes_stale_geometric_wall_but_excludes_held_cargo():
     teacher=SimpleNamespace(rid='r2', goal_set_log=[dict(candidates=[dict(collision_audit=[
         dict(id=k,blocked=True,gap_m=0.) for k in ('north','west','beam_1','fresh')])])])
