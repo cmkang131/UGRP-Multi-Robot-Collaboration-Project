@@ -29,7 +29,7 @@ FREE_ROBOT_M = .18
 PARK_CLEARANCE_M = .15
 
 
-def carry_parking_constraints(static, start, station, zone):
+def carry_parking_constraints(static, start, station, zone, *, carry5=False):
     """Scene construction only: reserve pickup, zones, passages and map routes.
 
     These authored corridors are never forwarded to a controller. In particular
@@ -68,8 +68,10 @@ def carry_parking_constraints(static, start, station, zone):
             paths.append(compact)
     if len(paths) < 2:
         raise ValueError('no static pickup/delivery corridor for parking')
-    return {'profile': 'carry_parking_static_v1', 'forbidden_rects': forbidden,
-            'paths': paths, 'path_clearance_m': .26+FREE_ROBOT_M+PARK_CLEARANCE_M,
+    from sim.solo_carry_obstacles import PEER_DISC_MAX_M
+    clearance = .26+PEER_DISC_MAX_M+.01 if carry5 else .26+FREE_ROBOT_M+PARK_CLEARANCE_M
+    return {'profile': 'carry5_parking_v1' if carry5 else 'carry_parking_static_v1', 'forbidden_rects': forbidden,
+            'paths': paths, 'path_clearance_m': clearance,
             'region_clearance_m': FREE_ROBOT_M+PARK_CLEARANCE_M}
 
 
@@ -114,7 +116,7 @@ def candidates(kind, scenarios=SCENARIOS):
     return out
 
 
-def episode(i, kind, seed, split, *, scenarios=SCENARIOS, carry_layout=False):
+def episode(i, kind, seed, split, *, scenarios=SCENARIOS, carry_layout=False, carry5=False):
     rng = random.Random(seed)
     pool = candidates(kind, scenarios)
     rejects = Counter()
@@ -160,7 +162,7 @@ def episode(i, kind, seed, split, *, scenarios=SCENARIOS, carry_layout=False):
                 continue
             order = next(o for o in scenario['orders'] if o['order_id'] == placement['order_id'])
             try:
-                parking_constraints = carry_parking_constraints(static, start, final, order['destination_zone'])
+                parking_constraints = carry_parking_constraints(static, start, final, order['destination_zone'], carry5=carry5)
             except ValueError:
                 rejects['no_static_carry_corridor'] += 1
                 continue

@@ -205,7 +205,9 @@ class LookaroundLocalizer:
     # --- view plan ---
     def make_plan(self, start_pan_pulse=1500):
         start = (start_pan_pulse-1500)*PAN_DEG_PER_PULSE
-        plan = plan_views(tuple(self.own.x), self.own.P, self.landmarks, self.visible, start_pan=start)
+        plan = plan_views(tuple(self.own.x), getattr(self, 'planning_covariance', self.own.P),
+                          self.landmarks, self.visible, start_pan=start,
+                          **({'body_yaws': (0.,)} if getattr(self, 'pan_only', False) else {}))
         self.plan = {'expected_gain_nats': plan['expected_gain_nats'], 'rotated': plan['rotated'],
                      'expected_landmarks': plan['expected_landmarks'],
                      'views': [{'body_yaw_deg': v['body_yaw_deg'], 'pan_deg': v['pan_deg'], 'pan_pulse': pan_pulse(v['pan_deg']),

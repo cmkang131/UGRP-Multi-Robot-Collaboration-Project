@@ -187,6 +187,9 @@ class SoloTeacher:
                 rgb_lift_mode != 'solo_lift_lookback_v1' or solo_lift_negative_probe_v1):
             raise ValueError('zone carry requires box, RGB lookback and map controller')
         self.carry = carry if solo_carry_to_zone_v1 else None
+        self.recovery_return = None
+        self.recovery_fixes = 0
+        self.recovery_site = None
         self.zone_advance_m = 0.
         self.zone_visible_t = None
         self.rgb_lift_mode = rgb_lift_mode
@@ -345,7 +348,9 @@ class SoloTeacher:
         return {'skill': self.skill, 'object_kind': self.spec.kind, 'role': self.role,
                 'skill_elapsed_s': max(0., now-self.skill_started) if self.skill_started is not None else 0.,
                 'local_skill_sample': not self.negative_probe and self.phase not in
-                    ('start', 'pickup_search', 'lookaround', 'complete', 'failed', 'carry_prepare', 'carry_to_zone')}
+                    ('start', 'pickup_search', 'lookaround', 'complete', 'failed', 'carry_prepare', 'carry_to_zone',
+                     'carry_reobserve', 'carry_recover_lower', 'carry_recover_open',
+                     'carry_recover_retract', 'carry_recover_backoff', 'carry_recover_restore', 'carry_reacquire')}
 
     def _target(self, measurement, now, dt):
         if self.target is not None and self.previous is not None:
@@ -443,6 +448,40 @@ class SoloTeacher:
         clip = lambda v, lo, hi: max(lo, min(hi, v))
         return self._drive(now, clip(forward, -.05, .08), clip(left, -.06, .06), clip(turn, -.1, .1))
 
+    def _start_carry_recovery(self, now):
+        self.recovery_return = 'approach'  # reacquire a fresh visible target after setdown
+        self.recovery_fixes = self.carry.loc.fixes
+        self.recovery_pwm = dict(self.sink.pwm)
+        self.recovery_site = None if self.target is None else tuple(self.target['xyz'])
+        if self.holding:
+            from harness.visual_arm_v3 import forward_grip
+            self.recovery_site = tuple(forward_grip({1: 1500, **self.low}))
+        self.target = None; self.seen_t = None
+        if self.carry.failure:
+            self.result = self.carry.failure
+            self._set('failed', now)
+        elif self.holding:
+            # A controlled setdown uses the issued low arm pose, never held world coordinates.
+            # Check the static/observed local envelope before releasing or backing away.
+            from sim.grasp_act_visible_route import segment_free
+            x, y, a = self.carry.loc.pose
+            rear = (x-.15*math.cos(a), y-.15*math.sin(a))
+            if not segment_free((x, y), rear, self.carry.obstacles.discs(now),
+                                self.carry.rects, self.carry.radius):
+                self.result = 'carry_recovery_setdown_envelope_blocked'
+                self._set('failed', now)
+            else:
+                self._queue(self.low, now, .8, .2)
+                self._set('carry_recover_lower', now)
+        else:
+            self._start_carry_scan(now)
+
+    def _start_carry_scan(self, now):
+        if not self.lookaround.armed:
+            self.lookaround.arm()
+        self.lookaround.start(now, self.sink.pwm[6])
+        self._set('carry_reobserve', now)
+
     def step(self, now, *, measurement=None, rgb_holding='unknown', own_rgb=None,
              place_visible=False):
         if self.previous_t is not None and not 0 < now-self.previous_t <= .15+1e-8:
@@ -454,7 +493,7 @@ class SoloTeacher:
             self._set('fold', now)
         if self.lookaround is not None and self.previous is not None:
             self.lookaround.issue(self.previous, dt)
-        if self.phase == 'backoff' and self.previous is not None:
+        if self.phase in ('backoff', 'carry_recover_backoff') and self.previous is not None:
             self.backoff_m -= self.ops.delta(self.previous, dt)[0]
         if self.phase == 'lookback' and self.previous is not None:
             self.lookback_m -= self.ops.delta(self.previous, dt)[0]
@@ -462,6 +501,9 @@ class SoloTeacher:
             self.lookback_return_m += self.ops.delta(self.previous, dt)[0]
         if self.phase == 'zone_place_advance' and self.previous is not None:
             self.zone_advance_m += self.ops.delta(self.previous, dt)[0]
+        if self.recovery_site is not None and self.previous is not None and (
+                self.phase.startswith('carry_recover_') or self.phase in ('carry_reobserve', 'carry_reacquire')):
+            self.recovery_site = self.ops.propagate(self.recovery_site, self.previous, dt)
         self._target(measurement, now, dt)
         idle = self.arm.tick(now)
         value = self._hold(now)
@@ -470,6 +512,65 @@ class SoloTeacher:
         elif now-self.phase_t > (180 if self.phase == 'carry_to_zone' else 60):
             self.result = 'phase_timeout'
             self._set('failed', now)
+        elif (self.carry is not None and self.carry.active_recovery
+              and self.phase in ('approach', 'align', 'carry_prepare', 'carry_to_zone')
+              and self.carry.needs_recovery(now)):
+            self._start_carry_recovery(now)
+        elif self.phase == 'carry_recover_lower' and idle:
+            self._queue({1: 2000}, now, .5, .2)
+            self._set('carry_recover_open', now)
+        elif self.phase == 'carry_recover_open' and idle:
+            self.holding = False
+            self._queue(self.high, now, .8)
+            self._queue(self.ops.folded, now, .8)
+            self._set('carry_recover_retract', now)
+        elif self.phase == 'carry_recover_retract' and idle:
+            self.backoff_m = 0.
+            self._set('carry_recover_backoff', now)
+        elif self.phase == 'carry_recover_backoff':
+            if self.backoff_m < .15:
+                value = self._drive(now, -.05)
+            else:
+                self._start_carry_scan(now)
+        elif self.phase == 'carry_reobserve':
+            old_pose = self.carry.loc.pose
+            old_fixes = self.carry.loc.fixes
+            value, done = self.lookaround.step(now, self.sink.pwm, own_rgb)
+            self.sink.pwm.update({int(k): v for k, v in value['pwm'].items()})
+            self.arm.commanded.update(self.sink.pwm)
+            if self.carry.loc.fixes > old_fixes:
+                self.carry.obstacles.reanchor(old_pose, self.carry.loc.pose)
+            if done:
+                if self.carry.finish_recovery(now, self.recovery_fixes):
+                    # Return camera to the previously issued target-view posture.
+                    # A held recovery has released: never restore the closed gripper.
+                    self._queue({**self.recovery_pwm, 1: 2000}, now, .8, .2)
+                    self._set('carry_recover_restore', now)
+                else:
+                    self.result = self.carry.failure
+                    self._set('failed', now)
+        elif self.phase == 'carry_recover_restore' and idle:
+            self.target = None; self.seen_t = None
+            self.verify_t = None; self.stable_t = None
+            self.lookback_m = self.lookback_return_m = 0.
+            self._reset_alignment()
+            self._set('carry_reacquire', now)
+        elif self.phase == 'carry_reacquire':
+            if measurement is not None:
+                self.recovery_site = None
+                self._set(self.recovery_return, now)
+            elif now-self.phase_t >= 10.:
+                self.result = 'carry_reacquire_unconfirmed'
+                self._set('failed', now)
+            elif self.recovery_site is not None:
+                # Site is propagated own low-gripper geometry/previous visible
+                # relative target; it only aims the camera, never drives to cargo.
+                gaze = self.ops.gaze(self.recovery_site, self.sink.pwm, visible=False)
+                if gaze is not None:
+                    self.sink.pwm.update(self.ops.slew(self.sink.pwm, gaze))
+                    self.arm.commanded.update(self.sink.pwm)
+            else:
+                self._scan_gaze(now-self.phase_t)
         elif self.phase == 'fold' and idle:
             self._set('pickup_search' if self.pickup_search is not None else 'approach', now)
         elif self.phase == 'pickup_search':

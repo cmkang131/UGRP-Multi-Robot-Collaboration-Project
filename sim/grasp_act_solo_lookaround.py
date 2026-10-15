@@ -17,7 +17,7 @@ from __future__ import annotations
 
 class SoloLookaround:
     def __init__(self, static, *, ops, odometry_profile='off',
-                 localizer_factory=None, runner_factory=None, truth_free_v1=False, command_pose=None):
+                 localizer_factory=None, runner_factory=None, truth_free_v1=False, command_pose=None, carry5=False):
         if localizer_factory is None or runner_factory is None:
             from sim.lookaround_localization import LookaroundLocalizer, ScriptRunner
             localizer_factory = localizer_factory or LookaroundLocalizer
@@ -34,6 +34,7 @@ class SoloLookaround:
         if command_pose is not None and not truth_free_v1:
             raise ValueError('command pose requires truth-free own-RGB mode')
         self.command_pose = command_pose
+        self.carry5 = bool(carry5)
 
     @property
     def armed(self):
@@ -88,8 +89,13 @@ class SoloLookaround:
             return
         if self.loc is None:
             raise ValueError('look-around start before the pose estimate was armed')
+        if self.carry5:
+            import numpy as np
+            self.loc.planning_covariance = np.diag(np.square(self.command_pose.sigmas()))
+            self.loc.pan_only = False
         plan = self.loc.make_plan(int(pan_pulse))
-        self.runner = self.make_runner(self.loc.script(), now)
+        self.runner = (Carry5ViewRunner(plan, self.command_pose, self.ops, now) if self.carry5
+                       else self.make_runner(self.loc.script(), now))
         self.events.append({'t': now, 'event': 'start', 'views': len(plan['views']),
                             'rotated': plan['rotated']})
 
@@ -120,7 +126,12 @@ class SoloLookaround:
                 prior_x, prior_P = self.loc.own.x.copy(), self.loc.own.P.copy()
                 # Include the accumulated command-error budget in this update.
                 self.loc.own.P = np.diag(np.square(self.command_pose.sigmas()))
-            rec = self.loc.observe(at, own_rgb(), dict(servo))
+            try:
+                rec = self.loc.observe(at, own_rgb(), dict(servo))
+            except Exception:
+                if self.command_pose is not None:
+                    self.loc.own.x, self.loc.own.P = prior_x, prior_P
+                raise
             if rec.get('status') == 'measured':
                 self.measured_views += 1
             if self.command_pose is not None:
@@ -155,3 +166,46 @@ class SoloLookaround:
                 'localizer': self.loc.record(),
                 'predictions_are_observations': False,
                 'pose_error': 'evaluation output only; unknown here'}
+
+
+class Carry5ViewRunner:
+    """Map-chosen views; turn completion is issued-command feedback, never nominal M2 rate.
+
+    Camera pan is preferred by plan_views. If it predicts no information, turn
+    in place after setdown. No return turn after the last accepted observation.
+    """
+    def __init__(self, plan, pose, ops, now):
+        self.views = plan['views']; self.pose = pose; self.ops = ops
+        self.origin_yaw = pose.pose[2]
+        self.i = 0; self.stage = 'arm'; self.wait_from = None
+        self.done = not self.views
+        self.start = now
+
+    def tick(self, now, *, set_servo, set_wheels, wheels_idle, capture):
+        import math
+        from sim.active_lookaround import wrap
+        from sim.lookaround_localization import look_servo
+        if self.done:
+            return
+        view = self.views[self.i]
+        if self.stage == 'arm':
+            set_servo(look_servo(view['pan_deg']), now)
+            self.wait_from = now; self.stage = 'arm_wait'; return
+        if self.stage == 'arm_wait':
+            if now-self.wait_from < 1.:
+                return
+            self.stage = 'turn'
+        if self.stage == 'turn':
+            error = wrap(self.origin_yaw+math.radians(view['body_yaw_deg'])-self.pose.pose[2])
+            if abs(error) > .025:
+                turn = max(-.1, min(.1, .6*error))
+                wheels, duration = self.ops.duty([0., 0., .65*turn])
+                set_wheels([(wheels, duration)], now)
+                return
+            set_servo(look_servo(view['pan_deg']), now)
+            self.wait_from = now; self.stage = 'settle'; return
+        if self.stage == 'settle' and now-self.wait_from >= .8-1e-9:
+            capture(now)
+            self.i += 1
+            self.done = self.i == len(self.views)
+            self.stage = 'turn'

@@ -66,7 +66,10 @@ class ZoneScore:
     A drop/regrasp cannot erase a failure. All samples from confirmed carry
     through the start of lowering must retain lift clearance and both fingers.
     """
-    def __init__(self, region):
+    def __init__(self, region, *, active_recovery=False):
+        self.active_recovery = active_recovery
+        self.intermediate_setdowns = 0
+        self.last_phase = None
         self.region = region
         self.lift = Score()
         self.last_t = None
@@ -80,6 +83,9 @@ class ZoneScore:
     def add(self, now, *, phase, footprint_xy, finger_contacts=False, **row):
         # Preserve the old lift criterion; pickup-offset release is ignored.
         self.lift.add(now, **row)
+        if self.active_recovery and phase == 'carry_recover_lower' and self.last_phase != phase:
+            self.intermediate_setdowns += 1
+        self.last_phase = phase
         dt = 0. if self.last_t is None else now-self.last_t
         self.start_t = now if self.start_t is None else self.start_t
         self.end_t = now
@@ -112,6 +118,9 @@ class ZoneScore:
         return {'lift_success': self.lift.lift_ok, 'zone_placement_success': release,
             'release_success': release, 'no_drop_during_carry': retained,
             'physical_success': bool(command_complete and self.lift.lift_ok and release and retained),
+            **({'intermediate_controlled_setdowns': self.intermediate_setdowns,
+                'retention_scope': 'travel legs only; deliberate recovery setdowns separately counted',
+                'uninterrupted_carry': self.intermediate_setdowns == 0} if self.active_recovery else {}),
             'carry_samples': self.carry_samples, 'drop_samples': self.drop_samples,
             'max_stable_lift_s': self.lift.max_lift_s, 'max_stable_release_s': self.max_release_s,
             'final_footprint_inside_zone': self.last_inside,

@@ -51,14 +51,15 @@ def prepare_legacy_v2():
             'gate_promotion_authorized_if_all_conditions_pass': False}
 
 
-def prepare():
+def prepare(*, carry5=False):
     """Fresh layout generated against the actual task start and static corridors."""
     from sim.solo_pickup_search import PROFILE
-    check_range('solo_carry_diagnostic_v1', 93220, 8)
+    seed0 = 93240 if carry5 else 93220
+    check_range('solo_carry_diagnostic_v1', seed0, 8)
     episodes = []
     for i, kind in enumerate(BOX_KINDS*2):
-        p = episode(i//4, kind, 93220+i, 'solo_carry_diagnostic_v1',
-                    scenarios=SCENARIOS, carry_layout=True)
+        p = episode(i//4, kind, seed0+i, 'solo_carry_diagnostic_v1',
+                    scenarios=SCENARIOS, carry_layout=True, carry5=carry5)
         scenario = load_scenario(p['scenario_id'])
         placement = next(x for x in scenario['eval']['setup']['placements'] if x['item_id'] == p['item_id'])
         order = next(x for x in scenario['orders'] if x['order_id'] == placement['order_id'])
@@ -69,15 +70,21 @@ def prepare():
                  solo_carry_to_zone_v1=True, destination_zone=order['destination_zone'],
                  static_map_sha256=digest(static), negative_probe=False, gate_eligible=False,
                  training_eligible=False, batch='solo-carry-zone-v4', training_rgb=False)
+        if carry5:
+            p.update(carry5_profile='carry5_active_localization_v1', batch='solo-carry-zone-v5',
+                     drive_model_dependency='claude/drive-model-deadband',
+                     drive_model_required='drive_model_deadband_v1')
         episodes.append(p)
-    return {'schema': 'ugrp.solo_carry_plan.v4', 'episodes': episodes,
+    return {'schema': 'ugrp.solo_carry_plan.v5' if carry5 else 'ugrp.solo_carry_plan.v4', 'episodes': episodes,
             'distribution': dict(Counter(e['kind'] for e in episodes)),
-            'prior_seeds_used_or_reserved': [*range(93200, 93208), *range(93210, 93218)],
+            'prior_seeds_used_or_reserved': [*range(93200, 93208), *range(93210, 93218),
+                                             *(range(93220, 93228) if carry5 else ())],
             'research_result': False, 'training_rgb': False, 'gate_eligible': False,
             'gate_promotion_authorized_if_all_conditions_pass': False}
 
 
-def queue(plan, sha, pr):
+def queue(plan, sha, pr, *, plan_path=PLAN):
+    carry5 = plan['schema'] == 'ugrp.solo_carry_plan.v5'
     runs = []
     for i, p in enumerate(plan['episodes']):
         name = f"solo-carry-{p['seed']}-{sha[:8]}"
@@ -91,9 +98,9 @@ def queue(plan, sha, pr):
                 'align_relook_v1', '--reach-mode', 'pad_window_v2', '--rgb-lift-mode',
                 'solo_lift_lookback_v1', '--solo-lift-lookback-margin-v1',
                 '--solo-truth-free-lookaround-v1', '--solo-carry-to-zone-v1',
-                '--plan', PLAN, '--episode', str(i), '--cap-s', '300',
+                '--plan', str(plan_path), '--episode', str(i), '--cap-s', '300',
                 '--out', f'/home/ugrp/ugrp-sim/runs/{name}/raw']})
-    return {'schema': 'ugrp.solo_carry_queue.v4', 'branch': 'claude/map-carry-zone', 'pr': pr,
+    result = {'schema': 'ugrp.solo_carry_queue.v5' if carry5 else 'ugrp.solo_carry_queue.v4', 'branch': 'claude/map-carry-zone', 'pr': pr,
         'sha': sha, 'host': 'gcp1', 'machine_type': 'n4-highcpu-64', 'project': 'ugrp-act-train-1014',
         'source_worktree': str(ROOT), 'runner_cwd': '/Users/changmin/projects/ugrp',
         'status': 'prepared_not_submitted', 'ready': False, 'runs_enabled': False,
@@ -101,8 +108,8 @@ def queue(plan, sha, pr):
         'gate_promotion_authorized_if_all_conditions_pass': False, 'gate_eligible': False,
         'training_rgb': False, 'top_rgb_control_allowed': False, 'amcl_option': 'off',
         'supersedes_blocked_queue': '20261015-solo-carry-de8c2412.json', 'run_count': 8, 'runs': runs, 'max_parallel': 1,
-        'plan_sha256': hashlib.sha256((ROOT/PLAN).read_bytes()).hexdigest(),
-        'seed_reservation': {'split': 'solo_carry_diagnostic_v1', 'range': [93220, 93227],
+        'plan_sha256': hashlib.sha256((ROOT/plan_path).read_bytes()).hexdigest(),
+        'seed_reservation': {'split': 'solo_carry_diagnostic_v1', 'range': [93240, 93247] if carry5 else [93220, 93227],
                              'remote_unused_verified': False},
         'storage_budget_mib': {'per_run': 256, 'total': 2048, 'measured': False},
         'preconditions': [
@@ -116,15 +123,28 @@ def queue(plan, sha, pr):
             'Report all8 including failure/HOST_ERROR; compare whole-footprint zone release, no-drop and SIM time separately.',
             'Preserve raw frames/commands/evaluation, retrieve manifest hashes, verify VM stopped; no automatic gate/training promotion.']}
 
+    if carry5:
+        result.update(supersedes_blocked_queue='20261015-solo-carry-870c0c59.json',
+            carry5_profile='carry5_active_localization_v1', approved=False,
+            dependency={'branch': 'claude/drive-model-deadband', 'required_toggle': 'drive_model_deadband_v1',
+                        'ready': False, 'reason': 'toggle commit must be merged and enabled before submission'},
+            execution_stages=[{'name': 'first_one', 'indices': [0], 'enabled': False},
+                              {'name': 'remaining_seven', 'indices': list(range(1,8)), 'enabled': False,
+                               'requires': 'first run retrieval, first30 and video review plus explicit approval'}])
+        for i, run in enumerate(result['runs']):
+            run.update(ready=False, approved=False,
+                       stage='first_one' if i == 0 else 'remaining_seven')
+    return result
 
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--plan-out', type=Path)
     p.add_argument('--queue-out', type=Path)
     p.add_argument('--pr', type=int)
+    p.add_argument('--carry5', action='store_true')
     a = p.parse_args()
     if a.plan_out:
-        plan = prepare()
+        plan = prepare(carry5=a.carry5)
         a.plan_out.parent.mkdir(parents=True, exist_ok=True)
         with a.plan_out.open('x') as f:
             # Compact static corridor arrays keep the frozen plan below 64 KiB.
@@ -133,9 +153,10 @@ def main():
         if not a.pr:
             p.error('--pr required for queue')
         sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-        plan = json.loads((ROOT/PLAN).read_text())
+        plan_path = 'experiments/2026-10-15-map-carry-zone/diagnostic-plan-v5.json' if a.carry5 else PLAN
+        plan = json.loads((ROOT/plan_path).read_text())
         with a.queue_out.open('x') as f:
-            json.dump(queue(plan, sha, a.pr), f, indent=2); f.write('\n')
+            json.dump(queue(plan, sha, a.pr, plan_path=plan_path), f, indent=2); f.write('\n')
 
 
 if __name__ == '__main__':

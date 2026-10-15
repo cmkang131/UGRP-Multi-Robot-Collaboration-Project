@@ -152,7 +152,16 @@ class RGBCommandPose:
 
 
 class CarryToZone:
-    def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off'):
+    def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off', recovery_profile='off'):
+        if recovery_profile not in ('off', 'carry5_active_localization_v1'):
+            raise ValueError('unknown carry recovery profile')
+        self.recovery_profile = recovery_profile
+        self.active_recovery = recovery_profile != 'off'
+        self.recovery_reason = None
+        self.recovery_events = []
+        self.recovery_count = 0
+        self.recovery_anchor = None
+        self.stalled_recoveries = 0
         if zone not in ('A', 'B', 'C') or 'zone_'+zone not in static['regions']:
             raise ValueError('destination must be an authored zone')
         self.static, self.zone = static, zone
@@ -161,7 +170,7 @@ class CarryToZone:
         self.radius = .26  # chassis + upright small box/arm envelope + clearance
         self.path = None
         from sim.solo_carry_obstacles import RGBObstacleMemory
-        self.obstacles = RGBObstacleMemory()
+        self.obstacles = RGBObstacleMemory(managed=self.active_recovery)
         self.slot = self.goal = None
         self.started = None
         self.arrived = None
@@ -188,12 +197,15 @@ class CarryToZone:
 
     def refresh_obstacles(self, bgr, pwm, now, *, holding, kind, grasp_pwm):
         self.obstacles.observe(bgr, pwm, self.loc.pose, now, holding=holding,
-                               kind=kind, grasp_pwm=grasp_pwm)
+                               kind=kind, grasp_pwm=grasp_pwm, pose_sigma=self.loc.sigmas())
         self.last_plan = -math.inf  # a newly visible obstacle invalidates the route
 
     def start(self, now, grip_xy):
         self.started = now
         self.grip_xy = tuple(grip_xy)
+        self.travel_heading = self.loc.pose[2] if self.active_recovery else 0.
+        if self.active_recovery and self.needs_recovery(now):
+            return
         if not self.loc.ready(now):
             self.failure = 'carry_self_pose_unavailable'
             return
@@ -217,16 +229,26 @@ class CarryToZone:
                 self.slot, self.goal, self.path = slot, goal, path
                 break
         if self.path is None:
-            self.failure = 'carry_no_static_route'
+            if self.active_recovery:
+                self.request_recovery(now, 'carry_no_route')
+            else:
+                self.failure = 'carry_no_static_route'
 
     def step(self, now):
+        if self.active_recovery and self.needs_recovery(now):
+            return (0., 0., 0.), False, self.failure
         if self.failure:
             return (0., 0., 0.), False, self.failure
         if not self.loc.ready(now):
             return (0., 0., 0.), False, 'carry_self_pose_stale'
         pose = self.loc.pose
         discs = self.obstacles.discs(now)
-        if not free(self.goal, discs, self.rects, self.radius):
+        if self.active_recovery and (self.goal is None or not free(self.goal, discs, self.rects, self.radius)):
+            self.path = None
+            self.start(now, self.grip_xy)  # reselect all five authored slots
+            if self.recovery_reason or self.failure:
+                return (0., 0., 0.), False, self.failure
+        elif not free(self.goal, discs, self.rects, self.radius):
             return (0., 0., 0.), False, 'carry_goal_obstructed'
         distance = math.dist(pose[:2], self.goal)
         if distance <= .025 and abs(wrap(pose[2])) <= .04:
@@ -239,10 +261,77 @@ class CarryToZone:
             self.last_plan = now
         target = waypoint(pose[:2], self.path, discs, self.rects, self.radius)
         if target is None:
+            if self.active_recovery:
+                self.request_recovery(now, 'carry_no_route')
+                return (0., 0., 0.), False, self.failure
             return (0., 0., 0.), False, 'carry_no_static_route'
+        if self.active_recovery:
+            return self.heading_drive(pose, target, self.travel_heading), False, None
         cmd = proportional_drive(pose, self.goal, target, 0.)
         return (max(-.05, min(.08, cmd['forward'])), max(-.06, min(.06, cmd['left'])),
                 max(-.1, min(.1, cmd['turn']))), False, None
+
+    @staticmethod
+    def heading_drive(pose, target, heading):
+        """Mecanum translation while retaining the current travel heading."""
+        x, y, a = pose; dx, dy = target[0]-x, target[1]-y
+        forward = math.cos(a)*dx+math.sin(a)*dy
+        left = -math.sin(a)*dx+math.cos(a)*dy
+        return (max(-.05, min(.08, .9*forward)), max(-.06, min(.06, .9*left)),
+                max(-.1, min(.1, .6*wrap(heading-a))))
+
+    def needs_recovery(self, now):
+        if self.recovery_reason:
+            return True
+        sigma = self.loc.sigmas()
+        # Reserve 20% of unchanged hard limits for stopping/setdown/backoff.
+        if not self.loc.ready(now) or max(sigma[:2]) >= .40 or sigma[2] >= math.radians(16.):
+            self.request_recovery(now, 'pose_budget')
+            return True
+        return False
+
+    def request_recovery(self, now, reason):
+        if not self.active_recovery or self.recovery_reason or self.failure:
+            return
+        self.recovery_reason = reason
+        self.recovery_count += 1
+        if self.recovery_anchor is not None and math.dist(self.loc.pose[:2], self.recovery_anchor) < .15:
+            self.stalled_recoveries += 1
+        else:
+            self.stalled_recoveries = 0
+        self.recovery_anchor = self.loc.pose[:2]
+        self.recovery_events.append({'t': now, 'event': 'stop_reobserve', 'reason': reason,
+                                     'pose': self.loc.record()})
+        if self.recovery_count > 12 or self.stalled_recoveries >= 2:
+            self.failure = 'carry_recovery_no_progress'
+
+    def finish_recovery(self, now, fixes_before):
+        if self.loc.fixes <= fixes_before or not self.loc.ready(now) or self.needs_budget():
+            self.failure = 'carry_relocalization_unconfirmed'
+            return False
+        self.recovery_events.append({'t': now, 'event': 'accepted_replan', 'fixes': self.loc.fixes})
+        self.recovery_reason = None
+        self.path = None; self.last_plan = -math.inf
+        return True
+
+    def needs_budget(self):
+        s = self.loc.sigmas()
+        return max(s[:2]) >= .40 or s[2] >= math.radians(16.)
+
+    def pickup_route(self, goal, target, kind, now):
+        """Allowed body goal; single matching target exemption, no world target memory."""
+        if self.needs_recovery(now):
+            return (0., 0., 0.)
+        x, y, a = self.loc.pose; c, s = math.cos(a), math.sin(a)
+        discs = self.obstacles.pickup_discs(now, self.loc.pose, kind, target)
+        rects = [(c*(ox-x)+s*(oy-y), -s*(ox-x)+c*(oy-y), hx, hy, angle-a)
+                 for ox, oy, hx, hy, angle in self.rects]
+        path = plan_path((0., 0.), goal[:2], (-2., 2., -2., 2.), discs, rects=rects, radius=.17)
+        if not path:
+            self.request_recovery(now, 'pickup_no_route')
+            return (0., 0., 0.)
+        point = next((p for p in path if math.hypot(*p) >= .06), goal[:2])
+        return self.heading_drive((0., 0., 0.), point, goal[2])
 
     def place_visible(self, bgr, pwm, low, kind):
         """Floor footprint must actually be visible and have destination paint.
@@ -272,4 +361,6 @@ class CarryToZone:
                 'self_pose': self.loc.record(), 'carry_started_t': self.started,
                 'map_arrival_estimated_t': self.arrived, 'failure': self.failure,
                 'path': self.path, 'static_route_only': False, 'obstacles': self.obstacles.record(),
-                'held_world_reads': 0, 'physical_success': None}
+                'held_world_reads': 0, 'physical_success': None,
+                **({'recovery_profile': self.recovery_profile, 'recovery_reason': self.recovery_reason,
+                    'recovery_events': self.recovery_events} if self.active_recovery else {})}

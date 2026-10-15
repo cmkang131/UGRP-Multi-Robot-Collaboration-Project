@@ -161,13 +161,15 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             if digest(static) != plan['static_map_sha256']:
                 raise ValueError('carry static map/scene hash mismatch')
             carry = CarryToZone(static, plan['destination_zone'], start=plan['task_start'],
-                                now=float(data.time), robot_id=rid)
-            score = ZoneScore(carry.region)
+                                now=float(data.time), robot_id=rid,
+                                recovery_profile=plan.get('carry5_profile', 'off'))
+            score = ZoneScore(carry.region, active_recovery=carry.active_recovery)
             write(out/'carry-static-map.json', static)
         # Legacy look-around used live truth + frozen error as a map estimate.
         # Recording uses a pose-free scan; carry2 shares only its command belief.
         relook = SoloLookaround(static, ops=ops, truth_free_v1=solo_truth_free_lookaround_v1,
-                                command_pose=carry.loc if carry is not None else None)
+                                command_pose=carry.loc if carry is not None else None,
+                                carry5=carry is not None and carry.active_recovery)
         look_eval = {'views': []}
 
         def truth_pose():
@@ -198,6 +200,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             # Current visible wall measurements remain in the body frame;
             # an uncertain map prior cannot fabricate a registered self pose.
             discs, rects = observed_discs, observed_rects
+            if carry is not None and carry.active_recovery:
+                target = None if teacher.target is None else teacher.target['xyz'][:2]
+                return carry.pickup_route(goal, target, teacher.spec.kind, carry.loc.now)
             if carry is not None:
                 x, y, a = carry.loc.pose; c, s = math.cos(a), math.sin(a)
                 from scripts.zone_teacher import PeerDisc
@@ -551,6 +556,8 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
     from sim.solo_pickup_search import PROFILE as SEARCH_PROFILE
     if plan.get('pickup_search_profile') != SEARCH_PROFILE:
         raise ValueError('carry3 requires explicit static pickup search profile')
+    if plan.get('carry5_profile', 'off') not in ('off', 'carry5_active_localization_v1'):
+        raise ValueError('unknown carry5 profile')
     scenario = load_scenario(plan['scenario_id'])
     source = ROOT/'configs/zone_study_scenarios_v6'/f"{plan['scenario_id']}.json"
     if hashlib.sha256(source.read_bytes()).hexdigest() != plan['scenario_source_sha256']:
