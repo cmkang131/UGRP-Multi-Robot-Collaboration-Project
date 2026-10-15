@@ -6,7 +6,7 @@ beamact1 PR #540·같은 브랜치를 이어간다. TRAIN166/60,023행·validati
 
 학생 실행기는 교사 객체를 만들지 않는다. 자기 RGB4장·실제 발행16명령·고정 스킬/물건/색 끝 토큰·자기 명령 시계만 격리 CPU worker에 전달한다. 정답은 evaluator의 결과 원장에만 쓴다. held_object_hidden_v1은 학생에게 화물 좌표 경로 자체가 없어 상시 충족하며 invisible_measurements/held_world_reads=0을 입력 allowlist로 검사한다. 근거리 명령은 ACT만 낸다. 통신은 pinned dependency26f84d0f의 GraspStartSync READY/GO/ACK를 그대로 쓴다.
 
-ACT14차원에 READY head가 없어 자기 집게 닫기 proposal을 READY로 해석한다. OPEN2000/CLOSED1500의 최근접 끝점 분류 경계1750이며 새 물리 수용 기준이 아니다. GO/ACK와 원래0..1.5SIM초 지연을 통과할 때까지 ACT proposal을 보관하고 이전 PWM·정지 wheel을 발행한다. 허용 뒤 정확히 그 proposal을 발행한다. 대기 때 모델 추론/교사 동작/인식 보정은 없다. 완료는 학생 done과 기존3.1SIM초 관찰 창, 또는60SIM초cap뿐이다. 평가 정답으로 실행을 끝내지 않는다.
+ACT14차원에 READY head가 없어 자기 집게 닫기 proposal을 READY로 해석한다. OPEN2000/CLOSED1500의 방향에 따라 직전 발행보다 PWM이 감소하면1PWM이라도 READY다. 새 물리 수용 상수는 없다. 초기 구현의1750 최근접 분류는 평가 전 검토에서 제거했다(그 경계까지 부분 닫기를 먼저 발행할 수 있기 때문). GO/ACK와 원래0..1.5SIM초 지연을 통과할 때까지 ACT proposal을 보관하고 이전 PWM·정지 wheel을 발행한다. 허용 뒤 정확히 그 proposal을 발행한다. 대기 때 모델 추론/교사 동작/인식 보정은 없다. 완료는 학생 done과 기존3.1SIM초 관찰 창, 또는60SIM초cap뿐이다. 평가 정답으로 실행을 끝내지 않는다.
 
 보류20은 기존 beampair8 heldout-plan을 그대로 쓴다. 원래 시작 분포(.5..2m)와 학습 local 선정(.8m 이내)의 범위 차이는 남기며 정답으로 시작 위치를 바꾸지 않는다. 평가 퍼널 접근(.8m)·명목 정렬(.203m station, .03m/.06rad)·READY·양 집게 접촉(.5N)·3초 들기(.012m/10도)는 기존 교사/평가기 수치를 재사용한다. 명목 정렬은 teacher의 대체/표본 자세 전체를 대표하지 않으므로 원시 geometry·단계별 독립 통과도 함께 남긴다. 최종 성공은 양 학생 완료+안정 공동들기3초+cap아님+감사0이며 교사와 합산하지 않는다.
 

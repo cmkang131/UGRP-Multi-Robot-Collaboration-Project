@@ -7,8 +7,9 @@ MODE = 'beamact2_student_v1'
 class StudentBarrier:
     """A close proposal emits READY; existing GO/ACK releases that proposal.
 
-    The 1750 boundary is nearest-endpoint decoding of the pinned teacher's
-    OPEN=2000/CLOSED=1500 commands, not a fitted physical acceptance tolerance.
+    Closing means a decrease from the last issued gripper PWM: the pinned
+    teacher's OPEN=2000/CLOSED=1500 establishes that direction. Even a one-PWM
+    close proposal must await GO/ACK; there is no learned/tuned PWM threshold.
     Only the pending ACT proposal and actually issued history are used. Waiting
     holds the last PWM and stops wheels; it never supplies grasp motion.
     """
@@ -22,10 +23,10 @@ class StudentBarrier:
     def ready(self):
         return self.pending is not None or self.started
 
-    def propose(self, value, done):
+    def propose(self, value, done, previous):
         if self.pending is not None:
             raise ValueError('pending ACT proposal must be released before inference')
-        if not self.started and value['pwm']['1'] <= (2000 + 1500) / 2:
+        if not self.started and value['pwm']['1'] < previous['pwm']['1']:
             self.pending = (deepcopy(value), bool(done))
             self.events.append(dict(t=value['t'], event='READY', source='own_ACT_close_proposal'))
             return True

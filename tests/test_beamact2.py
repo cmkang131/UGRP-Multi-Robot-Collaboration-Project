@@ -26,7 +26,7 @@ def test_close_never_executes_before_both_READY_GO_ACK_and_delay():
     barrier=sync();students={r:StudentBarrier() for r in ('r1','r2')}
     previous={r:command(grip=2000) for r in students}
     proposals={r:command(grip=1500) for r in students}
-    for r in students:students[r].propose(proposals[r],False)
+    for r in students:students[r].propose(proposals[r],False,previous[r])
     issued={}
     for i in range(15):
         now=i*.1
@@ -46,7 +46,7 @@ def test_close_never_executes_before_both_READY_GO_ACK_and_delay():
 
 def test_pending_proposal_is_exact_and_early_peer_cannot_bypass_barrier():
     barrier=sync();s=StudentBarrier();candidate=command(grip=1749);before=deepcopy(candidate)
-    assert s.propose(candidate,False)
+    assert s.propose(candidate,False,command())
     for i in range(20):
         permit=barrier.tick({'r1':True,'r2':False},i*.1)['r1']
         value,done=s.issue(i*.1,command(),None,False,permit)
@@ -56,10 +56,11 @@ def test_pending_proposal_is_exact_and_early_peer_cannot_bypass_barrier():
     with pytest.raises(ValueError,match='missing student'):s.issue(2.1,value,None,False,True)
 
 
-def test_open_endpoint_does_not_claim_ready_and_done_has_no_truth_dependency():
+def test_even_one_PWM_close_waits_and_open_hold_does_not_claim_ready():
     s=StudentBarrier()
-    assert not s.propose(command(grip=1751),False) and not s.ready
-    assert s.propose(command(grip=1750),True)
+    assert not s.propose(command(grip=2000),False,command()) and not s.ready
+    assert not s.propose(command(grip=2000),False,command(grip=1900)) and not s.ready
+    assert s.propose(command(grip=1999),True,command())
     value,done=s.issue(1.,command(),None,False,False)
     assert not done and value['pwm']['1']==2000
     value,done=s.issue(1.1,command(),None,False,True)

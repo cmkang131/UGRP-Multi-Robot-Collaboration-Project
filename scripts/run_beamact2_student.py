@@ -163,7 +163,7 @@ def run(plan, output, dependency, model, actor_python, *, mode='off', cap_s=60.)
                     proposal=None;done=False
                     if barrier.pending is None:
                         proposal,done=executors[rid].step(obs,jpegs)
-                        barrier.propose(proposal,done)
+                        barrier.propose(proposal,done,previous[rid])
                     value,done=barrier.issue(now,previous[rid],proposal,done,permits[rid])
                     if done:done_times.setdefault(rid,now)
                     apply(port,value,now,previous[rid])
