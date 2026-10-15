@@ -239,6 +239,7 @@ plan('a'*40)
 def production_robot_xml():
     # The real XML builder imports MuJoCo definitions but never constructs a
     # model, data, world or renderer. Only XML strings are produced here.
+    pytest.importorskip('mujoco')  # offline CI shards have no MuJoCo
     from sim.multi_masterpi_production import build_multi_robot_xml
     return build_multi_robot_xml(None)
 
