@@ -1,0 +1,68 @@
+{
+  "task": "warp1",
+  "recorded_utc": "2026-10-15T21:02:33.095756+00:00",
+  "work_status": "running_not_complete",
+  "branch": "claude/warp-act",
+  "base_sha": "142dbf04c2128c3d7ca1c3ceb03ee3b651d9a7e5",
+  "teacher_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "PR": 534,
+  "L4": {
+    "project": "ugrp-sim-b-1014",
+    "instance": "ugrp-act-l4-gcp2",
+    "machine": "g2-standard-8",
+    "start_utc": "2026-10-15T18:02:37.522+00:00",
+    "hard_end_utc": "2026-10-15T22:02:37.522+00:00",
+    "guard_work_stop_utc": "2026-10-15T22:00:37.522+00:00",
+    "maximum_hours": 4,
+    "active_own": [
+      {
+        "pid": 34915,
+        "run": "policy-qual-n16-seed0",
+        "source": "8d157d6c"
+      }
+    ],
+    "paused_own": [
+      {
+        "pid": 34822,
+        "run": "policy-qual-n1-seed0",
+        "paused_utc": "2026-10-15T20:59:00.285795+00:00",
+        "reason": "prioritize N16 full correctness; qualitative wall is not throughput"
+      }
+    ],
+    "old_original_N1": {
+      "run": "r2-warp-n1-seed0",
+      "status": "complete",
+      "sim_s": 40.7,
+      "success": 1,
+      "stopped_redundant_watchdog_pid": 4552
+    },
+    "old_original_N16": {
+      "run": "qual-n16-seed0",
+      "status": "supervisor_stop",
+      "reason": "superseded by separately measured native policy candidate; not a teacher failure"
+    },
+    "stop_policy": "do not stop VM while any foreign lease or ugrp python/mujoco/ffmpeg process remains; final audit required"
+  },
+  "CPU": {
+    "instance": "ugrp-sim-gcp2",
+    "own_lease_removed": true,
+    "VM_stopped": false,
+    "reason": "foreign leases/processes; see cpu-stop-audit.json"
+  },
+  "not_executed": [
+    "40-episode gate",
+    "training recorder",
+    "ACT learning",
+    "student evaluation",
+    "LLM/model calls",
+    "Mac physics/render/GUI"
+  ],
+  "remaining": [
+    "complete or resource-cap own qualitative runs",
+    "remote raw hash verification and compact retrieval",
+    "final rejection_table/summary/playback/queue status",
+    "push and PR body update",
+    "remove own L4 lease and verify process/VM disposition",
+    "final ops-alert line"
+  ]
+}

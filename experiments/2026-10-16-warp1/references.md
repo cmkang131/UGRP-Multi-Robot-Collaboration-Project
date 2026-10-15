@@ -31,3 +31,6 @@ compact 수치 기록: pinned io.py1791–1797은 compact convergence tolerance�
 
 
 남은 physics cost 조사: 설치된 pinned io.py439의 기본 broadphase는 NXN이고 types.py124–135가 SAP_TILE/SAP_SEGMENTED를 지원한다. [공식 옵션](https://mujoco.readthedocs.io/en/latest/mjwarp/index.html#options), [공식 sap_broadphase API](https://mujoco.readthedocs.io/en/latest/mjwarp/api.html), [upstream458](https://github.com/google-deepmind/mujoco_warp/issues/458)을 읽었다.458의 옛 SAP_TILE crash에서 SAP_SEGMENTED가 대조였다는 사실은 현재 장면의 보증이 아니다.1390geom의 all-pairs 병목은 가설이며, 별도 기본 off `sap_segmented_v1`로 실제 짧은 A/B를 한다. geometry·mass·friction·contact 설정과 task Score를 바꾸지 않는다. candidate pair ordering/부동소수 궤적이 달라질 수 있어 결과를 NXN과 분리한다.
+
+
+SAP 판정: 같은 source56d26138/native-sleep/0.1SIM초 초기 tick, 기존 두 correctness 작업이 함께 있던 공유 부하에서 NXN physics6.2322초, SAP_SEGMENTED6.4816초였다. 단일 초기 tick이고 접촉 구간/전용GPU 측정이 아니므로 일반 순위를 확정하지 않는다. 이번 선택 후보로는 채택하지 않고 기본 off 진단 옵션으로 남긴다.

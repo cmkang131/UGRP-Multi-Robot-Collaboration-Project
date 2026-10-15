@@ -4,7 +4,7 @@ from pathlib import Path
 if platform.system()!='Linux':raise RuntimeError('remote analysis only')
 p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
 rows=[]
-keys=('status','physics_backend','source_sha','teacher_sha','host','nworld','seed','world_seeds','unique_seeds','cap_s','training_rgb','training_recording_supported','student_evaluation_supported','teacher_vectorized','gate_eligible','scene_status','scope','reproduce','model_counts','camera','capacities','model_batch','solver_numerics','sleep_compact','initial_world_state','reset_proof','prototype_reset','setup_compile_s','wall_s','loop_wall_s','aggregate_completed_sim_s','completed','attempted','physical_success','cap_end','timing','physical_batch_sim_s','attempted_control_sim_s','vm_cost_estimate_usd','sim_s_per_wall_s','sim_s_per_usd','useful_completed_sim_s_per_usd','error_type','error','worlds','hourly_usd','price_basis','backend','n','elapsed_s','vm_hourly_usd','cost_estimate_usd','aggregate_sim_s','cold_sim_s_per_wall_s','cold_sim_s_per_usd','HOST_ERROR')
+keys=('status','physics_backend','source_sha','teacher_sha','host','nworld','seed','world_seeds','unique_seeds','cap_s','training_rgb','training_recording_supported','student_evaluation_supported','native_sleep_policy_compat_v1','float32_solver_default_v1','sap_segmented_v1','teacher_vectorized','gate_eligible','scene_status','scope','reproduce','model_counts','camera','capacities','model_batch','solver_numerics','sleep_compact','initial_world_state','reset_proof','prototype_reset','setup_compile_s','wall_s','loop_wall_s','aggregate_completed_sim_s','completed','attempted','physical_success','cap_end','timing','physical_batch_sim_s','attempted_control_sim_s','vm_cost_estimate_usd','sim_s_per_wall_s','sim_s_per_usd','useful_completed_sim_s_per_usd','error_type','error','worlds','hourly_usd','price_basis','backend','n','elapsed_s','vm_hourly_usd','cost_estimate_usd','aggregate_sim_s','cold_sim_s_per_wall_s','cold_sim_s_per_usd','HOST_ERROR')
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 for f in sorted(a.root.rglob('summary.json')):
  s=json.loads(f.read_text());root=f.parent;row={'run':str(root.relative_to(a.root)),'raw':str(root),'summary_sha256':sha(f),**{k:s[k] for k in keys if k in s}}
@@ -30,7 +30,20 @@ for f in sorted(a.root.rglob('summary.json')):
   data=json.loads(subprocess.check_output(['zstd','-qdc',str(wf)])) if wf.suffix=='.zst' else json.loads(wf.read_text())
   wanted=('status','physical_success','lift_success','release_success','cap_end','sim_s','input_audit','failure_rgb_buffer','input_funnel','route_funnel','route_rejections','teacher','visibility','lookaround')
   world.append({'raw':str(wf),'sha256':sha(wf),**{k:data[k] for k in wanted if k in data}})
- if world:row['world_results']=world
+ if world:
+  for w in world:
+   parent=Path(w['raw']).parent
+   funnel=parent/'input-funnel.json'
+   if funnel.exists():w['input_funnel']=json.loads(funnel.read_text())
+   elif w.get('input_audit'):
+    audit=w['input_audit'];measurements=sum(audit.get('measurements_by_phase',{}).values())
+    hidden=audit.get('blocked_hidden',0);held=audit.get('blocked_held',0)
+    w['input_funnel']={'counts':{'frames':measurements+hidden+held,'not_held':measurements+hidden,'visible_not_held':measurements,'measurements':measurements},
+      'basis':'derived from mutually exclusive frozen InputAudit.measure85-103 counters; earlier adapter did not save a separate funnel',
+      'raw':w['raw']}
+   route=parent/'route-rejections.json'
+   if route.exists():w['route_rejections']=json.loads(route.read_text())
+  row['world_results']=world
  rows.append(row)
 # One file inventory per VM; no source credentials or home-directory traversal.
 inventory=[]

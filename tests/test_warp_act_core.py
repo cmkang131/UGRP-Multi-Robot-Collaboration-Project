@@ -112,15 +112,21 @@ def test_heterogeneous_models_preserve_world_order_and_reject_structural_changes
         varying_model_arrays(rows,{'mass'})
 
 
-def test_resource_guard_owns_output_not_shared_adapter_source():
+def test_resource_guard_owns_output_not_shared_adapter_source(tmp_path):
     from pathlib import Path
     import runpy
     ns=runpy.run_path(str(Path(__file__).resolve().parents[1]/'experiments/2026-10-16-warp1/resource_guard_v2.py'))
     own=ns['owned_output'];root='/home/ugrp/ugrp-sim/runs/warp1'
     assert own(['python','--teacher-source',root,'--out','/home/ugrp/ugrp-sim/runs/warp2/run']) is None
-    assert own(['python','--out',root+'/run'])==root+'/run'
+    assert own(['python','--out',root+'/run'])==str(Path(root+'/run').resolve())
     assert own(['python','--out',root+'-foreign/run']) is None
+    assert own(['python','--out',root+'/../warp2/run']) is None
     assert own(['ffmpeg','-i',root+'/input.mp4','/home/ugrp/ugrp-sim/runs/warp2/output.mp4']) is None
+    actual=tmp_path/'real-task';actual.mkdir()
+    alias=tmp_path/'alias';alias.symlink_to(actual,target_is_directory=True)
+    own.__globals__['REMOTE']=str(alias)
+    assert own(['python','--out',str(alias/'result')])==str(actual/'result')
+    assert own(['python','--out',str(alias/'../foreign')]) is None
 
 
 def test_masked_reset_preserves_unselected_world_state():
@@ -162,6 +168,7 @@ def test_lease_audit_does_not_own_foreign_teacher_source_reference():
     assert not owns_output(['python','--teacher-source','/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot','--out','/home/ugrp/ugrp-sim/runs/rl1b/probe'],'warp1')
     assert owns_output(['python','--out','/home/ugrp/ugrp-sim/runs/warp1/qual'],'warp1')
     assert not owns_output(['python','--out','/home/ugrp/ugrp-sim/runs/warp1-foreign/qual'],'warp1')
+    assert not owns_output(['python','--out','/home/ugrp/ugrp-sim/runs/warp1/../warp2/qual'],'warp1')
 
 
 @pytest.mark.parametrize('marker,expected',[

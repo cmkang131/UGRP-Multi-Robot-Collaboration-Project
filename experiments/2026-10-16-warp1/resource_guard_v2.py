@@ -23,11 +23,11 @@ def owned_output(args):
     if '--out' in args:
         index=args.index('--out')+1
         if index<len(args):
-            value=Path(args[index])
-            if value==Path(REMOTE) or value.is_relative_to(REMOTE):return str(value)
+            value=Path(args[index]).resolve()
+            if value==Path(REMOTE).resolve() or value.is_relative_to(Path(REMOTE).resolve()):return str(value)
     if args and Path(args[0]).name.startswith('ffmpeg') and len(args)>1:
-        value=Path(args[-1])
-        if value.is_relative_to(REMOTE):return str(value.parent)
+        value=Path(args[-1]).resolve()
+        if value.is_relative_to(Path(REMOTE).resolve()):return str(value.parent)
     return None
 
 

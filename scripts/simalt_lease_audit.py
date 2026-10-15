@@ -8,14 +8,14 @@ import sys
 
 def owns_output(args, task):
     """Shared source/teacher paths do not establish process ownership."""
-    root=Path('/home/ugrp/ugrp-sim/runs')/task
+    root=(Path('/home/ugrp/ugrp-sim/runs')/task).resolve()
     if '--out' in args:
         index=args.index('--out')+1
         if index<len(args):
-            output=Path(args[index])
+            output=Path(args[index]).resolve()
             return output==root or output.is_relative_to(root)
     if args and Path(args[0]).name.startswith('ffmpeg') and len(args)>1:
-        return Path(args[-1]).is_relative_to(root)
+        return Path(args[-1]).resolve().is_relative_to(root)
     return False
 
 
