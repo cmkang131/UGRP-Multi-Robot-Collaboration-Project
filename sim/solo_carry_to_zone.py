@@ -170,6 +170,7 @@ class CarryToZone:
         self.reloc12_reacquire = reloc12_carry_reacquire_v1
         self.reacquire_turn_rad = 0.
         self.recovery_turn_anchor = 0.
+        self.rejection_context = None
         self.recovery_reason = None
         self.recovery_events = []
         self.recovery_count = 0
@@ -311,6 +312,8 @@ class CarryToZone:
     def request_recovery(self, now, reason):
         if not self.active_recovery or self.recovery_reason or self.failure:
             return
+        if self.reloc12_reacquire and reason == 'pose_budget':
+            self.rejection_context = None
         self.recovery_reason = reason
         self.recovery_count += 1
         angular_progress = self.reacquire_turn_rad-self.recovery_turn_anchor
@@ -322,6 +325,10 @@ class CarryToZone:
             self.stalled_recoveries = 0
         self.recovery_anchor = self.loc.pose[:2]
         self.recovery_events.append({'t': now, 'event': 'stop_reobserve', 'reason': reason,
+                                     **(dict(category='localization' if reason == 'pose_budget' else 'route',
+                                        **(self.rejection_context or dict(blocked_object='pose_uncertainty_budget',
+                                            minimum_gap_m=None, gap_scope='not_applicable_localization_gate')))
+                                        if self.reloc12_reacquire else {}),
                                      'pose': self.loc.record(),
                                      **({'reacquire_issued_turn_rad': angular_progress} if self.reloc12_reacquire else {})})
         if self.recovery_count > 12 or self.stalled_recoveries >= 2:
@@ -355,6 +362,10 @@ class CarryToZone:
                  for ox, oy, hx, hy, angle in self.rects]
         path = plan_path((0., 0.), goal[:2], (-2., 2., -2., 2.), discs, rects=rects, radius=.17)
         if not path:
+            if self.reloc12_reacquire:
+                from harness.reloc12_ledger import route_context
+                self.rejection_context = route_context((0.,0.),goal[:2],discs,rects,.17,
+                    names=[o['id'] for o in self.static['obstacles']],bounds=(-2.,2.,-2.,2.))
             self.request_recovery(now, 'pickup_no_route')
             return (0., 0., 0.)
         point = next((p for p in path if math.hypot(*p) >= .06), goal[:2])

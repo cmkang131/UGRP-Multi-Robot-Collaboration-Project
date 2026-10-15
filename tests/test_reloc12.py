@@ -94,3 +94,10 @@ def test_reacquire_is_preempted_before_return_then_resumes_same_search(monkeypat
  assert t.phase=='carry_reacquire' and t.reacquirer is search and search.scan_yaw==.6
  t.step(.2,measurement=dict(xyz=[.5,0,.024],yaw=0))
  assert t.phase=='approach' and t.recovery_world is None
+
+
+def test_route_rejection_names_wall_and_signed_minimum_gap():
+ from harness.reloc12_ledger import route_context
+ r=route_context((0,0),(1,0),[],[(.5,0,.05,1,0)],.17,names=['wall_mid'])
+ assert r['blocked_object']=='wall_mid' and r['minimum_gap_m']==pytest.approx(-.17)
+ assert r['diagnostic_checks']==101

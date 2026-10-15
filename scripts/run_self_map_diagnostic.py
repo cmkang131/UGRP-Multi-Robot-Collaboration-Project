@@ -126,6 +126,8 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
     if reloc11_low_contrast_v1:
         result['options']['reloc11_low_contrast_v1'] = True
         result.update(execution_bundle_id='selfmap9-reloc11-low-contrast-v1',pool_with_previous_results=False)
+    if any(reloc12.values()):
+        result.update(execution_bundle_id='reloc12-registration-v1')
     return result
 
 
