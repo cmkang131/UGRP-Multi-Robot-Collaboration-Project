@@ -131,6 +131,12 @@ def analyze(root,out):
         entry['frame_funnel']=ordered_funnel(frame_N,[('any_assigned_probe',any_visible),
             ('meaningful_region_5_of_15',region_visible),('measurement_admitted_not_held',admitted)])
         entry['adapter_sha']=adapter['source_sha'];entry['dependency_sha']=adapter['dependency_sha']
+        entry['peer_yield']=adapter.get('peer_yield','off')
+        entry['reservation_population']={rid:dict(N=len(t.get('peer_yield_log',[])),
+            ordered_funnel=ordered_funnel(len(t.get('peer_yield_log',[])),[
+                ('outside_reserved_teal_destination',sum(not e['blocked'] for e in t.get('peer_yield_log',[])))]),
+            scope='constraint-query states; not candidate rejections or physical peer positions')
+            for rid,t in result.get('teachers',{}).items()}
         entry['candidate']=adapter['candidate'];entry['held_object_hidden_v1']=adapter['held_object_hidden_v1']
         entry['hidden_measurement_ticks']=adapter['hidden_measurement_ticks']
         entry['held_world_reads']=adapter['held_world_reads']
@@ -190,6 +196,7 @@ def analyze(root,out):
     dump(out/'rejection-table.json',dict(schema='ugrp.beampair1.funnel.v1',source_sha=batch['source_sha'],
         raw_root=str(root),episode_funnel=funnel,reason_distribution=dict(reasons),blocked_objects=dict(blocker_counts),
         candidate_populations={e['raw']:e['candidate_populations'] for e in episodes},
+        reservation_state_populations={e['raw']:e['reservation_population'] for e in episodes},
         frame_populations={e['raw']:e['frame_funnel'] for e in episodes},
         event_populations={e['raw']:e['event_funnel'] for e in episodes},
         rendezvous_event_populations={e['raw']:e['rendezvous_event_funnel'] for e in episodes},

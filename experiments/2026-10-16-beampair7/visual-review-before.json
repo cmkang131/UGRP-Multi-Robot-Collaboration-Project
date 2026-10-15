@@ -1,0 +1,105 @@
+{
+  "runs": [
+    {
+      "seed": 8318711,
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-beampair-gate-baseline-8318711-0b5faa4c/raw",
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "duration_sim_s": 59.90000000020341,
+      "original_tail_frames": 202,
+      "reviewed_sheets": [
+        "full-01.jpg",
+        "full-02.jpg",
+        "full-03.jpg",
+        "full-04.jpg",
+        "full-05.jpg",
+        "full-06.jpg",
+        "tail-01.jpg",
+        "tail-02.jpg",
+        "tail-03.jpg",
+        "tail-04.jpg",
+        "tail-05.jpg"
+      ],
+      "video_sha256": "a85c25e89436b43399e954a6cd4424623b45e56c22d5fbe52ca7e35e4af587a1",
+      "video_bytes": 631715,
+      "ffprobe": {
+        "programs": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 272,
+            "duration": "20.000000",
+            "nb_read_frames": "600"
+          }
+        ]
+      },
+      "scope": "Evaluation overview qpos rendering; original 10Hz own RGB for saved failure tail, calibrated qpos own rendering elsewhere. No physics/controller rerun or inferred motion frames. Qpos own views use original raw_fisheye_remap and actor geomgroup masks; native tail originals kept.",
+      "direct_visual_review_completed": true
+    },
+    {
+      "seed": 8318726,
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-beampair-short-baseline-8318726-0b5faa4c/raw",
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "duration_sim_s": 38.000000000098844,
+      "original_tail_frames": 0,
+      "reviewed_sheets": [
+        "full-01.jpg",
+        "full-02.jpg",
+        "full-03.jpg",
+        "full-04.jpg"
+      ],
+      "video_sha256": "c07e4845aae9c7f776f3e0d74cef0f9229ee2e08e9c02fd282e284610170be8c",
+      "video_bytes": 271904,
+      "ffprobe": {
+        "programs": [],
+        "streams": [
+          {
+            "width": 960,
+            "height": 272,
+            "duration": "12.700000",
+            "nb_read_frames": "381"
+          }
+        ]
+      },
+      "scope": "Evaluation saved-state rendering; original own JPEGs are 1Hz; qpos is 10Hz. No physics/controller rerun or inferred motion frames. Qpos own views use original raw_fisheye_remap and actor geomgroup masks; native tail originals kept.",
+      "direct_visual_review_completed": true
+    }
+  ],
+  "failure_timeline": [
+    {
+      "sim_s": "0–8",
+      "observed": "Separate starting sides; r1 blue search while r2 teal approaches from the blue side."
+    },
+    {
+      "sim_s": "8–18",
+      "observed": "r1 moves toward blue from teal side; r2 approaches teal from blue side; paths converge."
+    },
+    {
+      "sim_s": "18–24",
+      "observed": "Bases converge at teal end; r2 body fills r1 view. Neither reaches align."
+    },
+    {
+      "sim_s": "24–53",
+      "observed": "Sustained close bodies, r1 occluded; r2 continues showing teal. Repeated issued motion is not actual progress."
+    },
+    {
+      "sim_s": "53–59.9",
+      "observed": "10Hz originals reveal brief r1 scan/turn changes and renewed occlusion; r2 view remains close to teal. No READY/pick."
+    }
+  ],
+  "difference_from_sparse_review": "10Hz shows brief repeated scan/rotation amid long apparent standstill; the assigned ends differ even though both bases converge at teal.",
+  "original_six_reviewed_sim_s": [
+    0,
+    12,
+    24,
+    35,
+    47,
+    59
+  ],
+  "mac_gui_physics_render": 0
+}
