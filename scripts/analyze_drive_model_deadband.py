@@ -21,7 +21,12 @@ import an
 import flows
 from harness.drive_model import CommandDriveModel, DEFAULT_PARAMETERS
 from harness.grasp_act_visible_world import command_delta
-from sim.visible_belief import odometry
+from sim.visible_belief import odometry, rates
+
+# Existing odometry-scale/scripts/m3.py: fit on beam only, evaluation comparator.
+# Never passed into CommandDriveModel or fitted again on the compared flows.
+GT_FIT_GAINS = (.749, .715, .719)
+MODELS = ('m1', 'm2', 'gt_fit', 'new')
 
 
 def stat(values):
@@ -54,13 +59,15 @@ def evaluate(name, iterable, own, stage=None, solo=False):
                 mismatches += int(json.dumps([m1,m2]) != json.dumps([s['m1'],s['m2']]))
                 ticks+=1
                 if own == 'm1':
-                    s['on']=command_delta(issued,s['dt'],drive_model_deadband_v1=True,model=model)
+                    s['new']=command_delta(issued,s['dt'],drive_model_deadband_v1=True,model=model)
                 else:
                     # Keep the original M2 caller's scalar pulse-duration rule;
                     # change only the drive law. The remaining interval is idle.
-                    s['on']=odometry(s['w'],sec,drive_model_deadband_v1=True,model=model)
+                    s['new']=odometry(s['w'],sec,drive_model_deadband_v1=True,model=model)
                     if s['dt']>sec:
-                        model.delta([0.]*4,[0.]*4,s['dt']-sec)
+                        coast=model.delta([0.]*4,[0.]*4,s['dt']-sec)
+                        s['new']=tuple(a+b for a,b in zip(s['new'],coast))
+                s['gt_fit']=tuple(a*b for a,b in zip(s['m1'],GT_FIT_GAINS))
             if stage:steps=[s for s in steps if phases[s['i']]==stage]
             if not steps:continue
             has_yaw=gt[0][2] is not None
@@ -68,21 +75,26 @@ def evaluate(name, iterable, own, stage=None, solo=False):
             moving=[s for s in steps if any(s['w'])]
             row=dict(flow=name,run=run,robot=robot,ticks=len(steps),
                      gt_path_m=sum(map(gt_length,steps)),moving_gt_path_m=sum(map(gt_length,moving)))
-            for label, key in [('off',own),('on','on')]:
+            for label in MODELS:
+                key=label
+                final=an.drift(steps,gt,key,y0)[-1]
                 row[label]=dict(path_m=sum(math.hypot(*s[key][:2]) for s in steps),
                     moving_path_m=sum(math.hypot(*s[key][:2]) for s in moving),
-                    final_error_m=an.drift(steps,gt,key,y0)[-1][0])
+                    final_error_m=final[0],
+                    final_yaw_error_deg=abs(math.degrees(final[1])) if final[1] is not None else None)
                 gy=sum(abs(s['g'][2]) for s in steps) if has_yaw else 0
                 if gy and sum(abs(s['m1'][2]) for s in steps)>math.radians(20):
                     row[label]['yaw_ratio']=sum(abs(s[key][2]) for s in steps)/gy
             rows.append(row)
     out=dict(flow=name,own_model=own,runs=len({r['run'] for r in rows}),robots=len(rows),
              command_levels=sorted(levels),off_byte_comparison=dict(ticks=ticks,mismatches=mismatches))
-    for label in ('off','on'):
+    for label in MODELS:
         out[label]=dict(
             path_ratio=stat([r[label]['path_m']/r['gt_path_m'] for r in rows if r['gt_path_m']>.5]),
             moving_path_ratio=stat([r[label]['moving_path_m']/r['moving_gt_path_m'] for r in rows if r['moving_gt_path_m']>.5]),
             final_error_m=stat([r[label]['final_error_m'] for r in rows if r['gt_path_m']>.3]),
+            final_yaw_error_deg=stat([r[label]['final_yaw_error_deg'] for r in rows
+                                     if r['gt_path_m']>.3 and r[label]['final_yaw_error_deg'] is not None]),
             yaw_ratio=stat([r[label]['yaw_ratio'] for r in rows if 'yaw_ratio' in r[label]]))
     return out,rows
 
@@ -138,7 +150,7 @@ def main():
     for name,it,own,stage,solo in cases:
         out,per=evaluate(name,it,own,stage,solo)
         summaries.append(out);rows.extend(per)
-        print(name,json.dumps(out['on'],sort_keys=True),flush=True)
+        print(name,json.dumps(out['new'],sort_keys=True),flush=True)
     # Include status/plan evidence for every loaded run without asserting that
     # this local retrieval is an exhaustive remote inventory.
     statuses=[]
@@ -153,14 +165,19 @@ def main():
                     status[name]={k:obj[k] for k in ('source_sha','status','success','passed','reason','terminal_reason','t') if k in obj}
         statuses.append(status)
     params=DEFAULT_PARAMETERS
-    result=dict(schema='ugrp.drive_model_deadband.offline.v1',
+    result=dict(schema='ugrp.drive_model_deadband.offline.v2',
                 scope='saved-command open-loop score only; no new behavior/simulation/render/remote',
                 gt_scope='evaluation denominators and shared initial pose only; never model input',
-                metrics='per-robot medians; full/moving path GT>0.5m separately; final error full GT>0.3m; yaw nominal M1>20deg',
+                metrics='per-robot medians; full/moving path GT>0.5m separately; final position/absolute wrapped yaw error full GT>0.3m; yaw ratio nominal M1>20deg; solo yaw unavailable',
+                gt_fit=dict(gains=GT_FIT_GAINS,source='odometry-scale/scripts/m3.py; beam in-sample; fixed comparator only'),
+                pulse_timing='new M1 per-wheel durations; new M2 existing scalar duration; both include coast within full evaluation interval',
                 parameters=vars(params),confirmed_damping_nm_s=params.damping_nm_s,
-                unverified=['extra damping about 0.000624 Nm s is not included',
-                            'non-0.35 levels have no saved-motion validation',
-                            'closed-loop behavior, contact, loads, transient/coast and hardware'],
+                isolated_pulse_rates=rates(drive_model_deadband_v1=True),
+                yaw_reference_rad_s=1.03,
+                unverified=['yaw loss ratio equals forward loss: unverified',
+                            'lateral needs a separate loss coefficient; not calibrated here',
+                            'inertia is a mass/XML estimate; coupled/load dynamics unverified',
+                            'closed-loop behavior, hardware; only .35 in replay ledgers'],
                 base_sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True,cwd=ROOT).strip(),
                 source_state='working tree identified by code_sha256; final commit recorded in PR',
                 code_sha256={str(f.relative_to(ROOT)):sha(f) for f in
@@ -172,6 +189,27 @@ def main():
                 run_statuses=compressed_json(args.out/'run-statuses.json.zst',statuses))
     (args.out/'summary.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
     assert all(s['off_byte_comparison']['mismatches']==0 for s in summaries)
+    lines=['# 접촉 손실·펄스 ODE 저장 원장 재생', '',
+           '각 셀은 M1 / M2 / GT-fit / 새 모델 순서의 로봇별 중앙값이다. '
+           'GT-fit은 기존 빔 적합 .749/.715/.719를 고정 재사용했다. 빔은 in-sample이며 새 모델에는 이 계수를 넣지 않았다.', '',
+           '| 흐름 | 실행/로봇 | 최종 병진 drift mm (n) | 최종 요 drift ° (n) | 명령 구간 경로비 (n) | 요 경로비 (n) |',
+           '|---|---:|---:|---:|---:|---:|']
+    def cell(flow,key,scale=1,digits=2):
+        stats=[flow[m][key] for m in MODELS]
+        if all(s is None for s in stats):return '미측정/분모 없음 (0)'
+        assert len({s['n'] for s in stats if s})==1
+        return ' / '.join(f"{s['median']*scale:.{digits}f}" if s else '—' for s in stats)+f" ({stats[0]['n']})"
+    for f in summaries:
+        lines.append(f"| {f['flow']} | {f['runs']}/{f['robots']} | {cell(f,'final_error_m',1000,1)} | {cell(f,'final_yaw_error_deg')} | {cell(f,'moving_path_ratio',digits=3)} | {cell(f,'yaw_ratio',digits=3)} |")
+    lines += ['', '- 병진/요 drift: 전체 GT 경로 >0.3 m, 공통 시작 GT 자세에서 열린고리 적분한 최종 오차. 요는 최단각 절댓값.',
+              '- 명령 구간 경로비: 해당 GT 경로 >0.5 m. 요 경로비: 공칭 M1 누적 회전 >20°. solo는 저장 yaw가 없어 요 drift 미측정.',
+              '- 실패·중단 포함. 진단 부분집합과 상자 grasp/release는 중복이므로 n을 합산하지 않는다. solo carry 870c0c59는 interrupted 1회다.',
+              '- 84a1b7b8은 경로 임계값 미달이며 per-robot.json.zst에 비선별 원시 점수를 보존했다.',
+              '- M2 비교는 기존 scalar pulse duration 규칙을 유지하며 새 모델은 남은 구간 coast까지 더한다. M1은 바퀴별 duration을 쓴다.',
+              '- 요 손실이 병진과 같은 비율인지는 미확인. 횡이동의 별도 손실 계수·하중·폐루프·실물은 미검증.',
+              f"- OFF 바이트 비교 {sum(f['off_byte_comparison']['ticks'] for f in summaries):,}회, 불일치 0회(중복 포함). 원본/plan/상태 {len(inputs):,}파일 SHA-256 기록.",
+              '- 상세 수치/분모: [summary.json](summary.json), 전체 로봇: [per-robot.json.zst](per-robot.json.zst), 상태: [run-statuses.json.zst](run-statuses.json.zst), 원본 해시: [inputs.json.zst](inputs.json.zst).']
+    (args.out/'results.md').write_text('\n'.join(lines)+'\n')
 
 
 if __name__=='__main__':main()

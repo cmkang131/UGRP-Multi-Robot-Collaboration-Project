@@ -33,11 +33,25 @@ ODOMETRY_PROFILES = {
 
 
 def rates(profile='off', *, drive_model_deadband_v1=False):
-    """(axial m/s, lateral m/s, yaw rad/s) at wheel level 0.35 for an odometry profile."""
+    """Rates per 0.1 s isolated pulse at .35, including the subsequent coast.
+
+    ON axial passes the S3 12.6--13.2 mm acceptance band (12.9 mm measured).
+    ON yaw uses the same loss provisionally; yaw/lateral losses are unmeasured.
+    These planning rates are not steady velocities or an integration shortcut.
+    """
     validate_options(drive_model_deadband_v1,profile=profile)
     if drive_model_deadband_v1:
-        axial=CommandDriveModel().delta([.35]*4,[1.]*4,1.)[0]
-        yaw=CommandDriveModel().delta([-.35,.35,-.35,.35],[1.]*4,1.)[2]
+        def pulse_rate(wheels, axis):
+            model=CommandDriveModel()
+            active=model.delta(wheels,[.1]*4,.1)[axis]
+            # Analytic zero-torque stop time, not a fitted settling timeout.
+            p=model.parameters
+            stop=max(p.effective_inertia_kg_m2/p.total_damping_nm_s *
+                     math.log1p(p.total_damping_nm_s*abs(w)/p.rolling_torque_nm)
+                     for w in model.angular_speeds)
+            return (active+model.delta([0.]*4,[0.]*4,stop)[axis])/.1
+        axial=pulse_rate([.35]*4,0)
+        yaw=pulse_rate([-.35,.35,-.35,.35],2)
         return axial,axial,yaw
     return ODOMETRY_PROFILES[profile]
 

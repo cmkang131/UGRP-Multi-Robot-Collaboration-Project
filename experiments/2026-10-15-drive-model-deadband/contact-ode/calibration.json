@@ -1,0 +1,149 @@
+{
+  "scope": "saved numeric data and XML arithmetic only; no physics, rendering, remote or model calls",
+  "parameters": {
+    "wheel_radius_m": 0.0325,
+    "lx_plus_ly_m": 0.12435,
+    "no_load_rpm": 150.0,
+    "torque_cap_nm": 0.1176798,
+    "no_load_current_a": 0.1,
+    "stall_current_a": 1.2,
+    "start_fraction": 0.325,
+    "rolling_torque_nm": 0.001857,
+    "contact_damping_nm_s": 2.86e-05,
+    "effective_inertia_kg_m2": 0.000385
+  },
+  "sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/odometry-scale/damping_analysis.md",
+      "sha256": "8c36c5247562f617823e3818f5161039b576b73f381730e023696562f365810d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-gate-752b0cbb/raw/grasp-search-gate40-gcp-752b0cbb/cohort-016/episode-016/raw/scene.xml",
+      "sha256": "da9bef95b3ee44aaf782c827ce8686f01f621025a87049e7b3b483e61b75d641"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/drive-model/experiments/2026-10-06-drive-friction/v7-results.json",
+      "sha256": "f2e0e6dacc3e2749b3f63363e12e0041032dc85bef0e5e942b5376b2f0a2f5ab"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/odometry-scale/scripts/m3.py",
+      "sha256": "61e4f50946d2a4d5fb0fe1d7998e9045458a6b0aba704fc618f45b2c6a75f537"
+    }
+  ],
+  "steady": [
+    {
+      "run": "v7-empty-forward-u035",
+      "u": 0.35,
+      "omega": 4.283155914827329,
+      "measured_ratio": 0.27267417435122343,
+      "predicted_ratio": 0.2725593285728967,
+      "relative_error": -0.0004211831890567064,
+      "residual_loss_nm": 0.0019670578890843143
+    },
+    {
+      "run": "v7-empty-forward-u050",
+      "u": 0.5,
+      "omega": 6.8385891383594615,
+      "measured_ratio": 0.43535810605778147,
+      "predicted_ratio": 0.4355170396902862,
+      "relative_error": 0.0003650641398271759,
+      "residual_loss_nm": 0.00206979972151302
+    },
+    {
+      "run": "v7-empty-forward-u100",
+      "u": 1.0,
+      "omega": 15.373963622582629,
+      "measured_ratio": 0.978736922179603,
+      "predicted_ratio": 0.9787094100815843,
+      "relative_error": -2.810979885936593e-05,
+      "residual_loss_nm": 0.0022937151831813607
+    }
+  ],
+  "no_contact": {
+    "run": "v7-motion-no_contact-u035",
+    "measured_ratio": 0.29090909112112456,
+    "source_prediction": 0.2909090909090908
+  },
+  "contact_fit": {
+    "tau_c_nm": 0.0018572352765005755,
+    "b1_nm_s": 2.864112726944949e-05,
+    "n": 3,
+    "parameters": 2,
+    "residual_degrees_of_freedom": 1
+  },
+  "inertia": {
+    "terms_kg_m2": {
+      "reflected_body_mass_m_r2_over_4": 0.00029046875000000004,
+      "hub_y_axis": 4.49468085106383e-05,
+      "joint_armature": 2e-05,
+      "rigid_carried_rollers_upper": 3.044690391357728e-05
+    },
+    "sum_kg_m2": 0.0003858624624242156,
+    "chosen_kg_m2": 0.000385,
+    "qualification": "rounded upper-side estimate, rigid carried rollers; actual mecanum coupling/load not identified"
+  },
+  "isolated_pulse": {
+    "I_eff": 0.000385,
+    "active_m": 0.007441559721280288,
+    "coast_m": 0.005174809736786159,
+    "total_m": 0.012616369458066446,
+    "final_omega": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "inertia_sensitivity": [
+    {
+      "I_eff": 0.0002,
+      "active_m": 0.010007271668699006,
+      "coast_m": 0.0031972172967063522,
+      "total_m": 0.013204488965405358,
+      "final_omega": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "I_eff": 0.000385,
+      "active_m": 0.007441559721280288,
+      "coast_m": 0.005174809736786159,
+      "total_m": 0.012616369458066446,
+      "final_omega": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "repeated_duty": {
+    "pulse_s": 0.07,
+    "period_s": 0.1,
+    "repetitions": 200,
+    "m1_ratio": 0.7562904992461558,
+    "relative_to_contact_steady": 0.9711708497453218
+  },
+  "m2_rates": {
+    "axial": 0.12616369458066445,
+    "lateral": 0.12616369458066445,
+    "yaw": 1.014585400729107,
+    "yaw_measured_reference": 1.03,
+    "yaw_relative_error": -0.014965630360090243,
+    "yaw_loss_ratio_verified": false,
+    "axial_acceptance_mm": [
+      12.6,
+      13.2
+    ],
+    "axial_measured_reference_mm": 12.9
+  },
+  "limits": [
+    "steady three points are fit data, not held out",
+    "pulse includes passive coast after .1 s command",
+    "yaw/lateral independent loss and hardware not verified",
+    "no body GT gains applied to the new model"
+  ]
+}

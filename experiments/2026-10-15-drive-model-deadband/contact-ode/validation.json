@@ -1,0 +1,43 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_drive_model_deadband.py",
+  "exit_code": 0,
+  "stdout_tail": "22 passed in 3.69s",
+  "scope": "pure command ODE, saved steady values, pulse/coast, source AST relay, adapters and frozen OFF bytes",
+  "test_sha256": "184a7dd3b63555acd80341955b8fb25b5cd3a99fdfeaa3e1426c65c0aae4e532",
+  "python": "3.12.13",
+  "physics_steps": 0,
+  "renders": 0,
+  "remote_sessions": 0,
+  "model_calls": 0,
+  "ci": "not checked for this commit at local validation time",
+  "raw_files_rehashed": 2802,
+  "raw_hash_mismatches": 0,
+  "code_hash_mismatches": 0,
+  "off_delta_comparisons_including_overlap": 475991,
+  "off_delta_mismatches": 0,
+  "previous_round_inputs": {
+    "files": 2736,
+    "retained": 2736,
+    "common_hash_changes": 0,
+    "added_local_files": 66,
+    "missing": 0,
+    "note": "same local replay roots; 10 additional already-local crate diagnostic runs included; not added to the gate cohorts"
+  },
+  "run_status_counts": {
+    "complete": 213,
+    "status-not-recorded": 253,
+    "interrupted": 10,
+    "HOST_ERROR": 6
+  },
+  "compressed_artifacts_roundtrip_verified": true,
+  "calibration_code_sha256": "82ba069a33b957b856f162f4f1ebd596e4329f3b9cd5174681f2ce8b7853be8d",
+  "replay_code_sha256": {
+    "scripts/analyze_drive_model_deadband.py": "8eb5496efee487b5600d20f430ef3a466e9d0d34950250c8b6798fca963727a7",
+    "harness/drive_model.py": "62da40fec2d39c79c5c2d6490a48fc7fe6019566c7f0ccd016e23857ed410cbc",
+    "harness/grasp_act_visible_world.py": "254515b9af0043ffaa0423a72be49b9372d969f8948f32e1682f7a468d1e7de4",
+    "sim/visible_belief.py": "1948d7904a22cbad04d162c33dbe1a2b8b8c9137b7a8afd0ecd467ddfd482249",
+    "experiments/2026-10-15-drive-model-deadband/analysis_helpers/lib.py": "ae0f9c0f16ec46161f5852e47d57c2ad00a06bc436752171c7d9f9c997a38c53",
+    "experiments/2026-10-15-drive-model-deadband/analysis_helpers/an.py": "2ae243c8972824b7637389e31ed398f86d1b470cafa957d70874474db32da4e9",
+    "experiments/2026-10-15-drive-model-deadband/analysis_helpers/flows.py": "d8c594928c10b63856eab13f12fbfd1b2fad092f61d766314daeedbcc41a63d5"
+  }
+}

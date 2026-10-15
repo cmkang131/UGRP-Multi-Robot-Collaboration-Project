@@ -28,6 +28,8 @@
 
 ## 현재 검증 범위
 
+- [PR #510 자기 명령 구동 모델](experiments/2026-10-15-drive-model-deadband/README.md): 기본 off. v7 `v7-empty-forward-u035/050/100`의 접촉 구름 손실과 일차 펄스 ODE를 반영했다. [저장 원장 4모델 drift 비교](experiments/2026-10-15-drive-model-deadband/contact-ode/results.md)는 열린고리 계산이며 새 실행 성공이 아니다.
+
 - [S4 집게 이탈 저장 영상 감사](experiments/2026-10-06-s4-llm/s4grip/README.md): 실제 모델 응답·이탈 영상 부족으로 S4 정확도 미측정. 기존 CV 참고 진단, 접촉 라벨 평가 전용, 물리/렌더/모델0.
 
 - [S4 빔 공동 출발 준비](experiments/2026-10-06-s4-llm/s4live4/README.md): 기본 OFF LLM claim→GO/ACK→공동 출발·자기 RGB 이탈 정지, 오프라인 준비만. S3 확정 SHA 대기, 4조건×seed601 사전 목록, 실제 모델/물리 0.

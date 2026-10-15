@@ -1,7 +1,9 @@
 # 공용 자기 명령 구동 모델 — drive_model_deadband_v1
 
 기본 **off**. M1의 명령=바퀴속도 가정과 M2의 임시 요 상수를,
-v7의 입력 릴레이·무부하 전류 손실·확인된 감쇠에서 유도한 같은 모델로 선택적으로 바꾼다.
+v7 입력 릴레이·DC 감쇠에 저장된 접촉 구름 손실과 일차 ODE를 더한 모델로 선택적으로 바꾼다.
+최신 수정 라운드는 [contact-ode 결과표](contact-ode/results.md)·[요약](contact-ode/summary.json)이며,
+기존 results.md/summary.json/validation.json은 `01703ed2`의 직사각 모델 기록으로 보존한다.
 자기 발행 바퀴 명령과 시간, 고정 모터/치수만 받는다. GT·접촉·실측 관절은 입력하지 않는다.
 실물에는 실제 모터 사양과 별도의 고정 보정이 필요하다. 현재 숫자는 실물 검증값이 아니다.
 
@@ -22,58 +24,75 @@ M1은 #484 `4fdf7f84`의 `grasp_act_visible_world.py`, M2는 #500 `fd724191`의
   같은 방향에서는 `|u| > bk`까지 유지. 그 외 source torque는 0.
 - 켜진 바퀴의 `tau = T0 × (u − sign(u) × bk)`;
   확인된 `B = (T0 − T0×bk) / omega0 = 0.006867418019757396 N·m·s`.
-- 무부하 정상상태 `omega = tau / B`, `omega0 = 150×2π/60 rad/s`.
-  따라서 u=.35에서 `omega/omega0=.290909`, 공칭/예측=1.203125;
-  u=.40에서는 .345455와 1.157895다. .40은 수식 예측만 검증했다.
+- 접촉 구름 손실을 반영한 정상상태는 `|omega| = max(0, T0*(|u|-bk)-τc)/(B+b1)`.
+  `τc=1.857e-3 N·m`, `b1=2.86e-5 N·m·s`(바퀴당)는
+  `experiments/2026-10-06-drive-friction/v7-results.json`의 **v7-empty-forward-u035/050/100**
+  (`rows[3:6]`)에 저장된 4바퀴 평균 속도와 모터 토크의 잔차를 직선 적합한 값이다.
+  u=.35/.50/1.0의 저장 정상 비율 .2727/.4354/.9787을 ±1% 이내로 재현한다.
+  세 점은 적합 자료이며 독립 검증이 아니다. `u-bk`만으로 속도를 계산하지 않는다.
+- 펄스는 `I_eff * dω/dt = τmotor - (B+b1)*ω - τc*sign(ω)`를 각 구간에서 해석적으로 적분한다.
+  속도 0을 지나는 시점에서 구간을 나누며, 정지 중 `|τmotor|<=τc`면 붙어 있는 상태를 유지한다.
+  반전·바퀴별 명령 종료·명령 없는 감속을 처리한다. 릴레이 상태와 예측 속도는 별도다.
+- `I_eff=3.85e-4 kg·m²`는 질량/XML 어림이다. 빔 gate episode-016 scene.xml에서
+  질량 1.1 kg의 병진 환산 `m*r²/4=2.9046875e-4`, 허브 y축 관성 `4.49468085e-5`,
+  armature `2e-5`, 9개 롤러의 `Σ[m*(x²+z²)+max(diaginertia)]=3.04469039e-5`를
+  더하면 `3.85862462e-4`다. 롤러를 함께 회전하는 물체로 근사한 상한 쪽 어림을 반올림했다.
+  실제 메카넘 결합·자유 롤러·하중별 유효 관성은 식별하지 않았다. 원본 분석의
+  `2e-4..3.85e-4` 민감도에서 고립 펄스 총 이동은 약 13.20..12.62 mm다.
 - 메카넘 차체 증분은 바퀴 각 증분을 `r/4` 행렬로 변환한다.
   `r=.0325 m`, `lx+ly=.0594+.06495=.12435 m`는 저장된 v3 장면의 고정 치수다.
-  OFF는 기존 M1의 .1255를 그대로 쓴다. ON의 M2 요 속도는 u=.35에서 약 1.1943 rad/s다.
-- 정상상태 근사라 관성·가감속·coast·밀림·접촉/정지를 예측하지 않는다.
-  발행 명령을 실제 이동이나 파지 성공으로 취급하면 안 된다.
+  OFF는 기존 M1의 .1255를 그대로 쓴다. 별도의 몸체 GT 이득은 곱하지 않았다.
+- u=.35의 **0.1초 고립 펄스 + 완전 감속**은 12.616 mm로, S3 실측 12.9 mm의
+  요청 허용 범위 12.6–13.2 mm 안이다. 첫 .1초 이동만은 7.442 mm이고 그 뒤 5.175 mm를 더 간다.
+  M2 ON `rates()`는 이 검증을 거친 펄스 이동/.1초인 **.126164 m/s**를 쓴다.
+  기본 OFF의 경험값 .129는 유지한다. rates와 .1초 시점의 순간 적분값을 혼동하지 않는다.
+- ON 요 계획 상수는 같은 펄스/기하에서 **1.0146 rad/s**(실측 약 1.03 대비 −1.5%)다.
+  요에 병진과 같은 손실을 적용할 수 있는지는 **미확인**이다. 정상 속도 기반 요 예측은 약 1.119 rad/s다.
+  저장 r14d 요 진단은 새 모델 요 경로비 .815로 과소 추정한다(2로봇).
+  횡이동도 별도 손실 계수가 필요할 수 있다(기존 GT-fit 횡 .715, 전진 .749;
+  접촉 미끄럼 횡 .015 m/s, 전진 .00014 m/s). 이번에 횡 전용 계수는 넣지 않았다.
+- 외력·충돌·실제 하중 변화는 예측하지 않는다. 발행 명령을 실제 이동이나 파지 성공으로 취급하면 안 된다.
 
-공용 모델은 wheel relay 상태를 로봇마다 보관하며 episode 시작에 `reset()`한다.
+공용 모델은 wheel relay와 명령만으로 예측한 각속도 상태를 로봇마다 보관하며 episode 시작에 `reset()`한다.
 `delta(wheels, durations_s, dt)`에는 구간 시작의 바퀴별 남은 펄스 시간을 넣는다.
-펄스가 dt보다 짧으면 남은 정지 구간에서 해당 relay를 해제한다. 정지 구간도 전달해야 한다.
+펄스가 dt보다 짧으면 해당 relay를 해제하고 남은 구간의 감속 이동까지 적분한다. 정지 구간도 전달해야 한다.
 같은 틱에서 좌표/요/거리 갱신에 쓸 delta는 한 번 계산해 재사용한다.
 기억 항목마다 같은 상태 객체를 다시 적분하면 안 된다.
 
-## 추가 감쇠 조사와 남는 차이
+## 접촉 손실의 근거와 한계
 
-[정적 감사](source-audit.json)는 빔 원본 scene.xml 40개, 장면당 바퀴 12개를 확인했다.
-모두 `damping=.006867418019757396`, `frictionloss=0`, native motor·gear=1이고
-actuator default 블록은 없다. wheel 위치도 위 고정 치수와 일치한다.
-`masterpi_drive_friction_v7` → v6 XML → v2/v1, `v7_exact_speedups`,
-`CameraRobotPort`/`set_motor_commands` 및 multi-world 초기화를 읽었다.
-relay cache는 원래 parameter 속성을 전달하고 명령 설정은 ±1 clipping만 한다.
-검토한 경로에서 추가 `dof_damping` 또는 `actuator_biasprm` 덮어쓰기를 찾지 못했다.
-시뮬레이터 코드는 변경하지 않았다. 실제 런타임 배열을 새로 관찰한 결과는 아니다.
+접촉을 제거한 `v7-motion-no_contact-u035`(`rows[12]`)는 `omega/omega0=.290909`를 재현한다.
+추가 DC 점성 감쇠가 있다는 이전 해석을 철회한다. 기존 [정적 감사](source-audit.json)의 XML 40개에
+기록된 `B=.006867418019757396`, `frictionloss=0`, native motor·gear=1과도 일치한다.
+새 τc와 작은 b1은 **롤러–바닥 접촉 잔차**다. 손실이 소산되는 세부 기구는 미식별이며,
+과거 한 속도에서 환산한 .000624 N·m·s를 실제 감쇠로 더하지 않는다.
 
-제공된 분석의 정상 바퀴속도 `.2666×omega0`는 `B≈T0/omega0=.00749172874882625`와 맞는다.
-그 차이 **.0006243107290688542 N·m·s의 원인은 미확인**이므로 ON 계산에 넣지 않았다.
-`omega≈(u−bk)×omega0`를 확정한 법칙으로 채택하지 않았다.
-이 선택 때문에 M1 과대가 줄어도 약 10–15%가 남고,
-이미 전진이 보정된 M2 내려놓기의 위치 차는 커진다. 기본 전환 근거가 아니다.
+원본 분석의 .2666은 정상 속도가 아니라 펄스 구간 평균이다. 접촉 손실과 듀티 효과를
+분리하며, 약 ×.973의 듀티 손실을 고정 이득으로 또 곱하지 않고 ODE로 계산한다.
+분석 원문·수치 근거·XML·해시는 [이번 라운드 근거](contact-ode/calibration.json)에 기록했다.
+빈 로봇 직진 3점의 적합은 하중·횡·요·실물 검증을 대신하지 않는다.
 
 ## 저장 원본 재계산
 
-[결과표](results.md) · [요약 JSON](summary.json).
+[최신 4모델 결과표](contact-ode/results.md) · [요약 JSON](contact-ode/summary.json).
 원본 `odometry-scale/scripts/{lib,flows,an}.py`를 바이트 그대로
 `analysis_helpers/`에 보존해 loader·시각 대응·드리프트 정의를 재사용했다.
-모델별 별도 계수 fitting은 하지 않았다.
+GT-fit 비교에는 기존 `odometry-scale/scripts/m3.py`의 .749/.715/.719를 그대로 쓴다.
+새 모델에는 몸체 GT 적합 계수를 넣지 않았으며 접촉 손실 2개 모수만 저장 바퀴 속도 3점에서 가져왔다.
 
 - 명령 at `t_a` ↔ 평가 `[t_a,t_b]` 구간. M1의 바퀴별 duration과 M2의 기존 scalar duration
-  규칙을 각각 유지하고 ON/OFF를 계산한다. M2 ON 표는 `odometry(wheels, seconds, ...)`의 기존
-  호출 형태를 쓴다. 새 optional `durations_s`를 사용하는 별도 비교와 섞지 않는다.
+  규칙을 각각 유지하고 M1/M2/GT-fit/새 모델을 계산한다. M2 흐름의 새 모델 표는 `odometry(wheels, seconds, ...)`의 기존
+  호출 형태를 쓰되 같은 평가 구간에 남은 감속 이동도 더한다. 새 optional `durations_s`를 사용하는 별도 비교와 섞지 않는다.
 - 경로비는 로봇별 issued/GT, 전체와 nonzero-command 구간을 별도 산출한다(각 GT 경로 >.5 m).
-  최종 위치 차는 전체 GT 경로 >.3 m, 첫 GT 자세에 두 모델을 동일하게 정렬한 열린고리 적분이다.
-  GT를 매 틱 모델에 넣지 않는다. 요는 공칭 M1 누적 절댓값 >20°인 로봇을 분모로 쓴다.
+  최종 위치/요 차는 전체 GT 경로 >.3 m, 첫 GT 자세에 네 모델을 동일하게 정렬한 열린고리 적분이다.
+  GT를 매 틱 모델에 넣지 않는다. 요 drift는 최종 최단각 절댓값이고, 요 경로비는 공칭 M1 누적 절댓값 >20°인 로봇을 분모로 쓴다. solo 원장에는 yaw가 없어 미측정으로 표시한다.
 - 실패·중단도 제외하지 않는다. 진단 집합에는 여러 과거 SHA가 있어 단일 새 코호트 성능이 아니다.
   `r12d`, `r14d`는 release 진단의 부분집합이고, 상자 grasp/release도 같은 실행의 단계다.
   이 행들의 n을 더해 독립 실행 수로 보고하지 않는다.
 - 단독 운반은 원 보고서 Markdown과 JSON이 다르다. JSON과 원본에는
   `84a1b7b8`(거의 정지) 및 `870c0c59`(interrupted)가 모두 있다. 두 행으로 분리한다.
   움직인 interrupted 1회도 완주/성공으로 표시하지 않는다.
-- native_yaw_v1 자료의 외부 부호 처리 의미는 미확인이다. 여기서는 두 모델의 양의 요를
+- native_yaw_v1 자료의 외부 부호 처리 의미는 미확인이다. 여기서는 네 모델의 양의 요를
   같은 메카넘 규약으로 적분한 크기 비교이며, 실행기 부호 경로를 검증한 결과가 아니다.
 
 재현(로컬 저장 원본만 읽음):
@@ -84,6 +103,11 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/analyze_drive_model_deadband.py \
   --beam-runs /Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/beam-gate-752b0cbb/raw/grasp-search-gate40-gcp-752b0cbb \
   --out /private/tmp/drive-model-new-output
 ```
+
+이번 재생은 기존 원본 2,736파일을 모두 같은 해시로 유지하고 같은 로컬 경로의 추가 상자 진단 10실행(66파일)을 포함했다.
+관문 코호트는 그대로이며 진단 행의 분모만 증가했다. 총 2,802파일을 다시 해시 검증했다.
+상태 원장은 complete 213 / interrupted 10 / HOST_ERROR 6 / status 미기록 253개 디렉터리다.
+status 미기록을 완료로 간주하지 않으며, 저장 구간의 계산 완료와 실제 실행 완료는 구분한다.
 
 raw 파일은 기존 로컬 위치에 보존한다. 요약의 원본 hash 목록·개별 로봇 결과·실행 상태 파일은
 zstd 압축 뒤 해제 바이트/해시를 확인했다. 새 물리·렌더·원격 실행과 모델 호출은 0이다.
@@ -104,9 +128,9 @@ zstd 압축 뒤 해제 바이트/해시를 확인했다. 새 물리·렌더·원
 | 단독 운반 #505 | `sim/solo_carry_pose.py::CommandPose.issue`, `sim/solo_carry_to_zone.py::integrate` | 두 command_delta 호출에 같은 토글. 한 자기 자세를 이중 적분하지 않고 각 소유 상태에서 한 번 계산 |
 | 빔 내려놓기 #491 | `sim/grasp_act_release_teacher.py::ReleaseTeacher.dead_reckon`, `scripts/run_grasp_act_release.py`의 own-command 경로 | `odometry(wheels, seconds, drive_model_deadband_v1=True)`. 기존 외부 native_yaw 부호 처리는 별도 검증 필요 |
 | 상자 내려놓기/둘러보기 #500 | 위 release teacher, `scripts/run_crate_teacher.py:817–819`의 own_la/전파용 `odometry` | 모든 소비자가 같은 토글. `gcp_probe_v1`와 동시 사용 거부 |
-| 계획용 속도표 | `scripts/probe_carry_lookaround.py`의 모든 `rates(odometry)` | `rates(..., drive_model_deadband_v1=True)`; .35의 정상상태 값이며 다른 u에 선형 비례로 재사용 금지 |
+| 계획용 속도표 | `scripts/probe_carry_lookaround.py`의 모든 `rates(odometry)` | `rates(..., drive_model_deadband_v1=True)`; .35 고립 .1초 펄스+감속의 이동/.1초이며 다른 u·듀티에 선형 비례로 재사용 금지 |
 
-함수는 기본 one-shot(정지에서 시작)으로도 호출할 수 있다. 연속 저명령 유지까지 쓸 때는
+함수는 기본 one-shot(정지에서 시작)으로도 호출할 수 있다. 연속 명령·가속·감속 이력을 유지하려면
 `CommandDriveModel` 하나를 로봇/episode별로 만들고 `model=`에 전달하며 정지 구간도 적분한다.
 `rates`는 별도의 one-shot 계산이라 로봇의 relay 상태를 바꾸지 않는다.
 
@@ -125,12 +149,14 @@ M2의 `gcp_probe_v1`도 동시에 켜면 거부한다. 기존 OFF/search17/gcp_p
 
 ## 검증
 
-`tests/test_drive_model_deadband.py`: **17 passed**. 실제 v7 parameter class만 AST로 추출해
-릴레이 모든 방향/경계값·감쇠를 비교했으며 MuJoCo 객체를 만들지 않았다.
+`tests/test_drive_model_deadband.py`: **22 passed** (접촉 ODE 수정 라운드). 실제 v7 parameter class만 AST로 추출해
+릴레이 모든 방향/경계값·기존 DC 감쇠를 비교했으며 시뮬레이터 객체를 만들지 않았다.
+저장 정상값 3점 ±1%, 고립 펄스 12.6–13.2 mm, 반복 .07/.1 듀티, 구간 분할 불변성·반전·정지를 검사했다.
 두 API 연결, pulse/gap/reset, mixed wheels·요 부호, 오류 입력, GT 입력 거부와 상호 배제를 검사했다.
 고정 baseline 소스에서 만든 128개 입력의 OFF 및 기존 보정 결과 JSON,
-M1 VisibleWorld 출력 JSON은 SHA-256이 일치했다. [시험 기록](validation.json).
-저장 원장의 OFF 바이트 비교 횟수와 mismatch는 결과표/요약에 별도로 있다.
+M1 VisibleWorld 출력 JSON은 SHA-256이 일치했다. [이번 시험 기록](contact-ode/validation.json).
+저장 원장의 OFF 바이트 비교는 475,991회(중복 포함), 불일치 0회다.
+기본 OFF·기존 고정 보정 출력은 바뀌지 않았다. 소스·압축/해제 해시도 대조했다.
 Git diff에서 기존 시뮬레이터 파일 변경은 0이다. CI에 이 시험 파일을 등록했다.
 
 ## 참고 자료 — 2026-10-15 원문 확인
@@ -147,4 +173,7 @@ Git diff에서 기존 시뮬레이터 파일 변경은 0이다. CI에 이 시험
 4. 저장소 `sim/masterpi_drive_friction_v7.py`의 `DriveParameters`·`command_step`,
    v6 `transform_xml` 및 저장 XML 40개: 이 프로젝트 수치의 직접 근거.
    제공된 `odometry-scale/report.md`, `summary.json`, scripts는 측정 근거이며
-   source/hash를 [sources.json](sources.json)에 기록했다. 추가 감쇠의 출처로 대신 인용하지 않았다.
+   source/hash를 [sources.json](sources.json)에 기록했다.
+5. 이번 접촉 보정의 직접 근거: `v7-results.json`의 `v7-empty-forward-u035/050/100`,
+   반증 행 `v7-motion-no_contact-u035`, 제공된 `odometry-scale/damping_analysis.md` 2·3·5·7절.
+   [고정 원문 사본](contact-ode/damping_analysis.md)·[해시/수치](contact-ode/calibration.json).
