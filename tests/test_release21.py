@@ -28,6 +28,8 @@ def setup(cls=release21.LineAlign):
             fov_step=release17.FOV_STEP)
     a.state = 'align'
     a.expected = dict(t.pwm)
+    a.command_history = release18.CommandHistory()
+    a.command_history.observe(t.pwm, saved['t'])
     a.features = lambda frame:saved['feature']
     return a, t, saved, issued, scheduled
 
@@ -46,12 +48,14 @@ def test_saved_110618_reproduces_old_failure_and_starts_stationary_recenter():
     assert release21.margin(projected) > release21.margin(saved['feature']['points'])+4.
 
 
-def test_recenter_uses_fresh_view_then_restores_and_cannot_certify_alignment(monkeypatch):
+@pytest.mark.parametrize('yaw_sign',[1,-1])
+def test_recenter_checks_same_camera_yaw_before_restore_and_cannot_certify_alignment(yaw_sign):
     a,t,saved,issued,scheduled = setup()
     at=saved['t']
     a.tick(at, lambda *v:None, lambda *v:scheduled.append(v))
     view = a.view_state
     t.pwm = dict(view['target'])
+    a.command_history.observe(t.pwm,at+.1)  # scheduler issues on its next tick
     # The fresh camera frame is represented by reprojected own pixels here;
     # this tests scheduling, not a physical prediction or a new observation.
     f=copy.deepcopy(saved['feature'])
@@ -60,11 +64,29 @@ def test_recenter_uses_fresh_view_then_restores_and_cannot_certify_alignment(mon
     a.features=lambda image:f
     captured=[]
     assert a.tick(at+.7, lambda *v:pytest.fail('unsettled camera'), lambda *v:None)=='pending'
-    assert a.tick(at+.8, lambda *v:captured.append(v), lambda *v:scheduled.append(v))=='pending'
-    assert captured and a.view_state['phase']=='restore'
+    a.command_history.observe(t.pwm,at+.8)
+    assert a.tick(at+.8,lambda *v:pytest.fail('command age only .7'),lambda *v:None)=='pending'
+    a.command_history.observe(t.pwm,at+.9)
+    assert a.tick(at+.9, lambda *v:captured.append(v), lambda *v:scheduled.append(v))=='pending'
+    assert captured and a.view_state['phase']=='verify'
     assert any(e['event']=='release21_pulse' for e in a.records)
     assert a.stable is None and a.state!='done'
+    assert a.sign_pending is not None and len(scheduled)==1  # no restore before new RGB
+    expected=a.sign_pending['expected_px']
+    after={**f,'center_error':f['center_error']+yaw_sign*expected/640}
+    a.features=lambda image:after
+    a.command_history.observe(t.pwm,at+1.1)
+    assert a.tick(at+1.1,lambda *v:captured.append(v),lambda *v:scheduled.append(v))=='pending'
+    assert a.sign_state==('verified' if yaw_sign==1 else 'mismatch')
+    assert a.view_state['phase']=='restore'
     assert scheduled[-1][1][-1][1] == {3:view['home'][3],6:view['home'][6]}
+    t.pwm=dict(view['home']);a.command_history.observe(t.pwm,at+1.2)
+    a.command_history.observe(t.pwm,at+1.9)
+    assert a.tick(at+1.9,lambda *v:pytest.fail('restore age only .7'),lambda *v:None)=='pending'
+    if yaw_sign==-1:
+        a.command_history.observe(t.pwm,at+2.)
+        assert a.tick(at+2.,lambda *v:pytest.fail('yaw mismatch'),lambda *v:None)=='failed'
+        assert a.failure=='release17_yaw_cal_sign_mismatch'
     assert a.started == at  # original 16 s cap remains
 
 

@@ -102,6 +102,11 @@ class LineAlign(release20.LineAlign):
         try:
             w, d, actual, floor = self.pulse(motion)
             safe = any(d) and self.allowed(f, actual)
+            sign = None
+            if safe and self.sign_state == 'unchecked' and abs(actual[2]) > 1e-9 and f.get('center_error') is not None:
+                expected, yaw, lateral = release17.yaw_expected_shift_px(self.camera, self.teacher.pwm,
+                                                                        float(actual[1]), float(actual[2]))
+                sign = dict(center_error=f['center_error'], expected_px=expected, yaw_px=yaw, lateral_px=lateral)
         except (ValueError, np.linalg.LinAlgError):
             safe = False
         if not safe:
@@ -111,6 +116,7 @@ class LineAlign(release20.LineAlign):
         self.records.append(dict(t=now, event='release21_pulse', action=action, wheels=w, durations=d,
                                  realized_motion=actual.tolist(), yaw_floor=floor))
         self.reset_settling()
+        self.sign_pending = sign
         self.progress = now
         self.until = now+max(.2, max(d)+.1)
         return True
@@ -185,31 +191,78 @@ class LineAlign(release20.LineAlign):
         self.records.append(dict(t=now, event='release21_exhausted', attempts=dict(self.alternatives)))
         return self.fail('fov_no_safe_translation')
 
+    def camera_ready(self, view, target, now):
+        if self.teacher.pwm != target:
+            return False
+        if self.command_history is not None:
+            ages = [self.command_history.servo_age(sid, target[sid], now) for sid in (3,6)]
+            age = min(ages) if all(v is not None for v in ages) else 0.
+        else:
+            # Without a fresh scheduler history, start the dwell only once
+            # the complete issued snapshot is actually observed.
+            view.setdefault('command_seen', now)
+            age = now-view['command_seen']
+        if age < VIEW_WAIT_S-1e-8:
+            self.until = now+max(.1, VIEW_WAIT_S-age)
+            return False
+        return True
+
+    def restore_camera(self, view, now, schedule):
+        schedule(self.teacher.rid, [(0., {3:view['home'][3], 6:view['home'][6]})], now)
+        view['phase'] = 'restore'
+        view.pop('command_seen', None)
+        self.until = now+VIEW_WAIT_S
+
     def tick(self, now, capture, schedule):
         if self.view_state is not None:
             if self.failure:
                 return 'failed'
+            if now-self.started > 16.:
+                return self.fail('line_timeout')
             if now < self.until-1e-8:
                 return 'pending'
             view = self.view_state
             if view['phase'] == 'restore':
+                if self.teacher.pwm != view['home']:
+                    return self.fail('open_hover_command_changed')
+                if not self.camera_ready(view, view['home'], now):
+                    return 'pending'
                 self.view_state = None
                 self.reset_settling()
                 self.progress = now
+                if view.get('failure'):
+                    return self.fail(view['failure'])
                 # Continue the original deadline; camera recovery does not
                 # extend the 16 s alignment or the episode's 180 s cap.
             else:
                 if self.teacher.pwm != view['target']:
                     return self.fail('open_hover_command_changed')
+                if view['phase'] == 'view' and not self.camera_ready(view, view['target'], now):
+                    return 'pending'
+                if view['phase'] == 'verify':
+                    f = self.features(self.undistort(capture(self.teacher.rid, now, 'release21_verify')))
+                    self.records.append(dict(t=now, event='release21_verify_view', **f))
+                    self.check_yaw_sign(f, now)
+                    if self.sign_pending is not None and now-view['pulse_at'] < 1.-1e-8:
+                        self.until = now+.2
+                        return 'pending'
+                    if self.sign_state == 'mismatch':
+                        view['failure'] = 'yaw_cal_sign_mismatch'
+                    elif self.sign_pending is not None:
+                        view['failure'] = 'shaft_unobserved_1s'
+                    self.restore_camera(view, now, schedule)
+                    return 'pending'
                 f = self.features(self.undistort(capture(self.teacher.rid, now, 'release21_recenter')))
                 self.records.append(dict(t=now, event='release21_view', **f))
                 accepted = (now-self.started <= 16. and f.get('valid') and bool(f.get('points'))
                             and view['motion'] is not None and self.issue(f, view['motion'], now, 'recenter_correction'))
                 self.records.append(dict(t=now, event='release21_recenter_result', accepted=bool(accepted)))
-                delay = max(0., self.until-now) if accepted else 0.
-                schedule(self.teacher.rid, [(delay, {3:view['home'][3], 6:view['home'][6]})], now)
-                view['phase'] = 'restore'
-                self.until = now+delay+VIEW_WAIT_S
+                if accepted:
+                    # Check body yaw using a fresh image at the SAME camera
+                    # command, before any camera restoration can contaminate it.
+                    view.update(phase='verify', pulse_at=now)
+                else:
+                    self.restore_camera(view, now, schedule)
                 return 'pending'
         try:
             return super().tick(now, capture, schedule)
