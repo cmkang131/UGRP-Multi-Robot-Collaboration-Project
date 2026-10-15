@@ -48,10 +48,11 @@ def main():
     args = p.parse_args()
     if platform.system() != 'Linux':
         raise RuntimeError('analysis requires Linux gcp2; Mac analysis disabled')
-    from urllib.request import Request, urlopen
+    from urllib.request import Request, build_opener, ProxyHandler
     def meta(key):
-        with urlopen(Request('http://169.254.169.254/computeMetadata/v1/'+key,
-                            headers={'Metadata-Flavor': 'Google'}), timeout=3) as r:
+        with build_opener(ProxyHandler({})).open(Request(
+                'http://169.254.169.254/computeMetadata/v1/'+key,
+                headers={'Metadata-Flavor': 'Google'}), timeout=3) as r:
             return r.read().decode().split('/')[-1]
     host = {k: meta(v) for k, v in {'project':'project/project-id',
             'instance':'instance/name','machine':'instance/machine-type'}.items()}
@@ -85,6 +86,8 @@ def main():
                     pending = list(chunks[observation['sample_id']])
                     refresh += 1
                 selected = pending.pop(0) if pending else None
+                if command.get('done_requested'):
+                    pending = []
                 if not label['label_valid'] or label['teacher_command'] is None:
                     continue
                 expert = np.asarray(encode(label['teacher_command']))
