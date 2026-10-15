@@ -96,7 +96,7 @@ PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -c "from harness.gras
 처음 uncached 기록은6.099로 본실행을 보류했다. 기록 전용 기본off `recording_capture_cache_v1`은 같은 pre-command tick의 같은 자기 JPEG만 공유한다.
 [MuJoCo scene update 공식 설명](https://mujoco.readthedocs.io/en/stable/programming/visualization.html)과 고정 runner의 순서를 확인했고, 실제4시드 명령/픽셀 동일성으로 수용했다.
 
-관련 비물리 회귀41개 PASS. 실제 데이터 로더의 모든 파일 검사와 첫/중간/마지막 샘플의 키·유한 값 검사를 통과했다.
+관련 비물리 회귀41개와 공통 CLI의 카탈로그/실행 없는 계획 검사2개 PASS. 실제 데이터 로더의 모든 파일 검사와 첫/중간/마지막 샘플의 키·유한 값 검사를 통과했다.
 학습·학생 독립 실행·운반/놓기·실물 성공은 미측정이다.
 자기 실행0을 확인하고 임대를 해제했다. 다른 reloc18 임대와4개 실행 프로세스가 남아 VM 정지는 시도하지 않았다([정리 확인](lease-released.json)).
 PR은#533 위의#537이며 병합은 수행하지 않았다.
