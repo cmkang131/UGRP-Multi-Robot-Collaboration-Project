@@ -49,7 +49,9 @@ def response(process, timeout=120.):
     return json.loads(line)
 
 
-def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
+def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_steps=c.CHUNK,
+        temporal_ensemble_coeff=None):
+    ChunkExecutor(None, n_action_steps=n_action_steps, temporal_ensemble_coeff=temporal_ensemble_coeff)
     if not 0 < cap_s <= 90.:
         raise ValueError('finite <=90 SIM seconds required')
     host, source = require_gcp(training=False), source_sha()
@@ -64,11 +66,13 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
                  else 'staged near-field solo grasp; no navigation/release/E2E claim',
         'object_kind': plan['object_kind'], 'requested_sequence': plan['skill'],
         'input_audit': {'forbidden_input_fields': 0, 'teacher_input_fields': 0, 'requests': 0},
+        'execution': {'chunk_size': c.CHUNK, 'n_action_steps': n_action_steps,
+                      'temporal_ensemble_coeff': temporal_ensemble_coeff},
         'completion_confirmation': 'unknown', 'gate_promotion_authorized_if_all_conditions_pass': False}
     write_summary(output / 'summary.json', report)
     write_json(output / 'plan.json', plan)
     write_json(output / 'RUN_META.json', {'class': 'dev', 'sha': source})
-    world = worker = port = None
+    world = worker = port = prediction_log = None
     begin = time.monotonic()
     try:
         import numpy as np
@@ -124,6 +128,7 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
         if response(worker) != {'ready': True}:
             raise RuntimeError('student worker did not load')
         latencies = []
+        prediction_log = (output / 'chunk-predictions.jsonl').open('x')
         audit = InputAudit()
         report['input_audit'] = audit.record
         def predict(observation, jpegs):
@@ -136,8 +141,12 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
             latencies.append(time.monotonic() - start)
             if set(result) != {'chunk'}:
                 raise ValueError('student response whitelist mismatch')
+            prediction_log.write(json.dumps({'sample_id': observation['sample_id'], 't': observation['t'],
+                'chunk': result['chunk']}, allow_nan=False) + '\n')
+            prediction_log.flush()
             return result['chunk']
-        executor, score = ChunkExecutor(predict), SoloScore()
+        executor = ChunkExecutor(predict, n_action_steps=n_action_steps, temporal_ensemble_coeff=temporal_ensemble_coeff)
+        score = SoloScore()
         sequence = SoloSequence(with_release)
         # Evaluation-only private handles; these never leave the simulation owner.
         body = world.model.body(obj['body_name']).id
@@ -217,6 +226,8 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60.):
                       complete=False, error_type=type(exc).__name__)
         raise
     finally:
+        if prediction_log is not None:
+            prediction_log.close()
         if port is not None:
             port.stop()
         if worker is not None:
@@ -242,9 +253,12 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--actor-python', required=True)
     p.add_argument('--cap-s', type=float, default=60.)
+    p.add_argument('--n-action-steps', type=int, default=c.CHUNK)
+    p.add_argument('--temporal-ensemble-coeff', type=float)
     a = p.parse_args()
     run(json.loads(a.plan.read_text()), json.loads(a.protocol.read_text()), a.model, a.output,
-        actor_python=a.actor_python, cap_s=a.cap_s)
+        actor_python=a.actor_python, cap_s=a.cap_s, n_action_steps=a.n_action_steps,
+        temporal_ensemble_coeff=a.temporal_ensemble_coeff)
 
 
 if __name__ == '__main__':

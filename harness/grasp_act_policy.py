@@ -60,7 +60,10 @@ def observation_batch(observation, jpegs, stats, *, blank=False):
     return batch
 
 
-def save_actor(policy, output, stats, provenance, *, blank=False):
+def save_actor(policy, output, stats, provenance, *, blank=False, done_mode='legacy_l1'):
+    from harness.grasp_act_loss import DONE_MODES
+    if done_mode not in DONE_MODES:
+        raise ValueError('unknown completion output mode')
     import draccus
     from safetensors.torch import save_file
     output = Path(output)
@@ -68,7 +71,8 @@ def save_actor(policy, output, stats, provenance, *, blank=False):
     save_file({k: v.detach().cpu().contiguous() for k, v in policy.state_dict().items()},
               str(output / 'model.safetensors'))
     write_json(output / 'config.json', draccus.encode(policy.config))
-    write_json(output / 'adapter.json', {'schema': 'ugrp.grasp_act.adapter.v1',
+    write_json(output / 'adapter.json', {'schema': 'ugrp.grasp_act.adapter.v1' if done_mode == 'legacy_l1' else 'ugrp.grasp_act.adapter.v2',
+        **({'done_mode': done_mode} if done_mode != 'legacy_l1' else {}),
         'contract_sha256': sha256(Path(c.__file__)), 'upstream_sha': UPSTREAM_SHA,
         'image_hw': list(IMAGE_HW), 'model_image_hw': list(MODEL_IMAGE_HW),
         'history_layout': '2x2_row_major_oldest_to_newest',
@@ -78,8 +82,18 @@ def save_actor(policy, output, stats, provenance, *, blank=False):
 
 
 class GraspActor:
-    def __init__(self, policy, stats, *, blank=False, device='cpu'):
+    def __init__(self, policy, stats, *, blank=False, device='cpu', done_mode='legacy_l1'):
         self.policy, self.stats, self.blank, self.device = policy.eval(), stats, blank, device
+        self.done_mode = done_mode
+
+    def decode_predictions(self, values):
+        values = np.asarray(values)
+        decoded = values * np.asarray(self.stats['action_std']) + np.asarray(self.stats['action_mean'])
+        if self.done_mode == 'balanced_bce_v1':
+            # Stable sigmoid. Class-balanced scores are not calibrated probabilities.
+            z = values[..., -1]
+            decoded[..., -1] = np.exp(-np.logaddexp(0., -z))
+        return decoded
 
     def predict(self, observation, jpegs):
         import torch
@@ -87,7 +101,7 @@ class GraspActor:
         batch = {k: torch.from_numpy(v.copy()).unsqueeze(0).to(self.device) for k, v in batch.items()}
         with torch.inference_mode():
             values = self.policy.predict_action_chunk(batch)[0].cpu().numpy()
-        values = values * np.asarray(self.stats['action_std']) + np.asarray(self.stats['action_mean'])
+        values = self.decode_predictions(values)
         if values.shape != (c.CHUNK, c.ACTION_DIM) or not np.isfinite(values).all():
             raise ValueError('nonfinite/wrong-sized ACT chunk; no fallback')
         return values.tolist()
@@ -104,7 +118,10 @@ class GraspActor:
             if sha256(root / name) != digest:
                 raise ValueError('checkpoint artifact hash mismatch')
         meta = json.loads((root / 'adapter.json').read_text())
-        if (meta['schema'] != 'ugrp.grasp_act.adapter.v1' or meta['upstream_sha'] != UPSTREAM_SHA
+        done_mode = meta.get('done_mode', 'legacy_l1')
+        if ((meta['schema'], done_mode) not in (
+                ('ugrp.grasp_act.adapter.v1', 'legacy_l1'),
+                ('ugrp.grasp_act.adapter.v2', 'balanced_bce_v1')) or meta['upstream_sha'] != UPSTREAM_SHA
                 or meta['contract_sha256'] != sha256(Path(c.__file__))
                 or meta['image_hw'] != list(IMAGE_HW) or meta['model_image_hw'] != list(MODEL_IMAGE_HW)
                 or meta['history_layout'] != '2x2_row_major_oldest_to_newest'
@@ -118,18 +135,25 @@ class GraspActor:
         if saved != actual:
             raise ValueError('checkpoint differs from audited ACT configuration')
         policy.load_state_dict(load_file(str(root / 'model.safetensors')), strict=True)
-        return cls(policy, meta['stats'], blank=meta['blank_images'], device=device)
+        return cls(policy, meta['stats'], blank=meta['blank_images'], device=device, done_mode=done_mode)
 
 
 class ChunkExecutor:
     """No simulator capability. Reset on task switch or interruption; no fallback."""
-    def __init__(self, predict):
+    def __init__(self, predict, *, n_action_steps=c.CHUNK, temporal_ensemble_coeff=None):
+        if type(n_action_steps) is not int or not 1 <= n_action_steps <= c.CHUNK:
+            raise ValueError('n_action_steps must be 1..chunk_size')
+        if temporal_ensemble_coeff is not None and (
+                not np.isfinite(temporal_ensemble_coeff) or temporal_ensemble_coeff < 0 or n_action_steps != 1):
+            raise ValueError('temporal ensembling requires finite nonnegative coefficient and n_action_steps=1')
         self.predict = predict
+        self.n_action_steps, self.temporal_ensemble_coeff = n_action_steps, temporal_ensemble_coeff
         self.reset()
 
     def reset(self):
         self.pending, self.identity, self.last_t = [], None, None
         self.done_requested = False
+        self.chunks = []
 
     def step(self, observation, jpegs, *, interrupt=False):
         c.validate_observation(observation)
@@ -148,11 +172,22 @@ class ChunkExecutor:
             if values.shape != (c.CHUNK, c.ACTION_DIM) or not np.isfinite(values).all():
                 raise ValueError('invalid action chunk')
             # Validate the entire chunk before executing its first command.
-            self.pending = [c.decode_action(row) for row in values]
+            decoded = [c.decode_action(row) for row in values]
+            if self.temporal_ensemble_coeff is None:
+                self.pending = decoded[:self.n_action_steps]
+            else:
+                # Same exp(-m*i), oldest first, as pinned ACTTemporalEnsembler.
+                # Keep this small serialized adapter numpy-only on the sim host.
+                self.chunks.append(values)
+                weights = np.exp(-self.temporal_ensemble_coeff * np.arange(len(self.chunks)))
+                averaged = np.average([chunk[0] for chunk in self.chunks], axis=0, weights=weights)
+                self.pending = [c.decode_action(averaged)]
+                self.chunks = [chunk[1:] for chunk in self.chunks if len(chunk) > 1]
         action = self.pending.pop(0)
         self.done_requested = action['done']
         if self.done_requested:
             self.pending.clear()
+            self.chunks.clear()
         value = {'t': now, **{k: action[k] for k in ('wheels', 'duration_s', 'pwm')}}
         c.command(value)
         return value, self.done_requested

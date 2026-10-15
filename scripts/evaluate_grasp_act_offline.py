@@ -55,6 +55,7 @@ def main():
         import torch
         from harness.grasp_act_policy import GraspActor
         actor = GraspActor.load(a.model, device='cuda')
+        report['done_output_mode'] = actor.done_mode
         meta = json.loads((a.model / 'adapter.json').read_text())
         if meta['provenance']['dataset_manifest_sha256'] != report['dataset_manifest_sha256']:
             raise ValueError('model/dataset mismatch')
@@ -74,7 +75,7 @@ def main():
                         pred = actor.policy.predict_action_chunk(inputs).cpu().numpy()
                     target = batch['action'].numpy()
                     mean, std = np.asarray(actor.stats['action_mean']), np.asarray(actor.stats['action_std'])
-                    pred, target = pred * std + mean, target * std + mean
+                    pred, target = actor.decode_predictions(pred), target * std + mean
                     pads = batch['action_is_pad'].numpy()
                     ps.extend(pred); ys.extend(target); masks.extend(pads)
                     for i in range(len(pred)):

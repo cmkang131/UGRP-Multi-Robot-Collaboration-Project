@@ -1,0 +1,75 @@
+{
+  "schema": "ugrp.grasp_act.act4.summary.v1",
+  "status": "partial_measurements_candidate_prepared",
+  "baseline_source_sha": "f609979cd4e0b7174f999986408401817a5c991a",
+  "implementation_base_sha": "4e6b548d1980b02ca7fe35c21c8e02b8eb62f83b",
+  "measurement_complete": false,
+  "physical_runs_this_task": 0,
+  "training_runs_this_task": 0,
+  "remote_execution_started": false,
+  "baseline_results": {
+    "training_steps": 10000,
+    "validation_unique_timesteps": 1833,
+    "grasp_done_n_N": [
+      0,
+      5
+    ],
+    "release_done_n_N": [
+      0,
+      5
+    ],
+    "physical_success_n_N": [
+      0,
+      1
+    ],
+    "unsubmitted_stopped_N": 9,
+    "all_operator_results": "operations-f609979c-summary.json"
+  },
+  "cpu_probe": {
+    "device": "cpu",
+    "threads": 2,
+    "batches": 5,
+    "inputs": 17,
+    "heldout_inputs": 0,
+    "training_inputs": 16,
+    "rollout_inputs": 1,
+    "first_chunk_max_encoded_abs_difference": 2.8428687659509677e-07
+  },
+  "missing": [
+    "heldout 86045..86049 saved predictions.jsonl and samples metadata",
+    "48/50 teacher RGB/labels for recovery census",
+    "91100 dense first-seconds RGB history beyond t=0; only representative frames recovered"
+  ],
+  "tests": {
+    "command": "PYTHONPATH=. /Users/changmin/Project-Runtimes/ugrp/.venv-reference-act/bin/python -m pytest -q tests/test_grasp_act_policy.py tests/test_grasp_act_pilot.py tests/test_grasp_act_act4.py",
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act4-offline-f609979c/tests-final.xml",
+    "junit_sha256": "be2eea7611ff721a793cdf7913f3e83fbe331bf848d498c141a67b9c04e7432e"
+  },
+  "changes": {
+    "done_loss_default": "legacy_l1",
+    "candidate_done_loss": "balanced_bce_v1",
+    "candidate_done_loss_weight": 1,
+    "default_n_action_steps": 8,
+    "default_temporal_ensemble_coeff": null,
+    "candidate_n_action_steps": 1,
+    "candidate_temporal_ensemble_coeff": 0.01,
+    "threshold": 0.65,
+    "newly_trained_model_available": false
+  },
+  "queues": {
+    "generator": "scripts/queue_grasp_act_act4.py",
+    "output_dir": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue",
+    "approved": false,
+    "blocked_until_missing_measurements": true,
+    "dart_recording_prepared": false
+  },
+  "details": {
+    "path": "act4-measurements.json",
+    "sha256": "c4acbcaebe4c915fa45f67e97cc9f60a73e63cde2af9285d1704b7d0d1016260"
+  },
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act4-offline-f609979c",
+  "gate_promotion_authorized_if_all_conditions_pass": false
+}

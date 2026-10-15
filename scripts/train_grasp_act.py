@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import importlib.metadata
 import json
+import math
 from pathlib import Path
 import signal
 import time
@@ -15,6 +16,7 @@ if str(Path(__file__).resolve().parents[1]) not in sys.path:
 
 from harness.grasp_act_data import GraspDataset, assert_tensor_keys, sha256, write_json, write_summary
 from scripts.grasp_act_training_guard import authorize_main, require_gcp, source_sha
+from harness.grasp_act_loss import DONE_MODES, completion_priors, policy_loss
 
 
 def main():
@@ -29,7 +31,11 @@ def main():
     p.add_argument('--approval', type=Path)
     p.add_argument('--smoke-summary', type=Path)
     p.add_argument('--blank-images', action='store_true')
+    p.add_argument('--done-loss', choices=DONE_MODES, default='legacy_l1')
+    p.add_argument('--done-loss-weight', type=float, default=1.)
     a = p.parse_args()
+    if not math.isfinite(a.done_loss_weight) or a.done_loss_weight <= 0:
+        p.error('completion loss weight must be finite and positive')
     if not 1 <= a.max_wall_s <= 7 * 3600 or not 1 <= a.steps <= 100000:
         p.error('finite steps and <=7h process budget required')
     if a.stage == 'smoke' and (a.steps > 500 or a.max_wall_s > 1800 or a.resume):
@@ -42,7 +48,9 @@ def main():
         if (smoke.get('status') != 'complete' or smoke.get('stage') != 'smoke'
                 or smoke.get('dataset_manifest_sha256') != dataset_hash
                 or smoke.get('source_sha') != source or not smoke.get('readback_verified')
-                or smoke.get('blank_images') != a.blank_images):
+                or smoke.get('blank_images') != a.blank_images
+                or smoke.get('done_loss', 'legacy_l1') != a.done_loss
+                or smoke.get('done_loss_weight', 1.) != a.done_loss_weight):
             raise ValueError('completed matching smoke with checkpoint readback required')
         authorize_main(a.approval, source=source, dataset_hash=dataset_hash,
                        smoke_hash=smoke_hash, steps=a.steps, blank=a.blank_images)
@@ -50,7 +58,8 @@ def main():
     report = {'status': 'running', 'complete': False, 'stage': a.stage,
         'source_sha': source, 'dataset_manifest_sha256': dataset_hash, 'host': host,
         'steps_requested': a.steps, 'steps_completed': 0, 'seed': a.seed,
-        'blank_images': a.blank_images, 'batch_size': 8, 'readback_verified': False,
+        'blank_images': a.blank_images, 'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
+        'batch_size': 8, 'readback_verified': False,
         'gate_promotion_authorized_if_all_conditions_pass': False,
         'selection': 'fixed final step; validation never selects checkpoint'}
     write_summary(a.output / 'summary.json', report)
@@ -72,6 +81,8 @@ def main():
         torch.set_num_threads(4)
         torch.backends.cudnn.benchmark = False
         data = GraspDataset(a.dataset, 'train', blank=a.blank_images)
+        priors = completion_priors(data) if a.done_loss != 'legacy_l1' else None
+        report['done_class_counts'] = priors
         policy = make_policy(pretrained=not bool(a.resume), device='cuda')
         optimizer = torch.optim.AdamW(policy.get_optim_params(), lr=1e-5, weight_decay=1e-4)
         generator = torch.Generator().manual_seed(a.seed)
@@ -79,12 +90,15 @@ def main():
         if a.resume:
             resume = json.loads((a.resume / 'resume.json').read_text())
             for k, v in {'source_sha': source, 'dataset_manifest_sha256': dataset_hash,
-                         'blank_images': a.blank_images, 'seed': a.seed}.items():
-                if resume[k] != v:
+                         'blank_images': a.blank_images, 'seed': a.seed,
+                         'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight}.items():
+                if resume.get(k, {'done_loss': 'legacy_l1', 'done_loss_weight': 1.}.get(k)) != v:
                     raise ValueError('resume provenance mismatch: ' + k)
             if sha256(a.resume / 'optimizer.pt') != resume['optimizer_sha256']:
                 raise ValueError('resume optimizer hash mismatch')
             actor = GraspActor.load(a.resume / 'actor', device='cuda')
+            if actor.done_mode != a.done_loss:
+                raise ValueError('resume completion output mismatch')
             policy.load_state_dict(actor.policy.state_dict(), strict=True)
             del actor
             state = torch.load(a.resume / 'optimizer.pt', map_location='cpu', weights_only=True)
@@ -113,8 +127,10 @@ def main():
             folder = a.output / f'step-{step:06d}'
             folder.mkdir()
             provenance = {'source_sha': source, 'dataset_manifest_sha256': dataset_hash,
-                          'blank_images': a.blank_images, 'seed': a.seed, 'step': step}
-            save_actor(policy, folder / 'actor', data.stats, provenance, blank=a.blank_images)
+                          'blank_images': a.blank_images, 'seed': a.seed, 'step': step,
+                          'done_loss': a.done_loss, 'done_loss_weight': a.done_loss_weight,
+                          'done_class_counts': priors}
+            save_actor(policy, folder / 'actor', data.stats, provenance, blank=a.blank_images, done_mode=a.done_loss)
             torch.save({'optimizer': optimizer.state_dict(), 'rng': torch.get_rng_state(),
                         'cuda_rng': torch.cuda.get_rng_state_all(), 'sampler_rng': generator.get_state()},
                        folder / 'optimizer.pt')
@@ -137,7 +153,8 @@ def main():
                 optimizer.zero_grad(set_to_none=True)
                 # Existing upstream-compatible activation checkpoint helper.
                 with checkpoint_encoder(policy, enabled=True):
-                    loss, metrics = policy(batch)
+                    loss, metrics = policy_loss(policy, batch, mode=a.done_loss,
+                        stats=data.stats, priors=priors, weight=a.done_loss_weight)
                     if not torch.isfinite(loss):
                         raise ValueError('nonfinite training loss')
                     loss.backward()
