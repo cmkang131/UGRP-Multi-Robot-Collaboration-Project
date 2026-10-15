@@ -1,5 +1,7 @@
 # 세 로봇 목표 합의와 실제 운반
 
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 top 카메라는 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 문서의 기존 경로는 아직 `top_rgb`를 입력으로 사용한다(미이행).
+
 기본 실행기는 `scripts/run_three_robot_e2e.py`이며 `run_three_robot_mission.py`로 연결된다.
 세 독립 LLM이 물체·목적지·담당·완료 조건에 합의한 뒤 세 대 모두 물리 작업을 실행한다.
 
