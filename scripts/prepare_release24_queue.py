@@ -17,11 +17,12 @@ def build(sha,table,*,stage='dev',round_number=1,proof=None,selected='gated'):
         runner_cwd='/Users/changmin/projects/ugrp-wt/gcp-sim-host')
     profiles=q['candidates'];base=q['runs']
     q['candidates']=[];q['runs']=[]
-    for mode in (('fusion','gated') if stage=='dev' else (selected,)):
+    for mode in (('fusion','gated') if stage=='dev' and selected!='current' else (selected,)):
         for c in profiles:
             cp=dict(c,id=mode+'_'+c['id'],execution_profile=dict(c['execution_profile'],
                 axis_fusion=release24.FUSION,
                 axis_disagree_reobserve=release24.REOBSERVE if mode=='gated' else 'off',
+                axis_observation_window=release24.CURRENT if mode=='current' else 'off',
                 failure_rgb_recording='own_rgb_last10_10hz_v1'))
             q['candidates'].append(cp)
         for r in base:
@@ -39,21 +40,21 @@ def commands(q,source):return previous_commands(q,source)
 def verify(q):
     p=Path(q['rejection_table']);assert p.is_absolute() and p.is_file()
     assert hashlib.sha256(p.read_bytes()).hexdigest()==q['rejection_table_sha256']
-    assert q['run_count']==len(q['runs'])==(12 if q['stage']=='dev' else 80)
+    assert q['run_count']==len(q['runs'])==((6 if q['selected_axis_candidate']=='current' else 12) if q['stage']=='dev' else 80)
     for r in [q,*q['runs']]:assert all(r[k] is False for k in FLAGS)
     assert q['round']<=3 and q['max_gcp1_total_concurrency']==40
     for c in q['candidates']:
         release24.validate(c['execution_profile'])
         rows=[r for r in q['runs'] if r['candidate']==c['id']]
         assert len(rows)==(3 if q['stage']=='dev' else 40)
-    if q['stage']=='dev':
+    if q['stage']=='dev' and q['run_count']==12:
         assert [r['seed'] for r in q['runs'][:6]]==[r['seed'] for r in q['runs'][6:]]
 
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--sha',required=True);p.add_argument('--rejection-table',type=Path,required=True)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--stage',choices=('dev','gate'),default='dev')
-    p.add_argument('--round',type=int,default=1);p.add_argument('--proof',type=Path);p.add_argument('--selected',choices=('fusion','gated'),default='gated')
+    p.add_argument('--round',type=int,default=1);p.add_argument('--proof',type=Path);p.add_argument('--selected',choices=('fusion','gated','current'),default='gated')
     a=p.parse_args();q=build(a.sha,a.rejection_table,stage=a.stage,round_number=a.round,proof=a.proof,selected=a.selected)
     with a.out.open('x') as f:f.write(compact(q).decode()+'\n')
     print(a.out)

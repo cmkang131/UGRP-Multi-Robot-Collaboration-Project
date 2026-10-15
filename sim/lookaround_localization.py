@@ -376,10 +376,16 @@ class LookaroundLocalizer:
                        'features_out': len(floors)+len(doors)-len(feats), 'expected_wall_groups': sorted(expected)}
         rec['wall_points_body'] = [[round(float(a), 3), round(float(b), 3)] for a, b in walls]
 
-    def finalize(self):
+    def finalize(self, *, view_start=None):
         """v2: one joint update over every view's gated detections; keep the prior unless every test passes."""
         if getattr(self, 'global_matcher', None) is not None:
-            self.decision = self.global_matcher.fit(self.views, self.command_own.x)
+            views=self.views
+            if view_start is not None:
+                if not isinstance(view_start,int) or not 0<=view_start<=len(views):raise ValueError('invalid observation epoch')
+                views=views[view_start:]
+            self.decision = self.global_matcher.fit(views, self.command_own.x)
+            if view_start is not None:
+                self.decision['observation_epoch_views']=dict(start=view_start,stop=len(self.views),count=len(views))
             # A failed fresh observation revokes release authorization. The old
             # map estimate may still propagate, but cannot authorize placement.
             if self.decision['accepted']:

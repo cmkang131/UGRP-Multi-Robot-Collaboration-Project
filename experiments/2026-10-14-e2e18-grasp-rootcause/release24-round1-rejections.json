@@ -1,0 +1,333 @@
+{
+  "schema": "ugrp.release24.rejections.v1",
+  "episode_funnel": [
+    {
+      "gate": "queued_candidate",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "terminal_original_and_hash",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "input_audit_zero",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "physical_release",
+      "input": 6,
+      "cumulative_passed": 5,
+      "rejected": 1
+    }
+  ],
+  "frame_funnel": [
+    {
+      "gate": "generated_original_own_RGB",
+      "input": 2664,
+      "cumulative_passed": 2664,
+      "rejected": 0
+    },
+    {
+      "gate": "original_hash_and_JPEG_decode",
+      "input": 2664,
+      "cumulative_passed": 2664,
+      "rejected": 0
+    }
+  ],
+  "event_funnel": [
+    {
+      "gate": "line_candidates",
+      "input": 48,
+      "cumulative_passed": 48,
+      "rejected": 0
+    },
+    {
+      "gate": "line_alignment_completed",
+      "input": 48,
+      "cumulative_passed": 48,
+      "rejected": 0
+    }
+  ],
+  "event_counts": {
+    "total": 983,
+    "rejection_records": 3
+  },
+  "rejection_reason_table": [
+    {
+      "category": "release21_fov_blocked",
+      "count": 2
+    },
+    {
+      "category": "correction_count",
+      "count": 1
+    }
+  ],
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/runs/r24d1-f-00-b20bb52a",
+    "/home/ugrp/ugrp-sim/runs/r24d1-f-01-b20bb52a",
+    "/home/ugrp/ugrp-sim/runs/r24d1-f-02-b20bb52a",
+    "/home/ugrp/ugrp-sim/runs/r24d1-f-03-b20bb52a",
+    "/home/ugrp/ugrp-sim/runs/r24d1-f-04-b20bb52a",
+    "/home/ugrp/ugrp-sim/runs/r24d1-f-05-b20bb52a"
+  ],
+  "reproduction": "/home/ugrp/ugrp-sim/src/b20bb52a0eddf3aca0034444661b434a07c51c0d/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release24/analyze_results.py --names '[\"r24d1-f-00-b20bb52a\", \"r24d1-f-01-b20bb52a\", \"r24d1-f-02-b20bb52a\", \"r24d1-f-03-b20bb52a\", \"r24d1-f-04-b20bb52a\", \"r24d1-f-05-b20bb52a\"]' --out /home/ugrp/ugrp-sim/ops-reviews/release24/round1-fusion",
+  "candidate_funnel": [
+    {
+      "gate": "paired_release_candidate",
+      "input": 18,
+      "cumulative_passed": 18,
+      "rejected": 0
+    },
+    {
+      "gate": "same_round_localized_geometry",
+      "input": 18,
+      "cumulative_passed": 18,
+      "rejected": 0
+    },
+    {
+      "gate": "axis_consistency",
+      "input": 18,
+      "cumulative_passed": 18,
+      "rejected": 0
+    },
+    {
+      "gate": "axis_alignment",
+      "input": 18,
+      "cumulative_passed": 18,
+      "rejected": 0
+    },
+    {
+      "gate": "lateral_clearance",
+      "input": 18,
+      "cumulative_passed": 15,
+      "rejected": 3
+    },
+    {
+      "gate": "margin_sum_consistency",
+      "input": 15,
+      "cumulative_passed": 15,
+      "rejected": 0
+    },
+    {
+      "gate": "inside_both_margin_lower_bounds",
+      "input": 15,
+      "cumulative_passed": 5,
+      "rejected": 10
+    }
+  ],
+  "decision_reason_counts": {
+    "localized_margin_correction": 10,
+    "localized_lateral_correction": 3,
+    "localized_margins_inside": 5
+  },
+  "sweep_funnel": [
+    {
+      "gate": "whole_sweep_static_constraints",
+      "input": 336,
+      "cumulative_passed": 336,
+      "rejected": 0
+    },
+    {
+      "gate": "positive_static_clearance",
+      "input": 336,
+      "cumulative_passed": 336,
+      "rejected": 0
+    }
+  ],
+  "alternative_funnel": [
+    {
+      "gate": "budget_alternatives_proposed",
+      "input": 0,
+      "cumulative_passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "safe_and_improving_or_fresh_reobserve",
+      "input": 0,
+      "cumulative_passed": 0,
+      "rejected": 0
+    }
+  ],
+  "interpretation": "Lateral/axial correction rejections are progress alternatives, not failed episodes; frame/line/constraint funnels have different units and are never summed.",
+  "other_candidate": {
+    "schema": "ugrp.release24.rejections.v1",
+    "episode_funnel": [
+      {
+        "gate": "queued_candidate",
+        "input": 6,
+        "cumulative_passed": 6,
+        "rejected": 0
+      },
+      {
+        "gate": "terminal_original_and_hash",
+        "input": 6,
+        "cumulative_passed": 6,
+        "rejected": 0
+      },
+      {
+        "gate": "input_audit_zero",
+        "input": 6,
+        "cumulative_passed": 6,
+        "rejected": 0
+      },
+      {
+        "gate": "physical_release",
+        "input": 6,
+        "cumulative_passed": 2,
+        "rejected": 4
+      }
+    ],
+    "frame_funnel": [
+      {
+        "gate": "generated_original_own_RGB",
+        "input": 3076,
+        "cumulative_passed": 3076,
+        "rejected": 0
+      },
+      {
+        "gate": "original_hash_and_JPEG_decode",
+        "input": 3076,
+        "cumulative_passed": 3076,
+        "rejected": 0
+      }
+    ],
+    "event_funnel": [
+      {
+        "gate": "line_candidates",
+        "input": 44,
+        "cumulative_passed": 44,
+        "rejected": 0
+      },
+      {
+        "gate": "line_alignment_completed",
+        "input": 44,
+        "cumulative_passed": 44,
+        "rejected": 0
+      }
+    ],
+    "event_counts": {
+      "total": 894,
+      "rejection_records": 4
+    },
+    "rejection_reason_table": [
+      {
+        "category": "supervisor_stop_same_defect",
+        "count": 2
+      },
+      {
+        "category": "result_serialization",
+        "count": 1
+      },
+      {
+        "category": "release21_fov_blocked",
+        "count": 1
+      }
+    ],
+    "raw_paths": [
+      "/home/ugrp/ugrp-sim/runs/r24d1-g-00-b20bb52a",
+      "/home/ugrp/ugrp-sim/runs/r24d1-g-01-b20bb52a",
+      "/home/ugrp/ugrp-sim/runs/r24d1-g-02-b20bb52a",
+      "/home/ugrp/ugrp-sim/runs/r24d1-g-03-b20bb52a",
+      "/home/ugrp/ugrp-sim/runs/r24d1-g-04-b20bb52a",
+      "/home/ugrp/ugrp-sim/runs/r24d1-g-05-b20bb52a"
+    ],
+    "reproduction": "/home/ugrp/ugrp-sim/src/b20bb52a0eddf3aca0034444661b434a07c51c0d/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release24/analyze_results.py --names '[\"r24d1-g-00-b20bb52a\", \"r24d1-g-01-b20bb52a\", \"r24d1-g-02-b20bb52a\", \"r24d1-g-03-b20bb52a\", \"r24d1-g-04-b20bb52a\", \"r24d1-g-05-b20bb52a\"]' --out /home/ugrp/ugrp-sim/ops-reviews/release24/round1-gated",
+    "candidate_funnel": [
+      {
+        "gate": "paired_release_candidate",
+        "input": 6,
+        "cumulative_passed": 6,
+        "rejected": 0
+      },
+      {
+        "gate": "same_round_localized_geometry",
+        "input": 6,
+        "cumulative_passed": 6,
+        "rejected": 0
+      },
+      {
+        "gate": "axis_consistency",
+        "input": 6,
+        "cumulative_passed": 6,
+        "rejected": 0
+      },
+      {
+        "gate": "axis_alignment",
+        "input": 6,
+        "cumulative_passed": 6,
+        "rejected": 0
+      },
+      {
+        "gate": "lateral_clearance",
+        "input": 6,
+        "cumulative_passed": 6,
+        "rejected": 0
+      },
+      {
+        "gate": "margin_sum_consistency",
+        "input": 6,
+        "cumulative_passed": 6,
+        "rejected": 0
+      },
+      {
+        "gate": "inside_both_margin_lower_bounds",
+        "input": 6,
+        "cumulative_passed": 2,
+        "rejected": 4
+      }
+    ],
+    "decision_reason_counts": {
+      "localized_margin_correction": 4,
+      "localized_margins_inside": 2
+    },
+    "sweep_funnel": [
+      {
+        "gate": "whole_sweep_static_constraints",
+        "input": 308,
+        "cumulative_passed": 308,
+        "rejected": 0
+      },
+      {
+        "gate": "positive_static_clearance",
+        "input": 308,
+        "cumulative_passed": 308,
+        "rejected": 0
+      }
+    ],
+    "alternative_funnel": [
+      {
+        "gate": "budget_alternatives_proposed",
+        "input": 0,
+        "cumulative_passed": 0,
+        "rejected": 0
+      },
+      {
+        "gate": "safe_and_improving_or_fresh_reobserve",
+        "input": 0,
+        "cumulative_passed": 0,
+        "rejected": 0
+      }
+    ],
+    "interpretation": "Lateral/axial correction rejections are progress alternatives, not failed episodes; frame/line/constraint funnels have different units and are never summed."
+  },
+  "epoch_replay": {
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/release24/epoch-replay.json",
+    "sha256": "15177addc5a8724ecabef052e1ea2a6a8474b2631f00985d9e0e7ea0bd6bf34f",
+    "N": 12,
+    "accepted": 12,
+    "reproduce": "cd /home/ugrp/ugrp-sim/src/b20bb52a0eddf3aca0034444661b434a07c51c0d && PYTHONPATH=. .venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release24/replay_epoch.py"
+  },
+  "new_primary_defect": {
+    "category": "historical_view_transport_bias",
+    "blocking_object": "current set-down RGB pose/beam envelope estimate",
+    "minimum_gap": -0.004417354604305396,
+    "gap_unit": "m",
+    "observed_case": "110622 B final r1 clearance .035582645395694626m vs .04m; evaluator whole object fits, not used for control"
+  }
+}

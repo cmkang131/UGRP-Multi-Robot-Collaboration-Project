@@ -12,6 +12,7 @@ class FailureRGB:
         self.rows=deque();self.mode=mode;self.captured=0
 
     def capture(self,t,cameras):
+        if self.rows and t==self.rows[-1][0]:return  # state-only transition; no new SIM tick
         row={rid:capture() for rid,capture in cameras.items()}
         self.rows.append((t,row));self.captured+=len(row)
         # User 2026-10-15: last 10 SIM seconds, 10Hz. The runner's existing

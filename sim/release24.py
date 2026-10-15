@@ -11,7 +11,8 @@ from sim import release23
 
 FUSION='axis_fusion_v1'
 REOBSERVE='axis_disagree_reobserve_v1'
-OPTIONS=dict(axis_fusion=FUSION,axis_disagree_reobserve=REOBSERVE)
+CURRENT='axis_current_setdown_v1'
+OPTIONS=dict(axis_fusion=FUSION,axis_disagree_reobserve=REOBSERVE,axis_observation_window=CURRENT)
 # release24-baseline-rejections.json, release21 80 runs / 194 same-round
 # pairs only. E[e^2] includes bias: r1=.78026767, r2=.70794465 deg^2.
 MSE_RAD2=tuple(v*(math.pi/180)**2 for v in (.7802676717621957,.7079446501165835))
@@ -27,7 +28,7 @@ def wrap(a):return (a+math.pi/2)%math.pi-math.pi/2
 def validate(options):
     for key,mode in OPTIONS.items():
         if options.get(key,'off') not in ('off',mode):raise ValueError('unknown '+key)
-    if options.get('axis_disagree_reobserve','off')!='off' and options.get('axis_fusion')!=FUSION:
+    if any(options.get(k,'off')!='off' for k in ('axis_disagree_reobserve','axis_observation_window')) and options.get('axis_fusion')!=FUSION:
         raise ValueError('axis consistency requires fusion')
     if options.get('axis_fusion','off')!= 'off':
         if options.get('release_plan_budget')!=release23.COMPUTE or options.get('margin_common_mode')!=release23.MARGIN:

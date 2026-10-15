@@ -46,3 +46,17 @@ VM에서 ffmpeg으로4배속 동영상(각≤8MiB)을 만들고 ffprobe로 검�
 ## 실행 전 비물리 검증
 
 관련 회귀126개 중125개 통과, 신규 OFF 재생 시험은 fixture가 대체한 subprocess 경로 때문에 실패했다. 검증용 원본 읽기를 기존 release23 시험과 같은 실제 subprocess.run으로 고친 뒤 신규10개 모두 통과했다. 제어 코드 실패가 아니며 실패 기록도 보존한다. Mac 물리/렌더/모델 호출0.
+
+## Round1 중단·세 번째 후보
+
+실행 `b20bb52a0eddf3aca0034444661b434a07c51c0d`: fusion 5/6, gated는 성공2·HOST_ERROR1·감독중단3이다. 합산하지 않는다. 새 원인은 `release24-round1-rejections.json`에 기록했다. fusion의110622 B는120.6초에 융합−9.034°로 불필요한 축 회차를 피했지만169.7초에 r1 lateral .0355826m가4cm보다4.4mm 작다고 추정하여 네 번째 옆이동을 요구했다. 실제 빔은 평가상 영역 안(최소 end-center 여유 .11805m)이나 이를 제어로 반환하거나 성공으로 덮지 않았다.
+
+해당 실패 release0–159.6초2Hz 전체320시점·149.6–159.6초10Hz101시점, 성공110618 A의0–74초 전체149시점을 직접 봤다. 반대 색 끝 유지, 같은 끝·상호 막힘 없음. 실패 마지막10초는 진짜10Hz이며149.6–151초 팬/시선 변화,151–154초 끝 가까이 접근·물러남,154–157초 재관측,158–159.6초 끝을 본 채 대기했다. 주기적 바퀴 진동을 원인으로 볼 증거는 없었다. 전체 과거 구간은1Hz 제한이 남는다. 영상/띠 경로는 `outputs/e2e18-admin/playback/release24-baseline/r24d1-f-{02,04}-b20bb52a/`. 개요 원본은 없어 unavailable로 표시했다.
+
+VM `epoch-replay.json`은 실패1·성공2의마지막두보고, 로봇별 총12회 저장 관측 재생이다. 기존 matcher는 최근18 views를 발행 명령으로 현재 몸체 좌표에 옮겨 함께 맞춘다. 이전 이동 전 관측이 남으면 명령 이동 오차를 현재 RGB가 설명해야 한다. 현재 내려놓기 이후6장만 같은 matcher에 주니12/12가 기존 관문을 통과했다. 실패169.7초 r1의 평가 yaw 오차는−2.4595°→+.3113°, r2는−2.4111°→+.0166°였다.120.6초 r2는−4.5730°→−.8045°였다. 새 궤적 성공은 아니며 정답은 여기 오프라인 평가에서만 읽었다. 원인 확인 후 같은 추정 경로의 gated 소유 활성3개를 PID·명령·SHA 확인하고 SIGINT로 정지했다. 다른 작업은 유지했다.
+
+세 번째 기본 OFF 후보 `axis_observation_window=axis_current_setdown_v1`은 융합과 함께 쓴다. 새 수치 문턱 대신 기존 내려놓기 이벤트를 관측 epoch 경계로 삼고, 그 뒤 실제 자기 RGB로 얻은 관측만 global matcher에 준다. 모든 원본 views는 그대로 보존한다. 이 방식은 [Nav2 AMCL 공식 current-scan sensorFunction](https://raw.githubusercontent.com/ros-navigation/navigation2/main/nav2_amcl/src/sensors/laser/likelihood_field_model.cpp)의 현재 측정을 현재 위치 가설에 맞추는 관측 모형 원칙을 따른다. AMCL 알고리즘/레이저 입력/기본값을 복사하지 않는다. 오차의 실측 반례는 위 재생이다. 기존 RGB 선·view 수·rank·점수 차·4cm·10°·18°·180초·3회는 모두 유지한다. Round2는 새 소스로 같은6장면을 처음부터 잰다.
+
+Gated HOST_ERROR는 release19 경로의 일반 ScriptRunner에 없는 `reused_waits` 기록 속성을 읽어서 발생했다. 기록부가 속성 미제공 시 빈 reuse 목록을 남기도록 고쳤고, 실제 clock-only reobservation 경로를 회귀 시험한다. 중단에도 선택 로그·예외 사유를 보존한다. 상태 전환만 하고 SIM 시각이 같은 loop의 중복 ring capture도 기록부에서 제거한다. 제어 동작·대기 시간은 바꾸지 않는다.
+
+Hiwonder [공식 제품 사양](https://www.hiwonder.com/products/masterpi)·[조립/보정 안내](https://docs.hiwonder.com/projects/MasterPi/en/latest/docs/1.getting_ready.html)도 열었다. 서보 동작각·조립 편차는 설명하지만 공동 운반 빔의10° 허용각을 뒷받침하는 사양은 찾지 못했다. 이를 기존10° 근거로 전용하지 않는다.

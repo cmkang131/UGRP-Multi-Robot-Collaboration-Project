@@ -172,7 +172,7 @@ def own_end_world(world,inst,end):
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
         zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',release_fov_step='off',release_settle_reuse='off',release_goal_region='off',release20_settle='off',release21='off',review_top='on',record_training=False,
         margin_common_mode='off',release_leg_budget='off',lateral_rate_cal='off',release_yaw_budget='off',release_plan_budget='off',
-        axis_fusion='off',axis_disagree_reobserve='off',failure_rgb_recording='own_rgb_last10_10hz_v1'):
+        axis_fusion='off',axis_disagree_reobserve='off',axis_observation_window='off',failure_rgb_recording='own_rgb_last10_10hz_v1'):
     release23_control.validate(release_profile,record_training,locals(),plan)
     release24_control.validate(locals())
     failure_rgb=FailureRGB(failure_rgb_recording)
@@ -255,7 +255,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         report.update(release23_options,teacher_version='release23',effective_motion_profile=motion_profile,
                       planning_budget_basis='finite computation checks and SIM seconds; no wall deadline')
     if axis_fusion!='off':
-        report.update(teacher_version='release24',axis_fusion=axis_fusion,axis_disagree_reobserve=axis_disagree_reobserve)
+        report.update(teacher_version='release24',axis_fusion=axis_fusion,axis_disagree_reobserve=axis_disagree_reobserve,axis_observation_window=axis_observation_window)
     if not line_guard:
         report.pop('release_profile');report.pop('training_exclusions')
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.
@@ -467,6 +467,13 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             return busy
         def every(seq_fn,interval):return [(interval*(k+1),p) for k,p in enumerate(seq_fn)]
         def start_lower(now):
+            if axis_observation_window==release24_control.CURRENT:
+                # Current-scan localization, not transport of old raw images
+                # across uncertain motion. Nav2 AMCL sensorFunction similarly
+                # scores the current scan: nav2_amcl/src/sensors/laser/likelihood_field_model.cpp.
+                # Boundary is the existing set-down event, no fitted time/count
+                # constant. Saved same-epoch replay: release24.md, 12/12 fits.
+                st['global_fit_start']={rid:len(l.views) for rid,l in loc.items()}
             for rid,t in rel.items():schedule(rid,every(t.arm_waypoints(LOWER_Z_M,8),.2),now+.2)
             st.update(phase='lower',since=now,go=now+.2,end=now+.2+1.6+.6)
         def start_shift(now,s):
@@ -608,7 +615,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                         capture=lambda at,rid=rid:look_capture(rid,at))
                 if all(r.done for r in look_run.values()):
                     for rid,t in rel.items():
-                        dec=loc[rid].finalize()    # v2: one joint update with acceptance tests (None for v1)
+                        dec=loc[rid].finalize(**({'view_start':st.get('global_fit_start',{}).get(rid,0)}
+                            if axis_observation_window==release24_control.CURRENT else {}))
                         look_eval[rid].update(after=look_truth(rid),sim_s=now-look_eval[rid]['t0'],script=look_run[rid].log,
                                               decision=None if dec is None else {k:dec.get(k) for k in ('accepted','reason','wall_inliers','features','views_with_evidence')})
                         if localization_support != 'off':
@@ -629,7 +637,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                             look_eval[rid]['zone_center_evaluation']={'truth_center_body_m':target,
                                 'center_error_m':None if predicted is None else math.dist(predicted,target)}
                         if release19_enabled:
-                            look_eval[rid]['reused_command_waits']=copy.deepcopy(look_run[rid].reused_waits)
+                            look_eval[rid]['reused_command_waits']=copy.deepcopy(getattr(look_run[rid],'reused_waits',[]))
                         look_eval[rid]['sweeps'].append(copy.deepcopy({k:v for k,v in look_eval[rid].items() if k not in ('sweeps','views')}))
                         schedule(rid,[(0.,t.gaze_target(now))],now)
                     if line_guard and st.get('pre_backoff'):
@@ -926,6 +934,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         raise
     finally:
         report['failure_rgb_recording']=failure_rgb.finish(out,failed=report.get('status')!='complete' or not report.get('release_success'))
+        if 'code' in locals():report.setdefault('code_decisions',code.log)
         report['wall_s']=time.monotonic()-start;report['sim_s']=None if world is None else float(world.data.time)-origin
         report['loadavg_at_end']=os.getloadavg();report['input_audit']={**audit.record(),**top_audit.record()}
         if line_guard:
@@ -937,6 +946,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             report['release_rejection_reasons']=locals().get('rejection_counts',{})
         if any(v!='off' for v in release23_options.values()):
             report['rejection_ledger']=release23_control.rejection_ledger(report)
+            if report.get('status') in ('HOST_ERROR','interrupted'):
+                report['rejection_ledger'].append(release23_control.rejection('execution_exception',
+                    report.get('error_type','supervisor stop')+': '+report.get('error',''),unit='nongeometric'))
         if isinstance(report.get('teachers'),dict):   # copied from the teachers' own diagnostics (no recomputation)
             report['input_audit']['visibility_by_phase']={r:t.get('visible_counts_by_phase') for r,t in report['teachers'].items()}
             report['input_audit']['max_destination_blind_s_by_phase']={r:t.get('max_destination_blind_s_by_phase') for r,t in report['teachers'].items()}
