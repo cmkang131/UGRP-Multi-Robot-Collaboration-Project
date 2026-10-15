@@ -72,3 +72,30 @@ HOST_ERROR1·감독중단5, 완료0·물리0·후보/프레임0. 외곽EXIT0은 
 계획의 별도v6 ID/hash를 고치고 비물리 사전검사에6장면 전부를 추가했다.
 R2부터는 endpoint와 full 검사 로그를 병합하지 않고 실제 passed_gates를 단계마다
 기록한다. budget/cap으로 중단된 불완전 행은 이미 통과한 관문만 남긴다.
+
+## R2 — 강제 IRM 전환의 회귀, 수정 전 표 보존
+
+83479cc4f9caad813d53eec8077ce64ca36f4a44, 원본
+`gcp1:/home/ugrp/ugrp-sim/runs/search27-r2-short6-83479cc4`.
+성공1·교사실패3·cap_end1·감독중단1. 확정 완료5/6, base1/3·v6 0/2 완료,
+v6 1건은 감독 중단이다. 원본 manifest 검증. 별도 렌더 분석 스크립트의 host_error_N1은
+미완료를 포함하는 옛 분류라 재사용하지 않고 search27-r2-rejection-table.json의
+supervisor_stop으로 분리한다. 이 표와 거부분포를 만든 뒤 R3를 수정했다.
+blocked_goal8736 > unsafe_body_sweep1469 > blocked_retreat546 > first_command_invalid10.
+첫 명령 필터가10개를 선택 전에 거부했지만 일반 성공률 개선 근거는 없다.
+
+모든 정상 경로를 IRM으로 강제하면8312300/315709 v6에서도 −15도/.1932m를 선택해
+정렬 무진전으로 끝났다. R3는 정상 경로 선택을 기존대로 복원하고 실제 최종 명령이
+막힌 때만 동일 checker의 IRM fallback을 활성화한다. IK/jaw/ready를 완화하지 않는다.
+315709 base는26.8s start invalid −3.110mm에서 검사된 단조 이탈1회를 발행했다.
+그 뒤 시작 yaw 연결이 여전히 막혀26.9s에 전역 grid를 다시 채우다30wall초cap으로 끝났다.
+기존98304 논리검사까지 간 결과가 아니며 checks53738, last_stage=body_edge였다.
+R3는 invalid-start 복구 뒤에만 기존 cardinal .025 펄스로 yaw blocker 틈이 양 모형에서
+증가하는 안전한 짧은 연결을 만든다. yaw를 향할 제자리 검사 통과 시 전역 계획에 복귀한다.
+연결은 기존3SIM초 접근 인계로 제한하며, 실제 좌표는 수정하지 않는다.
+
+매틱 중복 RGB 렌더는 첫 invalid-start의 같은 틱 자기 RGB 원본을 필요할 때 캡처하는
+방식으로 줄인다. 해시·원본 경로·admitted band와 마지막 안전 명령은 유지한다.
+평소 자기 검토 프레임은 기존 주기 그대로다. 시야 예측 행동은 바꾸지 않는다.
+
+R3 추가: issued-arm sweep의 동일 PWM 기구학 cloud는 기존 cached_capsules를 재사용한다. 같은 입력의 거부·틈 동등성을 비물리 검사한다.

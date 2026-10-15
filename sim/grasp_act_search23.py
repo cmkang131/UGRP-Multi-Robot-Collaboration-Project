@@ -229,7 +229,9 @@ class BodyNavigation(Previous):
             if count>=5:
                 c,s=math.cos(prior[2]),math.sin(prior[2]);dx,dy=xy[0]-prior[0],xy[1]-prior[1]
                 da=wrap(yaw-prior[2])
-                reason=issued_sweep_reason(self.world,self.rid,prior,before,after,
+                from sim.grasp_act_search27 import enabled as search27,arm_sweep
+                sweep=(lambda *a,**kw:arm_sweep(self.teacher,*a,**kw)) if search27(self.teacher,'search_dependency_cache') else issued_sweep_reason
+                reason=sweep(self.world,self.rid,prior,before,after,
                     (c*dx+s*dy,-s*dx+c*dy,da),audit=audit if self.teacher.search15_modes.get('search24_irm','off')!='off' else None)
             self.connector_cache[key]=(count,after,reason,list(getattr(self,'visibility_audit',[])),audit)
         count,after,reason,visibility,collision=self.connector_cache[key]

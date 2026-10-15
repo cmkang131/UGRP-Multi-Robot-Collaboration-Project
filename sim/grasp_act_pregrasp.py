@@ -362,7 +362,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
     return (min(feasible, key=lambda p: p['cost']) if feasible else None), checked
 
 
-def issued_sweep_reason(world, rid, pose, before, after, delta, *, audit=None):
+def issued_sweep_reason(world, rid, pose, before, after, delta, *, audit=None, capsule_fn=None):
     """Check the actual next pulse plus camera/arm PWM interpolation."""
     dx, dy, da = delta
     n = max(1, math.ceil(max(abs(after[k]-before[k]) for k in before)/5),
@@ -371,7 +371,7 @@ def issued_sweep_reason(world, rid, pose, before, after, delta, *, audit=None):
     for i in range(n+1):
         u = i/n
         pwm = {k:before[k]+u*(after[k]-before[k]) for k in before}
-        xyz, radii, fingers = capsules(pwm)
+        xyz, radii, fingers = (capsules if capsule_fn is None else capsule_fn)(pwm)
         base = (pose[0]+u*(co*dx-si*dy), pose[1]+u*(si*dx+co*dy), pose[2]+u*da)
         reason = collision_reason(world, rid, base, xyz, radii, np.zeros_like(fingers),audit=audit)
         if reason:return reason

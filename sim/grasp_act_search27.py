@@ -144,6 +144,20 @@ def event(t, now, name, reason, audit=(), **fields):
         'checks': list(audit), **fields})
 
 
+def arm_sweep(t,*args,**kwargs):
+    from sim.grasp_act_pregrasp import issued_sweep_reason
+    from sim.grasp_act_search23 import cached_capsules
+    if enabled(t,'search_dependency_cache'):
+        def cloud(pwm):
+            s=stats(t,'capsule_kinematics');s['calls']+=1
+            before=cached_capsules.cache_info().hits
+            result=cached_capsules(tuple(sorted(pwm.items())))
+            s['cache_hits' if cached_capsules.cache_info().hits>before else 'computed']+=1
+            return result
+        kwargs['capsule_fn']=cloud
+    return issued_sweep_reason(*args,**kwargs)
+
+
 def start_state(t, world, before):
     """Exactly once per tick, outside every IRM/candidate loop."""
     from sim.grasp_act_search23 import BodyNavigation
@@ -152,12 +166,13 @@ def start_state(t, world, before):
     gaps, slack = nav.measure([nav.pose[:2]], nav.pose[2])
     audit = list(nav.last_blockers)
     arm = []
-    reason = issued_sweep_reason(world, t.rid, nav.pose, before, before, (0., 0., 0.), audit=arm)
+    reason = arm_sweep(t,world, t.rid, nav.pose, before, before, (0., 0., 0.), audit=arm)
     bad = bool((slack < 0).any()) or reason is not None
     snap = provenance(nav)
     snap.update(min_gap_m=float(gaps.min()), body_invalid=bool((slack < 0).any()), arm_reason=reason)
     previous = getattr(t, 'search27_previous', None)
     if bad and not getattr(t, 'search27_invalid', False):
+        t.search27_connector_since=None
         event(t, world['t'], 'start_geometry_invalid', 'start_geometry_invalid', [*audit, *arm],
               previous=previous, current=snap,
               actual_next_observation=deepcopy(snap['admitted_band']),
@@ -167,7 +182,20 @@ def start_state(t, world, before):
                   (previous['body_discs'] != snap['body_discs'] or previous['body_rects'] != snap['body_rects']))
     t.search27_previous = snap; t.search27_invalid = bad
     if not bad:
+        # Only repair the connector AFTER an actually observed invalid start.
+        # Clear nominal routes keep their original pose/path policy.
+        if getattr(t,'search27_repair_connector',False):
+            wanted=nav.heading(nav.pose[:2])
+            if nav.pose_segment(nav.pose,(*nav.pose[:2],wanted)):
+                t.search27_repair_connector=False;t.search27_connector_since=None
+                return None
+            value=heading_connector(t,world,before,nav)
+            if value is not None:return value
+            if t.approach_blocked_since is None:t.approach_blocked_since=world['t']
+            if world['t']-t.approach_blocked_since>=t.APPROACH_BLOCKED_LIMIT_S:t._approach_handoff(world['t'])
+            return t._hold(world['t'])
         return None
+    t.search27_repair_connector=True
     t.approach_plan_valid = False
     # A stationary arm collision is not repaired by moving the body blindly.
     candidate = None if reason else escape(t, world, before, nav)
@@ -255,7 +283,7 @@ def command_check(t, world, value, before, *, after=None, nav=None, allow_escape
         pwm1 = {k: before[k]+t1/.1*(after[k]-before[k]) for k in before}
         c,s=math.cos(a[2]),math.sin(a[2]);dx,dy=b[0]-a[0],b[1]-a[1]
         arm=[]
-        reason=issued_sweep_reason(world,t.rid,a,pwm0,pwm1,(c*dx+s*dy,-s*dx+c*dy,b[2]-a[2]),audit=arm)
+        reason=arm_sweep(t,world,t.rid,a,pwm0,pwm1,(c*dx+s*dy,-s*dx+c*dy,b[2]-a[2]),audit=arm)
         if reason:
             return False, [{'reason': reason, 'mode': mode, 'blockers': arm}]
     if allow_escape and not all(progress.values()):
@@ -271,6 +299,42 @@ def escape(t, world, before, nav):
         ok,checks=command_check(t,world,value,before,nav=nav,allow_escape=True)
         if ok:return value
     return None
+
+
+def heading_connector(t,world,before,nav):
+    """Finite SE(2) connector using existing translation primitives only.
+
+    Once outside collision, don't launch an A* whose mandatory initial yaw is
+    still blocked. Compare real, safe pulses increasing clearance to the yaw
+    blockers under BOTH issued models. Coordinates remain predictions only.
+    Same 3 SIM-second approach handoff debt bounds this connector.
+    """
+    if getattr(t,'search27_connector_since',None) is None:
+        t.search27_connector_since=world['t']
+    if world['t']-t.search27_connector_since>=t.APPROACH_BLOCKED_LIMIT_S:
+        if t.approach_blocked_since is None:t.approach_blocked_since=t.search27_connector_since
+        t._approach_handoff(world['t'])
+        return t._hold(world['t'])
+    ids={d['id'] for d in nav.last_blockers}
+    selected=[j for j,d in enumerate(nav.audit_details) if d['id'] in ids]
+    if not selected:return None
+    _,slack=nav.measure([nav.pose[:2]],nav.pose[2]);baseline=slack[0,selected]
+    candidates=[]
+    for dx,dy in ((-1,0),(0,-1),(0,1),(1,0)):
+        value=t._continuous(world['t'],.025*dx,.025*dy,0.)
+        ok,checks=command_check(t,world,value,before,nav=nav)
+        if not ok:continue
+        gains=[]
+        for mode in dict.fromkeys(('off',t.search15_modes['search17_odometry'])):
+            endpoint=[b for m,_,_,_,b in pulse_segments(t,nav.pose,value) if m==mode][-1]
+            _,after=nav.measure([endpoint[:2]],endpoint[2])
+            gains.append(float((after[0,selected]-baseline).min()))
+        if min(gains)>0:candidates.append((min(gains),value))
+    if not candidates:return None
+    gain,value=max(candidates,key=lambda p:p[0])
+    event(t,world['t'],'start_heading_connector','safe_translation_increases_yaw_blocker_clearance',
+          command=value,clearance_increase_m=gain,blocker_ids=sorted(ids))
+    return value
 
 
 def first_command(nav, path, goal, point, before):

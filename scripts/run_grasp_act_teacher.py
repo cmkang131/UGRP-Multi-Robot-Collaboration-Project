@@ -267,10 +267,8 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                     v=truth['visibility'][rid];v['any_probe_visible']=v['visible'];v['visible']=v['visible_probes']>=5
                     own=models[rid].observe(ms,now,comparison_pose=(truth['robots'][rid]['pose'] if self_pose_source=='perfect_self_comparison' else None))
                     if search_command_feasible!='off':
-                        jpg=base64.b64decode(ports[rid].capture()['image'])
-                        search27_captures[rid]=jpg
-                        own['visibility'][rid]['own_rgb']={'t':now,'sample':i,'sha256':hashlib.sha256(jpg).hexdigest(),
-                            'camera':'own','pwm':previous[rid]['pwm']}
+                        own['visibility'][rid]['own_rgb']={'t':now,'sample':i,'sha256':None,
+                            'camera':'own','capture_scope':'captured on first invalid start; regular own review otherwise'}
                     perceived[rid]=AuditedTeacherInput(own,report['input_audit'])
             elif observable:
                 for rid in plan['roles']:
@@ -345,15 +343,14 @@ def run(plan,out,*,cap_s=60.,noise=False,record_training=False,probe=False,teach
                 at=time.monotonic()
                 if strict:t.skill_started=now-elapsed['skill_elapsed_s']
                 clean,done=t.step(perceived[rid] if strict else truth,now,permit_pick=allowed)
-                if search_command_feasible!='off' and rid in search27_captures:
-                    if any(e.get('event')=='start_geometry_invalid' and e['t']==now for e in t.search20_log[-2:]):
-                        folder=out/'failure-frames'/rid;folder.mkdir(parents=True,exist_ok=True)
-                        (folder/f'{i:06d}-invalid.jpg').write_bytes(search27_captures[rid])
-                        if rid in search27_safe_rgb:
-                            si,sjpg=search27_safe_rgb[rid]
-                            (folder/f'{si:06d}-last-safe.jpg').write_bytes(sjpg)
-                    if getattr(t,'search27_last_safe',{}).get('t')==now:
-                        search27_safe_rgb[rid]=(i,search27_captures[rid])
+                if search_command_feasible!='off':
+                    for event in t.search20_log[-2:]:
+                        if event.get('event')=='start_geometry_invalid' and event['t']==now:
+                            jpg=base64.b64decode(ports[rid].capture()['image'])
+                            folder=out/'failure-frames'/rid;folder.mkdir(parents=True,exist_ok=True)
+                            fp=folder/f'{i:06d}-invalid.jpg';fp.write_bytes(jpg)
+                            event['current']['rgb'].update(sha256=hashlib.sha256(jpg).hexdigest(),path=str(fp),
+                                capture_scope='actual same-tick own RGB before application of next command')
                 timings['teacher']+=time.monotonic()-at
                 # Privileged navigation samples remain in raw but are excluded by the data admission loader.
                 phase=t.phase;applied=json.loads(json.dumps(clean));perturbed=False

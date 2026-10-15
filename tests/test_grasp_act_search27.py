@@ -92,3 +92,27 @@ def test_short_plan_all_six_scenario_hashes_validate_before_submission():
     assert [(r['seed'],r.get('cargo_scene','off')) for r in plan['episodes']]==[
         (315709,'off'),(315709,'cargo_v6'),(8311709,'off'),(8311709,'cargo_v6'),(8312300,'off'),(8312300,'cargo_v6')]
     for row in plan['episodes']:validate_cargo_scene(row)
+
+
+def test_recovery_heading_connector_uses_safe_real_pulse_without_coordinate_change():
+    from sim.grasp_act_search27 import heading_connector
+    from harness.grasp_act_visible_world import command_delta
+    import math
+    t,w=candidate();w['objects']['box']['xy']=[0.,.11]
+    w['visibility']['r1']['observations']['band_blue']={'id':'band_blue','kind':'band','seen_t':w['t'],'xyz':[0.,.5,.03]}
+    nav=BodyNavigation(t,w);nav.target=(0.,.5,.03)
+    assert not nav.pose_segment(nav.pose,(*nav.pose[:2],math.pi/2))
+    original=deepcopy(w['robots'])
+    with patch('sim.grasp_act_pregrasp.issued_sweep_reason',return_value=None):
+        value=heading_connector(t,w,dict(t.sink.pwm),nav)
+        assert value is not None and command_delta(value,.1)[1]<0
+    assert w['robots']==original
+
+
+def test_cached_issued_arm_kinematics_preserve_rejection_and_gap():
+    from sim.grasp_act_pregrasp import issued_sweep_reason
+    from sim.grasp_act_search27 import arm_sweep
+    t,w=candidate();w['objects']['box']['top_z_bound_m']=.04;before=dict(t.sink.pwm);a=[];b=[]
+    x=issued_sweep_reason(w,t.rid,(0.,0.,0.),before,before,(.001,0.,0.),audit=a)
+    y=arm_sweep(t,w,t.rid,(0.,0.,0.),before,before,(.001,0.,0.),audit=b)
+    assert x==y and a==b

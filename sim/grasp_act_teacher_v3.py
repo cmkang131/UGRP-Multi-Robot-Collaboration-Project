@@ -440,8 +440,6 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return True
 
     def _uses_goal_set(self,world):
-        from sim.grasp_act_search27 import enabled as search27
-        if search27(self):return True
         # Keep the alternative implementation for the OFF comparison. With
         # map handoff enabled, every clear nominal case uses the original law.
         if self.nominal_blocked_handoff!='off' and self.approach_recovery not in ('approach_recovery_v2','progress_view_recovery_v3'):return False
@@ -470,9 +468,6 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self._nominal_handoff(world,now)
             return False
         from sim.grasp_act_search20 import enabled, plan_active
-        from sim.grasp_act_search27 import enabled as search27
-        if search27(self):
-            self.search19_body_active=True;self.sampled_stance=True
         if enabled(self) and self.search19_body_active:return plan_active(self,world,now)
         from sim.grasp_act_goal_set import select_goal
         from sim.grasp_act_visible_route import constraints,free,waypoint
@@ -953,6 +948,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             ok,checks=command_check(self,truth,value,before_pwm,after=dict(self.sink.pwm))
             if not ok:
                 event(self,now,'command_feasibility_reject','final_command_invalid',checks)
+                if self.phase=='approach':
+                    self.search19_body_active=True;self.sampled_stance=True
+                    self.approach_plan_valid=False;self.next_plan=now
                 self.sink.pwm.update(before_pwm);self.arm.commanded.update(before_pwm)
                 value=self._hold(now)
             else:
