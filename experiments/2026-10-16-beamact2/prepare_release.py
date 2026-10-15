@@ -59,14 +59,15 @@ def main():
     (staging/'README.md').write_text(
         '# beamact2 comparison model\n\nFixed step10000; shared L4 training. '
         f'Student reserved20: {evaluation["n"]}/20; {evaluation["verdict"]}.\n\n'
-        'Use the frozen source and pinned optional ACT environment. CPU load check:\n\n'
+        f'Deployment source: `{evaluation["source_sha"]}`; training source: `{training["source_sha"]}`.\n\n'
+        'Use the frozen deployment source and pinned optional ACT environment. CPU load check:\n\n'
         '```sh\npython -m scripts.beamact2_worker --model /PATH/actor < /dev/null\n```\n\n'
         'Own RGB/issued-history only; the beamact1.v3 adapter applies the TRAIN-mean wheel/pulse mask. '
         'This model is not a default controller. See provenance and experiment records for verification limits.\n')
     files=[dict(path=str(f.relative_to(staging)),bytes=f.stat().st_size,sha256=sha256(f))
         for f in sorted(staging.rglob('*')) if f.is_file()]
     row=dict(id=MODEL_ID,status='available',description='Fixed final shared-weight beam pair ACT comparison model; default off',
-        source_sha=training['source_sha'],training_source_sha=training['source_sha'],
+        source_sha=evaluation['source_sha'],training_source_sha=training['source_sha'],
         evaluation_source_sha=evaluation['source_sha'],
         release=dict(tag=TAG,asset=MODEL_ID+'.zip',
             url=f'https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/{TAG}/{MODEL_ID}.zip'),
