@@ -131,3 +131,30 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
                          'work_budget':{'columns':n,'rows_per_column':und_bgr.shape[0],'line_pair_checks':checks},
                          'truth_inputs':0,'interpolated_missing_columns':0}
     return scan
+
+
+def configured_backend(hfw):
+    """Instance-local opt-in facade for existing modules()->hfw.detect callers.
+
+    No monkeypatch: the legacy module object and its globals stay unchanged.
+    The empty/off setting returns that exact object, including in v1 scenes.
+    A selected file declares BOTH scene profile and calibrated colour model.
+    """
+    import os,json,hashlib
+    from pathlib import Path
+    from types import SimpleNamespace
+    option=os.environ.get('UGRP_SCENE_COLOUR_BOUNDARY','off')
+    if option=='off':return hfw
+    if option!=OPTION:raise ValueError('UNKNOWN_SCENE_COLOUR_BOUNDARY')
+    profile=os.environ.get('UGRP_SCENE_RENDER_PROFILE','')
+    path=Path(os.environ.get('UGRP_SCENE_COLOUR_CALIBRATION',''))
+    digest=os.environ.get('UGRP_SCENE_COLOUR_CALIBRATION_SHA256','')
+    if not path.is_file() or len(digest)!=64:raise ValueError('EXPLICIT_FROZEN_COLOUR_CALIBRATION_REQUIRED')
+    raw=path.read_bytes()
+    if hashlib.sha256(raw).hexdigest()!=digest:raise ValueError('COLOUR_CALIBRATION_HASH_MISMATCH')
+    state=ColourBoundaryState(profile,json.loads(raw))
+    def dispatch(und_bgr,cm,params=None,self_top=None,loaded=True,*,wall_detector='off',contact_rule='off'):
+        if self_top is not None or wall_detector!='off' or contact_rule!='off':
+            raise ValueError('SCENE_COLOUR_BACKEND_REQUIRES_UNMODIFIED_CONTACT_INTERFACE')
+        return detect(hfw,und_bgr,cm,params=params or {},loaded=loaded,state=state)
+    return SimpleNamespace(**{**vars(hfw),'detect':dispatch,'scene_colour_state':state})

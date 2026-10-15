@@ -110,3 +110,31 @@ def test_low_amplitude_assets_preserve_v1_spatial_variation():
         old=np.asarray(Image.open(original[file])).astype(int)
         new=np.asarray(Image.open(root/key)).astype(int)
         assert np.array_equal(new,np.array(v5.PROFILES[name]['rgb'])+old-84)
+
+def test_shared_selfmap_backend_is_instance_local_hash_pinned_and_off_exact(monkeypatch,tmp_path):
+    import json,hashlib,numpy as np
+    from harness.scene_colour_boundary import configured_backend,OPTION
+    from harness.active_wall_vision import modules
+    from harness.active_camera import transform
+    from scripts.zone_teacher import FOLDED
+    modules.cache_clear()
+    mp,original,_=modules()
+    assert configured_backend(original) is original
+    path=tmp_path/'calibration.json';path.write_text(json.dumps(calibration_for_test()))
+    monkeypatch.setenv('UGRP_SCENE_COLOUR_BOUNDARY',OPTION)
+    monkeypatch.setenv('UGRP_SCENE_RENDER_PROFILE','walls_floor_contrast_v5_violet175')
+    monkeypatch.setenv('UGRP_SCENE_COLOUR_CALIBRATION',str(path))
+    monkeypatch.setenv('UGRP_SCENE_COLOUR_CALIBRATION_SHA256',hashlib.sha256(path.read_bytes()).hexdigest())
+    backend=configured_backend(original)
+    assert backend is not original and backend.link_segments is original.link_segments
+    assert original.detect.__module__=='height_free_wall'
+    origin,rotation=transform(FOLDED)
+    cm=mp.ColumnModel(tuple(sorted(FOLDED.items())),0.,mp.column_positions(96,2),camera_transform=(origin,rotation))
+    im=np.full((480,640,3),[150,150,150],np.uint8);im[:300]=[175,31,146]
+    scan=backend.detect(im,cm,params={},loaded=False)
+    assert np.isfinite(scan['vb'][:,0]).sum()>80
+    monkeypatch.setenv('UGRP_SCENE_RENDER_PROFILE','floor_light_textured_v1')
+    with pytest.raises(ValueError):configured_backend(original)
+    monkeypatch.setenv('UGRP_SCENE_RENDER_PROFILE','walls_floor_contrast_v5_violet175')
+    path.write_text('{}')
+    with pytest.raises(ValueError,match='HASH'):configured_backend(original)

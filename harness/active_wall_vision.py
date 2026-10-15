@@ -18,7 +18,8 @@ def modules():
     import height_free_wall as hfw
     import ego_wall_map as ewm
     from harness.wall_column_calibration import adapter
-    return adapter(mp),hfw,ewm
+    from harness.scene_colour_boundary import configured_backend
+    return adapter(mp),configured_backend(hfw),ewm
 
 
 def observe(rgb,servo,*,body_settling=1.,wall_detector='off',contact_rule='off',
