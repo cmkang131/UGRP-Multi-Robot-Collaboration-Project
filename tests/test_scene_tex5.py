@@ -87,9 +87,26 @@ def test_transition_preserves_abi_and_does_not_fill_orange_occlusion():
     assert all(v.shape==(96,3) for v in result.values())
     valid=np.isfinite(result['vb'][:,0])
     assert valid.sum()>80
-    assert np.allclose(result['vb'][valid,0],299.5)
+    assert np.allclose(result['vb'][valid,0],299.)
     im[200:450,280:360]=[0,120,255]
     masked=detect(hfw,im,cm,params={},loaded=False,state=state)
     inside=(cm.columns>280)&(cm.columns<360)
     assert np.isnan(masked['vb'][inside]).all()
     assert state.last_result['interpolated_missing_columns']==0
+
+def test_low_amplitude_assets_preserve_v1_spatial_variation():
+    import hashlib,json,numpy as np
+    from PIL import Image
+    from pathlib import Path
+    from sim import natural_scene_texture as v1
+    root=Path(v5.__file__).parent/'assets/scene_contrast_v5'
+    assert hashlib.sha256((root/'manifest.json').read_bytes()).hexdigest()==v5.TEXTURE_MANIFEST_SHA256
+    manifest=json.loads((root/'manifest.json').read_text())
+    record=v1.manifest()
+    original={v['file']:v1.checked_file(k,record,v1.ASSETS) for k,v in record['images'].items() if k!='floor'}
+    for key,digest in manifest['images'].items():
+        assert hashlib.sha256((root/key).read_bytes()).hexdigest()==digest
+        name,file=key.split('/',1)
+        old=np.asarray(Image.open(original[file])).astype(int)
+        new=np.asarray(Image.open(root/key)).astype(int)
+        assert np.array_equal(new,np.array(v5.PROFILES[name]['rgb'])+old-84)

@@ -70,7 +70,8 @@ def wrap(scene):
     if base_profile not in (BASE_PROFILE, 'floor_light_textured_v1', 'walls_floor_textured_v2', 'walls_floor_textured_v3',
                             'walls_floor_contrast_v4_dark', 'walls_floor_contrast_v4_light', 'walls_floor_contrast_v4_skirt',
                             'walls_floor_contrast_v4_luma', 'walls_floor_contrast_v4_flat',
-                            'walls_floor_contrast_v5_violet150','walls_floor_contrast_v5_violet175','walls_floor_contrast_v5_violet195'):
+                            'walls_floor_contrast_v5_violet150','walls_floor_contrast_v5_violet175','walls_floor_contrast_v5_violet195',
+                'walls_floor_contrast_v5_indigo100','walls_floor_contrast_v5_indigo85','walls_floor_contrast_v5_indigo100_flat'):
         raise ValueError(f'{ID} needs a {BASE_PROFILE} scene, got {getattr(scene, "_render_profile_name", None)!r}')
     inner = scene.transform
 

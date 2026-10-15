@@ -21,13 +21,16 @@ def calibrate(rows,profile):
     from harness.active_wall_vision import modules
     mp,_,_=modules();mp.undistort(np.zeros((480,640,3),np.uint8))
     hist={s:np.zeros((3,256),np.int64) for s in ('floor','wall')}
-    ab={s:np.zeros(65536,np.int64) for s in hist};sources=[]
+    ab={s:np.zeros(65536,np.int64) for s in hist};sources=[];hsv_hist=np.zeros((3,256),np.int64)
     for r in rows:
         root=Path(r['raw_root']);stem=r['case']+'--'+r['material']+'--'+r['quality']
         masks={s:cv2.imread(str(root/(stem+'--mask-'+s+'.png')),0) for s in hist}
         masks={s:cv2.erode(cv2.remap(m,mp._UNDISTORT[0],mp._UNDISTORT[1],cv2.INTER_NEAREST),np.ones((5,5),np.uint8))>0 for s,m in masks.items()}
         for e in ENC:
-            lab=cv2.cvtColor(mp.undistort(cv2.imread(str(root/r['encodings'][e]['file']))),cv2.COLOR_BGR2LAB)
+            und=mp.undistort(cv2.imread(str(root/r['encodings'][e]['file'])))
+            lab=cv2.cvtColor(und,cv2.COLOR_BGR2LAB)
+            hsv=cv2.cvtColor(und,cv2.COLOR_BGR2HSV)[masks['wall']]
+            for c in range(3):hsv_hist[c]+=np.bincount(hsv[:,c],minlength=256)
             for s,m in masks.items():
                 pix=lab[m]
                 for c in range(3):hist[s][c]+=np.bincount(pix[:,c],minlength=256)
@@ -39,6 +42,7 @@ def calibrate(rows,profile):
     tails={'floor_p99':quantile(values,ab['floor'],99),'wall_p01':quantile(values,ab['wall'],1)}
     if tails['floor_p99']>=tails['wall_p01']:raise ValueError('CHROMA_DISTRIBUTIONS_NOT_SEPARATED')
     return {'schema':'ugrp.scene_colour_calibration.v1','scene_profile':profile,'scene_sha256':profile_record(profile)['sha256'],
+        'wall_hsv':{'p'+str(q).zfill(2):[quantile(np.arange(256),hsv_hist[c],q) for c in range(3)] for q in (1,99)},'wall_hsv_basis':'original wall pixel p01/p99; retains hue specificity against existing blue B and purple C paint',
         'lab':labs,'axis_ab':axis.tolist(),'split':sum(tails.values())/2,'split_basis':tails,
         'basis':'midpoint of original floor p99 and wall p01 chroma; class envelopes p00/p100; no boundary-error tuning',
         'interior_kernel_px':5,'interior_kernel_basis':'existing strip_half_px=2 -> 5-pixel support',

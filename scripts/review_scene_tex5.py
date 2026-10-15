@@ -8,7 +8,7 @@ from scripts.score_scene_tex5 import signal,ENC
 from scripts.probe_scene_tex2 import pose_pwm_mode
 from harness.scene_colour_boundary import ColourBoundaryState
 
-def main(analysis,roots,out):
+def main(analysis,roots,out,cases=None):
     from harness.zone_pair_highpose import HIGH
     from scripts.zone_teacher import FOLDED
     out.mkdir(parents=True,exist_ok=False)
@@ -16,6 +16,7 @@ def main(analysis,roots,out):
     for root in roots:
         groups.append([dict(read(root/i['record']),raw_root=str(root)) for i in read(root/'index.json')])
     choices=[r for r in groups[0] if r['pose']=='drive' and r['view'] in (0,1) and r['robot']=='r1'][:6]
+    if cases:choices=[r for r in groups[0] if r['case'] in cases]
     plate=Image.new('RGB',(400*len(groups),330*len(choices)),'white');draw=ImageDraw.Draw(plate)
     seen=[]
     for y,b in enumerate(choices):
@@ -39,6 +40,6 @@ def main(analysis,roots,out):
     write(out/'review-index.json',{'frames':seen,'legend':'cyan=evaluation wall-floor contact; red=detector; undistorted own RGB','scope':'static t0; no motion timeline or dynamic video review'})
     write(out/'SHA256SUMS.json',{p.name:sha(p) for p in out.iterdir() if p.is_file()})
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--analysis',type=Path,required=True);p.add_argument('--inputs',nargs='+',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--analysis',type=Path,required=True);p.add_argument('--inputs',nargs='+',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--cases',nargs='+');a=p.parse_args()
     if not platform.node().startswith('ugrp-sim-gcp2'):p.error('gcp2 only')
-    main(a.analysis,a.inputs,a.output)
+    main(a.analysis,a.inputs,a.output,a.cases)

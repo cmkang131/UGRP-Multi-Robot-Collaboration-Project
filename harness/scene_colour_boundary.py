@@ -34,6 +34,10 @@ def surface_masks(bgr, calibration):
     for surface in ('floor', 'wall'):
         lo, hi = np.asarray(calibration['lab'][surface]['p00']), np.asarray(calibration['lab'][surface]['p100'])
         masks[surface] = ((lab >= lo) & (lab <= hi)).all(-1)
+    if 'wall_hsv' in calibration:
+        hsv=cv2.cvtColor(bgr,cv2.COLOR_BGR2HSV)
+        bounds=calibration['wall_hsv']
+        masks['wall'] &= ((hsv>=bounds['p01']) & (hsv<=bounds['p99'])).all(-1)
     masks['wall'] &= score > split
     masks['floor'] &= score < split
     return masks, score
@@ -54,6 +58,7 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
     robot = robot_occluded_columns(und_bgr)
     top = hfw.self_top_mask(und_bgr, cm, p, loaded)
     strips = hfw.ColumnStrips(und_bgr, cols, half)
+    grey=cv2.cvtColor(und_bgr,cv2.COLOR_BGR2GRAY).astype(float)
     reasons = []
     for j, u in enumerate(cols):
         sl = slice(max(0, u-half), min(und_bgr.shape[1], u+half+1))
@@ -72,7 +77,13 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
             if above < 0 or below >= len(s) or not w[above] or not f[below]: continue
             # Linear interpolation of the scalar colour crossing. This is a
             # measured subpixel edge, not a snapped GT boundary or line fill.
-            row = float(v+s[v]/(s[v]-s[v+1]))
+            # Brightness is deliberately separated in scene-v5: choose the
+            # strongest local luminance step, within the inherited support
+            # window. Preserve the legacy integer-row convention (GT scores
+            # against half-pixel label edges); no fitted px correction.
+            lum=np.median(grey[:,sl],axis=1)
+            edges=np.arange(max(0,v-window),min(len(lum)-1,v+window+1))
+            row=float(edges[np.argmax(abs(lum[edges+1]-lum[edges]))])
             if row >= top[j]-p['self_margin_px']-1: continue
             ts = cm.t_of_row(np.full(n, row)); t = float(ts[j])
             if not np.isfinite(t): continue
