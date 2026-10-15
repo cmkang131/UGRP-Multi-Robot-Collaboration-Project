@@ -57,3 +57,7 @@ R3 93585 41.5초는0.06초 전진펄스를 골랐고 기존 RealPrimitivePort의
 원본16/16manifest검증, 선택자기RGB96장(몽타주16개)직접검토·Mac다운로드해시확인([검증](local-review-verification.json)). 모델/학습0·weldOFF·invisible_measurements=held_world_reads=0. 원본전체는GCP영속디스크에있고별도전체백업완료는아니다. Mac에는요약·몽타주·실패선택프레임만회수했다. 소유PID/임대/예약0,공유호스트의다른작업·가드유지([종료](final-state.json)). 공유VM의기존24h상한은변경하지않았고후속큐의8h운영조건은조정자확인이남는다([호스트](host-safety.json)).
 
 남은문제는하중중추측항법/예산의일반화,잘못된작은공분산과실행자세보정수용,복구수렴,목적지놓기다. 3라운드한도를넘는새물리실행은내지않았다. 추가계수맞춤의재생성공을폐루프성공으로보고하지않는다.
+
+후속큐의 고정소스는 `bebc9d1eaa8b6d86d703b40c9507d1df87d2aae3`이며 최종물리 f3d06408과다르다(물리후코드수정 포함). [큐검증](queue-verification.json)의selfmap8·carry11모두BLOCKED·승인/실행/제출false,동시16·전체40이다. `rejection_table` 절대경로/파일해시와모든run의40자리source_sha를확인해기본프로젝트vm3-queue에같은바이트로복사했다. 실제호스트24h와요구8h불일치도차단사유에남겼다.
+
+이번 탐색의 자기 동시 실행 최대는6개다. 동시16부하의실제재생동등성은검증하지않았으며,후속큐의max_parallel=16을그측정결과로해석하지않는다. 검증세부는 [validation.json](validation.json)에있다.

@@ -42,7 +42,8 @@
       "pytest-final.txt",
       "pytest-native.txt"
     ],
-    "scope": "offline, no Mac physics/render/model"
+    "scope": "55 distinct offline cases across five files; queue contract rechecked after command metadata change; no Mac physics/render/model",
+    "queue_rechecked_log": "pytest-queue.txt"
   },
   "first30": [
     {
@@ -108,5 +109,31 @@
     "physical destination release not verified",
     "carry budget undercoverage",
     "post-round3 code fixes lack new closed-loop validation"
-  ]
+  ],
+  "candidate_source_sha": "bebc9d1eaa8b6d86d703b40c9507d1df87d2aae3",
+  "source_frozen_path": "/Users/changmin/projects/ugrp-wt/map-selfmap/outputs/reloc14/source-bebc9d1e",
+  "queues": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-selfmap/experiments/2026-10-15-reloc14/queues/20261015-reloc14-carry-v7-bebc9d1e.json",
+      "coordinator_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-reloc14-carry-v7-bebc9d1e.json",
+      "sha256": "64f7e827dc909999c5412ba35e88b7a93ed6aca6e429cd0fc58aa921ba9a22af",
+      "run_N": 11,
+      "status": "BLOCKED",
+      "rejection_table": "/Users/changmin/projects/ugrp-wt/map-selfmap/experiments/2026-10-15-reloc14/rejection-table.json",
+      "source_sha": "bebc9d1eaa8b6d86d703b40c9507d1df87d2aae3"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/map-selfmap/experiments/2026-10-15-reloc14/queues/20261015-reloc14-selfmap-bebc9d1e.json",
+      "coordinator_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-reloc14-selfmap-bebc9d1e.json",
+      "sha256": "a16d136faa26f5eb92fa3b9a56ec1faa62e6ff5cea6bd7d0577af14330d09324",
+      "run_N": 8,
+      "status": "BLOCKED",
+      "rejection_table": "/Users/changmin/projects/ugrp-wt/map-selfmap/experiments/2026-10-15-reloc14/rejection-table.json",
+      "source_sha": "bebc9d1eaa8b6d86d703b40c9507d1df87d2aae3"
+    }
+  ],
+  "host_guard_observed_s": 86400,
+  "host_guard_required_s": 28800,
+  "max_own_parallel_measured": 6,
+  "load16_replay_verified": false
 }

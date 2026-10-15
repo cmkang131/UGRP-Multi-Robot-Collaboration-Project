@@ -1,0 +1,35 @@
+{
+  "candidate_source_sha": "bebc9d1eaa8b6d86d703b40c9507d1df87d2aae3",
+  "last_physical_source_sha": "f3d0640829abede9f84c1b05cbc1ff877d78b8fe",
+  "new_physics_after_post3_fixes": 0,
+  "unique_offline_cases_passed": 55,
+  "test_files": [
+    "tests/test_reloc14.py",
+    "tests/test_reloc13.py",
+    "tests/test_reloc12.py",
+    "tests/test_reloc10_selfmap.py",
+    "tests/test_self_map_executor.py"
+  ],
+  "logs": [
+    "pytest-final.txt",
+    "pytest-native.txt",
+    "pytest-queue.txt"
+  ],
+  "runtime_files_match_frozen_candidate": true,
+  "sha256": {
+    "harness/active_wall_mapping.py": "7c5ca79092b14582986aa5eb19a0bad597ab8ae13d0281905910cb6050cdb773",
+    "harness/reloc14_tracking.py": "e561b364ccf14fd8e092e060dc46d4c3c47a4fc0ca3fcee58777ce5e6be59db0",
+    "harness/reloc10_settle.py": "58923f5c6426d8cae69db3e2bdd0100b6181f51a7714ce8666c81c00ef82077d",
+    "harness/self_map_executor.py": "d10220199fedfd25afb934fa45ddac030043b41b9ef7d125cf5ef0c25dcb6cc0",
+    "harness/self_map_integration.py": "17cd25426aef2a1caf2ad6beffc43ade550a7c6e8ee91dce22010ad311d1977a",
+    "harness/selfmap4_geometry.py": "cdca5233574bacb7fa8742d682722f0a264da45240b2babcc30fb4fe68ef59a5",
+    "harness/selfmap6_safety.py": "bd5331378c80e00b28134484227f0edd38cc3017edeb6415e10ada1796d50fe0",
+    "sim/solo_carry_pose.py": "f3d24594dd7f1a2427d523f57c8042f2a7f5473522236911d7fcb413df62eda5",
+    "sim/solo_carry_to_zone.py": "0cabd581c1a117f4bae37581ef3d2c1995b709a292e6e6b88cb8cc0cdbce3706",
+    "sim/reloc14_carry_tracking.py": "a3222b00474bbb17b49278c48e868d8d90ba40154c9868bb255e812399506cec",
+    "sim/zone_scenario_scene.py": "5e0e2cb1fb4d9328f361e6cb075b71bd9b8fcc806c26ff571c926b53499737d4",
+    "scripts/run_self_map_diagnostic.py": "1b15942562c6fc5d75e3d84f1556159022f8423b634dc9bb86bf08d265c0f58d",
+    "scripts/run_solo_grasp_act_teacher.py": "0deba978b9b61034a86d911f86ef987bbb1255f5e8ad7a3d3f49aa75bac7eda1"
+  },
+  "ci_patterns_include_new_tests": true
+}
