@@ -1,0 +1,1076 @@
+{
+  "schema": "ugrp.reloc17.funnel.v1",
+  "analysis_host": "gcp2",
+  "runs": [
+    {
+      "round": 1,
+      "seed": 93584,
+      "scene": "v5",
+      "run": "reloc16-r1-selfmap-93584-v5-93635d6e-hostretry1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v5-93635d6e-hostretry1/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "cumulative": {
+        "frames": 301,
+        "detected": 283,
+        "sensor_update": 134,
+        "pf_resolved": 97,
+        "dominant_mode": 97,
+        "raw_covariance": 97,
+        "correspondence_nis": 97,
+        "geometry_axes": 87,
+        "global_unique": 2,
+        "pf_geometry_agreement": 0,
+        "three_views": 0,
+        "registered": 0
+      },
+      "independent": {
+        "frames": 301,
+        "detected": 283,
+        "sensor_update": 134,
+        "pf_resolved": 217,
+        "dominant_mode": 291,
+        "raw_covariance": 255,
+        "correspondence_nis": 284,
+        "geometry_axes": 255,
+        "global_unique": 2,
+        "pf_geometry_agreement": 0,
+        "three_views": 0,
+        "registered": 0
+      },
+      "first_rejections": [
+        {
+          "category": "detected",
+          "N": 18,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_resolved",
+          "N": 37,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "sensor_update",
+          "N": 149,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "geometry_axes",
+          "N": 10,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "global_unique",
+          "N": 85,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_geometry_agreement",
+          "N": 2,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "distribution": {
+        "raw_xy_sigma_m": {
+          "N": 301,
+          "p0": 0.0007724473157085166,
+          "p50": 0.044853074760948,
+          "p95": 0.8022591907973753,
+          "p100": 1.793428044471503
+        },
+        "raw_yaw_sigma_deg": {
+          "N": 301,
+          "p0": 0.023911856794737736,
+          "p50": 2.496174168903464,
+          "p95": 26.38025811383457,
+          "p100": 165.6465252946895
+        },
+        "cluster_mass": {
+          "N": 301,
+          "p0": 0.4069999999999997,
+          "p50": 1.0,
+          "p95": 1.0000000000000002,
+          "p100": 1.0000000000000002
+        },
+        "injected": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 193.0
+        },
+        "recovery_probability": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 0.09907258349872117
+        },
+        "raw_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 92.0,
+          "p95": 96.0,
+          "p100": 96.0
+        },
+        "fitted_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 65.0,
+          "p95": 96.0,
+          "p100": 96.0
+        }
+      },
+      "sha256": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v5-93635d6e-hostretry1/raw/trace.jsonl.zst": "b65a799a6dcce5df4f620b3addac9e3c4aa525dd606f287b00eda5b1c754827e",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v5-93635d6e-hostretry1/raw/result.json": "ad0e489f5836a46c8926e20b35e3f7593c11deffa5f4de5f6c04fbbe03744913",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v5-93635d6e-hostretry1/raw/eval_only/trajectory.jsonl.zst": "0fc34decd6130d4c071998fac1c3f9ba68569ca74c67d6c5b60ae87603f0eefb"
+      },
+      "note": "Sequential acquisition funnel; registered is independently latched after acquisition. Tracking frames have separate independent counts. Correspondences are instrumented separately where packet supports replay."
+    },
+    {
+      "round": 1,
+      "seed": 93583,
+      "scene": "v5",
+      "run": "reloc16-r1-selfmap-93583-v5-93635d6e-hostretry1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v5-93635d6e-hostretry1/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "cumulative": {
+        "frames": 301,
+        "detected": 288,
+        "sensor_update": 142,
+        "pf_resolved": 83,
+        "dominant_mode": 83,
+        "raw_covariance": 83,
+        "correspondence_nis": 83,
+        "geometry_axes": 64,
+        "global_unique": 1,
+        "pf_geometry_agreement": 0,
+        "three_views": 0,
+        "registered": 0
+      },
+      "independent": {
+        "frames": 301,
+        "detected": 288,
+        "sensor_update": 142,
+        "pf_resolved": 143,
+        "dominant_mode": 260,
+        "raw_covariance": 163,
+        "correspondence_nis": 299,
+        "geometry_axes": 233,
+        "global_unique": 1,
+        "pf_geometry_agreement": 0,
+        "three_views": 0,
+        "registered": 0
+      },
+      "first_rejections": [
+        {
+          "category": "detected",
+          "N": 13,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_resolved",
+          "N": 59,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "sensor_update",
+          "N": 146,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "geometry_axes",
+          "N": 19,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "global_unique",
+          "N": 63,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_geometry_agreement",
+          "N": 1,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "distribution": {
+        "raw_xy_sigma_m": {
+          "N": 301,
+          "p0": 0.006684299949101601,
+          "p50": 0.05208404759131608,
+          "p95": 0.892902261000609,
+          "p100": 1.793428044471503
+        },
+        "raw_yaw_sigma_deg": {
+          "N": 301,
+          "p0": 0.15315754281575097,
+          "p50": 3.9743028999475025,
+          "p95": 44.89159595630637,
+          "p100": 165.6465252946895
+        },
+        "cluster_mass": {
+          "N": 301,
+          "p0": 0.5984999999999996,
+          "p50": 1.0,
+          "p95": 1.0000000000000002,
+          "p100": 1.0000000000000002
+        },
+        "injected": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 180.0
+        },
+        "recovery_probability": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 0.09158641497197528
+        },
+        "raw_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 95.0,
+          "p95": 96.0,
+          "p100": 96.0
+        },
+        "fitted_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 83.0,
+          "p95": 96.0,
+          "p100": 96.0
+        }
+      },
+      "sha256": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v5-93635d6e-hostretry1/raw/trace.jsonl.zst": "d34dc94d36dce7e938bbb81aacb5b09c5ccf4f3053f0d97a1a043ac8c92371c8",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v5-93635d6e-hostretry1/raw/result.json": "2775589d56ded3dc96acf76fe2574625532611c92030a465757a2dfaa9d25bcb",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v5-93635d6e-hostretry1/raw/eval_only/trajectory.jsonl.zst": "9060f573b65e4479a6551927589dd32be5f61e04ee33b661b01026d8abdbfd4c"
+      },
+      "note": "Sequential acquisition funnel; registered is independently latched after acquisition. Tracking frames have separate independent counts. Correspondences are instrumented separately where packet supports replay."
+    },
+    {
+      "round": 1,
+      "seed": 93584,
+      "scene": "v1",
+      "run": "reloc16-r1-selfmap-93584-v1-93635d6e-hostretry1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v1-93635d6e-hostretry1/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "cumulative": {
+        "frames": 301,
+        "detected": 80,
+        "sensor_update": 43,
+        "pf_resolved": 34,
+        "dominant_mode": 34,
+        "raw_covariance": 34,
+        "correspondence_nis": 34,
+        "geometry_axes": 34,
+        "global_unique": 29,
+        "pf_geometry_agreement": 8,
+        "three_views": 2,
+        "registered": 2
+      },
+      "independent": {
+        "frames": 301,
+        "detected": 80,
+        "sensor_update": 174,
+        "pf_resolved": 239,
+        "dominant_mode": 296,
+        "raw_covariance": 283,
+        "correspondence_nis": 204,
+        "geometry_axes": 122,
+        "global_unique": 29,
+        "pf_geometry_agreement": 213,
+        "three_views": 44,
+        "registered": 216
+      },
+      "first_rejections": [
+        {
+          "category": "detected",
+          "N": 221,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_resolved",
+          "N": 9,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "sensor_update",
+          "N": 37,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_geometry_agreement",
+          "N": 21,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "global_unique",
+          "N": 5,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "three_views",
+          "N": 6,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "distribution": {
+        "raw_xy_sigma_m": {
+          "N": 301,
+          "p0": 0.009604965030907322,
+          "p50": 0.031185202058415414,
+          "p95": 0.8616228197564758,
+          "p100": 1.793428044471503
+        },
+        "raw_yaw_sigma_deg": {
+          "N": 301,
+          "p0": 0.1318876926478719,
+          "p50": 1.296898352231987,
+          "p95": 27.34272689661932,
+          "p100": 165.6465252946895
+        },
+        "cluster_mass": {
+          "N": 301,
+          "p0": 0.8869999999999995,
+          "p50": 0.9999999999999993,
+          "p95": 1.0,
+          "p100": 1.0000000000000002
+        },
+        "injected": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 178.0
+        },
+        "recovery_probability": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 0.09909909887616775
+        },
+        "raw_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 96.0,
+          "p100": 96.0
+        },
+        "fitted_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 96.0,
+          "p100": 96.0
+        }
+      },
+      "sha256": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v1-93635d6e-hostretry1/raw/trace.jsonl.zst": "53f99c672d681ab22c2592c5bad27db6679d6ffbc6a5c770e04cb97bf761c757",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v1-93635d6e-hostretry1/raw/result.json": "3392c6c7ae8dfb48c71958dc1d3f40397d20feac4ac8474d1e609377ae27ae8c",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93584-v1-93635d6e-hostretry1/raw/eval_only/trajectory.jsonl.zst": "ff32fd62192e29e7e8fbb083469e9dfb8cab7f473048cd118f4e333177d857a1"
+      },
+      "note": "Sequential acquisition funnel; registered is independently latched after acquisition. Tracking frames have separate independent counts. Correspondences are instrumented separately where packet supports replay."
+    },
+    {
+      "round": 1,
+      "seed": 93583,
+      "scene": "v1",
+      "run": "reloc16-r1-selfmap-93583-v1-93635d6e-hostretry1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v1-93635d6e-hostretry1/raw",
+      "source_sha": "93635d6ecd47226138c433603a15dd362ff10f11",
+      "cumulative": {
+        "frames": 301,
+        "detected": 133,
+        "sensor_update": 72,
+        "pf_resolved": 55,
+        "dominant_mode": 55,
+        "raw_covariance": 55,
+        "correspondence_nis": 55,
+        "geometry_axes": 55,
+        "global_unique": 30,
+        "pf_geometry_agreement": 12,
+        "three_views": 2,
+        "registered": 2
+      },
+      "independent": {
+        "frames": 301,
+        "detected": 133,
+        "sensor_update": 175,
+        "pf_resolved": 230,
+        "dominant_mode": 296,
+        "raw_covariance": 243,
+        "correspondence_nis": 211,
+        "geometry_axes": 190,
+        "global_unique": 30,
+        "pf_geometry_agreement": 162,
+        "three_views": 50,
+        "registered": 219
+      },
+      "first_rejections": [
+        {
+          "category": "detected",
+          "N": 168,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_resolved",
+          "N": 17,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "sensor_update",
+          "N": 61,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "global_unique",
+          "N": 25,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_geometry_agreement",
+          "N": 18,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "three_views",
+          "N": 10,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "distribution": {
+        "raw_xy_sigma_m": {
+          "N": 301,
+          "p0": 0.014898016082716962,
+          "p50": 0.03726749513252725,
+          "p95": 0.8348229799601622,
+          "p100": 1.793428044471503
+        },
+        "raw_yaw_sigma_deg": {
+          "N": 301,
+          "p0": 0.8308937890819118,
+          "p50": 1.6536696328060547,
+          "p95": 24.992528778800814,
+          "p100": 165.6465252946895
+        },
+        "cluster_mass": {
+          "N": 301,
+          "p0": 0.5109424406067715,
+          "p50": 1.0,
+          "p95": 1.0000000000000002,
+          "p100": 1.0000000000000002
+        },
+        "injected": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 213.0
+        },
+        "recovery_probability": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 0.09909908697945247
+        },
+        "raw_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 96.0,
+          "p100": 96.0
+        },
+        "fitted_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 96.0,
+          "p100": 96.0
+        }
+      },
+      "sha256": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v1-93635d6e-hostretry1/raw/trace.jsonl.zst": "2a22a73597e36f12ca36e100cc4a2819b9eee662c456bd254a81317ec138dea2",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v1-93635d6e-hostretry1/raw/result.json": "5122fb2f0c5b8d83c3df01951f6e65b4b55197e051bcc0bcdd989b6c9f9e29b2",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r1-selfmap-93583-v1-93635d6e-hostretry1/raw/eval_only/trajectory.jsonl.zst": "8db485494ff1ce6b892925f8507230726a49f837e13b69f0f4f2d90adeac134d"
+      },
+      "note": "Sequential acquisition funnel; registered is independently latched after acquisition. Tracking frames have separate independent counts. Correspondences are instrumented separately where packet supports replay."
+    },
+    {
+      "round": 2,
+      "seed": 93584,
+      "scene": "v5",
+      "run": "reloc16-r2-selfmap-93584-v5-5f8b3eb2",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93584-v5-5f8b3eb2/raw",
+      "source_sha": "5f8b3eb283ce79f59a69331993575a49b5c101bd",
+      "cumulative": {
+        "frames": 301,
+        "detected": 112,
+        "sensor_update": 52,
+        "pf_resolved": 35,
+        "dominant_mode": 35,
+        "raw_covariance": 35,
+        "correspondence_nis": 35,
+        "geometry_axes": 34,
+        "global_unique": 26,
+        "pf_geometry_agreement": 8,
+        "three_views": 2,
+        "registered": 2
+      },
+      "independent": {
+        "frames": 301,
+        "detected": 112,
+        "sensor_update": 128,
+        "pf_resolved": 178,
+        "dominant_mode": 296,
+        "raw_covariance": 235,
+        "correspondence_nis": 191,
+        "geometry_axes": 138,
+        "global_unique": 26,
+        "pf_geometry_agreement": 123,
+        "three_views": 121,
+        "registered": 219
+      },
+      "first_rejections": [
+        {
+          "category": "detected",
+          "N": 189,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_resolved",
+          "N": 17,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "sensor_update",
+          "N": 60,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "geometry_axes",
+          "N": 1,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "global_unique",
+          "N": 8,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_geometry_agreement",
+          "N": 18,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "three_views",
+          "N": 6,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "distribution": {
+        "raw_xy_sigma_m": {
+          "N": 301,
+          "p0": 0.004913614970272537,
+          "p50": 0.042156404166270534,
+          "p95": 0.8779862367248119,
+          "p100": 1.793428044471503
+        },
+        "raw_yaw_sigma_deg": {
+          "N": 301,
+          "p0": 0.06840082577946006,
+          "p50": 2.7247415637667487,
+          "p95": 25.70807505482996,
+          "p100": 165.6465252946895
+        },
+        "cluster_mass": {
+          "N": 301,
+          "p0": 0.8669999999999994,
+          "p50": 0.9999999999999993,
+          "p95": 1.0,
+          "p100": 1.0000000000000002
+        },
+        "injected": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 178.0
+        },
+        "recovery_probability": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 0.09909855438097459
+        },
+        "raw_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 96.0,
+          "p100": 96.0
+        },
+        "fitted_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 96.0,
+          "p100": 96.0
+        }
+      },
+      "sha256": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93584-v5-5f8b3eb2/raw/trace.jsonl.zst": "359e41077a4c321b1b95f9d3e16c2927b3766917169cbc35584e72a43a08d0db",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93584-v5-5f8b3eb2/raw/result.json": "26cc39968e9c9846354b78a683088a73ab4ab9f8b9ebf729b015d415a72dc5d1",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93584-v5-5f8b3eb2/raw/eval_only/trajectory.jsonl.zst": "c476df8116e4c5cd13b685e0eab8ddedc6012fe4b3d32b1453f2a35e1c6aaca4"
+      },
+      "note": "Sequential acquisition funnel; registered is independently latched after acquisition. Tracking frames have separate independent counts. Correspondences are instrumented separately where packet supports replay."
+    },
+    {
+      "round": 2,
+      "seed": 93583,
+      "scene": "v5",
+      "run": "reloc16-r2-selfmap-93583-v5-5f8b3eb2",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93583-v5-5f8b3eb2/raw",
+      "source_sha": "5f8b3eb283ce79f59a69331993575a49b5c101bd",
+      "cumulative": {
+        "frames": 301,
+        "detected": 104,
+        "sensor_update": 50,
+        "pf_resolved": 44,
+        "dominant_mode": 44,
+        "raw_covariance": 44,
+        "correspondence_nis": 44,
+        "geometry_axes": 43,
+        "global_unique": 30,
+        "pf_geometry_agreement": 13,
+        "three_views": 3,
+        "registered": 3
+      },
+      "independent": {
+        "frames": 301,
+        "detected": 104,
+        "sensor_update": 145,
+        "pf_resolved": 240,
+        "dominant_mode": 301,
+        "raw_covariance": 281,
+        "correspondence_nis": 228,
+        "geometry_axes": 127,
+        "global_unique": 30,
+        "pf_geometry_agreement": 190,
+        "three_views": 153,
+        "registered": 221
+      },
+      "first_rejections": [
+        {
+          "category": "detected",
+          "N": 197,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_resolved",
+          "N": 6,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "sensor_update",
+          "N": 54,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "geometry_axes",
+          "N": 1,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_geometry_agreement",
+          "N": 17,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "global_unique",
+          "N": 13,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "three_views",
+          "N": 10,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "distribution": {
+        "raw_xy_sigma_m": {
+          "N": 301,
+          "p0": 0.0064810244992264355,
+          "p50": 0.03086451810956554,
+          "p95": 0.7520388934000612,
+          "p100": 1.793428044471503
+        },
+        "raw_yaw_sigma_deg": {
+          "N": 301,
+          "p0": 0.20702048617553162,
+          "p50": 1.22389832198145,
+          "p95": 24.5764337342075,
+          "p100": 165.6465252946895
+        },
+        "cluster_mass": {
+          "N": 301,
+          "p0": 0.9109999999999993,
+          "p50": 0.9999999999999993,
+          "p95": 1.0,
+          "p100": 1.0000000000000002
+        },
+        "injected": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 178.0
+        },
+        "recovery_probability": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 0.09909510005708222
+        },
+        "raw_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 96.0,
+          "p100": 96.0
+        },
+        "fitted_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 96.0,
+          "p100": 96.0
+        }
+      },
+      "sha256": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93583-v5-5f8b3eb2/raw/trace.jsonl.zst": "4d4c840703505b3d9271b9a0fec72e615cb81493231121b48e6a6772c98c9e94",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93583-v5-5f8b3eb2/raw/result.json": "7d97faab1088d647a91c3611626b2a9087b51202c55934bcf12aebad68468e37",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r2-selfmap-93583-v5-5f8b3eb2/raw/eval_only/trajectory.jsonl.zst": "5acaa38513955d94a3bdb9439c1055d9f3bb285f13062bbe54e5e7e9fb235134"
+      },
+      "note": "Sequential acquisition funnel; registered is independently latched after acquisition. Tracking frames have separate independent counts. Correspondences are instrumented separately where packet supports replay."
+    },
+    {
+      "round": 3,
+      "seed": 93584,
+      "scene": "v5",
+      "run": "reloc16-r3-selfmap-93584-v5-df8115a5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93584-v5-df8115a5/raw",
+      "source_sha": "df8115a53c01af2d1974c0e8777fdb4853252eaf",
+      "cumulative": {
+        "frames": 301,
+        "detected": 268,
+        "sensor_update": 124,
+        "pf_resolved": 0,
+        "dominant_mode": 0,
+        "raw_covariance": 0,
+        "correspondence_nis": 0,
+        "geometry_axes": 0,
+        "global_unique": 0,
+        "pf_geometry_agreement": 0,
+        "three_views": 0,
+        "registered": 0
+      },
+      "independent": {
+        "frames": 301,
+        "detected": 268,
+        "sensor_update": 124,
+        "pf_resolved": 0,
+        "dominant_mode": 241,
+        "raw_covariance": 0,
+        "correspondence_nis": 289,
+        "geometry_axes": 284,
+        "global_unique": 0,
+        "pf_geometry_agreement": 0,
+        "three_views": 0,
+        "registered": 0
+      },
+      "first_rejections": [
+        {
+          "category": "detected",
+          "N": 33,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_resolved",
+          "N": 124,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "sensor_update",
+          "N": 144,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "distribution": {
+        "raw_xy_sigma_m": {
+          "N": 301,
+          "p0": 0.14743077293792134,
+          "p50": 0.4702247388585699,
+          "p95": 1.9063290434637368,
+          "p100": 1.9682805986649456
+        },
+        "raw_yaw_sigma_deg": {
+          "N": 301,
+          "p0": 6.719061767011301,
+          "p50": 19.53726922484378,
+          "p95": 156.90074280283272,
+          "p100": 165.6465252946895
+        },
+        "cluster_mass": {
+          "N": 301,
+          "p0": 0.24249999999999983,
+          "p50": 0.978943946377973,
+          "p95": 0.9983442506409187,
+          "p100": 1.0
+        },
+        "injected": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 19.0
+        },
+        "recovery_probability": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 0.011113239719745316
+        },
+        "raw_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 92.0,
+          "p95": 96.0,
+          "p100": 96.0
+        },
+        "fitted_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 65.0,
+          "p95": 96.0,
+          "p100": 96.0
+        }
+      },
+      "sha256": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93584-v5-df8115a5/raw/trace.jsonl.zst": "3f43264fe95aa8e85422f353378df756a32bcb7b2535f2b0c2e6e4a5970be9b5",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93584-v5-df8115a5/raw/result.json": "c1cffd3aff3080dc3ae47cf4d9fa7f59a090f48d59c821edad95a9cf99f845de",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93584-v5-df8115a5/raw/eval_only/trajectory.jsonl.zst": "0fc34decd6130d4c071998fac1c3f9ba68569ca74c67d6c5b60ae87603f0eefb"
+      },
+      "note": "Sequential acquisition funnel; registered is independently latched after acquisition. Tracking frames have separate independent counts. Correspondences are instrumented separately where packet supports replay."
+    },
+    {
+      "round": 3,
+      "seed": 93583,
+      "scene": "v5",
+      "run": "reloc16-r3-selfmap-93583-v5-df8115a5",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93583-v5-df8115a5/raw",
+      "source_sha": "df8115a53c01af2d1974c0e8777fdb4853252eaf",
+      "cumulative": {
+        "frames": 301,
+        "detected": 287,
+        "sensor_update": 108,
+        "pf_resolved": 0,
+        "dominant_mode": 0,
+        "raw_covariance": 0,
+        "correspondence_nis": 0,
+        "geometry_axes": 0,
+        "global_unique": 0,
+        "pf_geometry_agreement": 0,
+        "three_views": 0,
+        "registered": 0
+      },
+      "independent": {
+        "frames": 301,
+        "detected": 287,
+        "sensor_update": 108,
+        "pf_resolved": 0,
+        "dominant_mode": 65,
+        "raw_covariance": 0,
+        "correspondence_nis": 289,
+        "geometry_axes": 289,
+        "global_unique": 0,
+        "pf_geometry_agreement": 0,
+        "three_views": 0,
+        "registered": 0
+      },
+      "first_rejections": [
+        {
+          "category": "detected",
+          "N": 14,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "pf_resolved",
+          "N": 108,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "sensor_update",
+          "N": 179,
+          "blocked_object": "static_registration_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "distribution": {
+        "raw_xy_sigma_m": {
+          "N": 301,
+          "p0": 0.8388616792787823,
+          "p50": 1.5216642066101804,
+          "p95": 1.793428044471503,
+          "p100": 1.8695357723230515
+        },
+        "raw_yaw_sigma_deg": {
+          "N": 301,
+          "p0": 9.114275838517838,
+          "p50": 38.39952716711028,
+          "p95": 145.61755253936292,
+          "p100": 165.6465252946895
+        },
+        "cluster_mass": {
+          "N": 301,
+          "p0": 0.28381815958120415,
+          "p50": 0.6894766568284507,
+          "p95": 0.9981853572818564,
+          "p100": 1.0
+        },
+        "injected": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 19.0
+        },
+        "recovery_probability": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p100": 0.011021186991768572
+        },
+        "raw_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 95.0,
+          "p95": 96.0,
+          "p100": 96.0
+        },
+        "fitted_columns": {
+          "N": 301,
+          "p0": 0.0,
+          "p50": 94.0,
+          "p95": 96.0,
+          "p100": 96.0
+        }
+      },
+      "sha256": {
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93583-v5-df8115a5/raw/trace.jsonl.zst": "2640a01e86b6fb933847d3524b2190d4a2611444c51b6d97b570ff56681c86f3",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93583-v5-df8115a5/raw/result.json": "c53546b263adefb70f73a4fee72aa5ad838a8ba50abed67601dcc1ae6c5ea8a2",
+        "/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93583-v5-df8115a5/raw/eval_only/trajectory.jsonl.zst": "794ce8c9415e515d379d40c8aa54b925d4141f295b8bd82e55986c3967d3e7eb"
+      },
+      "note": "Sequential acquisition funnel; registered is independently latched after acquisition. Tracking frames have separate independent counts. Correspondences are instrumented separately where packet supports replay."
+    }
+  ],
+  "reproduction": "PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python experiments/2026-10-16-reloc17/funnel.py",
+  "frame_table": "/home/ugrp/ugrp-sim/runs/reloc17-investigation/funnel-frames.csv"
+}

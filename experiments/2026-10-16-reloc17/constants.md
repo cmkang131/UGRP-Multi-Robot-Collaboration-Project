@@ -12,6 +12,9 @@
 |MultiFrameEvidence hue12, angle 3×sqrt(Paa+(5°/3)²), NIS≤9, line noise .05/3m|기존 구현/과제 잔차; 센서 분포 적합성 미확인|NIS9는 3σ 반지름이지 2/3자유도 99.73% 주장이 아님. inflate P로 대응 허용 범위도 커진다.|
 |independent axes eigenvalue≥.5, 3 distinct views, view bin10°, anchor .1m/5°|기존 기하·정책, 원본 독립성·분포 보정 미확인|parallel line 모호성 억제 의도. 서로 다른 view를 독립 표본으로 세지 않는다.|
 |PF vs unique geometry .15m/10°|기존 일관성 정책, 분포 근거 미확인|unique 자체와 agreement를 따로 센다.|
+|reloc12 RANSAC min_inliers3, min_fraction .7, generator16, proposal4096, refit3|기존 결정적 탐색 정책, 원본 최소대응·검출률 근거 미확인|노드/대응 검사 예산이다. 최대시간으로 탐색 결과를 바꾸지 않는다.|
+|reloc12 generator hue/3, normal/.05, midpoint/.05 양자화|기존 중복 제거 정책, 원본 분포 근거 미확인|새 장면에 적합한가 미확인.|
+|landmarks sigma_line .1m/5°, range .2m/bearing3°/width .1m, random_fraction .05|기존 공개 어댑터, 우리 RGB 잔차 coverage 미확인|R2 원본 floor-line distance p95 .552/1.471m, normal p95 23.17/48.26°. 현재 noise로 모든 거짓 특징을 설명하지 못함. 정답으로 온라인 특징을 거르지 않는다.|
 |robust_segment ≥6, support≥.6, residual .025m, length≥.12m, range<4m|기존 floor/SE2 정책; 분포 적합성 미확인|이 실험에서는 변경하지 않음.|
 |reloc15 update .05m/2.5°|10cm/5° 과제 목표의 절반이라는 관측기회 가설|논문 최적값·실측 정확도 보증 아님.|
 |selfmap cap60·carry150 SIM초, search40000 nodes|기존 제한된 DEV 예산|수용 정확도 상수와 구분. cap_end를 실패·완주와 분리.|
