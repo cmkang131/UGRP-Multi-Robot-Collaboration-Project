@@ -1,0 +1,1303 @@
+{
+  "schema": "ugrp.release13.measurement.v1",
+  "source_head": "97942a8285b498a2e7896dc8dccc88e067b77cc7",
+  "scope": "local saved evidence only; no code change, physics, render or remote host access",
+  "runs": [
+    {
+      "name": "r12d-01-97942a82",
+      "source_sha": "97942a8285b498a2e7896dc8dccc88e067b77cc7",
+      "seed": 74963,
+      "release_success": false,
+      "release_outcome": "regrasp_realign_no_image_progress_3s:r1",
+      "evaluation_last": {
+        "t": 50.900000000152026,
+        "fit": true,
+        "z": 0.030269339697251176,
+        "tilt_deg": 5.820033091068104,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            5.378594945476485,
+            5.375291415777731
+          ]
+        },
+        "grip_to_beam_m": [
+          0.09180159564230993,
+          0.023191698954937875
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 1500
+        },
+        "beam_xy_yaw": [
+          4.792162290241928,
+          0.760577496800727,
+          -1.6891654871734125
+        ]
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r12d-01-97942a82/raw",
+      "tests": [
+        {
+          "epoch": 1,
+          "attempt": 1,
+          "start_t": 31.900000000061304,
+          "N": 21,
+          "r1_both_contacts_ge_0_5N": 0,
+          "r1_end_rise_mm": 0.04626381026127252,
+          "beam_min_z_range_mm": [
+            -0.3117795362753001,
+            -0.22786372296400292
+          ],
+          "central_fraction_before_lift_settled": [
+            0.23832465277777778,
+            0.3450846354166667,
+            0.34274088541666664
+          ],
+          "contact_before_N": [
+            0.0,
+            0.0
+          ],
+          "verdicts": {
+            "yes": 0,
+            "no": 21,
+            "unknown": 0
+          }
+        }
+      ],
+      "verified_payloads": 209,
+      "verified_jpg": 201,
+      "missing_manifest_files": 0,
+      "tick_rows": 384,
+      "reviewed_frames": 24
+    },
+    {
+      "name": "release11-diag-08-c9ba20a6",
+      "source_sha": "c9ba20a605c1c4117d553550268c20fa6ac2c3a3",
+      "seed": 74976,
+      "release_success": false,
+      "release_outcome": "regrasp_attempt_cap:r1:own_grip_shaft_not_framed",
+      "evaluation_last": {
+        "t": 105.9999999992214,
+        "fit": false,
+        "z": 0.06005067361506353,
+        "tilt_deg": 0.5017394323276785,
+        "contact_n": {
+          "r1": [
+            5.274586053679849,
+            5.2742387220545615
+          ],
+          "r2": [
+            5.373556070877379,
+            5.381572575821362
+          ]
+        },
+        "grip_to_beam_m": [
+          0.023699759751786655,
+          0.0231991830995835
+        ],
+        "open_pwm": {
+          "r1": 1500,
+          "r2": 1500
+        },
+        "beam_xy_yaw": [
+          4.53220771213465,
+          -0.17296729666835628,
+          1.5733656353178853
+        ]
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release11-diag-08-c9ba20a6/raw",
+      "tests": [
+        {
+          "epoch": 1,
+          "attempt": 1,
+          "start_t": 31.900000000061304,
+          "N": 11,
+          "r1_both_contacts_ge_0_5N": 11,
+          "r1_end_rise_mm": 12.824207197813145,
+          "beam_min_z_range_mm": [
+            68.87610900983832,
+            68.9332708315304
+          ],
+          "central_fraction_before_lift_settled": [
+            0.9710286458333334,
+            0.9772135416666666,
+            0.9890082465277777
+          ],
+          "contact_before_N": [
+            5.377023833816956,
+            5.375502158759391
+          ],
+          "verdicts": {
+            "yes": 11,
+            "no": 0,
+            "unknown": 0
+          }
+        },
+        {
+          "epoch": 2,
+          "attempt": 1,
+          "start_t": 68.40000000011052,
+          "N": 21,
+          "r1_both_contacts_ge_0_5N": 0,
+          "r1_end_rise_mm": 0.0007163137293007826,
+          "beam_min_z_range_mm": [
+            -0.1533968669514968,
+            -0.15288533825758704
+          ],
+          "central_fraction_before_lift_settled": [
+            0.6698133680555556,
+            0.5365017361111111,
+            0.5365993923611111
+          ],
+          "contact_before_N": [
+            0.0,
+            0.0
+          ],
+          "verdicts": {
+            "yes": 0,
+            "no": 21,
+            "unknown": 0
+          }
+        },
+        {
+          "epoch": 2,
+          "attempt": 2,
+          "start_t": 82.09999999978656,
+          "N": 21,
+          "r1_both_contacts_ge_0_5N": 21,
+          "r1_end_rise_mm": 12.277683552604056,
+          "beam_min_z_range_mm": [
+            67.01832728729498,
+            67.83785745721943
+          ],
+          "central_fraction_before_lift_settled": [
+            0.007703993055555556,
+            0.01745876736111111,
+            0.05287543402777778
+          ],
+          "contact_before_N": [
+            5.409014378204789,
+            5.450164967941106
+          ],
+          "verdicts": {
+            "yes": 0,
+            "no": 21,
+            "unknown": 0
+          }
+        },
+        {
+          "epoch": 2,
+          "attempt": 3,
+          "start_t": 95.7999999994626,
+          "N": 21,
+          "r1_both_contacts_ge_0_5N": 21,
+          "r1_end_rise_mm": 12.695784378775166,
+          "beam_min_z_range_mm": [
+            60.43196248278217,
+            61.242219470082944
+          ],
+          "central_fraction_before_lift_settled": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "contact_before_N": [
+            5.247386950719561,
+            5.267450422582885
+          ],
+          "verdicts": {
+            "yes": 0,
+            "no": 21,
+            "unknown": 0
+          }
+        }
+      ],
+      "verified_payloads": 433,
+      "verified_jpg": 425,
+      "missing_manifest_files": 0,
+      "tick_rows": 935,
+      "reviewed_frames": 24
+    },
+    {
+      "name": "release11-diag-01-c9ba20a6",
+      "source_sha": "c9ba20a605c1c4117d553550268c20fa6ac2c3a3",
+      "seed": 74963,
+      "release_success": false,
+      "release_outcome": "regrasp_attempt_cap:r1:own_grip_shaft_not_framed",
+      "evaluation_last": {
+        "t": 69.50000000008451,
+        "fit": true,
+        "z": 0.028832538122643497,
+        "tilt_deg": 5.544776287156183,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            5.379868253030977,
+            5.374497653262255
+          ]
+        },
+        "grip_to_beam_m": [
+          0.09272094832856613,
+          0.023227316038037224
+        ],
+        "open_pwm": {
+          "r1": 1500,
+          "r2": 1500
+        },
+        "beam_xy_yaw": [
+          4.792587550334682,
+          0.7613656877039726,
+          -1.6891196969259223
+        ]
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release11-diag-01-c9ba20a6/raw",
+      "tests": [
+        {
+          "epoch": 1,
+          "attempt": 1,
+          "start_t": 31.900000000061304,
+          "N": 21,
+          "r1_both_contacts_ge_0_5N": 0,
+          "r1_end_rise_mm": 0.04626381026127252,
+          "beam_min_z_range_mm": [
+            -0.3117795362753001,
+            -0.22786372296400292
+          ],
+          "central_fraction_before_lift_settled": [
+            0.23832465277777778,
+            0.3450846354166667,
+            0.34274088541666664
+          ],
+          "contact_before_N": [
+            0.0,
+            0.0
+          ],
+          "verdicts": {
+            "yes": 0,
+            "no": 21,
+            "unknown": 0
+          }
+        },
+        {
+          "epoch": 1,
+          "attempt": 2,
+          "start_t": 45.60000000012672,
+          "N": 21,
+          "r1_both_contacts_ge_0_5N": 0,
+          "r1_end_rise_mm": -0.0001013512151634699,
+          "beam_min_z_range_mm": [
+            -0.22447604771803215,
+            -0.22432036384831266
+          ],
+          "central_fraction_before_lift_settled": [
+            0.5393988715277778,
+            0.5286458333333334,
+            0.52900390625
+          ],
+          "contact_before_N": [
+            0.0,
+            0.0
+          ],
+          "verdicts": {
+            "yes": 0,
+            "no": 21,
+            "unknown": 0
+          }
+        },
+        {
+          "epoch": 1,
+          "attempt": 3,
+          "start_t": 59.300000000192135,
+          "N": 21,
+          "r1_both_contacts_ge_0_5N": 0,
+          "r1_end_rise_mm": -0.000942702958937891,
+          "beam_min_z_range_mm": [
+            -0.2239310367309899,
+            -0.22347995090931522
+          ],
+          "central_fraction_before_lift_settled": [
+            0.6623697916666667,
+            0.5316080729166667,
+            0.5317491319444444
+          ],
+          "contact_before_N": [
+            0.0,
+            0.0
+          ],
+          "verdicts": {
+            "yes": 0,
+            "no": 21,
+            "unknown": 0
+          }
+        }
+      ],
+      "verified_payloads": 278,
+      "verified_jpg": 270,
+      "missing_manifest_files": 6,
+      "tick_rows": 570,
+      "reviewed_frames": 24
+    },
+    {
+      "name": "release11-diag-00-c9ba20a6",
+      "source_sha": "c9ba20a605c1c4117d553550268c20fa6ac2c3a3",
+      "seed": 74940,
+      "release_success": true,
+      "release_outcome": "teacher_done",
+      "evaluation_last": {
+        "t": 150.79999999816204,
+        "fit": true,
+        "z": -0.0001077554202161703,
+        "tilt_deg": 7.771673678115716e-09,
+        "contact_n": {
+          "r1": [
+            0.0,
+            0.0
+          ],
+          "r2": [
+            0.0,
+            0.0
+          ]
+        },
+        "grip_to_beam_m": [
+          0.25412936460166136,
+          0.25968449027899165
+        ],
+        "open_pwm": {
+          "r1": 2000,
+          "r2": 2000
+        },
+        "beam_xy_yaw": [
+          4.677511482453658,
+          0.38567847680878553,
+          1.6950789260088492
+        ]
+      },
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/release11-diag-00-c9ba20a6/raw",
+      "tests": [
+        {
+          "epoch": 1,
+          "attempt": 1,
+          "start_t": 44.00000000011908,
+          "N": 11,
+          "r1_both_contacts_ge_0_5N": 11,
+          "r1_end_rise_mm": 12.998220742786156,
+          "beam_min_z_range_mm": [
+            68.81602410384214,
+            68.86210402133086
+          ],
+          "central_fraction_before_lift_settled": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "contact_before_N": [
+            5.373739327989385,
+            5.384865147596597
+          ],
+          "verdicts": {
+            "yes": 11,
+            "no": 0,
+            "unknown": 0
+          }
+        },
+        {
+          "epoch": 2,
+          "attempt": 1,
+          "start_t": 80.59999999982203,
+          "N": 11,
+          "r1_both_contacts_ge_0_5N": 11,
+          "r1_end_rise_mm": 12.495047839086059,
+          "beam_min_z_range_mm": [
+            68.77749827538942,
+            68.86607869198026
+          ],
+          "central_fraction_before_lift_settled": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "contact_before_N": [
+            5.371461571607423,
+            5.38029638222539
+          ],
+          "verdicts": {
+            "yes": 11,
+            "no": 0,
+            "unknown": 0
+          }
+        },
+        {
+          "epoch": 3,
+          "attempt": 1,
+          "start_t": 117.09999999895892,
+          "N": 11,
+          "r1_both_contacts_ge_0_5N": 11,
+          "r1_end_rise_mm": 11.846223615608679,
+          "beam_min_z_range_mm": [
+            68.11170510404452,
+            68.26127426455625
+          ],
+          "central_fraction_before_lift_settled": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "contact_before_N": [
+            5.3722986136333235,
+            5.379318719707699
+          ],
+          "verdicts": {
+            "yes": 11,
+            "no": 0,
+            "unknown": 0
+          }
+        }
+      ],
+      "verified_payloads": 8,
+      "verified_jpg": 0,
+      "missing_manifest_files": 574,
+      "tick_rows": 1383,
+      "reviewed_frames": 0
+    }
+  ],
+  "reviewed_original_frames": 99,
+  "recovery": [
+    {
+      "t": 43.30000000011574,
+      "cumulative_commanded_right_mm": 0,
+      "net_actual_forward_mm": -0.0,
+      "net_actual_right_mm": -0.0,
+      "net_actual_yaw_deg": 0.0,
+      "undistorted_center_x_px": 499.5231943031536,
+      "raw_center_x_px": 493.15736937125513,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 114.10160186444207,
+        "wall_name": "zone_wall_north",
+        "beam": 71.4153414285518,
+        "r2_lower_chassis": 728.8642505880428,
+        "zone_A_boundary_noncollider": 25.019564435714145,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 43.50000000011669,
+      "cumulative_commanded_right_mm": 3.2,
+      "net_actual_forward_mm": -1.8185910474872755,
+      "net_actual_right_mm": 4.16185427153514,
+      "net_actual_yaw_deg": 0.5721464682037828,
+      "undistorted_center_x_px": 495.0042168455079,
+      "raw_center_x_px": 488.21219936728966,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 112.36410801125119,
+        "wall_name": "zone_wall_north",
+        "beam": 72.6482643279732,
+        "r2_lower_chassis": 730.0840282529591,
+        "zone_A_boundary_noncollider": 27.19572164236055,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 43.70000000011765,
+      "cumulative_commanded_right_mm": 6.4,
+      "net_actual_forward_mm": -2.069759494947797,
+      "net_actual_right_mm": 6.88624616387354,
+      "net_actual_yaw_deg": 1.6708887674719264,
+      "undistorted_center_x_px": 502.31363892418744,
+      "raw_center_x_px": 487.0849040907038,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 112.66229430793717,
+        "wall_name": "zone_wall_north",
+        "beam": 72.05185552432917,
+        "r2_lower_chassis": 729.4753475034149,
+        "zone_A_boundary_noncollider": 28.179947847763877,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 43.9000000001186,
+      "cumulative_commanded_right_mm": 9.600000000000001,
+      "net_actual_forward_mm": -1.6273299561991692,
+      "net_actual_right_mm": 9.035310400431008,
+      "net_actual_yaw_deg": 2.605196729037052,
+      "undistorted_center_x_px": 509.10499000297784,
+      "raw_center_x_px": 494.2974169286727,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 113.60885234739793,
+        "wall_name": "zone_wall_north",
+        "beam": 70.92519550192117,
+        "r2_lower_chassis": 728.3464466813381,
+        "zone_A_boundary_noncollider": 28.40156159836448,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 44.10000000011956,
+      "cumulative_commanded_right_mm": 12.8,
+      "net_actual_forward_mm": -1.3133015529958223,
+      "net_actual_right_mm": 11.951347240325424,
+      "net_actual_yaw_deg": 3.8893687948212583,
+      "undistorted_center_x_px": 518.3257317034247,
+      "raw_center_x_px": 502.8671394237118,
+      "next_pulse_duration_ms": 40.52688421373537,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 114.65893998777955,
+        "wall_name": "zone_wall_north",
+        "beam": 69.71353183588886,
+        "r2_lower_chassis": 727.1278124594844,
+        "zone_A_boundary_noncollider": 29.060745012811978,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 44.30000000012051,
+      "cumulative_commanded_right_mm": 16.04215073709883,
+      "net_actual_forward_mm": -1.6852909307721078,
+      "net_actual_right_mm": 13.976875397798908,
+      "net_actual_yaw_deg": 4.838605692892715,
+      "undistorted_center_x_px": 525.5561609907121,
+      "raw_center_x_px": 508.64040298570643,
+      "next_pulse_duration_ms": 41.79739695108063,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 113.73741056106401,
+        "wall_name": "zone_wall_north",
+        "beam": 69.45731719951114,
+        "r2_lower_chassis": 726.8643461741573,
+        "zone_A_boundary_noncollider": 29.144225601168916,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 44.50000000012147,
+      "cumulative_commanded_right_mm": 19.38594249318528,
+      "net_actual_forward_mm": -1.8320441988769143,
+      "net_actual_right_mm": 17.17905891230458,
+      "net_actual_yaw_deg": 6.261729673984113,
+      "undistorted_center_x_px": 519.9607673327996,
+      "raw_center_x_px": 516.6568717860548,
+      "next_pulse_duration_ms": 40.8141885369775,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 112.33965110556254,
+        "wall_name": "zone_wall_north",
+        "beam": 68.7044737679919,
+        "r2_lower_chassis": 726.1013192033838,
+        "zone_A_boundary_noncollider": 28.496221685390122,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 44.70000000012242,
+      "cumulative_commanded_right_mm": 22.65107757614348,
+      "net_actual_forward_mm": -1.4319611747498473,
+      "net_actual_right_mm": 20.02003085709423,
+      "net_actual_yaw_deg": 6.86532838752212,
+      "undistorted_center_x_px": 520.7260523096254,
+      "raw_center_x_px": 517.3434850566002,
+      "next_pulse_duration_ms": 40.94866247650771,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 112.1192700948721,
+        "wall_name": "zone_wall_north",
+        "beam": 67.87005043280868,
+        "r2_lower_chassis": 725.2516515054594,
+        "zone_A_boundary_noncollider": 27.883161549455913,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 44.90000000012338,
+      "cumulative_commanded_right_mm": 25.926970574264097,
+      "net_actual_forward_mm": -1.2656889574569623,
+      "net_actual_right_mm": 24.651733787261936,
+      "net_actual_yaw_deg": 7.115608621138693,
+      "undistorted_center_x_px": 525.9133611319006,
+      "raw_center_x_px": 510.38740769642055,
+      "next_pulse_duration_ms": 41.86016325597479,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 111.78482981709136,
+        "wall_name": "zone_wall_north",
+        "beam": 67.42874756670746,
+        "r2_lower_chassis": 724.7302911117938,
+        "zone_A_boundary_noncollider": 27.878034533528773,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 45.10000000012433,
+      "cumulative_commanded_right_mm": 29.27578363474208,
+      "net_actual_forward_mm": -0.9176457463790444,
+      "net_actual_right_mm": 30.139830964250372,
+      "net_actual_yaw_deg": 6.961629530313388,
+      "undistorted_center_x_px": 507.63616168108086,
+      "raw_center_x_px": 497.21713793705857,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 111.84461733980467,
+        "wall_name": "zone_wall_north",
+        "beam": 67.39119252453294,
+        "r2_lower_chassis": 724.171213729571,
+        "zone_A_boundary_noncollider": 28.026739718301606,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 45.30000000012529,
+      "cumulative_commanded_right_mm": 32.47578363474208,
+      "net_actual_forward_mm": -1.2510917721220736,
+      "net_actual_right_mm": 35.530736423837155,
+      "net_actual_yaw_deg": 6.631202406146848,
+      "undistorted_center_x_px": 487.28100836180545,
+      "raw_center_x_px": 479.3447103826431,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 111.35330198904936,
+        "wall_name": "zone_wall_north",
+        "beam": 68.55306794437598,
+        "r2_lower_chassis": 724.3816153989595,
+        "zone_A_boundary_noncollider": 28.96997539882351,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 45.50000000012624,
+      "cumulative_commanded_right_mm": 35.67578363474208,
+      "net_actual_forward_mm": 1.0755374150004904,
+      "net_actual_right_mm": 39.231591693570046,
+      "net_actual_yaw_deg": 6.883042652909415,
+      "undistorted_center_x_px": 479.92057224304494,
+      "raw_center_x_px": 468.0803023638089,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 113.23741997375424,
+        "wall_name": "zone_wall_north",
+        "beam": 66.5058797901882,
+        "r2_lower_chassis": 721.7361325700379,
+        "zone_A_boundary_noncollider": 26.74086171329759,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 45.7000000001272,
+      "cumulative_commanded_right_mm": 38.875783634742085,
+      "net_actual_forward_mm": 2.3214008685226357,
+      "net_actual_right_mm": 41.62856815392498,
+      "net_actual_yaw_deg": 7.7834715745043646,
+      "undistorted_center_x_px": 485.7450314591032,
+      "raw_center_x_px": 477.66010930240725,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 113.70695997761504,
+        "wall_name": "zone_wall_north",
+        "beam": 64.99545994162513,
+        "r2_lower_chassis": 719.9332752178698,
+        "zone_A_boundary_noncollider": 25.067109326775583,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 45.90000000012815,
+      "cumulative_commanded_right_mm": 42.07578363474209,
+      "net_actual_forward_mm": 2.907479965263357,
+      "net_actual_right_mm": 44.41633386495496,
+      "net_actual_yaw_deg": 9.076539857088699,
+      "undistorted_center_x_px": 495.288366003475,
+      "raw_center_x_px": 492.44276108604987,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 113.26821912151108,
+        "wall_name": "zone_wall_north",
+        "beam": 63.984708807653476,
+        "r2_lower_chassis": 718.623546072356,
+        "zone_A_boundary_noncollider": 23.857052183433147,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 46.10000000012911,
+      "cumulative_commanded_right_mm": 45.27578363474209,
+      "net_actual_forward_mm": 2.7419955390341326,
+      "net_actual_right_mm": 46.44194485872551,
+      "net_actual_yaw_deg": 10.04656865445087,
+      "undistorted_center_x_px": 502.6671672137247,
+      "raw_center_x_px": 500.52242833052276,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 112.37155582119152,
+        "wall_name": "zone_wall_north",
+        "beam": 63.84017067816154,
+        "r2_lower_chassis": 718.2698056841583,
+        "zone_A_boundary_noncollider": 23.57959758288164,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 46.30000000013006,
+      "cumulative_commanded_right_mm": 48.47578363474209,
+      "net_actual_forward_mm": 3.1555824624084043,
+      "net_actual_right_mm": 49.52565303493178,
+      "net_actual_yaw_deg": 11.391631671499827,
+      "undistorted_center_x_px": 512.028416638061,
+      "raw_center_x_px": 503.3634407155828,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 111.79487973190282,
+        "wall_name": "zone_wall_north",
+        "beam": 63.10128259455556,
+        "r2_lower_chassis": 717.173070106932,
+        "zone_A_boundary_noncollider": 22.61794533517536,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 46.50000000013102,
+      "cumulative_commanded_right_mm": 51.675783634742096,
+      "net_actual_forward_mm": 3.9817903812994397,
+      "net_actual_right_mm": 51.65595340954642,
+      "net_actual_yaw_deg": 12.354472424529645,
+      "undistorted_center_x_px": 519.0608163668059,
+      "raw_center_x_px": 509.0221975262315,
+      "next_pulse_duration_ms": 40.65605143061071,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 111.94860345491887,
+        "wall_name": "zone_wall_north",
+        "beam": 62.06975790878435,
+        "r2_lower_chassis": 715.8759534290018,
+        "zone_A_boundary_noncollider": 21.427489715551083,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 46.70000000013197,
+      "cumulative_commanded_right_mm": 54.92826774919095,
+      "net_actual_forward_mm": 5.223204637724837,
+      "net_actual_right_mm": 54.01190766259593,
+      "net_actual_yaw_deg": 13.675220162239338,
+      "undistorted_center_x_px": 530.4173157108016,
+      "raw_center_x_px": 517.7073455868026,
+      "next_pulse_duration_ms": 42.65158675706334,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 112.3517264708005,
+        "wall_name": "zone_wall_north",
+        "beam": 60.47040445929045,
+        "r2_lower_chassis": 714.067106481659,
+        "zone_A_boundary_noncollider": 19.690341598411543,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 46.90000000013293,
+      "cumulative_commanded_right_mm": 58.34039468975602,
+      "net_actual_forward_mm": 5.498207446186207,
+      "net_actual_right_mm": 56.510736268908374,
+      "net_actual_yaw_deg": 14.699842044890081,
+      "undistorted_center_x_px": 526.8648582783443,
+      "raw_center_x_px": 522.909225196075,
+      "next_pulse_duration_ms": 42.02735792672965,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 111.9655518477376,
+        "wall_name": "zone_wall_north",
+        "beam": 60.08436922538396,
+        "r2_lower_chassis": 713.3307512182812,
+        "zone_A_boundary_noncollider": 19.1121818522495,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 47.10000000013388,
+      "cumulative_commanded_right_mm": 61.70258332389439,
+      "net_actual_forward_mm": 5.769063877384404,
+      "net_actual_right_mm": 59.30804173477163,
+      "net_actual_yaw_deg": 15.9276633868861,
+      "undistorted_center_x_px": 534.0673006897142,
+      "raw_center_x_px": 529.3877154410899,
+      "next_pulse_duration_ms": 43.29295288106109,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 111.4991753092136,
+        "wall_name": "zone_wall_north",
+        "beam": 59.67904379411027,
+        "r2_lower_chassis": 712.5633032850967,
+        "zone_A_boundary_noncollider": 18.504688705047066,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 47.30000000013484,
+      "cumulative_commanded_right_mm": 65.16601955437928,
+      "net_actual_forward_mm": 6.381151654550464,
+      "net_actual_right_mm": 62.77646012769943,
+      "net_actual_yaw_deg": 16.590293283882467,
+      "undistorted_center_x_px": 533.3163071944131,
+      "raw_center_x_px": 528.754175538669,
+      "next_pulse_duration_ms": 43.16099020449898,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 111.5910200357142,
+        "wall_name": "zone_wall_north",
+        "beam": 59.591272542967126,
+        "r2_lower_chassis": 711.6321976349433,
+        "zone_A_boundary_noncollider": 17.870471217771964,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 47.50000000013579,
+      "cumulative_commanded_right_mm": 68.6188987707392,
+      "net_actual_forward_mm": 7.861009780032201,
+      "net_actual_right_mm": 67.47932827836036,
+      "net_actual_yaw_deg": 16.55966052102335,
+      "undistorted_center_x_px": 529.2221012628162,
+      "raw_center_x_px": 518.7749538048043,
+      "next_pulse_duration_ms": 42.441566698822186,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 112.74377129580415,
+        "wall_name": "zone_wall_north",
+        "beam": 59.52906660519325,
+        "r2_lower_chassis": 709.9535685975014,
+        "zone_A_boundary_noncollider": 16.742217317865517,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 47.70000000013675,
+      "cumulative_commanded_right_mm": 72.01422410664497,
+      "net_actual_forward_mm": 9.51726379464099,
+      "net_actual_right_mm": 73.15918077321638,
+      "net_actual_yaw_deg": 16.544164617327002,
+      "undistorted_center_x_px": 511.7706226634798,
+      "raw_center_x_px": 506.6168362229546,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 113.99671207691742,
+        "wall_name": "zone_wall_north",
+        "beam": 59.56168982424136,
+        "r2_lower_chassis": 708.0791015143745,
+        "zone_A_boundary_noncollider": 15.50169006905433,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 47.9000000001377,
+      "cumulative_commanded_right_mm": 75.21422410664498,
+      "net_actual_forward_mm": 10.721290395292948,
+      "net_actual_right_mm": 78.2731517070566,
+      "net_actual_yaw_deg": 16.162573329114913,
+      "undistorted_center_x_px": 492.4064156104232,
+      "raw_center_x_px": 490.22912197826037,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 114.98784945728535,
+        "wall_name": "zone_wall_north",
+        "beam": 60.002829798224546,
+        "r2_lower_chassis": 706.8063534879026,
+        "zone_A_boundary_noncollider": 14.820749280102685,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 48.10000000013866,
+      "cumulative_commanded_right_mm": 78.41422410664498,
+      "net_actual_forward_mm": 12.780441953994641,
+      "net_actual_right_mm": 81.91086679000863,
+      "net_actual_yaw_deg": 17.213658736803986,
+      "undistorted_center_x_px": 495.76485946076747,
+      "raw_center_x_px": 493.8259394181346,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 116.36544078517619,
+        "wall_name": "zone_wall_north",
+        "beam": 58.687129810956534,
+        "r2_lower_chassis": 704.3945152171102,
+        "zone_A_boundary_noncollider": 12.609689499415655,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 48.30000000013961,
+      "cumulative_commanded_right_mm": 81.61422410664498,
+      "net_actual_forward_mm": 14.158742850992551,
+      "net_actual_right_mm": 83.53008368030804,
+      "net_actual_yaw_deg": 18.063428276682064,
+      "undistorted_center_x_px": 501.71893750513715,
+      "raw_center_x_px": 499.54517478418416,
+      "next_pulse_duration_ms": 40.0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 117.31187537853694,
+        "wall_name": "zone_wall_north",
+        "beam": 57.5550647553214,
+        "r2_lower_chassis": 702.7725789155905,
+        "zone_A_boundary_noncollider": 11.037634656706707,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "t": 48.50000000014057,
+      "cumulative_commanded_right_mm": 84.81422410664499,
+      "net_actual_forward_mm": 15.257530387006602,
+      "net_actual_right_mm": 86.03731619624176,
+      "net_actual_yaw_deg": 19.20862505053895,
+      "undistorted_center_x_px": 509.0215421387834,
+      "raw_center_x_px": 506.1145694210557,
+      "next_pulse_duration_ms": 0,
+      "pwm": {
+        "1": 2000,
+        "3": 674,
+        "4": 1739,
+        "5": 2256,
+        "6": 1500
+      },
+      "clearances": {
+        "wall": 117.84161805517334,
+        "wall_name": "zone_wall_north",
+        "beam": 56.89432785526615,
+        "r2_lower_chassis": 701.3758600308239,
+        "zone_A_boundary_noncollider": 9.733222045039014,
+        "nearest_physical": "beam"
+      },
+      "r1_contacts_N": [
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "queue": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release-gate-97942a82.json",
+    "ready": false,
+    "ready_runs": 0,
+    "N": 49,
+    "before_sha256": "60209f6ebbacf182e6522e4afa470b865cf04784841c104ae17a0ab00a617d8a",
+    "after_sha256": "1f0a55c4fc2e389091d2d88891a2c7210ef183dda6500f68737cd77e8cc3851b",
+    "backup": "outputs/release13-review/queue-before.json",
+    "scope": "local queue only; no remote host verification"
+  },
+  "pixel_validation": {
+    "replayed_recovery_rgb_count": 27,
+    "max_abs_center_px": 0.004065300217121148,
+    "all_valid_clipped": true
+  },
+  "artifacts": [
+    {
+      "path": "release13-measurement-detail.json.zst",
+      "bytes": 547542,
+      "sha256": "6fd9b1af92494b769f3a0a76a16aac3bdc331681fa8e8fed89af9b4b712e0195",
+      "decoded_bytes": 5513065,
+      "decoded_sha256": "ab8653cb0b4d7cee034055a47a116c099437aad290a201b2be3ed9695426687a"
+    },
+    {
+      "path": "release13-ticks.md.zst",
+      "bytes": 51989,
+      "sha256": "af0a7b3d7f32510498761a43045a2cea6873d7da52fad2f2c306840943c23a8b",
+      "decoded_bytes": 702244,
+      "decoded_sha256": "007b28256c6ee9f7677a3bee0a3e666083f3a36618e57d55a238ec6f6f330c60"
+    }
+  ],
+  "gate_rule": "74963 and 74976 are tuning seeds; all future acceptance gates use fresh, unused seeds. 74940 is diagnostic control only. No gate reopened."
+}

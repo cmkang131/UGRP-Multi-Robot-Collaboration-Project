@@ -1,0 +1,63 @@
+{
+  "scope": "offline saved-evidence arithmetic and integrity only",
+  "source_HEAD": "97942a8285b498a2e7896dc8dccc88e067b77cc7",
+  "original_payloads_and_jpg_sha256_rechecked": 928,
+  "command_rows": 3272,
+  "actual_tick_rows_independently_checked": 3268,
+  "first_tick_actual_pose_missing": [
+    [
+      "r12d-01-97942a82",
+      10.099999999999136,
+      10.199999999998903
+    ],
+    [
+      "release11-diag-08-c9ba20a6",
+      10.099999999999136,
+      10.199999999998903
+    ],
+    [
+      "release11-diag-01-c9ba20a6",
+      10.099999999999136,
+      10.199999999998903
+    ],
+    [
+      "release11-diag-00-c9ba20a6",
+      10.099999999999136,
+      10.199999999998903
+    ]
+  ],
+  "max_independent_command_delta_error": 1.7763568394002505e-15,
+  "max_independent_pose_delta_error": 1.2878587085651816e-14,
+  "recovery_raw_recomputed_right_mm": 86.03731619624176,
+  "recovery_raw_recomputed_yaw_deg": 19.20862505053895,
+  "recovery_images": {
+    "replayed_recovery_rgb_count": 27,
+    "max_abs_center_px": 0.004065300217121148,
+    "all_valid_clipped": true
+  },
+  "compressed_decode_byte_checks": [
+    {
+      "path": "release13-measurement-detail.json.zst",
+      "bytes": 547542,
+      "sha256": "6fd9b1af92494b769f3a0a76a16aac3bdc331681fa8e8fed89af9b4b712e0195",
+      "decoded_bytes": 5513065,
+      "decoded_sha256": "ab8653cb0b4d7cee034055a47a116c099437aad290a201b2be3ed9695426687a"
+    },
+    {
+      "path": "release13-ticks.md.zst",
+      "bytes": 51989,
+      "sha256": "af0a7b3d7f32510498761a43045a2cea6873d7da52fad2f2c306840943c23a8b",
+      "decoded_bytes": 702244,
+      "decoded_sha256": "007b28256c6ee9f7677a3bee0a3e666083f3a36618e57d55a238ec6f6f330c60"
+    }
+  ],
+  "queue_ready": false,
+  "run_ready_count": 0,
+  "queue_commands_seeds_preserved": true,
+  "queue_sha256": "1f0a55c4fc2e389091d2d88891a2c7210ef183dda6500f68737cd77e8cc3851b",
+  "reviewed_original_frames": 99,
+  "product_tests_rerun": false,
+  "reason": "measurement artifacts only; source/test files unchanged",
+  "source_raw_deleted_or_modified": false,
+  "independent_numeric_checks_passed": true
+}
