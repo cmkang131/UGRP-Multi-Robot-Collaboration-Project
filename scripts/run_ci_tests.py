@@ -24,6 +24,7 @@ from scripts import agent_lock
 from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_destination_visual_acquire.py",
     "tests/test_reloc11_*.py",
     "tests/test_reloc12*.py",
     "tests/test_reloc13.py",

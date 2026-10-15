@@ -56,3 +56,20 @@ def test_held_scan_never_fabricates_fix_or_shrinks_covariance():
     q.issue([0,0,2*math.pi]);assert q.relocalize_step(64)==(0,0,0)
     np.testing.assert_array_equal(P,c.loc.own.P);assert c.loc.fixes==fix
     assert q.relocalize_step(65) is None and q.relocalizations==1
+
+@pytest.mark.parametrize('enabled',[False,True])
+def test_teacher_arrival_enters_acquisition_only_when_opted_in(enabled):
+    from sim.grasp_act_solo_teacher import SoloTeacher, PROFILE
+    static,_=static_input();c=CarryToZone(static,'A',start=task_start(static),now=1.)
+    c.goal=tuple(c.loc.pose[:2]);c.slot=tuple(c.region['center_m']);c.grip_xy=(.2,0);c.started=0.
+    if enabled:c.destination_acquire=DestinationAcquire(c)
+    pwm={1:1500,3:777,4:2053,5:1646,6:1500}
+    t=SoloTeacher('red','west',pwm,profile=PROFILE,held_object_hidden_v1=True,
+        rgb_lift_mode='solo_lift_lookback_v1',solo_carry_to_zone_v1=True,carry=c)
+    t.skill_started=0.;t.phase='carry_to_zone';t.phase_t=0.;t.holding=True
+    t.step(1.)
+    assert t.phase==('destination_acquire' if enabled else 'zone_place_view')
+    if enabled:
+        c.destination_acquire.step=lambda *a:((0,0,0),True,None)
+        t.step(1.1,own_rgb=lambda:np.zeros((480,640,3),np.uint8))
+        assert t.phase=='zone_place_view' and t.holding
