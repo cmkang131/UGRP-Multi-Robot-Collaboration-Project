@@ -1,36 +1,73 @@
 {
-  "execution_sha": "ef284e92510ca4283f1db5de9aecd1dac5c17b0b",
-  "files": [
+  "comparisons": [
     {
-      "path": "harness/beampair_peer_yield.py",
-      "sha256": "047826df934ec57935e3ac3075df298e0df568a89ce929bc102f6d6dcfae6606",
-      "identical_to_branch_head": true
+      "execution_sha": "ef284e92510ca4283f1db5de9aecd1dac5c17b0b",
+      "files": [
+        {
+          "path": "harness/beampair_peer_yield.py",
+          "sha256": "047826df934ec57935e3ac3075df298e0df568a89ce929bc102f6d6dcfae6606",
+          "identical_to_branch_head": true
+        },
+        {
+          "path": "scripts/run_beampair1.py",
+          "sha256": "848f10466bb04b3b3eaf2495bc7da00befb7e048cae1f49bdf33b23a0e202805",
+          "identical_to_branch_head": true
+        },
+        {
+          "path": "harness/beampair_approach.py",
+          "sha256": "3fb688052e7cc9329047470dc57ab1674fcec1043a55b52efefa22e566b016db",
+          "identical_to_branch_head": true
+        },
+        {
+          "path": "harness/grasp_act_peer_rendezvous.py",
+          "sha256": "afc1b5efe983ae129f260952a528c374f725102a3e92e34b97bec93ecb29a3e6",
+          "identical_to_branch_head": true
+        },
+        {
+          "path": "sim/gatesv5_scene.py",
+          "sha256": "984cb3a43c5f8666cf159560f916310958d7112b1a5cfb7841a45ac226d8f9c3",
+          "identical_to_branch_head": true
+        },
+        {
+          "path": "scripts/analyze_beampair1.py",
+          "sha256": "51a49dbebf2476ec75276c39664f63407940c77e377c02afd83ad3059562eee7",
+          "identical_to_branch_head": true
+        }
+      ],
+      "scope": "R1 execution controller compared specifically to3334e747 queue-guard/CI-record commit; later R2 controller differs",
+      "compared_to_sha": "3334e747870463dfe3aa4b0ebf01bbdc725832aa"
     },
     {
-      "path": "scripts/run_beampair1.py",
-      "sha256": "848f10466bb04b3b3eaf2495bc7da00befb7e048cae1f49bdf33b23a0e202805",
-      "identical_to_branch_head": true
-    },
-    {
-      "path": "harness/beampair_approach.py",
-      "sha256": "3fb688052e7cc9329047470dc57ab1674fcec1043a55b52efefa22e566b016db",
-      "identical_to_branch_head": true
-    },
-    {
-      "path": "harness/grasp_act_peer_rendezvous.py",
-      "sha256": "afc1b5efe983ae129f260952a528c374f725102a3e92e34b97bec93ecb29a3e6",
-      "identical_to_branch_head": true
-    },
-    {
-      "path": "sim/gatesv5_scene.py",
-      "sha256": "984cb3a43c5f8666cf159560f916310958d7112b1a5cfb7841a45ac226d8f9c3",
-      "identical_to_branch_head": true
-    },
-    {
-      "path": "scripts/analyze_beampair1.py",
-      "sha256": "51a49dbebf2476ec75276c39664f63407940c77e377c02afd83ad3059562eee7",
-      "identical_to_branch_head": true
+      "execution_sha": "835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+      "compared_to_sha": "835ccef26aa84b08cc8f7e256fd0f43aa1583ef9",
+      "files": [
+        {
+          "path": "harness/beampair_peer_yield.py",
+          "sha256": "59833fafb6e3ddd2aef22ecfab3a9c44113a266d91c294ba0dced59e0682d8b1",
+          "identical_to_execution_source": true
+        },
+        {
+          "path": "scripts/run_beampair1.py",
+          "sha256": "78c9221e00e6b20ce8047c6382716bb4069ede8363c248e5a103b73d9de23fc6",
+          "identical_to_execution_source": true
+        },
+        {
+          "path": "harness/beampair_approach.py",
+          "sha256": "3fb688052e7cc9329047470dc57ab1674fcec1043a55b52efefa22e566b016db",
+          "identical_to_execution_source": true
+        },
+        {
+          "path": "harness/grasp_act_peer_rendezvous.py",
+          "sha256": "afc1b5efe983ae129f260952a528c374f725102a3e92e34b97bec93ecb29a3e6",
+          "identical_to_execution_source": true
+        },
+        {
+          "path": "sim/gatesv5_scene.py",
+          "sha256": "984cb3a43c5f8666cf159560f916310958d7112b1a5cfb7841a45ac226d8f9c3",
+          "identical_to_execution_source": true
+        }
+      ],
+      "scope": "current controller files equal pinned R2 executed source; later records do not change controller"
     }
-  ],
-  "scope": "controller/scene binding/analysis code unchanged in post-run queue-guard and CI-record commit"
+  ]
 }
