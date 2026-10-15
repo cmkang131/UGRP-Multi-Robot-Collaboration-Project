@@ -120,6 +120,7 @@ def replay(a):
     import cv2
     import mujoco
     import numpy as np
+    from PIL import Image
     from sim.grasp_act_port import DutyActPort
     from scripts.run_grasp_act_teacher import apply
     plan = json.loads(a.plan.read_text())
@@ -131,7 +132,7 @@ def replay(a):
                             (mujoco, 'mjv_updateScene', 'scene_update'),
                             (mujoco, 'mjr_render', 'render'),
                             (mujoco, 'mjr_readPixels', 'readback'),
-                            (cv2, 'remap', 'remap'), (cv2, 'imencode', 'JPEG')):
+                            (cv2, 'remap', 'remap'), (Image.Image, 'save', 'JPEG')):
         timer.wrap(obj, key, label)
     world = None
     states, phase_rows, recent = [], [], deque(maxlen=100)
@@ -296,8 +297,15 @@ def main():
     p.add_argument('--snapshots',action='store_true');p.add_argument('--states',type=Path)
     a=p.parse_args()
     if a.render_backend=='egl_l4_v1' and not a.egl_l4_v1:p.error('egl_l4_v1 is OFF by default')
-    if a.mode=='replay':replay(a)
-    else:snapshots(a)
+    try:
+        if a.mode=='replay':replay(a)
+        else:snapshots(a)
+    except Exception as error:
+        if not (a.out/'result.json').exists():
+            write(a.out/'result.json', {'status':'HOST_ERROR','attempted':1,'completed':0,
+                'failure':0,'HOST_ERROR':1,'error_type':type(error).__name__,'error':str(error),
+                'stage':'preflight','sha':a.sha,'raw_paths':[str(a.out)]})
+        raise
 
 
 if __name__=='__main__':main()
