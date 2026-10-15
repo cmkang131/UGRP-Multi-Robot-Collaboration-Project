@@ -190,7 +190,7 @@ def main():
         report.update(wall_s=wall,loop_wall_s=loop_wall,aggregate_completed_sim_s=sim,
             completed=len(reports),attempted=a.nworld,
             physical_success=sum(r.get('physical_success',False) for r in reports.values()),
-            cap_end=sum(r.get('cap_end',False) for r in reports.values()),
+            cap_end=sum(r.get('cap_end',False) for r in reports.values())+(int(active.sum()) if report.get('resource_cap_end') else 0),
             timing=dict(hooks.seconds),
             physical_batch_sim_s=getattr(hooks,'tick',0)*.1*a.nworld if a.physics_backend=='mjwarp_batch_v1' else sum(ticks)*.1,
             attempted_control_sim_s=float(sum(ticks))*.1,

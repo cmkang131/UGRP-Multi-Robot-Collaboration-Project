@@ -438,8 +438,13 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
             report['training_exclusion_reason'] = 'pending independent dataset admission' if report['training_candidate'] else 'pilot / failure / unqualified source or absent own-RGB handoff'
         write(out/'result.json', report)
     except GeneratorExit:
-        report.update(status='setup_export_only' if not recent else 'supervisor_stop',
-                      physical_success=None, gate_eligible=False)
+        marker=hooks.out/'SUPERVISOR_STOP.json'
+        stop=json.loads(marker.read_text()) if marker.exists() else {}
+        cap=stop.get('category')=='cap_end' or stop.get('reason')=='resource_cap4h'
+        report.update(status='setup_export_only' if not recent else 'cap_end' if cap else 'supervisor_stop',
+                      cap_end=bool(recent and cap),reason=stop.get('reason','frontend closed before task completion'),
+                      physical_success=None,gate_eligible=False)
+        if world is not None and 'origin' in locals():report['sim_s']=float(world.data.time)-origin
         raise
     except BaseException as error:
         report.update(status='interrupted' if isinstance(error, KeyboardInterrupt) else 'HOST_ERROR',
