@@ -1,0 +1,403 @@
+{
+  "scope": "stored visible inputs; counterfactual pulses and issued-odometry feedback only; physical success unverified",
+  "baseline_matched": 1424,
+  "baseline_total": 1424,
+  "rejected_ticks": [
+    {
+      "mode": "crate_motion_v17",
+      "run": "crate16-reproduction-77990-221755a5",
+      "robot": "r2",
+      "rejected_ticks": 121,
+      "translation_ticks": 121,
+      "kind": {
+        "preferred_retreat": 116,
+        "preferred_tangent": 5
+      },
+      "predicted_xy_mm": {
+        "n": 121,
+        "min": 4.5,
+        "p50": 4.5,
+        "p95": 4.5,
+        "max": 4.500000000000001
+      }
+    },
+    {
+      "mode": "crate_motion_v17",
+      "run": "crate16-reproduction-79314-221755a5",
+      "robot": "r1",
+      "rejected_ticks": 36,
+      "translation_ticks": 36,
+      "kind": {
+        "preferred_tangent": 1,
+        "preferred_retreat": 35
+      },
+      "predicted_xy_mm": {
+        "n": 36,
+        "min": 4.5,
+        "p50": 4.5,
+        "p95": 4.5,
+        "max": 4.5
+      }
+    },
+    {
+      "mode": "crate_motion_v17",
+      "run": "crate16-reproduction-79314-221755a5",
+      "robot": "r2",
+      "rejected_ticks": 130,
+      "translation_ticks": 130,
+      "kind": {
+        "preferred_retreat": 126,
+        "preferred_tangent": 4
+      },
+      "predicted_xy_mm": {
+        "n": 130,
+        "min": 4.5,
+        "p50": 4.5,
+        "p95": 4.5,
+        "max": 4.5
+      }
+    },
+    {
+      "mode": "crate_motion_v17_no_clearance",
+      "run": "crate16-reproduction-77990-221755a5",
+      "robot": "r2",
+      "rejected_ticks": 121,
+      "translation_ticks": 121,
+      "kind": {
+        "scale_0.5": 48,
+        "scale_0.75": 18,
+        "scale_0.25": 46,
+        "direction_+15": 7,
+        "direction_+30": 2
+      },
+      "predicted_xy_mm": {
+        "n": 121,
+        "min": 2.8900473868223133,
+        "p50": 6.278059456869174,
+        "p95": 12.519401906240915,
+        "max": 12.641808386732292
+      }
+    },
+    {
+      "mode": "crate_motion_v17_no_clearance",
+      "run": "crate16-reproduction-79314-221755a5",
+      "robot": "r1",
+      "rejected_ticks": 36,
+      "translation_ticks": 36,
+      "kind": {
+        "scale_0.75": 15,
+        "scale_0.5": 7,
+        "scale_0.25": 8,
+        "direction_-30": 4,
+        "direction_-15": 2
+      },
+      "predicted_xy_mm": {
+        "n": 36,
+        "min": 2.9020388705502183,
+        "p50": 8.890622935489848,
+        "p95": 12.5035954465091,
+        "max": 12.56237695353444
+      }
+    },
+    {
+      "mode": "crate_motion_v17_no_clearance",
+      "run": "crate16-reproduction-79314-221755a5",
+      "robot": "r2",
+      "rejected_ticks": 130,
+      "translation_ticks": 130,
+      "kind": {
+        "direction_-15": 6,
+        "scale_0.25": 37,
+        "scale_0.5": 45,
+        "scale_0.75": 38,
+        "direction_-30": 4
+      },
+      "predicted_xy_mm": {
+        "n": 130,
+        "min": 2.6512095004742027,
+        "p50": 6.299682171978099,
+        "p95": 11.79239991237164,
+        "max": 12.648863406258233
+      }
+    }
+  ],
+  "closed_loop": {
+    "cases": 21,
+    "candidate_cases": 42,
+    "all_issue_translation": true,
+    "net_xy_mm": {
+      "n": 42,
+      "min": 17.31896649694007,
+      "p50": 64.7846045954897,
+      "p95": 101.5609325096874,
+      "max": 102.40639685179
+    }
+  },
+  "original_gcp_teacher_compute_s": {
+    "n": 784,
+    "min": 0.00011869100126205012,
+    "p50": 0.004156001999945147,
+    "p95": 0.09301613299976452,
+    "max": 0.5267463030031649
+  },
+  "source_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-77990-221755a5/raw/result.json.zst": "4194fa36727f1a174c0a7f2b46b68f10bae15c36e628ffb0a0e2652175c0f4c6",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-77990-221755a5/raw/eval-only.jsonl.zst": "2adcbd001053d1483a14cecb4f805a58dc89097c992fa9e163c87a567aeec44b",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-77990-221755a5/raw/teacher-r1.jsonl.zst": "346b884850e15632253d686dbb9f13c5419ace4897904c1b7ffeadc7a67ee4ab",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-77990-221755a5/raw/teacher-r2.jsonl.zst": "9622c4d3d741f5a9a0b8bf61951845ee90926176c4ceb94473a90d1a72a5002c",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-79314-221755a5/raw/result.json.zst": "6335ed79cebc4d9aadec64f8326d2c24f30696a6cdc0bbe37f974f0e7bd3b1a9",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-79314-221755a5/raw/eval-only.jsonl.zst": "d00f3bac55474ca2e6290a3e5f4cb81af849c9147968fa8ac85bd0b43274e676",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-79314-221755a5/raw/teacher-r1.jsonl.zst": "0d0fa550ee72a70d3be13aaf9b07399ef535199221286933b86ccdc0bdc41102",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-79314-221755a5/raw/teacher-r2.jsonl.zst": "e27249541ccc8a8b52ab168860523745bd16db2e918913a5ad5de85b7c97c381",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77990-8007db00/raw/result.json.zst": "32fe0ebec3681b6af413962449ae0ad3e32de67009f3d6e60ae204be8913fb91",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77990-8007db00/raw/eval-only.jsonl.zst": "d095624d788e7255a0d3c261ecf24fa03ffe9a6c4e4af2444ea3ead1c9c9fe39",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77990-8007db00/raw/teacher-r1.jsonl.zst": "fc43638dd1c31d7e76ae1af2c23c23fb3ce52f65e3b7ede5819be64e052fcfd5",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77990-8007db00/raw/teacher-r2.jsonl.zst": "1f069f3de8ffa5fcc5a953a3beee70e53e5959fff8d57c5583ec779443733e94",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79314-8007db00/raw/result.json.zst": "e179464e7d5bb090df5e4c4120d6614ba7d93f60e288cb7e92ca0d69a804205c",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79314-8007db00/raw/eval-only.jsonl.zst": "7eca342a175425d90e962a0a66bf55af4eb8c86f288d05e201c85e70a3b6892d",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79314-8007db00/raw/teacher-r1.jsonl.zst": "6c370aefc1678b65aa26c0631ff683fabdf49397cb1337b7053cf49d42009c0a",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79314-8007db00/raw/teacher-r2.jsonl.zst": "d83843d33245cb1faf1fc155e219fcc39d72b140d9cc27d0f87158e915249d60",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79317-8007db00/raw/result.json": "c17956f11961a72ed90efab195678d5654c8fc15f8419a302c0dac26e6f8dac5",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79317-8007db00/raw/eval-only.jsonl.zst": "78a8163f582d7a9f962aeca67ac35fa24ad0fc02316e6bb71d31783056abb4b5",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79317-8007db00/raw/teacher-r1.jsonl.zst": "cb217a25806d0c7cc4e19264fe9d34ee11720985bfed242ba3d6006abdbac2fd",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79317-8007db00/raw/teacher-r2.jsonl.zst": "b3fa9de41fe0f8428a80de1a5ad4adbab64f8a72dc683f1f2ce701e7a9724267",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79450-8007db00/raw/result.json": "40761496dc6a3a1ec362ae23b17becf6c68f0a6236ba61a2082e1bd666fd2f30",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79450-8007db00/raw/eval-only.jsonl.zst": "c6f0ad53c3da33329c2ada5dba4ddbe4b45a7ca35ca55c6d3f16a538a806a634",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79450-8007db00/raw/teacher-r1.jsonl.zst": "d63eb254c82ce54e2fb387b902a6a5c8da26db7a2439a7ec521ee0712d482872",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79450-8007db00/raw/teacher-r2.jsonl.zst": "8388374980ebfe214ed37a3cb50e484208475eef752a05c2f84152f100b4e3d2",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79451-8007db00/raw/result.json": "15e3b48512c6ba6f41ab426ee580f30bf56e17394c0574348e277d84f37fff39",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79451-8007db00/raw/eval-only.jsonl.zst": "f08d2b08fbc845b32198f60a7dd088d0f3564f675975f81eb1eae8e54e220595",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79451-8007db00/raw/teacher-r1.jsonl.zst": "070d590f0c14c3958f270dbec195e8342afb0412390ebd70151671d3e1972d24",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79451-8007db00/raw/teacher-r2.jsonl.zst": "15510cfe22d3d91a33e103f848edba88ebe8eb7a32d87050678893562df1399c"
+  },
+  "local_runner_calls_no_ik_cache_s": {
+    "crate_motion_v16": {
+      "n": 784,
+      "min": 3.587501123547554e-05,
+      "p50": 0.0016692089848220348,
+      "p95": 0.039888584055006504,
+      "max": 0.3440726670669392
+    },
+    "crate_motion_v17": {
+      "n": 784,
+      "min": 4.166702274233103e-05,
+      "p50": 0.0015207501128315926,
+      "p95": 0.034480332979001105,
+      "max": 0.10864950006362051
+    },
+    "crate_motion_v17_no_clearance": {
+      "n": 784,
+      "min": 4.3915933929383755e-05,
+      "p50": 0.001423583016730845,
+      "p95": 0.020923207979649305,
+      "max": 0.10522533406037837
+    }
+  },
+  "input_audits": [
+    {
+      "run": "crate16-reproduction-77990-221755a5",
+      "mode": "crate_motion_v16",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false,
+        "admitted_source_tags": {
+          "clock": 364,
+          "issued_commands": 1820,
+          "known_shape": 1212,
+          "visible_teacher_measurement": 1576,
+          "static_map": 364,
+          "fixed_rule": 364
+        }
+      }
+    },
+    {
+      "run": "crate16-reproduction-79314-221755a5",
+      "mode": "crate_motion_v16",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false,
+        "admitted_source_tags": {
+          "clock": 420,
+          "issued_commands": 2100,
+          "known_shape": 1525,
+          "visible_teacher_measurement": 1945,
+          "static_map": 420,
+          "fixed_rule": 420
+        }
+      }
+    },
+    {
+      "run": "crate16-reproduction-77990-221755a5",
+      "mode": "crate_motion_v17",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false,
+        "admitted_source_tags": {
+          "clock": 364,
+          "issued_commands": 1820,
+          "known_shape": 1212,
+          "visible_teacher_measurement": 1576,
+          "static_map": 364,
+          "fixed_rule": 364
+        }
+      }
+    },
+    {
+      "run": "crate16-reproduction-79314-221755a5",
+      "mode": "crate_motion_v17",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false,
+        "admitted_source_tags": {
+          "clock": 420,
+          "issued_commands": 2100,
+          "known_shape": 1525,
+          "visible_teacher_measurement": 1945,
+          "static_map": 420,
+          "fixed_rule": 420
+        }
+      }
+    },
+    {
+      "run": "crate16-reproduction-77990-221755a5",
+      "mode": "crate_motion_v17_no_clearance",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false,
+        "admitted_source_tags": {
+          "clock": 364,
+          "issued_commands": 1820,
+          "known_shape": 1212,
+          "visible_teacher_measurement": 1576,
+          "static_map": 364,
+          "fixed_rule": 364
+        }
+      }
+    },
+    {
+      "run": "crate16-reproduction-79314-221755a5",
+      "mode": "crate_motion_v17_no_clearance",
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false,
+        "admitted_source_tags": {
+          "clock": 420,
+          "issued_commands": 2100,
+          "known_shape": 1525,
+          "visible_teacher_measurement": 1945,
+          "static_map": 420,
+          "fixed_rule": 420
+        }
+      }
+    }
+  ],
+  "timing_limit": "local saved-input runner calls, no MuJoCo; GCP candidate wall time remains unmeasured",
+  "detail_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate17-local-v2/rejected-ticks.json.zst": "e0d955b0cd3783907b78da3b4dae59b28c9bdb9f6b4c131c53ca04fdde99c935",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate17-local-v2/closed-loop.json.zst": "7d12e94a17773dfa8c287ba94f90586b2ba379a66286f66751f42759a6a0b01e",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate17-local-v2/teacher-ticks.json.zst": "81859a5a40ff2939624d86a7c4ee52db66051e93f62cf2821425385c7e7b90df"
+  },
+  "physical_runs": 0,
+  "render_calls": 0,
+  "remote_connections": 0,
+  "model_calls": 0,
+  "source_base_sha": "221755a5b4a6b3588fed0d61bb49b6e5142d63ef",
+  "tests": {
+    "passed": 81,
+    "pytest_processes": 1,
+    "files": [
+      "tests/test_crate17.py",
+      "tests/test_crate16.py",
+      "tests/test_crate15.py"
+    ],
+    "junit": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate17-local-v2/pytest-final.xml",
+    "sha256": "57436839281b9448a839dbb1f44ff2f3d15039b6c4dba61308112e970cea72f4",
+    "random_collision_draws": 5400
+  },
+  "original_gcp_runs": [
+    {
+      "seed": 77990,
+      "status": "complete",
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-77990-221755a5/raw",
+      "teacher_compute_s": {
+        "r1": {
+          "n": 182,
+          "p95": 0.41955529900224064,
+          "max": 0.5267463030031649
+        },
+        "r2": {
+          "n": 182,
+          "p95": 0.06654167699889513,
+          "max": 0.37035735299650696
+        }
+      }
+    },
+    {
+      "seed": 79314,
+      "status": "complete",
+      "prefix_held": false,
+      "outcomes": {
+        "r1": "episode_timeout",
+        "r2": "alignment_no_progress"
+      },
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate16-reproduction-79314-221755a5/raw",
+      "teacher_compute_s": {
+        "r1": {
+          "n": 210,
+          "p95": 0.06321395999839297,
+          "max": 0.12071706899951096
+        },
+        "r2": {
+          "n": 210,
+          "p95": 0.0729610859962122,
+          "max": 0.36895978900429327
+        }
+      }
+    }
+  ],
+  "reviewer_readonly_sources": {
+    "/private/tmp/claude-501/-Users-changmin-projects-ugrp/71c0cb65-eb0b-48a4-a56c-4c39977a7c14/scratchpad/rv16/diag2.py": "d0c1d2a0e8b621550e3a9fdc119861c2beb5bee3719f721d0ac90d491f6f082b",
+    "/private/tmp/claude-501/-Users-changmin-projects-ugrp/71c0cb65-eb0b-48a4-a56c-4c39977a7c14/scratchpad/rv16/diag3.py": "570c3a872aaecb621806af0e774d412cdbb08e65aed8423e939b1d7bfeb9898d",
+    "/private/tmp/claude-501/-Users-changmin-projects-ugrp/71c0cb65-eb0b-48a4-a56c-4c39977a7c14/scratchpad/rv16/fixsim.py": "954dd2b967c1fad06121b3530604e4a6c4ecdf59a8fa31cbdafa14a1e95f39ac",
+    "/private/tmp/claude-501/-Users-changmin-projects-ugrp/71c0cb65-eb0b-48a4-a56c-4c39977a7c14/scratchpad/rv16/fixtures.py": "5896d1298434762051bfd05127668fc6a17fcb95d35c8c7c75f555193ab66abb",
+    "/private/tmp/claude-501/-Users-changmin-projects-ugrp/71c0cb65-eb0b-48a4-a56c-4c39977a7c14/scratchpad/rv16/prop.py": "12a9df2ae2faa051c7605ddf5c15282c7dfd6303b583448fea1701cb7faead9c"
+  },
+  "remaining": [
+    "GCP candidate runs/success/speed unmeasured; queue all flags false",
+    "Sonnet read-only review before admission"
+  ],
+  "reproduction_command": "bash experiments/2026-10-15-crate17/check.sh /private/tmp/crate17-check-NEW",
+  "verification_artifact": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate17-local-v2/verification.json",
+    "sha256": "49fca6ea4d541a6b1b913efbcb6f7e40bc4c11bbe77373f91e873be7f9d3d95a"
+  }
+}

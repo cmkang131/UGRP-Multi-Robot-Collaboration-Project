@@ -43,6 +43,7 @@ TEST_PATTERNS = (
     "tests/test_crate14.py",
     "tests/test_crate15.py",
     "tests/test_crate16.py",
+    "tests/test_crate17.py",
     "tests/test_grasp_act_crate_start_los.py",
     "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",

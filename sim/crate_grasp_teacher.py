@@ -33,7 +33,8 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             raise ValueError('crate14 alignment requires crate13 staging and stances')
         from sim.crate_motion_v15 import MODE as MOTION
         from sim.crate_motion_v16 import MODE as MOTION16
-        if crate_motion not in ('off', MOTION, MOTION16):raise ValueError('unknown crate motion')
+        from sim.crate_motion_v17 import MODES as MOTION17
+        if crate_motion not in ('off', MOTION, MOTION16, *MOTION17):raise ValueError('unknown crate motion')
         if crate_motion != 'off' and crate_alignment == 'off':raise ValueError('crate15 requires crate14 alignment')
         self.crate_motion = crate_motion
         self.navigation_cache = {}
@@ -42,6 +43,15 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         self.motion_blocked_since = None
         self.motion_recovery_at = None
         self.motion_blocked_origin = None
+        self.motion17 = crate_motion in MOTION17
+        self.motion16 = crate_motion == MOTION16 or self.motion17
+        self.escape_last = None
+        self.escape_no_move_ticks = 0
+        self.escape_flip_ticks = 0
+        self.escape_no_move_since = None
+        self.escape_flip_since = None
+        self.motion_clear_since = None
+        self.motion_clear_origin = None
         self.teacher_compute_s = 0.
         self.teacher_compute_total_s = 0.
         self.crate15_errors = None
@@ -223,7 +233,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return self.peer_elapsed_s >= 12.-1e-8
 
     def _peer_route(self, world, goal, now):
-        if self.crate_motion == 'crate_motion_v16':
+        if self.motion16:
             nav = self._navigation(world)
             pose = world['robots'][self.rid]['pose']
             target = nav.waypoint(pose[:2], self.path, nav.focus or goal)
@@ -254,7 +264,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         self.staging_clock_t = now
 
     def _staging_expired(self, now):
-        if self.crate_motion == 'crate_motion_v16':
+        if self.motion16:
             # Wall time in SIM seconds includes all peer pauses. At 12 s the
             # step-level recovery retreats/relooks; at 24 s it hands off.
             return self.motion_blocked_since is not None and now-self.motion_blocked_since >= 24.-1e-8
@@ -264,8 +274,10 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return self.staging_elapsed_s >= 12.-1e-8
 
     def _navigation(self, world):
-        if self.crate_motion == 'crate_motion_v16':
+        if self.motion16:
             from sim.crate_motion_v16 import Navigation, MAX_TICK_EXPANSIONS
+            if self.motion17:
+                from sim.crate_motion_v17 import Navigation
             if self.navigation_t != world['t']:
                 self.navigation_cache = {}
                 self.navigation_t = world['t']
@@ -285,9 +297,58 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return WallFootprint(world,self.rid,self.folded_ready,self.cargo_profile,self.bounds)
 
     def _motion_blocked(self, world, now):
+        if self.motion17:
+            self.motion_clear_since = None
+            self.motion_clear_origin = None
         if self.motion_blocked_since is None:
             self.motion_blocked_since = now
             self.motion_blocked_origin = tuple(world['robots'][self.rid]['pose'][:2])
+
+    def _motion17_progress(self, world, now, value, *, escape):
+        """Only admitted issued pose/bearing, never measured simulator motion."""
+        from harness.grasp_act_visible_world import command_delta
+        pose = tuple(world['robots'][self.rid]['pose'])
+        dx, dy, da = command_delta(value, .1)
+        sign = 0 if abs(da) < 1e-8 else (1 if da > 0 else -1)
+        if escape:
+            self.motion_clear_since = None; self.motion_clear_origin = None
+            previous = self.escape_last
+            no_move = (math.hypot(dx, dy) < .0005 or
+                       previous is not None and math.dist(pose[:2], previous[0][:2]) < .0005)
+            flipped = previous is not None and sign*previous[1] < 0
+            self.escape_no_move_ticks = self.escape_no_move_ticks+1 if no_move else 0
+            self.escape_flip_ticks = self.escape_flip_ticks+1 if flipped else (1 if sign else 0)
+            self.escape_no_move_since = ((now if self.escape_no_move_since is None else self.escape_no_move_since)
+                                         if no_move else None)
+            self.escape_flip_since = self.escape_flip_since if flipped else (now if sign else None)
+            self.escape_last = (pose, sign)
+            if self.escape_no_move_ticks >= 10:
+                self._motion_blocked(world, self.escape_no_move_since)
+            if self.escape_flip_ticks >= 10:
+                self._motion_blocked(world, self.escape_flip_since)
+            return
+        self.escape_last = None; self.escape_no_move_since = None; self.escape_flip_since = None
+        self.escape_no_move_ticks = 0; self.escape_flip_ticks = 0
+        # A recovered usable route with sustained >5mm net progress retires an
+        # old deadline; a <5cm recovery must not inherit a stale blocked timer.
+        if self.motion_blocked_since is not None and self.approach_plan_valid and math.hypot(dx, dy) >= .0005:
+            if self.motion_clear_since is None:
+                self.motion_clear_since = now; self.motion_clear_origin = pose[:2]
+            if now-self.motion_clear_since >= .5-1e-8 and math.dist(pose[:2], self.motion_clear_origin) >= .005:
+                self.motion_blocked_since = None; self.motion_blocked_origin = None
+                self.motion_recovery_at = None; self.motion_clear_since = None; self.motion_clear_origin = None
+        else:
+            self.motion_clear_since = None; self.motion_clear_origin = None
+
+    def navigation_stats(self):
+        values = [n.stats for n in self.navigation_cache.values()]
+        return {'expansions': sum(v['expansions'] for v in values),
+                'budget_exhausted': sum(v['budget_exhausted'] for v in values),
+                'remaining_expansions': (self.navigation_budget or {}).get('remaining'),
+                'path_pads_m': [p for v in values for p in v['path_pads_m']],
+                'attempted_pads_m': [p for v in values for p in v.get('attempted_pads_m', [])],
+                'segment_calls': sum(v['segment_calls'] for v in values),
+                'segment_cache_hits': sum(v['segment_cache_hits'] for v in values)}
 
     def _motion_timeout(self, world, now):
         if self.motion_blocked_since is None:
@@ -357,10 +418,10 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def _plan_approach(self, world, now):
         old_path, old_goal, old_choice = list(self.path), self.path_goal, self.approach_choice
         valid = super()._plan_approach(world, now)
-        if self.crate_motion == 'crate_motion_v16':
+        if self.motion16:
             if not valid:
                 self._motion_blocked(world, now)
-            elif (self.motion_blocked_origin is not None and
+            elif (not self.motion17 and self.motion_blocked_origin is not None and
                   math.dist(world['robots'][self.rid]['pose'][:2], self.motion_blocked_origin) >= .05):
                 self.motion_blocked_since = None; self.motion_recovery_at = None
                 self.motion_blocked_origin = None
@@ -446,6 +507,28 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def _check_navigation_pulse(self, truth, value, now):
         if self.crate_motion != 'off' and self.phase in ('approach','align','ready','search','relook'):
             nav=self._navigation(truth)
+            if self.motion17:
+                safe = nav.pulse_safe(value)
+                if any(value['wheels']) and self.crate_motion == 'crate_motion_v17':
+                    preferred = nav.preferred_escape(value)
+                    if preferred is not None:
+                        kind, candidate = preferred
+                        self._motion17_progress(truth, now, candidate, escape=True)
+                        self.crate_recovery_log.append({'t': now, 'recovery': 'crate17_escape', 'kind': kind})
+                        return candidate
+                if safe:
+                    self._motion17_progress(truth, now, value, escape=False)
+                    return value
+                for kind, candidate in nav.escape_candidates(value):
+                    if any(candidate['wheels']) and nav.pulse_safe(candidate):
+                        self._motion17_progress(truth, now, candidate, escape=True)
+                        self.crate_recovery_log.append({'t': now, 'recovery': 'crate17_escape', 'kind': kind})
+                        return candidate
+                self._motion_blocked(truth, now)
+                self._motion17_progress(truth, now, self._hold(now), escape=True)
+                self.next_plan = now
+                self.crate_recovery_log.append({'t': now, 'recovery': 'crate17_blocked_hold'})
+                return self._hold(now)
             if nav.pulse_safe(value):return value
             if self.crate_motion == 'crate_motion_v16':
                 # Preserve search yaw or escape from an admitted margin; never
@@ -603,6 +686,10 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         from copy import deepcopy
         import time
         at = time.perf_counter()
+        if self.motion17 and self.navigation_t != truth['t']:
+            # Preserve prepare_signal work within this tick, expire it even on
+            # holding ticks that do not call navigation at all.
+            self.navigation_t = None; self.navigation_cache = {}; self.navigation_budget = None
         if self.crate_motion == 'crate_motion_v16':
             # No cached visible cargo survives across ticks or into holding.
             self.navigation_t = None; self.navigation_cache = {}
@@ -621,7 +708,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def _step(self, truth, now, *, permit_pick, permit_lift=False):
         if self.outcome is not None:
             return self._hold(now), False
-        if self.crate_motion == 'crate_motion_v16' and self.phase in ('approach', 'align', 'ready', 'search', 'relook'):
+        if self.motion16 and self.phase in ('approach', 'align', 'ready', 'search', 'relook'):
             recovery = self._motion_timeout(truth, now)
             if recovery is not None:
                 return recovery, False
@@ -659,6 +746,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 'crate_candidate_recovery': self.crate_candidate_recovery, 'crate_recovery_log': self.crate_recovery_log,
                 'crate_alignment': self.crate_alignment, 'crate_motion': self.crate_motion,
                 'teacher_compute_s': self.teacher_compute_s, 'teacher_compute_total_s': self.teacher_compute_total_s,
+                'navigation_stats': self.navigation_stats(),
                 'staging_clock': {'elapsed_s': self.staging_elapsed_s, 'peer_paused_s': self.staging_paused_s,
                                   'peer_blocked': self.staging_peer_blocked},
                 'closed_at': self.closed_at, 'lift_done': self.lift_done,
