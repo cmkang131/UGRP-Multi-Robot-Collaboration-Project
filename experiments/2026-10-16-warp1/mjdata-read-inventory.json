@@ -1,0 +1,749 @@
+{
+  "scope": "static direct-state candidates including indexed setup writes; manually classified by design.md; absence is not a whole-program noninterference proof",
+  "frozen_teacher": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "act15_student": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+  "camera_port_same_blob_as_backend_base": "63a44a8faf0d0a62bdbc55648a347d7160c77c04",
+  "files": [
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "scripts/run_solo_grasp_act_teacher.py",
+      "source_sha256": "520625c990adcc010a293b033ec826095438d1de845195607839da0fbaad3a51",
+      "direct_state_candidates": [
+        {
+          "line": 146,
+          "function": "run",
+          "field": "xpos",
+          "expression": "data.body(body_name).xpos",
+          "statement": "initial_xy = data.body(body_name).xpos[:2].copy()  # EVALUATION ONLY"
+        },
+        {
+          "line": 165,
+          "function": "run.look_truth",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "cp = np.array([data.cam_xpos[cid][0]-b_[0], data.cam_xpos[cid][1]-b_[1], data.cam_xpos[cid][2]])"
+        },
+        {
+          "line": 165,
+          "function": "run.look_truth",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "cp = np.array([data.cam_xpos[cid][0]-b_[0], data.cam_xpos[cid][1]-b_[1], data.cam_xpos[cid][2]])"
+        },
+        {
+          "line": 165,
+          "function": "run.look_truth",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "cp = np.array([data.cam_xpos[cid][0]-b_[0], data.cam_xpos[cid][1]-b_[1], data.cam_xpos[cid][2]])"
+        },
+        {
+          "line": 166,
+          "function": "run.look_truth",
+          "field": "cam_xmat",
+          "expression": "data.cam_xmat",
+          "statement": "cz = data.cam_xmat[cid].reshape(3, 3)@np.array([0., 0., -1.])"
+        },
+        {
+          "line": 224,
+          "function": "run.refresh_obstacles",
+          "field": "xpos",
+          "expression": "data.body(other + '__robot').xpos",
+          "statement": "xy = data.body(other+'__robot').xpos[:2]-base[:2]"
+        },
+        {
+          "line": 236,
+          "function": "run.refresh_obstacles",
+          "field": "xpos",
+          "expression": "data.body(name).xpos",
+          "statement": "xy = data.body(name).xpos[:2]-base[:2]"
+        },
+        {
+          "line": 237,
+          "function": "run.refresh_obstacles",
+          "field": "geom_xpos",
+          "expression": "data.geom_xpos",
+          "statement": "radius = max((float(np.linalg.norm(data.geom_xpos[g, :2]-data.body(name).xpos[:2]))"
+        },
+        {
+          "line": 237,
+          "function": "run.refresh_obstacles",
+          "field": "xpos",
+          "expression": "data.body(name).xpos",
+          "statement": "radius = max((float(np.linalg.norm(data.geom_xpos[g, :2]-data.body(name).xpos[:2]))"
+        },
+        {
+          "line": 246,
+          "function": "run.refresh_obstacles",
+          "field": "geom_xpos",
+          "expression": "data.geom_xpos",
+          "statement": "xy = data.geom_xpos[g, :2]-base[:2]"
+        },
+        {
+          "line": 247,
+          "function": "run.refresh_obstacles",
+          "field": "geom_xmat",
+          "expression": "data.geom_xmat",
+          "statement": "rot = data.geom_xmat[g].reshape(3, 3)"
+        },
+        {
+          "line": 251,
+          "function": "run",
+          "field": "time",
+          "expression": "data.time",
+          "statement": "previous = teacher._hold(float(data.time))"
+        },
+        {
+          "line": 258,
+          "function": "run",
+          "field": "time",
+          "expression": "data.time",
+          "statement": "origin = float(data.time)"
+        },
+        {
+          "line": 262,
+          "function": "run",
+          "field": "time",
+          "expression": "data.time",
+          "statement": "while float(data.time)-origin < cap_s-1e-8:"
+        },
+        {
+          "line": 265,
+          "function": "run",
+          "field": "time",
+          "expression": "data.time",
+          "statement": "now = float(data.time)"
+        },
+        {
+          "line": 266,
+          "function": "run",
+          "field": "eq_active",
+          "expression": "data.eq_active",
+          "statement": "if data.eq_active.any():"
+        },
+        {
+          "line": 276,
+          "function": "run.read_relative",
+          "field": "xmat",
+          "expression": "b.xmat",
+          "statement": "rot = b.xmat.reshape(3, 3)"
+        },
+        {
+          "line": 277,
+          "function": "run.read_relative",
+          "field": "xpos",
+          "expression": "b.xpos",
+          "statement": "point = b.xpos+rot@np.array([0., 0., teacher.spec.grip_z_m-body_origin_z])"
+        },
+        {
+          "line": 350,
+          "function": "run",
+          "field": "xmat",
+          "expression": "body.xmat",
+          "statement": "body = data.body(body_name); rot = body.xmat.reshape(3, 3)"
+        },
+        {
+          "line": 352,
+          "function": "run",
+          "field": "geom_xpos",
+          "expression": "data.geom_xpos",
+          "statement": "data.geom_xpos[g], data.geom_xmat[g].reshape(3, 3), model.geom_size[g]) for g in gids)"
+        },
+        {
+          "line": 352,
+          "function": "run",
+          "field": "geom_xmat",
+          "expression": "data.geom_xmat",
+          "statement": "data.geom_xpos[g], data.geom_xmat[g].reshape(3, 3), model.geom_size[g]) for g in gids)"
+        },
+        {
+          "line": 354,
+          "function": "run",
+          "field": "ncon",
+          "expression": "data.ncon",
+          "statement": "for i in range(data.ncon):"
+        },
+        {
+          "line": 355,
+          "function": "run",
+          "field": "contact",
+          "expression": "data.contact",
+          "statement": "g1, g2 = int(data.contact[i].geom1), int(data.contact[i].geom2)"
+        },
+        {
+          "line": 355,
+          "function": "run",
+          "field": "contact",
+          "expression": "data.contact",
+          "statement": "g1, g2 = int(data.contact[i].geom1), int(data.contact[i].geom2)"
+        },
+        {
+          "line": 360,
+          "function": "run",
+          "field": "xpos",
+          "expression": "body.xpos",
+          "statement": "pos = body.xpos.copy()"
+        },
+        {
+          "line": 394,
+          "function": "run",
+          "field": "time",
+          "expression": "data.time",
+          "statement": "while float(data.time) < until-1e-8:"
+        },
+        {
+          "line": 395,
+          "function": "run",
+          "field": "time",
+          "expression": "data.time",
+          "statement": "port.tick(float(data.time))"
+        },
+        {
+          "line": 397,
+          "function": "run",
+          "field": "time",
+          "expression": "data.time",
+          "statement": "report.update(status='complete', sim_s=float(data.time)-origin, wall_s=time.monotonic()-start,"
+        }
+      ],
+      "indirect_state_or_camera_calls": [
+        {
+          "line": 155,
+          "function": "run.truth_pose",
+          "call": "world.robot(rid).base_xyz",
+          "statement": "base = world.robot(rid).base_xyz()"
+        },
+        {
+          "line": 156,
+          "function": "run.truth_pose",
+          "call": "world.robot(rid).base_rpy",
+          "statement": "return [float(base[0]), float(base[1]), float(world.robot(rid).base_rpy()[2])]"
+        },
+        {
+          "line": 164,
+          "function": "run.look_truth",
+          "call": "world.robot(rid).base_xyz",
+          "statement": "b_ = world.robot(rid).base_xyz()"
+        },
+        {
+          "line": 216,
+          "function": "run.refresh_obstacles",
+          "call": "world.robot(rid).base_xyz",
+          "statement": "base = world.robot(rid).base_xyz()"
+        },
+        {
+          "line": 217,
+          "function": "run.refresh_obstacles",
+          "call": "world.robot(rid).base_rpy",
+          "statement": "a = float(world.robot(rid).base_rpy()[2]); c, s = math.cos(a), math.sin(a)"
+        },
+        {
+          "line": 278,
+          "function": "run.read_relative",
+          "call": "world.robot(rid).base_xyz",
+          "statement": "base = world.robot(rid).base_xyz()"
+        },
+        {
+          "line": 279,
+          "function": "run.read_relative",
+          "call": "world.robot(rid).base_rpy",
+          "statement": "a = float(world.robot(rid).base_rpy()[2]); c, s = math.cos(a), math.sin(a)"
+        },
+        {
+          "line": 287,
+          "function": "run",
+          "call": "port.capture",
+          "statement": "jpg = base64.b64decode(port.capture()['image'])"
+        },
+        {
+          "line": 358,
+          "function": "run",
+          "call": "mujoco.mj_contactForce",
+          "statement": "mujoco.mj_contactForce(model, data, i, f)"
+        },
+        {
+          "line": 361,
+          "function": "run",
+          "call": "world.robot(rid).base_xyz",
+          "statement": "base = world.robot(rid).base_xyz()      # evaluation-only record, never read by the teacher"
+        },
+        {
+          "line": 379,
+          "function": "run",
+          "call": "world.render_team_jpeg",
+          "statement": "(out/'review-top'/f'{tick:06d}.jpg').write_bytes(world.render_team_jpeg(camera=static['top_cameras'][0]['name']))"
+        },
+        {
+          "line": 396,
+          "function": "run",
+          "call": "world._physics_step_for",
+          "statement": "world._physics_step_for(world.robot(rid))"
+        }
+      ]
+    },
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "scripts/audit_grasp_act_visibility.py",
+      "source_sha256": "8cd9054047a16ae3e422fbaef4b2ac09d930bf695d61a5286e5b800cf8e67f06",
+      "direct_state_candidates": [
+        {
+          "line": 48,
+          "function": "measure",
+          "field": "geom_xpos",
+          "expression": "data.geom_xpos",
+          "statement": "points=data.geom_xpos[gid]+self.probes[role]@data.geom_xmat[gid].reshape(3,3).T"
+        },
+        {
+          "line": 48,
+          "function": "measure",
+          "field": "geom_xmat",
+          "expression": "data.geom_xmat",
+          "statement": "points=data.geom_xpos[gid]+self.probes[role]@data.geom_xmat[gid].reshape(3,3).T"
+        },
+        {
+          "line": 49,
+          "function": "measure",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "camera=(points-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3)"
+        },
+        {
+          "line": 49,
+          "function": "measure",
+          "field": "cam_xmat",
+          "expression": "data.cam_xmat",
+          "statement": "camera=(points-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3)"
+        },
+        {
+          "line": 58,
+          "function": "measure",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "delta=points[i]-data.cam_xpos[cid];distance=float(np.linalg.norm(delta));direction=delta/distance"
+        },
+        {
+          "line": 60,
+          "function": "measure",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "skip=self.near*distance/z[i];origin=data.cam_xpos[cid]+skip*direction"
+        },
+        {
+          "line": 85,
+          "function": "body_visible",
+          "field": "geom_xpos",
+          "expression": "data.geom_xpos",
+          "statement": "points=data.geom_xpos[gids]"
+        },
+        {
+          "line": 86,
+          "function": "body_visible",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "optical=((points-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])"
+        },
+        {
+          "line": 86,
+          "function": "body_visible",
+          "field": "cam_xmat",
+          "expression": "data.cam_xmat",
+          "statement": "optical=((points-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])"
+        },
+        {
+          "line": 92,
+          "function": "body_visible",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "delta=point-data.cam_xpos[cid];distance=float(np.linalg.norm(delta));direction=delta/distance"
+        },
+        {
+          "line": 93,
+          "function": "body_visible",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "origin=data.cam_xpos[cid]+self.near*distance/p[2]*direction;hit=np.array([-1],dtype=np.int32)"
+        },
+        {
+          "line": 111,
+          "function": "region_visible",
+          "field": "geom_xmat",
+          "expression": "data.geom_xmat",
+          "statement": "axes=data.geom_xmat[gid].reshape(3,3);center=data.geom_xpos[gid]"
+        },
+        {
+          "line": 111,
+          "function": "region_visible",
+          "field": "geom_xpos",
+          "expression": "data.geom_xpos",
+          "statement": "axes=data.geom_xmat[gid].reshape(3,3);center=data.geom_xpos[gid]"
+        },
+        {
+          "line": 117,
+          "function": "region_visible",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "p=((point-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])"
+        },
+        {
+          "line": 117,
+          "function": "region_visible",
+          "field": "cam_xmat",
+          "expression": "data.cam_xmat",
+          "statement": "p=((point-data.cam_xpos[cid])@data.cam_xmat[cid].reshape(3,3))*np.array([1.,-1.,-1.])"
+        },
+        {
+          "line": 122,
+          "function": "region_visible",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "delta=point-data.cam_xpos[cid];distance=float(np.linalg.norm(delta));direction=delta/distance"
+        },
+        {
+          "line": 123,
+          "function": "region_visible",
+          "field": "cam_xpos",
+          "expression": "data.cam_xpos",
+          "statement": "origin=data.cam_xpos[cid]+self.near*distance/p[2]*direction;hit=np.array([-1],dtype=np.int32)"
+        },
+        {
+          "line": 192,
+          "function": "audit",
+          "field": "qpos",
+          "expression": "data.qpos",
+          "statement": "data.qpos[:]=row['joints'];mujoco.mj_kinematics(model,data);mujoco.mj_camlight(model,data)"
+        }
+      ],
+      "indirect_state_or_camera_calls": [
+        {
+          "line": 62,
+          "function": "measure",
+          "call": "mujoco.mj_ray",
+          "statement": "ray=mujoco.mj_ray(self.model,data,origin,direction,self.groups,True,-1,hit)"
+        },
+        {
+          "line": 94,
+          "function": "body_visible",
+          "call": "mujoco.mj_ray",
+          "statement": "mujoco.mj_ray(self.model,data,origin,direction,self.groups,True,-1,hit)"
+        },
+        {
+          "line": 124,
+          "function": "region_visible",
+          "call": "mujoco.mj_ray",
+          "statement": "mujoco.mj_ray(self.model,data,origin,direction,self.groups,True,-1,hit)"
+        },
+        {
+          "line": 192,
+          "function": "audit",
+          "call": "mujoco.mj_kinematics",
+          "statement": "data.qpos[:]=row['joints'];mujoco.mj_kinematics(model,data);mujoco.mj_camlight(model,data)"
+        }
+      ]
+    },
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "sim/grasp_act_solo_teacher.py",
+      "source_sha256": "6b1cccf16d727449e059acebbba866cc4048f42918d8791ef8b1ba1729bcbdb6",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "sim/grasp_act_solo_evaluation.py",
+      "source_sha256": "838f5dd3f9810fe24ec5f6e20c0450b8be3ca8a6f858c9d12ccb7bf940ae0ddc",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "sim/grasp_act_solo_lookaround.py",
+      "source_sha256": "808e8f5ad63aec3532d49f10ebdcb13f1ea6d2374173fe0837e2c2b6a1a3fd15",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "sim/grasp_act_solo_lookback.py",
+      "source_sha256": "dfceb0c880bbf525c6218e2ec306ada5a48f3f951520635f43c4c1f9541ab323",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "sim/grasp_act_port.py",
+      "source_sha256": "047e2f9550b796999f55d487e48dae96e811ef4cc81da6b16f44460be4a322d0",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "sim/camera_robot_port.py",
+      "source_sha256": "be94c99a2a597a81e55ab0cbaba44f9340d3c2bbb7a3d14a2078f1d903bc8910",
+      "direct_state_candidates": [
+        {
+          "line": 275,
+          "function": "_clock_time",
+          "field": "time",
+          "expression": "self._world.data.time",
+          "statement": "return float(self._world.data.time)"
+        }
+      ],
+      "indirect_state_or_camera_calls": [
+        {
+          "line": 105,
+          "function": "capture",
+          "call": "self._world.render_jpeg",
+          "statement": "self._world.render_jpeg("
+        }
+      ]
+    },
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "sim/s2_realism_camera_binding.py",
+      "source_sha256": "86922a48dc7e6a3350f478bf2331a9be114da00ec380b3145e834746ed59bbe0",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": [
+        {
+          "line": 13,
+          "function": "bind_camera.apply",
+          "call": "mujoco.mj_forward",
+          "statement": "mujoco.mj_forward(controller.model, controller.data)"
+        }
+      ]
+    },
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "sim/masterpi_camera_profile.py",
+      "source_sha256": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+      "file": "harness/grasp_act_solo_recording.py",
+      "source_sha256": "ee3fa56d77874cd298995379c1e66d767ffa93afab5443fec8eef3e6f0504cb9",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "file": "scripts/run_grasp_act_student.py",
+      "source_sha256": "b14a83a94fa64fb1996bf1de7fd3ce3e1e1061cbfd78df6ca12fde44ee7434be",
+      "direct_state_candidates": [
+        {
+          "line": 130,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "previous = {'t': float(world.data.time), 'wheels': [0.] * 4, 'duration_s': [0.] * 4,"
+        },
+        {
+          "line": 137,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "settle = float(world.data.time) + 1."
+        },
+        {
+          "line": 138,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "while float(world.data.time) < settle - 1e-8:"
+        },
+        {
+          "line": 139,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "port.tick(float(world.data.time))"
+        },
+        {
+          "line": 141,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "previous['t'] = float(world.data.time)"
+        },
+        {
+          "line": 193,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "origin, tick = float(world.data.time), 0"
+        },
+        {
+          "line": 196,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "while float(world.data.time) - origin < cap_s - 1e-8:"
+        },
+        {
+          "line": 201,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "now = float(world.data.time)"
+        },
+        {
+          "line": 227,
+          "function": "run",
+          "field": "geom_xpos",
+          "expression": "world.data.geom_xpos",
+          "statement": "clearance = min(float(world.data.geom_xpos[g, 2] - np.abs(world.data.geom_xmat[g].reshape(3, 3)[2]) @ world.model.geom_size[g]) for g in gids)"
+        },
+        {
+          "line": 227,
+          "function": "run",
+          "field": "geom_xmat",
+          "expression": "world.data.geom_xmat",
+          "statement": "clearance = min(float(world.data.geom_xpos[g, 2] - np.abs(world.data.geom_xmat[g].reshape(3, 3)[2]) @ world.model.geom_size[g]) for g in gids)"
+        },
+        {
+          "line": 228,
+          "function": "run",
+          "field": "xmat",
+          "expression": "world.data.xmat",
+          "statement": "rotation = world.data.xmat[body].reshape(3, 3)"
+        },
+        {
+          "line": 231,
+          "function": "run",
+          "field": "ncon",
+          "expression": "world.data.ncon",
+          "statement": "for i in range(world.data.ncon):"
+        },
+        {
+          "line": 232,
+          "function": "run",
+          "field": "contact",
+          "expression": "world.data.contact",
+          "statement": "contact = world.data.contact[i]"
+        },
+        {
+          "line": 239,
+          "function": "run",
+          "field": "eq_active",
+          "expression": "world.data.eq_active",
+          "statement": "'weld': bool(world.data.eq_active.any())}"
+        },
+        {
+          "line": 242,
+          "function": "run",
+          "field": "xpos",
+          "expression": "world.data.xpos",
+          "statement": "target = world.data.xpos[body]"
+        },
+        {
+          "line": 254,
+          "function": "run",
+          "field": "contact",
+          "expression": "world.data.contact",
+          "statement": "for contact in world.data.contact[:world.data.ncon]:"
+        },
+        {
+          "line": 254,
+          "function": "run",
+          "field": "ncon",
+          "expression": "world.data.ncon",
+          "statement": "for contact in world.data.contact[:world.data.ncon]:"
+        },
+        {
+          "line": 293,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "while float(world.data.time) < until - 1e-8:"
+        },
+        {
+          "line": 294,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "t = float(world.data.time)"
+        },
+        {
+          "line": 298,
+          "function": "run",
+          "field": "time",
+          "expression": "world.data.time",
+          "statement": "report.update(status='complete', complete=True, sim_s=float(world.data.time)-origin,"
+        }
+      ],
+      "indirect_state_or_camera_calls": [
+        {
+          "line": 140,
+          "function": "run",
+          "call": "world._physics_step_for",
+          "statement": "world._physics_step_for(world.robot(rid))"
+        },
+        {
+          "line": 202,
+          "function": "run",
+          "call": "port.capture",
+          "statement": "jpeg = base64.b64decode(port.capture()['image'])"
+        },
+        {
+          "line": 236,
+          "function": "run",
+          "call": "mujoco.mj_contactForce",
+          "statement": "mujoco.mj_contactForce(world.model, world.data, i, force)"
+        },
+        {
+          "line": 243,
+          "function": "run",
+          "call": "world.robot(rid).base_xyz",
+          "statement": "base = world.robot(rid).base_xyz()"
+        },
+        {
+          "line": 244,
+          "function": "run",
+          "call": "world.robot(rid).base_rpy",
+          "statement": "yaw = float(world.robot(rid).base_rpy()[2])"
+        },
+        {
+          "line": 297,
+          "function": "run",
+          "call": "world._physics_step_for",
+          "statement": "world._physics_step_for(world.robot(rid))"
+        }
+      ]
+    },
+    {
+      "sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "file": "scripts/grasp_act_student_worker.py",
+      "source_sha256": "f59355a6833142bbf2aaa6ee905f99b1ac36b9d5de57a97278579ccf5df3343f",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "file": "harness/grasp_act_rollout.py",
+      "source_sha256": "babca2bbea1e07dd9f49f1cccdbc3e8007dd541bfc5982355158c4a90c8901c1",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "file": "harness/grasp_act_input.py",
+      "source_sha256": "674fb4837ddb0338ae3bac71b03af51780471ca32d13d77424c6900905ebc933",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "file": "harness/grasp_act_policy.py",
+      "source_sha256": "0cfa080f086ea991368e3c686960cf54cab9a8f9796e1077557f17a639f79c6c",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    },
+    {
+      "sha": "686cccb6e31342a9edfadb30a8047ad57ceb9291",
+      "file": "scripts/train_grasp_act.py",
+      "source_sha256": "fd7ecfcba5c53936887f2aebca287f9a5f21cbf37dfd608d0a50bf3de09ac4f4",
+      "direct_state_candidates": [],
+      "indirect_state_or_camera_calls": []
+    }
+  ]
+}

@@ -155,3 +155,10 @@ def test_cached_perception_world_has_independent_buffers_and_commands(monkeypatc
     assert b.controllers['r1'].motor_command[0]==controller.motor_command[0]==0.
     assert b.controllers['r1'].servo_command_pulses[1]==controller.servo_command_pulses[1]==1500
     with pytest.raises(RuntimeError,match='C physics forbidden'):a._physics_step_for(None)
+
+
+def test_lease_audit_does_not_own_foreign_teacher_source_reference():
+    from scripts.simalt_lease_audit import owns_output
+    assert not owns_output(['python','--teacher-source','/home/ugrp/ugrp-sim/src/warp1-teacher-snapshot','--out','/home/ugrp/ugrp-sim/runs/rl1b/probe'],'warp1')
+    assert owns_output(['python','--out','/home/ugrp/ugrp-sim/runs/warp1/qual'],'warp1')
+    assert not owns_output(['python','--out','/home/ugrp/ugrp-sim/runs/warp1-foreign/qual'],'warp1')

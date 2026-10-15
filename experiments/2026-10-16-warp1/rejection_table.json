@@ -1,0 +1,95 @@
+{
+  "schema": "ugrp.warp1.rejection_table.v1",
+  "status": "qualitative_running_not_ready",
+  "reproduce": [
+    "see per-run reproduce in l4-preliminary.json and cpu-results.json",
+    "python experiments/2026-10-16-warp1/build_read_inventory.py"
+  ],
+  "raw_roots": [
+    "gcp2 CPU:/home/ugrp/ugrp-sim/runs/warp1",
+    "gcp2 L4:/home/ugrp/ugrp-sim/runs/warp1"
+  ],
+  "funnel": [
+    {
+      "cohort": "C matched qualitative",
+      "gate": "requested→returned→physical_success",
+      "entered": 3,
+      "passed": 3,
+      "rejected": 0
+    },
+    {
+      "cohort": "MJWarp shared RGB prefix",
+      "gate": "requested worlds→returned cap_end",
+      "entered": 352,
+      "passed": 352,
+      "rejected": 0,
+      "physical_success_scope": "not counted: finite prefix, not full task"
+    },
+    {
+      "cohort": "distinct static model N16",
+      "gate": "initialized→per-world qpos/RGB→masked reset fields",
+      "entered": 16,
+      "passed": 16,
+      "rejected": 0,
+      "unique_starts": 3,
+      "reset_fields": 10
+    },
+    {
+      "cohort": "heterogeneous source seed N16",
+      "gate": "setup→supported model array audit",
+      "entered": 16,
+      "passed": 0,
+      "rejected": 16,
+      "unique_seeds": 3
+    },
+    {
+      "cohort": "explicit sleep compact candidate",
+      "gate": "C export→Warp model conversion",
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1
+    }
+  ],
+  "distribution": [
+    {
+      "category": "cap_end_prefix",
+      "count": 352,
+      "reason": "predeclared finite4.0 or0.1SIM seconds for RGB timing; no physical task failure claim",
+      "blocking_object": "none: measurement horizon",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not a geometric rejection"
+    },
+    {
+      "category": "unbatchable_model_field",
+      "count": 1,
+      "rejected_worlds": 16,
+      "reason": "dof_length differs across randomized source models; pinned field is not world batchable",
+      "blocking_object": "converted model.dof_length",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "model compatibility, not geometric"
+    },
+    {
+      "category": "unsupported_sleep_policy",
+      "count": 1,
+      "reason": "pinned types.SleepPolicy lacks explicit NEVER/ALLOWED/INIT; rejected compact candidate removed from final CLI",
+      "blocking_object": "compiled tree_sleep_policy",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "feature unsupported, not geometric"
+    },
+    {
+      "category": "physical_cost",
+      "count": 1,
+      "reason": "N16 4SIM prefix physics1439.078s/loop1450.718s; scalar teacher3.395s. Shared GPU, no intrinsic speed attribution",
+      "blocking_object": "full scene246 DOFs / sharedGPU",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "performance observation, not collision cause"
+    }
+  ],
+  "unfinished": [
+    "full N1/N16 qualitative ongoing",
+    "scene approval",
+    "full NumPy teacher state machine/IK/raycast port",
+    "training recorder/student evaluation adapters",
+    "long steady-state performance on qualified teacher"
+  ]
+}

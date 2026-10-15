@@ -1,5 +1,5 @@
 """Run on gcp2: compact result retrieval with raw-file hash verification."""
-import argparse,hashlib,json,platform,subprocess
+import argparse,hashlib,json,platform,subprocess,datetime
 from pathlib import Path
 if platform.system()!='Linux':raise RuntimeError('remote analysis only')
 p=argparse.ArgumentParser();p.add_argument('--root',type=Path,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args()
@@ -8,6 +8,16 @@ keys=('status','physics_backend','source_sha','teacher_sha','host','nworld','see
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 for f in sorted(a.root.rglob('summary.json')):
  s=json.loads(f.read_text());root=f.parent;row={'run':str(root.relative_to(a.root)),'raw':str(root),'summary_sha256':sha(f),**{k:s[k] for k in keys if k in s}}
+ marker=root/'SUPERVISOR_STOP.json'
+ if marker.exists():
+  stop=json.loads(marker.read_text());row['supervision']=stop
+  row['outcome_category']='cap_end' if stop.get('category')=='cap_end' or stop.get('reason')=='resource_cap4h' else 'supervisor_stop'
+  row['outcome_reason']=stop.get('reason') or 'explicit supervisor marker; raw exception retained'
+ elif s.get('status')=='HOST_ERROR':
+  row['outcome_category']='HOST_ERROR';row['outcome_reason']=s.get('error') or s.get('error_type') or 'missing exception detail'
+ elif s.get('status')=='complete' and s.get('cap_end',0):
+  row['outcome_category']='cap_end';row['outcome_reason']='predeclared finite SIM horizon; task completion not inferred'
+ else:row['outcome_category']=s.get('status','unknown')
  if s.get('status')=='running':row['verification']={'status':'running_not_complete'}
  else:
   expected=s.get('sha256',{});bad=[]
@@ -28,4 +38,4 @@ for f in sorted(a.root.rglob('*')):
  if f.is_file():inventory.append({'relative':str(f.relative_to(a.root)),'bytes':f.stat().st_size,'sha256':sha(f)})
 a.out.parent.mkdir(parents=True,exist_ok=True)
 manifest=a.out.with_name(a.out.stem+'-raw-manifest.json');manifest.write_text(json.dumps({'root':str(a.root),'files':inventory},separators=(',',':'))+'\n')
-a.out.write_text(json.dumps({'root':str(a.root),'runs':rows,'raw_manifest':str(manifest),'raw_manifest_sha256':sha(manifest),'raw_files':len(inventory),'raw_bytes':sum(r['bytes'] for r in inventory),'raw_backup':'VM only; hashes are not a backup'},indent=2)+'\n')
+a.out.write_text(json.dumps({'collected_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'analysis_script_sha256':sha(Path(__file__)),'snapshot_status':'incomplete_running' if any(r.get('status')=='running' for r in rows) else 'all_reported_runs_terminal','root':str(a.root),'runs':rows,'raw_manifest':str(manifest),'raw_manifest_sha256':sha(manifest),'raw_files':len(inventory),'raw_bytes':sum(r['bytes'] for r in inventory),'raw_backup':'VM only; hashes are not a backup'},indent=2)+'\n')

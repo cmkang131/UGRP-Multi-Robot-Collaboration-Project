@@ -408,10 +408,6 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
                     break
             tick += 1
             yield {'kind': 'step', 'world': world, 'port': port, 'command': value}
-        write(out/'input-funnel.json', {'counts': input_funnel, 'raw': str(out/'teacher-commands.jsonl'),
-            'scope': 'frames→not-held→currently-visible→lazy relative measurement'})
-        write(out/'route-rejections.json', {'counts': route_counts, 'rows': route_rejections,
-            'budget_basis': 'frozen scripts.zone_teacher.plan_path default40000 nodes; no wall-clock planning cap'})
         report.update(status='cap_end' if teacher.result is None else 'complete',
             cap_end=teacher.result is None, sim_s=float(data.time)-origin, wall_s=time.monotonic()-start,
             teacher=teacher.diagnostic(), input_audit=audit.record(), visibility=visibility_stats.record(),
@@ -452,6 +448,17 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
         write(out/'result.json', report)
         raise
     finally:
+        # Flush the same input/rejection counters on setup errors and supervision,
+        # before closing/compressing traces. Completion is a separate status.
+        report.update(input_audit=audit.record(),visibility=visibility_stats.record())
+        if 'input_funnel' in locals():
+            write(out/'input-funnel.json', {'counts':input_funnel,
+                'raw':str(out/('teacher-raw/commands.jsonl.zst' if training_rgb else 'teacher-commands.jsonl.zst')),
+                'scope':'frames→not-held→currently-visible→lazy relative measurement',
+                'run_status':report.get('status')})
+            write(out/'route-rejections.json', {'counts':route_counts,'rows':route_rejections,
+                'run_status':report.get('status'),
+                'budget_basis':'frozen scripts.zone_teacher.plan_path default40000 nodes; no wall-clock planning cap'})
         folder = out/'failure-rgb-buffer'
         folder.mkdir(exist_ok=True)
         for index, jpg in recent:

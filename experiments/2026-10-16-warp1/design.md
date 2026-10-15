@@ -23,3 +23,9 @@
 조정자가 지적한 warmup 뒤 첫 world state로 덮이는 위험은 `2fd1490a`부터 두 번째 put_data 뒤에도 모든 integration state를 다시 복사하도록 고쳤다. 새 실행은 첫 teacher action 전 expected/actual world qpos 해시와 첫 RGB 해시를 저장한다. `--reset-check-v1`는 서로 다른 시작을 넣은 별도 진단에서 world0만 다른 시작으로 바꿨다가 원래 integration state로 reset하고, 선택하지 않은 세계의 모든 persistent state가 그대로인지 검사한다. 이 진단은 실제 teacher rollout/성공률이 아니며 mid-episode teacher/이력 reset 구현을 뜻하지 않는다.
 
 현재 계획은 ACT11 frozen source의 v4 scenario ID와 floor_light_v1을 사용한다. v6/v7 또는 scenetex5 승계를 주장하지 않는다. 현재와 다른 승인 장면으로 바꾸면 모델 자산과 관문을 다시 만든다.
+
+정확한 위치/원본 해시는 [MjData 접근 목록](mjdata-read-inventory.json)에 있다(`build_read_inventory.py`, git object를 AST로만 읽고 물리를 import하지 않음). frozen teacher runner의28개 직접 상태 후보는 clock/평가와 `read_relative`, `refresh_obstacles`, `look_truth`로 분류된다. `audit_grasp_act_visibility.py`18개는 가시 ray/FOV와 감사/평가 경로다. `sim/grasp_act_solo_teacher.py`, RGB lookback, recorder, 순수 Score에는 직접 MjData 읽기가 없었다. 간접 `base_xyz/base_rpy`, contactForce, camera/physics 호출도 따로 열거했다. AST 목록만으로 전체 프로그램의 입력 비간섭을 증명하지는 않는다.
+
+ACT15 평가 소스 `686cccb6`의 `scripts/run_grasp_act_student.py:227` 이후 clearance/tilt/contact와242–245의 target/base 측정은 평가 전용으로 남겨야 한다. GPU contact/pose 평가 owner로 옮기고 actor에는 전달하지 않는 설계다. `scripts/grasp_act_student_worker.py`는 observation+jpegs whitelist만 받는 별도 과정이며 직접 MjData 접근이 없다. `harness/grasp_act_solo_recording.py`는 observe(동작 전 JPEG/과거 발행 명령)/target(이번 발행 명령)을 받는 구조를 유지할 수 있지만, 기존 C 관문 승인 SHA를 새 backend 승인으로 재사용하지 않는다. 현재 CLI는 training_rgb를 켜지 않으며 학생 실행·새 관문 이후 기록 어댑터는 미완료다.
+
+교사 성능 후보의 최종 상태: 명시 sleep 정책 compact 옵션은 pinned MJWarp가 지원하지 않아 최종 CLI에서 제거했다. 서로 다른 source seed는 `dof_length` 차이로 결합을 거부했다. 같은 물리 seed/모델에 기존 source plan의 r1 시작 위치3종만 넣은 진단은 N16에서 초기 qpos/RGB3종을 보존했고, world0 리셋 뒤10개 persistent field의 selected/untouched 검사가 모두 통과했다. 이것은 성공률 표본이 아니다.
