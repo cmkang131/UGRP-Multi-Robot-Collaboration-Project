@@ -167,7 +167,13 @@ def summarize(root, output):
         ]
         for stage, check in checks:
             passed = [r for r in alive if check(r)]
-            stages.append({'stage': stage, 'input_n': len(alive), 'cumulative_pass_n': len(passed), 'rejected_n': len(alive)-len(passed)})
+            rejected = [r for r in alive if not check(r)]
+            stages.append({'stage': stage, 'input_n': len(alive), 'cumulative_pass_n': len(passed), 'rejected_n': len(rejected),
+                           'rejections': [{'case': r['case'], 'category': stage.upper(),
+                               'blocking_object': 'existing box detector' if stage.startswith('box') else 'floor / zone wall surfaces',
+                               'minimum_gap_m': None, 'minimum_gap_reason': 'static image gate, no collision clearance',
+                               'reason': 'paired v1 preservation requirement failed; full per-surface distributions in arm report'}
+                               for r in rejected]})
             alive = passed
         table = {'material': material, 'quality': quality, 'stages': stages, 'box_changes': failures,
                  'remaining_issues': [{'category': 'REAL_FRAME_UNAVAILABLE', 'blocking_object': 'archived physical RGB missing at recorded paths',
