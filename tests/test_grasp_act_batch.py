@@ -106,6 +106,16 @@ def test_nominal_handoff_toggle_reaches_each_teacher_child(tmp_path,fake_childre
     assert (summary['n'],summary['N'],summary['planned_N'],summary['approach_handoff_n'])==(1,2,40,1)
 
 
+def test_search19_toggles_reach_each_child_and_result(tmp_path,fake_children):
+    from sim.grasp_act_search19 import MODES
+    fake_children[0].update({0:(0,SUCCESS,0)})
+    rows,reason,killed=run_wave(tmp_path,fake_children,**MODES)
+    assert reason is None and killed==[]
+    command=json.loads((tmp_path/'wave/episode-000/PROCESS.json').read_text())['command']
+    for key,mode in MODES.items():
+        assert command[command.index('--'+key.replace('_','-'))+1]==mode
+
+
 def test_second_shared_failure_stops_only_unfinished_children(tmp_path,fake_children):
     fake_children[0].update({0:(0,failure(),0),1:(1,failure(),0),2:(3,SUCCESS,0)})
     rows,reason,killed=run_wave(tmp_path,fake_children)

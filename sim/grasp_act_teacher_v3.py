@@ -75,6 +75,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         self.search17_log=[];self.search17_escape_state=None
         from sim.grasp_act_free_space import FreeSpace
         self.search18_space=FreeSpace();self.search18_log=[]
+        self.search19_log=[];self.search19_body_active=False
         self.peer_wait_since=None;self.peer_wait_ids=set();self.peer_clear_since=None
         self.peer_route=[];self.peer_route_next=0.;self.recovery_log=[]
         self.nominal_handoff_log=[]
@@ -389,6 +390,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return pose,g,heading,goal
 
     def _navigation(self,world):
+        if self.search19_body_active:
+            from sim.grasp_act_search19 import BodyNavigation
+            return BodyNavigation(self,world)
         from sim.grasp_act_search18 import navigation
         return navigation(self,world)
 
@@ -428,7 +432,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # Until then the exact original planner, cadence and readiness law run.
         if self.approach_choice!=(0.,STATION_M):return True
         from sim.grasp_act_goal_set import nominal_goal_blocked
-        if self.search15_modes['search18_footprint']!='off':
+        if self.search15_modes['search18_footprint']!='off' or self.search19_body_active:
             scene=deepcopy(dict(world));scene['robots']={self.rid:world['robots'][self.rid]}
             nav=self._navigation(scene);radius,discs,rects=self._constraints(scene)
             return not nav.free(self._geometry(world)[3],discs,rects,radius)
@@ -486,6 +490,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                     blockers=remembered_blockers(world,self.rid,checked,self.folded_ready,include_visible=True)
                     if self.reobserver.begin('obstacle',blockers,world,self,now,retreat_first=True):
                         self.search17_log.append({'t':now,'event':'blocked_retreat_reobserve','targets':sorted(blockers)})
+            if (selected is None and not self.search19_body_active
+                    and self.search15_modes['search19_footprint']!='off' and self.reobserver.active is None):
+                from sim.grasp_act_search19 import body_fallback
+                selected,body_checked=body_fallback(self,world,now)
+                checked+=body_checked
             if selected is None and self.search15_modes['search18_start_plan']!='off':
                 retained=nav.retained_path(pose[:2],self.path,goal,discs,rects,radius)
                 if retained:
@@ -589,6 +598,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         pose=world['robots'][self.rid]['pose']
         radius,discs,rects=self._constraints(world)
         blocked=peer_goal_blocked(goal,discs,rects,radius)
+        if self.search19_body_active and nav.free(goal,discs,rects,radius):blocked=False
         if self.approach_recovery=='progress_view_recovery_v3' and self.peer_wait_since is None:
             if not blocked:
                 self.peer_trigger.reset()
@@ -790,7 +800,11 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
             self.local_seen=propagate_owned(self.local_seen,self.last_command,min(.1,now-self.last_tick),mode=self.search15_modes['search17_odometry'])
         value,done=self._step(truth,now,permit_pick=permit_pick)
-        if (((self.priority is not None and self.phase in ('approach','align','ready','search','relook'))
+        if self.search15_modes['search19_motion']!='off':
+            from sim.grasp_act_search19 import project_motion
+            value=project_motion(self,truth,value,before_pwm,now)
+        if (((self.search19_body_active and self.phase in ('approach','align','ready','search','relook'))
+                or (self.priority is not None and self.phase in ('approach','align','ready','search','relook'))
                 or (self.approach_recovery in ('approach_recovery_v2','progress_view_recovery_v3') and self.approach_plan_valid
                     and self.approach_choice!=(0.,STATION_M) and self.phase in ('approach','align','ready')))
                 and truth['beam'] is not None):
@@ -804,9 +818,12 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 from sim.grasp_act_search17 import pulse_free
                 safe=all(pulse_free(pose,value,discs,rects,radius,mode=mode)
                          for mode in ('off',self.search15_modes['search17_odometry']))
+            if self.search19_body_active:
+                from sim.grasp_act_search19 import body_pulse_free
+                safe=body_pulse_free(self,truth,value)
             if not safe:
                 from sim.grasp_act_search17 import escape_command
-                value=escape_command(self,truth,now) or self._hold(now)
+                value=(None if self.search19_body_active else escape_command(self,truth,now)) or self._hold(now)
         if self.sampled_stance and self.phase in ('approach','align','ready','search','relook'):
             from sim.grasp_act_pregrasp import issued_sweep_reason
             from harness.grasp_act_visible_world import command_delta
@@ -938,7 +955,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'approach_progress':self.approach_progress,'approach_progress_log':self.progress_log,
                 'approach_recovery':self.approach_recovery,'recovery_log':self.recovery_log,
                 'approach_coordination':self.approach_coordination,**self.search15_modes,
-                'search17_log':self.search17_log,'search18_log':self.search18_log,'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
+                'search17_log':self.search17_log,'search18_log':self.search18_log,'search19_log':self.search19_log,'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
                 'candidate_angle_counts':dict(Counter(str(round(c['offset_deg'],3)) for c in candidates)),
                 'candidate_rejection_counts':dict(Counter(c['reason'] for c in candidates)),
                 'reobserve_pending':None if self.reobserver.active is None else {
