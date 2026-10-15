@@ -174,6 +174,8 @@ class BodyNavigation(Previous):
             if (slack<=envelope).any() and not self.last_blockers:
                 i,j=np.unravel_index(np.argmin(slack),slack.shape)
                 self.last_blockers=[{**self.audit_details[j],'gap_m':float(slack[i,j]),
+                    'slack_m':float(slack[i,j]-envelope),
+                    'sample_pose':[*map(float,xy[i]),float(a[2]+u[i]*da)],
                     'margin_m':envelope,'category':'interpolation_envelope',
                     'gap_scope':'body gap versus nearest-sample displacement bound'}]
             return bool(self.fresh_target and (slack>envelope).all())

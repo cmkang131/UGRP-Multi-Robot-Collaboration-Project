@@ -50,14 +50,19 @@ def funnel(result):
                 groups[group][key]+=1
     out={}
     for name, counts in groups.items():
-        remaining=sum(counts.values());steps=[]
+        # A compute cap can interrupt any gate. Do not pretend these rows
+        # passed earlier gates merely because the exception was logged later.
+        uncertain=counts.get('planning_budget',0)
+        remaining=sum(counts.values())-uncertain;steps=[]
         for gate in (*reasons, *sorted(set(counts)-set(reasons))):
+            if gate=='planning_budget':continue
             rejected=counts[gate] if gate not in ('feasible','endpoint_feasible') else 0
             passed_terminal=counts[gate] if gate in ('feasible','endpoint_feasible') else 0
             steps.append({'gate':gate,'entered':remaining,'rejected':rejected,
                           'terminal_pass':passed_terminal,'continued':remaining-rejected-passed_terminal})
             remaining-=rejected+passed_terminal
-        out[name]={'N_rows':sum(counts.values()),'terminal_reason_counts':dict(counts),'ordered_funnel':steps}
+        out[name]={'N_rows':sum(counts.values()),'unknown_stage_budget_N':uncertain,
+                   'terminal_reason_counts':dict(counts),'ordered_funnel':steps}
     return out
 
 

@@ -47,6 +47,11 @@ def test_sample_envelope_rejects_an_edge_grazing_between_samples():
     assert nav.free((x,0.),(),(),0.)
     assert not nav.pose_segment((x,0.,0.),(x,.002,0.))
     assert nav.last_blockers[0]['id']=='box'
+    # Grid edges retain these rows in nav.blocked, then another batched node
+    # measurement compares slacks. Exercise the R1 failure path explicitly.
+    nav.blocked['box']=nav.last_blockers[0]
+    nav.measure([(.2,0.)])
+    assert nav.blocked['box']['slack_m']<0
     assert segment_envelope((0.,0.,0.),(.1,0.,.1),50)>0
 
 

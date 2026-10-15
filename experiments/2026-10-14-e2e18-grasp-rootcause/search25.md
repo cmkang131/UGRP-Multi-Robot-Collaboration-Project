@@ -79,3 +79,15 @@ r2는 대부분 대상에서약0.743m이고 성공8312301만 시작1.335m다. �
 실패 seed8311709 base/v6,315709 v6/base를 먼저 둔 기존6개 계획, 동시6·60SIM초 상한,
 최대3라운드. 원본 재계수·실패 프레임·입력 감사·funnel·전체 raw manifest를 검증한다.
 4/6 이상인 최종 소스만32회 비교 대기열 후보가 되며, 대기열은 비활성·검토용이다.
+
+### R1 — 호스트 오류, 성공률 미측정
+
+실행 SHA `26f84d0f0ada1c33473c83cca2d3415ce51bd247`, 원본
+`/home/ugrp/ugrp-sim/runs/search25-r1-short6-26f84d0f`. 보간 경계의 새 차단물 row에
+slack_m이 없어 후속 grid measure에서 KeyError. HOST_ERROR1·동반 interrupted5·완료0.
+성공0/6으로 해석하지 않는다. 실행기가20.9wall초 안에 전부 정지했고 별도 정지 기록을 남겼다.
+원본 전체 manifest 검증 뒤 임대/예약을 해제했다. R2는 동일 profile에서 필드 누락만 고친다.
+R1 거부는 현재기하104·endpoint_feasible76·feasible2, 물리 성공/실패 판정 전 중단이다.
+GCP view 검사는1813개 사각 경계/내부 점의 pinhole/fisheye 이탈0/0, 저장상태60개 camera 표본,
+실패4개 장면을 실제 renderer로 복원했다. 감지 정확도/새 궤적 성공 검증과 구분한다.
+비물리 회귀28통과. budget-stop ACTIVE를 실시간 확인했고 기존 비용/유휴/종료 장치를 변경하지 않았다.

@@ -51,7 +51,7 @@ def analyze(root,out):
             'planning_compute':dict(budget),'missing_rejection_evidence':bad_ledgers,
             'decoded_result_sha256':hashlib.sha256(data).hexdigest() if data else None}
         totals.update(categories)
-        if not success and complete:
+        if not success and data:
             frames=[]
             for rid in plan.get('roles',{}):
                 files=sorted((raw/'eval-own'/rid).glob('*.jpg'))
