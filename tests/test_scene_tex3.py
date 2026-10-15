@@ -30,3 +30,14 @@ def test_profile_requires_explicit_known_name():
     with pytest.raises(ValueError):
         q.resolve(None)
     assert q.resolve('native').scale == 1
+
+
+def test_surface_measurements_are_json_serializable():
+    import json
+    from scripts.probe_scene_tex3 import measure
+    image = np.random.default_rng(6).integers(0, 256, (96, 128, 3), dtype=np.uint8)
+    masks = {'floor': np.ones((96, 128), bool), 'wall': np.zeros((96, 128), bool)}
+    result = measure(image, masks)
+    json.dumps(result, allow_nan=False)
+    assert result['floor']['orb20'] > 0
+    assert result['wall']['laplacian_variance'] is None

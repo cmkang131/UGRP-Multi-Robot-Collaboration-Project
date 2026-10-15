@@ -57,8 +57,8 @@ def measure(bgr, masks):
         for fast in (20, 7):
             kp, _ = features(bgr, mask, fast)
             row['orb'+str(fast)] = len(kp)
-            row['interior'+str(fast)] = sum(dist[min(mask.shape[0]-1, round(k.pt[1])),
-                min(mask.shape[1]-1, round(k.pt[0]))] >= k.size*math.sqrt(2)/2 for k in kp)
+            row['interior'+str(fast)] = int(sum(dist[min(mask.shape[0]-1, round(k.pt[1])),
+                min(mask.shape[1]-1, round(k.pt[0]))] >= k.size*math.sqrt(2)/2 for k in kp))
         out[label] = row
     return out
 
