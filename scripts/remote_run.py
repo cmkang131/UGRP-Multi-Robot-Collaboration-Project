@@ -1,11 +1,11 @@
 """Committed-source Oracle/Azure/GCP runner, with finite Azure/GCP lifecycle by default.
 
-Usage: remote_run.py [--host azure] WORKTREE NAME -- COMMAND [ARGS...]
-The historical ORACLE_HOST default (oracle) is preserved. Azure waits, fetches
+Usage: remote_run.py [--host gcp2] WORKTREE NAME -- COMMAND [ARGS...]
+The default host is configured in configs/gcp_hosts.json. Azure waits, fetches
 lite evidence, waits for verified ARM archival, then deallocates when no jobs remain.
---host gcp1 (opt-in, GCP project ugrp-act-train-1014): starts the VM with gcloud, runs, waits,
-verifies the VM-side SHA256SUMS, fetches lite evidence to outputs/gcp1-runs, records
-outputs/gcp1-lifecycle/<run>.json and stops the VM (disk kept). Raw stays on the persistent
+GCP starts the configured VM with gcloud, runs, waits,
+verifies the VM-side SHA256SUMS, fetches lite evidence to outputs/<host>-runs, records
+outputs/<host>-lifecycle/<run>.json and stops the VM (disk kept). Raw stays on the persistent
 VM disk; there is no ARM archival for GCP yet. Results from different CPUs are never pooled.
 """
 import argparse
@@ -23,7 +23,7 @@ if __package__ in (None, ''):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.azure_api import AZURE_HOSTS
-from scripts.gcpctl import GCP_HOSTS
+from scripts.gcpctl import GCP_HOSTS, DEFAULT_HOST
 
 PRIMARY = Path('/Users/changmin/projects/ugrp')
 
@@ -58,7 +58,7 @@ def fetch_lifecycle(host='azure'):
 def finish_lease(host, name, lease, archived, detached=False):
     if host in GCP_HOSTS:
         # archived == SHA256SUMS verified on the VM and lite evidence fetched. Otherwise the lease
-        # stays, so gcpctl stop refuses; the VM idle guard and 8 h cap remain the backstops.
+        # stays, so gcpctl stop refuses; the VM idle guard and runtime cap remain the backstops.
         if archived:
             ssh(host, f'rm -f {lease}')
         if not detached:
@@ -88,7 +88,8 @@ def wait_gcp(host, name, root, lease, sha, started_unix):
     Returns (verified, exit_state). Raw stays on the VM's persistent disk (no ARM archive).
     """
     from scripts.azure_shutdown import write_json
-    deadline = time.monotonic() + 7.5 * 3600
+    # 2026-10-15: simulation VM cap is 24h, including the gcp2 successor.
+    deadline = time.monotonic() + 23.5 * 3600
     state = ''
     while time.monotonic() < deadline:
         state = ssh(host, f'touch {lease}; test ! -f {root}/EXIT || cat {root}/EXIT', capture_output=True, text=True).stdout.strip()
@@ -96,7 +97,7 @@ def wait_gcp(host, name, root, lease, sha, started_unix):
             break
         time.sleep(30)
     else:
-        raise RuntimeError('Runner deadline exceeded; eight-hour VM guard remains active')
+        raise RuntimeError('Runner deadline exceeded; configured VM guard remains active')
     # EXIT is written before SHA256SUMS; wait until the wrapper itself has finished.
     for _ in range(120):
         done = subprocess.run(['ssh', '-o', 'BatchMode=yes', host, f'! pgrep -f "{name}/[r]un_wrapper\\.sh" >/dev/null'])
@@ -123,6 +124,8 @@ def wait_gcp(host, name, root, lease, sha, started_unix):
 
 
 def ship(host, worktree, sha):
+    if host in GCP_HOSTS:
+        return ship_gcp(host, worktree, sha)
     source = f'~/ugrp-sim/src/{sha}'
     exists = subprocess.run(
         ['ssh', '-o', 'BatchMode=yes', host, f'test -f {source}/.git/ugrp-source-complete'], capture_output=True)
@@ -144,9 +147,53 @@ def ship(host, worktree, sha):
         raise RuntimeError('Source transfer failed')
 
 
+def ship_gcp(host, worktree, sha):
+    """One shared object database; every source clone references it directly.
+
+    Never prune/gc git-shared.git: source clones borrow its objects. The Mac sends
+    committed Git objects only, without GitHub credentials or untracked files.
+    """
+    from scripts.gcpctl import require_lifecycle
+    require_lifecycle(host)
+    shared = '$HOME/ugrp-sim/git-shared.git'
+    source = f'$HOME/ugrp-sim/src/{sha}'
+    marker = f'{source}/.git/ugrp-source-complete'
+    if subprocess.run(['ssh', '-o', 'BatchMode=yes', host, f'test -f {marker}'], capture_output=True).returncode == 0:
+        return
+    # Serialize import/clone so simultaneous admissions do not race shared refs.
+    ssh(host, f'mkdir -p ~/ugrp-sim/src; test -d {shared} || git init --bare -q {shared}; '
+              f'git --git-dir={shared} config gc.auto 0; '
+              f'git --git-dir={shared} config maintenance.auto false; '
+              f'git --git-dir={shared} config gc.pruneExpire never')
+    refs = ssh(host, f'git --git-dir={shared} for-each-ref --format="%(objectname)"',
+               capture_output=True, text=True).stdout.split()
+    known = [ref for ref in refs if subprocess.run(
+        ['git', '-C', str(worktree), 'cat-file', '-e', ref], capture_output=True).returncode == 0]
+    objects = subprocess.check_output(['git', '-C', str(worktree), 'rev-list', '--objects', sha,
+                                       '--not', *known])
+    pack = subprocess.Popen(['git', '-C', str(worktree), 'pack-objects', '--stdout'],
+                            stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    receiver = subprocess.Popen(['ssh', '-o', 'BatchMode=yes', host,
+        f'flock ~/ugrp-sim/git-shared.lock bash -c ' + shlex.quote(
+            f'git --git-dir={shared} index-pack --stdin && '
+            f'git --git-dir={shared} update-ref refs/heads/source-{sha} {sha} && '
+            f'test ! -e {source} && '
+            f'git -c gc.auto=0 clone --reference {shared} --no-local --no-checkout '
+            f'--branch source-{sha} {shared} {source} && '
+            f'git -C {source} checkout --detach {sha} && '
+            f'ln -s ~/ugrp-sim/ugrp/.venv-sim {source}/.venv-sim && '
+            f'echo {sha} > {marker}')], stdin=pack.stdout)
+    pack.stdout.close()
+    pack.stdin.write(objects)
+    pack.stdin.close()
+    pack_result, receive_result = pack.wait(), receiver.wait()
+    if pack_result or receive_result:
+        raise RuntimeError('Shared source transfer failed; preserve partial data for inspection')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--host', default=os.environ.get('ORACLE_HOST', 'oracle'))
+    parser.add_argument('--host', default=os.environ.get('ORACLE_HOST', DEFAULT_HOST))
     parser.add_argument('--detach', action='store_true', help='opt out of Azure wait/fetch/archive/stop; guards remain enabled')
     parser.add_argument('--per-run-mb', type=float, default=128)
     parser.add_argument('--pr', type=int)
@@ -196,7 +243,7 @@ def main():
                 break
             time.sleep(5)
         else:
-            raise RuntimeError('GCP VM started but SSH did not become ready; the VM idle guard and 8 h cap remain active')
+            raise RuntimeError('GCP VM started but SSH did not become ready; idle and runtime guards remain active')
     started_unix = time.time()
     root = f'$HOME/ugrp-sim/runs/{name}'
     lease = f'$HOME/ugrp-sim/leases/{name}'
