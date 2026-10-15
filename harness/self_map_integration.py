@@ -38,6 +38,7 @@ class Options:
     revision_gate: str = 'off'
     multiframe_registration: str = 'off'
     correction_safety: str = 'off'
+    active_relocalization: str = 'off'
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
@@ -73,6 +74,10 @@ class Options:
             raise ValueError('UNKNOWN_CORRECTION_SAFETY')
         if self.correction_safety != 'off' and (self.revision_gate != REVISION or self.multiframe_registration != MULTIFRAME):
             raise ValueError('SELFMAP6_REQUIRES_REVISION_AND_MULTIFRAME')
+        from harness.active_relocalization import validate
+        validate(self.active_relocalization)
+        if self.active_relocalization != 'off' and self.correction_safety != SAFETY:
+            raise ValueError('RELOC8_REQUIRES_SELFMAP6_SAFETY')
 
 
 def make_mapper(legacy=None, *, options=None, **kwargs):
@@ -172,7 +177,8 @@ class SelfMapIntegration:
                 raise ValueError('SELFMAP4_AUTHORED_STATIC_MAP_REQUIRED')
             self.registration = StaticRegistration(static_map,
                 multiframe_registration=self.options.multiframe_registration,
-                correction_safety=self.options.correction_safety)
+                correction_safety=self.options.correction_safety,
+                active_relocalization=self.options.active_relocalization)
             self.flow = PlaneFlow()
         elif static_map is not None:
             raise ValueError('STATIC_MAP_REQUIRES_SELFMAP4_PROFILE')

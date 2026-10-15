@@ -1,0 +1,142 @@
+{
+  "schema": "ugrp.reloc8_summary.v1",
+  "flow": "selfmap",
+  "source_revision": "commit containing this record; full SHA pinned in newly generated external queue",
+  "baseline_sha": "c8d9b6e51a601dba5e0724e83fd1eae8929fc9d2",
+  "toggle": "reloc8_active_vision_v1",
+  "default": "off",
+  "new_physics_runs": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "training_runs": 0,
+  "verified_scope": "fixed saved priors/proposals and selected RGB; not causal full trajectory, new-view pixels or physical improvement",
+  "metrics": [
+    {
+      "seed": 93560,
+      "proposals_N": 52,
+      "old_accepted_N": 52,
+      "new_accepted_N": 52,
+      "rejected_N": 0,
+      "dangerous_accepted_N": 0,
+      "registered_N": 0
+    },
+    {
+      "seed": 93561,
+      "proposals_N": 71,
+      "old_accepted_N": 61,
+      "new_accepted_N": 61,
+      "rejected_N": 10,
+      "dangerous_accepted_N": 0,
+      "registered_N": 0
+    }
+  ],
+  "related_pytest_passed": 37,
+  "pytest_log": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/reloc8/selfmap-tests-final2.txt",
+  "analysis": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/reloc8/selfmap-verified.json",
+    "sha256": "f7178ec46cd4218137a6d9b2ff801db1df7703abf79276ccff456e44102d0878"
+  },
+  "runs": [
+    {
+      "name": "selfmap6-smooth-93560-c8d9b6e5",
+      "source_sha": "c8d9b6e51a601dba5e0724e83fd1eae8929fc9d2",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93560-c8d9b6e5/raw",
+      "status": "RECORDED",
+      "physical_success": null,
+      "termination_reason": "sim_time_cap",
+      "error_type": null,
+      "elapsed_sim_s": 30.0,
+      "new_execution": false
+    },
+    {
+      "name": "selfmap6-smooth-93561-c8d9b6e5",
+      "source_sha": "c8d9b6e51a601dba5e0724e83fd1eae8929fc9d2",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93561-c8d9b6e5/raw",
+      "status": "HOST_ERROR",
+      "physical_success": null,
+      "termination_reason": "selfmap4_relocalization_exhausted",
+      "error_type": null,
+      "elapsed_sim_s": 57.900000000000006,
+      "new_execution": false
+    }
+  ],
+  "raw_sources": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93560-c8d9b6e5/raw/result.json",
+      "sha256": "8179b03b0b271deffba4390b4cad8a44f213a7fb9a235e47228c7702c1161306",
+      "decoded_sha256": "8179b03b0b271deffba4390b4cad8a44f213a7fb9a235e47228c7702c1161306",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93561-c8d9b6e5/raw/result.json",
+      "sha256": "769e9cbc9f187dc06a9e6598a8a3b5d16f3c1818f6f511f734365648ee3d63dd",
+      "decoded_sha256": "769e9cbc9f187dc06a9e6598a8a3b5d16f3c1818f6f511f734365648ee3d63dd",
+      "original_manifest_verified": true
+    }
+  ],
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93560-c8d9b6e5/raw/trace.jsonl.zst",
+      "sha256": "c1f57177ad08279c4a061f4eba31f5e966755bc099114786d52f4c5424b91b14",
+      "decoded_sha256": "80d0a60cd004d8f0f6ad63b0f65579c6ebec14eaf77585a191847471c3de2e83",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93560-c8d9b6e5/raw/robots/r3/frames.jsonl.zst",
+      "sha256": "71954c807de0265386d8382ac9e385132de390407157252bdf4779e561974c9a",
+      "decoded_sha256": "7187227d1c7943dc10b007d7ee0856a2d0493b3e9af75eac20220e4d127ed038",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93560-c8d9b6e5/raw/inputs/static_map.json",
+      "sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "decoded_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93560-c8d9b6e5/raw/eval_only/trajectory.jsonl.zst",
+      "sha256": "56931f8c1cd814c7a852d77d1b0940122d79ed8e18dc16378b8199979edaae56",
+      "decoded_sha256": "ded7d663f8778133435ab62ccec7887359ef3d047f77523249873c85e38d98ce",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93561-c8d9b6e5/raw/trace.jsonl.zst",
+      "sha256": "393f95084f0f9eac72e454f58fdc02c2693487047784e28db5bad31d6c81eeb2",
+      "decoded_sha256": "9614fdc4aa51c67e48d6403772cb20ac2a1d75e3af794d0b1e55acb6fc598dab",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93561-c8d9b6e5/raw/robots/r3/frames.jsonl.zst",
+      "sha256": "155fcf7b59ca69eebe7b455a299e6f65fe7ba34cbc5b14b826e790dc7efdbd65",
+      "decoded_sha256": "09f94aa764d3872296ba92f9ab64f887c7fb09ff288d1df82e15b77007fa4906",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93561-c8d9b6e5/raw/inputs/static_map.json",
+      "sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "decoded_sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "original_manifest_verified": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/selfmap6-smooth-93561-c8d9b6e5/raw/eval_only/trajectory.jsonl.zst",
+      "sha256": "6a49bef5ea0a23e4985d2a08bf3044b191f31a60d89085d31c61984b27b0e9d5",
+      "decoded_sha256": "a5e3cdf2cee122103f9363df09af7c429ba0563ce2fcbf87537cd2655e8c7869",
+      "original_manifest_verified": true
+    }
+  ],
+  "selected_rgb_N": 17,
+  "six_per_third_verified": false,
+  "material_ratios": "heuristic color proxy, not semantic GT",
+  "previous_results_combinable": false,
+  "source_sha256": {
+    "harness/active_relocalization.py": "4c1abb8b96183fa2dbbffdbb03c9c42c5941096ec37a78fa35377e955287aa74",
+    "scripts/analyze_reloc8.py": "a895e716119a5b6d130d99e2279b7da29cbb605c9e75107531e0839ade2b12ae",
+    "tests/test_active_relocalization.py": "4aee8c2ff2b7a10c6bc55c65bfbff2b810be4ef9d2a71920418242f028c60c54",
+    "harness/self_map_executor.py": "438f897b8dde5e456ea6e00836ad76e5a0b8908c7b95bd0f38dc17de2d6e89af",
+    "harness/self_map_integration.py": "1e33d26f1462ecb8a7f8f7b222d756a8023b600cc0c59a975f22ddf2999a7662",
+    "harness/selfmap4_geometry.py": "5136d9df8bcf866e13f6c77029d232e312f3b1a2d3a87c52ea88384ed0eac574",
+    "scripts/run_self_map_diagnostic.py": "5636810a7dad9b26b1372de783f9c1877147fee69a45535cd2a525feeebd96cd",
+    "scripts/prepare_selfmap7_queue.py": "18246a770c7d31cd281eefe0858cf38c07cf0abe360da5d7a0e43f29fc2546a7",
+    "tests/test_reloc8_selfmap.py": "b63f660f1dbe60bab9b33fd90068b15718b2012decc905f44198c661dc51f641"
+  }
+}

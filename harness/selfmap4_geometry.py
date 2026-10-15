@@ -141,7 +141,7 @@ class StaticRegistration:
     Unresolved hypotheses can propose look directions but cannot clip/clear maps
     or lower pose covariance. Registration has to survive three distinct views.
     """
-    def __init__(self, static, *, multiframe_registration='off', correction_safety='off'):
+    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off'):
         from harness.e2e_static_rgb_localizer import create
         from harness.self_map_landmark_sensor import Sensor
         if set(static) != {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}:
@@ -156,6 +156,9 @@ class StaticRegistration:
         self.evidence = None
         self.confirmation_views = set()
         self.correction_safety = correction_safety
+        self.active_relocalization = active_relocalization
+        self.active_hypotheses = []
+        self.command_anchor = None
         if multiframe_registration != 'off':
             from harness.selfmap5_registration import OPTION, RecoveryPolicy, MultiFrameEvidence
             if multiframe_registration != OPTION:
@@ -235,6 +238,21 @@ class StaticRegistration:
                 reliable = (unique_pose is not None and np.linalg.norm(unique_pose[:2]-np.asarray(row['pose'])[:2]) <= .15
                     and abs(math.atan2(math.sin(unique_pose[2]-row['pose'][2]), math.cos(unique_pose[2]-row['pose'][2]))) <= math.radians(10))
             geometry['ambiguity'] = ambiguity
+            if self.active_relocalization != 'off':
+                from harness.active_relocalization import conditioned_modes, relative_candidates
+                search = registration_hypotheses(self.evidence, self.pf.landmark_map.edges, own_pose, cov)
+                candidates = search['candidates'] or [row['pose']]
+                if self.command_anchor is not None:
+                    previous_world, previous_own = self.command_anchor
+                    predicted = relative_candidates([previous_world], previous_own, own_pose)[0]
+                    modes = conditioned_modes(candidates, np.zeros(len(candidates)), predicted, cov,
+                        complete=search['search_complete'])
+                    self.active_hypotheses = modes['hypotheses'] or [dict(pose=p) for p in candidates]
+                    geometry['reloc8_search'] = modes
+                else:
+                    self.active_hypotheses = [dict(pose=p) for p in candidates]
+                if reliable and self.map_from_own is not None:
+                    self.command_anchor = (np.asarray(row['pose']).copy(), np.asarray(own_pose).copy())
         view = (tuple(sorted(servo.items())), int(math.floor(own_pose[2]/math.radians(10))))
         if reliable and (self.evidence is None or view not in self.confirmation_views):
             anchor = compose(row['pose'], inverse(own_pose))
