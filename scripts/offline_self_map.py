@@ -190,7 +190,8 @@ def evaluate(replay_dir, raw, output):
     summary = json.loads((replay_dir/'summary.json').read_text())
     if summary['status'] != 'RECORDED':
         raise ValueError('INCOMPLETE_REPLAY_NOT_SCOREABLE')
-    snapshot = json.loads((replay_dir/'map.json').read_text())
+    prediction_raw, prediction_source = read(replay_dir/'map.json')
+    snapshot = json.loads(prediction_raw)
     map_raw, map_source = read(raw/'inputs/static_map.json')
     trajectory, trajectory_source = rows(raw/'eval_only'/summary['robot_id']/'trajectory.jsonl')
     start = trajectory[0]
@@ -198,8 +199,7 @@ def evaluate(replay_dir, raw, output):
         raise ValueError('EVAL_ORIGIN_TIMESTAMP_MISMATCH')
     origin = [*start['robot_xyz_m'][:2], start['robot_yaw_rad']]
     metrics = score(snapshot, json.loads(map_raw), origin)
-    metrics['sources'] = [map_source, trajectory_source,
-                          {'path': str((replay_dir/'map.json').resolve()), 'sha256': digest(replay_dir/'map.json')}]
+    metrics['sources'] = [map_source, trajectory_source, prediction_source]
     output.parent.mkdir(parents=True, exist_ok=True)
     if output.exists():
         raise FileExistsError(output)

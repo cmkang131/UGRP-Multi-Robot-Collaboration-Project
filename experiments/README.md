@@ -3,6 +3,7 @@
 - [S3 s3fix19 정수 tick 운반](2026-10-10-s3-integer-carry/README.md): 관련22시험 통과·20조건 on/off 등록; 디스크 거부/원본 소실/SSH 단절로 물리 판정 미완료.
 - [2026-10-10 S3 공동 운반 v164/v165](2026-10-10-s3-synchronized-carry/README.md): x86 동시10조건 v165 정렬·집기·상승·20mm 운반10/10; pair endpoint1/6, 이후 하강 낙하가드4/6·포즈계약 실패2/6, HOST_ERROR0. 기본 off·미채택.
 # 실험 인덱스
+- [2026-10-15 자기 지도 연결 selfmap1](2026-10-15-self-map/selfmap1.md): 기본 off 자연 바닥 pose→점유→frontier 제안, 24시험. 저장 RGB 126/2308·116/2353, IoU 4.53/3.56%, free 커버리지 13.14/13.21%, 완료 선언 0; 실제 주행 미검증.
 - [2026-10-12 PR #405 main 병합 정리](2026-10-12-pr405-main-merge/README.md): 물리0. 충돌2건 합집합, v195 seal 보존 위해 v7 main 바이트 유지·pickle 처리 이전, egomap64/65 재개 계획 퇴역(원본 보존, 재등록 없음).
 - [2026-10-10 S3 정렬 소유권·끝점 v162](2026-10-10-s3-alignment-ownership/README.md): 기본 off A/B/C, x86 10조건 정렬·집기·상승9/10·실제 운반4/10; pair 운반0/6·c3 정렬 잔여, raw/TensorBoard 검증.
 

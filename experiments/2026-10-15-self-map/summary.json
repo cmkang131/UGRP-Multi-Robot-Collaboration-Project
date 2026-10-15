@@ -1,0 +1,321 @@
+{
+  "schema": "ugrp.selfmap1.summary.v1",
+  "experiment": "2026-10-15-self-map",
+  "scope": "offline saved-RGB subset only; no physical execution",
+  "runtime_source_sha": "63f15e8ea47ac13189b10869c29a67459e445fb3",
+  "dependency": {
+    "pr": 496,
+    "source_sha": "69eb200ae4a80d53cd7adea9846832426ffef674",
+    "mode": "verbatim import, no core changes",
+    "files": {
+      "harness/natural_floor_slam.py": "e5b67799b3d42ce6be142007036139c6c3b0e96e7d288409f11a7240fbfb15b3",
+      "tests/test_natural_floor_slam.py": "945e2207f37436ec2ec10ae09b5ea19cd02e9d479333c1ad1f958ee0f88f5e44",
+      "docs/natural_floor_slam.md": "6657771ed3ab4fc253bd4ba213ed85b65ede40ccb1b8b3065a47ad5aecc905c4"
+    }
+  },
+  "runtime_default": "off",
+  "tests": {
+    "files": [
+      "tests/test_natural_floor_slam.py",
+      "tests/test_self_map_integration.py",
+      "tests/test_offline_self_map.py"
+    ],
+    "passed": 24,
+    "validation": "initial 24 passed; snapshot changes 16 passed; archive reader 5 passed"
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "opencv": "5.0.0",
+    "numpy": "2.5.2",
+    "scipy": "1.17.1"
+  },
+  "physical_runs": 0,
+  "renderer_calls": 0,
+  "model_calls": 0,
+  "runs": [
+    {
+      "status": "HOST_ERROR",
+      "phase": "snapshot_serialization",
+      "source_sha": "9f13d4c7b6b2c4f3dec5b2e5fe2fda8842e13c18",
+      "recovered_trace_rows": 126,
+      "failure": "TypeError: Object of type int64 is not JSON serializable",
+      "scope": "incomplete artifact, not an evaluated replay",
+      "raw_trace": "/Users/changmin/projects/ugrp/outputs/selfmap1-9f13d4c7/s61001-r2/trace.jsonl",
+      "raw_trace_sha256": "85a7b6f742bd6df1db9420de0a19139003ddae765f406f3b62a8fb745f105865",
+      "compression": [
+        {
+          "original_path": "/Users/changmin/projects/ugrp/outputs/selfmap1-9f13d4c7/s61001-r2/trace.jsonl",
+          "original_bytes": 125419,
+          "original_sha256": "85a7b6f742bd6df1db9420de0a19139003ddae765f406f3b62a8fb745f105865",
+          "archive_path": "/Users/changmin/projects/ugrp/outputs/selfmap1-9f13d4c7/s61001-r2/trace.jsonl.zst",
+          "archive_bytes": 21423,
+          "archive_sha256": "a27a29d86ff9747fcc8e576d4a3d3b207bfe65ddaf8f82377dcc5ab4de049a08",
+          "verified_decompressed_bytes": true
+        }
+      ]
+    },
+    {
+      "status": "RECORDED",
+      "failure": null,
+      "robot_id": "r2",
+      "source_sha": "63f15e8ea47ac13189b10869c29a67459e445fb3",
+      "toggle": "natural_floor_frontier_v1",
+      "motion_model": "s2_pulse_v122_rotL_v1",
+      "replay_start_t": 1.3,
+      "declared_frames": 2308,
+      "replayed_frames": 126,
+      "missing_frames": 2182,
+      "unprocessed_frames": 0,
+      "map_updated_frames": 10,
+      "pose_sources": {
+        "bootstrap": 3,
+        "command_only": 109,
+        "visual_update": 14
+      },
+      "insertion_blockers": {
+        "camera_unsettled": 2,
+        "visual_pose_unavailable": 111,
+        "pose_revision_requires_rebuild": 105,
+        "pose_uncertain": 42
+      },
+      "completion_declarations": 0,
+      "frontier_proposals": 0,
+      "observed_cells": 392,
+      "selected_time_range": [
+        1.3,
+        260.5
+      ],
+      "scope": "saved RGB subset; recorded behavior, proposals not executed",
+      "artifacts": {
+        "inputs.json": "b40a26a2bf8b753efcc5e25e37246cd4a2f24f0757cfab2faed12317adaeb517",
+        "map.json": "f6c77b361e68e56a3cf88f761063f8cb226182de839f702872dea0e5301c9807",
+        "trace.jsonl": "85a7b6f742bd6df1db9420de0a19139003ddae765f406f3b62a8fb745f105865"
+      },
+      "run": "e2e10-a-s61001-r2",
+      "raw_output": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61001-r2",
+      "evaluation": {
+        "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+        "occupancy_iou": 0.045307443365695796,
+        "occupancy_intersection": 14,
+        "occupancy_union": 309,
+        "predicted_occupied": 23,
+        "truth_occupied": 300,
+        "false_occupied_outside_domain": 0,
+        "free_coverage_n": 362,
+        "free_coverage_N": 2755,
+        "free_coverage": 0.13139745916515427,
+        "reachable_free_coverage_n": 362,
+        "reachable_free_coverage_N": 2755,
+        "known_coverage_n": 392,
+        "known_coverage_N": 3055,
+        "wall_error_rmse_m": 0.08644550935101553,
+        "wall_error_predicted_N": 23,
+        "all_wall_to_prediction_p95_m": 3.780173975932879,
+        "all_wall_samples_N": 564,
+        "origin_eval_only": [
+          0.6000231548019372,
+          0.049998600428778545,
+          -3.838689186837606e-06
+        ],
+        "sources": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/inputs/static_map.json",
+            "sha256": "2da6cd61a9a8289e1f46ca105a23d16a828eb610b17ede22890211c5f9461032"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61001-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+            "sha256": "837b24495d3f34decaeb0bbb420e1c8051a1785369ae3d2f6505d27a9e08ae78"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61001-r2/map.json",
+            "sha256": "f6c77b361e68e56a3cf88f761063f8cb226182de839f702872dea0e5301c9807"
+          }
+        ]
+      },
+      "stored_artifacts": {
+        "compression-manifest.json": {
+          "bytes": 987,
+          "sha256": "b5e0b843922e0abfe934d05b05c9d82ebf9cf2cf350efb8eb9d97fad99bee6de"
+        },
+        "evaluation-archive-check.json": {
+          "bytes": 1408,
+          "sha256": "9362afaadb7c7d8249822c4a04401862ef094bf510e599eab626a7f5f380d094"
+        },
+        "evaluation.json": {
+          "bytes": 1404,
+          "sha256": "e0e47fd5df86b45b274f1699a758e5c9671e5033ed47af4ac955b010d158266a"
+        },
+        "inputs.json": {
+          "bytes": 55874,
+          "sha256": "b40a26a2bf8b753efcc5e25e37246cd4a2f24f0757cfab2faed12317adaeb517"
+        },
+        "map.json.zst": {
+          "bytes": 21176,
+          "sha256": "4a4d1232c8e14efbcea8cf7ca651733f9d7de9e345d31594a9ed0955f0408a08"
+        },
+        "summary.json": {
+          "bytes": 1113,
+          "sha256": "ce6d152679ae4f2f850b529044eb6a80407613df03199140947c001ad711101d"
+        },
+        "trace.jsonl.zst": {
+          "bytes": 21423,
+          "sha256": "a27a29d86ff9747fcc8e576d4a3d3b207bfe65ddaf8f82377dcc5ab4de049a08"
+        }
+      },
+      "compression": [
+        {
+          "original_path": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61001-r2/map.json",
+          "original_bytes": 128323,
+          "original_sha256": "f6c77b361e68e56a3cf88f761063f8cb226182de839f702872dea0e5301c9807",
+          "archive_path": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61001-r2/map.json.zst",
+          "archive_bytes": 21176,
+          "archive_sha256": "4a4d1232c8e14efbcea8cf7ca651733f9d7de9e345d31594a9ed0955f0408a08",
+          "verified_decompressed_bytes": true
+        },
+        {
+          "original_path": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61001-r2/trace.jsonl",
+          "original_bytes": 125419,
+          "original_sha256": "85a7b6f742bd6df1db9420de0a19139003ddae765f406f3b62a8fb745f105865",
+          "archive_path": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61001-r2/trace.jsonl.zst",
+          "archive_bytes": 21423,
+          "archive_sha256": "a27a29d86ff9747fcc8e576d4a3d3b207bfe65ddaf8f82377dcc5ab4de049a08",
+          "verified_decompressed_bytes": true
+        }
+      ]
+    },
+    {
+      "status": "RECORDED",
+      "failure": null,
+      "robot_id": "r2",
+      "source_sha": "63f15e8ea47ac13189b10869c29a67459e445fb3",
+      "toggle": "natural_floor_frontier_v1",
+      "motion_model": "s2_pulse_v122_rotL_v1",
+      "replay_start_t": 1.3,
+      "declared_frames": 2353,
+      "replayed_frames": 116,
+      "missing_frames": 2237,
+      "unprocessed_frames": 0,
+      "map_updated_frames": 10,
+      "pose_sources": {
+        "bootstrap": 3,
+        "visual_update": 10,
+        "command_only": 103
+      },
+      "insertion_blockers": {
+        "camera_unsettled": 2,
+        "visual_pose_unavailable": 105,
+        "pose_revision_requires_rebuild": 83,
+        "pose_uncertain": 21
+      },
+      "completion_declarations": 0,
+      "frontier_proposals": 0,
+      "observed_cells": 394,
+      "selected_time_range": [
+        1.3,
+        204.7
+      ],
+      "scope": "saved RGB subset; recorded behavior, proposals not executed",
+      "artifacts": {
+        "inputs.json": "1bc96fd18ea8b55189b3d7aa228dd502bc9a47f16d8c53788785536986542e66",
+        "map.json": "265f804be841567a37de07b19aa89599920598c88c3565e40e083f30f5b6ab6a",
+        "trace.jsonl": "60913b067cec57297aea03e63026bd68cb0a65cab9045b3cdde0f3f35202e487"
+      },
+      "run": "e2e10-a-s61002-r2",
+      "raw_output": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61002-r2",
+      "evaluation": {
+        "scope": "static geometry only; all predicted occupied cells scored against wall surfaces",
+        "occupancy_iou": 0.03559870550161812,
+        "occupancy_intersection": 11,
+        "occupancy_union": 309,
+        "predicted_occupied": 20,
+        "truth_occupied": 300,
+        "false_occupied_outside_domain": 0,
+        "free_coverage_n": 364,
+        "free_coverage_N": 2755,
+        "free_coverage": 0.13212341197822142,
+        "reachable_free_coverage_n": 364,
+        "reachable_free_coverage_N": 2755,
+        "known_coverage_n": 394,
+        "known_coverage_N": 3055,
+        "wall_error_rmse_m": 0.10954451150103317,
+        "wall_error_predicted_N": 20,
+        "all_wall_to_prediction_p95_m": 3.8213168263922968,
+        "all_wall_samples_N": 564,
+        "origin_eval_only": [
+          0.6000233787139712,
+          0.049998107394715635,
+          -5.633641701578803e-06
+        ],
+        "sources": [
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/inputs/static_map.json",
+            "sha256": "2da6cd61a9a8289e1f46ca105a23d16a828eb610b17ede22890211c5f9461032"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/azure-runs/e2e10-a-s61002-r2/raw/eval_only/r2/trajectory.jsonl.zst",
+            "sha256": "5fb06aa9e6fef2d1f5be44a46829eab127c21735df3cc3bc0ff8eba579f8635e"
+          },
+          {
+            "path": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61002-r2/map.json",
+            "sha256": "265f804be841567a37de07b19aa89599920598c88c3565e40e083f30f5b6ab6a"
+          }
+        ]
+      },
+      "stored_artifacts": {
+        "compression-manifest.json": {
+          "bytes": 987,
+          "sha256": "bcbc1b37f4eaec230405405d80f85fa39bbe5fc7b4521ff54be356612d0ba446"
+        },
+        "evaluation.json": {
+          "bytes": 1404,
+          "sha256": "72361ae8871cfa0c5ea350113cdc8973c4dd2c2875caa31f09e80ba1a4dcafe7"
+        },
+        "inputs.json": {
+          "bytes": 53663,
+          "sha256": "1bc96fd18ea8b55189b3d7aa228dd502bc9a47f16d8c53788785536986542e66"
+        },
+        "map.json.zst": {
+          "bytes": 19809,
+          "sha256": "57325e44bbd7860d38a106710a1644298ff4694b1d91586b8daab91a3b4a869e"
+        },
+        "summary.json": {
+          "bytes": 1112,
+          "sha256": "5e546d473251c42892111beda11d2acf4edce681d3a8a9f51d2ee1428c9e9e48"
+        },
+        "trace.jsonl.zst": {
+          "bytes": 19820,
+          "sha256": "dfbe00425c8b3af6b39534bbe7787a2cfdc62d0c93336e813e102826fc88f261"
+        }
+      },
+      "compression": [
+        {
+          "original_path": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61002-r2/map.json",
+          "original_bytes": 121478,
+          "original_sha256": "265f804be841567a37de07b19aa89599920598c88c3565e40e083f30f5b6ab6a",
+          "archive_path": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61002-r2/map.json.zst",
+          "archive_bytes": 19809,
+          "archive_sha256": "57325e44bbd7860d38a106710a1644298ff4694b1d91586b8daab91a3b4a869e",
+          "verified_decompressed_bytes": true
+        },
+        {
+          "original_path": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61002-r2/trace.jsonl",
+          "original_bytes": 114282,
+          "original_sha256": "60913b067cec57297aea03e63026bd68cb0a65cab9045b3cdde0f3f35202e487",
+          "archive_path": "/Users/changmin/projects/ugrp/outputs/selfmap1-63f15e8e/s61002-r2/trace.jsonl.zst",
+          "archive_bytes": 19820,
+          "archive_sha256": "dfbe00425c8b3af6b39534bbe7787a2cfdc62d0c93336e813e102826fc88f261",
+          "verified_decompressed_bytes": true
+        }
+      ]
+    }
+  ],
+  "verdict": "NOT_READY_FOR_COMPLETE_MAPPING_OR_DRIVING",
+  "remaining": [
+    "continuous RGB unavailable locally",
+    "large visual pose revision needs historical-pose rebuild",
+    "frontier executor/observation cycle not connected to live workflow",
+    "only B-zone detector supported; general obstacle perception unvalidated"
+  ],
+  "raw_backup": "local only; source and compressed output hashes recorded, no remote raw backup claimed"
+}
