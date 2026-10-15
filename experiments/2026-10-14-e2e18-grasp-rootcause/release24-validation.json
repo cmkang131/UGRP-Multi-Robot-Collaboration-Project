@@ -1,0 +1,30 @@
+{
+  "source_sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+  "scope": "Non-physics unit tests on Mac; simulation on gcp1; no physical robot/student/training",
+  "tests": {
+    "passed": 67,
+    "log": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release24-ops/final-unit-tests.log",
+    "sha256": "5f57a78d9fcd9638013033a48eea498d8f7fbfbb2005207d216513568c64e285"
+  },
+  "source_files": {
+    "scripts/run_grasp_act_release.py": "d0af6a5c41c452130102fed816859864838457258bec805a581734edf701942d",
+    "sim/release24.py": "001146e7df5a733898df923c3b761a9d414f65fac7f9ac1c498166fbafa84255",
+    "sim/lookaround_localization.py": "48c772164eaa64085f97e72da535836989741b9d0e08c2ab461abe0dcd61b556",
+    "sim/failure_rgb_recording.py": "47020c07418f7a095aa1b955b1c236ae4fafefc4135a8c1fc86d258a3158bec2",
+    "sim/release_global_observation.py": "cb21e3867f443269040006eaee8156f28cd45bb6c96307843991fb7a99ba4f48",
+    "sim/release23.py": "277fa1dd2b88481dfd9d62b6f0d95fa5d9eac16d62b0c239eca827e00c8655bb"
+  },
+  "artifact_sizes": {
+    "summary.json": 53720,
+    "rejection_table.json": 7071,
+    "delivery-full.json.zst": 26221
+  },
+  "summary_sha256": "e030a7ba76cd1829082337530f56ea911def4a2d29033da904f548ae3ea4c945",
+  "rejection_table_sha256": "6204835c432a230a564069b45e9d322e84b5dc2888f6b8e9acb97683c9ada3ce",
+  "epoch_reproduction": {
+    "exact_json_object_match": true,
+    "original_sha256": "15177addc5a8724ecabef052e1ea2a6a8474b2631f00985d9e0e7ea0bd6bf34f",
+    "reproduced_sha256": "15177addc5a8724ecabef052e1ea2a6a8474b2631f00985d9e0e7ea0bd6bf34f"
+  },
+  "remote_snapshot_git_branch_label": "master in isolated pin; origin working branch claude/grasp-act-probes; exact source/tree SHA verified"
+}

@@ -1,0 +1,262 @@
+{
+  "schema": "ugrp.release24.rejections.v2",
+  "episode_funnel": [
+    {
+      "gate": "queued_candidate",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "terminal_original_and_hash",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "input_audit_zero",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    },
+    {
+      "gate": "physical_release",
+      "input": 6,
+      "cumulative_passed": 6,
+      "rejected": 0
+    }
+  ],
+  "frame_funnel": [
+    {
+      "gate": "generated_original_own_RGB",
+      "input": 2475,
+      "cumulative_passed": 2475,
+      "rejected": 0
+    },
+    {
+      "gate": "original_hash_and_JPEG_decode",
+      "input": 2475,
+      "cumulative_passed": 2475,
+      "rejected": 0
+    }
+  ],
+  "event_funnel": [
+    {
+      "gate": "line_candidates",
+      "input": 48,
+      "cumulative_passed": 48,
+      "rejected": 0
+    },
+    {
+      "gate": "line_alignment_completed",
+      "input": 48,
+      "cumulative_passed": 48,
+      "rejected": 0
+    }
+  ],
+  "event_counts": {
+    "total": 1000,
+    "rejection_records": 1
+  },
+  "rejection_reason_table": [
+    {
+      "category": "release21_fov_blocked",
+      "count": 1
+    }
+  ],
+  "raw_paths": [
+    "/home/ugrp/ugrp-sim/runs/r24d2-c-00-8b7f2f45",
+    "/home/ugrp/ugrp-sim/runs/r24d2-c-01-8b7f2f45",
+    "/home/ugrp/ugrp-sim/runs/r24d2-c-02-8b7f2f45",
+    "/home/ugrp/ugrp-sim/runs/r24d2-c-03-8b7f2f45",
+    "/home/ugrp/ugrp-sim/runs/r24d2-c-04-8b7f2f45",
+    "/home/ugrp/ugrp-sim/runs/r24d2-c-05-8b7f2f45"
+  ],
+  "reproduction": "/home/ugrp/ugrp-sim/src/8b7f2f4517d827b39a79246b892fa549bbcec0a8/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release24/analyze_results.py --names '[\"r24d2-c-00-8b7f2f45\", \"r24d2-c-01-8b7f2f45\", \"r24d2-c-02-8b7f2f45\", \"r24d2-c-03-8b7f2f45\", \"r24d2-c-04-8b7f2f45\", \"r24d2-c-05-8b7f2f45\"]' --out /home/ugrp/ugrp-sim/ops-reviews/release24/round2-current",
+  "candidate_funnel": [
+    {
+      "gate": "paired_release_candidate",
+      "input": 18,
+      "cumulative_passed": 18,
+      "rejected": 0
+    },
+    {
+      "gate": "same_round_localized_geometry",
+      "input": 18,
+      "cumulative_passed": 18,
+      "rejected": 0
+    },
+    {
+      "gate": "axis_consistency",
+      "input": 18,
+      "cumulative_passed": 18,
+      "rejected": 0
+    },
+    {
+      "gate": "axis_alignment",
+      "input": 18,
+      "cumulative_passed": 18,
+      "rejected": 0
+    },
+    {
+      "gate": "lateral_clearance",
+      "input": 18,
+      "cumulative_passed": 16,
+      "rejected": 2
+    },
+    {
+      "gate": "margin_sum_consistency",
+      "input": 16,
+      "cumulative_passed": 16,
+      "rejected": 0
+    },
+    {
+      "gate": "inside_both_margin_lower_bounds",
+      "input": 16,
+      "cumulative_passed": 6,
+      "rejected": 10
+    }
+  ],
+  "decision_reason_counts": {
+    "localized_margin_correction": 10,
+    "localized_lateral_correction": 2,
+    "localized_margins_inside": 6
+  },
+  "sweep_funnel": [
+    {
+      "gate": "whole_sweep_static_constraints",
+      "input": 336,
+      "cumulative_passed": 336,
+      "rejected": 0
+    },
+    {
+      "gate": "positive_static_clearance",
+      "input": 336,
+      "cumulative_passed": 336,
+      "rejected": 0
+    }
+  ],
+  "alternative_funnel": [
+    {
+      "gate": "budget_alternatives_proposed",
+      "input": 0,
+      "cumulative_passed": 0,
+      "rejected": 0
+    },
+    {
+      "gate": "safe_and_improving_or_fresh_reobserve",
+      "input": 0,
+      "cumulative_passed": 0,
+      "rejected": 0
+    }
+  ],
+  "interpretation": "Lateral/axial correction rejections are progress alternatives, not failed episodes; frame/line/constraint funnels have different units and are never summed.",
+  "native_input_funnel": [
+    {
+      "gate": "recorded_control_RGB",
+      "cumulative_passed": 943,
+      "rejected": 0
+    },
+    {
+      "gate": "declared_sha256_native_size_JPEG_decode",
+      "cumulative_passed": 943,
+      "rejected": 0
+    }
+  ],
+  "rejection_records": [
+    {
+      "run": "r24d2-c-04-8b7f2f45",
+      "t": 31.400000000058917,
+      "event": "release21_fov_blocked",
+      "count": 1,
+      "proposed_motion": [
+        0.0,
+        0.00037984057896992256,
+        -0.007691902679208801
+      ],
+      "attempts": {
+        "recenter": 0,
+        "backoff": 0,
+        "reverse": 0
+      },
+      "robot": "r1",
+      "reason_category": "release21_fov_blocked",
+      "blocking_object": "own camera FOV boundary",
+      "minimum_gap": -0.702800794070086,
+      "gap_unit": "pixel",
+      "raw_minimum_gap": null,
+      "basis": "nominal-plane predicted feature pixels from own RGB + issued PWM and floored proposed pulse",
+      "gap_derivation": "/home/ugrp/ugrp-sim/ops-reviews/release24/fov-gaps.json"
+    }
+  ],
+  "prior_stage_tables": [
+    {
+      "path": "/home/ugrp/ugrp-sim/ops-reviews/release24/round1-fusion/rejection_table.json",
+      "sha256": "0e2ae6a096b6c026eafde7ce233682f4d5f7e1e7bc4d0f8e289645ad1f349292",
+      "bytes": 3859
+    },
+    {
+      "path": "/home/ugrp/ugrp-sim/ops-reviews/release24/round1-gated-corrected/rejection_table.json",
+      "sha256": "3888f3c42214aa322921d0e97f9c6f590eab5b531d595ac007c5d11f0e63b0fd",
+      "bytes": 3902
+    }
+  ],
+  "prior_result_scope": "Independent variants/rounds; never pool rates; missing interrupted choice logs are not zero events.",
+  "raw_input_verification": [
+    {
+      "run": "r24d2-c-00-8b7f2f45",
+      "verified_native_input_N": 228,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "b40caac78728434744753dedd2e22adff8eeb25fe1346bffe26644c90e704e5c"
+    },
+    {
+      "run": "r24d2-c-01-8b7f2f45",
+      "verified_native_input_N": 154,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "08fe14e1806255121473e21e88bccba652ea8076d23dca5addcdebf3723bf959"
+    },
+    {
+      "run": "r24d2-c-02-8b7f2f45",
+      "verified_native_input_N": 235,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "fab1abbc6c9801894aa215cad703ecbd4a24cc2e40ed1bd870bb7be4a0fa1d5f"
+    },
+    {
+      "run": "r24d2-c-03-8b7f2f45",
+      "verified_native_input_N": 154,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "659d0173b331cdde8bdca2caedc2f9356fe0b5642115328402db9db6cd63a8d6"
+    },
+    {
+      "run": "r24d2-c-04-8b7f2f45",
+      "verified_native_input_N": 90,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "9e8ec7682be20cda92aeff6aca38e4a2d4bf97091429e56fc863ab9e5d863c5b"
+    },
+    {
+      "run": "r24d2-c-05-8b7f2f45",
+      "verified_native_input_N": 82,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "781b3ecb0b79081eeeb890053a32849c295f1fff15ec38f999ee3fb06a045633"
+    }
+  ],
+  "fov_gap_reproduction": "cd /home/ugrp/ugrp-sim/src/8b7f2f4517d827b39a79246b892fa549bbcec0a8 && .venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release24/fov_gaps.py"
+}

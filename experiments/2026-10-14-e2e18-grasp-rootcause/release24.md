@@ -60,3 +60,27 @@ VM `epoch-replay.json`은 실패1·성공2의마지막두보고, 로봇별 총12
 Gated HOST_ERROR는 release19 경로의 일반 ScriptRunner에 없는 `reused_waits` 기록 속성을 읽어서 발생했다. 기록부가 속성 미제공 시 빈 reuse 목록을 남기도록 고쳤고, 실제 clock-only reobservation 경로를 회귀 시험한다. 중단에도 선택 로그·예외 사유를 보존한다. 상태 전환만 하고 SIM 시각이 같은 loop의 중복 ring capture도 기록부에서 제거한다. 제어 동작·대기 시간은 바꾸지 않는다.
 
 Hiwonder [공식 제품 사양](https://www.hiwonder.com/products/masterpi)·[조립/보정 안내](https://docs.hiwonder.com/projects/MasterPi/en/latest/docs/1.getting_ready.html)도 열었다. 서보 동작각·조립 편차는 설명하지만 공동 운반 빔의10° 허용각을 뒷받침하는 사양은 찾지 못했다. 이를 기존10° 근거로 전용하지 않는다.
+
+## 최종 Round2 — DEV6 통과, A40/B40 미승인
+
+실행 SHA **`8b7f2f4517d827b39a79246b892fa549bbcec0a8`**, gcp1. 최종 후보는 `axis_fusion_v1` + `axis_current_setdown_v1`, `axis_disagree_reobserve=off`다. 나머지는 release23 최종 프로필·compute budget ON. 최대3라운드 중2라운드를 사용했으며 성공한 행만 이전 라운드에서 가져오지 않았다.
+
+| seed | A (release18_v1) | B (release19_v1) |
+|---|---|---|
+|110622|성공,178.6 SIM초|성공,173.3 SIM초|
+|88639|성공,131.0 SIM초|성공,126.2 SIM초|
+|110618|성공,85.5 SIM초|성공,79.2 SIM초|
+
+총6/6, 각 A3/3·B3/3. cap_end/HOST_ERROR/회차상한0. 총 시간은 별도 마지막 평가 구간을 포함한다. 110622 B의120.6초 보고는 r1−5.5002°, r2−7.5785°, 융합−6.5899°이며 축 이동을 선택했다.168.5초에 둘 다 약−6.52°로 보고하고 양끝 lower bound [.25554,.45426]m를 수용했다. 불필요한 axis_correct0회, 세 회차 안에서 종료했다. 평가 전용 최종 최소 end-center 여유는+.11940m, 실제 yaw−6.4012°다. 정답을 선택에 반환하지 않았다.
+
+6/6 release 입력 감사에서 invisible_measurements=held_world_reads=control_top_camera_reads=0이고 검토 top도0이다. prefix 장면 준비는 이 감사 범위에서 제외한다. 최종 수용6건 평가 라벨 fit6/6, 오수용0/6. 원본6/6 manifest를 VM에서 전수 검증했고 JPEG2475/2475 decode·해시를 확인했다. 실제 제어 입력으로 보존된 native640×480 RGB943장도 각 기록의 선언 sha256·실제 파일·해상도를 별도로 대조했다. 선 정렬48/48, translation sweep 정적 제약336/336 통과. FOV 거부1건은 복구됐으며 원본 RGB/발행 PWM·명목 평면 투영으로 최소 FOV 틈을 재계산해 별도 보충했다(제어·정답 위치 사용 없음). 후보/프레임/이벤트별 누적 funnel과 원본·재현 명령은 `release24-rejection_table.json`에 있다.
+
+양측 처음/중간/끝 총72프레임을 직접 검토했고,110622 B 성공의 release0–162초 전체325시점2Hz 띠5장도 봤다.0–51초 첫 회차,52–72초 내려놓기·재접근,73–99초 두 번째 유지/이동,100–119초 관측·접근,120–146초 세 번째 유지/이동,147–158초 내려놓기·팬/구역 재관측,159–162초 양측 물러나 대기 순서였다. 반대 끝이 유지되고 상호 막힘은 보이지 않았다. 이 성공의 원본 리뷰는1Hz라 빠른 진동 판정으로 쓰지 않는다. 개요 원본이 없어 unavailable을 표시했다. 영상은 VM ffmpeg 제작·ffprobe 확인, Mac 화면 앱은 열지 않았다.
+
+최종 관련 비물리67개 통과(14.95초), 앞 버전126개와 합산하지 않는다. 제어 관련6파일의 바이트는 실행8b7f2f45와 다시 대조했다. 첫30 SIM초 원본 기반 wall/SIM 중앙3.044(6회), 모델 호출0. 기록 주기·호스트 부하가 다른 release23과 속도 개선을 주장하지 않는다. 실제 로봇·학생·학습 RGB·데이터 수용·학습은0이다.
+
+`outputs/e2e18-admin/vm3-queue/20261015-release24-gate80-8b7f2f45.json`에 새 A40/B40를 준비했다.110622·88639를 먼저 배치한 각40 unique scene, A/B 독립 n/40·필요38/40, 소유동시16·전체40,180 SIM초·학습 OFF다. 실재 rejection_table 절대경로·해시와 DEV6 proof를 연결했으며 approved/enabled/ready/submitted/scheduled/executed는 모두false다. 관문 실행·승격·데이터 기록은 하지 않았다. 실행 전 조정자가 정확한 clean source SHA를 다시 확인한다. 활성 기록 checkout을 reset하지 않는다. gcp1의 기존8b7f2f45 고정 소스는 clean으로 검증했다. 등록 worktree가 이미 상한을 넘어 새 로컬 pin을 우회 생성하지 않았다.
+
+Round1 12회와 Round2 6회의 원본은 각각 별도 보존했다. HOST_ERROR1·감독중단3을 성공으로 복구하지 않았다. 초기 분석기의 HOST_ERROR fallback 분류가 과거 직렬화 오류 문구를 사용했던 부분은 실제 AttributeError/ScriptRunner 원인으로 바로잡은 별도 corrected 표를 최종 기록에 연결했다. 중단 선택 로그가 누락된 옛 원본을0이벤트로 해석하지 않는다. 동일 epoch 재생12회는 저장 JSON 객체 전체가 원본과 정확히 같은지 다시 재현했다.
+
+소유 실행·예약·임대0을 확인하고 다른 작업의 예약/VM은 유지했다. UGRP 예외대로 로컬 프로젝트와 Git 브랜치에 보존한다.10°의 실기/문헌 근거는 여전히 미확인으로 남기고 값은 유지했다. DEV6 통과는 새 최소40회 교사 관문의 대체가 아니다.

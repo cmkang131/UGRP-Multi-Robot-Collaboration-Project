@@ -1,0 +1,1430 @@
+{
+  "schema": "ugrp.release24.delivery.v1",
+  "source_sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+  "counts": {
+    "completed": 6,
+    "success": 6,
+    "N": 6
+  },
+  "classification_counts": {
+    "success": 6
+  },
+  "verified": true,
+  "failure_seeds_solved": true,
+  "rejection_table": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release24-8b7f2f45/rejection_table.json",
+  "research_result": false,
+  "training_rgb": false,
+  "student_execution": false,
+  "pooling": "No pooling across old SHA, rounds, A/B, DEV or gate.",
+  "round": 2,
+  "selected_axis_candidate": "current",
+  "native_input_verification": [
+    {
+      "run": "r24d2-c-00-8b7f2f45",
+      "verified_native_input_N": 228,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "b40caac78728434744753dedd2e22adff8eeb25fe1346bffe26644c90e704e5c"
+    },
+    {
+      "run": "r24d2-c-01-8b7f2f45",
+      "verified_native_input_N": 154,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "08fe14e1806255121473e21e88bccba652ea8076d23dca5addcdebf3723bf959"
+    },
+    {
+      "run": "r24d2-c-02-8b7f2f45",
+      "verified_native_input_N": 235,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "fab1abbc6c9801894aa215cad703ecbd4a24cc2e40ed1bd870bb7be4a0fa1d5f"
+    },
+    {
+      "run": "r24d2-c-03-8b7f2f45",
+      "verified_native_input_N": 154,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "659d0173b331cdde8bdca2caedc2f9356fe0b5642115328402db9db6cd63a8d6"
+    },
+    {
+      "run": "r24d2-c-04-8b7f2f45",
+      "verified_native_input_N": 90,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "9e8ec7682be20cda92aeff6aca38e4a2d4bf97091429e56fc863ab9e5d863c5b"
+    },
+    {
+      "run": "r24d2-c-05-8b7f2f45",
+      "verified_native_input_N": 82,
+      "dimensions": [
+        640,
+        480
+      ],
+      "source_result_sha256": "781b3ecb0b79081eeeb890053a32849c295f1fff15ec38f999ee3fb06a045633"
+    }
+  ],
+  "input_audit_scope": "release judgment only; prefix scene preparation excluded",
+  "false_final_accepts": 0,
+  "first30_wall_per_sim_median": 3.0439721042961443,
+  "physical_robot_verified": false,
+  "recording_or_training_started": false,
+  "gate40_executed": false,
+  "methods": [
+    "same-round scalar CI mean",
+    "current set-down epoch own RGB global localization"
+  ],
+  "caps_unchanged": {
+    "margin_m": 0.04,
+    "axis_deg": 10,
+    "yaw_deg": 18,
+    "episode_sim_s": 180,
+    "max_corrections": 3,
+    "weld": "off"
+  },
+  "reproduce": "cd /home/ugrp/ugrp-sim/src/8b7f2f4517d827b39a79246b892fa549bbcec0a8 && PYTHONPATH=. .venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/release24/deliver_remote.py",
+  "runs": [
+    {
+      "name": "r24d2-c-00-8b7f2f45",
+      "seed": 110622,
+      "source_sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 178.5999999974619,
+      "release_sim_s": 163.69999999761902,
+      "iterations": 3,
+      "shift_steps": 3,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.14455822124929707,
+          -0.0940243546615247
+        ],
+        "center_distance_m": 0.17244610346504471,
+        "yaw_error_deg": -6.217017781164592,
+        "min_end_margin_m": 0.12295338975325548,
+        "zone_long_axis": "y"
+      },
+      "false_final_accepts": 0,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off",
+        "axis_fusion": "axis_fusion_v1",
+        "axis_disagree_reobserve": "off",
+        "teacher_version": "release24",
+        "failure_rgb_recording": {
+          "mode": "own_rgb_last10_10hz_v1",
+          "control_input": false,
+          "training_rgb": false,
+          "captured": 3358,
+          "retained_frames": 0,
+          "bytes": 0,
+          "retained_range_sim_s": null
+        },
+        "axis_observation_window": "axis_current_setdown_v1"
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d2-c-00-8b7f2f45",
+      "raw_result_sha256": "b40caac78728434744753dedd2e22adff8eeb25fe1346bffe26644c90e704e5c",
+      "raw_manifest_sha256": "62d068833484e0392c4ad9091799eebd30e28880d3e5647f3aca17e8d9ef836b",
+      "full_original_manifest_verified": true,
+      "frame_decode_verified_N": 582,
+      "native_inputs_verified": 228,
+      "localization_epoch_views": {
+        "r1": {
+          "start": 18,
+          "stop": 24,
+          "count": 6
+        },
+        "r2": {
+          "start": 18,
+          "stop": 24,
+          "count": 6
+        }
+      },
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 3358,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      }
+    },
+    {
+      "name": "r24d2-c-01-8b7f2f45",
+      "seed": 88639,
+      "source_sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 126.19999999870099,
+      "release_sim_s": 111.2999999988581,
+      "iterations": 2,
+      "shift_steps": 2,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          -0.019813720608576446,
+          -0.09503088546929023
+        ],
+        "center_distance_m": 0.09707446995699788,
+        "yaw_error_deg": 6.017328980718847,
+        "min_end_margin_m": 0.24873750456804994,
+        "zone_long_axis": "y"
+      },
+      "false_final_accepts": 0,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off",
+        "axis_fusion": "axis_fusion_v1",
+        "axis_disagree_reobserve": "off",
+        "teacher_version": "release24",
+        "failure_rgb_recording": {
+          "mode": "own_rgb_last10_10hz_v1",
+          "control_input": false,
+          "training_rgb": false,
+          "captured": 2310,
+          "retained_frames": 0,
+          "bytes": 0,
+          "retained_range_sim_s": null
+        },
+        "axis_observation_window": "axis_current_setdown_v1"
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d2-c-01-8b7f2f45",
+      "raw_result_sha256": "08fe14e1806255121473e21e88bccba652ea8076d23dca5addcdebf3723bf959",
+      "raw_manifest_sha256": "d11fe5ff1603c4dfa2e80205c6627f66923aaa8b2c1af520ba0767d7bfb31c75",
+      "full_original_manifest_verified": true,
+      "frame_decode_verified_N": 404,
+      "native_inputs_verified": 154,
+      "localization_epoch_views": {
+        "r1": {
+          "start": 12,
+          "stop": 18,
+          "count": 6
+        },
+        "r2": {
+          "start": 12,
+          "stop": 18,
+          "count": 6
+        }
+      },
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 2310,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      }
+    },
+    {
+      "name": "r24d2-c-02-8b7f2f45",
+      "seed": 110622,
+      "source_sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 173.29999999758724,
+      "release_sim_s": 158.39999999774435,
+      "iterations": 3,
+      "shift_steps": 3,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.14715318843235714,
+          -0.10818102450525485
+        ],
+        "center_distance_m": 0.1826395218150096,
+        "yaw_error_deg": -6.40119379072539,
+        "min_end_margin_m": 0.11939992019408602,
+        "zone_long_axis": "y"
+      },
+      "false_final_accepts": 0,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off",
+        "axis_fusion": "axis_fusion_v1",
+        "axis_disagree_reobserve": "off",
+        "teacher_version": "release24",
+        "failure_rgb_recording": {
+          "mode": "own_rgb_last10_10hz_v1",
+          "control_input": false,
+          "training_rgb": false,
+          "captured": 3252,
+          "retained_frames": 0,
+          "bytes": 0,
+          "retained_range_sim_s": null
+        },
+        "axis_observation_window": "axis_current_setdown_v1"
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d2-c-02-8b7f2f45",
+      "raw_result_sha256": "fab1abbc6c9801894aa215cad703ecbd4a24cc2e40ed1bd870bb7be4a0fa1d5f",
+      "raw_manifest_sha256": "1ffef2a18c2dc1ab96c408cdb869db9fcbfe48bc0bb0990dafd37086c2480d7c",
+      "full_original_manifest_verified": true,
+      "frame_decode_verified_N": 579,
+      "native_inputs_verified": 235,
+      "localization_epoch_views": {
+        "r1": {
+          "start": 18,
+          "stop": 24,
+          "count": 6
+        },
+        "r2": {
+          "start": 18,
+          "stop": 24,
+          "count": 6
+        }
+      },
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 3252,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      }
+    },
+    {
+      "name": "r24d2-c-03-8b7f2f45",
+      "seed": 88639,
+      "source_sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 130.9999999985875,
+      "release_sim_s": 116.0999999987446,
+      "iterations": 2,
+      "shift_steps": 2,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          -0.021485080995207184,
+          -0.09565834307771631
+        ],
+        "center_distance_m": 0.09804145707681362,
+        "yaw_error_deg": 5.827429728873244,
+        "min_end_margin_m": 0.24805514684644353,
+        "zone_long_axis": "y"
+      },
+      "false_final_accepts": 0,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off",
+        "axis_fusion": "axis_fusion_v1",
+        "axis_disagree_reobserve": "off",
+        "teacher_version": "release24",
+        "failure_rgb_recording": {
+          "mode": "own_rgb_last10_10hz_v1",
+          "control_input": false,
+          "training_rgb": false,
+          "captured": 2406,
+          "retained_frames": 0,
+          "bytes": 0,
+          "retained_range_sim_s": null
+        },
+        "axis_observation_window": "axis_current_setdown_v1"
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d2-c-03-8b7f2f45",
+      "raw_result_sha256": "659d0173b331cdde8bdca2caedc2f9356fe0b5642115328402db9db6cd63a8d6",
+      "raw_manifest_sha256": "d5a64c3a099c2fc5564395c6527e008827a7429a68028dea8c4bc3354c6f6ff6",
+      "full_original_manifest_verified": true,
+      "frame_decode_verified_N": 414,
+      "native_inputs_verified": 154,
+      "localization_epoch_views": {
+        "r1": {
+          "start": 12,
+          "stop": 18,
+          "count": 6
+        },
+        "r2": {
+          "start": 12,
+          "stop": 18,
+          "count": 6
+        }
+      },
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 2406,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      }
+    },
+    {
+      "name": "r24d2-c-04-8b7f2f45",
+      "seed": 110618,
+      "source_sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 85.49999999966342,
+      "release_sim_s": 70.59999999982053,
+      "iterations": 1,
+      "shift_steps": 1,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.12022449203960672,
+          -0.13698594855614998
+        ],
+        "center_distance_m": 0.18226101774106726,
+        "yaw_error_deg": 5.476918345808967,
+        "min_end_margin_m": 0.15114208339937124,
+        "zone_long_axis": "y"
+      },
+      "false_final_accepts": 0,
+      "execution_profile": {
+        "release_profile": "release18_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off",
+        "axis_fusion": "axis_fusion_v1",
+        "axis_disagree_reobserve": "off",
+        "teacher_version": "release24",
+        "failure_rgb_recording": {
+          "mode": "own_rgb_last10_10hz_v1",
+          "control_input": false,
+          "training_rgb": false,
+          "captured": 1496,
+          "retained_frames": 0,
+          "bytes": 0,
+          "retained_range_sim_s": null
+        },
+        "axis_observation_window": "axis_current_setdown_v1"
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d2-c-04-8b7f2f45",
+      "raw_result_sha256": "9e8ec7682be20cda92aeff6aca38e4a2d4bf97091429e56fc863ab9e5d863c5b",
+      "raw_manifest_sha256": "f18661fc6552a6432250cccb23a62bd183c82d7b4ca125fd79f771856d19b377",
+      "full_original_manifest_verified": true,
+      "frame_decode_verified_N": 258,
+      "native_inputs_verified": 90,
+      "localization_epoch_views": {
+        "r1": {
+          "start": 6,
+          "stop": 12,
+          "count": 6
+        },
+        "r2": {
+          "start": 6,
+          "stop": 12,
+          "count": 6
+        }
+      },
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 1496,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      }
+    },
+    {
+      "name": "r24d2-c-05-8b7f2f45",
+      "seed": 110618,
+      "source_sha": "8b7f2f4517d827b39a79246b892fa549bbcec0a8",
+      "classification": "success",
+      "status": "complete",
+      "success": true,
+      "outcome": "teacher_done",
+      "sim_s": 79.19999999981239,
+      "release_sim_s": 64.2999999999695,
+      "iterations": 1,
+      "shift_steps": 1,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0
+      },
+      "evaluation_position_error": {
+        "center_offset_m": [
+          0.12071604714201989,
+          -0.1366638909106384
+        ],
+        "center_distance_m": 0.18234413375929934,
+        "yaw_error_deg": 5.383895939794219,
+        "min_end_margin_m": 0.15113540642047613,
+        "zone_long_axis": "y"
+      },
+      "false_final_accepts": 0,
+      "execution_profile": {
+        "release_profile": "release19_v1",
+        "release_goal_region": "inside_margins_v1",
+        "command_motion": "yaw_cal_v1",
+        "effective_motion_profile": "lateral_rate_cal_v1",
+        "release20_settle": "release20_settle_v1",
+        "release21": "release21_v1",
+        "margin_common_mode": "margin_common_mode_v1",
+        "release_leg_budget": "release_leg_budget_v1",
+        "lateral_rate_cal": "lateral_rate_cal_v1",
+        "release_yaw_budget": "release_yaw_budget_v1",
+        "release_plan_budget": "compute_budget_v1",
+        "recording_mode": "success_measurement",
+        "weld": "off",
+        "axis_fusion": "axis_fusion_v1",
+        "axis_disagree_reobserve": "off",
+        "teacher_version": "release24",
+        "failure_rgb_recording": {
+          "mode": "own_rgb_last10_10hz_v1",
+          "control_input": false,
+          "training_rgb": false,
+          "captured": 1370,
+          "retained_frames": 0,
+          "bytes": 0,
+          "retained_range_sim_s": null
+        },
+        "axis_observation_window": "axis_current_setdown_v1"
+      },
+      "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d2-c-05-8b7f2f45",
+      "raw_result_sha256": "781b3ecb0b79081eeeb890053a32849c295f1fff15ec38f999ee3fb06a045633",
+      "raw_manifest_sha256": "9ef8075a53b124c43d7e9b8a1d2838a9f39ff44d2908ebb3bbc3ebe81dd79bae",
+      "full_original_manifest_verified": true,
+      "frame_decode_verified_N": 238,
+      "native_inputs_verified": 82,
+      "localization_epoch_views": {
+        "r1": {
+          "start": 6,
+          "stop": 12,
+          "count": 6
+        },
+        "r2": {
+          "start": 6,
+          "stop": 12,
+          "count": 6
+        }
+      },
+      "failure_rgb_recording": {
+        "mode": "own_rgb_last10_10hz_v1",
+        "control_input": false,
+        "training_rgb": false,
+        "captured": 1370,
+        "retained_frames": 0,
+        "bytes": 0,
+        "retained_range_sim_s": null
+      }
+    }
+  ],
+  "prior_stages": [
+    {
+      "candidate": "fusion",
+      "round": 1,
+      "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+      "counts": {
+        "completed": 6,
+        "success": 5,
+        "N": 6
+      },
+      "classification_counts": {
+        "success": 5,
+        "failure": 1
+      },
+      "runs": [
+        {
+          "name": "r24d1-f-00-b20bb52a",
+          "seed": 110622,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "success",
+          "status": "complete",
+          "success": true,
+          "outcome": "teacher_done",
+          "sim_s": 177.9999999974761,
+          "release_sim_s": 163.0999999976332,
+          "iterations": 3,
+          "shift_steps": 3,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": {
+            "center_offset_m": [
+              0.1443174700372527,
+              -0.10051126988320735
+            ],
+            "center_distance_m": 0.17586940476242102,
+            "yaw_error_deg": -5.390319264514924,
+            "min_end_margin_m": 0.12750049962632753,
+            "zone_long_axis": "y"
+          },
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release18_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "off",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 3358,
+              "retained_frames": 0,
+              "bytes": 0,
+              "retained_range_sim_s": null
+            }
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-f-00-b20bb52a",
+          "raw_result_sha256": "d4c83be3d6239e78a2d0b867442c01932c57755d151fdf9292a551936e1d2eb1",
+          "raw_manifest_sha256": "6200b353a0af3eb87335c61f91853be0c8e08e828356ca63df5391c092a83728",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 578
+        },
+        {
+          "name": "r24d1-f-01-b20bb52a",
+          "seed": 88639,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "success",
+          "status": "complete",
+          "success": true,
+          "outcome": "teacher_done",
+          "sim_s": 126.19999999870099,
+          "release_sim_s": 111.2999999988581,
+          "iterations": 2,
+          "shift_steps": 2,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": {
+            "center_offset_m": [
+              -0.019813720608576446,
+              -0.09503088546929023
+            ],
+            "center_distance_m": 0.09707446995699788,
+            "yaw_error_deg": 6.017328980718847,
+            "min_end_margin_m": 0.24873750456804994,
+            "zone_long_axis": "y"
+          },
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release19_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "off",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 2318,
+              "retained_frames": 0,
+              "bytes": 0,
+              "retained_range_sim_s": null
+            }
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-f-01-b20bb52a",
+          "raw_result_sha256": "321626cc7539fc17fca16575704c48ba7605804a154f721cae622417f79afd8f",
+          "raw_manifest_sha256": "2201991bd22d125c982c04ad9e1b1b2d31d75fbb33d43848f8891149091dd454",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 404
+        },
+        {
+          "name": "r24d1-f-02-b20bb52a",
+          "seed": 110622,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "failure",
+          "status": "complete",
+          "success": false,
+          "outcome": "release_iteration_cap",
+          "sim_s": 170.3999999976558,
+          "release_sim_s": 162.09999999765685,
+          "iterations": 3,
+          "shift_steps": 3,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": {
+            "center_offset_m": [
+              0.14784323331674898,
+              -0.10956144023937975
+            ],
+            "center_distance_m": 0.18401448536698914,
+            "yaw_error_deg": -6.527470873970013,
+            "min_end_margin_m": 0.11805289390808332,
+            "zone_long_axis": "y"
+          },
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release19_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "off",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 3206,
+              "retained_frames": 202,
+              "bytes": 2884387,
+              "retained_range_sim_s": [
+                149.59999999795244,
+                159.59999999771597
+              ]
+            }
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-f-02-b20bb52a",
+          "raw_result_sha256": "7b8fd07dbd7b3d51523660b658fe448457eb0427a558ff5fa30e50b6b6485df0",
+          "raw_manifest_sha256": "be1ffd047c4e0b05413c8fb1c41e333deca6be68635b7051f3f39d2e370c3edf",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 772
+        },
+        {
+          "name": "r24d1-f-03-b20bb52a",
+          "seed": 88639,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "success",
+          "status": "complete",
+          "success": true,
+          "outcome": "teacher_done",
+          "sim_s": 130.9999999985875,
+          "release_sim_s": 116.0999999987446,
+          "iterations": 2,
+          "shift_steps": 2,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": {
+            "center_offset_m": [
+              -0.021485080995207184,
+              -0.09565834307771631
+            ],
+            "center_distance_m": 0.09804145707681362,
+            "yaw_error_deg": 5.827429728873244,
+            "min_end_margin_m": 0.24805514684644353,
+            "zone_long_axis": "y"
+          },
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release18_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "off",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 2414,
+              "retained_frames": 0,
+              "bytes": 0,
+              "retained_range_sim_s": null
+            }
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-f-03-b20bb52a",
+          "raw_result_sha256": "a360bd3c9a02c56cf2a2a4d83f4cb87f4350e7db64cc1768521fb394a23cfd5a",
+          "raw_manifest_sha256": "d685172d6223584590c6dec813271d24eb6a68d2eadfc0cbd3ce85198fe8bf6d",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 414
+        },
+        {
+          "name": "r24d1-f-04-b20bb52a",
+          "seed": 110618,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "success",
+          "status": "complete",
+          "success": true,
+          "outcome": "teacher_done",
+          "sim_s": 85.49999999966342,
+          "release_sim_s": 70.59999999982053,
+          "iterations": 1,
+          "shift_steps": 1,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": {
+            "center_offset_m": [
+              0.12022449203960672,
+              -0.13698594855614998
+            ],
+            "center_distance_m": 0.18226101774106726,
+            "yaw_error_deg": 5.476918345808967,
+            "min_end_margin_m": 0.15114208339937124,
+            "zone_long_axis": "y"
+          },
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release18_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "off",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 1500,
+              "retained_frames": 0,
+              "bytes": 0,
+              "retained_range_sim_s": null
+            }
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-f-04-b20bb52a",
+          "raw_result_sha256": "e52a9973b69a7d57a62077c8f346cf873c91b890f1eb7c3c1139d54d420e3316",
+          "raw_manifest_sha256": "ac1ec4116e8db5b6c17fe0736227ee8e4c93afc9ed2daa6f00a402a1685399e1",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 258
+        },
+        {
+          "name": "r24d1-f-05-b20bb52a",
+          "seed": 110618,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "success",
+          "status": "complete",
+          "success": true,
+          "outcome": "teacher_done",
+          "sim_s": 79.19999999981239,
+          "release_sim_s": 64.2999999999695,
+          "iterations": 1,
+          "shift_steps": 1,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": {
+            "center_offset_m": [
+              0.12071604714201989,
+              -0.1366638909106384
+            ],
+            "center_distance_m": 0.18234413375929934,
+            "yaw_error_deg": 5.383895939794219,
+            "min_end_margin_m": 0.15113540642047613,
+            "zone_long_axis": "y"
+          },
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release19_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "off",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 1374,
+              "retained_frames": 0,
+              "bytes": 0,
+              "retained_range_sim_s": null
+            }
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-f-05-b20bb52a",
+          "raw_result_sha256": "dcfcc1c86fbca68e6f8292e129d9abb4ffc2650dac92f0cdd5aa2ffad9a966b8",
+          "raw_manifest_sha256": "3b1cfb853efbd4246e32c9f018733eb0f747d723a3717fffb649f67158ce2f1d",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 238
+        }
+      ],
+      "summary": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release24/round1-fusion/summary.json",
+        "sha256": "2cddd9682cd158ba0e04e1b0af04f4b7b3afc75e8e8719794ba1098c195613e4",
+        "bytes": 79523
+      }
+    },
+    {
+      "candidate": "gated",
+      "round": 1,
+      "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+      "counts": {
+        "completed": 6,
+        "success": 2,
+        "N": 6
+      },
+      "classification_counts": {
+        "supervisor_stop": 3,
+        "success": 2,
+        "HOST_ERROR": 1
+      },
+      "runs": [
+        {
+          "name": "r24d1-g-00-b20bb52a",
+          "seed": 110622,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "supervisor_stop",
+          "status": "interrupted",
+          "success": false,
+          "outcome": null,
+          "sim_s": 168.59999999769838,
+          "release_sim_s": null,
+          "iterations": null,
+          "shift_steps": null,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": null,
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release18_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "axis_disagree_reobserve_v1",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 3220,
+              "retained_frames": 202,
+              "bytes": 3019276,
+              "retained_range_sim_s": [
+                150.29999999793588,
+                160.29999999769942
+              ]
+            },
+            "axis_observation_window": null
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-g-00-b20bb52a",
+          "raw_result_sha256": "c36334a04b79a02921df69b1840d0bd77dae63d3085fcc808dea97c715151c4e",
+          "raw_manifest_sha256": "a251ada179aed5116a47a6b41077d903d0ffbc70b7ae593c011e7cea2ccb9640",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 764
+        },
+        {
+          "name": "r24d1-g-01-b20bb52a",
+          "seed": 88639,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "success",
+          "status": "complete",
+          "success": true,
+          "outcome": "teacher_done",
+          "sim_s": 126.19999999870099,
+          "release_sim_s": 111.2999999988581,
+          "iterations": 2,
+          "shift_steps": 2,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": {
+            "center_offset_m": [
+              -0.019813720608576446,
+              -0.09503088546929023
+            ],
+            "center_distance_m": 0.09707446995699788,
+            "yaw_error_deg": 6.017328980718847,
+            "min_end_margin_m": 0.24873750456804994,
+            "zone_long_axis": "y"
+          },
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release19_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "axis_disagree_reobserve_v1",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 2318,
+              "retained_frames": 0,
+              "bytes": 0,
+              "retained_range_sim_s": null
+            },
+            "axis_observation_window": null
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-g-01-b20bb52a",
+          "raw_result_sha256": "5dd5341bd1523f8ecfff2dec7532ccdf70cb5829af440993d5c214a3bd925201",
+          "raw_manifest_sha256": "e572584bc3c9606f0c022c1860a2f2b91672a1af23519cd0da09364e5624d1d4",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 404
+        },
+        {
+          "name": "r24d1-g-02-b20bb52a",
+          "seed": 110622,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "HOST_ERROR",
+          "status": "HOST_ERROR",
+          "success": false,
+          "outcome": null,
+          "sim_s": 123.19999999877193,
+          "release_sim_s": null,
+          "iterations": null,
+          "shift_steps": null,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": null,
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release19_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "axis_disagree_reobserve_v1",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 2310,
+              "retained_frames": 204,
+              "bytes": 2980453,
+              "retained_range_sim_s": [
+                104.89999999900944,
+                114.89999999877297
+              ]
+            },
+            "axis_observation_window": null
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-g-02-b20bb52a",
+          "raw_result_sha256": "a0e2b7d8f3ba6614e9a18de216a8687a88f5676c1151d22c8c443e96037fe0e9",
+          "raw_manifest_sha256": "7f835126fb3582e6b267154a9b8235e1943da26f0fe5c9dccbd532d272869f61",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 614
+        },
+        {
+          "name": "r24d1-g-03-b20bb52a",
+          "seed": 88639,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "success",
+          "status": "complete",
+          "success": true,
+          "outcome": "teacher_done",
+          "sim_s": 130.9999999985875,
+          "release_sim_s": 116.0999999987446,
+          "iterations": 2,
+          "shift_steps": 2,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": {
+            "center_offset_m": [
+              -0.021485080995207184,
+              -0.09565834307771631
+            ],
+            "center_distance_m": 0.09804145707681362,
+            "yaw_error_deg": 5.827429728873244,
+            "min_end_margin_m": 0.24805514684644353,
+            "zone_long_axis": "y"
+          },
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release18_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "axis_disagree_reobserve_v1",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 2414,
+              "retained_frames": 0,
+              "bytes": 0,
+              "retained_range_sim_s": null
+            },
+            "axis_observation_window": null
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-g-03-b20bb52a",
+          "raw_result_sha256": "616c5c0bc09d668704f995f2cf9984ab2df9885fdd6140c91e078f7553a133da",
+          "raw_manifest_sha256": "caf141716ccda8b316a68beeaba64948ac94dde146c510fe9bbbbd6b4c2d02ab",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 414
+        },
+        {
+          "name": "r24d1-g-04-b20bb52a",
+          "seed": 110618,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "supervisor_stop",
+          "status": "interrupted",
+          "success": false,
+          "outcome": null,
+          "sim_s": 76.38374999987899,
+          "release_sim_s": null,
+          "iterations": null,
+          "shift_steps": null,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": null,
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release18_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "axis_disagree_reobserve_v1",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 1366,
+              "retained_frames": 202,
+              "bytes": 3048091,
+              "retained_range_sim_s": [
+                58.00000000011848,
+                67.99999999988201
+              ]
+            },
+            "axis_observation_window": null
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-g-04-b20bb52a",
+          "raw_result_sha256": "fe2eb61b9d58bd7e05992b2e60ca9d321ccd1b7c90f9d2a26cbff2c453a3b450",
+          "raw_manifest_sha256": "777427b06fa31357c0794ab4128bb71ec62316dc34324c82a44fbdc065c155be",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 448
+        },
+        {
+          "name": "r24d1-g-05-b20bb52a",
+          "seed": 110618,
+          "source_sha": "b20bb52a0eddf3aca0034444661b434a07c51c0d",
+          "classification": "supervisor_stop",
+          "status": "interrupted",
+          "success": false,
+          "outcome": null,
+          "sim_s": 73.19999999995427,
+          "release_sim_s": null,
+          "iterations": null,
+          "shift_steps": null,
+          "input_audit": {
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "control_top_camera_reads": 0,
+            "evaluation_top_camera_reads": 0
+          },
+          "evaluation_position_error": null,
+          "false_final_accepts": 0,
+          "execution_profile": {
+            "release_profile": "release19_v1",
+            "release_goal_region": "inside_margins_v1",
+            "command_motion": "yaw_cal_v1",
+            "effective_motion_profile": "lateral_rate_cal_v1",
+            "release20_settle": "release20_settle_v1",
+            "release21": "release21_v1",
+            "margin_common_mode": "margin_common_mode_v1",
+            "release_leg_budget": "release_leg_budget_v1",
+            "lateral_rate_cal": "lateral_rate_cal_v1",
+            "release_yaw_budget": "release_yaw_budget_v1",
+            "release_plan_budget": "compute_budget_v1",
+            "recording_mode": "success_measurement",
+            "weld": "off",
+            "axis_fusion": "axis_fusion_v1",
+            "axis_disagree_reobserve": "axis_disagree_reobserve_v1",
+            "teacher_version": "release24",
+            "failure_rgb_recording": {
+              "mode": "own_rgb_last10_10hz_v1",
+              "control_input": false,
+              "training_rgb": false,
+              "captured": 1302,
+              "retained_frames": 202,
+              "bytes": 2908465,
+              "retained_range_sim_s": [
+                54.80000000019415,
+                64.79999999995768
+              ]
+            },
+            "axis_observation_window": null
+          },
+          "remote_raw": "/home/ugrp/ugrp-sim/runs/r24d1-g-05-b20bb52a",
+          "raw_result_sha256": "d21ad45b8df4ae708cd02fb11e67f63a2c53d836742b8df55dbbad233f986a94",
+          "raw_manifest_sha256": "bf39f6b47f712f91f2c2c437587250cb0cda859e20c9278ec1507de8e7171248",
+          "full_original_manifest_verified": true,
+          "frame_decode_verified_N": 432
+        }
+      ],
+      "summary": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/release24/round1-gated-corrected/summary.json",
+        "sha256": "fef2ce410ef65520232033de1fb32bff71e28104d61ad334c87992268689ef0e",
+        "bytes": 60357
+      }
+    }
+  ],
+  "full_analysis": {
+    "path": "/home/ugrp/ugrp-sim/ops-reviews/release24/delivery-full.json.zst",
+    "sha256": "d876163eca1a346a7f5d83aabd6cd2724b98068995133f17f9db226900b90be9",
+    "bytes": 26221
+  },
+  "rejection_table_sha256": "6204835c432a230a564069b45e9d322e84b5dc2888f6b8e9acb97683c9ada3ce",
+  "visual_review": {
+    "verified": true,
+    "representative_frames": 72,
+    "source": "six current candidate montages, each both robots at six uniform elapsed times",
+    "current_success_playback": {
+      "run": "r24d2-c-02-8b7f2f45",
+      "release_range_s": [
+        0,
+        162
+      ],
+      "sample_hz": 2,
+      "displayed_samples": 325,
+      "overview_available": false,
+      "source_hz": 1,
+      "judgment": "opposite teal/blue ends maintained; after final lowering and panorama, both back away and wait; no same-end approach or mutual blocking visible"
+    },
+    "earlier_failure_playback": {
+      "run": "r24d1-f-02-b20bb52a",
+      "release_range_s": [
+        0,
+        159.6
+      ],
+      "last10_range_s": [
+        149.6,
+        159.6
+      ],
+      "last10_hz": 10,
+      "scope": "actual 10Hz ring in final10s; earlier review evidence1Hz, no fast-oscillation claim"
+    },
+    "no_desktop_app_opened": true,
+    "ffprobe_verified": true
+  },
+  "status": "DEV6_PASSED_GATE_QUEUE_PREPARED_NOT_APPROVED",
+  "gate40_queue_created": true,
+  "record_location": "/Users/changmin/projects/ugrp-wt/grasp-act-probes/experiments/2026-10-14-e2e18-grasp-rootcause/release24.md",
+  "gate_queue": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-release24-gate80-8b7f2f45.json",
+  "gate40_approved": false,
+  "owned_active_runs": 0,
+  "owned_live_reservations": 0,
+  "owned_leases": 0,
+  "cleanup": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release24-8b7f2f45/cleanup.json",
+  "reproduction_receipt": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/release24-8b7f2f45/reproduction-receipt.json"
+}
