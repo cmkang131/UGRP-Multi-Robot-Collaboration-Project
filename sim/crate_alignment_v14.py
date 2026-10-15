@@ -64,7 +64,6 @@ def peer_blocks_stances(world, teacher):
     All actual goals, paths and pulses keep every peer and wall constraint.
     A static/IK/excluded failure alone never pauses the staging deadline.
     """
-    from sim.crate_navigation_v12 import WallFootprint
     from sim.grasp_act_goal_set import geometry
     if world['beam'] is None or world['visibility'][teacher.rid]['visible_probes'] < 5:
         return False
@@ -72,7 +71,7 @@ def peer_blocks_stances(world, teacher):
         return False
     solo = {**world, 'robots': {teacher.rid: world['robots'][teacher.rid]}}
     nav = teacher._navigation(world)
-    without = WallFootprint(solo, teacher.rid, teacher.folded_ready, teacher.cargo_profile, teacher.bounds)
+    without = teacher._navigation(solo)
     start = world['robots'][teacher.rid]['pose'][:2]
     for angle in teacher.approach_angles:
         choice = (math.radians(angle), STATION_M)

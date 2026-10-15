@@ -1,0 +1,167 @@
+{
+  "baseline_sha": "8007db00ecca9f168d79caad55a06001781ad079",
+  "profile": "crate15_v1",
+  "verdict": "OFFLINE_CHECKED_PHYSICAL_NOT_READY",
+  "runs": 5,
+  "baseline_ticks_matched": 1424,
+  "baseline_ticks_total": 1424,
+  "tests_passed": 84,
+  "new_physical_runs": 0,
+  "remote_submitted": false,
+  "training_submitted": false,
+  "model_calls": 0,
+  "viewed_frames": 111,
+  "locally_verified_manifest_entries": 156,
+  "unretrieved_manifest_entries": 111,
+  "goal_rejections_cleared": 133,
+  "actual_occupied_goals_still_rejected": 966,
+  "previous_no_path_routes_found": 196,
+  "fresh_seeds": [
+    79600,
+    79601,
+    79602,
+    79603,
+    79604,
+    79605,
+    79606,
+    79607,
+    79610,
+    79611
+  ],
+  "start_proposals": 41,
+  "start_rejected": 29,
+  "near_wall_drawn": 12,
+  "near_wall_excluded": 2,
+  "queue_approved": false,
+  "queue_enabled": false,
+  "remaining": [
+    "GCP live seed/cost/disk/slot admission",
+    "same-machine first30 speed and own RGB review",
+    "new closed-loop physical diagnostic5+10",
+    "separate >=40 teacher gate and training approval"
+  ],
+  "raw_analysis": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate15-8007db00",
+  "evidence_sha256": {
+    "baseline.json": "36e771fabf70f7a48c24bb0202b9d7a1045c77c36d70bbd13c847f59063349f3",
+    "comparison.json": "813a9c46aeefde4faaa5f7f21e4687b63aecc68066ce6eb05b0140d1d443ea84",
+    "saved-analysis.json": "18885cb350b4b625ac4145c1ca64911aa97302ca5dbd340942d7dd4c3598b0d3",
+    "local-verification.json": "6e992669fdaabe2da917c0224cc1d046b51abeb940a5618dbccadb4acb527aab",
+    "pytest.xml": "c5b99a6eacbad2d3204b5b0e96bbe6c028b424a4de8a3e6537ed65631d6932c2",
+    "rejection-detail.json": "4c90015f2739de97682bbb23b946b90f182316168de04f33eca56dd90f4be5a4",
+    "report.md": "12aa315e4f9d3c4d6b737480cfa86f77104a6811d94052ed9aa2ac70d12c45dc"
+  },
+  "results": [
+    {
+      "name": "crate-reproduction-77990-8007db00",
+      "stage": "reproduction",
+      "seed": 77990,
+      "status": "complete",
+      "success": false,
+      "teacher_outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "sim_s": 14.399999999986154,
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77990-8007db00",
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-77990-8007db00/raw/result.json.zst",
+        "sha256": "32fe0ebec3681b6af413962449ae0ad3e32de67009f3d6e60ae204be8913fb91",
+        "decoded_sha256": "7280130ab787c505c06d93cdedf90d7c64c6bc2b831e5409ca9cd39b081745d5"
+      },
+      "candidate_transitions": {
+        "blocked_goal->goal_blocked": 966,
+        "feasible->goal_clear": 2,
+        "no_path->goal_clear": 140,
+        "no_path->path": 140
+      }
+    },
+    {
+      "name": "crate-reproduction-79314-8007db00",
+      "stage": "reproduction",
+      "seed": 79314,
+      "status": "complete",
+      "success": false,
+      "teacher_outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "sim_s": 13.999999999985667,
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79314-8007db00",
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79314-8007db00/raw/result.json.zst",
+        "sha256": "e179464e7d5bb090df5e4c4120d6614ba7d93f60e288cb7e92ca0d69a804205c",
+        "decoded_sha256": "cf0eac591471b59717b782c27ad57d4d199db92ededfbbee1b217360ca9b0cb8"
+      },
+      "candidate_transitions": {
+        "blocked_goal->goal_clear": 133,
+        "no_path->goal_clear": 56,
+        "no_path->path": 56
+      }
+    },
+    {
+      "name": "crate-reproduction-79317-8007db00",
+      "stage": "reproduction",
+      "seed": 79317,
+      "status": "complete",
+      "success": false,
+      "teacher_outcomes": {
+        "r1": "alignment_no_progress",
+        "r2": "episode_timeout"
+      },
+      "sim_s": 11.499999999991493,
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79317-8007db00",
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-reproduction-79317-8007db00/raw/result.json",
+        "sha256": "c17956f11961a72ed90efab195678d5654c8fc15f8419a302c0dac26e6f8dac5",
+        "decoded_sha256": "c17956f11961a72ed90efab195678d5654c8fc15f8419a302c0dac26e6f8dac5"
+      },
+      "candidate_transitions": {
+        "feasible->goal_clear": 34
+      }
+    },
+    {
+      "name": "crate-diag-79450-8007db00",
+      "stage": "diagnostic",
+      "seed": 79450,
+      "status": "complete",
+      "success": false,
+      "teacher_outcomes": {
+        "r1": "alignment_no_progress",
+        "r2": "episode_timeout"
+      },
+      "sim_s": 17.199999999999523,
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79450-8007db00",
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79450-8007db00/raw/result.json",
+        "sha256": "40761496dc6a3a1ec362ae23b17becf6c68f0a6236ba61a2082e1bd666fd2f30",
+        "decoded_sha256": "40761496dc6a3a1ec362ae23b17becf6c68f0a6236ba61a2082e1bd666fd2f30"
+      },
+      "candidate_transitions": {
+        "feasible->goal_clear": 24
+      }
+    },
+    {
+      "name": "crate-diag-79451-8007db00",
+      "stage": "diagnostic",
+      "seed": 79451,
+      "status": "complete",
+      "success": false,
+      "teacher_outcomes": {
+        "r1": "episode_timeout",
+        "r2": "alignment_no_progress"
+      },
+      "sim_s": 13.599999999986599,
+      "retrieved_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79451-8007db00",
+      "result_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/crate-diag-79451-8007db00/raw/result.json",
+        "sha256": "15e3b48512c6ba6f41ab426ee580f30bf56e17394c0574348e277d84f37fff39",
+        "decoded_sha256": "15e3b48512c6ba6f41ab426ee580f30bf56e17394c0574348e277d84f37fff39"
+      },
+      "candidate_transitions": {
+        "feasible->goal_clear": 41
+      }
+    }
+  ],
+  "scope": "stored GCP crate14 outcomes and teacher-forced crate15 local decision probes; no new closed-loop outcome",
+  "ci_test_registered": "tests/test_crate15.py, exactly once in TEST_PATTERNS"
+}

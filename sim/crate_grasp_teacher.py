@@ -25,12 +25,22 @@ LIFT_WAIT_LIMIT_S = 20.
 class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def __init__(self, *args, profile=CRATE, crate_lift_pose='off', crate_approach_recovery='off',
                  crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off', crate_candidate_recovery='off',
-                 crate_alignment='off', **kwargs):
+                 crate_alignment='off', crate_motion='off', **kwargs):
         from sim.crate_alignment_v14 import MODE as ALIGNMENT
         if crate_alignment not in ('off', ALIGNMENT):
             raise ValueError('unknown crate alignment')
         if crate_alignment != 'off' and (crate_candidate_recovery == 'off' or crate_stances == 'off'):
             raise ValueError('crate14 alignment requires crate13 staging and stances')
+        from sim.crate_motion_v15 import MODE as MOTION
+        if crate_motion not in ('off', MOTION):raise ValueError('unknown crate motion')
+        if crate_motion != 'off' and crate_alignment == 'off':raise ValueError('crate15 requires crate14 alignment')
+        self.crate_motion = crate_motion
+        self.crate15_errors = None
+        self.search_view_origin = None
+        self.search_view_key = None
+        self.search_view_visited = set()
+        self.search_view_progress = None
+        self.search_view_repeat = 0
         self.crate_alignment = crate_alignment
         self.staging_elapsed_s = 0.
         self.staging_clock_t = None
@@ -118,6 +128,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def _alignment_settled(self, truth, errors):
         if self.crate_alignment == 'off':
             return super()._alignment_settled(truth, errors)
+        self.crate15_errors = tuple(errors)
         inner, _ = self._alignment_bands()
         return self.ready_geometry(truth) and all(abs(e) <= b for e, b in zip(errors, inner))
 
@@ -134,6 +145,9 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return super()._wait_ready(truth, now)
 
     def _continuous(self, now, forward, left, turn):
+        if self.crate_motion != 'off' and self.phase in ('align', 'ready') and self.crate15_errors is not None:
+            from sim.crate_motion_v15 import alignment_pulse
+            return alignment_pulse(self._hold(now), (forward,left,turn), self.crate15_errors)
         value = super()._continuous(now, forward, left, turn)
         if self.crate_alignment != 'off' and self.phase in ('align', 'ready'):
             from harness.grasp_act_contract import wheel_mix, command
@@ -148,6 +162,48 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             return command(value)
         return value
 
+    def _observe_stable(self, world, now):
+        value = super()._observe_stable(world, now)
+        if self.crate_motion == 'off' or value is None or self.phase != 'search' or not self.folded_ready:
+            return value
+        # View acquisition around a CURRENTLY visible body, never the inferred
+        # hidden assigned lug. Ordinary pan/body scan remains when no body is seen.
+        obj=world['objects'].get(self.cargo_profile.item_id)
+        if obj is None or self.cargo_profile.item_id not in world['visibility'][self.rid]['objects']:
+            return value
+        from sim.grasp_act_visible_route import drive
+        pose=world['robots'][self.rid]['pose'];centre=obj['xy'];nav=self._navigation(world)
+        if self.search_view_progress is not None:
+            key,at,before=self.search_view_progress
+            if now-at>=1.-1e-8:
+                self.search_view_repeat=self.search_view_repeat+1 if math.dist(pose[:2],before)<.01 else 0
+                self.search_view_progress=(key,now,tuple(pose[:2]))
+                if self.search_view_repeat>=3:
+                    self.search_view_visited.add(key);self.search_view_key=None
+                    self.search_view_progress=None;self.search_view_repeat=0
+        if self.search_view_origin is None:
+            self.search_view_origin=math.atan2(pose[1]-centre[1],pose[0]-centre[0])
+        choices=([self.search_view_key] if self.search_view_key is not None else [])
+        choices += [k for k in (60,-60,90,-90,120,-120,180) if k not in self.search_view_visited and k not in choices]
+        for key in choices:
+            angle=self.search_view_origin+math.radians(key)
+            goal=(centre[0]+.45*math.cos(angle),centre[1]+.45*math.sin(angle))
+            if math.dist(pose[:2],goal)<.04:
+                self.search_view_visited.add(key);self.search_view_key=None
+                continue
+            heading=math.atan2(centre[1]-goal[1],centre[0]-goal[0])
+            if not nav.free(goal,heading):continue
+            path=nav.path(pose[:2],goal,heading)
+            target=nav.waypoint(pose[:2],path,centre)
+            if target is None:continue
+            self.search_view_key=key
+            if self.search_view_progress is None or self.search_view_progress[0]!=key:
+                self.search_view_progress=(key,now,tuple(pose[:2]));self.search_view_repeat=0
+            self.crate_recovery_log.append({'t':now,'recovery':'visible_body_side_view',
+                'body_source':'current_visible_cargo','hidden_lug_read':False,'view_deg':key,'goal':goal})
+            return self._continuous(now,**drive(pose,goal,target,centre))
+        return value
+
     def _peer_wait_expired(self, now, blocked):
         if self.crate_alignment == 'off':
             return super()._peer_wait_expired(now, blocked)
@@ -158,6 +214,10 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return self.peer_elapsed_s >= 12.-1e-8
 
     def _peer_route(self, world, goal, now):
+        if self.crate_motion != 'off':
+            # Peer footprints already constrain every goal, route and pulse.
+            # Do not reintroduce the old circular peer-wait gate here.
+            return None
         value = super()._peer_route(world, goal, now)
         if self.crate_alignment != 'off' and self.peer_wait_since is None:
             self.peer_clock_t = None
@@ -183,6 +243,9 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return self.staging_elapsed_s >= 12.-1e-8
 
     def _navigation(self, world):
+        if self.crate_motion != 'off':
+            from sim.crate_motion_v15 import Navigation
+            return Navigation(world,self.rid,self.folded_ready,self.cargo_profile,self.bounds,end=self.end)
         if self.crate_wall_footprint=='off':return None
         from sim.crate_navigation_v12 import WallFootprint
         return WallFootprint(world,self.rid,self.folded_ready,self.cargo_profile,self.bounds)
@@ -228,7 +291,20 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return super()._approach(truth, now)
 
     def _plan_approach(self, world, now):
+        old_path, old_goal, old_choice = list(self.path), self.path_goal, self.approach_choice
         valid = super()._plan_approach(world, now)
+        if self.crate_motion != 'off' and not valid and old_path and old_choice not in self.approach_excluded:
+            nav=self._navigation(world);pose,g,heading,goal=self._geometry(world)
+            nearest=min(range(len(old_path)),key=lambda i:math.dist(pose[:2],old_path[i]))
+            remaining=[tuple(pose[:2]),*old_path[nearest:],tuple(goal)]
+            if (old_goal is not None and math.dist(goal,old_goal)<=.025
+                    and self.approach_grasp_filter(world,(*goal,heading)) and nav.free(goal,heading)
+                    and all(nav.segment(a,b,pose[2] if i==0 else nav.heading_at(a,heading),nav.heading_at(b,heading))
+                            for i,(a,b) in enumerate(zip(remaining,remaining[1:])))
+                    and nav.waypoint(pose[:2],remaining,g) is not None):
+                self.path=remaining;self.path_goal=tuple(goal);self.approach_plan_valid=True
+                self.approach_blocked_since=None;valid=True
+                self.crate_recovery_log.append({'t':now,'recovery':'revalidated_previous_path'})
         if self.crate_candidate_recovery != 'off':
             # This finite staging controller owns the deadline while no grasp
             # pose is reachable; the legacy 3 s deadline must not fire first.
@@ -297,6 +373,12 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return self._continuous(now, **drive(pose, view['goal'], view['target'], world['beam']['ends'][self.end]))
 
     def _check_navigation_pulse(self, truth, value, now):
+        if self.crate_motion != 'off' and self.phase in ('approach','align','ready','search','relook'):
+            nav=self._navigation(truth)
+            if nav.pulse_safe(value):return value
+            self.crate_recovery_log.append({'t':now,'recovery':'crate15_unsafe_pulse_hold_replan'})
+            self.next_plan=now
+            return self._hold(now)
         # A held or invisible assigned lug is never read by this correction.
         if self.crate_approach_recovery == 'off' or self.phase not in ('approach','align','ready','search','relook'):
             return value
@@ -482,7 +564,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 'crate_wall_footprint': self.crate_wall_footprint,
                 'crate_stances': self.crate_stances, 'crate_pulse_safety': self.crate_pulse_safety,
                 'crate_candidate_recovery': self.crate_candidate_recovery, 'crate_recovery_log': self.crate_recovery_log,
-                'crate_alignment': self.crate_alignment,
+                'crate_alignment': self.crate_alignment, 'crate_motion': self.crate_motion,
                 'staging_clock': {'elapsed_s': self.staging_elapsed_s, 'peer_paused_s': self.staging_paused_s,
                                   'peer_blocked': self.staging_peer_blocked},
                 'closed_at': self.closed_at, 'lift_done': self.lift_done,

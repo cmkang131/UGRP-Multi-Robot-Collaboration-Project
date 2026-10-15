@@ -78,6 +78,8 @@ def test_static_torques_match_independent_xml_potential_energy_derivative():
 
 def test_readiness_checks_full_path_before_closing_and_keeps_visibility_gate():
     t=teacher();t.folded_ready=True
+    # Readiness requires an accepted collision-checked approach plan.
+    assert t._plan_approach(world(), 0.)
     assert t.ready_geometry(world())
     assert not t.ready_geometry(world(MOUNT_X_M+.158))
     hidden=world();hidden['visibility']['r1']['visible_probes']=4

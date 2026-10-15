@@ -1,0 +1,19 @@
+{
+  "reserved_range": [
+    79600,
+    79639
+  ],
+  "split": "crate15_diagnostic",
+  "local_json_files_checked": 5430,
+  "explicit_seed_conflicts": [],
+  "scope": "current worktree experiment JSON and existing local queue snapshots only",
+  "rejected_candidate_range": {
+    "range": [
+      79500,
+      79539
+    ],
+    "reason": "conflicts with four saved solo queues; never submitted"
+  },
+  "remote_live_inventory_verified": false,
+  "required_before_admission": "operations checks live GCP inventory and all active queues under shared admission lock"
+}

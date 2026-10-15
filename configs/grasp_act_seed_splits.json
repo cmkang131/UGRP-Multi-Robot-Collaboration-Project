@@ -109,6 +109,12 @@
         79450,
         79474
       ]
+    ],
+    "crate15_diagnostic": [
+      [
+        79600,
+        79639
+      ]
     ]
   },
   "gate_seeds_never_train": [
@@ -125,7 +131,8 @@
     "crate_gate_v4",
     "crate_gate_v5",
     "crate13_diagnostic",
-    "crate14_diagnostic"
+    "crate14_diagnostic",
+    "crate15_diagnostic"
   ],
   "heldout_maps": [
     "zone_wide_corridor_final_v3"
@@ -143,6 +150,7 @@
     "crate_gate_v4": "crate4 fixes, fresh 77300-77339; old 77200-77239 diagnostic only; never train",
     "crate_gate_v5": "crate10 approach recovery, fresh 77400-77439; coordinator approval required after diagnostic10+reproduction3; never train",
     "crate13_diagnostic": "crate13 v6 synthetic handoff diagnostics; exclude near_wall with drawn/excluded denominator; not a gate, never train",
-    "crate14_diagnostic": "crate14 conditional fixed-role/assigned-LOS v6 diagnostics; exclude near_wall with full rejection denominator; never train or pool with crate13"
+    "crate14_diagnostic": "crate14 conditional fixed-role/assigned-LOS v6 diagnostics; exclude near_wall with full rejection denominator; never train or pool with crate13",
+    "crate15_diagnostic": "crate15 separate diagnostic10; conditional crate14 setup, runtime crate_motion_v15; near-wall excluded and full proposal denominator retained, never train"
   }
 }
