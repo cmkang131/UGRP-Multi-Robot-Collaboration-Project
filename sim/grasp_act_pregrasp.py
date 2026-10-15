@@ -169,12 +169,12 @@ def band_view(world, rid, end, base, previous):
     return count, view
 
 
-def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=None):
+def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=None, choices=None):
     from sim.grasp_act_goal_set import geometry, ANGLES_DEG
     from sim.grasp_act_recovery import AXIAL_CHOICES
     radius, discs, rects = constraints(world, rid, folded)
     start = world['robots'][rid]['pose'][:2]
-    choices = [(math.radians(a), d) for a in ANGLES_DEG for _, d in AXIAL_CHOICES]
+    if choices is None:choices = [(math.radians(a), d) for a in ANGLES_DEG for _, d in AXIAL_CHOICES]
     if current is not None:choices = [current]  # Revalidate the selected stance without oscillating.
     checked = []; feasible = []
     for choice in choices:

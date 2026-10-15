@@ -14,14 +14,14 @@ def observations(world, rid):
     return world['visibility'][rid].get('observations', {})
 
 
-def remembered_blockers(world, rid, checked, folded):
+def remembered_blockers(world, rid, checked, folded, *, include_visible=False):
     """Identify stale cargo/walls that actually rejected an IK-reachable goal."""
     radius = .13 if folded else .17
     extra = .17-radius
     goals = [r['goal'] for r in checked if r['reason'] == 'blocked_goal']
     result = {}
     for key, m in observations(world, rid).items():
-        if m['seen_t'] >= world['t']-1e-8:
+        if not include_visible and m['seen_t'] >= world['t']-1e-8:
             continue
         if m['kind'] == 'cargo' and key != 'beam_1':
             padding = .005 if folded and m.get('top_z_bound_m', math.inf) <= .1 else .02+extra
@@ -73,7 +73,7 @@ class ActiveReobserve:
                 w['walls'].append((*m['xyz'][:2], *m['half_extents'], m['yaw']))
         return w
 
-    def begin(self, kind, targets, world, teacher, now):
+    def begin(self, kind, targets, world, teacher, now, *, retreat_first=False):
         if self.active or self.used[kind] >= self.MAX_ENCOUNTERS or not targets:
             return False
         self.used[kind] += 1
@@ -88,7 +88,7 @@ class ActiveReobserve:
         self.active = {'kind': kind, 'targets': deepcopy(targets), 'start': now,
                        'pwm': dict(teacher.sink.pwm), 'world':snapshot, 'radius': rad, 'discs': ds, 'rects': rs,
                        'goal':teacher._geometry(world)[3],
-                       'attempt': -1, 'retreat_start': None}
+                       'attempt': -1, 'retreat_start': None, 'retreat_first':retreat_first}
         self.events.append({'t': now, 'event': 'reobserve_start', 'kind': kind,
                             'encounter': self.used[kind], 'targets': deepcopy(targets),
                             'input': 'own visible history and issued-command pose only'})
@@ -131,7 +131,7 @@ class ActiveReobserve:
                 seen=set()
         elif a['kind']=='peer':
             teacher.peer_clear_since=None
-        if seen == set(a['targets']):
+        if seen == set(a['targets']) and (not a['retreat_first'] or age>=self.RETREAT_S):
             self.events.append({'t': now, 'event': 'reobserve_measurements', 'kind': a['kind'],
                                 'before': a['targets'], 'after': {k: fresh[k] for k in sorted(seen)}})
             self.finish(teacher, now, 'fresh_measurements_replan')
@@ -139,7 +139,7 @@ class ActiveReobserve:
         if age >= self.LIMIT_S-1e-8:
             self.finish(teacher, now, 'bounded_reobserve_exhausted_replan')
             return teacher._hold(now)
-        targets = [v for k, v in sorted(a['targets'].items()) if k not in seen]
+        targets = [v for k, v in sorted(a['targets'].items()) if k not in seen or a['retreat_first']]
         target = targets[min(int(age/self.VIEW_S), len(targets)-1)]
         x, y = local(pose, target['xyz'])
         z = (min(.20,target.get('top_z_bound_m',.32)/2) if target['kind']=='robot' else target['xyz'][2])
@@ -148,7 +148,7 @@ class ActiveReobserve:
                 if teacher.last_command is not None else dict(teacher.sink.pwm))
         teacher.sink.pwm.update(slew(teacher.sink.pwm, view))
         teacher.arm.commanded.update(teacher.sink.pwm)
-        attempt = min(3, int((age+1e-8)/self.VIEW_S))
+        attempt = (3 if age<self.RETREAT_S else 0) if a['retreat_first'] else min(3, int((age+1e-8)/self.VIEW_S))
         if attempt != a['attempt']:
             a['attempt'] = attempt
             self.events.append({'t': now, 'event': 'reobserve_attempt', 'kind': a['kind'],

@@ -14,13 +14,9 @@ from sim.grasp_act_port import duty_wheels
 from scripts.zone_teacher import FOLDED
 
 
-def propagate_owned(point,issued,dt):
-    # Nominal 65 mm wheel / 150 rpm kinematics; not calibrated odometry.
-    # Only the preceding issued pulse is integrated, never measured motion.
-    wheel=[w*min(dt,d) for w,d in zip(issued['wheels'],issued['duration_s'])]
-    a,b,c,d=wheel;gain=.0325*150*2*math.pi/60
-    dx= gain*(a+b+c+d)/4;dy=gain*(-a+b+c-d)/4
-    yaw=gain*(-a+b-c+d)/(4*.1255)
+def propagate_owned(point,issued,dt,*,mode="off"):
+    from harness.grasp_act_visible_world import command_delta
+    dx,dy,yaw=command_delta(issued,dt,mode=mode)
     x,y,z=point;x-=dx;y-=dy;co,si=math.cos(yaw),math.sin(yaw)
     return [co*x+si*y,-si*x+co*y,z]
 
@@ -71,11 +67,12 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.approach_coordination not in ('off',MODE,OBSERVED_MODE):raise ValueError('unknown approach coordination mode')
         if self.approach_coordination!='off':
             require_baseline(self.teacher_stability,self.teacher_search,self.approach_goal_set,self.nominal_blocked_handoff,self.approach_progress,self.approach_recovery)
-        from sim.grasp_act_search15_modes import MODES, validate
+        from sim.grasp_act_search15_modes import ALL_MODES as MODES, validate
         self.search15_modes={k:kwargs.pop(k,'off') for k in MODES}
         validate(self.search15_modes,recovery=self.approach_recovery,coordination=self.approach_coordination)
         from sim.grasp_act_reobserve import ActiveReobserve
         self.reobserver=ActiveReobserve();self.sampled_stance=False
+        self.search17_log=[];self.search17_escape_state=None
         self.peer_wait_since=None;self.peer_wait_ids=set();self.peer_clear_since=None
         self.peer_route=[];self.peer_route_next=0.;self.recovery_log=[]
         self.nominal_handoff_log=[]
@@ -464,6 +461,19 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                     selected,sampled=select_sampled_goal(world,self.rid,self.end,self.bounds,self.folded_ready,self.sink.pwm)
                     checked+=sampled
                     self.sampled_stance=selected is not None
+            if selected is None and self.search15_modes['search17_candidates']!='off' and self.reobserver.active is None:
+                from sim.grasp_act_pregrasp import select_sampled_goal
+                from sim.grasp_act_search17 import expanded_choices
+                selected,expanded=select_sampled_goal(world,self.rid,self.end,self.bounds,self.folded_ready,
+                                                       self.sink.pwm,choices=expanded_choices())
+                checked+=expanded;self.sampled_stance=selected is not None
+                self.search17_log.append({'t':now,'event':'expanded_candidates','tested':len(expanded),
+                                          'feasible':sum(c['reason']=='feasible' for c in expanded)})
+                if selected is None and self.reobserver.used['obstacle']==0:
+                    from sim.grasp_act_reobserve import remembered_blockers
+                    blockers=remembered_blockers(world,self.rid,checked,self.folded_ready,include_visible=True)
+                    if self.reobserver.begin('obstacle',blockers,world,self,now,retreat_first=True):
+                        self.search17_log.append({'t':now,'event':'blocked_retreat_reobserve','targets':sorted(blockers)})
             self.planner_calls+=1;self.next_plan=now+1.;self.path_goal=tuple(goal)
             self.blocked_goal_calls+=int(blocked)
             self.approach_plan_valid=selected is not None
@@ -491,6 +501,13 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.approach_recovery!='off' and self.priority is None:
             recovered=self._peer_route(world,goal,now)
             if recovered is not None:return recovered
+        from sim.grasp_act_search17 import escape_command
+        # Only replace an unusable route (or finish its bounded escape).
+        # A harmless margin overlap with a usable legacy route is unchanged.
+        radius,discs,rects=self._constraints(world)
+        if self.search17_escape_state is not None or waypoint(pose[:2],self.path,discs,rects,radius) is None:
+            escaped=escape_command(self,world,now)
+            if escaped is not None:return escaped
         if self.approach_progress!='off':
             recovery=(self.progress.observe_goal(pose,goal,heading,now)
                       if self.approach_recovery=='progress_view_recovery_v3'
@@ -740,7 +757,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.priority is not None and self.priority.round<2 and permit_pick:
             self.priority.advance(self,now);permit_pick=False
         if self.local_seen is not None and self.last_command is not None and self.last_tick is not None:
-            self.local_seen=propagate_owned(self.local_seen,self.last_command,min(.1,now-self.last_tick))
+            self.local_seen=propagate_owned(self.local_seen,self.last_command,min(.1,now-self.last_tick),mode=self.search15_modes['search17_odometry'])
         value,done=self._step(truth,now,permit_pick=permit_pick)
         if (((self.priority is not None and self.phase in ('approach','align','ready','search','relook'))
                 or (self.approach_recovery in ('approach_recovery_v2','progress_view_recovery_v3') and self.approach_plan_valid
@@ -751,7 +768,14 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             pose=truth['robots'][self.rid]['pose'];radius,discs,rects=self._constraints(truth)
             dx,dy,_=command_delta(value,.1);co,si=math.cos(pose[2]),math.sin(pose[2])
             end=(pose[0]+co*dx-si*dy,pose[1]+si*dx+co*dy)
-            if not segment_free(pose[:2],end,discs,rects,radius):value=self._hold(now)
+            safe=segment_free(pose[:2],end,discs,rects,radius)
+            if self.search15_modes['search17_escape']!='off':
+                from sim.grasp_act_search17 import pulse_free
+                safe=all(pulse_free(pose,value,discs,rects,radius,mode=mode)
+                         for mode in ('off',self.search15_modes['search17_odometry']))
+            if not safe:
+                from sim.grasp_act_search17 import escape_command
+                value=escape_command(self,truth,now) or self._hold(now)
         if self.sampled_stance and self.phase in ('approach','align','ready','search','relook'):
             from sim.grasp_act_pregrasp import issued_sweep_reason
             from harness.grasp_act_visible_world import command_delta
@@ -876,7 +900,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'approach_progress':self.approach_progress,'approach_progress_log':self.progress_log,
                 'approach_recovery':self.approach_recovery,'recovery_log':self.recovery_log,
                 'approach_coordination':self.approach_coordination,**self.search15_modes,
-                'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
+                'search17_log':self.search17_log,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
                 'candidate_angle_counts':dict(Counter(str(round(c['offset_deg'],3)) for c in candidates)),
                 'candidate_rejection_counts':dict(Counter(c['reason'] for c in candidates)),
                 'reobserve_pending':None if self.reobserver.active is None else {

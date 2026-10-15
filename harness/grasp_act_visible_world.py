@@ -8,16 +8,27 @@ from copy import deepcopy
 from harness.grasp_act_contract import MEMORY_S
 
 
-def command_delta(issued,dt):
+SEARCH17_GAINS = (.75141578, .68525882, .71802760)
+
+
+def command_delta(issued,dt,*,mode='off'):
+    if mode not in ('off','search17_fixed_v1'):raise ValueError('unknown search17 odometry')
     a,b,c,d=[w*min(dt,t) for w,t in zip(issued['wheels'],issued['duration_s'])]
     gain=.0325*150*2*math.pi/60
-    return gain*(a+b+c+d)/4,gain*(-a+b+c-d)/4,gain*(-a+b-c+d)/(4*.1255)
+    delta=(gain*(a+b+c+d)/4,gain*(-a+b+c-d)/4,gain*(-a+b-c+d)/(4*.1255))
+    # Fixed offline least-squares gains; no runtime measured pose or velocity.
+    # Fit: 19 even-index successful 752b0cbb episodes; held out: other 21.
+    # See search17.md. Coordinator interpretation of fixed calibration is
+    # user-unconfirmed; this option is never enabled by default.
+    return tuple(x*g for x,g in zip(delta,SEARCH17_GAINS)) if mode!='off' else delta
 
 
 class VisibleWorld:
-    def __init__(self,rid,end,*,pose_source='issued'):
+    def __init__(self,rid,end,*,pose_source='issued',odometry='off'):
         if pose_source not in ('issued','perfect_self_comparison'):raise ValueError('explicit pose source required')
-        self.rid=rid;self.end=end;self.pose_source=pose_source
+        if odometry not in ('off','search17_fixed_v1'):raise ValueError('unknown search17 odometry')
+        if odometry!='off' and pose_source!='issued':raise ValueError('search17 requires issued pose')
+        self.rid=rid;self.end=end;self.pose_source=pose_source;self.odometry=odometry
         self.pose=[0.,0.,0.];self.memory={};self.previous=None;self.previous_t=None
 
     def issue(self,command):self.previous=deepcopy(command)
@@ -28,7 +39,7 @@ class VisibleWorld:
             self.pose=list(comparison_pose)
         elif comparison_pose is not None:raise ValueError('GT self pose forbidden in default profile')
         elif self.previous is not None and self.previous_t is not None:
-            x,y,a=command_delta(self.previous,min(.15,max(0.,now-self.previous_t)))
+            x,y,a=command_delta(self.previous,min(.15,max(0.,now-self.previous_t)),mode=self.odometry)
             co,si=math.cos(self.pose[2]),math.sin(self.pose[2])
             self.pose=[self.pose[0]+co*x-si*y,self.pose[1]+si*x+co*y,self.pose[2]+a]
         self.previous_t=now;seen=set()
