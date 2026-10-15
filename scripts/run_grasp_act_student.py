@@ -54,7 +54,7 @@ def response(process, timeout=120.):
 
 def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_steps=c.CHUNK,
         temporal_ensemble_coeff=None, actor_threads=1, teacher_start_v1=False,
-        diagnostic_observer_factory=None):
+        diagnostic_observer_factory=None, actor_server_url=None):
     if actor_threads not in (1, 2, 4, 8, 16):
         raise ValueError('bounded actor thread setting required')
     ChunkExecutor(None, n_action_steps=n_action_steps, temporal_ensemble_coeff=temporal_ensemble_coeff)
@@ -138,7 +138,13 @@ def run(plan, protocol, model, output, *, actor_python, cap_s=60., n_action_step
                    for k in ('pos', 'quat', 'intrinsic', 'resolution')})
         history = OwnHistory(rid, f'student-{plan["seed"]}', previous)
         (output / 'rgb' / rid).mkdir(parents=True)
-        worker = subprocess.Popen([actor_python, '-m', 'scripts.grasp_act_student_worker', '--model', str(model), '--threads', str(actor_threads)],
+        if actor_server_url:
+            from harness.grasp_act_inference import private_url
+            report['execution']['actor_server_url']=private_url(actor_server_url)
+            report['execution']['inference_device']='cuda_l4_batch1_v1'
+            write_summary(output / 'summary.json', report)
+        worker = subprocess.Popen([actor_python, '-m', 'scripts.grasp_act_student_worker', '--model', str(model), '--threads', str(actor_threads)]+
+            (['--server-url',actor_server_url] if actor_server_url else []),
             cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True, bufsize=1)
         if response(worker) != {'ready': True}:
             raise RuntimeError('student worker did not load')
@@ -337,6 +343,7 @@ def main():
     p.add_argument('--n-action-steps', type=int, default=c.CHUNK)
     p.add_argument('--temporal-ensemble-coeff', type=float)
     p.add_argument('--actor-threads', type=int, choices=(1, 2, 4, 8, 16), default=1)
+    p.add_argument('--actor-server-url', help='opt-in private L4, own-input-only inference')
     p.add_argument('--teacher-start-v1', action='store_true')
     p.add_argument('--scene-source', type=Path, help='frozen 6f057f7e scene/physics package; no teacher policy')
     a = p.parse_args()
@@ -348,7 +355,7 @@ def main():
         run(json.loads(a.plan.read_text()), json.loads(a.protocol.read_text()), a.model, a.output,
             actor_python=a.actor_python, cap_s=a.cap_s, n_action_steps=a.n_action_steps,
             temporal_ensemble_coeff=a.temporal_ensemble_coeff, actor_threads=a.actor_threads,
-            teacher_start_v1=a.teacher_start_v1)
+            teacher_start_v1=a.teacher_start_v1, actor_server_url=a.actor_server_url)
 
 
 if __name__ == '__main__':

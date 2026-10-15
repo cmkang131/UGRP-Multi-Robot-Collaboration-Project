@@ -66,3 +66,27 @@ def test_dagger_aggregation_uses_actual_student_history_and_only_valid_labels(tm
     with np.load(tmp_path/'combined/3-r1/tensors.npz') as tensors:
         assert tensors['action_is_pad'][-1].tolist()==[False]+[True]*7
         assert not tensors['action'][...,-1].any()
+
+
+def test_private_inference_client_binds_model_and_unchanged_response(tmp_path,monkeypatch):
+    import io
+    from harness.grasp_act_inference import RemoteActor,private_url
+    from harness.grasp_act_data import sha256
+    from harness import grasp_act_contract as c
+    from tests.test_grasp_act_data import episode
+    _,observations,_=episode(tmp_path,8)
+    model=tmp_path/'model';model.mkdir();(model/'model.safetensors').write_bytes(b'fixture model')
+    health={'ready':True,'batch_size':1,'deterministic_cuda':True,
+            'model_sha256':sha256(model/'model.safetensors'),'contract_sha256':sha256(c.__file__)}
+    chunk=np.zeros((8,14)).tolist();replies=[health,{'chunk':chunk}]
+    def urlopen(request,**kwargs):return io.BytesIO(json.dumps(replies.pop(0)).encode())
+    monkeypatch.setattr('urllib.request.urlopen',urlopen)
+    client=RemoteActor(model,'http://10.178.0.5:18796')
+    import base64
+    jpeg=(tmp_path/'run-8/raw/rgb/r1/0.jpg').read_bytes()
+    request={'observation':observations[0],'jpegs':[base64.b64encode(jpeg).decode()]*4}
+    assert client.predict_request(request)==chunk
+    replies.append({**health,'model_sha256':'0'*64})
+    with pytest.raises(ValueError,match='identity mismatch'):RemoteActor(model,client.url)
+    for url in ['http://8.8.8.8:18796','http://key:secret@10.178.0.5:1','https://10.178.0.5:1']:
+        with pytest.raises(ValueError):private_url(url)
