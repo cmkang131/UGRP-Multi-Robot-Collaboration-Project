@@ -13,3 +13,5 @@ MuJoCo/물리·렌더·GUI를 실행하지 않은 fake port 통합 시험이다.
 - 기존 CameraRobotPort의 소유 입력/동작·기한 검증 회귀.
 
 실물·ACT 학생·운반·폐루프 성공을 증명하지 않는다. 폐루프 결과는 별도 원본으로 센다.
+
+생성자·command hook의 기존 호출자 호환성을 추가 확인: `python -m pytest -q tests/test_self_map_executor.py` → **16 passed in 2.27s**. 새 코드 변경 없이 이 영향 경로만 검증했다. 합계28 passed·27 subtests, 물리/렌더0.
