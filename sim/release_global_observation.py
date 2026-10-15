@@ -18,7 +18,7 @@ LATERAL_MODES = ('off', 'bounded_v1')
 MAX_LATERAL_SHIFT_M = .10
 
 
-def margin_report(localizer, teacher, now, *, lateral_recovery='off', axis_recovery=False):
+def margin_report(localizer, teacher, now, *, lateral_recovery='off', axis_recovery=False, defer_axis_gate=False):
     """Static zone bounds through the accepted own RGB pose, own release FK."""
     decision = localizer.decision or {}
     base = dict(phase='observe', kind='none', margin_m=None)
@@ -34,7 +34,7 @@ def margin_report(localizer, teacher, now, *, lateral_recovery='off', axis_recov
     extra={'axis_error_rad':error} if axis_recovery else {}
     # The unchanged teacher transports axially. Rotation is an observation
     # action only and returns to its starting heading before a grasp/shift.
-    if abs(outward[axis])<math.cos(math.radians(10)):
+    if not defer_axis_gate and abs(outward[axis])<math.cos(math.radians(10)):
         return {**base,'reason':'release_axis_unaligned',**extra}
     center=np.array([cx,cy]);half=np.array([hx,hy]);sign=1 if outward[axis]>0 else -1
     margin=float(half[axis]-sign*(point[axis]-center[axis]))

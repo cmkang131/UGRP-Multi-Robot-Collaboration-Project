@@ -24,6 +24,8 @@ from sim.release_regrasp_recovery import MODES as REGRASP_RECOVERY_MODES
 from sim import release14, release15, release16, release17, release18, release19, release20
 from sim import release21 as release21_control
 from sim import release23 as release23_control
+from sim import release24 as release24_control
+from sim.failure_rgb_recording import FailureRGB
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 # User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
 # hidden_v1: while the own gripper holds the cargo, its world pose never enters teacher/map-code inputs.
@@ -169,8 +171,11 @@ def own_end_world(world,inst,end):
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
         zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',release_fov_step='off',release_settle_reuse='off',release_goal_region='off',release20_settle='off',release21='off',review_top='on',record_training=False,
-        margin_common_mode='off',release_leg_budget='off',lateral_rate_cal='off',release_yaw_budget='off',release_plan_budget='off'):
+        margin_common_mode='off',release_leg_budget='off',lateral_rate_cal='off',release_yaw_budget='off',release_plan_budget='off',
+        axis_fusion='off',axis_disagree_reobserve='off',failure_rgb_recording='own_rgb_last10_10hz_v1'):
     release23_control.validate(release_profile,record_training,locals(),plan)
+    release24_control.validate(locals())
+    failure_rgb=FailureRGB(failure_rgb_recording)
     release23_options=dict(margin_common_mode=margin_common_mode,release_leg_budget=release_leg_budget,
         lateral_rate_cal=lateral_rate_cal,release_yaw_budget=release_yaw_budget,release_plan_budget=release_plan_budget)
     motion_profile=release23_control.LATERAL if lateral_rate_cal==release23_control.LATERAL else command_motion
@@ -249,6 +254,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     if any(v!='off' for v in release23_options.values()):
         report.update(release23_options,teacher_version='release23',effective_motion_profile=motion_profile,
                       planning_budget_basis='finite computation checks and SIM seconds; no wall deadline')
+    if axis_fusion!='off':
+        report.update(teacher_version='release24',axis_fusion=axis_fusion,axis_disagree_reobserve=axis_disagree_reobserve)
     if not line_guard:
         report.pop('release_profile');report.pop('training_exclusions')
     write(out/'result.json',report);world=None;start=time.monotonic();streams=[];origin=0.
@@ -390,7 +397,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                  'seen_groups':rec.get('seen_groups'),**look_truth(rid)}
             look_eval[rid]['views'].append(row);ev.write(json.dumps({'kind':'lookaround_view','rid':rid,**row})+'\n')
         R=tuple(roles);code=PairReleaseCode(R);release_t0=float(world.data.time)
-        st={'phase':'look','since':release_t0,'iter':0,'steps':0,'search':0,'sched':{},'plan':{},'go':None,'after_visible':False,'choice':None}
+        st={'phase':'look','since':release_t0,'iter':0,'steps':0,'search':0,'sched':{},'plan':{},'go':None,'after_visible':False,'choice':None,'axis_epoch':0,'axis_reobservations':0}
         recovery_stage={rid:0 for rid in roles}; recovery_log=[]
         regrasp_barriers=[]; barrier=None; regrasp_inputs=[]; rejection_counts={}
         line_checks=[]; line_check=None; line_pending=[]; line_stage=None; backoff_checks=[]
@@ -520,6 +527,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         k=0;outcome=None;done_at=None
         while float(world.data.time)-origin<cap_s:
             now=float(world.data.time);tick_t=now;ph=st['phase'];age=now-st['since']
+            failure_rgb.capture(now-release_t0,{rid:lambda rid=rid:base64.b64decode(ports[rid].capture()['image']) for rid in roles})
             track_commands(now)
             fine=ph in ('look','observe')
             for rid,t in rel.items():t.phase=ph;t.perceive(observe(rid,now,fine),now)
@@ -638,9 +646,11 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                     from sim.release_global_observation import margin_report
                     reports={rid:margin_report(loc[rid],t,now,
                         **({'lateral_recovery':lateral_recovery} if lateral_recovery!='off' else {}),
+                        **({'defer_axis_gate':True} if axis_fusion!='off' else {}),
                         **({'axis_recovery':True} if checked_regrasp else {})) for rid,t in rel.items()}
                     if margin_common_mode==release23_control.MARGIN:
-                        for r in reports.values():r.update(observation_epoch=st['iter'],observed_at=now,
+                        st['axis_epoch']+=1
+                        for r in reports.values():r.update(observation_epoch=st['axis_epoch'] if axis_fusion!='off' else st['iter'],observed_at=now,
                             zone_axis_width_m=2*max(rect[2:]))
                     for rid,t in rel.items():t.last_report=reports[rid]
                     if checked_regrasp:
@@ -664,16 +674,31 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             elif ph=='await_observe' and ready('observe',now):
                 if global_release:
                     from sim.release_global_observation import pair_choice
-                    chooser=release23_control.pair_choice if release18_enabled else pair_choice
+                    chooser=release24_control.pair_choice if axis_fusion!='off' else release23_control.pair_choice if release18_enabled else pair_choice
                     choice=chooser(code.delivered,R,now,lateral_recovery=lateral_recovery,
                         **({'goal_region':release_goal_region} if release18_enabled else {}),
                         **({'margin_common_mode':margin_common_mode,'release_leg_budget':release_leg_budget} if release18_enabled else {}),
+                        **({'axis_fusion':axis_fusion,'axis_disagree_reobserve':axis_disagree_reobserve} if axis_fusion!='off' else {}),
                         **({'axis_recovery':True} if checked_regrasp else {}));code.log.append(choice)
                 elif rgb_center:
                     from sim.release_zone_servo import pair_choice
                     choice=pair_choice(code.delivered,R,now);code.log.append(choice)
                 else:choice=code.decide(now,require_seen=True)
                 st['choice']=choice
+                if choice.get('reason')=='axis_disagreement_reobserve':
+                    # User common rule: remove an unchanged choice after three
+                    # consecutive repetitions. No new acceptance threshold.
+                    st['axis_reobservations']+=1
+                    if st['axis_reobservations']>=3:
+                        outcome='axis_disagreement_persistent';break
+                    from sim.lookaround_localization import ScriptRunner
+                    for rid,t in rel.items():
+                        look_eval[rid]['before']=look_truth(rid);look_eval[rid]['t0']=now
+                        loc[rid].make_plan(t.pwm[6])
+                        look_run[rid]=ScriptRunner(loc[rid].script(restore={k:t.pwm[k] for k in (3,4,5,6)}),now)
+                    st.update(phase='lookaround',since=now)
+                    continue
+                st['axis_reobservations']=0
                 if choice['action']=='axis_correct':
                     from sim.release_axis_correction import correction_angle
                     try:choice['axis_turn_rad']=correction_angle(choice)
@@ -900,6 +925,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         report.update(status='HOST_ERROR' if not isinstance(error,KeyboardInterrupt) else 'interrupted',error_type=type(error).__name__,error=str(error))
         raise
     finally:
+        report['failure_rgb_recording']=failure_rgb.finish(out,failed=report.get('status')!='complete' or not report.get('release_success'))
         report['wall_s']=time.monotonic()-start;report['sim_s']=None if world is None else float(world.data.time)-origin
         report['loadavg_at_end']=os.getloadavg();report['input_audit']={**audit.record(),**top_audit.record()}
         if line_guard:
@@ -928,6 +954,9 @@ def main():
     p.add_argument('--release21',choices=release21_control.MODES,default='off')
     for key,mode in release23_control.OPTIONS.items():
         p.add_argument('--'+key.replace('_','-'),choices=('off',mode),default='off')
+    for key,mode in release24_control.OPTIONS.items():
+        p.add_argument('--'+key.replace('_','-'),choices=('off',mode),default='off')
+    p.add_argument('--failure-rgb-recording',choices=('own_rgb_last10_10hz_v1',),default='own_rgb_last10_10hz_v1')
     p.add_argument('--review-top',choices=('on','off'),default='on')
     p.add_argument('--release20-settle',choices=release20.MODES,default='off')
     p.add_argument('--release-profile',choices=release19.PROFILES,default='off')
@@ -952,5 +981,5 @@ def main():
     p.add_argument('--lookaround',choices=LOOKAROUND_MODES,default='off',help='setdown_lookaround_v1: after the backoff step, look toward static-map landmarks chosen from the own pose estimate (640x480 own camera)');a=p.parse_args()
     if not 0<a.cap_s<=180:raise ValueError('finite cap required')
     plan=json.loads(a.plan.read_text())['episodes'][a.episode]
-    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,release_fov_step=a.release_fov_step,release_settle_reuse=a.release_settle_reuse,release_goal_region=a.release_goal_region,release20_settle=a.release20_settle,release21=a.release21,review_top=a.review_top,record_training=a.record_training,**{k:getattr(a,k) for k in release23_control.OPTIONS}),ensure_ascii=False,default=str))
+    print(json.dumps(run(plan,a.out,cap_s=a.cap_s,own_pose_source=a.own_pose_source,observe_mode=a.observe_mode,render_dr=a.render_dr,zone_slots=a.zone_slots,reach_mode=a.reach_mode,held_object=a.held_object,lookaround=a.lookaround,pose_anchor=a.pose_anchor,placement=a.placement,lateral_recovery=a.lateral_recovery,active_recovery=a.active_recovery,command_motion=a.command_motion,localization_support=a.localization_support,regrasp_check=a.regrasp_check,regrasp_recovery=a.regrasp_recovery,release_profile=a.release_profile,release_fov_step=a.release_fov_step,release_settle_reuse=a.release_settle_reuse,release_goal_region=a.release_goal_region,release20_settle=a.release20_settle,release21=a.release21,review_top=a.review_top,record_training=a.record_training,**{k:getattr(a,k) for k in (*release23_control.OPTIONS,*release24_control.OPTIONS)},failure_rgb_recording=a.failure_rgb_recording),ensure_ascii=False,default=str))
 if __name__=='__main__':main()
