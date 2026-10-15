@@ -1,0 +1,3197 @@
+{
+  "schema": "ugrp.act12.record_plan.v1",
+  "teacher_source_sha": "1fce11554754d4609470e4fe4b172f9a583bc026",
+  "teacher_dependency_sha": "6f057f7e97c1a3aec9e8c398b8d9068e27b25df8",
+  "episodes": [
+    {
+      "episode_id": "train-86820",
+      "batch": "solo-teacher-train-86820",
+      "seed": 86820,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "cyan",
+      "item_id": "cyan_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.006584671351146654,
+          0.1774257404256352,
+          0.032355118817659255,
+          1.3356171152993703
+        ],
+        "r2": [
+          -0.7403085299938242,
+          -2.8690370464558845,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.6759193701456887,
+          -2.4967656185346683,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.11658980445241962,
+        0.03808953884148754,
+        0.027232760064419076
+      ],
+      "start_to_cargo_m": 0.7022480884308993,
+      "proposal_attempts": 4,
+      "rejects": {
+        "start_blocked": 3
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86821",
+      "batch": "solo-teacher-train-86821",
+      "seed": 86821,
+      "split": "train",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.09260364058417692,
+          -2.7703551936091744,
+          0.032355118817659255,
+          0.5827545012499041
+        ],
+        "r2": [
+          5.006651636988527,
+          -0.19593158707838754,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.14541302951612223,
+          -1.8456838877798867,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.047593903834268037,
+        0.010598092252134607,
+        0.05245547148268263
+      ],
+      "start_to_cargo_m": 0.9622866533177425,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86822",
+      "batch": "solo-teacher-train-86822",
+      "seed": 86822,
+      "split": "train",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7824536081320101,
+          1.1099267288757761,
+          0.032355118817659255,
+          -0.6821902335879744
+        ],
+        "r2": [
+          3.287993746327182,
+          -1.9369352170489804,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          5.138408813414749,
+          -1.4074591350778831,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.03182566117003455,
+        0.0388488749302518,
+        0.03761529407161731
+      ],
+      "start_to_cargo_m": 0.6846893133277411,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86823",
+      "batch": "solo-teacher-train-86823",
+      "seed": 86823,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7804883000625988,
+          1.1042157311993912,
+          0.032355118817659255,
+          -0.2768418584354054
+        ],
+        "r2": [
+          1.4833065138503274,
+          -1.6181880515099032,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          5.0366483113621925,
+          1.0234352270401996,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.11256730330691356,
+        0.08976001622044767,
+        0.020498034564789585
+      ],
+      "start_to_cargo_m": 0.6800260662200274,
+      "proposal_attempts": 3,
+      "rejects": {
+        "start_blocked": 2
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86824",
+      "batch": "solo-teacher-train-86824",
+      "seed": 86824,
+      "split": "train",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.1867063015204785,
+          -1.7334127659973126,
+          0.032355118817659255,
+          -0.6748407533897214
+        ],
+        "r2": [
+          5.169317294374201,
+          -1.8762337278939147,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.7646212526037632,
+          -1.0706862830783634,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.013137527412922581,
+        0.0054370001344242625,
+        0.05895407632466135
+      ],
+      "start_to_cargo_m": 0.9261325759195932,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86825",
+      "batch": "solo-teacher-train-86825",
+      "seed": 86825,
+      "split": "train",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.4544589640325095,
+          -1.847351189535388,
+          0.032355118817659255,
+          -0.6290283054352819
+        ],
+        "r2": [
+          3.827102263523884,
+          0.9510988418600372,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.942280964014762,
+          -0.5592659507155142,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.030507943348399964,
+        -0.056810543977671504,
+        -0.00455189931374081
+      ],
+      "start_to_cargo_m": 0.8128964329352756,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86826",
+      "batch": "solo-teacher-train-86826",
+      "seed": 86826,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.4420777181124288,
+          -0.6259086568723652,
+          0.032355118817659255,
+          -0.22222950771765987
+        ],
+        "r2": [
+          -0.6063255295173373,
+          1.0337048168732732,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.5619692677851065,
+          -1.6658136762813505,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.10311722035781411,
+        -0.01032888362937062,
+        0.010463793705397937
+      ],
+      "start_to_cargo_m": 0.8713849972349665,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86827",
+      "batch": "solo-teacher-train-86827",
+      "seed": 86827,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.4849255008409321,
+          1.0412044531225282,
+          0.032355118817659255,
+          -0.4175604513247084
+        ],
+        "r2": [
+          1.7454110172911208,
+          -0.9660058975968875,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.6949906147521328,
+          -2.916824542559006,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.0016968790252618337,
+        0.04194043854613362,
+        0.07787227543071422
+      ],
+      "start_to_cargo_m": 0.9316078442976773,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86828",
+      "batch": "solo-teacher-train-86828",
+      "seed": 86828,
+      "split": "train",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.04212045992194968,
+          -1.9669791031711115,
+          0.032355118817659255,
+          -0.767631727518771
+        ],
+        "r2": [
+          1.482032427847472,
+          -1.9245103254573501,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.12653165843368197,
+          0.9175434372424314,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.009480035774839312,
+        0.016196261220738528,
+        -0.05648618799009362
+      ],
+      "start_to_cargo_m": 0.6011546822406533,
+      "proposal_attempts": 3,
+      "rejects": {
+        "start_blocked": 2
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86829",
+      "batch": "solo-teacher-train-86829",
+      "seed": 86829,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.30337048587088367,
+          -1.8171872900885808,
+          0.032355118817659255,
+          -0.6907031078527203
+        ],
+        "r2": [
+          3.5515845657948817,
+          -0.7699260962818224,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.37406329491138,
+          -2.4085319333514734,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.02957732277048758,
+        -0.05966746777818909,
+        0.03883723111093197
+      ],
+      "start_to_cargo_m": 0.9411400564109482,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86830",
+      "batch": "solo-teacher-train-86830",
+      "seed": 86830,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5193450695562505,
+          -1.238641671232808,
+          0.032355118817659255,
+          -0.0011770771604952546
+        ],
+        "r2": [
+          0.09228827022793451,
+          -2.9200377187854643,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.914718550595859,
+          -1.4778742880831834,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.0044428994266506525,
+        -0.04998372548924634,
+        0.06288040806688279
+      ],
+      "start_to_cargo_m": 0.9981170800742852,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86831",
+      "batch": "solo-teacher-train-86831",
+      "seed": 86831,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5772890378699251,
+          0.26237158691116597,
+          0.032355118817659255,
+          1.11344788559066
+        ],
+        "r2": [
+          0.2123283759655854,
+          -1.6639305073602293,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.033093484853304,
+          -1.6811143317788946,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.03770854053257488,
+        -0.10766863126041176,
+        -0.05829801922505491
+      ],
+      "start_to_cargo_m": 0.6165456084900356,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86832",
+      "batch": "solo-teacher-train-86832",
+      "seed": 86832,
+      "split": "train",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.16386147700286013,
+          -2.145351482247242,
+          0.032355118817659255,
+          -0.9307896702415722
+        ],
+        "r2": [
+          1.9423492708241321,
+          0.11003751439465681,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.8504839313734023,
+          1.1612783176167096,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.0959530685712982,
+        0.0721262192785297,
+        0.0040687465105761125
+      ],
+      "start_to_cargo_m": 0.6408981858429618,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86833",
+      "batch": "solo-teacher-train-86833",
+      "seed": 86833,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.6,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.8743054153153891,
+          -1.850443811777737,
+          0.032355118817659255,
+          -0.26237454602391347
+        ],
+        "r2": [
+          4.2673286270666395,
+          -1.9319112214664862,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.07281308537540199,
+          -1.567094080643454,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.0024257625511407642,
+        0.05686147759287039,
+        0.00683401379349647
+      ],
+      "start_to_cargo_m": 0.941328982384044,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86834",
+      "batch": "solo-teacher-train-86834",
+      "seed": 86834,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.24547279503284847,
+          -1.6245810268357062,
+          0.032355118817659255,
+          0.7780356205184442
+        ],
+        "r2": [
+          -0.6108758360498051,
+          -0.09934263724423964,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.5506050652568937,
+          -0.7174469723596726,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.03570856508145034,
+        0.013933732390411974,
+        0.04690555342995488
+      ],
+      "start_to_cargo_m": 1.0082712414134276,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86835",
+      "batch": "solo-teacher-train-86835",
+      "seed": 86835,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5800804394008007,
+          0.3972497244798154,
+          0.032355118817659255,
+          0.13282158927676802
+        ],
+        "r2": [
+          2.093070320140503,
+          -2.7107836940572865,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.4092503693310499,
+          -1.545651205850096,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.0199938096655069,
+        -0.1159789242297018,
+        -0.0055744476847235346
+      ],
+      "start_to_cargo_m": 1.04162873643906,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86836",
+      "batch": "solo-teacher-train-86836",
+      "seed": 86836,
+      "split": "train",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.154385889446647,
+          -2.007729886991083,
+          0.032355118817659255,
+          -0.903401386602535
+        ],
+        "r2": [
+          4.801938421377638,
+          -0.5499174047532134,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.0613532802379284,
+          -2.108281266016694,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.019599320875885683,
+        0.08117849738476214,
+        0.040792344500598834
+      ],
+      "start_to_cargo_m": 0.7091872582600948,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86837",
+      "batch": "solo-teacher-train-86837",
+      "seed": 86837,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.6,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.7676553884898225,
+          -2.898013925533476,
+          0.032355118817659255,
+          0.7193856439400728
+        ],
+        "r2": [
+          4.770787580403562,
+          0.7499690413928324,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.5002472188411713,
+          -2.1074450906780777,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.03672052744902669,
+        -0.019964978259694552,
+        0.03911495413617993
+      ],
+      "start_to_cargo_m": 0.9452587105030786,
+      "proposal_attempts": 4,
+      "rejects": {
+        "start_blocked": 3
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86838",
+      "batch": "solo-teacher-train-86838",
+      "seed": 86838,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.40700690572951415,
+          -0.19480405333714368,
+          0.032355118817659255,
+          -0.8818364252409692
+        ],
+        "r2": [
+          1.5771316730313814,
+          0.09913266093082518,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.937190642942078,
+          -1.4003419360674838,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.07698051562102129,
+        0.022852410966203215,
+        -0.04081612157479965
+      ],
+      "start_to_cargo_m": 1.0394911612989124,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86839",
+      "batch": "solo-teacher-train-86839",
+      "seed": 86839,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.8052614033569241,
+          0.47177031739849623,
+          0.032355118817659255,
+          0.8500658581194342
+        ],
+        "r2": [
+          3.323124946780569,
+          -1.4607601380362891,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.362509454033216,
+          -0.21636863736255707,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.020120785397995698,
+        0.03956402468716486,
+        -0.08830431769054399
+      ],
+      "start_to_cargo_m": 0.6661479735570218,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86840",
+      "batch": "solo-teacher-train-86840",
+      "seed": 86840,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3949710140187791,
+          -1.6963365247343156,
+          0.032355118817659255,
+          -0.6880969852308187
+        ],
+        "r2": [
+          0.749520946984898,
+          -0.635508858738612,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.05882260528826366,
+          0.8804723517695687,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.008976609847276704,
+        0.11749635116148315,
+        -0.07989385302652481
+      ],
+      "start_to_cargo_m": 1.0954394310410753,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86841",
+      "batch": "solo-teacher-train-86841",
+      "seed": 86841,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.4325794200373032,
+          -1.9631898791566218,
+          0.032355118817659255,
+          -0.6303773697244892
+        ],
+        "r2": [
+          3.053029970652895,
+          1.1088605311664073,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.2602524642703008,
+          0.2165660540635086,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.06735606887241913,
+        -0.003741246757341982,
+        0.007650040868751209
+      ],
+      "start_to_cargo_m": 0.7476297267503131,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86842",
+      "batch": "solo-teacher-train-86842",
+      "seed": 86842,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.10088825547840463,
+          -0.2142696389302713,
+          0.032355118817659255,
+          -0.8115760197906183
+        ],
+        "r2": [
+          -0.8106268947795149,
+          -2.7810384538924504,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.7519678205325344,
+          -1.0749688947965037,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.03768293309580931,
+        0.021696389891527668,
+        0.012534037015608606
+      ],
+      "start_to_cargo_m": 0.8093467343864724,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86843",
+      "batch": "solo-teacher-train-86843",
+      "seed": 86843,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.43101626851693375,
+          0.21682361275446205,
+          0.032355118817659255,
+          0.7672344238096283
+        ],
+        "r2": [
+          1.6405376495178543,
+          0.018620730109953687,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.636404694820967,
+          -0.656169037085816,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.038608853378102034,
+        -0.05135084438807746,
+        0.04931636639409773
+      ],
+      "start_to_cargo_m": 0.987352570491419,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86844",
+      "batch": "solo-teacher-train-86844",
+      "seed": 86844,
+      "split": "train",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.2109316443134095,
+          -2.868530507053434,
+          0.032355118817659255,
+          0.8821171562447971
+        ],
+        "r2": [
+          4.20421126333256,
+          -0.6997390084604294,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.5918125393737372,
+          -0.33010850916121637,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.018286658330332328,
+        0.057256300890313916,
+        -0.020244840305573972
+      ],
+      "start_to_cargo_m": 0.7405438942816901,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86845",
+      "batch": "solo-teacher-train-86845",
+      "seed": 86845,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.6,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.817714169123153,
+          -1.812899252361602,
+          0.032355118817659255,
+          -0.38479060970328477
+        ],
+        "r2": [
+          0.11881268305116088,
+          -1.3087104602859518,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.991577701085081,
+          -2.0276479610525753,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.06253970370301423,
+        0.11528602333703208,
+        -0.03695149603282956
+      ],
+      "start_to_cargo_m": 1.0088946842124231,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86846",
+      "batch": "solo-teacher-train-86846",
+      "seed": 86846,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3623886542732594,
+          -0.48274607240645856,
+          0.032355118817659255,
+          -0.550468962174852
+        ],
+        "r2": [
+          -0.6785937833807102,
+          -1.3235071899847606,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.6576892939389394,
+          -2.5914842879597306,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.08685819144358498,
+        -0.006638198359491378,
+        0.01905713399501807
+      ],
+      "start_to_cargo_m": 0.8462339555332636,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86847",
+      "batch": "solo-teacher-train-86847",
+      "seed": 86847,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.08826280222394883,
+          0.3261390428651878,
+          0.032355118817659255,
+          0.9743161318635443
+        ],
+        "r2": [
+          4.3260407213492,
+          -0.246422725053824,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.3781152655852655,
+          -2.75526626197958,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.13671179668610237,
+        0.02576027445342484,
+        0.0083010976256707
+      ],
+      "start_to_cargo_m": 0.6465745703465472,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86848",
+      "batch": "solo-teacher-train-86848",
+      "seed": 86848,
+      "split": "train",
+      "scenario_id": "s7_trio_rendezvous_v4",
+      "scenario_source_sha256": "eee44f749141dd9a44d8146c8ec22ab79662cc77f1c58467f1243cbb17e6f50c",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.125,
+        0.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.37370559633554007,
+          0.071055346038771,
+          0.032355118817659255,
+          0.533285502002847
+        ],
+        "r2": [
+          0.16287057776886238,
+          -2.471796497176482,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.5366554586132227,
+          -2.6931905253856394,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.03201830977558178,
+        -0.06546926060586143,
+        -0.056038552526619254
+      ],
+      "start_to_cargo_m": 0.6263436138272523,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86849",
+      "batch": "solo-teacher-train-86849",
+      "seed": 86849,
+      "split": "train",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.5099116657007722,
+          -2.88476551229387,
+          0.032355118817659255,
+          0.67371443927422
+        ],
+        "r2": [
+          0.515046572078544,
+          1.068136840422421,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.8332840421057104,
+          0.808328097552502,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.06357080571986481,
+        0.06992087047658545,
+        -0.01984694189470288
+      ],
+      "start_to_cargo_m": 0.6551393944011783,
+      "proposal_attempts": 6,
+      "rejects": {
+        "start_blocked": 5
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86850",
+      "batch": "solo-teacher-train-86850",
+      "seed": 86850,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.28196382921842067,
+          -0.15569432594899768,
+          0.032355118817659255,
+          -1.1577642753766908
+        ],
+        "r2": [
+          4.384704859927611,
+          -1.4610133635601859,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.7247631508516054,
+          -1.5645577897792036,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.03896966764654126,
+        0.02078485606235237,
+        -0.034258578883493006
+      ],
+      "start_to_cargo_m": 0.9732086278808197,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86851",
+      "batch": "solo-teacher-train-86851",
+      "seed": 86851,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5689677910165954,
+          1.1935827474903449,
+          0.032355118817659255,
+          -0.3592210028006379
+        ],
+        "r2": [
+          1.4656900350195587,
+          -1.5927488863614265,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.518013657476557,
+          -2.5680660053453472,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.04408328001611844,
+        0.04541850164292116,
+        -0.04016242679834143
+      ],
+      "start_to_cargo_m": 1.0656754824517,
+      "proposal_attempts": 3,
+      "rejects": {
+        "start_blocked": 2
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86852",
+      "batch": "solo-teacher-train-86852",
+      "seed": 86852,
+      "split": "train",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        -0.2,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.6367401170800886,
+          -2.9274356210039167,
+          0.032355118817659255,
+          1.173731841217251
+        ],
+        "r2": [
+          0.011119774640315438,
+          -0.9110617601884607,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.130353557965412,
+          -2.361879188683453,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.08311321378389841,
+        0.013975390503620164,
+        0.019260130327521146
+      ],
+      "start_to_cargo_m": 0.6470600451816856,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86853",
+      "batch": "solo-teacher-train-86853",
+      "seed": 86853,
+      "split": "train",
+      "scenario_id": "s1_normal_mixed_v4",
+      "scenario_source_sha256": "004c61f7324eac530c81dcf226ad47582e8ad9032089c30d24878e2fba855ac6",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.387803556050634,
+          -1.8707451212884223,
+          0.032355118817659255,
+          -0.7749851947548496
+        ],
+        "r2": [
+          1.5532966044615106,
+          0.12225528492255666,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.7836466737719268,
+          -0.6110793318242282,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.04172824623884176,
+        -0.0036374912645963063,
+        -0.022156994463233947
+      ],
+      "start_to_cargo_m": 0.8428052565660789,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86854",
+      "batch": "solo-teacher-train-86854",
+      "seed": 86854,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.4282381999393533,
+          -1.3306454357529887,
+          0.032355118817659255,
+          0.428512240247256
+        ],
+        "r2": [
+          0.965575770190644,
+          0.26539139481982543,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.837524606930899,
+          -0.28533191884494125,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.0659870782554657,
+        0.006820812939866663,
+        0.02365162349242806
+      ],
+      "start_to_cargo_m": 0.9576004128805296,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86855",
+      "batch": "solo-teacher-train-86855",
+      "seed": 86855,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.4947959993437695,
+          0.19955735834546995,
+          0.032355118817659255,
+          0.3655650663357715
+        ],
+        "r2": [
+          -0.44005042310250986,
+          -2.26898264535458,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.6938116170630364,
+          -2.671260960311802,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.04666255150184106,
+        0.10254506050435747,
+        0.019300257777980088
+      ],
+      "start_to_cargo_m": 1.0505460400159683,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86856",
+      "batch": "solo-teacher-train-86856",
+      "seed": 86856,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "cyan",
+      "item_id": "cyan_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.19221163893732174,
+          0.3577120370873083,
+          0.032355118817659255,
+          0.4339676388786691
+        ],
+        "r2": [
+          1.333720963680816,
+          -1.6458854775706133,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.3451500774410008,
+          -1.3189922259709048,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.03557535797720261,
+        -0.05585228922362412,
+        0.03455426435607946
+      ],
+      "start_to_cargo_m": 0.7103551725292202,
+      "proposal_attempts": 3,
+      "rejects": {
+        "start_blocked": 2
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86857",
+      "batch": "solo-teacher-train-86857",
+      "seed": 86857,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.014143031394637795,
+          -2.7141981483482724,
+          0.032355118817659255,
+          0.42435841888112663
+        ],
+        "r2": [
+          3.0969735797191094,
+          -0.730728492336294,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.5515681174001033,
+          -0.18000894575681103,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.014194713293776355,
+        -0.08198695090275313,
+        0.01821382041511666
+      ],
+      "start_to_cargo_m": 1.0479917698708139,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86858",
+      "batch": "solo-teacher-train-86858",
+      "seed": 86858,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.20006703877300014,
+          -0.8486078750856939,
+          0.032355118817659255,
+          0.23651323945988667
+        ],
+        "r2": [
+          3.087825695054555,
+          -0.7408610265332083,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.8039069612046542,
+          -2.8447624796866355,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.03607862698199005,
+        -0.012581595711112996,
+        -0.0009412678603968932
+      ],
+      "start_to_cargo_m": 0.6000686536002146,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86859",
+      "batch": "solo-teacher-train-86859",
+      "seed": 86859,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.4557458290054369,
+          0.40694651444564445,
+          0.032355118817659255,
+          0.010349245292260556
+        ],
+        "r2": [
+          4.357191181280394,
+          0.3317872527982857,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.8161188599224847,
+          0.1732713471601679,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.013751425059941775,
+        -0.048098487831364486,
+        -0.019633606168358016
+      ],
+      "start_to_cargo_m": 0.9219471881898632,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86860",
+      "batch": "solo-teacher-train-86860",
+      "seed": 86860,
+      "split": "train",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3583199331306621,
+          -2.5060593408995078,
+          0.032355118817659255,
+          0.3007156606652756
+        ],
+        "r2": [
+          3.8394618280435204,
+          -1.7536318710625978,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.8427086618035766,
+          0.332318787742107,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.032297379865638756,
+        0.049308914041483985,
+        0.0683902969588868
+      ],
+      "start_to_cargo_m": 0.7603892231517877,
+      "proposal_attempts": 3,
+      "rejects": {
+        "start_blocked": 2
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86861",
+      "batch": "solo-teacher-train-86861",
+      "seed": 86861,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.3094243586725758,
+          -1.9950837593821111,
+          0.032355118817659255,
+          -0.8415924465221256
+        ],
+        "r2": [
+          5.068115406131383,
+          0.6816071069613825,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.7901683436643971,
+          -1.2504647628059218,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.02896924700034642,
+        0.03828025636806228,
+        -0.049959525465944066
+      ],
+      "start_to_cargo_m": 0.8269483069531591,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86862",
+      "batch": "solo-teacher-train-86862",
+      "seed": 86862,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.5765277398919636,
+          -0.846736444901783,
+          0.032355118817659255,
+          0.10508340618263225
+        ],
+        "r2": [
+          3.6349880032595405,
+          -1.8104278057379075,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.447881078618684,
+          -2.0949207170319566,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.02036521341466089,
+        -0.11830561356135767,
+        0.021220117343408243
+      ],
+      "start_to_cargo_m": 0.9765331932762888,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86863",
+      "batch": "solo-teacher-train-86863",
+      "seed": 86863,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        -0.2,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.7686344174006625,
+          0.09690608381305921,
+          0.032355118817659255,
+          0.7354908497777438
+        ],
+        "r2": [
+          2.9459020677802883,
+          -0.7381324802173537,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          3.8612100018150426,
+          0.9475366933159393,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.0494264479296184,
+        -0.007248881657837169,
+        0.001448925258358451
+      ],
+      "start_to_cargo_m": 0.8659542505311615,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86864",
+      "batch": "solo-teacher-train-86864",
+      "seed": 86864,
+      "split": "train",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.2096913068266142,
+          -2.9068789545021114,
+          0.032355118817659255,
+          0.6964791941403421
+        ],
+        "r2": [
+          1.7391814750546528,
+          -2.7084966496279637,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          5.093159358476024,
+          0.32294762046190995,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.009460040821208576,
+        0.014185353615133567,
+        -0.022744495672963275
+      ],
+      "start_to_cargo_m": 0.7618804818912785,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "train",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86865",
+      "batch": "solo-teacher-train-86865",
+      "seed": 86865,
+      "split": "train",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.06456609779993083,
+          -2.1933885082851554,
+          0.032355118817659255,
+          -0.22904273756654153
+        ],
+        "r2": [
+          1.5624057992548939,
+          0.13922730573929032,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.2538610168787656,
+          0.02271713525465424,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.03511333358699399,
+        -0.024711925804038998,
+        -0.015736849960153114
+      ],
+      "start_to_cargo_m": 0.9699928056771177,
+      "proposal_attempts": 3,
+      "rejects": {
+        "start_blocked": 2
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "validation",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86866",
+      "batch": "solo-teacher-train-86866",
+      "seed": 86866,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.490033789205399,
+          -1.297018968362864,
+          0.032355118817659255,
+          0.12456245512499742
+        ],
+        "r2": [
+          0.22499507457187073,
+          -1.6764569504841222,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.252705863931471,
+          -0.801531231945023,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.11165609361002363,
+        -0.030740162769528897,
+        -0.011979753309946222
+      ],
+      "start_to_cargo_m": 0.995984991856564,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "validation",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86867",
+      "batch": "solo-teacher-train-86867",
+      "seed": 86867,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3816157786806167,
+          0.4333339646808289,
+          0.032355118817659255,
+          0.6002228509071581
+        ],
+        "r2": [
+          3.690502974492739,
+          -2.1110074454117913,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          5.092775075811165,
+          -2.7711271704674734,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.021437593711217576,
+        -0.06646940009153815,
+        0.043648110189860236
+      ],
+      "start_to_cargo_m": 0.8433271034463847,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "validation",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86868",
+      "batch": "solo-teacher-train-86868",
+      "seed": 86868,
+      "split": "train",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.6270493355050065,
+          -2.5614765840454,
+          0.032355118817659255,
+          -0.025950447206653307
+        ],
+        "r2": [
+          4.44623579930539,
+          -1.4438209881609647,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.987722170962222,
+          -2.465435581649317,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.0951956389088619,
+        0.05574913241681162,
+        -0.06532186269324172
+      ],
+      "start_to_cargo_m": 1.0330814906635908,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "validation",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86869",
+      "batch": "solo-teacher-train-86869",
+      "seed": 86869,
+      "split": "train",
+      "scenario_id": "s3_late_rendezvous_v4",
+      "scenario_source_sha256": "43efea3232a82e85d1ac0ad08466bef2a63f38d17bed5b291ae939b1a00cc480",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.2586416289248692,
+          -2.0307681137534987,
+          0.032355118817659255,
+          -0.5262782703042337
+        ],
+        "r2": [
+          2.7958923891617564,
+          0.39566183532147514,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          4.043730838605057,
+          1.0986793170369933,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.02196450344259323,
+        0.02376592328273075,
+        0.011387579594717081
+      ],
+      "start_to_cargo_m": 0.8516851582650544,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "validation",
+      "reserve_order": null
+    },
+    {
+      "episode_id": "train-86870",
+      "batch": "solo-teacher-train-86870",
+      "seed": 86870,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3236448698433063,
+          -1.386220552425247,
+          0.032355118817659255,
+          0.5560638570758285
+        ],
+        "r2": [
+          2.50714285122124,
+          1.1793908048822712,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.3594421272857562,
+          -0.615439875213101,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.03027348833095696,
+        0.03367965341496042,
+        0.009379440959139649
+      ],
+      "start_to_cargo_m": 0.9006632991822044,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "reserve",
+      "reserve_order": 1
+    },
+    {
+      "episode_id": "train-86871",
+      "batch": "solo-teacher-train-86871",
+      "seed": 86871,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.40356083550000776,
+          0.19949799632237364,
+          0.032355118817659255,
+          0.48758644446873955
+        ],
+        "r2": [
+          5.144240857436127,
+          -2.4020085083503027,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.031606932665178,
+          0.11449125606252064,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.02523745218578693,
+        0.04391574450689562,
+        0.04589756898420878
+      ],
+      "start_to_cargo_m": 0.9740443893388802,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "reserve",
+      "reserve_order": 2
+    },
+    {
+      "episode_id": "train-86872",
+      "batch": "solo-teacher-train-86872",
+      "seed": 86872,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.10594717498777984,
+          -2.056235675006473,
+          0.032355118817659255,
+          -0.8138214172686427
+        ],
+        "r2": [
+          4.549658902103237,
+          -1.60421404727097,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.5956079114180253,
+          -1.9648295145259864,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.09677383373516589,
+        -0.030832387586934115,
+        -0.04014212981025001
+      ],
+      "start_to_cargo_m": 0.6411184660542256,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "reserve",
+      "reserve_order": 3
+    },
+    {
+      "episode_id": "train-86873",
+      "batch": "solo-teacher-train-86873",
+      "seed": 86873,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.0,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.2482416632678559,
+          -2.920199254367007,
+          0.032355118817659255,
+          0.8101710538447322
+        ],
+        "r2": [
+          3.305302846725026,
+          0.4414536409002934,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.09829740606238369,
+          -2.1966255324125705,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.002197953032950198,
+        -0.018469684674719683,
+        0.035884282831138356
+      ],
+      "start_to_cargo_m": 0.886694950731969,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "reserve",
+      "reserve_order": 4
+    },
+    {
+      "episode_id": "train-86874",
+      "batch": "solo-teacher-train-86874",
+      "seed": 86874,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.6495342905602154,
+          -0.5960807800294262,
+          0.032355118817659255,
+          -0.03740895485691262
+        ],
+        "r2": [
+          5.09549430730071,
+          1.1395297089555707,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          2.6233797583295364,
+          -1.351629127670681,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.060348840675348396,
+        0.01797303635148224,
+        -0.011160273154916274
+      ],
+      "start_to_cargo_m": 1.079813501180736,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "reserve",
+      "reserve_order": 5
+    },
+    {
+      "episode_id": "train-86875",
+      "batch": "solo-teacher-train-86875",
+      "seed": 86875,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3755016616976209,
+          0.2459499326060851,
+          0.032355118817659255,
+          0.6912164817364104
+        ],
+        "r2": [
+          3.1471267572773303,
+          -1.2431675457683746,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          1.272322734038084,
+          1.2288239858902839,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.01115515180762841,
+        -0.09616943261572446,
+        -0.03068506440228096
+      ],
+      "start_to_cargo_m": 0.9249158327845737,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "reserve",
+      "reserve_order": 6
+    },
+    {
+      "episode_id": "train-86876",
+      "batch": "solo-teacher-train-86876",
+      "seed": 86876,
+      "split": "train",
+      "scenario_id": "s6_novel_relation_v4",
+      "scenario_source_sha256": "fb2596bbbe76d360bd7c481e750bfea0683e95770d60617af26fbc114a820986",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "cyan",
+      "item_id": "cyan_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.2608697239218343,
+          -2.446384028194513,
+          0.032355118817659255,
+          0.41011144140170047
+        ],
+        "r2": [
+          3.198682634227627,
+          -1.0015614326703155,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.7956856063765788,
+          -0.9247189604618473,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.09788125588773734,
+        0.015069498687985178,
+        0.03168900903401896
+      ],
+      "start_to_cargo_m": 0.6608796163058894,
+      "proposal_attempts": 1,
+      "rejects": {},
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "reserve",
+      "reserve_order": 7
+    },
+    {
+      "episode_id": "train-86877",
+      "batch": "solo-teacher-train-86877",
+      "seed": 86877,
+      "split": "train",
+      "scenario_id": "s5_moved_dropped_item_v4",
+      "scenario_source_sha256": "984cc24c527cf2633940095375eb8a8440c6a10c20ff45a658ee6e60e0110b5e",
+      "map_id": "zone_wide_door_geometry_v3",
+      "kind": "red",
+      "item_id": "red_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        1.6,
+        -2.45,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          0.6859386102508251,
+          -2.0637991685979378,
+          0.032355118817659255,
+          -0.32285360926202855
+        ],
+        "r2": [
+          -0.226545301297145,
+          -0.5550246248327837,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.6982448775608581,
+          0.32599631336221657,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.07662714344245049,
+        0.020252677786754006,
+        -0.06102258103266786
+      ],
+      "start_to_cargo_m": 0.9923000082665712,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "reserve",
+      "reserve_order": 8
+    },
+    {
+      "episode_id": "train-86878",
+      "batch": "solo-teacher-train-86878",
+      "seed": 86878,
+      "split": "train",
+      "scenario_id": "s2_unmapped_blockage_v4",
+      "scenario_source_sha256": "02a8b12d01e91be9753e1efd85a9dda306ceee6370e7ca52f243b467e2817271",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "green",
+      "item_id": "green_1",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        -0.85,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.20259615941164377,
+          -1.1887694415814656,
+          0.032355118817659255,
+          0.686746992437054
+        ],
+        "r2": [
+          0.9836373242280616,
+          -2.4232653370810606,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.667348282764276,
+          -0.4264141911922139,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        -0.018546516551862045,
+        0.04963640750725947,
+        -0.0017686669881792378
+      ],
+      "start_to_cargo_m": 0.6912936177103628,
+      "proposal_attempts": 2,
+      "rejects": {
+        "start_blocked": 1
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "reserve",
+      "reserve_order": 9
+    },
+    {
+      "episode_id": "train-86879",
+      "batch": "solo-teacher-train-86879",
+      "seed": 86879,
+      "split": "train",
+      "scenario_id": "s8_mixed_tiers_v4",
+      "scenario_source_sha256": "cd3127fdffa8a6d99ae0d9721afa6024d69b4f30551a1ba7600fa90cffc1e99f",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "kind": "yellow",
+      "item_id": "yellow_2",
+      "role": "west",
+      "robot_id": "r1",
+      "cargo_pose_m": [
+        0.4,
+        0.75,
+        0.0
+      ],
+      "spawns": {
+        "r1": [
+          -0.3203987552806289,
+          0.37553591111052526,
+          0.032355118817659255,
+          0.7371913151506917
+        ],
+        "r2": [
+          2.436901254069419,
+          -1.3695859301110884,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          0.9782514102955562,
+          -1.621683249172908,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "handoff_pose_error": [
+        0.023667170774130993,
+        -0.026926631950855262,
+        -0.054978538488078016
+      ],
+      "start_to_cargo_m": 0.8119099214061274,
+      "proposal_attempts": 4,
+      "rejects": {
+        "start_blocked": 3
+      },
+      "pr": 504,
+      "negative_probe": false,
+      "gate_eligible": false,
+      "training_eligible": true,
+      "dataset_split": "reserve",
+      "reserve_order": 10
+    }
+  ],
+  "train_target": 45,
+  "validation_target": 5,
+  "reserve_count": 10,
+  "selection_rule": "first 45 successful train slots and 5 successful validation slots; failed attempts excluded with denominator; reserves in ascending order fill failed slots without crossing splits",
+  "recovery_success_episode_count": null,
+  "minimum_recovery_success_episodes": 20,
+  "approved": false,
+  "ready": false,
+  "raw_split_note": "pinned recorder requires split=train; dataset_split is offline assignment, never student input",
+  "review_policy": "own_review_only_v1: suppress two evaluation-only top output statements; all teacher/control AST unchanged",
+  "rotation_calibration": "act8_yaw_gain_v1",
+  "yaw_gain": 0.6790684337506349,
+  "recovery_mode": "recovery_active_search_v1",
+  "noise_sha256": "c5fc20e0dae610afd24f60960dab9b5b9f77ae057719274ae13e12734fa16565"
+}
