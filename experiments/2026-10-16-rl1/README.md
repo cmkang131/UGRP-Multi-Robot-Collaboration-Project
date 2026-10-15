@@ -30,7 +30,7 @@ Refs #523. 상태: rl1b WAITING_BACKEND, 개선 여부는 아직 미측정이다
 재사용 모듈: `scripts/rl_act_reward.py`, `scripts/rl_act_curriculum.py`, `scripts/rl_act_env.py`.
 현재 env는 backend 주입용 계약 래퍼이며 **실제 MJWarp binding/부분 reset은 미검증**이다.
 기존 미커밋 env/reward 원형은 `outputs/rl1b/imported-originals/`에 보존했다(실행하지 않음).
-짧은 비물리 시험: `tests/test_rl_act_signal.py` 13개 통과; 평가에서 privileged read0,
+짧은 비물리 시험: `tests/test_rl_act_signal.py` 15개 통과; 평가에서 privileged read0,
 GT 변경 시 actor 입력 불변, h2 중복 벌점 방지, 부분 reset의 래퍼 이력 격리를 검사했다.
 이는 실제 GPU reset·actor 출력 바이트·물리 성공 검증이 아니다.
 
@@ -218,3 +218,24 @@ h1 mask·교사 정렬 원장이 없어 해당 항은 미측정, 성공 보상·
 KeyError(min_z)로 중단됐다(부분 산출물 원격 보존, 학습/물리0). 18c369ff에서
 알려진 주석 이벤트만 분리하여 완료했으며 모르는 schema는 계속 거부한다.
 이 저장 감사는 새로운 RL 신호나 h1–h4 정책 효과를 뜻하지 않는다.
+
+### 학습 클라이언트 준비
+
+`scripts/rl_act_actor.py`는 ACT15 해시를 고정하고 upstream ACT의 ResNet18·원래 역정규화·
+원래 디코더를 그대로 쓴다. 자기 RGB montage에서4x4 공간 bin, 정규화 발행 명령, raw ACT 행동,
+청크 번호와 자기 done latch만 잔차 입력에 넣는다. 보상·critic·시뮬 모듈을 import하지 않는다.
+0잔차는 float64 raw base를 그대로 디코딩하고, 자기 done 이후에는 원래 정지/유지 계약을 따른다.
+
+`scripts/rl_act_learning.py`는 세계별 n-step3 replay, twin LayerNorm critic, actor4회 지연,
+UTD1용 update, zero-init actor, tau.005를 구현했다. GPU 학습 생성자는 gcp2 L4 metadata와
+명시적 enabled를 요구하며 CPU/Mac 학습 fallback은 없다. 아직 실제 optimizer 실행은0이다.
+기존 decoder의 바퀴 deadband·PWM 반올림 때문에 actor loss에서만 straight-through gradient를
+쓰는 **pilot 근사**를 명시했다. forward/replay는 실제 디코딩 명령이다. 이 미분은 실제 물리 미분이나
+ResFiT 원문 그대로의 재현이 아니며, 실제 GPU 손실·grad 검증 전 학습 준비 완료로 보고하지 않는다.
+
+TD3의 Adam3e-4·target noise.2/clip.5는 [저자 코드](https://github.com/sfujim/TD3/blob/master/TD3.py),
+straight-through 개념은 [Bengio2013 초록](https://arxiv.org/abs/1308.3432)에서 확인했다.
+공간 bin4x4는2x2 시점 montage 각각에2x2 위치 bin을 보존하는 pilot 표현 선택이다.
+LeRobot pinned source의 feature_map interface는 gcp2 설치본 commit89236ea0에서 직접 확인했다.
+원문 GitHub raw URL 열람은 실패했으며 설치본 확인을 원격 원문 열람으로 바꾸어 쓰지 않는다.
+비물리 시험15개에는 n-step terminal/collector truncation 분리·episode 간 credit 차단·0잔차 정밀도 보존이 포함된다.

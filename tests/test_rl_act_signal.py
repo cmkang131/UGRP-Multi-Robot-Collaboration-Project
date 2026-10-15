@@ -209,6 +209,7 @@ def test_dependency_watch_does_not_mistake_teacher_transport_for_actor_reset(mon
     source += '    def reset(self): pass\n'
     signalled = watch.inspect()
     assert signalled['signal'] and not signalled['runtime_admitted']
+
     source = ('class Base:\n    def reset(self): pass\n'
               'class WarpTransport(Base):\n    def step(self): pass\n')
     assert watch.inspect()['signal']
@@ -218,3 +219,43 @@ def test_dependency_watch_does_not_mistake_teacher_transport_for_actor_reset(mon
     watch.ALERT.write_text('warp1: FAILED backend pilot\n')
     signalled = watch.inspect()
     assert signalled['signal'] and not signalled['runtime_admitted']
+
+
+def test_zero_residual_composition_preserves_base_precision_and_limits():
+    import numpy as np
+    from scripts.rl_act_actor import compose
+    raw = np.linspace(-.12345678901234, .99876543210987,14)
+    assert compose(raw,np.zeros(14),np.ones(14),lambda v:v) == raw.tolist()
+    actual = compose(raw,np.ones(14),np.linspace(0,.1,14),lambda v:v)
+    assert np.allclose(actual,raw+np.linspace(0,.1,14))
+    with pytest.raises(ValueError,match='bounded'):
+        compose(raw,np.full(14,1.01),np.ones(14),lambda v:v)
+
+
+def test_nstep_credit_terminal_flush_and_collector_truncation_are_separate():
+    import numpy as np
+    from scripts.rl_act_learning import Replay, Transition
+    def row(reward, terminal=False):
+        return Transition(np.array([reward,0.]),np.zeros(14),np.zeros(1),np.zeros(14),
+            reward,np.array([reward+1,0.]),np.ones(14),np.ones(1),terminal)
+    replay = Replay(2,2,1,capacity=10)
+    replay.push(0,row(1))
+    replay.push(1,row(7))
+    replay.push(0,row(2))
+    assert replay.size == 0
+    with pytest.raises(ValueError,match='flush'):
+        replay.reset(0)
+    replay.push(0,row(3,True))
+    assert replay.size == 3
+    assert replay.data['reward'][0,0] == pytest.approx(1+GAMMA*2+GAMMA**2*3)
+    assert (replay.data['discount'][:3] == 0).all()
+    assert len(replay.pending[1]) == 1
+    replay.reset(0)
+    replay.truncate(1)
+    assert replay.data['discount'][3,0] == pytest.approx(GAMMA)
+    assert replay.transitions == 4 and replay.total == 4
+    invalid = row(1)
+    invalid.privileged[0] = float('nan')
+    with pytest.raises(ValueError,match='privileged'):
+        replay.push(1,invalid)
+    assert not replay.pending[1]
