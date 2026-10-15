@@ -39,6 +39,7 @@ def parser():
     p.add_argument('--compiled-reference-v1',type=Path)
     p.add_argument('--compiled-geometry-312-v1',type=Path)
     p.add_argument('--per-world-model-references-v1',type=Path,help='default OFF: XMLsha→exact C312 assets; preserve batchable per-world model fields')
+    p.add_argument('--float32-solver-default-v1',action='store_true',help='default OFF: retain upstream float32 tolerance clamp; unchanged task success criteria')
     p.add_argument('--reset-check-v1',action='store_true',help='diagnostic only: reset selected initial state; no teacher rollout or gate')
     p.add_argument('--export-compiled-only',action='store_true')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
@@ -119,8 +120,9 @@ def main():
         if a.physics_backend=='mjwarp_batch_v1':
             hooks.initialize(contexts,compiled_reference=a.compiled_reference_v1,
                 compiled_geometry=a.compiled_geometry_312_v1,
-                per_world_model_references=json.loads(a.per_world_model_references_v1.read_text()) if a.per_world_model_references_v1 else None)
-            report.update(camera=hooks.camera,compatibility=hooks.compat,capacities=hooks.capacities,model_batch=hooks.model_batch_audit)
+                per_world_model_references=json.loads(a.per_world_model_references_v1.read_text()) if a.per_world_model_references_v1 else None,
+                float32_solver_default_v1=a.float32_solver_default_v1)
+            report.update(camera=hooks.camera,compatibility=hooks.compat,capacities=hooks.capacities,model_batch=hooks.model_batch_audit,solver_numerics=hooks.solver_numerics)
             initial=hooks.initial_state_proof(contexts)
             write(a.out/'initial-world-state.json',initial)
             report['initial_world_state']=initial
@@ -166,6 +168,8 @@ def main():
     finally:
         for gen in generators:gen.close()
         hooks.save_states()
+        if hasattr(hooks,'solver_samples'):
+            write(a.out/'solver-iterations.json',hooks.solver_samples)
         report['prototype_reset']={'unique_plans':len(hooks.prototypes),'cache_hits':hooks.prototype_hits,
             'scope':'exact-plan initial MjData copy; per-world native buffers/command arrays are independent'}
         hooks.close()

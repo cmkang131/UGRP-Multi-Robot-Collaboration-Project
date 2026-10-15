@@ -138,7 +138,7 @@ class CTransport(Transport):
 
 
 class WarpTransport(Transport):
-    def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None, per_world_model_references=None):
+    def initialize(self, contexts, *, compiled_reference=None, compiled_geometry=None, per_world_model_references=None, float32_solver_default_v1=False):
         import mujoco
         import warp as wp
         import mujoco_warp as mjw
@@ -188,7 +188,14 @@ class WarpTransport(Transport):
         else:
             self.wm=mjw.put_model(m)
             self.model_batch_audit={'mode':'same_static_model','varying_fields':[]}
-        self.wm.opt.tolerance.fill_(float(m.opt.tolerance))
+        upstream_tolerance=float(self.wm.opt.tolerance.numpy().item())
+        if not float32_solver_default_v1:
+            self.wm.opt.tolerance.fill_(float(m.opt.tolerance))
+        self.solver_numerics={'profile':'float32_solver_default_v1' if float32_solver_default_v1 else 'source_tolerance',
+            'source_tolerance':float(m.opt.tolerance),'upstream_tolerance':upstream_tolerance,
+            'effective_tolerance':float(self.wm.opt.tolerance.numpy().item()),
+            'basis':'pinned io.py433 clamps float64 C tolerance to minimum1e-6 to avoid float32 needless iterations; task Score unchanged'}
+        self.solver_samples=[]
         if self.wm.opt.noslip_iterations != 10:
             raise RuntimeError('noslip lost in Warp conversion')
         self.compat['collision'] = install_legacy_plane(m)
@@ -413,6 +420,9 @@ class WarpTransport(Transport):
             wp.capture_launch(self.graph)
         wp.synchronize()
         self.tick+=1
+        niter=self.wd.solver_niter.numpy()
+        self.solver_samples.append({'control_tick':self.tick,'max':int(niter.max()),
+            'mean':float(niter.mean()),'min':int(niter.min())})
         self.seconds['physics']+=time.perf_counter()-start
         if np.any(self.wd.overflow.numpy()):
             raise RuntimeError('MJWarp workspace overflow '+str(self.wd.overflow.numpy().tolist()))
