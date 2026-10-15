@@ -193,6 +193,13 @@ def run(a):
             d=mujoco.MjData(m);d.qpos[:]=fixture['qpos'];d.qvel[:]=fixture['qvel'];d.ctrl[:]=tape[0]
             mujoco.mj_forward(m,d)
             if a.engine=='warp':
+                # MuJoCo 3.16's reset contact set can exceed 3.12's sampled
+                # maximum. Include the actual import counts, as put_data
+                # requires. This is workspace allocation, not contact removal.
+                ncon=max(ncon,2**math.ceil(math.log2(max(1,int(d.ncon)))))
+                nefc=max(nefc,2**math.ceil(math.log2(max(1,int(d.nefc)))))
+                report['capacities'].update(nconmax=ncon,njmax=nefc,
+                    basis='next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts')
                 with unused_efm(m,d): wd=mjw.put_data(m,d,nworld=a.nworld,nconmax=ncon,njmax=nefc)
                 mjw.step(wm,wd);wp.synchronize();check(wd)
                 # Warm-up is recorded separately, and discarded before the trace.
