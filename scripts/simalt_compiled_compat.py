@@ -59,3 +59,56 @@ def apply_reference(model, xml, path, *, ablation=False):
                          'after': float(bias[i, 2])} for i in changed],
             'other_audited_arrays_exact': True,
             'source': reference['source'], 'new_physical_parameters': False}
+
+
+def export_geometry(model, xml, version, path):
+    """Compiled geometry and its accelerator caches, not an XML approximation."""
+    import numpy as np
+    fields = {name: getattr(model, name).copy() for name in dir(model)
+              if name.startswith(('geom_', 'mesh_', 'bvh_'))
+              and isinstance(getattr(model, name), np.ndarray)}
+    metadata = {'mujoco': version, 'xml_sha256': digest(xml),
+        'geom_names': [model.geom(i).name for i in range(model.ngeom)],
+        'fields': {name: {'shape': list(value.shape), 'dtype': str(value.dtype),
+                          'sha256': hashlib.sha256(value.tobytes()).hexdigest()}
+                   for name, value in fields.items()}}
+    with Path(path).open('xb') as stream:
+        np.savez_compressed(stream, **fields)
+    metadata['npz_sha256'] = digest(path)
+    Path(str(path)+'.json').write_text(json.dumps(metadata, indent=2)+'\n')
+    return metadata
+
+
+def apply_geometry(model, xml, path):
+    import numpy as np
+    reference = json.loads(Path(str(path)+'.json').read_text())
+    if (reference['mujoco'] != '3.12.0' or reference['xml_sha256'] != digest(xml)
+            or reference['npz_sha256'] != digest(path)):
+        raise ValueError('compiled geometry reference version/XML/hash mismatch')
+    if reference['geom_names'] != [model.geom(i).name for i in range(model.ngeom)]:
+        raise ValueError('compiled geometry geom ordering mismatch')
+    arrays = np.load(path, allow_pickle=False)
+    # Check the complete transfer before writing anything. Structure and all
+    # physical parameters must already agree. Only the principal-axis mesh
+    # representation and its associated compiled caches are replaced together.
+    structural = ('geom_type', 'geom_bodyid', 'geom_dataid', 'geom_friction',
+        'geom_solref', 'geom_solimp', 'geom_margin', 'geom_gap', 'geom_condim',
+        'geom_contype', 'geom_conaffinity', 'geom_solmix', 'geom_priority')
+    for name in arrays.files:
+        target = getattr(model, name, None)
+        if target is None or target.shape != arrays[name].shape or target.dtype != arrays[name].dtype:
+            raise ValueError('compiled geometry layout mismatch: '+name)
+        if name in structural and not np.array_equal(target, arrays[name]):
+            raise ValueError('compiled geometry physical/structural difference: '+name)
+    changes=[]
+    for name in arrays.files:
+        target = getattr(model, name)
+        if not np.array_equal(target, arrays[name]):
+            changes.append({'array': name, 'entries': int(np.count_nonzero(target != arrays[name])),
+                'before_sha256': hashlib.sha256(target.tobytes()).hexdigest(),
+                'after_sha256': hashlib.sha256(arrays[name].tobytes()).hexdigest()})
+        target[:] = arrays[name]
+    return {'mode': 'compiled-geometry-312-v1', 'reference': str(path),
+        'reference_sha256': digest(path), 'fields_copied': len(arrays.files), 'changes': changes,
+        'basis': 'same XML and same physical geometry; C312 compiled mesh principal axes, vertices and caches transferred as a unit',
+        'new_physical_parameters': False}

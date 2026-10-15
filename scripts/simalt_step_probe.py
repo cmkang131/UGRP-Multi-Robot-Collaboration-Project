@@ -39,6 +39,9 @@ def main():
     p.add_argument('--damping-ablation-v1', action='store_true',
                    help='diagnostic only: copy C3.16 damping onto C3.12 to isolate its contribution')
     p.add_argument('--export-compiled', type=Path, help='export compiled arrays without physics steps')
+    p.add_argument('--export-compiled-geometry', type=Path, help='export compiled geometry/caches without steps')
+    p.add_argument('--compiled-geometry-312-v1', type=Path,
+                   help='default OFF: same-XML C312 mesh representation and compiled geometry caches')
     a = p.parse_args()
     if not a.enabled or platform.system() != 'Linux':
         p.error('explicit Linux gcp2 opt-in required; Mac physics/render forbidden')
@@ -54,10 +57,14 @@ def main():
         p.error('damping ablation requires C3.12 and an explicit C3.16 reference')
     a.out.mkdir(parents=True, exist_ok=False)
     m = mujoco.MjModel.from_xml_path(str(a.fixture/'scene.xml'))
-    from simalt_compiled_compat import apply_reference, export_reference
+    from simalt_compiled_compat import apply_reference, export_reference, export_geometry, apply_geometry
     if a.export_compiled:
         export_reference(m, a.fixture/'scene.xml', mujoco.__version__, a.export_compiled)
         return
+    if a.export_compiled_geometry:
+        export_geometry(m, a.fixture/'scene.xml', mujoco.__version__, a.export_compiled_geometry)
+        return
+    geometry = apply_geometry(m, a.fixture/'scene.xml', a.compiled_geometry_312_v1) if a.compiled_geometry_312_v1 else None
     compatibility = apply_reference(m, a.fixture/'scene.xml', a.compiled_reference_v1,
                                    ablation=a.damping_ablation_v1) if a.compiled_reference_v1 else None
     native_collision = None
@@ -105,6 +112,7 @@ def main():
         ('geom_friction','pair_friction','geom_solref','geom_solimp','body_mass','body_inertia',
          'actuator_gainprm','actuator_biasprm','geom_margin','geom_gap','geom_condim')}
     metadata['compiled_compatibility'] = compatibility
+    metadata['compiled_geometry_compatibility'] = geometry
     if native_collision:
         metadata['collision_adapter'] = native_collision
     def save():
