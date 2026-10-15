@@ -22,7 +22,9 @@ def main():
     from sim.masterpi_camera_profile import raw_fisheye_remap
     from sim import masterpi_camera_review_v3 as camera
     a.out.mkdir(parents=True,exist_ok=False)
-    xml=(a.fixture/'scene.xml').read_text().replace('/tmp/simalt1/source/',str(a.source.resolve())+'/')
+    xml=(a.fixture/'scene.xml').read_text()
+    for prefix in ('/tmp/simalt1/source/','/home/changmin/ugrp-sim/runs/simalt2/runtime/source/'):
+        xml=xml.replace(prefix,str(a.source.resolve())+'/')
     m=mujoco.MjModel.from_xml_string(xml);d=mujoco.MjData(m)
     for name in ('camera_bracket','camera_body','camera_lens_visual'):
         gid=mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_GEOM,'r1__'+name)

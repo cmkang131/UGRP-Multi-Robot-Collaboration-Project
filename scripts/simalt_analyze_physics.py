@@ -16,7 +16,9 @@ def main():
     if socket.gethostname().split('.')[0]!='ugrp-sim-gcp1':p.error('gcp1 analysis only')
     import mujoco
     import numpy as np
-    xml=(a.fixture/'scene.xml').read_text().replace('/tmp/simalt1/source/',str(a.asset_source.resolve())+'/')
+    xml=(a.fixture/'scene.xml').read_text()
+    for prefix in ('/tmp/simalt1/source/','/home/changmin/ugrp-sim/runs/simalt2/runtime/source/'):
+        xml=xml.replace(prefix,str(a.asset_source.resolve())+'/')
     m=mujoco.MjModel.from_xml_string(xml)
     meta=json.loads((a.fixture/'fixture.json').read_text())
     rr=json.loads((a.reference/'result.json').read_text());cc=json.loads((a.candidate/'result.json').read_text())
