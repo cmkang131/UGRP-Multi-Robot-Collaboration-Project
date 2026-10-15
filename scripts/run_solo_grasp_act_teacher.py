@@ -27,7 +27,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         teacher_stability='off', reach_mode='box_station_v1', rgb_lift_mode='off',
         solo_lift_negative_probe_v1=False, solo_lift_lookback_margin_v1=False,
         training_rgb=False, solo_truth_free_lookaround_v1=False,
-        recording_stage='pilot', recording_approval=None, solo_carry_to_zone_v1=False):
+        recording_stage='pilot', recording_approval=None, solo_carry_to_zone_v1=False, failure_rgb_buffer=False):
     if platform.system() != 'Linux' or execution_host != 'gcp1':
         raise RuntimeError('Linux gcp1 only; Mac physics/render disabled')
     if not 0 < cap_s <= (300 if solo_carry_to_zone_v1 else 180) or profile != 'solo_visible_only_v1' or not hidden or not look:
@@ -102,6 +102,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         (out/'evaluation').mkdir()
     start = time.monotonic()
     audit, visibility_stats, score = InputAudit(), VisibilityStats(), Score()
+    from harness.failure_rgb_buffer import FailureRGBBuffer
+    failure_frames=FailureRGBBuffer(out/'failure-rgb') if failure_rgb_buffer else None
     ops = primitives()
     try:
         # Scene hardware/camera/physics are exactly the existing pair setup.
@@ -180,6 +182,7 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 reloc14_carry_budget_v1=plan.get('reloc14_carry_budget_v1', False),
                                 reloc14_compute_budget_v1=plan.get('reloc14_compute_budget_v1', False),
                                 reloc14_carry_tracking_v1=plan.get('reloc14_carry_tracking_v1', False),
+                                reloc15_rgb_heading_v1=plan.get('reloc15_rgb_heading_v1', False),
                                 carry_pose_budget_xy_reserve0_v1=plan.get('carry_pose_budget_xy_reserve0_v1', False))
             if carry.loc.drive_model_enabled:
                 ops.delta = carry.loc.cached_delta
@@ -360,6 +363,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
             # Capture once: recording persists exactly these controller bytes.
             jpg = base64.b64decode(port.capture()['image'])
             bgr = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+            if failure_frames is not None:
+                failure_frames.add(now,jpg,camera=rid+'/robot_cam')
             map_evidence = None
             if carry is not None:
                 if tick:
@@ -550,6 +555,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
         write(out/'result.json', report)
         raise
     finally:
+        if failure_frames is not None:
+            report['failure_rgb_buffer']=failure_frames.flush(report.get('status','interrupted'))
+            write(out/'result.json',report)
         if recorder is not None:
             recorder.flush()
             if 'recording' not in report:
@@ -606,7 +614,7 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
     if plan.get('render_profile','floor_light_v1') not in ('floor_light_v1','floor_light_textured_v1'):
         raise ValueError('unknown carry render profile')
     for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1',
-                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1', 'reloc12_carry_reacquire_v1', 'carry_pose_budget_recal_v1', 'carry_pose_budget_xy_reserve0_v1', 'reloc14_carry_budget_v1', 'reloc14_compute_budget_v1', 'reloc14_scene_v7', 'reloc14_carry_tracking_v1'):
+                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1', 'reloc12_carry_reacquire_v1', 'carry_pose_budget_recal_v1', 'carry_pose_budget_xy_reserve0_v1', 'reloc14_carry_budget_v1', 'reloc14_compute_budget_v1', 'reloc14_scene_v7', 'reloc14_carry_tracking_v1', 'reloc15_rgb_heading_v1'):
         if type(plan.get(option, False)) is not bool:
             raise ValueError(option+' must be bool')
         if plan.get(option) and plan.get('carry5_profile') != 'carry5_active_localization_v1':
@@ -656,6 +664,7 @@ def main():
     p.add_argument('--solo-carry-to-zone-v1', action='store_true', help='diagnostic only, default off')
     p.add_argument('--solo-truth-free-lookaround-v1', action='store_true',
                    help='pose-free fixed own-RGB sweep; required for training, default OFF')
+    p.add_argument('--failure-rgb-buffer', action='store_true', help='record-only 10Hz last 10 SIM seconds')
     p.add_argument('--recording-stage', choices=('pilot', 'batch'), default='pilot')
     p.add_argument('--recording-approval', type=Path)
     a = p.parse_args()
@@ -668,6 +677,7 @@ def main():
               solo_lift_lookback_margin_v1=a.solo_lift_lookback_margin_v1,
               training_rgb=a.training_rgb, solo_truth_free_lookaround_v1=a.solo_truth_free_lookaround_v1,
               recording_stage=a.recording_stage, recording_approval=a.recording_approval,
+              failure_rgb_buffer=a.failure_rgb_buffer,
               solo_carry_to_zone_v1=a.solo_carry_to_zone_v1)))
 
 

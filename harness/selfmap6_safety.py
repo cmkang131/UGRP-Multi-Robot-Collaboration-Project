@@ -23,7 +23,22 @@ class PreMutationGate:
                      correction_gate, pose_override=None):
         self._admit, self._override, self._admission = correction_gate, pose_override, None
         try:
-            event = self.step(observation, command_delta=command_delta, command_covariance=command_covariance)
+            if getattr(self, 'reloc15_pose_handoff', False) and pose_override is not None and not self.landmarks:
+                # NaturalFloorSLAM's empty-bank branch never calls _fit. Map
+                # observations must still reach execution when ORB has no bank.
+                from harness.natural_floor_slam import _motion_covariance
+                prior=compose(self.pose,command_delta)
+                decision=correction_gate(prior,pose_override[0],self._gate_prediction,
+                    dict(covariance=pose_override[1],matched=[]))
+                self._admission=decision
+                event=self.step(observation,command_delta=command_delta,command_covariance=command_covariance)
+                if decision['accepted']:
+                    self.pose=np.asarray(pose_override[0]).copy();self.covariance=np.asarray(pose_override[1]).copy()
+                    event.update(status='visual_relocalized',reason='visual_relocalized',
+                        pose=self.pose.tolist(),covariance=self.covariance.tolist())
+                    self.trajectory[-1].update(pose=event['pose'],covariance=event['covariance'],source=event['status'])
+            else:
+                event = self.step(observation, command_delta=command_delta, command_covariance=command_covariance)
             if self._admission is not None:
                 event['correction_gate'] = self._admission
             return event

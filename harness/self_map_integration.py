@@ -51,11 +51,12 @@ class Options:
     reloc13_live_r7_v1: bool = False
     reloc14_continuous_tracking_v1: bool = False
     reloc14_compute_budget_v1: bool = False
+    reloc15_pose_handoff_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
-        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1'):
+        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1', 'reloc15_pose_handoff_v1'):
             if type(getattr(self, name)) is not bool or (getattr(self, name) and self.multiframe_registration == 'off'):
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
         if self.reloc13_execution_cov_v1 and not self.reloc12_raw_cov_gate_v1:
@@ -64,6 +65,8 @@ class Options:
             raise ValueError('reloc13 execution frame requires execution covariance')
         if self.reloc13_live_r7_v1 and not self.reloc13_execution_frame_v1:
             raise ValueError('live R7 requires execution frame')
+        if self.reloc15_pose_handoff_v1 and not self.reloc14_continuous_tracking_v1:
+            raise ValueError('reloc15 requires continuous tracking')
         if self.reloc14_continuous_tracking_v1 and not self.reloc13_live_r7_v1:
             raise ValueError("continuous tracking requires live R7")
         from harness.reloc9_rotation import selfmap_model
@@ -496,6 +499,22 @@ class SelfMapIntegration:
                                                  t, registration_reference,
                 **({"execution_pose": compose(self.slam.pose, self.delta)} if self.options.reloc13_execution_frame_v1 else {}))
             prior = compose(self.slam.pose, self.delta)
+        handoff = None
+        if self.options.reloc15_pose_handoff_v1 and static_pose is not None:
+            fresh = bool(self.registration.last.get('updated'))
+            if fresh:
+                from harness.reloc15_handoff import deliver
+                # Synchronous capture: exposure and release are this SIM t.
+                # deliver also supports delayed release with one body-odom replay.
+                static_pose, handoff = deliver(self.registration.last['world_pose'],
+                    self.registration.last['raw_covariance'],
+                    map_from_execution=self.registration.map_from_own,
+                    exposure_t=t, release_t=t, odom_at_exposure=self.odom.pose,
+                    odom_at_release=self.odom.pose, replay_covariance=np.zeros((3,3)))
+            else:
+                # A PF prediction consumes the same command delta as execution.
+                # It must not be fused or renew a visual-fix epoch a second time.
+                static_pose = None
         predicted_covariance = _motion_covariance(self.slam.pose, self.delta, self.slam.covariance, self.Q)
         if self.options.revision_gate != 'off':
             from harness.selfmap5_revision import issued_distance
@@ -527,6 +546,7 @@ class SelfMapIntegration:
             if self.quarantine_release is not None:
                 observation = Observation(frame_id, t, np.empty((0, 2)), np.empty((0, 32), np.uint8), sha256)
             self.slam.reloc14_pf_tracking = self.options.reloc14_continuous_tracking_v1 and self.registration.map_from_own is not None
+            self.slam.reloc15_pose_handoff = self.options.reloc15_pose_handoff_v1
             self.slam._gate_prediction = predicted_covariance
             # Authored-map fixes are absolute; bootstrap ORB fixes remain correlated.
             self.slam.reloc13_absolute_static = self.options.reloc13_execution_cov_v1 and static_pose is not None
@@ -549,6 +569,11 @@ class SelfMapIntegration:
         sigma_xy = math.sqrt(max(0., float(np.linalg.eigvalsh(cov[:2, :2]).max())))
         sigma_yaw = math.sqrt(max(0., float(cov[2, 2])))
         visual = event['status'] in ('visual_update', 'visual_relocalized')
+        if self.options.reloc15_pose_handoff_v1:
+            event['pose_handoff'] = handoff
+            if visual and static_pose is not None:
+                self.last_measurement_t = t
+            event['last_measurement_t'] = getattr(self, 'last_measurement_t', None)
         bootstrap = event['status'] == 'bootstrap' and event['landmark_count'] >= self.slam.options.min_inliers
         # PR496 does not supply revised historical poses. Do not silently smear or
         # rigidly shift old occupied cells after a discontinuous relocalization.
@@ -674,6 +699,8 @@ class SelfMapIntegration:
                           quarantine_release=self.quarantine_release)
         if self.options.reloc11_low_contrast_v1:
             result['reloc11_feature_extraction'] = dict(FAST=7,features_cap=800,min_matches=8,min_inliers=6)
+        if self.options.reloc15_pose_handoff_v1:
+            result.update(pose_handoff=event.get('pose_handoff'),last_measurement_t=event.get('last_measurement_t'))
         self.events.append(result)
         if self.options.bootstrap != 'off':
             result.update(mapping_pose_quality='command_prior' if prior_insertion else 'visual',

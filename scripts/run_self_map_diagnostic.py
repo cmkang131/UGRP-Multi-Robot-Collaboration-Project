@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recovery_profile='off',
            revision_gate='off', multiframe_registration='off', render_profile='floor_light_v1', correction_safety='off', active_relocalization='off',
            reloc9_rotation_calibration_v1=False, reloc9_wall_height_guard_v1=False,
-           reloc10_settle_v1=False, reloc10_registration_v1=False, reloc11_timing_v1=False, reloc11_half_rate_v1=False, reloc11_wall_field_v1=False, reloc11_low_contrast_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False, reloc13_live_r7_v1=False, reloc14_continuous_tracking_v1=False, reloc14_compute_budget_v1=False):
+           reloc10_settle_v1=False, reloc10_registration_v1=False, reloc11_timing_v1=False, reloc11_half_rate_v1=False, reloc11_wall_field_v1=False, reloc11_low_contrast_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False, reloc13_live_r7_v1=False, reloc14_continuous_tracking_v1=False, reloc14_compute_budget_v1=False, reloc15_pose_handoff_v1=False):
     from harness.active_camera import SEARCH
     if not math.isfinite(cap_s) or not 1 <= cap_s <= 300 or abs(cap_s*10-round(cap_s*10)) > 1e-8:
         raise ValueError('CAP_MUST_BE_0_1S_GRID_IN_1_TO_300')
@@ -99,7 +99,7 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
         result.update(execution_bundle_id='selfmap8-reloc10-v1', pool_with_previous_results=False)
         result['options'].update(reloc10_settle_v1=reloc10_settle_v1,
                                  reloc10_registration_v1=reloc10_registration_v1)
-    reloc12 = dict(reloc12_raw_cov_gate_v1=reloc12_raw_cov_gate_v1, reloc12_ransac_hypotheses_v1=reloc12_ransac_hypotheses_v1, reloc13_execution_cov_v1=reloc13_execution_cov_v1, reloc13_execution_frame_v1=reloc13_execution_frame_v1, reloc13_live_r7_v1=reloc13_live_r7_v1, reloc14_continuous_tracking_v1=reloc14_continuous_tracking_v1, reloc14_compute_budget_v1=reloc14_compute_budget_v1)
+    reloc12 = dict(reloc12_raw_cov_gate_v1=reloc12_raw_cov_gate_v1, reloc12_ransac_hypotheses_v1=reloc12_ransac_hypotheses_v1, reloc13_execution_cov_v1=reloc13_execution_cov_v1, reloc13_execution_frame_v1=reloc13_execution_frame_v1, reloc13_live_r7_v1=reloc13_live_r7_v1, reloc14_continuous_tracking_v1=reloc14_continuous_tracking_v1, reloc14_compute_budget_v1=reloc14_compute_budget_v1, reloc15_pose_handoff_v1=reloc15_pose_handoff_v1)
     Options(multiframe_registration=multiframe_registration, recovery_profile=recovery_profile, **reloc12)
     if any(reloc12.values()):
         result['options'].update(reloc12)
@@ -197,6 +197,8 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         pr=506, branch='claude/map-selfmap', sha=b['source_sha'], batch=b['check']))
     backend = controller = None
     timing = None
+    from harness.failure_rgb_buffer import FailureRGBBuffer
+    failure_frames=FailureRGBBuffer(out/'failure-rgb') if b['recording'].get('failure_rgb_buffer') else None
     restores = []
     if b['options'].get('reloc11_timing_v1', False):
         from harness.reloc11_timing import Timings
@@ -244,7 +246,7 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         for option in ('revision_gate', 'multiframe_registration', 'correction_safety', 'active_relocalization'):
             if b['options'].get(option, 'off') != 'off':
                 extra[option] = b['options'][option]
-        for option in ('reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc10_settle_v1', 'reloc10_registration_v1', 'reloc11_wall_field_v1', 'reloc11_low_contrast_v1', 'reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1'):
+        for option in ('reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc10_settle_v1', 'reloc10_registration_v1', 'reloc11_wall_field_v1', 'reloc11_low_contrast_v1', 'reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1', 'reloc15_pose_handoff_v1'):
             if b['options'].get(option, False):
                 extra[option] = True
         controller = controller_factory(self_map_executor=OPTION, robot_id=robot,
@@ -275,6 +277,8 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                 saved = out/f'robots/{robot}/rgb/{tick:05d}.jpg'
                 if digest(saved) != obs['sha256']:
                     raise ValueError('LIVE_SAVED_RGB_HASH_MISMATCH')
+                if failure_frames is not None:
+                    failure_frames.add(t,saved.read_bytes(),camera=robot+'/robot_cam')
                 bgr = cv2.imdecode(np.frombuffer(saved.read_bytes(), np.uint8), cv2.IMREAD_COLOR)
                 if bgr is None:
                     raise ValueError('LIVE_SAVED_RGB_DECODE_FAILED')
@@ -306,6 +310,11 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                     break
                 if monotonic()-started > wall_cap_s:
                     raise TimeoutError('SELF_MAP_HOST_TIME_CAP')
+                if failure_frames is not None and interval > .1:
+                    import base64
+                    backend.advance_to(round(t+.1,9))
+                    packet=backend.ports[robot].capture()
+                    failure_frames.add(backend.now,base64.b64decode(packet['image']),camera=robot+'/robot_cam')
                 backend.advance_to(round(start+(tick+1)*interval, 9))
         result.update(status='HOST_ERROR' if controller.stop_reason == 'selfmap4_relocalization_exhausted' else 'RECORDED', elapsed_sim_s=backend.now-start,
             termination_category='cap_end' if controller.stop_reason == 'sim_time_cap' else controller.stop_reason,
@@ -319,6 +328,8 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         result.update(status='PHYSICAL_FAILURE' if type(exc).__name__ == 'PhysicalStop' else 'HOST_ERROR',
                       complete=False, failure=dict(type=type(exc).__name__, message=str(exc)))
     finally:
+        if failure_frames is not None:
+            result['failure_rgb_buffer']=failure_frames.flush(result.get('stop_reason') or result['status'])
         for restore in reversed(restores):
             restore()
         if timing is not None and controller is not None:
@@ -368,6 +379,8 @@ def main(argv=None):
     p.add_argument('--multiframe-registration', choices=['off', 'selfmap4_multiframe_registration_v1'], default='off')
     p.add_argument('--correction-safety', choices=['off', 'selfmap6_correction_safety_v1'], default='off')
     p.add_argument('--active-relocalization', choices=['off', 'reloc8_active_vision_v1'], default='off')
+    p.add_argument('--reloc15-pose-handoff-v1', action='store_true')
+    p.add_argument('--failure-rgb-buffer', action='store_true', help='record-only 10Hz last 10 SIM seconds')
     p.add_argument('--reloc14-compute-budget-v1', action='store_true')
     p.add_argument('--reloc14-continuous-tracking-v1', action='store_true')
     p.add_argument('--reloc13-live-r7-v1', action='store_true')
@@ -399,6 +412,7 @@ def main(argv=None):
                reloc13_live_r7_v1=a.reloc13_live_r7_v1,
                reloc14_continuous_tracking_v1=a.reloc14_continuous_tracking_v1,
                reloc14_compute_budget_v1=a.reloc14_compute_budget_v1,
+               reloc15_pose_handoff_v1=a.reloc15_pose_handoff_v1,
                reloc11_wall_field_v1=a.reloc11_wall_field_v1, reloc11_low_contrast_v1=a.reloc11_low_contrast_v1,
                reloc9_rotation_calibration_v1=a.reloc9_rotation_calibration_v1,
                reloc9_wall_height_guard_v1=a.reloc9_wall_height_guard_v1)
@@ -422,6 +436,7 @@ def main(argv=None):
     signal.signal(signal.SIGALRM, timeout)
     signal.setitimer(signal.ITIMER_REAL, 1800.)
     try:
+        b['recording']['failure_rgb_buffer'] = a.failure_rgb_buffer
         result = acquire(a.output, b, PhysicsBackend)
     finally:
         signal.setitimer(signal.ITIMER_REAL, 0)

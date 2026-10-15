@@ -1,0 +1,1373 @@
+{
+  "schema": "ugrp.reloc15.carry_yaw.v1",
+  "analysis_host": "gcp1",
+  "truth_scope": "offline evaluation only",
+  "runs": [
+    {
+      "run": "reloc10-r1-carry-93261-0fb980e6",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc10-r1-carry-93261-0fb980e6/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 112,
+          "sim_s": 11.200000000024255,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 2.16040788932698,
+          "actual_net_yaw_deg": -0.8136718691856851,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 2.16040788932698,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0045194928127178765,
+            0.07300867875083285,
+            0.3596387429784607
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.01138193181696949,
+          "min_cargo_z_m": -0.00017481987734581025
+        },
+        {
+          "held_eval": false,
+          "command_mode": "rotation",
+          "N": 135,
+          "sim_s": 13.50000000006446,
+          "command_abs_yaw_deg": 87.26579865576346,
+          "actual_abs_yaw_deg": 84.5207763871284,
+          "actual_net_yaw_deg": 5.067655873133128,
+          "actual_over_command_abs": 0.9685441225437776,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.17152980915647478,
+            0.4964296864994546,
+            0.6257250031798827
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.09148067391768076,
+          "min_cargo_z_m": -0.00010775542088297188
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 127,
+          "sim_s": 12.70000000000504,
+          "command_abs_yaw_deg": 0.5840739076054863,
+          "actual_abs_yaw_deg": 10.260639238177598,
+          "actual_net_yaw_deg": 0.1538714558719349,
+          "actual_over_command_abs": 17.567364514266515,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 7.121074000900822,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.037229934961543025,
+            0.3323765923562012,
+            0.5617869605613338
+          ],
+          "command_distance_m": 1.1552878213818294,
+          "actual_xy_m": 1.0418546075505437,
+          "min_cargo_z_m": -0.00010775542122914636
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 123,
+          "sim_s": 12.30000000005873,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 0.8442366329868991,
+          "actual_net_yaw_deg": 0.12382320952933934,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 0.8442366329868991,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.00014456316522960545,
+            0.03255824657100888,
+            0.22826895570885358
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.008544356356453535,
+          "min_cargo_z_m": 0.0010503641993884795
+        },
+        {
+          "held_eval": true,
+          "command_mode": "translation",
+          "N": 44,
+          "sim_s": 4.400000000021009,
+          "command_abs_yaw_deg": 1.0390835057053107e-15,
+          "actual_abs_yaw_deg": 9.182662287222795,
+          "actual_net_yaw_deg": 3.4112611633404293,
+          "actual_over_command_abs": 8837270764864825.0,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 7.872941635280755,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.18885666069309384,
+            0.411138373579028,
+            0.48101819099162224
+          ],
+          "command_distance_m": 0.3215724251870796,
+          "actual_xy_m": 0.268599894013249,
+          "min_cargo_z_m": 0.07070013895661603
+        }
+      ],
+      "excluded": {},
+      "max_error": {
+        "t": 51.300000000153936,
+        "phase": "carry_reobserve",
+        "error_yaw_deg": -10.112813676275552,
+        "command_since_fix": 1.2280162973319075,
+        "distance_since_fix": 1.47686024656891,
+        "last_fix_t": null
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc10-r1-carry-93261-0fb980e6/raw/eval-only.jsonl.zst": "e68c82b715e06d0f331b4c885fdb71f449a79567a696983fda6d5ea2814e37f2",
+        "/home/ugrp/ugrp-sim/runs/reloc10-r1-carry-93261-0fb980e6/raw/teacher-commands.jsonl.zst": "17f98b10cfba07977ae0e33030281eccb5df03c3dc3bc942e224d1f022b8fd6f"
+      }
+    },
+    {
+      "run": "reloc10-r2-carry-93261-e55d7a8d",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc10-r2-carry-93261-e55d7a8d/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 126,
+          "sim_s": 12.60000000003094,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 2.1684163202524056,
+          "actual_net_yaw_deg": -0.821680300111111,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 2.1684163202524056,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.003258675058349569,
+            0.06252971888869754,
+            0.3596387429784607
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.011424467856274887,
+          "min_cargo_z_m": -0.00017481987734581025
+        },
+        {
+          "held_eval": false,
+          "command_mode": "rotation",
+          "N": 179,
+          "sim_s": 17.90000000008547,
+          "command_abs_yaw_deg": 120.06176350352968,
+          "actual_abs_yaw_deg": 121.35319900059322,
+          "actual_net_yaw_deg": 41.90007848659796,
+          "actual_over_command_abs": 1.0107564261874729,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.1870733048311076,
+            0.5324687239841809,
+            0.7196548559374393
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.11851710802710637,
+          "min_cargo_z_m": -0.00010775542088297188
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 127,
+          "sim_s": 12.70000000000504,
+          "command_abs_yaw_deg": 0.5840739076054863,
+          "actual_abs_yaw_deg": 10.260639238177598,
+          "actual_net_yaw_deg": 0.1538714558719349,
+          "actual_over_command_abs": 17.567364514266515,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 7.121074000900822,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.037229934961543025,
+            0.3323765923562012,
+            0.5617869605613338
+          ],
+          "command_distance_m": 1.1552878213818294,
+          "actual_xy_m": 1.0418546075505437,
+          "min_cargo_z_m": -0.00010775542122914636
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 123,
+          "sim_s": 12.30000000005873,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 0.8442366329868991,
+          "actual_net_yaw_deg": 0.12382320952933934,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 0.8442366329868991,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.00014456316522960545,
+            0.03255824657100888,
+            0.22826895570885358
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.008544356356453535,
+          "min_cargo_z_m": 0.0010503641993884795
+        },
+        {
+          "held_eval": true,
+          "command_mode": "translation",
+          "N": 44,
+          "sim_s": 4.400000000021009,
+          "command_abs_yaw_deg": 1.0390835057053107e-15,
+          "actual_abs_yaw_deg": 9.182662287222795,
+          "actual_net_yaw_deg": 3.4112611633404293,
+          "actual_over_command_abs": 8837270764864825.0,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 7.872941635280755,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.18885666069309384,
+            0.411138373579028,
+            0.48101819099162224
+          ],
+          "command_distance_m": 0.3215724251870796,
+          "actual_xy_m": 0.268599894013249,
+          "min_cargo_z_m": 0.07070013895661603
+        }
+      ],
+      "excluded": {},
+      "max_error": {
+        "t": 60.900000000199775,
+        "phase": "carry_reobserve",
+        "error_yaw_deg": -12.59152168829785,
+        "command_since_fix": 2.0666399847435715,
+        "distance_since_fix": 1.47686024656891,
+        "last_fix_t": null
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc10-r2-carry-93261-e55d7a8d/raw/eval-only.jsonl.zst": "119906ed051fe68673245309335f8627eba019f096e43b735f6550609b27b1aa",
+        "/home/ugrp/ugrp-sim/runs/reloc10-r2-carry-93261-e55d7a8d/raw/teacher-commands.jsonl.zst": "65d96ee3d7be95311c75119896b8338c65c2c6ce3047730fc252bd20bc1f4360"
+      }
+    },
+    {
+      "run": "reloc10-r3-carry-93261-96712d69",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc10-r3-carry-93261-96712d69/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 126,
+          "sim_s": 12.60000000003094,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 2.1684163202524056,
+          "actual_net_yaw_deg": -0.821680300111111,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 2.1684163202524056,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.003258675058349569,
+            0.06252971888869754,
+            0.3596387429784607
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.011424467856274887,
+          "min_cargo_z_m": -0.00017481987734581025
+        },
+        {
+          "held_eval": false,
+          "command_mode": "rotation",
+          "N": 179,
+          "sim_s": 17.90000000008547,
+          "command_abs_yaw_deg": 120.06176350352968,
+          "actual_abs_yaw_deg": 121.35319900059322,
+          "actual_net_yaw_deg": 41.90007848659796,
+          "actual_over_command_abs": 1.0107564261874729,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.1870733048311076,
+            0.5324687239841809,
+            0.7196548559374393
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.11851710802710637,
+          "min_cargo_z_m": -0.00010775542088297188
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 127,
+          "sim_s": 12.70000000000504,
+          "command_abs_yaw_deg": 0.5840739076054863,
+          "actual_abs_yaw_deg": 10.260639238177598,
+          "actual_net_yaw_deg": 0.1538714558719349,
+          "actual_over_command_abs": 17.567364514266515,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 7.121074000900822,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.037229934961543025,
+            0.3323765923562012,
+            0.5617869605613338
+          ],
+          "command_distance_m": 1.1552878213818294,
+          "actual_xy_m": 1.0418546075505437,
+          "min_cargo_z_m": -0.00010775542122914636
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 123,
+          "sim_s": 12.30000000005873,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 0.8442366329868991,
+          "actual_net_yaw_deg": 0.12382320952933934,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 0.8442366329868991,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.00014456316522960545,
+            0.03255824657100888,
+            0.22826895570885358
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.008544356356453535,
+          "min_cargo_z_m": 0.0010503641993884795
+        },
+        {
+          "held_eval": true,
+          "command_mode": "translation",
+          "N": 44,
+          "sim_s": 4.400000000021009,
+          "command_abs_yaw_deg": 1.0390835057053107e-15,
+          "actual_abs_yaw_deg": 9.182662287222795,
+          "actual_net_yaw_deg": 3.4112611633404293,
+          "actual_over_command_abs": 8837270764864825.0,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 7.872941635280755,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.18885666069309384,
+            0.411138373579028,
+            0.48101819099162224
+          ],
+          "command_distance_m": 0.3215724251870796,
+          "actual_xy_m": 0.268599894013249,
+          "min_cargo_z_m": 0.07070013895661603
+        }
+      ],
+      "excluded": {},
+      "max_error": {
+        "t": 60.900000000199775,
+        "phase": "carry_reobserve",
+        "error_yaw_deg": -12.59152168829785,
+        "command_since_fix": 2.0666399847435715,
+        "distance_since_fix": 1.47686024656891,
+        "last_fix_t": null
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc10-r3-carry-93261-96712d69/raw/eval-only.jsonl.zst": "119906ed051fe68673245309335f8627eba019f096e43b735f6550609b27b1aa",
+        "/home/ugrp/ugrp-sim/runs/reloc10-r3-carry-93261-96712d69/raw/teacher-commands.jsonl.zst": "65d96ee3d7be95311c75119896b8338c65c2c6ce3047730fc252bd20bc1f4360"
+      }
+    },
+    {
+      "run": "reloc13-r1-carry-texture-93266-aa1f4661",
+      "status": "missing_map_pose"
+    },
+    {
+      "run": "reloc13-r1-carry-texture-93266-aa1f4661-retry1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93266-aa1f4661-retry1/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 553,
+          "sim_s": 55.299999999105594,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 143.1678532774471,
+          "actual_net_yaw_deg": -4.451128218029757,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 143.1678532774471,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0011919236115300557,
+            0.1318608599878069,
+            31.86859224526024
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.03663746483652443,
+          "min_cargo_z_m": -0.00018867031472407855
+        },
+        {
+          "held_eval": false,
+          "command_mode": "mixed",
+          "N": 56,
+          "sim_s": 5.600000000011106,
+          "command_abs_yaw_deg": 38.29453418379681,
+          "actual_abs_yaw_deg": 34.081254925454076,
+          "actual_net_yaw_deg": -29.085983830039524,
+          "actual_over_command_abs": 0.8899770072115029,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.18721079838593876,
+            0.5073980773637535,
+            0.7327194451947328
+          ],
+          "command_distance_m": 0.4582619161376054,
+          "actual_xy_m": 0.3940300236078167,
+          "min_cargo_z_m": -0.00010775542026517787
+        },
+        {
+          "held_eval": false,
+          "command_mode": "rotation",
+          "N": 1984,
+          "sim_s": 198.39999999577458,
+          "command_abs_yaw_deg": 1471.4370671442355,
+          "actual_abs_yaw_deg": 1364.489793080871,
+          "actual_net_yaw_deg": -750.3183538860261,
+          "actual_over_command_abs": 0.9273178062104093,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.2195963365699656,
+            0.5548323148994443,
+            0.8207165477322709
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 1.3583947435092145,
+          "min_cargo_z_m": -0.00010775542088907464
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 256,
+          "sim_s": 25.600000000012102,
+          "command_abs_yaw_deg": 15.771173553779594,
+          "actual_abs_yaw_deg": 48.03963427477796,
+          "actual_net_yaw_deg": -9.295329207106104,
+          "actual_over_command_abs": 3.0460405569035895,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 5.190747617913695,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.16265340359868952,
+            0.4474940003039909,
+            0.776954887664409
+          ],
+          "command_distance_m": 2.0438354448254783,
+          "actual_xy_m": 1.720179522673738,
+          "min_cargo_z_m": -0.0001077554208737952
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 123,
+          "sim_s": 12.299999999763138,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 0.769409114030424,
+          "actual_net_yaw_deg": 0.3210869729934811,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 0.769409114030424,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0003121907062745721,
+            0.03969672545226848,
+            0.1505096064373975
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.005704205358717503,
+          "min_cargo_z_m": 0.000984727709545278
+        },
+        {
+          "held_eval": true,
+          "command_mode": "translation",
+          "N": 24,
+          "sim_s": 2.3999999999432475,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 2.104162853190323,
+          "actual_net_yaw_deg": 0.23277582645061204,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 2.104162853190323,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.08881153455012607,
+            0.16701243691422166,
+            0.19542751973578595
+          ],
+          "command_distance_m": 0.1527548427927297,
+          "actual_xy_m": 0.13094691056529498,
+          "min_cargo_z_m": 0.07081530679771178
+        }
+      ],
+      "excluded": {
+        "fix_boundary": 3
+      },
+      "max_error": {
+        "t": 293.89999999477817,
+        "phase": "carry_reobserve",
+        "error_yaw_deg": -68.5782882167407,
+        "command_since_fix": 4.750175798399709,
+        "distance_since_fix": 0.0,
+        "last_fix_t": 244.29999999595105
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93266-aa1f4661-retry1/raw/eval-only.jsonl.zst": "46d41e2797805d5abebe4dbbdcdc1f6326b456dd02f0facf77384c36d5576e33",
+        "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93266-aa1f4661-retry1/raw/teacher-commands.jsonl.zst": "ef3c3286de577000985ed42ea67f45cd5595a8e233d0be3825b1c2c1001fa6f3"
+      }
+    },
+    {
+      "run": "reloc13-r1-carry-texture-93315-aa1f4661",
+      "status": "missing_map_pose"
+    },
+    {
+      "run": "reloc13-r1-carry-texture-93315-aa1f4661-retry1",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93315-aa1f4661-retry1/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 169,
+          "sim_s": 16.899999999983965,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 5.8941944520848395,
+          "actual_net_yaw_deg": -1.7520326025441635,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 5.8941944520848395,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0022693382346270145,
+            0.13508531456732784,
+            1.7048217892188189
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.017033854852431918,
+          "min_cargo_z_m": -0.00021689869464940753
+        },
+        {
+          "held_eval": false,
+          "command_mode": "rotation",
+          "N": 137,
+          "sim_s": 13.700000000065415,
+          "command_abs_yaw_deg": 90.87168845855909,
+          "actual_abs_yaw_deg": 93.50373333160871,
+          "actual_net_yaw_deg": 2.360369139725293,
+          "actual_over_command_abs": 1.0289644103427211,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.18197759424311455,
+            0.48991954349027506,
+            0.6013221246702481
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.08732816043321341,
+          "min_cargo_z_m": -0.00010775542087587339
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 115,
+          "sim_s": 11.500000000021338,
+          "command_abs_yaw_deg": 5.910605291954055,
+          "actual_abs_yaw_deg": 21.972609960037982,
+          "actual_net_yaw_deg": -4.810169515918983,
+          "actual_over_command_abs": 3.7174889668150723,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 9.089965278006213,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.1443838949172539,
+            0.3033783871190197,
+            0.47548025587189474
+          ],
+          "command_distance_m": 0.9896147293928625,
+          "actual_xy_m": 0.8771830976647337,
+          "min_cargo_z_m": -0.00010775542093348703
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 241,
+          "sim_s": 24.099999999765487,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 1.80770483158202,
+          "actual_net_yaw_deg": 0.9451655766090259,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 1.80770483158202,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0003759346456934444,
+            0.03975943882111544,
+            0.22754887872401386
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.017220841825866064,
+          "min_cargo_z_m": 0.0007672344844469048
+        },
+        {
+          "held_eval": true,
+          "command_mode": "translation",
+          "N": 276,
+          "sim_s": 27.59999999964009,
+          "command_abs_yaw_deg": 2.0781670114106215e-15,
+          "actual_abs_yaw_deg": 35.99734972721932,
+          "actual_net_yaw_deg": -2.554044350984926,
+          "actual_over_command_abs": 1.7321682776007972e+16,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 34.59900851654738,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.1023099199121376,
+            0.32373938970429417,
+            0.4304041500016692
+          ],
+          "command_distance_m": 2.703466165308171,
+          "actual_xy_m": 2.3817188768646544,
+          "min_cargo_z_m": 0.07008214861422085
+        }
+      ],
+      "excluded": {
+        "fix_boundary": 1
+      },
+      "max_error": {
+        "t": 45.800000000127675,
+        "phase": "carry_reobserve",
+        "error_yaw_deg": 7.4003186750430965,
+        "command_since_fix": 0.5058028562528915,
+        "distance_since_fix": 1.8269259431037825,
+        "last_fix_t": null
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93315-aa1f4661-retry1/raw/eval-only.jsonl.zst": "f656d654bfdda1147a0763e862e2d21bd0da41c9007322e37c5046ecd20ee9e4",
+        "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93315-aa1f4661-retry1/raw/teacher-commands.jsonl.zst": "cf3f53c0945dafe1c76bf7f86039107e0ec423e7f1ae46a3efc57fbe8b17b59f"
+      }
+    },
+    {
+      "run": "reloc14-r1-carry-texture-93266-6c9fa728",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc14-r1-carry-texture-93266-6c9fa728/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 221,
+          "sim_s": 22.099999999876463,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 13.371778893699062,
+          "actual_net_yaw_deg": 8.310243551921564,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 13.371778893699062,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.004250457145130329,
+            0.12101835698181639,
+            8.208934315328136
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.020494963132677062,
+          "min_cargo_z_m": -0.0001966038325148245
+        },
+        {
+          "held_eval": false,
+          "command_mode": "mixed",
+          "N": 40,
+          "sim_s": 4.000000000003465,
+          "command_abs_yaw_deg": 4.764608950769992,
+          "actual_abs_yaw_deg": 6.064163134586726,
+          "actual_net_yaw_deg": -0.20076499576015241,
+          "actual_over_command_abs": 1.2727514885784526,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.12001517615156279,
+            0.3471972162525314,
+            0.373151565724651
+          ],
+          "command_distance_m": 0.3240419555934742,
+          "actual_xy_m": 0.27546029934512006,
+          "min_cargo_z_m": -0.00010775542026517787
+        },
+        {
+          "held_eval": false,
+          "command_mode": "rotation",
+          "N": 201,
+          "sim_s": 20.099999999584377,
+          "command_abs_yaw_deg": 144.53980443536003,
+          "actual_abs_yaw_deg": 143.94663317812115,
+          "actual_net_yaw_deg": -70.87848087229993,
+          "actual_over_command_abs": 0.9958961390631731,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.2104127989158731,
+            0.5128448091433454,
+            0.6669174909172602
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.11568398202464289,
+          "min_cargo_z_m": -0.00010775542088475518
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 270,
+          "sim_s": 27.000000000087,
+          "command_abs_yaw_deg": 19.541958093546857,
+          "actual_abs_yaw_deg": 42.77207672073265,
+          "actual_net_yaw_deg": -0.921122557599252,
+          "actual_over_command_abs": 2.188730347081076,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 5.7244324118092065,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.14955028905262768,
+            0.42554465963832827,
+            0.6904684435879054
+          ],
+          "command_distance_m": 2.1744379069721704,
+          "actual_xy_m": 1.8282180262390182,
+          "min_cargo_z_m": -0.00010775542108072342
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 122,
+          "sim_s": 12.200000000058253,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 1.0328757392711652,
+          "actual_net_yaw_deg": 0.054305254130335816,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 1.0328757392711652,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.00030489774282346294,
+            0.043813648387595765,
+            0.22789486748446205
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.0062368420752730944,
+          "min_cargo_z_m": 0.0009232543296080961
+        },
+        {
+          "held_eval": true,
+          "command_mode": "translation",
+          "N": 24,
+          "sim_s": 2.4000000000114596,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 2.137107138701247,
+          "actual_net_yaw_deg": 0.5854013742474443,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 2.137107138701247,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.07828253606262789,
+            0.1901794301227983,
+            0.1972436098931172
+          ],
+          "command_distance_m": 0.1527548427927297,
+          "actual_xy_m": 0.1302478020043327,
+          "min_cargo_z_m": 0.0706675433483834
+        }
+      ],
+      "excluded": {
+        "fix_boundary": 1
+      },
+      "max_error": {
+        "t": 64.90000000019329,
+        "phase": "carry_reobserve",
+        "error_yaw_deg": 23.863773477456753,
+        "command_since_fix": 0.8625245053858073,
+        "distance_since_fix": 2.6512347053583873,
+        "last_fix_t": null
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc14-r1-carry-texture-93266-6c9fa728/raw/eval-only.jsonl.zst": "f1d19255bab44a16237c336a533db4e5eabd7a5530a95c8a98a111e3feb06b64",
+        "/home/ugrp/ugrp-sim/runs/reloc14-r1-carry-texture-93266-6c9fa728/raw/teacher-commands.jsonl.zst": "1ae80588754725e3443cd0826d2ba62c0cc4ec174d4c001f3b525fdd1f0510a8"
+      }
+    },
+    {
+      "run": "reloc14-r1-carry-texture-93315-6c9fa728",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc14-r1-carry-texture-93315-6c9fa728/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 139,
+          "sim_s": 13.899999999944068,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 8.480783150540079,
+          "actual_net_yaw_deg": 4.9838734428110385,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 8.480783150540079,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0012654115464882684,
+            0.16818825034638762,
+            4.605582375188514
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.01196571888812378,
+          "min_cargo_z_m": -0.00017822013623607427
+        },
+        {
+          "held_eval": false,
+          "command_mode": "rotation",
+          "N": 280,
+          "sim_s": 27.999999999698836,
+          "command_abs_yaw_deg": 202.47362975206073,
+          "actual_abs_yaw_deg": 205.7074779100193,
+          "actual_net_yaw_deg": -33.942491442793084,
+          "actual_over_command_abs": 1.015971700423006,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.1973486949290283,
+            0.552428491347095,
+            0.6798314276752349
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.1785463788130995,
+          "min_cargo_z_m": -0.00010775542088089715
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 96,
+          "sim_s": 9.600000000012265,
+          "command_abs_yaw_deg": 1.3104718674965392,
+          "actual_abs_yaw_deg": 12.02761397075393,
+          "actual_net_yaw_deg": -0.22528776783014923,
+          "actual_over_command_abs": 9.178078728031675,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 3.4334912050287354,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.09417207161925194,
+            0.2664717065686843,
+            0.3538728014248164
+          ],
+          "command_distance_m": 0.8413897092271216,
+          "actual_xy_m": 0.7507161324234197,
+          "min_cargo_z_m": -0.00010775542109569061
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 124,
+          "sim_s": 12.400000000042153,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 1.5927629860439418,
+          "actual_net_yaw_deg": -1.1211067998809825,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 1.5927629860439418,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0004440191151081025,
+            0.1050853806364677,
+            0.28097582597462706
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.01575167259326464,
+          "min_cargo_z_m": 0.0009205507446814754
+        },
+        {
+          "held_eval": true,
+          "command_mode": "translation",
+          "N": 172,
+          "sim_s": 17.200000000082127,
+          "command_abs_yaw_deg": 1.4547169079874349e-15,
+          "actual_abs_yaw_deg": 21.047803803263744,
+          "actual_net_yaw_deg": -2.7314063276374823,
+          "actual_over_command_abs": 1.446865963246613e+16,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 20.132693205968582,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.09548707252810809,
+            0.3062491691299059,
+            0.4222104122947538
+          ],
+          "command_distance_m": 1.7172864003284618,
+          "actual_xy_m": 1.5013178007428294,
+          "min_cargo_z_m": 0.07030360075569805
+        }
+      ],
+      "excluded": {
+        "fix_boundary": 1
+      },
+      "max_error": {
+        "t": 79.99999999983622,
+        "phase": "carry_reobserve",
+        "error_yaw_deg": 6.286057561572294,
+        "command_since_fix": 1.6509107169482564,
+        "distance_since_fix": 0.0,
+        "last_fix_t": 66.30000000016018
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc14-r1-carry-texture-93315-6c9fa728/raw/eval-only.jsonl.zst": "0cd435085c3ea57c3260585e2e9e9fb74b967c30e401a7d19be076f3d2104fe1",
+        "/home/ugrp/ugrp-sim/runs/reloc14-r1-carry-texture-93315-6c9fa728/raw/teacher-commands.jsonl.zst": "9bc9fe2afe07451a137e3857d92fa90a7e950b105516f959594ffc420ac0a445"
+      }
+    },
+    {
+      "run": "reloc14-r2-carry-texture-93266-1e407968",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc14-r2-carry-texture-93266-1e407968/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 101,
+          "sim_s": 10.100000000023002,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 1.3052466161342549,
+          "actual_net_yaw_deg": 0.05704424295810657,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 1.3052466161342549,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.004045988126473832,
+            0.061165453622155905,
+            0.12403841969704446
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.006569340924877167,
+          "min_cargo_z_m": -0.0001412145883570859
+        },
+        {
+          "held_eval": false,
+          "command_mode": "mixed",
+          "N": 32,
+          "sim_s": 3.1999999999992914,
+          "command_abs_yaw_deg": 3.3329507519431076,
+          "actual_abs_yaw_deg": 5.51893828161841,
+          "actual_net_yaw_deg": 0.037059764554402554,
+          "actual_over_command_abs": 1.6558715361758265,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.12240118759340628,
+            0.30699508893794913,
+            0.47484628540995816
+          ],
+          "command_distance_m": 0.25923356447477935,
+          "actual_xy_m": 0.22292465107099205,
+          "min_cargo_z_m": -0.00010775542026517787
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 249,
+          "sim_s": 24.900000000079103,
+          "command_abs_yaw_deg": 11.637890894025423,
+          "actual_abs_yaw_deg": 41.78228869000883,
+          "actual_net_yaw_deg": -3.2032409487994262,
+          "actual_over_command_abs": 3.5901942259536663,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 2.3554584958672127,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.1314856034956157,
+            0.4257898857857057,
+            0.554168593491448
+          ],
+          "command_distance_m": 2.0426480741099664,
+          "actual_xy_m": 1.7138991036701137,
+          "min_cargo_z_m": -0.00010775542026595156
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 33,
+          "sim_s": 3.300000000015757,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 0.2551711222357632,
+          "actual_net_yaw_deg": -0.20472332458062933,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 0.2551711222357632,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.00038560439311752345,
+            0.060343586078117954,
+            0.0746322743398542
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.0011907387964767073,
+          "min_cargo_z_m": 0.0009446422866326507
+        }
+      ],
+      "excluded": {
+        "fix_boundary": 9
+      },
+      "max_error": {
+        "t": 36.10000000008136,
+        "phase": "align",
+        "error_yaw_deg": 13.329132174514962,
+        "command_since_fix": 0.14403221066094724,
+        "distance_since_fix": 1.2171653399418088,
+        "last_fix_t": 21.00000000000926
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc14-r2-carry-texture-93266-1e407968/raw/eval-only.jsonl.zst": "747281f5b082c01135a21c83dce16c58aa5d42a33c73825a8c6124e087091445",
+        "/home/ugrp/ugrp-sim/runs/reloc14-r2-carry-texture-93266-1e407968/raw/teacher-commands.jsonl.zst": "d7465b6e9e8f5ba731b0ca3fb3ef0fccae600ca989584a52105519038d21a82e"
+      }
+    },
+    {
+      "run": "reloc14-r2-carry-texture-93315-1e407968",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc14-r2-carry-texture-93315-1e407968/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 50,
+          "sim_s": 4.9999999999901235,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 1.4462305132085684,
+          "actual_net_yaw_deg": 0.6461722464069233,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 1.4462305132085684,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0018368391734705385,
+            0.1555014597542191,
+            0.1744648804533928
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.00533163134712143,
+          "min_cargo_z_m": -0.00012775904854799708
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 70,
+          "sim_s": 7.00000000000056,
+          "command_abs_yaw_deg": 1.273096613208733,
+          "actual_abs_yaw_deg": 10.397196318906886,
+          "actual_net_yaw_deg": -0.6771205718299871,
+          "actual_over_command_abs": 8.166855689531392,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 2.1785878983533973,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.1298846001619963,
+            0.27289242074575343,
+            0.3538728014248164
+          ],
+          "command_distance_m": 0.668267554062028,
+          "actual_xy_m": 0.6020491653261947,
+          "min_cargo_z_m": -0.00010775542088788809
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 33,
+          "sim_s": 3.299999999998702,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 0.03880394462891052,
+          "actual_net_yaw_deg": -0.006723020286817863,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 0.03880394462891052,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0007514355425806488,
+            0.0033824280170231666,
+            0.006101039122503963
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.0005373497373602877,
+          "min_cargo_z_m": 0.0009205507446814754
+        }
+      ],
+      "excluded": {
+        "fix_boundary": 3
+      },
+      "max_error": {
+        "t": 10.399999999998437,
+        "phase": "hover",
+        "error_yaw_deg": -1.3097685310645621,
+        "command_since_fix": 0.002166110046377613,
+        "distance_since_fix": 0.18963571331147516,
+        "last_fix_t": 7.000000000002809
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc14-r2-carry-texture-93315-1e407968/raw/eval-only.jsonl.zst": "7d2cc590c8cc77249137d9185de9f2caf720641fe02b8fdf9ec21535cf6b563e",
+        "/home/ugrp/ugrp-sim/runs/reloc14-r2-carry-texture-93315-1e407968/raw/teacher-commands.jsonl.zst": "361739fbed421d88b8d6df7e5f68d56944fcb256af5916b758b9dfe8047600ea"
+      }
+    },
+    {
+      "run": "reloc14-r3-carry-texture-93266-f3d06408",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93266-f3d06408/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 442,
+          "sim_s": 44.19999999921416,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 35.69116465272452,
+          "actual_net_yaw_deg": -8.839979892145337,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 35.69116465272452,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.002179537099444946,
+            0.17375949073006206,
+            7.161255052586515
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.0396492957692914,
+          "min_cargo_z_m": -0.00032849282236092556
+        },
+        {
+          "held_eval": false,
+          "command_mode": "mixed",
+          "N": 31,
+          "sim_s": 3.0999999999902883,
+          "command_abs_yaw_deg": 6.676383034235618,
+          "actual_abs_yaw_deg": 7.872920388492452,
+          "actual_net_yaw_deg": 3.1104538909844512,
+          "actual_over_command_abs": 1.1792193989052375,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.13265089704731045,
+            0.30484269437919975,
+            0.7069233909112486
+          ],
+          "command_distance_m": 0.2511325155849425,
+          "actual_xy_m": 0.21492457334358198,
+          "min_cargo_z_m": -0.00010775542083845888
+        },
+        {
+          "held_eval": false,
+          "command_mode": "rotation",
+          "N": 1053,
+          "sim_s": 105.29999999750999,
+          "command_abs_yaw_deg": 749.7138088625525,
+          "actual_abs_yaw_deg": 748.360512004428,
+          "actual_net_yaw_deg": -22.24147146669615,
+          "actual_over_command_abs": 0.9981949153902104,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.2043501404693556,
+            0.5644682893472533,
+            1.1479281894524138
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.68107015043608,
+          "min_cargo_z_m": -0.00010775542088644133
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 330,
+          "sim_s": 32.999999999875484,
+          "command_abs_yaw_deg": 25.77083512783005,
+          "actual_abs_yaw_deg": 62.46093720578339,
+          "actual_net_yaw_deg": 11.326063516181392,
+          "actual_over_command_abs": 2.423706367913996,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 10.401931455159147,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.1296572772994626,
+            0.37515558448112524,
+            0.6312169649009912
+          ],
+          "command_distance_m": 2.61484013804294,
+          "actual_xy_m": 2.2150686656178618,
+          "min_cargo_z_m": -0.00010775542088670848
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 247,
+          "sim_s": 24.699999999739944,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 2.9921003998048588,
+          "actual_net_yaw_deg": -0.9439519549078726,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 2.9921003998048588,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0003654276696650112,
+            0.06748042971868783,
+            0.33064238584774336
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.016491116931076546,
+          "min_cargo_z_m": 0.0007928626686485862
+        },
+        {
+          "held_eval": true,
+          "command_mode": "translation",
+          "N": 241,
+          "sim_s": 24.099999999785375,
+          "command_abs_yaw_deg": 1.4547169079874349e-15,
+          "actual_abs_yaw_deg": 42.945696164024795,
+          "actual_net_yaw_deg": 2.643466959531139,
+          "actual_over_command_abs": 2.9521686266394684e+16,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 41.90776744898678,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.16593072916068724,
+            0.36042829119847336,
+            0.4267026991223159
+          ],
+          "command_distance_m": 2.314552483625616,
+          "actual_xy_m": 2.0154015304100006,
+          "min_cargo_z_m": 0.07059093619595092
+        }
+      ],
+      "excluded": {
+        "fix_boundary": 96
+      },
+      "max_error": {
+        "t": 235.49999999615915,
+        "phase": "carry_reobserve",
+        "error_yaw_deg": -9.804080969023337,
+        "command_since_fix": 0.19779520730838124,
+        "distance_since_fix": 0.0,
+        "last_fix_t": 233.3999999962088
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93266-f3d06408/raw/eval-only.jsonl.zst": "01c88f7e6dad030e4045accf60e52786c37a37b74f4674e6c4e4f3765377ea77",
+        "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93266-f3d06408/raw/teacher-commands.jsonl.zst": "ff58963e49fee050706824e2f5f1e4c1452dd06f6ab8e9fc8687af29e3702adc"
+      }
+    },
+    {
+      "run": "reloc14-r3-carry-texture-93315-f3d06408",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93315-f3d06408/raw",
+      "status": "scored",
+      "groups": [
+        {
+          "held_eval": false,
+          "command_mode": "idle",
+          "N": 187,
+          "sim_s": 18.699999999828165,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 8.421974792578862,
+          "actual_net_yaw_deg": -4.810575385991826,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 8.421974792578862,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0018407008910983022,
+            0.1114173830662406,
+            4.664571194069888
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.012580024127240186,
+          "min_cargo_z_m": -0.00014769054535856974
+        },
+        {
+          "held_eval": false,
+          "command_mode": "mixed",
+          "N": 1,
+          "sim_s": 0.09999999999763531,
+          "command_abs_yaw_deg": 1.2708160355928748,
+          "actual_abs_yaw_deg": 1.270490686245359,
+          "actual_net_yaw_deg": 1.270490686245359,
+          "actual_over_command_abs": 0.999743983913955,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.0003253493475157074,
+            0.0003253493475157074,
+            0.0003253493475157074
+          ],
+          "command_distance_m": 0.008101048889836855,
+          "actual_xy_m": 0.007004487947766357,
+          "min_cargo_z_m": -0.0001077554207484302
+        },
+        {
+          "held_eval": false,
+          "command_mode": "rotation",
+          "N": 212,
+          "sim_s": 21.19999999972321,
+          "command_abs_yaw_deg": 154.91029517574907,
+          "actual_abs_yaw_deg": 155.22890818164507,
+          "actual_net_yaw_deg": -7.034712386391621,
+          "actual_over_command_abs": 1.0020567581098112,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 0.0,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.19619123813161718,
+            0.5553405716741052,
+            1.189176981376608
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.1339814022209378,
+          "min_cargo_z_m": -0.00010775542091239973
+        },
+        {
+          "held_eval": false,
+          "command_mode": "translation",
+          "N": 115,
+          "sim_s": 11.499999999962363,
+          "command_abs_yaw_deg": 7.360817929544789,
+          "actual_abs_yaw_deg": 21.73108365562245,
+          "actual_net_yaw_deg": 5.4586543126594025,
+          "actual_over_command_abs": 2.952264797692986,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 8.759445966576811,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.13815513957963324,
+            0.3490888040788641,
+            0.688851620177115
+          ],
+          "command_distance_m": 0.9733018117236604,
+          "actual_xy_m": 0.8608124429291486,
+          "min_cargo_z_m": -0.00010775542119232165
+        },
+        {
+          "held_eval": true,
+          "command_mode": "idle",
+          "N": 241,
+          "sim_s": 24.099999999765487,
+          "command_abs_yaw_deg": 0.0,
+          "actual_abs_yaw_deg": 1.8893633275407826,
+          "actual_net_yaw_deg": 0.6651117031859243,
+          "actual_over_command_abs": null,
+          "ratio_status": "undefined_zero_command_yaw",
+          "zero_command_actual_abs_yaw_deg": 1.8893633275407826,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.00022775439152267874,
+            0.04387851378813994,
+            0.2394112361422386
+          ],
+          "command_distance_m": 0.0,
+          "actual_xy_m": 0.015232766771630676,
+          "min_cargo_z_m": 0.0009205507446814754
+        },
+        {
+          "held_eval": true,
+          "command_mode": "translation",
+          "N": 473,
+          "sim_s": 47.29999999950678,
+          "command_abs_yaw_deg": 8.916635333333698e-15,
+          "actual_abs_yaw_deg": 130.08023400487536,
+          "actual_net_yaw_deg": -75.62375733793475,
+          "actual_over_command_abs": 1.4588488722712154e+16,
+          "ratio_status": "defined",
+          "zero_command_actual_abs_yaw_deg": 83.76925794702099,
+          "residual_abs_yaw_p50_p95_max_deg": [
+            0.16420321754321637,
+            1.1269281042547716,
+            1.7991744821067037
+          ],
+          "command_distance_m": 4.531122969079334,
+          "actual_xy_m": 2.789765314579781,
+          "min_cargo_z_m": 0.07023558041564415
+        }
+      ],
+      "excluded": {
+        "fix_boundary": 15
+      },
+      "max_error": {
+        "t": 125.69999999875556,
+        "phase": "failed",
+        "error_yaw_deg": 67.76063074791482,
+        "command_since_fix": 0.11207784547504591,
+        "distance_since_fix": 2.4098766870263546,
+        "last_fix_t": 82.39999999977947
+      },
+      "sources": {
+        "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93315-f3d06408/raw/eval-only.jsonl.zst": "4a47439bc6e0ad243310e67aa3936d69dc7db240730b4b2ab9061d6b82ede6c9",
+        "/home/ugrp/ugrp-sim/runs/reloc14-r3-carry-texture-93315-f3d06408/raw/teacher-commands.jsonl.zst": "0019262e00daea12ee7f7b14c92a96264491611b7e5922b96a094a8a31d2c5f5"
+      }
+    }
+  ],
+  "held_definition": "finger_contacts and cargo min_z above support; issued closure recorded separately",
+  "limitation": "saved error reconstruction excludes fix boundaries; exact physical replay required for causal contact attribution"
+}

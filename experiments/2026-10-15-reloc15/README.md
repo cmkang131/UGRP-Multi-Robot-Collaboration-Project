@@ -1,0 +1,19 @@
+# reloc15 — 운반 회전 원인·보정 전달 분리 탐색
+
+진행 중, NOT_READY. 시작 소스 562b77bccb918d997b4f2cb846b523aa675fc25a, 기준 물리 f3d0640829abede9f84c1b05cbc1ff877d78b8fe. 질감/v7이 주 조건이며 이전 결과와 합산하지 않는다.
+
+수정 전에 GCP 원본 운반 13개(11개 원장 가용, 2개 HOST_ERROR 원장 없음)를 분석했다. [명령별 yaw](carry-yaw.md), [수정 전 관문표](rejection-table.json). 정답은 평가에만 쓴다. 0 명령 yaw의 비는 undefined다. 67.76°는 실제 yaw의 절댓값이 아니라 추정 오차다.
+
+93315 R3 고정 명령 재생은 scene.xml 일치·1245틱 모두 원본 위치 오차 0m. 2Hz 전체·마지막10 SIM초10Hz, 개요(eval)/r1/r2(유휴), SIM4배속. MP4는 ffprobe 확인·235853bytes. 원본 카메라는1Hz로, 추가 프레임은 명령 재생이며 원본 저장 프레임이라고 부르지 않는다. 영상/프레임은 기본 checkout outputs/e2e18-admin/playback/reloc15에 보존한다.
+
+## 분리할 후보
+
+1. `reloc15_pose_handoff_v1` 기본off: map 측정의 exposure/release SIM시각과 map→execution/own-command odom 프레임을 명시한다. release 지연 동안의 body odom을 한 번만 재생한다(현재 동기 어댑터의 지연은0). PF 예측은 측정으로 다시 융합하지 않고 기존 명령 전파를 쓴다. 관측 없는 프레임은 `last_measurement_t`를 갱신하지 않는다. ORB bank가 비어 있어도 기존 correction gate를 통과한 지도 측정은 실행에 전달한다. 기존 안전/수용 오차는 유지한다.
+2. `reloc15_rgb_heading_v1` 기본off: 들고 있는 동안 기존 S2 own-RGB homography 분해·모든 cheirality 유효해 yaw 구간을 재사용해 해당 영상쌍의 명령 yaw를 한 번 교체한다. xy·전체 RGB fix epoch는 갱신하지 않는다. 카메라 회전은 고정 v3 회전 사슬·자기 발행 PWM뿐이다. unloaded metric FK 자격 제한을 우회하지 않는다. loaded 회전 외부보정의 정확성은 미검증이다. 기존 5Hz·loaded settle2.25초와 S2 feature/pixel/pitch 수치를 그대로 쓴다(근거는 해당 S2 모듈; 새로운 수용 상수0). 불명확 영상은 보정하지 않는다.
+3. 기록 전용 `--failure-rgb-buffer`: 실패/중단 직전10 SIM초 자기RGB10Hz, 학습 카메라와 분리. 제어 호출 주기·입력 불변. 5Hz selfmap은 중간 .1초에 기록만 한다.
+
+조사 1순위를 먼저 비교하며 관측 모델 전체 교체·목적지 ACT 인계는 별도 검증이다. 참조: 사용자 제공 loc.md 72–86행, 기존 S2 `zone_solo_cyan_rotation_envelope.py`와 그 출처 OpenCV homography decomposition tutorial. 질량·마찰·토크·카메라 배치/FOV는 변경하지 않는다. 모델/학습0, weldOFF, held_object_hidden_v1 유지.
+
+## 탐색 예산
+
+최대3라운드, 라운드당 selfmap3+carry3. 동시 전체40 이하, 자기6 이하. GCP gcp1/n4-highcpu-64, 24h STOP·idle20m·budget-stop 유지. 첫30 SIM초 속도와 HOST_ERROR/cap_end 모두 기록. 후보를 합산하지 않고 동일 시드의 한 변수 변경부터 비교한다. 새 실행 소스는 커밋 고정한다. 통과 근거 없는 후속큐는 제출하지 않는다.
