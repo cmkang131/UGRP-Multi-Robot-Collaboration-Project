@@ -79,6 +79,7 @@ TEST_PATTERNS = (
     "tests/test_map_amcl.py",
     "tests/test_map_amcl_profiles.py",
     "tests/test_map_amcl_recording.py",
+    "tests/test_map_recording_profile.py",
     "tests/test_e2e_static_rgb_localizer.py",
     "tests/test_e2e_stage_pose_eval.py",
     "tests/test_self_map_causal.py",

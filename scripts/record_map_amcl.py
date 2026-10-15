@@ -19,6 +19,7 @@ from statistics import median
 from harness.e2e_result_writer import Finalizer, write
 from harness.map_recording_audit import InputAudit, Metrics
 from harness.map_recording_speed import using as rectangle_batch
+from harness.map_recording_speed import PROFILES, configure, controller_profile
 from scripts.extract_e2e_pose_features import sha256
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,6 +40,8 @@ def load_spec(path=SPEC):
         raise ValueError('CURRENT_SPEED_POLICY_REQUIRED')
     if type(spec['performance']['rectangle_batch']) is not bool:
         raise ValueError('BOOLEAN_RECTANGLE_BATCH_REQUIRED')
+    if spec['performance'].get('controller_profile', 'off') not in PROFILES:
+        raise ValueError('UNKNOWN_RECORDING_CONTROLLER_PROFILE')
     for name, digest in spec['source_inputs'].items():
         if sha256(ROOT/name) != digest:
             raise ValueError('INPUT_HASH_MISMATCH:'+name)
@@ -172,10 +175,11 @@ def make_robots(spec, seed):
     from harness.s4_event_policy import Options
     cov = json.loads((ROOT/'configs/e2e_nees_egomap70_dev_v1.json').read_text())
     e = spec['estimator']
-    return {rid: Robot(rid, 2*seed+i, cov, Options(), **spec['navigation'],
+    return {rid: configure(Robot(rid, 2*seed+i, cov, Options(), **spec['navigation'],
                 stall_options=StallOptions(**{k: e[k] for k in
                     ('stall_odometry', 'stall_recovery', 'stall_noise')}),
-                vo_floor_mask=e['vo_floor_mask'], vo_rotation_policy=e['vo_rotation_policy'])
+                vo_floor_mask=e['vo_floor_mask'], vo_rotation_policy=e['vo_rotation_policy']),
+                spec['performance'].get('controller_profile', 'off'))
             for i, rid in enumerate(spec['robots'])}
 
 
@@ -212,7 +216,8 @@ def record_loop(backend, robots, spec, out, *, clock=time.monotonic, metrics=Non
         for rid, robot in robots.items():
             with metrics.measure('capture_materialize'):
                 obs, rgb = frames[rid]
-            with metrics.measure('controller_'+rid), rectangle_batch(spec['performance']['rectangle_batch']):
+            with metrics.measure('controller_'+rid), rectangle_batch(spec['performance']['rectangle_batch']), \
+                    controller_profile(spec['performance'].get('controller_profile', 'off')):
                 trace = audit.receive(robot, obs, rgb, now)
             with metrics.measure('ownmap_serialize'):
                 row = normalize(ownmap_record(robot, obs, trace, now))

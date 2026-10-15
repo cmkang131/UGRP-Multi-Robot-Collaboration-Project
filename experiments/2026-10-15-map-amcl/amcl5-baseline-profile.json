@@ -1,0 +1,809 @@
+{
+  "schema": "map-recording-replay/1",
+  "mode": "legacy",
+  "profile": true,
+  "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw",
+  "N": 602,
+  "wall_s": 264.7691486249678,
+  "cpu_s": 272.36780600000003,
+  "sources": {
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r1/frames.jsonl": "c8c16b353b641288d33440456370c768a31bc5943cd19f992520bc0c20c7be20",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r1/commands.jsonl": "cdd67b74b90ebb2da0d4bce2c00e1045e9f163b19e13ec7abcc1ec36f71c4c55",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r1/ownmap.jsonl": "acfeaf77fdd9044c80afd30e9c91b1f4789e9e21b913e2965cc46f91bd405739",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r2/frames.jsonl": "a67a25f85fe5dca62b3f17867bcdaecacbcbfdc142afa653fa7b818aff3442a8",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r2/commands.jsonl": "8505f14cc67785318b7bd5972f7ac2e11eceaae8e2a0e3347a8760c7cef71644",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r2/ownmap.jsonl": "d8e0844a22e306492372e9a3685236ef674b31a76f4e24947a4c192ff74feac8"
+  },
+  "environment": {
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "opencv": "5.0.0",
+    "opencv_threads": 8,
+    "load_start": [
+      3.53955078125,
+      8.1396484375,
+      8.79541015625
+    ],
+    "load_end": [
+      4.42333984375,
+      6.18017578125,
+      7.73291015625
+    ]
+  },
+  "input_audit": {
+    "schema": "map-amcl-input-audit/1",
+    "status": "MEASURED_CONTROLLER_BOUNDARY",
+    "own_rgb_inputs": 602,
+    "controller_calls": 602,
+    "top_camera_inputs": 0,
+    "truth_reads": 0,
+    "held_world_reads": 0,
+    "rejected_inputs": 0,
+    "held_observations": 0,
+    "scope": "own RGB ingress and forbidden field access; evaluator excluded",
+    "held_scope": "drive-only recording, no grasp/held phase; held count is not held-task validation"
+  },
+  "robots": {
+    "r1": {
+      "frames": 301,
+      "issued_commands": 150,
+      "exact_rows": 0,
+      "exact_proposed_commands": 301,
+      "exact_issued_commands": 150,
+      "controller": {
+        "n": 301,
+        "total_s": 183.14464958070312,
+        "median_s": 0.6202526249689981,
+        "p95_s": 0.7963450839743018,
+        "max_s": 5.693416708032601
+      },
+      "decode": {
+        "n": 301,
+        "total_s": 0.404406703193672,
+        "median_s": 0.0014389590360224247,
+        "p95_s": 0.0016311670187860727,
+        "max_s": 0.00986008404288441
+      },
+      "serialize_compare": {
+        "n": 301,
+        "total_s": 0.08947437850292772,
+        "median_s": 0.00029250001534819603,
+        "p95_s": 0.00037475000135600567,
+        "max_s": 0.0006466669728979468
+      },
+      "accuracy": {
+        "xy_median_m": 0.05314239343392624,
+        "xy_p95_m": 0.098885400080585,
+        "yaw_median_deg": 5.456874699026096,
+        "yaw_demeaned_median_deg": 3.0747116294636774,
+        "path_own_m": 1.3432592929730889,
+        "path_gt_m": 0.4090329399178211,
+        "path_ratio": 3.2839880652227262,
+        "passed_pose": false,
+        "passed_pr480": false,
+        "absolute_xy_median_m": 0.09353505081018022,
+        "absolute_yaw_median_deg": 5.104060920424075,
+        "absolute_xy_p95_m": 0.10671345807908979,
+        "absolute_yaw_p95_deg": 6.68839626948547,
+        "N": 301,
+        "frame": "fixed_initial_truth_SE2_evaluation_only"
+      },
+      "ownmap_sha256": "548b57aa7c45c628568202d9648831c377b01b7d1a939785407b5bca2d1e1543",
+      "timing_sha256": "933b35b37febfc4eb94582548f2eb06ebc7ed6160c1809b18b83e971e5a71749",
+      "top20_cumulative": [
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/map_recording_audit.py",
+          "line": 89,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.0017425750000000001,
+          "cumulative_s": 183.124594757
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_live_mapping.py",
+          "line": 106,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.001772876,
+          "cumulative_s": 183.122147705
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_live_mapping.py",
+          "line": 110,
+          "function": "_receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.023016952,
+          "cumulative_s": 183.11571411600002
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_explore_deadlock.py",
+          "line": 111,
+          "function": "received",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.0015655640000000002,
+          "cumulative_s": 177.29229820100002
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_rgb_vo.py",
+          "line": 465,
+          "function": "received",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.008129922000000001,
+          "cumulative_s": 177.289263643
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_boundary_association.py",
+          "line": 89,
+          "function": "received",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.0007007830000000001,
+          "cumulative_s": 171.74311621
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_boundary_views.py",
+          "line": 285,
+          "function": "with_diagnostics",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.001502417,
+          "cumulative_s": 171.74216738
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_exploration.py",
+          "line": 135,
+          "function": "receive_progress",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.001197057,
+          "cumulative_s": 171.739581716
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/ego_pose_continuity.py",
+          "line": 274,
+          "function": "receive_pose",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.004969414,
+          "cumulative_s": 171.73828129100002
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_setdown_relook.py",
+          "line": 97,
+          "function": "receive_rgb",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.0070624880000000004,
+          "cumulative_s": 171.42680545300001
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/grid_acceleration.py",
+          "line": 105,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.001776222,
+          "cumulative_s": 169.70532125300002
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_goal_route.py",
+          "line": 66,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.010504032,
+          "cumulative_s": 169.70037950100001
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/goal_route_continuous.py",
+          "line": 246,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.023816461,
+          "cumulative_s": 168.71037929300002
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_boundary_association.py",
+          "line": 86,
+          "function": "observed",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.000960248,
+          "cumulative_s": 86.984582918
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_goal_route.py",
+          "line": 80,
+          "function": "own_rgb_received",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.00198414,
+          "cumulative_s": 86.98304442
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_rgb_gate.py",
+          "line": 203,
+          "function": "observe",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.010390999000000001,
+          "cumulative_s": 86.92394300500001
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_rgb_gate.py",
+          "line": 110,
+          "function": "boundary",
+          "calls": 602,
+          "primitive_calls": 301,
+          "self_s": 0.014877543000000002,
+          "cumulative_s": 82.334215418
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_b_partial.py",
+          "line": 185,
+          "function": "detect_partial",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.020857635000000003,
+          "cumulative_s": 78.53544158800001
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_b_partial.py",
+          "line": 67,
+          "function": "estimate",
+          "calls": 235,
+          "primitive_calls": 235,
+          "self_s": 2.930589372,
+          "cumulative_s": 74.876999755
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_b_partial.py",
+          "line": 33,
+          "function": "rect_sd",
+          "calls": 22172,
+          "primitive_calls": 22172,
+          "self_s": 65.080059809,
+          "cumulative_s": 68.27376936900001
+        }
+      ]
+    },
+    "r2": {
+      "frames": 301,
+      "issued_commands": 150,
+      "exact_rows": 0,
+      "exact_proposed_commands": 301,
+      "exact_issued_commands": 150,
+      "controller": {
+        "n": 301,
+        "total_s": 80.58583678060677,
+        "median_s": 0.2127373330295086,
+        "p95_s": 0.28621633304283023,
+        "max_s": 7.5458990830229595
+      },
+      "decode": {
+        "n": 301,
+        "total_s": 0.39670592441689223,
+        "median_s": 0.0014192910166457295,
+        "p95_s": 0.0016585419652983546,
+        "max_s": 0.00259479193482548
+      },
+      "serialize_compare": {
+        "n": 301,
+        "total_s": 0.12999842374119908,
+        "median_s": 0.00042033300269395113,
+        "p95_s": 0.0005227910587564111,
+        "max_s": 0.0014282920164987445
+      },
+      "accuracy": {
+        "xy_median_m": 0.09412828913356708,
+        "xy_p95_m": 0.26104435623666217,
+        "yaw_median_deg": 6.310524307727413,
+        "yaw_demeaned_median_deg": 3.3512684440060614,
+        "path_own_m": 2.122562991179688,
+        "path_gt_m": 0.560918041704033,
+        "path_ratio": 3.784087573171078,
+        "passed_pose": false,
+        "passed_pr480": false,
+        "absolute_xy_median_m": 0.351964397381276,
+        "absolute_yaw_median_deg": 0.878194130514274,
+        "absolute_xy_p95_m": 0.510631474856619,
+        "absolute_yaw_p95_deg": 9.328101464743131,
+        "N": 301,
+        "frame": "fixed_initial_truth_SE2_evaluation_only"
+      },
+      "ownmap_sha256": "5540a5d75b831d5e71e4a6665875d116a4e57e0acb6651529f1cbe8e0337687d",
+      "timing_sha256": "fd0f355a34b9576b5da994390a7f4293a48a8f233de1a5733f16b4b8d962bd4f",
+      "top20_cumulative": [
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/map_recording_audit.py",
+          "line": 89,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.001766994,
+          "cumulative_s": 80.56583767100001
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_live_mapping.py",
+          "line": 106,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.0018586260000000002,
+          "cumulative_s": 80.563432667
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_live_mapping.py",
+          "line": 110,
+          "function": "_receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.032553422000000005,
+          "cumulative_s": 80.55700026400001
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_explore_deadlock.py",
+          "line": 111,
+          "function": "received",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.0015878210000000001,
+          "cumulative_s": 72.785084736
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_rgb_vo.py",
+          "line": 465,
+          "function": "received",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.007609236,
+          "cumulative_s": 72.78190616100001
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_boundary_association.py",
+          "line": 89,
+          "function": "received",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.000656415,
+          "cumulative_s": 66.453743538
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_boundary_views.py",
+          "line": 285,
+          "function": "with_diagnostics",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.001385198,
+          "cumulative_s": 66.45283024
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_exploration.py",
+          "line": 135,
+          "function": "receive_progress",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.001102256,
+          "cumulative_s": 66.450443686
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/ego_pose_continuity.py",
+          "line": 274,
+          "function": "receive_pose",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.0036229200000000004,
+          "cumulative_s": 66.44921872100001
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_setdown_relook.py",
+          "line": 97,
+          "function": "receive_rgb",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.004410172,
+          "cumulative_s": 66.269764541
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/grid_acceleration.py",
+          "line": 105,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.0017404060000000001,
+          "cumulative_s": 63.938639213
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_goal_route.py",
+          "line": 66,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.007371072,
+          "cumulative_s": 63.933830201000006
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/goal_route_continuous.py",
+          "line": 246,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.021938930000000002,
+          "cumulative_s": 62.371664321000004
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/active_wall_recovery.py",
+          "line": 143,
+          "function": "receive",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.012598119000000001,
+          "cumulative_s": 33.624715657
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/active_wall_recovery.py",
+          "line": 101,
+          "function": "_rays",
+          "calls": 803,
+          "primitive_calls": 803,
+          "self_s": 0.002432397,
+          "cumulative_s": 19.647996469000002
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/active_wall_mapping.py",
+          "line": 121,
+          "function": "_rays",
+          "calls": 803,
+          "primitive_calls": 803,
+          "self_s": 0.057618772000000006,
+          "cumulative_s": 19.645564072000003
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/public_navigation_raytrace.py",
+          "line": 25,
+          "function": "receive_rays",
+          "calls": 803,
+          "primitive_calls": 803,
+          "self_s": 1.309508327,
+          "cumulative_s": 19.108730371
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_boundary_association.py",
+          "line": 86,
+          "function": "observed",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.000971128,
+          "cumulative_s": 14.958661622000001
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_goal_route.py",
+          "line": 80,
+          "function": "own_rgb_received",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.001725336,
+          "cumulative_s": 14.957547912
+        },
+        {
+          "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_rgb_gate.py",
+          "line": 203,
+          "function": "observe",
+          "calls": 301,
+          "primitive_calls": 301,
+          "self_s": 0.011892738,
+          "cumulative_s": 14.915229084000002
+        }
+      ]
+    }
+  },
+  "original_timing": {
+    "first30_wall_s": 485.49221660300014,
+    "first30_wall_per_sim": 16.18307388676667,
+    "host_timing": {
+      "option": "buffered_jsonl_v1",
+      "timers": {
+        "jsonl_append": {
+          "calls": 3927,
+          "wall_s": 0.1803690840042691
+        },
+        "eval_sample_including_io": {
+          "calls": 301,
+          "wall_s": 0.15216071299801115
+        },
+        "physics_advance": {
+          "calls": 300,
+          "wall_s": 62.693715963000614
+        }
+      },
+      "nested_timers_not_additive": true,
+      "controller_feedback": false,
+      "cprofile": false
+    },
+    "physics_advance_s": 62.693715963000614,
+    "camera_capture_s": 35.96422306400609,
+    "camera_render_encode_hash_s": 34.94090151800219,
+    "evaluation_s": 0.15216071299801115,
+    "outside_physics_camera_eval_s": 386.68211686299543,
+    "pure_render_s": null,
+    "render_scope": "Original capture includes render/encode/hash; pure render not instrumented",
+    "budget": {
+      "assumption": "Same physics/camera/eval costs; all remaining work may change",
+      "retained_wall_per_sim": 3.2936699913334904,
+      "remaining_s_at_6": 81.18990025999528,
+      "remaining_reduction_fraction_at_6": 0.7900345096932385,
+      "remaining_s_at_3_5": 6.189900259995284,
+      "remaining_reduction_fraction_at_3_5": 0.9839922768856972
+    }
+  },
+  "controller_speedups": {
+    "schema": "ugrp.controller_exact_speedups.v1",
+    "mode": "exact-v1",
+    "enabled": true,
+    "module_sha256": "61596dbfcfbe58ea912fe845b59126469db48913acdb5ab0edd76aed69de0655",
+    "distribution_changed": false,
+    "rng_changed": false,
+    "observation_skipping": false,
+    "physics_changed": false,
+    "scan_speedups": "off",
+    "local_submap_requested_m": 0.0,
+    "local_submap_active_m": 0.0,
+    "result_changes_allowed": false,
+    "referee_event_speedups": "off",
+    "referee_owned_streams": 0,
+    "referee_owned_appends": 0,
+    "referee_past_key_checks_avoided": 0,
+    "visibility_speedups": "shared-v1",
+    "applied": [
+      "owncam_moments",
+      "markerless_integer_clip",
+      "opencv_integer_clip",
+      "shared_shadow_depths",
+      "posterior_summary",
+      "offsets_grid",
+      "sensor_sigma",
+      "grid_field",
+      "nearest_probability_lookup",
+      "forecast_evidence_copy"
+    ],
+    "fallback": [
+      "s3_cache:source_changed"
+    ],
+    "nearest_lookup_scipy": "1.17.1",
+    "integer_clip_fast_calls": 0,
+    "nearest_lookup_fast_calls": 162,
+    "caches": {
+      "owncam_moments": {
+        "hits": 0,
+        "misses": 0,
+        "entries": 0,
+        "max_entries": 4
+      },
+      "shared_shadow_depths": {
+        "hits": 0,
+        "misses": 0,
+        "entries": 0,
+        "max_entries": 8,
+        "estimated_entry_bytes": 0,
+        "max_entry_bytes": 67108864
+      },
+      "posterior_summary": {
+        "hits": 0,
+        "misses": 0,
+        "entries": 0,
+        "max_entries": 4
+      },
+      "offsets_grid": {
+        "hits": 212,
+        "misses": 214,
+        "entries": 32,
+        "max_entries": 32
+      },
+      "sensor_sigma": {
+        "hits": 198,
+        "misses": 15,
+        "entries": 8,
+        "max_entries": 8
+      },
+      "grid_field": {
+        "hits": 0,
+        "misses": 213,
+        "entries": 32,
+        "max_entries": 32
+      }
+    }
+  },
+  "scope": "Saved own RGB + issued commands; open-loop, truth evaluated only after all control",
+  "new_simulation_runs": 0,
+  "new_renders": 0,
+  "remote_connections": 0,
+  "top20_cumulative": [
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/map_recording_audit.py",
+      "line": 89,
+      "function": "receive",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.003509569,
+      "cumulative_s": 263.690432428
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_live_mapping.py",
+      "line": 106,
+      "function": "receive",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.003631502,
+      "cumulative_s": 263.685580372
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_live_mapping.py",
+      "line": 110,
+      "function": "_receive",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.055570374000000006,
+      "cumulative_s": 263.67271438
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_explore_deadlock.py",
+      "line": 111,
+      "function": "received",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.0031533850000000003,
+      "cumulative_s": 250.07738293700004
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_rgb_vo.py",
+      "line": 465,
+      "function": "received",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.015739158000000003,
+      "cumulative_s": 250.07116980400002
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_boundary_association.py",
+      "line": 89,
+      "function": "received",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.001357198,
+      "cumulative_s": 238.196859748
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_boundary_views.py",
+      "line": 285,
+      "function": "with_diagnostics",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.002887615,
+      "cumulative_s": 238.19499762
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_exploration.py",
+      "line": 135,
+      "function": "receive_progress",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.002299313,
+      "cumulative_s": 238.190025402
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/ego_pose_continuity.py",
+      "line": 274,
+      "function": "receive_pose",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.008592334,
+      "cumulative_s": 238.18750001200004
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_setdown_relook.py",
+      "line": 97,
+      "function": "receive_rgb",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.01147266,
+      "cumulative_s": 237.69656999400001
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/grid_acceleration.py",
+      "line": 105,
+      "function": "receive",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.003516628,
+      "cumulative_s": 233.643960466
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_goal_route.py",
+      "line": 66,
+      "function": "receive",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.017875104,
+      "cumulative_s": 233.63420970200002
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/goal_route_continuous.py",
+      "line": 246,
+      "function": "receive",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.045755391000000006,
+      "cumulative_s": 231.082043614
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_boundary_association.py",
+      "line": 86,
+      "function": "observed",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.001931376,
+      "cumulative_s": 101.94324454
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_goal_route.py",
+      "line": 80,
+      "function": "own_rgb_received",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.003709476,
+      "cumulative_s": 101.940592332
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_rgb_gate.py",
+      "line": 203,
+      "function": "observe",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.022283737,
+      "cumulative_s": 101.83917208900002
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/active_wall_recovery.py",
+      "line": 143,
+      "function": "receive",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.028464674000000002,
+      "cumulative_s": 98.16510268800002
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_rgb_gate.py",
+      "line": 110,
+      "function": "boundary",
+      "calls": 1204,
+      "primitive_calls": 602,
+      "self_s": 0.058244311,
+      "cumulative_s": 92.347626126
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_b_partial.py",
+      "line": 185,
+      "function": "detect_partial",
+      "calls": 602,
+      "primitive_calls": 602,
+      "self_s": 0.040692951000000005,
+      "cumulative_s": 84.54267475300001
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp-wt/map-amcl/harness/e2e_b_partial.py",
+      "line": 67,
+      "function": "estimate",
+      "calls": 247,
+      "primitive_calls": 247,
+      "self_s": 3.015161073,
+      "cumulative_s": 77.12466084
+    }
+  ]
+}

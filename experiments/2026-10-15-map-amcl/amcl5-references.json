@@ -1,0 +1,31 @@
+{
+  "schema": "map-amcl5-references/1",
+  "accessed": "2026-10-15",
+  "references": [
+    {
+      "title": "Python 3.12 cProfile / pstats",
+      "url": "https://docs.python.org/3.12/library/profile.html",
+      "used": "cumulative/self-time, separate benchmark because profiler overhead is not uniform"
+    },
+    {
+      "title": "NumPy broadcasting",
+      "url": "https://numpy.org/doc/stable/user/basics.broadcasting.html",
+      "used": "vectorized operations with bounded temporary arrays; avoid large broadcast memory costs"
+    },
+    {
+      "title": "Project exact controller primitives",
+      "path": "harness/e2e_exact_speedups2.py",
+      "used": "reuse scalar/vector rays, indexed costmap writes, bit-keyed shared wall frontend"
+    },
+    {
+      "title": "Project pure geometry memoization",
+      "path": "harness/controller_exact_speedups.py",
+      "used": "runtime exact-v1 setup restored in replay; bit-keyed bounded pure-result caches"
+    },
+    {
+      "title": "Project squared rectangle kernel",
+      "path": "harness/e2e_speed5.py",
+      "used": "reuse float64 rectangle_grid_cost in blocks of 128; no lean interior sample reduction"
+    }
+  ]
+}

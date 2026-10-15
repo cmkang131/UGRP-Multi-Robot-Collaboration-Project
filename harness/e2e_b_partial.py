@@ -96,7 +96,14 @@ def estimate(contour, servo, usable, board_half=None, *, cfg=CFG):
     t = cfg['trunc_m']; cost = np.empty((len(yaws), len(centers)))
     from harness.e2e_speed5 import ACTIVE, rectangle_grid_cost
     from harness.map_recording_speed import ACTIVE as RECORD_BATCH, grid_cost
+    from harness.map_recording_speed import PROFILE, squared_grid_cost
     for i, yaw in enumerate(yaws):
+        if PROFILE.get() == 'squared_v1':
+            c = squared_grid_cost(sub, centers, yaw, half, t)
+            if len(floor_i):
+                c = c+squared_grid_cost(floor_i, centers, yaw, half, t, interior=True)
+            cost[i] = c
+            continue
         if RECORD_BATCH.get():
             c = grid_cost(sub, centers, yaw, half, t)
             if len(floor_i):
