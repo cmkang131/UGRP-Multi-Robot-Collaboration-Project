@@ -4,7 +4,8 @@ MODES = {'peer_reobserve': 'peer_reobserve_v1',
          'pregrasp_sampling': 'pregrasp_sampling_v1'}
 
 from sim.grasp_act_search17 import MODES as SEARCH17_MODES
-ALL_MODES = {**MODES, **SEARCH17_MODES}
+from sim.grasp_act_search18 import MODES as SEARCH18_MODES
+ALL_MODES = {**MODES, **SEARCH17_MODES, **SEARCH18_MODES}
 
 
 def validate(values, *, recovery, profile='visible_only', pose_source='issued', coordination='off'):

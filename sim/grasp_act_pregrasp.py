@@ -169,9 +169,13 @@ def band_view(world, rid, end, base, previous):
     return count, view
 
 
-def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=None, choices=None):
+def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=None, choices=None, navigation=None):
     from sim.grasp_act_goal_set import geometry, ANGLES_DEG
     from sim.grasp_act_recovery import AXIAL_CHOICES
+    from sim.grasp_act_visible_route import free, segment_free
+    from scripts.zone_teacher import plan_path
+    if navigation is not None:
+        free,segment_free,plan_path=navigation.free,navigation.segment_free,navigation.plan_path
     radius, discs, rects = constraints(world, rid, folded)
     start = world['robots'][rid]['pose'][:2]
     if choices is None:choices = [(math.radians(a), d) for a in ANGLES_DEG for _, d in AXIAL_CHOICES]

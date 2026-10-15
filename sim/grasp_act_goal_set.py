@@ -42,13 +42,17 @@ def nominal_goal_blocked(world, rid, end, bounds, folded, *, static_map_only=Fal
             or not free(goal, [d for d in discs if not isinstance(d, PeerDisc)], rects, radius))
 
 
-def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, choices=None):
+def select_goal(world, rid, end, bounds, folded, current=(0., STATION_M), *, choices=None, navigation=None):
     """Fallback after nominal_goal_blocked; keep an already selected stance.
 
     Angles stay on the assigned end's outward half-circle. Distances must pass
     the existing descent/hover IK, and every path segment keeps the unchanged
     collision margin (including the exact start and terminal segment).
     """
+    from sim.grasp_act_visible_route import free, segment_free
+    from scripts.zone_teacher import plan_path
+    if navigation is not None:
+        free,segment_free,plan_path=navigation.free,navigation.segment_free,navigation.plan_path
     radius, discs, rects = constraints(world, rid, folded)
     start = world['robots'][rid]['pose'][:2]
     x0, x1, y0, y1 = bounds
