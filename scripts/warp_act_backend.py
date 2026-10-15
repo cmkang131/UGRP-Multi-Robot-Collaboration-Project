@@ -135,6 +135,11 @@ class WarpTransport(Transport):
         mjw.step(self.wm,self.wd); wp.synchronize()
         with unused_efm(m,d):
             self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax)
+        # put_data broadcasts the first world. Restore each authored setup after
+        # discarding warm-up too, otherwise a mixed-seed batch silently runs the
+        # first seed's poses in every lane.
+        wp.copy(self.wd.qpos, wp.array(np.stack([c['world'].data.qpos for c in contexts]).astype(np.float32), dtype=float))
+        wp.copy(self.wd.qvel, wp.array(np.stack([c['world'].data.qvel for c in contexts]).astype(np.float32), dtype=float))
         # Capture exactly the 400 physics ticks, not a host wall budget.
         with wp.ScopedCapture() as capture:
             for _ in range(16):

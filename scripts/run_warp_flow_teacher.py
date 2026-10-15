@@ -27,6 +27,8 @@ def parser():
     p.add_argument('--plan', type=Path, required=True)
     p.add_argument('--episode', type=int, default=0)
     p.add_argument('--nworld', type=int, choices=[1, 16, 64, 256], default=1)
+    p.add_argument('--mix-known-six', action='store_true',
+        help='Assign the six frozen development plans cyclically; report per-seed counts separately')
     p.add_argument('--cap-s', type=float, default=60.)
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--compiled-reference-v1', type=Path)
@@ -64,13 +66,17 @@ def main():
     plan = plans['episodes'][a.episode]
     if plan['seed'] not in (8318726, 8318620, 8318600, 8318604, 8318611, 8318631):
         p.error('known beampair6 development six only; gate queue is HOLD_SCENE')
+    selected = [plans['episodes'][i % 6] if a.mix_known_six else plan for i in range(a.nworld)]
+    if a.mix_known_six and (a.nworld < 16 or {e['seed'] for e in plans['episodes']} != {
+            8318726,8318620,8318600,8318604,8318611,8318631}):
+        p.error('mixed batch needs the exact six-plan population and at least sixteen worlds')
     import numpy as np
     import mujoco
     from warp_act_backend import CTransport, WarpTransport
     a.out.mkdir(parents=True, exist_ok=False)
     report = dict(schema='ugrp.warp2.batch.v1', status='running', source_sha=source,
         adapter_sha=ADAPTER_SHA, teacher_sha=TEACHER_SHA, physics_backend=a.physics_backend,
-        host=host, nworld=a.nworld, seed=plan['seed'], cap_s=a.cap_s,
+        host=host, nworld=a.nworld, seed=plan['seed'], world_seeds=[e['seed'] for e in selected], cap_s=a.cap_s,
         plan_sha256=hashlib.sha256(a.plan.read_bytes()).hexdigest(), mujoco=mujoco.__version__,
         gate_eligible=False, scene_status='HOLD_SCENE', training_rgb=False, student_execution=False,
         model_calls=0, backend_results_pooled=False, hourly_usd=a.vm_hourly_usd,
@@ -85,7 +91,7 @@ def main():
     start = time.perf_counter(); loop_start = None
     try:
         for i in range(a.nworld):
-            lane, bridge = make_lane(a.adapter_source, a.teacher_source, plan, a.out/f'world-{i:03d}', hooks, i, a.cap_s)
+            lane, bridge = make_lane(a.adapter_source, a.teacher_source, selected[i], a.out/f'world-{i:03d}', hooks, i, a.cap_s)
             lanes.append(lane); bridges.append(bridge)
             setup = next(lane)
             if setup['kind'] != 'setup':
@@ -141,7 +147,7 @@ def main():
         worlds = []
         for i, result in sorted(results.items()):
             cap = not result['physical_success'] and result['sim_s'] >= a.cap_s-1e-8  # frozen runner grid epsilon
-            worlds.append(dict(world=i, physical_success=result['physical_success'], cap_end=bool(cap),
+            worlds.append(dict(world=i, seed=selected[i]['seed'], physical_success=result['physical_success'], cap_end=bool(cap),
                 sim_s=result['sim_s'], joint_held=result['joint_held'], input_audit=result['input_audit']))
         sim = sum(r['sim_s'] for r in worlds)
         report['counts'].update(completed=len(worlds), physical_success=sum(r['physical_success'] for r in worlds),
