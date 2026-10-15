@@ -99,6 +99,18 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             self._set('relook',now)
         return self._hold(now),False
 
+    def _alignment_bands(self):
+        return (.002,.012,.02),(.004,.018,.04)
+
+    def _alignment_settled(self,truth,errors):
+        return self.ready_geometry(truth)
+
+    def _resume_alignment(self,errors):
+        pass
+
+    def _wait_ready(self,truth,now):
+        return self._hold(now),False
+
     def _approach(self,truth,now):
         if self.teacher_stability=='off':return super()._approach(truth,now)
         # Only the currently visible measurement frame reaches this law.
@@ -122,14 +134,14 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             return self._route(truth,goal,heading,now),False
         if self.phase=='approach':self._set('align',now);self._reset_alignment()
         gx,gy=local(pose,g);errors=(gx-self.staging_distance,gy,wrap(heading-pose[2]))
-        if self.ready_geometry(truth):
+        if self._alignment_settled(truth,errors):
             self.stable_since=now if self.stable_since is None else self.stable_since
             self._reset_alignment()
             return self._hold(now),now-self.stable_since>=.3
         self.stable_since=None
         # Schmitt deadbands: stop within inner, restart beyond outer. The
         # residual still goes to the same pad IK; readiness is never relaxed.
-        inner=(.002,.012,.02);outer=(.004,.018,.04)
+        inner,outer=self._alignment_bands()
         merit=max(abs(e)/b for e,b in zip(errors,inner))
         if self.align_best is None or merit<self.align_best-.25:
             self.align_best=merit;self.align_progress_t=now
@@ -144,6 +156,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         try:grasp_poses((gx,gy,g[2]));reachable=True
         except ValueError:reachable=False
         if not reachable and abs(errors[0])>.0005:self.align_active[0]=True
+        self._resume_alignment(errors)
         axis=next((i for i in (2,1,0) if self.align_active[i]),None)
         if axis is None:return self._hold(now),False
         sign=1 if errors[axis]>0 else -1
@@ -474,7 +487,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                     return None
             else:self.peer_clear_since=None
         # One finite encounter budget, independent of motion or visibility flicker.
-        if now-self.peer_wait_since>=12.-1e-8:
+        if self._peer_wait_expired(now,blocked):
             self.outcome='approach_blocked_handoff'
             self.recovery_log.append({'t':now,'recovery':'peer_wait_deadline_handoff'})
             return self._hold(now)
@@ -493,6 +506,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # Check the actual issued pulse too, not just the ideal route tangent.
         if not segment_free(pose[:2],end,discs,rects,radius):return self._hold(now)
         return value
+
+    def _peer_wait_expired(self,now,blocked):
+        return now-self.peer_wait_since>=12.-1e-8
 
     def _hold(self,now):
         return command({'t':now,'wheels':[0.]*4,'duration_s':[0.]*4,
@@ -633,6 +649,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 # Revalidate immediately before committing the fixed motion.
                 if not self.ready_geometry(truth):self._set('align',now)
                 else:self._queue_pick(truth,now)
+            elif self.phase=='ready':
+                return self._wait_ready(truth,now)
             return self._hold(now),False
         if self.phase=='pick' and arms_done:
             self.command_complete=True;self._set('complete',now)

@@ -20,7 +20,7 @@ Original admissible starts/rejection rates remain in the plan. This privilege
 belongs solely to demonstration setup; runtime teachers do not receive it.
 """
 from __future__ import annotations
-import argparse, hashlib, json, math, random
+import argparse, hashlib, json, math, random, subprocess
 from collections import Counter
 from pathlib import Path
 from harness.zone_final_environment import resolve
@@ -43,6 +43,14 @@ CROSS_OFFSET_M = .08
 LOUD = ('nearest', 'alternating', 'fixed_rgb_lugs_v1')
 
 
+def station_clearance(episode):
+    """Setup-only crate14 check: neither robot occupies its partner's station."""
+    from sim.crate_alignment_v14 import STATION_M
+    return {rid: math.dist(episode['spawns']['r2' if rid == 'r1' else 'r1'][:2],
+                          station_xy(CRATE, end, *episode['cargo_pose'], station_m=STATION_M)[:2])
+            for rid, end in episode['roles'].items()}
+
+
 def assign(own, other, crate, p=CRATE):
     """Return (r1_end, r2_end) minimising total start-to-station distance (ties: r1 teal)."""
     st = {e: station_xy(p, e, *crate)[:2] for e in ('teal', 'blue')}
@@ -53,7 +61,13 @@ def assign(own, other, crate, p=CRATE):
 
 
 def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assignment='nearest', indices=None,
-            scenario_set='v4', start_assigned_los='off', near_wall_policy='include'):
+            scenario_set='v4', start_assigned_los='off', near_wall_policy='include', crate_profile='off'):
+    if crate_profile not in ('off', 'crate14_v1'):
+        raise ValueError('unknown plan crate profile')
+    if crate_profile == 'crate14_v1':
+        if assignment != 'fixed_rgb_lugs_v1':
+            raise ValueError('crate14 starts require fixed RGB roles')
+        start_assigned_los = 'start_assigned_los_v1'
     if near_wall_policy not in ('include', 'exclude_report_v1'):
         raise ValueError('unknown near_wall policy')
     if near_wall_policy != 'include' and indices is not None:
@@ -75,6 +89,9 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
     original_starts = []
     accepted_starts = []
     excluded_wall = []
+    start_rule_proposals = 0
+    total_los_proposals = 0
+    start_rejections = []
     i = 0
     while len(episodes) < count:
         check_range(split, seed+i, 1)
@@ -129,21 +146,24 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
             ownyaw = facing+rng.uniform(-math.pi/3, math.pi/3)
             # peer cases relative to the lug the peer will take; the lug choice needs both starts,
             # so the peer start is drawn first in crate-axis terms and assigned afterwards.
-            other_end = rng.choice(('teal', 'blue'))
-            ox, oy, oh = station_xy(CRATE, other_end, *crate)
+            other_end = 'blue' if crate_profile == 'crate14_v1' else rng.choice(('teal', 'blue'))
+            ox, oy, oh = station_xy(CRATE, other_end, *crate, station_m=.1974 if crate_profile == 'crate14_v1' else .203)
             if peer == 'other_end':
                 other = [ox, oy]
             elif peer == 'near_own':
-                other = [own[0]+rng.uniform(-.45, .45), own[1]+rng.uniform(-.45, .45)]
+                anchor = (ox, oy) if crate_profile == 'crate14_v1' else own
+                other = [anchor[0]+rng.uniform(-.45, .45), anchor[1]+rng.uniform(-.45, .45)]
             elif peer == 'approaching':
                 pr = rng.uniform(.65, 1.4)
-                pa = az+rng.uniform(-1.0, 1.0)
-                other = [x+pr*math.cos(pa), y+pr*math.sin(pa)]
+                pa = (oh+math.pi if crate_profile == 'crate14_v1' else az)+rng.uniform(-1.0, 1.0)
+                anchor = (ox, oy) if crate_profile == 'crate14_v1' else (x, y)
+                other = [anchor[0]+pr*math.cos(pa), anchor[1]+pr*math.sin(pa)]
             else:
                 # 'absent': the gate is a two-robot teacher, so the peer starts far away (2.0-2.6 m)
                 pr = rng.uniform(2.0, 2.6)
-                pa = az+math.pi+rng.uniform(-.8, .8)
-                other = [x+pr*math.cos(pa), y+pr*math.sin(pa)]
+                pa = (oh if crate_profile == 'crate14_v1' else az)+math.pi+rng.uniform(-.8, .8)
+                anchor = (ox, oy) if crate_profile == 'crate14_v1' else (x, y)
+                other = [anchor[0]+pr*math.cos(pa), anchor[1]+pr*math.sin(pa)]
             otheryaw = math.atan2(y-other[1], x-other[0])
             if assignment == 'fixed_rgb_lugs_v1':
                 # Public role tickets, independent of both GT spawn positions.
@@ -198,9 +218,20 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
                 'near_wall': min(rect_distance(crate, rect) for rect in rects) < .45,
                 'handoff_pose_error': err, 'crate_to_zone_center_m': math.dist(crate[:2], (cx, cy)),
                 'proposal_attempts': attempt+1}
+            if crate_profile == 'crate14_v1':
+                start_rule_proposals += 1
+                distances = station_clearance(episode)
+                episode.update(crate_plan_profile=crate_profile, cargo_scene_version='crate_mass_025_v1',
+                               peer_station_clearance_m=distances)
+                if min(distances.values()) < .34:
+                    rejects['peer_on_assigned_station'] += 1
+                    start_rejections.append({'seed': seed+i, 'attempt': attempt+1,
+                                             'reason': 'peer_on_assigned_station', 'episode': episode})
+                    continue
             if checker is not None:
                 report = checker.check(episode)
                 los_proposals += 1
+                total_los_proposals += 1
                 if original_start is None:
                     # First geometrically valid proposal is byte-for-byte the
                     # toggle-off start. Keep it even when subsequently rejected.
@@ -209,6 +240,9 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
                                       'initial_pan': episode['initial_pan'], **report}
                 if not report['accepted']:
                     rejects['start_assigned_los'] += 1
+                    if crate_profile == 'crate14_v1':
+                        start_rejections.append({'seed': seed+i, 'attempt': attempt+1,
+                                                 'reason': 'start_assigned_los', 'episode': episode, 'audit': report})
                     for rid, value in report['robots'].items():
                         if not value['gate5']:
                             rejects['start_assigned_los_'+rid] += 1
@@ -236,6 +270,17 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
             original_starts = [original_starts[j] for j in indices]
             accepted_starts = [accepted_starts[j] for j in indices]
     return {'schema': 'ugrp.crate_teacher.plan.v1', 'episodes': episodes, 'rejected_proposals': dict(rejects),
+            **({'crate_plan_profile': crate_profile, 'start_distribution': {
+                'definition': 'crate14 conditional demonstration setup distribution, not evaluation outcome censoring; never pool with crate13',
+                'peer_anchor': 'r2 assigned blue station; other_end exact, near_own square +/-0.45m about station, approaching/absent outward cone about station',
+                'station_distance_m': .1974, 'peer_station_min_m': .34,
+                'denominator': 'geometrically admissible proposals before peer-station and assigned-LOS rejection, including near-wall completed draws',
+                'proposals': start_rule_proposals,
+                'station_rejected': rejects['peer_on_assigned_station'],
+                'los_tested': total_los_proposals, 'los_rejected': rejects['start_assigned_los'],
+                'rejected': len(start_rejections),
+                'rejection_rate': len(start_rejections)/start_rule_proposals,
+                'rejected_starts': start_rejections}} if crate_profile == 'crate14_v1' else {}),
             'near_wall_filter': {'policy': near_wall_policy, 'definition': 'min rect_distance(crate center, static keepouts including perimeter) < 0.45 m (crate12 unchanged)',
                 'drawn_episode_count': i, 'excluded_count': len(excluded_wall),
                 'excluded_rate': len(excluded_wall)/i, 'accepted_count': len(episodes),
@@ -251,7 +296,7 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
                     'original': summarize(original_starts), 'accepted': summarize(accepted_starts),
                     'original_starts': original_starts,
                     'rejected_los_proposals': rejects['start_assigned_los'],
-                    'total_los_proposals': sum(e['start_los_proposals'] for e in episodes),
+                    'total_los_proposals': total_los_proposals,
                     'mj_step_calls': 0, 'render_calls': 0}} if checker is not None else {}),
             'distribution': {
                 'robot_distance_m': [.5, 2.0], 'peer_cases': list(PEERS), 'scenarios': list(scenarios), 'scenario_set': scenario_set,
@@ -269,6 +314,28 @@ def prepare(*, count=40, seed=77000, split='crate_gate', destination='B', assign
             'student_evaluation': False}
 
 
+def write_plan(path, result):
+    """Keep large crate14 rejection evidence lossless beside the runnable plan."""
+    from copy import deepcopy
+    result = deepcopy(result)
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if result.get('crate_plan_profile') == 'crate14_v1':
+        starts = result['start_distribution'].pop('rejected_starts')
+        raw = (json.dumps(starts, separators=(',', ':'))+'\n').encode()
+        packed = subprocess.check_output(['zstd', '-q', '-c'], input=raw)
+        if subprocess.check_output(['zstd', '-q', '-d', '-c'], input=packed) != raw:
+            raise ValueError('rejection evidence compression mismatch')
+        archive = path.with_name(path.stem+'-rejected-starts.json.zst')
+        archive.write_bytes(packed)
+        result['start_distribution']['rejected_starts_artifact'] = {
+            'path': archive.name, 'sha256': hashlib.sha256(packed).hexdigest(),
+            'uncompressed_sha256': hashlib.sha256(raw).hexdigest(), 'uncompressed_bytes': len(raw)}
+        path.write_text(json.dumps(result, separators=(',', ':'))+'\n')
+    else:
+        path.write_text(json.dumps(result, indent=2)+'\n')
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--out', type=Path, required=True)
@@ -280,12 +347,13 @@ def main():
     p.add_argument('--start-assigned-los', choices=('off', 'start_assigned_los_v1'), default='off')
     p.add_argument('--near-wall-policy', choices=('include', 'exclude_report_v1'), default='include')
     p.add_argument('--indices', default=None, help='comma separated generated indices to keep (diagnostic subset)')
+    p.add_argument('--crate-profile', choices=('off', 'crate14_v1'), default='off')
     a = p.parse_args()
     result = prepare(count=a.count, seed=a.seed, split=a.split, assignment=a.assignment,
                      indices=None if a.indices is None else [int(v) for v in a.indices.split(',')],
-                     scenario_set=a.scenario_set, start_assigned_los=a.start_assigned_los, near_wall_policy=a.near_wall_policy)
-    a.out.parent.mkdir(parents=True, exist_ok=True)
-    a.out.write_text(json.dumps(result, indent=2)+'\n')
+                     scenario_set=a.scenario_set, start_assigned_los=a.start_assigned_los, near_wall_policy=a.near_wall_policy,
+                     crate_profile=a.crate_profile)
+    write_plan(a.out, result)
     print(json.dumps({'episodes': len(result['episodes']), 'rejected': result['rejected_proposals']}))
 
 

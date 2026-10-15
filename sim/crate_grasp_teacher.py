@@ -24,7 +24,21 @@ LIFT_WAIT_LIMIT_S = 20.
 
 class CrateGraspTeacher(VisibleOnlyGraspTeacher):
     def __init__(self, *args, profile=CRATE, crate_lift_pose='off', crate_approach_recovery='off',
-                 crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off', crate_candidate_recovery='off', **kwargs):
+                 crate_wall_footprint='off', crate_stances='off', crate_pulse_safety='off', crate_candidate_recovery='off',
+                 crate_alignment='off', **kwargs):
+        from sim.crate_alignment_v14 import MODE as ALIGNMENT
+        if crate_alignment not in ('off', ALIGNMENT):
+            raise ValueError('unknown crate alignment')
+        if crate_alignment != 'off' and (crate_candidate_recovery == 'off' or crate_stances == 'off'):
+            raise ValueError('crate14 alignment requires crate13 staging and stances')
+        self.crate_alignment = crate_alignment
+        self.staging_elapsed_s = 0.
+        self.staging_clock_t = None
+        self.staging_peer_blocked = False
+        self.staging_paused_s = 0.
+        self.peer_clock_t = None
+        self.peer_clock_blocked = False
+        self.peer_elapsed_s = 0.
         from sim.crate_navigation_v12 import WALL_MODE, STANCE_MODE
         from sim.crate_approach_recovery import PULSE_MODES
         if crate_wall_footprint not in ('off',WALL_MODE) or crate_stances not in ('off',STANCE_MODE):
@@ -88,6 +102,85 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             self.approach_angles=ANGLES_DEG
             self.approach_distances=tuple(dict.fromkeys((self.staging_distance,*DISTANCES_M)))
             self.approach_grasp_filter=lambda world,pose:stance_grasp_valid(world,self.rid,self.end,pose)
+        if crate_alignment != 'off':
+            from sim.crate_alignment_v14 import STATION_M, DISTANCES_M, stance_valid
+            self.staging_distance = STATION_M
+            self.approach_choice = (0., STATION_M)
+            self.approach_distances = DISTANCES_M
+            self.approach_grasp_filter = lambda world, pose: stance_valid(world, self.rid, self.end, pose)
+
+    def _alignment_bands(self):
+        if self.crate_alignment == 'off':
+            return super()._alignment_bands()
+        from sim.crate_alignment_v14 import INNER, OUTER
+        return INNER, OUTER
+
+    def _alignment_settled(self, truth, errors):
+        if self.crate_alignment == 'off':
+            return super()._alignment_settled(truth, errors)
+        inner, _ = self._alignment_bands()
+        return self.ready_geometry(truth) and all(abs(e) <= b for e, b in zip(errors, inner))
+
+    def _resume_alignment(self, errors):
+        if self.crate_alignment != 'off' and not any(self.align_active):
+            inner, _ = self._alignment_bands()
+            axis = max(range(3), key=lambda i: abs(errors[i])/inner[i])
+            if abs(errors[axis]) > 1e-9:
+                self.align_active[axis] = True
+
+    def _wait_ready(self, truth, now):
+        if self.crate_alignment != 'off':
+            return self._approach(truth, now)
+        return super()._wait_ready(truth, now)
+
+    def _continuous(self, now, forward, left, turn):
+        value = super()._continuous(now, forward, left, turn)
+        if self.crate_alignment != 'off' and self.phase in ('align', 'ready'):
+            from harness.grasp_act_contract import wheel_mix, command
+            desired = wheel_mix([3.*forward, 3.*left, .65*turn])
+            # Reactivating an axis must survive the duty encoder's 1 ms
+            # truncation. Retain the existing alignment 40 ms pulse floor,
+            # including READY waiting. The normal swept safety check follows.
+            for i, effort in enumerate(desired):
+                if effort:
+                    value['wheels'][i] = math.copysign(.35, effort)
+                    value['duration_s'][i] = max(.04, value['duration_s'][i])
+            return command(value)
+        return value
+
+    def _peer_wait_expired(self, now, blocked):
+        if self.crate_alignment == 'off':
+            return super()._peer_wait_expired(now, blocked)
+        if self.peer_clock_t is not None and not self.peer_clock_blocked:
+            self.peer_elapsed_s += max(0., now-self.peer_clock_t)
+        self.peer_clock_t = now
+        self.peer_clock_blocked = blocked
+        return self.peer_elapsed_s >= 12.-1e-8
+
+    def _peer_route(self, world, goal, now):
+        value = super()._peer_route(world, goal, now)
+        if self.crate_alignment != 'off' and self.peer_wait_since is None:
+            self.peer_clock_t = None
+            self.peer_elapsed_s = 0.
+            self.peer_clock_blocked = False
+        return value
+
+    def _staging_clock(self, now):
+        if self.staging_since is None:
+            return
+        if self.staging_clock_t is not None:
+            dt = max(0., now-self.staging_clock_t)
+            if self.staging_peer_blocked:
+                self.staging_paused_s += dt
+            else:
+                self.staging_elapsed_s += dt
+        self.staging_clock_t = now
+
+    def _staging_expired(self, now):
+        if self.crate_alignment == 'off':
+            return self.staging_since is not None and now-self.staging_since >= 12.-1e-8
+        self._staging_clock(now)
+        return self.staging_elapsed_s >= 12.-1e-8
 
     def _navigation(self, world):
         if self.crate_wall_footprint=='off':return None
@@ -116,6 +209,9 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             if self.staging_since is not None:
                 self.crate_visible_progress = None
             self.staging_since = None
+            self.staging_elapsed_s = 0.
+            self.staging_clock_t = None
+            self.staging_peer_blocked = False
             self.staging_last = None
         if (self.crate_lift_pose in CARTESIAN_MODES and self.phase == 'approach'
                 and truth['beam'] is not None and truth['visibility'][self.rid]['visible_probes'] >= 5):
@@ -137,6 +233,15 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             # This finite staging controller owns the deadline while no grasp
             # pose is reachable; the legacy 3 s deadline must not fire first.
             self.approach_blocked_since = None
+            if self.crate_alignment != 'off':
+                from sim.crate_alignment_v14 import peer_blocks_stances
+                self._staging_clock(now)
+                blocked = not valid and peer_blocks_stances(world, self)
+                if blocked != self.staging_peer_blocked:
+                    self.crate_recovery_log.append({'t': now, 'recovery': 'staging_peer_clock',
+                        'paused': blocked, 'elapsed_s': self.staging_elapsed_s,
+                        'reason': 'visible_peer_disc' if blocked else 'peer_clear_or_other_cause'})
+                self.staging_peer_blocked = blocked
         if (self.crate_approach_recovery != 'off' and not valid and self.goal_set_log
                 and self.goal_set_log[-1]['t'] == now):
             candidates = self.goal_set_log[-1]['candidates']
@@ -155,10 +260,10 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         return valid
 
     def _staging_recovery(self, world, now):
-        from sim.crate_candidate_recovery import staging_view, MAX_RECOVERY_S
+        from sim.crate_candidate_recovery import staging_view
         from sim.grasp_act_visible_route import drive
         self.staging_since = now if self.staging_since is None else self.staging_since
-        if now-self.staging_since >= MAX_RECOVERY_S-1e-8:
+        if self._staging_expired(now):
             self.outcome = 'approach_blocked_handoff'
             self.crate_recovery_log.append({'t': now, 'recovery': 'staging_exhausted_handoff'})
             return self._hold(now)
@@ -243,6 +348,14 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
             return False
         if self.crate_lift_pose not in CARTESIAN_MODES:
             return True
+        if self.crate_alignment != 'off':
+            from sim.crate_alignment_v14 import grasp_valid, OUTER
+            from sim.grasp_act_teacher import wrap
+            pose, g, heading, _ = self._geometry(truth)
+            x, y = local(pose, g)
+            errors = (x-self.staging_distance, y, wrap(heading-pose[2]))
+            return (all(abs(e) <= b for e, b in zip(errors, OUTER))
+                    and grasp_valid(truth, self.rid, self.end, pose))
         if self.crate_lift_pose == ANTIPODAL_OPTION:
             from sim.crate_antipodal import visible_grasp
             if not visible_grasp(truth, self.rid, self.end)['valid']:
@@ -278,6 +391,9 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
 
     # --- picking: hover, descent, close (no lift yet) ---
     def _queue_pick(self, truth, now):
+        if self.crate_alignment != 'off' and not self.ready_geometry(truth):
+            self._begin_relook(now, 'crate14_pick_geometry_changed')
+            return
         if self.crate_lift_pose == ANTIPODAL_OPTION:
             from sim.crate_antipodal import visible_grasp
             if not visible_grasp(truth, self.rid, self.end)['valid']:
@@ -335,7 +451,7 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
         if self.outcome is not None:
             return self._hold(now), False
         if (self.crate_candidate_recovery != 'off' and self.staging_since is not None
-                and self.phase in ('approach', 'search', 'relook') and now-self.staging_since >= 12.-1e-8):
+                and self.phase in ('approach', 'search', 'relook') and self._staging_expired(now)):
             self.outcome = 'approach_blocked_handoff'
             self.crate_recovery_log.append({'t': now, 'recovery': 'staging_exhausted_handoff'})
             return self._hold(now), False
@@ -366,6 +482,9 @@ class CrateGraspTeacher(VisibleOnlyGraspTeacher):
                 'crate_wall_footprint': self.crate_wall_footprint,
                 'crate_stances': self.crate_stances, 'crate_pulse_safety': self.crate_pulse_safety,
                 'crate_candidate_recovery': self.crate_candidate_recovery, 'crate_recovery_log': self.crate_recovery_log,
+                'crate_alignment': self.crate_alignment,
+                'staging_clock': {'elapsed_s': self.staging_elapsed_s, 'peer_paused_s': self.staging_paused_s,
+                                  'peer_blocked': self.staging_peer_blocked},
                 'closed_at': self.closed_at, 'lift_done': self.lift_done,
                 'crate_lift_pose': self.crate_lift_pose, 'lift_pose_selection': self.lift_selection,
                 **({'excluded_stalled_stances': sorted(self.approach_excluded)}

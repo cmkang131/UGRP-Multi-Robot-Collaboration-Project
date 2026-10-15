@@ -1,0 +1,753 @@
+{
+  "scope": "offline saved decision replay + numerical/static rays only; no physical/student success",
+  "source_baseline": "727de2af0e5ec10dda0b954e757c2fe42e694766",
+  "runs": [
+    {
+      "run": "crate-diag-79317-727de2af",
+      "candidate": false,
+      "matched": 402,
+      "total": 402,
+      "full_baseline_match": true,
+      "first_divergence": [],
+      "alignment": {
+        "r1": {
+          "align_N": 129,
+          "align_old_zero": 102,
+          "align_new_zero": 3,
+          "zero_to_motion": 99,
+          "snapshots_N": 134,
+          "old_ready": 13,
+          "new_ready": 0,
+          "candidate_rejects_old_stance": 0
+        },
+        "r2": {
+          "align_N": 25,
+          "align_old_zero": 4,
+          "align_new_zero": 0,
+          "zero_to_motion": 4,
+          "snapshots_N": 56,
+          "old_ready": 35,
+          "new_ready": 0,
+          "candidate_rejects_old_stance": 0
+        }
+      },
+      "saved_status": "complete",
+      "saved_outcomes": {
+        "r1": "alignment_no_progress",
+        "r2": "episode_timeout"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false,
+        "admitted_source_tags": {
+          "clock": 402,
+          "issued_commands": 2010,
+          "known_shape": 1457,
+          "visible_teacher_measurement": 1859,
+          "static_map": 402,
+          "fixed_rule": 402
+        }
+      },
+      "input_sha256": {
+        "result.json": "22abc56314eb4ffb79c42871a94fcc509365f9011b66d44d5d71bae509e0d902",
+        "plan.json": "0d25e7e66e2a007b90d40d3a15bfde279279c9abe7e95da184b09feebc524181",
+        "eval-only.jsonl": "2fe7087019deb7959e101efb228a502106a039c2492fdfa5e07b89fcee608d90",
+        "teacher-r1.jsonl": "135b7341a609f892a1765b46c1bdb972b50467c93ede5b1959e4941a63a0571b",
+        "teacher-r2.jsonl": "e04286e0a375f0d9adb4d18b50c05e34c8ad88b3ea48417b6650414439df56ea"
+      },
+      "candidate_first_divergence": [
+        {
+          "tick": 7,
+          "t": 2.4999999999999742,
+          "robot": "r2",
+          "before": "approach",
+          "old_phase": "approach",
+          "new_phase": "approach",
+          "old_wheels": [
+            0.35,
+            0.35,
+            0.35,
+            0.35
+          ],
+          "new_wheels": [
+            0.35,
+            0.35,
+            0.35,
+            0.35
+          ],
+          "old_duration_s": [
+            0.1,
+            0.09237751446371828,
+            0.09454693860533817,
+            0.09783057585838015
+          ],
+          "new_duration_s": [
+            0.1,
+            0.09235290670733963,
+            0.09452207174553345,
+            0.0978308349618062
+          ],
+          "changed_fields": [
+            "duration_s"
+          ]
+        }
+      ],
+      "detail": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate14-audit/replay-79317.json.zst",
+      "detail_sha256": "d1083d121c4a8dcb016b178e795fe596b81f80707f190e6d7fe60734ed42c6b6",
+      "detail_uncompressed_sha256": "587c90af2694b3bc06e4d038ea5235d84d90a8eb1b6b0642a543b8af09fb8e48"
+    },
+    {
+      "run": "crate-diag-79316-727de2af",
+      "candidate": false,
+      "matched": 594,
+      "total": 594,
+      "full_baseline_match": true,
+      "first_divergence": [],
+      "alignment": {
+        "r1": {
+          "align_N": 31,
+          "align_old_zero": 4,
+          "align_new_zero": 0,
+          "zero_to_motion": 4,
+          "snapshots_N": 87,
+          "old_ready": 60,
+          "new_ready": 0,
+          "candidate_rejects_old_stance": 0
+        },
+        "r2": {
+          "align_N": 68,
+          "align_old_zero": 33,
+          "align_new_zero": 1,
+          "zero_to_motion": 32,
+          "snapshots_N": 68,
+          "old_ready": 0,
+          "new_ready": 0,
+          "candidate_rejects_old_stance": 68
+        }
+      },
+      "saved_status": "interrupted",
+      "saved_outcomes": null,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false,
+        "admitted_source_tags": {
+          "clock": 594,
+          "issued_commands": 2970,
+          "known_shape": 1944,
+          "visible_teacher_measurement": 2538,
+          "static_map": 594,
+          "fixed_rule": 594
+        }
+      },
+      "input_sha256": {
+        "result.json": "72bd3e61cbbd49b793cc06b2b32ead9034463d2efdcde336bd8e1921f5068729",
+        "plan.json": "8587f8c04a1bf0ced32fb705e281ade85084d173b863f86c1700a0622a9b069b",
+        "eval-only.jsonl": "ead8bde799b05ab43a6f0da96f6d4cbfb7329a176361b861c3937ff07bff50af",
+        "teacher-r1.jsonl": "bc197bc62ec87136ae84719a4ccc701f10d15d8526f9b1d690769a912ffc0485",
+        "teacher-r2.jsonl": "a47c25f542afaf435085d679252cd7be7822aa2c6f297c261d571d73a4715949"
+      },
+      "candidate_first_divergence": [
+        {
+          "tick": 39,
+          "t": 5.7000000000012205,
+          "robot": "r2",
+          "before": "search",
+          "old_phase": "approach",
+          "new_phase": "approach",
+          "old_wheels": [
+            0.35,
+            0.35,
+            0.35,
+            0.35
+          ],
+          "new_wheels": [
+            0.35,
+            0.35,
+            0.35,
+            0.35
+          ],
+          "old_duration_s": [
+            0.1,
+            0.06994895893560028,
+            0.0795797716508202,
+            0.0903691872847801
+          ],
+          "new_duration_s": [
+            0.1,
+            0.06988340936267423,
+            0.07951163736178948,
+            0.09037177200088475
+          ],
+          "changed_fields": [
+            "duration_s"
+          ]
+        }
+      ],
+      "detail": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate14-audit/replay-79316.json.zst",
+      "detail_sha256": "f11ec7b265af101871e72926043c85653da23be0217a322436485274676272e7",
+      "detail_uncompressed_sha256": "f955ac911b8674ba46dc5770768631f0c2e3506cb9396d6b1516b383be7a598b"
+    }
+  ],
+  "source_analysis_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/crate-diag-79316-727de2af-r2-align-trace.json": "50e18614057f8aee433983b6b4d0bac8b3e41257ebbae68c0ca6a95b62b0dc8e",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/crate-diag-79317-727de2af-r1-align-trace.json": "b5fb7c1b48f63c3674f312c6cf250f080849ba7e67ded752a6c739d153a986c9",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/crate-reproduction-77978-727de2af-r1-align-trace.json": "aa1ac6951a0d880117a5b9fd01683359389d206601bedd1b6b3fb1d9632e9c46",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/offline-start-stats.json": "91553d29995ac57f2669fde57c2e536ae4d0cd5f6d66152171ba805a62df34e2",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/phase-stats.json": "c10d41d33afa00d023e44267901fffe7ec0acb2d96d206d0a633731fdd06a02c",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/run-geometry.json": "22f1ca4fa002e60fd695b4cb15f93a72e13f92813a4adb0dd3db74a5d86f97a4",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/align_trace.py": "a08edcdae9c0300da47651522ff5e87ea6fc678daa38642d31ab2f7d6d8df202",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/blocking_stats.py": "cde36857b63323aff3947de2657e0f4f6a64284e0dcd117cee72e65d4af36d74",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/lift_window_probe.py": "30d861bfa2d14b9205cea13911e19fd6f1296389608c251defa7a7257bee93aa",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/lift_window_probe_cases.py": "4151a2532655aaa42542d31c2c32dc9e63edf7df2ed856a944e016c1bba03263",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/make_sheets.py": "6bef384c55ffb87c621419828d282082e99c44000661c07da4d863d6ac9135bc",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/offline_start_stats.py": "76bb85ab93c88e70f1dd6afce26c8ff2ba17bf65e05207eebe12fb0f1b34d634",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/phase_stats.py": "0663af817b03f2d435dcb5d283760dfb75d2cc9780bbbdb034b4702388337bbe",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/replay13.py": "c6d46e40c9f674b3bc51e3b50967ace603ca1967506b31bf9a60382ecd983ca9",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/run_geometry.py": "dfe57079ea53c63618d5276995fdec616a17e3f8ce31f607aad502bb32a122ea",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/start_los_check.py": "ab148cfa28cde40a41d5f02ac2fec92424ac0e5a68fb312cd3e219a8c16afbe6",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/timeline.py": "279a663f69e5ebc14541d04546a4aaeb4126b5807779b790c7bbe75bf35d09a2",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/scripts/visibility_map.py": "79da037c94800489840a8058d32b004583a103bca8badd2e46e55671c7db4d3b",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/start-los-diag13.json": "f6f87b6b5a5971fa284bed6e50faeacf2066d8c3f8fb585a28f76348217a0511",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/visibility-map.json": "d573f3e1dfa9ce3c4ce95f32e0b6096927d55d5b1d0588bca80e735ef44876c0",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate13-727de2af/report.md": "3c519b4ca38056f4d4d29ebe5215b0ba588aa92fe94f69634221cfca6803cfea"
+  },
+  "observed_grasp_z_m": {
+    "min": 0.02396362461435691,
+    "max": 0.023963624677273827,
+    "N": 345
+  },
+  "execution_pose_lift_windows": [
+    {
+      "y_m": 0.0,
+      "z_m": 0.02396,
+      "min_x_m": 0.1942,
+      "max_x_m": 0.2008,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.004,
+      "z_m": 0.02396,
+      "min_x_m": 0.1941,
+      "max_x_m": 0.2009,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.012,
+      "z_m": 0.02396,
+      "min_x_m": 0.1937,
+      "max_x_m": 0.2004,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.0167,
+      "z_m": 0.02396,
+      "min_x_m": 0.1932,
+      "max_x_m": 0.1997,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.0,
+      "z_m": 0.02396362461435691,
+      "min_x_m": 0.1942,
+      "max_x_m": 0.2008,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.004,
+      "z_m": 0.02396362461435691,
+      "min_x_m": 0.1941,
+      "max_x_m": 0.2009,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.012,
+      "z_m": 0.02396362461435691,
+      "min_x_m": 0.1937,
+      "max_x_m": 0.2004,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.0167,
+      "z_m": 0.02396362461435691,
+      "min_x_m": 0.1932,
+      "max_x_m": 0.1997,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.0,
+      "z_m": 0.023963624677273827,
+      "min_x_m": 0.1942,
+      "max_x_m": 0.2008,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.004,
+      "z_m": 0.023963624677273827,
+      "min_x_m": 0.1941,
+      "max_x_m": 0.2009,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.012,
+      "z_m": 0.023963624677273827,
+      "min_x_m": 0.1937,
+      "max_x_m": 0.2004,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    },
+    {
+      "y_m": 0.0167,
+      "z_m": 0.023963624677273827,
+      "min_x_m": 0.1932,
+      "max_x_m": 0.1997,
+      "step_m": 0.0001,
+      "command_source": "exact planned final descent PWM, then close 1500; same as _queue_pick"
+    }
+  ],
+  "source_code_sha256": {
+    "sim/crate_alignment_v14.py": "828d243b20319ee4e7a90083c513e2fb092b992029634f884ad9b45b1992dedf",
+    "sim/crate_grasp_teacher.py": "d4644404a80b59a378b7dba116e6323b91da68556baa13f3eba1119250f25164",
+    "sim/grasp_act_teacher_v3.py": "a5173074285a0b552ded5b6b87d0ae49ec37d5e6adfc5cd21c42e45a379cfdda",
+    "scripts/make_crate_teacher_plan.py": "045979c2fbb3dbb010f8c2ee255763beb59d0659fa8c052ca9eaa314bce19311",
+    "scripts/run_crate_teacher.py": "034886034bce2549d25de74ca98f5e8a75c53400eeccf74d33c72a9b073363ae"
+  },
+  "crate_profile": "crate14_v1",
+  "default": "off",
+  "never_pool_with_previous": true,
+  "tests": {
+    "command": "python -m pytest -q tests/test_crate14.py tests/test_crate13.py tests/test_crate12.py",
+    "passed": 41,
+    "failed": 0,
+    "seconds": 4.27,
+    "junit": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate14-audit/tests.xml",
+    "junit_sha256": "827b32861ca922549df79e04c3f50868d2f8cb582536baa3a6d8ea04d28c601c"
+  },
+  "start_audit": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate14-audit/start-audit.json",
+    "sha256": "96b2e7bdb6b71f833476fcd960cf9c304e3a16c2e57200ca540f68aa033c2695",
+    "results": {
+      "regenerated_proposals_artifact": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/crate14-audit/regenerated-same-indices.json.zst",
+        "sha256": "91469fd0f6411f1df788754dd98fe0831e488118e33916f593273a38227e2464",
+        "uncompressed_sha256": "c3a9575176bd50e31672f14e02508cac33a58d4fb7300397486ac96cea75a21d"
+      },
+      "scope": "offline static rays/conditional setup proposals, no physics/render or teacher success",
+      "source_plan_sha256": "844e5565796b4e998b654070f3d213f8ee1174a77e0caca5c5981355727b0fff",
+      "original10": {
+        "N": 10,
+        "los_pass": 7,
+        "station_rejected": 1,
+        "union_rejected": 3,
+        "accepted": 7,
+        "rows": [
+          {
+            "seed": 79314,
+            "los_pass": false,
+            "per_robot": {
+              "r1": false,
+              "r2": true
+            },
+            "station_clearance_m": {
+              "r1": 0.005599999999999847,
+              "r2": 0.3089309863040639
+            },
+            "station_pass": false,
+            "accepted": false
+          },
+          {
+            "seed": 79315,
+            "los_pass": true,
+            "per_robot": {
+              "r1": true,
+              "r2": true
+            },
+            "station_clearance_m": {
+              "r1": 1.2859885016601558,
+              "r2": 1.0703265532641175
+            },
+            "station_pass": true,
+            "accepted": true
+          },
+          {
+            "seed": 79316,
+            "los_pass": true,
+            "per_robot": {
+              "r1": true,
+              "r2": true
+            },
+            "station_clearance_m": {
+              "r1": 1.300375555026518,
+              "r2": 1.9143882702062809
+            },
+            "station_pass": true,
+            "accepted": true
+          },
+          {
+            "seed": 79317,
+            "los_pass": true,
+            "per_robot": {
+              "r1": true,
+              "r2": true
+            },
+            "station_clearance_m": {
+              "r1": 2.402486021746406,
+              "r2": 0.8304015744565824
+            },
+            "station_pass": true,
+            "accepted": true
+          },
+          {
+            "seed": 79318,
+            "los_pass": true,
+            "per_robot": {
+              "r1": true,
+              "r2": true
+            },
+            "station_clearance_m": {
+              "r1": 0.6004000000000002,
+              "r2": 1.4032366607673148
+            },
+            "station_pass": true,
+            "accepted": true
+          },
+          {
+            "seed": 79319,
+            "los_pass": false,
+            "per_robot": {
+              "r1": false,
+              "r2": true
+            },
+            "station_clearance_m": {
+              "r1": 1.3951097704066047,
+              "r2": 1.1600144366107423
+            },
+            "station_pass": true,
+            "accepted": false
+          },
+          {
+            "seed": 79320,
+            "los_pass": false,
+            "per_robot": {
+              "r1": false,
+              "r2": true
+            },
+            "station_clearance_m": {
+              "r1": 1.520926331485987,
+              "r2": 0.5111592539994315
+            },
+            "station_pass": true,
+            "accepted": false
+          },
+          {
+            "seed": 79321,
+            "los_pass": true,
+            "per_robot": {
+              "r1": true,
+              "r2": true
+            },
+            "station_clearance_m": {
+              "r1": 2.5413812784027137,
+              "r2": 0.8016034479931474
+            },
+            "station_pass": true,
+            "accepted": true
+          },
+          {
+            "seed": 79324,
+            "los_pass": true,
+            "per_robot": {
+              "r1": true,
+              "r2": true
+            },
+            "station_clearance_m": {
+              "r1": 1.3943846151617214,
+              "r2": 1.6426634273298086
+            },
+            "station_pass": true,
+            "accepted": true
+          },
+          {
+            "seed": 79325,
+            "los_pass": true,
+            "per_robot": {
+              "r1": true,
+              "r2": true
+            },
+            "station_clearance_m": {
+              "r1": 2.334479338029116,
+              "r2": 0.9571773893105192
+            },
+            "station_pass": true,
+            "accepted": true
+          }
+        ]
+      },
+      "regenerated_same10": {
+        "N": 10,
+        "los_pass": 10,
+        "station_pass": 10,
+        "near_wall": 0
+      },
+      "regeneration_proposals_all12_indices": {
+        "definition": "crate14 conditional demonstration setup distribution, not evaluation outcome censoring; never pool with crate13",
+        "peer_anchor": "r2 assigned blue station; other_end exact, near_own square +/-0.45m about station, approaching/absent outward cone about station",
+        "station_distance_m": 0.1974,
+        "peer_station_min_m": 0.34,
+        "denominator": "geometrically admissible proposals before peer-station and assigned-LOS rejection, including near-wall completed draws",
+        "proposals": 26,
+        "station_rejected": 1,
+        "los_tested": 25,
+        "los_rejected": 13,
+        "rejected": 14,
+        "rejection_rate": 0.5384615384615384
+      },
+      "fresh10": {
+        "seeds": [
+          79450,
+          79451,
+          79452,
+          79453,
+          79454,
+          79455,
+          79456,
+          79457,
+          79460,
+          79461
+        ],
+        "los_pass": 10,
+        "start_distribution": {
+          "definition": "crate14 conditional demonstration setup distribution, not evaluation outcome censoring; never pool with crate13",
+          "peer_anchor": "r2 assigned blue station; other_end exact, near_own square +/-0.45m about station, approaching/absent outward cone about station",
+          "station_distance_m": 0.1974,
+          "peer_station_min_m": 0.34,
+          "denominator": "geometrically admissible proposals before peer-station and assigned-LOS rejection, including near-wall completed draws",
+          "proposals": 23,
+          "station_rejected": 0,
+          "los_tested": 23,
+          "los_rejected": 11,
+          "rejected": 11,
+          "rejection_rate": 0.4782608695652174,
+          "rejected_starts_artifact": {
+            "path": "diag_plan_crate14_79450-rejected-starts.json.zst",
+            "sha256": "992f3352611dd2a2558176f94ec7eca9ad0980ee3e507fae44eda0541134f970",
+            "uncompressed_sha256": "c72e82bf6993336555c376b9656153e5c12d8fcfa8d4dbeb7322ecc6339a2c5a",
+            "uncompressed_bytes": 28214
+          }
+        },
+        "near_wall_filter": {
+          "policy": "exclude_report_v1",
+          "definition": "min rect_distance(crate center, static keepouts including perimeter) < 0.45 m (crate12 unchanged)",
+          "drawn_episode_count": 12,
+          "excluded_count": 2,
+          "excluded_rate": 0.16666666666666666,
+          "accepted_count": 10,
+          "strata_overlap": "(i//4)%4 and (i//8)%2 share one bit; recorded, distribution unchanged"
+        }
+      },
+      "mj_step_calls": 0,
+      "mj_forward_calls": 0,
+      "render_calls": 0
+    }
+  },
+  "physical_validation": {
+    "new_runs": 0,
+    "simulation_steps": 0,
+    "renders": 0,
+    "training_runs": 0,
+    "remote_server_access": false,
+    "success_rate": null,
+    "student_success": null,
+    "unfinished": "GCP execution, dynamics/stability, first30 and live seed/cost/disk/admission checks"
+  },
+  "planned_runs": [
+    {
+      "seed": 77990,
+      "stage": "reproduction",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79314,
+      "stage": "reproduction",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79317,
+      "stage": "reproduction",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79450,
+      "stage": "diagnostic",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79451,
+      "stage": "diagnostic",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79452,
+      "stage": "diagnostic",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79453,
+      "stage": "diagnostic",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79454,
+      "stage": "diagnostic",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79455,
+      "stage": "diagnostic",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79456,
+      "stage": "diagnostic",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79457,
+      "stage": "diagnostic",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79460,
+      "stage": "diagnostic",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    },
+    {
+      "seed": 79461,
+      "stage": "diagnostic",
+      "status": "NOT_SUBMITTED",
+      "raw_location": null,
+      "sha256": null,
+      "approved": false,
+      "enabled": false,
+      "ready": false,
+      "stage_ready": false
+    }
+  ],
+  "visual_review": {
+    "source": "saved contact sheets only; overview evaluation-only",
+    "79317": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      18,
+      20
+    ],
+    "79316": [
+      0,
+      6,
+      12,
+      17,
+      18,
+      23,
+      24,
+      29
+    ]
+  },
+  "caveats": [
+    "Snapshot decisions after trajectory divergence are independent saved-state probes, not a physical counterfactual rollout.",
+    "The source report says zero 99/129; full ledger yields 102/129, with 99 becoming motion and 3 remaining recovery ticks.",
+    "Existing visible-relative demonstration adapter retained; not RGB-only localization validation."
+  ]
+}

@@ -11,7 +11,8 @@ from sim.crate_rgb_lift import masks
 
 PROFILE = 'crate12_v1'
 CRATE13 = 'crate13_v1'
-PROFILES = (PROFILE, CRATE13)
+CRATE14 = 'crate14_v1'
+PROFILES = (PROFILE, CRATE13, CRATE14)
 ASSIGNMENT = 'fixed_rgb_lugs_v1'
 LOOKAROUND = 'setdown_lookaround_own_v2'
 RELEASE = 'fixed_signals_v1'
