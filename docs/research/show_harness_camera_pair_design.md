@@ -1,5 +1,7 @@
 # Show-Harness 기반 카메라 전용 공동 파지 설계
 
+> 현행 규칙: top 카메라는 평가 전용(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366)). 이 문서는 기록 당시 설계다.
+
 작성: 2026-09-14. 상태: **구현 전 설계**, 실험 결과 없음.
 요청: Show-Harness를 UGRP에 적용하는 구체적인 구조와 검증 계획.
 확인한 기준 코드: `main` / `266a4e7` (원격과 일치). 실행 코드 변경·모델 호출·로봇 구동 없음.

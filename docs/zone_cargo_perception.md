@@ -1,12 +1,16 @@
 # 구역 화물 종류 인식 (TOP RGB, 프로필 `top_cargo_v1`·`top_cargo_v2`)
 
-> **`top_cargo_v2`는 평가·검토용으로만 쓴다.** 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정·교사 행동 결정에 쓰지 않는다(2026-10-03 사용자 결정, [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366); 사용자 원문: "공용(위) 카메라는 쓰지 않는다. 지도 만들기나 위치 추정에 쓰지 않는다."). TOP에서 만든 물체 라벨·좌표도 제어 입력으로 전달하지 않는다. v1은 평행 빔 병합과 틀 안쪽 상자 억제 결함이 있어 평가 기준으로만 바이트 그대로 남긴다. v2의 차이는 [아래 절](#top_cargo_v2)과 [v2 실험 기록](../experiments/2026-09-25-zone-cargo-perception-v2/README.md)을 따른다.
+> **연동에는 `top_cargo_v2`를 쓴다.** v1은 평행 빔 병합과 틀 안쪽 상자 억제 결함이 있어 평가 기준으로만 바이트 그대로 남긴다. v2의 차이는 [아래 절](#top_cargo_v2)과 [v2 실험 기록](../experiments/2026-09-25-zone-cargo-perception-v2/README.md)을 따른다.
+
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행·비교용)이다. 위 연동 안내는 기존 구현 설명이며 현행 제어 사용 승인이 아니다. TOP 파생 라벨·좌표도 제어·위치 추정 입력으로 쓸 수 없다.
 
 2026-09-25 요청: [화물 목록](zone_cargo.md)의 새 종류(can·tile·long_beam·heavy_crate·tri_frame)를 TOP RGB에서 알아보게 해 LLM 로봇이 볼 수 있게 한다. **이 문서는 인식기와 출력 계약만 다룬다.** 제어기·프롬프트 연결은 팀 운반 연동 담당이 한다. 평가 수치는 [실험 기록](../experiments/2026-09-25-zone-cargo-perception/README.md)에 있다.
 
 ## 입력 경계
 
 - 입력: TOP JPEG 네 장(`zone_wide`), 작성된 TOP 보정(`static_map['top_cameras']`), 정적 화물 목록(`sim.zone_cargo`: 모양·치수·파지 역할). 정적 목록은 지도와 같은 허용 정적 정보다.
+
+  현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행·비교용)이다. 정적 목록 허용은 TOP 영상·파생 좌표의 제어 사용 허용을 뜻하지 않는다.
 - 쓰지 않음: 시뮬레이터 자세, 분할 영상, 접촉, 화물 설정 pose. 평가 정답은 `eval-labels/`에만 있고 검출기에 가지 않는다.
 - 기존 프로필(`zone_perception_v1`, `top_zone_v2`, `own_*`)과 `harness/zone_perception.py`·`harness/zone_color_boxes.py`는 바꾸지 않았다. 새 프로필은 `harness/zone_cargo_perception.py`에 있고 명시적으로 불러야 켜진다. 실행 번들 소스 closure 밖이다.
 

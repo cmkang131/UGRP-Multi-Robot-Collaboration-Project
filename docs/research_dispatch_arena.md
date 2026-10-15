@@ -59,9 +59,11 @@ python scripts/ugrp_session.py run dispatch-e2e -- \
 - 계획의 `box_job`은 `"route":"auto"`와 `"park"`를 가진다. `park`는 하역 뒤 빔이 아직 dock을
   써야 할 때 상자 로봇이 기다릴 곳이며, `static_map.regions`의 이름(예: `"wait_west"`) 또는
   `{"xy_m":[x,y]}`(`warehouse_xy_m`)이다. 빔은 합의한 north/south 통로를 그대로 쓴다.
-- 실행 전 가능성 검사는 자기 RGB·자기 발행 명령 이력에서 추정한 상자 위치에서 dock 슬롯까지 A* 경로(`harness/map_goto.py`)를
-  찾아야 하고, 경로가 지나는 자원 영역(게이트·apron)만 예약한다. 경로가 없거나 `park`가 게이트·apron·dock·빔
+- 실행 전 가능성 검사가 현재 TOP RGB의 상자 위치에서 dock 슬롯까지 A* 경로(`harness/map_goto.py`)를
+  찾고, 경로가 지나는 자원 영역(게이트·apron)만 예약한다. 경로가 없거나 `park`가 게이트·apron·dock·빔
   경로를 막으면 이유를 모델에 돌려 새 합의를 요구한다.
+
+  현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행·비교용)이다. 위 실행 전 가능성 검사에도 이 구분이 적용된다.
 - 운반 중에는 매 결정마다 RGB 화물 위치로 경로 이탈을 검사하고 8cm를 넘으면 다시 계획한다(최대 4회).
   예약하지 않은 자원 영역은 지나가지 않는다. 대기 이동은 RGB 바퀴 형상 위치에서 A*로 계획한다.
 - 범위: 동기식 plan-first skills 실행기, 직렬 자원(`--route-overlap`·`--realtime-control`·
@@ -101,7 +103,10 @@ python scripts/ugrp_session.py run goto-live -- .venv-sim-worker-mac/bin/mjpytho
 이 수치 프로필은 실물 보정 결과가 아니다. 과거 물리 조건은 `legacy`, 전역 NoSlip은 별도 비교 진단이다.
 수정 후보와 제외한 불안정 조건을 [전체 기록](../experiments/dispatch-skill-integration-20260917/README.md)에 남겼다.
 
-학생 입력은 자기 RGB, 승인된 정적 지도, 자기 발행 명령과 동료 메시지다. 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정·교사 행동 결정에 쓰지 않는다(2026-10-03 사용자 결정, [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366); 사용자 원문: "공용(위) 카메라는 쓰지 않는다. 지도 만들기나 위치 추정에 쓰지 않는다.").
+학생 입력은 자기 RGB, 공용 TOP RGB, 승인된 정적 지도, 자기 발행 명령과 동료 메시지다.
+
+> 현행 규칙(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366))상 공용 top 카메라는 평가·검토 영상 전용이며 제어·지도 만들기·위치 추정 입력으로 금지한다. 이 기존 경로는 아직 TOP 사용(미이행·비교용)이다.
+
 영상에서 추정한 위치·모양과 실제 평가 좌표를 구분하며, 접촉/관절 측정/평가 성공으로 제어를 보정하지 않는다.
 자기 명령은 실제 이동·관절 상태의 증명이 아니다. 최종 요청 재구성과 상자 517개 결정 재실행을 확인했다.
 교사 시연 성공과 학생의 독립 실행 성공은 별도로 기록한다.

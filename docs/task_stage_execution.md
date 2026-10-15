@@ -1,5 +1,7 @@
 # 공동 단계 관리기와 실제 실행 포트 연결
 
+> 현행 규칙: top 카메라는 평가 전용(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366)). 이 문서는 기록 당시 설계다.
+
 2026-09-16. PR55의 [단계 계약](task_stage_sync_contract.md)에
 `harness/task_stage_execution.py`의 `TaskStageExecution`을 추가한다.
 창민 담당인 보고 수신·명령 허가·공동 정지·재개를 실제 `CameraRobotPort`와 연결한다.

@@ -1,5 +1,7 @@
 # 공동 작업 단계 동기화 계약 v1
 
+> 현행 규칙: top 카메라는 평가 전용(2026-10-03 [#366](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/366)). 이 문서는 기록 당시 설계다.
+
 2026-09-16. [작업 목록 #39](https://github.com/kcm0127-dotcom/ugrp/issues/39)의
 T1과 T2 중 **팀원 연결용 입출력과 공통 단계 전환**을 구현한다.
 `harness/task_stage_sync.py`의 `TaskStageSync`는 기존 `PairCarrySync`를 재사용한다.
