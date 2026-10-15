@@ -24,3 +24,9 @@ GCP 결과는 실행 완료·원본 재집계 뒤 아래에 기록한다.
 - Du Toit & Burdick (2011), *Probabilistic Collision Checking With Chance Constraints*, IEEE T-RO 27(4), 809–815, https://authors.library.caltech.edu/records/44h4y-qcn35 . 2026-10-15 저자 기관의 초록·서지 확인, 전체 논문은 metadata-only라 미확인. 로봇/장애물 상대 불확실성을 함께 다루는 원칙을 적용한다.
 - Nav2 사용자가 준 obstacle.html / inflation.html URL은 모두 404. 2026-10-15 공식 이전 경로의 실제 본문 확인: https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/costmap_2d/costmap_plugins/obstacle/ (marking, clearing, raytrace_min/max_range), https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/costmap_2d/costmap_plugins/inflation/ (inflation_radius, cost_scaling_factor). footprint 내부를 무조건 비우는 옵션은 이식하지 않는다.
 - 저장소 기존 자기 불확실성: `harness/self_map_csm.py:UncertainCommandOdometry.advance`, `harness/self_odom_grid.py:motion_profiles`, M1 calibration SHA 검사 유지. 기존 search21의 유한 복구·경로 진행 구현 재사용.
+
+## 라운드1 — c099eb7a
+
+2/6 성공, HOST_ERROR1, 감독 중단3. `candidate_audit`가 충분히 멀리 떨어진 장애물에 대한 검사 조기 반환값 `inf`를 원장에 그대로 넣어 `allow_nan=False` 최종 결과 직렬화가 실패했다. 감독기가 CHILD_HOST_ERROR로 전체 잔여3회를 중단했고 소유 worker0을 확인했다. 기하 계산과 승인 결과는 바꾸지 않고 원장에는 `gap_m=null`, 검사를 통과한 하한을 `gap_lower_bound_m`로 기록하도록 수정했다. 해당 비유한 값 직렬화 회귀를 추가해 관련43통과. 원격 전체 SHA256SUMS 검증과 로컬 lite 회수 완료. 실패/중단4회는 자기 카메라6장씩24장을 직접 확인했다. 원본은 `gcp1:/home/ugrp/ugrp-sim/runs/grasp-search22-r1-short6-gcp-c099eb7a`, 로컬은 이 worktree의 `outputs/gcp1-runs/`다. 첫30초 측정은 HOST_ERROR 때문에 미완료이므로 속도 통과로 보고하지 않는다.
+
+라운드1의 315709 cargo_v6 원본을 명령/phase 불일치0으로 순수 재생했다. 재관측 대상 선정이 목표 자세의 거부만 보고, 실제로는 연결 경로에서만 기억 여유가 막힌 경우를 빠뜨렸다. 목표의 yellow_1은 현재 관측으로5mm였지만, 과거 red_2의 sigma35.16mm·여유111.70mm가 연결 경로를 지웠다. 라운드2에서는 연결/후퇴 검사에서 **기하 겹침 없이 기억 여유만** 거부한 샘플도 대상 선정과 후보 원장에 포함한다. 단순 여유 축소/정답 보정은 하지 않는다.

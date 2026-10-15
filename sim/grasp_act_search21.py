@@ -112,8 +112,11 @@ def fallback(t,world,now,choices):
     checked=[]
     # Deterministic original choice order; jaw/IK/path/arm remain mandatory.
     for choice in sorted(choices,key=lambda q:(abs(q[0]),-q[1],q[0])):
+        if search22(t):nav.path_blockers=[]
         selected,rows=select_sampled_goal(world,t.rid,t.end,t.bounds,t.folded_ready,
             t.sink.pwm,choices=[choice],navigation=nav)
+        if search22(t):
+            for row in rows:row['path_memory_blockers']=list(nav.path_blockers)
         checked+=rows
         if search22(t):
             from sim.grasp_act_search22 import record_candidates

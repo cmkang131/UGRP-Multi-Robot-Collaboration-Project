@@ -81,7 +81,8 @@ class BodyNavigation(Search21Navigation):
         labels=[r for r in world['robots'] if r!=t.rid]
         labels += [k for k in world['objects'] if k!='beam_1']
         labels += ['band_'+t.end]*5 if world['beam'] else []
-        self.labels=labels;self.details=[]
+        self.world_observations=obs
+        self.labels=labels;self.details=[];self.path_blockers=[]
         for key in labels:
             m=obs.get(key);fresh=m is not None and m['seen_t']>=world['t']-1e-8
             info=uncertainty(m,self.pose) if m is not None else None
@@ -97,11 +98,31 @@ class BodyNavigation(Search21Navigation):
         # A retained route may survive a briefly lost band; new stances may not.
         if not admission:self.fresh_target=True
 
+    def free(self,p,discs,rects,radius,*,heading=None):
+        result=super().free(p,discs,rects,radius,heading=heading)
+        if not result and self.fresh_target:
+            yaw=self.heading(p) if heading is None else heading
+            checks=self.candidate_audit(p,yaw)
+            blockers=[d for d in checks if d['blocked']]
+            # A collision-free sampled pose rejected ONLY by memory inflation
+            # identifies a reobservation target, also on a connector/retreat.
+            if (blockers and all(d['category']=='memory_margin' for d in blockers)
+                    and body_clearance((*p[:2],yaw),[],self.rects,bounds=self.bounds,need=FRESH_MARGIN_M)>=FRESH_MARGIN_M):
+                obs=self.world_observations
+                for d in blockers:
+                    if d['id'] not in obs:continue
+                    self.teacher.search22_targets[d['id']]=deepcopy(obs[d['id']])
+                    if not any(b['id']==d['id'] for b in self.path_blockers):
+                        self.path_blockers.append({**d,'sample_pose':[*p[:2],yaw]})
+        return result
+
     def candidate_audit(self,p,heading):
         pose=(*p[:2],heading);rows=[]
         for d,detail in zip(self.discs,self.details):
             gap=body_clearance(pose,[d],[],need=detail['margin_m'])
-            rows.append({**detail,'gap_m':gap,'blocked':gap<detail['margin_m'],
+            rows.append({**detail,'gap_m':gap if math.isfinite(gap) else None,
+                'gap_lower_bound_m':gap if math.isfinite(gap) else detail['margin_m'],
+                'blocked':gap<detail['margin_m'],
                 'category':'memory_margin' if not detail['fresh'] and gap>=FRESH_MARGIN_M else 'current_geometry'})
         return rows
 
@@ -113,6 +134,7 @@ def record_candidates(t,world,rows,now):
     for row in rows:
         reason=row['reason']
         blockers=[d for d in row.get('collision_audit',[]) if d['blocked']]
+        if not blockers:blockers=row.get('path_memory_blockers',[])
         category=('IK' if reason=='ik_unreachable' else 'gripper_angle' if reason=='gripper_angle' else
             'memory_margin' if blockers and all(d['category']=='memory_margin' for d in blockers) else
             'current_geometry' if reason in ('blocked_goal','blocked_retreat','unsafe_body_sweep') or 'sweep' in reason else reason)

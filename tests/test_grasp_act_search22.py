@@ -1,5 +1,5 @@
 """Pure issued/visible regressions; no MuJoCo world or renderer."""
-import argparse,math
+import argparse,math,json
 from copy import deepcopy
 import numpy as np
 import pytest
@@ -91,3 +91,28 @@ def test_clear_needs_fresh_frame_coverage_dwell_and_new_sighting_restores(monkey
     assert 'tile_1' not in update_world(t,w,now+.3)['objects']
     m['seen_t']=now+.4
     assert 'tile_1' in update_world(t,w,now+.4)['objects']
+
+
+def test_collision_audit_serializes_infinite_clearance_as_a_lower_bound():
+    t=teacher();w=deepcopy(FIX['world']);nav=BodyNavigation(t,w,admission=True)
+    rows=nav.candidate_audit((100.,100.),0.)
+    json.dumps(rows,allow_nan=False)
+    assert all(not r['blocked'] and r['gap_m'] is None and r['gap_lower_bound_m']==r['margin_m'] for r in rows)
+
+
+def test_memory_only_connector_failure_is_a_target_even_when_goal_is_clear():
+    t=teacher();w=deepcopy(FIX['world']);m=w['visibility']['r1']['observations']['tile_1']
+    m['seen_t']-=1;m['uncertainty']=measurement_uncertainty(m)
+    m['uncertainty']['command_covariance']=(np.eye(3)*.0001).tolist()
+    nav=BodyNavigation(t,w,admission=True)
+    # Find a collision-free pose inside only the uncertainty envelope.
+    found=False
+    for x in np.arange(m['xyz'][0]-.3,m['xyz'][0]+.3,.01):
+        p=(float(x),m['xyz'][1])
+        checks=nav.candidate_audit(p,0.)
+        blocked=[c for c in checks if c['blocked']]
+        if blocked and all(c['category']=='memory_margin' for c in blocked):
+            nav.free(p,[],[],0.,heading=0.)
+            found='tile_1' in t.search22_targets
+            if found:break
+    assert found and nav.path_blockers
