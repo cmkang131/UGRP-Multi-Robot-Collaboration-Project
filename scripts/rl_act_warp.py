@@ -192,11 +192,11 @@ class Owner:
                 or any(type(i) is not int or not 0<=i<self.n for i in indices)):
             raise ValueError('valid unique reset indices required')
         from warp_act_core import model_key
-        before=self.integration();old_private=list(self.private);old_rgb=list(h.rgb)
+        before=self.integration();old_private=list(self.private);old_rgb=list(h.rgb);old_forces=h.contact_forces.copy()
         for i,plan in zip(indices,plans):
             if self.active[i]:
                 row=self.measure(i,sample=False)
-                self.trace_result(i,row,cap_end=True,prefix_cap=True,reason='curriculum_collector_reset',student_done=False)
+                self.trace_result(i,row,cap_end=True,prefix_cap=True,reason='curriculum_collector_reset' if self.training else 'probe_partial_reset',student_done=False)
             self.generations[i]+=1
             new=self.context(plan,i);old=self.contexts[i]
             if model_key(new['world'].scene_xml)!=model_key(old['world'].scene_xml):
@@ -227,7 +227,9 @@ class Owner:
         # Preserve non-reset critic snapshots until the next real step rebuilds
         # contacts. This never supplies measurements to the policy lane.
         for i in range(self.n):
-            if i not in indices:self.private[i]=old_private[i]
+            if i not in indices:
+                self.private[i]=old_private[i]
+                h.contact_forces[i]=old_forces[i]  # unchanged world's last evaluated contact snapshot
         after=self.integration();untouched=[i for i in range(self.n) if i not in indices]
         equal={name:bool(np.array_equal(before[name][untouched],value[untouched])) for name,value in after.items()}
         rgb_equal=all(old_rgb[i]==h.rgb[i] for i in untouched)
@@ -289,8 +291,8 @@ class Owner:
 
     def trace_result(self,i,row,**extra):
         folder=self.contexts[i]['folder']
-        record=dict(status='complete' if not extra.get('prefix_cap') else 'prefix_cap',**row,**extra,
-            command_sequence_complete=bool(extra.get('student_done')),weld='off')
+        record={**row,**extra,'status':'prefix_cap' if extra.get('prefix_cap') else 'complete',
+            'command_sequence_complete':bool(extra.get('student_done')),'weld_mode':'off'}
         (folder/'result.json').write_text(json.dumps(record,indent=2)+'\n')
         for j,(at,jpeg) in enumerate(self.rings[i]):
             path=folder/'last10s';path.mkdir(exist_ok=True)
@@ -303,20 +305,32 @@ class Owner:
         return result
 
     def close(self,reason):
+        # Preserve traces before per-world score/JSON finalization can fail.
+        errors=[]
+        if self.trace:
+            try:self.np.savez_compressed(self.out/'warp-qpos.npz',qpos=self.np.stack(self.trace),
+                sim_t=self.origin+self.np.arange(len(self.trace))*.1)
+            except BaseException as error:errors.append('trace:'+repr(error))
         for i in range(self.n):
-            if self.active[i]:
-                row=self.measure(i,sample=False)
-                self.trace_result(i,row,cap_end=True,prefix_cap=True,reason=reason,student_done=False)
-        if self.trace:self.np.savez_compressed(self.out/'warp-qpos.npz',qpos=self.np.stack(self.trace),
-            sim_t=self.origin+self.np.arange(len(self.trace))*.1)
-        self.log.close();self.commands.close()
-        report=dict(status=reason,backend='mjwarp',training=self.training,nworld=self.n,ticks=self.tick,
+            try:
+                if self.active[i]:
+                    row=self.measure(i,sample=False)
+                    self.trace_result(i,row,cap_end=True,prefix_cap=True,reason=reason,student_done=False)
+            except BaseException as error:errors.append(f'world{i}:'+repr(error))
+        for stream in (self.log,self.commands):
+            try:stream.close()
+            except BaseException as error:errors.append('stream:'+repr(error))
+        report=dict(status='HOST_ERROR' if errors else reason,backend='mjwarp',training=self.training,nworld=self.n,ticks=self.tick,
             wall_s=time.monotonic()-self.started,timing=dict(self.hooks.seconds),
             actor_truth_payloads=0,evaluator_reads=self.eval_reads,
             training_privileged_reward_reads=self.reward_reads,training_privileged_critic_reads=self.critic_reads,
-            recording_ring_bytes=sum(len(jpg) for ring in self.rings for _,jpg in ring))
+            recording_ring_bytes=sum(len(jpg) for ring in self.rings for _,jpg in ring),close_errors=errors)
+        for c in self.contexts:
+            try:c['world'].close()
+            except BaseException as error:errors.append('world_close:'+repr(error))
+        if errors:report['status']='HOST_ERROR'
         (self.out/'owner-summary.json').write_text(json.dumps(report,indent=2)+'\n')
-        for c in self.contexts:c['world'].close()
+        if errors:raise RuntimeError('owner finalization failed: '+repr(errors))
 
 
 def main():

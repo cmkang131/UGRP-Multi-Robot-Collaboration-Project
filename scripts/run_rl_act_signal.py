@@ -33,6 +33,7 @@ def main():
     for name in ('actor-source','teacher-source','checkpoint','physics-python','plans','training-plans',
                  'compiled-reference','compiled-geometry','calibration','budget','out'):
         p.add_argument('--'+name,type=Path,required=True)
+    p.add_argument('--reset-only',action='store_true',help='probe-only correctness after a known speed block; zero task ticks, never admit training')
     p.add_argument('--seal',type=Path)
     p.add_argument('--residual',type=Path)
     a=p.parse_args()
@@ -62,6 +63,7 @@ def main():
     plans=json.loads(a.plans.read_text())['episodes']
     if len(plans)!=8:p.error('sealed short cohort is8worlds')
     n=len(plans)
+    if a.reset_only and a.mode!='probe':p.error('reset-only is probe-only')
     frozen=FrozenACT(a.actor_source,a.checkpoint,n,device='cuda')
     limits=np.asarray(json.loads(a.calibration.read_text())['residual_limits'],np.float64)
     client=Client(python=a.physics_python,teacher_source=a.teacher_source,actor_source=a.actor_source,
@@ -90,7 +92,7 @@ def main():
             client.reset(plans,indices=tuple(range(n)))
             residual=ResidualPolicy(a.residual,frozen,device='cuda') if a.residual else None
             if residual is not None:limits=residual.limits
-            if a.mode=='probe':count=8
+            if a.mode=='probe':count=0 if a.reset_only else 8
             else:
                 sealed=json.loads(a.seal.read_text());count=sealed['prefix_ticks']
                 step_allowance=max(sealed['probe_tick_wall_s'])
@@ -106,13 +108,14 @@ def main():
                 step_allowance=max(latencies)
                 write(a.out/'progress.json',dict(ticks=tick+1,phase_wall_s=time.monotonic()-phase_started))
             if a.mode=='probe':
-                report['wall_per_sim_median']=float(np.median(latencies)/.1)
-                report['aggregate_sim_s_per_wall_s']=n*.1*len(latencies)/sum(latencies)
+                report['wall_per_sim_median']=None if a.reset_only else float(np.median(latencies)/.1)
+                report['aggregate_sim_s_per_wall_s']=None if a.reset_only else n*.1*len(latencies)/sum(latencies)
                 report['formal_30sim_speed_gate']='not measured by eight-tick correctness probe'
                 all_train=json.loads(a.training_plans.read_text())['episodes']
                 new=next(r for r in all_train if r['setup_fingerprint']!=plans[0]['setup_fingerprint'])
                 check();client.reset([new],indices=(0,))
                 report['partial_reset']='immediate integration/RGB isolation checked by owner; next-step dynamics unverified'
+                if a.reset_only:raise AdmissionBlock('RESET_ONLY_COMPLETE; known prior speed block remains; no task ticks or learning admitted')
                 if report['wall_per_sim_median']>6.:
                     raise AdmissionBlock('PRELIMINARY_SPEED_BLOCK: eight-tick median exceeds6; do not submit learning')
                 # Resource allocation only. Seal a SIM-tick prefix BEFORE any fit

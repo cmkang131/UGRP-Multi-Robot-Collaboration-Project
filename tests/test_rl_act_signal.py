@@ -273,3 +273,19 @@ def test_evaluation_rpc_rejects_private_lane_before_actor():
         client.receive()
     with pytest.raises(RuntimeError,match='no privileged'):
         client.read_training(0)
+
+
+def test_actual_owner_record_keeps_weld_evidence_and_camera_ring(tmp_path):
+    # Regression for the observed GPU-finalization TypeError, without physics.
+    from collections import deque
+    from types import SimpleNamespace
+    from scripts.rl_act_warp import Owner
+    import json
+    owner=object.__new__(Owner)
+    owner.contexts=[{'folder':tmp_path}]
+    owner.rings=[deque([(1.3,b'actual-own-rgb')])]
+    owner.trace_result(0,{'weld':False,'lift_success':False},cap_end=True,prefix_cap=True,student_done=False)
+    row=json.loads((tmp_path/'result.json').read_text())
+    assert row['weld'] is False and row['weld_mode']=='off'
+    assert row['cap_end'] is True and row['status']=='prefix_cap'
+    assert (tmp_path/'last10s/000-1.300.jpg').read_bytes()==b'actual-own-rgb'
