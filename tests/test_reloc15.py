@@ -76,3 +76,21 @@ def test_update_budget_is_per_filter_and_stationary_image_is_not_remeasured():
     assert not old['updated'] and new['updated']
     assert not candidate.step(t=2.,points=[[1.,0]],delta=[0,0,0],servo=servo)['updated']
     assert PARAMS['update_min_d_m']==.25 and PARAMS['update_min_a_rad']==.2
+
+
+def test_fixed_image_border_cannot_override_moving_floor():
+    import json,cv2
+    from pathlib import Path
+    from harness.reloc15_heading import commanded_rotation
+    from harness.reloc15_dense_yaw import measure
+    from harness.zone_solo_cyan_rotation_envelope import yaw_measurement
+    p=Path(__file__).parent/'fixtures/reloc15'
+    label=json.loads((p/'counterexample.json').read_text())
+    images=[cv2.cvtColor(cv2.imread(str(p/f'heading-{s}.jpg')),cv2.COLOR_BGR2RGB) for s in ('before','after')]
+    cm=SimpleNamespace(_rot=commanded_rotation(label['pwm']))
+    sparse=yaw_measurement(*images,cm,label['pwm'],None)
+    dense=measure(*images,cm)
+    expected=math.radians(label['actual_delta_yaw_deg'])
+    assert dense['status']=='measured' and dense['gradient_rank']==8
+    assert abs(dense['delta_yaw']-expected)<abs(sparse['delta_yaw']-expected)
+    assert dense['support_radius_px']==80 and not dense['correlation_is_accuracy_certificate']

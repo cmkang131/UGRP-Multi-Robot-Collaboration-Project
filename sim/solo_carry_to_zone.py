@@ -154,7 +154,7 @@ class RGBCommandPose:
 class CarryToZone:
     def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off', recovery_profile='off', drive_model_deadband_v1=False,
                  carry5_rank_aware_views_v1=False, carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
-                 carry7_robust_recovery_v1=False, reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, reloc12_carry_reacquire_v1=False, carry_pose_budget_recal_v1=False, carry_pose_budget_xy_reserve0_v1=False, reloc14_carry_budget_v1=False, reloc14_compute_budget_v1=False, reloc14_carry_tracking_v1=False, reloc15_rgb_heading_v1=False, reloc15_heading_10hz_v1=False):
+                 carry7_robust_recovery_v1=False, reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, reloc12_carry_reacquire_v1=False, carry_pose_budget_recal_v1=False, carry_pose_budget_xy_reserve0_v1=False, reloc14_carry_budget_v1=False, reloc14_compute_budget_v1=False, reloc14_carry_tracking_v1=False, reloc15_rgb_heading_v1=False, reloc15_heading_10hz_v1=False, reloc15_dense_yaw_v1=False):
         if recovery_profile not in ('off', 'carry5_active_localization_v1'):
             raise ValueError('unknown carry recovery profile')
         from functools import partial
@@ -214,7 +214,7 @@ class CarryToZone:
                                reloc10_rotation_calibration_v1=reloc10_rotation_calibration_v1,
                                carry_pose_budget_recal_v1=carry_pose_budget_recal_v1,
                                reloc14_carry_budget_v1=reloc14_carry_budget_v1,
-                               reloc14_carry_tracking_v1=reloc14_carry_tracking_v1,tracking_static=static,reloc15_rgb_heading_v1=reloc15_rgb_heading_v1,reloc15_heading_10hz_v1=reloc15_heading_10hz_v1)
+                               reloc14_carry_tracking_v1=reloc14_carry_tracking_v1,tracking_static=static,reloc15_rgb_heading_v1=reloc15_rgb_heading_v1,reloc15_heading_10hz_v1=reloc15_heading_10hz_v1,reloc15_dense_yaw_v1=reloc15_dense_yaw_v1)
 
     def issue(self, issued, dt):
         self.loc.issue(issued, dt)

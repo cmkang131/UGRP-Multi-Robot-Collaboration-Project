@@ -26,12 +26,13 @@ def commanded_rotation(servo):
 
 
 class Heading:
-    def __init__(self, *, sample_s=.2):
+    def __init__(self, *, sample_s=.2, dense_v1=False):
         # R2 .1s = native 10Hz command clock/user recording cadence. At
         # saved failure p95/max yaw speed16.87/17.99deg/s this spans1.69/1.80deg
         # instead of3.37/3.60deg at .2s, below existing5deg task target.
         if sample_s not in (.1,.2):raise ValueError('native 10Hz/5Hz only')
         self.sample_s=sample_s
+        self.dense_v1=dense_v1
         self.previous=None;self.delta_yaw=0.;self.servo=None;self.servo_since=None
         self.last_measurement_t=None;self.accepted=0;self.last=dict(category='no_pair')
 
@@ -56,7 +57,11 @@ class Heading:
             self.last['category']='servo_unsettled_or_no_pair';return
         from harness.zone_solo_cyan_rotation_envelope import yaw_measurement
         cm=SimpleNamespace(_rot=commanded_rotation(self.servo))
-        observation=yaw_measurement(old['rgb'],rgb,cm,self.servo,None)
+        if self.dense_v1:
+            from harness.reloc15_dense_yaw import measure
+            observation=measure(old['rgb'],rgb,cm)
+        else:
+            observation=yaw_measurement(old['rgb'],rgb,cm,self.servo,None)
         self.last.update(observation)
         if observation['status']!='measured':return
         # Replace this pair's command yaw exactly once. Preserve xy and its
