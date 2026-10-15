@@ -189,7 +189,7 @@ def footprint_clearance(grid, footprint, margin, yaw=None):
     return state, ~blocked, distance_transform_edt(state == -1)*r, lo
 
 
-def astar(clear, start, target, resolution=.1, clearance=None):
+def astar(clear, start, target, resolution=.1, clearance=None, *, compute_budget_v1=False):
     h,w = clear.shape
     def valid(c):
         return 0 <= c[0] < w and 0 <= c[1] < h and clear[c[1],c[0]]
@@ -197,8 +197,19 @@ def astar(clear, start, target, resolution=.1, clearance=None):
     if not valid(start) or not valid(target):
         return None
     todo,cost,parent = [(0.,start)],{start:0.},{}
+    closed=set(); pops=0
+    # At most one expansion per cell and one push per directed (8-neighbor)
+    # edge plus the start. This combinatorial bound is independent of CPU load.
+    max_pops=1+len(MOVES)*clear.size
     while todo:
+        if compute_budget_v1 and pops>=max_pops:
+            return None
+        pops+=1
         _,cur = heapq.heappop(todo)
+        if compute_budget_v1:
+            if cur in closed:
+                continue
+            closed.add(cur)
         if cur == target:
             out = [cur]
             while out[-1] != start:

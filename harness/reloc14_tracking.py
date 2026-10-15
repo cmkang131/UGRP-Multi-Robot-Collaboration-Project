@@ -1,0 +1,49 @@
+"""Continuous known-mode PF tracking; global registration remains a separate gate.
+
+Nav2 amcl_node.cpp shouldUpdateFilter/updateFilter/map-to-odom transform and
+ORB-SLAM2 Tracking::Track (LOST -> Relocalization) are the design references.
+Native PF motion gates (.25 m / .2 rad) are unchanged. R7's three distinct views
+and 10 cm/5 deg anchor test apply on global acquisition/reacquisition only.
+Known-mode tracking reuses the EXISTING current-view 5 cm/5 deg line admission,
+two independent axes, .9 cluster mass and .15 m/5 deg raw covariance limits;
+none is newly fitted or claimed to certify actual error. See reloc14 README.
+"""
+import math
+import numpy as np
+from harness.natural_floor_slam import compose
+
+
+def track(reg, row, observation, own_pose, t):
+    from harness.selfmap4_geometry import inverse
+    supported, geometry=reg.geometry_supported(observation,row['pose'])
+    cov=np.asarray(row['covariance'])
+    good=(row['resolved'] and row['cluster']['mass']>=.9 and
+        np.linalg.eigvalsh(cov[:2,:2]).max()<=.15**2 and cov[2,2]<=math.radians(5)**2 and supported)
+    # Fresh invalid evidence causes LOST, never a renewed global confirmation
+    # count from repeated sensor-less frames. Motion-gated PF prediction is not
+    # represented as a new absolute measurement.
+    if row['updated'] and not good:
+        reg.tracking_state='LOST';reg.execution_r7_admitted=False
+        reg.confirmations.clear();reg.confirmation_views.clear()
+        reg.last_tracking_failure=dict(t=t,category='tracking_evidence_lost',
+            blocked_object='own_rgb_static_lines',minimum_gap_m=None,
+            gap_status='not_applicable_localization_gate',geometry=geometry)
+        return None,False
+    reg.execution_r7_admitted=True
+    a=reg.map_from_own[2];c,s=math.cos(a),math.sin(a)
+    R=np.array([[c,s,0],[-s,c,0],[0,0,1]])
+    local=compose(inverse(reg.map_from_own),row['pose'])
+    reg.last=dict(updated=row['updated'],resolved=bool(good),registered=True,
+        confirmations=len(reg.confirmations),execution_r7_admitted=True,
+        world_pose=row['pose'],raw_covariance=row['covariance'],covariance=row['covariance'],
+        execution_covariance=(R@cov@R.T).tolist(),cluster=row['cluster'],pf_sensor=row.get('sensor'),
+        feature_count=len(observation['features']),geometry=geometry,
+        tracking=dict(state='TRACKING',measurement=bool(row['updated']),
+            motion_model='calibrated_issued_commands',global_confirmations_required=False,
+            update_min_d_m=.25,update_min_a_rad=.2,budget_kind='finite_PF_particles_and_line_checks'),
+        reloc12=dict(registered_world_pose=compose(reg.command_registration_anchor,own_pose).tolist(),
+            map_from_execution=reg.map_from_own.tolist(),execution_frame_v1=True,
+            replay=dict(own_odometry_pose=np.asarray(own_pose).tolist()),
+            rejection=dict(category='accepted_tracking' if row['updated'] else 'motion_gate_prediction',
+                blocked_object='none',minimum_gap_m=None,gap_status='not_applicable_localization_gate')))
+    return (local,R@cov@R.T),True

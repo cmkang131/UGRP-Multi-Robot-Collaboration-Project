@@ -49,11 +49,13 @@ class Options:
     reloc13_execution_cov_v1: bool = False
     reloc13_execution_frame_v1: bool = False
     reloc13_live_r7_v1: bool = False
+    reloc14_continuous_tracking_v1: bool = False
+    reloc14_compute_budget_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
-        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1'):
+        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1', 'reloc13_execution_frame_v1', 'reloc13_live_r7_v1', 'reloc14_continuous_tracking_v1', 'reloc14_compute_budget_v1'):
             if type(getattr(self, name)) is not bool or (getattr(self, name) and self.multiframe_registration == 'off'):
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
         if self.reloc13_execution_cov_v1 and not self.reloc12_raw_cov_gate_v1:
@@ -62,6 +64,8 @@ class Options:
             raise ValueError('reloc13 execution frame requires execution covariance')
         if self.reloc13_live_r7_v1 and not self.reloc13_execution_frame_v1:
             raise ValueError('live R7 requires execution frame')
+        if self.reloc14_continuous_tracking_v1 and not self.reloc13_live_r7_v1:
+            raise ValueError("continuous tracking requires live R7")
         from harness.reloc9_rotation import selfmap_model
         from harness.reloc9_wall_guard import validate as validate_wall
         object.__setattr__(self, 'motion_model', selfmap_model(self.motion_model, self.reloc9_rotation_calibration_v1))
@@ -215,6 +219,7 @@ class SelfMapIntegration:
                 reloc13_execution_cov_v1=self.options.reloc13_execution_cov_v1,
                 reloc13_execution_frame_v1=self.options.reloc13_execution_frame_v1,
                 reloc13_live_r7_v1=self.options.reloc13_live_r7_v1,
+                reloc14_continuous_tracking_v1=self.options.reloc14_continuous_tracking_v1,
 
                 correction_safety=self.options.correction_safety,
                 active_relocalization=self.options.active_relocalization)
@@ -466,6 +471,7 @@ class SelfMapIntegration:
             observation = extractor(image, self.servo, frame_id=frame_id, t=t, sha256=sha256)
         else:
             observation = Observation(frame_id, t, np.empty((0, 2)), np.empty((0, 32), np.uint8), sha256)
+        command_delta = self.delta.copy()
         prior = compose(self.slam.pose, self.delta)
         wall_observation, flow_row, static_pose = None, None, None
         if self.recovery:
@@ -480,6 +486,10 @@ class SelfMapIntegration:
             # Retained line frames need one correction-free reference. A SLAM
             # correction changes only the current pose, leaving older buffered
             # poses in the old revision. Own-command odometry has no such jumps.
+            if self.options.reloc14_continuous_tracking_v1 and self.registration.map_from_own is not None:
+                # Baseline command yaw actual/estimated is .995-1.004; mixing LK
+                # delta with command-buffer geometry is a different error source.
+                self.delta = command_delta
             registration_reference = (np.asarray(self.odom.pose) if self.options.reloc10_registration_v1
                                       else compose(self.slam.pose, self.delta))
             static_pose = self.registration.step(wall_observation, self.delta, self.servo,
@@ -516,13 +526,15 @@ class SelfMapIntegration:
             # While rolling back, do not immediately re-adopt the rejected bank.
             if self.quarantine_release is not None:
                 observation = Observation(frame_id, t, np.empty((0, 2)), np.empty((0, 32), np.uint8), sha256)
+            self.slam.reloc14_pf_tracking = self.options.reloc14_continuous_tracking_v1 and self.registration.map_from_own is not None
             self.slam._gate_prediction = predicted_covariance
             # Authored-map fixes are absolute; bootstrap ORB fixes remain correlated.
             self.slam.reloc13_absolute_static = self.options.reloc13_execution_cov_v1 and static_pose is not None
             event = self.slam.guarded_step(observation, command_delta=self.delta, command_covariance=self.Q,
                                            correction_gate=admit, pose_override=static_pose)
             if static_pose is not None and event['status'] == 'visual_relocalized':
-                event['reason'] = 'selfmap4_static_lines'
+                event['reason'] = ('selfmap14_tracking_prediction' if self.options.reloc14_continuous_tracking_v1
+                    and self.registration.last.get('tracking',{}).get('measurement') is False else 'selfmap4_static_lines')
                 self.registration.execution_handoff = True
         else:
             event = self.slam.step(observation, command_delta=self.delta, command_covariance=self.Q)

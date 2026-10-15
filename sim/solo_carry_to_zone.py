@@ -154,9 +154,13 @@ class RGBCommandPose:
 class CarryToZone:
     def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off', recovery_profile='off', drive_model_deadband_v1=False,
                  carry5_rank_aware_views_v1=False, carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
-                 carry7_robust_recovery_v1=False, reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, reloc12_carry_reacquire_v1=False, carry_pose_budget_recal_v1=False, carry_pose_budget_xy_reserve0_v1=False):
+                 carry7_robust_recovery_v1=False, reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, reloc12_carry_reacquire_v1=False, carry_pose_budget_recal_v1=False, carry_pose_budget_xy_reserve0_v1=False, reloc14_carry_budget_v1=False, reloc14_compute_budget_v1=False):
         if recovery_profile not in ('off', 'carry5_active_localization_v1'):
             raise ValueError('unknown carry recovery profile')
+        from functools import partial
+        self.compute_budget = reloc14_compute_budget_v1
+        # zone_teacher.plan_path's existing 40000-node cap, not a wall deadline.
+        self.plan_path = partial(plan_path,budget=40000) if reloc14_compute_budget_v1 else plan_path
         self.recovery_profile = recovery_profile
         self.active_recovery = recovery_profile != 'off'
         if type(carry5_rank_aware_views_v1) is not bool or (carry5_rank_aware_views_v1 and not self.active_recovery):
@@ -208,7 +212,8 @@ class CarryToZone:
                                trim_calibration=trim_calibration,
                                reloc9_rotation_calibration_v1=reloc9_rotation_calibration_v1,
                                reloc10_rotation_calibration_v1=reloc10_rotation_calibration_v1,
-                               carry_pose_budget_recal_v1=carry_pose_budget_recal_v1)
+                               carry_pose_budget_recal_v1=carry_pose_budget_recal_v1,
+                               reloc14_carry_budget_v1=reloc14_carry_budget_v1)
 
     def issue(self, issued, dt):
         self.loc.issue(issued, dt)
@@ -248,7 +253,7 @@ class CarryToZone:
                     segment_free(goal, final, discs, self.rects, self.radius) and
                     segment_free(final, retreat, discs, self.rects, self.radius)):
                 continue
-            path = plan_path(self.loc.pose[:2], goal, self.static['bounds_m'], discs, rects=self.rects, radius=self.radius)
+            path = self.plan_path(self.loc.pose[:2], goal, self.static['bounds_m'], discs, rects=self.rects, radius=self.radius)
             if path:
                 self.slot, self.goal, self.path = slot, goal, path
                 break
@@ -281,7 +286,7 @@ class CarryToZone:
         if distance <= .025:
             return (0., 0., max(-.1, min(.1, -.6*wrap(pose[2])))), False, None
         if now-self.last_plan >= 1.:
-            self.path = plan_path(pose[:2], self.goal, self.static['bounds_m'], discs, rects=self.rects, radius=self.radius)
+            self.path = self.plan_path(pose[:2], self.goal, self.static['bounds_m'], discs, rects=self.rects, radius=self.radius)
             self.last_plan = now
         target = waypoint(pose[:2], self.path, discs, self.rects, self.radius)
         if target is None:
@@ -369,7 +374,7 @@ class CarryToZone:
         discs = self.obstacles.pickup_discs(now, self.loc.pose, kind, target)
         rects = [(c*(ox-x)+s*(oy-y), -s*(ox-x)+c*(oy-y), hx, hy, angle-a)
                  for ox, oy, hx, hy, angle in self.rects]
-        path = plan_path((0., 0.), goal[:2], (-2., 2., -2., 2.), discs, rects=rects, radius=.17)
+        path = self.plan_path((0., 0.), goal[:2], (-2., 2., -2., 2.), discs, rects=rects, radius=.17)
         if not path:
             if self.reloc12_reacquire:
                 from harness.reloc12_ledger import route_context

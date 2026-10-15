@@ -151,7 +151,7 @@ class StaticRegistration:
     Unresolved hypotheses can propose look directions but cannot clip/clear maps
     or lower pose covariance. Registration has to survive three distinct views.
     """
-    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False, reloc13_live_r7_v1=False):
+    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False, reloc13_execution_frame_v1=False, reloc13_live_r7_v1=False, reloc14_continuous_tracking_v1=False):
         from harness.e2e_static_rgb_localizer import create
         from harness.self_map_landmark_sensor import Sensor
         if set(static) != {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}:
@@ -167,6 +167,11 @@ class StaticRegistration:
             raise ValueError('reloc13 execution frame requires execution covariance')
         if type(reloc13_live_r7_v1) is not bool or (reloc13_live_r7_v1 and not reloc13_execution_frame_v1):
             raise ValueError('live R7 requires the execution frame')
+        if type(reloc14_continuous_tracking_v1) is not bool or (reloc14_continuous_tracking_v1 and not reloc13_live_r7_v1):
+            raise ValueError("continuous tracking requires live R7")
+        self.continuous_tracking = reloc14_continuous_tracking_v1
+        self.tracking_state = "GLOBAL"
+        self.last_tracking_failure = None
         self.live_r7 = reloc13_live_r7_v1
         self.execution_r7_admitted = False
         self.execution_frame = reloc13_execution_frame_v1
@@ -250,6 +255,11 @@ class StaticRegistration:
         from harness.self_map_csm import sample_segments
         row = self.pf.step(t=t, points=sample_segments(observation['segments']),
                            delta=delta, servo=servo, features=observation['features'])
+        if self.continuous_tracking and self.map_from_own is not None and self.tracking_state == 'TRACKING':
+            from harness.reloc14_tracking import track
+            result, handled = track(self, row, observation, own_pose, t)
+            if handled:
+                return result
         cov = np.asarray(row['covariance'])
         if self.evidence is not None:
             from harness.selfmap5_registration import calibrated_covariance
@@ -378,6 +388,11 @@ class StaticRegistration:
                 pf_particles=self.pf.n, sensor_landmarks='off',
                 wall_points=len(sample_segments(observation['segments'])),
                 geometry_and_covariance_gates='unchanged', input='own_RGB_wall_floor_segments')
+        if self.continuous_tracking:
+            if self.execution_r7_admitted:
+                self.tracking_state = 'TRACKING'
+            self.last['tracking'] = dict(state=self.tracking_state,measurement=bool(row['updated']),
+                global_confirmations_required=True,last_failure=self.last_tracking_failure)
         if reliable and self.map_from_own is not None and (not self.live_r7 or self.execution_r7_admitted):
             local = compose(inverse(self.map_from_own), row['pose'])
             c, s = math.cos(self.map_from_own[2]), math.sin(self.map_from_own[2])

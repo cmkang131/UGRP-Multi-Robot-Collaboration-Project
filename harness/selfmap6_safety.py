@@ -31,6 +31,10 @@ class PreMutationGate:
             self._admit = None; self._override = None
 
     def _fit(self, points, descriptors, prior, frame_id):
+        if getattr(self, '_override', None) is None and getattr(self, 'reloc14_pf_tracking', False):
+            # The prior-seeded ORB bank shares its old pose bias. Known-mode PF
+            # tracking supplies map corrections; LOST invokes global R7 recovery.
+            return None, [], dict(matches=0,inliers=0,fit_rms_m=None,spread_m=None,reason='pf_tracking_or_relocalization')
         if getattr(self, '_override', None) is None:
             pose, pairs, detail = super()._fit(points, descriptors, prior, frame_id)
         else:

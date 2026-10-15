@@ -1,0 +1,76 @@
+{
+  "schema": "ugrp.reloc14.carry_budget.v1",
+  "basis": "nonnegative linear upper envelope, all recorded phases including partial epochs; fit seed93266; seed93315 holdout; scoring-only truth",
+  "fits": {
+    "xy_m": {
+      "coefficients": [
+        0.260783545418116,
+        0.09953783447277453,
+        0.0,
+        0.0
+      ],
+      "features": [
+        "intercept",
+        "issued_distance_m",
+        "issued_turn_rad",
+        "since_rgb_fix_s"
+      ],
+      "scores": [
+        {
+          "run": "reloc13-r1-carry-texture-93266-aa1f4661-retry1",
+          "N": 3000,
+          "covered_N": 3000,
+          "positive_N": 0,
+          "trigger_recall": null
+        },
+        {
+          "run": "reloc13-r1-carry-texture-93315-aa1f4661-retry1",
+          "N": 940,
+          "covered_N": 940,
+          "positive_N": 0,
+          "trigger_recall": null
+        }
+      ]
+    },
+    "yaw_deg": {
+      "coefficients": [
+        4.522386263900104,
+        0.0,
+        20.584161983501907,
+        0.0
+      ],
+      "features": [
+        "intercept",
+        "issued_distance_m",
+        "issued_turn_rad",
+        "since_rgb_fix_s"
+      ],
+      "scores": [
+        {
+          "run": "reloc13-r1-carry-texture-93266-aa1f4661-retry1",
+          "N": 3000,
+          "covered_N": 3000,
+          "positive_N": 835,
+          "trigger_recall": 1.0
+        },
+        {
+          "run": "reloc13-r1-carry-texture-93315-aa1f4661-retry1",
+          "N": 940,
+          "covered_N": 940,
+          "positive_N": 0,
+          "trigger_recall": null
+        }
+      ]
+    }
+  },
+  "source_hashes": [
+    {
+      "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93266-aa1f4661-retry1/raw/teacher-commands.jsonl.zst": "ef3c3286de577000985ed42ea67f45cd5595a8e233d0be3825b1c2c1001fa6f3",
+      "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93266-aa1f4661-retry1/raw/eval-only.jsonl.zst": "46d41e2797805d5abebe4dbbdcdc1f6326b456dd02f0facf77384c36d5576e33"
+    },
+    {
+      "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93315-aa1f4661-retry1/raw/teacher-commands.jsonl.zst": "cf3f53c0945dafe1c76bf7f86039107e0ec423e7f1ae46a3efc57fbe8b17b59f",
+      "/home/ugrp/ugrp-sim/runs/reloc13-r1-carry-texture-93315-aa1f4661-retry1/raw/eval-only.jsonl.zst": "f656d654bfdda1147a0763e862e2d21bd0da41c9007322e37c5046ecd20ee9e4"
+    }
+  ]
+}

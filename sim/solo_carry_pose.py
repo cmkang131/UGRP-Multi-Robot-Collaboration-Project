@@ -42,7 +42,7 @@ def task_start(static):
 class CommandPose:
     def __init__(self, start, *, now=0., robot_id='r1', map_sha256='', amcl_option='off', drive_model_deadband_v1=False,
                  carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
-                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, carry_pose_budget_recal_v1=False):
+                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, carry_pose_budget_recal_v1=False, reloc14_carry_budget_v1=False):
         if amcl_option not in ('off', 'report_v1'):
             raise ValueError('unknown carry AMCL report option')
         if (set(start) != START_KEYS
@@ -69,6 +69,13 @@ class CommandPose:
         self.rotation10 = calibration10() if reloc10_rotation_calibration_v1 else None
         if type(carry_pose_budget_recal_v1) is not bool or (carry_pose_budget_recal_v1 and self.rotation10 is None):
             raise ValueError('carry pose recal requires reloc10 rotation')
+        if type(reloc14_carry_budget_v1) is not bool or (reloc14_carry_budget_v1 and self.rotation10 is None):
+            raise ValueError("reloc14 budget requires calibrated rotation")
+        self.budget14 = reloc14_carry_budget_v1
+        if self.budget14:
+            import json
+            from pathlib import Path
+            self.drift_fit = json.loads((Path(__file__).resolve().parents[1]/"configs/calibration/reloc14_carry_budget_v1.json").read_text())
         self.budget_recal = carry_pose_budget_recal_v1
         if self.budget_recal:
             import json
@@ -200,6 +207,8 @@ class CommandPose:
     def yaw_budget_limit(self):
         # A correlated command envelope is not actual angular error. The 41deg
         # trigger is replay-fitted (578/578 >=20deg errors), not a 41deg task tolerance.
+        if self.budget14:
+            return MOTION_ERROR['max_yaw_rad']  # 20deg existing carry task criterion, not a fitted 41deg trigger.
         return math.radians(self.budget_fit['yaw_trigger_deg']) if self.budget_recal else MOTION_ERROR['max_yaw_rad']
 
     def sigmas(self):
@@ -207,6 +216,15 @@ class CommandPose:
         distance, turn = self.distance_since_fix, self.turn_since_fix
         if self.partial_epoch is not None:
             distance -= self.partial_epoch[0]; turn -= self.partial_epoch[1]
+        if self.budget14:
+            # reloc14 carry-budget-fit: NN nonnegative upper envelope over ALL
+            # phases of 93266 (including re-search); 93315 held out. Coefficients
+            # and raw hashes are in config. It is an error envelope, not sigma.
+            features = [1.,distance,turn,self.now-(self.started if self.last_fix is None else self.last_fix)]
+            def bound(name):
+                return sum(x*c for x,c in zip(features,self.drift_fit['fits'][name]['coefficients']))
+            xy=max(max(base[:2]),bound('xy_m'))
+            return [xy,xy,max(base[2],math.radians(bound('yaw_deg')))]
         xy = MOTION_ERROR['translation_fraction']*distance
         fitted_rotation = self.rotation10 or self.rotation_calibration
         fraction = (max(.40, fitted_rotation['residual_rotation_fraction'])
@@ -229,6 +247,7 @@ class CommandPose:
                 'amcl_option': self.amcl_option, 'localization_verified': False,
                 'motion_error': MOTION_ERROR,
                 'carry_pose_budget_recal_v1': self.budget_recal,
+                'reloc14_carry_budget_v1': self.budget14,
                 'budget_limits': {'yaw_rad': self.yaw_budget_limit(), 'xy_m': MOTION_ERROR['max_xy_m']}, 'last_dt_s': self.last_dt,
                 'error_bound_semantics': 'covariance sigma plus correlated command bias; not calibrated sigma',
                 'issued_distance_since_fix_m': self.distance_since_fix,

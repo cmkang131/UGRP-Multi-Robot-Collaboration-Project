@@ -88,7 +88,9 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
               'plan_sha256': hashlib.sha256((out/'plan.json').read_bytes()).hexdigest()}
     if solo_carry_to_zone_v1:
         report.update(solo_carry_to_zone_v1=True, gate_eligible=False,
-                      placement_task='carry to authored v6 destination zone',
+                      placement_task='carry to authored destination zone',
+                      scenario_version='v7' if plan.get('reloc14_scene_v7') else 'v6',
+                      pool_with_previous_results=False,
                       destination_zone=plan['destination_zone'], research_result=False)
     if training_rgb:
         report.update(training_include=False, training_candidate=False, data_admitted=False,
@@ -175,6 +177,8 @@ def run(plan, out, *, execution_host, profile='off', hidden=False, look=False, c
                                 reloc10_rotation_calibration_v1=plan.get('reloc10_rotation_calibration_v1', False),
                                 reloc12_carry_reacquire_v1=plan.get('reloc12_carry_reacquire_v1', False),
                                 carry_pose_budget_recal_v1=plan.get('carry_pose_budget_recal_v1', False),
+                                reloc14_carry_budget_v1=plan.get('reloc14_carry_budget_v1', False),
+                                reloc14_compute_budget_v1=plan.get('reloc14_compute_budget_v1', False),
                                 carry_pose_budget_xy_reserve0_v1=plan.get('carry_pose_budget_xy_reserve0_v1', False))
             if carry.loc.drive_model_enabled:
                 ops.delta = carry.loc.cached_delta
@@ -584,7 +588,7 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
     check_range('solo_carry_diagnostic_v1', plan['seed'], 1)
     if (training_rgb or negative or not truth_free or lift != 'solo_lift_lookback_v1'
             or plan.get('split') != 'solo_carry_diagnostic_v1' or plan['kind'] not in BOX_KINDS
-            or not plan['scenario_id'].endswith('_v6') or plan.get('gate_eligible') is not False):
+            or not (plan['scenario_id'].endswith('_v6') or plan.get('reloc14_scene_v7') is True and plan['scenario_id'].endswith('_v7')) or plan.get('gate_eligible') is not False):
         raise ValueError('carry diagnostic requires v6 box, truth-free lookaround, RGB lift, training off')
     from harness.zone_final_environment import resolve
     from sim.solo_carry_pose import task_start
@@ -601,7 +605,7 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
     if plan.get('render_profile','floor_light_v1') not in ('floor_light_v1','floor_light_textured_v1'):
         raise ValueError('unknown carry render profile')
     for option in ('carry5_rank_aware_views_v1', 'carry5_trim_yaw_calibration_v1', 'carry7_robust_recovery_v1',
-                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1', 'reloc12_carry_reacquire_v1', 'carry_pose_budget_recal_v1', 'carry_pose_budget_xy_reserve0_v1'):
+                   'reloc9_rotation_calibration_v1', 'reloc9_wall_height_guard_v1', 'reloc9_reacquisition_v1', 'reloc10_rotation_calibration_v1', 'reloc10_own_review_only_v1', 'reloc12_carry_reacquire_v1', 'carry_pose_budget_recal_v1', 'carry_pose_budget_xy_reserve0_v1', 'reloc14_carry_budget_v1', 'reloc14_compute_budget_v1', 'reloc14_scene_v7'):
         if type(plan.get(option, False)) is not bool:
             raise ValueError(option+' must be bool')
         if plan.get(option) and plan.get('carry5_profile') != 'carry5_active_localization_v1':
@@ -618,7 +622,10 @@ def validate_carry(plan, *, enabled, training_rgb, truth_free, lift, negative):
         from sim.solo_carry6 import validate_calibration
         validate_calibration(plan.get('trim_calibration'))
     scenario = load_scenario(plan['scenario_id'])
-    source = ROOT/'configs/zone_study_scenarios_v6'/f"{plan['scenario_id']}.json"
+    version = 'v7' if plan.get('reloc14_scene_v7', False) else 'v6'
+    source = ROOT/f'configs/zone_study_scenarios_{version}'/f"{plan['scenario_id']}.json"
+    if version == 'v7' and any(p['kind']=='heavy_crate' for p in scenario['eval']['setup']['placements']):
+        raise ValueError('reloc14 v7 forbids heavy_crate')
     if hashlib.sha256(source.read_bytes()).hexdigest() != plan['scenario_source_sha256']:
         raise ValueError('carry scenario hash mismatch')
     placement = next(p for p in scenario['eval']['setup']['placements'] if p['item_id'] == plan['item_id'])
