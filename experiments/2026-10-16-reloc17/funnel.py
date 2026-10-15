@@ -39,8 +39,10 @@ def main():
                     ('sensor_update',bool(s.get('updated'))),('pf_resolved',bool(s.get('pf_resolved',s.get('resolved')))),
                     ('dominant_mode',s.get('cluster',{}).get('mass',0)>=.9),
                     ('raw_covariance',rawxy<=.15 and rawyaw<=5),
+                    ('correspondence_nis',g.get('supported_floor_lines',0)>0),
                     ('geometry_axes',bool(g.get('independent_line_axes'))),
-                    ('global_unique',bool(a.get('evaluated') and a.get('unique') and s.get('resolved'))),
+                    ('global_unique',bool(a.get('evaluated') and a.get('unique'))),
+                    ('pf_geometry_agreement',bool(s.get('resolved'))),
                     ('three_views',s.get('confirmations',0)>=3),('registered',bool(s.get('registered')))]
                 ok=True;first=None
                 for name,pass_ in checks:
@@ -59,7 +61,7 @@ def main():
     data=dict(schema='ugrp.reloc17.funnel.v1',analysis_host='gcp2',runs=reports,reproduction='PYTHONPATH=. /home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python experiments/2026-10-16-reloc17/funnel.py',frame_table=str(OUT/'funnel-frames.csv'))
     (OUT/'rejection-table.json').write_text(json.dumps(data,indent=2)+'\n')
     lines=['# reloc17 원본 프레임 관문 재집계','', '|실행|검출→갱신→PF resolved→mode→raw P→기하→유일→3뷰→수용|독립 registered|','|---|---|---:|']
-    keys=['detected','sensor_update','pf_resolved','dominant_mode','raw_covariance','geometry_axes','global_unique','three_views','registered']
+    keys=['detected','sensor_update','pf_resolved','dominant_mode','raw_covariance','correspondence_nis','geometry_axes','global_unique','pf_geometry_agreement','three_views','registered']
     for r in reports:lines.append('|'+r['run']+'|'+str(r['cumulative']['frames'])+' → '+' → '.join(str(r['cumulative'][k]) for k in keys)+'|'+str(r['independent']['registered'])+'|')
     lines+=['','원본과 해시·사유별 거부·독립 통과 수는 rejection-table.json, 프레임별 값은 funnel-frames.csv.','기하/대응은 PF와 독립 계산되며 위 표는 비교용 순차 투영이다. PF가 막힌 뒤의 독립 통과를 수용으로 세지 않는다.']
     (OUT/'funnel.md').write_text('\n'.join(lines)+'\n')
