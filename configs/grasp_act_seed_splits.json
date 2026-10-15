@@ -2,26 +2,134 @@
   "schema": "ugrp.grasp_act.seed_splits.v1",
   "registered": "2026-10-14, claude/grasp-act-release (PR #491 on #484). Ranges are inclusive. Never reuse a range for another split; add new ranges instead.",
   "ranges": {
-    "grasp_gate_078": [[71000, 71039]],
-    "grasp_gate_v2": [[72000, 72039]],
-    "grasp_gate_v3": [[73000, 73039]],
-    "release_gate": [[74000, 74039]],
-    "release_diagnostic": [[74900, 74999]],
-    "carry_probe": [[75000, 75999]],
-    "train": [[80000, 89999]],
-    "development": [[90000, 90999]],
-    "heldout_start": [[91000, 91999]],
-    "heldout_map": [[92000, 92999]],
-    "release_gate_command_relative_v1": [[74100, 74139]],
-    "release_gate_zone_center_rgb_v1": [[74200, 74239]],
-    "release14_diagnostic": [[76000, 76006]],
-    "release15_diagnostic": [[78330, 78336]],
-    "release16_diagnostic": [[78460, 78466]],
-    "release17_diagnostic": [[78480, 78486]],
-    "release18_diagnostic": [[78520, 78526]]
+    "grasp_gate_078": [
+      [
+        71000,
+        71039
+      ]
+    ],
+    "grasp_gate_v2": [
+      [
+        72000,
+        72039
+      ]
+    ],
+    "grasp_gate_v3": [
+      [
+        73000,
+        73039
+      ]
+    ],
+    "release_gate": [
+      [
+        74000,
+        74039
+      ]
+    ],
+    "release_diagnostic": [
+      [
+        74900,
+        74999
+      ]
+    ],
+    "carry_probe": [
+      [
+        75000,
+        75999
+      ]
+    ],
+    "train": [
+      [
+        80000,
+        89999
+      ]
+    ],
+    "development": [
+      [
+        90000,
+        90999
+      ]
+    ],
+    "heldout_start": [
+      [
+        91000,
+        91999
+      ]
+    ],
+    "heldout_map": [
+      [
+        92000,
+        92999
+      ]
+    ],
+    "release_gate_command_relative_v1": [
+      [
+        74100,
+        74139
+      ]
+    ],
+    "release_gate_zone_center_rgb_v1": [
+      [
+        74200,
+        74239
+      ]
+    ],
+    "release14_diagnostic": [
+      [
+        76000,
+        76006
+      ]
+    ],
+    "release15_diagnostic": [
+      [
+        78330,
+        78336
+      ]
+    ],
+    "release16_diagnostic": [
+      [
+        78460,
+        78466
+      ]
+    ],
+    "release17_diagnostic": [
+      [
+        78480,
+        78486
+      ]
+    ],
+    "release18_diagnostic": [
+      [
+        78520,
+        78526
+      ]
+    ],
+    "release18_release19_gate40": [
+      [
+        110600,
+        110639
+      ]
+    ]
   },
-  "gate_seeds_never_train": ["grasp_gate_078", "grasp_gate_v2", "grasp_gate_v3", "release_gate", "release_diagnostic", "carry_probe", "release_gate_command_relative_v1", "release_gate_zone_center_rgb_v1", "release14_diagnostic", "release15_diagnostic", "release16_diagnostic", "release17_diagnostic", "release18_diagnostic"],
-  "heldout_maps": ["zone_wide_corridor_final_v3"],
+  "gate_seeds_never_train": [
+    "grasp_gate_078",
+    "grasp_gate_v2",
+    "grasp_gate_v3",
+    "release_gate",
+    "release_diagnostic",
+    "carry_probe",
+    "release_gate_command_relative_v1",
+    "release_gate_zone_center_rgb_v1",
+    "release14_diagnostic",
+    "release15_diagnostic",
+    "release16_diagnostic",
+    "release17_diagnostic",
+    "release18_diagnostic",
+    "release18_release19_gate40"
+  ],
+  "heldout_maps": [
+    "zone_wide_corridor_final_v3"
+  ],
   "notes": {
     "release18_diagnostic": "release18_v1 fresh7, settled_command_v1 default-off; origin/main + 22 open PR heads + HEAD seed configs/plan JSON/Markdown and local queues checked; remote history preflight pending. Never train; no gate approval.",
     "release17_diagnostic": "release17_v1 fresh7 (FOV one-pulse + yaw_cal_v1 toggles); main + all 209 origin refs + HEAD grepped for 784[6-9]x: only release16 78460-78466 and byte counts 78473/78494, no seed use; local VM3 queues checked; remote history not accessed. Never train; gate40 unapproved.",
@@ -35,6 +143,7 @@
     "heldout_maps": "s4_narrow_door_standoff_v4 map, HELDOUT in scripts/make_grasp_act_plan.py",
     "release_gate_command_relative_v1": "PR #491 continuation on claude/grasp-act-probes: held hidden_v1 + setdown_lookaround_v2 + command_relative_v1; new profile, no pooling with 74000-74039",
     "release_record_first50": "train seeds 88000-88049 reserved for the first 50 release recordings; approval and new-profile >=38/40 gate required; no gate or diagnostic seeds",
-    "release_gate_zone_center_rgb_v1": "PR #491 probes continuation: RGB local rectangle centering, new seeds. Main + all 17 open PR branches/comments checked; 74218-74220 references were archive PIDs, 74228 was a byte count, not seeds. Never train."
+    "release_gate_zone_center_rgb_v1": "PR #491 probes continuation: RGB local rectangle centering, new seeds. Main + all 17 open PR branches/comments checked; 74218-74220 references were archive PIDs, 74228 was a byte count, not seeds. Never train.",
+    "release18_release19_gate40": "2026-10-15 release18/release19 paired gate; local vm3-queue and experiments text checked only; never train; A/B results separate; all queue flags false."
   }
 }
