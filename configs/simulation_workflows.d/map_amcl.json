@@ -1,0 +1,13 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "map-amcl-replay", "version": "1.0.0",
+    "purpose": "Default-off PR480 80-interval saved-RGB AMCL comparison; no physics",
+    "entry": "scripts/replay_map_amcl.py", "runner": "scripts.replay_map_amcl",
+    "docs": "experiments/2026-10-15-map-amcl/amcl1.md",
+    "requires": "committed source and saved RGB or verified feature packets; no renderer",
+    "output_flag": "--output", "output_kind": "directory",
+    "required_inputs": ["--raw-root"],
+    "side_effect": "offline_analysis", "adapter": "managed_legacy_cli"
+  }]
+}

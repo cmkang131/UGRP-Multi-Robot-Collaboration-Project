@@ -1,0 +1,32 @@
+{
+  "expected_intervals": 80,
+  "seed": 64001,
+  "primary_pass": {
+    "xy_median_m": 0.05,
+    "yaw_median_deg": 5,
+    "path_ratio": [
+      0.9,
+      1.1
+    ]
+  },
+  "pose_only_pass": {
+    "xy_median_m": 0.05,
+    "yaw_median_deg": 5
+  },
+  "jump_residual_slack": {
+    "xy_m": 0.05,
+    "yaw_deg": 5,
+    "scope": "diagnostic command residual, not calibrated physical speed bound"
+  },
+  "cold_start": "uniform free geometry, no historical pose; include full suffix and unresolved frames",
+  "improvement_requires": [
+    "all 80 matched intervals with saved RGB hashes verified",
+    "PR480 joint pass count increases vs fused odom",
+    "paired interval position and yaw median do not worsen",
+    "command-residual jump flagged fraction does not worsen",
+    "absolute static-map errors, unresolved fraction, convergence delay reported; no SE2 alignment-only success claim"
+  ],
+  "gate_promotion_authorized_if_all_conditions_pass": false,
+  "physics_requires": "separate coordinator-approved short GCP queue after offline improvement",
+  "reference_six_run_plan": "pr480-static-localization-plan.json; screening subset is not the 80-interval denominator"
+}

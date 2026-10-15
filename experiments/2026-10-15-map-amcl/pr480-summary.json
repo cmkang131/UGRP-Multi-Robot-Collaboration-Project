@@ -1,0 +1,61 @@
+{
+  "status": "diagnosis_complete_first_two_offline_candidates_rejected_next_static_map_localization",
+  "scope": "40 grasp stage exposures and 8 route stages; no new physical simulation or full E2E",
+  "input_count": {
+    "runs": 48,
+    "robots": 96,
+    "grasp_robot_trajectories": 80,
+    "files": 1034
+  },
+  "clock_fix": "physical_t = own_t - checkpoint.cutoff_s + trajectory[0].t; no independent yaw offset fit in primary metric",
+  "baseline_map": {
+    "xy_median_m": 0.10650818084245184,
+    "yaw_median_deg": 11.152439626367844,
+    "path_ratio": 1.111322347773196
+  },
+  "fixed_increment_replay": {
+    "off": {
+      "passed_n": 3,
+      "N": 80,
+      "xy_median_m": 0.09514754940326282,
+      "yaw_median_deg": 11.212115430044,
+      "path_ratio": 1.0582657957266002
+    },
+    "nis_reject_v1": {
+      "passed_n": 2,
+      "N": 80,
+      "xy_median_m": 0.11172340023985253,
+      "yaw_median_deg": 11.265913403393714,
+      "path_ratio": 1.084893808555416
+    },
+    "nis_stationary_v1": {
+      "passed_n": 2,
+      "N": 80,
+      "xy_median_m": 0.11264139661671434,
+      "yaw_median_deg": 11.622529493074882,
+      "path_ratio": 1.082813815449449
+    },
+    "command_only": {
+      "passed_n": 2,
+      "N": 80,
+      "xy_median_m": 0.11152002814195998,
+      "yaw_median_deg": 11.24342742722179,
+      "path_ratio": 1.0907073560549154
+    },
+    "scope": "Fixed own measurements and commands; fused odom reproduction error max 8.35e-14, not a full PF or controller replay; off here is continuous fused odom, not map-pose baseline."
+  },
+  "raw": "azure3:/home/ugrp/ugrp-sim/runs/{grasp1-stage-a1,stage-b-cohort2,stage-c-cohort3,stage-c-cohort4}-*",
+  "fetch": "fetch-lite-manifest.json.zst",
+  "vm": "PowerState/deallocated verified after retrieval",
+  "tests": "7 passed, two related files",
+  "next": "reuse pinned AMCL + own-RGB floor/wall observations; do not submit failed innovation variants",
+  "thresholds": {
+    "xy_median_m": 0.05,
+    "yaw_median_deg": 5,
+    "path_ratio": [
+      0.9,
+      1.1
+    ]
+  },
+  "raw_scope_note": "8 staging-invalid and 2 supervisor-censored grasp exposures remain diagnostic data, not a 40-run valid success/failure cohort"
+}
