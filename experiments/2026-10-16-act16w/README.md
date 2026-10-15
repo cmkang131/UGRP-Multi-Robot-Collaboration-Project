@@ -104,3 +104,8 @@ NOT_READY, commands는 null, 필수 rejection_table.json은 미작성 상태다.
 [대기열 원문·해시·존재 확인](warp1-queue-receipt.json). 장면 결정은 별도로
 받았지만 모델 배치 호환성·전체 교사 비용·기록/학생 통합 미완료가 남아 있다.
 이 대기열을 실행 승인으로 취급하지 않았고 GPU 사용은0이다.
+
+05:24 KST: 새 비물리 시험5파일을 CI glob에 등록했고8개 shard 목록에서
+각각 정확히1회 포함됨을 확인했다. [목록 검증](ci-registration.json).
+로컬 전체 suite나 원격 CI를 실행한 결과가 아니다. 학습 감독 중단 파일은
+RESOURCE_CAP 대신 SUPERVISOR_STOP으로 구분하도록 보고 분류를 바로잡았다.

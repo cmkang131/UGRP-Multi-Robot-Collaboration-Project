@@ -129,7 +129,9 @@ def main():
             last_checkpoint = folder; report['last_checkpoint'] = str(folder)
         with (a.output / 'progress.jsonl').open('x') as log:
             while step < a.steps:
-                if stop['requested'] or time.monotonic()-started >= a.max_wall_s or (a.output/'SUPERVISOR_STOP.json').exists():
+                if (a.output/'SUPERVISOR_STOP.json').exists():
+                    stop['requested'] = True
+                if stop['requested'] or time.monotonic()-started >= a.max_wall_s:
                     break
                 eligible = curriculum.eligible(step/a.schedule_steps) if curriculum else None
                 indices = torch.randint(len(eligible) if curriculum else len(data), (8,), generator=generator).tolist()
