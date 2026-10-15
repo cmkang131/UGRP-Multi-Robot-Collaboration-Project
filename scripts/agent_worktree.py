@@ -49,6 +49,7 @@ SPARSE_PROFILE = "agent-media-v1"
 RUNTIME_KEEP = (
     "experiments/dispatch-skill-integration-20260917/models.zip",
     "experiments/2026-09-10-rgb-varied-start/models.zip",
+    "experiments/2026-10-06-robot-camera-review/real-post-lift-comparison.jpg",
     *REQUIRED_FIXTURES,
 )
 CACHE_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}

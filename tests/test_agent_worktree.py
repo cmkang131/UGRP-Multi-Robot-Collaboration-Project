@@ -47,6 +47,7 @@ def repo(tmp_path, monkeypatch):
         "experiments/a/video.mp4": "M" * 4000,
         "experiments/dispatch-skill-integration-20260917/models.zip": "K" * 3000,
         "experiments/2026-09-10-rgb-varied-start/models.zip": "V" * 3000,
+        "experiments/2026-10-06-robot-camera-review/real-post-lift-comparison.jpg": "J" * 100,
         "tests/fixtures/frame.jpg": "F" * 100,
         "scripts/tool.py": "print(1)\n",
     }
