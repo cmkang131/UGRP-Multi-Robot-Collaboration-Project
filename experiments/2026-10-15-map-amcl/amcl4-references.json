@@ -1,0 +1,43 @@
+{
+  "checked_at": "2026-10-15",
+  "references": [
+    {
+      "title": "ROS AMCL source",
+      "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/amcl/src/amcl_node.cpp",
+      "local_path": "outputs/amcl4-references/ros-amcl-node.cpp",
+      "sha256": "dbb3b89db9affafad12ebc6f36b6821186e0df9d75fca5075b45d6051bf429c3"
+    },
+    {
+      "title": "ROS AMCL source",
+      "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/amcl/src/amcl/pf/pf.c",
+      "local_path": "outputs/amcl4-references/ros-pf.c",
+      "sha256": "894376b8d2926d43d5bec44eddc620f072520352a7b081416808425bd5346958"
+    },
+    {
+      "title": "ROS AMCL source",
+      "url": "https://raw.githubusercontent.com/ros-planning/navigation/noetic-devel/amcl/src/amcl/sensors/amcl_laser.cpp",
+      "local_path": "outputs/amcl4-references/ros-laser.cpp",
+      "sha256": "2dc54fa9b840465e55362c02ed5bdcaeb58c0ce04be49429a475cd948872b89e"
+    },
+    {
+      "title": "Fox 2003, Adapting the Sample Size in Particle Filters Through KLD-Sampling",
+      "url": "https://cis.temple.edu/~latecki/Courses/RobotFall07/PapersFall07/fox-ijrr-2003.pdf",
+      "local_path": "outputs/amcl4-references/fox03.pdf",
+      "sha256": "6542b3964618701a5bdedf88e830e69e3a25a599958da25f2941a36b1c39e2f7",
+      "checked": "Section 3.2, equation 14, Table 2; text and Table 2 image inspected"
+    },
+    {
+      "title": "Thrun/Burgard/Fox, Probabilistic Robotics, ISBN 9780262201629",
+      "url": "https://roboticsjtu.github.io/CS7355/Probabilistic-Robotics-en.pdf",
+      "local_path": "outputs/amcl4-references/book-2005.pdf",
+      "sha256": "97696cc41196476e5039fc2f85583c05c90b237087cd41545d6c27618d3a66d1",
+      "checked": "Chapter 8 sections 8.3.2, 8.3.7, 8.5; Table 8.4 image inspected. Catalog year 2005, this copy copyright 2006; original 2005 printing not independently checked"
+    },
+    {
+      "title": "Official Nav2 Jazzy AMCL parameters",
+      "url": "https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/others/configuring_amcl/",
+      "checked": "update_min_d/a, resample_interval, min/max_particles, max_beams, pf_z"
+    }
+  ],
+  "excluded_early_draft": "UFPR PDF is labeled EARLY DRAFT 1999-2000; not evidence for the 2005 chapter"
+}

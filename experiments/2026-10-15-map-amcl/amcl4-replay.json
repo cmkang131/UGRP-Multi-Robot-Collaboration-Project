@@ -1,0 +1,251 @@
+{
+  "schema": "map-amcl-amcl4-replay/1",
+  "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw",
+  "inventory": {
+    "r1": {
+      "expected": 301,
+      "available": 0,
+      "missing": 301,
+      "first_missing": [
+        {
+          "frame_id": 1,
+          "sha256": "1d806d55307bdbc0c63bf692049f4f072b37c09ca92ded2afe0174ff6460a31d",
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r1/rgb/00000.jpg"
+        },
+        {
+          "frame_id": 2,
+          "sha256": "28b6b9cd2770970586bea8bc403cb67dcb3d088c9eb854f3de9da0079d0f8c54",
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r1/rgb/00001.jpg"
+        },
+        {
+          "frame_id": 3,
+          "sha256": "7feff230f0013931c4a1349da4bb051f412583b10974d7f86c6d622be69707fc",
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r1/rgb/00002.jpg"
+        }
+      ]
+    },
+    "r2": {
+      "expected": 301,
+      "available": 0,
+      "missing": 301,
+      "first_missing": [
+        {
+          "frame_id": 1,
+          "sha256": "bea0f20482af76a2946df4563fc7138a1e02f4342962a5820c1ee7473feab17d",
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r2/rgb/00000.jpg"
+        },
+        {
+          "frame_id": 2,
+          "sha256": "f1b7047dfe9bcd32c28895a72342d9f31250bb1d0c32c70d1f88c06ced4683ae",
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r2/rgb/00001.jpg"
+        },
+        {
+          "frame_id": 3,
+          "sha256": "f6254ec1da403e8d34a76869d088a374d434a4edb54959724619da66e188fa96",
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r2/rgb/00002.jpg"
+        }
+      ]
+    }
+  },
+  "sources": {
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r1/frames.jsonl.zst": "82e13685560d52e8322711511280d667e8e42d2aa3481720bdd5683717314807",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r1/ownmap.jsonl.zst": "8b9b62a9017cdfee7f83503b6c0341ae2fa6d1b0c77dd00f07ce797e431b5a26",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r2/frames.jsonl.zst": "f24f03f4e424157688721dd1b2600a379a5b75afac3241a56f3039da595bb02e",
+    "/Users/changmin/projects/ugrp/outputs/gcp1-runs/map-amcl-record-b2387ac1/recordings/map-amcl-record-s65101/raw/robots/r2/ownmap.jsonl.zst": "bdd318958bce33dffde3f2054093b258c98ccb8a5bbb08fc18bce91d1f502cfa"
+  },
+  "environment": {
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "load": [
+      8.71435546875,
+      4.71044921875,
+      4.78564453125
+    ]
+  },
+  "input_scope": "own RGB, own issued motion/servo, static map only; truth evaluated last",
+  "profiles": {
+    "off": {
+      "min_particles": 500,
+      "max_particles": 2000,
+      "pf_err": 0.05,
+      "pf_z": 0.99,
+      "recovery_alpha_slow": 0.001,
+      "recovery_alpha_fast": 0.1,
+      "alpha": 0.2,
+      "update_min_d": 0.25,
+      "update_min_a": 0.2,
+      "resample_interval": 1,
+      "max_beams": 60,
+      "max_landmarks": 32
+    },
+    "amcl4_motion_v1": {
+      "min_particles": 500,
+      "max_particles": 2000,
+      "pf_err": 0.05,
+      "pf_z": 0.99,
+      "recovery_alpha_slow": 0.001,
+      "recovery_alpha_fast": 0.1,
+      "alpha": 0.2,
+      "update_min_d": 0.25,
+      "update_min_a": 0.2,
+      "resample_interval": 1,
+      "max_beams": 60,
+      "max_landmarks": 32
+    },
+    "amcl4_resample2_v1": {
+      "min_particles": 500,
+      "max_particles": 2000,
+      "pf_err": 0.05,
+      "pf_z": 0.99,
+      "recovery_alpha_slow": 0.001,
+      "recovery_alpha_fast": 0.1,
+      "alpha": 0.2,
+      "update_min_d": 0.25,
+      "update_min_a": 0.2,
+      "resample_interval": 2,
+      "max_beams": 60,
+      "max_landmarks": 32
+    },
+    "amcl4_kld250_v1": {
+      "min_particles": 250,
+      "max_particles": 2000,
+      "pf_err": 0.05,
+      "pf_z": 0.99,
+      "recovery_alpha_slow": 0.001,
+      "recovery_alpha_fast": 0.1,
+      "alpha": 0.2,
+      "update_min_d": 0.25,
+      "update_min_a": 0.2,
+      "resample_interval": 1,
+      "max_beams": 60,
+      "max_landmarks": 32
+    },
+    "amcl4_features30_v1": {
+      "min_particles": 500,
+      "max_particles": 2000,
+      "pf_err": 0.05,
+      "pf_z": 0.99,
+      "recovery_alpha_slow": 0.001,
+      "recovery_alpha_fast": 0.1,
+      "alpha": 0.2,
+      "update_min_d": 0.25,
+      "update_min_a": 0.2,
+      "resample_interval": 1,
+      "max_beams": 30,
+      "max_landmarks": 4
+    },
+    "amcl4_balanced_v1": {
+      "min_particles": 250,
+      "max_particles": 2000,
+      "pf_err": 0.05,
+      "pf_z": 0.99,
+      "recovery_alpha_slow": 0.001,
+      "recovery_alpha_fast": 0.1,
+      "alpha": 0.2,
+      "update_min_d": 0.25,
+      "update_min_a": 0.2,
+      "resample_interval": 2,
+      "max_beams": 30,
+      "max_landmarks": 4
+    }
+  },
+  "runs": [],
+  "original": {
+    "first30_wall_s": 485.49221660300014,
+    "first30_wall_per_sim": 16.18307388676667,
+    "host_timing": {
+      "option": "buffered_jsonl_v1",
+      "timers": {
+        "jsonl_append": {
+          "calls": 3927,
+          "wall_s": 0.1803690840042691
+        },
+        "eval_sample_including_io": {
+          "calls": 301,
+          "wall_s": 0.15216071299801115
+        },
+        "physics_advance": {
+          "calls": 300,
+          "wall_s": 62.693715963000614
+        }
+      },
+      "nested_timers_not_additive": true,
+      "controller_feedback": false,
+      "cprofile": false
+    },
+    "physics_advance_s": 62.693715963000614,
+    "camera_capture_s": 35.96422306400609,
+    "camera_render_encode_hash_s": 34.94090151800219,
+    "evaluation_s": 0.15216071299801115,
+    "outside_physics_camera_eval_s": 386.68211686299543,
+    "pure_render_s": null,
+    "render_scope": "Original capture includes render/encode/hash; pure render not instrumented",
+    "budget": {
+      "assumption": "Same physics/camera/eval costs; all remaining work may change",
+      "retained_wall_per_sim": 3.2936699913334904,
+      "remaining_s_at_6": 81.18990025999528,
+      "remaining_reduction_fraction_at_6": 0.7900345096932385,
+      "remaining_s_at_3_5": 6.189900259995284,
+      "remaining_reduction_fraction_at_3_5": 0.9839922768856972
+    }
+  },
+  "prediction": {
+    "wall_per_sim": null,
+    "ready": false,
+    "reason": "AMCL_NOT_IN_RECORDING_CONTROL_PATH"
+  },
+  "new_simulation_runs": 0,
+  "new_camera_renders": 0,
+  "remote_connections": 0,
+  "status": "BLOCKED_MISSING_SAVED_RGB",
+  "missing_rgb": 602,
+  "comparisons": [
+    {
+      "profile": "off",
+      "evaluated_N": 0,
+      "expected_N": 2,
+      "stage_seconds": null,
+      "accuracy": null,
+      "adopted": false
+    },
+    {
+      "profile": "amcl4_motion_v1",
+      "evaluated_N": 0,
+      "expected_N": 2,
+      "stage_seconds": null,
+      "accuracy": null,
+      "adopted": false
+    },
+    {
+      "profile": "amcl4_resample2_v1",
+      "evaluated_N": 0,
+      "expected_N": 2,
+      "stage_seconds": null,
+      "accuracy": null,
+      "adopted": false
+    },
+    {
+      "profile": "amcl4_kld250_v1",
+      "evaluated_N": 0,
+      "expected_N": 2,
+      "stage_seconds": null,
+      "accuracy": null,
+      "adopted": false
+    },
+    {
+      "profile": "amcl4_features30_v1",
+      "evaluated_N": 0,
+      "expected_N": 2,
+      "stage_seconds": null,
+      "accuracy": null,
+      "adopted": false
+    },
+    {
+      "profile": "amcl4_balanced_v1",
+      "evaluated_N": 0,
+      "expected_N": 2,
+      "stage_seconds": null,
+      "accuracy": null,
+      "adopted": false
+    }
+  ]
+}

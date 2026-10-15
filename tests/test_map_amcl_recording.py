@@ -121,6 +121,29 @@ def test_linux_requires_real_source_bound_approval(tmp_path, monkeypatch):
     monkeypatch.setattr(record.shutil, 'disk_usage', lambda p: SimpleNamespace(free=10**12))
     record.admission(record.load_spec(), 65102, 'a'*40, tmp_path/'queue.json', tmp_path/record.run_name(65102))
     assert not (tmp_path/'out').exists()  # Admission itself never starts a run.
+    q['amcl4'] = dict(offline_speed_and_accuracy_verified=False,
+                     remaining_recordings_authorized=False)
+    write(tmp_path/'queue.json', q)
+    with pytest.raises(ValueError, match='AMCL4_OFFLINE'):
+        record.admission(record.load_spec(), 65102, 'a'*40, tmp_path/'queue.json', tmp_path/record.run_name(65102))
+    q['amcl4']['offline_speed_and_accuracy_verified'] = True
+    write(tmp_path/'queue.json', q)
+    record.admission(record.load_spec(), 65102, 'a'*40, tmp_path/'queue.json', tmp_path/record.run_name(65102))
+    first_raw = tmp_path/record.run_name(65102)/'raw'
+    write(first_raw/'result.json', dict(source_sha='a'*40, status='RECORDED',
+        first30=dict(wall_per_sim=4.), finalization_complete=True, finalization_errors=[], frames_per_robot=601))
+    write(first_raw/'artifacts.sha256.json', {})
+    with pytest.raises(ValueError, match='AMCL4_FIRST_RECORDING_ACCURACY'):
+        record.admission(record.load_spec(), 65103, 'a'*40, tmp_path/'queue.json', tmp_path/record.run_name(65103))
+    q['amcl4'].update(remaining_recordings_authorized=True,
+        first_recording_accuracy_review=dict(passed=True, seed=65102, source_sha='a'*40,
+            result_sha256=sha256(first_raw/'result.json'), artifacts_sha256=sha256(first_raw/'artifacts.sha256.json')))
+    write(tmp_path/'queue.json', q)
+    record.admission(record.load_spec(), 65103, 'a'*40, tmp_path/'queue.json', tmp_path/record.run_name(65103))
+    q['amcl4']['first_recording_accuracy_review']['result_sha256'] = 'stale'
+    write(tmp_path/'queue.json', q)
+    with pytest.raises(ValueError, match='AMCL4_FIRST_RECORDING_ACCURACY'):
+        record.admission(record.load_spec(), 65103, 'a'*40, tmp_path/'queue.json', tmp_path/record.run_name(65103))
     q['source_sha'] = 'b'*40
     write(tmp_path/'queue.json', q)
     with pytest.raises(ValueError, match='COORDINATOR_APPROVAL'):

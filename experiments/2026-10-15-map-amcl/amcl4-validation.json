@@ -1,0 +1,46 @@
+{
+  "schema": "map-amcl-amcl4-validation/1",
+  "base_sha": "e45eaba342422041d9c9da514c972e7b1bb25649",
+  "tests": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_map_amcl.py tests/test_map_amcl_profiles.py tests/test_map_amcl_recording.py tests/test_e2e_static_rgb_localizer.py --junitxml=outputs/amcl4-tests-final.xml",
+    "passed": 56,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 10.48,
+    "junit": "outputs/amcl4-tests-final.xml",
+    "junit_sha256": "047fc7358ffcc045aab9c7d51f91795affa2c0e15895e81a14ddb4943bdb891d"
+  },
+  "source_sha256": {
+    "harness/map_amcl.py": "7cd0cf96c76d136b9bb19b57d6854c2dfbfcc57ff40cfbd0f88e37a12b74525b",
+    "harness/map_amcl_profiles.py": "2b1aeef3bed928055b88d9833b6cc22d7719380b7b461e3cae07c05ff7297ba9",
+    "scripts/profile_map_amcl.py": "9b5ceb89df7b36ba3fbc6aedd4eb6e2870e421d3a31b4cd545f006a63e54e2cb",
+    "scripts/audit_map_amcl_motion.py": "2e3630804dc6af9f96f7d715f34bfde6ee16da8ea104d9b9c10b2d9543447044",
+    "scripts/record_map_amcl.py": "b02257b47cd11b3e920961a410a16122aad11ae507bd80106f8af443709a0d0d",
+    "scripts/run_ci_tests.py": "cf01caaad2200ad5bfbf076b180c4f68959d4bef2caac9745e571d6bea2cb465",
+    "tests/test_map_amcl.py": "e90b8c07602d0a5dce6d3fc0e68025f77dce5c463d48d95a09088bec2e78e7db",
+    "tests/test_map_amcl_profiles.py": "3659e2746cd5e5aca75e854214b33f057d7951873b18b7917f0bae844c69a064",
+    "tests/test_map_amcl_recording.py": "2ca3068c4b479c9b5259023cfd0c962e52dc5d0c946f73a5419618c33faa5c75",
+    "tests/test_e2e_static_rgb_localizer.py": "5e4be720c4b2ca3101de08b09a80df1126fed0ca3bd32d113d2038e3ef183912"
+  },
+  "artifacts": {
+    "amcl4-alpha.json.zst": "9bc917104b9dce81b15a2521292647f4094a3ef3e91d5c6b8846e756d8adcc82",
+    "amcl4-replay.json": "1121b7626ba702e07b7c33f64d019efd4c43377aa696017d975e48f12312e7f2",
+    "amcl4-alpha-storage.json": "762dfdcef68ba8250f1c747388508269765439f5f01410a708b39ed264e69709",
+    "amcl4-references.json": "09ed64244becd2e210a5afae678cb6022e397e1be8c0f3ffa5e43072001fe22f",
+    "amcl4-summary.json": "b5ac83d78d536342e47f1da52050d69d41545ad293dea3cd7474ee5dca007847",
+    "amcl4.md": "d2a3d9e04ca364fcce630f428ceea1c42ff7c918cbeb736b3d205500c89fea54"
+  },
+  "real_rgb_replay": {
+    "status": "BLOCKED_MISSING_SAVED_RGB",
+    "available": 0,
+    "expected": 602,
+    "exit_code": 2
+  },
+  "synthetic_scope": "Deterministic numeric and bitmap tests only; not task accuracy or recording speed evidence",
+  "simulation_runs": 0,
+  "camera_renders": 0,
+  "remote_connections": 0,
+  "model_calls": 0,
+  "actual_recording_speed_verified": false,
+  "goal_achieved": false
+}

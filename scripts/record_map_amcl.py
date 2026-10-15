@@ -123,6 +123,9 @@ def admission(spec, seed, source_sha, approval_path, output):
     limit = q.get('limits', {}).get('max_parallel_jobs')
     if type(limit) is not int or limit < 1:
         raise ValueError('QUEUE_PARALLEL_LIMIT_REQUIRED')
+    amcl4 = q.get('amcl4')
+    if amcl4 is not None and amcl4.get('offline_speed_and_accuracy_verified') is not True:
+        raise ValueError('AMCL4_OFFLINE_RECORDING_SPEED_AND_ACCURACY_REQUIRED')
     # First actual recording measures speed; 3.5 is warning only. Completion,
     # integrity and the first-run median <=6 are required before the rest.
     if seed != spec['seeds'][0]:
@@ -132,6 +135,17 @@ def admission(spec, seed, source_sha, approval_path, output):
                 not first.get('finalization_complete') or first.get('finalization_errors') or
                 first.get('frames_per_robot') != spec['frames_per_robot']):
             raise ValueError('FIRST_RECORDING_SPEED_AND_INTEGRITY_GATE_REQUIRED')
+        if amcl4 is not None:
+            # A source-bound coordinator review of the actual first recording
+            # is a separate gate. A speed pass must not auto-authorize the rest.
+            review = amcl4.get('first_recording_accuracy_review', {})
+            first_raw = output.parent/run_name(spec['seeds'][0])/'raw'
+            if (amcl4.get('remaining_recordings_authorized') is not True or
+                    review.get('passed') is not True or review.get('source_sha') != source_sha or
+                    review.get('seed') != spec['seeds'][0] or
+                    review.get('result_sha256') != sha256(first_raw/'result.json') or
+                    review.get('artifacts_sha256') != sha256(first_raw/'artifacts.sha256.json')):
+                raise ValueError('AMCL4_FIRST_RECORDING_ACCURACY_REVIEW_REQUIRED')
     output.parent.mkdir(parents=True, exist_ok=True)
     if shutil.disk_usage(output.parent).free < spec['min_free_bytes'] + spec['per_run_disk_bytes']:
         raise ValueError('DISK_BUDGET_REQUIRED')

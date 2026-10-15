@@ -6,6 +6,7 @@ PR480 wall endpoints / floor-zone boundary lines replace laser returns.
 No initial pose, cargo pose, evaluator, simulator or peer-state API exists.
 """
 from dataclasses import dataclass, asdict
+from contextlib import nullcontext
 import math
 
 import numpy as np
@@ -31,11 +32,18 @@ class Parameters:
     alpha: float = .2  # Nav2 alpha1..alpha5 defaults, omnidirectional robot
     update_min_d: float = .25
     update_min_a: float = .2
+    resample_interval: int = 1
+    max_beams: int = 60
+    max_landmarks: int = 32
 
     def __post_init__(self):
         if (not isinstance(self.min_particles, int) or not isinstance(self.max_particles, int)
                 or not 2 <= self.min_particles <= self.max_particles <= 100000):
             raise ValueError('INVALID_PARTICLE_BUDGET')
+        if (type(self.resample_interval) is not int or self.resample_interval < 1 or
+                type(self.max_beams) is not int or not 1 <= self.max_beams <= 60 or
+                type(self.max_landmarks) is not int or not 1 <= self.max_landmarks <= 32):
+            raise ValueError('INVALID_MEASUREMENT_BUDGET')
         if (not all(math.isfinite(x) for x in asdict(self).values()) or
                 self.pf_err <= 0 or self.pf_z <= 0 or self.alpha < 0 or
                 self.update_min_d < 0 or self.update_min_a < 0 or
@@ -43,12 +51,18 @@ class Parameters:
             raise ValueError('INVALID_AMCL_PARAMETERS')
 
 
-def create(static_map, *, option='off', seed=64001, parameters=None):
+def create(static_map, *, option='off', seed=64001, parameters=None, profile='off', metrics=None):
+    from harness.map_amcl_profiles import parameters_for
+    configured = parameters_for(profile)
+    if profile != 'off' and parameters is not None:
+        raise ValueError('PROFILE_AND_PARAMETERS_ARE_EXCLUSIVE')
     if option not in OPTIONS:
         raise ValueError('UNKNOWN_MAP_AMCL_OPTION')
     if option == 'off':
         return None  # do not even inspect the map on the legacy path
-    return AMCL(static_map, option=option, seed=seed, parameters=parameters or Parameters())
+    pf = AMCL(static_map, option=option, seed=seed, parameters=parameters or configured)
+    pf.metrics = metrics
+    return pf
 
 
 def sample_limit(bins, p):
@@ -104,6 +118,38 @@ class AMCL(StaticRGBLocalizer):
         self.last_t = None
         self.w_slow = self.w_fast = 0.
         self.updates = self.resamples = 0
+        self.metrics = None
+
+    def timed(self, name):
+        return self.metrics.measure(name) if self.metrics is not None else nullcontext()
+
+    def measurement_due(self, delta, servo):
+        """Peek before expensive RGB extraction; do not consume motion/view state.
+
+        ROS AMCL tests axis displacement from the last accepted update, not
+        elapsed time or the most recent command. A new commanded camera view is
+        the existing RGB adaptation; it is consumed only by a usable update.
+        """
+        delta = np.asarray(delta, float)
+        if delta.shape != (3,) or not np.isfinite(delta).all():
+            raise ValueError('CAUSAL_FINITE_OWN_PACKET_REQUIRED')
+        odom = compose(self.odom, delta)
+        pending = between(self.anchor, odom)
+        changed = (np.any(abs((odom-self.anchor)[:2]) > self.parameters.update_min_d) or
+                   abs(pending[2]) > self.parameters.update_min_a)
+        view = tuple(int(servo[k]) for k in (3, 4, 5, 6))
+        return bool(not self.updates or changed or view not in self.seen)
+
+    def _measurement_score(self, points, features):
+        p = self.parameters
+        if len(points) > p.max_beams:
+            points = points[np.linspace(0, len(points)-1, p.max_beams, dtype=int)]
+        if len(features) > p.max_landmarks:
+            features = [features[i] for i in np.linspace(0, len(features)-1, p.max_landmarks, dtype=int)]
+        score = field.likelihood(self.field, self.px, points)
+        if features:
+            score *= landmark_likelihood(self.landmark_map, self.px, features)
+        return score
 
     def _predict(self, delta):
         distance = math.hypot(delta[0], delta[1])
@@ -181,12 +227,10 @@ class AMCL(StaticRGBLocalizer):
                       (not self.updates or changed or view not in self.seen))
         audit = None
         if update:
-            self._predict(pending)
-            if len(points) > field.PARAMS['max_beams']:
-                points = points[np.linspace(0, len(points)-1, field.PARAMS['max_beams'], dtype=int)]
-            score = field.likelihood(self.field, self.px, points)
-            if usable_features:
-                score *= landmark_likelihood(self.landmark_map, self.px, usable_features)
+            with self.timed('motion_model'):
+                self._predict(pending)
+            with self.timed('measurement_model'):
+                score = self._measurement_score(points, usable_features)
             if not np.isfinite(score).all() or np.any(score <= 0):
                 raise ValueError('FINITE_POSITIVE_SENSOR_SCORE_REQUIRED')
             prior = self._weights()
@@ -198,8 +242,10 @@ class AMCL(StaticRGBLocalizer):
             self.logw = np.log(np.maximum(prior, 1e-300)) + np.log(score)
             audit = dict(w_avg=avg, w_slow=self.w_slow, w_fast=self.w_fast,
                          injection_probability=probability, samples_before=self.n)
-            # Nav2 default resample_interval=1; no legacy ESS-only gate.
-            audit.update(self._resample(probability))
+            # Count accepted sensor updates, never frames or elapsed time.
+            if (self.updates+1) % p.resample_interval == 0:
+                with self.timed('resample'):
+                    audit.update(self._resample(probability))
             if changed:
                 self.seen.clear()
             self.seen.add(view)
