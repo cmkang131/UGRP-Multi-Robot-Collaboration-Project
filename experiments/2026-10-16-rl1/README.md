@@ -281,7 +281,7 @@ GT는 별도 owner process의 채점·훈련 lane에만 있다. 평가 process�
   이는 초기 청크/첫 동작을 각 tier에 담는 계산량 하한이고 새로운 파지 수용 상수가 아니다.
 - prefix에서 끝나지 않은 과제는 cap_end이며 실패0으로 확정하지 않는다. SIGNAL/NO_SIGNAL은
   **같은 prefix에서 관측한** 안정 들기·관문 변화에 한정한다. 전체 과제 성공 여부는 별도 미측정이다.
-- GPU vector 진단은 CPU 독립 실행의30 SIM초/6.0 지연 관문을 명시적 override 사유와 함께 기록한다.
+- 8틱 정확성 probe는 정식30 SIM초 속도 관문이 아니다. 이 짧은 probe부터 wall/SIM 중앙값>6이면 새 학습을 내지 않고 BLOCKED로 기록한다. 속도 관문 override는 제공하지 않는다.
   per-world wall/SIM과 aggregate SIM/s를 둘 다 남기며 GPU1h 한도·예산 정지는 우회하지 않는다.
 - 새 경로는 공통 manager의 `rl-act-signal`로 등록한다. 모든 실행은 커밋·push한 source,
   exact-XML C312 geometry/damping, 실제 library 버전, 모델·설정·시작 manifest 해시를 기록한다.

@@ -34,7 +34,6 @@ def main():
         p.add_argument('--'+name,type=Path,required=True)
     p.add_argument('--seal',type=Path)
     p.add_argument('--residual',type=Path)
-    p.add_argument('--speed-gate-override',help='Explicit recorded reason for GPU-vector prefix instead of CPU30SIM latency gate')
     a=p.parse_args()
     from scripts.simalt_host import gcp2_identity
     host=gcp2_identity()
@@ -72,7 +71,6 @@ def main():
         actor_input='own RGB+issued history+instruction+own chunk/done memory',
         physics_backend='mjwarp',scene='ACT15 frozen6f S1 cyan_1 floor_light_v1; no scene-v5 pooling',
         budget=str(a.budget),gpu_deadline_epoch_s=receipt['deadline_epoch_s'])
-    report['speed_gate_override']=a.speed_gate_override
     write(a.out/'RUN_META.json',dict(**{'class':'dev'},pr=530,branch='claude/rl-act',sha=sha,batch='rl1b-'+a.mode))
     public=(a.out/'actor-inputs.jsonl').open('x');losses=(a.out/'learning.jsonl').open('x')
     phase_started=time.monotonic();learner=None
@@ -108,8 +106,9 @@ def main():
             if a.mode=='probe':
                 report['wall_per_sim_median']=float(np.median(latencies)/.1)
                 report['aggregate_sim_s_per_wall_s']=n*.1*len(latencies)/sum(latencies)
-                if report['wall_per_sim_median']>6. and not a.speed_gate_override:
-                    raise RuntimeError('SPEED_GATE_FAIL: explicit GPU-vector diagnostic override required')
+                report['formal_30sim_speed_gate']='not measured by eight-tick correctness probe'
+                if report['wall_per_sim_median']>6.:
+                    raise RuntimeError('PRELIMINARY_SPEED_BLOCK: eight-tick median exceeds6; do not submit learning')
                 # Resource allocation only. Seal a SIM-tick prefix BEFORE any fit
                 # or fresh evaluation. CPU-style wall caps never steer actions.
                 remaining=receipt['deadline_epoch_s']-time.time()-40.
