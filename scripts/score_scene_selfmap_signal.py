@@ -24,7 +24,17 @@ def score(root, output):
         pwm = FOLDED if pose_pwm_mode(r['pose']) == 'FOLDED' else {**HIGH, 1: 1500}
         stem = r['case']+'--'+r['material']+'--'+r['quality']
         after = cv2.imread(str(root/(stem+'--next.png')))
-        origin, rotation = transform(pwm)
+        try:
+            origin, rotation = transform(pwm)
+        except ValueError as exc:
+            # Preserve the existing loaded/unknown-load calibration guard.
+            # A static HIGH fixture must not silently become an unloaded FK.
+            for enc in ('png', 'jpeg90'):
+                rows.append({'case': r['case'], 'pose': r['pose'], 'material': r['material'], 'quality': r['quality'],
+                    'encoding': enc, 'wall_contact_columns': None, 'linked_wall_segments': None,
+                    'LK_status': 'UNQUALIFIED_CAMERA:'+str(exc), 'LK_tracks': None,
+                    'LK_homography_inliers': None, 'LK_rigid_inliers': None})
+            continue
         cm = mp.ColumnModel(tuple(sorted(pwm.items())), 0., mp.column_positions(96, 2), camera_transform=(origin, rotation))
         params = dict(floor_patch_max_m=.81, run_step_window=3, top_edge_px=4)
         for enc in ('png', 'jpeg90'):
