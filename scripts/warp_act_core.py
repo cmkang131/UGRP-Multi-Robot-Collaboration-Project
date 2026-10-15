@@ -133,23 +133,3 @@ def masked_restore(current, initial, mask):
             raise ValueError('integration reset layout mismatch: '+name)
         restored=value.copy();restored[selected]=start[selected];out[name]=restored
     return out
-
-
-def sleep_scene_xml(xml, active_robot):
-    """Opt-in native sleeping scene; geometry/materials/contact values untouched."""
-    import xml.etree.ElementTree as ET
-    root=ET.fromstring(xml)
-    option=root.find('option')
-    if option is None:raise ValueError('explicit source option required')
-    flag=option.find('flag')
-    if flag is None:flag=ET.SubElement(option,'flag')
-    flag.set('sleep','enable')
-    active_found=False
-    for body in root.findall('worldbody/body'):
-        free=body.find('freejoint') is not None or any(j.get('type')=='free' for j in body.findall('joint'))
-        if not free:continue
-        active=body.get('name')==active_robot+'__robot'
-        active_found|=active
-        body.set('sleep','never' if active else 'allowed')
-    if not active_found:raise ValueError('active robot root missing')
-    return ET.tostring(root,encoding='unicode')

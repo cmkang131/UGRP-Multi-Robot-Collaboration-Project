@@ -155,14 +155,3 @@ def test_cached_perception_world_has_independent_buffers_and_commands(monkeypatc
     assert b.controllers['r1'].motor_command[0]==controller.motor_command[0]==0.
     assert b.controllers['r1'].servo_command_pulses[1]==controller.servo_command_pulses[1]==1500
     with pytest.raises(RuntimeError,match='C physics forbidden'):a._physics_step_for(None)
-
-
-def test_native_sleep_scene_preserves_geometry_and_active_robot_awake():
-    import xml.etree.ElementTree as ET
-    from scripts.warp_act_core import sleep_scene_xml
-    xml='<mujoco><option/><worldbody><body name="r1__robot"><freejoint/><geom mass="1" friction="1 2 3"/></body><body name="r2__robot"><freejoint/></body><body name="box"><joint type="free"/></body><body name="wall"><geom size="1 2 3"/></body></worldbody></mujoco>'
-    a,b=ET.fromstring(xml),ET.fromstring(sleep_scene_xml(xml,'r1'))
-    assert b.find('option/flag').get('sleep')=='enable'
-    assert [(x.get('name'),x.get('sleep')) for x in b.findall('worldbody/body')]==[
-        ('r1__robot','never'),('r2__robot','allowed'),('box','allowed'),('wall',None)]
-    assert [x.attrib for x in a.iter('geom')]==[x.attrib for x in b.iter('geom')]

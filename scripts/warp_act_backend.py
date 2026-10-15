@@ -12,7 +12,7 @@ import hashlib
 import time
 from pathlib import Path
 import numpy as np
-from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore, sleep_scene_xml
+from warp_act_core import SERVOS, control_tape, model_key, varying_model_arrays, masked_restore
 
 
 class PerceptionWorld:
@@ -57,7 +57,7 @@ class PerceptionWorld:
 class Transport:
     native_render = False
 
-    def __init__(self, host, source_sha, backend, out, *, sleep_compact_v1=False):
+    def __init__(self, host, source_sha, backend, out):
         self.host, self.source_sha, self.backend, self.out = host, source_sha, backend, Path(out)
         self.seconds = defaultdict(float)
         self.samples = []
@@ -65,25 +65,8 @@ class Transport:
         self.contact_forces = None
         self.prototypes={}
         self.prototype_hits=0
-        self.sleep_compact_v1=sleep_compact_v1
 
     def make_world(self, plan, scene, factory, bind_camera, **kwargs):
-        if self.sleep_compact_v1:
-            original_transform,original_setup=scene.robot_transform,scene.setup
-            def transform(xml,**settings):
-                return sleep_scene_xml(original_transform(xml,**settings),plan['robot_id'])
-            def setup(world):
-                # Native documented -0.0 wake sentinel during setup placement.
-                world.data.qfrc_applied[:]=-0.0
-                original_setup(world)
-                world.data.qfrc_applied[:]=0.0
-                # Reuse Scene.setup's existing .4s folded-settle duration.
-                # Extra quiet setup is not a success threshold or policy input.
-                for _ in range(round(.4/world.model.opt.timestep)):
-                    world._physics_step_for(world.robot(plan['robot_id']))
-            scene.robot_transform,scene.setup=transform,setup
-            scene.manifest['mjwarp_sleep_compact_v1']={'active_robot':'never sleeps','other_free_bodies':'native allowed; collision wakes normally',
-                'extra_quiet_setup_s':.4,'mass_friction_dt_unchanged':True}
         if self.native_render:
             world=factory(scene,**kwargs)
             for controller in world.controllers.values():bind_camera(controller)
@@ -227,16 +210,9 @@ class WarpTransport(Transport):
         self.source_sleep=np.stack([c['world'].data.tree_asleep.copy() for c in contexts])
         self.dof_tree=np.asarray(m.body_treeid[m.dof_bodyid])
         native_active=np.sum(self.source_sleep[:,self.dof_tree]<0,axis=1)
-        active_bounds=[]
-        for c in contexts:
-            robot_tree=int(m.body_treeid[m.body('r1__robot').id])
-            cargo_tree=int(m.body_treeid[m.geom_bodyid[c['gids'][0]]])
-            active_bounds.append(int(np.count_nonzero(np.isin(self.dof_tree,[robot_tree,cargo_tree]))))
-        bound=max(int(native_active.max()),max(active_bounds))
-        self.nvmax=min(int(m.nv),1 << (max(1,bound)-1).bit_length()) if self.sleep_compact_v1 else None
-        self.sleep_audit={'enabled':self.sleep_compact_v1,'native_initial_active_dofs':native_active.tolist(),
-            'active_robot_plus_target_dofs':active_bounds,'nvmax':self.nvmax,
-            'capacity_basis':'next power of2 of actual native active count and static robot+target DOFs; overflow rejects unexpected activation'}
+        self.nvmax=None  # full workspace; rejected sleep candidate is not exposed.
+        self.sleep_audit={'enabled':False,'native_initial_active_dofs':native_active.tolist(),
+            'nvmax':None,'reason':'source sleep profile retained; explicit-policy compact candidate rejected by pinned MJWarp'}
         d.tree_asleep[:]=self.source_sleep[0]
         with unused_efm(m, d):
             self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax,nvmax=self.nvmax)

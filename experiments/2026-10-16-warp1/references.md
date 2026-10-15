@@ -19,3 +19,6 @@ Native 초기 상태 복사는 [MuJoCo 변경 기록의 mj_copyData/copy.copy �
 수치 성능 후보: [공식 Options 설명](https://mujoco.readthedocs.io/en/latest/mjwarp/index.html#options)과 설치된 고정 io.py433–437은 float64용 tolerance를 GPU float32에서 최소1e-6으로 올려 불필요한 solver 반복을 막는다고 설명한다. 이전 strict-C 호환 경로는 이를1e-8로 되돌렸다. 기본 off `float32_solver_default_v1`는 변환기가 실제 정한 값을 보존하며, 새 task 성공 허용값을 넣지 않는다. A/B·solver_niter를 따로 기록하고 이 후보를1e-8 결과와 합산하지 않는다.
 
 기본 off native sleeping/compact 후보는 [공식 compact solver](https://mujoco.readthedocs.io/en/latest/mjwarp/index.html#compact-solver)의 Newton+sleep+nvmax 경로를 사용한다. 모델 전체246 DoF를 줄이거나 다른 로봇의 형상/질량을 제거하지 않는다. 실제 command를 받는 r1은 never sleep, 나머지 free body는 native allowed이며 충돌로 정상 wake한다. nvmax는 실제 C import active DOF 수와 정적 r1+target DOF 수의 최댓값을 다음2거듭제곱으로 올려 정하고, 예기치 않은 wake로 용량을 넘으면 실패 처리한다. sleep tolerance는 native 기본값을 그대로 두며, 원래 scene.setup과 같은0.4SIM초의 quiet setup을 추가해 sleep 상태를 측정한다. 이 물리 실행 프로필은 기존 off·C 결과와 합산하지 않는다. task Score를 바꾸지 않는다.
+
+
+실행 결과로 범위를 정정한다. `sleep-prefix-n1`(`49b436ce`)은 pinned types.py320–332가 명시적 `NEVER/ALLOWED/INIT`를 미지원하므로 `put_model`에서 HOST_ERROR였다. 최신 문서의 sleep 지원만으로 명시 정책 지원을 가정한 후보는 채택하지 않았고 최종 CLI에서 제거했다. 다른 자동 sleep 정책의 지원까지 부정하는 결과는 아니다. 고정 환경을 갈아끼우거나 정책 enum을 근사하지 않았다. 서로 다른 실제 source seed의 모델 결합도 `dof_length`가 world-batch 필드가 아니어서 거부했다. 질량·기하·파생 모델 필드를 임의 공유해 통과시키지 않는다.
