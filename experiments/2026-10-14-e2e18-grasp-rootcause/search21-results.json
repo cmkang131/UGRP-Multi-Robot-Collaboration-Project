@@ -1,0 +1,2627 @@
+{
+  "schema": "ugrp.grasp_act.search21.result_summary.v1",
+  "status": "NOT_READY_MAX_THREE_ROUNDS",
+  "source_sha": "38266bdee986399056baf219f3b7be22a782c47d",
+  "n": 3,
+  "N": 6,
+  "scope": "GCP visible-only teacher diagnostic; not gate40, ACT data/student success, transport or physical hardware",
+  "default_mode": "off",
+  "all_input_audits_enabled": true,
+  "invisible_measurements": 0,
+  "held_world_reads": 0,
+  "rounds": [
+    {
+      "run": "grasp-search21-r1-short6-gcp-98a29aef",
+      "source_sha": "98a29aef560c3de008a271d9ed2aa92b00c6c6d1",
+      "exit": "0",
+      "n": 2,
+      "N": 6,
+      "host_errors": 0,
+      "interrupted": 3,
+      "input_invisible_total": 0,
+      "input_held_total": 0,
+      "all_audits_enabled": true,
+      "audits_missing_N": 0,
+      "median_wall_per_sim": 2.969872173785999,
+      "max_wall_per_sim": 4.548931740539751,
+      "remote_full_manifest_verified": true,
+      "local_manifest_verified_N": 232,
+      "decoded_manifest_verified_N": 17,
+      "selected_frames_N": 105,
+      "frames_directly_viewed": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search21-r1-short6-gcp-98a29aef",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef",
+      "manifest_sha256": "8e356f16b95a704088250ce79c9a2d2d3c578558b5db5bd0a303021935eacd0b",
+      "summary_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/grasp-search21-r1-short6-gcp-98a29aef-summary.json",
+      "summary_sha256": "fc427d9ab61ec7ac70e3cb972764c4f42966a483627f56ecd2cc9a1a91d877db",
+      "directly_viewed_frames": [
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000000.jpg",
+          "sha256": "54b2f2f344571f777040a9c46c66a0d41116eb66125617b49b991fba9b2e9667"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+          "sha256": "8d48a4c74d366e89a5496f8e9ada4902946e7afdbe5f9a63ae3ff920b596e89d"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+          "sha256": "5afde6bb1d34bc61800d0419b14c00ee739a128fc89e32a7adf57d233029c435"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 20,
+          "sim_s_approx": 2.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000020.jpg",
+          "sha256": "4063144d89c25d6fb6f8847e469ab1baab50e0f40410e409278e3b386fee1c25"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 20,
+          "sim_s_approx": 2.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000020.jpg",
+          "sha256": "39db9386e817f74ee6c8120e65ea5c7a2a4a4102acd25cf50cb0d6e0a80e7ceb"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 20,
+          "sim_s_approx": 2.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000020.jpg",
+          "sha256": "87c712fdd338cd92de2bd0acca7885a98bc0b34be3c8c7a3fb6b1c6412eef808"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000030.jpg",
+          "sha256": "a4d19ba0fcfe4b8f905ba663b6f6abbb6160abed0c97835c46e559d12966032d"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000030.jpg",
+          "sha256": "f077b0b1245832c17550deeaa772768aaf59e09ccd97a7c25e24f32478debc87"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000030.jpg",
+          "sha256": "dccd447a9c24660bb9bec108ed4da3dc2189c470766094bff2e6919a72b417f2"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000050.jpg",
+          "sha256": "36b78d40831c9b849683bebd0256f7b7d82aa15f20176e726828802b20e96369"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000050.jpg",
+          "sha256": "66cfa6ccdffdb758446dfcc3dcc3f5882219d9758466a1009811a4c7eab234fb"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000050.jpg",
+          "sha256": "5ecb5640c0e9af7776b5f5ea2f9ad855173f3c51f35cbbaad1703f3e7feb86c3"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000060.jpg",
+          "sha256": "bc68adcc8e263eca4697fb3afc441406908421e8f7dd05178835eeda4d6f79b2"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000060.jpg",
+          "sha256": "487268896a389ad590d5bf7b34f1783258ed88befd031b815f90f6366d52f4dc"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000060.jpg",
+          "sha256": "dfdd231323e88a008d7ba796f5a63ae8cdf3c2c0064b1e5513ffa7cc2de8feda"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 80,
+          "sim_s_approx": 8.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000080.jpg",
+          "sha256": "47983fd64ca5b301053db45f0ed43db7b4ebdcde5132c0dc23b6261887366256"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 80,
+          "sim_s_approx": 8.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000080.jpg",
+          "sha256": "55ec1b0bcc0a56415dbff8b57499aec17ebf663e8651783036c30c6e3a260972"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 80,
+          "sim_s_approx": 8.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000080.jpg",
+          "sha256": "6cc256ae8fc82c5cf95585c940dca6e4f4189b8075bca0d8cfb8528c9bafbd35"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-overview",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-001/raw/eval-overview/000000.jpg",
+          "sha256": "726a3e187ab56900c50ef2ee645fdff5ac8e159f8a1d2158ce5deaedde606492"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r1",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r1/000000.jpg",
+          "sha256": "d0de940faf0dbe86cc719964cfd136f6a7335c72ffb493c27aa95cb1e21b8e8d"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r2",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r2/000000.jpg",
+          "sha256": "dd8fc9d290f87027d30a4068cea4365cac0701d2f3bd6ce5fb9cddaaa685eaf4"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-overview",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-001/raw/eval-overview/000030.jpg",
+          "sha256": "8be266437558df85de3cda11e55c9286256ac5d9c41ecb98c04b2fd13ae7eb76"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r1",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r1/000030.jpg",
+          "sha256": "61300288cbb65bde8ac8406018a9185a1c6781935614999947d8e80223d82b52"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r2",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r2/000030.jpg",
+          "sha256": "53922af95ce7a8bde904a67719bf55ad1623318d1ebd93a91554b03047f9e818"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-overview",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-001/raw/eval-overview/000060.jpg",
+          "sha256": "60cd5340c1318131d3ec28096cacbe15be3c1ab407aa7225f65b2053b2072157"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r1",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r1/000060.jpg",
+          "sha256": "7e93cec1456662a22bb21071587ec0b196551a1e14321ec316c1e629f2184af2"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r2",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r2/000060.jpg",
+          "sha256": "17348396f82e9282ce1de56d1dc40e03e91fbe2c699172e71368ee127ef9ce9d"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-overview",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-001/raw/eval-overview/000100.jpg",
+          "sha256": "a7c9e71610eb6b4692d8f8a0aadebfc9b01f86d0d142b0200aa6070028f71471"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r1",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r1/000100.jpg",
+          "sha256": "d84a1ff989132b32edd1457904045f3bfba5febc3631338fd7f9871a4ef982e9"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r2",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r2/000100.jpg",
+          "sha256": "a3e1ee63376472a6bad1e04a587ecca7b71439acf3da98d5f303b5b0fd0c7405"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-overview",
+          "frame_tick": 130,
+          "sim_s_approx": 13.0,
+          "path": "diagnostic/episode-001/raw/eval-overview/000130.jpg",
+          "sha256": "4358ac36b93e0b98c04a1be7737cc6e5894fbe7a2018bc31b6e813a883d554d4"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r1",
+          "frame_tick": 130,
+          "sim_s_approx": 13.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r1/000130.jpg",
+          "sha256": "5e1ea658347924edc37e21eab04defc683fab1c6e76dc3998b3766a54f771f48"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r2",
+          "frame_tick": 130,
+          "sim_s_approx": 13.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r2/000130.jpg",
+          "sha256": "518292c8b7816bdaf527432d35c278394a2845d698230ef31c82b7cd092473ba"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-overview",
+          "frame_tick": 160,
+          "sim_s_approx": 16.0,
+          "path": "diagnostic/episode-001/raw/eval-overview/000160.jpg",
+          "sha256": "da36df01615d295e2d27f345f330ff17a59dc9339df07b7323409f8255aba167"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r1",
+          "frame_tick": 160,
+          "sim_s_approx": 16.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r1/000160.jpg",
+          "sha256": "6dc544cc1f8278ccd2c6af5e0cf6e0f51a56fa237707697d95c7d57841115ea8"
+        },
+        {
+          "episode": "episode-001",
+          "view": "eval-own/r2",
+          "frame_tick": 160,
+          "sim_s_approx": 16.0,
+          "path": "diagnostic/episode-001/raw/eval-own/r2/000160.jpg",
+          "sha256": "293c21fc6051133855aa9f60aa293553b86055749f4f2fcd1324f8c10eba2e66"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000000.jpg",
+          "sha256": "97c1278047fbba180e7041c68b38c307bf72cc6988b9f6c5a8431ea2edb54f0e"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000000.jpg",
+          "sha256": "7e38e2278d73ad5ba953a5d29b9b729efd80c0b83708400eff460d3909d5f411"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000000.jpg",
+          "sha256": "76d10a5b8b7d0bebff7e9db8d35d11401dd81402d72182aa4aa85d098aaab75b"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000050.jpg",
+          "sha256": "816b386668b03ebbf4c0d34b5711587c14c882571a5a4717f01d362824f20ddf"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000050.jpg",
+          "sha256": "eb1592b3ed6154ab38a440dd5def65c1aa9b9385201f59f4165fffd4a22929c3"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000050.jpg",
+          "sha256": "447befcf33242954217914679b76552fd142aff27d2acd65a9a49c84fe75fbaf"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 90,
+          "sim_s_approx": 9.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000090.jpg",
+          "sha256": "5b17a85e922132efc5acc47764418131707ac81f60458801171b8ecd69fbbf61"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 90,
+          "sim_s_approx": 9.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000090.jpg",
+          "sha256": "6ce60b91cf2bbf828cc6458fb3b9c1c36ad4ea522e9922b8766f4a01af5e70e7"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 90,
+          "sim_s_approx": 9.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000090.jpg",
+          "sha256": "c96e9560ab6c8f964fbfdc34b050bde047fbc981ebf25e6b3aa74e7c256aea51"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 140,
+          "sim_s_approx": 14.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000140.jpg",
+          "sha256": "f99d6e7b0decc0ab049e0ea425ea1017e880833f948bea25d94b92b07e7a1cb5"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 140,
+          "sim_s_approx": 14.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000140.jpg",
+          "sha256": "4481b4d113d0881840e69b38a4aada1506608496aca401ac266cd3ba6880b3a3"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 140,
+          "sim_s_approx": 14.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000140.jpg",
+          "sha256": "3377166a956e987fd3b2c899df8c0ba79f26de5a12d384139b0f037b5c201484"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 180,
+          "sim_s_approx": 18.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000180.jpg",
+          "sha256": "86e9ae3db95c1f1853ed7c8bbf261605afa8f3228f49a1545d6b1a43f4ca167b"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 180,
+          "sim_s_approx": 18.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000180.jpg",
+          "sha256": "ac0f1732ec7cf1788fc843e3ed79243bf3d1dcd43253f938e5b8bc79ecdab915"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 180,
+          "sim_s_approx": 18.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000180.jpg",
+          "sha256": "a22ade39166a4200e665da18d3901ddffdd98568c39889f8099f060a3ee06032"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 230,
+          "sim_s_approx": 23.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000230.jpg",
+          "sha256": "5f95cccde5b86ac633d04d8b61edb422005b47e3233fd5aaea9362e38c3ffc7f"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 230,
+          "sim_s_approx": 23.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000230.jpg",
+          "sha256": "f3abddb0264f5a871ee36c172f4b52624fceb3f5f2d9f0cdc2e7ef72716312b4"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 230,
+          "sim_s_approx": 23.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000230.jpg",
+          "sha256": "24751ed572e7a4913119c41879b8e02596841aa6eec65e0aec55a992e609f54f"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000000.jpg",
+          "sha256": "ac281279b11b906eecb3856bf222a112ca2a60f4e616120350ddb3c1345ed2db"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000000.jpg",
+          "sha256": "d43a40126574d6fbfac8759130d4e633e86f2a337565a972257088e2709598c1"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000000.jpg",
+          "sha256": "2f7e9503999abfb2715e5d8c4c15ee656cacbc7f262cda06a71e9650d8c5f07e"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 10,
+          "sim_s_approx": 1.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000010.jpg",
+          "sha256": "f1dd928c1299ba4c4d887beb65c0b6d2db0c8f524268766f61d1ea46189146e9"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 10,
+          "sim_s_approx": 1.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000010.jpg",
+          "sha256": "412226064dd1761c21088bbf8572d0218bb8bcf73c0041564adcd6fe272985fb"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 10,
+          "sim_s_approx": 1.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000010.jpg",
+          "sha256": "edcc472152abe4e655f471ee18890faceb3f78abce403c3a6e384700779ba2dd"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 20,
+          "sim_s_approx": 2.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000020.jpg",
+          "sha256": "d1444b5d6262f099d049d5071ffc1e9ce83fffe0f26323edc873b0d9b102c162"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 20,
+          "sim_s_approx": 2.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000020.jpg",
+          "sha256": "940aac5843cfdd78c347a4bfc6635422b2684a8c4deff74ffc62c61a12a35dee"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 20,
+          "sim_s_approx": 2.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000020.jpg",
+          "sha256": "04c3ad1cebb5e119695ac6a21fd1a367ddd9435a5554cb954c204c4912f26aa4"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000030.jpg",
+          "sha256": "0963dfd47b6f81a1446749f973d22ffc7ecc24b64069dc2d1445d09942a981c6"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000030.jpg",
+          "sha256": "9f43f4a82af6c3ed8dc506bc6d99f30e9153fb01ccd3500e8a917b78cbbb65d2"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000030.jpg",
+          "sha256": "bfa4e9e38fa68aa7f00d8849e1dac36f6ed8d5a40dedc206d3f1be0ccc09a8d9"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 40,
+          "sim_s_approx": 4.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000040.jpg",
+          "sha256": "9e6d55772d1810cb01cf913ca0915a740b067c3ea172f5448f799633362bed64"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 40,
+          "sim_s_approx": 4.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000040.jpg",
+          "sha256": "4f2c4ed922597090975ad38be6aa0825896d3e28e1a6e5ffac93be07be626c8f"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 40,
+          "sim_s_approx": 4.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000040.jpg",
+          "sha256": "40b52b49ee9463aee560bd4c33d547660b75e9aa0fc11c4feb2be46c35723931"
+        }
+      ],
+      "directly_viewed_frame_N": 69,
+      "episodes": [
+        {
+          "episode": "episode-000",
+          "seed": 8311709,
+          "status": "interrupted",
+          "physical_success": false,
+          "sim_s": null,
+          "wall_s": 93.83088955999847,
+          "wall_per_sim": null,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 470,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "98a29aef560c3de008a271d9ed2aa92b00c6c6d1",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": null,
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-000/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-000/raw/result.json",
+          "result_sha256": "da7b779f7d62b8d1faab87d95a38790a03e76fbd26b118a213b27e2beb15172c",
+          "result_decoded_sha256": "da7b779f7d62b8d1faab87d95a38790a03e76fbd26b118a213b27e2beb15172c",
+          "cargo_scene": "off",
+          "outcomes": {},
+          "raw_manifest_sha256": "784ce55d4688ca526ce1e22523e5a7ddc6ccb5533bc7b6e54e5b8e9f770ff716",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "ea8da40030e1f3364f4f32a823b7e39e68d0d333e4e37f3acd3f4e84e39c635f",
+              "bytes": 169601,
+              "decoded_sha256": "f396a274e22ea498153503919917725c75c8bb949ddbdce7acbef5173b820486"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "f593e5f310fdec5e427433eabd4c60f7142291e3b92e7f9c2ee8730fa0e144f7",
+              "bytes": 5611,
+              "decoded_sha256": "2f9d0744d93b2385b97ce10c40404cfab796724c60362898244bda5a843b7d1a"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "41e3d56458db333bc0116acd389db4ca764bff5d342c79c102a28b5f86faca71",
+              "bytes": 4109,
+              "decoded_sha256": "9944ccc3fe172967ca63d86e1d76cb87432f5662d4368cf16fb2de5bf20b577a"
+            }
+          }
+        },
+        {
+          "episode": "episode-001",
+          "seed": 315709,
+          "status": "complete",
+          "physical_success": false,
+          "sim_s": 16.699999999997136,
+          "wall_s": 75.9671600670008,
+          "wall_per_sim": 4.548931740539751,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1181,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "98a29aef560c3de008a271d9ed2aa92b00c6c6d1",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-001/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-001/raw/result.json.zst",
+          "result_sha256": "85d3a15ba6dcd0903acbbf2d5fcead0386a7d9bfe68aaf519b40ecfc369754f2",
+          "result_decoded_sha256": "328dd04f6f350de8436b50e29f4d189067dfa9302f1cee3a0d6cd6c016efddcf",
+          "cargo_scene": "off",
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "raw_manifest_sha256": "61f09bf08af16661f568919337d5cadc15a2619704137a9e4927c67883ca0a60",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "853a0180e0bdf5962bfe92abf92e4c54083d524715ac6c6e8a0aec196f5439d6",
+              "bytes": 358614,
+              "decoded_sha256": "7e2e028696627ca5cea45c01ef34156ceecfaa79647628a37ef7f0e9573e0c5c"
+            },
+            "result.json.zst": {
+              "sha256": "85d3a15ba6dcd0903acbbf2d5fcead0386a7d9bfe68aaf519b40ecfc369754f2",
+              "bytes": 131121,
+              "decoded_sha256": "328dd04f6f350de8436b50e29f4d189067dfa9302f1cee3a0d6cd6c016efddcf"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "9c39bc1ea1a58a243de17e0d4522cca2f91811ada09bf2c3e71c7722b8c0b319",
+              "bytes": 11927,
+              "decoded_sha256": "4d03e6c2ff7ca1d96687773e19f8b00624887a3dabe46aa821961ec9cb5d6f0e"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "f77325198a0294f819dfee8c7a2805f074c5e9595d206050d92e667a146d5021",
+              "bytes": 8014,
+              "decoded_sha256": "9362fa2fbfe73ed4a3885bf84dcff22cdeb264b4f786dbb41480b1434da5b110"
+            }
+          }
+        },
+        {
+          "episode": "episode-002",
+          "seed": 8311709,
+          "status": "interrupted",
+          "physical_success": false,
+          "sim_s": null,
+          "wall_s": 93.82519490100094,
+          "wall_per_sim": null,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1164,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "98a29aef560c3de008a271d9ed2aa92b00c6c6d1",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": null,
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-002/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-002/raw/result.json",
+          "result_sha256": "8d973d9b64ed44dbc58ee2f6e4a71e8489c2d9d037e7bff142930504de8eb52e",
+          "result_decoded_sha256": "8d973d9b64ed44dbc58ee2f6e4a71e8489c2d9d037e7bff142930504de8eb52e",
+          "cargo_scene": "cargo_v6",
+          "outcomes": {},
+          "raw_manifest_sha256": "3e33db22e4570223779496ef1cd79713a38cc730f40b6888df81827955dcab65",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "7d93df697dd81acbeb9fc9677a27143e12a10588e737d8fc80da0f5f66f6ddfb",
+              "bytes": 496776,
+              "decoded_sha256": "2df2242a0e00f1f997fe0c2adeab781dabc446beb8d074bfad588af82cc15905"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "4115fb3817524a2cb871074899ecd32b8186702bb64beecfe23d05ea23c3d662",
+              "bytes": 21606,
+              "decoded_sha256": "496f10da74fdd85b8a7e84e2119524f5f90a1a9adbdebda95404558eab273cf6"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "d81f1ac45b35fb41318a26cec2d33dba28077d10ae44d39bc2f80bac90b4bbcf",
+              "bytes": 10921,
+              "decoded_sha256": "35964d5a305221eafdab32cc2f98f1b750bdb540691692019376ea390217edde"
+            }
+          }
+        },
+        {
+          "episode": "episode-003",
+          "seed": 315709,
+          "status": "interrupted",
+          "physical_success": false,
+          "sim_s": null,
+          "wall_s": 93.82254995399853,
+          "wall_per_sim": null,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 206,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "98a29aef560c3de008a271d9ed2aa92b00c6c6d1",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": null,
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-003/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-003/raw/result.json",
+          "result_sha256": "520be93d92350b9742f0e40abbf2e0b1a77896641524bbcb908d444020de3f8b",
+          "result_decoded_sha256": "520be93d92350b9742f0e40abbf2e0b1a77896641524bbcb908d444020de3f8b",
+          "cargo_scene": "cargo_v6",
+          "outcomes": {},
+          "raw_manifest_sha256": "fb9ee2ae6f10392176625c9207bbc3b19cb0b4e308da90e31b3adecc71d3effd",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "8e105c51fed1aeecdaf8847c1316312fcbb843828f2a8659061da9741402c357",
+              "bytes": 98271,
+              "decoded_sha256": "6a3084b14c4381430a699ed98532915efc5aa69f09708c5e73016d20db3707df"
+            }
+          }
+        },
+        {
+          "episode": "episode-004",
+          "seed": 8312300,
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 24.800000000035812,
+          "wall_s": 73.65282990999913,
+          "wall_per_sim": 2.969872173785999,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 713,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "98a29aef560c3de008a271d9ed2aa92b00c6c6d1",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-004/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-004/raw/result.json",
+          "result_sha256": "1c32cf540386313b9e0c596bbe5770be0dded56f57db99c7b2a9d1269f4b49df",
+          "result_decoded_sha256": "1c32cf540386313b9e0c596bbe5770be0dded56f57db99c7b2a9d1269f4b49df",
+          "cargo_scene": "off",
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "raw_manifest_sha256": "e4b8bd63bf378303a4caa88e1da876d060734d3f34ae008adf2acce4f01f8dfc",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "8df0c23df6297c9ec5bedd32dc65ec4945ccd9f4c62dac9f274c01be31b4fb0a",
+              "bytes": 501269,
+              "decoded_sha256": "3cadfe1b12ef1d7bfb7a06ad94f52c15e4438c1dae61fd563e83b853861c9299"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "a97bbc2f5bf62b9e2da231ff3d251928fe94e125b626c15c21b60d976e434c87",
+              "bytes": 17615,
+              "decoded_sha256": "715134c32e4a89da57c9f9a7753020365a38560be6b80ae1e40cf7b71f91cf25"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "afbbfb28e6d5f8b62fea3494cf07926b79c62ea98dc2a4550e42bae95df8ff52",
+              "bytes": 11811,
+              "decoded_sha256": "e2ef40bde863beb58424973654b4f6dda5e6cc9ee1e3dac722ca77c655e5fc55"
+            }
+          }
+        },
+        {
+          "episode": "episode-005",
+          "seed": 8312301,
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 28.00000000005109,
+          "wall_s": 81.46579202000066,
+          "wall_per_sim": 2.9094925721375717,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 930,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "98a29aef560c3de008a271d9ed2aa92b00c6c6d1",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-005/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r1-short6-gcp-98a29aef/diagnostic/episode-005/raw/result.json",
+          "result_sha256": "9feb095dd7eff211c42ded1a4549ee9345ae8690f511f3f50125f39f6538f449",
+          "result_decoded_sha256": "9feb095dd7eff211c42ded1a4549ee9345ae8690f511f3f50125f39f6538f449",
+          "cargo_scene": "off",
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "raw_manifest_sha256": "d55c47c67dce3ccb818ddd1ee1642e19a73ff728e0bd1e89ff28fe90ff0e1036",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "7f4adcfc22fe2a31105efac7a4c2f3f4c14fef18c56eb104f034429baf704ca5",
+              "bytes": 558302,
+              "decoded_sha256": "b7413b497f6e2bc2e3a9f6ce750eafd8702a6ba314f4619d06e0f27f418def03"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "205fa8f28ff6b1da247d8a8f8d7dd35eac8a8ec26930f54e84a49483576840bc",
+              "bytes": 18153,
+              "decoded_sha256": "c164664263b429dc697084094b6aa3e7fdde115f665ea6f9dda8e9b64e9f8122"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "3ccf68c9c848df9fa880c2d08145e18871ce03d0df5000476f6a40bcdfeed4ff",
+              "bytes": 15304,
+              "decoded_sha256": "ae9ec809a7e22e65a876fe7406912fd88f0b95e33d8358db257f7e6cca65a806"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "run": "grasp-search21-r2-short6-gcp-d5571756",
+      "source_sha": "d55717566d669062a6cffda35a0dbcbe9dc69a6c",
+      "exit": "0",
+      "n": 3,
+      "N": 6,
+      "host_errors": 0,
+      "interrupted": 2,
+      "input_invisible_total": 0,
+      "input_held_total": 0,
+      "all_audits_enabled": true,
+      "audits_missing_N": 0,
+      "median_wall_per_sim": 3.561374169743209,
+      "max_wall_per_sim": 6.257827460410628,
+      "remote_full_manifest_verified": true,
+      "local_manifest_verified_N": 236,
+      "decoded_manifest_verified_N": 20,
+      "selected_frames_N": 108,
+      "frames_directly_viewed": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search21-r2-short6-gcp-d5571756",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756",
+      "manifest_sha256": "b894df4ea544bbf649e28e874e9fc1cb3238de1a39fbe86c605444cee1294768",
+      "summary_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/grasp-search21-r2-short6-gcp-d5571756-summary.json",
+      "summary_sha256": "5de4044bdc62b81c66141570098655daad11def7595668689ea9c93c78808928",
+      "directly_viewed_frames": [
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000000.jpg",
+          "sha256": "54b2f2f344571f777040a9c46c66a0d41116eb66125617b49b991fba9b2e9667"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+          "sha256": "8d48a4c74d366e89a5496f8e9ada4902946e7afdbe5f9a63ae3ff920b596e89d"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+          "sha256": "5afde6bb1d34bc61800d0419b14c00ee739a128fc89e32a7adf57d233029c435"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000060.jpg",
+          "sha256": "1b6264bc955d505ba6d844a1d7d6d7c6f869a59c47072d63b0f14da7923decf3"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000060.jpg",
+          "sha256": "4d0dbfcf060b16d9b869fbba79f2cf8efbf3462a824f3b8a625563c68d63288a"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000060.jpg",
+          "sha256": "dfdd231323e88a008d7ba796f5a63ae8cdf3c2c0064b1e5513ffa7cc2de8feda"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 120,
+          "sim_s_approx": 12.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000120.jpg",
+          "sha256": "08836b3fdb5ddb14256d78fb5d2f4da7b3b64873d17b990fdc3b49513e234fbf"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 120,
+          "sim_s_approx": 12.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000120.jpg",
+          "sha256": "9c4b21bffb845c4a1632be85b90dfe8fe96b08ace867a014bf62c4f1f38e5d32"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 120,
+          "sim_s_approx": 12.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000120.jpg",
+          "sha256": "f8b4b7cf0f4d27fdead1984b8203dee007484868f53a5834cb9ec3cdb8fd5907"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 190,
+          "sim_s_approx": 19.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000190.jpg",
+          "sha256": "a2db2b47386ab55fb63796d5b06ad96d6e7de9423d9cab550ad6c375f5fbcf82"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 190,
+          "sim_s_approx": 19.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000190.jpg",
+          "sha256": "8b5315a272df42bd3990d30fff12eebf75945f4c2c1f41bad0a6eb73d79c7b34"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 190,
+          "sim_s_approx": 19.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000190.jpg",
+          "sha256": "52342979a2129683826cbf6b457b7331952265ccc52ecbd98d4d5fea7d33ef8b"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 250,
+          "sim_s_approx": 25.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000250.jpg",
+          "sha256": "5885959ff0628eb63fb412ebf9c4f7675ec96a741a46149b284456d40d39a1b5"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 250,
+          "sim_s_approx": 25.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000250.jpg",
+          "sha256": "57149366c9cdcf49ebe291d3ee5854def2f2b9b0914ff43a4d6ae00fc001352c"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 250,
+          "sim_s_approx": 25.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000250.jpg",
+          "sha256": "9b3a5d029d2ce4a458b20e750dc31f0b91d16f1b6950464cd4a560cb5eef4a38"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 310,
+          "sim_s_approx": 31.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000310.jpg",
+          "sha256": "90c5be3300fff224c830d5d0dd5ce009cd070c5a65d5d51cb865657f29f8622a"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 310,
+          "sim_s_approx": 31.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000310.jpg",
+          "sha256": "61d5689bc6d63e1a3bb3454143f46708efc98d41e38a61f171fff83218b06c9b"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 310,
+          "sim_s_approx": 31.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000310.jpg",
+          "sha256": "1bd990fb70f7c00d373bde753ece1760b97f50c5cc4639b41ebbe1d0e4846a09"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000000.jpg",
+          "sha256": "97c1278047fbba180e7041c68b38c307bf72cc6988b9f6c5a8431ea2edb54f0e"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000000.jpg",
+          "sha256": "7e38e2278d73ad5ba953a5d29b9b729efd80c0b83708400eff460d3909d5f411"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000000.jpg",
+          "sha256": "76d10a5b8b7d0bebff7e9db8d35d11401dd81402d72182aa4aa85d098aaab75b"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000030.jpg",
+          "sha256": "33adf85eb49e3a924a5a0ab0b15a1f6cc0bd6c4d1e7d47d5ff7e5e1714514c90"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000030.jpg",
+          "sha256": "45bc7afb28c3d09cc1dec1bff08fa4389d934d5b1763daac96d3eb660e5d859b"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000030.jpg",
+          "sha256": "0ecb06154fa3794c08ff9f1781518f5001b90b4c416a589dca57da812d3ab1c9"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 70,
+          "sim_s_approx": 7.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000070.jpg",
+          "sha256": "3b87f3195e34bf31e0f9289233076deb2ca61e03b316fa43f6dae217268337f7"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 70,
+          "sim_s_approx": 7.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000070.jpg",
+          "sha256": "1ea2f67288e58063bae96b19cb74f756939f89fc5ff7510af644e3cc855f2ae5"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 70,
+          "sim_s_approx": 7.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000070.jpg",
+          "sha256": "9c6a1ba415e68896db9350d0976031b5f5c13dbe0f713ee8d03a86ca3f616ee0"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000100.jpg",
+          "sha256": "aed93e5e4e3331c1f2ab83a0cdde0971fad2457369be4aca1568a9df391705e9"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000100.jpg",
+          "sha256": "160de85ad32fbc0b7421dedf1611697dbaaba8b40fa69e2d0ad4053a59faf52c"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000100.jpg",
+          "sha256": "a3a7453b8fc39ab96b61032cbe205b25225bb08fb3ca8dfd372c232c2c1127bf"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 140,
+          "sim_s_approx": 14.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000140.jpg",
+          "sha256": "686a69958ea95bba52c36e47032b0edc1b0b66324c0f99597bf56e7ca2eb06fc"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 140,
+          "sim_s_approx": 14.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000140.jpg",
+          "sha256": "a92db0f0046c86dfcb74ad31b35e4a3c669b44722c9b98ca40530db78e1a701c"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 140,
+          "sim_s_approx": 14.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000140.jpg",
+          "sha256": "3377166a956e987fd3b2c899df8c0ba79f26de5a12d384139b0f037b5c201484"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 170,
+          "sim_s_approx": 17.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000170.jpg",
+          "sha256": "86871620c848099a5c2f67625ac94e4f61f120c111ad610a8e50c68467029952"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 170,
+          "sim_s_approx": 17.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000170.jpg",
+          "sha256": "8110e63e7d7f2f80f06f107f5c19d90a27993a62058921e9e2ca0799c7868e45"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 170,
+          "sim_s_approx": 17.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000170.jpg",
+          "sha256": "e3f23cbd83ad588e0c236c6e66b0611777d0fdae5bae5fb890dc13a18f28deef"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000000.jpg",
+          "sha256": "ac281279b11b906eecb3856bf222a112ca2a60f4e616120350ddb3c1345ed2db"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000000.jpg",
+          "sha256": "d43a40126574d6fbfac8759130d4e633e86f2a337565a972257088e2709598c1"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000000.jpg",
+          "sha256": "2f7e9503999abfb2715e5d8c4c15ee656cacbc7f262cda06a71e9650d8c5f07e"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000030.jpg",
+          "sha256": "0963dfd47b6f81a1446749f973d22ffc7ecc24b64069dc2d1445d09942a981c6"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000030.jpg",
+          "sha256": "9f43f4a82af6c3ed8dc506bc6d99f30e9153fb01ccd3500e8a917b78cbbb65d2"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 30,
+          "sim_s_approx": 3.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000030.jpg",
+          "sha256": "bfa4e9e38fa68aa7f00d8849e1dac36f6ed8d5a40dedc206d3f1be0ccc09a8d9"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000060.jpg",
+          "sha256": "a969655c7ce388a6ffdcb6646cc1972b05dbb5c2703b3b2d73f9adcb2cd5594d"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000060.jpg",
+          "sha256": "6a5df3f4cd3cccb8a4a2b2b43692481b21a63b6feb1d6efab9953e0fb702ebee"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 60,
+          "sim_s_approx": 6.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000060.jpg",
+          "sha256": "88e32b52355a221ab7b6723d04398ca6f8898d2638554618da2d9b92c55937a3"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 80,
+          "sim_s_approx": 8.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000080.jpg",
+          "sha256": "a18dbc2fe0758c55b2d28199c581525d6d436de58d14072f5efa35a807e7b314"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 80,
+          "sim_s_approx": 8.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000080.jpg",
+          "sha256": "1babd2bb994fe4f315c40e15c9932a6253c5ce461b897e92aaffcc90f3831e7a"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 80,
+          "sim_s_approx": 8.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000080.jpg",
+          "sha256": "50b0999be6f0d0e8edeed76e7e9c7666c6133ee77eae1d98ad683901e5fb6f52"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 110,
+          "sim_s_approx": 11.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000110.jpg",
+          "sha256": "9b53b5d0b6ecc3c73384af581ace10206e49f219c76b9a3b1aa95181672a6cb0"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 110,
+          "sim_s_approx": 11.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000110.jpg",
+          "sha256": "860b88ddc683d2538543713f2a00d038f3a0362d719aa56d87a555026f9e7fcf"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 110,
+          "sim_s_approx": 11.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000110.jpg",
+          "sha256": "e71381ea86c87b36eebd478cd779c1e6b455c360b038a51a9489c1a5bad477c8"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 140,
+          "sim_s_approx": 14.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000140.jpg",
+          "sha256": "379b71e2f3ef70112b8e6e3c8d0dff6c24aec391aaa9d880e450051666a2c738"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 140,
+          "sim_s_approx": 14.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000140.jpg",
+          "sha256": "e9e24414bd6415216601c5c7f7af2546070686046eba95a5e257f59b35ebc847"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 140,
+          "sim_s_approx": 14.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000140.jpg",
+          "sha256": "c82900b3d601f1c0908ab75d5b2725dc31f440b5104818b1718d9d8718b08c95"
+        }
+      ],
+      "directly_viewed_frame_N": 54,
+      "episodes": [
+        {
+          "episode": "episode-000",
+          "seed": 8311709,
+          "status": "interrupted",
+          "physical_success": false,
+          "sim_s": null,
+          "wall_s": 154.52875135099748,
+          "wall_per_sim": null,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1757,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "d55717566d669062a6cffda35a0dbcbe9dc69a6c",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": null,
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-000/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-000/raw/result.json",
+          "result_sha256": "3f77788a72cc4fd8e3b271ab2f8d007e61450757b1fb55cd7fb0af6397582fbd",
+          "result_decoded_sha256": "3f77788a72cc4fd8e3b271ab2f8d007e61450757b1fb55cd7fb0af6397582fbd",
+          "cargo_scene": "off",
+          "outcomes": {},
+          "raw_manifest_sha256": "63418f56e731e57d0b82bb86893dac9010d8bcb88216fa907519086ad784a0c8",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "f838ad39151dfc33cc25d6feb4d0d0dedeed5ee2acdb2d21440c511a4edb089b",
+              "bytes": 664026,
+              "decoded_sha256": "3e3592d23bd2c445a3e2d41950a4b6d4ddae92887563da3715945f11e96e5552"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "8a2abba725267a0aa7597411b12304d4d019bc5d83f23259f94daf1495fbc136",
+              "bytes": 31459,
+              "decoded_sha256": "ce95aeee70faca05ea22562ef5e4356a701cae9ad27d7f900a643b7e77881db1"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "0d8b74a58ee63a22b033737b1e55874f3cca5e7908ff1124700da8981a595e5e",
+              "bytes": 14478,
+              "decoded_sha256": "01d5b1691d4926eda284a7ea744eebb8d7b418f55cd8b6599a24f410b63d07c9"
+            }
+          }
+        },
+        {
+          "episode": "episode-001",
+          "seed": 315709,
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 33.50000000007736,
+          "wall_s": 128.0124485870001,
+          "wall_per_sim": 3.821267121991179,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1481,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "d55717566d669062a6cffda35a0dbcbe9dc69a6c",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-001/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-001/raw/result.json.zst",
+          "result_sha256": "6d706e8684b3d1a353d5c9f2b3af97c2705fdc97d4410855e526cf7a08bf90c7",
+          "result_decoded_sha256": "6b3656a640eb3e222816b7ac02c6d4abda7a154c5446d58cd8db1c5ad215261a",
+          "cargo_scene": "off",
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "raw_manifest_sha256": "27d63522e98833df09264a8776089680b0dd0ddf4416779b6d318108d4b0cb0c",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "f1e31e7fd072edfcef7065c9107b517bf3742de7c27afe52c29142aebd1b0c88",
+              "bytes": 700448,
+              "decoded_sha256": "7bc856f5e86ada1225cac648e5d78a5cfd1a985486fe84a28c4826607ae521e4"
+            },
+            "result.json.zst": {
+              "sha256": "6d706e8684b3d1a353d5c9f2b3af97c2705fdc97d4410855e526cf7a08bf90c7",
+              "bytes": 15968,
+              "decoded_sha256": "6b3656a640eb3e222816b7ac02c6d4abda7a154c5446d58cd8db1c5ad215261a"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "55d23800d4c4d3511c9f8e8623dabb26526b5c06d86e0a1dd4a069aaa34c601c",
+              "bytes": 22671,
+              "decoded_sha256": "42bf6d0d89ea4c085a26f950a61e2ac838ce56945f820fbfb4d62ac5bda29ce4"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "ba9deb4e138ba48a2e6861db01c3f77351d058141eb03f2695bb66f35fba6d19",
+              "bytes": 15517,
+              "decoded_sha256": "6c5f5af6dfebfb8d46bebc8067b30021f712142648efd450c23f83344e151f5d"
+            }
+          }
+        },
+        {
+          "episode": "episode-002",
+          "seed": 8311709,
+          "status": "interrupted",
+          "physical_success": false,
+          "sim_s": null,
+          "wall_s": 154.5235467349994,
+          "wall_per_sim": null,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1102,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "d55717566d669062a6cffda35a0dbcbe9dc69a6c",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": null,
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-002/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-002/raw/result.json",
+          "result_sha256": "66cde9af17ee30699268e814ca85b647b670dff6726e1ec30e769e8cf6ef4116",
+          "result_decoded_sha256": "66cde9af17ee30699268e814ca85b647b670dff6726e1ec30e769e8cf6ef4116",
+          "cargo_scene": "cargo_v6",
+          "outcomes": {},
+          "raw_manifest_sha256": "886d628fd1967495c008a034d6a2790ef9ee636765396b58a623d7efbd300973",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "721b24675b6e6ae624cd9ee877038f37f1a0aec6b761c73a3f5aa4f642d29dda",
+              "bytes": 384868,
+              "decoded_sha256": "72d81197cc85b36ced6324b86ddd672be79381fc9e1ece409345d007cadb5d11"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "b97ae8dbd487c4cbf1657b7b3d5c2174ebd42fb8fe8b2d289b61a1e9f24e658a",
+              "bytes": 15459,
+              "decoded_sha256": "89def910fc55914f636006694d5bb63302a632ae702d122135de8fca8f354bc8"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "7f00fd0d5e3affa4042ad75c7527321532d2d8023010ccf74a59697bd8a5036f",
+              "bytes": 8405,
+              "decoded_sha256": "6309fd5a3d5e7db5ef2d7a5f19d4ea3a2d544d990beffcd71bb9d87cb0002c3a"
+            }
+          }
+        },
+        {
+          "episode": "episode-003",
+          "seed": 315709,
+          "status": "complete",
+          "physical_success": false,
+          "sim_s": 14.799999999988064,
+          "wall_s": 92.61584641400259,
+          "wall_per_sim": 6.257827460410628,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1124,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "d55717566d669062a6cffda35a0dbcbe9dc69a6c",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-003/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-003/raw/result.json.zst",
+          "result_sha256": "d1979ecd61c4bfd11f2998581f0000572f3d99ca5cc91d18cec1837b684c7efa",
+          "result_decoded_sha256": "0babc93f5ed8036bc253c31dd41423b5d8ec92076153accacaa87ed8db9e0cc8",
+          "cargo_scene": "cargo_v6",
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "raw_manifest_sha256": "25a347de520c4ba44b0e60b73f94cb43e98ddb63a24c4d361a18260b46a43c5b",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "1ca38a4b49f2ebc2f25c72e97d615792f619e53895210f9b2f9a17293640b6a8",
+              "bytes": 326103,
+              "decoded_sha256": "d3d927637e3fc6ddd2ebb434c9bf45e3c6e18f13412aebc4d10862e989f237e5"
+            },
+            "result.json.zst": {
+              "sha256": "d1979ecd61c4bfd11f2998581f0000572f3d99ca5cc91d18cec1837b684c7efa",
+              "bytes": 13278,
+              "decoded_sha256": "0babc93f5ed8036bc253c31dd41423b5d8ec92076153accacaa87ed8db9e0cc8"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "91a81f5fffcce4dca90c5bc4eee36f99c91c55c70698378bfeb846756bbb6847",
+              "bytes": 13952,
+              "decoded_sha256": "8ea00dd1216bb0cde64e82f6b489d59c2517c297bf6b331cc5c136b7a14a8e07"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "59fd6d0e9934c56f7176b52c0f4463a774a0a58e98b83c3bc3170ffe67ed310f",
+              "bytes": 7274,
+              "decoded_sha256": "7650d933eb4df8c5bace51700645fc47ea1445448d9cef3becd991f0001dd651"
+            }
+          }
+        },
+        {
+          "episode": "episode-004",
+          "seed": 8312300,
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 24.800000000035812,
+          "wall_s": 81.87673419400016,
+          "wall_per_sim": 3.301481217495239,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 713,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "d55717566d669062a6cffda35a0dbcbe9dc69a6c",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-004/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-004/raw/result.json",
+          "result_sha256": "b6aea59d441d525f70370126a8474bd8ed718106849a66d3b227b13881b55aec",
+          "result_decoded_sha256": "b6aea59d441d525f70370126a8474bd8ed718106849a66d3b227b13881b55aec",
+          "cargo_scene": "off",
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "raw_manifest_sha256": "9fa9f8217a7be21f74fee2a74d71dd3760ab22f8d7c61d41131a84d2902d671b",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "8df0c23df6297c9ec5bedd32dc65ec4945ccd9f4c62dac9f274c01be31b4fb0a",
+              "bytes": 501269,
+              "decoded_sha256": "3cadfe1b12ef1d7bfb7a06ad94f52c15e4438c1dae61fd563e83b853861c9299"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "16504063f32121eb8420f714911b776edbd153f5ae863a320eff479c02686013",
+              "bytes": 17740,
+              "decoded_sha256": "0c6353ab619110930a6c82667c32012dee0abeaa7bef87530e29cd37c8ab0d66"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "7ccd0e5d386b4b12de22fb29786e067a93505db8069134d01728a069e772530e",
+              "bytes": 11772,
+              "decoded_sha256": "3c646f1dcd6f864b5d75a5fc27e891277efdf8c813edaf5c60cd44a9221303f2"
+            }
+          }
+        },
+        {
+          "episode": "episode-005",
+          "seed": 8312301,
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 28.00000000005109,
+          "wall_s": 91.86644110800262,
+          "wall_per_sim": 3.280944325279821,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 930,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "d55717566d669062a6cffda35a0dbcbe9dc69a6c",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-005/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r2-short6-gcp-d5571756/diagnostic/episode-005/raw/result.json",
+          "result_sha256": "b412a019e01dc984dfe0581d09c06fb3d4ab9193e207bbad18903653a3f3c7c3",
+          "result_decoded_sha256": "b412a019e01dc984dfe0581d09c06fb3d4ab9193e207bbad18903653a3f3c7c3",
+          "cargo_scene": "off",
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "raw_manifest_sha256": "c6778beaf02bcb3df7c151b20086fbba3b2f93f81b11ceea949eb2420ec52a72",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "7f4adcfc22fe2a31105efac7a4c2f3f4c14fef18c56eb104f034429baf704ca5",
+              "bytes": 558302,
+              "decoded_sha256": "b7413b497f6e2bc2e3a9f6ce750eafd8702a6ba314f4619d06e0f27f418def03"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "952456264722dae8076461e61e9e5f53b42f36406559ac3709a43f78cfef2fa6",
+              "bytes": 18269,
+              "decoded_sha256": "972205775e7d0f77054f3cf68cfa41ab7954f4ea9ff5d36d09438aa2b2946b3a"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "13c610459eb687fee6436e54533ca059ef353d33a5988d92a42ce6649e3e4b6e",
+              "bytes": 15457,
+              "decoded_sha256": "6967da16eef385dad570c18790d5503475080637a9aa0e6fb4539b68a6825160"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "run": "grasp-search21-r3-short6-gcp-38266bde",
+      "source_sha": "38266bdee986399056baf219f3b7be22a782c47d",
+      "exit": "0",
+      "n": 3,
+      "N": 6,
+      "host_errors": 0,
+      "interrupted": 0,
+      "input_invisible_total": 0,
+      "input_held_total": 0,
+      "all_audits_enabled": true,
+      "audits_missing_N": 0,
+      "median_wall_per_sim": 4.093525154382151,
+      "max_wall_per_sim": 5.065352385772803,
+      "remote_full_manifest_verified": true,
+      "local_manifest_verified_N": 229,
+      "decoded_manifest_verified_N": 22,
+      "selected_frames_N": 108,
+      "frames_directly_viewed": false,
+      "raw_location": "gcp1:/home/ugrp/ugrp-sim/runs/grasp-search21-r3-short6-gcp-38266bde",
+      "local_lite": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde",
+      "manifest_sha256": "bce2e48df544e583f34d4df747cffe8085332a2334f119031e1e4b139ae38f54",
+      "summary_path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/grasp-search21-r3-short6-gcp-38266bde-summary.json",
+      "summary_sha256": "ac426d3fff1e0ebaeba7aef546b0fa1d8b62429d3d279b66e228914895d42978",
+      "directly_viewed_frames": [
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000000.jpg",
+          "sha256": "54b2f2f344571f777040a9c46c66a0d41116eb66125617b49b991fba9b2e9667"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+          "sha256": "8d48a4c74d366e89a5496f8e9ada4902946e7afdbe5f9a63ae3ff920b596e89d"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+          "sha256": "5afde6bb1d34bc61800d0419b14c00ee739a128fc89e32a7adf57d233029c435"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000050.jpg",
+          "sha256": "151b453ba68aaa353b7128179256e3b3cd75db22d488bf8c361206b3417863bb"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000050.jpg",
+          "sha256": "39e7ea83efe04b41831f2f5870f51e323b1a57c48b6b2b42e8f8b0a68b8826cd"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000050.jpg",
+          "sha256": "5ecb5640c0e9af7776b5f5ea2f9ad855173f3c51f35cbbaad1703f3e7feb86c3"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000100.jpg",
+          "sha256": "f14e0ecaefca12ac4782107c905e9e9a8d48cddff30f47e887d0a0fd148cd6ae"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000100.jpg",
+          "sha256": "141e99a2439da3c2333b79263005e43263c7e9413a4acce900ebd1210b5acdfe"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000100.jpg",
+          "sha256": "da0ea1749f97bdd3456d33cffeaf9065549301526872169e63527a8bac191b07"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 160,
+          "sim_s_approx": 16.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000160.jpg",
+          "sha256": "77ded553793b48b41c22fa5c082ff61d0b1887ba6c49d0dce8aee217d812b864"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 160,
+          "sim_s_approx": 16.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000160.jpg",
+          "sha256": "b14f4406bdc4e9844823cd1ba19ed97252205079c958b3dd74122ea409ff3892"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 160,
+          "sim_s_approx": 16.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000160.jpg",
+          "sha256": "810461e162ba32541be93d1fb316a450bb48b593ce94d3104961c0ba33c7002e"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 210,
+          "sim_s_approx": 21.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000210.jpg",
+          "sha256": "0eb9cb50695bcc303acbf66be142c69030d44a858659a334a4d57ae0dd45b85c"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 210,
+          "sim_s_approx": 21.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000210.jpg",
+          "sha256": "9c575f14d26e146f191af8a3ef6a60137a8137da1553f2fa7ac3295aa7731ec0"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 210,
+          "sim_s_approx": 21.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000210.jpg",
+          "sha256": "8fe928dbb855442afe9bc962d084b81eae89086fde8beaa23a296599fedd5589"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-overview",
+          "frame_tick": 260,
+          "sim_s_approx": 26.0,
+          "path": "diagnostic/episode-000/raw/eval-overview/000260.jpg",
+          "sha256": "6fdfa7a5fa8664cd859d8c7a1f8d9858ae3c0b11cbeb9bcfd964d78a275f6157"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r1",
+          "frame_tick": 260,
+          "sim_s_approx": 26.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r1/000260.jpg",
+          "sha256": "4c891f0480965919edc4a96d67be32da49751ba7d2310d2333e0343a2f85979a"
+        },
+        {
+          "episode": "episode-000",
+          "view": "eval-own/r2",
+          "frame_tick": 260,
+          "sim_s_approx": 26.0,
+          "path": "diagnostic/episode-000/raw/eval-own/r2/000260.jpg",
+          "sha256": "26b5f8876ca743d4cff9c47c52d056b9c5e32b6e4ea464cccf18ae00b67705f3"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000000.jpg",
+          "sha256": "97c1278047fbba180e7041c68b38c307bf72cc6988b9f6c5a8431ea2edb54f0e"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000000.jpg",
+          "sha256": "7e38e2278d73ad5ba953a5d29b9b729efd80c0b83708400eff460d3909d5f411"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000000.jpg",
+          "sha256": "76d10a5b8b7d0bebff7e9db8d35d11401dd81402d72182aa4aa85d098aaab75b"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000050.jpg",
+          "sha256": "308b1904dbfdf3ff26a365741dae3ef90135bd524b4a02fd5bf3da05c4f45225"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000050.jpg",
+          "sha256": "fa15adb6a2ef4261985786c6060a0644570039d935bed557c20fec2b7d7e2b79"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000050.jpg",
+          "sha256": "447befcf33242954217914679b76552fd142aff27d2acd65a9a49c84fe75fbaf"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000100.jpg",
+          "sha256": "b7ead9852ae5735b90c3ba3e2de30135e1e18d9be8f433235dfcd0c1b888efa5"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000100.jpg",
+          "sha256": "8666151ee6ce602db4381be72f989270adba4119f7498ddb1d6a96039e01a7ce"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 100,
+          "sim_s_approx": 10.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000100.jpg",
+          "sha256": "a3a7453b8fc39ab96b61032cbe205b25225bb08fb3ca8dfd372c232c2c1127bf"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 150,
+          "sim_s_approx": 15.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000150.jpg",
+          "sha256": "2c628307eb928bfe9eeb995738a00cc09649a308a749b90cc4d5c4fd7be4ed3c"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 150,
+          "sim_s_approx": 15.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000150.jpg",
+          "sha256": "0d604f93e1693dd007df65a2f1a90e3bccbf6d0de72476474c385dcbb49bafe8"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 150,
+          "sim_s_approx": 15.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000150.jpg",
+          "sha256": "fcd3abcc79b7f795558f72f2c78af2e7e703b6e907dbd3c7531a0487ab8675d2"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 200,
+          "sim_s_approx": 20.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000200.jpg",
+          "sha256": "bbde1dfaa1b522c4e08dcc79c8504a295a794e8e335cde6124c18bcbf76c26e9"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 200,
+          "sim_s_approx": 20.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000200.jpg",
+          "sha256": "95faa2693977949a2d71db88efe549101404b68830517481ffb1e2ac523f6e4e"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 200,
+          "sim_s_approx": 20.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000200.jpg",
+          "sha256": "8975e8592a053b193b7ee19426bb1f775fcd9b745f5f131c20b0f62224e59120"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-overview",
+          "frame_tick": 250,
+          "sim_s_approx": 25.0,
+          "path": "diagnostic/episode-002/raw/eval-overview/000250.jpg",
+          "sha256": "85edd3c845fb1054091fd75b4f3370a35468c2d2d74389eb27b4f8ce9322ebb2"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r1",
+          "frame_tick": 250,
+          "sim_s_approx": 25.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r1/000250.jpg",
+          "sha256": "47a794d319c8d89da27b22d60ef7c36f146d6462302c4bfbefb531f4ed5e74ad"
+        },
+        {
+          "episode": "episode-002",
+          "view": "eval-own/r2",
+          "frame_tick": 250,
+          "sim_s_approx": 25.0,
+          "path": "diagnostic/episode-002/raw/eval-own/r2/000250.jpg",
+          "sha256": "8c4a3a37745d323aec2da552b7a3c01d50dd8eac6cb3a161a656e3aa19866eaf"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000000.jpg",
+          "sha256": "ac281279b11b906eecb3856bf222a112ca2a60f4e616120350ddb3c1345ed2db"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000000.jpg",
+          "sha256": "d43a40126574d6fbfac8759130d4e633e86f2a337565a972257088e2709598c1"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 0,
+          "sim_s_approx": 0.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000000.jpg",
+          "sha256": "2f7e9503999abfb2715e5d8c4c15ee656cacbc7f262cda06a71e9650d8c5f07e"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000050.jpg",
+          "sha256": "e05146038aceb994b3fb5839d940618f871661474b3820002e1de6e627167fa0"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000050.jpg",
+          "sha256": "cf5228552954b1b37824fe5ab1d90beb534b0071c260d16913a1edd51af8fd3d"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 50,
+          "sim_s_approx": 5.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000050.jpg",
+          "sha256": "f89420fa2aacf0942386d93746d2ade212f65cd1c7d6e5cee945409774cabaf8"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 110,
+          "sim_s_approx": 11.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000110.jpg",
+          "sha256": "ab1cfa4a9d73d0ab1d9fab4516f19a906f11fce530987e838194b5c0fbc3fe9e"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 110,
+          "sim_s_approx": 11.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000110.jpg",
+          "sha256": "2ca67bbcbc2c6304ee65d183f81ee327100ebcf5c53a1aa75358b733edd3f6a6"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 110,
+          "sim_s_approx": 11.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000110.jpg",
+          "sha256": "e71381ea86c87b36eebd478cd779c1e6b455c360b038a51a9489c1a5bad477c8"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 160,
+          "sim_s_approx": 16.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000160.jpg",
+          "sha256": "d27506275043efa120f5d47808dc9004d66d0122db7de0b91eb9a65f52c88815"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 160,
+          "sim_s_approx": 16.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000160.jpg",
+          "sha256": "4a59531d25d6eebf919dc3ec01efa67f4842479eed02bc9571345b0ff2a29723"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 160,
+          "sim_s_approx": 16.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000160.jpg",
+          "sha256": "91b0893c0b497932417698f67149c2de059266d534cf9c9870d679c0c85e79cb"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 220,
+          "sim_s_approx": 22.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000220.jpg",
+          "sha256": "3510b73bf6cce6b96ad05a84563f4911be8c5b2838bc370313d60d69b39bfc17"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 220,
+          "sim_s_approx": 22.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000220.jpg",
+          "sha256": "255404b866e75f048bb8796f78892802d1a059f3374c5bcf0be6cbc68128540e"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 220,
+          "sim_s_approx": 22.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000220.jpg",
+          "sha256": "a840e78ecc0b7d0e1a31b9ba7220e20bd0b5a35912eab7ca08b8cc98dc0372f5"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-overview",
+          "frame_tick": 270,
+          "sim_s_approx": 27.0,
+          "path": "diagnostic/episode-003/raw/eval-overview/000270.jpg",
+          "sha256": "6403b973f5bfdb22cc0dc12f2a2491e209e03aad0e22dffb0576388363164c5d"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r1",
+          "frame_tick": 270,
+          "sim_s_approx": 27.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r1/000270.jpg",
+          "sha256": "f456f8229fdaba852bce49a867b76e6b5f6cba10ff7aaf7082bb215f3fdc1f73"
+        },
+        {
+          "episode": "episode-003",
+          "view": "eval-own/r2",
+          "frame_tick": 270,
+          "sim_s_approx": 27.0,
+          "path": "diagnostic/episode-003/raw/eval-own/r2/000270.jpg",
+          "sha256": "64fdbce841089b38215e9ceee05b3db692f4035d3ed7c9d4492263eab792e23b"
+        }
+      ],
+      "directly_viewed_frame_N": 54,
+      "episodes": [
+        {
+          "episode": "episode-000",
+          "seed": 8311709,
+          "status": "complete",
+          "physical_success": false,
+          "sim_s": 26.50000000004393,
+          "wall_s": 118.33889489899957,
+          "wall_per_sim": 4.465618675426543,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1318,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "38266bdee986399056baf219f3b7be22a782c47d",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-000/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-000/raw/result.json.zst",
+          "result_sha256": "5adba97040dd70d55061c0fdaf5a272b875589c0779f72fea6b16baf863925bd",
+          "result_decoded_sha256": "6a39c01cd45ab4480156b8b82a8aab58408aadb3f6ed7d6a9f379e3700c4f19a",
+          "cargo_scene": "off",
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "raw_manifest_sha256": "9303f2ca8e7448e4a307e48fd8d877cf54b3202e4913f2e2fb4a2600c8b8f8cc",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "bca9a0ee7a121a9031eb2a54367331e55de1c2d3928032ca2b80fee792cf2eb9",
+              "bytes": 548636,
+              "decoded_sha256": "67bcd7d8dc10a806ff126858a04360c8dc432895a17d94696971a6bcf3343b67"
+            },
+            "result.json.zst": {
+              "sha256": "5adba97040dd70d55061c0fdaf5a272b875589c0779f72fea6b16baf863925bd",
+              "bytes": 151071,
+              "decoded_sha256": "6a39c01cd45ab4480156b8b82a8aab58408aadb3f6ed7d6a9f379e3700c4f19a"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "4da51bb13f072088e0fdc6bf41a4b01db87eaa01aef738151101afb42acd9cf3",
+              "bytes": 23687,
+              "decoded_sha256": "044387bb8f87525be1e6e505ac524adfe67655b8087107515031e5adfdb726f0"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "cbbfe865edd91845a6cca7c17e17c2a8d379b91c026ac1b65299016eb39a6fbc",
+              "bytes": 12309,
+              "decoded_sha256": "8e08c4cd8b2d01c613ab99f7e0583c27164e73132789d5c6adb116b86d35c9c9"
+            }
+          }
+        },
+        {
+          "episode": "episode-001",
+          "seed": 315709,
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 33.50000000007736,
+          "wall_s": 125.47472698999991,
+          "wall_per_sim": 3.745514238498811,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1481,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "38266bdee986399056baf219f3b7be22a782c47d",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-001/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-001/raw/result.json.zst",
+          "result_sha256": "7835a4dd86c74abf1cb0d2425ef2268e793b0f821ebd37f0b353484d4f877fb4",
+          "result_decoded_sha256": "8f167e54ce34565d4d52d8d785d0c2698cf250ff8884dea410aaf7dfedb7f322",
+          "cargo_scene": "off",
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "raw_manifest_sha256": "aaa1f9d9b18a50cbe2d932c5c4d813e56cd5784175a980546217746bde2f1bff",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "f1e31e7fd072edfcef7065c9107b517bf3742de7c27afe52c29142aebd1b0c88",
+              "bytes": 700448,
+              "decoded_sha256": "7bc856f5e86ada1225cac648e5d78a5cfd1a985486fe84a28c4826607ae521e4"
+            },
+            "result.json.zst": {
+              "sha256": "7835a4dd86c74abf1cb0d2425ef2268e793b0f821ebd37f0b353484d4f877fb4",
+              "bytes": 15977,
+              "decoded_sha256": "8f167e54ce34565d4d52d8d785d0c2698cf250ff8884dea410aaf7dfedb7f322"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "0c33aaa6c3ad4bfdfa81b2aef932ab8d4bc42029f0a73cf68ae0dcd9e1b03faa",
+              "bytes": 22663,
+              "decoded_sha256": "67598b796a4aedca4730d1becbb9ad79cdae965164c1bc8ecd0b6ef513e3d0d0"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "98a6fbc7d566281b27b99eea0b70515ff27d260de71743378159e95433bc43b1",
+              "bytes": 15492,
+              "decoded_sha256": "59d9327061b8dabaee83f06cbbb328200aac511950b6f1575d1ab222bf65b96e"
+            }
+          }
+        },
+        {
+          "episode": "episode-002",
+          "seed": 8311709,
+          "status": "complete",
+          "physical_success": false,
+          "sim_s": 25.70000000004011,
+          "wall_s": 114.14747700600128,
+          "wall_per_sim": 4.441536070265491,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1290,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "38266bdee986399056baf219f3b7be22a782c47d",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-002/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-002/raw/result.json.zst",
+          "result_sha256": "19dfcfd8ad9a39af935dcd407335f8f55474b0097c7d5f8c0cde41e534e05efe",
+          "result_decoded_sha256": "67faa12705d90fbde830cbc96c147b9065a78c6a81df4bd1d1437efcdc6f1177",
+          "cargo_scene": "cargo_v6",
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "raw_manifest_sha256": "96f3820ee9ecb02dd81409b3e584834a67309e755179c850dd65c180c5a9a8d9",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "9076b666c653c5966b91c39db9d39a57c358f4f3a28a688ce4640e64996f002f",
+              "bytes": 543468,
+              "decoded_sha256": "8e8e814df00c8f2bd889a3447ada9e78bf0d0e5cdb9c6e699a4ac07eda1d8651"
+            },
+            "result.json.zst": {
+              "sha256": "19dfcfd8ad9a39af935dcd407335f8f55474b0097c7d5f8c0cde41e534e05efe",
+              "bytes": 150841,
+              "decoded_sha256": "67faa12705d90fbde830cbc96c147b9065a78c6a81df4bd1d1437efcdc6f1177"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "920ba03f66f037c636a73cb0c3c128278991d155278f04576716ded24b13829e",
+              "bytes": 22855,
+              "decoded_sha256": "9e5db03bf15956ca1d02fa05d8078bf4226d55456c6db878f04776e97670e7b1"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "a29cd748bed50802f8a7b547e1adc43346413bb878b5021daa34cb331951a2de",
+              "bytes": 11936,
+              "decoded_sha256": "51ad600d3b2ed6b1bd38bbe3ea9e03035f6972817a406fd95eaa136ae6f74c03"
+            }
+          }
+        },
+        {
+          "episode": "episode-003",
+          "seed": 315709,
+          "status": "complete",
+          "physical_success": false,
+          "sim_s": 27.500000000048704,
+          "wall_s": 139.2971906089988,
+          "wall_per_sim": 5.065352385772803,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 1818,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "38266bdee986399056baf219f3b7be22a782c47d",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-003/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-003/raw/result.json.zst",
+          "result_sha256": "fdc12824a520e5c91cde1ce16651f1b1b092dc1a80823f4627f428548ae68144",
+          "result_decoded_sha256": "4f29d421632ad71f1538c17733f59729ed35ae227be049bbaae842a7a7085504",
+          "cargo_scene": "cargo_v6",
+          "outcomes": {
+            "r1": "approach_blocked_handoff",
+            "r2": "peer_approach_handoff"
+          },
+          "raw_manifest_sha256": "31d1b420d5b21f554967b2f77673fea8cd81e701469335d6025f957754743eb2",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "ab0334ed7c65fd6663cff6ab6cf2d52c3e992082a5251dfeb554cbe49dace4b6",
+              "bytes": 599494,
+              "decoded_sha256": "d669df211e1468c0c02996011c20411c741d7a346c18ed02870c631a5451d9dd"
+            },
+            "result.json.zst": {
+              "sha256": "fdc12824a520e5c91cde1ce16651f1b1b092dc1a80823f4627f428548ae68144",
+              "bytes": 149468,
+              "decoded_sha256": "4f29d421632ad71f1538c17733f59729ed35ae227be049bbaae842a7a7085504"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "f4433b66aa49f2f152318d28d491ff662a639ab75f79bd83ccaae5382be715a9",
+              "bytes": 24936,
+              "decoded_sha256": "7f4ee847e1e7c7847dceecd85f83dfad2983c78f3aaead0487b74c9e40bf9c8b"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "c1da7b40739b4b62851b3ae0e58583629c457f72b23334052ef0b96da5584e63",
+              "bytes": 12952,
+              "decoded_sha256": "0eb06cc7fc494a24b985dd8848ef3d19e72a39880583bc9b1c1a2b34ddd06fb7"
+            }
+          }
+        },
+        {
+          "episode": "episode-004",
+          "seed": 8312300,
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 24.800000000035812,
+          "wall_s": 78.93530568099959,
+          "wall_per_sim": 3.182875229067968,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 713,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "38266bdee986399056baf219f3b7be22a782c47d",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-004/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-004/raw/result.json",
+          "result_sha256": "7394f3c12ad3da318d66cdd3e2c36b7766dd459b4a78e5a47e6d03915726f6ce",
+          "result_decoded_sha256": "7394f3c12ad3da318d66cdd3e2c36b7766dd459b4a78e5a47e6d03915726f6ce",
+          "cargo_scene": "off",
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "raw_manifest_sha256": "928bafb4cb609cd876d237e780e8929c6dfeabf0708ace626e6a858be8a37541",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "8df0c23df6297c9ec5bedd32dc65ec4945ccd9f4c62dac9f274c01be31b4fb0a",
+              "bytes": 501269,
+              "decoded_sha256": "3cadfe1b12ef1d7bfb7a06ad94f52c15e4438c1dae61fd563e83b853861c9299"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "65bfd9c3b3b4c5e3adddf60fb4261475e82c522cb027eec2278d21828c0657b3",
+              "bytes": 17621,
+              "decoded_sha256": "3608ae2a19985d72a4048cd7a126c058666fcf09eb6339c8c3d9a9c032b92b84"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "1d97b2c7e4be895b3a1b70e3f07e9a10d942f85c2c1125f3835e52df62b3f82c",
+              "bytes": 11761,
+              "decoded_sha256": "95acd93e952a086bc547e335e3066f84287d7cc519c4003b33809a967d924436"
+            }
+          }
+        },
+        {
+          "episode": "episode-005",
+          "seed": 8312301,
+          "status": "complete",
+          "physical_success": true,
+          "sim_s": 28.00000000005109,
+          "wall_s": 89.00321773599717,
+          "wall_per_sim": 3.1786863477083847,
+          "input_audit": {
+            "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+            "enabled": true,
+            "measurement_rows": 930,
+            "invisible_measurements": 0,
+            "held_world_reads": 0,
+            "gt_self_pose_comparison": false
+          },
+          "source_sha": "38266bdee986399056baf219f3b7be22a782c47d",
+          "host": {
+            "provider": "gcp",
+            "project_id": "ugrp-act-train-1014",
+            "instance": "ugrp-sim-gcp1",
+            "machine_type": "n4-highcpu-64",
+            "zone": "asia-northeast3-a",
+            "cpu_count": 64,
+            "schema": "ugrp.grasp_act.host.v1"
+          },
+          "weld": "off",
+          "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-005/raw",
+          "result_file": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search21-r3-short6-gcp-38266bde/diagnostic/episode-005/raw/result.json",
+          "result_sha256": "14bf009dc5c99a0995c07d0864090e125e21f0740770f951eee4a285fc167eb3",
+          "result_decoded_sha256": "14bf009dc5c99a0995c07d0864090e125e21f0740770f951eee4a285fc167eb3",
+          "cargo_scene": "off",
+          "outcomes": {
+            "r1": "success",
+            "r2": "success"
+          },
+          "raw_manifest_sha256": "7da6ccbef30b8543b83b52e86393a4ed6138ccd7db42176aed4d0538869f3828",
+          "text_manifests": {
+            "eval-only.jsonl.zst": {
+              "sha256": "7f4adcfc22fe2a31105efac7a4c2f3f4c14fef18c56eb104f034429baf704ca5",
+              "bytes": 558302,
+              "decoded_sha256": "b7413b497f6e2bc2e3a9f6ce750eafd8702a6ba314f4619d06e0f27f418def03"
+            },
+            "teacher-r1.jsonl.zst": {
+              "sha256": "fb3196f9b3218f3e7aa749141b00d8049a57e348b02f705ee68bcbb8e387f7c9",
+              "bytes": 18240,
+              "decoded_sha256": "c0a0b9e92c2d1d438e82211661b990687fa57f56a6141c7de51754b2f96281fb"
+            },
+            "teacher-r2.jsonl.zst": {
+              "sha256": "13b3f421d80511e3f57300a7df72c6a3a03e63d2dcd2dc63daf05a340a6f4fde",
+              "bytes": 15419,
+              "decoded_sha256": "6009c763602064d9160df017b3873c2c2bc7968a86713fc7f5910f1aa6015745"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "final_first30_or_completion": [
+    {
+      "episode": "episode-000",
+      "sim_s": 26.50000000004393,
+      "wall_s": 118.33889489899957,
+      "source": "final result; completed before30 SIMs",
+      "wall_per_sim": 4.465618675426543
+    },
+    {
+      "episode": "episode-001",
+      "sim_s": 30.00000000006064,
+      "wall_s": 113.85607590200016,
+      "source": "progress snapshot at30 SIMs",
+      "wall_per_sim": 3.7952025300590004
+    },
+    {
+      "episode": "episode-002",
+      "sim_s": 25.70000000004011,
+      "wall_s": 114.14747700600128,
+      "source": "final result; completed before30 SIMs",
+      "wall_per_sim": 4.441536070265491
+    },
+    {
+      "episode": "episode-003",
+      "sim_s": 27.500000000048704,
+      "wall_s": 139.2971906089988,
+      "source": "final result; completed before30 SIMs",
+      "wall_per_sim": 5.065352385772803
+    },
+    {
+      "episode": "episode-004",
+      "sim_s": 24.800000000035812,
+      "wall_s": 78.93530568099959,
+      "source": "final result; completed before30 SIMs",
+      "wall_per_sim": 3.182875229067968
+    },
+    {
+      "episode": "episode-005",
+      "sim_s": 28.00000000005109,
+      "wall_s": 89.00321773599717,
+      "source": "final result; completed before30 SIMs",
+      "wall_per_sim": 3.1786863477083847
+    }
+  ],
+  "final_first30_or_completion_median_wall_per_sim": 4.118369300162246,
+  "final_failure_detail": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/r3-final-blockers.json",
+    "sha256": "89cd82598db21a56ee1240e4a99815d6a5e0fa575374b94d032c8da35d847fd3"
+  },
+  "candidate_audit": {
+    "path": "experiments/2026-10-14-e2e18-grasp-rootcause/search21-candidate-audit.json",
+    "sha256": "4f4d8f072c7c96165a3d9f7d5957a447f4ae21bf54aa3f3549e59096f5e1ba72"
+  },
+  "queue": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/vm3-queue/20261015-grasp-search21-38266bde-diag.json",
+    "sha256": "4eafd1797a1040b14489eb84104923c78e0e7b9f3ddac764815af6bc651be7dd",
+    "ready": false,
+    "submitted": false,
+    "passed_source_sha_available": false
+  },
+  "tests": {
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_search21.py tests/test_grasp_act_search20.py tests/test_grasp_act_batch.py",
+    "passed": 36,
+    "physics": false
+  },
+  "remaining": [
+    "8311709 base pinned tile_1 no longer freshly observed; all20 reachable/jaw-valid goals below remembered140mm",
+    "8311709 cargo_v6 same mechanism with red_2; no tile/can in v6",
+    "315709 cargo_v6 same mechanism with yellow_1",
+    "bounded camera pan did not reacquire these low hazards; obstacle-directed RGB reacquisition remains unimplemented",
+    "no passed SHA; blocked queue binds last tested SHA only; no fourth round or cohort submission"
+  ],
+  "prior_search20": {
+    "n": 1,
+    "N": 2,
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search20-fd9995df-ops/grasp-search20-base-repro4-gcp-fd9995df-summary.json.zst",
+    "sha256": "99f1f6027cf2ee1f2860bf3a1bfd951dd7c9e51f1873d36d65730c45fd5cdb4e"
+  },
+  "supporting_records": {
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/preflight.json": "638e9b1489be76267a3e941a7e6f9817fdc8bacf8d2a0c66cd3cb2aab4f8aa44",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/r1-admission.json": "2554e600b97875c9403bc17ba99ae272f6b1bf1549b3ec5b20f896605dbe1e13",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/r2-admission.json": "cf7232c2b093cb2ffc6a7ef3a451cb6098d9ae4890ed6e3f3be6fdad95f090ca",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/r3-admission.json": "663d0f40b2bfd2ab94158252d8fae3892a264ed62cdf999efd2914cce697dc83",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/short6-remote-seeds.json": "340378f2e8023ba39276fb64e4541d2b4f86f3b79bd063f9c4f90d858c5155e0",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/queue-remote-seeds.json": "164530c03fab90801d356b791d54526893ad9433a432d92cf47eddb8f8f4eb3a",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/r2-315709-v6-replay.json": "9e8d521acf1c80e548cd95bd9e6d3c415c6e85ffd961f6f73862bf52a133a2db",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/r3-cleanup.json": "75ce2a67fdf865dc4ff1ad2c453d3665c3087d96cc74ea06cfb4763c5653c639",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search21/r3-first30-exact.jsonl": "290560a46d882e1bd7d7d1fa4b5c7438466e062b488b37a001e4c734db04e920"
+  },
+  "final_cleanup": {
+    "own_teacher_pids": [],
+    "own_run_lease": "removed",
+    "own_reservation": "released",
+    "vm_stop": "deferred exit75; other leases/processes present, untouched",
+    "raw": "GCP persistent disk plus verified local lite/selected frames; no separate remote archive"
+  },
+  "tested_runtime_files_sha256": {
+    "sim/grasp_act_search21.py": "83be22e70068980f4e4d1c0fac282e231e421101ea9abcc617bd8e19054bf289",
+    "sim/grasp_act_search20.py": "ab859b14e5b2a9a3130c64b4dbb33b80f7c425ccd93339009b3cec8408059425",
+    "sim/grasp_act_search19.py": "2320b8faf3b01189a7d9aa77a782484afb4de41002400243b8c37744504e7131",
+    "sim/grasp_act_teacher_v3.py": "308ef55b381b4a51fa18dcfa980b868d1644a160de4fb876a43a231219ce75bc",
+    "sim/grasp_act_pregrasp.py": "5747f5a633b56cf87b8b55eccccc138e6c654bcbcc62046958fb3312c4894b8a",
+    "sim/grasp_act_search15_modes.py": "d9faf2e3fa5542cd7d1f08a72e2cd6bc91092f8a12cf1b50ae9e550c62d6712a",
+    "harness/grasp_act_admission.py": "ae4f631b08ccbbd4f31626eb1af2b5447dbf37b466a04bd30a94337964015a02",
+    "scripts/run_grasp_act_batch.py": "57fbaddc84afce075d3a8a0a3ff301c1eb49439c4bbcc9d39748166125a5167a",
+    "scripts/run_grasp_act_teacher.py": "38a97d1d4be2c030be83340c133f8c49e55e109704afd4f6c5e7fbdd67b513d4"
+  }
+}
