@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 import subprocess
+import shlex
 import time
 
 L4=['ssh','-o','BatchMode=yes','-i','/Users/changmin/.ssh/ugrp_gcp2','ugrp@34.64.52.225']
@@ -16,6 +17,19 @@ def query(host,code):
     # content. No credentials, model bytes or large raw logs are printed.
     result=subprocess.run([*host,'python3 -'],input=code,text=True,capture_output=True,check=True)
     return json.loads(result.stdout)
+
+
+def relay_command(directory, send):
+    code=f'''import datetime,json,os,pathlib,subprocess
+lease=pathlib.Path('/home/ugrp/ugrp-sim/leases/beamact2-transfer.json')
+with lease.open('x') as f:
+ json.dump(dict(task='beamact2-transfer',pid=os.getpid(),started=datetime.datetime.now(datetime.timezone.utc).isoformat(),expected_end=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(minutes=20)).isoformat(),concurrency=0),f)
+try:
+ subprocess.run({['tar','-C',directory,'-cf' if send else '-xf','-','.'] if send else ['tar','-C',directory,'-xf','-']!r},check=True)
+finally:
+ lease.unlink()
+'''
+    return 'python3 -c '+shlex.quote(code)
 
 
 def main():
@@ -46,8 +60,8 @@ print(json.dumps(v))
         raise ValueError('fixed final model only')
     target=BASE+'/model-v1'
     subprocess.run([*CPU,f'test ! -e {target} && mkdir -p {target}'],check=True)
-    sender=subprocess.Popen([*L4,f'tar -C {model} -cf - .'],stdout=subprocess.PIPE)
-    receiver=subprocess.Popen([*CPU,f'tar -C {target} -xf -'],stdin=sender.stdout)
+    sender=subprocess.Popen([*L4,relay_command(model,True)],stdout=subprocess.PIPE)
+    receiver=subprocess.Popen([*CPU,relay_command(target,False)],stdin=sender.stdout)
     sender.stdout.close()
     if receiver.wait() or sender.wait():raise RuntimeError('model relay failed')
     check=query(CPU,f'''import hashlib,json,pathlib
