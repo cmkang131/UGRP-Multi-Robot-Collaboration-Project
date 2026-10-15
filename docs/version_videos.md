@@ -142,3 +142,10 @@ tail은 원촬영202장이다. [원본·해시·검토](../experiments/2026-10-1
 ## 2026-10-16 beampair7 R2 — 깊은 예약 시작점의 연속 연결
 
 실행 소스 `835ccef26aa84b08cc8f7e256fd0f43aa1583ef9`, gcp2/C MuJoCo3.12, 같은 확정 장면·기본 off 토글이다. [8318728 대표 영상](../experiments/2026-10-16-beampair7/representative-r2-8318728.mp4)309130B,SHA256 `c763b8b87f2d67f3537af9850051a36a3475326276a875de3d55991f3e630861`. 전체0–38.9초2Hz79시점을 직접 보았다. 예약 자리에서 뒤로 빠져나온 뒤 다른 끝으로 접근·정렬·공동파지한다. 개요는 평가용,자기 화면은 저장 qpos 재렌더이며 원촬영10Hz가 아니다. [출처/ffprobe/검토](../experiments/2026-10-16-beampair7/playback-short-r2-8318728.json). 짧은5/5와 새로운 gate40 결과는 분리한다.
+## 2026-10-15 ACT15 DAgger1 근거리 학생 (실패 비교)
+
+저장된 **자기 RGB** 영상이며 정답 도식/top 카메라가 아니다.
+
+|버전·소스|대표 case|결과|영상·해시|범위와 한계|
+|---|---|---|---|---|
+|ACT15 DAgger1; 학습1535c8a3, 실행686cccb6|91420, ACT14 p0 실패와 같은 seed; 최다 거부 단계인 정렬 실패 선택|90 SIM초 cap_end, 안정 들기/완료0; 전체 같은20 0/20·새20 0/20|[자기 RGB4배속](../experiments/2026-10-15-act-train/videos/act15-91420-4x.mp4),22.5초/900프레임/169401bytes;SHA256 `e9a95fd808c256f12d37ffa5b753a29bf8e441201340100f4b5ca3d2bb3a34fd`|접근 후 목표가 화면 밖으로 빠지는 사례. 단일 원인·일반화·E2E·실물·기본 채택 아님. [원본·milestone 복제·해시](../experiments/2026-10-15-act-train/act15-video.json), [전체 결과](../experiments/2026-10-15-act-train/act15.md).|
