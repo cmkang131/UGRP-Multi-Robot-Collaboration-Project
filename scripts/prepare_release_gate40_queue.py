@@ -10,7 +10,6 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
-import subprocess
 import zlib
 
 ROOT = Path(__file__).resolve().parents[1]

@@ -21,7 +21,7 @@ from sim.release_global_observation import LATERAL_MODES
 from sim.release_nbv_observation import MODES as ACTIVE_RECOVERY_MODES
 from sim.release_regrasp import MODES as REGRASP_CHECK_MODES
 from sim.release_regrasp_recovery import MODES as REGRASP_RECOVERY_MODES
-from sim import release14, release15, release16, release17, release18
+from sim import release14, release15, release16, release17, release18, release19
 ZONE_SLOT_MODES=("floor","zone")   # zone: destination slot squares (static map, inside the zone) read as zone
 # User 2026-10-14: "빔을 들고 옮길 때에도 빔의 위치를 아나? ... 그럴 때에는 모르게 하는 게 어때".
 # hidden_v1: while the own gripper holds the cargo, its world pose never enters teacher/map-code inputs.
@@ -167,10 +167,12 @@ def own_end_world(world,inst,end):
 
 def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe_mode='gaze_v2',render_dr='off',
         zone_slots='floor',reach_mode='calibrated_mid_v1',held_object='visible_v0',lookaround='off',pose_anchor='legacy_truth_v0',placement='margin_v0',lateral_recovery='off',active_recovery='off',command_motion='off',localization_support='off',regrasp_check='off',regrasp_recovery='off',release_profile='off',release_fov_step='off',release_settle_reuse='off',release_goal_region='off',record_training=False):
-    release18.validate(release_profile,record_training,locals(),plan)
-    line_guard=release_profile in (release14.PROFILE, release15.PROFILE, release16.PROFILE, release17.PROFILE, release18.PROFILE)
-    fov_guard=release_profile in (release15.PROFILE, release16.PROFILE, release17.PROFILE, release18.PROFILE)
-    line_control=release18 if release_profile==release18.PROFILE else release17 if release_profile==release17.PROFILE else (release16 if release_profile==release16.PROFILE else (release15 if fov_guard else release14))
+    release19.validate(release_profile,record_training,locals(),plan)
+    release19_enabled=release_profile==release19.PROFILE
+    release18_enabled=release_profile in (release18.PROFILE,release19.PROFILE)
+    line_guard=release_profile in (release14.PROFILE, release15.PROFILE, release16.PROFILE, release17.PROFILE, release18.PROFILE, release19.PROFILE)
+    fov_guard=release_profile in (release15.PROFILE, release16.PROFILE, release17.PROFILE, release18.PROFILE, release19.PROFILE)
+    line_control=release18 if release18_enabled else release17 if release_profile==release17.PROFILE else (release16 if release_profile==release16.PROFILE else (release15 if fov_guard else release14))
     if observe_mode not in OBSERVE_MODES:raise ValueError(observe_mode)
     if lookaround not in LOOKAROUND_MODES:raise ValueError(lookaround)
     if lookaround!='off' and observe_mode!='backoff_v3':raise ValueError('lookaround runs after the backoff_v3 step back')
@@ -204,6 +206,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     if rgb_center and not (relative_pose and held_object=='hidden_v1' and lookaround=='setdown_lookaround_v2' and observe_mode=='backoff_v3'):
         raise ValueError('zone_center_rgb_v1 requires command_relative_v1, hidden_v1, setdown_lookaround_v2, backoff_v3')
     audit=HeldAudit(held_object)
+    top_audit=release19.TopCameraAudit()
     if platform.system()=='Darwin':raise RuntimeError('Mac physics/render disabled; use VM3')
     import numpy as np
     from PIL import Image
@@ -226,7 +229,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
     branch=subprocess.check_output(['git','branch','--show-current'],cwd=ROOT,text=True).strip()
     write(out/'RUN_META.json',{'class':'dev','pr':491,'branch':branch,'sha':sha,'batch':plan['batch']})
     report={'status':'running','source_sha':sha,'teacher':'release_visible_only_v1','own_pose_source':own_pose_source,'observe_mode':observe_mode,'zone_slots':zone_slots,'reach_mode':reach_mode,'held_object':held_object,'lateral_recovery':lateral_recovery,'active_recovery':active_recovery,
-        'lookaround':lookaround,'pose_anchor':pose_anchor,'placement':placement,'command_motion':command_motion,'localization_support':localization_support,'regrasp_check':regrasp_check,'regrasp_recovery':regrasp_recovery,'release_profile':release_profile,**({'release_fov_step':release_fov_step} if release_profile in (release17.PROFILE,release18.PROFILE) else {}),**({'release_settle_reuse':release_settle_reuse,'release_goal_region':release_goal_region} if release_profile==release18.PROFILE else {}),'map_pose_known':not relative_pose,
+        'lookaround':lookaround,'pose_anchor':pose_anchor,'placement':placement,'command_motion':command_motion,'localization_support':localization_support,'regrasp_check':regrasp_check,'regrasp_recovery':regrasp_recovery,'release_profile':release_profile,**({'release_fov_step':release_fov_step} if release_profile in (release17.PROFILE,release18.PROFILE,release19.PROFILE) else {}),**({'release_settle_reuse':release_settle_reuse,'release_goal_region':release_goal_region} if release18_enabled else {}),'map_pose_known':not relative_pose,
         'release_decision_inputs':'own RGB, own issued commands, static map only' if rgb_only else 'legacy visible-only teacher',
         'pose_estimate_source':'own issued wheels from arbitrary zero; map pose unknown' if relative_pose else 'legacy truth at release handoff plus frozen plan error',
         'own_camera_px':list(LOOK_RES if lookaround!='off' else (320,240)),'weld':'off','recording_mode':'success_measurement','student_execution':False,'success_rule':SUCCESS,
@@ -242,6 +245,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         cw,ch=LOOK_RES if lookaround!='off' else (320,240)   # existing OpenCV localisation modules work at 640x480 only
         world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=cw,height=ch,render=True,
             warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,roller_collision='mesh',idle_robot_contacts='off')
+        top_audit.install(world)
         for controller in world.controllers.values():bind_camera(controller)
         scene.setup(world)
         from harness.render_randomization import draw as dr_draw,apply as dr_apply
@@ -279,7 +283,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         def frames(i,tag):
             at=time.monotonic();overview=Image.new('RGB',(640,480))
             for k,camera in enumerate(static['top_cameras'][:4]):
-                f=Image.open(io.BytesIO(world.render_team_jpeg(camera=camera['name'])))
+                f=Image.open(io.BytesIO(top_audit.evaluation_jpeg(world,camera=camera['name'])))
                 overview.paste(f.resize((320,240)),((k%2)*320,(k//2)*240))
             overview.save(out/'eval-overview'/f'{i:06d}-{tag}.jpg',quality=86)
             for rid in roles:
@@ -478,12 +482,12 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                 wheel_command=lambda rid,w,d,at:wheels[rid].command(w,d,at),
                 clearance=lambda dx,dy,da:line_control.map_motion_clear(loc[teacher.rid],dx,dy,da),
                 **({'pick_audit':lambda at,t,xy:audit.pick('line_aligned_station',t.rid,at,t,xy=xy)} if fov_guard else {}),
-                **({'fov_step':release_fov_step} if release_profile in (release17.PROFILE,release18.PROFILE) else {}),
+                **({'fov_step':release_fov_step} if release_profile in (release17.PROFILE,release18.PROFILE,release19.PROFILE) else {}),
                 **({'settle_reuse':release_settle_reuse,'command_history':command_history[teacher.rid],
                     'after_approach':line_stage=='after_approach' and st['phase'] in ('approach','line_recheck'),
                     'before_approach':line_stage=='before_approach' and st['phase'] in ('await_observe','line_recheck'),
                     'idle':lambda:not st['sched'].get(teacher.rid) and not st['plan'].get(teacher.rid)
-                        and not any(wheels[teacher.rid].levels)} if release_profile==release18.PROFILE else {}))
+                        and not any(wheels[teacher.rid].levels)} if release18_enabled else {}))
             guard.peer_commands={r:dict(t.pwm) for r,t in rel.items() if r!=teacher.rid}
             return guard
         def regrasp_recovery_factory(teacher,now):
@@ -553,7 +557,10 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                                 # inspect nearby floor edges with a downward view.
                                 script=script[:-1]+[{'servo':look_servo(p,LOOK_ARM),'wait':1.0 if i==0 else VIEW_SETTLE_S,
                                     'capture':True,'label':f'zone_floor_{p:+.0f}'} for i,p in enumerate((-35.,0.,35.))]+script[-1:]
-                            look_run[rid]=ScriptRunner(script,now)
+                            look_run[rid]=(release19.ScriptRunner(script,now,teacher=t,
+                                command_history=command_history[rid],
+                                idle=lambda rid=rid:not st['sched'].get(rid) and not st['plan'].get(rid)
+                                    and not any(wheels[rid].levels)) if release19_enabled else ScriptRunner(script,now))
                         st.update(phase='lookaround',since=now)
                     elif now>=st['settle']-1e-9:
                         for rid,t in rel.items():schedule(rid,[(0.,t.gaze_target(now))],now)
@@ -592,6 +599,8 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
                             predicted=zfit.get('center_body_m')
                             look_eval[rid]['zone_center_evaluation']={'truth_center_body_m':target,
                                 'center_error_m':None if predicted is None else math.dist(predicted,target)}
+                        if release19_enabled:
+                            look_eval[rid]['reused_command_waits']=copy.deepcopy(look_run[rid].reused_waits)
                         look_eval[rid]['sweeps'].append(copy.deepcopy({k:v for k,v in look_eval[rid].items() if k not in ('sweeps','views')}))
                         schedule(rid,[(0.,t.gaze_target(now))],now)
                     if line_guard and st.get('pre_backoff'):
@@ -631,9 +640,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
             elif ph=='await_observe' and ready('observe',now):
                 if global_release:
                     from sim.release_global_observation import pair_choice
-                    chooser=release18.pair_choice if release_profile==release18.PROFILE else pair_choice
+                    chooser=release18.pair_choice if release18_enabled else pair_choice
                     choice=chooser(code.delivered,R,now,lateral_recovery=lateral_recovery,
-                        **({'goal_region':release_goal_region} if release_profile==release18.PROFILE else {}),
+                        **({'goal_region':release_goal_region} if release18_enabled else {}),
                         **({'axis_recovery':True} if checked_regrasp else {}));code.log.append(choice)
                 elif rgb_center:
                     from sim.release_zone_servo import pair_choice
@@ -858,7 +867,7 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
         raise
     finally:
         report['wall_s']=time.monotonic()-start;report['sim_s']=None if world is None else float(world.data.time)-origin
-        report['loadavg_at_end']=os.getloadavg();report['input_audit']=audit.record()
+        report['loadavg_at_end']=os.getloadavg();report['input_audit']={**audit.record(),**top_audit.record()}
         if line_guard:
             report['line_rechecks']=[c.record() for c in locals().get('line_checks',[])]
             report['map_backoff_checks']=locals().get('backoff_checks',[])
@@ -880,9 +889,9 @@ def run(plan,out,*,cap_s=90.,prefix_cap_s=35.,own_pose_source='commands',observe
 def main():
     p=argparse.ArgumentParser();p.add_argument('--plan',type=Path,required=True);p.add_argument('--episode',type=int,default=0)
     p.add_argument('--out',type=Path,required=True);p.add_argument('--cap-s',type=float,default=90.)
-    p.add_argument('--release-profile',choices=release18.PROFILES,default='off')
-    p.add_argument('--release-goal-region',choices=release18.GOAL_MODES,default='off',help='inside_margins_v1 (release18 only): stop extra centering when both RGB margin reports satisfy the existing 4 cm inside condition')
-    p.add_argument('--release-settle-reuse',choices=release18.REUSE_MODES,default='off',help='settled_command_v1 (release18 only): reuse unchanged open/hover commands after reapproach; fresh RGB alignment remains mandatory')
+    p.add_argument('--release-profile',choices=release19.PROFILES,default='off')
+    p.add_argument('--release-goal-region',choices=release18.GOAL_MODES,default='off',help='inside_margins_v1 (release18/release19 only): stop extra centering when both RGB margin reports satisfy the existing 4 cm inside condition')
+    p.add_argument('--release-settle-reuse',choices=release18.REUSE_MODES,default='off',help='settled_command_v1 (release18/release19 only): reuse unchanged open/hover commands after reapproach; fresh RGB alignment remains mandatory')
     p.add_argument('--release-fov-step',choices=release17.FOV_STEPS,default='off',help='release_fov_step_pulse_v1 (release17/18 profile only): FOV recovery by one 0.1 s level-0.35 pulse, one 0.15 s escalation, then fail')
     p.add_argument('--record-training',action='store_true',help='fail closed: safe profile and future verified gate/writer required')
     p.add_argument('--own-pose-source',choices=('commands','truth_comparison'),default='commands')

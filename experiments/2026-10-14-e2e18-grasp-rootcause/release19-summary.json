@@ -1,0 +1,127 @@
+{
+  "schema": "ugrp.release19.summary.v1",
+  "baseline_sha": "a3bbc90e07d3d731278cb6c83185687a190e3c6b",
+  "profile": "release19_v1",
+  "default": "off",
+  "verification_scope": "saved release18 ledgers and clock-only backend; no physical result",
+  "tests": {
+    "passed": 61,
+    "files": [
+      "tests/test_release19.py",
+      "tests/test_release18.py",
+      "tests/test_grasp_act_release_run.py"
+    ]
+  },
+  "replay": {
+    "runs": 9,
+    "corrections": 14,
+    "baseline_correction_median_s": 47.95,
+    "candidate_scheduler_median_s": 46.349999999999994,
+    "omitted_wait_per_correction_s": [
+      1.6
+    ],
+    "artifact": "release19-replay.json.zst",
+    "sha256": "a20cc9de2decadf91e83363ad82d302436a74e46dd3b144e6d1eec2575033f28",
+    "decoded_sha256": "ee275de4b4d014d29f9414dd8311839f5d7905b12f3fe2552c89715c4a13c025"
+  },
+  "runs": [
+    {
+      "seed": 74963,
+      "name": "r18d-00-a3bbc90e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18d-00-a3bbc90e/raw",
+      "original_release18_success": true,
+      "replayed_corrections": 1,
+      "omitted_wait_s": 3.2,
+      "result_sha256": "c7e41b15dc26f5723cef4514b2e24d406b68ccf4183c40f5b93e705515875dc9"
+    },
+    {
+      "seed": 74976,
+      "name": "r18d-01-a3bbc90e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18d-01-a3bbc90e/raw",
+      "original_release18_success": true,
+      "replayed_corrections": 3,
+      "omitted_wait_s": 6.4,
+      "result_sha256": "0b335e4cf4ba948e449d2ce7aafa57900b3e7ccefe30acc3ec34299ed45c3c6e"
+    },
+    {
+      "seed": 78520,
+      "name": "r18n-00-a3bbc90e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-00-a3bbc90e/raw",
+      "original_release18_success": true,
+      "replayed_corrections": 0,
+      "omitted_wait_s": 1.6,
+      "result_sha256": "28f1fdf41c54c40fed08914954ed52c83fdb1bbcb1fecf797dc0afaeeb185310"
+    },
+    {
+      "seed": 78521,
+      "name": "r18n-01-a3bbc90e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-01-a3bbc90e/raw",
+      "original_release18_success": true,
+      "replayed_corrections": 1,
+      "omitted_wait_s": 3.2,
+      "result_sha256": "3d1c4490ea4ba7dbd92b086491eb4827642dd1e7151d316a5296b16a36b790a5"
+    },
+    {
+      "seed": 78522,
+      "name": "r18n-02-a3bbc90e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-02-a3bbc90e/raw",
+      "original_release18_success": true,
+      "replayed_corrections": 1,
+      "omitted_wait_s": 3.2,
+      "result_sha256": "71330abf09874d8709a92c7de17cda069c2cddd56769999e642f6684d0d364d5"
+    },
+    {
+      "seed": 78523,
+      "name": "r18n-03-a3bbc90e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-03-a3bbc90e/raw",
+      "original_release18_success": true,
+      "replayed_corrections": 1,
+      "omitted_wait_s": 3.2,
+      "result_sha256": "57b6d9c091898b211ee86a696c3aeda4e607116610ce26c2d8a4c7105e421a8c"
+    },
+    {
+      "seed": 78524,
+      "name": "r18n-04-a3bbc90e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-04-a3bbc90e/raw",
+      "original_release18_success": true,
+      "replayed_corrections": 2,
+      "omitted_wait_s": 4.8,
+      "result_sha256": "cf3fb928ff09c27d3536c8af977691a834f47d99b4f6763925593aae58415131"
+    },
+    {
+      "seed": 78525,
+      "name": "r18n-05-a3bbc90e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-05-a3bbc90e/raw",
+      "original_release18_success": true,
+      "replayed_corrections": 2,
+      "omitted_wait_s": 4.8,
+      "result_sha256": "7436e8dd38b02aeef7ea78b6afd9087e7f8024330c35a1c69f79f3e5227b919f"
+    },
+    {
+      "seed": 78526,
+      "name": "r18n-06-a3bbc90e",
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/r18n-06-a3bbc90e/raw",
+      "original_release18_success": true,
+      "replayed_corrections": 3,
+      "omitted_wait_s": 6.4,
+      "result_sha256": "4e90654420bc01ae22cb4b4dec97d6ae4f2762c85471bff3e02da49dc0261576"
+    }
+  ],
+  "new_execution": {
+    "simulation": 0,
+    "rendering": 0,
+    "remote_connections": 0,
+    "gate": 0,
+    "release19_success": null
+  },
+  "input_audit": {
+    "clock_only_control_top_camera_reads": 0,
+    "historical_control_top_camera_reads": null,
+    "gcp_release19_control_top_camera_reads": null
+  },
+  "remaining": [
+    "4 correction moves can still exceed 180 s; 0.2 m limit retained",
+    "release19 physics and gate40 not executed",
+    "queue flags false; source materialization and coordinator execution pending"
+  ]
+}
