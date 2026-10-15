@@ -18,12 +18,14 @@ def main():
     p.add_argument('--batch',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     a=p.parse_args();host=require_cpu();a.output.mkdir(parents=True,exist_ok=False)
     jobs=read_json(a.batch/'batch-summary.json')['results']
-    phases=defaultdict(lambda:defaultdict(list)); copies=[]; events=[]; masks=[]; runs=[]; rejected=[]
+    phases=defaultdict(lambda:defaultdict(list)); refresh=defaultdict(lambda:defaultdict(list))
+    copies=[]; events=[]; masks=[]; runs=[]; rejected=[]
     for job in sorted(jobs,key=lambda r:r['seed']):
         raw=Path(job['raw']);s=read_json(raw/'summary.json')
         if job['status']!='complete' or not s.get('complete'):
             runs.append({'seed':job['seed'],'status':'HOST_ERROR','raw':str(raw)});continue
         obs=read_rows(raw/'student-inputs.jsonl');cmd=read_rows(raw/'commands.jsonl');labels=read_rows(raw/'shadow-labels.jsonl')
+        query_ids={r['sample_id'] for r in read_rows(raw/'chunk-predictions.jsonl')}
         ev=read_rows(raw/'eval-only.jsonl');funnel=recount(ev)
         assert len(obs)==len(cmd)==len(labels)==len(ev)
         assert funnel['first_pass_sim_t']==s['first_pass_sim_t']
@@ -35,9 +37,11 @@ def main():
             if not valid:invalid+=1;continue
             for policy in ('act','persistence'):
                 err=errors(row[policy],row['target']);phases[l['teacher_phase']][policy].append(err);phases['ALL'][policy].append(err)
+                if o['sample_id'] in query_ids:
+                    refresh[l['teacher_phase']][policy].append(err);refresh['ALL'][policy].append(err)
             sa,sp,sy=map(np.sign,(row['act']['wheels'],row['persistence']['wheels'],row['target']['wheels']))
             needed=sy!=sp
-            copies.append(dict(phase=l['teacher_phase'],n=4,agree=int((sa==sp).sum()),corrective=int(needed.sum()),
+            copies.append(dict(phase=l['teacher_phase'],query=o['sample_id'] in query_ids,n=4,agree=int((sa==sp).sum()),corrective=int(needed.sum()),
                                copied=int(((sa==sp)&needed).sum()),correct=int(((sa==sy)&needed).sum())))
         run_events=reversal_events(rows)
         events.extend(dict(seed=job['seed'],**r) for r in run_events)
@@ -73,12 +77,22 @@ def main():
     copy={p:{'wheel_rows':sum(r['n'] for r in copies if p=='ALL' or r['phase']==p),
         **{k:sum(r[k] for r in copies if p=='ALL' or r['phase']==p) for k in ('agree','corrective','copied','correct')}}
         for p in ('ALL','start','fold','approach','align','relook')}
+    refresh_copy={p:{'wheel_rows':sum(r['n'] for r in copies if r['query'] and (p=='ALL' or r['phase']==p)),
+        **{k:sum(r[k] for r in copies if r['query'] and (p=='ALL' or r['phase']==p)) for k in ('agree','corrective','copied','correct')}}
+        for p in ('ALL','start','fold','approach','align','relook')}
     errors_report={p:{policy:summarize_errors(v) for policy,v in data.items()} for p,data in phases.items()}
     metrics=dict(host=host,completed_runs=sum(r['status']=='complete' for r in runs),
         errors_by_phase=errors_report,copycat=copy,
+        refresh_only_errors={p:{policy:summarize_errors(v) for policy,v in data.items()} for p,data in refresh.items()},
+        refresh_only_copycat=refresh_copy,
         reversal={'events':len(events),**{policy:{'matched':sum(r[policy+'_delay_s'] is not None for r in events),
             'censored':sum(r[policy+'_delay_s'] is None for r in events),
             'matched_delay_s':stats([r[policy+'_delay_s'] for r in events if r[policy+'_delay_s'] is not None])} for policy in ('act','persistence')}},
+        reversal_requiring_response={'events':sum(r['requires_response'] for r in events),
+            'target_dwell_s':stats([r['target_dwell_s'] for r in events if r['requires_response']]),
+            **{policy:{'matched':sum(r['requires_response'] and r[policy+'_delay_s'] is not None for r in events),
+                'censored':sum(r['requires_response'] and r[policy+'_delay_s'] is None for r in events),
+                'matched_delay_s':stats([r[policy+'_delay_s'] for r in events if r['requires_response'] and r[policy+'_delay_s'] is not None])} for policy in ('act','persistence')}},
         mask=dict(queries=len(masks),h0_delta=summarize_errors([r['h0_delta'] for r in masks]),
             done_flips=sum(r['done_flip'] for r in masks),
             max_stored_chunk_error=max(r['stored_chunk_max_abs_error'] for r in masks),

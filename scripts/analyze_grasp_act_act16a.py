@@ -184,7 +184,8 @@ def reversal_events(rows):
             while end<len(rows) and rows[end]['valid'] and np.sign(rows[end]['target']['wheels'][wheel])==new:
                 end += 1
             record = {'t':now['t'], 'wheel':wheel, 'from_sign':int(old), 'to_sign':int(new),
-                      'phase':now['phase'], 'target_dwell_s':rows[end-1]['t']-now['t']+c.PERIOD_S}
+                      'phase':now['phase'], 'target_dwell_s':rows[end-1]['t']-now['t']+c.PERIOD_S,
+                      'requires_response':bool(np.sign(now['persistence']['wheels'][wheel])!=new)}
             for policy in ('act','persistence'):
                 match = next((r['t'] for r in rows[i:end] if np.sign(r[policy]['wheels'][wheel])==new),None)
                 record[policy+'_delay_s'] = None if match is None else match-now['t']

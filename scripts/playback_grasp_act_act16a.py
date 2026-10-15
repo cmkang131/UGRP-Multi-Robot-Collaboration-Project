@@ -6,7 +6,7 @@ from pathlib import Path
 import subprocess
 
 from harness.grasp_act_data import read_rows, read_json, sha256, write_json
-from scripts.analyze_grasp_act_act16a import require_cpu
+from scripts.analyze_grasp_act_act16a import require_cpu, existing
 
 
 def main():
@@ -18,9 +18,9 @@ def main():
         own=a.run/'review-own-10hz'
         index=read_json(a.run/'review-own-index.json')
         origin=index[0]['t'];n=len(index)
-        commands=read_rows(a.run/'teacher-commands.jsonl')
+        commands=read_rows(existing(a.run/'teacher-commands.jsonl'))
         event=next((r['t'] for r in commands if r['phase']=='done'),commands[-1]['t'])
-        result=read_json(a.run/'result.json')
+        result=read_json(existing(a.run/'result.json'))
     else:
         own=a.run/'rgb/r1'
         index=read_rows(a.run/'student-inputs.jsonl');origin=index[0]['t'];n=len(index)
