@@ -163,6 +163,8 @@ def run(args):
             'matching_increment': 'one raw fisheye center pixel horizontal angle atan(1/fx), evaluation-only base yaw',
             'segmentation_palette_source': 'v3' if 'walls_floor_textured_v3' in args.materials else 'v2',
             'rejection_table': str(args.output/'rejection-table.json')}
+    meta['planned_frames'] = sum(old.planned_case_count(len(old.wall_views(json.loads(p.read_text()))), args.poses)
+        for p in MAPS) * len(old.ROBOTS) * len(args.materials) * len(args.qualities)
     write(args.output/'meta.json', meta)
     try:
         for map_path in MAPS:
@@ -250,9 +252,9 @@ def run(args):
                         print(json.dumps({'finished': [map_path.stem, material, quality_name], 'frames': len(rows)}), flush=True)
                     finally:
                         renderer.close()
-    except Exception as exc:
+    except BaseException as exc:
         import traceback
-        errors.append({'category': 'HOST_ERROR', 'blocking_object': 'camera_probe', 'minimum_gap_m': None,
+        errors.append({'category': 'SUPERVISOR_STOP' if isinstance(exc, KeyboardInterrupt) else 'HOST_ERROR', 'blocking_object': 'camera_probe', 'minimum_gap_m': None,
                        'minimum_gap_reason': 'static image diagnosis, no clearance gate', 'reason': repr(exc),
                        'traceback': traceback.format_exc()})
         raise
@@ -262,7 +264,8 @@ def run(args):
         write(args.output/'rejection-table.json', {'stages': [
             {'stage': 'render_and_analyse', 'cumulative_pass_n': len(rows), 'rejected_n': len(errors)}],
             'errors': errors, 'raw_path': str(args.output), 'reproduction_command': meta['reproduction_command']})
-        write(args.output/'summary.json', {**meta, 'frames': len(rows), 'status': 'HOST_ERROR' if errors else 'MEASURED', 'errors': errors})
+        write(args.output/'summary.json', {**meta, 'frames': len(rows), 'status': 'INCOMPLETE_OR_HOST_ERROR'
+              if errors or len(rows) != meta['planned_frames'] else 'MEASURED', 'errors': errors})
         write(args.output/'SHA256SUMS.json', {p.name: old.sha256(p.read_bytes()) for p in args.output.iterdir()
                                             if p.is_file() and not p.name.startswith('SHA256SUMS')})
 
