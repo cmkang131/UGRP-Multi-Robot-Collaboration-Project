@@ -24,6 +24,8 @@ from harness.grasp_act_data import write_json
 from harness.json_encoding import dumps
 from harness.grasp_act_peer_rendezvous import (PeerRendezvous, RendezvousTeacherMixin,
     MODE as RENDEZVOUS_MODE, BOUNDED_MODE)
+from harness.beampair_approach import ApproachRepairMixin, MODE as APPROACH_MODE
+from harness.failure_rgb_tail import FailureRGBTail
 
 ROOT=Path(__file__).resolve().parents[1]
 EXP=ROOT/'experiments/2026-10-15-beampair1'
@@ -118,9 +120,11 @@ def setup_admission(plan,scenario):
     return rows
 
 
-def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,rendezvous='off'):
+def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,rendezvous='off',
+        approach_repair='off',failure_tail=True):
     if platform.system()!='Linux':raise RuntimeError('GCP Linux only; Mac physics/render forbidden')
     if mode!=MODE:raise ValueError('explicit beampair1_v1 opt-in required')
+    if approach_repair not in ('off',APPROACH_MODE):raise ValueError('unknown approach repair')
     validate_plan(plan)
     source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT):raise ValueError('committed source required')
@@ -155,6 +159,12 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         original_apply=runner.apply
         original_audit=audit_module.new_input_audit
         original_make_scene=scene_module.make_scene
+        original_snapshot=runner.snapshot
+        tail=FailureRGBTail() if failure_tail else None
+        def snapshot(world,*a,**kw):
+            value=original_snapshot(world,*a,**kw)
+            if tail is not None:tail.capture(world,plan['roles'],float(world.data.time))
+            return value
         def make_scene(p):
             # Standard Scene API accepts an authored scenario dictionary; this
             # avoids modifying the dependency's v4/v6 registry. V7 only changes
@@ -188,10 +198,11 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
                 guard.sanitize_memory(self)
                 visible[self.rid]=any(m['id']=='band_'+self.end and m['visible_n']>=5 for m in ms)
                 return guard.sanitize_world(super().observe(ms,now,**kw))
-        class Teacher(RendezvousTeacherMixin,original_teacher):
+        class Teacher(ApproachRepairMixin,RendezvousTeacherMixin,original_teacher):
             def __init__(self,rid,*a,**kw):
                 super().__init__(rid,*a,**kw);teachers[rid]=self
                 self.rendezvous=PeerRendezvous(rendezvous)
+                self.approach_repair=approach_repair;self.approach_repair_log=[]
                 ticks=plan['burst_ticks'] if rid=='r1' else 13-plan['burst_ticks']
                 self.pair_perturb=PairRecoveryPerturb(perturb_model(ticks),seed=plan['seed']+(rid=='r2'))
             def step(self,w,now,**kw):
@@ -222,6 +233,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         scene_module.make_scene=make_scene;measurements_module.measurements=measurements
         world_module.VisibleWorld=World;teacher_module.VisibleOnlyGraspTeacher=Teacher
         runner.apply=apply;audit_module.new_input_audit=new_audit
+        runner.snapshot=snapshot
         report=None
         try:
             with recording_json(runner):
@@ -230,6 +242,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             scene_module.make_scene=original_make_scene;measurements_module.measurements=original_measure
             world_module.VisibleWorld=original_world;teacher_module.VisibleOnlyGraspTeacher=original_teacher
             runner.apply=original_apply;audit_module.new_input_audit=original_audit
+            runner.snapshot=original_snapshot
             # Separate adapter result, leaving the dependency's raw result and
             # manifest intact. Both full source SHAs are required for identity.
             adapter=out.parent/'adapter';adapter.mkdir(parents=True,exist_ok=False)
@@ -241,6 +254,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
             write_json(adapter/'beampair1-result.json',{'schema':'ugrp.beampair1.result.v1',
                 'source_sha':source,'dependency_sha':DEPENDENCY_SHA,'candidate':candidate,
                 'peer_rendezvous':rendezvous,
+                'approach_repair':approach_repair,'failure_tail_recording':failure_tail,
                 'mode':mode,'held_object_hidden_v1':True,'held_world_reads':guard.held_world_reads,
                 'first_close_t':guard.first_close_t,'hidden_measurement_ticks':guard.hidden_measurement_ticks,
                 'input_audit':audit,'training_rgb':False,'profiles':selected,'result':report,
@@ -249,6 +263,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
                 'probe_executed_ticks':{r:sum(x['robot_id']==r and x['disturbance'] is not None for x in probe_rows) for r in teachers}})
             ledger=adapter/'beampair1-commands.jsonl'
             ledger.write_text(''.join(dumps(r)+'\n' for r in probe_rows))
+            if tail is not None:
+                tail.finish(adapter/'failure-tail',failed=not bool(report and report.get('physical_success')))
             runner.compress_logs(adapter)
     return report
 
@@ -260,5 +276,9 @@ if __name__=='__main__':
     p.add_argument('--mode',choices=['off',MODE],default='off')
     p.add_argument('--candidate',choices=['baseline','soft'],default='baseline');p.add_argument('--cap-s',type=float,default=60.)
     p.add_argument('--rendezvous',choices=['off',RENDEZVOUS_MODE,BOUNDED_MODE],default='off')
+    p.add_argument('--approach-repair',choices=['off',APPROACH_MODE],default='off')
+    p.add_argument('--failure-tail',action=argparse.BooleanOptionalAction,default=True,
+                   help='Recording only: retain last10 SIM seconds own RGB on failure/interruption')
     a=p.parse_args();run(json.loads(a.plan.read_text())['episodes'][a.episode],a.out,a.dependency_root,
-                         mode=a.mode,candidate=a.candidate,cap_s=a.cap_s,rendezvous=a.rendezvous)
+                         mode=a.mode,candidate=a.candidate,cap_s=a.cap_s,rendezvous=a.rendezvous,
+                         approach_repair=a.approach_repair,failure_tail=a.failure_tail)

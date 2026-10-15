@@ -1,0 +1,1941 @@
+{
+  "analysis_host": "gcp1",
+  "baseline_source_sha": "e645b34beb4fa693ab4ddedfe77045ae26b46388",
+  "source_scope": "pre-edit beampair3; no new gate measurement",
+  "episode_funnel": [
+    {
+      "gate": "submitted",
+      "entered": 40,
+      "cumulative_passed": 32,
+      "rejected": 8
+    },
+    {
+      "gate": "both_align_and_joint_hold",
+      "entered": 32,
+      "cumulative_passed": 30,
+      "rejected": 2
+    }
+  ],
+  "candidate_first_rejections": {
+    "blocked_goal": 6643
+  },
+  "blocker_occurrences": [
+    {
+      "reason": "blocked_goal",
+      "category": "memory_margin",
+      "blocked_object": "zone_wall_west",
+      "N": 6643
+    },
+    {
+      "reason": "blocked_goal",
+      "category": "current_geometry",
+      "blocked_object": "zone_wall_north",
+      "N": 6643
+    }
+  ],
+  "approach_frame_distributions": {
+    "success30": {
+      "N": 7563,
+      "command_actual_cosine": {
+        "N": 6750,
+        "min": -0.9997819999600643,
+        "p05": 0.9750705317104037,
+        "p50": 0.9996442533057817,
+        "p95": 0.9999979232836337,
+        "max": 0.999999999978008
+      },
+      "observed_distance_m": {
+        "N": 7234,
+        "min": 0.1425640099665899,
+        "p05": 0.1484491718329873,
+        "p50": 0.5307249394497751,
+        "p95": 1.4198061304207572,
+        "max": 2.0616545425194985
+      },
+      "direction_opposed_N": 38,
+      "command_away_band_N": 739,
+      "actual_away_band_N": 1024
+    },
+    "failure2": {
+      "N": 556,
+      "command_actual_cosine": {
+        "N": 444,
+        "min": -0.9989276678698744,
+        "p05": -0.06117477536504108,
+        "p50": 0.9990749655825267,
+        "p95": 0.999996742571686,
+        "max": 0.9999999999984467
+      },
+      "observed_distance_m": {
+        "N": 528,
+        "min": 0.145318140383742,
+        "p05": 0.15240158668933307,
+        "p50": 0.5935823791886432,
+        "p95": 1.1190193239340211,
+        "max": 1.42470153916682
+      },
+      "direction_opposed_N": 23,
+      "command_away_band_N": 119,
+      "actual_away_band_N": 178
+    }
+  },
+  "failures": [
+    {
+      "seed": 8318620,
+      "last6": {
+        "r1": {
+          "N": 61,
+          "range": [
+            27.70000000004966,
+            33.70000000007831
+          ],
+          "observed_distance": [
+            0.1654713631756979,
+            0.43549043590212155
+          ],
+          "evaluator_displacement_m": 0.27303500792747537,
+          "command_delta_sum": [
+            -0.26900460937029197,
+            0.07689292886894045
+          ],
+          "command_actual_cosine": {
+            "N": 60,
+            "min": -0.5375047403440233,
+            "p05": 0.89083054324936,
+            "p50": 0.9980936346375961,
+            "p95": 0.9999958467458155,
+            "max": 0.9999999999984467
+          },
+          "observed_ids_counts": {
+            "band_teal": 61
+          },
+          "nonzero_wheel_rows": 60,
+          "physical_contact_rows": 0,
+          "physical_contact_names": {},
+          "peer_distance_m": {
+            "N": 61,
+            "min": 0.6803153830043832,
+            "p05": 0.68083992658259,
+            "p50": 0.7072432975084427,
+            "p95": 0.839941249834206,
+            "max": 0.8636182230078692
+          },
+          "beam_displacement_m": 0.0
+        },
+        "r2": {
+          "N": 61,
+          "range": [
+            27.70000000004966,
+            33.70000000007831
+          ],
+          "observed_distance": [
+            0.15001839054205535,
+            0.20135403977703895
+          ],
+          "evaluator_displacement_m": 0.110510890738706,
+          "command_delta_sum": [
+            0.04724314727769914,
+            -0.09180360313702206
+          ],
+          "command_actual_cosine": {
+            "N": 27,
+            "min": 0.8973128797151388,
+            "p05": 0.9650382494280012,
+            "p50": 0.9950955792217705,
+            "p95": 0.9998150645533687,
+            "max": 0.999983809832423
+          },
+          "observed_ids_counts": {
+            "band_blue": 61
+          },
+          "nonzero_wheel_rows": 46,
+          "physical_contact_rows": 0,
+          "physical_contact_names": {},
+          "peer_distance_m": {
+            "N": 61,
+            "min": 0.6803153830043832,
+            "p05": 0.68083992658259,
+            "p50": 0.7072432975084427,
+            "p95": 0.839941249834206,
+            "max": 0.8636182230078692
+          },
+          "beam_displacement_m": 0.0
+        }
+      }
+    },
+    {
+      "seed": 8318626,
+      "last6": {
+        "r1": {
+          "N": 61,
+          "range": [
+            16.99999999999857,
+            23.000000000027217
+          ],
+          "observed_distance": [
+            0.20269455944268758,
+            0.20272343737680273
+          ],
+          "evaluator_displacement_m": 2.8900201394020182e-05,
+          "command_delta_sum": [
+            0.0,
+            0.0
+          ],
+          "command_actual_cosine": null,
+          "observed_ids_counts": {
+            "band_teal": 61
+          },
+          "nonzero_wheel_rows": 0,
+          "physical_contact_rows": 0,
+          "physical_contact_names": {},
+          "peer_distance_m": {
+            "N": 61,
+            "min": 0.5103150645889535,
+            "p05": 0.5111364260165336,
+            "p50": 0.5113950912731933,
+            "p95": 0.5114723846069317,
+            "max": 0.511500170956591
+          },
+          "beam_displacement_m": 0.0
+        },
+        "r2": {
+          "N": 61,
+          "range": [
+            16.99999999999857,
+            23.000000000027217
+          ],
+          "observed_distance": [
+            0.9674320079013973,
+            0.966360895621739
+          ],
+          "evaluator_displacement_m": 0.0016317951459132527,
+          "command_delta_sum": [
+            0.0,
+            0.0
+          ],
+          "command_actual_cosine": null,
+          "observed_ids_counts": {
+            "null": 1,
+            "band_blue": 60
+          },
+          "nonzero_wheel_rows": 0,
+          "physical_contact_rows": 0,
+          "physical_contact_names": {},
+          "peer_distance_m": {
+            "N": 61,
+            "min": 0.5103150645889535,
+            "p05": 0.5111364260165336,
+            "p50": 0.5113950912731933,
+            "p95": 0.5114723846069317,
+            "max": 0.511500170956591
+          },
+          "beam_displacement_m": 0.0
+        }
+      }
+    }
+  ],
+  "runs": [
+    {
+      "seed": 8318600,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318600-e645b34b/raw",
+      "success": true,
+      "sim_s": 31.20000000006637,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 158,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318600-e645b34b/raw/result.json": "bc95b97c321d9c27e07b4f1178a106dee942a6968ac999a7ae79b236a0850b15",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318600-e645b34b/raw/plan.json": "9c1fdad5d74dcb67f5d0c236857962b5b81c8791aee385fdc9a45eaccb736ae8",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318600-e645b34b/raw/eval-only.jsonl.zst": "02c484c9ece192783aa58dea7b28b7af06b9bc9a8f0d9520f2f04e49890d0b4f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318600-e645b34b/raw/teacher-r1.jsonl.zst": "10168f6fe0b0e878708d14712bac2448ecdedeb10a0ef160a164055dc28bed83",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318600-e645b34b/raw/teacher-r2.jsonl.zst": "c39ff3bc9d12615a44d10b941862425b48a50ee84a0f99e2ba6ae9e45a0037b4"
+      },
+      "event_counts": {
+        "r1": 9,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318601,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318601-e645b34b/raw",
+      "success": true,
+      "sim_s": 29.60000000005873,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 238,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318601-e645b34b/raw/result.json": "29eea63b340de83d91fcd8804a322af36dafcfb1b45189035e9b72a0e859084f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318601-e645b34b/raw/plan.json": "c228c381cf40a66777483047d1f8901cc0a3eb875b33cb20b43dd17d22824dd0",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318601-e645b34b/raw/eval-only.jsonl.zst": "d09f47f5fac9a56d7cf89e7d03641145cb6bfbd1cab4f5d5f29090e00051b869",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318601-e645b34b/raw/teacher-r1.jsonl.zst": "a3083dd273adfe8f509c1d4ef1598a067045469b4c6a78344e3b6615a99773e7",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318601-e645b34b/raw/teacher-r2.jsonl.zst": "aae29514d76ba01db509555a95bbaaa12bae2b4878384cd5ef0bac5de56b072f"
+      },
+      "event_counts": {
+        "r1": 8,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318602,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318602-e645b34b/raw",
+      "success": true,
+      "sim_s": 42.10000000011842,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 314,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318602-e645b34b/raw/result.json": "bf1c5f23b164ee370da9e3f250c7e750372f9c833afe8966cb332168b67980fd",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318602-e645b34b/raw/plan.json": "71c6c5f497bf895831abfaa8b3522e8c48e9a025f12fa978eeaa26c7a7f6f3c7",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318602-e645b34b/raw/eval-only.jsonl.zst": "b17aaebc672c7180f69e7fccd5e19e1a952615bbd10a274a7f10c400807a25fa",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318602-e645b34b/raw/teacher-r1.jsonl.zst": "402135762147ed95846b6e7e53a6761329936424625878290faf26a8293ba393",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318602-e645b34b/raw/teacher-r2.jsonl.zst": "81ab59c9dfa17da62ddbf5c0993d70f6120a7cd2c24c856b3a3ff1dfbdd4ccea"
+      },
+      "event_counts": {
+        "r1": 6,
+        "r2": 10
+      }
+    },
+    {
+      "seed": 8318603,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318603-e645b34b/raw",
+      "success": true,
+      "sim_s": 26.10000000004202,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 113,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318603-e645b34b/raw/result.json": "f8b1b0d7c1dc276f033c7e166a14be816704fe83218de5d632e767c6aa5d5d1f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318603-e645b34b/raw/plan.json": "a3f3ac3b4966891f307f2ce609f51a3770e7997b6538f036e3123fee16c60f3d",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318603-e645b34b/raw/eval-only.jsonl.zst": "1d3b64824ec874f41964782a78ef4f99f3bba5c546d02207410551de75744e06",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318603-e645b34b/raw/teacher-r1.jsonl.zst": "2506096735478dbc1798f85a17c0bd311224846b98df1353066928cdf74e8611",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318603-e645b34b/raw/teacher-r2.jsonl.zst": "16cf07c8b2762fbc425408ef96e94c1c39b1a9fdb340b103ed71238d19813e52"
+      },
+      "event_counts": {
+        "r1": 12,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318604,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318604-e645b34b/raw",
+      "success": true,
+      "sim_s": 48.60000000014946,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 464,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318604-e645b34b/raw/result.json.zst": "0ecbbc9d64e6b30180172d8cd4aab53aea67790e02716374de1f21501acd7fc3",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318604-e645b34b/raw/plan.json": "eaaba876db61a165f692a5a059f3e5e6fc07a537385e0012be7f950a88f1c223",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318604-e645b34b/raw/eval-only.jsonl.zst": "9102cb17dfb737245e375188f83a33d00632fc1c25d08aa5713b72136546ed0d",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318604-e645b34b/raw/teacher-r1.jsonl.zst": "5ebde480001b0f43e6f9be299cfd863b9115ff609751c487276e41f52678792c",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318604-e645b34b/raw/teacher-r2.jsonl.zst": "93cd76909569620f7bea3608d65a3cd514ac3df0b90a3f0701e8fab44504fd8e"
+      },
+      "event_counts": {
+        "r1": 10,
+        "r2": 10
+      }
+    },
+    {
+      "seed": 8318605,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318605-e645b34b/raw",
+      "success": true,
+      "sim_s": 37.200000000095024,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 352,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318605-e645b34b/raw/result.json": "a549fa97345c19ebd426c5d6bf6388346931a73f7a2b9fa5b3905fa49aebf59b",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318605-e645b34b/raw/plan.json": "ead99b235cc4aabba797546bb9465915063c8504fa8022bdda0ef4c7c722e5e4",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318605-e645b34b/raw/eval-only.jsonl.zst": "97202e774da1325704cfb3a949aa473c65f490e29df02d02c1aac58dfca88edc",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318605-e645b34b/raw/teacher-r1.jsonl.zst": "5080828097a99b2655c0480eb42490b53f8772cf464db9b5004ce8213db6d12d",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318605-e645b34b/raw/teacher-r2.jsonl.zst": "6c130d71699b9a690cf48489437e30648fae52535cdda5b04b7eebb697a88efc"
+      },
+      "event_counts": {
+        "r1": 14,
+        "r2": 10
+      }
+    },
+    {
+      "seed": 8318606,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318606-e645b34b/raw",
+      "success": true,
+      "sim_s": 39.00000000010362,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 113,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318606-e645b34b/raw/result.json": "b28fbe75802e05d1fb5da3ad0f7c75f63e15b9cecf3d17feb18920d82501ea7e",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318606-e645b34b/raw/plan.json": "b4c2fb29bcf02ba470db8076bc48a0785ec678fa99cfff3498f5340aecf754e3",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318606-e645b34b/raw/eval-only.jsonl.zst": "0c9dc86bff026f5194685bd602202131b70b8bb7de3d17f7a1b6a72509e72fe4",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318606-e645b34b/raw/teacher-r1.jsonl.zst": "66b910cabe709de5adc679d742a07080af8a6f5cee18031ec23865dd2a8a8379",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318606-e645b34b/raw/teacher-r2.jsonl.zst": "7ef73cb125cd9feda9435d58e809a11c45468f5a9256d84384f5b629a77b347d"
+      },
+      "event_counts": {
+        "r1": 16,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318607,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318607-e645b34b/raw",
+      "success": true,
+      "sim_s": 37.3000000000955,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 260,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318607-e645b34b/raw/result.json": "b48ff5db572df9ae6dfc705ed61ee0eb12b8e7294d1dbcdde27041b431cfae43",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318607-e645b34b/raw/plan.json": "2eb16eb38c935e8a085f7e27284bc61a5c0f1481e9a9c7d57676ccc6477570fd",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318607-e645b34b/raw/eval-only.jsonl.zst": "8ec3ac94f0ffc9a4b99cb07cb137d49f69628fa12c46b79adacb7a3e35ad1631",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318607-e645b34b/raw/teacher-r1.jsonl.zst": "2b39c9877b20e80463f7374bbdd81d0e8ca2ef23c7c5a8061208ba5e268dbf3f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318607-e645b34b/raw/teacher-r2.jsonl.zst": "f3e744e24f8eca821fdc54edc67d8bb3fb2e0cd997b92f3af255534843924a15"
+      },
+      "event_counts": {
+        "r1": 10,
+        "r2": 10
+      }
+    },
+    {
+      "seed": 8318608,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318608-e645b34b/raw",
+      "success": true,
+      "sim_s": 49.900000000155664,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 357,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318608-e645b34b/raw/result.json": "15ef7188f5fd90ca1e92c69e4fd2886c4a4835384ba2237f60f6166cd75cd713",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318608-e645b34b/raw/plan.json": "29d0953f600b77f0b660874cbf8a19ae364965153ea59f56124d4cf1b0e5b63f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318608-e645b34b/raw/eval-only.jsonl.zst": "846eb2b46f0ad998a3c406c3da28d6d407e60cb7f4f66ff2f9130de70488e494",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318608-e645b34b/raw/teacher-r1.jsonl.zst": "63b4ea6ca328516a25c470ec3274909ce48cabe59ebeec164b723a74414cecc1",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318608-e645b34b/raw/teacher-r2.jsonl.zst": "8cd9347b981eab02cbb5ac008f5a765bdefa63ea58e8cac62ed60bcc4cb07480"
+      },
+      "event_counts": {
+        "r1": 16,
+        "r2": 8
+      }
+    },
+    {
+      "seed": 8318609,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318609-e645b34b/raw",
+      "success": true,
+      "sim_s": 43.80000000012654,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 143,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318609-e645b34b/raw/result.json": "b5f23f698d10e25f1e477f26eba3f182f35568490844725ca99538b3877a628f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318609-e645b34b/raw/plan.json": "041f666b45ce850fe4a1cf58a1ae88ff76513ad82f6c322fd35ff20d785d42fa",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318609-e645b34b/raw/eval-only.jsonl.zst": "df31641cc32fe0906363cdf695ceaeb2dcbf170771264c061deb84038ec78149",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318609-e645b34b/raw/teacher-r1.jsonl.zst": "20c7ca77e0c7d5d4e2b234026e9ff0979bcd9439e29b5f8b3548c7e8af4fdd42",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318609-e645b34b/raw/teacher-r2.jsonl.zst": "462085d76575e3c2a9ab7dcd3f474dc2aa815ed5b4e31aba3c64d0b136ea0d57"
+      },
+      "event_counts": {
+        "r1": 6,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318610,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318610-e645b34b/raw",
+      "success": true,
+      "sim_s": 36.20000000009025,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 303,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318610-e645b34b/raw/result.json": "15e40b1d8294b72d40e3b02738a1554d6100e4ede4d065f00e7cf0a017514384",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318610-e645b34b/raw/plan.json": "3d8110e1cc94f057452ac6e8a4da36dbf2852a94191fcf0da80255d949ac9d57",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318610-e645b34b/raw/eval-only.jsonl.zst": "1aba92977f2a1cfc2f7f0ff1c30973df68248c41bd9d2f1117cfe67631ec4711",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318610-e645b34b/raw/teacher-r1.jsonl.zst": "dcba9de99ce30d78a3bfb42542693a4651e3893b7034c2daa1272da904b61c89",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318610-e645b34b/raw/teacher-r2.jsonl.zst": "130205b1161f71d784708ea3a0c778f4521f9076ca285787188bedacf9c49978"
+      },
+      "event_counts": {
+        "r1": 9,
+        "r2": 13
+      }
+    },
+    {
+      "seed": 8318611,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318611-e645b34b/raw",
+      "success": true,
+      "sim_s": 48.00000000014659,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 1,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 1,
+              "passed": 1,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 1,
+              "passed": 1,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 553,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318611-e645b34b/raw/result.json.zst": "7433a36ea046789f1dbf9a21c6947cd439a000840b890489bb64a6e39de1f223",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318611-e645b34b/raw/plan.json": "04761042845cd459b62babd06a3601b8143d0f2b68ac735254ec6289f1605995",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318611-e645b34b/raw/eval-only.jsonl.zst": "69e03e44687d949f2cb6067099ea86009afca96ec7d8400fe7d071c08ca505bf",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318611-e645b34b/raw/teacher-r1.jsonl.zst": "0a0cb11e2c1d6345a657458442d52d3614cb1c71be939f9890e3b5a896ca088a",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318611-e645b34b/raw/teacher-r2.jsonl.zst": "c1d72d048c3b2d51f2ff3e7833bbfa87465f59a44852e18c32b825602e2bdd15"
+      },
+      "event_counts": {
+        "r1": 11,
+        "r2": 10
+      }
+    },
+    {
+      "seed": 8318612,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318612-e645b34b/raw",
+      "success": true,
+      "sim_s": 30.90000000006494,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 183,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318612-e645b34b/raw/result.json": "cd4c0cd972124edd2d772f1abe0ab7578f6292e232a86d051b4e6d796cfa772c",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318612-e645b34b/raw/plan.json": "045ba088e05b93f6a47419eeb1b1fd3adc1bd1d458d37532b45676ca47832437",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318612-e645b34b/raw/eval-only.jsonl.zst": "d6c5a71ff3b8901836bf53958d4b87e739365bf772ab29e4ecb1b5819f3b59b0",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318612-e645b34b/raw/teacher-r1.jsonl.zst": "a287a67aa09c3b4a1d8b98805486b020bfcdb81f0a1742f3e5b95da8c33a5301",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318612-e645b34b/raw/teacher-r2.jsonl.zst": "5707533aa41b5a59f6219eb34208dab2c8fed2ede952802e204603222907cbe0"
+      },
+      "event_counts": {
+        "r1": 4,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318613,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318613-e645b34b/raw",
+      "success": true,
+      "sim_s": 37.900000000098366,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 343,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318613-e645b34b/raw/result.json": "98be9810484557a7e18890e09a8e5aad9ab42d035b87298a2211fcb63f905aab",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318613-e645b34b/raw/plan.json": "9cc610b0a25072a8eacaaddbf194fa1e5cd633c50af23d05158124e5d4546d81",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318613-e645b34b/raw/eval-only.jsonl.zst": "6dd2853a0ba240142314990b807b7d49be2d32b7a557a7ed1cd620d046074e9b",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318613-e645b34b/raw/teacher-r1.jsonl.zst": "ffb5c727631496c022aba2c7dac710e58aa87f23923de0e9e81db4e59fc94543",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318613-e645b34b/raw/teacher-r2.jsonl.zst": "c6e65752f35aaea0d085c57de033013f00fdd337a52b5d3459f8e99ffa38f698"
+      },
+      "event_counts": {
+        "r1": 11,
+        "r2": 11
+      }
+    },
+    {
+      "seed": 8318614,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318614-e645b34b/raw",
+      "success": true,
+      "sim_s": 35.00000000008452,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 343,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318614-e645b34b/raw/result.json": "d4c0ec9d6750037a47ef87b932859b99854af7c08cd2d3c3067032de1a0f275e",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318614-e645b34b/raw/plan.json": "98365a77ac30a75b58f556e1c6b0c4695c15615811405d720216aaee7ed3a058",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318614-e645b34b/raw/eval-only.jsonl.zst": "9998406b01597205a86468a5295ea09975ffff5c9066808ae88cf08ee905aab0",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318614-e645b34b/raw/teacher-r1.jsonl.zst": "cfcd2050755086f87052143021317e99bd370694458a05d131f33e0dbc7a3597",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318614-e645b34b/raw/teacher-r2.jsonl.zst": "141baeb1a2b6632484d6f342c5e3cd774145c9e1b0233df7da06b9fda7bbd704"
+      },
+      "event_counts": {
+        "r1": 14,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318615,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318615-e645b34b/raw",
+      "success": true,
+      "sim_s": 33.80000000007879,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 143,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318615-e645b34b/raw/result.json": "12187f947373d28d329227cb8f254fc86db5211787c983523fb18534057d5b84",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318615-e645b34b/raw/plan.json": "782e29ce1d15a4c25ec9c52c6e215064220a63d81e01088d98b5feaaf647fdb8",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318615-e645b34b/raw/eval-only.jsonl.zst": "a46db85aead204bf3e3e61e085487831f23a90a263236c6f48fa6f4292920289",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318615-e645b34b/raw/teacher-r1.jsonl.zst": "f7485372ff7b779e65c4045460cbc755bea6f5f911332a8460b365c3c2ca855e",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318615-e645b34b/raw/teacher-r2.jsonl.zst": "30799a7272a5cf952d045ffb81aecc9c0a3f2b76d98434e92a4a880dcd226cf5"
+      },
+      "event_counts": {
+        "r1": 16,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318616,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318616-e645b34b/raw",
+      "success": true,
+      "sim_s": 26.200000000042497,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 222,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318616-e645b34b/raw/result.json": "9943c345dea5312fa626059b90b08fd6423542b2bb4981c7f557f8c95edb2337",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318616-e645b34b/raw/plan.json": "56f72da3b3e2d2936b46bf22ee451870cefdb678201804c7c3d74d5a259732a6",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318616-e645b34b/raw/eval-only.jsonl.zst": "21dd25a58e61e0bfd9468bdec687f3f20c4ba1024470c1ce1bd482d51c6e88ff",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318616-e645b34b/raw/teacher-r1.jsonl.zst": "ab344fb948164962845d5f539a9280228ace3071a3065da7967613018d11797f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318616-e645b34b/raw/teacher-r2.jsonl.zst": "aa481246a60cd398143c6a5f89e06098181c4f854fdf385d0515c67bdbc760cb"
+      },
+      "event_counts": {
+        "r1": 10,
+        "r2": 10
+      }
+    },
+    {
+      "seed": 8318617,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318617-e645b34b/raw",
+      "success": true,
+      "sim_s": 36.50000000009168,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 364,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318617-e645b34b/raw/result.json": "728854715909a4c42684d7c16aa3bdc1bf4f59a89a49adee25aca5542d316eff",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318617-e645b34b/raw/plan.json": "f44deecd37694e2983ebe3c7225560ca94af46d6fe55abb24a9fde41aca0a93d",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318617-e645b34b/raw/eval-only.jsonl.zst": "31d8a14272175ae22da9b7367253047c0e865e7896e8bd95ebd068205a3c02fa",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318617-e645b34b/raw/teacher-r1.jsonl.zst": "8778ec1776d7ac74a379e77f8baaa80d18e44e610bc2c53c8c0cb58eb464721f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318617-e645b34b/raw/teacher-r2.jsonl.zst": "f44baa4e4f412c4bddc1c3d5eb4b0e8222ff34cd1483f93047f1605acb2bdfb6"
+      },
+      "event_counts": {
+        "r1": 11,
+        "r2": 10
+      }
+    },
+    {
+      "seed": 8318618,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318618-e645b34b/raw",
+      "success": true,
+      "sim_s": 32.400000000072104,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 109,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318618-e645b34b/raw/result.json": "cfa284b89ba30d830e6b7ef850c7203348ca250859a83a3c2267523d610a34ea",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318618-e645b34b/raw/plan.json": "0d475679210a7f23d14d8f5a229295de3ea958e1d7d1479c37d8c622cc5ba36a",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318618-e645b34b/raw/eval-only.jsonl.zst": "00673122bfde8248e861ebadca36dec156899a52950352c94a907ecf9feb6a90",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318618-e645b34b/raw/teacher-r1.jsonl.zst": "99734bc3dc0780c3fb2812e08db568fbed2277500e4328f5c142b5d296b7a31c",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318618-e645b34b/raw/teacher-r2.jsonl.zst": "3abeaa5ddedd535124e2a5b05b264eca88583b745b443c70dffd6dd6b9de2c06"
+      },
+      "event_counts": {
+        "r1": 15,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318619,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318619-e645b34b/raw",
+      "success": true,
+      "sim_s": 38.000000000098844,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 314,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318619-e645b34b/raw/result.json": "1683e82b63e5b712ab6b2f3bf604a23203be6b3eb7b30c4444e197e31a795e46",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318619-e645b34b/raw/plan.json": "1d294943389234a85a16e1a917c54776f127cf5ed4dcb219fd2480243d500293",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318619-e645b34b/raw/eval-only.jsonl.zst": "80009385b798772a6bca33a77610dae77b276f523a8a86baf62d1dc38b3b6f0a",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318619-e645b34b/raw/teacher-r1.jsonl.zst": "caa75d1dc686e715fd332415fd9a3a692cdd29141eb5d7156944a1a577166945",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318619-e645b34b/raw/teacher-r2.jsonl.zst": "6172a0e6947465f41edc668b6a74c982006fff3b2656c86a5845d7639dccc6a0"
+      },
+      "event_counts": {
+        "r1": 18,
+        "r2": 4
+      }
+    },
+    {
+      "seed": 8318620,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318620-e645b34b/raw",
+      "success": false,
+      "sim_s": 33.70000000007831,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "phases": {
+        "r1": "approach",
+        "r2": "ready"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 431,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318620-e645b34b/raw/result.json": "16c8f2785aefb8b69edfd38f23e08cc50d541ecdfeaba0968de473fbc5aabc97",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318620-e645b34b/raw/plan.json": "7b3c607bcf9c7774dad52a2115aa9e5fdfb1e3fc143c8f16564183d536620690",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318620-e645b34b/raw/eval-only.jsonl.zst": "8e34b6ccaa4fed12b04b239b8a275858d8a6bdec11ccc00088c519c9b64e0546",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318620-e645b34b/raw/teacher-r1.jsonl.zst": "4c04deb3f887afac4a680ce311ad0ba116121a86381c436e7ce0650945f8133a",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318620-e645b34b/raw/teacher-r2.jsonl.zst": "dbd8b1465906ba080766cd36736590c44ef90e0c23ad0fab8b37122d4e663b48"
+      },
+      "event_counts": {
+        "r1": 17,
+        "r2": 8
+      }
+    },
+    {
+      "seed": 8318621,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318621-e645b34b/raw",
+      "success": true,
+      "sim_s": 32.000000000070195,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 195,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318621-e645b34b/raw/result.json": "5a8dd2b1db3faadd1cbca2430787653e4041812980a05184a54409d661eca4a3",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318621-e645b34b/raw/plan.json": "788615e4cc6a653bc00230f1c6e7240f614811ce75b468bb6a66dc8f55d742b4",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318621-e645b34b/raw/eval-only.jsonl.zst": "4dfa0d6de39155d73aca994b255d8192a575879489d1729753eebc3646ad3b16",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318621-e645b34b/raw/teacher-r1.jsonl.zst": "67ff1a94b6545e834d046cd4ea2e1ccdeab3efe3a9146425ae21dd6cdd42f58f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318621-e645b34b/raw/teacher-r2.jsonl.zst": "f7d24ebc55bb2b82021df2f0e4f1b53fca04f79e99159407f9e879c5c0a3c2e2"
+      },
+      "event_counts": {
+        "r1": 6,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318622,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318622-e645b34b/raw",
+      "success": true,
+      "sim_s": 33.00000000007497,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 312,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318622-e645b34b/raw/result.json": "dd8b89172e6fcc0a009135508799f3225b96faf0e6907a3c6f00bf9e9a1e1c2d",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318622-e645b34b/raw/plan.json": "dfb5ebf910046b68354e7d74d73202fedd37595c8a503f35afd519f5cf90b7cd",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318622-e645b34b/raw/eval-only.jsonl.zst": "db72b0226410d72217f2e09fc77f9950c43659fb6db81f23523afb28feb29cd7",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318622-e645b34b/raw/teacher-r1.jsonl.zst": "f4a5423a5653da931bab10fb7fbb2979e012647c1135321ef5871a30416917c0",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318622-e645b34b/raw/teacher-r2.jsonl.zst": "bb7106cce0d8cbc30a0ffcd62fcf82c74a0a67c38f83569501a175b709906ff8"
+      },
+      "event_counts": {
+        "r1": 10,
+        "r2": 7
+      }
+    },
+    {
+      "seed": 8318623,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318623-e645b34b/raw",
+      "success": true,
+      "sim_s": 49.500000000153754,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 378,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318623-e645b34b/raw/result.json": "67c00d7feae03784169c5b329e30a177bdd799b1a2e5c6452573ecafefe546b7",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318623-e645b34b/raw/plan.json": "544ff0b354e985b44b25f1bd4b3a6c20101cb88a79ecac6e29183ac3af7c3ef4",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318623-e645b34b/raw/eval-only.jsonl.zst": "fe9e8ab32fbf9c80f3b5365f7bffe4dec2a58f7a8a8c28824987462ddb0cc885",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318623-e645b34b/raw/teacher-r1.jsonl.zst": "cc9f28a9f582d16faea672f01db2d7625512c6e0a2e594927a3f382ed37bb41f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318623-e645b34b/raw/teacher-r2.jsonl.zst": "66bd7b3995de92bc95fecc35fbdae19b2f68247712e633db0b151b585e980a36"
+      },
+      "event_counts": {
+        "r1": 14,
+        "r2": 4
+      }
+    },
+    {
+      "seed": 8318624,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318624-e645b34b/raw",
+      "success": true,
+      "sim_s": 33.3000000000764,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 197,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318624-e645b34b/raw/result.json": "09fb030813fab922bd0a1d33f625f88365a6882f29c52902fb165098c3eb4b2b",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318624-e645b34b/raw/plan.json": "17c454c6251882d3374ee318d11437031ba90cd1877707aa9f88dcfbd1e45b83",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318624-e645b34b/raw/eval-only.jsonl.zst": "b626b5e6b449d070e74bf9e5482ecf58105cf0633a36cadf3c5f3ed47460d60e",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318624-e645b34b/raw/teacher-r1.jsonl.zst": "d16efa1030800f4a0aaa9c77fc6f7864dfb3d01a9b2c4c2048f13a06ed86743e",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318624-e645b34b/raw/teacher-r2.jsonl.zst": "d52d13f108b4abf127315fd6aec2d89b1490bc4c0dac07ef34d98df4276c17fb"
+      },
+      "event_counts": {
+        "r1": 8,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318625,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318625-e645b34b/raw",
+      "success": true,
+      "sim_s": 39.70000000010696,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 297,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318625-e645b34b/raw/result.json": "54640ef8f99fc4fabe2d1f4b36cee5ad14dfec7a5091e91790ccc7ec55179d6f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318625-e645b34b/raw/plan.json": "542a5fe082d8070ac4d457b3e865753d71333d9eb11a526fe09cbb4e760f0b2f",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318625-e645b34b/raw/eval-only.jsonl.zst": "8d01006c3b2d3d6d0700a87de437e5b241373eeab09ce25b8ebab401a2a5cf47",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318625-e645b34b/raw/teacher-r1.jsonl.zst": "6f0a4e5b8631ea69d984723f7cabd691218a897dfaf0e620c310384a83d6b701",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318625-e645b34b/raw/teacher-r2.jsonl.zst": "a47b7c863fcaef09a0406ed5b02fea628411a679d4c5dd17f271c6098a457a0e"
+      },
+      "event_counts": {
+        "r1": 4,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318626,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318626-e645b34b/raw",
+      "success": false,
+      "sim_s": 23.000000000027217,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "phases": {
+        "r1": "ready",
+        "r2": "approach"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        },
+        "full_or_retained": {
+          "N": 6643,
+          "reason_distribution": {
+            "blocked_goal": 6643
+          },
+          "ordered_funnel": [
+            {
+              "gate": "ik_unreachable",
+              "entered": 6643,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 6643
+            },
+            {
+              "gate": "gripper_angle",
+              "entered": 6643,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 6643
+            },
+            {
+              "gate": "outside_bounds",
+              "entered": 6643,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 6643
+            },
+            {
+              "gate": "blocked_goal",
+              "entered": 6643,
+              "rejected": 6643,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "blocked_retreat",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "no_path",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "unsafe_body_sweep",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "band_not_visible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "arm",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "endpoint_feasible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "connector",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "planning_budget",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            },
+            {
+              "gate": "feasible",
+              "entered": 0,
+              "rejected": 0,
+              "terminal_pass": 0,
+              "continued": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 125,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318626-e645b34b/raw/result.json.zst": "57e4a33c75675c512cdbac702080c39b8ce9a40107210004fd9bb5fd257bdb5d",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318626-e645b34b/raw/plan.json": "5982b12dfe903743180769c1cfaa969ae3769bf2b9766c445007ec72c4cdf35b",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318626-e645b34b/raw/eval-only.jsonl.zst": "6f1f1ffc04ea42f4c4b65c0c0457608d307b7fc0ec31f62a74aa0f41b3830b2e",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318626-e645b34b/raw/teacher-r1.jsonl.zst": "d8ccbd7b680e46c8d70e463f0302ba6308cebbac952681e3c5264a5a238dbe42",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318626-e645b34b/raw/teacher-r2.jsonl.zst": "c56dabd281feba7aabf5098dad597f78799628a1aead4b0c24f863959fbdb4a6"
+      },
+      "event_counts": {
+        "r1": 4,
+        "r2": 9
+      }
+    },
+    {
+      "seed": 8318627,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318627-e645b34b/raw",
+      "success": true,
+      "sim_s": 25.100000000037245,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 141,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318627-e645b34b/raw/result.json": "d3bd15f4e16d3fe12aac6ac5b8f2199b709e33fd4e1d57862cb55fb6176aa484",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318627-e645b34b/raw/plan.json": "a750c0383b1062110d26e375357532e7463b54888f9ac8c0ace73889f07d2538",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318627-e645b34b/raw/eval-only.jsonl.zst": "7dbf15bb2fdb856587e14cf5152751e504f851e7646731c246f5ee1cb64a0ba8",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318627-e645b34b/raw/teacher-r1.jsonl.zst": "a5c854327e2a0cb54c1cfc34b543b83241230a5567bdea687695d98de8d01e3a",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318627-e645b34b/raw/teacher-r2.jsonl.zst": "f78d041e57c29dbe5aabea34e3b755bcaf84adefd99fce65f6750c2680443e28"
+      },
+      "event_counts": {
+        "r1": 4,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318628,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318628-e645b34b/raw",
+      "success": true,
+      "sim_s": 33.50000000007736,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 259,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318628-e645b34b/raw/result.json": "ed632e717aedc87af553a74bcbedbfb18ea08fd3aeb126fbc94fe4869098934e",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318628-e645b34b/raw/plan.json": "080071e68d50f115d419e4716a82a502b3ada26ef36ddfe06a3d4ebc6c327310",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318628-e645b34b/raw/eval-only.jsonl.zst": "85f826676b5c8696ef555a9f93520c395f7120efc1b6e6b72bba3110abb50a67",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318628-e645b34b/raw/teacher-r1.jsonl.zst": "7d40bae52a1fef7dc3b4d874e018462177ae28282031383a70b1b49168acfc91",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318628-e645b34b/raw/teacher-r2.jsonl.zst": "5a19c42c3436965efaf02b99cd24833d9b493d7654d0dc0481d995025b43a426"
+      },
+      "event_counts": {
+        "r1": 14,
+        "r2": 10
+      }
+    },
+    {
+      "seed": 8318629,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318629-e645b34b/raw",
+      "success": true,
+      "sim_s": 34.70000000008309,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 199,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318629-e645b34b/raw/result.json": "5fbe252cd3112677e56811c52e45f97fc9ff2908578e4134723ef90653cad394",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318629-e645b34b/raw/plan.json": "a9ff7add4b2025b7b8d315f2295365dd62ae68a7d05c323b1a66128a890f047e",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318629-e645b34b/raw/eval-only.jsonl.zst": "1208578fb51ab834068bf0ee9c0ab6d6c258a5485cde9ef0111a61859be77e97",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318629-e645b34b/raw/teacher-r1.jsonl.zst": "34793f060df1664826754256f8ff231e0846ffd75c9ac2477f8125959876d708",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318629-e645b34b/raw/teacher-r2.jsonl.zst": "37fa7e24625141d108ffcc2e2fc4c8b58f2b1d3bee4233b9cf6d03fc410c0c1b"
+      },
+      "event_counts": {
+        "r1": 4,
+        "r2": 10
+      }
+    },
+    {
+      "seed": 8318630,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318630-e645b34b/raw",
+      "success": true,
+      "sim_s": 16.299999999995226,
+      "roles": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 17,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318630-e645b34b/raw/result.json": "261700c9c1c2c7be3c1a3c1783cfd1cea8029bfd32869fe4200eb90ac6e568cf",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318630-e645b34b/raw/plan.json": "d78acf8195c251ce574303109329f44dc18d3990e24333e476191db8602416f0",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318630-e645b34b/raw/eval-only.jsonl.zst": "6b054b00bd8af8bcb66350b8a7b4f50ffdecddb8c1fe0eed62f9e80655cf0650",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318630-e645b34b/raw/teacher-r1.jsonl.zst": "afacc1e68da2b7508e7349897d364684f863a886a2380739f7096416f104c661",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318630-e645b34b/raw/teacher-r2.jsonl.zst": "b780258a2cffe7788ec092357ead39d98f71cda8ac4d5316ff2ffc86bcfa98aa"
+      },
+      "event_counts": {
+        "r1": 9,
+        "r2": 6
+      }
+    },
+    {
+      "seed": 8318631,
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318631-e645b34b/raw",
+      "success": true,
+      "sim_s": 27.900000000050614,
+      "roles": {
+        "r1": "blue",
+        "r2": "teal"
+      },
+      "cap_end": false,
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "phases": {
+        "r1": "complete",
+        "r2": "complete"
+      },
+      "candidates": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "approach_sample_N": 179,
+      "source_hashes": {
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318631-e645b34b/raw/result.json": "a9d89d2dc0ca5360935cb13dc15efeed90dd701a3f54e58868b4b0e28c3dd764",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318631-e645b34b/raw/plan.json": "3fa902466ffeded5c33d36468672a0c54ef6de7be1185a0a2d76ecd42bd4d400",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318631-e645b34b/raw/eval-only.jsonl.zst": "1001340ce1ecf7f999940222c37b52391c2f858e32b22515a9de4cb18d5fe4da",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318631-e645b34b/raw/teacher-r1.jsonl.zst": "eccc097e27b7399db774b14446c886fbef5da74853c59df4263d49f51fef13bb",
+        "/home/ugrp/ugrp-sim/runs/beampair3-gate-8318631-e645b34b/raw/teacher-r2.jsonl.zst": "50b38320f4d6e1335cfeddaa698c08a30be825b9d71dc474c637459115c05f65"
+      },
+      "event_counts": {
+        "r1": 15,
+        "r2": 10
+      }
+    }
+  ],
+  "note": "blocker occurrences may overlap within a candidate; directions per issued pulse and subsequent saved-state interval; qpos contacts are geometric snapshots only",
+  "reproduce": "PYTHONPATH=/home/ugrp/ugrp-sim/ops-reviews python3 /home/ugrp/ugrp-sim/ops-reviews/beampair4/analyze_beampair4.py --root /home/ugrp/ugrp-sim/runs --out NEW_OUTPUT",
+  "analysis_sha256": "7f3eaea6609664d44f7d889483c40c35ec2e217ea9775a34afaed02241b49d7f"
+}
