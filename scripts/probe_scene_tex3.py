@@ -166,7 +166,7 @@ def run(args):
     meta = {'source_sha': args.source_sha, 'host': platform.node(), 'mujoco': mujoco.__version__,
             'opencv': cv2.__version__, 'materials': args.materials, 'qualities': args.qualities,
             'physics_steps': 0, 'model_calls': 0, 'sim_s': 0, 'cap_end': False,
-            'reproduction_command': [sys.executable, '-m', 'scripts.probe_scene_tex3', *sys.argv[1:]],
+            'reproduction_command': [sys.executable, '-m', getattr(args, 'module', 'scripts.probe_scene_tex3'), *sys.argv[1:]],
             'scope': 'static fixture sequence, NOT motion/VO/localization success',
             'matching_increment': 'one raw fisheye center pixel horizontal angle atan(1/fx), evaluation-only base yaw',
             'segmentation_palette_source': 'v3' if 'walls_floor_textured_v3' in args.materials else 'v2',

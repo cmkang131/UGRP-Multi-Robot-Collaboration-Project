@@ -21,6 +21,7 @@ def main():
     probe.old.setup_proof(Path('/home/ugrp/ugrp-sim/scenetex2-setup-proof.md'))
     os.chdir(probe.ROOT)
     a.poses = a.resume_from = a.resume_materials = None
+    a.module = 'scripts.probe_scene_tex4'
     probe.run(a)
 
 

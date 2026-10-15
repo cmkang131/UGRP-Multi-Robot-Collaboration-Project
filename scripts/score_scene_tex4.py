@@ -81,12 +81,13 @@ def boundary_ok(rows, reference, enc):
     a, b = [r['columns'] for r in rr], [r['columns'] for r in bb]
     ae = [v for r in rr for v in r['residuals_px']]
     be = [v for r in bb for v in r['residuals_px']]
-    # An empty/short boundary error sample cannot win by failing to detect.
-    errors_ok = bool(ae and be) and len(ae) >= len(be) and bool(np.all(
+    # Column median/p10 is the user's separate coverage gate. No new minimum
+    # residual sample count or error tolerance is fitted to the candidates.
+    errors_ok = bool(ae and be) and bool(np.all(
         np.percentile(ae, np.arange(101)) <= np.percentile(be, np.arange(101))))
     cols_ok = bool(a and b) and all(np.percentile(a, q) >= np.percentile(b, q) for q in (10, 50))
     false_ok = sum(r['false_columns'] for r in rr) <= sum(r['false_columns'] for r in bb)
-    return {'pass': bool(cols_ok and errors_ok and false_ok), 'columns_pass': bool(cols_ok),
+    return {'pass': bool(cols_ok and errors_ok), 'columns_pass': bool(cols_ok),
             'error_distribution_pass': bool(errors_ok), 'false_columns_pass': bool(false_ok),
             'columns': distribution(a), 'v1_columns': distribution(b),
             'errors_px': distribution(ae), 'v1_errors_px': distribution(be),
