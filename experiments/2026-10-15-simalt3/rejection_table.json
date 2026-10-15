@@ -1,5 +1,5 @@
 {
-  "stage": "after_N1_equivalence_before_batch_diagnostics",
+  "stage": "final",
   "distribution": [
     {
       "category": "numeric_cast_overflow",
@@ -20,46 +20,68 @@
   ],
   "funnel": [
     {
-      "gate": "gcp2 budget-stop setup test",
+      "gate": "gcp2 setup stop test",
+      "unit": "backend candidate",
       "entered": 1,
       "passed": 1,
-      "rejected": 0
+      "rejected": 0,
+      "blocked": 0
     },
     {
-      "gate": "unused EFM data import",
+      "gate": "unused EFM numeric import",
+      "unit": "backend candidate",
       "entered": 1,
       "passed": 1,
-      "rejected": 0
+      "rejected": 0,
+      "blocked": 0
     },
     {
       "gate": "first finite noslip10 step",
+      "unit": "backend candidate",
       "entered": 1,
       "passed": 1,
-      "rejected": 0
+      "rejected": 0,
+      "blocked": 0
     },
     {
-      "gate": "complete command cases",
-      "entered": 4,
-      "passed": 4,
-      "rejected": 0
-    },
-    {
-      "gate": "exploratory endpoint response",
-      "entered": 4,
+      "gate": "N1 complete four-case suite",
+      "unit": "backend candidate",
+      "entered": 1,
       "passed": 1,
-      "rejected": 3
+      "rejected": 0,
+      "blocked": 0
     },
     {
-      "gate": "bilateral loaded hold 3s",
+      "gate": "all four endpoint responses within exploratory proposals",
+      "unit": "backend candidate",
       "entered": 1,
       "passed": 0,
-      "rejected": 1
+      "rejected": 1,
+      "blocked": 0
     },
     {
-      "gate": "production adoption",
-      "entered": 1,
+      "gate": "3s bilateral loaded hold admission",
+      "unit": "backend candidate",
+      "entered": 0,
       "passed": 0,
-      "rejected": 1
+      "rejected": 0,
+      "blocked": 1
+    },
+    {
+      "gate": "information-equivalent RGB admission",
+      "unit": "backend candidate",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0,
+      "blocked": 1
+    },
+    {
+      "gate": "twofold cost efficiency adoption",
+      "unit": "backend candidate",
+      "entered": 0,
+      "passed": 0,
+      "rejected": 0,
+      "blocked": 1
     }
   ],
   "raw_paths": [
@@ -105,5 +127,46 @@
       "minimum_gap_status": "not_geometric; visual information loss",
       "evidence": "evidence/rgb-matched-state-comparison.jpg"
     }
-  ]
+  ],
+  "diagnostic_funnels": {
+    "endpoint_cases": {
+      "entered": 4,
+      "passed": 1,
+      "rejected": 3,
+      "unit": "command case"
+    },
+    "loaded_hold_samples": {
+      "entered": 30,
+      "C_passed": 30,
+      "Warp_passed": 0,
+      "Warp_rejected": 30,
+      "unit": "10Hz samples, not episodes"
+    },
+    "completed_throughput_jobs": {
+      "entered": 10,
+      "passed": 10,
+      "rejected": 0,
+      "unit": "N/mode row; N1 physics row is forward excerpt from full suite"
+    },
+    "matched_RGB_snapshot": {
+      "entered": 1,
+      "passed": 0,
+      "rejected": 1,
+      "unit": "same-state image pair"
+    },
+    "raw_files_SHA256": {
+      "entered": 992,
+      "passed": 992,
+      "rejected": 0,
+      "unit": "stored raw file"
+    }
+  },
+  "source_paths": {
+    "comparison": "evidence/comparison.json",
+    "C_version_control": "evidence/comparison-cpu316.json",
+    "throughput": "benchmark.json",
+    "raw_manifest": "evidence/SHA256SUMS",
+    "reproduction": "README.md and run-batch.sh"
+  },
+  "adoption": "NOT_ADOPTED"
 }

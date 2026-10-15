@@ -1,0 +1,1565 @@
+{
+  "reports": {
+    "cpu-n1": {
+      "sha": "25bf9995",
+      "engine": "cpu",
+      "mujoco_version": "3.12.0",
+      "nworld": 1,
+      "script_sha256": "4af40620bef93c0e954c48ee0b00a9806a07e8215f97ccd81215afe04fb264de",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "none; physics-only; state ring buffer for offline rendering",
+      "status": "complete",
+      "attempted": 4,
+      "completed": 4,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 221600,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 12,
+          "max_nefc": 73,
+          "physics_wall_s": 3.2426267079999604,
+          "evaluator_wall_s": 0.02940780600005155,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 3.274081970999987,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 1.2335678325634913,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 1.2217150893406734,
+          "per_world_sim_seconds_per_wall_second": 1.2217149009014967
+        },
+        {
+          "name": "side",
+          "status": "complete",
+          "max_ncon": 10,
+          "max_nefc": 67,
+          "physics_wall_s": 3.5737564180000447,
+          "evaluator_wall_s": 0.030131357999948705,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 3.605837457000007,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 1.119270462825357,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 1.109311362200081,
+          "per_world_sim_seconds_per_wall_second": 1.1093111991493567
+        },
+        {
+          "name": "turn",
+          "status": "complete",
+          "max_ncon": 10,
+          "max_nefc": 67,
+          "physics_wall_s": 3.640945463999941,
+          "evaluator_wall_s": 0.02957987800013484,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 3.6726776260000236,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 1.0986157413095667,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 1.0891231027851624,
+          "per_world_sim_seconds_per_wall_second": 1.089122991876491
+        },
+        {
+          "name": "grip",
+          "status": "complete",
+          "max_ncon": 16,
+          "max_nefc": 84,
+          "physics_wall_s": 41.14318422600027,
+          "evaluator_wall_s": 0.3442202390007765,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 43.4,
+          "wall_s": 41.51335956600002,
+          "sample_count": 434,
+          "physics_only_SIM_s_per_wall_s": 1.0548527250978679,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 1.0454465504841701,
+          "per_world_sim_seconds_per_wall_second": 1.045446541418155
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/cpu-n1/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": false,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "wall_s": 52.14637843999998,
+      "rejections": []
+    },
+    "warp-n1": {
+      "sha": "25bf9995",
+      "engine": "warp",
+      "mujoco_version": "3.16.0",
+      "nworld": 1,
+      "script_sha256": "4af40620bef93c0e954c48ee0b00a9806a07e8215f97ccd81215afe04fb264de",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "none; physics-only; state ring buffer for offline rendering",
+      "status": "complete",
+      "attempted": 4,
+      "completed": 4,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 221600,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 40.80188706599995,
+          "evaluator_wall_s": 0.3282161450000558,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 41.13231105,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 0.09803468142367328,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 0.09724713957214438,
+          "per_world_sim_seconds_per_wall_second": 0.09724713821506399
+        },
+        {
+          "name": "side",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 67.59290172699997,
+          "evaluator_wall_s": 0.32411848099997087,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 67.91907992699993,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 0.05917781154233538,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 0.058893600126863004,
+          "per_world_sim_seconds_per_wall_second": 0.05889359965341872
+        },
+        {
+          "name": "turn",
+          "status": "complete",
+          "max_ncon": 25,
+          "max_nefc": 112,
+          "physics_wall_s": 67.73275373600029,
+          "evaluator_wall_s": 0.327449485999864,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 68.06249277899997,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 0.05905562345199587,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 0.05876951784901733,
+          "per_world_sim_seconds_per_wall_second": 0.058769517574435715
+        },
+        {
+          "name": "grip",
+          "status": "complete",
+          "max_ncon": 26,
+          "max_nefc": 115,
+          "physics_wall_s": 781.9615370579991,
+          "evaluator_wall_s": 3.5430545399980247,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 43.4,
+          "wall_s": 785.5322536109999,
+          "sample_count": 434,
+          "physics_only_SIM_s_per_wall_s": 0.055501451085798056,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 0.0552491634815417,
+          "per_world_sim_seconds_per_wall_second": 0.05524916345980868
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n1/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": true,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "warp_version": "1.15.0",
+      "backend_solver_tolerance": 9.99999993922529e-09,
+      "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+      "capacities": {
+        "nconmax": 32,
+        "njmax": 128,
+        "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+      },
+      "put_data_passed": true,
+      "first_step_passed": true,
+      "gpu_memory_end": "316, 23034, 100",
+      "wall_s": 1096.0102282760001,
+      "rejections": []
+    },
+    "cpu316-n1": {
+      "sha": "737f5a0e",
+      "engine": "cpu",
+      "mujoco_version": "3.16.0",
+      "nworld": 1,
+      "script_sha256": "a51a30d5da3fc7c016224dfc16f2b0836c2e93681cb2eb3a4d8cfed241988706",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "none; physics-only; state ring buffer for offline rendering",
+      "status": "complete",
+      "attempted": 4,
+      "completed": 4,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 221600,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 4.136623787999952,
+          "evaluator_wall_s": 0.040018151999674956,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 4.179010483999946,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 0.9669721504778154,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 0.9571633710784889,
+          "per_world_sim_seconds_per_wall_second": 0.9571631647131013
+        },
+        {
+          "name": "side",
+          "status": "complete",
+          "max_ncon": 21,
+          "max_nefc": 100,
+          "physics_wall_s": 5.318493346000878,
+          "evaluator_wall_s": 0.03793008899947381,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 5.35838008099995,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 0.7520926961406674,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 0.7464938205611852,
+          "per_world_sim_seconds_per_wall_second": 0.746493752854968
+        },
+        {
+          "name": "turn",
+          "status": "complete",
+          "max_ncon": 24,
+          "max_nefc": 109,
+          "physics_wall_s": 4.956529197999998,
+          "evaluator_wall_s": 0.038960656999051935,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 4.99759419499992,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 0.8070163294133391,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 0.800384824062969,
+          "per_world_sim_seconds_per_wall_second": 0.8003847718527852
+        },
+        {
+          "name": "grip",
+          "status": "complete",
+          "max_ncon": 29,
+          "max_nefc": 124,
+          "physics_wall_s": 60.25767667600189,
+          "evaluator_wall_s": 0.44362626100360103,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 43.4,
+          "wall_s": 60.725752749999856,
+          "sample_count": 434,
+          "physics_only_SIM_s_per_wall_s": 0.7202401817341292,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 0.7146885279136512,
+          "per_world_sim_seconds_per_wall_second": 0.71468852433584
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/cpu316-n1/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": false,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "wall_s": 75.3543559929999,
+      "rejections": []
+    },
+    "warp-n16-forward": {
+      "sha": "737f5a0e",
+      "engine": "warp",
+      "mujoco_version": "3.16.0",
+      "nworld": 16,
+      "script_sha256": "a51a30d5da3fc7c016224dfc16f2b0836c2e93681cb2eb3a4d8cfed241988706",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "none; physics-only; state ring buffer for offline rendering",
+      "status": "complete",
+      "attempted": 1,
+      "completed": 1,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 256000,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 75.30572297200047,
+          "evaluator_wall_s": 0.3460302049991242,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 75.653625035,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 0.8498690069517816,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 0.8459607298296932,
+          "per_world_sim_seconds_per_wall_second": 0.052872545320827774
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n16-forward/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": true,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "warp_version": "1.15.0",
+      "backend_solver_tolerance": 9.99999993922529e-09,
+      "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+      "capacities": {
+        "nconmax": 32,
+        "njmax": 128,
+        "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+      },
+      "put_data_passed": true,
+      "first_step_passed": true,
+      "gpu_memory_end": "316, 23034, 100",
+      "wall_s": 79.33160448299986,
+      "rejections": []
+    },
+    "warp-n64-forward": {
+      "sha": "737f5a0e",
+      "engine": "warp",
+      "mujoco_version": "3.16.0",
+      "nworld": 64,
+      "script_sha256": "a51a30d5da3fc7c016224dfc16f2b0836c2e93681cb2eb3a4d8cfed241988706",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "none; physics-only; state ring buffer for offline rendering",
+      "status": "complete",
+      "attempted": 1,
+      "completed": 1,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 1024000,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 102.52966099900004,
+          "evaluator_wall_s": 0.40356577399984417,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 102.93541044300014,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 2.4968384514847535,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 2.4869963038963943,
+          "per_world_sim_seconds_per_wall_second": 0.03885931704452489
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n64-forward/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": true,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "warp_version": "1.15.0",
+      "backend_solver_tolerance": 9.99999993922529e-09,
+      "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+      "capacities": {
+        "nconmax": 32,
+        "njmax": 128,
+        "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+      },
+      "put_data_passed": true,
+      "first_step_passed": true,
+      "gpu_memory_end": "316, 23034, 100",
+      "wall_s": 106.67029468700002,
+      "rejections": []
+    },
+    "warp-n128-forward": {
+      "sha": "737f5a0e",
+      "engine": "warp",
+      "mujoco_version": "3.16.0",
+      "nworld": 128,
+      "script_sha256": "a51a30d5da3fc7c016224dfc16f2b0836c2e93681cb2eb3a4d8cfed241988706",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "none; physics-only; state ring buffer for offline rendering",
+      "status": "complete",
+      "attempted": 1,
+      "completed": 1,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 2048000,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 121.26580694599966,
+          "evaluator_wall_s": 0.46128015400063305,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 121.72916103800003,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 4.222129987787873,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 4.206057478851093,
+          "per_world_sim_seconds_per_wall_second": 0.03285982387536242
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n128-forward/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": true,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "warp_version": "1.15.0",
+      "backend_solver_tolerance": 9.99999993922529e-09,
+      "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+      "capacities": {
+        "nconmax": 32,
+        "njmax": 128,
+        "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+      },
+      "put_data_passed": true,
+      "first_step_passed": true,
+      "gpu_memory_end": "348, 23034, 100",
+      "wall_s": 125.416355501,
+      "rejections": []
+    },
+    "warp-n256-forward": {
+      "sha": "737f5a0e",
+      "engine": "warp",
+      "mujoco_version": "3.16.0",
+      "nworld": 256,
+      "script_sha256": "a51a30d5da3fc7c016224dfc16f2b0836c2e93681cb2eb3a4d8cfed241988706",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "none; physics-only; state ring buffer for offline rendering",
+      "status": "complete",
+      "attempted": 1,
+      "completed": 1,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 4096000,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 159.9601440209999,
+          "evaluator_wall_s": 0.5785779060001914,
+          "batch_render_wall_s": 0.0,
+          "readback_fisheye_wall_s": 0.0,
+          "RGB_frames": 0,
+          "sim_s": 4.0,
+          "wall_s": 160.54106806900018,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 6.4015946363837175,
+          "physics_plus_RGB_SIM_s_per_wall_s": null,
+          "total_sim_seconds_per_wall_second": 6.378429341106925,
+          "per_world_sim_seconds_per_wall_second": 0.024915739529115778
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n256-forward/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": true,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "warp_version": "1.15.0",
+      "backend_solver_tolerance": 9.99999993922529e-09,
+      "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+      "capacities": {
+        "nconmax": 32,
+        "njmax": 128,
+        "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+      },
+      "put_data_passed": true,
+      "first_step_passed": true,
+      "gpu_memory_end": "444, 23034, 100",
+      "wall_s": 164.25892910899984,
+      "rejections": []
+    },
+    "warp-n1-forward-rgb": {
+      "sha": "01cd2a9c",
+      "engine": "warp",
+      "mujoco_version": "3.16.0",
+      "nworld": 1,
+      "script_sha256": "6ef918f9c1576713bd9c6a6b9752fd05f7b9e28877fb79eecf8ccb5245c4a593",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "MJWarp batch RGB640x480 at10Hz, readback+OpenCV fisheye; no policy/training/JPEG time",
+      "status": "complete",
+      "attempted": 1,
+      "completed": 1,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 16000,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 40.79369638599701,
+          "evaluator_wall_s": 0.33863841600123123,
+          "batch_render_wall_s": 0.05263927600117313,
+          "readback_fisheye_wall_s": 0.1409955210001499,
+          "RGB_frames": 40,
+          "sim_s": 4.0,
+          "wall_s": 41.32836872500002,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 0.09805436511933874,
+          "physics_plus_RGB_SIM_s_per_wall_s": 0.09759113083359797,
+          "total_sim_seconds_per_wall_second": 0.09678580706392341,
+          "per_world_sim_seconds_per_wall_second": 0.09678580609907125
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n1-forward-rgb/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": true,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "camera": {
+        "name": "r1__robot_cam",
+        "resolution": [
+          640,
+          480
+        ],
+        "mount_pos_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "mount_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ],
+        "intrinsic": [
+          619.5194702148438,
+          622.1654663085938,
+          32.31089401245117,
+          21.303133010864258
+        ],
+        "sensorsize": [
+          640.0,
+          480.0
+        ],
+        "K": [
+          [
+            619.5194540517232,
+            0.0,
+            287.68910608896766
+          ],
+          [
+            0.0,
+            622.1654884818748,
+            218.69686648455726
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "D": [
+          -0.0199819517209417,
+          -0.1707593617153504,
+          -0.2568318201202376,
+          0.9650933421665181
+        ],
+        "raw_fisheye_map_sha256": "eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42",
+        "post_integration_transforms": true,
+        "enabled_geom_groups": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "warp_version": "1.15.0",
+      "backend_solver_tolerance": 9.99999993922529e-09,
+      "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+      "capacities": {
+        "nconmax": 32,
+        "njmax": 128,
+        "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+      },
+      "put_data_passed": true,
+      "first_step_passed": true,
+      "RGB_ring": {
+        "path": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n1-forward-rgb/own-RGB-ring",
+        "hz": 10,
+        "max_frames": 100,
+        "saved_frames": 40,
+        "world": 0,
+        "bytes": 738948,
+        "recording_only": true
+      },
+      "gpu_memory_end": "342, 23034, 100",
+      "wall_s": 56.457651178000106,
+      "rejections": []
+    },
+    "warp-n16-forward-rgb": {
+      "sha": "01cd2a9c",
+      "engine": "warp",
+      "mujoco_version": "3.16.0",
+      "nworld": 16,
+      "script_sha256": "6ef918f9c1576713bd9c6a6b9752fd05f7b9e28877fb79eecf8ccb5245c4a593",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "MJWarp batch RGB640x480 at10Hz, readback+OpenCV fisheye; no policy/training/JPEG time",
+      "status": "complete",
+      "attempted": 1,
+      "completed": 1,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 256000,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 76.26764234399934,
+          "evaluator_wall_s": 0.3624165720016208,
+          "batch_render_wall_s": 0.18538607900018178,
+          "readback_fisheye_wall_s": 3.836178385997755,
+          "RGB_frames": 640,
+          "sim_s": 4.0,
+          "wall_s": 80.65422962399998,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 0.8391501039370395,
+          "physics_plus_RGB_SIM_s_per_wall_s": 0.7971183493224908,
+          "total_sim_seconds_per_wall_second": 0.7935107267860315,
+          "per_world_sim_seconds_per_wall_second": 0.049594420184315355
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n16-forward-rgb/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": true,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "camera": {
+        "name": "r1__robot_cam",
+        "resolution": [
+          640,
+          480
+        ],
+        "mount_pos_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "mount_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ],
+        "intrinsic": [
+          619.5194702148438,
+          622.1654663085938,
+          32.31089401245117,
+          21.303133010864258
+        ],
+        "sensorsize": [
+          640.0,
+          480.0
+        ],
+        "K": [
+          [
+            619.5194540517232,
+            0.0,
+            287.68910608896766
+          ],
+          [
+            0.0,
+            622.1654884818748,
+            218.69686648455726
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "D": [
+          -0.0199819517209417,
+          -0.1707593617153504,
+          -0.2568318201202376,
+          0.9650933421665181
+        ],
+        "raw_fisheye_map_sha256": "eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42",
+        "post_integration_transforms": true,
+        "enabled_geom_groups": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "warp_version": "1.15.0",
+      "backend_solver_tolerance": 9.99999993922529e-09,
+      "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+      "capacities": {
+        "nconmax": 32,
+        "njmax": 128,
+        "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+      },
+      "put_data_passed": true,
+      "first_step_passed": true,
+      "RGB_ring": {
+        "path": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n16-forward-rgb/own-RGB-ring",
+        "hz": 10,
+        "max_frames": 100,
+        "saved_frames": 40,
+        "world": 0,
+        "bytes": 738832,
+        "recording_only": true
+      },
+      "gpu_memory_end": "406, 23034, 0",
+      "wall_s": 84.63458748600033,
+      "rejections": []
+    },
+    "warp-n64-forward-rgb": {
+      "sha": "01cd2a9c",
+      "engine": "warp",
+      "mujoco_version": "3.16.0",
+      "nworld": 64,
+      "script_sha256": "6ef918f9c1576713bd9c6a6b9752fd05f7b9e28877fb79eecf8ccb5245c4a593",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "MJWarp batch RGB640x480 at10Hz, readback+OpenCV fisheye; no policy/training/JPEG time",
+      "status": "complete",
+      "attempted": 1,
+      "completed": 1,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 1024000,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 102.57472468700053,
+          "evaluator_wall_s": 0.43172877599909043,
+          "batch_render_wall_s": 0.6281134480004766,
+          "readback_fisheye_wall_s": 15.244613880000543,
+          "RGB_frames": 2560,
+          "sim_s": 4.0,
+          "wall_s": 118.8817674930001,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 2.495741526786114,
+          "physics_plus_RGB_SIM_s_per_wall_s": 2.1612959641172966,
+          "total_sim_seconds_per_wall_second": 2.153399935466064,
+          "per_world_sim_seconds_per_wall_second": 0.03364687388467263
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n64-forward-rgb/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": true,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "camera": {
+        "name": "r1__robot_cam",
+        "resolution": [
+          640,
+          480
+        ],
+        "mount_pos_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "mount_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ],
+        "intrinsic": [
+          619.5194702148438,
+          622.1654663085938,
+          32.31089401245117,
+          21.303133010864258
+        ],
+        "sensorsize": [
+          640.0,
+          480.0
+        ],
+        "K": [
+          [
+            619.5194540517232,
+            0.0,
+            287.68910608896766
+          ],
+          [
+            0.0,
+            622.1654884818748,
+            218.69686648455726
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "D": [
+          -0.0199819517209417,
+          -0.1707593617153504,
+          -0.2568318201202376,
+          0.9650933421665181
+        ],
+        "raw_fisheye_map_sha256": "eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42",
+        "post_integration_transforms": true,
+        "enabled_geom_groups": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "warp_version": "1.15.0",
+      "backend_solver_tolerance": 9.99999993922529e-09,
+      "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+      "capacities": {
+        "nconmax": 32,
+        "njmax": 128,
+        "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+      },
+      "put_data_passed": true,
+      "first_step_passed": true,
+      "RGB_ring": {
+        "path": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n64-forward-rgb/own-RGB-ring",
+        "hz": 10,
+        "max_frames": 100,
+        "saved_frames": 40,
+        "world": 0,
+        "bytes": 737861,
+        "recording_only": true
+      },
+      "gpu_memory_end": "662, 23034, 1",
+      "wall_s": 122.86930822999966,
+      "rejections": []
+    },
+    "warp-n128-forward-rgb": {
+      "sha": "01cd2a9c",
+      "engine": "warp",
+      "mujoco_version": "3.16.0",
+      "nworld": 128,
+      "script_sha256": "6ef918f9c1576713bd9c6a6b9752fd05f7b9e28877fb79eecf8ccb5245c4a593",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "MJWarp batch RGB640x480 at10Hz, readback+OpenCV fisheye; no policy/training/JPEG time",
+      "status": "complete",
+      "attempted": 1,
+      "completed": 1,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 2048000,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 98,
+          "physics_wall_s": 121.10976974799951,
+          "evaluator_wall_s": 0.49932268400107205,
+          "batch_render_wall_s": 1.2025223390000974,
+          "readback_fisheye_wall_s": 30.454082909000135,
+          "RGB_frames": 5120,
+          "sim_s": 4.0,
+          "wall_s": 153.26856721100012,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 4.227569758123971,
+          "physics_plus_RGB_SIM_s_per_wall_s": 3.3515228728403548,
+          "total_sim_seconds_per_wall_second": 3.3405413490874705,
+          "per_world_sim_seconds_per_wall_second": 0.026097979209716075
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n128-forward-rgb/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": true,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "camera": {
+        "name": "r1__robot_cam",
+        "resolution": [
+          640,
+          480
+        ],
+        "mount_pos_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "mount_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ],
+        "intrinsic": [
+          619.5194702148438,
+          622.1654663085938,
+          32.31089401245117,
+          21.303133010864258
+        ],
+        "sensorsize": [
+          640.0,
+          480.0
+        ],
+        "K": [
+          [
+            619.5194540517232,
+            0.0,
+            287.68910608896766
+          ],
+          [
+            0.0,
+            622.1654884818748,
+            218.69686648455726
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "D": [
+          -0.0199819517209417,
+          -0.1707593617153504,
+          -0.2568318201202376,
+          0.9650933421665181
+        ],
+        "raw_fisheye_map_sha256": "eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42",
+        "post_integration_transforms": true,
+        "enabled_geom_groups": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "warp_version": "1.15.0",
+      "backend_solver_tolerance": 9.99999993922529e-09,
+      "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+      "capacities": {
+        "nconmax": 32,
+        "njmax": 128,
+        "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+      },
+      "put_data_passed": true,
+      "first_step_passed": true,
+      "RGB_ring": {
+        "path": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n128-forward-rgb/own-RGB-ring",
+        "hz": 10,
+        "max_frames": 100,
+        "saved_frames": 40,
+        "world": 0,
+        "bytes": 738594,
+        "recording_only": true
+      },
+      "gpu_memory_end": "1046, 23034, 0",
+      "wall_s": 157.31274315400015,
+      "rejections": []
+    },
+    "warp-n256-forward-rgb": {
+      "sha": "01cd2a9c",
+      "engine": "warp",
+      "mujoco_version": "3.16.0",
+      "nworld": 256,
+      "script_sha256": "6ef918f9c1576713bd9c6a6b9752fd05f7b9e28877fb79eecf8ccb5245c4a593",
+      "fixture_sha256": "d3548742053aa18ee526297baa2611bb37b32f923b504097dc5a0c17f4184577",
+      "xml_sha256": "ad46cd87ef4188daa9a4dbebd79c470fac6f1b3fcb5e5a1fe0d9dfa3c2261849",
+      "training": false,
+      "renderer": "MJWarp batch RGB640x480 at10Hz, readback+OpenCV fisheye; no policy/training/JPEG time",
+      "status": "complete",
+      "attempted": 1,
+      "completed": 1,
+      "failure": 0,
+      "HOST_ERROR": 0,
+      "cap_end": false,
+      "steps_accepted": 4096000,
+      "cases": [
+        {
+          "name": "forward",
+          "status": "complete",
+          "max_ncon": 20,
+          "max_nefc": 97,
+          "physics_wall_s": 159.26481832299896,
+          "evaluator_wall_s": 0.6140109349985323,
+          "batch_render_wall_s": 2.394430929000009,
+          "readback_fisheye_wall_s": 60.92010883999865,
+          "RGB_frames": 10240,
+          "sim_s": 4.0,
+          "wall_s": 223.19614917299987,
+          "sample_count": 40,
+          "physics_only_SIM_s_per_wall_s": 6.429543013845432,
+          "physics_plus_RGB_SIM_s_per_wall_s": 4.600606313082973,
+          "total_sim_seconds_per_wall_second": 4.5878922874603205,
+          "per_world_sim_seconds_per_wall_second": 0.01792145420509485
+        }
+      ],
+      "physics_overrides": {},
+      "rejection_table": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n256-forward-rgb/rejection_table.json",
+      "execution_host": {
+        "project_id": "ugrp-sim-b-1014",
+        "instance": "ugrp-act-l4-gcp2",
+        "machine_type": "g2-standard-8",
+        "zone": "asia-northeast3-a"
+      },
+      "unused_efm_v1": true,
+      "options": {
+        "timestep": 0.00025,
+        "iterations": 80.0,
+        "ls_iterations": 50.0,
+        "noslip_iterations": 10.0,
+        "noslip_tolerance": 1e-06,
+        "tolerance": 1e-08,
+        "integrator": 3.0,
+        "cone": 1.0,
+        "solver": 2.0
+      },
+      "physics_hashes": {
+        "geom_friction": "08593369156c366597bac102a551af05ab3eecfee0fb6f5d4fb69a8a8e265947",
+        "pair_friction": "0f938b07114d30ffbb590621228001874a0e2848542f15afd27ae4bbbb359cac",
+        "body_mass": "e4abc27f0089096c2a15703ab001a653b88a430a3c5dd93cfbca361f5346d3ee",
+        "body_inertia": "0fb4f413ba95e8889c088ce1ac928d251fa58d9643a018f34b5cb9ef089698fd",
+        "geom_solref": "478e247fec389d3ede7f87078b1a18dbdd016711a116232f416d01eb5b6fd000",
+        "geom_solimp": "14e0918211d0a18544873512cd928dbd13df270f8ab50fd85815d469e86d413b"
+      },
+      "camera": {
+        "name": "r1__robot_cam",
+        "resolution": [
+          640,
+          480
+        ],
+        "mount_pos_m": [
+          0.052982009925558314,
+          0.0,
+          0.028152173913043477
+        ],
+        "mount_quat_wxyz": [
+          0.4545194776720437,
+          0.5416752204197018,
+          -0.5416752204197018,
+          -0.4545194776720437
+        ],
+        "intrinsic": [
+          619.5194702148438,
+          622.1654663085938,
+          32.31089401245117,
+          21.303133010864258
+        ],
+        "sensorsize": [
+          640.0,
+          480.0
+        ],
+        "K": [
+          [
+            619.5194540517232,
+            0.0,
+            287.68910608896766
+          ],
+          [
+            0.0,
+            622.1654884818748,
+            218.69686648455726
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "D": [
+          -0.0199819517209417,
+          -0.1707593617153504,
+          -0.2568318201202376,
+          0.9650933421665181
+        ],
+        "raw_fisheye_map_sha256": "eb9b67fbe2cd9323054c779f34e925507caec635b6e74306241469c5d9c32e42",
+        "post_integration_transforms": true,
+        "enabled_geom_groups": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "warp_version": "1.15.0",
+      "backend_solver_tolerance": 9.99999993922529e-09,
+      "backend_solver_tolerance_before_preservation": 9.999999974752427e-07,
+      "capacities": {
+        "nconmax": 32,
+        "njmax": 128,
+        "basis": "next power of 2 of observed C3.12 trace maxima and actual C3.16 import counts"
+      },
+      "put_data_passed": true,
+      "first_step_passed": true,
+      "RGB_ring": {
+        "path": "/home/ugrp/ugrp-sim/runs/simalt3/warp-n256-forward-rgb/own-RGB-ring",
+        "hz": 10,
+        "max_frames": 100,
+        "saved_frames": 40,
+        "world": 0,
+        "bytes": 738514,
+        "recording_only": true
+      },
+      "gpu_memory_end": "1782, 23034, 0",
+      "wall_s": 227.30022193700006,
+      "rejections": []
+    }
+  },
+  "memory": {
+    "cpu-n1": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 0,
+      "samples": 43,
+      "nominal_window_utc": [
+        "2026-10-15T14:32:23.261628+00:00",
+        "2026-10-15T14:33:15.408007+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "warp-n1": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 316,
+      "samples": 1095,
+      "nominal_window_utc": [
+        "2026-10-15T14:33:18.802521+00:00",
+        "2026-10-15T14:51:34.812749+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "cpu316-n1": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 0,
+      "samples": 75,
+      "nominal_window_utc": [
+        "2026-10-15T14:53:59.796057+00:00",
+        "2026-10-15T14:55:15.150413+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "warp-n16-forward": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 316,
+      "samples": 79,
+      "nominal_window_utc": [
+        "2026-10-15T14:55:41.871769+00:00",
+        "2026-10-15T14:57:01.203373+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "warp-n64-forward": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 316,
+      "samples": 107,
+      "nominal_window_utc": [
+        "2026-10-15T14:57:45.128810+00:00",
+        "2026-10-15T14:59:31.799105+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "warp-n128-forward": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 348,
+      "samples": 126,
+      "nominal_window_utc": [
+        "2026-10-15T15:00:05.260970+00:00",
+        "2026-10-15T15:02:10.677326+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "warp-n256-forward": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 444,
+      "samples": 164,
+      "nominal_window_utc": [
+        "2026-10-15T15:02:51.882972+00:00",
+        "2026-10-15T15:05:36.141901+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "warp-n1-forward-rgb": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 342,
+      "samples": 57,
+      "nominal_window_utc": [
+        "2026-10-15T15:07:38.550542+00:00",
+        "2026-10-15T15:08:35.008193+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "warp-n16-forward-rgb": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 406,
+      "samples": 84,
+      "nominal_window_utc": [
+        "2026-10-15T15:09:26.899398+00:00",
+        "2026-10-15T15:10:51.533985+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "warp-n64-forward-rgb": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 662,
+      "samples": 122,
+      "nominal_window_utc": [
+        "2026-10-15T15:12:05.141770+00:00",
+        "2026-10-15T15:14:08.011078+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "warp-n128-forward-rgb": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 1046,
+      "samples": 157,
+      "nominal_window_utc": [
+        "2026-10-15T15:14:42.659113+00:00",
+        "2026-10-15T15:17:19.971857+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    },
+    "warp-n256-forward-rgb": {
+      "sample_hz": 1,
+      "sampled_peak_MiB": 1782,
+      "samples": 227,
+      "nominal_window_utc": [
+        "2026-10-15T15:18:18.028103+00:00",
+        "2026-10-15T15:22:05.328325+00:00"
+      ],
+      "basis": "result file mtime minus measured run wall; sampled, not allocator peak"
+    }
+  },
+  "expected_jobs": 12,
+  "completed_jobs": 12,
+  "HOST_ERROR": 0,
+  "cap_end": 0,
+  "failed_runs": 0,
+  "rejected_equivalence_is_separate": true,
+  "source_batches": {
+    "25bf9995": "C3.12 reference + Warp N1 suite",
+    "737f5a0e": "C3.16 control + physics-only N16/64/128/256",
+    "01cd2a9c": "batch RGB N1/16/64/128/256; physics unchanged, camera transform sync and logging added"
+  }
+}
