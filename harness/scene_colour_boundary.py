@@ -11,10 +11,13 @@ import cv2
 import numpy as np
 
 OPTION = 'scene_colour_transition_v1'
+RELOC16_OPTION = 'scene_colour_transition_v2'
 
 
 class ColourBoundaryState:
-    def __init__(self, profile, calibration):
+    def __init__(self, profile, calibration, *, option=OPTION):
+        if option not in (OPTION, RELOC16_OPTION): raise ValueError("UNKNOWN_SCENE_COLOUR_BOUNDARY")
+        self.option = option
         from sim.scene_contrast_v5 import resolve, profile_record
         self.profile = resolve(profile)
         if (calibration.get('scene_profile') != profile or
@@ -72,7 +75,17 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
         found = False
         for v in y[::-1]:
             above, below = v-window, v+1+window
-            if above < 0 or below >= len(s) or not np.median(w[max(0,v-int(p['band_px'])):above+1]) or not f[below]: continue
+            if above < 0 or below >= len(s): continue
+            if state.option == RELOC16_OPTION:
+                # Before-audit: largest PNG loss425/741 was a single below row;
+                # JPEG/PIL also lose wall band support. Reuse the inherited
+                # band(10) and support window(3), no new colour/error threshold.
+                # Require a majority-class window on BOTH sides of the edge.
+                wa=w[max(0,v-int(p['band_px'])):v+1]
+                fb=f[v+1:min(len(f),v+1+int(p['band_px']))]
+                support=lambda a: len(a)>=window and np.any(np.convolve(a.astype(int),np.ones(window,int),'valid')>window/2)
+                if not support(wa) or not support(fb): continue
+            elif not np.median(w[max(0,v-int(p['band_px'])):above+1]) or not f[below]: continue
             # Linear interpolation of the scalar colour crossing. This is a
             # measured subpixel edge, not a snapped GT boundary or line fill.
             # Brightness is deliberately separated in scene-v5: choose the
@@ -107,7 +120,7 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
     # frozen raw manifest/source in the calibration, not a new admission slack.
     tol=float(state.calibration['line_residual_px_p95'])
     primary=np.isfinite(scan['vb'][:,0])
-    seed=primary & np.array([not robot[max(0,u-half):min(len(robot),u+half+1)].any() for u in cols])
+    seed=primary.copy() if state.option == RELOC16_OPTION else primary & np.array([not robot[max(0,u-half):min(len(robot),u+half+1)].any() for u in cols])
     remaining=primary.copy();supported_line=np.zeros(n,bool);checks=0
     while np.count_nonzero(seed & remaining)>=2:
         ids=np.flatnonzero(seed & remaining);best=None
@@ -127,7 +140,7 @@ def detect(hfw, und_bgr, cm, *, params, loaded, state):
     for seg in segments: supported[seg['col_first']:seg['col_last']+1] = True
     for j in np.flatnonzero(np.isfinite(scan['vb'][:,0]) & ~supported): reasons[j] = 'NO_NEIGHBOUR_CONTINUITY'
     for arr in scan.values(): arr[~supported] = np.nan
-    state.last_result = {'option':OPTION,'scene_profile':state.profile,'column_reasons':reasons,
+    state.last_result = {'option':state.option,'scene_profile':state.profile,'column_reasons':reasons,
                          'work_budget':{'columns':n,'rows_per_column':und_bgr.shape[0],'line_pair_checks':checks},
                          'truth_inputs':0,'interpolated_missing_columns':0}
     return scan
@@ -145,14 +158,14 @@ def configured_backend(hfw):
     from types import SimpleNamespace
     option=os.environ.get('UGRP_SCENE_COLOUR_BOUNDARY','off')
     if option=='off':return hfw
-    if option!=OPTION:raise ValueError('UNKNOWN_SCENE_COLOUR_BOUNDARY')
+    if option not in (OPTION,RELOC16_OPTION):raise ValueError('UNKNOWN_SCENE_COLOUR_BOUNDARY')
     profile=os.environ.get('UGRP_SCENE_RENDER_PROFILE','')
     path=Path(os.environ.get('UGRP_SCENE_COLOUR_CALIBRATION',''))
     digest=os.environ.get('UGRP_SCENE_COLOUR_CALIBRATION_SHA256','')
     if not path.is_file() or len(digest)!=64:raise ValueError('EXPLICIT_FROZEN_COLOUR_CALIBRATION_REQUIRED')
     raw=path.read_bytes()
     if hashlib.sha256(raw).hexdigest()!=digest:raise ValueError('COLOUR_CALIBRATION_HASH_MISMATCH')
-    state=ColourBoundaryState(profile,json.loads(raw))
+    state=ColourBoundaryState(profile,json.loads(raw),option=option)
     def dispatch(und_bgr,cm,params=None,self_top=None,loaded=True,*,wall_detector='off',contact_rule='off'):
         if self_top is not None or wall_detector!='off' or contact_rule!='off':
             raise ValueError('SCENE_COLOUR_BACKEND_REQUIRES_UNMODIFIED_CONTACT_INTERFACE')
