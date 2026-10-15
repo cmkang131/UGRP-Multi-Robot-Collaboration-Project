@@ -1,0 +1,469 @@
+{
+  "schema": "ugrp.warp2.cpu_comparison.v1",
+  "source_sha": "70553d2f4235b28648c188b26f9b2a03fa32a19d",
+  "backend": "c_pilot_v1",
+  "host": "gcp2/ugrp-sim-gcp2/n4-highcpu-64",
+  "concurrency": 16,
+  "physical_success": 16,
+  "N": 16,
+  "unique_seeds": 6,
+  "cap_end": 0,
+  "HOST_ERROR": 0,
+  "aggregate_completed_sim_s": 671.7000000018857,
+  "batch_wall_s": 200.05319023132324,
+  "sim_s_per_wall_s": 3.357607040533536,
+  "sim_s_per_usd_estimate": 3842.8770095761206,
+  "vm_cost_usd_estimate": 0.17479091793155668,
+  "price_hourly_usd": 3.1454,
+  "price_basis": "historical unverified regional estimate; billing not measured",
+  "co_tenancy_admission": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/admission.json",
+  "first30": {
+    "N": 14,
+    "median": 3.808241477192294,
+    "min": 3.504837182192911,
+    "max": 3.9775286373919636
+  },
+  "sha256_check": {
+    "files": 1730,
+    "mismatches": []
+  },
+  "commands_equal_original_gcp2_N": 16,
+  "records": [
+    {
+      "run": "p00",
+      "seed": 8318726,
+      "world": {
+        "world": 0,
+        "seed": 8318726,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 38.000000000098844,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1631,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "ea55aa50b0c90cceaad7890032b8e51c4a8092665a5c4790b91bb6728afb85f4",
+      "hidden_measurement_ticks": 106,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "022a2fce49be1a9be2ddb8ed9254312e8fb488b57fe9c441dcbe1c35182e679f",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p00",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-000/adapter"
+    },
+    {
+      "run": "p01",
+      "seed": 8318620,
+      "world": {
+        "world": 0,
+        "seed": 8318620,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 55.800000000183836,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1803,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "564db5dcf4827be18365347833bb8b5c7dab878ce8e557263b7fb32a6572c215",
+      "hidden_measurement_ticks": 80,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "da02306da92b6a187089c8d8c5afbf809802d799c0690c12edefd44ae98e29a1",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p01",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-001/adapter"
+    },
+    {
+      "run": "p02",
+      "seed": 8318600,
+      "world": {
+        "world": 0,
+        "seed": 8318600,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 31.20000000006637,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 938,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "453b20113ce94e43868e7438a39b8784359e75d97de3c566a2999d7138623116",
+      "hidden_measurement_ticks": 102,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "2b99d0dbe358cb47815115c101eda9c0023dc2a5456017ec4a4a0ef00d30b973",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p02",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-002/adapter"
+    },
+    {
+      "run": "p03",
+      "seed": 8318604,
+      "world": {
+        "world": 0,
+        "seed": 8318604,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 48.300000000148025,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1746,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "3f96d8fd97c5fe24296b90a0e99a9095264bb3e03a280ac4fcb8de7fd2c80eb7",
+      "hidden_measurement_ticks": 92,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "d33d5b3f832f4481500e5fbe5266ccfbe13eadb6cbf5231945e69bf68b2f0ab1",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p03",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-003/adapter"
+    },
+    {
+      "run": "p04",
+      "seed": 8318611,
+      "world": {
+        "world": 0,
+        "seed": 8318611,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 48.00000000014659,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1586,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "a9e12097e97eb44abf65ff1fa8075b832b230b404e74ee53feb2156a498233ff",
+      "hidden_measurement_ticks": 94,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "71156936fb14497e88201df0c19fb368345ddf680c8d034bc511ac2cd67d14f1",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p04",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-004/adapter"
+    },
+    {
+      "run": "p05",
+      "seed": 8318631,
+      "world": {
+        "world": 0,
+        "seed": 8318631,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 27.900000000050614,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 668,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "185c6fc779f6c5ab6cab61ac42e318b48a197fd60578ad4140f12d2404ac1f82",
+      "hidden_measurement_ticks": 82,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "97b57fd785ef6c134c4c13cd8885c59b4e12ea504cb35bdaedb20f5afd2a271f",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p05",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-005/adapter"
+    },
+    {
+      "run": "p06",
+      "seed": 8318726,
+      "world": {
+        "world": 0,
+        "seed": 8318726,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 38.000000000098844,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1631,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "88bb6737aa2b2d0f0cdd90c7d100d9db855fd94fb47506a725af26a8cfcd57a3",
+      "hidden_measurement_ticks": 106,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "022a2fce49be1a9be2ddb8ed9254312e8fb488b57fe9c441dcbe1c35182e679f",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p06",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-000/adapter"
+    },
+    {
+      "run": "p07",
+      "seed": 8318620,
+      "world": {
+        "world": 0,
+        "seed": 8318620,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 55.800000000183836,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1803,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "01f6baa9ee49f2d2b5f311c1e8f2214a72fabea9f7d5fd6fe8f9c9a3f774eb46",
+      "hidden_measurement_ticks": 80,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "da02306da92b6a187089c8d8c5afbf809802d799c0690c12edefd44ae98e29a1",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p07",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-001/adapter"
+    },
+    {
+      "run": "p08",
+      "seed": 8318600,
+      "world": {
+        "world": 0,
+        "seed": 8318600,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 31.20000000006637,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 938,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "ce7181db132a491bb6910509c5a011c3fe8c10623fb686dd9fdcc52a53520b56",
+      "hidden_measurement_ticks": 102,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "2b99d0dbe358cb47815115c101eda9c0023dc2a5456017ec4a4a0ef00d30b973",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p08",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-002/adapter"
+    },
+    {
+      "run": "p09",
+      "seed": 8318604,
+      "world": {
+        "world": 0,
+        "seed": 8318604,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 48.300000000148025,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1746,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "56e000522846e6971c54dd72f98fe563794275ce63eea51a853f618c32ac3b4e",
+      "hidden_measurement_ticks": 92,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "d33d5b3f832f4481500e5fbe5266ccfbe13eadb6cbf5231945e69bf68b2f0ab1",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p09",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-003/adapter"
+    },
+    {
+      "run": "p10",
+      "seed": 8318611,
+      "world": {
+        "world": 0,
+        "seed": 8318611,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 48.00000000014659,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1586,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "d462cd661dc447e0c26efcb512f2a9570c6ee019cb30f4021d8c9b3693ab16f0",
+      "hidden_measurement_ticks": 94,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "71156936fb14497e88201df0c19fb368345ddf680c8d034bc511ac2cd67d14f1",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p10",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-004/adapter"
+    },
+    {
+      "run": "p11",
+      "seed": 8318631,
+      "world": {
+        "world": 0,
+        "seed": 8318631,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 27.900000000050614,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 668,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "42429b3d2461d2b85920175102c18dbdd5b2ca411f50ba86fbab3193bae27ba0",
+      "hidden_measurement_ticks": 82,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "97b57fd785ef6c134c4c13cd8885c59b4e12ea504cb35bdaedb20f5afd2a271f",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p11",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-005/adapter"
+    },
+    {
+      "run": "p12",
+      "seed": 8318726,
+      "world": {
+        "world": 0,
+        "seed": 8318726,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 38.000000000098844,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1631,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "8e7f640150fa1cf1bc424c78e12f6dd5b568de405b74119becc5a413a26c0036",
+      "hidden_measurement_ticks": 106,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "022a2fce49be1a9be2ddb8ed9254312e8fb488b57fe9c441dcbe1c35182e679f",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p12",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-000/adapter"
+    },
+    {
+      "run": "p13",
+      "seed": 8318620,
+      "world": {
+        "world": 0,
+        "seed": 8318620,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 55.800000000183836,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1803,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "418a6112399c9ccfc0f6f4c96471da719be6418914553a47c624f99f606a207f",
+      "hidden_measurement_ticks": 80,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "da02306da92b6a187089c8d8c5afbf809802d799c0690c12edefd44ae98e29a1",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p13",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-001/adapter"
+    },
+    {
+      "run": "p14",
+      "seed": 8318600,
+      "world": {
+        "world": 0,
+        "seed": 8318600,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 31.20000000006637,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 938,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "20859fc0dc893c4513d2a3a356195b73d4b9c842fca8e2e334386f1969ca8fb2",
+      "hidden_measurement_ticks": 102,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "2b99d0dbe358cb47815115c101eda9c0023dc2a5456017ec4a4a0ef00d30b973",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p14",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-002/adapter"
+    },
+    {
+      "run": "p15",
+      "seed": 8318604,
+      "world": {
+        "world": 0,
+        "seed": 8318604,
+        "physical_success": true,
+        "cap_end": false,
+        "sim_s": 48.300000000148025,
+        "joint_held": true,
+        "input_audit": {
+          "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+          "enabled": true,
+          "measurement_rows": 1746,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "gt_self_pose_comparison": false
+        }
+      },
+      "summary_sha256": "f2d22f2f07cd46aa6c2a5e1b57a5033a81a261ad5aeb97e3e71375400287929d",
+      "hidden_measurement_ticks": 92,
+      "held_world_reads": 0,
+      "command_bytes_equal_original_gcp2": true,
+      "command_sha256": "d33d5b3f832f4481500e5fbe5266ccfbe13eadb6cbf5231945e69bf68b2f0ab1",
+      "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f/p15",
+      "original_raw": "/home/ugrp/ugrp-sim/runs/beampair6-r1-08f12921/round/diagnostic/episode-003/adapter"
+    }
+  ],
+  "raw": "/home/ugrp/ugrp-sim/runs/warp2-cpu-r1-70553d2f",
+  "reproduce": "python3 /home/ugrp/ugrp-sim/runs/warp2-analyze-cpu.py",
+  "pooling": false,
+  "scope": "new C backend comparison; repeated seeds are not independent trials; GPU results separate"
+}
