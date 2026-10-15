@@ -1,0 +1,18 @@
+{
+  "disk_gb": 400,
+  "type": "hyperdisk-balanced",
+  "reason": "Keep the gcp1 400GB simulation capacity; speed first, no cost optimization. gcp1 raw is not migrated.",
+  "planning_gb": {
+    "os_and_apt": 20,
+    "simulation_environment_and_pip_cache": 10,
+    "git_shared_once": 2,
+    "concurrent_24_runs_at_1GB": 24,
+    "retained_raw_and_future_batches": 164,
+    "free_space_floor": 50,
+    "source_worktrees_100_at_1_3GB": 130
+  },
+  "note": "Capacity allocations, not measured usage or acceptance constants. Actual usage will be recorded after install.",
+  "measured_shared_git_mib": 931,
+  "measured_first_checkout_gib": 1.3,
+  "measured_first_clone_git_mib": 2.1
+}

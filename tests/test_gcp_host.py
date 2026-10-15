@@ -42,9 +42,9 @@ def test_runner_keeps_gcp_evidence_apart_and_keeps_lease_unless_verified(tmp_pat
     assert not any('lifecycle' in str(c) for c in run.call_args_list)
     for archived, removes in ((True, True), (False, False)):
         with patch.object(remote_run, 'ssh') as ssh, patch.object(remote_run.subprocess, 'run') as run:
-            remote_run.finish_lease('gcp1', 'r1', 'LEASE', archived)
+            remote_run.finish_lease('gcp2', 'r1', 'LEASE', archived)
         assert any('rm -f LEASE' in str(c) for c in ssh.call_args_list) is removes
-        assert run.call_args.args[0][-2:] == ['stop', 'gcp1']
+        assert run.call_args.args[0][-2:] == ['stop', 'gcp2']
 
 
 def test_retired_gcp1_cannot_be_mutated_even_with_force():
@@ -64,3 +64,11 @@ def test_ssh_config_uses_separate_key_and_explicit_config(capsys):
     assert 'Host gcp2' in block
     assert '~/.ssh/ugrp_gcp2' in block
     assert 'UGRP_GCP_CONFIG=' in block
+
+
+def test_retired_gcp1_finisher_never_removes_lease():
+    with patch.object(remote_run, 'ssh') as ssh, patch.object(remote_run.subprocess, 'run') as run:
+        with pytest.raises(RuntimeError, match='lifecycle disabled'):
+            remote_run.finish_lease('gcp1', 'old', 'LEASE', True)
+        ssh.assert_not_called()
+        run.assert_not_called()

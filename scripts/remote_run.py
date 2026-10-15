@@ -57,6 +57,8 @@ def fetch_lifecycle(host='azure'):
 
 def finish_lease(host, name, lease, archived, detached=False):
     if host in GCP_HOSTS:
+        from scripts.gcpctl import require_lifecycle
+        require_lifecycle(host)
         # archived == SHA256SUMS verified on the VM and lite evidence fetched. Otherwise the lease
         # stays, so gcpctl stop refuses; the VM idle guard and runtime cap remain the backstops.
         if archived:
@@ -215,6 +217,9 @@ def main():
     if args.first in ('fetch', 'fetch-lite'):
         print(fetch(host, name))
         return
+    if host in GCP_HOSTS:
+        from scripts.gcpctl import require_lifecycle
+        require_lifecycle(host)
     if args.first == 'archive':
         ssh(host, 'UGRP_RUNS=$HOME/ugrp-sim/runs UGRP_ARCHIVE=$HOME/ugrp-sim/arm /usr/local/bin/ugrp-auto-archive')
         return
