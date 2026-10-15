@@ -9,7 +9,10 @@ import subprocess
 import sys
 import time
 
-r=Path('/home/ugrp/ugrp-sim');s=r/'src/warp2-70553d2f';out=r/'runs/warp2-cpu-r1-70553d2f'
+r=Path('/home/ugrp/ugrp-sim');s=r/'src/warp2-70553d2f'
+fixed_episode=int(sys.argv[1]) if len(sys.argv)>1 else None
+assert fixed_episode is None or 0<=fixed_episode<6
+out=r/'runs'/('warp2-cpu-r1-70553d2f'+('' if fixed_episode is None else '-seed'+str(fixed_episode)))
 lease=r/'leases/warp2.json';assert not lease.exists()
 out.mkdir(exist_ok=False);start=time.time();children=[]
 def write(p,v):p.write_text(json.dumps(v,indent=2)+'\n')
@@ -31,7 +34,7 @@ try:
    '--physics-backend','c_pilot_v1','--adapter-source',str(r/'src/08f129213031255dd188e20df832bb6714dfca9a'),
    '--teacher-source',str(r/'src/26f84d0f0ada1c33473c83cca2d3415ce51bd247'),
    '--plan',str(r/'src/08f129213031255dd188e20df832bb6714dfca9a/experiments/2026-10-16-beampair6/short6-plan.json'),
-   '--episode',str(i%6),'--out',str(d),'--vm-hourly-usd','3.1454']
+   '--episode',str(i%6 if fixed_episode is None else fixed_episode),'--out',str(d),'--vm-hourly-usd','3.1454']
   env={**os.environ,'MUJOCO_GL':'osmesa','PYTHONPATH':str(s),'OMP_NUM_THREADS':'1','LP_NUM_THREADS':'1','OPENBLAS_NUM_THREADS':'1','MKL_NUM_THREADS':'1'}
   p=subprocess.Popen(cmd,cwd=s,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
   children.append((p,log,d));write(out/'processes.json',[dict(pid=p.pid,out=str(d)) for p,_,d in children])
