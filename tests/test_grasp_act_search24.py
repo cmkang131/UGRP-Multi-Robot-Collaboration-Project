@@ -95,3 +95,30 @@ def test_frozen_failed_scene_selects_only_certified_cells_without_wall_deadline(
     assert all(r['reason'] not in ('ik_unreachable','gripper_angle') for r in rows)
     assert all('blocked_object' in r and 'min_gap_m' in r and r['reason'] for r in rows)
     assert selected['choice'] in [(a,d) for a,d,_,_ in reachability_map(fixture['world']['beam']['ends'][t.end][2])]
+
+
+def test_start_memory_blocker_is_not_mislabeled_as_current_goal_geometry():
+    from sim.grasp_act_search22 import record_candidates
+    t=teacher();t.search15_modes['search24_irm']='search24_irm_v1';w=deepcopy(FIX['world'])
+    rows=[{'reason':'unsafe_body_sweep','collision_audit':[{'id':'tile_1','blocked':False,'gap_m':.03,'category':'current_geometry'}],
+           'failure_audit':[{'id':'can_1','category':'memory_margin','gap_m':.16,'margin_m':.17}]}]
+    record_candidates(t,w,rows,w['t'])
+    assert rows[0]['rejection_category']=='memory_margin'
+    assert rows[0]['blocked_object']=='can_1' and rows[0]['min_gap_m']==.16
+
+
+def test_cached_certificate_is_exact_and_cannot_be_mutated_by_a_caller():
+    from sim.grasp_act_search24 import certified_poses
+    a,b=certified_poses(.198,.024);expected=grasp_poses((.198,0.,.024))
+    assert (a,b)==expected
+    a[3]=999;b[-1][3]=999
+    assert certified_poses(.198,.024)==expected
+
+
+def test_off_keeps_prior_goal_audit_classification():
+    from sim.grasp_act_search22 import record_candidates
+    t=teacher();w=deepcopy(FIX['world'])
+    rows=[{'reason':'unsafe_body_sweep','collision_audit':[{'id':'tile_1','blocked':False,'gap_m':.03,'category':'current_geometry'}],
+           'failure_audit':[{'id':'can_1','category':'memory_margin','gap_m':.16,'margin_m':.17}]}]
+    record_candidates(t,w,rows,w['t'])
+    assert rows[0]['rejection_category']=='current_geometry'

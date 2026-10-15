@@ -22,6 +22,21 @@ def compute_budget(t):
     return t.search15_modes.get('search24_budget', 'off') != 'off'
 
 
+@lru_cache(maxsize=512)
+def grasp_certificate(distance,z):
+    from sim.grasp_act_teacher import grasp_poses
+    try:hover,descent=grasp_poses((distance,0.,z))
+    except ValueError:return None
+    return tuple(tuple(sorted(p.items())) for p in (hover,*descent))
+
+
+def certified_poses(distance,z):
+    certificate=grasp_certificate(distance,z)
+    if certificate is None:raise ValueError('outside certified grasp workspace')
+    poses=[dict(p) for p in certificate]
+    return poses[0],poses[1:]
+
+
 @lru_cache(maxsize=128)
 def reachability_map(z):
     """Immutable certificates for the entire unchanged hover/descent/lift IK.
@@ -32,14 +47,14 @@ def reachability_map(z):
     """
     from harness.visual_arm import CALIBRATED_GRASP_RADIUS_CM
     from harness.visual_arm_v3 import MOUNT_X_M
-    from sim.grasp_act_teacher import grasp_poses, STATION_M
+    from sim.grasp_act_teacher import STATION_M
     from sim.grasp_act_pregrasp import jaw_geometry
     lo, hi = (MOUNT_X_M+r/100 for r in CALIBRATED_GRASP_RADIUS_CM)
     distances = sorted({lo+i*DISTANCE_STEP_M for i in range(math.floor((hi-lo)/DISTANCE_STEP_M)+1)} |
                        {d for d in (.190,.194,.198,STATION_M,.208,.212) if lo<=d<=hi})
     result=[]
     for d in distances:
-        try: hover, descent=grasp_poses((d,0.,z))
+        try: hover, descent=certified_poses(d,z)
         except ValueError: continue
         for deg in range(-90,91,ANGLE_STEP_DEG):
             a=math.radians(deg);jaw=jaw_geometry(a,descent[-1])

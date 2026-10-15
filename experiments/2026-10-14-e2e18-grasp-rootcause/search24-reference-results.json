@@ -1,0 +1,504 @@
+{
+  "source_sha": "35861e92374c5fe936d5f54884a38bd7fe62f5fb",
+  "run": "search24-r3-reference-35861e92-fixed",
+  "raw": "/home/ugrp/ugrp-sim/runs/search24-r3-reference-35861e92-fixed",
+  "n": 2,
+  "N": 6,
+  "completed": 6,
+  "host_error_N": 0,
+  "rejections": {
+    "current_geometry": 5856,
+    "IK": 10730,
+    "endpoint_feasible": 172,
+    "feasible": 19,
+    "gripper_angle": 21460,
+    "connector_connector_band_not_visible": 493,
+    "memory_margin": 860
+  },
+  "rows": [
+    {
+      "episode": "episode-000",
+      "seed": 8311709,
+      "scene": "off",
+      "status": "complete",
+      "success": false,
+      "sim_s": 17.500000000000956,
+      "wall_s": 71.10933238700022,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 970,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": null,
+      "rejections": {
+        "current_geometry": 2336,
+        "IK": 3393,
+        "endpoint_feasible": 3,
+        "feasible": 1,
+        "gripper_angle": 6786
+      },
+      "reasons": {
+        "blocked_goal": 1408,
+        "ik_unreachable": 3393,
+        "endpoint_feasible": 3,
+        "feasible": 1,
+        "gripper_angle": 6786,
+        "unsafe_body_sweep": 928
+      },
+      "blockers": {},
+      "grid_status": {
+        "found": 6,
+        "no_path": 43
+      },
+      "planning_compute": {
+        "ticks": 352,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "70d761dd2ca033aaf6eb8423e511ea804955d8817ebb74fa4f7b41c905f1fcc4"
+    },
+    {
+      "episode": "episode-001",
+      "seed": 8311709,
+      "scene": "cargo_v6",
+      "status": "complete",
+      "success": false,
+      "sim_s": 17.500000000000956,
+      "wall_s": 70.13590557099997,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 974,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": null,
+      "rejections": {
+        "current_geometry": 2332,
+        "IK": 3393,
+        "endpoint_feasible": 7,
+        "gripper_angle": 6786,
+        "feasible": 1
+      },
+      "reasons": {
+        "blocked_goal": 1404,
+        "ik_unreachable": 3393,
+        "endpoint_feasible": 7,
+        "gripper_angle": 6786,
+        "feasible": 1,
+        "unsafe_body_sweep": 928
+      },
+      "blockers": {},
+      "grid_status": {
+        "found": 6,
+        "no_path": 43
+      },
+      "planning_compute": {
+        "ticks": 352,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "292001b17029a17fb901f974c6bf34c909004abb676c541610fc5f996a4e6b0b"
+    },
+    {
+      "episode": "episode-002",
+      "seed": 315709,
+      "scene": "cargo_v6",
+      "status": "complete",
+      "success": false,
+      "sim_s": 20.300000000014325,
+      "wall_s": 94.20271554500005,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1149,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": null,
+      "rejections": {
+        "current_geometry": 560,
+        "IK": 1682,
+        "endpoint_feasible": 93,
+        "feasible": 10,
+        "gripper_angle": 3364,
+        "connector_connector_band_not_visible": 1,
+        "memory_margin": 496
+      },
+      "reasons": {
+        "blocked_goal": 1000,
+        "ik_unreachable": 1682,
+        "endpoint_feasible": 93,
+        "feasible": 10,
+        "gripper_angle": 3364,
+        "unsafe_body_sweep": 56,
+        "connector_connector_band_not_visible": 1
+      },
+      "blockers": {},
+      "grid_status": {
+        "found": 76,
+        "no_path": 7
+      },
+      "planning_compute": {
+        "ticks": 408,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "235fb3c06cfc615d3605706da99efc0b83e5f05b8c4fd0e72c7f173eabeece3e"
+    },
+    {
+      "episode": "episode-003",
+      "seed": 315709,
+      "scene": "off",
+      "status": "complete",
+      "success": false,
+      "sim_s": 21.000000000017668,
+      "wall_s": 121.43404308699996,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "approach_blocked_handoff",
+        "r2": "peer_approach_handoff"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1160,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": null,
+      "rejections": {
+        "current_geometry": 628,
+        "IK": 2262,
+        "endpoint_feasible": 69,
+        "feasible": 7,
+        "gripper_angle": 4524,
+        "memory_margin": 364,
+        "connector_connector_band_not_visible": 492
+      },
+      "reasons": {
+        "blocked_goal": 992,
+        "ik_unreachable": 2262,
+        "endpoint_feasible": 69,
+        "feasible": 7,
+        "gripper_angle": 4524,
+        "connector_connector_band_not_visible": 492
+      },
+      "blockers": {},
+      "grid_status": {
+        "found": 649
+      },
+      "planning_compute": {
+        "ticks": 422,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "64ef5147e52509c2e264a6c6270186e9eed98fa924759705c3913b216ae0b735"
+    },
+    {
+      "episode": "episode-004",
+      "seed": 8312300,
+      "scene": "off",
+      "status": "complete",
+      "success": true,
+      "sim_s": 24.800000000035812,
+      "wall_s": 61.45076407800002,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 713,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": null,
+      "rejections": {},
+      "reasons": {},
+      "blockers": {},
+      "grid_status": {},
+      "planning_compute": {
+        "ticks": 498,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "f179593cb4f7394058ff358cfd459538d8b998119744f61f44d095a8407823ff"
+    },
+    {
+      "episode": "episode-005",
+      "seed": 8312301,
+      "scene": "off",
+      "status": "complete",
+      "success": true,
+      "sim_s": 28.00000000005109,
+      "wall_s": 65.33799535699995,
+      "cap_end": false,
+      "end_reason": "teacher_terminal",
+      "outcomes": {
+        "r1": "success",
+        "r2": "success"
+      },
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 930,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "first30_speed": null,
+      "rejections": {},
+      "reasons": {},
+      "blockers": {},
+      "grid_status": {},
+      "planning_compute": {
+        "ticks": 562,
+        "exhausted": 0
+      },
+      "missing_rejection_evidence": 0,
+      "decoded_result_sha256": "21006d5ae7f7e46deb6434680ddbe983455156f7ed8f8063861c64692a589c96"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "failed-frames/episode-000/r1/000000.jpg",
+      "sha256": "8d48a4c74d366e89a5496f8e9ada4902946e7afdbe5f9a63ae3ff920b596e89d"
+    },
+    {
+      "path": "failed-frames/episode-000/r1/000030.jpg",
+      "sha256": "f077b0b1245832c17550deeaa772768aaf59e09ccd97a7c25e24f32478debc87"
+    },
+    {
+      "path": "failed-frames/episode-000/r1/000070.jpg",
+      "sha256": "72c900c5bcc550d626340f0dd832e9815b30f035986b6e9327ee6d0593764f46"
+    },
+    {
+      "path": "failed-frames/episode-000/r1/000100.jpg",
+      "sha256": "78fe5ea36413396e4ebef401b7cb48408f8a7a5e97d9598557ba4e4b7cdefb3d"
+    },
+    {
+      "path": "failed-frames/episode-000/r1/000140.jpg",
+      "sha256": "90ea7501b1cfe10bbc9c28740a0708fb3b42835f54d197c216f2bd20eb929f3d"
+    },
+    {
+      "path": "failed-frames/episode-000/r1/000170.jpg",
+      "sha256": "173fb056f1a7db69700386146752648dba714f93cf2417035531024ebb98574e"
+    },
+    {
+      "path": "failed-frames/episode-000/r2/000000.jpg",
+      "sha256": "5afde6bb1d34bc61800d0419b14c00ee739a128fc89e32a7adf57d233029c435"
+    },
+    {
+      "path": "failed-frames/episode-000/r2/000030.jpg",
+      "sha256": "dccd447a9c24660bb9bec108ed4da3dc2189c470766094bff2e6919a72b417f2"
+    },
+    {
+      "path": "failed-frames/episode-000/r2/000070.jpg",
+      "sha256": "9c2b9a895334e1ee288fa0817e434d35c21375e2cbb8932085724f5ca5cb98e8"
+    },
+    {
+      "path": "failed-frames/episode-000/r2/000100.jpg",
+      "sha256": "da0ea1749f97bdd3456d33cffeaf9065549301526872169e63527a8bac191b07"
+    },
+    {
+      "path": "failed-frames/episode-000/r2/000140.jpg",
+      "sha256": "66bbf090263c0150aa8b6bcea83986c5fc93410d95297245b68eed1b23e8f322"
+    },
+    {
+      "path": "failed-frames/episode-000/r2/000170.jpg",
+      "sha256": "2337d463d6b190d8d0870f134683d7ab5027865df6ff25df3617e5b399556768"
+    },
+    {
+      "path": "episode-000-montage.jpg",
+      "sha256": "2b61238c41d54c7812be5f945fb2bf09be1009f29d5bb26d5ff8dcfb113afd36"
+    },
+    {
+      "path": "failed-frames/episode-001/r1/000000.jpg",
+      "sha256": "7e38e2278d73ad5ba953a5d29b9b729efd80c0b83708400eff460d3909d5f411"
+    },
+    {
+      "path": "failed-frames/episode-001/r1/000030.jpg",
+      "sha256": "45bc7afb28c3d09cc1dec1bff08fa4389d934d5b1763daac96d3eb660e5d859b"
+    },
+    {
+      "path": "failed-frames/episode-001/r1/000070.jpg",
+      "sha256": "5e5f12864c575c376461764d532be41d64233a7172fb87957d174d907b111a2a"
+    },
+    {
+      "path": "failed-frames/episode-001/r1/000100.jpg",
+      "sha256": "10fe47d3479dc4721464a7375fdafa603e86cc22b45699fbe0bedbe58ee71366"
+    },
+    {
+      "path": "failed-frames/episode-001/r1/000140.jpg",
+      "sha256": "83bda655f282cf6af4fd2c6b07a725e35b3165f4c39d0a376c60f914a2d7d249"
+    },
+    {
+      "path": "failed-frames/episode-001/r1/000170.jpg",
+      "sha256": "9bafabe1d5ef5026a2f61f265316b79073dd8695e3ce349dcd79f66b656d95b4"
+    },
+    {
+      "path": "failed-frames/episode-001/r2/000000.jpg",
+      "sha256": "76d10a5b8b7d0bebff7e9db8d35d11401dd81402d72182aa4aa85d098aaab75b"
+    },
+    {
+      "path": "failed-frames/episode-001/r2/000030.jpg",
+      "sha256": "0ecb06154fa3794c08ff9f1781518f5001b90b4c416a589dca57da812d3ab1c9"
+    },
+    {
+      "path": "failed-frames/episode-001/r2/000070.jpg",
+      "sha256": "9c6a1ba415e68896db9350d0976031b5f5c13dbe0f713ee8d03a86ca3f616ee0"
+    },
+    {
+      "path": "failed-frames/episode-001/r2/000100.jpg",
+      "sha256": "a3a7453b8fc39ab96b61032cbe205b25225bb08fb3ca8dfd372c232c2c1127bf"
+    },
+    {
+      "path": "failed-frames/episode-001/r2/000140.jpg",
+      "sha256": "3377166a956e987fd3b2c899df8c0ba79f26de5a12d384139b0f037b5c201484"
+    },
+    {
+      "path": "failed-frames/episode-001/r2/000170.jpg",
+      "sha256": "e3f23cbd83ad588e0c236c6e66b0611777d0fdae5bae5fb890dc13a18f28deef"
+    },
+    {
+      "path": "episode-001-montage.jpg",
+      "sha256": "bf4eb40830e35d3ec8245ebcfcb720f1ff6610980922fd9e27457d809bba25e5"
+    },
+    {
+      "path": "failed-frames/episode-002/r1/000000.jpg",
+      "sha256": "d43a40126574d6fbfac8759130d4e633e86f2a337565a972257088e2709598c1"
+    },
+    {
+      "path": "failed-frames/episode-002/r1/000040.jpg",
+      "sha256": "4f2c4ed922597090975ad38be6aa0825896d3e28e1a6e5ffac93be07be626c8f"
+    },
+    {
+      "path": "failed-frames/episode-002/r1/000080.jpg",
+      "sha256": "75e3c940b990fdcdf6225017163cedd2642243f59b22f19491dddab6cf80b771"
+    },
+    {
+      "path": "failed-frames/episode-002/r1/000120.jpg",
+      "sha256": "fcf0bcadbd056216385fbb56adf4c1547f8638705b50c3ad7ca8bfc3708ec2b1"
+    },
+    {
+      "path": "failed-frames/episode-002/r1/000160.jpg",
+      "sha256": "6e517a18972010bbca496ca8c822f9c4f3bf2c3462993e75587517d7a1e5b91e"
+    },
+    {
+      "path": "failed-frames/episode-002/r1/000200.jpg",
+      "sha256": "aff8dc65917cfdcc14010337f84f91c1e73071f8472bdbc34f1b1d1d1cafde75"
+    },
+    {
+      "path": "failed-frames/episode-002/r2/000000.jpg",
+      "sha256": "2f7e9503999abfb2715e5d8c4c15ee656cacbc7f262cda06a71e9650d8c5f07e"
+    },
+    {
+      "path": "failed-frames/episode-002/r2/000040.jpg",
+      "sha256": "40b52b49ee9463aee560bd4c33d547660b75e9aa0fc11c4feb2be46c35723931"
+    },
+    {
+      "path": "failed-frames/episode-002/r2/000080.jpg",
+      "sha256": "50b0999be6f0d0e8edeed76e7e9c7666c6133ee77eae1d98ad683901e5fb6f52"
+    },
+    {
+      "path": "failed-frames/episode-002/r2/000120.jpg",
+      "sha256": "164844dd9a923472c5a3d5a5b0a403f4ccef1f490f440b1c05dd1fa1a6140999"
+    },
+    {
+      "path": "failed-frames/episode-002/r2/000160.jpg",
+      "sha256": "91b0893c0b497932417698f67149c2de059266d534cf9c9870d679c0c85e79cb"
+    },
+    {
+      "path": "failed-frames/episode-002/r2/000200.jpg",
+      "sha256": "53a78acf6cf703e4e81b8674ebb2b35b227277ad40bb76efe43e8625e618d62f"
+    },
+    {
+      "path": "episode-002-montage.jpg",
+      "sha256": "cc6f8f98165bb9b16da3ba03998c104be5ebab6581d140e38188fbb99e1cf5b8"
+    },
+    {
+      "path": "failed-frames/episode-003/r1/000000.jpg",
+      "sha256": "d0de940faf0dbe86cc719964cfd136f6a7335c72ffb493c27aa95cb1e21b8e8d"
+    },
+    {
+      "path": "failed-frames/episode-003/r1/000040.jpg",
+      "sha256": "7b7a1489038ea26b77ced23e026ad1dcc2006eb983d55bade8ea5a18f632d170"
+    },
+    {
+      "path": "failed-frames/episode-003/r1/000080.jpg",
+      "sha256": "ea55d7d5bd024e3b472c773eeedb559bd0765266fb2cb17ef962ae44e1f5d1d9"
+    },
+    {
+      "path": "failed-frames/episode-003/r1/000130.jpg",
+      "sha256": "82fac839f5ab1de84732d488211bd45f8c0fe50e787c59f97bb9dc46cfed5c47"
+    },
+    {
+      "path": "failed-frames/episode-003/r1/000170.jpg",
+      "sha256": "a94137c77d2cb267311b295d37bccdee581acef7f328c48f85b79d4871e4a5fb"
+    },
+    {
+      "path": "failed-frames/episode-003/r1/000210.jpg",
+      "sha256": "d9686e8a04c8ee07ba3d37f5b851aaabd120b6d1fed0852a49757447a177ab90"
+    },
+    {
+      "path": "failed-frames/episode-003/r2/000000.jpg",
+      "sha256": "dd8fc9d290f87027d30a4068cea4365cac0701d2f3bd6ce5fb9cddaaa685eaf4"
+    },
+    {
+      "path": "failed-frames/episode-003/r2/000040.jpg",
+      "sha256": "85c0b9f967eed9e70178829fff1bd151498d18b97bca81391742a7df5fcee8e9"
+    },
+    {
+      "path": "failed-frames/episode-003/r2/000080.jpg",
+      "sha256": "afc84baa4e7a87a9fe27d6a51af169c1ba6e0573d1680275977d549ec0674387"
+    },
+    {
+      "path": "failed-frames/episode-003/r2/000130.jpg",
+      "sha256": "df7c2c2a79172be46e7e0ec6fe5a45fb2304b9ba2b93ecf55045bdcac322c5e5"
+    },
+    {
+      "path": "failed-frames/episode-003/r2/000170.jpg",
+      "sha256": "a6beaeecb7b16a28d6e45e57399c587e3aff3031cb2bb86e204cf29aa0c54c81"
+    },
+    {
+      "path": "failed-frames/episode-003/r2/000210.jpg",
+      "sha256": "a90adb359cb418a86865b8f1c3bf53b48f70ce2b0f90ff3cdd0def30a0a2d2ba"
+    },
+    {
+      "path": "episode-003-montage.jpg",
+      "sha256": "bbff0242454d3c400c0b8ae7cdfb8ed6371913191b515fe8c303caebf0dd9eda"
+    }
+  ],
+  "scope": "raw result recount on gcp1; no control replay; selected failed own RGB only",
+  "source_sha_matches_run_meta": true
+}

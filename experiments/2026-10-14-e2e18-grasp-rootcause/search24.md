@@ -41,3 +41,15 @@ GCP n4-highcpu-64, scheduling maxRunDuration86400초/STOP, budget-stop ACTIVE, �
 첫 reference wrapper는 batch에 없는 `--self-pose-source issued` 인수 때문에 CLI EXIT2, 물리 실행0으로 끝났다. 해당 인수를 제거한 frozen source35861e92 재측정6회를 별도 이름으로 제출했다. CLI 실패는 결과/라운드 분모에 합산하지 않는다.
 
 오프라인 검사: 신규IRM10건(모든 cell의 IK/각도, fresh-only, 좌표변환, wall 독립, cold/warm 동일 계산량, 실패 장면의 완전 stance)을 통과했다. 기존 search21 helper가 ALL_MODES 추가로 새 토글을 의도치 않게 켜므로 명시OFF로 수정했다. 기존 search15 mock은 search23에서 이미 추가된 navigation keyword를 받도록 mock 인수만 고쳤다.
+
+### search23 R3 후보 재측정
+
+`search24-r3-reference-35861e92-fixed`, 실행 SHA35861e92374c5fe936d5f54884a38bd7fe62f5fb. 이전 R3 SHA0205485e의 실행 소스13파일 hash와13/13 일치(문서 커밋 차이). 6회 완료, 성공2/6, HOST_ERROR0, cap_end0. 각도21460·IK10730·현재기하5856·기억860·연결시야493·no_path0. episode000/001은8311709 base/v6,002/003은315709 base/v6가 접근 인계로 종료했다. 새8312300/8312301 성공. VM 전체 SHA256SUMS 검증 및 선택 실패RGB48장+몽타주4개 해시 일치. 실제 프레임에서 r1의 빔 끝 접근이 멈추고 r2가 청록 끝에서 대기함을 확인했다.
+
+### 후보 R1
+
+`bacfb71fbe157e50afaa573c02867f90ffd8b158`, 6회 완료,2/6 성공, HOST_ERROR0, cap_end0. 각도0·IK0, 기록상 현재기하28262·기억6149·연결시야1383·계산예산24·no_path0. endpoint_feasible835와 feasible20은 거부가 아니므로 별도다. 첫30SIM초에 이르기 전에 모든 실행이 끝났으므로 first30 실측은 미생성이다. 전체 실행 wall/SIM 중앙5.204(경고;6.0미만),315709 v6 단일 실행8.446. 호스트/프로필/라운드는 합산하지 않는다.
+
+원본의 `unsafe_body_sweep` row가 가진 failure_audit는 실제 이동 구간의 기억 차단물인데, 기존 record_candidates는 목표 collision_audit만 봐 현재기하로 분류했다. 이 분류는 search22 재관측 대상 선택에도 쓰여 실제 기억 차단물을 누락할 수 있다. R2는 search24 토글을 켠 경우에만 failure_audit→goal audit→path audit 순으로 원인을 사용한다. 기존 토글off의 분류/재관측 행동은 유지한다. 여유 축소·기억 TTL 변경·위치 정답 보정이 아니다. 정확한 거리/높이의 불변 IK certificate를 실제 후보/팔 cloud 검사에서도 재사용해 같은 IK를 반복 풀던 비용을 줄인다. 변화한 재관측 선택은 새 SHA의 물리 진단으로 구분한다.
+
+GCP의 자기 visible_measurements+실제 발행 명령만으로 한 단면을 재구성한 추가검사에서 숨은 memory의 실제/요구 gap 차이를 확인했다. 이 분석은 teacher의 free-space/reobserver cache 전체 재생이 아니므로 실제 전체 제어기 상태와 동등하다고 주장하지 않는다. R2 수정 근거는 원본 row에 이미 저장된 failure_audit다.

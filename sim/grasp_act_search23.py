@@ -206,7 +206,9 @@ class BodyNavigation(Previous):
     def pick_cloud(self,view,distance,z):
         from sim.grasp_act_teacher import grasp_poses
         from sim.grasp_act_pregrasp import actual_pick_cloud
-        hover,descent=grasp_poses((distance,0.,z))
+        from sim.grasp_act_search24 import enabled as irm, certified_poses
+        poses=certified_poses(distance,z) if irm(self.teacher) else None
+        hover,descent=grasp_poses((distance,0.,z)) if poses is None else poses
         states=[view,{**view,**hover,1:2000}]
         states.extend({**states[-1],**p,1:2000} for p in descent)
         states.extend([{**states[-1],1:1500},{**states[-1],**hover,1:1500}])
@@ -222,7 +224,7 @@ class BodyNavigation(Previous):
                 for _ in range(n+1):self.check_budget()
         if key not in _PICK_CLOUDS:
             _PICK_CLOUDS[key]=actual_pick_cloud(view,(distance,0.,z),check_budget=None if deterministic else self.check_budget,
-                capsule_fn=lambda p:cached_capsules(tuple(sorted(p.items()))))
+                capsule_fn=lambda p:cached_capsules(tuple(sorted(p.items()))),poses=poses)
             if len(_PICK_CLOUDS)>32:_PICK_CLOUDS.popitem(last=False)
         _PICK_CLOUDS.move_to_end(key)
         return _PICK_CLOUDS[key]

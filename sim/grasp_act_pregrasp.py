@@ -81,9 +81,9 @@ def swept_cloud(start_items, distance, z):
     return actual_pick_cloud(dict(start_items),(distance,0.,z))
 
 
-def actual_pick_cloud(start,target,*,check_budget=None,capsule_fn=None):
+def actual_pick_cloud(start,target,*,check_budget=None,capsule_fn=None,poses=None):
     capsule_fn=capsules if capsule_fn is None else capsule_fn
-    hover, descent = grasp_poses(target)
+    hover, descent = grasp_poses(target) if poses is None else poses
     # Exactly the issued pick sequence: folded -> hover/open -> descent -> close -> lift.
     states = [start, {**start, **hover, 1: 2000}]
     states.extend({**states[-1], **p, 1: 2000} for p in descent)
@@ -211,7 +211,11 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         pose, point, heading, goal = geometry(world, rid, end, choice)
         row = {'offset_deg': math.degrees(choice[0]), 'distance_m': choice[1], 'goal': goal}
         checked.append(row)
-        try: hover, descent = grasp_poses((choice[1], 0., point[2]))
+        try:
+            if hasattr(navigation,'teacher') and navigation.teacher.search15_modes.get('search24_irm','off')!='off':
+                from sim.grasp_act_search24 import certified_poses
+                hover,descent=certified_poses(choice[1],point[2])
+            else:hover,descent=grasp_poses((choice[1],0.,point[2]))
         except ValueError:row['reason'] = 'ik_unreachable';continue
         row['jaw_geometry'] = jaw_geometry(choice[0], descent[-1])
         if not row['jaw_geometry']['allowed']:row['reason'] = 'gripper_angle';continue

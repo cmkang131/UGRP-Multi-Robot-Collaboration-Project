@@ -71,10 +71,16 @@ def analyze(root,out):
                 artifacts.append({'path':target.name,'sha256':hashlib.sha256(target.read_bytes()).hexdigest()})
         rows.append(row)
     source=(root/'SOURCE_SHA').read_text().strip()
+    manifest=root/'SHA256SUMS'
+    verified=(manifest.exists() and (root/'EXIT').exists() and
+              subprocess.run(['sha256sum','-c','--quiet',str(manifest)],cwd=root).returncode==0)
     result={'source_sha':source,'run':root.name,'raw':str(root),'n':sum(r['success'] for r in rows),'N':6,
-        'completed':sum(r['status']=='complete' for r in rows),'host_error_N':sum(r['status']!='complete' for r in rows),
+        'completed':sum(r['status']=='complete' for r in rows),'host_error_N':sum(r['status'] in ('HOST_ERROR','interrupted','missing') or ((root/'EXIT').exists() and r['status']=='running') for r in rows),
+        'running_N':sum(r['status']=='running' and not (root/'EXIT').exists() for r in rows),
         'rejections':dict(totals),'rows':rows,'artifacts':artifacts,
         'scope':'raw result recount on gcp1; no control replay; selected failed own RGB only',
+        'remote_full_manifest_verified':verified,
+        'raw_manifest_sha256':hashlib.sha256(manifest.read_bytes()).hexdigest() if manifest.exists() else None,
         'source_sha_matches_run_meta':json.loads((root/'RUN_META.json').read_text()).get('sha')==source}
     (out/'summary.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:result[k] for k in ('source_sha','run','n','N','completed','host_error_N','rejections')}))

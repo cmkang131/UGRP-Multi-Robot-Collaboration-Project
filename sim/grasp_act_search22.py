@@ -139,13 +139,17 @@ def record_candidates(t,world,rows,now):
     counts=Counter();targets={};obs=world['visibility'][t.rid].get('observations',{})
     for row in rows:
         reason=row['reason']
-        blockers=[d for d in row.get('collision_audit',[]) if d['blocked']]
+        search24=(t.search15_modes.get('search24_irm','off')!='off' or
+                  t.search15_modes.get('search24_budget','off')!='off')
+        blockers=list(row.get('failure_audit',[])) if search24 else []
+        if not blockers:blockers=[d for d in row.get('collision_audit',[]) if d['blocked']]
         if not blockers:blockers=row.get('path_memory_blockers',[])
+        if not blockers and search24:blockers=(row.get('path_audit') or {}).get('blocked_obstacles',[])
         category=('IK' if reason=='ik_unreachable' else 'gripper_angle' if reason=='gripper_angle' else
             'memory_margin' if blockers and all(d['category']=='memory_margin' for d in blockers) else
             'current_geometry' if reason in ('blocked_goal','blocked_retreat','unsafe_body_sweep') or 'sweep' in reason else reason)
         row['rejection_category']=category;counts[category]+=1
-        if t.search15_modes.get('search24_irm','off')!='off' or t.search15_modes.get('search24_budget','off')!='off':
+        if search24:
             evidence=(row.get('failure_audit') or blockers or
                       (row.get('path_audit') or {}).get('blocked_obstacles',[]))
             gaps=[d for d in evidence if d.get('gap_m') is not None]
