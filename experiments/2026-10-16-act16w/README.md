@@ -109,3 +109,9 @@ NOT_READY, commands는 null, 필수 rejection_table.json은 미작성 상태다.
 각각 정확히1회 포함됨을 확인했다. [목록 검증](ci-registration.json).
 로컬 전체 suite나 원격 CI를 실행한 결과가 아니다. 학습 감독 중단 파일은
 RESOURCE_CAP 대신 SUPERVISOR_STOP으로 구분하도록 보고 분류를 바로잡았다.
+
+06:48 KST: 기반 `claude/warp-act` 게시를 확인하고 `90a25999`를 작업 브랜치에
+병합했다. 실제 대기열과 거부 표는 존재한다. backend는 여전히 NOT_READY이고
+실행 명령은 없다. 장면 결정은 받았지만 대기열의 장면 미승인 문구는 아직 갱신되지
+않았으므로 장면 적용 완료로 간주하지 않는다. 초기 preflight 표는
+`preflight-initial.json`, 현재 상태는 `rejection_table.json`에 구분했다.

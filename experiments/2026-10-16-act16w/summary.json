@@ -11,9 +11,9 @@
     "state": "outputs/act16w-wait/wait-state.json",
     "warp1": "2026-10-15T18:51:49.347269+00:00 warp1: GPU_SHARED_TIMING | L4 warp2 PID9247 발견, warp1 N1은 paused·N16 prefix 측정 진행 | 공유부하 처리량으로 분리, 타 작업 정지/VM 정지 없음 | 독점 여부 사용자 선택 대기",
     "scene_decision": "experiments/2026-10-16-act16w/scene-decision.json",
-    "latest_check": "2026-10-15T19:34:16.696822+00:00",
-    "checks": 17,
-    "queue_status": "exists_but_NOT_READY_commands_absent_rejection_table_missing",
+    "latest_check": "2026-10-15T21:40:14.315854+00:00",
+    "checks": 42,
+    "queue_status": "exists_NOT_READY_commands_absent_rejection_table_present",
     "queue_receipt": "experiments/2026-10-16-act16w/warp1-queue-receipt.json",
     "warp1_queue_blockers": [
       "scene profile not approved",
@@ -21,7 +21,11 @@
       "training recording and ACT student evaluation adapters unfinished",
       "heterogeneous source seeds differ in unbatchable model fields; use exact model cohorts or implement supported layout",
       "full N1/N16 qualitative and intrinsic throughput must be qualified before any gate submission"
-    ]
+    ],
+    "queue_backend_readiness": "NOT_READY",
+    "queue_rejection_table_exists": true,
+    "queue_last_verified_at": "2026-10-15T21:44:50.399525+00:00",
+    "blocker_interpretation": "Published queue still says scene unapproved, but coordinator scene decision is received; queue has not integrated that profile. Other backend blockers remain."
   },
   "teacher_gate": {
     "attempted": 0,
@@ -67,7 +71,8 @@
     "commit": "9d78bfc50148a42ea0be8bb78836c4e23f592bca",
     "push_verified": true,
     "pr": null,
-    "pr_blocker": "base claude/warp-act absent on remote at 03:22 KST"
+    "pr_blocker": null,
+    "base_branch_published": true
   },
   "scene": {
     "scope": "coordinator ACT scene selection; no runtime verified by act16w",
@@ -83,7 +88,7 @@
   "backend_review": {
     "finding_source": "e9c97e2eb6ea994e37cf82d0ebe391c517f81be7",
     "static_fix_seen_at": "2fd1490a6f00459a0e32c4e89adc8421a8dba1a4",
-    "runtime_distinct_start_verification": "pending"
+    "runtime_distinct_start_verification": "warp1 reports N16 fields10 pass with3 unique starts; not independently executed by act16w"
   },
   "dagger": {
     "status": "target_helper_prepared_not_executed",
@@ -92,5 +97,6 @@
     "future_horizons_masked": 7,
     "oracle_query_after_potential_student_close": "blocked without calling oracle",
     "rollouts": 0
-  }
+  },
+  "backend_source_merged": "90a25999c16faca91667bd54cdd12270f44b8632"
 }

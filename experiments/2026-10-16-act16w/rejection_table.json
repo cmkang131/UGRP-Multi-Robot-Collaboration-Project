@@ -1,26 +1,29 @@
 {
   "schema": "ugrp.act16w.rejection_table.v1",
-  "status": "WAIT_SIGNALS",
-  "scope": "preflight only; no simulation attempts",
+  "status": "WAIT_BACKEND_NOT_READY",
+  "scope": "prerequisite admission only; no teacher/student simulation attempts",
   "funnel": [
     {
       "gate": "required_signals",
-      "candidates_N": 2,
-      "passed": 0,
-      "rejected": 2,
-      "reasons": [
-        "warp1 result absent",
-        "coordinator scene decision absent"
-      ]
+      "entered": 2,
+      "passed": 2,
+      "rejected": 0
     },
     {
-      "gate": "queue_and_source_admission",
+      "gate": "queue_file_and_rejection_table",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "backend_readiness",
+      "entered": 1,
       "passed": 0,
-      "rejected": 0,
-      "not_evaluated": true
+      "rejected": 1
     },
     {
       "gate": "teacher_attempts",
+      "entered": 0,
       "passed": 0,
       "rejected": 0,
       "not_evaluated": true
@@ -28,20 +31,45 @@
   ],
   "rejections": [
     {
-      "category": "prerequisite_pending",
-      "reason": "warp1 result absent",
+      "category": "backend_not_ready",
+      "reason": "scene profile not approved",
       "blocking_object": "not_applicable_non_geometric",
       "minimum_gap_m": null,
       "minimum_gap_status": "not_applicable_non_geometric"
     },
     {
-      "category": "prerequisite_pending",
-      "reason": "coordinator ACT scene decision absent",
+      "category": "backend_not_ready",
+      "reason": "scalar frozen teacher/IK/raycast loop remains; full NumPy teacher migration unfinished",
+      "blocking_object": "not_applicable_non_geometric",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_non_geometric"
+    },
+    {
+      "category": "backend_not_ready",
+      "reason": "training recording and ACT student evaluation adapters unfinished",
+      "blocking_object": "not_applicable_non_geometric",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_non_geometric"
+    },
+    {
+      "category": "backend_not_ready",
+      "reason": "heterogeneous source seeds differ in unbatchable model fields; use exact model cohorts or implement supported layout",
+      "blocking_object": "not_applicable_non_geometric",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_applicable_non_geometric"
+    },
+    {
+      "category": "backend_not_ready",
+      "reason": "full N1/N16 qualitative and intrinsic throughput must be qualified before any gate submission",
       "blocking_object": "not_applicable_non_geometric",
       "minimum_gap_m": null,
       "minimum_gap_status": "not_applicable_non_geometric"
     }
   ],
   "raw": "outputs/act16w-wait/prerequisite-checks.jsonl",
-  "reproduce": "python3 scripts/act16w_prerequisites.py --ops-alert /Users/changmin/projects/ugrp/outputs/e2e18-admin/ops-alert.md --out outputs/act16w-wait"
+  "reproduce": "python3 scripts/act16w_prerequisites.py --ops-alert /Users/changmin/projects/ugrp/outputs/e2e18-admin/ops-alert.md --teacher-queue /Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp1/teacher-gate-queue.json --out outputs/act16w-wait",
+  "checked_at": "2026-10-15T21:44:50.399525+00:00",
+  "queue": "/Users/changmin/projects/ugrp-wt/warp-act/experiments/2026-10-16-warp1/teacher-gate-queue.json",
+  "queue_sha256": "a081b47d19f38e2262b80cb7a98c6c64c0f2664144f5c6d35b3c0f0287c202ba",
+  "initial_snapshot": "preflight-initial.json"
 }
