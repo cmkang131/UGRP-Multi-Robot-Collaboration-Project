@@ -5,6 +5,7 @@ mapping/navigation proposal seam, not an actuator or an ACT grasp replacement.
 PR496 is imported verbatim; design/provenance: docs/self_map_integration.md.
 """
 from dataclasses import dataclass
+import copy
 import json
 import math
 from pathlib import Path
@@ -29,6 +30,8 @@ class Options:
     max_sigma_yaw_rad: float = math.radians(5)
     stable_views: int = 5
     required_zones: tuple = ('B',)
+    pose_rebuild: str = 'off'
+    navigation_support: str = 'off'
 
     def __post_init__(self):
         if self.self_map_integration not in ('off', OPTION):
@@ -40,6 +43,10 @@ class Options:
             raise ValueError('INVALID_STABLE_VIEWS')
         if not self.required_zones or any(z != 'B' for z in self.required_zones):
             raise ValueError('V1_SUPPORTS_B_ZONE_ONLY')
+        if self.pose_rebuild not in ('off', 'refit_history_v1'):
+            raise ValueError('UNKNOWN_POSE_REBUILD')
+        if self.navigation_support not in ('off', 'current_footprint_v1'):
+            raise ValueError('UNKNOWN_NAVIGATION_SUPPORT')
 
 
 def make_mapper(legacy=None, *, options=None, **kwargs):
@@ -132,6 +139,65 @@ class SelfMapIntegration:
         self.stable = 0
         self.last_states = None
         self.rebuild_required = False
+        self.history, self.rebuilds = [], []
+        self.last_rebuild_t = -math.inf
+
+    def planning_grid(self):
+        """Current body support only; never changes occupancy/coverage evidence."""
+        nav = self.grid.navigation
+        if self.options.navigation_support == 'off':
+            return nav
+        from harness.public_navigation_unknown import footprint_cells
+        result = copy.copy(nav)
+        result.odds = nav.odds.copy()
+        result.support = set(nav.support)
+        for cell in footprint_cells(nav, self.slam.pose):
+            if nav.state(cell) != 1:  # observed obstacles always win
+                result.odds[cell] = -1.
+                result.support.add(cell)
+        return result
+
+    def rebuild(self, t):
+        """Refit each saved body observation, then atomically rasterize anew.
+
+        No rigid shifting of raster cells or invented historical poses. A failed
+        fit keeps the previous map quarantined and completion blocked. This is
+        landmark-bank refitting, not a claim of global pose-graph optimization.
+        """
+        replacement = PoseGrid(self.robot_id, self.options.resolution_m)
+        poses, unresolved = [], []
+        for record in self.history:
+            obs = record['observation']
+            if record['anchor']:
+                pose = record['pose'].copy()  # preserve the arbitrary start frame
+            else:
+                pose, _, detail = self.slam._fit(obs.points_body, obs.descriptors,
+                                                record['pose'], obs.frame_id)
+                if pose is not None:
+                    cov = detail['covariance']
+                    if (np.linalg.eigvalsh(cov[:2, :2]).max() > self.options.max_sigma_xy_m**2
+                            or cov[2, 2] > self.options.max_sigma_yaw_rad**2):
+                        pose = None
+            if pose is None:
+                unresolved.append(obs.frame_id)
+                continue
+            replacement.insert(frame_id=obs.frame_id, pose=pose, **record['rays'])
+            poses.append(pose.copy())
+        self.last_rebuild_t = float(t)
+        receipt = dict(t=float(t), frames=len(self.history), refitted=len(poses),
+                       unresolved=unresolved, committed=not unresolved)
+        self.rebuilds.append(receipt)
+        if unresolved:
+            return receipt
+        self.grid = replacement
+        for record, pose in zip(self.history, poses):
+            record['pose'] = pose
+        self.rebuild_required = False
+        self.stable, self.last_states = 0, None
+        # Old zone coordinates/confirmation must not survive a map revision.
+        self.zones.tracks.clear()
+        self.sectors.clear()  # require a fresh admitted sweep after rebuilding
+        return receipt
 
     def _motion(self, delta, variance):
         # Accumulate calibrated command increments in the previous RGB body frame.
@@ -190,6 +256,9 @@ class SelfMapIntegration:
         if self.grid.navigation.seen and visual and (
                 innovation > self.options.resolution_m or yaw_jump > self.options.max_sigma_yaw_rad):
             self.rebuild_required = True
+        if self.rebuild_required and self.options.pose_rebuild == 'refit_history_v1' and (
+                visual and t-self.last_rebuild_t >= 5.):
+            self.rebuild(t)
         reasons = []
         if held: reasons.append('commanded_grip_closed')
         if not settled: reasons.append('camera_unsettled')
@@ -203,16 +272,20 @@ class SelfMapIntegration:
             obs = observe(image, self.servo, body_settling=t-self.odom.servo_since)
             counts = self.grid.insert(frame_id=frame_id, pose=pose, camera=obs['camera'],
                                       segments=obs['segments'], floor_xy=obs['floor_xy'])
+            if self.options.pose_rebuild != 'off':
+                self.history.append(dict(observation=observation, pose=pose.copy(),
+                    anchor=not self.history and bootstrap,
+                    rays=copy.deepcopy({k: obs[k] for k in ('camera', 'segments', 'floor_xy')})))
             self.zones.observe(image, robot_id=robot_id, frame_id=frame_id, t=t,
                                pose=pose, servo=self.servo, profile='camera_v3', settled=True)
             if counts['free_cells'] or counts['hit_cells']:
                 self.sectors.add(int((pose[2] % (2*math.pi))/(math.pi/4)))
-            candidates = frontier_candidates(self.grid.navigation, pose, self.nav_options)
+            candidates = frontier_candidates(self.planning_grid(), pose, self.nav_options)
         nav = self.grid.navigation
         states = {c: nav.state(c) for c in nav.odds}
         self.stable = self.stable+1 if not reasons and states and states == self.last_states else 0
         self.last_states = states
-        edges = raw_frontier_count(nav, pose)
+        edges = raw_frontier_count(self.planning_grid(), pose)
         zone_ok = any(track['confirmed_t'] is not None for track in self.zones.tracks)
         blockers = list(reasons)
         if edges is None or edges: blockers.append('unresolved_observed_boundary')
@@ -225,6 +298,8 @@ class SelfMapIntegration:
         result = dict(t=float(t), frame_id=frame_id, sha256=sha256,
                       pose=pose.tolist(), covariance=cov.tolist(), pose_source=event['status'],
                       features=event['features'], sigma_xy_m=sigma_xy,
+                      visual_reason=event['reason'], matches=event['matches'], inliers=event['inliers'],
+                      rebuild_count=len(self.rebuilds), rebuild_required=self.rebuild_required,
                       map_updated=not reasons, insertion_blockers=reasons, **counts,
                       status='self_map_complete' if complete else 'frontier' if proposal else 'observation_required',
                       complete=complete, completion_blockers=blockers, raw_frontier_cells=edges,
@@ -245,5 +320,5 @@ class SelfMapIntegration:
                     cells=[[int(x), int(y), float(v)] for (x, y), v in sorted(nav.odds.items())],
                     floor_cells=[[int(v) for v in c] for c in sorted(nav.floor_frames)],
                     wall_cells=[[int(v) for v in c] for c in sorted(nav.wall_frames)],
-                    rebuild_required=self.rebuild_required, zones=zones,
+                    rebuild_required=self.rebuild_required, rebuilds=self.rebuilds, zones=zones,
                     slam=self.slam.snapshot(), latest=self.events[-1] if self.events else None)

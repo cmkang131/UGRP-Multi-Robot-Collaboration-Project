@@ -41,7 +41,8 @@ def safe_rgb_path(root, relative, robot):
     return path
 
 
-def replay(raw, images, robot, output, motion_model, self_map_integration='off'):
+def replay(raw, images, robot, output, motion_model, self_map_integration='off',
+           pose_rebuild='off', navigation_support='off'):
     # No evaluation file is opened in this function or passed to the mapper.
     from harness.self_map_integration import Options, OPTION, make_mapper
     if self_map_integration == 'off':
@@ -56,7 +57,8 @@ def replay(raw, images, robot, output, motion_model, self_map_integration='off')
     output.mkdir(parents=True, exist_ok=False)
     start = min(float(frames[0]['sim_time']), float(commands[0]['t']))
     mapper = make_mapper(robot_id=robot, start_time=start,
-                         options=Options(self_map_integration=OPTION, motion_model=motion_model))
+                         options=Options(self_map_integration=OPTION, motion_model=motion_model,
+                                         pose_rebuild=pose_rebuild, navigation_support=navigation_support))
     ci, missing, used, rejected = 0, [], [], []
     status = 'RECORDED'
     failure = None
@@ -104,6 +106,7 @@ def replay(raw, images, robot, output, motion_model, self_map_integration='off')
     summary = dict(status=status, failure=failure, robot_id=robot,
                    source_sha=subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
                    toggle=OPTION, motion_model=motion_model, replay_start_t=start,
+                   pose_rebuild=pose_rebuild, navigation_support=navigation_support,
                    declared_frames=len(frames), replayed_frames=len(used), missing_frames=len(missing),
                    unprocessed_frames=len(frames)-len(used)-len(missing),
                    map_updated_frames=sum(e['map_updated'] for e in mapper.events),
@@ -217,6 +220,8 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--motion-model', choices=['s2_pulse_v122', 's2_pulse_v122_rotL_v1'], required=True)
     p.add_argument('--self-map-integration', choices=['off', 'natural_floor_frontier_v1'], default='off')
+    p.add_argument('--pose-rebuild', choices=['off', 'refit_history_v1'], default='off')
+    p.add_argument('--navigation-support', choices=['off', 'current_footprint_v1'], default='off')
     p = sub.add_parser('evaluate')
     p.add_argument('--replay-dir', type=Path, required=True)
     p.add_argument('--raw', type=Path, required=True)

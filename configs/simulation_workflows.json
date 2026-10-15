@@ -3,6 +3,20 @@
   "scope": "entry points; sim_cli does not silently launch models, hardware or training",
   "workflows": [
     {
+      "id": "self-map-diagnostic",
+      "purpose": "기본 off 자기 RGB 10 Hz 기록·frontier 실주행·자기 지도 완료 진단",
+      "entry": "scripts/run_self_map_diagnostic.py",
+      "docs": "experiments/2026-10-15-self-map/selfmap2.md",
+      "requires": "GCP gcp1 only; explicit --execute and --self-map-executor frontier_drive_v1, pinned clean SHA; coordinator approval external to runner. No Mac physics/render, no model, no top or truth input.",
+      "version": "0.2.0",
+      "runner": "scripts.run_self_map_diagnostic",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": ["--expected-source-sha", "--seed"],
+      "output_kind": "directory"
+    },
+    {
       "id": "zone-study-pilot",
       "purpose": "구역 연구 실어댑터 파일럿: 기본 dry-run, 4조건 pre-flight와 공유 영속 예산",
       "entry": "scripts/run_zone_study_pilot.py",
