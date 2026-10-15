@@ -66,22 +66,28 @@ class ApproachRepairMixin:
                 tracker = getattr(self, '_approach_checked_arc', None)
                 if tracker is None:
                     tracker = self._approach_checked_arc = CheckedArc()
+                event = original(pose, target, yaw, at)
                 if tracker.advance(pose, self.path, self.progress.required_movement_m, route_projection):
                     self.progress.since = at
                     self.progress.retried = False
+                    return None
                 # Preserve original visible goal/heading improvements through
                 # search and replans. R1 lost this credit on a stale fixed path
                 # and falsely handed r2 off at14.4 SIMs; no time limit changed.
-                return original(pose, target, yaw, at)
+                return event
             # Reuse the existing 1 cm / 3 SIMs monotone checked-route observer;
             # no new acceptance/timing constant. Original 8318620 advanced
             # 0.340193 m on its fixed path while goal error grew 0.2397->0.4775m.
             return route_progress(self, world, target, yaw, at)
         self.progress.observe_goal = observe
+        before = len(getattr(self, 'progress_log', []))
         try:
             return super()._route(world, goal, heading, now)
         finally:
             self.progress.observe_goal = original
+            for row in getattr(self, 'progress_log', [])[before:]:
+                row.update(reason_category=row['reason'],blocked_object='none:progress_window',
+                           min_gap_m=None,gap_scope='not_geometric; visible_goal_heading_and_checked_arc')
 
     def _plan_approach(self, world, now):
         valid = super()._plan_approach(world, now)

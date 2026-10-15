@@ -19,7 +19,21 @@ def blockers(candidate):
 
 def rejection_rows(result):
     rows=[]
+    terminal = ('HOST_ERROR' if result.get('status')=='HOST_ERROR' else
+                'cap_end' if result.get('cap_end') else None)
+    if terminal:
+        rows.append(dict(robot='run',t=result.get('sim_s'),population='terminal_run_events',
+            reason=terminal,reason_category=terminal,blocked_object='none:'+terminal,
+            min_gap_m=None,gap_scope='not_geometric; '+str(result.get('error') or terminal),
+            candidate=dict(status=result.get('status'),cap_end=result.get('cap_end',False))))
     for rid,t in result.get('teachers',{}).items():
+        for event in t.get('approach_progress_log', []):
+            rows.append(dict(robot=rid,t=event['t'],population='approach_progress_events',
+                reason=event.get('reason') or 'progress_window_expired',
+                reason_category=event.get('reason_category',event.get('reason') or 'progress_window_expired'),
+                blocked_object=event.get('blocked_object','none:progress_window'),
+                min_gap_m=event.get('min_gap_m'),gap_scope=event.get('gap_scope','not_geometric; progress_window'),
+                candidate=event))
         for event in t.get('rendezvous_log',[]):
             if event.get('blocked') or event.get('accepted') is False or event['event'].endswith('replan'):
                 rows.append(dict(robot=rid,t=event['t'],population='rendezvous_events',

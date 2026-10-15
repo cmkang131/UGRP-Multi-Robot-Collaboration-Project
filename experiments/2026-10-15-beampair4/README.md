@@ -125,3 +125,30 @@ SHA256SUMS 전부 검증 뒤 본 예약·lease 해제, 다른 작업은 유지�
 기존1cm만큼 새 최고 arc를 넘으면 원래3SIM초 창의 진전을 갱신한다.
 수용/시간 상수 변경 없음. stale blocker 재관측과 recording-only 링은 그대로다.
 R2는 동일6개·동일교란·첫두개직렬, 두 번째 탐색 라운드다. 비물리29개 통과.
+
+## R2 HOST_ERROR와 마지막 R3
+
+f6c2830e:19.7SIM초·8318620 하나에서HOST_ERROR, 나머지5 미제출.
+[R2 요약](r2-summary.json), [관문표](r2-rejection-table.json), [런타임](r2-runtime.json).
+traceback는 progress.reset 뒤 best_distance=None인데 arc credit이 since부터
+채워 원래 observe_goal의 초기화를 건너뛴 TypeError다. 물리 실패와 합산하지 않는다.
+R3는 원래 관찰기를 먼저 호출해 기준값을 초기화한 뒤 추가 arc credit을 적용한다.
+실패/진행 사건에는 reason_category·none:progress_window 또는 none:HOST_ERROR와
+기하가 아닌 min_gap=null 범위를 명시한다. 새 수용 상수 없음.
+
+R2 전체0–19.7초2Hz41프레임·끝9.7–19.7초10Hz101프레임 직접검토.
+초반r2 파랑 탐색, 약12초 재접근,16초쯤 양측 자기 끝이 보이며r1/r2가 지나간다.
+19초r1 영상은 가까운 상대 차체가 차지하고,19.7초 예외로 양측 새 명령 없이 끝난다.
+같은 끝으로 바꾼 실패나 공동 들기 물리 실패로 분류하지 않는다.
+원래10Hz 자기RGB202장1,642,257bytes, MP4 278,230bytes/198프레임,
+평가 몸체 위치차이0. Mac playback/beampair4-r2-8318620에 회수했다.
+
+R3는 세 번째이자 마지막 라운드다. 같은6개·같은 장면과 교란, 첫두개직렬.
+6/6 전에는 gate40을 만들지 않으며 학습off·held 숨김on·weld off를 유지한다.
+
+실행 전 비물리 원본 재생: 수정off는8318620 338명령·8318626 231명령 모두
+원본과 불일치0. 수정on도 전 구간 예외0,8318620의 마지막 handoff가 사라졌다.
+원본과 첫 명령 차이는 경과30.9초(기존 재계획 뒤),8318626은17.1초의지정 재관측PWM이다.
+8318626도 저장구간 종료 때handoff 없음. 새 관측을 생성하지 않는 재생이므로
+이 결과를 물리 완주·교사 성공률로 간주하지 않는다.
+기존32회 [프레임·사건 순차 표](baseline-input-funnels.json)도 별도 보존한다.

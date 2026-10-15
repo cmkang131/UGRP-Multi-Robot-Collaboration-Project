@@ -8,7 +8,7 @@ import math
 from pathlib import Path
 import sys
 
-from scripts.audit_beampair1 import read, read_bytes, dump
+from scripts.audit_beampair1 import read, read_bytes, dump, ordered_funnel
 from scripts.analyze_beampair1 import candidate_funnels, blockers
 
 
@@ -119,6 +119,17 @@ def analyze(root, out):
             approach_sample_N=sum(r['phase']=='approach' for r in rows),
             source_hashes={str(read_bytes(raw/n)[1]):read_bytes(raw/n)[2]
                 for n in ('result.json','plan.json','eval-only.jsonl','teacher-r1.jsonl','teacher-r2.jsonl')})
+        anyv=sum(e['visibility'][rid]['visible_probes']>0 for e in ev for rid in plan['roles'])
+        meaningful=sum(e['visibility'][rid]['visible_probes']>=5 for e in ev for rid in plan['roles'])
+        admitted=sum(any(m['id']=='band_'+plan['roles'][rid] for m in e['visible_measurements'][rid])
+                     for e in ev for rid in plan['roles'])
+        info['frame_funnel']=ordered_funnel(len(ev)*2,[('any_assigned_probe',anyv),
+            ('meaningful_5_probes',meaningful),('measurement_admitted_not_held',admitted)])
+        phase_sets=[{e.get('to') for e in t['events']} for t in result['teachers'].values()]
+        counts=[sum(bool(v & set(names)) for v in phase_sets) for names in
+                [('ready','pick','complete'),('pick','complete'),('complete',)]]
+        info['event_funnel']=ordered_funnel(2,list(zip(
+            ['own_ready','own_pick_go_ack','own_command_complete'],counts)))
         all_runs.append(info)
         if failed:
             dump(out/f'{plan["seed"]}-timeline.json', rows)

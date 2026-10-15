@@ -88,3 +88,23 @@ def test_arc_credits_a_detour_and_cannot_be_earned_by_replanning_or_oscillation(
     assert not tracker.advance((0,0,0),path,.01,project)
     assert not tracker.advance((-.1,0,0),path,.01,project)
     assert tracker.advance((-.2,0,0),path,.01,project)
+
+
+def test_arc_after_goal_reset_initializes_original_before_credit(monkeypatch):
+    from harness.beampair_approach import BOUNDED_MODE
+    mod=ModuleType('sim.grasp_act_search21')
+    mod.route_projection=lambda p,path:(0,p,p[0])
+    mod.route_progress=lambda *a:None
+    monkeypatch.setitem(sys.modules,mod.__name__,mod)
+    class Base:
+        def _route(self,w,g,h,n):return self.progress.observe_goal((1.,0.,0.),g,h,n)
+    class T(ApproachRepairMixin,Base):pass
+    t=T();t.approach_repair=BOUNDED_MODE;t.search19_body_active=False;t.path=[(0,0),(2,0)]
+    progress=SimpleNamespace(since=None,best_distance=None,required_movement_m=.01,retried=False)
+    def original(*args):
+        assert progress.since is None or progress.best_distance is not None
+        progress.best_distance=1.;progress.since=3.
+    progress.observe_goal=original;t.progress=progress
+    t._approach_checked_arc=CheckedArc();t._approach_checked_arc.previous=(0.,0.)
+    assert t._route({},(2,0),0.,4.) is None
+    assert progress.best_distance==1. and progress.since==4.
