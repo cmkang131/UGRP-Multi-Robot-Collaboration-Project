@@ -18,11 +18,11 @@ try:
  for name in ('mujoco','numpy','opencv-python','opencv-python-headless','pillow'):
   try:versions[name]=importlib.metadata.version(name)
   except importlib.metadata.PackageNotFoundError:pass
- write_json(OPS/'environment-recording.json',dict(python=platform.python_version(),platform=platform.platform(),
+ write_json(OPS/'environment-recording-v2.json',dict(python=platform.python_version(),platform=platform.platform(),
   packages=versions,execution_source_sha=SRC.name,dependency_sha='26f84d0f0ada1c33473c83cca2d3415ce51bd247',
   host=read_json(OPS/'gate-proof.json')['execution_host'],backend='C MuJoCo CPU',
   operations={p.name:sha256(p) for p in OPS.glob('*.py')}))
- subprocess.run([str(PY),str(OPS/'analyze_cohort.py'),'--batch',str(BATCH),'--out',str(OPS/'cohort-analysis')],cwd=SRC,env=env,check=True)
+ subprocess.run([str(PY),str(OPS/'analyze_cohort.py'),'--batch',str(BATCH),'--out',str(OPS/'cohort-analysis-v2')],cwd=SRC,env=env,check=True)
  subprocess.run([str(PY),str(OPS/'prepare_dataset.py'),'--batch',str(BATCH),'--output',str(OPS/'dataset-v1'),
   '--heldout',str(OPS/'heldout-plan.json'),'--convert'],cwd=SRC,env=env,check=True)
  summary=read_json(OPS/'dataset-v1/summary.json')

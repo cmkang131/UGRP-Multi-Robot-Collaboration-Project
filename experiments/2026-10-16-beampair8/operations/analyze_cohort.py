@@ -22,7 +22,14 @@ def main():
         assert adapter['source_sha']=='72c0e83dab384b4f7d4bb73e37e440e0d1b248f6'
         assert adapter['training_rgb'] and adapter['held_object_hidden_v1'] and adapter['held_world_reads']==0
         assert adapter['hidden_measurement_ticks']>=0
-        assert adapter['peer_yield']=='beampair_peer_yield_v1' and result['weld']=='off'
+        assert adapter['peer_yield']=='beampair_peer_yield_v1'
+        # The pinned runner writes weld only after normal finalization. Its
+        # PlanningSafetyCap exception is a failed cap_end, not a data source.
+        # Preserve the missing field as unknown; never manufacture OFF.
+        if 'weld' in result:assert result['weld']=='off'
+        else:assert item['category']=='cap_end' and not result['physical_success']
+        entry['weld_reported']=result.get('weld')
+        entry['terminal_metadata_missing']=['weld'] if 'weld' not in result else []
         truth=read_rows(existing(raw,'eval-only.jsonl'));fs=Counter()
         for f in truth:
             for rid in ('r1','r2'):
@@ -68,6 +75,7 @@ def main():
         scope='fresh record200 only; original gate40 and two identity cohorts are excluded',missing_rejection_audit_N=missing)
     write_json(a.out/'rejection_table.json',table);write_json(a.out/'candidate-rejections.json',rejections)
     summary=dict(n=len(remaining),N=len(rows),cap_end_N=sum(r.get('cap_end',False) for r in rows),
+        terminal_metadata_missing_N=sum(bool(r['terminal_metadata_missing']) for r in rows),
         HOST_ERROR_N=sum(r['category']=='HOST_ERROR' for r in rows),unstarted_N=len(done['not_started']),
         physical_success_N=sum(r['legacy_success'] for r in rows),raw_adapter_verified_files=manifest_files,missing_rejection_audit_N=missing,
         terminal_outcome_distribution=dict(outcomes),invisible_measurements=sum(r['audit']['invisible_measurements'] for r in rows),
