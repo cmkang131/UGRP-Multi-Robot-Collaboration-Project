@@ -18,23 +18,29 @@ PAN_SWEEP_S = len(PANS)*PAN_STEP_S
 YAW_RATE = (.0325*150*2*math.pi/60)*.35/.1255
 
 
-def command_delta(issued, dt):
+def command_delta(issued, dt, yaw_gain=1.):
     """Same 65 mm/150 rpm mecanum model as teacher 6f057f7e."""
     a, b, c, d = [w*min(dt, t) for w, t in zip(issued['wheels'], issued['duration_s'])]
     gain = .0325*150*2*math.pi/60
     return (gain*(a+b+c+d)/4, gain*(-a+b+c-d)/4,
-            gain*(-a+b-c+d)/(4*.1255))
+            yaw_gain*gain*(-a+b-c+d)/(4*.1255))
 
 
-def propagate(point, issued, dt):
-    dx, dy, yaw = command_delta(issued, dt)
+def propagate(point, issued, dt, yaw_gain=1.):
+    dx, dy, yaw = command_delta(issued, dt, yaw_gain)
     x, y, z = point; x -= dx; y -= dy
     co, si = math.cos(yaw), math.sin(yaw)
     return [co*x+si*y, -si*x+co*y, z]
 
 
 class CommandSearch:
-    def __init__(self):
+    # Separate direction-only memory: never fed back to the parent's approach
+    # target (whose MEMORY_S remains 5.2). A 5.2 s expiry here would truncate the
+    # 8.1 s pan sweep. Every search instead stops at 24 s or one estimated turn.
+    def __init__(self, *, yaw_gain=1.):
+        if not math.isfinite(yaw_gain) or not .1 <= yaw_gain <= 2.:
+            raise ValueError('finite calibrated yaw gain in [0.1, 2] required')
+        self.yaw_gain = yaw_gain
         self.point = self.seen_t = self.previous_t = None
         self.started = self.stage_t = None
         self.stage = None
@@ -52,9 +58,9 @@ class CommandSearch:
             return
         if previous is not None:
             if self.point is not None:
-                self.point = propagate(self.point, previous, dt)
+                self.point = propagate(self.point, previous, dt, self.yaw_gain)
             if self.last_action_stage == 'body_scan':
-                self.scan_yaw += abs(command_delta(previous, dt)[2])
+                self.scan_yaw += abs(command_delta(previous, dt, self.yaw_gain)[2])
         self.last_action_stage = None
         if measurement is not None:
             if (set(measurement) != {'xyz', 'yaw'} or len(measurement['xyz']) != 3
@@ -98,7 +104,7 @@ class CommandSearch:
         if self.stage in ('orient', 'body_scan'):
             sign = (1 if bearing > 0 else -1) if self.stage == 'orient' else 1
             remaining = abs(bearing) if self.stage == 'orient' else 2*math.pi-self.scan_yaw
-            duration = min(.1 if self.stage == 'orient' else .04, remaining/YAW_RATE)
+            duration = min(.1 if self.stage == 'orient' else .04, remaining/(YAW_RATE*self.yaw_gain))
             value['wheels'] = [sign*w for w in (-.35, .35, -.35, .35)]
             value['duration_s'] = [duration]*4
         self.last_action_stage = self.stage
@@ -107,5 +113,7 @@ class CommandSearch:
     def diagnostic(self, now):
         return {'stage': self.stage, 'search_s': now-self.started if self.started is not None else 0.,
                 'last_seen_t': self.seen_t, 'expected_relative_xyz': deepcopy(self.point),
+                'memory_age_s': now-self.seen_t if self.seen_t is not None else None,
+                'yaw_gain': self.yaw_gain,
                 'commanded_scan_yaw_rad': self.scan_yaw,
                 'scope': 'visible memory + actual issued history only; not measured motion'}

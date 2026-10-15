@@ -1,0 +1,50 @@
+{
+  "schema": "ugrp.act11.verification.v1",
+  "base_sha": "567dc12041b4562ab0d972764f350684a2f267f0",
+  "pytest": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_act11.py tests/test_grasp_act_act10.py tests/test_grasp_act_act9.py tests/test_grasp_act_act8.py tests/test_grasp_act_act7.py tests/test_grasp_act_act6.py tests/test_grasp_act_data.py",
+    "exit_code": 0,
+    "passed": 104,
+    "wall_s": 20.04,
+    "concurrent_pytest_processes_started": 1
+  },
+  "simulation_executed": false,
+  "render_executed": false,
+  "training_executed": false,
+  "remote_access": false,
+  "stop_owned": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/act9-ec0bd628-ops/stop_owned.py",
+    "sha256": "4d32b7fbd376bb8f90b8ccd71a0732704c304f9406e7afa77f6217d501531616",
+    "modified": false
+  },
+  "sources": [
+    {
+      "path": "harness/grasp_act_dart.py",
+      "sha256": "fdd621836fbc6cc335354b29fdf4e0ee7b2c13e77fd75f4e946e192af266c675"
+    },
+    {
+      "path": "harness/grasp_act_search.py",
+      "sha256": "c8db943be12cc0960a811695b02dac6fe1aa3011c7106c4fa3fc3df10f0df75e"
+    },
+    {
+      "path": "harness/grasp_act_recovery_gate.py",
+      "sha256": "07fdced8bf09bbad939b05005ee7d1f24c5d900b765f78682502d2eeab71d40a"
+    },
+    {
+      "path": "scripts/run_grasp_act_recovery.py",
+      "sha256": "73ed734941ef68a820fc4b8aaa28267e52ca4f72f2f73ab164b2a96d97b29e3c"
+    },
+    {
+      "path": "scripts/audit_grasp_act_act11.py",
+      "sha256": "448af3a39e76996326ea775e4e29fcda0a677f3d372d1a0bd42c331e668caf44"
+    },
+    {
+      "path": "scripts/queue_grasp_act_act11.py",
+      "sha256": "2b510154245e7a4e80768e405b99e2c6e6bfadd8f57ca93243d36861b264b44e"
+    },
+    {
+      "path": "tests/test_grasp_act_act11.py",
+      "sha256": "58513b525953916725f14f264ef697ccd20ba6d18d162725f32ec674dbfc5960"
+    }
+  ]
+}

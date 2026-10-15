@@ -1,0 +1,31 @@
+{
+  "schema": "ugrp.act9.perturb.v1",
+  "mode": "recovery_active_search_v1",
+  "default": "off",
+  "probability_per_eligible_tick": 0.1,
+  "minimum_eligible_ticks": 12,
+  "burst_ticks": 9,
+  "max_injections_per_run": 1,
+  "wheel_duty": 0.35,
+  "pulse_s": 0.1,
+  "phases": [
+    "approach",
+    "align"
+  ],
+  "held_noise": false,
+  "arm_noise": false,
+  "perturbation_targets_excluded": true,
+  "scope": "ACT11 paired search gates; optional frozen ACT8 yaw gain; no online truth",
+  "rotation_calibration": {
+    "mode": "act8_yaw_gain_v1",
+    "yaw_gain": 0.6790684337506349,
+    "fit_cohort": "act8",
+    "validation_cohorts": [
+      "act9",
+      "act10"
+    ],
+    "fit_N": 12,
+    "estimator": "zero-intercept least squares: sum(nominal*actual)/sum(nominal^2)",
+    "scope": "n4-highcpu-64 saved no-load near-cargo intervals; not measured odometry online"
+  }
+}

@@ -1,0 +1,4102 @@
+{
+  "schema": "ugrp.act11.offline.v1",
+  "calibration": {
+    "mode": "act8_yaw_gain_v1",
+    "yaw_gain": 0.6790684337506349,
+    "fit_cohort": "act8",
+    "validation_cohorts": [
+      "act9",
+      "act10"
+    ],
+    "fit_N": 12,
+    "estimator": "zero-intercept least squares: sum(nominal*actual)/sum(nominal^2)",
+    "scope": "n4-highcpu-64 saved no-load near-cargo intervals; not measured odometry online"
+  },
+  "bearing": {
+    "act8": {
+      "off": {
+        "N": 0
+      },
+      "on": {
+        "N": 0
+      }
+    },
+    "act9": {
+      "off": {
+        "N": 2164,
+        "median_deg": 11.21158946228608,
+        "p95_deg": 13.066296280044524,
+        "max_deg": 16.09593637098111
+      },
+      "on": {
+        "N": 2164,
+        "median_deg": 5.843435635438924,
+        "p95_deg": 7.1193674612728435,
+        "max_deg": 7.584510374805974
+      }
+    },
+    "act10": {
+      "off": {
+        "N": 24,
+        "median_deg": 5.300938590783454,
+        "p95_deg": 12.03733524376379,
+        "max_deg": 14.140658069255437
+      },
+      "on": {
+        "N": 24,
+        "median_deg": 3.80445936454174,
+        "p95_deg": 6.501867359672145,
+        "max_deg": 6.704037037479153
+      }
+    }
+  },
+  "runs": [
+    {
+      "name": "act8-gate-8316800-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "ba0093c5f3133b09637e16e2ada6205ee6c6ece3d8ce38dc1d88f45279dcfb8a",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "f106f5732b27f52a2e00469882e407b837245810f56e080a6bd8a877545253e3",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 433,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316800-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "74be985886be7df114bf30ba3a76c95a911bdbc5c3f97c0e3b298d8ddb5cfb63"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316800-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "0ef3a0883695df2829bb2d7ca2e59b014d798f8069d6fb443a6867c8c19c55ac"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316800-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "79c6d09f25767cc7c2e34e60f91e2641e705345349278d9e260dee3bdb30e6fa"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316800-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "ca543503dc7e98f23b5d66b61ac08511288cee2a6023b6ed48d35d7ca5a1422f"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316800-01a892fa/raw/result.json.zst",
+          "sha256": "1ac550c1d078be0b73fdea5ee6b5ca9a742bbaf62d6771fe99d3470b2626586e"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316800-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316801-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "a2f780bbf000a734793200039e7356b4ef18637e9a7ccdfc08cf2e567f1a8c8b",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "498c7a5eef9d11d54836f54659eac18771028781460318d77b8485021b550a3b",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 442,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316801-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "6388ad3cbfd363ab95eb1f74989bab66a994c2a011c8a9ffb014bf3f7eb42566"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316801-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "37698d1607ffb3ee3d233d5a3066e3e9f6819a7a7da9854f34c2123cd76c4137"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316801-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "4ee4a7a6deae901d4b5bcce66cf7917e8199eeb0091a2dfbec347866d1424078"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316801-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "a84e050b2dc024c692bed4729a50fc4e07f67b2d2f1b3dbbba49a73f8a9c3fa7"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316801-01a892fa/raw/result.json.zst",
+          "sha256": "69887178184b251496df689fe53f0c82f61007524b36e9ff9b1df2e5824eb83e"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316801-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316802-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "0683a6065626a23492627ae4afb9169fb4701e677374001ae0164122f64f5f76",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "126cb898c247d411806917a7bc23a9db68f55a47828fcef300ae3b7fafe04f0d",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 447,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316802-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "8d429a2009325ee1531835566a3b20a42470f702ef7b0f34db0a7c4e3f5953c6"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316802-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "5da5ed04dfee11074312fd88bed251bd9cb269ff0e0db908bba88e15b0af0cf0"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316802-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "df9d5cefe22c3459c623bf83b72407dd9dc739df62868aba80d69d485dd8a81a"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316802-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "8db106041bdc47b2c4e037e058a1611d586d99c9d1abae23c0b609ee238a9539"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316802-01a892fa/raw/result.json.zst",
+          "sha256": "56458164d98a7d251ca4a32ac49fce9638d8aad1e1833c851f8d0e38ebe68d51"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316802-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316803-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "2e311b3818849f63f7942a62f0300e63238f2fb6c9e5ef89cbbe7c042a7b3f2e",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "f3badc79fe979253b9d563581fc759a6a5086218208b00f8cd16045b0a0b7e7f",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 453,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316803-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "89bd1c05a3fb2f6cf960d5f5d8c05413ddb4f95c1ead0ad01e63337bee3a0f09"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316803-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "8f2f9a18a37e00e322b05176982a9b828fbac5d07606ab05aeebea8d2b10d116"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316803-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "a5b06e94be7a2d11cece0ff814e6e13035b6cc34efeb3dd04be05af66ac534a7"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316803-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "10adc41923c46b61653e9a099090b0c0b29756347d2811e1579381ed79b9342a"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316803-01a892fa/raw/result.json.zst",
+          "sha256": "a39e84f1b1450760fc0a873f73cc13be8d76e1cb080d7b8fb5d726d2316291a3"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 2.356653271448183,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316803-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316804-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "b65c08ab0ead3ea3b8e9b695fe26ed0ae83489bd35bcec8e073ae65072494a2f",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "dd53017c9707b9b37700d8e2df9b66abc1a9f7c421829c7de45a849e58890e1e",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 493,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316804-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "11453021fb32011d0682fdc1d41308d1c447c7d9240cd5e33bfdb91995a484b4"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316804-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "c3ba0d3dbe0ca0716df843a32e6e84e19cd5788240e750d72af54beb270fa6d8"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316804-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "1161cf8a0a092f580240174127f54230fcb78d518d4c23168b8815d4fd02ef8b"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316804-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "259bee082494a7a729c4b0c9caa2d24f547e125d5b1d122d5d2df50e8db00970"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316804-01a892fa/raw/result.json.zst",
+          "sha256": "5026f02e615295a5f919e9cd23eecd6d5e005eef106dc9ab1d93464c8b8b1cec"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316804-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316805-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "b7fc77df9201291d11fa418f74821ef8a4d0ae434be781e4321a2915ddf30f43",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "0590c533c066e6c095a48011b776d6a5c122ecbc4be50a4de3ee8262f3a0ad83",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 435,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316805-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "2bf18820ccc16417de9ea62239fbea7d763594251c3965d6a9b8a79e6c0219d5"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316805-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "ef535ee556a9788da91915032eabc4b56696693f85dbe13756466f73dfdf3fff"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316805-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "24468bde36d359a8e093d7f1c213e025ecda28cedc85b1222c74b66c277cf6f5"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316805-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "6005918a0670b8d30c5de63e23aeb9946ccfa6b25c226fed3394b62fa928752f"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316805-01a892fa/raw/result.json.zst",
+          "sha256": "99805343b8a39bccbe0b43554717ec86c3caea0582c3e6084d1d7d1ad3ab8db9"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 2.132793813374374,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316805-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316806-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "b4aef4f891055961b2336957ee849b217ab983c7654f8a8be8b0eb6710a8a4e3",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "a3ecb23f893748c7801c37aa3fabe4d78bc2e1398e919f5625fc34152db6cd3b",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 466,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316806-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "4828580de1071b0b1e6a1f0d3373ca13d94493c844f2ca174d9b95d527166361"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316806-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "2a546527241bd877ce944cb1133811baead814007ba824a80161e14ec67d19d9"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316806-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "0bfb90e314c8e2f4326fc12ee6f7bb0a664c6ebfbd22a6d5b5258d7631f910ce"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316806-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "b6772ad4f0b5266ceca11058d53717583b40980f1bd919d56e6d4bc052b2a976"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316806-01a892fa/raw/result.json.zst",
+          "sha256": "6c48f573b647525b6970f7dda1a1fc56d83da6fa0629ba3de7f282834ddcc683"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316806-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316807-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "e53614bcc0fe74c52d67564e17b27ce2fb8bebb03dba9c80e4e833734b1fff06",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "e4f2bf15aa90c96d1c43a0a1ea8adf131d031ceb9fccdfaca81e6aec0843e121",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 473,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316807-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "d8d8da861033a05085dc8c942dd0b82245cad4c5b910d12b12f4722896dcbc0b"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316807-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "c250370e86723cdaf8b340fdfc7214b89260f15193d9bd93e840de1644dbff8a"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316807-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "256550af8516efbca0ff4085561ddbf77c4e80ec05fe3481c410a284b8806e68"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316807-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "7c7440dac7fdaefee8dc3a333fb84e85269df347a7490492d631ca4fc31f5b29"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316807-01a892fa/raw/result.json.zst",
+          "sha256": "ee3203f6a812e3585fee5aaed40673b5c36c4cc4255589e3d3cfdcc477c52a51"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 2.232599021085688,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316807-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316808-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "2cce12887f79b1a9806ca09171cc765b82c7852ad546625372459881abdef1ab",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "def2f675614f43c1aaec0901162f44cf32bbe046b02288c0c3cbdd25984c5535",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 464,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316808-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "a3eba9384b37de1c82615763b3506c14f1a05947f6813987f97dde55857d7b3c"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316808-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "e8dc14f40bbfedbf8580af7a3c37f80cad2dd9dbc52618f9f1fc8fc8202f4824"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316808-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "27231d3cf92f4427068c736d716206671d71dbd05864ea6374bf1abe323eca89"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316808-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "7bca7622f3804383f5c7a226c7aca02a1b273c1a3a3cffc8fd3f9a12344b637b"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316808-01a892fa/raw/result.json.zst",
+          "sha256": "7abb9c7219fc438b1e0ea932ac2e872fe42bf06166176e64b501f9cf837ecae3"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316808-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316809-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "4ed31006a1353952b7847ee24d3fd474fc4c3971bd063a5c265a1590c73c3a4b",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "07ec7f640bc39babf3cc7289f6ecd2283a96601acc1ca6723da2f868a0ae1019",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 451,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316809-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "f767c8e2fba3cd45742de357f8028f7ea57bfc6d7d2ec450cb5c6ccb12df2929"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316809-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "791c415f8bd7b3132ba8c6677b5a2f241b4d1269c7c9fd009b4c9956239e8fbf"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316809-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "72d978baa3eec323806aef92b64bb20e9f9f03ab2fb7e0d2d2a6ada14e0c6d9b"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316809-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "28fee3f06cfe59140067fac1a4f159fc6046e6dc19abaf2419cce479ccf7bd89"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316809-01a892fa/raw/result.json.zst",
+          "sha256": "cd84b7104d35aa5df74c54817367e3a62d5cd01916772d8b7c2c5dc513d91990"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316809-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316810-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "7cc134fbedf558b1343d4880f6e999ef6f27a63ad4cc5a43b5be4734b3f7bfd4",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "14bd0584fc590ea33c19db194f7809b699726b8bcf0602bd6eccb7b1c93e41b0",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 446,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316810-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "f77d6314df28603f75fb443875f03f18bf543d13c1aa177dc2067c2e90e15928"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316810-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "27e417d004bef97b64920cd40ad95d92ac61ef085782c1d1878095da5e8c4bec"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316810-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "5735dd0b76e114fe89ef95ceab67c3727109aea40fd394bb3cb588965e3b3afe"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316810-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "314837cc70f586d2c31269a05e7a80aa51fb09c65f5a463156b23ab2e71d5157"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316810-01a892fa/raw/result.json.zst",
+          "sha256": "f49541d2516ecb3fcd4ffa72e858fba031dc602248d5e61a3f24cf980d7d70ea"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 2.3000066823094554,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316810-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316811-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "748d238fc49961e5df48247d8404fd615ab1769dbb4bb79f73b632396828bed3",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "d00212403b775450eff90293e3f9d5e609bc456d3fa0198153dbc27b5f87fa9d",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 462,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316811-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "400f22f95db9e356f5a1fe73016cbd57aeebef27834dc37124002324f7281760"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316811-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "60f1c3374947f38ef7350e05602c3e0c0c1518ca089a39ad21de5cd3a562e063"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316811-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "3207929ae7c253d34eb697d5223a1ac06e19b5259dd6d260856a61abef99ec4f"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316811-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "cfed844cf4a8863cd2a09207df41c23e214be110706adcdddde472810028f8ba"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316811-01a892fa/raw/result.json.zst",
+          "sha256": "bb4d53bfd85a0b9210130bed3ffd235044e70a5a5b839a1ba2d796a0d74705ad"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316811-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316812-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "72b5fa49615004e936f99a4e4ccf49e4cb5d044dd9a37e10a3d7de694060950f",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "409bea582c26abe491d0b0e9508b7390b7e790f10149ac50439bc8076b5a4d08",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 464,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316812-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "7ddcba64829278f17e15ce0efc2631140ca0cb05ca7227919685fb86816dc9df"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316812-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "b48f3c9eeda472da68b12cac4e83ce1736f3bc081904668eed6413b2ecfef6bf"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316812-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "eb3c074b67cf82ed0469d16e5b03dc7ad43da7766348c6e60bd61cf3c8516031"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316812-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "671c3ff96a1b08081050fc8a9485f5f567e2e3fdd3827164b589aabe2026f9ba"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316812-01a892fa/raw/result.json.zst",
+          "sha256": "4c5eba97da9a8fb89e0a701f48462818a9cde9415552973a11dde359377811c9"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316812-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316813-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "bdd8cca440f44de71edfe37be9eaa320fac939a9de37892530d45d8cf8b7f109",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "b315f7cbbe1b07bc77b84aeac6ea53991dd1114cf8e976d2a4051936ab233aa5",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 451,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316813-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "51fc1353cb25da158c221440b7553be0abce6c63c9eb7561e5e79fd29822b309"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316813-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "05d166b5586ef471bfbeae2c20591d876831ce103bd57a0d91d68ee82b8cb28e"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316813-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "78f1dad712a3b3de33dcbe50e4bd35c2bb104785128b64504608ef47c51f1aa3"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316813-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "b5677b619efc9b9736b1b47d6443b29db3811eb3df6e9d41c9d2c0425986119e"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316813-01a892fa/raw/result.json.zst",
+          "sha256": "2860502e7cfd7c04211119afb6acffc6a5900985fad76bfb4d621b06a740c3ca"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316813-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316814-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "cd1290ffcff5816c11924d6e7a4dc5cfafe6e0c59da03c45008559dd6d19dfc4",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "a3be6deae32d1716b95002bd06400ee246a086703c14ed8c0f3a78d50d8d8c49",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 479,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316814-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "feb271224516ad700adddc66117e8d2da705246b4c621fa280849175d6706c2f"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316814-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "1b4dcd0b02bf052d540a782c8e358d87665db01784ab1194038124baeeb45090"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316814-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "1173fc27c38999cb4be26db16230c81f6f95ff997438ee83c887b6859804b840"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316814-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "8b8f89ff0887f88dc6e02533b88924f3e073e82462f85360cc54d5457f090cce"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316814-01a892fa/raw/result.json.zst",
+          "sha256": "2f5384ff79a6c3367d03698a9437243389a0122a89b40e31bd518958fed3cf44"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316814-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316815-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "cd67e6e5d7dd35c299d54c0290bf31e498caa0af57208d9943ba35297bafd507",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "db0fb55b005da0b419b6d7971e3e952e8ae95556da9a6b6d7d78a3375a02c324",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 450,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316815-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "607e5696fea4b7b535041188479c41e2c2a6cae9266d3da3ceb41973726ee8e1"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316815-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "be1b5a76ab834fd18fe64bdd339f38dd640dc7f83090a245ddccb62727a09299"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316815-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "90b46230d7951f855ab93c7cab21cd71a4a5222b61d6aaa2728cd2c43fac8267"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316815-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "9d6517e10f4c7f21c44a73828435cab3c1cea5705cf8eb81df4d8458e0e7c682"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316815-01a892fa/raw/result.json.zst",
+          "sha256": "d5b7e01d126e69af00c821637b0f0abcbfa5c90f4f20acc701714c68d242a444"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316815-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316816-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "307ffe7a5009aebba920e4c996332e28e070094925a9ec1d8cbdae03f5fb6df4",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "2474dc1ab828f57da9f60e3199d43505b9f967a91c8b3f084fb1fcb71e4516c1",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 411,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316816-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "dc6422088ab614481ffd0ad8024c13aa7788c596f0d30898581d0f0387bda1d4"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316816-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "12d2c7b87ffb9895a8cedec67147bcbb890e913783114db88cf8a1bf2d50454b"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316816-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "28bd3c0b922546c7e4b293d4161805e9a10e2d63a7d8f5186c25e6b2ec871220"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316816-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "e4d9048fe5cdfc745e92aa6a2d70ddc1280e580e7eb3634c4e2c86d88c3f1d55"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316816-01a892fa/raw/result.json.zst",
+          "sha256": "cc001e27d543e9566ba57ae191fe929716fb6d482f32e5f01406594ca88add76"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316816-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316817-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "e12b9cf868f11ff2e6a82627580917e21eb7820e943760cde38de92eff0bbec4",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "277c9f426c85e36d0d594ff41c8f173e0b4a6382a896e0d362156bac11e80928",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 468,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316817-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "9b55fd983ccc51386e11dd4590ae95ea6c3eb72473fa28423c739a8a806a25b5"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316817-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "772171e634e087d8c6901da65d072c4e3ff544b1cf5e9a4dc9a4df89a86d5220"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316817-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "2aa018647efaac07830d042d6fea873e1340814105bb9166ddd0cf44ac13486d"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316817-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "e21e29a1151cbaa54b0fdf8ad67ae257d310866a756edaaf87570e480bc47cc5"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316817-01a892fa/raw/result.json.zst",
+          "sha256": "9490b9b2ff7116f5deb284be95d7ca1255354e49e53ee6fa7e3b87061b951b4e"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 2.229178664779493,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316817-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316818-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "04ac1783bfd5f4578a7bee8408fa15490e91ab7e1a0ca66744e9c9f4e12a1aff",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "aa29338cda835340d050f8ae533faf7d76cc41bdbb8da0c28164d883acd14a74",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 397,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316818-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "3382911df5744f5fac676c3e4fa4dd732d70b07c8407d0c4f6abd88b2b31b7ad"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316818-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "1d09d724594397189447988c9234d1388c8ddfc860fc4047ace83aec9304890c"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316818-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "9deebf85f7484f552641ae550e554ba811e13a34d783d1701f27bebc7473e9e3"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316818-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "4a0ff20c25d539cb9937962066274aa3613ded1da3eb95c65f1ba958913e5f07"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316818-01a892fa/raw/result.json.zst",
+          "sha256": "ac84f6ff12c2efc9f82dff00085206e041741ecca3256e402e7261eb89dd0f32"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316818-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316819-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "5019d7612a71872c42d7d96d799d721ff7b183f8d8ea7e9f3947e9627abf689f",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "e549d20ef22f86a2ec47ed0e12d5341e15031313e21b82fbc702031a710fe7b9",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 430,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316819-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "656c0298c56bb24fd111f60c7d60046456084e56c1e46b84ddbc9fb23467bed5"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316819-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "2b3bfe4d11248d2866c53dd4558cfb0e09bebbdcbbb27c06f42bb00515113916"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316819-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "676a4fb2834fb1425d9213450cbdc741f64c147257ec3a5b233c613ed9843360"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316819-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "19a076529be2648887928ce23a69a3a46e2dde94dc8259b8ffb855ef9fee36d7"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316819-01a892fa/raw/result.json.zst",
+          "sha256": "3e84a9b54bad1ef153cd3780ca12ca98d7e052c417dcc9b54d41fa4cce530f3c"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 2.293519975175162,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316819-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316820-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "0bc9a84cc7539fb7049964dc8bf3fe219d751edfcec0c6f8ba29e8dfb802b66a",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "13561cfd8e6a3d94844cdb409bbe83100551aeca158b26c7a5ddd673a5ac88a7",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 420,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316820-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "7b24c2d2f05edda8863effee9da37ca01d28041cd43b99d48070f831832db8e3"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316820-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "70f380ebd7c3db2bf0617a1fa16764f6fe40c902b2beccaff5c1b2ab9e8a4ba9"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316820-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "eb9a3e86c78de00a923880b416bc4b4b0c5b124189f0c53545b3f39dd6e43aa6"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316820-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "4b913a270d67ef3537f16b7cf6b2732b30f40bc24f967c662cd110bacd3a0f29"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316820-01a892fa/raw/result.json.zst",
+          "sha256": "c5519783bee9473e2b0029ecb470384b3be205e10ca6f0fbe0a3719918aeb3d6"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 1.8665467554554331,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316820-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316821-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "619359bfce66b5858bd3999d75ca15d30482e89ce2d1e62be4c2fad1d5feb899",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "d659d4103b27df7eb2f21b53ae44dbf10863c10eb3923ad0d3cf55a0b863bbd1",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 451,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316821-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "cf19eaa708ffb7ec50ff93f4feccfe70386a781681e85d971f2c43eee1eb6b64"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316821-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "2ce8530b5b1e61ae8ce6c7ce3c1b3cbc83758599b999cc31d06b95b0dab71d87"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316821-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "1e11d8c8d1b6c5d23fb8918824c3a9202f2675a2507672d9d67b3316a57cfb1e"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316821-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "63c5ae03f98c644d37e201d81addc2207b290725ccd7356d4cf578c0cdc1345c"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316821-01a892fa/raw/result.json.zst",
+          "sha256": "9d354fa1c08caac74ed93d3fb53aca3e7510c4f357741db2f4afa21ffce673d3"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 2.3485859413324857,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316821-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316822-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "9c377baf4d7a1c228d9246e4600c9802c3fc5538c6b896a6f80df9018f7aa890",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "ae12fa0e5daca90f5500fcdd2700b73543761c117b0ab93427ab531efb7521fc",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 454,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316822-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "64df7642894c720a40d906b6c31460d8d69ec4a2ef7994445844b48a936a5c4a"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316822-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "3b828d405d91ee013b6269791eaede9358b66fab877d80660c37459389f6b0c2"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316822-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "8ed5f05b521653fd013799a14bbb951ea59d9b1398272e7fc3942b0cc98d45f4"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316822-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "34998f4cb2bc84f0f0d043a4f539b1f2220b2d296b238b1c6ab85bff3f5eb0f1"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316822-01a892fa/raw/result.json.zst",
+          "sha256": "b52da4789591afcf210cdd394ab5b081be5813fcc607fe1a86618334cfeea4d3"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316822-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316823-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "51ce14fcde5e92377302399fa8ad0c6b66bac9db35da9dde0c98d8e94fa03212",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "5c5ac5e3b2133a467f02f412e952dc0394359acb1eabbcbe766cae7f8a4a6caf",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 453,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316823-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "912d440b7f199595d05d1ade9d73f7093e9069ec926c796b0216cc2be4d8ebee"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316823-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "ed5686eb6c434ad3745dfa8afd84abf119680fb6d9709fa4a97348022e97b88a"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316823-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "542f20a32f04a854de60bb928d33770a6c7f659114956119547c901413cb9d15"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316823-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "c5b17990190d67fa0fccd6b6a767fbe9ec26b727e9df6a2d50fbde8f1da08618"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316823-01a892fa/raw/result.json.zst",
+          "sha256": "53b33c2cf4b10793e78c1d0f07810b2aaa826c2295a5a5d9739a4c327dd8507d"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316823-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316824-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "efd0f190ebaec7a0c77437426c3c3eefb6b4c6b10af3a893b05fbcf37119421b",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "d716b255a28f17e72e589755a1e9af59e985ba5ea7df15005517a1b769fd18ae",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 453,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316824-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "7da99389fc553773b2ed122e922041dc9330c0ec6e461791e68f88ca3eb57314"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316824-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "51b3eb02eb481a448ca56f83954786f0d4feb481414d6bd94e297b7f65193c77"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316824-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "cf1b4943fd5fae0577e3c7a3445929c69e5293c2544502ed590f6be3ad4e2a45"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316824-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "ee81f89e0d875f5584d5e9d30eb2441f22ff5f0fd6187f7023994387f3b9ba53"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316824-01a892fa/raw/result.json.zst",
+          "sha256": "534c48a6495396a0415ae604a37e1b53dd68149af579a49a30853a0b9c8b2a2d"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316824-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316825-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "b1da280e52486c9ebdd8170d4c44887b8a9766d605951b3933bcb2d68988b46e",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "cc162a44665f867177d794a8f1c5b9d7128d10ae0c3cd0f47921dd8c6e7dec7e",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 491,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316825-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "940ad5c446a44f371900159021f87535b547e543d77b1553060ad53f401cff12"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316825-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "4f33d51998b28fd95888403ca8b57959aa0949226e3a62e32de6da5e00f571f5"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316825-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "e9dd57a1e07f9ca82c2fdf3cf91840e425bdc716da9aea4086b4a3f804238b34"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316825-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "e0898c62bdf2cefdf7da63a1d38d46755a5e7cb2fed9b28a5a6626efdc6cbc75"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316825-01a892fa/raw/result.json.zst",
+          "sha256": "c09c0011b87b44a297f3da0580e16771b1a9593d81836178b10fe83c8a4de7ee"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 2.269081991845868,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316825-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316826-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "a4b9b94615a1633eb9fd1a0ac8dd47dd690fb88c11144c944f6a3a97ae686082",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "66aae3cbeccf16d4cfa8715bd56e44544975d9d13021521ec9ca63d4cc6838c2",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 438,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316826-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "cf5ca75705ee16577cd9c7d7cdf891a8537c9fc8b65bd5236c6d8da8458bb5ee"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316826-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "53803f763dd2650f642628f9270520bc23b72881e8dddcc16d696c6ce4f822d9"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316826-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "259b5162691c541361ea6654abd0e12d7b84d3f10f91bbd6816a61f75b570ce1"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316826-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "f92e930fcb9b731cb8a6cd423a122bbe875757b2680c5a3983e04d316e8331dc"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316826-01a892fa/raw/result.json.zst",
+          "sha256": "78c54e9df64e4034dd7dd7448b2071870822f2f2ea220dece9ae000cb545b26a"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316826-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316827-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "1bfa8b5866f77321783673dc5025496f7cad9c0460d39346d35df572143fae82",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "a7b027fabe06b811e6546cb8def46515fb2bb0e2d523b2160294537d3ffa233a",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 432,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316827-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "4e6a8d0a5c67e490e7adaa84907aa8664bd939bb248318b5e2e7c5c070829c3a"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316827-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "524176fe11402ee72e6678e968fd1e7fe2efa33feecc4eeeb5e4494661ba7568"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316827-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "0b0d70e6bb28d014b087dfa978c25baa8376e6b198b8ff70a899230df9e3f6ce"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316827-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "b8ea102d71677d46d7f3393616ce4a77847aa072c98726687be6eceb41fd15e5"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316827-01a892fa/raw/result.json.zst",
+          "sha256": "9c49c4882220b51fea94953bf14cd8589400081e1d87a4c1b5f4c8ec58a2a831"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316827-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316828-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "55862e8e894dd67da9bb7b2f8edfaa9d1c53173be5ce0f60a98616752bfded78",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "0c822d9b442fe3f0c8874b741e8ce61ae609eeda9929a8fbf668017f519d7ba4",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 465,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316828-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "8ad879bfd8a13ae5a8aa519a4af827d917a6de899f6fa99b060cde1108e8226a"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316828-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "590de1c5c1f6c0e4c0aaad079107b2bee541439bcc6ce5653ba02dc824a3bb70"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316828-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "5b19bb18404ce2c485011ff4dfdaf46f6d56cd612453721a888c373158ff57f5"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316828-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "8a2549a032a9cbb458fa8ba8c0bc74c3a5ddcdb04db6319e516a9df604dcde2f"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316828-01a892fa/raw/result.json.zst",
+          "sha256": "40c8613e1f93779b734de7f89640a0f6a080931fefd96b6e03b6ded9b44774fa"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316828-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316829-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "ae2d2ed1d67a4835355e46c57740ac9c6bec6a5fb640b1f10dec207dfb0d7450",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "2d8e1ce063b193ccb39054860c4edaabb2d671f7298e99c740c2c8949e6ce1fe",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 458,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316829-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "dbc46e52c2b6617032e19212e49d8e0565642c137d76593606d69e63e8a39db5"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316829-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "8341f39ece2c0536299eedfc04a7e40ce3b6761e10f47a58c4bcda1dfbdd2ec6"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316829-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "a15a6221291c30df3b3ca19069b4a8a362396e8fba5aabbd6eb2381a3da0dbd6"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316829-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "78d52ff89abf202128e1555ec3fef4614d095e7ad2ab695b5840fd0f81cda7b6"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316829-01a892fa/raw/result.json.zst",
+          "sha256": "28f2ea5843b7edc3c1c0e23f53fa85034bd5605f78df01bdd1a6d22fe7c18bac"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316829-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316830-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "3bac0cff3eec4d87c0a390cd84cb037b45c5c898cd4777cace28f07c7a8b3d64",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "60424ce92728a817691b025f50a252a843377555b635d3a5a3b4cd2b32d2049a",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 434,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316830-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "3caf342e221fa9c1e10cf79426235a8e48732ae09aeb672b4ee7abef5649ecc3"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316830-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "a7eeb838d8371b3e1bedd2994141a5e2f59ab465bfe4ac9d5b9597dc70d1e44b"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316830-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "8e0701969181024774f495da1f7abe5b5c395376258a76749c668caefb4cd52b"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316830-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "cc7bfb0aa4f79fb185db8b1d1df8d337907e0caa41bf0562c1df24048b5bdd54"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316830-01a892fa/raw/result.json.zst",
+          "sha256": "37f8e528f39af637ea135840a7c4d84ec1b16d07c49ef40b683176c04fe4af22"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316830-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316831-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "239154e16f853817045115b84d4fbad3d6e272b407886abd6fbfbfd9000d5db0",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "643aed9e776fa6b8b8e3eee8cd7bf32f3b1588a164f7820d37f423e519076c7d",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 453,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316831-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "0118058babdad556eceb39b78c02fdca1d19327c50e63c43054b4f51d3e824e1"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316831-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "1f364799687bb7a7f4824b9413efbd1d80888d2fbd3edf62b4ac4073b6e0fc7b"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316831-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "9e8dd606b4e6eb1b1a145b5e0031cf3652ed309208b04f0fd6a70d8ebe325cb1"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316831-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "c1eb7db86a730aa80b17428fbab830b27bf6fabfdc5f92595ed854c622715ab1"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316831-01a892fa/raw/result.json.zst",
+          "sha256": "0b19999e4e827b0c0a2962e288eb775be7ce04f1ebf745002372fe56ddca005c"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 2.327003374291958,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316831-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316832-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "c36a54871b782402f1560c58fd29246a16b9235205360812e56da5705bf7b663",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "85594e8075d5d020e7c0647cb1247f9b3e2dd39a060fc064503dfcc3ebf6147c",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 427,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316832-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "c0244cbd3e65559b1509a79124e8f57366aa1439a28088d97256cb36d801086a"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316832-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "32079acdc15b16a707e3f7af828350c890b421ae48e0f8b6a5c591727d2decc9"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316832-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "e6989d83f2c09c4d465896768cf017e6d7d9e64b282867dac1037f70153af831"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316832-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "c436f9881411c8d9cbd3bf958a3396564b34f173859274a04a2a28d1f95660da"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316832-01a892fa/raw/result.json.zst",
+          "sha256": "eee0dee011dc1f104b8fe1d3f2de9e512b6a0134e9eaba090fac26cdb73b5e56"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316832-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316833-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "d7918ba53308bf80710e0ab73dc753fbbb8c295b92e466f07a96db0a7c05cc27",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "e3b4ac15bfac18de0816cae287ad7ac63f7702af95d6eed672f372eb168ea462",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 439,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316833-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "988175d94ba533d4466645bb647da9077ea6a61b9adf082272291179514ff33f"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316833-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "fe3f356cc2f176025e9f4d5d0edd4a193f764b91a76153b560610fc639014ff2"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316833-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "ed860dfaa51691917ab1675cc5571c496d6b5713acae042cffd7b5d2e7d8c40b"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316833-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "503429ac2c261be4328c6bbcc26c9b6b4ddac7961ca88a7ccdf787e08edd30e0"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316833-01a892fa/raw/result.json.zst",
+          "sha256": "12b795a9cd8ab19e2eb310c62b70d86ef490002f18eb41669c2fdfafd4063cdf"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316833-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316834-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "640b7fc6eba2d4c7bdf296a2f6179118bf93b6cec31bc4d6f112aa3a39c1c954",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "0149a8440567043a6da377fefb405cb82b238c2aa2a869b548584c4963776773",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 444,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316834-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "c4edf581240c4fe622daa259138e2e3dcbd8463d70d1ec567fde51119ae96ac2"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316834-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "f4bb53606204dd4bdb926537d2ff3e8768d50e04a4a237b21f0f8a11bdd2eb56"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316834-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "f9a4b9223acc7606f42d1e9a1f9a9efe0907729f2e04cfbada7fd150f8452846"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316834-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "793f46369871c6fda3688468ec0480d6b2245bce9ec8f7111b10b1ac301aa563"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316834-01a892fa/raw/result.json.zst",
+          "sha256": "9e821bd1c87bd29689b7cc1c8a4bb5e7f3fe7e91ed43835b4a681d467d4dd31a"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 2.417130712329785,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316834-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316835-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "d3c8e98287c7b1aa4ded414e498e3de048ccfe72906e6e26db607ecbb04fc0a1",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "e19ad699fa555029ce66d0d4f6c56c64ab8a60b6ed0e29aca4f0f5e1bd2aa2c9",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 424,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316835-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "3f8f601261b0a833f93ebd1a755f086f7abb83327b816563cc15dfac80363cc2"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316835-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "8d1f2602035d8e7396f807c683537a4ed5b1d32dc71cbab5811a0d2b6e407626"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316835-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "c712d2acbb4c575d48f8a215868818b2d090ae221596956ccb51aa63657eecd3"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316835-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "98596122b90e3559835afda22b3f37675a021bfdf754349c5d4ac55a4f24b4ba"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316835-01a892fa/raw/result.json.zst",
+          "sha256": "c8d9da7570edcf9a446dad7a192e8ae9d2c922e26f9b2f0becb43e31e9bf7c2e"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316835-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316836-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "25ea2c31cd13d7ba0570ece199f13e64ab8c10b7bf58fb428af3025c341a2406",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "328907f3b5cff8cd239bfcac02428f0deb71a66334bd346438bea497d9c77e7b",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 417,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316836-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "a3e824bb9befb54ac527a018c0e27b24b3ac05f40810bf4a97f431d13b005751"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316836-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "5109685b47eb617152c17846d43a4ec1d641a3c90c8bebb88d197bf45a1f6ec2"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316836-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "6bc8fb3ab5c3568bae04d03b0fb78ecf3ce1aca496b3e1e886ecfb5dcf70fd95"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316836-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "9c7e19715e8bd78c84fa6b41d295e89d8f0b7bc75ca78276caf7e56780beb01a"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316836-01a892fa/raw/result.json.zst",
+          "sha256": "0803936d151a951c9e9e99b757d2082444571ad8ed8f74615c7094ca927b27a0"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 1,
+        "observed_slope": null,
+        "actual_abs_deg": 1.8160813380113179,
+        "nominal_abs_deg": 3.2629482071713145,
+        "calibrated_abs_deg": 2.2157651284532665,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316836-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316837-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "d419d1ccc72d02f8d500712b7ac147d657d5116786ebddedbc60872ecbcd6247",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "f19d08911acd2cd53eee61426ba628a59714cebc7c6b3fe59dbec240105fe202",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 437,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316837-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "1fb8618985e55b4dcb0cb51408d1a1f94daec4cc5471668e47e0aeaa5f45928c"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316837-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "e8e3519cf85177fcf3c80e1dea5ee57b85406d114c8b8ba140f7e13e96464e6d"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316837-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "9246a451efb06caa45d86f5ba1b113227116951a24e30895f426429f5c255267"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316837-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "e4f5206378d6461e2cc0a7ea6aeba7d0c2a452c588a0fd6efa9444d713b7c225"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316837-01a892fa/raw/result.json.zst",
+          "sha256": "0fe273a1f85a6a2c519e256c4ceade553b4b24aafcabba2c66c0f0becec6e39a"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316837-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316838-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "1f7996bd8911b1efab01e7531e444e2d3d00707bb172a728931f2c0d22545daf",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "c24e704829e355fc8f9fc00791e45bfc6e1a8a029885d12fb939c4079d60c6f2",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 436,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316838-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "c90ba01cc78fb144b72c0abcd8b245e9afa2b43ad0c5e65ab0203f9a62022a60"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316838-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "28b99ed698037a3d8eaf5fac7c72a4194053e5d6a601b06506e0f06d3a006217"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316838-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "cfa0b69f233a1a27a4c079afdbef3d809d5ac6b0ca8148fff323311190c00a04"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316838-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "c0a52d56a56a5d7645ff427e3075adb82346cf3f7a0ee073f362de1a9aecfbb4"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316838-01a892fa/raw/result.json.zst",
+          "sha256": "0b7ad861a9a1cd869cce073446b847a35e2b17c6426880d6db83862c8e8f087b"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316838-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act8-gate-8316839-01a892fa",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "bdfff917430b3d8a1df61a897e8951fa38384bf1a0ca28d6e177e74241bf3f9c",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "40c5797885de2305c0f3ba3f79ef13d5713c399c900bf5132d6828de190f4c6b",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 447,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316839-01a892fa/recovery-commands.jsonl.zst",
+          "sha256": "47c0be564cc321c8b5af3485bbd88a930468662b7256558686d2aa2b0acd91eb"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316839-01a892fa/recovery-eval-only.jsonl.zst",
+          "sha256": "947e4f3d579b79b99ada0e4326b0ce4db593a304e9b164aca55bb6046ed3296c"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316839-01a892fa/raw/teacher-commands.jsonl.zst",
+          "sha256": "eb0bb4c6aaaf47b93b62444984d92e4c4799f96ab0207f18dce4f7bdcdc05dba"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316839-01a892fa/raw/eval-only.jsonl.zst",
+          "sha256": "070c4b0605d15e84a228e1c9ed14af7dad47af7b409472d5dac2559198d7c689"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act8-gate-8316839-01a892fa/raw/result.json.zst",
+          "sha256": "44acc5be97670a630f742bb965a9436c7d5a9728cce75c9d7c53f70e0196bca4"
+        }
+      },
+      "cohort": "act8",
+      "bearing": {
+        "off": {
+          "N": 0
+        },
+        "on": {
+          "N": 0
+        }
+      },
+      "rotation": {
+        "N": 0,
+        "observed_slope": null,
+        "actual_abs_deg": 0,
+        "nominal_abs_deg": 0,
+        "calibrated_abs_deg": 0.0,
+        "probe_N": 0,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act8-gate-8316839-01a892fa-evaluation.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "act9-gate-8316900-ec0bd628",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "360981efb68a9818ae2dd9539aa619d8eced6aaf885bf35733812ceda10ea7eb",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "8bee8338783ac6443ad8e3b8c774edd5f65ee714090e56bdbfecf04012a7f8e9",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 507,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "d06319c9e7f6bb3050e8b8d802397d8a2cc03e493dec022c5f4241254875f732"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "0f854129fc541f7e30c22ab68af72ba040f97b08a713efb17291edb11a3b2a61"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "6328b2794bf15e5867f6f7cb9e65649907566f38fff910a1e37b605e6eaf29a1"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "960d967e089660fe33b8d9d058405a348bb72f0c548f3e86a3226dda4792f4c7"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316900-ec0bd628/raw/result.json.zst",
+          "sha256": "beeb649b7b65bb7fe192d9dc054fa6da237b9ece259d5e2a042d88c83c731734"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 35,
+          "median_deg": 9.97993474354432,
+          "p95_deg": 10.189060671852396,
+          "max_deg": 12.324209009989358
+        },
+        "on": {
+          "N": 35,
+          "median_deg": 5.72354088494617,
+          "p95_deg": 5.758178554589278,
+          "max_deg": 5.766179030782156
+        }
+      },
+      "rotation": {
+        "N": 14,
+        "observed_slope": 0.7315769570677115,
+        "actual_abs_deg": 65.48755651938248,
+        "nominal_abs_deg": 89.7310756971795,
+        "calibrated_abs_deg": 60.933541032443344,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316900-ec0bd628-evaluation.jsonl",
+        "sha256": "c3610fcc6a9e4fa7a0217f6f00222630e3d391ae7617aa668e195043df77628e"
+      }
+    },
+    {
+      "name": "act9-gate-8316901-ec0bd628",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "dfae4fba53af7538be1b2e99da45623712dd84b089d9fbe468ac9758ab7bf38b",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "4fb95f99bc2df9cbac073286542cfc0bd1039a162f6e5da96e8335d93161ba50",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 487,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "47120c2416a14cbf139cf4c43d26e44a7da014d603517e8b4494b5b7b8d58603"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "8c55cd64e7c89aae90eadceeebb9989f48f6f31201cb8c276c0d4a858ede6a8c"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "cc396df5d9b7acf20b54d09f39ae6d8fc1f31a2fbba29cad4135ac2ad14bf8eb"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "645dd0909fb0703e327db469c8faa619e5b975db852bec08c1f1a6806fa1fb45"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316901-ec0bd628/raw/result.json.zst",
+          "sha256": "35ead40ab68ce4fdb2b59f66151218a1062b0b36101daed9c5250cfc1679d108"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 23,
+          "median_deg": 11.904158186954609,
+          "p95_deg": 12.09549104426403,
+          "max_deg": 14.06276891060089
+        },
+        "on": {
+          "N": 23,
+          "median_deg": 6.364218909807498,
+          "p95_deg": 6.432378104554109,
+          "max_deg": 6.43333757779821
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7346682831714115,
+        "actual_abs_deg": 53.936652542395144,
+        "nominal_abs_deg": 73.41633466135457,
+        "calibrated_abs_deg": 49.85471539019849,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316901-ec0bd628-evaluation.jsonl",
+        "sha256": "8d64b8483073facd26bce0f8b4af4686b70796dc91d2563de70e6da4385e262f"
+      }
+    },
+    {
+      "name": "act9-gate-8316902-ec0bd628",
+      "result_status": "complete",
+      "physical_success": false,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "ff47872299f2a4820843ddabaf5c130abd7dd40ddea88671181ca34fb9b86437",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "0059bb1c13ccf406693cf6f3b33d416f20a6bed132f00196b14942688cd10fb0",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 607,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "15a0f942d30789cf4974b86c342516542b66afe102468330cd970ffced374560"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "e03a9fc28c220d2b1d0562fe4a2748322179cda046b40f9cd35a7120014a6435"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "953231a87fa8f15a302c303f4645bf284bd92f0a329c54c5490c6f2b0088645d"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "b108bdd96686a73b77b4ecc1ea8d327ffb4b22c746d72d4e7a7f7de372e8c272"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316902-ec0bd628/raw/result.json",
+          "sha256": "966914e8699d2666bcc5ad92b6054c5ff7968f132435764ae75c6cb41bb4479f"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 575,
+          "median_deg": 7.968117281154454,
+          "p95_deg": 8.827821569782815,
+          "max_deg": 9.949416034651035
+        },
+        "on": {
+          "N": 575,
+          "median_deg": 5.1157832912599925,
+          "p95_deg": 6.517274669823904,
+          "max_deg": 6.661383028012771
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7380787580491843,
+        "actual_abs_deg": 54.18703710737585,
+        "nominal_abs_deg": 73.41633466135457,
+        "calibrated_abs_deg": 49.85471539019849,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316902-ec0bd628-evaluation.jsonl",
+        "sha256": "ec6227b96ab52738181ee59bfbc1fd772434a44e4e6c20bdf7b67ea53b27599f"
+      }
+    },
+    {
+      "name": "act9-gate-8316903-ec0bd628",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "a4ead2edde5f62c5ef5ffda2ee6f5eee104c7403e5f669e58d82bb1281a5953b",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "131c3cc92a6c48ec5d286310bddd2f593098adaee8bbd2a4fef66c09757b40f1",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 468,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316903-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "e82b8782c005ce6e88b0218ea367d4185ad8333295dbef19a281144b18883081"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316903-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "1a52b7d95505a600b4b079d6cb5171b6c3056eeed42f9e493ef15ca546c25001"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316903-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "3d7188059b272f91ace7a6ab64168486cfa558dc36bbbf5d421b649fe0c14932"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316903-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "a95d14093cbeb8f17701f765a4cec148d937ee1b9268485e904e45934ae3952b"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316903-ec0bd628/raw/result.json.zst",
+          "sha256": "fe301c16701ec2d296ac47cf66123c9617a7d389d3b58eb57d3f490cecd91649"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 15,
+          "median_deg": 12.845950324173717,
+          "p95_deg": 13.279475390316877,
+          "max_deg": 13.764404271015273
+        },
+        "on": {
+          "N": 15,
+          "median_deg": 5.25405515040541,
+          "p95_deg": 5.548682593740139,
+          "max_deg": 5.709517021218854
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7422416744469269,
+        "actual_abs_deg": 54.49266317079977,
+        "nominal_abs_deg": 73.41633466135457,
+        "calibrated_abs_deg": 49.85471539019849,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316903-ec0bd628-evaluation.jsonl",
+        "sha256": "30a6396313437f078397c27e4dcd13eb290806f23190e18738ed55ffa1294e94"
+      }
+    },
+    {
+      "name": "act9-gate-8316904-ec0bd628",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "2bfada7c8455aff8f6c12c0e41dcac971cb00431a43eae4e4e2da6fff9b8f783",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "a55fa92f1e70013077ce565c90b1af0f77f32bb75a76578c1a23059bdaeb630d",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 491,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316904-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "3e27d3f0eac75bd4ce5809752fd50f3f720289878100e0418b2ccbfaf3ea43d3"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316904-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "5faf4f44c0d3a131aa27572fe47ff6a7a24203a7f10c14c3c155074fc9e615fe"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316904-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "1fc8d97e798171b7850b7ca24601620df8cf8d55ad3d5636b5aa4990b814bd02"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316904-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "1b0a2c49e06cc2c1a8f229a8ba84bdeddef5b9707956abc9de211773936eb09a"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316904-ec0bd628/raw/result.json.zst",
+          "sha256": "ae88d3b4b38405644b26d3b7e7b19b7c0540b03a3481ea9bfb667d523d9fd83f"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 14,
+          "median_deg": 7.776268083974362,
+          "p95_deg": 8.740337831195426,
+          "max_deg": 9.996730562148864
+        },
+        "on": {
+          "N": 14,
+          "median_deg": 5.274291635239729,
+          "p95_deg": 5.338418955739825,
+          "max_deg": 5.340599715530024
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7359210043574221,
+        "actual_abs_deg": 54.028622740207545,
+        "nominal_abs_deg": 73.41633466133197,
+        "calibrated_abs_deg": 49.85471539018315,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316904-ec0bd628-evaluation.jsonl",
+        "sha256": "dcf53ea41156082714e7859d1863f8d1d4cfb8e0e523598548c916a58c03ecd6"
+      }
+    },
+    {
+      "name": "act9-gate-8316905-ec0bd628",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "4bf1027b45bec031e89f76d2bce52ec71c7906de3f9112ac6b30563414ccc031",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "897b6be0fa3c228ac65143224ec0477dc5e64ddd6e8cb6c296d6832f6db3f575",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 513,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316905-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "e24f881712c88cb66e4a7f8d74714a934f99b1477eab96b3e7198347f5eff625"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316905-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "f989ec976f2be24fd0bbde3c3ccf4ffff005da5a06af2ff3f9bfc432a772a74d"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316905-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "a3c72b5eaaaefd430e951f51fe8a6020974e9747f6a96c9e61979f9b82022887"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316905-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "f75a7ee39c88934e4d6521a092bf0c8027e0bd41a66fb24a008e2b79decebe06"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316905-ec0bd628/raw/result.json.zst",
+          "sha256": "4a33e91a400792d5a044337a5881719a5be93a0f69065481a3a735d7337f54b2"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 24,
+          "median_deg": 6.189754986844136,
+          "p95_deg": 6.264229588976547,
+          "max_deg": 7.651732557776551
+        },
+        "on": {
+          "N": 24,
+          "median_deg": 4.269338266151496,
+          "p95_deg": 4.2982593999339445,
+          "max_deg": 4.298680985484808
+        }
+      },
+      "rotation": {
+        "N": 10,
+        "observed_slope": 0.7313295739284998,
+        "actual_abs_deg": 55.711868271402054,
+        "nominal_abs_deg": 76.67928286851685,
+        "calibrated_abs_deg": 52.070480518645624,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316905-ec0bd628-evaluation.jsonl",
+        "sha256": "708bf8394142e442ac70da3e3f8647fafcd7605fa53805bb4f5e02e66ff6fe26"
+      }
+    },
+    {
+      "name": "act9-gate-8316906-ec0bd628",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "5c8cdd5730c3e1451d2944dbae2e70c9d3fb73e9a5de70a29feb71086d60a57f",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "b22123e1882f364ac3af29467258aeb2261e2ecb8c6dfd837a59ae0dd61d7f30",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 453,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316906-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "328f1af83891b61d20439b490d23f572a368589709580bb2364e03cb3e3c4980"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316906-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "1fea9077e996e2b741bdcda8f7afb0fea86801de22b49a314059baa30afbf333"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316906-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "c40801f9376d003772ca98d2bbbb4bebaed03c953627a4333b1010f528d15410"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316906-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "cb1c02b077dd339eeb50f9eb1ca3f77c416bd31e836931cf5e0762b1994e2e7d"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316906-ec0bd628/raw/result.json.zst",
+          "sha256": "c18354daa857cd21e64c0b97e7b6ac660dbf2b66e796dfb7260ec265871cc822"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 6,
+          "median_deg": 4.083116000014546,
+          "p95_deg": 5.594767989579849,
+          "max_deg": 6.015061959714157
+        },
+        "on": {
+          "N": 6,
+          "median_deg": 2.679399070939815,
+          "p95_deg": 4.032981838466978,
+          "max_deg": 4.118055311864358
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7365554174358034,
+        "actual_abs_deg": 54.07519902309346,
+        "nominal_abs_deg": 73.41633466134553,
+        "calibrated_abs_deg": 49.854715390192354,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316906-ec0bd628-evaluation.jsonl",
+        "sha256": "c94fe13dad5634b262190699fa4e078f9b139e3062c15323aa7bbba8987ac9c9"
+      }
+    },
+    {
+      "name": "act9-gate-8316907-ec0bd628",
+      "result_status": "interrupted",
+      "physical_success": null,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "dafe4ba22f9438788b8c5db1465d286edbea87f90ce8ef32eb1c5bb1d1217fab",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "71fdc2705f764f0dce4a9f26924d70cb761b161cc11a697f6e00ec67ea960869",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 468,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316907-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "2e0a4cad190c203f62a194d4f35316f4bdc9fdffe2ffe7fdd5b08086bc3301a9"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316907-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "e4124aaf46751fd066108862a4db020d6d5f2fb837c1906968e1ad88af1b1c30"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316907-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "e4acfd6ea8da8a8a6b8948a1794c53c1eb0c6d9a284cb3a96ba838b3386754c9"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316907-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "732de6d8d2ad2a377db5ee71da6411065c87cdea1fb4aa856afa13fb49e67cd7"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316907-ec0bd628/raw/result.json",
+          "sha256": "84e9eb813037e83ef633bd4e7733650a055ef0facdc9c97b40bdb4f14431e2c0"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 434,
+          "median_deg": 11.495035362325364,
+          "p95_deg": 12.152478382206434,
+          "max_deg": 13.917444012710659
+        },
+        "on": {
+          "N": 434,
+          "median_deg": 6.823696245734086,
+          "p95_deg": 7.467114673533176,
+          "max_deg": 7.584510374805974
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7297566188526176,
+        "actual_abs_deg": 53.576056151022335,
+        "nominal_abs_deg": 73.41633466135457,
+        "calibrated_abs_deg": 49.85471539019849,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316907-ec0bd628-evaluation.jsonl",
+        "sha256": "620e138d755395b241619884260576df768baf4f518a95ef3e5fb2b62bd493a9"
+      }
+    },
+    {
+      "name": "act9-gate-8316908-ec0bd628",
+      "result_status": "running",
+      "physical_success": null,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "98e5a68c74c64fe0ba35ee7894be44f56a8c4e0109fc97cdc2e1fa516a28d242",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "771475d87c8a6d26336b9536833e56b0d89232bb901b1a592709332a00009030",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 451,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316908-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "4b9e041c272fcf2d286d15650c06454f16b84a47e44845fa73a0e283a1656320"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316908-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "c1cd57dfbe3587bfaff2664eea4c1b71df4127f09debeba1f850abecc4a98810"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316908-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "1dbed9a8287d8a5b3899e2ee159f4ae132f71dc016b50826a25cd67267f57270"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316908-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "93ac9f34f3d53d115fb4e4c790fc5f7c40d56df7c15e6b8cc24d3a7f165e2975"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316908-ec0bd628/raw/result.json",
+          "sha256": "f2ba1fb716c12b4d367da8adbdf3f121862c7b5c2a4fe77bacb27ceecbf0bccd"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 9,
+          "median_deg": 5.0635625603720795,
+          "p95_deg": 5.8413480419825765,
+          "max_deg": 5.844592496895445
+        },
+        "on": {
+          "N": 9,
+          "median_deg": 2.3662068484295484,
+          "p95_deg": 3.17778995750196,
+          "max_deg": 3.2579867898572084
+        }
+      },
+      "rotation": {
+        "N": 15,
+        "observed_slope": 0.7368892100447376,
+        "actual_abs_deg": 68.45143033823965,
+        "nominal_abs_deg": 92.99402390438246,
+        "calibrated_abs_deg": 63.149306160918094,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316908-ec0bd628-evaluation.jsonl",
+        "sha256": "c2535e4043ef946b0bffd8cbc375f4f7f9a8577165c2f94d411aedfd10187c6e"
+      }
+    },
+    {
+      "name": "act9-gate-8316909-ec0bd628",
+      "result_status": "running",
+      "physical_success": null,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "7a91b01566f1ae0f2e5790060fa2fba6ae6921464b991eeb3dee78b49ca87ff4",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "5e33b5f3225c71f089f1da28bc9a55eaba0092fb9a70f2cf3ec39a83a79dc0d0",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 391,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316909-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "c32bc5b23bee7a3e267ed4a7728de1fdb794cd7c3a9b4fab266e832387db6481"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316909-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "60bae65af4e4af5503b185db10a08085617509bd1989614fd6ca35525bd92bf4"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316909-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "96506f5db09f210db661b2468c67428c7a585f25ca57b8c8b2b488429709384c"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316909-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "d2dc241d1cfef0c0652c6a99793c6b0bd57c47a018869130fb48c855f34596d1"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316909-ec0bd628/raw/result.json",
+          "sha256": "b4c0874dd58139c891909a095ac3aacb38839cc2f9da4570398e820d9342e053"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 33,
+          "median_deg": 5.354287254847723,
+          "p95_deg": 5.398273452671801,
+          "max_deg": 6.083970410569263
+        },
+        "on": {
+          "N": 33,
+          "median_deg": 2.4961977922870178,
+          "p95_deg": 2.928561011018223,
+          "max_deg": 3.2477190397512903
+        }
+      },
+      "rotation": {
+        "N": 18,
+        "observed_slope": 0.7218614161045984,
+        "actual_abs_deg": 74.04814656299236,
+        "nominal_abs_deg": 102.7828685257253,
+        "calibrated_abs_deg": 69.79660154616171,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316909-ec0bd628-evaluation.jsonl",
+        "sha256": "b1ba1a8867607af4daf9b74abc0c4cf4abfaa83c5aa84b0d6c64beee3c105a40"
+      }
+    },
+    {
+      "name": "act9-gate-8316910-ec0bd628",
+      "result_status": "interrupted",
+      "physical_success": null,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "ba3cb8e028074f285b799c7d76605f1f2a2e03203b13e809ce8c9b5eef9da3f9",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "4cd4e7db2d9271a047af851be139e49c16625cee3ee386ad74d7b0e34ba3ae82",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 395,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316910-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "643618950540340fe62e326345b6682188878069e0ddecba166132541391d79f"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316910-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "f1f4f2b197ad3499df8a86b7389cb6fc4a2356dd2e716bf9da5d8bd1def54d9d"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316910-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "f0f3809812b62d888ba90001970e3fccd411f376f3bb4f5081bb8829f76fb7e8"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316910-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "6c9ddf00d3e9bf0993320e888a300cfd0c5d3e624bb536c465798032c876989b"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316910-ec0bd628/raw/result.json",
+          "sha256": "98ed975127bb3ffbacc1b5c8daab35ebe6e8b64655c5b53e742f9b52060d0310"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 369,
+          "median_deg": 12.123120156613279,
+          "p95_deg": 12.353711012908581,
+          "max_deg": 14.09724872722011
+        },
+        "on": {
+          "N": 369,
+          "median_deg": 6.200349231756462,
+          "p95_deg": 6.528463421811151,
+          "max_deg": 6.5736335533130825
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7343431202607178,
+        "actual_abs_deg": 53.912780273310446,
+        "nominal_abs_deg": 73.41633466133649,
+        "calibrated_abs_deg": 49.854715390186215,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316910-ec0bd628-evaluation.jsonl",
+        "sha256": "612adbbb3fccd05d54b2478c643fc7e50b7c20ad2915dda4e3f2f46bedb35f18"
+      }
+    },
+    {
+      "name": "act9-gate-8316911-ec0bd628",
+      "result_status": "running",
+      "physical_success": null,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "cb6772d86e0c9aaedb90f59426f4eba297825c7729e7c8ea75abdbeaf394e757",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "561de7977bb5ba71b0088b8ee75453169c4ff2d1579cff9fc9285d8f65eb4751",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 293,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316911-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "7363409bb74af5a6e0e39a87ccdadd3115657ad8bfd8983619d0bdbe1e75dbfe"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316911-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "1da50555c2f2453c03a816c1a28b65501eed8c1d53a1f3f89e9468f197e2e086"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316911-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "683213337c0962356476faa831736c662accb8c6f82465761c66b0d325b3f671"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316911-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "520cdc2e4228f24b4363bb57fea0886021e9184946480adcd4d0cc2480734c26"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316911-ec0bd628/raw/result.json",
+          "sha256": "e5869f44171eb1d41fd8a90e306f10f9b862da9bec98d9d38114f5d2bc3df6d2"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 256,
+          "median_deg": 12.707618042136708,
+          "p95_deg": 12.8749064078893,
+          "max_deg": 14.174997475701678
+        },
+        "on": {
+          "N": 256,
+          "median_deg": 5.606905541687375,
+          "p95_deg": 6.193788070898337,
+          "max_deg": 6.286681960855018
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7310085917043029,
+        "actual_abs_deg": 53.6679714088886,
+        "nominal_abs_deg": 73.41633466135457,
+        "calibrated_abs_deg": 49.85471539019849,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316911-ec0bd628-evaluation.jsonl",
+        "sha256": "7b38ee66ff750d3554b057110b0dee8cf81799ec95e2dd84f239800279c6fc8b"
+      }
+    },
+    {
+      "name": "act9-gate-8316912-ec0bd628",
+      "result_status": "interrupted",
+      "physical_success": null,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "5202df6779c97a45425d4fc4b748f1cb0301cb19534c72a9ebb16b053d308335",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "c7b0f5a033729b0881b2485b7306c19877cc99e91d7f0c2f082c3fb50be3bd85",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 286,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316912-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "97283979150aef244aaaec2a68f4202f216eca60dcdf467b925436a64bd57439"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316912-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "c3d2c94b72ff7a5a56e377cefc766a708c112a7bd268757a955b30624703fca3"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316912-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "5145df9db633ee73a183b1f04a845178be9104066c12a8ee8ff0dc05c4fccf0d"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316912-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "596c2814307d19d54ecf9e3e74273a14f22fb0c386b33cace64116269491620e"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316912-ec0bd628/raw/result.json",
+          "sha256": "2dceec786c72b5713d45b3c5b4aa2f2002a543b1acf9525a073746d41e4080c1"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 224,
+          "median_deg": 10.528772513839446,
+          "p95_deg": 10.624238674159267,
+          "max_deg": 12.305223509382632
+        },
+        "on": {
+          "N": 224,
+          "median_deg": 5.175640236353868,
+          "p95_deg": 5.356705895100714,
+          "max_deg": 5.423905724666658
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7381375630892987,
+        "actual_abs_deg": 54.191354357880655,
+        "nominal_abs_deg": 73.41633466135457,
+        "calibrated_abs_deg": 49.85471539019849,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316912-ec0bd628-evaluation.jsonl",
+        "sha256": "7e91b5503298e01a42fc2c38df696ced32ebccc223731ac77f9f76bf239e5bbd"
+      }
+    },
+    {
+      "name": "act9-gate-8316913-ec0bd628",
+      "result_status": "interrupted",
+      "physical_success": null,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "c0bd2c1dbc43f91e25d2483c2dbc72c5b23c25562ac60bc48c7910c71110407a",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "910627fdf7c3c3b98fa340931200b1f0df1c7f867eec70868abff95f4cf259d9",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 215,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316913-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "d9cfda530252fc547bf9179bd5ddec3a6651428d984a3875beb2bc5ceea12e67"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316913-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "1277b7398b4077445cd850af176610f4fde28fbefc068e90f059a9e3c1bca3c6"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316913-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "2d45f43637e1a78f19d9cc229e68304044f1e7b9ce562482174b451f816f9ad0"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316913-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "6bd563cef18a6990817d18e448ff0130f3284f923030847d295215292cdd4ed9"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316913-ec0bd628/raw/result.json",
+          "sha256": "7315ed0f47739e48efaece850baa1ad9120ce94cead54cd05f02beed45df3b43"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 107,
+          "median_deg": 14.616325196328916,
+          "p95_deg": 14.759177159487603,
+          "max_deg": 16.09593637098111
+        },
+        "on": {
+          "N": 107,
+          "median_deg": 6.322014150994493,
+          "p95_deg": 6.381740182554277,
+          "max_deg": 6.394635483701724
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7328361822379043,
+        "actual_abs_deg": 53.80214640711682,
+        "nominal_abs_deg": 73.41633466134101,
+        "calibrated_abs_deg": 49.854715390189284,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316913-ec0bd628-evaluation.jsonl",
+        "sha256": "e343d2fb645ad12c950b510b6d313abf7da48090a16acd13ce95254354761bcd"
+      }
+    },
+    {
+      "name": "act9-gate-8316914-ec0bd628",
+      "result_status": "running",
+      "physical_success": null,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "9434d3aef0fdd72774e9444caf8ede02f59bff7ecefa58099db62bf6e47f00e1",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "276647a12442607a592cead41d0b9af408cc29d63b1332abbe61db8da79f4b60",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 184,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316914-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "5e360edbc57a29b9abae02be491d94025d89c873681958197a053949caf54cd2"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316914-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "0d98df8b76b21ca304719f1c866046d5895dcccc692fe48df88c48e171d6feb7"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316914-ec0bd628/raw/teacher-commands.jsonl.zst",
+          "sha256": "bf8296114741cacf5ce7b687c74c3ec612530610b5738bc496b51fedb7919893"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316914-ec0bd628/raw/eval-only.jsonl.zst",
+          "sha256": "9a6275e0d3e3517f1cfd6ff488dd07a0badce6112c976d120d3f4771be9e8e2a"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316914-ec0bd628/raw/result.json",
+          "sha256": "6e8590e9f3629396d3657d03018b8abdb55f08c7c6f81f8af1831c1b38957e7e"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 4,
+          "median_deg": 2.620714985780884,
+          "p95_deg": 3.7740659284034046,
+          "max_deg": 3.9653027038322795
+        },
+        "on": {
+          "N": 4,
+          "median_deg": 1.9080686078542168,
+          "p95_deg": 2.663973525110595,
+          "max_deg": 2.684876289668265
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7354496570262623,
+        "actual_abs_deg": 53.99401814681851,
+        "nominal_abs_deg": 73.41633466135457,
+        "calibrated_abs_deg": 49.85471539019849,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316914-ec0bd628-evaluation.jsonl",
+        "sha256": "f0a8b162d2bbfd4a19b2144e4316c24e141ed6ce281d2a323afd5c8b2a1303c3"
+      }
+    },
+    {
+      "name": "act9-gate-8316915-ec0bd628",
+      "result_status": "running",
+      "physical_success": null,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "8241596b25eff990e6f9d135bfa772d5874b761d148b4238ed2d525734d09ae4",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "e1bdc24e45eaeb86030a2ebc397a69b963420a6ed6ca57ea84c964395db64f0e",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 111,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316915-ec0bd628/recovery-commands.jsonl.zst",
+          "sha256": "8d50eca1ee8867df653fb99760a3521adff28779c2ed315d349e20cf608cae39"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316915-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "4f81063bac98a57c209753b1dbbd3bd74f1519ea17fe9ffb01a860af1cc3b461"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316915-ec0bd628/raw/teacher-commands.jsonl",
+          "sha256": "ba8df48d83703f1f70b2945689d74124f657d7ea4378552b909e075e0e038706"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316915-ec0bd628/raw/eval-only.jsonl",
+          "sha256": "f802545ffd68635d38934406ac3518c2e6accdf7851be6895780854da2b1cdd7"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316915-ec0bd628/raw/result.json",
+          "sha256": "e48d6ed77ec3347ea3dca7b8b11c1e41b7a545e78482818844d5551cb32cd5fe"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 14,
+          "median_deg": 8.522130991887547,
+          "p95_deg": 9.084935087034609,
+          "max_deg": 10.058799756453082
+        },
+        "on": {
+          "N": 14,
+          "median_deg": 4.554022571547257,
+          "p95_deg": 4.597665699143989,
+          "max_deg": 4.603762064535976
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7304670983712838,
+        "actual_abs_deg": 53.62821695313478,
+        "nominal_abs_deg": 73.41633466135457,
+        "calibrated_abs_deg": 49.85471539019849,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316915-ec0bd628-evaluation.jsonl",
+        "sha256": "cbbf1f95beb2a24d92d4762c141e8dfa187362405e1a9e2bfde8a8177a924224"
+      }
+    },
+    {
+      "name": "act9-gate-8316916-ec0bd628",
+      "result_status": "interrupted",
+      "physical_success": null,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "b2bdd0e123139e8cbd2c924c688c62b6df540f3bafce3c750f3f55f4f389fd2d",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "9a42bed1fe4e5000e691aa2639dbe8d1b7a96fd4ed82342f8d60a067ab76af6d",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 84,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316916-ec0bd628/recovery-commands.jsonl",
+          "sha256": "b2bdd0e123139e8cbd2c924c688c62b6df540f3bafce3c750f3f55f4f389fd2d"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316916-ec0bd628/recovery-eval-only.jsonl.zst",
+          "sha256": "71cfa7c0b87fd2bde27c563fe28fea3e4af31b0fb0c1e5a7f0ed560cc14909d7"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316916-ec0bd628/raw/teacher-commands.jsonl",
+          "sha256": "4d23dd96ac632f7d587d625cc8a15e25b4c14acf5e36e68a7149945e90f619c0"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316916-ec0bd628/raw/eval-only.jsonl",
+          "sha256": "32cb8d0a7af9da3c2fd31d2d87c8c5379a539b251f5bd5ecfcede36b50269b00"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act9-gate-8316916-ec0bd628/raw/result.json",
+          "sha256": "c21fb21c2f7b66d49d96b5dca4fbc0ff00cd05974636738edd2ad8db935b8ae9"
+        }
+      },
+      "cohort": "act9",
+      "bearing": {
+        "off": {
+          "N": 22,
+          "median_deg": 12.78653727544416,
+          "p95_deg": 12.883400142329265,
+          "max_deg": 13.968766727663988
+        },
+        "on": {
+          "N": 22,
+          "median_deg": 5.459470921636246,
+          "p95_deg": 5.7606132497801,
+          "max_deg": 5.844963878829628
+        }
+      },
+      "rotation": {
+        "N": 9,
+        "observed_slope": 0.7345888187446564,
+        "actual_abs_deg": 53.93081855544682,
+        "nominal_abs_deg": 73.41633466135457,
+        "calibrated_abs_deg": 49.85471539019849,
+        "probe_N": 9,
+        "search_N": 0
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act9-gate-8316916-ec0bd628-evaluation.jsonl",
+        "sha256": "e60e86c250eb27fa92e280ea822266c071b17b20de40345315f72884373c3446"
+      }
+    },
+    {
+      "name": "act10-gate-8317000-567dc120",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "6d5bb858ff1aff4c294d60a9f9f24d0f83e20b02d10a92317e00d1462480be6b",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "cb949036cc4b21c15f7509efa1d1ad9dab97bba95db825d7de2e0bcbd430ce60",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 429,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act10-gate-8317000-567dc120/recovery-commands.jsonl.zst",
+          "sha256": "a3b799a10350b1eceb79e9a06a846cc8c609705f0582f352d5582e869c2266c1"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act10-gate-8317000-567dc120/recovery-eval-only.jsonl.zst",
+          "sha256": "2138edc6c1f8b60626e323503d72335148e249bc9daf5f63d63f738580b6c272"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act10-gate-8317000-567dc120/raw/teacher-commands.jsonl.zst",
+          "sha256": "97a5a0e59b1d3e4ba5203d0e5de9790a52c418808f8b73fe9fe49140171d158b"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act10-gate-8317000-567dc120/raw/eval-only.jsonl.zst",
+          "sha256": "998218b349270879fd83dde5b7f3cca3adacca573cd17c6a576cf127f15dfa00"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act10-gate-8317000-567dc120/raw/result.json.zst",
+          "sha256": "6f4615eba1dd7fc8393c97ea58988c560eccff790d9d0d5610a1f15daea2df62"
+        }
+      },
+      "cohort": "act10",
+      "bearing": {
+        "off": {
+          "N": 13,
+          "median_deg": 6.088407024597998,
+          "p95_deg": 12.89436052576421,
+          "max_deg": 14.140658069255437
+        },
+        "on": {
+          "N": 13,
+          "median_deg": 3.8054511503463093,
+          "p95_deg": 6.448893318266971,
+          "max_deg": 6.704037037479153
+        }
+      },
+      "rotation": {
+        "N": 16,
+        "observed_slope": 0.7174197840920639,
+        "actual_abs_deg": 93.63614393166871,
+        "nominal_abs_deg": 130.5179282868119,
+        "calibrated_abs_deg": 88.63060513810304,
+        "probe_N": 9,
+        "search_N": 7
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act10-gate-8317000-567dc120-evaluation.jsonl",
+        "sha256": "46c83ed084fefd179072ee9c8ad0c8f79885a8ae25fa287421e770c5c7f20c0b"
+      }
+    },
+    {
+      "name": "act10-gate-8317001-567dc120",
+      "result_status": "complete",
+      "physical_success": true,
+      "integrity": {
+        "commands": {
+          "decoded_sha256": "1dce268b75f38d0b0b3a40b03723714d3ddd8756b528e48c2d805ba98cd893dc",
+          "result_hash_verified": true
+        },
+        "base": {
+          "decoded_sha256": "8585169088c6d28c5f009c9502a40c96496c0dd822a8ccae1fd5cca1c3f53b80",
+          "result_hash_verified": true
+        }
+      },
+      "ticks": 462,
+      "unpaired_tail_ticks": {
+        "commands": 0,
+        "base": 0,
+        "teacher": 0,
+        "cargo": 0
+      },
+      "raw": {
+        "commands": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act10-gate-8317001-567dc120/recovery-commands.jsonl.zst",
+          "sha256": "70691c2ecc07fe70c8ddf5a50e57f15bff3e3506fe6712d9d9141dcbe57642dd"
+        },
+        "base": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act10-gate-8317001-567dc120/recovery-eval-only.jsonl.zst",
+          "sha256": "f5f4e5f5277010d8ac91f456648452654add966d06a67e3adfadc605abca7bdd"
+        },
+        "teacher": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act10-gate-8317001-567dc120/raw/teacher-commands.jsonl.zst",
+          "sha256": "d8846486d933ea7893df15ff273bcb36ebf3b0fad716488e6c0a419f5514c67b"
+        },
+        "cargo": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act10-gate-8317001-567dc120/raw/eval-only.jsonl.zst",
+          "sha256": "dffad6c4df627f90228237319595799130517d0d22dab95113928db03ef5e125"
+        },
+        "result": {
+          "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/act10-gate-8317001-567dc120/raw/result.json.zst",
+          "sha256": "53a98814d18daa7bbd67fa45543c85f167a4b9fa34dc09f5335a3c13c5a81fa7"
+        }
+      },
+      "cohort": "act10",
+      "bearing": {
+        "off": {
+          "N": 11,
+          "median_deg": 4.5972625487225764,
+          "p95_deg": 10.945751246971149,
+          "max_deg": 11.889093810061578
+        },
+        "on": {
+          "N": 11,
+          "median_deg": 3.8034675787371706,
+          "p95_deg": 6.207900433258864,
+          "max_deg": 6.541232628062727
+        }
+      },
+      "rotation": {
+        "N": 15,
+        "observed_slope": 0.7162968755342981,
+        "actual_abs_deg": 87.6464852184982,
+        "nominal_abs_deg": 122.36055776890169,
+        "calibrated_abs_deg": 83.09119231698214,
+        "probe_N": 9,
+        "search_N": 6
+      },
+      "trace": {
+        "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/act11-offline-20261015-v2/act10-gate-8317001-567dc120-evaluation.jsonl",
+        "sha256": "42a78021e912671d4d47a104f9988db60768c23dce50ded950200b39a7a48e7f"
+      }
+    }
+  ],
+  "act9_reference_15": {
+    "off": {
+      "N": 2128,
+      "median_deg": 11.213949056934467,
+      "p95_deg": 13.069815083359181,
+      "max_deg": 16.09593637098111
+    },
+    "on": {
+      "N": 2128,
+      "median_deg": 5.878595126032117,
+      "p95_deg": 7.13096769133872,
+      "max_deg": 7.584510374805974
+    }
+  },
+  "excluded": [],
+  "search_off_regression": [
+    {
+      "seed": 8316900,
+      "ticks": 507,
+      "commands_equal": true,
+      "ledger_equal": true
+    },
+    {
+      "seed": 8316901,
+      "ticks": 487,
+      "commands_equal": true,
+      "ledger_equal": true
+    },
+    {
+      "seed": 8316902,
+      "ticks": 607,
+      "commands_equal": true,
+      "ledger_equal": true
+    }
+  ],
+  "simulation_executed": false,
+  "training_rgb": false,
+  "data_admitted": false,
+  "scope": "saved observations and actual commands; bearing/yaw truth evaluation only; no new physical outcome"
+}

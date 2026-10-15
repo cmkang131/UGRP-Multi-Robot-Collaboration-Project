@@ -6,7 +6,8 @@ from harness.grasp_act_dart import MODE, PULSE_MODE
 from harness.grasp_act_perturb import PERTURB_MODES, verified_recovery_audit
 
 
-def verify_gate(receipt, *, source, dependency, noise_hash, host, recording_seeds, recovery_mode=None):
+def verify_gate(receipt, *, source, dependency, noise_hash, host, recording_seeds, recovery_mode=None,
+                rotation_calibration='off', yaw_gain=1.):
     receipt=Path(receipt); proof=json.loads(receipt.read_text())
     if proof.get('approved') is not True or proof.get('gate_promotion_authorized_if_all_conditions_pass') is not False:
         raise ValueError('explicit gate review required; no automatic promotion')
@@ -21,8 +22,13 @@ def verify_gate(receipt, *, source, dependency, noise_hash, host, recording_seed
         raise ValueError('gate queue hash mismatch')
     queue = read_json(queue_path)
     gate_jobs = [j for j in queue.get('jobs', []) if j.get('N') == 40 and j.get('training_rgb') is False]
+    if len(gate_jobs)>1:
+        gate_jobs=[j for j in gate_jobs if j.get('candidate_id')==proof.get('candidate_id')]
     if queue.get('source_sha') != source or len(gate_jobs) != 1:
         raise ValueError('gate queue source/stage mismatch')
+    if (gate_jobs[0].get('rotation_calibration','off') != rotation_calibration
+            or gate_jobs[0].get('yaw_gain',1.) != yaw_gain):
+        raise ValueError('gate rotation calibration mismatch')
     queue_seeds = [r['seed'] for r in gate_jobs[0]['runs']]
     if len(queue_seeds) != 40 or len(set(queue_seeds)) != 40:
         raise ValueError('exactly 40 unique queue seeds required')
@@ -33,6 +39,9 @@ def verify_gate(receipt, *, source, dependency, noise_hash, host, recording_seed
         if str(p.resolve()) in paths or sha256(p)!=item['sha256']:raise ValueError('duplicate or corrupt gate result')
         paths.add(str(p.resolve()));r=read_json(p);seed=r['recovery']['seed']
         actual_mode=r.get('recovery',{}).get('mode')
+        if (r['recovery'].get('rotation_calibration','off') != rotation_calibration
+                or r['recovery'].get('yaw_gain',1.) != yaw_gain):
+            raise ValueError('mixed rotation calibration results')
         if mode is None:mode=actual_mode
         if actual_mode not in (MODE,PULSE_MODE,*PERTURB_MODES) or actual_mode!=mode:
             raise ValueError('unsupported or mixed recovery gate modes')

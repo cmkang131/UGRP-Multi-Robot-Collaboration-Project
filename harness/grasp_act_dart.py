@@ -120,7 +120,7 @@ class WheelNoise:
 
 
 @contextmanager
-def recovery_hooks(teacher_module, recording_module, noise, ledger):
+def recovery_hooks(teacher_module, recording_module, noise, ledger, *, yaw_gain=1.):
     """Reuse the pinned teacher/recorder without copying their control logic.
 
     The runner applies the noisy return. Its recorder labels the clean action
@@ -132,11 +132,12 @@ def recovery_hooks(teacher_module, recording_module, noise, ledger):
     class RecoveryTeacher(Teacher):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
-            self.recovery_search = CommandSearch() if noise.mode == SEARCH_MODE else None
+            self.recovery_search = CommandSearch(yaw_gain=yaw_gain) if noise.mode == SEARCH_MODE else None
             self.search_diagnostic = None
 
         def _search_or_resume(self, parent, measurement, now):
-            if self.recovery_search is None or measurement is not None or self.holding:
+            if (self.recovery_search is None or measurement is not None or self.holding
+                    or self.recovery_search.seen_t is None):
                 return parent(measurement, now)
             if noise.active:
                 return self._hold(now)
