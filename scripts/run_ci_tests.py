@@ -36,6 +36,7 @@ TEST_PATTERNS = (
     "tests/test_grasp_act_recovery.py",
     "tests/test_grasp_act_search.py",
     "tests/test_grasp_act_search19.py",
+    "tests/test_grasp_act_search20.py",
     "tests/test_grasp_act_data.py",
     "tests/test_e2e18.py",
     "tests/test_e2e18_beam_axis.py",

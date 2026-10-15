@@ -81,7 +81,7 @@ def swept_cloud(start_items, distance, z):
     return actual_pick_cloud(dict(start_items),(distance,0.,z))
 
 
-def actual_pick_cloud(start,target):
+def actual_pick_cloud(start,target,*,check_budget=None):
     hover, descent = grasp_poses(target)
     # Exactly the issued pick sequence: folded -> hover/open -> descent -> close -> lift.
     states = [start, {**start, **hover, 1: 2000}]
@@ -91,6 +91,7 @@ def actual_pick_cloud(start,target):
     for stage, (a, b) in enumerate(zip(states, states[1:])):
         n = max(1, math.ceil(max(abs(a[k]-b[k]) for k in a)/5))
         for i in range(n+1):
+            if check_budget is not None:check_budget()
             p = {k: a[k]+(b[k]-a[k])*i/n for k in a}
             xyz, radii, fingers = capsules(p)
             # Only intended pad/assigned-beam contact during closure/lift is excluded.
@@ -182,6 +183,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
     if current is not None:choices = [current]  # Revalidate the selected stance without oscillating.
     checked = []; feasible = []
     for choice in choices:
+        if navigation is not None and hasattr(navigation, 'check_budget'):navigation.check_budget()
         pose, point, heading, goal = geometry(world, rid, end, choice)
         row = {'offset_deg': math.degrees(choice[0]), 'distance_m': choice[1], 'goal': goal}
         checked.append(row)
@@ -196,7 +198,9 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         retreat = (goal[0]-.06*math.cos(heading), goal[1]-.06*math.sin(heading))
         if not (x0+radius <= retreat[0] <= x1-radius and y0+radius <= retreat[1] <= y1-radius) or not segment_free(goal, retreat, discs, rects, radius):
             row['reason'] = 'blocked_retreat';continue
-        path = ([tuple(start), goal] if segment_free(start, goal, discs, rects, radius) else
+        path = (navigation.path_for_goal(start,goal,discs,rects,radius)
+                if navigation is not None and hasattr(navigation,'path_for_goal') else
+                [tuple(start), goal] if segment_free(start, goal, discs, rects, radius) else
                 plan_path(start, goal, bounds, discs, rects=rects, radius=radius))
         if not path:row['reason'] = 'no_path';continue
         points = [tuple(start), *path]
@@ -206,7 +210,10 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         visible, view = band_view(world, rid, end, base, previous)
         row['predicted_visible_probes'] = visible
         if visible < 5:row['reason'] = 'band_not_visible';continue
-        xyz, radii, allowed = swept_cloud(tuple(sorted(view.items())), choice[1], point[2])
+        if navigation is not None and hasattr(navigation,'check_budget'):
+            xyz,radii,allowed=bounded_swept_cloud(tuple(sorted(view.items())),choice[1],point[2],navigation.check_budget)
+        else:
+            xyz, radii, allowed = swept_cloud(tuple(sorted(view.items())), choice[1], point[2])
         reason = collision_reason(world, rid, base, xyz, radii, allowed)
         if reason:row['reason'] = reason;continue
         # Connect using the same finite compact-view family. Every yaw/PWM
@@ -217,6 +224,7 @@ def select_sampled_goal(world, rid, end, bounds, folded, previous, *, current=No
         for a, b in zip(route, route[1:]):
             n = max(1, math.ceil(math.dist(a, b)/.01))
             for i in range(n+1):
+                if navigation is not None and hasattr(navigation, 'check_budget'):navigation.check_budget()
                 xy = tuple(a[k]+(b[k]-a[k])*i/n for k in range(2))
                 yaw = math.atan2(point[1]-xy[1], point[0]-xy[0])
                 count, after = band_view(world, rid, end, (*xy,yaw), before)
@@ -249,3 +257,17 @@ def issued_sweep_reason(world, rid, pose, before, after, delta):
         reason = collision_reason(world, rid, base, xyz, radii, np.zeros_like(fingers))
         if reason:return reason
     return None
+
+
+# Complete results only; exact PWM/distance/height keys, finite memory.
+from collections import OrderedDict
+_BOUNDED_CLOUDS = OrderedDict()
+
+def bounded_swept_cloud(start_items,distance,z,check_budget):
+    key=(start_items,distance,z)
+    check_budget()
+    if key not in _BOUNDED_CLOUDS:
+        _BOUNDED_CLOUDS[key]=actual_pick_cloud(dict(start_items),(distance,0.,z),check_budget=check_budget)
+        if len(_BOUNDED_CLOUDS)>4:_BOUNDED_CLOUDS.popitem(last=False)
+    else:_BOUNDED_CLOUDS.move_to_end(key)
+    return _BOUNDED_CLOUDS[key]

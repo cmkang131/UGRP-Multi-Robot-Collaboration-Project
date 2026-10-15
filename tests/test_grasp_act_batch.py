@@ -255,3 +255,13 @@ def test_compression_proof_is_pending_until_child_exits(tmp_path):
     assert batch.read(path)['status']=='complete'
     result=batch.read(path,finalized=True)
     assert result['status']=='HOST_ERROR' and 'missing manifest proof' in result['error']
+
+
+def test_search20_reaches_child_and_summary(tmp_path,fake_children):
+    from sim.grasp_act_search19 import MODES as S19
+    from sim.grasp_act_search20 import MODES as S20
+    fake_children[0].update({0:(0,SUCCESS,0)})
+    rows,reason,killed=run_wave(tmp_path,fake_children,**S19,**S20)
+    assert reason is None and killed==[]
+    command=json.loads((tmp_path/'wave/episode-000/PROCESS.json').read_text())['command']
+    assert command[command.index('--search20')+1]=='search20_v1'

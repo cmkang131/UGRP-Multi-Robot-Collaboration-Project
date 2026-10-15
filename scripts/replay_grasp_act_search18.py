@@ -38,7 +38,7 @@ def read(path):
 def clone_teacher(t):
     # Histories do not steer these branches. Avoid copying their ever-growing
     # diagnostic payloads, while preserving every controller state variable.
-    histories=('events','goal_set_log','search17_log','search18_log','recovery_log','progress_log','search_log')
+    histories=('events','goal_set_log','search17_log','search18_log','recovery_log','progress_log','search_log','search19_log','search20_log')
     memo={id(getattr(t,k)):[] for k in histories}
     memo[id(t.reobserver.events)]=[]
     return deepcopy(t,memo)

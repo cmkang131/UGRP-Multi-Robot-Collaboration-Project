@@ -41,7 +41,8 @@ class BodyNavigation(Navigation):
 
 
 def body_pulse_free(teacher, world, value):
-    nav = BodyNavigation(teacher, world)
+    from sim.grasp_act_search20 import enabled, BodyNavigation as Search20Navigation
+    nav = Search20Navigation(teacher, world) if enabled(teacher) else BodyNavigation(teacher, world)
     for mode in ('off', teacher.search15_modes['search17_odometry']):
         pose = tuple(nav.pose)
         times = sorted({0., .1, *(max(0., min(.1, d)) for d in value['duration_s'])})
@@ -67,8 +68,10 @@ def body_fallback(teacher, world, now):
     choices = [(math.radians(a), d) for a in ANGLES_DEG for _, d in AXIAL_CHOICES]
     selected, checked = select_sampled_goal(
         world, teacher.rid, teacher.end, teacher.bounds, teacher.folded_ready,
-        teacher.sink.pwm, choices=[*choices, *expanded_choices()], navigation=BodyNavigation(teacher, world))
-    teacher.search19_log.append({'t': now, 'event': 'body_fallback', 'margin_m': BODY_MARGIN_M,
+        teacher.sink.pwm, choices=_fallback_choices(teacher, [*choices, *expanded_choices()]),
+        navigation=_fallback_navigation(teacher, world))
+    from sim.grasp_act_search20 import enabled, ADMIT_MARGIN_M
+    teacher.search19_log.append({'t': now, 'event': 'body_fallback', 'margin_m': ADMIT_MARGIN_M if enabled(teacher) else BODY_MARGIN_M,
                                  'tested': len(checked), 'feasible': sum(c['reason']=='feasible' for c in checked)})
     if selected is not None:
         teacher.search19_body_active = True
@@ -142,3 +145,13 @@ def project_motion(teacher, world, value, before, now):
                                                  'waypoint': target})
                     return candidate
     return value
+
+
+def _fallback_navigation(teacher, world):
+    from sim.grasp_act_search20 import enabled, BodyNavigation as Search20Navigation
+    return Search20Navigation(teacher, world, admission=True) if enabled(teacher) else BodyNavigation(teacher, world)
+
+
+def _fallback_choices(teacher, choices):
+    from sim.grasp_act_search20 import enabled
+    return list(dict.fromkeys(choices)) if enabled(teacher) else choices

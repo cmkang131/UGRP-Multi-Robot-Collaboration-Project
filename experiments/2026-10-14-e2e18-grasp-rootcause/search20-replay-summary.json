@@ -1,0 +1,1695 @@
+{
+  "scope": "recorded-input replay; no dynamics/render/model/remote execution",
+  "complete": true,
+  "runs": [
+    {
+      "seed": 315709,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-repro4-gcp-00620d7a/diagnostic/episode-000/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": false,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 280,
+      "changed": 49,
+      "worse": 0,
+      "shadow_changed": 49,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1044,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "218644b3024c42a0e7eae2a55ed919df8e23e8aa24db9fcccc9b01d410dce391",
+        "teacher-r1.jsonl": "6b2d4b523d72481d816a79a414db360b8a131d9a6b9369d196dd85b983d96430",
+        "teacher-r2.jsonl": "c1a9444e53e2d29dfc7bd7551873caf819218d5c4f8e8845b01cc341d334e589",
+        "result.json": "4eec5d9c9b26825817a4e41aa888b1ce1953964b6ffb96b2a43329a1100fc91f",
+        "plan.json": "2c1a116af8b66c904742ba331254d323d499277004071617f9b5596b2f4c60a6"
+      },
+      "timing": {
+        "max_s": 3.4190809580031782,
+        "max_body_planning_s": 0.05308458395302296,
+        "total_s": 10.283686780370772,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 127,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": "approach_blocked_handoff",
+          "phase": "approach",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "ready",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311702,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-repro4-gcp-00620d7a/diagnostic/episode-001/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 548,
+      "changed": 5,
+      "worse": 0,
+      "shadow_changed": 5,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1000,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "e8ae265ddf6992488fc052b5444561d13f6848a1f9ee554052587d6ed5fd14a8",
+        "teacher-r1.jsonl": "a6ec125d17615a0931408f5a612156210e82b1123e13b65526cc6eb958d50dad",
+        "teacher-r2.jsonl": "5464dd4ca950f20bdcf548ed3f668ef7ecc1f652e55724dc235573cc75fe3ed5",
+        "result.json": "95ec5d98dcac2ce1248599cb7f2aeb34d7735fb1da4d07a2cdece2a752b710ae",
+        "plan.json": "35c22738206bf8f128c1fba9d00dd3bbecc4183c190255cccd9b5e7d4d51b09c"
+      },
+      "timing": {
+        "max_s": 0.007128291996195912,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.4041433067759499,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": [
+            {
+              "t": 19.200000000000664,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 19.30000000000114,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 19.40000000000162,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 19.500000000002096,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 19.600000000002574,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311709,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-repro4-gcp-00620d7a/diagnostic/episode-002/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": false,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 128,
+      "changed": 0,
+      "worse": 0,
+      "shadow_changed": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 339,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "522857ab3b8f80e3d5a04ff02dfcf27ef8a22f1f03a62603ce533d3b1656e8ea",
+        "teacher-r1.jsonl": "42f91f21b56a9df0d3f77fe4b59f662ceb7cd591954be465ebba22c0ae8f64a3",
+        "teacher-r2.jsonl": "d0172b8d55be086dc3aaa04c186e98b9699e610d23c6b6f65ef84ea3092132a3",
+        "result.json": "f0a35c7f43db17bd5736558da9fb277174870cbb7534a8ba9957ddbc81ff2026",
+        "plan.json": "5a18e7136053d5b43f31e7f1fa3eceade326d0c2a93c83d7ee36bff487184409"
+      },
+      "timing": {
+        "max_s": 0.18920849997084588,
+        "max_body_planning_s": 0.05327791697345674,
+        "total_s": 0.5499703665263951,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 127,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": "approach_blocked_handoff",
+          "phase": "approach",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "ready",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311711,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-repro4-gcp-00620d7a/diagnostic/episode-003/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": false,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 518,
+      "changed": 0,
+      "worse": 0,
+      "shadow_changed": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1117,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "6d6e1d6e4d89246f2f1fa87d64cd088b19aa7e5500fa7930c0e167ee7283f5fb",
+        "teacher-r1.jsonl": "3466269c6bcf1ba48b67ae2fff7f3c50630c51659a82133fd6f8dab16be184bd",
+        "teacher-r2.jsonl": "cad36b62c4701c7341c825ec04aac5f5e7c3f4c37f491a5abee4b3896a67a329",
+        "result.json": "93914bfc5d3be61f5b066d3a79e6af8d051ff6cf52d86f56ba98d96ce5862f04",
+        "plan.json": "7de6e1cbdf5054cd8f30315d3951395094e36704c1bed2f67c2d34a5d0ed54a5"
+      },
+      "timing": {
+        "max_s": 0.03152820898685604,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.4520169149618596,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "align",
+          "events": []
+        },
+        "r2": {
+          "outcome": "approach_blocked_handoff",
+          "phase": "approach",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311712,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-000/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 666,
+      "changed": 1,
+      "worse": 0,
+      "shadow_changed": 1,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1066,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "f2ad9f1bc356ad17b9c6f6a4a750cafe2b876e99df769f7fa50b49a0fae0492b",
+        "teacher-r1.jsonl": "a87a97f3483d576156e9d91fc81bf0e78f77463a4793654da67086be73c44b66",
+        "teacher-r2.jsonl": "1b80db0492a878e2e68dbda540571eaf1092341a17ef610b75a0c7dc095e9228",
+        "result.json": "62002e3acb9552887b58ebeb27fdb474e41fee18248a426422dbbd393b6a6f3a",
+        "plan.json": "cdb731ef5fe5d4419265b81acb9366cda380914504fa0dcd17e97ef8a5050277"
+      },
+      "timing": {
+        "max_s": 0.02084366697818041,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.4613675399450585,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": [
+            {
+              "t": 26.000000000033133,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311713,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-001/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 648,
+      "changed": 4,
+      "worse": 0,
+      "shadow_changed": 4,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1373,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "40623e954acb5fbcb34efe6095746fe220a0806a6890abe0ff5b311deec8cf7b",
+        "teacher-r1.jsonl": "95b4593c8d5ff4ef7eb8d6ec53a17e324cd721b7224c8baa20bb0c8e5c9a084e",
+        "teacher-r2.jsonl": "3306fdde1021d2ced7e8db1ae5b8381eff344977f2cd22f4792e779086aa3f06",
+        "result.json": "16def643a914bd86547089e4f055395194406ff3a6ea6270dd06d1f49a7dd133",
+        "plan.json": "52bc7d3e5f1a835609473f0e9c94b49f28538c02e79821ed12ae52c109637f22"
+      },
+      "timing": {
+        "max_s": 0.009476374951191247,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.5037091273115948,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": [
+            {
+              "t": 20.700000000007826,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 20.800000000008303,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 20.90000000000878,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 21.00000000000926,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311714,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-002/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 592,
+      "changed": 8,
+      "worse": 0,
+      "shadow_changed": 8,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 909,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "cb711086a28335c9afe4e4d2bd950c1929b20972a0b03017085459934fedc4c3",
+        "teacher-r1.jsonl": "aadcda652bbbb8b549f405a3840cc36bd7d84be08b1f4da6a24e3950e38947c8",
+        "teacher-r2.jsonl": "b7c38eb5b1855d0ea366070a0a57cd6aba78346573822bc23bf54ce4dea578df",
+        "result.json": "d0f56d5ffc9ebdafad212043f2b7dc13621041498f0bbeb455662746336d3582",
+        "plan.json": "e4677d4b65067efe58222ed2720d586f0e44382b08b66e2b94d86987900af20c"
+      },
+      "timing": {
+        "max_s": 0.06098900001961738,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.4567935785744339,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": [
+            {
+              "t": 17.79999999999398,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 17.899999999994456,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 17.999999999994934,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 18.09999999999541,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": [
+            {
+              "t": 21.30000000001069,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 21.40000000001117,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 21.500000000011646,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 21.600000000012123,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311715,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-003/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 476,
+      "changed": 0,
+      "worse": 0,
+      "shadow_changed": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 769,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "691a3b6bdbe1e1292988f9d5d2d91a7e9589fefc2b2ba64100d68f29292be465",
+        "teacher-r1.jsonl": "5e029d00bd14d2af08d711a57d3a93d99a430b91e350e23d060b32d0e50399d4",
+        "teacher-r2.jsonl": "2f4fc3cecf3c03ac556365bcbe32ce265dcfe17d0e2c7f9dd9c27ba5d93ea55b",
+        "result.json": "045198c128774e3ab1656b62f33ec6d38f91a6ed7727b321777a36f9b791212b",
+        "plan.json": "81af2b94996be1e2d094ddaa10e7b2cb2c3a3f50315dca998d778f13d76d1170"
+      },
+      "timing": {
+        "max_s": 0.014759667101316154,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.29326383757870644,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311716,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-004/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 648,
+      "changed": 3,
+      "worse": 0,
+      "shadow_changed": 3,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 921,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "a78caa96cd3bf29170551cf6136d16227a523a2a4b31b8e68e17e17d737f4206",
+        "teacher-r1.jsonl": "74a577e295b895fc74021945128d4d19b5b37e3582de853fa434cc169a946831",
+        "teacher-r2.jsonl": "a46cb965fa94cdfffaf81cdd854bc9f6d3936a4f7df8791a615a7fb117e89088",
+        "result.json": "c450cabe9de8d192320bb4bc10fec4b05531959bc2196678c1e0628d16e550e2",
+        "plan.json": "87cc4365fa845ebbbfd3e51dc625f47eb48af36e1e04cd916ade617afe1e763a"
+      },
+      "timing": {
+        "max_s": 0.005962583003565669,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.39347056904807687,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": [
+            {
+              "t": 24.200000000024538,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 24.300000000025015,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 24.400000000025493,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311717,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-005/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 600,
+      "changed": 3,
+      "worse": 0,
+      "shadow_changed": 3,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 956,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "94ea0c4c870b9290938622c4553b3770f0d085467135e471a9d9aa67c6130f95",
+        "teacher-r1.jsonl": "a727ba7abcc0100914dd07300a4234f6be660d277c9707bf0244f547c3274b69",
+        "teacher-r2.jsonl": "91d39f1b0158b2a9b398d6c5b488dc49000268b0b4ebe5b9ea8c5c4f63cd6099",
+        "result.json": "ca29cf82367407da462d9f304a9e86f9ff7ab0550e123bdb2b4432a0dd7205e1",
+        "plan.json": "ab6f23eb5217921e60537046a785c18900b88dc35889dbf6bc80999d01304246"
+      },
+      "timing": {
+        "max_s": 0.046629165997728705,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.3240028762957081,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": [
+            {
+              "t": 22.50000000001642,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 22.600000000016898,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 22.700000000017376,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311718,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-006/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 414,
+      "changed": 0,
+      "worse": 0,
+      "shadow_changed": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 849,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "c1ab1090a3cf82326842f346a8ced8ed578af26c827d4de688782bd59779ca67",
+        "teacher-r1.jsonl": "44cb1fbd613482eef2f2f0198ee417634fc25bc934691045727385cc0fc21f6c",
+        "teacher-r2.jsonl": "78fb7e7f3a85607d0bf31877c7e6ae38db90cabfc43d93ecb80083635d9e4816",
+        "result.json": "5d9a34195dca93a38288e736555688a947f9acdab00fdb4e3a5be1f9aecb58f5",
+        "plan.json": "fba368a93b3456ae24513f1afcc44ac9ccc9e632237896c7459aa99bea85948b"
+      },
+      "timing": {
+        "max_s": 0.0028145830146968365,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.2600885002175346,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311719,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic/episode-007/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 510,
+      "changed": 0,
+      "worse": 0,
+      "shadow_changed": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 987,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "8446f18ed83cd8bb55bd8a740b63bebeccf15123ae316d4712cdb55d95be5cbf",
+        "teacher-r1.jsonl": "ec0f6e87f8198ee05c8887bd658bab7768d25fb1666246676024ce3d35ee5ba2",
+        "teacher-r2.jsonl": "b78510e82e59157a4e874881fe94a6bfafb340422c497062f0e96a15f5bc36ec",
+        "result.json": "32c5856ca5675ccad8a446d719c002692e6021ee8bc95fa0464db52748efa15e",
+        "plan.json": "3c1cf37f28435b0934f6533d842f70287a17f8e22b090cad2e325af411455012"
+      },
+      "timing": {
+        "max_s": 0.005520291975699365,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.2641319619724527,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311720,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic-008/episode-008/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 772,
+      "changed": 7,
+      "worse": 0,
+      "shadow_changed": 7,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1540,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "566cf8ae268b2d2fa218c9985f38fe8e65aef77c9658a83f8200632d380fe0f0",
+        "teacher-r1.jsonl": "466591d8d131f6ef85b0706a728422cb43e2c9042298575eaca3c6f082a3bf45",
+        "teacher-r2.jsonl": "5e7b3c553140550cef47cc8e89d7240a9435f93c4c8d89f2e24adf9008a18632",
+        "result.json": "c835b04a34022dbaffd6aebd5f09759a31b998c216d48953bd6f39810bf5fb1d",
+        "plan.json": "b7534c88eff62290becb2988370c53c703dfcbb0fe4dec9dcab95a7112abd001"
+      },
+      "timing": {
+        "max_s": 0.018957416992634535,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.6295362443197519,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": [
+            {
+              "t": 21.7000000000126,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 21.80000000001308,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": [
+            {
+              "t": 30.800000000056052,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 30.90000000005653,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.000000000057007,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.100000000057484,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.200000000057962,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311721,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic-008/episode-009/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 556,
+      "changed": 0,
+      "worse": 0,
+      "shadow_changed": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 776,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "4c077e97bec62e59be8586c8c142253a0169851cb1ffb1a253986e87f119571e",
+        "teacher-r1.jsonl": "e82ae67805a59614d25d9343182e4dc05e3c1ed72f3767aa0dd5473a9b377a81",
+        "teacher-r2.jsonl": "4c3d9883488e63c9dfbc80716565365a8561d6fa0f84eed643964b215b60dcc0",
+        "result.json": "1d059579e58824799fa9118ae1bf3709ac18ff826b4c39587e81eb7e794c6c09",
+        "plan.json": "d596ced0044e83960fc606f1c507e41057cf52cbabe7e896148285b050282b84"
+      },
+      "timing": {
+        "max_s": 0.002526334021240473,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.26227770477999,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311722,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic-008/episode-010/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": true,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 668,
+      "changed": 5,
+      "worse": 0,
+      "shadow_changed": 5,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1306,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "e4c1fbf44e080d534e7aa5e58573780cbd3d7e5d95952ea8132c48aee9bfbd62",
+        "teacher-r1.jsonl": "e0032d0431cd801ff92a8e16bed64e4da48e496536347c0811569107ce5da637",
+        "teacher-r2.jsonl": "c5f52abb9d924f03b5aa71429e2e9a77d905cdbb88a0f4501f4e353d09f5e6b8",
+        "result.json": "69758f9b39705f041f978410aa05df776da2aeeb24c929f615380bc5a1ffd793",
+        "plan.json": "d721e6401966f479153f1462a867f4b49e207971f1d00914b1a52e81fef939bd"
+      },
+      "timing": {
+        "max_s": 0.015393291949294508,
+        "max_body_planning_s": 0.0,
+        "total_s": 0.300498915836215,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 0,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": null,
+          "phase": "complete",
+          "events": [
+            {
+              "t": 22.400000000015943,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 22.50000000001642,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 22.600000000016898,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 22.700000000017376,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 22.800000000017853,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "complete",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 8311723,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search18-novel12-gcp-00620d7a/diagnostic-008/episode-011/raw",
+      "source_sha": "00620d7ace67ae1b7f39aa0a20d990aff11cf861",
+      "original_success": false,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 126,
+      "changed": 0,
+      "worse": 0,
+      "shadow_changed": 0,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 347,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "d02be4d461c6063eab01b835f344b399ab0225dd327af51d0899c955be5be271",
+        "teacher-r1.jsonl": "0d3e4d6908308fdd682955be668a6754cd0f913f6c5fb835b6a6b81c3b86a5a9",
+        "teacher-r2.jsonl": "77c59ab443dea031ca626fb3b52a1cf7672c8a09c5298ee04f929ef28ac0e242",
+        "result.json": "3c57f216626e7ef73c685a3210e36d0d0c76bf41099197356c173c03c473bb71",
+        "plan.json": "38b17488d59f059f0c174707af6851393f051bbbeee722ad9f51d844b03e91b2"
+      },
+      "timing": {
+        "max_s": 0.12061995908152312,
+        "max_body_planning_s": 0.05713454191572964,
+        "total_s": 0.4597229160135612,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 127,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": "approach_blocked_handoff",
+          "phase": "approach",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "approach",
+          "events": []
+        }
+      },
+      "cohort": "search18"
+    },
+    {
+      "seed": 315709,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search19-repro4-gcp-06558d64/diagnostic/episode-000/raw",
+      "source_sha": "06558d64a2fd1bd34e59cfea7e0b40045b6dab77",
+      "original_success": false,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 640,
+      "changed": 77,
+      "worse": 0,
+      "shadow_changed": 77,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 1630,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "3da7d1864f6532ded93e7979559285d5f93f59c82ef006f42449d06c5e3104fa",
+        "teacher-r1.jsonl": "47fbc6ebafaf0e0abb1d6cc8c796c258136f95761788c629608553f388233e52",
+        "teacher-r2.jsonl": "0a9554323d76f5edf069143673c18732e33c2c6d536bc131e3370693193d7ced",
+        "result.json": "bdc8e0a3498062e8aa5c602f5b1d4fda4cc05cce3d840ca359e6c3511b3570d4",
+        "plan.json": "2c1a116af8b66c904742ba331254d323d499277004071617f9b5596b2f4c60a6"
+      },
+      "timing": {
+        "max_s": 3.789993125014007,
+        "max_body_planning_s": 0.0514622499467805,
+        "total_s": 11.043709203600883,
+        "budget_exhausted_ticks": 0,
+        "max_checks": 127,
+        "cache_hits": 0
+      },
+      "shadow": {
+        "r1": {
+          "outcome": "alignment_no_progress",
+          "phase": "align",
+          "events": [
+            {
+              "t": 25.000000000028358,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 25.100000000028835,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 25.200000000029313,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 25.30000000002979,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 25.400000000030268,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 25.500000000030745,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 25.600000000031223,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 25.7000000000317,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 25.800000000032178,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 25.900000000032655,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 26.000000000033133,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 26.10000000003361,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 26.200000000034088,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 26.300000000034565,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 26.400000000035043,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 26.50000000003552,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 26.600000000035998,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 27.200000000038862,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 27.30000000003934,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 27.400000000039817,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 27.500000000040295,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 27.600000000040772,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 27.70000000004125,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 27.800000000041727,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 27.900000000042205,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 28.000000000042682,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 28.10000000004316,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 28.200000000043637,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 28.300000000044115,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 28.400000000044592,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 28.50000000004507,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 28.600000000045547,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 28.700000000046025,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 28.800000000046502,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 28.90000000004698,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 29.000000000047457,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 29.100000000047935,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 29.200000000048412,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 29.30000000004889,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 29.400000000049367,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 29.500000000049845,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 29.600000000050322,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 29.7000000000508,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 29.800000000051277,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 29.900000000051755,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 30.000000000052232,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 30.10000000005271,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 30.700000000055574,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 30.800000000056052,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 30.90000000005653,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.000000000057007,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.100000000057484,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.200000000057962,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.30000000005844,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.400000000058917,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.500000000059394,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.60000000005987,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.70000000006035,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.800000000060827,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 31.900000000061304,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 32.00000000006178,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 32.10000000006226,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 32.20000000006274,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 32.300000000063214,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 32.40000000006369,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 32.50000000006417,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 32.60000000006465,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 32.700000000065124,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 32.8000000000656,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 32.90000000006608,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 33.00000000006656,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 33.100000000067034,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 33.20000000006751,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 33.30000000006799,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 33.40000000006847,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 33.500000000068944,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            },
+            {
+              "t": 33.60000000006942,
+              "event": "alignment_axis_admitted",
+              "axis": 0
+            }
+          ]
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "ready",
+          "events": []
+        }
+      },
+      "cohort": "search19"
+    },
+    {
+      "seed": 8311709,
+      "raw": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/grasp-search19-repro4-gcp-06558d64/diagnostic/episode-001/raw",
+      "source_sha": "06558d64a2fd1bd34e59cfea7e0b40045b6dab77",
+      "original_success": false,
+      "scope": "recorded-input decisions only; NOT physical success",
+      "baseline_mismatch_ticks": 0,
+      "robot_ticks": 354,
+      "changed": 7,
+      "worse": 31,
+      "shadow_changed": 138,
+      "input_audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 884,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "decoded_sha256": {
+        "eval-only.jsonl": "199ff526ff1bef6d6265379c50e3f36b858ed9a9b942126a08d3f912c7b60806",
+        "teacher-r1.jsonl": "8876b6403a3090f68f3fa275318da473f7f8ab0cbba227aeb1305e96c13fc1bd",
+        "teacher-r2.jsonl": "21ae90b108f02995e2f54e3d992ee25a84f1ef5dbc6cc33c479f1e6dffd95a04",
+        "result.json": "86a774e3f94b88d8973c55cd3bd4bfe4cc458e70962d112dc21faf19a5b01afa",
+        "plan.json": "5a18e7136053d5b43f31e7f1fa3eceade326d0c2a93c83d7ee36bff487184409"
+      },
+      "timing": {
+        "max_s": 0.8225881659891456,
+        "max_body_planning_s": 0.8218782909680158,
+        "total_s": 9.713529002270661,
+        "budget_exhausted_ticks": 1,
+        "max_checks": 32768,
+        "cache_hits": 99783
+      },
+      "shadow": {
+        "r1": {
+          "outcome": "approach_blocked_handoff",
+          "phase": "approach",
+          "events": []
+        },
+        "r2": {
+          "outcome": null,
+          "phase": "ready",
+          "events": []
+        }
+      },
+      "cohort": "search19"
+    }
+  ],
+  "robot_ticks": 9144,
+  "baseline_mismatch_ticks": 0,
+  "success_N": 12,
+  "success_changed_N": 8,
+  "success_worse_N": 0,
+  "source_hashes": {
+    "sim/grasp_act_search20.py": "41acfe4d8dbcad159cbebe057f56837fea8f7686864543d366c1fa638635e414",
+    "sim/grasp_act_search19.py": "179098b4b4a0a38095001185e2306892860291b4354c03b50e8712dcc4ea3947",
+    "sim/grasp_act_teacher_v3.py": "a7f6fcb95d978db0b76ae55d619d485f08f2e96d93b0ecb4061d701f158ff3d7",
+    "sim/grasp_act_pregrasp.py": "5747f5a633b56cf87b8b55eccccc138e6c654bcbcc62046958fb3312c4894b8a",
+    "scripts/replay_grasp_act_search20.py": "93d17d3883e4776fd71ade40c37177d27dcbba0a95450e77234618820cb3eb3d"
+  },
+  "actual_search19_ticks": 994,
+  "late_inherited_plan": [
+    {
+      "rid": "r1",
+      "t": 15.399999999986784,
+      "valid": true,
+      "outcome": null,
+      "wheels": [
+        0.35,
+        -0.35,
+        -0.35,
+        0.35
+      ],
+      "compute": {
+        "t": 15.399999999986784,
+        "elapsed_s": 0.24666008295025676,
+        "body_planning_s": 0.24607025005389005,
+        "checks": 5132,
+        "cache_hits": 2528,
+        "cache_size": 2493,
+        "budget_exhausted": false
+      },
+      "events": [
+        {
+          "t": 15.399999999986784,
+          "event": "stance_family_retained",
+          "choice": [
+            0.17453292519943295,
+            0.208
+          ],
+          "goal_shift_m": 0.0031962558507911704,
+          "margin_m": 0.002
+        }
+      ]
+    },
+    {
+      "rid": "r1",
+      "t": 16.399999999987294,
+      "valid": true,
+      "outcome": null,
+      "wheels": [
+        0.35,
+        -0.35,
+        -0.35,
+        0.35
+      ],
+      "compute": {
+        "t": 16.399999999987294,
+        "elapsed_s": 0.2916200830368325,
+        "body_planning_s": 0.290904541965574,
+        "checks": 4731,
+        "cache_hits": 2318,
+        "cache_size": 4096,
+        "budget_exhausted": false
+      },
+      "events": [
+        {
+          "t": 15.399999999986784,
+          "event": "stance_family_retained",
+          "choice": [
+            0.17453292519943295,
+            0.208
+          ],
+          "goal_shift_m": 0.0031962558507911704,
+          "margin_m": 0.002
+        },
+        {
+          "t": 16.399999999987294,
+          "event": "stance_family_retained",
+          "choice": [
+            0.17453292519943295,
+            0.208
+          ],
+          "goal_shift_m": 0.021577681309786705,
+          "margin_m": 0.002
+        }
+      ]
+    },
+    {
+      "rid": "r1",
+      "t": 17.39999999999207,
+      "valid": true,
+      "outcome": null,
+      "wheels": [
+        0.35,
+        -0.35,
+        -0.35,
+        0.35
+      ],
+      "compute": {
+        "t": 17.39999999999207,
+        "elapsed_s": 0.27855058293789625,
+        "body_planning_s": 0.27787920797709376,
+        "checks": 5576,
+        "cache_hits": 2647,
+        "cache_size": 4096,
+        "budget_exhausted": false
+      },
+      "events": [
+        {
+          "t": 16.399999999987294,
+          "event": "stance_family_retained",
+          "choice": [
+            0.17453292519943295,
+            0.208
+          ],
+          "goal_shift_m": 0.021577681309786705,
+          "margin_m": 0.002
+        },
+        {
+          "t": 17.39999999999207,
+          "event": "stance_family_retained",
+          "choice": [
+            0.17453292519943295,
+            0.208
+          ],
+          "goal_shift_m": 0.005923682783007828,
+          "margin_m": 0.002
+        }
+      ]
+    },
+    {
+      "rid": "r1",
+      "t": 18.399999999996844,
+      "valid": true,
+      "outcome": null,
+      "wheels": [
+        0.35,
+        -0.35,
+        -0.35,
+        0.35
+      ],
+      "compute": {
+        "t": 18.399999999996844,
+        "elapsed_s": 0.23601937491912395,
+        "body_planning_s": 0.2355063339928165,
+        "checks": 5846,
+        "cache_hits": 2916,
+        "cache_size": 4096,
+        "budget_exhausted": false
+      },
+      "events": [
+        {
+          "t": 17.39999999999207,
+          "event": "stance_family_retained",
+          "choice": [
+            0.17453292519943295,
+            0.208
+          ],
+          "goal_shift_m": 0.005923682783007828,
+          "margin_m": 0.002
+        },
+        {
+          "t": 18.399999999996844,
+          "event": "stance_family_retained",
+          "choice": [
+            0.17453292519943295,
+            0.208
+          ],
+          "goal_shift_m": 6.536635898270848e-05,
+          "margin_m": 0.002
+        }
+      ]
+    },
+    {
+      "rid": "r1",
+      "t": 19.40000000000162,
+      "valid": true,
+      "outcome": null,
+      "wheels": [
+        0.35,
+        -0.35,
+        -0.35,
+        0.35
+      ],
+      "compute": {
+        "t": 19.40000000000162,
+        "elapsed_s": 0.4822069590445608,
+        "body_planning_s": 0.4816032089293003,
+        "checks": 10550,
+        "cache_hits": 7505,
+        "cache_size": 4096,
+        "budget_exhausted": false
+      },
+      "events": [
+        {
+          "t": 19.40000000000162,
+          "event": "stance_family_retained",
+          "choice": [
+            0.17453292519943295,
+            0.208
+          ],
+          "goal_shift_m": 4.0827215776074736e-05,
+          "margin_m": 0.002
+        },
+        {
+          "t": 19.40000000000162,
+          "event": "stance_family_retained",
+          "choice": [
+            0.17453292519943295,
+            0.208
+          ],
+          "goal_shift_m": 0.0,
+          "margin_m": 0.002
+        }
+      ]
+    }
+  ],
+  "late_inherited_plan_scope": "warm-start at actual last valid 15.4s state; subsequent observations/applied commands fixed; not new physical trajectory",
+  "genuine_overlaps_rejected": {
+    "8311709": {
+      "rejected": 54,
+      "candidates": 118
+    },
+    "8311723": {
+      "rejected": 77,
+      "candidates": 118
+    }
+  },
+  "tests": {
+    "command": "PYTHONPATH=. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_grasp_act_search20.py tests/test_grasp_act_search19.py tests/test_grasp_act_search18.py tests/test_grasp_act_batch.py tests/test_grasp_act_admission.py tests/test_grasp_act_visible_only.py tests/test_grasp_act_search15.py",
+    "passed": 88,
+    "wall_s": 13.55
+  },
+  "original_gcp_result": {
+    "source_sha": "06558d64a2fd1bd34e59cfea7e0b40045b6dab77",
+    "n": 0,
+    "N": 2,
+    "pool_with_other_results": false,
+    "report": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/gcp-reports/search19-06558d64.json"
+  },
+  "artifact_files_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search20/replay-verified/summary.json": "324066b33bc94cf37db47567805c6b4cb10f341ba30c00670d99850f49f15233",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search20/replay-verified/search19/8311709-detail.json": "7f54d326196e610d41ec039012f4d70a416cabcad377bfa31ad3ae8ac171b6a4",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search20/replay-verified/search19/315709-detail.json": "3ef2d882535162b0c98f0215b3699b05fcf94b70fd0a933500206f835ec43c59",
+    "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/search20/audit/error-distribution.json": "ab46bc32f42b194fcc3ebfd55769f4ddd62d981782cbea5e5700fef30dcbe721"
+  }
+}

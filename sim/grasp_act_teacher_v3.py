@@ -76,6 +76,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         from sim.grasp_act_free_space import FreeSpace
         self.search18_space=FreeSpace();self.search18_log=[]
         self.search19_log=[];self.search19_body_active=False
+        from collections import OrderedDict
+        self.search20_cache=OrderedDict();self.search20_budget=None;self.search20_log=[];self.search20_compute={}
         self.peer_wait_since=None;self.peer_wait_ids=set();self.peer_clear_since=None
         self.peer_route=[];self.peer_route_next=0.;self.recovery_log=[]
         self.nominal_handoff_log=[]
@@ -391,6 +393,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def _navigation(self,world):
         if self.search19_body_active:
+            from sim.grasp_act_search20 import enabled, BodyNavigation as Search20Navigation
+            if enabled(self):return Search20Navigation(self,world)
             from sim.grasp_act_search19 import BodyNavigation
             return BodyNavigation(self,world)
         from sim.grasp_act_search18 import navigation
@@ -448,6 +452,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         if self.nominal_blocked_handoff!='off' and self.approach_recovery not in ('approach_recovery_v2','progress_view_recovery_v3'):
             self._nominal_handoff(world,now)
             return False
+        from sim.grasp_act_search20 import enabled, plan_active
+        if enabled(self) and self.search19_body_active:return plan_active(self,world,now)
         from sim.grasp_act_goal_set import select_goal
         from sim.grasp_act_visible_route import constraints,free,waypoint
         nav=self._navigation(world);free=nav.free;waypoint=nav.waypoint;segment_free=nav.segment_free
@@ -549,8 +555,10 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                      'reason':('no_goal_error_progress' if self.approach_recovery=='progress_view_recovery_v3' else 'no_issued_pose_progress'),
                      'input':'current visible goal and issued-command pose' if self.approach_recovery=='progress_view_recovery_v3' else 'issued-command pose only'}
                 self.progress_log.append(row);self.events.append(row)
-                self.path=[];self.path_goal=None;self.next_plan=now
-                self.approach_plan_valid=False
+                from sim.grasp_act_search20 import enabled
+                if not (enabled(self) and self.search19_body_active and recovery=='replan'):
+                    self.path=[];self.path_goal=None
+                self.next_plan=now;self.approach_plan_valid=False
                 if recovery=='handoff':
                     self.outcome='approach_blocked_handoff'
                     return self._hold(now)
@@ -790,6 +798,30 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return self.phase in ('ready','pick','complete')
 
     def step(self,truth,now,*,permit_pick=False):
+        from sim.grasp_act_search20 import enabled, PlanningBudget, PlanningBudgetExceeded
+        if not enabled(self):return self._search20_step(truth,now,permit_pick=permit_pick)
+        import time
+        started=time.perf_counter();before=dict(self.sink.pwm)
+        self.search20_budget=PlanningBudget()
+        try:
+            return self._search20_step(truth,now,permit_pick=permit_pick)
+        except PlanningBudgetExceeded:
+            self.sink.pwm.update(before);self.arm.commanded.update(before)
+            self.approach_plan_valid=False
+            if self.approach_blocked_since is None:self.approach_blocked_since=now
+            if now-self.approach_blocked_since>=self.APPROACH_BLOCKED_LIMIT_S:self._approach_handoff(now)
+            self.next_plan=now+1.
+            self.search20_log.append({'t':now,'event':'planning_budget_hold'})
+            value=self._hold(now);self.last_command=deepcopy(value);self.last_tick=now
+            return value,False
+        finally:
+            b=self.search20_budget
+            self.search20_compute={'t':now,'elapsed_s':time.perf_counter()-started,
+                'body_planning_s':b.elapsed(),'checks':b.checks,'cache_hits':b.hits,'cache_size':len(self.search20_cache),
+                'budget_exhausted':b.exhausted}
+            self.search20_budget=None
+
+    def _search20_step(self,truth,now,*,permit_pick=False):
         before_pwm=dict(self.sink.pwm)
         if self.search15_modes['search18_free_space']!='off':truth=self.search18_space.update(truth,self,now)
         if any(v!='off' for v in self.search15_modes.values()):
@@ -803,6 +835,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # Once the body fallback is active, failed replanning must not disable
         # the full sampled arm/connector checks on this or the next command.
         if self.search19_body_active:self.sampled_stance=True
+        from sim.grasp_act_search20 import enabled, alignment_alternative
+        if enabled(self) and truth['beam'] is not None:
+            value=alignment_alternative(self,truth,value,before_pwm,now)
         if self.search15_modes['search19_motion']!='off':
             from sim.grasp_act_search19 import project_motion
             value=project_motion(self,truth,value,before_pwm,now)
@@ -958,7 +993,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
                 'approach_progress':self.approach_progress,'approach_progress_log':self.progress_log,
                 'approach_recovery':self.approach_recovery,'recovery_log':self.recovery_log,
                 'approach_coordination':self.approach_coordination,**self.search15_modes,
-                'search17_log':self.search17_log,'search18_log':self.search18_log,'search19_log':self.search19_log,'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
+                'search17_log':self.search17_log,'search18_log':self.search18_log,'search19_log':self.search19_log,'search20_log':self.search20_log,'search20_compute':self.search20_compute,'free_space_log':self.search18_space.events,'reobserve_log':self.reobserver.events,'sampled_stance':self.sampled_stance,
                 'candidate_angle_counts':dict(Counter(str(round(c['offset_deg'],3)) for c in candidates)),
                 'candidate_rejection_counts':dict(Counter(c['reason'] for c in candidates)),
                 'reobserve_pending':None if self.reobserver.active is None else {
