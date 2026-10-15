@@ -12,6 +12,13 @@ from scripts.run_beampair1 import MODE
 from harness.grasp_act_data import write_json
 
 
+def final_adapter_result(path):
+    """Result compression is part of normal finalization, not missing evidence."""
+    if not path.exists() and not Path(str(path)+'.zst').exists():return None
+    from scripts.audit_beampair1 import read
+    return read(path)
+
+
 def python_processes():
     # Count all Python processes, including model workers. This overestimates
     # simulation concurrency; it cannot undercount another Python task here.
@@ -43,7 +50,8 @@ def run(args):
             if i==0 and args.first_episode_first:
                 code=process.wait()
                 report_path=d/'adapter/beampair1-result.json'
-                report=json.loads(report_path.read_text())['result'] if report_path.exists() else None
+                adapter=final_adapter_result(report_path)
+                report=adapter['result'] if adapter else None
                 if code or not report or not report['physical_success']:
                     stopped=True
                     write_json(root/'SUPERVISOR_STOP.json',dict(episode=d.name,reason='first_seed_failed',exit=code))
@@ -52,11 +60,12 @@ def run(args):
             failure=None
             for p,d,l in children:
                 result=d/'adapter/beampair1-result.json'
-                if result.exists():
-                    report=json.loads(result.read_text())['result']
+                adapter=final_adapter_result(result)
+                if adapter:
+                    report=adapter['result']
                     if report and report['status'] in ('complete','HOST_ERROR') and not report['physical_success']:
                         failure=dict(episode=d.name,result=report['status'],reason=report.get('end_reason') or report.get('error') or 'teacher_failure')
-                if p.poll() not in (None,0) and not result.exists():
+                if p.poll() not in (None,0) and not adapter:
                     failure=dict(episode=d.name,result='HOST_ERROR',reason='nonzero_exit_before_adapter_result')
             if failure and not stopped:
                 stopped=True;write_json(root/'SUPERVISOR_STOP.json',failure)

@@ -165,9 +165,9 @@ class RendezvousTeacherMixin:
             if not segment_free(pose[:2],end,discs+predicted,rects,radius):
                 rv.audit(self,world,now,'yield_pulse_blocked',end,start=pose[:2],predicted=predicted);rv.yield_goal=None
             else:
-                # Same 1cm route sampling distance from existing safe_prefix;
-                # completion at one pulse's reach also prevents overshoot.
-                if math.dist(pose[:2],rv.yield_goal)<=max(.01,math.hypot(dx,dy)):rv.yield_goal=None
+                # Mathematical completion at the current issued pulse's
+                # reach, without introducing an arrival tolerance.
+                if math.dist(pose[:2],rv.yield_goal)<=math.hypot(dx,dy):rv.yield_goal=None
                 return value
         value=super()._peer_route(world,goal,now)
         if self.peer_wait_since is not None:

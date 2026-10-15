@@ -34,7 +34,7 @@ r1의12 SIM초 고정시한이 재계획보다 먼저 terminal을 만들었다.
 상수 근거: 기존12 SIM초를 실패 판정 대신 재계획 주기로 재사용한다.
 기존 route refresh1 SIM초가 예측 horizon, 실제 pulse0.1 SIM초가 재검사 horizon이다.
 양보 거리0.34m는 기존 peer+own inflated exclusion 반지름 합이다.
-도착1cm는 기존 safe_prefix 샘플 간격,3회 반복은 사용자 규칙이다.
+도착은 현재 발행 pulse의 이동량으로 판단하며 새 허용오차가 없다.3회 반복은 사용자 규칙이다.
 성공 기준·오차·속도·margin·계획 계산량은 새로 튜닝하지 않는다.
 search24/25의98304 검사 예산과 기존 A* 노드 예산을 사용하고 wall초로
 후보를 바꾸지 않는다.30 wall초 host safety는 cap_end일 뿐이다.
@@ -59,3 +59,12 @@ search24/25의98304 검사 예산과 기존 A* 노드 예산을 사용하고 wal
 정식40회는 탐색이 해결된 뒤 별도 대기열만 준비한다(기존 d79 결과 합산 금지).
 
 검증: 로컬 비물리16개 통과. GCP 후보 결과는 아직 미측정이다.
+
+## R1 실행 결과
+
+물리 소스 `33e0e8c9ec04546b1dd12d4f284edbb63773de2a`: 실패seed8318604가48.6 SIM초에 성공.
+시한20.9에서 fresh r2 속도(-0.0532,-0.0746)m/s로 재계획했고 양 로봇이 각기 맡은 끝을 잡았다.
+[원본 재집계](r1-summary.json), [관문표](r1-rejection-table.json): 시작1·완료성공1·미시작5,
+cap_end/HOST_ERROR/입력위반0. 실행기 barrier가 압축된 adapter 결과를 못 읽어
+성공을 first_seed_failed로 잘못 표시했다(원본 batch 기록은 보존). 원본 physical_success와
+3초 유지 재계산은 모두 성공이며 압축 결과를 판독하도록 고친 R2에서6회 다시 잰다.

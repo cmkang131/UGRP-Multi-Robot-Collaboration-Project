@@ -57,3 +57,14 @@ def test_hidden_target_retry_does_not_query_cargo_geometry():
     rv.retry(t,world,13.,'encounter_deadline_replan')
     assert t.peer_wait_since is None and t.outcome is None
     assert rv.events[0]['reason_category']=='target_not_visible'
+
+
+def test_batch_accepts_a_compressed_final_adapter(tmp_path,monkeypatch):
+    import scripts.audit_beampair1 as audit
+    from scripts.run_beampair1_batch import final_adapter_result
+    path=tmp_path/'result.json';packed=tmp_path/'result.json.zst';packed.write_bytes(b'fixture')
+    expected={'result':{'status':'complete','physical_success':True}}
+    monkeypatch.setattr(audit,'read',lambda p:expected)
+    assert final_adapter_result(path)==expected
+    packed.unlink()
+    assert final_adapter_result(path) is None

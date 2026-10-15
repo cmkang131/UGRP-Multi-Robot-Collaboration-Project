@@ -143,7 +143,7 @@ def analyze(root,out):
     missing=sum(r['gap_scope']=='source_missing_clearance_audit' or r['blocked_object']=='not_recorded'
                 or r['reason']=='missing_reason' for r in all_rejections)
     report=dict(schema='ugrp.beampair1.round.v1',source_sha=batch['source_sha'],raw_root=str(root),
-        planned_N=planned,N=len(episodes),n=passed,training_rgb=False,host='gcp1',machine_type='n4-highcpu-64',
+        planned_N=planned,N=len(episodes),unstarted_N=planned-len(episodes),n=passed,training_rgb=False,host='gcp1',machine_type='n4-highcpu-64',
         incomplete_N=sum(e['status']!='complete' for e in episodes),
         cap_end_N=sum(e.get('cap_end',False) for e in episodes),
         held_world_reads=sum(e['held_world_reads'] for e in episodes),
