@@ -33,7 +33,7 @@ def parser():
     p.add_argument('--plan',type=Path,required=True)
     p.add_argument('--episode',type=int,default=0)
     p.add_argument('--world-episodes',help='comma-separated per-world indices; default repeats --episode for throughput')
-    p.add_argument('--nworld',type=int,choices=[1,16,64,256],default=1)
+    p.add_argument('--nworld',type=int,default=1)
     p.add_argument('--cap-s',type=float,default=90.)
     p.add_argument('--out',type=Path,required=True)
     p.add_argument('--compiled-reference-v1',type=Path)
@@ -47,6 +47,7 @@ def parser():
     p.add_argument('--initialize-only',action='store_true',help='first-state/RGB proof only; no rollout')
     p.add_argument('--numpy-teacher-v1',action='store_true',help='default OFF: NumPy IK, GPU batched visibility and direct GPU transforms')
     p.add_argument('--batch-sleep-v1',action='store_true',help='default OFF: exact world-indexed dof lengths for pinned upstream sleep')
+    p.add_argument('--teacher-gate-queue',type=Path,help='optional pinned independent-case gate admission; no training admission')
     p.add_argument('--export-compiled-only',action='store_true')
     p.add_argument('--vm-hourly-usd',type=float,required=True)
     return p
@@ -68,7 +69,7 @@ def main():
     p=parser();a=p.parse_args()
     if a.physics_backend=='off' or platform.system()!='Linux':
         p.error('explicit Linux gcp2 backend opt-in required; Mac physics/render forbidden')
-    if not 0<a.cap_s<=90 or a.vm_hourly_usd<=0:
+    if not 0<a.cap_s<=90 or a.vm_hourly_usd<=0 or not 1<=a.nworld<=256:
         p.error('finite <=90 SIM seconds and positive explicit price required')
     if a.physics_backend=='mjwarp_batch_v1' and (not a.compiled_reference_v1 or not a.compiled_geometry_312_v1):
         p.error('warp1 profile requires explicit same-XML compiled312 damping and geometry assets')
@@ -105,6 +106,12 @@ def main():
         p.error('one valid episode index per world required')
     world_plans=[plans['episodes'][i] for i in indices]
     plan=world_plans[0]
+    admission=None
+    if a.teacher_gate_queue:
+        if not all((a.scene_v5_v1,a.numpy_teacher_v1,a.batch_sleep_v1)) or a.physics_backend!='mjwarp_batch_v1':
+            p.error('warp3 gate requires selected scene, NumPy/GPU teacher and world-indexed sleep')
+        from warp_act_gate import admit
+        admission=admit(a.teacher_gate_queue,source_sha=source_sha,plan=a.plan,indices=indices,references=a.per_world_model_references_v1)
     if any(p['kind'] not in ('cyan','red','green','yellow') or p['robot_id']!='r1' for p in world_plans):
         p.error('warp1 supports r1 solo boxes only')
     a.out.mkdir(parents=True,exist_ok=False)
@@ -123,7 +130,10 @@ def main():
     hooks.scene_v5_v1=a.scene_v5_v1
     hooks.numpy_teacher_v1=a.numpy_teacher_v1
     hooks.batch_sleep_v1=a.batch_sleep_v1
+    hooks.gate_approved=bool(admission)
     report.update(numpy_teacher_v1=a.numpy_teacher_v1,batch_sleep_v1=a.batch_sleep_v1,
+        gate_eligible=bool(admission),gate_admission=admission,
+        scene_status='SELECTED_V5' if a.scene_v5_v1 else 'HOLD_SCENE',
         teacher_scheduling='independent per-world Python state machines',
         teacher_numerics='NumPy 51-pitch IK + GPU batched rays/transforms' if a.numpy_teacher_v1 else 'frozen scalar')
     generators=[];contexts=[];active=np.ones(a.nworld,bool);reports={};ticks=np.zeros(a.nworld,int)

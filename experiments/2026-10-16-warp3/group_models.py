@@ -21,7 +21,7 @@ def main():
     rows=json.loads((a.references/'inventory.json').read_text());groups={};audits=[]
     for row in rows:
         xml=Path(row['actuator']).parent/'world-000/scene.xml'
-        m=mujoco.MjModel.from_xml_path(str(xml))
+        m=mujoco.MjModel.from_xml_string(xml.read_text())
         apply_geometry(m,xml,Path(row['geometry']));apply_reference(m,xml,Path(row['actuator']))
         e=mujoco.mjtSleepPolicy
         m.tree_sleep_policy[:]=runtime_sleep_policy(m.tree_sleep_policy,auto=int(e.mjSLEEP_AUTO),auto_never=int(e.mjSLEEP_AUTO_NEVER),

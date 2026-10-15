@@ -79,7 +79,7 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
               'rgb_lift_mode': rgb_lift_mode,
               'negative_probe': bool(solo_lift_negative_probe_v1),
               'solo_lift_lookback_margin_v1': bool(solo_lift_lookback_margin_v1),
-              'gate_eligible': False,  # unapproved warp1 pilot, not a teacher gate
+              'gate_eligible': bool(getattr(hooks,'gate_approved',False)),
               'physical_success': None, 'placement_task': 'set down at own picked location',
               'plan_sha256': hashlib.sha256((out/'plan.json').read_bytes()).hexdigest()}
     if training_rgb:
