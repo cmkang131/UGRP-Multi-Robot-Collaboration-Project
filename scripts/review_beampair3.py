@@ -28,6 +28,13 @@ def review(raw, out):
     data, _, _ = read_bytes(raw / 'eval-only.jsonl')
     rows = [json.loads(x) for x in data.splitlines() if x.strip()]
     plan = read(raw / 'plan.json')
+    ring_root = raw.parent / 'adapter/failure-tail'
+    ring = read(ring_root / 'manifest.json') if (ring_root / 'manifest.json').exists() or Path(str(ring_root / 'manifest.json')+'.zst').exists() else {'frames': []}
+    originals = {(round(f['t'], 5), f['robot']): ring_root / f['path'] for f in ring['frames']}
+    for f in ring['frames']:
+        if hashlib.sha256((ring_root/f['path']).read_bytes()).hexdigest() != f['sha256']:
+            raise ValueError('original tail frame hash mismatch')
+    original_used = 0
     labels = {rid: [json.loads(x) for x in read_bytes(raw / f'teacher-{rid}.jsonl')[0].splitlines()]
               for rid in plan['roles']}
     model = mujoco.MjModel.from_xml_path(str(raw / 'scene.xml'))
@@ -73,13 +80,18 @@ def review(raw, out):
                     float(np.max(np.abs(state.body(rid + '__robot').xpos - v['xyz']))))
             canvas = Image.new('RGB', (960, 272))
             for k, camera in enumerate([overview, camera_ids['r1'], camera_ids['r2']]):
-                renderer.update_scene(state, camera=camera)
-                canvas.paste(Image.fromarray(renderer.render()), (320 * k, 0))
+                original = originals.get((round(row['t'], 5), 'r'+str(k))) if k else None
+                if original is not None:
+                    canvas.paste(Image.open(original).convert('RGB').resize((320,240)), (320*k,0))
+                    original_used += 1
+                else:
+                    renderer.update_scene(state, camera=camera)
+                    canvas.paste(Image.fromarray(renderer.render()), (320 * k, 0))
             elapsed = row['t'] - origin
             draw = ImageDraw.Draw(canvas)
             phases = {r: labels[r][i]['teacher_phase'] if i < len(labels[r]) else 'no_command_exception_tick'
                       for r in plan['roles']}
-            draw.text((4, 242), f'SIM {elapsed:.1f} / world {row["t"]:.1f} | EVAL qpos replay | 3x', fill='white')
+            draw.text((4, 242), f'SIM {elapsed:.1f} / world {row["t"]:.1f} | EVAL overview; own RGB tail / qpos elsewhere | 3x', fill='white')
             draw.text((4, 257), 'overview EVAL ONLY | ' + ' | '.join(
                 f'{r}={end} {phases[r]}' for r, end in plan['roles'].items()), fill='yellow')
             proc.stdin.write(canvas.tobytes())
@@ -124,14 +136,21 @@ def review(raw, out):
     for name in ('eval-only.jsonl', 'teacher-r1.jsonl', 'teacher-r2.jsonl'):
         p = raw / name
         sources.append(p if p.exists() else Path(str(p) + '.zst'))
+    if originals:
+        p = ring_root/'manifest.json'
+        sources.append(p if p.exists() else Path(str(p)+'.zst'))
     result = dict(raw=str(raw), seed=plan['seed'], roles=plan['roles'],
+        original_own_rgb_frames_used=original_used,
+        original_failure_tail_root=str(ring_root) if originals else None,
         assignment_source=plan['assignment_source'], origin_world_t=origin,
         duration_sim_s=duration, saved_eval_rows=len(rows), max_body_xyz_error_m=max_body_error,
         video=str(video), video_bytes=video.stat().st_size, ffprobe=probe,
         video_sha256=hashlib.sha256(video.read_bytes()).hexdigest(),
         sources={str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources},
         timeline=timeline, sheets=sheets, qpos_hashes=frame_hashes,
-        scope='Evaluation saved-state rendering, no physics/controller rerun; original own JPEGs are 1Hz; qpos is 10Hz. No inferred motion frames.',
+        scope=('Evaluation overview qpos rendering; original 10Hz own RGB for saved failure tail, calibrated qpos own rendering elsewhere. '
+               if originals else 'Evaluation saved-state rendering; original own JPEGs are 1Hz; qpos is 10Hz. ')
+              +'No physics/controller rerun or inferred motion frames.',
         direct_visual_review_completed=False)
     (out / 'review.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps({k: result[k] for k in ('seed', 'duration_sim_s', 'saved_eval_rows', 'max_body_xyz_error_m', 'video_bytes')}))

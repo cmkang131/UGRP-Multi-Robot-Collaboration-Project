@@ -8,6 +8,29 @@ obstacle on expiry. See experiments/2026-10-15-beampair4/README.md.
 from copy import deepcopy
 
 MODE = 'beampair_approach_v1'
+BOUNDED_MODE = 'beampair_approach_v2'
+
+
+class CheckedArc:
+    """Signed displacement projected on this tick's route, in one own frame.
+
+    A replanned path cannot itself earn progress: both successive poses are
+    projected on the same path. Subtract reversals before comparing the best
+    cumulative arc, so oscillation earns no new credit.
+    """
+    def __init__(self):
+        self.previous = None
+        self.arc = self.best = 0.
+
+    def advance(self, pose, path, minimum, project):
+        progressed = False
+        if self.previous is not None and len(path) >= 2:
+            self.arc += project(pose[:2], path)[2] - project(self.previous, path)[2]
+            if self.arc-self.best > minimum:
+                self.best = self.arc
+                progressed = True
+        self.previous = tuple(pose[:2])
+        return progressed
 
 
 def stale_blockers(teacher, world):
@@ -34,10 +57,21 @@ class ApproachRepairMixin:
     def _route(self, world, goal, heading, now):
         if self.approach_repair == 'off' or self.search19_body_active:
             return super()._route(world, goal, heading, now)
-        from sim.grasp_act_search21 import route_progress
+        from sim.grasp_act_search21 import route_progress, route_projection
         original = self.progress.observe_goal
         def observe(pose, target, yaw, at):
             if len(self.path) < 2:
+                return original(pose, target, yaw, at)
+            if self.approach_repair == BOUNDED_MODE:
+                tracker = getattr(self, '_approach_checked_arc', None)
+                if tracker is None:
+                    tracker = self._approach_checked_arc = CheckedArc()
+                if tracker.advance(pose, self.path, self.progress.required_movement_m, route_projection):
+                    self.progress.since = at
+                    self.progress.retried = False
+                # Preserve original visible goal/heading improvements through
+                # search and replans. R1 lost this credit on a stale fixed path
+                # and falsely handed r2 off at14.4 SIMs; no time limit changed.
                 return original(pose, target, yaw, at)
             # Reuse the existing 1 cm / 3 SIMs monotone checked-route observer;
             # no new acceptance/timing constant. Original 8318620 advanced

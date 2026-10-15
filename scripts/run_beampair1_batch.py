@@ -90,7 +90,7 @@ if __name__=='__main__':
     p.add_argument('--dependency-root',type=Path,required=True);p.add_argument('--root',type=Path,required=True)
     p.add_argument('--candidate',choices=['baseline','soft'],default='baseline')
     p.add_argument('--rendezvous',choices=['off','peer_rendezvous_v1','peer_rendezvous_v2'],default='off')
-    p.add_argument('--approach-repair',choices=['off','beampair_approach_v1'],default='off')
+    p.add_argument('--approach-repair',choices=['off','beampair_approach_v1','beampair_approach_v2'],default='off')
     p.add_argument('--first-episode-first',action='store_true')
     p.add_argument('--first-episodes',type=int,choices=range(7),default=0,
                    help='Run this many leading regression sentinels serially before filling')

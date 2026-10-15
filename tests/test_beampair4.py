@@ -5,7 +5,7 @@ import sys
 
 import pytest
 
-from harness.beampair_approach import ApproachRepairMixin, MODE, stale_blockers
+from harness.beampair_approach import ApproachRepairMixin, MODE, stale_blockers, CheckedArc
 from harness.failure_rgb_tail import FailureRGBTail
 
 
@@ -23,6 +23,7 @@ def test_route_observer_is_scoped_and_restored_on_error(monkeypatch):
     calls=[]
     mod=ModuleType('sim.grasp_act_search21')
     mod.route_progress=lambda t,w,g,h,n:calls.append('arc')
+    mod.route_projection=lambda p,path:(0,p,p[0])
     monkeypatch.setitem(sys.modules,mod.__name__,mod)
     class Base:
         def _route(self,w,g,h,n):
@@ -73,3 +74,17 @@ def test_tail_uses_sim_time_and_flushes_only_failure(tmp_path):
     assert report['stored_bytes']==202*len(b'fixture-jpeg')
     tail.finish(tmp_path/'success',failed=False)
     assert not list((tmp_path/'success').glob('*/*.jpg'))
+
+
+def test_arc_credits_a_detour_and_cannot_be_earned_by_replanning_or_oscillation():
+    tracker=CheckedArc()
+    # Known bent route: first movement goes away from the final (1,1) goal.
+    def project(p,path):
+        return 0,p,-p[0] if p[1]==0 else 1+p[1]
+    path=[(0,0),(-1,0),(-1,1),(1,1)]
+    assert not tracker.advance((0,0,0),path,.01,project)
+    assert tracker.advance((-.1,0,0),path,.01,project)
+    assert not tracker.advance((-.1,0,0),list(reversed(path)),.01,project)
+    assert not tracker.advance((0,0,0),path,.01,project)
+    assert not tracker.advance((-.1,0,0),path,.01,project)
+    assert tracker.advance((-.2,0,0),path,.01,project)

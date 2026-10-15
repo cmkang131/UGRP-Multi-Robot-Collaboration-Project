@@ -24,7 +24,7 @@ from harness.grasp_act_data import write_json
 from harness.json_encoding import dumps
 from harness.grasp_act_peer_rendezvous import (PeerRendezvous, RendezvousTeacherMixin,
     MODE as RENDEZVOUS_MODE, BOUNDED_MODE)
-from harness.beampair_approach import ApproachRepairMixin, MODE as APPROACH_MODE
+from harness.beampair_approach import ApproachRepairMixin, MODE as APPROACH_MODE, BOUNDED_MODE as APPROACH_BOUNDED_MODE
 from harness.failure_rgb_tail import FailureRGBTail
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -124,7 +124,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         approach_repair='off',failure_tail=True):
     if platform.system()!='Linux':raise RuntimeError('GCP Linux only; Mac physics/render forbidden')
     if mode!=MODE:raise ValueError('explicit beampair1_v1 opt-in required')
-    if approach_repair not in ('off',APPROACH_MODE):raise ValueError('unknown approach repair')
+    if approach_repair not in ('off',APPROACH_MODE,APPROACH_BOUNDED_MODE):raise ValueError('unknown approach repair')
     validate_plan(plan)
     source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT):raise ValueError('committed source required')
@@ -276,7 +276,7 @@ if __name__=='__main__':
     p.add_argument('--mode',choices=['off',MODE],default='off')
     p.add_argument('--candidate',choices=['baseline','soft'],default='baseline');p.add_argument('--cap-s',type=float,default=60.)
     p.add_argument('--rendezvous',choices=['off',RENDEZVOUS_MODE,BOUNDED_MODE],default='off')
-    p.add_argument('--approach-repair',choices=['off',APPROACH_MODE],default='off')
+    p.add_argument('--approach-repair',choices=['off',APPROACH_MODE,APPROACH_BOUNDED_MODE],default='off')
     p.add_argument('--failure-tail',action=argparse.BooleanOptionalAction,default=True,
                    help='Recording only: retain last10 SIM seconds own RGB on failure/interruption')
     a=p.parse_args();run(json.loads(a.plan.read_text())['episodes'][a.episode],a.out,a.dependency_root,

@@ -1,0 +1,176 @@
+[
+  {
+    "seed": 8318620,
+    "sim_s": 14.399999999986154,
+    "wall_s": 52.47464904899971,
+    "wall_per_sim": 3.6440728506284836,
+    "first30": null,
+    "timings": {
+      "physics": 30.775211374007995,
+      "rgb": 1.5694584349912475,
+      "evaluation": 15.584134361995893,
+      "teacher": 0.623201465994498,
+      "io": 0.0
+    },
+    "phases": {
+      "r1": "search",
+      "r2": "approach"
+    },
+    "outcomes": {
+      "r1": "peer_approach_handoff",
+      "r2": "approach_blocked_handoff"
+    },
+    "events": {
+      "r1": [
+        {
+          "t": 2.4999999999999742,
+          "from": "approach",
+          "to": "search"
+        },
+        {
+          "t": 4.2,
+          "stage": "view_complete",
+          "k": 0,
+          "command_estimated_yaw_deg": 0.0,
+          "search": "view_complete"
+        },
+        {
+          "t": 5.0,
+          "stage": "view_complete",
+          "k": 0,
+          "command_estimated_yaw_deg": 0.0,
+          "search": "view_complete"
+        },
+        {
+          "t": 5.6,
+          "stage": "view_complete",
+          "k": 0,
+          "command_estimated_yaw_deg": 0.0,
+          "search": "view_complete"
+        },
+        {
+          "t": 6.9,
+          "stage": "view_complete",
+          "k": 0,
+          "command_estimated_yaw_deg": 0.0,
+          "search": "view_complete"
+        },
+        {
+          "t": 7.7,
+          "stage": "view_complete",
+          "k": 0,
+          "command_estimated_yaw_deg": 0.0,
+          "search": "view_complete"
+        },
+        {
+          "t": 8.3,
+          "stage": "view_complete",
+          "k": 0,
+          "command_estimated_yaw_deg": 0.0,
+          "search": "view_complete"
+        },
+        {
+          "t": 10.4,
+          "stage": "view_complete",
+          "k": 0,
+          "command_estimated_yaw_deg": 0.0,
+          "search": "view_complete"
+        },
+        {
+          "t": 10.899999999997272,
+          "from": "search",
+          "to": "approach"
+        },
+        {
+          "t": 14.299999999989348,
+          "from": "approach",
+          "to": "search"
+        }
+      ],
+      "r2": [
+        {
+          "t": 2.4999999999999742,
+          "from": "approach",
+          "to": "search"
+        },
+        {
+          "t": 3.6,
+          "stage": "view_complete",
+          "k": 0,
+          "command_estimated_yaw_deg": 0.0,
+          "search": "view_complete"
+        },
+        {
+          "t": 4.4,
+          "stage": "view_complete",
+          "k": 0,
+          "command_estimated_yaw_deg": 0.0,
+          "search": "view_complete"
+        },
+        {
+          "t": 4.599999999999876,
+          "from": "search",
+          "to": "approach"
+        },
+        {
+          "t": 8.500000000002865,
+          "from": "approach",
+          "to": "search"
+        },
+        {
+          "t": 13.199999999991912,
+          "from": "search",
+          "to": "approach"
+        },
+        {
+          "t": 13.199999999991912,
+          "approach_progress": "replan",
+          "phase": "approach",
+          "required_movement_m": 0.01,
+          "allowance_s": 3.0,
+          "planner_calls": 4,
+          "no_path_calls": 0,
+          "blocked_goal_calls": 0,
+          "reason": "no_goal_error_progress",
+          "input": "current visible goal and issued-command pose"
+        },
+        {
+          "t": 16.19999999998634,
+          "approach_progress": "handoff",
+          "phase": "approach",
+          "required_movement_m": 0.01,
+          "allowance_s": 3.0,
+          "planner_calls": 9,
+          "no_path_calls": 0,
+          "blocked_goal_calls": 0,
+          "reason": "no_goal_error_progress",
+          "input": "current visible goal and issued-command pose"
+        }
+      ]
+    },
+    "repair_events": {
+      "r1": [],
+      "r2": []
+    },
+    "approach_repair": "beampair_approach_v1",
+    "failure_tail": {
+      "recording_only": true,
+      "controller_input": false,
+      "hz": 10,
+      "window_sim_s": 10,
+      "failed_or_interrupted": true,
+      "total_captured_frames": 290,
+      "peak_buffer_bytes": 1410346,
+      "stored_bytes": 1410346
+    },
+    "held_world_reads": 0,
+    "audit": {
+      "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+      "enabled": true,
+      "measurement_rows": 414,
+      "invisible_measurements": 0,
+      "held_world_reads": 0,
+      "gt_self_pose_comparison": false
+    }
+  }
+]

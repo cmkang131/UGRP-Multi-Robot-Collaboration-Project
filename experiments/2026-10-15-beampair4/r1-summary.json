@@ -1,0 +1,300 @@
+{
+  "schema": "ugrp.beampair1.round.v1",
+  "source_sha": "3640e010a61fb8c2a966637406895033a0e112a5",
+  "raw_root": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round",
+  "planned_N": 6,
+  "N": 1,
+  "unstarted_N": 5,
+  "n": 0,
+  "training_rgb": false,
+  "host": "gcp1",
+  "machine_type": "n4-highcpu-64",
+  "incomplete_N": 0,
+  "cap_end_N": 0,
+  "held_world_reads": 0,
+  "invisible_measurements": 0,
+  "missing_rejection_audit_N": 0,
+  "reason_distribution": {},
+  "blocked_object_distribution": {},
+  "runs": [
+    {
+      "raw": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw",
+      "reason_category": "peer_approach_handoff",
+      "blocked_object": "not_recorded",
+      "min_gap_m": null,
+      "gap_scope": "legacy ledger did not record a geometric blocker",
+      "result_path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/result.json",
+      "result_sha256": "e14af0ec282136bb568ef028ed25590fc7c176aa756b5f75a680e8fad2ff6547",
+      "status": "complete",
+      "saved_status": "complete",
+      "legacy_success": false,
+      "source_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "profile": "visible_only",
+      "cap_end": false,
+      "sim_s": 14.399999999986154,
+      "phases": {
+        "r1": "search",
+        "r2": "approach"
+      },
+      "outcomes": {
+        "r1": "peer_approach_handoff",
+        "r2": "approach_blocked_handoff"
+      },
+      "audit": {
+        "scope": "visual measurement admission and nonvisual-field access guard; evaluator/adapter reads excluded",
+        "enabled": true,
+        "measurement_rows": 414,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "gt_self_pose_comparison": false
+      },
+      "manifest_verified_files": 42,
+      "eval_path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-only.jsonl.zst",
+      "eval_sha256": "6591c67252f3f45acb29178c7357ad863c707b9b9180eb048292ed456a9e0e4a",
+      "evaluation_rows": 145,
+      "max_strict_hold_s": 0.0,
+      "assigned_ends": {
+        "r1": "teal",
+        "r2": "blue"
+      },
+      "end_relation_samples": [
+        {
+          "t": 1.8000000000001848,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 9.0000000000017,
+          "nearest_ends": {
+            "r1": "blue",
+            "r2": "teal"
+          },
+          "same_nearest_end": false,
+          "scope": "evaluator distance only; not inferred intent"
+        },
+        {
+          "t": 16.19999999998634,
+          "nearest_ends": {
+            "r1": "teal",
+            "r2": "teal"
+          },
+          "same_nearest_end": true,
+          "scope": "evaluator distance only; not inferred intent"
+        }
+      ],
+      "strict_success": false,
+      "saved_command_phases": {
+        "r1": {
+          "last_phase": "search",
+          "phase_counts": {
+            "approach": 41,
+            "search": 104
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/teacher-r1.jsonl.zst",
+          "sha256": "5bcce787a249be27e6fdf5d82763f80ff398a5834bffc341a5e20ce18d5a063b"
+        },
+        "r2": {
+          "last_phase": "approach",
+          "phase_counts": {
+            "approach": 77,
+            "search": 68
+          },
+          "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/teacher-r2.jsonl.zst",
+          "sha256": "ab006e9c98c8874067cd6108d8b59af9e808a618b1d0387c8dc10648e117f674"
+        }
+      },
+      "visible_eligible": false,
+      "seed": 8318620,
+      "frame_funnel": [
+        {
+          "gate": "any_assigned_probe",
+          "entered": 290,
+          "passed": 104,
+          "rejected": 186
+        },
+        {
+          "gate": "meaningful_region_5_of_15",
+          "entered": 104,
+          "passed": 104,
+          "rejected": 0
+        },
+        {
+          "gate": "measurement_admitted_not_held",
+          "entered": 104,
+          "passed": 104,
+          "rejected": 0
+        }
+      ],
+      "adapter_sha": "3640e010a61fb8c2a966637406895033a0e112a5",
+      "dependency_sha": "26f84d0f0ada1c33473c83cca2d3415ce51bd247",
+      "candidate": "baseline",
+      "held_object_hidden_v1": true,
+      "hidden_measurement_ticks": 0,
+      "held_world_reads": 0,
+      "probe_burst_ticks": {
+        "r1": 9,
+        "r2": 4
+      },
+      "probe_executed_ticks": {
+        "r1": 9,
+        "r2": 4
+      },
+      "adapter_manifest_verified_files": 205,
+      "candidate_populations": {
+        "rendezvous_wait_candidates": {
+          "N": 0,
+          "ordered_funnel": [
+            {
+              "gate": "current_and_predicted_clear_path",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            },
+            {
+              "gate": "nonrepeated_selected_wait",
+              "entered": 0,
+              "passed": 0,
+              "rejected": 0
+            }
+          ]
+        }
+      },
+      "montage": {
+        "path": "/home/ugrp/ugrp-sim/ops-reviews/beampair4/r1/episode-000.jpg",
+        "sha256": "d6350c97de9b2ffbe6cd7cd98b2213906ef6d526ca8bd85ab43b5ad6e125d59a",
+        "frames": [
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r1/000000.jpg",
+            "sha256": "227a7034b32981ffac593374e5dfbfea39e91e06cc59f108329e79f123cd5f50",
+            "robot": "r1",
+            "elapsed_sim_s": 0.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r2/000000.jpg",
+            "sha256": "1d8067691b807329b9a26d225c1c32796c96e80cb7d4f14b02d042ec4f78e251",
+            "robot": "r2",
+            "elapsed_sim_s": 0.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r1/000030.jpg",
+            "sha256": "1d99273bb47724497f8e8ccafd7fb567e75f8e788541dca13755ee20d0a847fa",
+            "robot": "r1",
+            "elapsed_sim_s": 3.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r2/000030.jpg",
+            "sha256": "cb6653fafa4f1abfb2e80288b17945226ddf80755b4ae90af3ed60773e9abf03",
+            "robot": "r2",
+            "elapsed_sim_s": 3.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r1/000060.jpg",
+            "sha256": "0c405154acb7fc219dde7ee05007b4d7e800d448f23593da1d2141c7e0bdd0a6",
+            "robot": "r1",
+            "elapsed_sim_s": 6.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r2/000060.jpg",
+            "sha256": "d6f61fc92395a33885003e1dbd3180cad0fe84feac884f8b16f077aa7be69a80",
+            "robot": "r2",
+            "elapsed_sim_s": 6.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r1/000080.jpg",
+            "sha256": "7373432a9de8549b3a8a494c527ce8c16ce3a40d1677df39c2f4e4c2c41f191c",
+            "robot": "r1",
+            "elapsed_sim_s": 8.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r2/000080.jpg",
+            "sha256": "57d191cefab0f71b777d1297d33c5bb2bcd066df76e9a701b9429f36ea64fded",
+            "robot": "r2",
+            "elapsed_sim_s": 8.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r1/000110.jpg",
+            "sha256": "31cb43ddb5c97de6a57c52595b6638ddb5f39b98c9bf4acfa27a1f4c9854d838",
+            "robot": "r1",
+            "elapsed_sim_s": 11.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r2/000110.jpg",
+            "sha256": "bf98f47b3f9c766fa40cfc282443320a75bcdc2e4b07351423bc0722a8a90a46",
+            "robot": "r2",
+            "elapsed_sim_s": 11.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r1/000140.jpg",
+            "sha256": "456a07b077aa95fac62de696b0ee7d2df1437e1b24d9a151ab1bc4a436fb7aa8",
+            "robot": "r1",
+            "elapsed_sim_s": 14.0
+          },
+          {
+            "path": "/home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round/diagnostic/episode-000/raw/eval-own/r2/000140.jpg",
+            "sha256": "2e0dea9e3b5c33ac806863d77d3f6aaa261c304cec0f1e10dfc17e3ae041337e",
+            "robot": "r2",
+            "elapsed_sim_s": 14.0
+          }
+        ]
+      },
+      "stages": {
+        "both_align": false,
+        "both_ready": false,
+        "both_pick": false,
+        "both_command_complete": false
+      },
+      "event_funnel": [
+        {
+          "gate": "own_ready",
+          "entered": 2,
+          "passed": 0,
+          "rejected": 2
+        },
+        {
+          "gate": "own_pick_after_go_ack",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "own_command_complete",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        }
+      ],
+      "rendezvous_event_funnel": [
+        {
+          "gate": "deadline_replanned",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "own_align_after_retry",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "own_complete_after_retry",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        },
+        {
+          "gate": "joint_hold_3s_after_retry",
+          "entered": 0,
+          "passed": 0,
+          "rejected": 0
+        }
+      ]
+    }
+  ],
+  "analysis_script_sha256": "7aa67bca70dab539f80a30a7d5767b6e662913e1c812f8da7f10da7c8ac00d80",
+  "reproduce": "cd /home/ugrp/ugrp-sim/src/3640e010a61fb8c2a966637406895033a0e112a5 && PYTHONPATH=. /home/ugrp/ugrp-sim/src/3640e010a61fb8c2a966637406895033a0e112a5/.venv-sim/bin/python /home/ugrp/ugrp-sim/src/3640e010a61fb8c2a966637406895033a0e112a5/scripts/analyze_beampair1.py /home/ugrp/ugrp-sim/runs/beampair4-r1-3640e010/round --out /home/ugrp/ugrp-sim/ops-reviews/beampair4/r1"
+}
