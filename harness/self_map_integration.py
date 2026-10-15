@@ -46,13 +46,16 @@ class Options:
     reloc11_low_contrast_v1: bool = False
     reloc12_raw_cov_gate_v1: bool = False
     reloc12_ransac_hypotheses_v1: bool = False
+    reloc13_execution_cov_v1: bool = False
     revision_xy_threshold_m: float = .1
     revision_yaw_threshold_rad: float = math.radians(5)
 
     def __post_init__(self):
-        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1'):
+        for name in ('reloc12_raw_cov_gate_v1', 'reloc12_ransac_hypotheses_v1', 'reloc13_execution_cov_v1'):
             if type(getattr(self, name)) is not bool or (getattr(self, name) and self.multiframe_registration == 'off'):
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
+        if self.reloc13_execution_cov_v1 and not self.reloc12_raw_cov_gate_v1:
+            raise ValueError('reloc13 execution covariance requires raw gate')
         from harness.reloc9_rotation import selfmap_model
         from harness.reloc9_wall_guard import validate as validate_wall
         object.__setattr__(self, 'motion_model', selfmap_model(self.motion_model, self.reloc9_rotation_calibration_v1))
@@ -203,6 +206,7 @@ class SelfMapIntegration:
                 reloc11_wall_field_v1=self.options.reloc11_wall_field_v1,
                 reloc12_raw_cov_gate_v1=self.options.reloc12_raw_cov_gate_v1,
                 reloc12_ransac_hypotheses_v1=self.options.reloc12_ransac_hypotheses_v1,
+                reloc13_execution_cov_v1=self.options.reloc13_execution_cov_v1,
 
                 correction_safety=self.options.correction_safety,
                 active_relocalization=self.options.active_relocalization)
@@ -498,6 +502,8 @@ class SelfMapIntegration:
             if self.quarantine_release is not None:
                 observation = Observation(frame_id, t, np.empty((0, 2)), np.empty((0, 32), np.uint8), sha256)
             self.slam._gate_prediction = predicted_covariance
+            # Authored-map fixes are absolute; bootstrap ORB fixes remain correlated.
+            self.slam.reloc13_absolute_static = self.options.reloc13_execution_cov_v1 and static_pose is not None
             event = self.slam.guarded_step(observation, command_delta=self.delta, command_covariance=self.Q,
                                            correction_gate=admit, pose_override=static_pose)
             if static_pose is not None and event['status'] == 'visual_relocalized':

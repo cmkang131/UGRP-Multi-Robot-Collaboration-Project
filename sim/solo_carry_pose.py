@@ -42,7 +42,7 @@ def task_start(static):
 class CommandPose:
     def __init__(self, start, *, now=0., robot_id='r1', map_sha256='', amcl_option='off', drive_model_deadband_v1=False,
                  carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
-                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False):
+                 reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, carry_pose_budget_recal_v1=False):
         if amcl_option not in ('off', 'report_v1'):
             raise ValueError('unknown carry AMCL report option')
         if (set(start) != START_KEYS
@@ -67,6 +67,13 @@ class CommandPose:
             raise ValueError('reloc10 requires drive model and excludes reloc9 gain')
         from harness.reloc10_rotation import calibration as calibration10
         self.rotation10 = calibration10() if reloc10_rotation_calibration_v1 else None
+        if type(carry_pose_budget_recal_v1) is not bool or (carry_pose_budget_recal_v1 and self.rotation10 is None):
+            raise ValueError('carry pose recal requires reloc10 rotation')
+        self.budget_recal = carry_pose_budget_recal_v1
+        if self.budget_recal:
+            import json
+            from pathlib import Path
+            self.budget_fit = json.loads((Path(__file__).resolve().parents[1]/'configs/calibration/reloc13_carry_budget_v1.json').read_text())
         if type(carry5_trim_yaw_calibration_v1) is not bool:
             raise ValueError('carry5_trim_yaw_calibration_v1 must be bool')
         self.trim_calibration = None
@@ -188,7 +195,12 @@ class CommandPose:
         sigma = self.sigmas()
         return (math.isfinite(now) and -.001 <= now-self.now <= .2+1e-8
                 and all(math.isfinite(v) for v in self.pose+sigma)
-                and max(sigma[:2]) <= MOTION_ERROR['max_xy_m'] and sigma[2] <= MOTION_ERROR['max_yaw_rad'])
+                and max(sigma[:2]) <= MOTION_ERROR['max_xy_m'] and sigma[2] <= self.yaw_budget_limit())
+
+    def yaw_budget_limit(self):
+        # A correlated command envelope is not actual angular error. The 41deg
+        # trigger is replay-fitted (578/578 >=20deg errors), not a 41deg task tolerance.
+        return math.radians(self.budget_fit['yaw_trigger_deg']) if self.budget_recal else MOTION_ERROR['max_yaw_rad']
 
     def sigmas(self):
         base = [math.sqrt(max(0., float(self.own.P[i, i]))) for i in range(3)]
@@ -199,6 +211,8 @@ class CommandPose:
         fitted_rotation = self.rotation10 or self.rotation_calibration
         fraction = (max(.40, fitted_rotation['residual_rotation_fraction'])
                     if fitted_rotation is not None else MOTION_ERROR['rotation_fraction'])
+        if self.budget_recal:
+            fraction = self.budget_fit['rotation_fraction']
         yaw = (fraction*turn+
                MOTION_ERROR['yaw_rad_per_m']*distance)
         # Correlated bias grows with total issued motion, not sqrt(tick count).
@@ -213,7 +227,9 @@ class CommandPose:
                 'command_only_age_s': self.now-(self.started if self.last_fix is None else self.last_fix),
                 'rgb_fixes': self.fixes, 'own_frame': self.own_frame,
                 'amcl_option': self.amcl_option, 'localization_verified': False,
-                'motion_error': MOTION_ERROR, 'last_dt_s': self.last_dt,
+                'motion_error': MOTION_ERROR,
+                'carry_pose_budget_recal_v1': self.budget_recal,
+                'budget_limits': {'yaw_rad': self.yaw_budget_limit(), 'xy_m': MOTION_ERROR['max_xy_m']}, 'last_dt_s': self.last_dt,
                 'error_bound_semantics': 'covariance sigma plus correlated command bias; not calibrated sigma',
                 'issued_distance_since_fix_m': self.distance_since_fix,
                 'issued_turn_since_fix_rad': self.turn_since_fix,
@@ -223,7 +239,7 @@ class CommandPose:
                     'rotation_error_fraction': max(.40, self.rotation_calibration['residual_rotation_fraction'])}
                    if self.rotation_calibration is not None else {}),
                 **({'reloc10_rotation_calibration_v1': True, 'rotation_calibration': self.rotation10,
-                    'rotation_error_fraction': max(.40, self.rotation10['residual_rotation_fraction'])}
+                    'rotation_error_fraction': self.budget_fit['rotation_fraction'] if self.budget_recal else max(.40, self.rotation10['residual_rotation_fraction'])}
                    if self.rotation10 is not None else {}),
                 **({'carry5_trim_yaw_calibration_v1': True, 'trim_calibration': self.trim_calibration}
                    if self.trim_calibration is not None else {}),

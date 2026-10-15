@@ -389,7 +389,12 @@ class LookaroundLocalizer:
             robust = correction_gate(prior, covariance, self.own.x, getattr(self, '_sensor_modes', None))
             accepted = accepted and robust['accepted']
             extra['robust_gate'] = robust
-        return {'accepted': bool(accepted), 'residual_count': len(errors), 'inlier_fraction': fraction,
+        return {'accepted': bool(accepted),
+                'view_statistics': {'wall_points': len(walls), 'floor_lines': len(floors), 'doors': len(doors),
+                    'residual_chi2': [float(e) if math.isfinite(e) else None for e in errors],
+                    'information_eigenvalues': np.linalg.eigvalsh(np.asarray(rows).T@np.asarray(rows)).tolist() if rows else [0.,0.,0.],
+                    'prior_pose': np.asarray(prior).tolist(), 'candidate_pose': self.own.x.tolist()},
+                'residual_count': len(errors), 'inlier_fraction': fraction,
                 'groups': sorted(groups), 'pose_rank': rank, 'innovation_chi2': chi2,
                 'innovation_chi2_limit': 11.345, 'residual_chi2_limit': GATE_CHI2_1,
                 'information_gain': gain, 'minimum_information_gain': MIN_GAIN, **extra}

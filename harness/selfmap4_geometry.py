@@ -151,7 +151,7 @@ class StaticRegistration:
     Unresolved hypotheses can propose look directions but cannot clip/clear maps
     or lower pose covariance. Registration has to survive three distinct views.
     """
-    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False):
+    def __init__(self, static, *, multiframe_registration='off', correction_safety='off', active_relocalization='off', reloc10_registration_v1=False, reloc11_wall_field_v1=False, reloc12_raw_cov_gate_v1=False, reloc12_ransac_hypotheses_v1=False, reloc13_execution_cov_v1=False):
         from harness.e2e_static_rgb_localizer import create
         from harness.self_map_landmark_sensor import Sensor
         if set(static) != {'map_id', 'version', 'frame', 'bounds_m', 'obstacles', 'regions', 'passages'}:
@@ -161,6 +161,9 @@ class StaticRegistration:
         for value in (reloc12_raw_cov_gate_v1, reloc12_ransac_hypotheses_v1):
             if type(value) is not bool or (value and multiframe_registration == 'off'):
                 raise ValueError('reloc12 requires multiframe registration and bool toggles')
+        if type(reloc13_execution_cov_v1) is not bool or (reloc13_execution_cov_v1 and not reloc12_raw_cov_gate_v1):
+            raise ValueError('reloc13 execution covariance requires raw gate')
+        self.execution_cov = reloc13_execution_cov_v1
         self.raw_cov_gate = reloc12_raw_cov_gate_v1
         self.ransac_hypotheses = reloc12_ransac_hypotheses_v1
         self.hypothesis_cache = None
@@ -355,7 +358,12 @@ class StaticRegistration:
             local = compose(inverse(self.map_from_own), row['pose'])
             c, s = math.cos(self.map_from_own[2]), math.sin(self.map_from_own[2])
             R = np.array([[c, s, 0], [-s, c, 0], [0, 0, 1]])
-            return local, R@cov@R.T
+            # reloc13: PF raw covariance is an execution estimate, not the x36
+            # residual search envelope. R7 still admits the pose; sigma is no
+            # accuracy classifier (const-audit: Spearman -0.04, reloc12 446/446 blocked).
+            execution_cov = np.asarray(row['covariance']) if self.execution_cov else cov
+            self.last['execution_covariance'] = (R@execution_cov@R.T).tolist()
+            return local, R@execution_cov@R.T
         return None
 
     def look_pans(self, pose):

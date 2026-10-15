@@ -154,7 +154,7 @@ class RGBCommandPose:
 class CarryToZone:
     def __init__(self, static, zone, *, start=None, now=0., robot_id='r1', amcl_option='off', recovery_profile='off', drive_model_deadband_v1=False,
                  carry5_rank_aware_views_v1=False, carry5_trim_yaw_calibration_v1=False, trim_calibration=None,
-                 carry7_robust_recovery_v1=False, reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, reloc12_carry_reacquire_v1=False):
+                 carry7_robust_recovery_v1=False, reloc9_rotation_calibration_v1=False, reloc10_rotation_calibration_v1=False, reloc12_carry_reacquire_v1=False, carry_pose_budget_recal_v1=False, carry_pose_budget_xy_reserve0_v1=False):
         if recovery_profile not in ('off', 'carry5_active_localization_v1'):
             raise ValueError('unknown carry recovery profile')
         self.recovery_profile = recovery_profile
@@ -167,6 +167,10 @@ class CarryToZone:
         self.robust_recovery_v1 = carry7_robust_recovery_v1
         if type(reloc12_carry_reacquire_v1) is not bool or (reloc12_carry_reacquire_v1 and not self.robust_recovery_v1):
             raise ValueError('reloc12 carry reacquisition requires carry7 and bool toggle')
+        for value in (carry_pose_budget_recal_v1, carry_pose_budget_xy_reserve0_v1):
+            if type(value) is not bool or (value and not self.active_recovery):
+                raise ValueError('carry budget toggles require active recovery')
+        self.xy_reserve0 = carry_pose_budget_xy_reserve0_v1
         self.reloc12_reacquire = reloc12_carry_reacquire_v1
         self.reacquire_turn_rad = 0.
         self.recovery_turn_anchor = 0.
@@ -203,7 +207,8 @@ class CarryToZone:
                                carry5_trim_yaw_calibration_v1=carry5_trim_yaw_calibration_v1,
                                trim_calibration=trim_calibration,
                                reloc9_rotation_calibration_v1=reloc9_rotation_calibration_v1,
-                               reloc10_rotation_calibration_v1=reloc10_rotation_calibration_v1)
+                               reloc10_rotation_calibration_v1=reloc10_rotation_calibration_v1,
+                               carry_pose_budget_recal_v1=carry_pose_budget_recal_v1)
 
     def issue(self, issued, dt):
         self.loc.issue(issued, dt)
@@ -304,7 +309,7 @@ class CarryToZone:
             return True
         sigma = self.loc.sigmas()
         # Reserve 20% of unchanged hard limits for stopping/setdown/backoff.
-        if not self.loc.ready(now) or max(sigma[:2]) >= .40 or sigma[2] >= math.radians(16.):
+        if not self.loc.ready(now) or self.needs_budget():
             self.request_recovery(now, 'pose_budget')
             return True
         return False
@@ -350,7 +355,11 @@ class CarryToZone:
 
     def needs_budget(self):
         s = self.loc.sigmas()
-        return max(s[:2]) >= .40 or s[2] >= math.radians(16.)
+        # const-audit C2: .25/m already is an envelope; remove only stacked
+        # reserve. Recal yaw uses the same replay-fitted limit as ready().
+        xy = .50 if getattr(self, 'xy_reserve0', False) else .40
+        yaw = self.loc.yaw_budget_limit() if getattr(self.loc, 'budget_recal', False) else math.radians(16.)
+        return max(s[:2]) >= xy or s[2] >= yaw
 
     def pickup_route(self, goal, target, kind, now):
         """Allowed body goal; single matching target exemption, no world target memory."""

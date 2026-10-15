@@ -25,7 +25,8 @@ class PriorBootstrapSLAM(NaturalFloorSLAM):
                                            self.covariance, np.asarray(command_covariance))
         event = super().step(observation, command_delta=command_delta,
                              command_covariance=command_covariance)
-        if event['status'] in ('visual_update', 'visual_relocalized'):
+        if event['status'] in ('visual_update', 'visual_relocalized') and not (
+                getattr(self, 'reloc13_absolute_static', False) and getattr(self, '_override', None) is not None):
             # Conservative retained envelope, NOT a calibrated posterior or an
             # independence claim for repeated observations of prior-seeded points.
             self.covariance = predicted_cov + self.covariance
@@ -40,7 +41,7 @@ class PriorBootstrapSLAM(NaturalFloorSLAM):
             added = self._add_landmarks(points, descriptors, self.pose, observation.frame_id, set())
             self.prior_landmark_ids.update(set(self.landmarks)-previous)
         event.update(prior_landmarks_added=added, landmark_count=len(self.landmarks),
-                     uncertainty_model='retained_command_plus_fit_envelope',
+                     uncertainty_model=('absolute_static_raw_covariance' if getattr(self, 'reloc13_absolute_static', False) and event['status']=='visual_relocalized' else 'retained_command_plus_fit_envelope'),
                      prior_landmark_count=len(self.prior_landmark_ids))
         return event
 
