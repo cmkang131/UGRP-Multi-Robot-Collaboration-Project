@@ -82,3 +82,18 @@ DAgger 표적은 학생이 실제 방문한 상태의 교사 첫 행동이다. �
 시점 교사 질의를 현재 상태의 교사 미래 chunk로 이어 붙이지 않는다. 별도 교사
 branch rollout이 없으면 h0만 유효하고 미래 7개는 padding 처리한다. 학생의
 RGB/발행 이력은 원래 그대로 보존하며 교사의 제안으로 교체하지 않는다.
+
+
+04:23 KST: `scripts/act16w_dagger.py`에 pre-hover 교사 h0 라벨 수용 검사와
+7개 미래 horizon padding을 준비했다. oracle phase/실패/시간 정렬/입력 감사를
+검사하고 거부 사유·누적 관문표를 반환한다. 학생의 발행 명령은 수정하지 않는다.
+학습 라벨 질의기는 명시적으로 발행한 초기 OPEN PWM보다 낮은 닫기 명령을
+하나라도 본 뒤에는 그 에피소드에서 teacher callback을 호출하지 않는다.
+측정 관절·접촉·물체 위치 없이 잠재 holding 구간을 학습 수집에서 제외한다.
+이 검사는 recorder/actor 통합과 실제 DAgger rollout을 완료했다는 뜻이 아니다.
+비물리 검사 총18통과·torch1skip이며 학생 실행/학습 효과는 미측정이다.
+
+`no_mip_v1`은 원본 `sim/camera_render_quality.py`에서 GL_LINEAR min filter다.
+[공식 MJWarp render_util 소스](https://github.com/google-deepmind/mujoco_warp/blob/main/mujoco_warp/_src/render_util.py)
+의 `create_warp_texture`도 LINEAR Texture2D를 만든다. 웹 main 확인이므로 설치된
+MJWarp 소스 SHA와 실제 렌더 sampler 확인은 GCP 실행 전 별도로 한다.

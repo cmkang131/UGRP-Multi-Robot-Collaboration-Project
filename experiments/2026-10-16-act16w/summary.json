@@ -37,7 +37,7 @@
     "assets": []
   },
   "checks": {
-    "nonphysics_passed": 14,
+    "nonphysics_passed": 18,
     "skipped": 1,
     "skip_reason": "torch not installed on Mac; no environment created",
     "trainer_syntax_and_cli_help": "PASS; CUDA execution not tested"
@@ -73,5 +73,13 @@
     "finding_source": "e9c97e2eb6ea994e37cf82d0ebe391c517f81be7",
     "static_fix_seen_at": "2fd1490a6f00459a0e32c4e89adc8421a8dba1a4",
     "runtime_distinct_start_verification": "pending"
+  },
+  "dagger": {
+    "status": "target_helper_prepared_not_executed",
+    "scope": "pre-hover single-step oracle only",
+    "valid_horizons": 1,
+    "future_horizons_masked": 7,
+    "oracle_query_after_potential_student_close": "blocked without calling oracle",
+    "rollouts": 0
   }
 }
