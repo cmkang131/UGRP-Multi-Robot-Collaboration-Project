@@ -120,10 +120,29 @@
     }
   },
   "verification": {
-    "non_physics_tests": 12,
+    "non_physics_tests": 13,
     "actual_warp_binding": false,
     "actual_partial_reset": false,
     "actual_actor_output_byte_invariance": false,
     "evaluation_wrapper_privileged_reads": 0
+  },
+  "saved_analysis": {
+    "status": "complete",
+    "source_sha": "18c369ffe30f6b24651a4e463147a9e3d4f7043e",
+    "summary": "saved-reward-audit.json",
+    "sha256": "f858e0c19f23e89214bf31c6a0ce7830afb589a3ab7289b420e9896b7114a3c0",
+    "raw": "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-18c369ff",
+    "gpu_seconds": 0,
+    "new_rollouts": 0,
+    "prior_attempts": [
+      {
+        "source_sha": "d1c6b040c",
+        "raw": "/home/ugrp/ugrp-sim/runs/rl1b-saved-audit-d1c6b040",
+        "status": "ANALYSIS_ERROR",
+        "reason": "KeyError min_z: six known lookaround annotations",
+        "new_rollouts": 0,
+        "gpu_seconds": 0
+      }
+    ]
   }
 }

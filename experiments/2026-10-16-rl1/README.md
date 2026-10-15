@@ -30,7 +30,7 @@ Refs #523. 상태: rl1b WAITING_BACKEND, 개선 여부는 아직 미측정이다
 재사용 모듈: `scripts/rl_act_reward.py`, `scripts/rl_act_curriculum.py`, `scripts/rl_act_env.py`.
 현재 env는 backend 주입용 계약 래퍼이며 **실제 MJWarp binding/부분 reset은 미검증**이다.
 기존 미커밋 env/reward 원형은 `outputs/rl1b/imported-originals/`에 보존했다(실행하지 않음).
-짧은 비물리 시험: `tests/test_rl_act_signal.py` 12개 통과; 평가에서 privileged read0,
+짧은 비물리 시험: `tests/test_rl_act_signal.py` 13개 통과; 평가에서 privileged read0,
 GT 변경 시 actor 입력 불변, h2 중복 벌점 방지, 부분 reset의 래퍼 이력 격리를 검사했다.
 이는 실제 GPU reset·actor 출력 바이트·물리 성공 검증이 아니다.
 
@@ -200,3 +200,21 @@ registry 갱신→재다운로드→전체해시→모델 로딩까지 확인한
 - [Ng et al. 1999](https://ai.stanford.edu/~ang/papers/shaping-icml99.pdf): potential-based shaping.
 - [DPPO v3](https://arxiv.org/html/2409.00588v3): diffusion denoising RL; ACT 직접 적용으로 인용하지 않음.
 - 이 계획은 공개 논문의 완전 재현·학생 채택·교사95%·E2E·실물 성공을 뜻하지 않는다.
+
+### 저장 보상 감사 (GCP2, 소스18c369ff)
+
+기존 C MuJoCo 원장을 gcp2 CPU에서만 재채점했다(새 물리/학습/GPU0).
+실패91427·91439의 첫 done53.2/22.1 SIM초에 h2−10이 각각1회 귀속됐고,
+성공 교사91434에서 기존 안정 들기3초를18.7 SIM초에 충족해 성공 항+10을 확인했다.
+이18.7초는 평가 성공 시각이며 교사의 RGB 들기 확인24.7초와 다르다.
+교사는 release를 포함하고 ACT done 토큰이 없어 완전한 return 짝 비교를 만들지 않았다.
+h1 mask·교사 정렬 원장이 없어 해당 항은 미측정, 성공 보상·실패 done 귀속만 확인했다.
+기록 [saved-reward-audit.json](saved-reward-audit.json); 로컬/원격 SHA256
+`f858e0c19f23e89214bf31c6a0ce7830afb589a3ab7289b420e9896b7114a3c0` 일치.
+잔차 calibration도 원격 원본과 전체 SHA256
+`03f38a61fa808e59c68775ba0417d7aa73426834e0cad9d671914ca5d57e72f1` 일치.
+
+첫 저장 분석 d1c6b040은 교사 원장의 lookaround_view6건을 채점 행으로 오인해
+KeyError(min_z)로 중단됐다(부분 산출물 원격 보존, 학습/물리0). 18c369ff에서
+알려진 주석 이벤트만 분리하여 완료했으며 모르는 schema는 계속 거부한다.
+이 저장 감사는 새로운 RL 신호나 h1–h4 정책 효과를 뜻하지 않는다.

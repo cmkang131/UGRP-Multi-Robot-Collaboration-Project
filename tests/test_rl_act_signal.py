@@ -183,3 +183,33 @@ def test_curriculum_expands_training_only_deterministically_and_copies_plans():
     assert all(s.plan['seed'] == s.seed for s in starts)
     with pytest.raises(ValueError, match='overlap'):
         Curriculum(starts, **{**kwargs, 'evaluation_seeds': [3]})
+
+
+def test_dependency_watch_does_not_mistake_teacher_transport_for_actor_reset(monkeypatch, tmp_path):
+    import importlib.util
+    from pathlib import Path
+    path = Path(__file__).resolve().parents[1] / 'experiments/2026-10-16-rl1/tools/wait_for_warp.py'
+    spec = importlib.util.spec_from_file_location('rl1b_watch', path)
+    watch = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(watch)
+    monkeypatch.setattr(watch, 'ALERT', tmp_path / 'ops-alert.md')
+    source = 'class WarpTransport:\n    def initialize(self): pass\n    def step(self): pass\n    def sync_render(self): pass\n'
+
+    def git(*args):
+        if args[0] == 'rev-parse':
+            return (0, 'abc123', '') if args[-1] == 'claude/warp-act' else (1, '', '')
+        if args[0] == 'ls-tree':
+            return 0, 'scripts/warp_act_backend.py', ''
+        if args[0] == 'show':
+            return 0, source, ''
+        raise AssertionError(args)
+
+    monkeypatch.setattr(watch, 'git', git)
+    assert not watch.inspect()['signal']
+    source += '    def reset(self): pass\n'
+    signalled = watch.inspect()
+    assert signalled['signal'] and not signalled['runtime_admitted']
+    source = 'class WarpTransport:\n    def step(self): pass\n'
+    watch.ALERT.write_text('warp1: FAILED backend pilot\n')
+    signalled = watch.inspect()
+    assert signalled['signal'] and not signalled['runtime_admitted']

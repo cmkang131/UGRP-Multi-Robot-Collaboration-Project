@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.rl1.rejection.v1",
-  "status": "PRE_IMPLEMENTATION",
+  "status": "RL1B_WAITING_BACKEND",
   "new_rl_runs": 0,
   "new_rl_funnel": [],
   "prior_evidence": {
@@ -374,5 +374,52 @@
       "reason": "No committed warp1 batch backend at plan registration"
     }
   ],
-  "reproduce": "python3 experiments/2026-10-16-rl1/tools/wait_for_warp.py --once"
+  "reproduce": "python3 experiments/2026-10-16-rl1/tools/wait_for_warp.py --once",
+  "rl1b_preflight_funnel": [
+    {
+      "gate": "candidate",
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "committed_transport",
+      "passed": 1,
+      "rejected": 0
+    },
+    {
+      "gate": "actor_reset_binding",
+      "passed": 0,
+      "rejected": 1
+    },
+    {
+      "gate": "distinct_start_reset_gpu_audit",
+      "passed": 0,
+      "rejected": 0,
+      "status": "not_reached"
+    },
+    {
+      "gate": "training",
+      "passed": 0,
+      "rejected": 0,
+      "status": "not_reached"
+    },
+    {
+      "gate": "paired_evaluation",
+      "passed": 0,
+      "rejected": 0,
+      "status": "not_reached"
+    }
+  ],
+  "rl1b_preflight_rejections": [
+    {
+      "category": "backend_actor_reset_api_missing",
+      "blocking_object": "not_geometric_backend_dependency",
+      "minimum_gap_m": null,
+      "minimum_gap_status": "not_geometric",
+      "source_ref": "claude/warp-act",
+      "source_sha": "4cf44ad1ac5a07de5abee7d99a5d7b3d6d08f0aa",
+      "evidence": "WarpTransport methods initialize/init_kernels/build_lookup/step/sync_render; runner declares student_evaluation_supported=false",
+      "reproduce": "python3 experiments/2026-10-16-rl1/tools/wait_for_warp.py --once --output outputs/rl1b/once.jsonl"
+    }
+  ]
 }
