@@ -126,7 +126,7 @@ def audit_camera(camera):
         raise ValueError('recorded student contract differs from loader')
 
 
-def paired_segments(observations, labels, *, done_label='teacher_v1'):
+def paired_segments(observations, labels, *, done_label='teacher_v1', include_initial_approach_v1=False):
     """Select local rows, optionally deriving completion from skill row order.
 
     A skill interval has one actor/episode/task identity. Excluded rows and
@@ -159,6 +159,14 @@ def paired_segments(observations, labels, *, done_label='teacher_v1'):
             raise ValueError('teacher command time mismatch')
         if label['done'] and label['terminal_reason'] != 'command_sequence_complete':
             raise ValueError('timeout/failure cannot be a done target')
+        if (include_initial_approach_v1 and obs['skill'] == 'grasp'
+                and label.get('teacher_phase') in ('start', 'fold', 'approach')
+                and not label.get('perturbation_interval', False)):
+            # ACT15 raw audit: ACT14 starts at skill elapsed=0, but ACT13's
+            # selected support starts at .7..4.9 SIM s (350 fold +102 approach
+            # rows omitted in 50 episodes). Include the recorded expert prefix,
+            # not a deployment warmup/controller. Original labels stay intact.
+            label = {**label, 'local_skill_sample': True}
         key = tuple(obs[k] for k in ('robot_id', 'skill', 'object_kind', 'role', 'destination_zone'))
         key += (sid.split(':')[0],)
         pairs.append((obs, label, key))
@@ -277,7 +285,8 @@ def convert(runs_root, protocol, output, *, seeds=None):
                     validate_recorded_labels(labels, verified_recovery_audit(result, result_path))
                 if any(o['robot_id'] != robot for o in observations):
                     raise ValueError('mixed actor in file')
-                groups = paired_segments(observations, labels, done_label=done_label)
+                groups = paired_segments(observations, labels, done_label=done_label,
+                    include_initial_approach_v1=protocol.get('include_initial_approach_v1', False))
                 if not groups:
                     raise ValueError('no local skill samples')
                 selected = [pair for group in groups for pair in group]
