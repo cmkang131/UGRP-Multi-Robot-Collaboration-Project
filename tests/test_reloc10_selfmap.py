@@ -57,38 +57,30 @@ def test_bundle_toggles_off_unchanged_and_on_recorded():
     assert b['options']['reloc10_settle_v1'] and b['options']['reloc10_registration_v1']
 
 
-def test_texture_adapter_is_instance_local_and_restores_factory(monkeypatch,tmp_path):
+def test_texture_adapter_uses_official_api_without_replacing_factory(monkeypatch,tmp_path):
     from types import SimpleNamespace
     import importlib.util, sys, types, sim
     from pathlib import Path
-    from sim import natural_scene_texture as texture
+    from sim import render_profile_selection
     host=types.ModuleType('sim.active_wall_map')
     class Base:
-        def __init__(self,*args,**kwargs): pass
+        def __init__(self,*args,**kwargs):
+            self.world=SimpleNamespace(model=object())
         def close(self): pass
     host.PhysicsBackend=Base
+    factory=host.make_scene=object()
     monkeypatch.setitem(sys.modules,'sim.active_wall_map',host)
     monkeypatch.setattr(sim,'active_wall_map',host,raising=False)
-    spec=importlib.util.spec_from_file_location('_reloc10_mock_backend',Path(__file__).resolve().parents[1]/'sim/own_map_closed_loop.py')
+    spec=importlib.util.spec_from_file_location('_reloc11_mock_backend',Path(__file__).resolve().parents[1]/'sim/own_map_closed_loop.py')
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     calls=[]
-    scene=SimpleNamespace(transform=lambda xml: xml,manifest={})
-    def original(bundle,seed):
-        assert bundle['options']['render_profile']=='floor_light_v1'
-        return scene
-    monkeypatch.setattr(host,'make_scene',original,raising=False)
-    monkeypatch.setattr(texture,'manifest',lambda: {})
-    monkeypatch.setattr(texture,'apply',lambda xml: (calls.append('apply') or xml))
-    monkeypatch.setattr(texture,'verify_model',lambda model: dict(checked=True))
-    def build(self,bundle,out,*,seed):
-        self.world=SimpleNamespace(model=object())
-        self.scene=host.make_scene(bundle,seed)
-        self.scene.transform('<root/>')
-    monkeypatch.setattr(module.Base,'__init__',build)
+    def verify(model,name):
+        calls.append(name)
+        return dict(checked=True)
+    monkeypatch.setattr(render_profile_selection,'for_name',lambda name: SimpleNamespace(verify_model=verify))
     x=module.PhysicsBackend(dict(options=dict(render_profile='floor_light_textured_v1')),tmp_path,seed=1)
-    assert calls==['apply'] and host.make_scene is original
+    assert calls==['floor_light_textured_v1'] and host.make_scene is factory
     assert x.texture_audit==dict(checked=True)
-    assert x.scene.manifest['natural_scene_texture']['source_commit']=='db0a6858f6387e9048d4a37e78bc8eefd2ead484'
 
 
 def test_executor_settle_receipt_reaches_dwell_and_records_reason(monkeypatch):

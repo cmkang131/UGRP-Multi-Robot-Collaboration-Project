@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recovery_profile='off',
            revision_gate='off', multiframe_registration='off', render_profile='floor_light_v1', correction_safety='off', active_relocalization='off',
            reloc9_rotation_calibration_v1=False, reloc9_wall_height_guard_v1=False,
-           reloc10_settle_v1=False, reloc10_registration_v1=False):
+           reloc10_settle_v1=False, reloc10_registration_v1=False, reloc11_timing_v1=False):
     from harness.active_camera import SEARCH
     if not math.isfinite(cap_s) or not 1 <= cap_s <= 300 or abs(cap_s*10-round(cap_s*10)) > 1e-8:
         raise ValueError('CAP_MUST_BE_0_1S_GRID_IN_1_TO_300')
@@ -72,7 +72,7 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
             pool_with_previous_results=False, scene_version=render_profile,
             dependencies=([dict(pr=511, branch='claude/scene-floor-texture',
                 source_sha='db0a6858f6387e9048d4a37e78bc8eefd2ead484',
-                required='natural_scene_texture exact assets, own-map scene instance adapter',
+                required='PR511 official render_profile_selection and nearclip APIs',
                 merged_verified=True)] if render_profile == 'floor_light_textured_v1' else []))
         result['options'].update(revision_gate=revision_gate, multiframe_registration=multiframe_registration,
                                  render_profile=render_profile)
@@ -99,6 +99,10 @@ def bundle(source, seed, cap_s, *, bootstrap='off', initial_sweep='off', recover
         result.update(execution_bundle_id='selfmap8-reloc10-v1', pool_with_previous_results=False)
         result['options'].update(reloc10_settle_v1=reloc10_settle_v1,
                                  reloc10_registration_v1=reloc10_registration_v1)
+    if type(reloc11_timing_v1) is not bool:
+        raise ValueError('reloc11 timing must be bool')
+    if reloc11_timing_v1:
+        result['options']['reloc11_timing_v1'] = True
     return result
 
 
@@ -163,6 +167,11 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
     dump(out/'RUN_META.json', dict(schema='ugrp.run_meta.v1', **{'class': 'dev'},
         pr=506, branch='claude/map-selfmap', sha=b['source_sha'], batch=b['check']))
     backend = controller = None
+    timing = None
+    restores = []
+    if b['options'].get('reloc11_timing_v1', False):
+        from harness.reloc11_timing import Timings
+        timing = Timings()
     started = monotonic()
     audit = InputAudit(b['task']['robot_id'])
     result = dict(status='HOST_ERROR', source_sha=b['source_sha'], seed=b['task']['seed'],
@@ -212,6 +221,13 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         controller = controller_factory(self_map_executor=OPTION, robot_id=robot,
             start_time=start, cap_s=cap, bootstrap=b['options'].get('bootstrap', 'off'),
             initial_sweep=b['options'].get('initial_sweep', 'off'), **extra)
+        if timing is not None:
+            from harness.reloc11_timing import install
+            restores = install(timing, controller)
+            restores += [timing.wrap(backend, 'capture', 'capture'),
+                         timing.wrap(backend, 'advance_to', 'physics_advance'),
+                         timing.wrap(audit, 'receive', 'control'),
+                         timing.wrap(backend, 'eval_sample', 'evaluation')]
         # This is the plant's issued reset-command history, never measured joints.
         audit.command(controller, dict(t=start, kind='initial_servo_command', pulses=backend.commands[robot]))
         for action in arm(b['initial_servo']):
@@ -250,6 +266,9 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
                         input_audit=audit.snapshot(),
                         frontier_arrivals=sum(e['reason'] == 'frontier_arrival' for e in controller.events))
                     dump(out/'progress.json', progress)
+                    if timing is not None:
+                        progress['timing'] = timing.snapshot(controller.mapper)
+                        dump(out/'progress.json', progress)
                     if tick == 300:
                         dump(out/'first30.json', progress)
                 if controller.done:
@@ -268,6 +287,10 @@ def acquire(out, b, backend_factory, *, controller_factory=make_executor, wall_c
         result.update(status='PHYSICAL_FAILURE' if type(exc).__name__ == 'PhysicalStop' else 'HOST_ERROR',
                       complete=False, failure=dict(type=type(exc).__name__, message=str(exc)))
     finally:
+        for restore in reversed(restores):
+            restore()
+        if timing is not None and controller is not None:
+            dump(out/'timing.json', timing.snapshot(controller.mapper))
         # Stop only our robot/plant. Preserve partial results on interrupt/error.
         if backend is not None:
             try:
@@ -313,6 +336,7 @@ def main(argv=None):
     p.add_argument('--multiframe-registration', choices=['off', 'selfmap4_multiframe_registration_v1'], default='off')
     p.add_argument('--correction-safety', choices=['off', 'selfmap6_correction_safety_v1'], default='off')
     p.add_argument('--active-relocalization', choices=['off', 'reloc8_active_vision_v1'], default='off')
+    p.add_argument('--reloc11-timing-v1', action='store_true')
     p.add_argument('--reloc10-settle-v1', action='store_true')
     p.add_argument('--reloc10-registration-v1', action='store_true')
     p.add_argument('--reloc9-rotation-calibration-v1', action='store_true')
@@ -325,6 +349,7 @@ def main(argv=None):
                multiframe_registration=a.multiframe_registration, render_profile=a.render_profile,
                correction_safety=a.correction_safety, active_relocalization=a.active_relocalization,
                reloc10_settle_v1=a.reloc10_settle_v1, reloc10_registration_v1=a.reloc10_registration_v1,
+               reloc11_timing_v1=a.reloc11_timing_v1,
                reloc9_rotation_calibration_v1=a.reloc9_rotation_calibration_v1,
                reloc9_wall_height_guard_v1=a.reloc9_wall_height_guard_v1)
     if not a.execute or a.self_map_executor == 'off':
