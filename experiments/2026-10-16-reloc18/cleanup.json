@@ -1,0 +1,124 @@
+{
+  "time_utc": "2026-10-15T22:44:26.302883+00:00",
+  "own_workers": 0,
+  "own_lease_before": {
+    "task": "reloc18",
+    "pid": 435413,
+    "started": "2026-10-15T21:18:36.408228+00:00",
+    "expected_end": "finite <=3 rounds, <=8 workers; analysis and retrieval",
+    "concurrency": 4,
+    "stage": "round3",
+    "source_sha": "133c12f4cbd5efafba5f94f761d494f45bef075a",
+    "pids": [
+      435441,
+      435440,
+      435443,
+      435442,
+      441959,
+      442248
+    ]
+  },
+  "other_leases": {
+    "beampair9.json": {
+      "task": "beampair9",
+      "pid": 459714,
+      "started": "2026-10-15T22:14:01.923605+00:00",
+      "expected_end": "finite analysis + maximum3 run-first rounds + fresh40 gate; <=16 workers; shared <=40",
+      "concurrency": 16,
+      "stage": "round3-67d65d8e",
+      "source_sha": "67d65d8e053179b60f6b9e8fd33f791c4e44657a",
+      "finished_batch": "round2-1fe9450a"
+    }
+  },
+  "remaining_python_mujoco_ffmpeg": [
+    {
+      "pid": 459714,
+      "ppid": 459713,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python experiments/2026-10-16-beampair9/operations/run_round.py /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-queue.json"
+    },
+    {
+      "pid": 459739,
+      "ppid": 459737,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 0 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-000/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459741,
+      "ppid": 459738,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 1 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-001/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459742,
+      "ppid": 459740,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 2 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-002/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459745,
+      "ppid": 459743,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 3 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-003/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459746,
+      "ppid": 459744,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 4 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-004/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459748,
+      "ppid": 459747,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 5 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-005/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459750,
+      "ppid": 459749,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 6 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-006/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459752,
+      "ppid": 459751,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 7 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-007/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459754,
+      "ppid": 459753,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 8 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-008/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459756,
+      "ppid": 459755,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 9 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-009/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459759,
+      "ppid": 459757,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 10 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-010/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459761,
+      "ppid": 459758,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 11 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-011/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459763,
+      "ppid": 459760,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 12 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-012/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459765,
+      "ppid": 459762,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 13 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-013/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459767,
+      "ppid": 459764,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 14 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-014/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    },
+    {
+      "pid": 459768,
+      "ppid": 459766,
+      "command": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python -m scripts.run_beampair1 --plan /home/ugrp/ugrp-sim/ops-reviews/beampair9/run-first-plan.json --episode 15 --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/round3-67d65d8e/diagnostic/episode-015/raw --dependency-root /home/ugrp/ugrp-sim/src/26f84d0f0ada1c33473c83cca2d3415ce51bd247 --mode beampair1_v1 --candidate soft --cap-s 60 --rendezvous peer_rendezvous_v2 --approach-repair beampair_approach_v2 --wall-layer beampair_wall_clear_v1 --peer-yield beampair_peer_yield_v1 --box-geometry beampair_box_geometry_v1 --planning-boundary beampair_geometry_work_v1"
+    }
+  ],
+  "vm_stop_requested": false,
+  "reason": "other lease/process present; VM shared with active work",
+  "action": "removed only reloc18.json; no process killed; no VM stop",
+  "own_lease_removed": true
+}

@@ -71,6 +71,11 @@ def main(n):
                     scope='evaluator only; predicates may be false because final place was never reached'),
                 would_stop_pose_budget=carry.get('would_stop_pose_budget'),
                 criteria=d.get('criteria'),failure=carry.get('failure'),terminal_rejections=terminal_rejections)
+            if not r['place_success']:
+                reason=d.get('termination_category') or d.get('termination_reason') or 'missing_original_terminal_reason'
+                r['terminal_rejections'].append(dict(category='terminal_'+reason,reason=reason,N=1,
+                    blocked_object=('zone_'+d['destination_zone']) if reason=='destination_floor_not_visible' else 'carry_route_or_localization',
+                    minimum_gap_m=None,gap_scope='not_applicable_visual_or_localization_terminal; original collision gaps retained in preceding events'))
         reports.append(r)
     result=dict(round=n,analysis_host='gcp2',runs=reports,reproduce=f'PYTHONPATH=. python {__file__} --round {n}',scope='DEV; invalid and predetermined failure-window diagnostics excluded from adoption')
     (batch/'summary.json').write_text(json.dumps(result,indent=2)+'\n')

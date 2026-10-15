@@ -110,3 +110,9 @@ SHA256 `69bdd4f62546e3e38ea024cf94b6bc12b86cef39b8a187ee155b7f11794a1c69`.
 |버전·소스|case|결과|영상·원본|검토 범위·한계|
 |---|---|---|---|---|
 |reloc16 R3 · `df8115a53c01af2d1974c0e8777fdb4853252eaf`|gcp2 CPU, selfmap93584,60SIM초|전역등록0/301·cap_end·NOT_READY|[4배속 대표 실패](../experiments/2026-10-16-reloc16/videos/representative-selfmap93584-r3-failure.mp4), 42289bytes, SHA256 `22ba87bff21c065c2d07d9cb86a086e6c22c44462437befa40762bdb79c9cc3c`; raw `/home/ugrp/ugrp-sim/runs/reloc16-r3-selfmap-93584-v5-df8115a5/raw`|실패가 전형적(두 selfmap 모두 등록0). 전체2Hz+직전10초10Hz 직접검토, 개요는 평가전용·제어r3 자기RGB. 이전장면 동일시드 gcp2 비교는 [기록](../experiments/2026-10-16-reloc16/README.md). 완주/ACT/실물 성공 아님; 부모milestone 원본 보존·전체백업없음.|
+
+## reloc18 place 실패·innovation 진단 (2026-10-16)
+
+|버전·소스|case|결과|영상·원본|검토 범위·한계|
+|---|---|---|---|---|
+|reloc18 R3 · `133c12f4cbd5efafba5f94f761d494f45bef075a`|gcp2 n4-highcpu-64 C MuJoCo CPU, carry93315, DEV pose-budget observe-only|78.4SIM초·place0/2·destination_floor_not_visible·NOT_READY|[4배속 대표 실패](../experiments/2026-10-16-reloc18/videos/representative-carry93315-r3-failure.mp4), 35552bytes, SHA256 `c8470138b36d30370d36a4479b403853d2a5e3186ec260fa676f63d690c324fa`; raw `/home/ugrp/ugrp-sim/runs/reloc18-r3-carry-candidate-93315-133c12f4/raw`|개요+r1+r2+r3 전체2Hz1.5–79.5SIM초·마지막10초10Hz 직접검토. 제어는 자기RGB, 개요는 평가전용. 목적지 색0/31·실제xy오차1.19m. 원본milestone 보존·영상/자료hash는[기록](../experiments/2026-10-16-reloc18/README.md). 성공영상 없음, 완주/학생/실물 성공 근거 아님.|
