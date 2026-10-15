@@ -54,6 +54,8 @@ def ordered_funnel(total, counts):
 
 
 def verify_manifest(raw):
+    if not (raw/'manifest.json').exists() and not (raw/'manifest.json.zst').exists():
+        return None
     manifest = read(raw/'manifest.json')
     checked = 0
     for name, spec in manifest.items():
@@ -80,7 +82,8 @@ def recount(raw):
     result = read(raw/'result.json')
     _, actual, digest = read_bytes(raw/'result.json')
     entry.update(result_path=str(actual), result_sha256=digest,
-                 status=result['status'], legacy_success=result.get('physical_success', False),
+                 status='interrupted' if result['status']=='running' else result['status'],
+                 saved_status=result['status'], legacy_success=result.get('physical_success', False),
                  source_sha=result.get('source_sha'), profile=result.get('teacher_profile', 'legacy'),
                  cap_end=result.get('cap_end', False), sim_s=result.get('sim_s'),
                  phases={r:t.get('phase') for r,t in result.get('teachers', {}).items()},
