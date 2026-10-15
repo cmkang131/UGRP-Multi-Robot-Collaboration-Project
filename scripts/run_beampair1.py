@@ -143,12 +143,15 @@ def setup_admission(plan,scenario):
 
 
 def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,rendezvous='off',
-        approach_repair='off',failure_tail=True,wall_layer='off',peer_yield='off'):
+        approach_repair='off',failure_tail=True,wall_layer='off',peer_yield='off',
+        record_training=False,recording_proof=None):
     if platform.system()!='Linux':raise RuntimeError('GCP Linux only; Mac physics/render forbidden')
     if mode!=MODE:raise ValueError('explicit beampair1_v1 opt-in required')
     if approach_repair not in ('off',APPROACH_MODE,APPROACH_BOUNDED_MODE):raise ValueError('unknown approach repair')
     if wall_layer not in ('off',WALL_MODE):raise ValueError('unknown wall layer')
     if peer_yield not in ('off',PEER_YIELD_MODE):raise ValueError('unknown peer yield')
+    if record_training and (not recording_proof or recording_proof.get('qualified') is not True):
+        raise ValueError('verified beampair7 gate proof required for recording')
     validate_plan(plan)
     source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT):raise ValueError('committed source required')
@@ -308,7 +311,8 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
         report=None
         try:
             with recording_json(runner):
-                report=runner.run(plan,out,cap_s=cap_s,record_training=False,noise=False,execution_host=host,**selected)
+                report=runner.run(plan,out,cap_s=cap_s,record_training=record_training,
+                    recording_proof=recording_proof,noise=False,execution_host=host,**selected)
         finally:
             scene_module.make_scene=original_make_scene;measurements_module.measurements=original_measure
             world_module.VisibleWorld=original_world;teacher_module.VisibleOnlyGraspTeacher=original_teacher
@@ -331,7 +335,7 @@ def run(plan,out,dependency_root,*,mode='off',candidate='baseline',cap_s=60.,ren
                 'peer_yield':peer_yield,
                 'mode':mode,'held_object_hidden_v1':True,'held_world_reads':guard.held_world_reads,
                 'first_close_t':guard.first_close_t,'hidden_measurement_ticks':guard.hidden_measurement_ticks,
-                'input_audit':audit,'training_rgb':False,'profiles':selected,'result':report,
+                'input_audit':audit,'training_rgb':record_training,'profiles':selected,'result':report,
                 'setup_admission':setup_rows,
                 'probe_burst_ticks':{r:t.pair_perturb.ticks for r,t in teachers.items()},
                 'probe_executed_ticks':{r:sum(x['robot_id']==r and x['disturbance'] is not None for x in probe_rows) for r in teachers}})
