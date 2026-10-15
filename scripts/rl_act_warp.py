@@ -104,7 +104,7 @@ class Owner:
         folder.mkdir(parents=True,exist_ok=False)
         (folder/'scene.xml').write_text(world.scene_xml)
         (folder/'plan.json').write_text(json.dumps(plan,indent=2)+'\n')
-        from audit_grasp_act_visibility import BandVisibility
+        from scripts.audit_grasp_act_visibility import BandVisibility
         from sim.masterpi_camera_profile import scaled_camera_matrix,CAMERA_FISHEYE_D
         eyes=object.__new__(BandVisibility)
         eyes.np=np;eyes.model=world.model;eyes.K=scaled_camera_matrix(640,480);eyes.D=np.array(CAMERA_FISHEYE_D)
