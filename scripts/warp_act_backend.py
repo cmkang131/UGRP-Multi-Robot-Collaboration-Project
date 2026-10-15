@@ -263,6 +263,9 @@ class WarpTransport(Transport):
         with unused_efm(m,d):
             self.wd = mjw.put_data(m,d,nworld=self.n,nconmax=ncon,njmax=njmax,nvmax=self.nvmax)
         self.copy_initial_state(contexts)
+        self.solver_numerics.update(compact_ctol=self.wd.ctol.numpy().tolist(),
+            compact_cls_tol=self.wd.cls_tol.numpy().tolist(),nvmax_pad=int(self.wd.nvmax_pad),
+            compact_basis='pinned io.py1791-1797: max(source tolerance,1e-6)*nv/nvmax_pad; separate compact cohort')
         # Capture exactly the 400 physics ticks, not a host wall budget.
         with wp.ScopedCapture() as capture:
             for _ in range(16):

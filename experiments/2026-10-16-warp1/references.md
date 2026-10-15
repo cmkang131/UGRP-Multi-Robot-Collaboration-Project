@@ -25,3 +25,6 @@ Native 초기 상태 복사는 [MuJoCo 변경 기록의 mj_copyData/copy.copy �
 
 
 추가 조사로 별도 후보 `native_sleep_policy_compat_v1`를 만든다. [MuJoCo3.16 engine_sleep.c125–126](https://github.com/google-deepmind/mujoco/blob/3.16.0/src/engine/engine_sleep.c#L125)은 NEVER와 AUTO_NEVER를 같은 sleep 금지 predicate로 검사하고, ALLOWED/AUTO_ALLOWED는 같은 나머지 경로다. [pinned MJWarp sleep.py290–292](https://github.com/google-deepmind/mujoco_warp/blob/57b4692f4d3cdf4d27d916b4b8c4759ba36e9148/mujoco_warp/_src/sleep.py#L290)은 AUTO_NEVER만 검사한다. 따라서 컴파일 이후 NEVER→AUTO_NEVER, ALLOWED→AUTO_ALLOWED를 정확히 옮기는 별도 호환 adapter를 시험한다. INIT는 초기화 의미가 따로 있어 계속 거부한다. 설치된 pinned package 전체에서 tree_sleep_policy의 실행 읽기는 이 predicate뿐임을 grep으로 확인했다(io의 admission/types/test 제외). package 자체나 버전은 바꾸지 않는다. [공식 body sleep](https://mujoco.readthedocs.io/en/latest/XMLreference.html#body-sleep)의 자동/명시 override 설명을 함께 읽었다. 이 근거는 작은 후보의 검증 시작점이며 실제 성공/속도/초기 sleep 상태는 새 실행에서 따로 확인한다.
+
+
+compact 수치 기록: pinned io.py1791–1797은 compact convergence tolerance를 `max(C tolerance,1e-6) * nv/nvmax_pad`로 따로 초기화한다. 따라서 wm.opt.tolerance만 보고 compact도1e-8이라고 해석하지 않도록 실제 `ctol`, `cls_tol`, `nvmax_pad`를 저장한다. 물리·task Score를 새로 맞추는 상수는 넣지 않았으며 source/no-sleep/compact 결과를 합산하지 않는다.
