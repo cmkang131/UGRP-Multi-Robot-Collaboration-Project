@@ -86,6 +86,8 @@ class Owner:
                 or plan['item_id']!='cyan_1' or plan['robot_id']!='r1'):
             raise ValueError('rl1b short same-model cohort is S1 cyan_1 r1 only')
         scene=make_scene({**plan,'end_color_scene':'off'})
+        # Exact frozen ACT15 reset: sampled poses override scene defaults.
+        scene.config['setup_only']['spawns'].update(plan['spawns'])
         world=build_world(scene,drive_profile=PROFILE,seed=plan['seed'],width=640,height=480,
             render=False,warehouse_layout=scene.engine_layout,warehouse_cargo_ids=None,
             roller_collision='mesh',idle_robot_contacts='off')
