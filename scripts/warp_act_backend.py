@@ -60,7 +60,7 @@ class Transport:
     def __init__(self, host, source_sha, backend, out, *, native_sleep_policy_compat_v1=False):
         self.host, self.source_sha, self.backend, self.out = host, source_sha, backend, Path(out)
         self.seconds = defaultdict(float)
-        self.samples = []
+        self.samples = defaultdict(list)
         self.rgb = []
         self.contact_forces = None
         self.prototypes={}
@@ -116,8 +116,7 @@ class Transport:
         return self.rgb[index]
 
     def record_state(self, index, tick, world):
-        if index == 0:
-            self.samples.append((tick, world.data.qpos.copy(), world.data.qvel.copy()))
+        self.samples[index].append((tick, world.data.qpos.copy(), world.data.qvel.copy()))
 
     def forces(self, index, model, data, targets, fingers):
         if not self.native_render:
@@ -134,10 +133,11 @@ class Transport:
         return result
 
     def save_states(self):
-        if self.samples:
-            np.savez_compressed(self.out/'world0-states.npz',
-                ticks=[s[0] for s in self.samples], qpos=[s[1] for s in self.samples],
-                qvel=[s[2] for s in self.samples])
+        for index,samples in self.samples.items():
+            path=self.out/f'world-{index:03d}-states.npz'
+            np.savez_compressed(path,ticks=[s[0] for s in samples],qpos=[s[1] for s in samples],qvel=[s[2] for s in samples])
+            if index==0:
+                (self.out/'world0-states.npz').write_bytes(path.read_bytes())
 
 
 class CTransport(Transport):
@@ -303,6 +303,14 @@ class WarpTransport(Transport):
             from warp_act_visibility import BatchVisibility
             self.visibility=BatchVisibility(self,contexts)
         self.sync_render(contexts)
+        if getattr(self,'numpy_teacher_v1',False):
+            rows=[]
+            for i,c in enumerate(contexts):
+                reference=c['visibility_reference']()
+                gpu=self.visibility.region_visible(i,c['gids'])
+                rows.append(dict(world=i,c_reference=list(reference),gpu=list(gpu),exact=reference==gpu))
+            (self.out/'visibility-initial-audit.json').write_text(json.dumps(dict(rows=rows,
+                exact=sum(r['exact'] for r in rows),N=len(rows),scope='evaluation-only initial C/GPU ray definition check; no scalar result enters teacher; no C physics equivalence gate'),indent=2)+'\n')
 
     def copy_initial_state(self, contexts):
         wp=self.wp

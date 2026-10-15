@@ -287,7 +287,8 @@ def episode(plan, out, *, hooks, world_index, execution_host, profile='off', hid
         tick = 0
         yield {'kind': 'setup', 'world': world, 'port': port, 'gids': gids,
                'finger_ids': finger_ids, 'body_name': body_name, 'origin': origin,
-               'visibility_gids':sorted(visibility_gids)}
+               'visibility_gids':sorted(visibility_gids),
+               'visibility_reference':lambda: BandVisibility.region_visible(eyes,data,rid,gids)}
         while float(data.time)-origin < cap_s-1e-8:
             if (out/'SUPERVISOR_STOP.json').exists():
                 raise KeyboardInterrupt('supervisor stopped this run')
