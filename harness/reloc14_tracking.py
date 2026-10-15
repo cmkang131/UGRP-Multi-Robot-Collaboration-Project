@@ -25,6 +25,21 @@ def track(reg, row, observation, own_pose, t):
     evidence.frames=[dict(t=t,pose=np.asarray(own_pose),lines=[f for f in observation['features'] if f['kind']=='floor_line'])]
     _,geometry=evidence.supported(reg.pf.landmark_map.edges,row['pose'],own_pose,cov)
     supported=geometry['supported_floor_lines']>0
+    # R2 t39.3 had a valid wall segment and no floor-color boundary. AMCL's
+    # SAME wall likelihood field supplies a partial constraint in that view.
+    # Reuse sigma_hit=.2m and NIS radius 3 (9) from the pinned field/R7 models.
+    from harness.self_map_csm import sample_segments
+    from harness.natural_floor_slam import transform
+    from harness.own_map_amcl_vendor.field import PARAMS
+    points=sample_segments(observation.get('segments',[]))
+    wall_support=0
+    if len(points):
+        distances=reg.pf.field.distances(transform(points,row['pose']))
+        variance=np.linalg.eigvalsh(cov[:2,:2]).max()+PARAMS['sigma_hit_m']**2
+        wall_support=int(np.count_nonzero(distances**2<=9*variance))
+    geometry['supported_wall_field_points']=wall_support
+    geometry['tracking_partial_observation']=True
+    supported=supported or wall_support>0
     good=(row['resolved'] and row['cluster']['mass']>=.9 and
         np.linalg.eigvalsh(cov[:2,:2]).max()<=.15**2 and cov[2,2]<=math.radians(5)**2 and supported)
     # Fresh invalid evidence causes LOST, never a renewed global confirmation

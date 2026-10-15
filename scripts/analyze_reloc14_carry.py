@@ -5,11 +5,18 @@ import json
 import math
 from pathlib import Path
 from scripts.analyze_reloc13_carry import analyze as previous
-from scripts.analyze_reloc11_selfmap import rows
+from scripts.analyze_reloc11_selfmap import rows, obj
 
 
 def analyze(folder):
     report=previous(folder);raw=folder/'raw'
+    stop=obj(folder/'SUPERVISOR_STOP.json')
+    if stop:
+        report['supervisor_stop']=stop
+        report['termination_category']='supervisor_stop'
+        report['termination_reason']=stop.get('reason') or 'supervisor_stop_requires_review'
+    elif not report.get('termination_reason'):
+        report['termination_reason']='running' if report['status']=='running' else 'unclassified_requires_review'
     truth={round(r['t'],5):r for r in rows(raw/'eval-only.jsonl')}
     values=[]
     for r in rows(raw/'teacher-commands.jsonl'):

@@ -1,0 +1,5415 @@
+{
+  "schema": "ugrp.reloc14.summary.v1",
+  "analysis_host": "gcp1",
+  "runs": [
+    {
+      "run": "reloc14-r2-carry-texture-93266-1e407968",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc14-r2-carry-texture-93266-1e407968/raw",
+      "source_sha": "1e4079683a42fb1790d63c838718718ed223581b",
+      "status": "HOST_ERROR",
+      "termination_category": null,
+      "termination_reason": "loaded_or_unknown_load_not_qualified",
+      "sim_s": null,
+      "wall_s": 124.25585723200038,
+      "first30": {
+        "elapsed_sim_s": 30.00000000005842,
+        "wall_elapsed_s": 82.79455960199994,
+        "wall_per_sim": 2.7598186619279574,
+        "top_capture": false
+      },
+      "physical_success": null,
+      "physical_lifted": null,
+      "physical_evaluation": {},
+      "funnel": {
+        "pickup_seen": 1,
+        "aligned": 1,
+        "lifted_controller": 0,
+        "zone_place_view": 0,
+        "release": 0
+      },
+      "phase_frames": {
+        "fold": 6,
+        "pickup_search": 57,
+        "approach": 272,
+        "align": 18,
+        "hover": 9,
+        "descent": 16,
+        "close": 11,
+        "lift": 15,
+        "lift_settle": 21
+      },
+      "phase_transitions": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold",
+          "map_pose": {
+            "t": 1.3000000000000178,
+            "pose_estimate": [
+              -0.7,
+              -0.85,
+              0.0
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.260783545418116,
+              0.260783545418116,
+              0.07893053035202198
+            ],
+            "estimate_t": 1.3000000000000178,
+            "last_rgb_fix_t": null,
+            "rgb_fix_age_s": null,
+            "command_only_age_s": 0.0,
+            "rgb_fixes": 0,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 1.3000000000000178,
+              "sha256": "d36c50cb3f058ded2b6f0e4d230c1bb8c6b169ef2f810b0533f12aeac4343f05"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "task_instruction_prior",
+              "sensor_updates": 0
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": null,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.0,
+            "issued_turn_since_fix_rad": 0.0,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 1.3000000000000178
+          }
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search",
+          "map_pose": {
+            "t": 1.9000000000002182,
+            "pose_estimate": [
+              -0.6991475794958454,
+              -0.850700644924556,
+              0.0003121578256020108
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.260783545418116,
+              0.260783545418116,
+              0.07893053035202198
+            ],
+            "estimate_t": 1.9000000000002182,
+            "last_rgb_fix_t": 1.600000000000118,
+            "rgb_fix_age_s": 0.3000000000001002,
+            "command_only_age_s": 0.3000000000001002,
+            "rgb_fixes": 1,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 1.9000000000002182,
+              "sha256": "2d2eba3e56fbd842392da2646e6a660a6ae947244898203f336a9680ea8c7805"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                -0.6991475794958454,
+                -0.850700644924556,
+                0.000312157825601882
+              ],
+              "covariance": [
+                [
+                  0.0026395193375388015,
+                  1.822624962136211e-05,
+                  0.0
+                ],
+                [
+                  1.8226249621362136e-05,
+                  0.0024525779517088307,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0026121251974044
+                ]
+              ],
+              "cluster": {
+                "clusters": 1,
+                "mass": 0.9999999999999993,
+                "particles": 2000,
+                "representative": 0
+              },
+              "sensor_updates": 1,
+              "feature_N": 2,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": true
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.1000000000000334,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.0,
+            "issued_turn_since_fix_rad": 0.0,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 1.600000000000118
+          }
+        },
+        {
+          "t": 7.600000000003543,
+          "phase": "approach",
+          "map_pose": {
+            "t": 7.600000000003543,
+            "pose_estimate": [
+              -0.6998025748871483,
+              -0.8240302456839742,
+              0.027982772206494033
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.260783545418116,
+              0.260783545418116,
+              0.07893053035202198
+            ],
+            "estimate_t": 7.600000000003543,
+            "last_rgb_fix_t": 5.2000000000006095,
+            "rgb_fix_age_s": 2.400000000002933,
+            "command_only_age_s": 2.400000000002933,
+            "rgb_fixes": 4,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 7.600000000003543,
+              "sha256": "a5b87d0a017c19eb70cb6e944b16224e40157c7026135bf602e5a315d055e4bb"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                -0.6998025748871483,
+                -0.8240302456839742,
+                0.02798277220649411
+              ],
+              "covariance": [
+                [
+                  0.002809790987269053,
+                  0.00010484316581447836,
+                  0.0
+                ],
+                [
+                  0.00010484316581447834,
+                  0.0016747718148952654,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0021574174581221804
+                ]
+              ],
+              "cluster": {
+                "clusters": 1,
+                "mass": 1.0,
+                "particles": 2000,
+                "representative": 7
+              },
+              "sensor_updates": 4,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": false
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.10000000000012221,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.0,
+            "issued_turn_since_fix_rad": 0.0,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 5.2000000000006095
+          }
+        },
+        {
+          "t": 34.80000000007515,
+          "phase": "align",
+          "map_pose": {
+            "t": 34.80000000007515,
+            "pose_estimate": [
+              0.08856873561469303,
+              1.0977906898215335,
+              0.19877777697763532
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.37339744511282125,
+              0.37339744511282125,
+              0.13067574405331844
+            ],
+            "estimate_t": 34.80000000007515,
+            "last_rgb_fix_t": 21.00000000000926,
+            "rgb_fix_age_s": 13.800000000065893,
+            "command_only_age_s": 13.800000000065893,
+            "rgb_fixes": 9,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 34.80000000007515,
+              "sha256": "bca55ce23c29e5dc49e76fc5252c5a3f72648f24e84dfd9cc4b7439799652129"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                4.278198506412793,
+                -0.6599569592971892,
+                1.391721856476446
+              ],
+              "covariance": [
+                [
+                  0.0024751234421199106,
+                  -0.00431713444136523,
+                  0.0
+                ],
+                [
+                  -0.00431713444136523,
+                  0.007999072731105377,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.00593137138586188
+                ]
+              ],
+              "cluster": {
+                "clusters": 2,
+                "mass": 0.9964999999999994,
+                "particles": 1993,
+                "representative": 0
+              },
+              "sensor_updates": 15,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": true
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.10000000000047748,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 1.1313677888532656,
+            "issued_turn_since_fix_rad": 0.14403221066094724,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 21.00000000000926
+          }
+        },
+        {
+          "t": 36.600000000083746,
+          "phase": "hover",
+          "map_pose": {
+            "t": 36.600000000083746,
+            "pose_estimate": [
+              0.076276598404904,
+              1.1888953345970206,
+              0.19877777697763532
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.3831201498156612,
+              0.3831201498156612,
+              0.13067574405331844
+            ],
+            "estimate_t": 36.600000000083746,
+            "last_rgb_fix_t": 21.00000000000926,
+            "rgb_fix_age_s": 15.600000000074488,
+            "command_only_age_s": 15.600000000074488,
+            "rgb_fixes": 9,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 36.600000000083746,
+              "sha256": "b82ca082c0b41fca6b5aa92c39e0890a94dd35c78982c5a0c256352b5d5a8e78"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                4.188920264972661,
+                -0.6377684114043577,
+                1.3919064756561244
+              ],
+              "covariance": [
+                [
+                  0.0019888428132172477,
+                  -0.004000405474035427,
+                  0.0
+                ],
+                [
+                  -0.004000405474035427,
+                  0.008751600237775074,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0059490137799393375
+                ]
+              ],
+              "cluster": {
+                "clusters": 2,
+                "mass": 0.9964999999999994,
+                "particles": 1993,
+                "representative": 0
+              },
+              "sensor_updates": 15,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": true
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.10000000000047748,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 1.2290462721590212,
+            "issued_turn_since_fix_rad": 0.14403221066094724,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 21.00000000000926
+          }
+        },
+        {
+          "t": 37.50000000008804,
+          "phase": "descent",
+          "map_pose": {
+            "t": 37.50000000008804,
+            "pose_estimate": [
+              0.076276598404904,
+              1.1888953345970206,
+              0.19877777697763532
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.3831201498156612,
+              0.3831201498156612,
+              0.13067574405331844
+            ],
+            "estimate_t": 37.50000000008804,
+            "last_rgb_fix_t": 21.00000000000926,
+            "rgb_fix_age_s": 16.500000000078785,
+            "command_only_age_s": 16.500000000078785,
+            "rgb_fixes": 9,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 37.50000000008804,
+              "sha256": "89114cc72c1c5deaf320dd063669f0dbeb545b6805cb8afd1db863694645388b"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                4.188920264972661,
+                -0.6377684114043577,
+                1.3919064756561244
+              ],
+              "covariance": [
+                [
+                  0.0019888428132172477,
+                  -0.004000405474035427,
+                  0.0
+                ],
+                [
+                  -0.004000405474035427,
+                  0.008751600237775074,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0059490137799393375
+                ]
+              ],
+              "cluster": {
+                "clusters": 2,
+                "mass": 0.9964999999999994,
+                "particles": 1993,
+                "representative": 0
+              },
+              "sensor_updates": 15,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": false
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.10000000000047748,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 1.2290462721590212,
+            "issued_turn_since_fix_rad": 0.14403221066094724,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 21.00000000000926
+          }
+        },
+        {
+          "t": 39.10000000009568,
+          "phase": "close",
+          "map_pose": {
+            "t": 39.10000000009568,
+            "pose_estimate": [
+              0.076276598404904,
+              1.1888953345970206,
+              0.19877777697763532
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.3831201498156612,
+              0.3831201498156612,
+              0.13067574405331844
+            ],
+            "estimate_t": 39.10000000009568,
+            "last_rgb_fix_t": 21.00000000000926,
+            "rgb_fix_age_s": 18.100000000086425,
+            "command_only_age_s": 18.100000000086425,
+            "rgb_fixes": 9,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 39.10000000009568,
+              "sha256": "e9a269e27198a71f45bd663ab3b0968b315824d90b4948b5c643505f8cf23cff"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                4.188920264972661,
+                -0.6377684114043577,
+                1.3919064756561244
+              ],
+              "covariance": [
+                [
+                  0.0019888428132172477,
+                  -0.004000405474035427,
+                  0.0
+                ],
+                [
+                  -0.004000405474035427,
+                  0.008751600237775074,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0059490137799393375
+                ]
+              ],
+              "cluster": {
+                "clusters": 2,
+                "mass": 0.9964999999999994,
+                "particles": 1993,
+                "representative": 0
+              },
+              "sensor_updates": 15,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": false
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.10000000000047748,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 1.2290462721590212,
+            "issued_turn_since_fix_rad": 0.14403221066094724,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 21.00000000000926
+          }
+        },
+        {
+          "t": 40.200000000100935,
+          "phase": "lift",
+          "map_pose": {
+            "t": 40.200000000100935,
+            "pose_estimate": [
+              0.076276598404904,
+              1.1888953345970206,
+              0.19877777697763532
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.3831201498156612,
+              0.3831201498156612,
+              0.13067574405331844
+            ],
+            "estimate_t": 40.200000000100935,
+            "last_rgb_fix_t": 21.00000000000926,
+            "rgb_fix_age_s": 19.200000000091677,
+            "command_only_age_s": 19.200000000091677,
+            "rgb_fixes": 9,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 40.200000000100935,
+              "sha256": "118ef418e5497b3f08a1b470941f96f789758fb008c7cb488c5f37d8c2918384"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                4.188920264972661,
+                -0.6377684114043577,
+                1.3919064756561244
+              ],
+              "covariance": [
+                [
+                  0.0019888428132172477,
+                  -0.004000405474035427,
+                  0.0
+                ],
+                [
+                  -0.004000405474035427,
+                  0.008751600237775074,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0059490137799393375
+                ]
+              ],
+              "cluster": {
+                "clusters": 2,
+                "mass": 0.9964999999999994,
+                "particles": 1993,
+                "representative": 0
+              },
+              "sensor_updates": 15,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": false
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.10000000000047748,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 1.2290462721590212,
+            "issued_turn_since_fix_rad": 0.14403221066094724,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 21.00000000000926
+          }
+        },
+        {
+          "t": 41.7000000001081,
+          "phase": "lift_settle",
+          "map_pose": {
+            "t": 41.7000000001081,
+            "pose_estimate": [
+              0.076276598404904,
+              1.1888953345970206,
+              0.19877777697763532
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.3831201498156612,
+              0.3831201498156612,
+              0.13067574405331844
+            ],
+            "estimate_t": 41.7000000001081,
+            "last_rgb_fix_t": 21.00000000000926,
+            "rgb_fix_age_s": 20.70000000009884,
+            "command_only_age_s": 20.70000000009884,
+            "rgb_fixes": 9,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 41.7000000001081,
+              "sha256": "189fcd7c85def8c3bbc7ee060ace6d8969c75297bba54aa23097916c089ad52c"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                4.188920264972661,
+                -0.6377684114043577,
+                1.3919064756561244
+              ],
+              "covariance": [
+                [
+                  0.0019888428132172477,
+                  -0.004000405474035427,
+                  0.0
+                ],
+                [
+                  -0.004000405474035427,
+                  0.008751600237775074,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0059490137799393375
+                ]
+              ],
+              "cluster": {
+                "clusters": 2,
+                "mass": 0.9964999999999994,
+                "particles": 1993,
+                "representative": 0
+              },
+              "sensor_updates": 15,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": false
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.10000000000047748,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 1.2290462721590212,
+            "issued_turn_since_fix_rad": 0.14403221066094724,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 21.00000000000926
+          }
+        }
+      ],
+      "rejections": [],
+      "carry": {},
+      "teacher_result": null,
+      "teacher_events": null,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 84,
+        "blocked_held": 47,
+        "measurements_by_phase": {
+          "pickup_search": 1,
+          "approach": 272,
+          "align": 18,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "visibility": {
+        "max_invisible_s": 6.7000000000319915,
+        "by_phase": {
+          "start": {
+            "seconds": 0.1000000000000334,
+            "visible_s": 0.0,
+            "max_invisible_s": 0.1000000000000334,
+            "N": 1,
+            "visible_ratio": 0.0
+          },
+          "fold": {
+            "seconds": 0.6000000000002002,
+            "visible_s": 0.0,
+            "max_invisible_s": 0.6000000000002002,
+            "N": 6,
+            "visible_ratio": 0.0
+          },
+          "pickup_search": {
+            "seconds": 5.7000000000034134,
+            "visible_s": 0.10000000000012221,
+            "max_invisible_s": 5.600000000003291,
+            "N": 57,
+            "visible_ratio": 0.017543859649133742
+          },
+          "approach": {
+            "seconds": 27.200000000071967,
+            "visible_s": 27.200000000071967,
+            "max_invisible_s": 0.0,
+            "N": 272,
+            "visible_ratio": 1.0
+          },
+          "align": {
+            "seconds": 1.8000000000085947,
+            "visible_s": 1.8000000000085947,
+            "max_invisible_s": 0.0,
+            "N": 18,
+            "visible_ratio": 1.0
+          },
+          "hover": {
+            "seconds": 0.9000000000042974,
+            "visible_s": 0.40000000000190994,
+            "max_invisible_s": 0.5000000000023874,
+            "N": 9,
+            "visible_ratio": 0.4444444444444444
+          },
+          "descent": {
+            "seconds": 1.6000000000076398,
+            "visible_s": 0.0,
+            "max_invisible_s": 1.6000000000076398,
+            "N": 16,
+            "visible_ratio": 0.0
+          },
+          "close": {
+            "seconds": 1.1000000000052523,
+            "visible_s": 0.0,
+            "max_invisible_s": 1.1000000000052523,
+            "N": 11,
+            "visible_ratio": 0.0
+          },
+          "lift": {
+            "seconds": 1.5000000000071623,
+            "visible_s": 0.0,
+            "max_invisible_s": 1.5000000000071623,
+            "N": 15,
+            "visible_ratio": 0.0
+          },
+          "lift_settle": {
+            "seconds": 2.0000000000095497,
+            "visible_s": 0.0,
+            "max_invisible_s": 2.0000000000095497,
+            "N": 20,
+            "visible_ratio": 0.0
+          }
+        }
+      },
+      "pose_error": {
+        "N": 425,
+        "xy_m": {
+          "N": 425,
+          "min": 0.011582084673787827,
+          "p50": 0.21521667335173622,
+          "p90": 0.45404514910674715,
+          "p95": 0.4550082401692193,
+          "p99": 0.4550118896889717,
+          "max": 0.4550121038592289
+        },
+        "yaw_deg": {
+          "N": 425,
+          "min": 0.024475133601447544,
+          "p50": 4.214243605237421,
+          "p90": 12.926108872989015,
+          "p95": 13.128963134000742,
+          "p99": 13.13401946472716,
+          "max": 13.329132174514962
+        },
+        "true_yaw_over20_N": 0,
+        "trigger_recall": null,
+        "max_untriggered_yaw_deg": 13.329132174514962,
+        "missed_over20_by_phase": {}
+      },
+      "views": [],
+      "view_funnel": {},
+      "view_rejections": {},
+      "sha256": {
+        "raw/result.json": "ab9b3f0699a0e74eb7bf6c931929bb9a3c1c576fa6818ca2507fba07431c74ea",
+        "raw/teacher-commands.jsonl.zst": "d7465b6e9e8f5ba731b0ca3fb3ef0fccae600ca989584a52105519038d21a82e",
+        "raw/eval-only.jsonl.zst": "747281f5b082c01135a21c83dce16c58aa5d42a33c73825a8c6124e087091445",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      },
+      "v7_scene_audit": {
+        "heavy_crate_bodies": [],
+        "static_fixture_crates": [
+          "warehouse_wood_crate"
+        ],
+        "scenario_id": "s8_mixed_tiers_v7"
+      }
+    },
+    {
+      "run": "reloc14-r2-carry-texture-93315-1e407968",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc14-r2-carry-texture-93315-1e407968/raw",
+      "source_sha": "1e4079683a42fb1790d63c838718718ed223581b",
+      "status": "HOST_ERROR",
+      "termination_category": null,
+      "termination_reason": "loaded_or_unknown_load_not_qualified",
+      "sim_s": null,
+      "wall_s": 50.88828118299989,
+      "first30": {},
+      "physical_success": null,
+      "physical_lifted": null,
+      "physical_evaluation": {},
+      "funnel": {
+        "pickup_seen": 1,
+        "aligned": 1,
+        "lifted_controller": 0,
+        "zone_place_view": 0,
+        "release": 0
+      },
+      "phase_frames": {
+        "fold": 6,
+        "pickup_search": 1,
+        "approach": 60,
+        "align": 16,
+        "hover": 10,
+        "descent": 16,
+        "close": 12,
+        "lift": 16,
+        "lift_settle": 20
+      },
+      "phase_transitions": [
+        {
+          "t": 1.3000000000000178,
+          "phase": "fold",
+          "map_pose": {
+            "t": 1.3000000000000178,
+            "pose_estimate": [
+              -0.7,
+              -0.85,
+              0.0
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.260783545418116,
+              0.260783545418116,
+              0.07893053035202198
+            ],
+            "estimate_t": 1.3000000000000178,
+            "last_rgb_fix_t": null,
+            "rgb_fix_age_s": null,
+            "command_only_age_s": 0.0,
+            "rgb_fixes": 0,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 1.3000000000000178,
+              "sha256": "22355f797b2c35c0bf61b00c7e741dc1b56bde543621f126369c91089bbf2dc6"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "task_instruction_prior",
+              "sensor_updates": 0
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": null,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.0,
+            "issued_turn_since_fix_rad": 0.0,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 1.3000000000000178
+          }
+        },
+        {
+          "t": 1.9000000000002182,
+          "phase": "pickup_search",
+          "map_pose": {
+            "t": 1.9000000000002182,
+            "pose_estimate": [
+              -0.6991475794958454,
+              -0.850700644924556,
+              0.0003121578256020108
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.260783545418116,
+              0.260783545418116,
+              0.07893053035202198
+            ],
+            "estimate_t": 1.9000000000002182,
+            "last_rgb_fix_t": 1.600000000000118,
+            "rgb_fix_age_s": 0.3000000000001002,
+            "command_only_age_s": 0.3000000000001002,
+            "rgb_fixes": 1,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 1.9000000000002182,
+              "sha256": "a333d82c532c4fbd7c243be9dbf272acca2815599d45831add1f02d5b69d1a5d"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                -0.6991475794958454,
+                -0.850700644924556,
+                0.000312157825601882
+              ],
+              "covariance": [
+                [
+                  0.0026395193375388015,
+                  1.822624962136211e-05,
+                  0.0
+                ],
+                [
+                  1.8226249621362136e-05,
+                  0.0024525779517088307,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0026121251974044
+                ]
+              ],
+              "cluster": {
+                "clusters": 1,
+                "mass": 0.9999999999999993,
+                "particles": 2000,
+                "representative": 0
+              },
+              "sensor_updates": 1,
+              "feature_N": 2,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": true
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.1000000000000334,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.0,
+            "issued_turn_since_fix_rad": 0.0,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 1.600000000000118
+          }
+        },
+        {
+          "t": 2.0000000000002514,
+          "phase": "approach",
+          "map_pose": {
+            "t": 2.0000000000002514,
+            "pose_estimate": [
+              -0.6991475794958454,
+              -0.850700644924556,
+              0.0003121578256020108
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.260783545418116,
+              0.260783545418116,
+              0.07893053035202198
+            ],
+            "estimate_t": 2.0000000000002514,
+            "last_rgb_fix_t": 1.600000000000118,
+            "rgb_fix_age_s": 0.40000000000013336,
+            "command_only_age_s": 0.40000000000013336,
+            "rgb_fixes": 1,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 2.0000000000002514,
+              "sha256": "aa1952044d891e1fbb470f8574f03510b20516ff716db06f5f7074a911189432"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                -0.6991475794958454,
+                -0.850700644924556,
+                0.000312157825601882
+              ],
+              "covariance": [
+                [
+                  0.0026395193375388015,
+                  1.822624962136211e-05,
+                  0.0
+                ],
+                [
+                  1.8226249621362136e-05,
+                  0.0024525779517088307,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0026121251974044
+                ]
+              ],
+              "cluster": {
+                "clusters": 1,
+                "mass": 0.9999999999999993,
+                "particles": 2000,
+                "representative": 0
+              },
+              "sensor_updates": 1,
+              "feature_N": 3,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": true
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.10000000000003317,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.0,
+            "issued_turn_since_fix_rad": 0.0,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 1.600000000000118
+          }
+        },
+        {
+          "t": 8.00000000000403,
+          "phase": "align",
+          "map_pose": {
+            "t": 8.00000000000403,
+            "pose_estimate": [
+              -0.0993553323576061,
+              -0.8512748347519613,
+              -0.006391511781822956
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.27089896731990337,
+              0.27089896731990337,
+              0.07970873008065202
+            ],
+            "estimate_t": 8.00000000000403,
+            "last_rgb_fix_t": 7.000000000002809,
+            "rgb_fix_age_s": 1.0000000000012212,
+            "command_only_age_s": 1.0000000000012212,
+            "rgb_fixes": 3,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 8.00000000000403,
+              "sha256": "89f26fb4caf94e320fc4a4441f029ec4d5b78f8067f32a4c06cf212461943cdc"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                -0.09953783382534907,
+                -0.8512604135714309,
+                -0.006425555349753608
+              ],
+              "covariance": [
+                [
+                  0.002707342643847282,
+                  3.990965094438244e-05,
+                  0.0
+                ],
+                [
+                  3.990965094438244e-05,
+                  0.0034828446806994856,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0030976186040300503
+                ]
+              ],
+              "cluster": {
+                "clusters": 1,
+                "mass": 0.9999999999999993,
+                "particles": 2000,
+                "representative": 0
+              },
+              "sensor_updates": 3,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": true
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.10000000000012133,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.10162388960304454,
+            "issued_turn_since_fix_rad": 0.002166110046377613,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 7.000000000002809
+          }
+        },
+        {
+          "t": 9.600000000000302,
+          "phase": "hover",
+          "map_pose": {
+            "t": 9.600000000000302,
+            "pose_estimate": [
+              -0.01724768281733015,
+              -0.8458590464587415,
+              -0.006391511781822956
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.2796594736598401,
+              0.2796594736598401,
+              0.07970873008065202
+            ],
+            "estimate_t": 9.600000000000302,
+            "last_rgb_fix_t": 7.000000000002809,
+            "rgb_fix_age_s": 2.5999999999974923,
+            "command_only_age_s": 2.5999999999974923,
+            "rgb_fixes": 3,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 9.600000000000302,
+              "sha256": "8741f94611f0dccb72f778b2f9a4084c3d8d7affe2b82fc043d7e22d0f195480"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                -0.017602070510323184,
+                -0.8458386180313854,
+                -0.006609917789569522
+              ],
+              "covariance": [
+                [
+                  0.0027086554781981533,
+                  4.3388054879882145e-05,
+                  0.0
+                ],
+                [
+                  4.338805487988215e-05,
+                  0.0037771529581084712,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.00313999374614049
+                ]
+              ],
+              "cluster": {
+                "clusters": 1,
+                "mass": 0.9999999999999993,
+                "particles": 2000,
+                "representative": 0
+              },
+              "sensor_updates": 3,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": true
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.09999999999976694,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.18963571331147516,
+            "issued_turn_since_fix_rad": 0.002166110046377613,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 7.000000000002809
+          }
+        },
+        {
+          "t": 10.599999999997971,
+          "phase": "descent",
+          "map_pose": {
+            "t": 10.599999999997971,
+            "pose_estimate": [
+              -0.01724768281733015,
+              -0.8458590464587415,
+              -0.006391511781822956
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.2796594736598401,
+              0.2796594736598401,
+              0.07970873008065202
+            ],
+            "estimate_t": 10.599999999997971,
+            "last_rgb_fix_t": 7.000000000002809,
+            "rgb_fix_age_s": 3.5999999999951617,
+            "command_only_age_s": 3.5999999999951617,
+            "rgb_fixes": 3,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 10.599999999997971,
+              "sha256": "68185ce694270b052fc473c3c637b7a9d7c04c4a89e9eb9f0a40741e65559051"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                -0.017602070510323184,
+                -0.8458386180313854,
+                -0.006609917789569522
+              ],
+              "covariance": [
+                [
+                  0.0027086554781981533,
+                  4.3388054879882145e-05,
+                  0.0
+                ],
+                [
+                  4.338805487988215e-05,
+                  0.0037771529581084712,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.00313999374614049
+                ]
+              ],
+              "cluster": {
+                "clusters": 1,
+                "mass": 0.9999999999999993,
+                "particles": 2000,
+                "representative": 0
+              },
+              "sensor_updates": 3,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": false
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.09999999999976694,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.18963571331147516,
+            "issued_turn_since_fix_rad": 0.002166110046377613,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 7.000000000002809
+          }
+        },
+        {
+          "t": 12.199999999994242,
+          "phase": "close",
+          "map_pose": {
+            "t": 12.199999999994242,
+            "pose_estimate": [
+              -0.01724768281733015,
+              -0.8458590464587415,
+              -0.006391511781822956
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.2796594736598401,
+              0.2796594736598401,
+              0.07970873008065202
+            ],
+            "estimate_t": 12.199999999994242,
+            "last_rgb_fix_t": 7.000000000002809,
+            "rgb_fix_age_s": 5.199999999991433,
+            "command_only_age_s": 5.199999999991433,
+            "rgb_fixes": 3,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 12.199999999994242,
+              "sha256": "e26d772d643f0a6254c03a1aa47cb8cbc2e47485b97d50f863b479e5df5b727b"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                -0.017602070510323184,
+                -0.8458386180313854,
+                -0.006609917789569522
+              ],
+              "covariance": [
+                [
+                  0.0027086554781981533,
+                  4.3388054879882145e-05,
+                  0.0
+                ],
+                [
+                  4.338805487988215e-05,
+                  0.0037771529581084712,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.00313999374614049
+                ]
+              ],
+              "cluster": {
+                "clusters": 1,
+                "mass": 0.9999999999999993,
+                "particles": 2000,
+                "representative": 0
+              },
+              "sensor_updates": 3,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": false
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.09999999999976694,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.18963571331147516,
+            "issued_turn_since_fix_rad": 0.002166110046377613,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 7.000000000002809
+          }
+        },
+        {
+          "t": 13.399999999991445,
+          "phase": "lift",
+          "map_pose": {
+            "t": 13.399999999991445,
+            "pose_estimate": [
+              -0.01724768281733015,
+              -0.8458590464587415,
+              -0.006391511781822956
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.2796594736598401,
+              0.2796594736598401,
+              0.07970873008065202
+            ],
+            "estimate_t": 13.399999999991445,
+            "last_rgb_fix_t": 7.000000000002809,
+            "rgb_fix_age_s": 6.399999999988636,
+            "command_only_age_s": 6.399999999988636,
+            "rgb_fixes": 3,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 13.399999999991445,
+              "sha256": "f2b3692f36bceba722010523158bcd9fe7a66614ef19acfd50686fdb1b878848"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                -0.017602070510323184,
+                -0.8458386180313854,
+                -0.006609917789569522
+              ],
+              "covariance": [
+                [
+                  0.0027086554781981533,
+                  4.3388054879882145e-05,
+                  0.0
+                ],
+                [
+                  4.338805487988215e-05,
+                  0.0037771529581084712,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.00313999374614049
+                ]
+              ],
+              "cluster": {
+                "clusters": 1,
+                "mass": 0.9999999999999993,
+                "particles": 2000,
+                "representative": 0
+              },
+              "sensor_updates": 3,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": false
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.09999999999976694,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.18963571331147516,
+            "issued_turn_since_fix_rad": 0.002166110046377613,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 7.000000000002809
+          }
+        },
+        {
+          "t": 14.999999999987716,
+          "phase": "lift_settle",
+          "map_pose": {
+            "t": 14.999999999987716,
+            "pose_estimate": [
+              -0.01724768281733015,
+              -0.8458590464587415,
+              -0.006391511781822956
+            ],
+            "source": "task_start_then_issued_commands_own_rgb_relook",
+            "task_start": {
+              "profile": "solo_carry_task_start_v2",
+              "source": "fixed_task_description.static_pickup_west",
+              "pose_m_rad": [
+                -0.7,
+                -0.85,
+                0.0
+              ],
+              "sigma_xy_m": 0.05,
+              "sigma_yaw_rad": 0.05235987755982989,
+              "instruction": "Start 0.25 m west of the static pickup region, at its midline, facing east.",
+              "is_observation": false
+            },
+            "sigma_m_m_rad": [
+              0.2796594736598401,
+              0.2796594736598401,
+              0.07970873008065202
+            ],
+            "estimate_t": 14.999999999987716,
+            "last_rgb_fix_t": 7.000000000002809,
+            "rgb_fix_age_s": 7.999999999984907,
+            "command_only_age_s": 7.999999999984907,
+            "rgb_fixes": 3,
+            "own_frame": {
+              "camera": "r1/robot_cam",
+              "t": 14.999999999987716,
+              "sha256": "e65b2a88da2e75911c88197b91507a41ff4c23edb3749abb00239978f9248106"
+            },
+            "amcl_option": "off",
+            "localization_verified": false,
+            "motion_error": {
+              "translation_fraction": 0.25,
+              "rotation_fraction": 0.25,
+              "yaw_rad_per_m": 0.1,
+              "max_xy_m": 0.5,
+              "max_yaw_rad": 0.3490658503988659,
+              "basis": "uncalibrated conservative accumulated slip budget; carry4.md",
+              "profile": "correlated_command_error_v1"
+            },
+            "carry_pose_budget_recal_v1": false,
+            "reloc14_carry_budget_v1": true,
+            "reloc14_tracking": {
+              "state": "prediction_or_unresolved",
+              "updated": false,
+              "accepted": false,
+              "pose": [
+                -0.017602070510323184,
+                -0.8458386180313854,
+                -0.006609917789569522
+              ],
+              "covariance": [
+                [
+                  0.0027086554781981533,
+                  4.3388054879882145e-05,
+                  0.0
+                ],
+                [
+                  4.338805487988215e-05,
+                  0.0037771529581084712,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.00313999374614049
+                ]
+              ],
+              "cluster": {
+                "clusters": 1,
+                "mass": 0.9999999999999993,
+                "particles": 2000,
+                "representative": 0
+              },
+              "sensor_updates": 3,
+              "feature_N": 0,
+              "input": "own_rgb_static_geometry_issued_commands",
+              "budget_kind": "2000_particles_motion_gate",
+              "settled": false
+            },
+            "budget_limits": {
+              "yaw_rad": 0.3490658503988659,
+              "xy_m": 0.5
+            },
+            "last_dt_s": 0.09999999999976694,
+            "error_bound_semantics": "covariance sigma plus correlated command bias; not calibrated sigma",
+            "issued_distance_since_fix_m": 0.18963571331147516,
+            "issued_turn_since_fix_rad": 0.002166110046377613,
+            "uncertainty_calibrated": false,
+            "top_rgb_control_allowed": false,
+            "reloc10_rotation_calibration_v1": true,
+            "rotation_calibration": {
+              "schema": "ugrp.reloc10.rotation.v1",
+              "left_scale": 0.5865230029942908,
+              "right_scale": 0.6586960959874627,
+              "drive_model_sha256": "801e23200b6942d51345b2c13ddc6e8a322c2ceab240b6d23206579a19810720",
+              "residual_rotation_fraction": 0.4920507586142564,
+              "calibration_ids": [
+                "solo-carry-rotation-check-05e3e61f:90L",
+                "solo-carry-rotation-check-05e3e61f:180R"
+              ],
+              "validation_policy": "fresh 90L/90R/180L/180R, all ratios 0.9-1.1; holdout never fitted",
+              "sources": [
+                {
+                  "path": "/Users/changmin/projects/ugrp/outputs/gcp1-runs/solo-carry-rotation-check-05e3e61f/raw/result.json",
+                  "sha256": "d2dc09dbe000a7c812ede9cb947334f4d78e37e1a4c7ba3d5f3a64ea7ce62956"
+                }
+              ],
+              "scope": "pure equal-duration duty rotation; stopping tail included in fit; no online truth"
+            },
+            "rotation_error_fraction": 0.4920507586142564,
+            "drive_model_deadband_v1": true,
+            "drive_model": "shared v7 relay and confirmed damping",
+            "budget_epoch_t": 7.000000000002809
+          }
+        }
+      ],
+      "rejections": [],
+      "carry": {},
+      "teacher_result": null,
+      "teacher_events": null,
+      "input_audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "blocked_hidden": 22,
+        "blocked_held": 48,
+        "measurements_by_phase": {
+          "start": 1,
+          "fold": 6,
+          "pickup_search": 1,
+          "approach": 60,
+          "align": 16,
+          "hover": 4
+        },
+        "scope": "decision input boundary only; evaluation excluded"
+      },
+      "visibility": {
+        "max_invisible_s": 6.899999999991023,
+        "by_phase": {
+          "start": {
+            "seconds": 0.1000000000000334,
+            "visible_s": 0.1000000000000334,
+            "max_invisible_s": 0.0,
+            "N": 1,
+            "visible_ratio": 1.0
+          },
+          "fold": {
+            "seconds": 0.6000000000002002,
+            "visible_s": 0.6000000000002002,
+            "max_invisible_s": 0.0,
+            "N": 6,
+            "visible_ratio": 1.0
+          },
+          "pickup_search": {
+            "seconds": 0.09999999999994458,
+            "visible_s": 0.09999999999994458,
+            "max_invisible_s": 0.0,
+            "N": 1,
+            "visible_ratio": 1.0
+          },
+          "approach": {
+            "seconds": 6.000000000003602,
+            "visible_s": 6.000000000003602,
+            "max_invisible_s": 0.0,
+            "N": 60,
+            "visible_ratio": 1.0
+          },
+          "align": {
+            "seconds": 1.599999999996271,
+            "visible_s": 1.599999999996271,
+            "max_invisible_s": 0.0,
+            "N": 16,
+            "visible_ratio": 1.0
+          },
+          "hover": {
+            "seconds": 0.9999999999976694,
+            "visible_s": 0.39999999999906777,
+            "max_invisible_s": 0.5999999999986017,
+            "N": 10,
+            "visible_ratio": 0.4
+          },
+          "descent": {
+            "seconds": 1.599999999996271,
+            "visible_s": 0.0,
+            "max_invisible_s": 1.599999999996271,
+            "N": 16,
+            "visible_ratio": 0.0
+          },
+          "close": {
+            "seconds": 1.1999999999972033,
+            "visible_s": 0.0,
+            "max_invisible_s": 1.1999999999972033,
+            "N": 12,
+            "visible_ratio": 0.0
+          },
+          "lift": {
+            "seconds": 1.599999999996271,
+            "visible_s": 0.0,
+            "max_invisible_s": 1.599999999996271,
+            "N": 16,
+            "visible_ratio": 0.0
+          },
+          "lift_settle": {
+            "seconds": 1.9000000000026755,
+            "visible_s": 0.0,
+            "max_invisible_s": 1.9000000000026755,
+            "N": 19,
+            "visible_ratio": 0.0
+          }
+        }
+      },
+      "pose_error": {
+        "N": 157,
+        "xy_m": {
+          "N": 157,
+          "min": 0.008868150264923718,
+          "p50": 0.058639016432685744,
+          "p90": 0.06230296027273553,
+          "p95": 0.06232771733226816,
+          "p99": 0.06235149257420471,
+          "max": 0.06235694829275113
+        },
+        "yaw_deg": {
+          "N": 157,
+          "min": 0.06965174989264894,
+          "p50": 0.870354105683468,
+          "p90": 1.2887609782448866,
+          "p95": 1.2996480470296388,
+          "p99": 1.3055823338348485,
+          "max": 1.3097685310645621
+        },
+        "true_yaw_over20_N": 0,
+        "trigger_recall": null,
+        "max_untriggered_yaw_deg": 1.3097685310645621,
+        "missed_over20_by_phase": {}
+      },
+      "views": [],
+      "view_funnel": {},
+      "view_rejections": {},
+      "sha256": {
+        "raw/result.json": "ba70f56fd4c5b12d1e785bba903811f7b61a4d188c13e07a4fc686be0ebdf756",
+        "raw/teacher-commands.jsonl.zst": "361739fbed421d88b8d6df7e5f68d56944fcb256af5916b758b9dfe8047600ea",
+        "raw/eval-only.jsonl.zst": "7d2cc590c8cc77249137d9185de9f2caf720641fe02b8fdf9ec21535cf6b563e",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      },
+      "v7_scene_audit": {
+        "heavy_crate_bodies": [],
+        "static_fixture_crates": [
+          "warehouse_wood_crate"
+        ],
+        "scenario_id": "s7_pair_with_solo_v7"
+      }
+    },
+    {
+      "run": "reloc14-r2-selfmap-texture-93571-1e407968",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc14-r2-selfmap-texture-93571-1e407968/raw",
+      "source_sha": "1e4079683a42fb1790d63c838718718ed223581b",
+      "unit": "ordered trace frames; events separately counted; temporal correlation retained",
+      "funnel": {
+        "fresh_static_fix_independent": 12,
+        "frames": 221,
+        "frames_independent": 221,
+        "registered": 83,
+        "registered_independent": 83,
+        "execution_pose_delivered": 83,
+        "execution_pose_delivered_independent": 83,
+        "map_inserted": 52,
+        "map_inserted_independent": 178,
+        "control_drive_used": 8,
+        "control_drive_used_independent": 9
+      },
+      "rejections": [
+        {
+          "category": "registered:not_yet_registered",
+          "N": 138,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:active_reloc8",
+          "N": 43,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:registered_r7_unconfirmed",
+          "N": 31,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:registered_r7_unconfirmed",
+          "N": 31,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:select",
+          "N": 1,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "R7": {
+        "ambiguity_evaluated": 21,
+        "unique": 15,
+        "pf_agreement_reliable": 55,
+        "three_confirmations": 32,
+        "reject:no_sensor_update": 122,
+        "reject:pf_unresolved": 66,
+        "reject:xy_covariance": 19,
+        "reject:yaw_covariance": 26,
+        "reject:geometry": 96,
+        "reject:ambiguity_pending_upstream": 149,
+        "reject:geometric_ambiguity": 6
+      },
+      "R7_postreg_fresh": {
+        "fresh_frames": 20,
+        "accepted": 12,
+        "geometry": 8,
+        "ambiguity_pending_upstream": 8
+      },
+      "registration_events": [
+        {
+          "t": 28.9,
+          "xy_m": 0.03489058519625268,
+          "yaw_deg": 0.09715659840179158,
+          "false": false
+        }
+      ],
+      "false_registration_events": 0,
+      "registered_errors": {
+        "N": 83,
+        "bad_N": 0,
+        "xy_m": {
+          "N": 83,
+          "min": 0.03437863916718074,
+          "p50": 0.06280703984382147,
+          "p90": 0.08399773916941257,
+          "p95": 0.08421591595477702,
+          "p99": 0.08676555213716235,
+          "max": 0.0874379443026223
+        },
+        "yaw_deg": {
+          "N": 83,
+          "min": 0.07277352617636766,
+          "p50": 0.9696750897835632,
+          "p90": 2.2085510745796264,
+          "p95": 2.2973696093816063,
+          "p99": 2.438038491746594,
+          "max": 2.5295550085004184
+        }
+      },
+      "map_inserted_errors": {
+        "N": 52,
+        "bad_N": 0,
+        "within15cm5_N": 52,
+        "within30cm10_N": 52,
+        "xy_m": {
+          "N": 52,
+          "min": 0.03489058519625246,
+          "p50": 0.07819824454861647,
+          "p90": 0.08411275285985557,
+          "p95": 0.08631739328478528,
+          "p99": 0.08701974917532404,
+          "max": 0.0874379443026223
+        },
+        "yaw_deg": {
+          "N": 52,
+          "min": 0.07277352617636766,
+          "p50": 0.9263988990451014,
+          "p90": 1.352516814183896,
+          "p95": 1.8279391714583433,
+          "p99": 2.168727811882285,
+          "max": 2.169019529033225
+        }
+      },
+      "drive_errors": {
+        "N": 8,
+        "bad_N": 0,
+        "within15cm5_N": 8,
+        "within30cm10_N": 8,
+        "xy_m": {
+          "N": 8,
+          "min": 0.07785339428294366,
+          "p50": 0.0850707010871187,
+          "p90": 0.0868639509906443,
+          "p95": 0.0871509476466333,
+          "p99": 0.0873805449714245,
+          "max": 0.0874379443026223
+        },
+        "yaw_deg": {
+          "N": 8,
+          "min": 0.07277352617636766,
+          "p50": 0.7869648438167742,
+          "p90": 0.9560691415361576,
+          "p95": 0.9735818238269857,
+          "p99": 0.9875919696596481,
+          "max": 0.9910945061178138
+        }
+      },
+      "alternate_tolerances": {
+        "N": 83,
+        "bad_N": 0,
+        "within15cm5_N": 83,
+        "within30cm10_N": 83,
+        "xy_m": {
+          "N": 83,
+          "min": 0.03437863916718074,
+          "p50": 0.06280703984382147,
+          "p90": 0.08399773916941257,
+          "p95": 0.08421591595477702,
+          "p99": 0.08676555213716235,
+          "max": 0.0874379443026223
+        },
+        "yaw_deg": {
+          "N": 83,
+          "min": 0.07277352617636766,
+          "p50": 0.9696750897835632,
+          "p90": 2.2085510745796264,
+          "p95": 2.2973696093816063,
+          "p99": 2.438038491746594,
+          "max": 2.5295550085004184
+        }
+      },
+      "bad_errors": {
+        "N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        },
+        "classification": {}
+      },
+      "termination": {
+        "status": "HOST_ERROR",
+        "category": "selfmap4_relocalization_exhausted",
+        "reason": "selfmap4_relocalization_exhausted",
+        "elapsed_sim_s": 44.0,
+        "supervisor_stop": {},
+        "code_vs_host": "controller_budget_exhaustion"
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 151,
+        "stage": "active_reloc8",
+        "wall_per_sim": 4.288863660700008,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 80,
+          "command_only": 55,
+          "visual_relocalized": 13
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 151,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 8.035508408011992,
+            "plane_flow": 2.632726632002232,
+            "pf": 1.1640250170066793,
+            "registration": 27.48273430100562,
+            "feature_tracking": 3.2809698870005377,
+            "control": 67.02664975599055,
+            "evaluation": 0.16583807199731382,
+            "physics_advance": 48.25253926700316,
+            "feature_extract": 1.1166715229901456,
+            "structure_extract": 13.10635042800277
+          },
+          "calls": {
+            "capture": 151,
+            "plane_flow": 151,
+            "pf": 151,
+            "registration": 151,
+            "feature_tracking": 151,
+            "control": 151,
+            "evaluation": 151,
+            "physics_advance": 150,
+            "feature_extract": 139,
+            "structure_extract": 139
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 221,
+        "issued_command_records": 227,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "final_frame": {
+        "t": 45.3,
+        "stage": "stopped",
+        "executor_stop_reason": "selfmap4_relocalization_exhausted",
+        "insertion_blockers": [
+          "registered_r7_unconfirmed"
+        ],
+        "frontier_reason": "pose_or_revision_quarantined"
+      },
+      "sha256": {
+        "raw/result.json": "68abc9a294b8d5bf10c181b98d03e9fbe64d24b3b0eb45d49743a825ac5bf14a",
+        "raw/trace.jsonl.zst": "5a3fad0183cbdf1f7280bf0fd2437cc9b3d7b3e429626176117e8e4e2558f4a6",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      },
+      "drift": {
+        "all": {
+          "N": 83,
+          "xy_bad_N": 0,
+          "yaw_bad_N": 0,
+          "both_bad_N": 0,
+          "xy_m": {
+            "N": 83,
+            "min": 0.03437863916718074,
+            "p50": 0.06280703984382147,
+            "p90": 0.08399773916941257,
+            "p95": 0.08421591595477702,
+            "p99": 0.08676555213716235,
+            "max": 0.08743794430262232
+          },
+          "yaw_deg": {
+            "N": 83,
+            "min": 0.07277352617635494,
+            "p50": 0.9696750897835505,
+            "p90": 2.2085510745796366,
+            "p95": 2.2973696093816063,
+            "p99": 2.4380384917466045,
+            "max": 2.5295550085004184
+          },
+          "pf_xy_m": {
+            "N": 83,
+            "min": 0.03489058519625268,
+            "p50": 0.0624522354934193,
+            "p90": 0.08399773916941292,
+            "p95": 0.08421591595477738,
+            "p99": 0.08676555213716229,
+            "max": 0.0874379443026224
+          },
+          "pf_yaw_deg": {
+            "N": 83,
+            "min": 0.07277352617640583,
+            "p50": 0.9696750897834996,
+            "p90": 2.1990441013328605,
+            "p95": 2.396423906884621,
+            "p99": 2.5988676964260744,
+            "max": 2.60231252746484
+          }
+        },
+        "fixes": {
+          "N": 12,
+          "xy_bad_N": 0,
+          "yaw_bad_N": 0,
+          "both_bad_N": 0,
+          "xy_m": {
+            "N": 12,
+            "min": 0.03489058519625246,
+            "p50": 0.07435288683569562,
+            "p90": 0.08589092722407171,
+            "p95": 0.08635093452894062,
+            "p99": 0.08656454999133967,
+            "max": 0.08661795385693943
+          },
+          "yaw_deg": {
+            "N": 12,
+            "min": 0.09715659840181702,
+            "p50": 0.6906409012900968,
+            "p90": 1.740269730869422,
+            "p95": 1.9394409785957634,
+            "p99": 2.1231038189457276,
+            "max": 2.169019529033218
+          },
+          "pf_xy_m": {
+            "N": 12,
+            "min": 0.03489058519625268,
+            "p50": 0.0743528868356957,
+            "p90": 0.0858909272240718,
+            "p95": 0.08635093452894063,
+            "p99": 0.08656454999133961,
+            "max": 0.08661795385693935
+          },
+          "pf_yaw_deg": {
+            "N": 12,
+            "min": 0.09715659840179158,
+            "p50": 0.690640901290084,
+            "p90": 1.740269730869445,
+            "p95": 1.939440978595766,
+            "p99": 2.1231038189457077,
+            "max": 2.169019529033193
+          }
+        },
+        "first_registration": {
+          "N": 1,
+          "xy_bad_N": 0,
+          "yaw_bad_N": 0,
+          "both_bad_N": 0,
+          "xy_m": {
+            "N": 1,
+            "min": 0.03489058519625246,
+            "p50": 0.03489058519625246,
+            "p90": 0.03489058519625246,
+            "p95": 0.03489058519625246,
+            "p99": 0.03489058519625246,
+            "max": 0.03489058519625246
+          },
+          "yaw_deg": {
+            "N": 1,
+            "min": 0.09715659840181702,
+            "p50": 0.09715659840181702,
+            "p90": 0.09715659840181702,
+            "p95": 0.09715659840181702,
+            "p99": 0.09715659840181702,
+            "max": 0.09715659840181702
+          },
+          "pf_xy_m": {
+            "N": 1,
+            "min": 0.03489058519625268,
+            "p50": 0.03489058519625268,
+            "p90": 0.03489058519625268,
+            "p95": 0.03489058519625268,
+            "p99": 0.03489058519625268,
+            "max": 0.03489058519625268
+          },
+          "pf_yaw_deg": {
+            "N": 1,
+            "min": 0.09715659840179158,
+            "p50": 0.09715659840179158,
+            "p90": 0.09715659840179158,
+            "p95": 0.09715659840179158,
+            "p99": 0.09715659840179158,
+            "max": 0.09715659840179158
+          }
+        },
+        "bins": {
+          "since_fix_s": [
+            {
+              "lo": 0,
+              "hi": 0.2,
+              "N": 17,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 17,
+                "min": 0.03489058519625246,
+                "p50": 0.07660328953075389,
+                "p90": 0.08629684560532791,
+                "p95": 0.08655832497844106,
+                "p99": 0.08660602808123975,
+                "max": 0.08661795385693943
+              },
+              "yaw_deg": {
+                "N": 17,
+                "min": 0.07277352617635494,
+                "p50": 0.690727509628757,
+                "p90": 1.9183414035178301,
+                "p95": 2.1685619335023425,
+                "p99": 2.168928009927043,
+                "max": 2.169019529033218
+              },
+              "pf_xy_m": {
+                "N": 17,
+                "min": 0.03489058519625268,
+                "p50": 0.07660328953075396,
+                "p90": 0.086296845605328,
+                "p95": 0.08655832497844111,
+                "p99": 0.0866060280812397,
+                "max": 0.08661795385693935
+              },
+              "pf_yaw_deg": {
+                "N": 17,
+                "min": 0.07277352617640583,
+                "p50": 0.6907275096287314,
+                "p90": 1.9183414035178554,
+                "p95": 2.1685619335023576,
+                "p99": 2.1689280099270256,
+                "max": 2.169019529033193
+              }
+            },
+            {
+              "lo": 0.2,
+              "hi": 1,
+              "N": 19,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 19,
+                "min": 0.03708904465254502,
+                "p50": 0.07289040364409842,
+                "p90": 0.08414464964622097,
+                "p95": 0.0845472816006616,
+                "p99": 0.08685981176223018,
+                "max": 0.08743794430262232
+              },
+              "yaw_deg": {
+                "N": 19,
+                "min": 0.1131077191721536,
+                "p50": 0.939388996640183,
+                "p90": 1.8361676459581489,
+                "p95": 1.8452390851840816,
+                "p99": 1.9060380053524233,
+                "max": 1.9212377353945087
+              },
+              "pf_xy_m": {
+                "N": 19,
+                "min": 0.03708904465254513,
+                "p50": 0.07289040364409853,
+                "p90": 0.08414464964622131,
+                "p95": 0.08454728160066194,
+                "p99": 0.08685981176223032,
+                "max": 0.0874379443026224
+              },
+              "pf_yaw_deg": {
+                "N": 19,
+                "min": 0.1131077191721536,
+                "p50": 0.9393889966402085,
+                "p90": 1.9657766543579918,
+                "p95": 2.0025991334448885,
+                "p99": 2.003163563727204,
+                "max": 2.0033046712977827
+              }
+            },
+            {
+              "lo": 1,
+              "hi": 3,
+              "N": 28,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 28,
+                "min": 0.04726199468221901,
+                "p50": 0.06280663208722864,
+                "p90": 0.07820605958992949,
+                "p95": 0.08197764456811928,
+                "p99": 0.08400872968775391,
+                "max": 0.08400893800456853
+              },
+              "yaw_deg": {
+                "N": 28,
+                "min": 0.19647019517259962,
+                "p50": 0.9684344288174014,
+                "p90": 1.8501141491749835,
+                "p95": 2.0584322051144253,
+                "p99": 2.2374435109995674,
+                "max": 2.268703833720679
+              },
+              "pf_xy_m": {
+                "N": 28,
+                "min": 0.047261994682219116,
+                "p50": 0.062451874336307146,
+                "p90": 0.07820605958992964,
+                "p95": 0.08197764456811955,
+                "p99": 0.08400872968775426,
+                "max": 0.08400893800456888
+              },
+              "pf_yaw_deg": {
+                "N": 28,
+                "min": 0.19647019517262507,
+                "p50": 0.9684344288173505,
+                "p90": 2.0235585406280148,
+                "p95": 2.2676964053761504,
+                "p99": 2.4656974696229605,
+                "max": 2.5000701006838364
+              }
+            },
+            {
+              "lo": 3,
+              "hi": 10,
+              "N": 19,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 19,
+                "min": 0.03437863916718074,
+                "p50": 0.04042337744279456,
+                "p90": 0.05582518503539897,
+                "p95": 0.05902307358625741,
+                "p99": 0.07436889079142296,
+                "max": 0.07820534509271433
+              },
+              "yaw_deg": {
+                "N": 19,
+                "min": 0.9708104637962061,
+                "p50": 2.207715290839602,
+                "p90": 2.3783874215439322,
+                "p95": 2.4291100510876964,
+                "p99": 2.509466017017874,
+                "max": 2.5295550085004184
+              },
+              "pf_xy_m": {
+                "N": 19,
+                "min": 0.040010355203512274,
+                "p50": 0.04293195800122186,
+                "p90": 0.05518826396286756,
+                "p95": 0.05802630977764009,
+                "p99": 0.07416953802969962,
+                "max": 0.07820534509271448
+              },
+              "pf_yaw_deg": {
+                "N": 19,
+                "min": 0.9708104637961552,
+                "p50": 2.080113973736929,
+                "p90": 2.5281639395104984,
+                "p95": 2.598531615349122,
+                "p99": 2.6015563450416965,
+                "max": 2.60231252746484
+              }
+            },
+            {
+              "lo": 10,
+              "hi": 30,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            },
+            {
+              "lo": 30,
+              "hi": null,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            }
+          ],
+          "command_distance_m": [
+            {
+              "lo": 0,
+              "hi": 0.01,
+              "N": 63,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 63,
+                "min": 0.03489058519625246,
+                "p50": 0.07289040364409842,
+                "p90": 0.08400878369581696,
+                "p95": 0.08594182743830191,
+                "p99": 0.08692955022629893,
+                "max": 0.08743794430262232
+              },
+              "yaw_deg": {
+                "N": 63,
+                "min": 0.07277352617635494,
+                "p50": 0.965873081628282,
+                "p90": 1.8356188173056034,
+                "p95": 1.8783307393729438,
+                "p99": 2.1686648924967895,
+                "max": 2.169019529033218
+              },
+              "pf_xy_m": {
+                "N": 63,
+                "min": 0.03489058519625268,
+                "p50": 0.07289040364409853,
+                "p90": 0.08400878369581731,
+                "p95": 0.08594182743830202,
+                "p99": 0.08692955022629892,
+                "max": 0.0874379443026224
+              },
+              "pf_yaw_deg": {
+                "N": 63,
+                "min": 0.07277352617640583,
+                "p50": 0.9658730816282312,
+                "p90": 2.000299340602394,
+                "p95": 2.0032295344749014,
+                "p99": 2.1686648924967957,
+                "max": 2.169019529033193
+              }
+            },
+            {
+              "lo": 0.01,
+              "hi": 0.1,
+              "N": 20,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 20,
+                "min": 0.03437863916718074,
+                "p50": 0.04155939027986168,
+                "p90": 0.05705056547237341,
+                "p95": 0.05855790392545035,
+                "p99": 0.059738031493414535,
+                "max": 0.06003306338540559
+              },
+              "yaw_deg": {
+                "N": 20,
+                "min": 1.8415355031769063,
+                "p50": 2.2079806395224804,
+                "p90": 2.3734421617039163,
+                "p95": 2.423529775675879,
+                "p99": 2.5083499619355103,
+                "max": 2.5295550085004184
+              },
+              "pf_xy_m": {
+                "N": 20,
+                "min": 0.040010355203512274,
+                "p50": 0.04398909557020035,
+                "p90": 0.05596606614418893,
+                "p95": 0.05769304970789827,
+                "p99": 0.059063192143274414,
+                "max": 0.05940572775211845
+              },
+              "pf_yaw_deg": {
+                "N": 20,
+                "min": 1.6451692839893928,
+                "p50": 2.1491387361478487,
+                "p90": 2.5194204926989445,
+                "p95": 2.5983215646760263,
+                "p99": 2.6015143349070775,
+                "max": 2.60231252746484
+              }
+            },
+            {
+              "lo": 0.1,
+              "hi": 0.25,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            },
+            {
+              "lo": 0.25,
+              "hi": 0.5,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            },
+            {
+              "lo": 0.5,
+              "hi": 1,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            },
+            {
+              "lo": 1,
+              "hi": null,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            }
+          ],
+          "command_turn_deg": [
+            {
+              "lo": 0,
+              "hi": 1,
+              "N": 21,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 21,
+                "min": 0.03489058519625246,
+                "p50": 0.04726991641298131,
+                "p90": 0.08371709471369732,
+                "p95": 0.08613246416966887,
+                "p99": 0.08652085591948531,
+                "max": 0.08661795385693943
+              },
+              "yaw_deg": {
+                "N": 21,
+                "min": 0.09715659840181702,
+                "p50": 0.6522263398839795,
+                "p90": 1.6382614636445127,
+                "p95": 1.7516039827833008,
+                "p99": 2.085536419783235,
+                "max": 2.169019529033218
+              },
+              "pf_xy_m": {
+                "N": 21,
+                "min": 0.03489058519625268,
+                "p50": 0.04726991641298142,
+                "p90": 0.08371709471369741,
+                "p95": 0.08613246416966895,
+                "p99": 0.08652085591948527,
+                "max": 0.08661795385693935
+              },
+              "pf_yaw_deg": {
+                "N": 21,
+                "min": 0.09715659840179158,
+                "p50": 0.6522263398839795,
+                "p90": 1.6382614636445127,
+                "p95": 1.7516039827833263,
+                "p99": 2.08553641978322,
+                "max": 2.169019529033193
+              }
+            },
+            {
+              "lo": 1,
+              "hi": 5,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            },
+            {
+              "lo": 5,
+              "hi": 15,
+              "N": 41,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 41,
+                "min": 0.03708904465254502,
+                "p50": 0.07820457341293491,
+                "p90": 0.08400893800456853,
+                "p95": 0.08422609685599931,
+                "p99": 0.08708013368509998,
+                "max": 0.08743794430262232
+              },
+              "yaw_deg": {
+                "N": 41,
+                "min": 0.07277352617635494,
+                "p50": 0.9678508339777345,
+                "p90": 1.836010859768622,
+                "p95": 1.8367947907162565,
+                "p99": 2.069563614929578,
+                "max": 2.1684475346196237
+              },
+              "pf_xy_m": {
+                "N": 41,
+                "min": 0.03708904465254513,
+                "p50": 0.07820457341293506,
+                "p90": 0.08400893800456888,
+                "p95": 0.08422609685599967,
+                "p99": 0.08708013368510006,
+                "max": 0.0874379443026224
+              },
+              "pf_yaw_deg": {
+                "N": 41,
+                "min": 0.07277352617640583,
+                "p50": 0.9678508339776837,
+                "p90": 2.0005605280350554,
+                "p95": 2.00255330306897,
+                "p99": 2.102390389290903,
+                "max": 2.168447534619649
+              }
+            },
+            {
+              "lo": 15,
+              "hi": 45,
+              "N": 5,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 5,
+                "min": 0.05555855377286371,
+                "p50": 0.058480263953873755,
+                "p90": 0.06047373333505327,
+                "p95": 0.060620623318269166,
+                "p99": 0.06073813530484188,
+                "max": 0.06076751330148506
+              },
+              "yaw_deg": {
+                "N": 5,
+                "min": 1.8415355031769063,
+                "p50": 2.021074793683629,
+                "p90": 2.222392244504217,
+                "p95": 2.2455480391124483,
+                "p99": 2.2640726747990327,
+                "max": 2.268703833720679
+              },
+              "pf_xy_m": {
+                "N": 5,
+                "min": 0.05503928126792648,
+                "p50": 0.05760290875820247,
+                "p90": 0.060048750613774536,
+                "p95": 0.060263091567659896,
+                "p99": 0.06043456433076819,
+                "max": 0.060477432521545256
+              },
+              "pf_yaw_deg": {
+                "N": 5,
+                "min": 2.0725707615991187,
+                "p50": 2.2939565753449926,
+                "p90": 2.449147684297354,
+                "p95": 2.474608892490595,
+                "p99": 2.4949778590451883,
+                "max": 2.5000701006838364
+              }
+            },
+            {
+              "lo": 45,
+              "hi": 90,
+              "N": 8,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 8,
+                "min": 0.03835879215811737,
+                "p50": 0.046746511676679425,
+                "p90": 0.05305749537985986,
+                "p95": 0.05341886974994602,
+                "p99": 0.05370796924601495,
+                "max": 0.05378024412003218
+              },
+              "yaw_deg": {
+                "N": 8,
+                "min": 1.881112883772465,
+                "p50": 2.309647629399088,
+                "p90": 2.451431152734968,
+                "p95": 2.4904930806176933,
+                "p99": 2.5217426229238735,
+                "max": 2.5295550085004184
+              },
+              "pf_xy_m": {
+                "N": 8,
+                "min": 0.04169034111987689,
+                "p50": 0.048136544534689824,
+                "p90": 0.05307233673628586,
+                "p95": 0.05341948983763182,
+                "p99": 0.05369721231870859,
+                "max": 0.05376664293897778
+              },
+              "pf_yaw_deg": {
+                "N": 8,
+                "min": 2.1408289227968083,
+                "p50": 2.335436877296063,
+                "p90": 2.5993718180415035,
+                "p95": 2.600842172753172,
+                "p99": 2.6020184565225066,
+                "max": 2.60231252746484
+              }
+            },
+            {
+              "lo": 90,
+              "hi": 180,
+              "N": 8,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 8,
+                "min": 0.03437863916718074,
+                "p50": 0.03438011719607299,
+                "p90": 0.03518499371716733,
+                "p95": 0.0360171304378946,
+                "p99": 0.036682839814476405,
+                "max": 0.03684926715862186
+              },
+              "yaw_deg": {
+                "N": 8,
+                "min": 2.116169073350728,
+                "p50": 2.2079806395224804,
+                "p90": 2.232251795514181,
+                "p95": 2.259178585461585,
+                "p99": 2.2807200174195086,
+                "max": 2.2861053754089893
+              },
+              "pf_xy_m": {
+                "N": 8,
+                "min": 0.040010355203512274,
+                "p50": 0.040016386895329006,
+                "p90": 0.040700301120270496,
+                "p95": 0.04135079466256487,
+                "p99": 0.04187118949640037,
+                "max": 0.042001288204859245
+              },
+              "pf_yaw_deg": {
+                "N": 8,
+                "min": 1.6451692839893928,
+                "p50": 1.7369808501611708,
+                "p90": 1.758160664066787,
+                "p95": 1.7814808882471234,
+                "p99": 1.8001370675913924,
+                "max": 1.8048011124274597
+              }
+            },
+            {
+              "lo": 180,
+              "hi": null,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            }
+          ]
+        },
+        "epochs": [
+          {
+            "t": 28.9,
+            "command_distance_m": 0.0028206293492812735,
+            "command_turn_deg": 5.932603707983279,
+            "actual_distance_m": 0.0007902030431348855,
+            "actual_turn_deg": 5.884740658426986
+          },
+          {
+            "t": 29.3,
+            "command_distance_m": 0.0028206293492812735,
+            "command_turn_deg": 5.932603707983254,
+            "actual_distance_m": 0.0011297233984767087,
+            "actual_turn_deg": 6.4778940754721175
+          },
+          {
+            "t": 31.5,
+            "command_distance_m": 0.0028206293492812713,
+            "command_turn_deg": 5.932603707983254,
+            "actual_distance_m": 0.0004551608324884263,
+            "actual_turn_deg": 5.731720510537378
+          },
+          {
+            "t": 31.9,
+            "command_distance_m": 0.0028206293492812604,
+            "command_turn_deg": 5.932603707983254,
+            "actual_distance_m": 0.0005346665076249249,
+            "actual_turn_deg": 5.597471933649672
+          },
+          {
+            "t": 32.3,
+            "command_distance_m": 0.0028206293492812244,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.004238946014972729,
+            "actual_turn_deg": 6.411504059567795
+          },
+          {
+            "t": 33.7,
+            "command_distance_m": 0.002820629349281226,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.00020284173471252228,
+            "actual_turn_deg": 5.417881677535892
+          },
+          {
+            "t": 34.1,
+            "command_distance_m": 0.0028206293492812266,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0003681964818705717,
+            "actual_turn_deg": 5.579158901946467
+          },
+          {
+            "t": 34.5,
+            "command_distance_m": 0.0028206293492812366,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 9.714630122949646e-05,
+            "actual_turn_deg": 5.885206155152944
+          },
+          {
+            "t": 34.9,
+            "command_distance_m": 0.002820629349281223,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0014588045166045536,
+            "actual_turn_deg": 6.214747320130881
+          },
+          {
+            "t": 38.1,
+            "command_distance_m": 0.002820629349281226,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0007786411437967275,
+            "actual_turn_deg": 5.960027281657013
+          },
+          {
+            "t": 38.5,
+            "command_distance_m": 0.0028206293492812253,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0013654431523254973,
+            "actual_turn_deg": 6.1284508242737505
+          },
+          {
+            "t": 38.9,
+            "command_distance_m": 0.04795069893778085,
+            "command_turn_deg": 100.85426303571634,
+            "actual_distance_m": 0.01146732029318324,
+            "actual_turn_deg": 101.43032204806838
+          }
+        ],
+        "fix_frames": [
+          {
+            "t": 28.9,
+            "xy_m": 0.03489058519625246,
+            "yaw_deg": 0.09715659840181702,
+            "pf_xy_m": 0.03489058519625268,
+            "pf_yaw_deg": 0.09715659840179158,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": true,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 29.3,
+            "xy_m": 0.047119101749310374,
+            "yaw_deg": 0.624642112038088,
+            "pf_xy_m": 0.047119101749310485,
+            "pf_yaw_deg": 0.624642112038088,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 31.5,
+            "xy_m": 0.06828076442213006,
+            "yaw_deg": 1.1046083863021918,
+            "pf_xy_m": 0.06828076442213017,
+            "pf_yaw_deg": 1.1046083863022171,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 31.9,
+            "xy_m": 0.07184148008328839,
+            "yaw_deg": 0.4759830848494026,
+            "pf_xy_m": 0.07184148008328849,
+            "pf_yaw_deg": 0.4759830848494026,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 32.3,
+            "xy_m": 0.08371709471369732,
+            "yaw_deg": 0.4984398441172584,
+            "pf_xy_m": 0.08371709471369741,
+            "pf_yaw_deg": 0.4984398441172584,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 33.7,
+            "xy_m": 0.08083902581920395,
+            "yaw_deg": 0.4319693925312329,
+            "pf_xy_m": 0.08083902581920416,
+            "pf_yaw_deg": 0.4319693925312329,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "drive",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 34.1,
+            "xy_m": 0.08613246416966887,
+            "yaw_deg": 0.6905542929514367,
+            "pf_xy_m": 0.08613246416966895,
+            "pf_yaw_deg": 0.6905542929514367,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "drive",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 34.5,
+            "xy_m": 0.08661795385693943,
+            "yaw_deg": 0.9410582710011746,
+            "pf_xy_m": 0.08661795385693935,
+            "pf_yaw_deg": 0.9410582710011237,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "drive",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 34.9,
+            "xy_m": 0.07785339428294366,
+            "yaw_deg": 0.690727509628757,
+            "pf_xy_m": 0.07785339428294374,
+            "pf_yaw_deg": 0.6907275096287314,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "drive",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 38.1,
+            "xy_m": 0.07686429358810284,
+            "yaw_deg": 2.169019529033218,
+            "pf_xy_m": 0.07686429358810291,
+            "pf_yaw_deg": 2.169019529033193,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 38.5,
+            "xy_m": 0.07183093917943359,
+            "yaw_deg": 1.7516039827833008,
+            "pf_xy_m": 0.07183093917943373,
+            "pf_yaw_deg": 1.7516039827833263,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 38.9,
+            "xy_m": 0.06441784868766967,
+            "yaw_deg": 1.6382614636445127,
+            "pf_xy_m": 0.06441784868766973,
+            "pf_yaw_deg": 1.6382614636445127,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          }
+        ],
+        "increment_regression": {
+          "N": 28,
+          "actual_per_command": 1.000670172530118,
+          "yaw_error_growth_turning_deg": {
+            "N": 28,
+            "min": -0.4560172613541659,
+            "p50": -0.006543904969362302,
+            "p90": 0.3930361594246453,
+            "p95": 0.429221264686114,
+            "p99": 0.44546450726342995,
+            "max": 0.4476479281626031
+          }
+        }
+      }
+    },
+    {
+      "run": "reloc14-r2-selfmap-texture-93584-1e407968",
+      "raw": "/home/ugrp/ugrp-sim/runs/reloc14-r2-selfmap-texture-93584-1e407968/raw",
+      "source_sha": "1e4079683a42fb1790d63c838718718ed223581b",
+      "unit": "ordered trace frames; events separately counted; temporal correlation retained",
+      "funnel": {
+        "fresh_static_fix_independent": 13,
+        "frames": 234,
+        "frames_independent": 234,
+        "registered": 147,
+        "registered_independent": 147,
+        "execution_pose_delivered": 147,
+        "execution_pose_delivered_independent": 147,
+        "map_inserted": 58,
+        "map_inserted_independent": 135,
+        "control_drive_used": 0,
+        "control_drive_used_independent": 0
+      },
+      "rejections": [
+        {
+          "category": "insertion:registered_r7_unconfirmed",
+          "N": 88,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "registered:not_yet_registered",
+          "N": 87,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:registered_r7_unconfirmed",
+          "N": 85,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:active_reloc8",
+          "N": 55,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "insertion:camera_unsettled",
+          "N": 4,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:registered_r7_unconfirmed;camera_unsettled",
+          "N": 3,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:spin",
+          "N": 2,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "control_drive_used:stage:select",
+          "N": 1,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        },
+        {
+          "category": "map_inserted:camera_unsettled",
+          "N": 1,
+          "blocked_object": "static_registration_or_map_evidence",
+          "minimum_gap_m": null,
+          "gap_status": "not_applicable_localization_gate"
+        }
+      ],
+      "R7": {
+        "ambiguity_evaluated": 25,
+        "unique": 16,
+        "pf_agreement_reliable": 62,
+        "three_confirmations": 13,
+        "reject:no_sensor_update": 124,
+        "reject:pf_unresolved": 69,
+        "reject:xy_covariance": 19,
+        "reject:yaw_covariance": 29,
+        "reject:geometry": 95,
+        "reject:ambiguity_pending_upstream": 152,
+        "reject:cluster_mass": 5,
+        "reject:geometric_ambiguity": 9
+      },
+      "R7_postreg_fresh": {
+        "fresh_frames": 45,
+        "accepted": 19,
+        "geometry": 18,
+        "ambiguity_pending_upstream": 20,
+        "pf_unresolved": 2,
+        "yaw_covariance": 2,
+        "geometric_ambiguity": 6
+      },
+      "registration_events": [
+        {
+          "t": 18.7,
+          "xy_m": 0.0872464921839517,
+          "yaw_deg": 1.5622440455496178,
+          "false": false
+        }
+      ],
+      "false_registration_events": 0,
+      "registered_errors": {
+        "N": 147,
+        "bad_N": 47,
+        "xy_m": {
+          "N": 147,
+          "min": 0.03991745162949179,
+          "p50": 0.08417174551549961,
+          "p90": 0.11682304648533516,
+          "p95": 0.12723763473515828,
+          "p99": 0.12747940441222325,
+          "max": 0.12837689061293459
+        },
+        "yaw_deg": {
+          "N": 147,
+          "min": 0.0021751444995834145,
+          "p50": 1.2876445482235335,
+          "p90": 2.2982579193140853,
+          "p95": 2.6125028951835527,
+          "p99": 3.6015399059441244,
+          "max": 3.603167047187558
+        }
+      },
+      "map_inserted_errors": {
+        "N": 58,
+        "bad_N": 18,
+        "within15cm5_N": 58,
+        "within30cm10_N": 58,
+        "xy_m": {
+          "N": 58,
+          "min": 0.06362241512054079,
+          "p50": 0.09278384465885878,
+          "p90": 0.1274606016608412,
+          "p95": 0.12746125170729472,
+          "p99": 0.12787407662900613,
+          "max": 0.12837689061293459
+        },
+        "yaw_deg": {
+          "N": 58,
+          "min": 0.29753094393575424,
+          "p50": 1.28587346334431,
+          "p90": 2.6128541404298735,
+          "p95": 3.5096097947062583,
+          "p99": 3.6027471587321527,
+          "max": 3.603167047187558
+        }
+      },
+      "drive_errors": {
+        "N": 0,
+        "bad_N": 0,
+        "within15cm5_N": 0,
+        "within30cm10_N": 0,
+        "xy_m": {
+          "N": 0
+        },
+        "yaw_deg": {
+          "N": 0
+        }
+      },
+      "alternate_tolerances": {
+        "N": 147,
+        "bad_N": 47,
+        "within15cm5_N": 147,
+        "within30cm10_N": 147,
+        "xy_m": {
+          "N": 147,
+          "min": 0.03991745162949179,
+          "p50": 0.08417174551549961,
+          "p90": 0.11682304648533516,
+          "p95": 0.12723763473515828,
+          "p99": 0.12747940441222325,
+          "max": 0.12837689061293459
+        },
+        "yaw_deg": {
+          "N": 147,
+          "min": 0.0021751444995834145,
+          "p50": 1.2876445482235335,
+          "p90": 2.2982579193140853,
+          "p95": 2.6125028951835527,
+          "p99": 3.6015399059441244,
+          "max": 3.603167047187558
+        }
+      },
+      "bad_errors": {
+        "N": 47,
+        "xy_m": {
+          "N": 47,
+          "min": 0.10051792722282131,
+          "p50": 0.11668601904873549,
+          "p90": 0.12746075995432332,
+          "p95": 0.12746133299183762,
+          "p99": 0.12797111090660634,
+          "max": 0.12837689061293459
+        },
+        "yaw_deg": {
+          "N": 47,
+          "min": 0.32255438174479334,
+          "p50": 1.5404419738080921,
+          "p90": 2.611702351842035,
+          "p95": 2.6130936427791314,
+          "p99": 2.681116683388227,
+          "max": 2.685111446456921
+        },
+        "classification": {
+          "xy_only:command_only:pf_tracking_or_relocalization": 28,
+          "xy_only:command_only:pose_correction_rejected": 13,
+          "xy_only:visual_relocalized:selfmap4_static_lines": 3,
+          "xy_only:visual_relocalized:selfmap14_tracking_prediction": 3
+        }
+      },
+      "termination": {
+        "status": "HOST_ERROR",
+        "category": "selfmap4_relocalization_exhausted",
+        "reason": "selfmap4_relocalization_exhausted",
+        "elapsed_sim_s": 46.6,
+        "supervisor_stop": {},
+        "code_vs_host": "controller_budget_exhaustion"
+      },
+      "first30": {
+        "elapsed_sim_s": 30.0,
+        "frames": 151,
+        "stage": "active_reloc8",
+        "wall_per_sim": 4.235810552066656,
+        "pose_sources": {
+          "bootstrap": 3,
+          "visual_update": 68,
+          "command_only": 78,
+          "visual_relocalized": 2
+        },
+        "input_audit": {
+          "schema": "ugrp.selfmap_input_audit.v1",
+          "measured": true,
+          "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+          "own_rgb_frames": 151,
+          "issued_command_records": 157,
+          "top_rgb_frames": 0,
+          "peer_rgb_frames": 0,
+          "truth_pose_inputs": 0,
+          "invisible_measurements": 0,
+          "held_world_reads": 0,
+          "rejected_inputs": 0,
+          "authored_static_map_inputs": 1
+        },
+        "frontier_arrivals": 0,
+        "timing": {
+          "seconds": {
+            "capture": 7.8099557959940284,
+            "plane_flow": 2.6163720599952285,
+            "pf": 1.2157441679983094,
+            "registration": 31.161937493997357,
+            "feature_tracking": 3.0450975769963406,
+            "control": 64.57742993799548,
+            "evaluation": 0.16638188599608839,
+            "physics_advance": 54.171790762003184,
+            "feature_extract": 1.138095762003104,
+            "structure_extract": 13.158222915999431
+          },
+          "calls": {
+            "capture": 151,
+            "plane_flow": 151,
+            "pf": 151,
+            "registration": 151,
+            "feature_tracking": 151,
+            "control": 151,
+            "evaluation": 151,
+            "physics_advance": 150,
+            "feature_extract": 139,
+            "structure_extract": 139
+          },
+          "pf_particles": 2000,
+          "nested_categories": true,
+          "note": "control includes feature/PF/geometry; registration includes PF and evidence"
+        }
+      },
+      "input_audit": {
+        "schema": "ugrp.selfmap_input_audit.v1",
+        "measured": true,
+        "scope": "all delivered controller payloads at writer boundary; excludes evaluation/plant reads",
+        "own_rgb_frames": 234,
+        "issued_command_records": 240,
+        "top_rgb_frames": 0,
+        "peer_rgb_frames": 0,
+        "truth_pose_inputs": 0,
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "rejected_inputs": 0,
+        "authored_static_map_inputs": 1
+      },
+      "final_frame": {
+        "t": 47.9,
+        "stage": "stopped",
+        "executor_stop_reason": "selfmap4_relocalization_exhausted",
+        "insertion_blockers": [
+          "registered_r7_unconfirmed"
+        ],
+        "frontier_reason": "pose_or_revision_quarantined"
+      },
+      "sha256": {
+        "raw/result.json": "184bfed86795bb2dbee264bff760b8ce48a3f114decb7e39d0089a8ce61692d7",
+        "raw/trace.jsonl.zst": "4163b7d15225ad513f85e1a3b11abb45378b4978686e8992b55264cb0316d47a",
+        "raw/eval_only/trajectory.jsonl.zst": "18e0cf8515d34b4f2a1bd123a6d50c2979091e136a2e52938d2f09c95eaa1011",
+        "EXIT": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      },
+      "drift": {
+        "all": {
+          "N": 147,
+          "xy_bad_N": 47,
+          "yaw_bad_N": 0,
+          "both_bad_N": 0,
+          "xy_m": {
+            "N": 147,
+            "min": 0.03991745162949179,
+            "p50": 0.08417174551549961,
+            "p90": 0.11682304648533516,
+            "p95": 0.12723763473515828,
+            "p99": 0.12747940441222325,
+            "max": 0.12837689061293459
+          },
+          "yaw_deg": {
+            "N": 147,
+            "min": 0.0021751444995961365,
+            "p50": 1.287644548223527,
+            "p90": 2.2982579193140933,
+            "p95": 2.6125028951835527,
+            "p99": 3.6015399059441244,
+            "max": 3.603167047187558
+          },
+          "pf_xy_m": {
+            "N": 147,
+            "min": 0.01472325584590518,
+            "p50": 0.06563662479838617,
+            "p90": 0.09354235440923492,
+            "p95": 0.09396756482316053,
+            "p99": 0.10940918101734018,
+            "max": 0.1108331397748449
+          },
+          "pf_yaw_deg": {
+            "N": 147,
+            "min": 0.007799392746544234,
+            "p50": 1.284618100572256,
+            "p90": 8.425296245230317,
+            "p95": 9.314368243504632,
+            "p99": 11.980139174809942,
+            "max": 12.046511346432718
+          }
+        },
+        "fixes": {
+          "N": 13,
+          "xy_bad_N": 3,
+          "yaw_bad_N": 0,
+          "both_bad_N": 0,
+          "xy_m": {
+            "N": 13,
+            "min": 0.06362241512054079,
+            "p50": 0.0872464921839517,
+            "p90": 0.10605486626863377,
+            "p95": 0.10866263861536017,
+            "p99": 0.11013088371768813,
+            "max": 0.11049794499327012
+          },
+          "yaw_deg": {
+            "N": 13,
+            "min": 0.29753094393574153,
+            "p50": 1.0341907439063363,
+            "p90": 2.060954938380437,
+            "p95": 2.751577413931891,
+            "p99": 3.430711116744392,
+            "max": 3.6004945424475183
+          },
+          "pf_xy_m": {
+            "N": 13,
+            "min": 0.06362241512054082,
+            "p50": 0.0872464921839517,
+            "p90": 0.10605486626863395,
+            "p95": 0.10866263861536035,
+            "p99": 0.1101308837176883,
+            "max": 0.11049794499327029
+          },
+          "pf_yaw_deg": {
+            "N": 13,
+            "min": 0.29753094393576696,
+            "p50": 1.0341907439063363,
+            "p90": 2.0609549383804167,
+            "p95": 2.751577413931876,
+            "p99": 3.430711116744389,
+            "max": 3.6004945424475183
+          }
+        },
+        "first_registration": {
+          "N": 1,
+          "xy_bad_N": 0,
+          "yaw_bad_N": 0,
+          "both_bad_N": 0,
+          "xy_m": {
+            "N": 1,
+            "min": 0.0872464921839517,
+            "p50": 0.0872464921839517,
+            "p90": 0.0872464921839517,
+            "p95": 0.0872464921839517,
+            "p99": 0.0872464921839517,
+            "max": 0.0872464921839517
+          },
+          "yaw_deg": {
+            "N": 1,
+            "min": 1.5622440455496116,
+            "p50": 1.5622440455496116,
+            "p90": 1.5622440455496116,
+            "p95": 1.5622440455496116,
+            "p99": 1.5622440455496116,
+            "max": 1.5622440455496116
+          },
+          "pf_xy_m": {
+            "N": 1,
+            "min": 0.0872464921839517,
+            "p50": 0.0872464921839517,
+            "p90": 0.0872464921839517,
+            "p95": 0.0872464921839517,
+            "p99": 0.0872464921839517,
+            "max": 0.0872464921839517
+          },
+          "pf_yaw_deg": {
+            "N": 1,
+            "min": 1.5622440455496116,
+            "p50": 1.5622440455496116,
+            "p90": 1.5622440455496116,
+            "p95": 1.5622440455496116,
+            "p99": 1.5622440455496116,
+            "max": 1.5622440455496116
+          }
+        },
+        "bins": {
+          "since_fix_s": [
+            {
+              "lo": 0,
+              "hi": 0.2,
+              "N": 19,
+              "xy_bad_N": 5,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 19,
+                "min": 0.06362241512054079,
+                "p50": 0.0872464921839517,
+                "p90": 0.1075774941810148,
+                "p95": 0.10836775460558087,
+                "p99": 0.11007190691573228,
+                "max": 0.11049794499327012
+              },
+              "yaw_deg": {
+                "N": 19,
+                "min": 0.29753094393574153,
+                "p50": 1.0341907439063363,
+                "p90": 2.2348835821441737,
+                "p95": 2.5487479921762177,
+                "p99": 3.390145232393259,
+                "max": 3.6004945424475183
+              },
+              "pf_xy_m": {
+                "N": 19,
+                "min": 0.06362241512054082,
+                "p50": 0.0872464921839517,
+                "p90": 0.10757749418101499,
+                "p95": 0.10836775460558097,
+                "p99": 0.11007190691573243,
+                "max": 0.11049794499327029
+              },
+              "pf_yaw_deg": {
+                "N": 19,
+                "min": 0.29753094393576696,
+                "p50": 1.0341907439063363,
+                "p90": 2.234883582144169,
+                "p95": 2.548747992176286,
+                "p99": 3.3901452323932726,
+                "max": 3.6004945424475183
+              }
+            },
+            {
+              "lo": 0.2,
+              "hi": 1,
+              "N": 18,
+              "xy_bad_N": 1,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 18,
+                "min": 0.06475618163190601,
+                "p50": 0.07937627554216896,
+                "p90": 0.09415336360374875,
+                "p95": 0.09693019976829377,
+                "p99": 0.10805255177353465,
+                "max": 0.1108331397748449
+              },
+              "yaw_deg": {
+                "N": 18,
+                "min": 0.5842656473067522,
+                "p50": 1.0405281047035422,
+                "p90": 3.5262290370998897,
+                "p95": 3.602540897736515,
+                "p99": 3.6030418172973495,
+                "max": 3.603167047187558
+              },
+              "pf_xy_m": {
+                "N": 18,
+                "min": 0.06475618163190605,
+                "p50": 0.07406091481854503,
+                "p90": 0.09415336360374901,
+                "p95": 0.09693019976829399,
+                "p99": 0.10805255177353469,
+                "max": 0.1108331397748449
+              },
+              "pf_yaw_deg": {
+                "N": 18,
+                "min": 0.5842656473067267,
+                "p50": 1.285873463344326,
+                "p90": 3.526229037099872,
+                "p95": 3.602540897736515,
+                "p99": 3.6030418172973495,
+                "max": 3.603167047187558
+              }
+            },
+            {
+              "lo": 1,
+              "hi": 3,
+              "N": 26,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 26,
+                "min": 0.06096205576036094,
+                "p50": 0.06587156998815716,
+                "p90": 0.09355028366493862,
+                "p95": 0.09355478662206466,
+                "p99": 0.0935656629967356,
+                "max": 0.09356898086221202
+              },
+              "yaw_deg": {
+                "N": 26,
+                "min": 0.06648470284707632,
+                "p50": 1.2540397025588454,
+                "p90": 1.3871252924007027,
+                "p95": 1.5473969660823665,
+                "p99": 1.6034970653690757,
+                "max": 1.6107118302840426
+              },
+              "pf_xy_m": {
+                "N": 26,
+                "min": 0.027160155699828673,
+                "p50": 0.06314708898234489,
+                "p90": 0.09355028366493888,
+                "p95": 0.09355478662206491,
+                "p99": 0.09356566299673585,
+                "max": 0.09356898086221228
+              },
+              "pf_yaw_deg": {
+                "N": 26,
+                "min": 0.007799392746544234,
+                "p50": 1.310811587012124,
+                "p90": 2.092428585939014,
+                "p95": 2.2753846690885586,
+                "p99": 2.4352547383742236,
+                "max": 2.4695125337935386
+              }
+            },
+            {
+              "lo": 3,
+              "hi": 10,
+              "N": 51,
+              "xy_bad_N": 8,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 51,
+                "min": 0.03991745162949179,
+                "p50": 0.08156340781374018,
+                "p90": 0.10401396673412956,
+                "p95": 0.1059614941968681,
+                "p99": 0.10600514334174038,
+                "max": 0.10603494558376574
+              },
+              "yaw_deg": {
+                "N": 51,
+                "min": 0.0021751444995961365,
+                "p50": 1.0956435156675606,
+                "p90": 1.5760544772611336,
+                "p95": 1.8667352368299297,
+                "p99": 1.9124870041273372,
+                "max": 1.924849587289901
+              },
+              "pf_xy_m": {
+                "N": 51,
+                "min": 0.01472325584590518,
+                "p50": 0.043295096935002796,
+                "p90": 0.06303614134502464,
+                "p95": 0.06476741525945857,
+                "p99": 0.06480704221860263,
+                "max": 0.06482849140175537
+              },
+              "pf_yaw_deg": {
+                "N": 51,
+                "min": 0.11133751624245856,
+                "p50": 0.7936047032859844,
+                "p90": 9.32995461746159,
+                "p95": 11.979713224962289,
+                "p99": 12.013446094285639,
+                "max": 12.046511346432718
+              }
+            },
+            {
+              "lo": 10,
+              "hi": 30,
+              "N": 33,
+              "xy_bad_N": 33,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 33,
+                "min": 0.10606307516210144,
+                "p50": 0.11673464991965582,
+                "p90": 0.12746115311481054,
+                "p95": 0.12747473072394416,
+                "p99": 0.12809460907809755,
+                "max": 0.12837689061293459
+              },
+              "yaw_deg": {
+                "N": 33,
+                "min": 0.79974677758986,
+                "p50": 1.8921223376233636,
+                "p90": 2.612560101345012,
+                "p95": 2.6385348332911573,
+                "p99": 2.6823324808439164,
+                "max": 2.685111446456921
+              },
+              "pf_xy_m": {
+                "N": 33,
+                "min": 0.06485122757371961,
+                "p50": 0.07699857012844885,
+                "p90": 0.08841147445526656,
+                "p95": 0.08845304037410683,
+                "p99": 0.08884484848219235,
+                "max": 0.08900202824831177
+              },
+              "pf_yaw_deg": {
+                "N": 33,
+                "min": 0.8372338647304017,
+                "p50": 3.22868055989594,
+                "p90": 8.609542493296885,
+                "p95": 9.314313718351853,
+                "p99": 9.314813717432019,
+                "max": 9.314997693325953
+              }
+            },
+            {
+              "lo": 30,
+              "hi": null,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            }
+          ],
+          "command_distance_m": [
+            {
+              "lo": 0,
+              "hi": 0.01,
+              "N": 50,
+              "xy_bad_N": 6,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 50,
+                "min": 0.06267330273673524,
+                "p50": 0.08297245540514668,
+                "p90": 0.10060078833016256,
+                "p95": 0.10781968219513867,
+                "p99": 0.11066889433187325,
+                "max": 0.1108331397748449
+              },
+              "yaw_deg": {
+                "N": 50,
+                "min": 0.06648470284707632,
+                "p50": 1.0251617730523264,
+                "p90": 2.210258121866159,
+                "p95": 3.552379087760969,
+                "p99": 3.602806090445192,
+                "max": 3.603167047187558
+              },
+              "pf_xy_m": {
+                "N": 50,
+                "min": 0.06065759730426845,
+                "p50": 0.08196507164412564,
+                "p90": 0.10060078833016267,
+                "p95": 0.10781968219513882,
+                "p99": 0.11066889433187334,
+                "max": 0.1108331397748449
+              },
+              "pf_yaw_deg": {
+                "N": 50,
+                "min": 0.19917072279760376,
+                "p50": 1.0251617730523392,
+                "p90": 2.2102581218661435,
+                "p95": 3.5523790877609573,
+                "p99": 3.602806090445192,
+                "max": 3.603167047187558
+              }
+            },
+            {
+              "lo": 0.01,
+              "hi": 0.1,
+              "N": 70,
+              "xy_bad_N": 14,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 70,
+                "min": 0.03991745162949179,
+                "p50": 0.07558698716712933,
+                "p90": 0.10598130154812012,
+                "p95": 0.10607206653101083,
+                "p99": 0.11055359939768798,
+                "max": 0.11170708601820084
+              },
+              "yaw_deg": {
+                "N": 70,
+                "min": 0.0021751444995961365,
+                "p50": 1.2072124883171451,
+                "p90": 1.6617599135401846,
+                "p95": 1.905080782821202,
+                "p99": 1.9145293096363123,
+                "max": 1.924849587289901
+              },
+              "pf_xy_m": {
+                "N": 70,
+                "min": 0.01472325584590518,
+                "p50": 0.04527686592969668,
+                "p90": 0.0648307650189518,
+                "p95": 0.06627421166894445,
+                "p99": 0.07823907977013417,
+                "max": 0.08190124199148786
+              },
+              "pf_yaw_deg": {
+                "N": 70,
+                "min": 0.007799392746544234,
+                "p50": 1.7413625571315652,
+                "p90": 9.314480261124263,
+                "p95": 11.979404332357133,
+                "p99": 12.00088129846975,
+                "max": 12.046511346432718
+              }
+            },
+            {
+              "lo": 0.1,
+              "hi": 0.25,
+              "N": 27,
+              "xy_bad_N": 27,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 27,
+                "min": 0.11333327239086576,
+                "p50": 0.11777253917334331,
+                "p90": 0.12746128865481424,
+                "p95": 0.1274847457702565,
+                "p99": 0.12814753686587949,
+                "max": 0.12837689061293459
+              },
+              "yaw_deg": {
+                "N": 27,
+                "min": 0.79974677758986,
+                "p50": 1.8921223376233636,
+                "p90": 2.612914016017188,
+                "p95": 2.65748100610372,
+                "p99": 2.6828535368963546,
+                "max": 2.685111446456921
+              },
+              "pf_xy_m": {
+                "N": 27,
+                "min": 0.06632826686607834,
+                "p50": 0.07699943789083367,
+                "p90": 0.08841285723371607,
+                "p95": 0.0884819409266477,
+                "p99": 0.08887431968833974,
+                "max": 0.08900202824831177
+              },
+              "pf_yaw_deg": {
+                "N": 27,
+                "min": 0.8372338647304017,
+                "p50": 2.5101679756565933,
+                "p90": 8.38783990368592,
+                "p95": 8.433105494683728,
+                "p99": 8.596895412109903,
+                "max": 8.651699430586822
+              }
+            },
+            {
+              "lo": 0.25,
+              "hi": 0.5,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            },
+            {
+              "lo": 0.5,
+              "hi": 1,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            },
+            {
+              "lo": 1,
+              "hi": null,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            }
+          ],
+          "command_turn_deg": [
+            {
+              "lo": 0,
+              "hi": 1,
+              "N": 24,
+              "xy_bad_N": 3,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 24,
+                "min": 0.06362241512054079,
+                "p50": 0.07138844309212641,
+                "p90": 0.09838569329293383,
+                "p95": 0.10640092495899703,
+                "p99": 0.10979441088173797,
+                "max": 0.11049794499327012
+              },
+              "yaw_deg": {
+                "N": 24,
+                "min": 0.29753094393574153,
+                "p50": 0.8027763997031929,
+                "p90": 3.1760359781897045,
+                "p95": 3.6021400220255093,
+                "p99": 3.60299761851257,
+                "max": 3.603167047187558
+              },
+              "pf_xy_m": {
+                "N": 24,
+                "min": 0.06362241512054082,
+                "p50": 0.07138844309212641,
+                "p90": 0.09838569329293388,
+                "p95": 0.10640092495899721,
+                "p99": 0.10979441088173815,
+                "max": 0.11049794499327029
+              },
+              "pf_yaw_deg": {
+                "N": 24,
+                "min": 0.29753094393576696,
+                "p50": 0.8027763997032057,
+                "p90": 3.176035978189697,
+                "p95": 3.6021400220255093,
+                "p99": 3.60299761851257,
+                "max": 3.603167047187558
+              }
+            },
+            {
+              "lo": 1,
+              "hi": 5,
+              "N": 0,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 0
+              },
+              "yaw_deg": {
+                "N": 0
+              },
+              "pf_xy_m": {
+                "N": 0
+              },
+              "pf_yaw_deg": {
+                "N": 0
+              }
+            },
+            {
+              "lo": 5,
+              "hi": 15,
+              "N": 24,
+              "xy_bad_N": 3,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 24,
+                "min": 0.06378640533645924,
+                "p50": 0.0935427350913762,
+                "p90": 0.09928559873750499,
+                "p95": 0.1071133875114526,
+                "p99": 0.11021166298711767,
+                "max": 0.1108331397748449
+              },
+              "yaw_deg": {
+                "N": 24,
+                "min": 0.06648470284707632,
+                "p50": 1.2858734633443134,
+                "p90": 1.4909939065138116,
+                "p95": 2.3016280878206388,
+                "p99": 3.24938397935898,
+                "max": 3.4935713098107426
+              },
+              "pf_xy_m": {
+                "N": 24,
+                "min": 0.061883974859185294,
+                "p50": 0.09354273509137645,
+                "p90": 0.09928559873750524,
+                "p95": 0.10711338751145272,
+                "p99": 0.1102116629871177,
+                "max": 0.1108331397748449
+              },
+              "pf_yaw_deg": {
+                "N": 24,
+                "min": 0.19917072279760376,
+                "p50": 1.2873866871699744,
+                "p90": 1.605089603902014,
+                "p95": 2.3105416985031546,
+                "p99": 3.249383979358978,
+                "max": 3.4935713098107173
+              }
+            },
+            {
+              "lo": 15,
+              "hi": 45,
+              "N": 10,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 10,
+                "min": 0.05735287998916269,
+                "p50": 0.06706717206449046,
+                "p90": 0.07861528594434804,
+                "p95": 0.07947139924189657,
+                "p99": 0.0801562898799354,
+                "max": 0.0803275125394451
+              },
+              "yaw_deg": {
+                "N": 10,
+                "min": 0.0021751444995961365,
+                "p50": 0.7670067873894615,
+                "p90": 1.457811874273666,
+                "p95": 1.5198323224489203,
+                "p99": 1.5694486809891237,
+                "max": 1.5818527706241745
+              },
+              "pf_xy_m": {
+                "N": 10,
+                "min": 0.055190802077219284,
+                "p50": 0.05968264669872894,
+                "p90": 0.06811614502104368,
+                "p95": 0.071208976944677,
+                "p99": 0.07368324248358366,
+                "max": 0.07430180886831031
+              },
+              "pf_yaw_deg": {
+                "N": 10,
+                "min": 0.007799392746544234,
+                "p50": 1.1230478827082275,
+                "p90": 2.3461844702840047,
+                "p95": 2.4078485020387714,
+                "p99": 2.4571797274425853,
+                "max": 2.4695125337935386
+              }
+            },
+            {
+              "lo": 45,
+              "hi": 90,
+              "N": 22,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 22,
+                "min": 0.03991745162949179,
+                "p50": 0.049648729849250416,
+                "p90": 0.06682388194991964,
+                "p95": 0.06839849817641193,
+                "p99": 0.06951228139268523,
+                "max": 0.06978743981114616
+              },
+              "yaw_deg": {
+                "N": 22,
+                "min": 0.00456349286287745,
+                "p50": 0.670484664738831,
+                "p90": 1.2889868787696273,
+                "p95": 1.3266578080366962,
+                "p99": 1.551466889189691,
+                "max": 1.6107118302840426
+              },
+              "pf_xy_m": {
+                "N": 22,
+                "min": 0.02592353391678841,
+                "p50": 0.04427819361894908,
+                "p90": 0.051298764678436116,
+                "p95": 0.052721838155577176,
+                "p99": 0.0550007550152265,
+                "max": 0.055590321553324544
+              },
+              "pf_yaw_deg": {
+                "N": 22,
+                "min": 0.19149822351058773,
+                "p50": 0.6794018422090923,
+                "p90": 1.9015516372017873,
+                "p95": 2.02741290149095,
+                "p99": 2.0708367148539857,
+                "max": 2.0807625518726307
+              }
+            },
+            {
+              "lo": 90,
+              "hi": 180,
+              "N": 26,
+              "xy_bad_N": 0,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 26,
+                "min": 0.06646181938904845,
+                "p50": 0.08417034490035367,
+                "p90": 0.09318138030567247,
+                "p95": 0.09663414684090661,
+                "p99": 0.09829322533706855,
+                "max": 0.09860487256301516
+              },
+              "yaw_deg": {
+                "N": 26,
+                "min": 0.7893678165314553,
+                "p50": 1.4435192784863609,
+                "p90": 1.5753868600848624,
+                "p95": 1.5759231363216673,
+                "p99": 1.6256523554817508,
+                "max": 1.64218498155529
+              },
+              "pf_xy_m": {
+                "N": 26,
+                "min": 0.01472325584590518,
+                "p50": 0.023279208680323127,
+                "p90": 0.04738118439059853,
+                "p95": 0.05393484397050459,
+                "p99": 0.056891592427749535,
+                "max": 0.057258428594674636
+              },
+              "pf_yaw_deg": {
+                "N": 26,
+                "min": 0.11133751624245856,
+                "p50": 2.597365460221,
+                "p90": 11.979713224962289,
+                "p95": 11.980249501199093,
+                "p99": 12.029978720359178,
+                "max": 12.046511346432718
+              }
+            },
+            {
+              "lo": 180,
+              "hi": null,
+              "N": 41,
+              "xy_bad_N": 41,
+              "yaw_bad_N": 0,
+              "both_bad_N": 0,
+              "xy_m": {
+                "N": 41,
+                "min": 0.10070789351529405,
+                "p50": 0.11669435858310358,
+                "p90": 0.12746084741892066,
+                "p95": 0.12746137732886104,
+                "p99": 0.1280240386943883,
+                "max": 0.12837689061293459
+              },
+              "yaw_deg": {
+                "N": 41,
+                "min": 0.79974677758986,
+                "p50": 1.8379343014042326,
+                "p90": 2.6121024520533376,
+                "p95": 2.6132732695410743,
+                "p99": 2.6816377394406654,
+                "max": 2.685111446456921
+              },
+              "pf_xy_m": {
+                "N": 41,
+                "min": 0.06039811814347055,
+                "p50": 0.07558271786359665,
+                "p90": 0.08841034086236528,
+                "p95": 0.08841450630405234,
+                "p99": 0.08880555354066248,
+                "max": 0.08900202824831177
+              },
+              "pf_yaw_deg": {
+                "N": 41,
+                "min": 0.8372338647304017,
+                "p50": 7.645489273119938,
+                "p90": 9.305229451136462,
+                "p95": 9.314422768657408,
+                "p99": 9.323971847807336,
+                "max": 9.32995461746159
+              }
+            }
+          ]
+        },
+        "epochs": [
+          {
+            "t": 18.7,
+            "command_distance_m": 0.12281240648289983,
+            "command_turn_deg": 272.9149725642432,
+            "actual_distance_m": 0.04091458663849386,
+            "actual_turn_deg": 273.2183396379218
+          },
+          {
+            "t": 35.3,
+            "command_distance_m": 0.002820629349281228,
+            "command_turn_deg": 5.932603707983381,
+            "actual_distance_m": 0.00114353757550462,
+            "actual_turn_deg": 6.04917774922526
+          },
+          {
+            "t": 36.1,
+            "command_distance_m": 0.0028206293492812257,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0006209261838433439,
+            "actual_turn_deg": 5.815618156175001
+          },
+          {
+            "t": 36.5,
+            "command_distance_m": 0.0028206293492812275,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0012687109906072045,
+            "actual_turn_deg": 6.405987054096826
+          },
+          {
+            "t": 36.9,
+            "command_distance_m": 0.002820629349281229,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0007885244121205913,
+            "actual_turn_deg": 5.763225213665238
+          },
+          {
+            "t": 37.3,
+            "command_distance_m": 0.00282062934928122,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0007348019198346048,
+            "actual_turn_deg": 5.850499288124623
+          },
+          {
+            "t": 37.7,
+            "command_distance_m": 0.00282062934928122,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0004460662202414502,
+            "actual_turn_deg": 5.761298635717836
+          },
+          {
+            "t": 38.1,
+            "command_distance_m": 0.0028206293492812257,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0009575704261409769,
+            "actual_turn_deg": 5.97899581563819
+          },
+          {
+            "t": 38.5,
+            "command_distance_m": 0.0028206293492812197,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0014768960589830302,
+            "actual_turn_deg": 6.276437196932541
+          },
+          {
+            "t": 40.7,
+            "command_distance_m": 0.0028206293492812257,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0010442311823851377,
+            "actual_turn_deg": 6.148765225471253
+          },
+          {
+            "t": 41.1,
+            "command_distance_m": 0.0028206293492812275,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0001418946371430287,
+            "actual_turn_deg": 5.595605805219561
+          },
+          {
+            "t": 41.5,
+            "command_distance_m": 0.002820629349281228,
+            "command_turn_deg": 5.932603707983356,
+            "actual_distance_m": 0.0002634062786033981,
+            "actual_turn_deg": 5.758299351021576
+          },
+          {
+            "t": 41.9,
+            "command_distance_m": 0.04230944023921843,
+            "command_turn_deg": 88.98905561974965,
+            "actual_distance_m": 0.017302609519909737,
+            "actual_turn_deg": 90.40066049101216
+          }
+        ],
+        "fix_frames": [
+          {
+            "t": 18.7,
+            "xy_m": 0.0872464921839517,
+            "yaw_deg": 1.5622440455496116,
+            "pf_xy_m": 0.0872464921839517,
+            "pf_yaw_deg": 1.5622440455496116,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": true,
+            "stage": "spin",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 35.3,
+            "xy_m": 0.07137700343599065,
+            "yaw_deg": 3.6004945424475183,
+            "pf_xy_m": 0.07137700343599065,
+            "pf_yaw_deg": 3.6004945424475183,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 36.1,
+            "xy_m": 0.07880566402544281,
+            "yaw_deg": 1.0341907439063363,
+            "pf_xy_m": 0.07880566402544281,
+            "pf_yaw_deg": 1.0341907439063363,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 36.5,
+            "xy_m": 0.08309821986272302,
+            "yaw_deg": 0.29753094393574153,
+            "pf_xy_m": 0.08309821986272302,
+            "pf_yaw_deg": 0.29753094393576696,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 36.9,
+            "xy_m": 0.09106470918750785,
+            "yaw_deg": 0.8386451053578937,
+            "pf_xy_m": 0.09106470918750795,
+            "pf_yaw_deg": 0.8386451053578937,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 37.3,
+            "xy_m": 0.11049794499327012,
+            "yaw_deg": 0.934336018646079,
+            "pf_xy_m": 0.11049794499327029,
+            "pf_yaw_deg": 0.9343360186461044,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 37.7,
+            "xy_m": 0.10743910103008687,
+            "yaw_deg": 0.7595283122403148,
+            "pf_xy_m": 0.10743910103008708,
+            "pf_yaw_deg": 0.7595283122403148,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 38.1,
+            "xy_m": 0.10051792722282131,
+            "yaw_deg": 0.383001690141701,
+            "pf_xy_m": 0.10051792722282141,
+            "pf_yaw_deg": 0.383001690141701,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 38.5,
+            "xy_m": 0.09341048078986303,
+            "yaw_deg": 1.0697551967211063,
+            "pf_xy_m": 0.09341048078986303,
+            "pf_yaw_deg": 1.0697551967210808,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 40.7,
+            "xy_m": 0.0883672990356726,
+            "yaw_deg": 2.185632661588143,
+            "pf_xy_m": 0.08836729903567297,
+            "pf_yaw_deg": 2.1856326615881176,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 41.1,
+            "xy_m": 0.08083192342552825,
+            "yaw_deg": 1.101027477024347,
+            "pf_xy_m": 0.08083192342552825,
+            "pf_yaw_deg": 1.101027477024347,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 41.5,
+            "xy_m": 0.06793496959017643,
+            "yaw_deg": 0.7338641175537507,
+            "pf_xy_m": 0.06793496959017649,
+            "pf_yaw_deg": 0.7338641175538015,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          },
+          {
+            "t": 41.9,
+            "xy_m": 0.06362241512054079,
+            "yaw_deg": 1.199959524146829,
+            "pf_xy_m": 0.06362241512054082,
+            "pf_yaw_deg": 1.1999595241468544,
+            "since_fix_s": 0.0,
+            "fix": true,
+            "initial_fix": false,
+            "stage": "active_reloc8",
+            "source": "visual_relocalized",
+            "R7": true,
+            "command_distance_m": 0.0,
+            "command_turn_deg": 0.0,
+            "actual_distance_m": 0.0,
+            "actual_turn_deg": 0.0
+          }
+        ],
+        "increment_regression": {
+          "N": 72,
+          "actual_per_command": 0.9950912826185212,
+          "yaw_error_growth_turning_deg": {
+            "N": 72,
+            "min": -0.4847200280299053,
+            "p50": -0.0373781044125836,
+            "p90": 0.3682357018363715,
+            "p95": 0.4656781857214255,
+            "p99": 0.5878240615665768,
+            "max": 0.7460035662148642
+          }
+        }
+      }
+    }
+  ],
+  "full_analysis": {
+    "path": "/home/ugrp/ugrp-sim/outputs/reloc14/round2-full.json",
+    "sha256": "4c2e86cbc82d6036d2e9d3ad75cfbc5a818f1d3fe1162a93e9a2e2dd44eb82f3"
+  }
+}

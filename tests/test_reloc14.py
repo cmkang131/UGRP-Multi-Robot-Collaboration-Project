@@ -99,3 +99,33 @@ def test_compute_budget_uses_graph_size_and_preserves_existing_path():
     from harness.own_map_navigation import astar
     clear=np.ones((20,20),bool);clear[3:17,10]=False
     assert astar(clear,(1,1),(18,18),compute_budget_v1=True)==astar(clear,(1,1),(18,18))
+
+
+def test_known_mode_wall_only_update_is_partial_tracking(monkeypatch):
+    from harness.selfmap5_registration import MultiFrameEvidence
+    monkeypatch.setattr(MultiFrameEvidence,'supported',lambda *a:(False,dict(supported_floor_lines=0)))
+    r=registration();r.pf.field=SimpleNamespace(distances=lambda p:np.zeros(len(p)))
+    result,handled=track(r,row(),dict(features=[],segments=[[[0.,1.],[1.,1.]]]),np.zeros(3),1.)
+    assert handled and result is not None and r.execution_r7_admitted
+    assert r.last['geometry']['supported_wall_field_points']>0
+
+
+def test_carry_closed_gripper_retains_prediction_without_unqualified_fk(monkeypatch):
+    from harness import selfmap4_geometry as g
+    from sim.solo_carry_pose import task_start
+    from sim.reloc14_carry_tracking import CarryTracker
+    static,_=g.static_input();c=CarryTracker(static,task_start(static))
+    c.issue(dict(t=0.,pwm={1:1200,3:900,4:2400,5:1320,6:1500}),[0,0,0])
+    monkeypatch.setattr(g,'observe',lambda *a,**kw:pytest.fail('unqualified loaded camera transform'))
+    monkeypatch.setattr(c.pf,'step',lambda **kw:dict(row(False),updates=0))
+    assert c.observe(np.zeros((480,640,3),np.uint8),3.) is None
+    assert c.last['camera_admission']=='loaded_or_unknown_prediction_only'
+
+
+def test_existing_carry_bgr_port_converts_to_rgb_once():
+    from sim.solo_carry_pose import CommandPose,task_start
+    c=CommandPose(task_start({'regions':{'pickup':{'center_m':[0,0],'half_extents_m':[.5,.5]}}}))
+    captured=[];c.tracker=SimpleNamespace(observe=lambda rgb,t:captured.append(rgb))
+    bgr=np.zeros((480,640,3),np.uint8);bgr[0,0]=[255,0,0]
+    c.observe_own(bgr,0.,camera='r1/robot_cam')
+    assert captured[0][0,0].tolist()==[0,0,255]

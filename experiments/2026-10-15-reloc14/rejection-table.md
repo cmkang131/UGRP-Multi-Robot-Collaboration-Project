@@ -711,3 +711,24 @@
 |map_inserted:camera_unsettled|1|
 
 지도4회는 code recovery 상한 소진. 운반2회는 같은 후보 결함 확인 뒤 소유PID에 SIGINT·supervisor_stop(미완료, physical_success=null). 전체6회 원본 manifest 검증. v7 장면의 warehouse_wood_crate는 공통 고정 소품이며 제거 대상 team cargo heavy_crate와 다르다. cargo_*crate 몸체0, v7정의 SHA 대조로 확인한다. R1 최초 audit의 전체 crate 문자열 검색은 이 고정 소품까지 세었으므로 이후 audit에서 분리했다.
+
+## R2 (1e407968): 마지막 수정 전 분포
+
+|실행|등록→전달→삽입→주행|10cm/5° 오류|종료|
+|---|---|---|---|
+|reloc14-r2-selfmap-texture-93571-1e407968|83→83→52→8|0/83|selfmap4_relocalization_exhausted|
+|reloc14-r2-selfmap-texture-93584-1e407968|147→147→58→0|47/147|selfmap4_relocalization_exhausted|
+
+|거부 범주|수|
+|---|---:|
+|registered:not_yet_registered|225|
+|insertion:registered_r7_unconfirmed|119|
+|map_inserted:registered_r7_unconfirmed|116|
+|control_drive_used:stage:active_reloc8|98|
+|insertion:camera_unsettled|4|
+|map_inserted:registered_r7_unconfirmed;camera_unsettled|3|
+|control_drive_used:stage:select|2|
+|control_drive_used:stage:spin|2|
+|map_inserted:camera_unsettled|1|
+
+운반2회 모두 loaded_or_unknown_load_not_qualified HOST_ERROR. 카메라 FK의 미검증 하중 외부파라미터 호출이 원인이며 물리 무게 판독이 아니다. 지도는 floor_line0/wall_segment1인39.3초에도 전역 복구로 갔다. 종료 전 소유 PID를 찾았으나 모두 이미 종료돼 SIGINT 대상0(확인 기록 stop-r2.json). 원본10/10 manifest 검증(integrity-r2.json).

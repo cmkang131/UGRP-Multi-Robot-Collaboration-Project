@@ -33,3 +33,9 @@ R1 v7 carry93266은 첫 RGB fix 전에2.23m 명령 이동/0.424rad 회전 뒤 �
 저장R3 관측에 국소선refit도 오프라인 진단했으나 일부 yaw/위치p95가 나빠져 실행에 넣지 않았다([진단](local-fit-probe.json)). 연구코드 보정상수로 승격하지 않았다.
 
 참고 구현을 열람한 정확한 revision: Nav2 `b58a7573f44a984fdc5f3eaa80c4b62ac529ab9d`, ORB-SLAM2 `f2e6f51cdc8d067655d90a78c06261378e07e8f3`.
+
+## R3 마지막 탐색 전 수정
+
+R2 지도는 floor-line0·wall-segment1 뷰에서도 LOST가 됐다(93571 39.3초). 마지막 후보는 **동일 PF의 벽 거리장** 일치도도 부분 추적 근거로 쓴다. 거리장 sigma_hit=.2m 및 기존3σ NIS=9를 재사용하며 새 수용 상수는 없다. 관측된 축이 하나라는 이유만으로 전역 재등록을 반복하지 않고, posterior 질량/공분산 검사와 추적 실패 재지역화는 유지한다.
+
+새 carry 어댑터에서 두 통합 결함을 확인해 고쳤다: 기존 carry 포트의 OpenCV BGR을 selfmap detector의 RGB로 한 번 변환한다. 또한 `servo_camera_fk`가 거부하는 closed-gripper 하중 상태에서 metric FK를 호출하지 않고 PF/명령 예측을 유지한다. 카메라나 FK 자격 제한을 바꾸지 않으며, 내려놓고 열었을 때의 자기 RGB만 다시 metric 보정에 쓴다. 따라서 운반 중의 시각 보정이 항상 가능하다는 주장은 하지 않는다. 이 조건에서 예산·복구·놓기까지를 마지막 폐루프로 확인한다.

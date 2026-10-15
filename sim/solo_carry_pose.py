@@ -180,7 +180,9 @@ class CommandPose:
             raise ValueError('own RGB timestamp does not match command estimate')
         self.own_frame = {'camera': camera, 't': now, 'sha256': hashlib.sha256(frame.tobytes()).hexdigest()}
         if self.tracker is not None:
-            fix=self.tracker.observe(frame,now)
+            # Existing carry observe_own port receives OpenCV BGR from the JPEG
+            # decoder. selfmap's detector accepts RGB: convert exactly once.
+            fix=self.tracker.observe(frame[...,::-1].copy(),now)
             if fix is not None:
                 self.own.x,self.own.P=fix
                 self.accepted_fix(now)

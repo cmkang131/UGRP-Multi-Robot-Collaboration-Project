@@ -33,7 +33,10 @@ class CarryTracker:
         # Selfmap's native settle and 5Hz capture conditions, not new wall caps.
         if not self.servo or now-self.last_frame<.2-1e-8:return None
         held=self.servo.get(1,2000)<=1600
-        settled=now-self.servo_since>=(2.25 if held else .25)
+        # servo_camera_fk explicitly has no qualified loaded extrinsics.
+        # Keep prediction while closed; obtain metric fixes after set-down/open.
+        # Do not change the servo command or pretend an unloaded camera model.
+        settled=not held and now-self.servo_since>=.25
         packet=observe(rgb,self.servo,self.sensor,reloc9_wall_height_guard_v1=True) if settled else dict(features=[],segments=[])
         from harness.self_map_csm import sample_segments
         row=self.pf.step(t=now,delta=self.pending,servo=self.servo,
@@ -45,5 +48,6 @@ class CarryTracker:
         self.last=dict(state='TRACKING' if accepted else 'prediction_or_unresolved',
             updated=row['updated'],accepted=accepted,pose=row['pose'],covariance=row['covariance'],
             cluster=row['cluster'],sensor_updates=row['updates'],feature_N=len(packet['features']),
-            input='own_rgb_static_geometry_issued_commands',budget_kind='2000_particles_motion_gate',settled=settled)
+            input='own_rgb_static_geometry_issued_commands',budget_kind='2000_particles_motion_gate',settled=settled,
+            camera_admission='loaded_or_unknown_prediction_only' if held else 'unloaded_fk')
         return (np.asarray(row['pose']),P) if accepted else None
