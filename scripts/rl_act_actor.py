@@ -68,69 +68,81 @@ class FrozenACT:
         self.last_t, self.identity = [None] * nworld, [None] * nworld
         # 2x2 lag montage: 4x4 bins preserve 2x2 spatial bins within each lag.
         self.feature_dim = 512*4*4 + c.CONTEXT_DIM + 14 + 2
+        self.feature_cache = np.zeros((nworld,self.feature_dim),np.float32)
+        self.raw_cache = np.zeros((nworld,14),np.float64)
 
     def reset(self, indices):
         for i in indices:
             self.pending[i].clear()
             self.latched[i], self.last_t[i], self.identity[i] = False, None, None
+            self.feature_cache[i] = 0
+            self.raw_cache[i] = 0
 
-    def prepare(self, actor_inputs):
+    def prepare(self, actor_inputs, *, active=None):
         import torch
         if len(actor_inputs) != self.nworld:
             raise ValueError('one own observation per world required')
-        batches, raw, phase = [], [], []
-        need = []
-        for i, item in enumerate(actor_inputs):
+        active = np.ones(self.nworld,bool) if active is None else np.asarray(active,bool)
+        if active.shape != (self.nworld,):
+            raise ValueError('one public active flag per world required')
+        indices = np.flatnonzero(active).tolist()
+        if not indices:
+            return self.feature_cache.copy(), self.raw_cache.copy()
+        batches, need = [], []
+        for j,i in enumerate(indices):
+            item = actor_inputs[i]
             obs = item.observation
             self.c.validate_observation(obs)
             identity = tuple(obs[k] for k in ('robot_id','skill','object_kind','role','destination_zone'))
             if (self.identity[i] != identity or (self.last_t[i] is not None and
                     abs(obs['t']-self.last_t[i]-self.c.PERIOD_S) > 1e-5)):
-                # Same issued-clock continuity tolerance as frozen ChunkExecutor.
                 self.reset([i])
             self.identity[i], self.last_t[i] = identity, obs['t']
             batches.append(self.batch(obs, item.jpegs, self.actor.stats, blank=self.actor.blank))
             if not self.latched[i] and not self.pending[i]:
-                need.append(i)
+                need.append(j)
         tensors = {k: torch.from_numpy(np.stack([b[k] for b in batches])).to(self.device)
                    for k in batches[0]}
         with torch.no_grad():
             if need:
-                selected = {k: v[need] for k,v in tensors.items()}
-                chunks = self.actor.decode_predictions(
-                    self.actor.policy.predict_action_chunk(selected).cpu().numpy())
-                if chunks.shape != (len(need), self.c.CHUNK, 14) or not np.isfinite(chunks).all():
+                chunks = self.actor.decode_predictions(self.actor.policy.predict_action_chunk(
+                    {k:v[need] for k,v in tensors.items()}).cpu().numpy())
+                if chunks.shape != (len(need),self.c.CHUNK,14) or not np.isfinite(chunks).all():
                     raise ValueError('invalid frozen ACT chunks; no fallback')
-                for i, chunk in zip(need, chunks):
-                    self.pending[i].extend(chunk.tolist())
-            # Pinned LeRobot ACT ResNet18 exposes feature_map; fail explicitly if
-            # upstream changes rather than silently replacing the representation.
+                for j,chunk in zip(need,chunks):
+                    self.pending[indices[j]].extend(chunk.tolist())
             maps = self.actor.policy.model.backbone(tensors[self.image_key])
-            if not isinstance(maps, dict) or 'feature_map' not in maps:
+            if not isinstance(maps,dict) or 'feature_map' not in maps:
                 raise ValueError('unexpected pinned ACT backbone interface')
-            visual = torch.nn.functional.adaptive_avg_pool2d(maps['feature_map'], (4,4)).flatten(1)
-            visual = visual.cpu().numpy()
-        for i, item in enumerate(actor_inputs):
+            visual = torch.nn.functional.adaptive_avg_pool2d(maps['feature_map'],(4,4)).flatten(1).cpu().numpy()
+        for j,i in enumerate(indices):
             if self.latched[i]:
-                previous = dict(item.observation['issued'][-1], wheels=[0.]*4, duration_s=[0.]*4)
-                raw.append(self.c.encode_action(previous, done=True))
-                phase.append(0.)
+                previous = dict(actor_inputs[i].observation['issued'][-1],wheels=[0.]*4,duration_s=[0.]*4)
+                raw = self.c.encode_action(previous,done=True)
+                phase = 0.
             else:
-                phase.append((self.c.CHUNK-len(self.pending[i]))/(self.c.CHUNK-1))
-                raw.append(self.pending[i].popleft())
-        raw = np.asarray(raw, np.float64)
-        features = np.concatenate([visual, np.stack([b['observation.state'] for b in batches]),
-            raw.astype(np.float32), np.asarray(phase,np.float32)[:,None],
-            np.asarray(self.latched,np.float32)[:,None]], axis=1).astype(np.float32)
-        if features.shape != (self.nworld, self.feature_dim) or not np.isfinite(features).all():
-            raise ValueError('invalid allowed actor features')
-        return features, raw
+                phase = (self.c.CHUNK-len(self.pending[i]))/(self.c.CHUNK-1)
+                raw = self.pending[i].popleft()
+            self.raw_cache[i] = raw
+            features = np.concatenate([visual[j],batches[j]['observation.state'],
+                np.asarray(raw,np.float32),np.asarray([phase,float(self.latched[i])],np.float32)])
+            if features.shape != (self.feature_dim,) or not np.isfinite(features).all():
+                raise ValueError('invalid allowed actor features')
+            self.feature_cache[i] = features
+        return self.feature_cache.copy(),self.raw_cache.copy()
 
-    def issue(self, actor_inputs, raw, residuals, limits):
+    def issue(self, actor_inputs, raw, residuals, limits, *, active=None):
         if len(residuals) != self.nworld or len(raw) != self.nworld:
             raise ValueError('one residual per world required')
+        active = np.ones(self.nworld,bool) if active is None else np.asarray(active,bool)
+        if active.shape != (self.nworld,):raise ValueError("one active flag per world required")
         actions, encoded = [], []
         for i, item in enumerate(actor_inputs):
+            if not active[i]:
+                command = dict(item.observation["issued"][-1],t=item.observation["t"],wheels=[0.]*4,duration_s=[0.]*4)
+                actions.append(dict(command=command,done=bool(self.latched[i])))
+                encoded.append(self.c.encode_action(command,done=bool(self.latched[i])))
+                continue
             residual = np.zeros(14) if self.latched[i] else residuals[i]
             action = compose(raw[i], residual, limits, self.c.decode_action)
             self.latched[i] |= action['done']

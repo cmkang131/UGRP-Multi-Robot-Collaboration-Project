@@ -483,6 +483,11 @@ raise SystemExit(3 if a.fail else 0)
         samples['warp-act-teacher'] = ['--teacher-source', str(model), '--plan', str(source),
             '--physics-backend', 'mjwarp_batch_v1', '--vm-hourly-usd', '1.096',
             '--compiled-reference-v1', str(source), '--compiled-geometry-312-v1', str(source)]
+        samples['rl-act-signal'] = ['--mode', 'probe', '--actor-source', str(model),
+            '--teacher-source', str(model), '--checkpoint', str(model), '--plans', str(source),
+            '--training-plans', str(source), '--compiled-reference', str(source),
+            '--compiled-geometry', str(source), '--calibration', str(source),
+            '--budget', str(source), '--physics-python', str(source)]
         retired_invalid = {'e2e-rpp-lookahead-v196'}
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):

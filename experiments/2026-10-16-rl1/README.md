@@ -30,7 +30,7 @@ Refs #523. 상태: rl1b WAITING_BACKEND, 개선 여부는 아직 미측정이다
 재사용 모듈: `scripts/rl_act_reward.py`, `scripts/rl_act_curriculum.py`, `scripts/rl_act_env.py`.
 현재 env는 backend 주입용 계약 래퍼이며 **실제 MJWarp binding/부분 reset은 미검증**이다.
 기존 미커밋 env/reward 원형은 `outputs/rl1b/imported-originals/`에 보존했다(실행하지 않음).
-짧은 비물리 시험: `tests/test_rl_act_signal.py` 15개 통과; 평가에서 privileged read0,
+짧은 비물리 시험: `tests/test_rl_act_signal.py` 16개 통과; 평가에서 privileged read0,
 GT 변경 시 actor 입력 불변, h2 중복 벌점 방지, 부분 reset의 래퍼 이력 격리를 검사했다.
 이는 실제 GPU reset·actor 출력 바이트·물리 성공 검증이 아니다.
 
@@ -254,3 +254,43 @@ ACT 원본 `b4db8ba2`의 policy/contract/data는 `3f99d58c`와 diff0이며 model
 이는 CPU 저장 입력·0잔차 경로의 인수다. 실제 GPU·새 RGB·부분 reset·학습 후 정책의
 정답 불변성은 아직 검증하지 않았다. 새 rollout/학습/GPU0이며 소유 임대는 제거했다.
 배포 로더/actor-only export는 이후 정리로 분리했고 아직 산출된 잔차 가중치는 없다.
+
+## 실제 연결과 한 시간짜리 진단 구간 (실행 전 봉인 규칙)
+
+warp1의 GPU_SHARED_TIMING 보고 줄이2026-10-16 03:56 점검에서 감지됐다.
+이는 actor/reset 준비 완료가 아니므로, 커밋2fd1490a의 공통 WarpTransport를 그대로 재사용하는
+`scripts/rl_act_warp.py`와 엄격한 RGB JSON 클라이언트 `scripts/rl_act_rpc.py`를 추가했다.
+GT는 별도 owner process의 채점·훈련 lane에만 있다. 평가 process는 reward/critic/env 모듈을
+로드하지 않는다. 실제 GPU 검증 전이며, 새 물리/학습 결과로 보고하지 않는다.
+
+한 시간 안의 신호 확인에 맞춰 **새 시작40개(918000–918039)의 첫8개**, S1 cyan_1의 동일 정적
+모델로 추가 축소한다. 훈련40개는919000–919039다. 장면은 기존 ACT15의 frozen6f/floor_light_v1으로
+봉인하며, 선택된 v5 장면의 ACT16w와 합산하거나 그 장면의 RL 결과로 보고하지 않는다.
+이 선택은 새 결과를 보기 전, 동일 모델 묶음·짧은 예산을 위한 것이다. 다중 장면/물건 일반화가 아니다.
+
+- 실제 물리 owner는 기존90 SIM초/학생 done+3.1초를 유지하고 GT 성공으로 중단하지 않는다.
+- 첫 측정은 훈련 시작8개의 **한 ACT 청크8틱**이다. 그8틱의 최대 전체 틱 시간과 남은 GPU 예산으로
+  `prefix_ticks=min(900, floor(remaining/(4*max_tick_wall)))`를 정한다. 세 비교/학습 단계와
+  갱신·저장 여유에 각1/4를 배정하는 자원 계획이며, 물리 성공 문턱을 바꾸는 값이 아니다.
+  owner 종료 wait30초+terminate10초는 자원 예약으로 빼고, 제어·계획은 고정된 SIM틱만 쓴다.
+- 이 구간을 **학습 전에** prefix-seal.json으로 봉인하고 기준 ACT와 잔차에 동일하게 적용한다.
+  구간 결정에 성패·GT 보상·새 평가 결과를 쓰지 않는다. 평가 시작은 아직 보지 않는다.
+- 훈련은 그 총 틱을3등분한 수집 구간이다. 분포는h4의25%→50%→전체로 넓히며,
+  수집 구간 끝은 collector truncation(bootstrap 유지), 실제90초/학생 종료는 terminal로 구분한다.
+- prefix가3개 curriculum tier×2개 ACT 청크(48틱)도 못 담으면 예산 부족으로 BLOCKED다.
+  이는 초기 청크/첫 동작을 각 tier에 담는 계산량 하한이고 새로운 파지 수용 상수가 아니다.
+- prefix에서 끝나지 않은 과제는 cap_end이며 실패0으로 확정하지 않는다. SIGNAL/NO_SIGNAL은
+  **같은 prefix에서 관측한** 안정 들기·관문 변화에 한정한다. 전체 과제 성공 여부는 별도 미측정이다.
+- GPU vector 진단은 CPU 독립 실행의30 SIM초/6.0 지연 관문을 명시적 override 사유와 함께 기록한다.
+  per-world wall/SIM과 aggregate SIM/s를 둘 다 남기며 GPU1h 한도·예산 정지는 우회하지 않는다.
+- 새 경로는 공통 manager의 `rl-act-signal`로 등록한다. 모든 실행은 커밋·push한 source,
+  exact-XML C312 geometry/damping, 실제 library 버전, 모델·설정·시작 manifest 해시를 기록한다.
+
+h1의 실제 연결은 frozen BandVisibility의 기존7개 probe/raycast로 가림을 확인하고 실제 자기
+fisheye의 대상 중심 투영을 쓴다. 화면 경계/근평면/카메라 보정은 원래 값이며, 새 CV threshold를
+만들지 않는다. mask centroid 도우미와는 별도의 geometric-probe annotation이며 인식 신뢰도가 아니다.
+실행 뒤 영상을 보지 않고 이 label의 정확성이나 원인을 확정하지 않는다.
+
+GPU reset은 설치된 공개 `mujoco_warp.reset_data(..., reset=world_mask)`를 사용한다.
+다른 세계의 integration state와 RGB 바이트가 즉시 같은지 검사한다. 다음 틱 동역학의 완전한
+비트 동등성은 이 짧은 인수에 포함하지 않으며, 채택/장기 rl2 관문으로 남긴다.

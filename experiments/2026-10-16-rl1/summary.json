@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.rl1.summary.v1",
-  "status": "RL1B_WAITING_BACKEND",
+  "status": "RL1B_BINDING_IMPLEMENTED_UNVERIFIED",
   "verdict": null,
   "plan_complete": true,
   "comparison_complete": false,
@@ -70,7 +70,9 @@
       918038,
       918039
     ],
-    "comparison_complete": false
+    "comparison_complete": false,
+    "scene": "ACT15 frozen6f floor_light_v1",
+    "horizon": "prefit sealed SIM prefix; full-task90SIM contract unchanged"
   },
   "prior_evidence": {
     "source": "/Users/changmin/projects/ugrp-wt/act16-analysis/experiments/2026-10-16-act16a",
@@ -106,8 +108,8 @@
     "paired new-start evaluation and playback",
     "checkpoint release verification if produced"
   ],
-  "scope": "ACT15 short signal only; ACT16w first, RL2 later",
-  "updated_utc": "2026-10-15T18:56:26.980081+00:00",
+  "scope": "ACT15 S1 cyan_1 matched-prefix short signal only; no scene-v5/ACT16w pooling",
+  "updated_utc": "2026-10-15T19:29:12.902974+00:00",
   "heuristics": {
     "h1": {
       "enabled_for_pilot": true,
@@ -131,7 +133,7 @@
     }
   },
   "verification": {
-    "non_physics_tests": 15,
+    "non_physics_tests": 16,
     "actual_warp_binding": false,
     "actual_partial_reset": false,
     "actual_actor_output_byte_invariance": false,
@@ -155,6 +157,14 @@
       "canary_mutation_feature_invariance": true,
       "forbidden_loaded_modules": [],
       "gpu_and_new_start_verified": false
+    },
+    "related_non_physics_suite": {
+      "files": [
+        "test_rl_act_signal.py",
+        "test_warp_act_core.py",
+        "test_simulation_workflow_manager.py"
+      ],
+      "status": "pending_last_result"
     }
   },
   "saved_analysis": {
@@ -177,10 +187,11 @@
     ]
   },
   "dependency_wait": {
-    "status": "waiting",
+    "status": "triggered_not_runtime_admitted",
     "deadline_utc": "2026-10-16T02:11:00+00:00",
     "poll_seconds": 300,
     "restart_reason": "detect inherited or module reset API too; original deadline unchanged",
-    "last_known_sha": "40738e3b3f79aac957bdc64329e9a518f2e6b134"
+    "last_known_sha": "40738e3b3f79aac957bdc64329e9a518f2e6b134",
+    "trigger": "warp1 GPU_SHARED_TIMING line observed2026-10-15T18:56:33Z"
   }
 }

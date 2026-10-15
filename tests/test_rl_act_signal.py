@@ -259,3 +259,17 @@ def test_nstep_credit_terminal_flush_and_collector_truncation_are_separate():
     with pytest.raises(ValueError,match='privileged'):
         replay.push(1,invalid)
     assert not replay.pending[1]
+
+
+def test_evaluation_rpc_rejects_private_lane_before_actor():
+    import io
+    import json
+    from types import SimpleNamespace
+    from scripts.rl_act_rpc import Client
+    client=object.__new__(Client)
+    client.nworld=1;client.training=False
+    client.proc=SimpleNamespace(stdout=io.StringIO(json.dumps(dict(frames=[{}],terminal=[False],training=[{'truth':123}]))+'\n'))
+    with pytest.raises(ValueError,match='whitelist'):
+        client.receive()
+    with pytest.raises(RuntimeError,match='no privileged'):
+        client.read_training(0)

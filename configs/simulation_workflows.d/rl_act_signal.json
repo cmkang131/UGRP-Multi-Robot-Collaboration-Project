@@ -1,0 +1,17 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [{
+    "id": "rl-act-signal",
+    "purpose": "기본 off ACT15 MJWarp 짧은 잔차 신호 확인; GPU합계1시간",
+    "entry": "scripts/run_rl_act_signal.py",
+    "docs": "experiments/2026-10-16-rl1/README.md",
+    "requires": "explicit gcp2 L4; frozen sources and ACT15; exact-XML compiled312 assets; one-hour receipt; matched sealed SIM prefix",
+    "version": "0.1.0",
+    "runner": "scripts.run_rl_act_signal",
+    "output_flag": "--out",
+    "side_effect": "local_simulation",
+    "adapter": "managed_legacy_cli",
+    "required_inputs": ["--mode", "--actor-source", "--teacher-source", "--checkpoint", "--plans", "--training-plans", "--compiled-reference", "--compiled-geometry", "--calibration", "--budget", "--physics-python"],
+    "output_kind": "directory"
+  }]
+}

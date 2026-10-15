@@ -46,6 +46,7 @@ class ActorEnv:
         self.nworld, self.training = nworld, training
         self.heuristics, self.distance_p95 = heuristics, distance_p95
         self.previous = [None] * nworld
+        self.critic_cache = [None] * nworld if training else None
         self.done_latched = [False] * nworld
         self.terminal = [True] * nworld
         self.training_privileged_reward_reads = 0
@@ -80,7 +81,9 @@ class ActorEnv:
             raise ValueError('first reset must initialize every world')
         self.backend.reset(deepcopy(plans), indices=indices)
         for i in indices:
-            self.previous[i] = self._truth(i)[0] if self.training else None
+            if self.training:
+                self.previous[i], self.critic_cache[i] = self._truth(i)
+            else:self.previous[i] = None
             self.done_latched[i], self.terminal[i] = False, False
         self.initialized = True
         return self.actor_inputs()
@@ -117,7 +120,13 @@ class ActorEnv:
                     terminal=terminal[i], heuristics=self.heuristics)
                 training_outputs.append(TrainingOutput(reward, critic))
                 self.previous[i] = after
+                self.critic_cache[i] = critic
             else:
                 training_outputs.append(None)
         self.terminal = list(terminal)
         return self.actor_inputs(), tuple(terminal), tuple(training_outputs)
+
+    def critic_snapshot(self):
+        if not self.training:
+            raise RuntimeError('no critic lane during evaluation')
+        return deepcopy(self.critic_cache)
