@@ -53,3 +53,22 @@ def test_transient_empty_set_does_not_disrupt_existing_motion():
     assert t.search21_recovery is None
     schedule(t,FIX['world'],FIX['t']+2.)
     assert t.search21_recovery is not None
+
+
+def test_follow_segment_instead_of_returning_to_a_passed_vertex(monkeypatch):
+    from sim.grasp_act_search21 import route_projection,route_progress
+    t=teacher();w=deepcopy(FIX['world']);nav=BodyNavigation(t,w)
+    path=[(0.,0.),(1.,0.),(1.,1.)];start=(.2,0.)
+    monkeypatch.setattr(nav,'segment_free',lambda *a:True)
+    assert nav.waypoint(start,path,[],[],0.)==(1.,0.)
+    t.path=path
+    assert nav.path_for_goal(start,(1.,1.),[],[],0.)==[start,(1.,0.),(1.,1.)]
+    # Moving away from the Euclidean goal along a required detour is progress.
+    t.path=[(0.,0.),(-1.,0.),(-1.,1.),(1.,1.)]
+    for now,x in enumerate((0.,-.2,-.4,-.6,-.8)):
+        w['robots']['r1']['pose']=[x,0.,0.]
+        assert route_progress(t,w,(1.,1.),0.,float(now)) is None
+    # Repeated forward/backward oscillation never exceeds the best arc.
+    for now,x in ((5.,-.7),(6.,-.8),(7.,-.7)):
+        w['robots']['r1']['pose']=[x,0.,0.];event=route_progress(t,w,(1.,1.),0.,now)
+    assert event=='replan'

@@ -107,7 +107,7 @@ def retain(teacher, world, now):
     from sim.grasp_act_pregrasp import select_sampled_goal
     selected, checked = select_sampled_goal(world, teacher.rid, teacher.end, teacher.bounds,
         teacher.folded_ready, teacher.sink.pwm, current=teacher.approach_choice,
-        navigation=BodyNavigation(teacher, world))
+        navigation=teacher._navigation(world))
     if selected is not None:
         teacher.search20_log.append({'t': now, 'event': 'stance_family_retained',
             'choice': teacher.approach_choice, 'goal_shift_m': math.dist(selected['goal'], teacher.path_goal),
@@ -154,7 +154,7 @@ def alignment_alternative(teacher, world, value, before, now):
 
 def plan_active(teacher, world, now):
     """Keep the admitted family first; every replacement uses admission padding."""
-    nav=BodyNavigation(teacher,world)
+    nav=teacher._navigation(world)
     pose,point,heading,goal=teacher._geometry(world)
     radius,discs,rects=teacher._constraints(world)
     changed=teacher.path_goal is None or math.dist(goal,teacher.path_goal)>.025

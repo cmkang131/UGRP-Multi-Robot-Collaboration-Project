@@ -81,6 +81,28 @@ class BodyNavigation(Search20Navigation):
         return None
 
 
+    def path_for_goal(self,start,goal,discs,rects,radius):
+        old=self.teacher.path
+        if len(old)>=2:
+            i,_,_=route_projection(start,old)
+            remaining=[tuple(start),*old[i+1:-1],tuple(goal)]
+            if all(self.segment_free(a,b,discs,rects,radius) for a,b in zip(remaining,remaining[1:])):
+                return remaining
+        return self.plan_path(start,goal,self.bounds,discs,rects=rects,radius=radius)
+
+    def waypoint(self,start,path,discs,rects,radius):
+        if len(path)<2:return None
+        i,_,_=route_projection(start,path)
+        best=None
+        for p in path[i+1:]:
+            if math.dist(start,p)<.001:continue
+            if self.segment_free(start,p,discs,rects,radius):
+                best=p
+                if math.dist(start,p)>=.12:break
+            elif best is not None:break
+        return best
+
+
 def fallback(t,world,now,choices):
     """Stop at the first fully checked stance; no partial plan on budget expiry."""
     from sim.grasp_act_pregrasp import select_sampled_goal
@@ -127,7 +149,7 @@ def recovery_step(t, world, now, before):
         t.search21_log.append({'t':now,'event':'reobserve_replan','issued_distance_m':distance})
         t.search21_recovery = None
         t.path=[];t.path_goal=None;t.next_plan=now;t.approach_plan_valid=False
-        t.progress.reset()
+        t.progress.reset();t.search21_progress=None
         return t._hold(now),False
     # Real camera movement after the checked retreat/sidestep. An old bearing
     # is a search direction only; it cannot authorize an unseen grasp target.
@@ -158,3 +180,34 @@ def recovery_step(t, world, now, before):
     t.search21_log.append({'t':now,'event':'translation_blocked_camera_reobserve'})
     state['start']=now-.8
     return t._hold(now),False
+
+
+def route_projection(start,path):
+    """Nearest segment, with forward tie-breaking; never return a passed vertex."""
+    arc=0.;choices=[]
+    for i,(a,b) in enumerate(zip(path,path[1:])):
+        dx,dy=b[0]-a[0],b[1]-a[1];length=math.hypot(dx,dy)
+        u=max(0.,min(1.,((start[0]-a[0])*dx+(start[1]-a[1])*dy)/max(length*length,1e-15)))
+        q=(a[0]+u*dx,a[1]+u*dy);s=arc+u*length
+        choices.append((math.dist(start,q),-s,i,q));arc+=length
+    _,minus_s,i,q=min(choices)
+    return i,q,-minus_s
+
+
+def route_progress(t,world,goal,heading,now):
+    """Monotone arc progress on a fixed checked route; oscillation earns nothing."""
+    pose=world['robots'][t.rid]['pose'];state=getattr(t,'search21_progress',None)
+    choice=tuple(t.approach_choice)
+    if state is None or state['choice']!=choice:
+        if len(t.path)<2:return t.progress.observe_goal(pose,goal,heading,now)
+        state={'path':[tuple(p) for p in t.path],'choice':choice,'best':None,'since':now,'retried':False}
+        t.search21_progress=state
+    _,_,arc=route_projection(pose[:2],state['path'])
+    if state['best'] is None or arc-state['best']>.01:
+        state.update(best=arc,since=now,retried=False)
+        return None
+    if now-state['since']<3.-1e-8:return None
+    event='handoff' if state['retried'] else 'replan'
+    state.update(since=now,retried=True)
+    t.search21_log.append({'t':now,'event':'route_progress_'+event,'best_arc_m':state['best'],'arc_m':arc})
+    return event

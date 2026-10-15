@@ -394,6 +394,8 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
 
     def _navigation(self,world):
         if self.search19_body_active:
+            from sim.grasp_act_search21 import enabled as search21, BodyNavigation as Search21Navigation
+            if search21(self):return Search21Navigation(self,world)
             from sim.grasp_act_search20 import enabled, BodyNavigation as Search20Navigation
             if enabled(self):return Search20Navigation(self,world)
             from sim.grasp_act_search19 import BodyNavigation
@@ -546,7 +548,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
             escaped=escape_command(self,world,now)
             if escaped is not None:return escaped
         if self.approach_progress!='off':
-            recovery=(self.progress.observe_goal(pose,goal,heading,now)
+            from sim.grasp_act_search21 import enabled as search21, route_progress
+            recovery=(route_progress(self,world,goal,heading,now) if search21(self) and self.search19_body_active else
+                      self.progress.observe_goal(pose,goal,heading,now)
                       if self.approach_recovery=='progress_view_recovery_v3'
                       else self.progress.observe(pose[:2],now))
             if recovery is not None:
