@@ -51,7 +51,7 @@ class ContinuousActPort(CameraRobotPort):
                     busy_until=self._busy_until,actuator_state=self._actuator_state())
 
 
-def duty_wheels(drive, period=.1):
+def duty_wheels(drive, period=.1, *, keep_nonzero=False):
     """Pulse-width modulation above the real dead zone, on the 10 Hz clock.
 
     Desired body effort is converted with the existing wheel mixing matrix.
@@ -63,7 +63,7 @@ def duty_wheels(drive, period=.1):
     wheels=[];durations=[]
     for v in desired:
         dt=period*abs(v)/scale
-        if dt<.001: wheels.append(0.);durations.append(0.)
+        if dt<.001 and not (keep_nonzero and v): wheels.append(0.);durations.append(0.)
         else: wheels.append(math.copysign(.35,v));durations.append(dt)
     return wheels,durations
 

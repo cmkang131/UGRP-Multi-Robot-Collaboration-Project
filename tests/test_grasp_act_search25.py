@@ -77,3 +77,21 @@ def test_wall_safety_cap_is_separate_from_compute_exhaustion():
         b.check()
         with pytest.raises(PlanningSafetyCap):b.check()
     assert b.checks==1 and not b.exhausted
+
+
+def test_raw_r2_submillimeter_unreachable_target_is_not_a_zero_command():
+    from sim.grasp_act_teacher import grasp_poses
+    point=(.20966332944715402,-.003981223655784681,.023892244543134985)
+    with pytest.raises(ValueError):grasp_poses(point)
+    values=[]
+    for mode in ('off',MODES['search25_inflation']):
+        t,w=scene();t.phase='align';t.staging_distance=.2092
+        t.search15_modes['search25_inflation']=mode
+        t._nominal_handoff=lambda *a:False;t._uses_goal_set=lambda *a:False
+        t._geometry=lambda *a:((0.,0.,0.),point,0.,(point[0]-.2092,point[1]))
+        t.ready_geometry=lambda *a:False
+        w.update(beam={'ends':{'blue':point}},visibility={'r1':{'visible_probes':15}})
+        value,_=t._approach(w,2.);values.append(value)
+    assert not any(values[0]['wheels'])
+    assert all(v==.35 for v in values[1]['wheels'])
+    assert values[1]['duration_s']==[.04]*4

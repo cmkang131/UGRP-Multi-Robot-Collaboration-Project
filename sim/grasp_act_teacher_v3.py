@@ -164,7 +164,9 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         # accepting it as ready or accumulating tiny lateral/yaw commands.
         try:grasp_poses((gx,gy,g[2]));reachable=True
         except ValueError:reachable=False
-        if not reachable and abs(errors[0])>.0005:self.align_active[0]=True
+        from sim.grasp_act_search25 import enabled as search25
+        restore_ik=not reachable and search25(self,'search25_inflation')
+        if not reachable and (restore_ik or abs(errors[0])>.0005):self.align_active[0]=True
         axis=next((i for i in (2,1,0) if self.align_active[i]),None)
         if axis is None:return self._hold(now),False
         sign=1 if errors[axis]>0 else -1
@@ -185,7 +187,7 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         drive=[0.,0.,0.];drive[axis]=max(lo,min(hi,effort))
         # One axis per command keeps the four-wheel ratios intact when the
         # bounded minimum width is applied. No new grasp motion/IK path.
-        return self._continuous(now,*drive),False
+        return self._continuous(now,*drive,restore_ik=restore_ik),False
 
     def _observe_stable(self,truth,now):
         from sim.grasp_act_gaze import slew
@@ -703,8 +705,12 @@ class VisibleOnlyGraspTeacher(GraspTeacher):
         return command({'t':now,'wheels':[0.]*4,'duration_s':[0.]*4,
                         'pwm':{str(s):self.sink.pwm[s] for s in SERVOS}})
 
-    def _continuous(self,now,forward,left,turn):
-        wheels,widths=duty_wheels([3.*forward,3.*left,.65*turn])
+    def _continuous(self,now,forward,left,turn,*,restore_ik=False):
+        # R2 raw: 0.463mm x residual is inside the old 0.5mm activation
+        # threshold but outside certified IK. Preserve a nonzero correction
+        # before the existing duty dead-zone truncation. Same speed35 and
+        # existing 40ms alignment pulse floor; no new acceptance tolerance.
+        wheels,widths=duty_wheels([3.*forward,3.*left,.65*turn],keep_nonzero=restore_ik)
         if self.teacher_stability!='off' and self.phase in ('align','search'):
             # Candidate 40 ms floor; real-wheel response remains unmeasured.
             widths=[max(.04,d) if w else 0. for w,d in zip(wheels,widths)]
