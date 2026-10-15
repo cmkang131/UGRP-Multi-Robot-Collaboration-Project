@@ -1,0 +1,1493 @@
+{
+  "status": "NOT_READY",
+  "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+  "host": "gcp2",
+  "machine_type": "n4-highcpu-64",
+  "physics": "C MuJoCo3.12.0 CPU",
+  "scene": "walls_floor_contrast_v5_indigo110_s80",
+  "floor": "v1 unchanged",
+  "camera_quality": "no_mip_v1",
+  "scene_asset_extension": "release_geometry_v1",
+  "scene_colour_transition_v1": "off",
+  "boundary_scope": "Only the new toggle is off; existing own RGB line extraction remains active",
+  "planned_N": 80,
+  "started_N": 78,
+  "completed_control_terminal_N": 63,
+  "success_n": 62,
+  "failure_N": 1,
+  "cap_end_N": 0,
+  "supervisor_stop_N": 15,
+  "HOST_ERROR_N": 0,
+  "not_submitted_N": 2,
+  "cohorts": {
+    "current_A": {
+      "N": 40,
+      "success": 31,
+      "categories": {
+        "success": 31,
+        "supervisor_stop": 7,
+        "failure": 1,
+        "not_started": 1
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 40,
+          "cumulative_passed": 39,
+          "rejected": 1
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 39,
+          "cumulative_passed": 39,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 39,
+          "cumulative_passed": 31,
+          "rejected": 8
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        }
+      ]
+    },
+    "current_B": {
+      "N": 40,
+      "success": 31,
+      "categories": {
+        "success": 31,
+        "supervisor_stop": 8,
+        "not_started": 1
+      },
+      "funnel": [
+        {
+          "gate": "started",
+          "entered": 40,
+          "cumulative_passed": 39,
+          "rejected": 1
+        },
+        {
+          "gate": "prefix_held",
+          "entered": 39,
+          "cumulative_passed": 39,
+          "rejected": 0
+        },
+        {
+          "gate": "teacher_done",
+          "entered": 39,
+          "cumulative_passed": 31,
+          "rejected": 8
+        },
+        {
+          "gate": "final_geometry_contact_command_clear",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        },
+        {
+          "gate": "settled_2s_original_evaluation",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        },
+        {
+          "gate": "input_audit_zero",
+          "entered": 31,
+          "cumulative_passed": 31,
+          "rejected": 0
+        }
+      ]
+    }
+  },
+  "short": "A3/3 B3/3 separate",
+  "input_audit": {
+    "runs_N": 78,
+    "invisible_measurements": 0,
+    "held_world_reads": 0,
+    "control_top_camera_reads": 0
+  },
+  "scene_runtime_verified_N": 78,
+  "manifest_files_verified": 22899,
+  "hash_errors": 0,
+  "false_accepts": 0,
+  "first30": {
+    "initial_wave": {
+      "n": 16,
+      "median": 4.181827091308201
+    },
+    "resumed_wave": {
+      "n": 16,
+      "median": 4.058100856475143
+    },
+    "block_threshold": 6.0
+  },
+  "raw_recount": "release-gate-summary.json.zst",
+  "rejection_table": "release-gate-rejection_table.json",
+  "operating_attempts": "release-final-attempt-ledger.json.zst",
+  "weld": "off",
+  "training_rgb": false,
+  "student_execution": false,
+  "model_calls": 0,
+  "pooling": false,
+  "raw_backup": "gcp2 persistent disk; no independent full raw backup; Mac retrieved summaries/montages/review frames/bounded videos only",
+  "remaining": "Seed110633 static sweep guard rejection requires source diagnosis/new candidate and fresh gate.15 supervised stops +2 unsubmitted do not count as control failures or successes.",
+  "runs": [
+    {
+      "name": "gv5-release-gate-current_A-110622-a41781dd-retry1",
+      "seed": 110622,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110622-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110622-a41781dd-retry1",
+      "seed": 110622,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110622-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-88639-a41781dd-retry1",
+      "seed": 88639,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-88639-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-88639-a41781dd-retry1",
+      "seed": 88639,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-88639-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110600-a41781dd-retry1",
+      "seed": 110600,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110600-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110600-a41781dd-retry1",
+      "seed": 110600,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110600-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110601-a41781dd-retry1",
+      "seed": 110601,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110601-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110601-a41781dd-retry1",
+      "seed": 110601,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110601-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110602-a41781dd-retry1",
+      "seed": 110602,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110602-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110602-a41781dd-retry1",
+      "seed": 110602,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110602-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110603-a41781dd-retry1",
+      "seed": 110603,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110603-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110603-a41781dd-retry1",
+      "seed": 110603,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110603-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110604-a41781dd-retry1",
+      "seed": 110604,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110604-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110604-a41781dd-retry1",
+      "seed": 110604,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110604-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110605-a41781dd-retry1",
+      "seed": 110605,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110605-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110605-a41781dd-retry1",
+      "seed": 110605,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110605-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110606-a41781dd-retry1-retry2",
+      "seed": 110606,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110606-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110606-a41781dd-retry1-retry2",
+      "seed": 110606,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110606-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110607-a41781dd-retry1-retry2",
+      "seed": 110607,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110607-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110607-a41781dd-retry1-retry2",
+      "seed": 110607,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110607-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110608-a41781dd-retry1",
+      "seed": 110608,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110608-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110608-a41781dd-retry1",
+      "seed": 110608,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110608-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110609-a41781dd-retry1-retry2",
+      "seed": 110609,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110609-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110609-a41781dd-retry1-retry2",
+      "seed": 110609,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110609-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110610-a41781dd-retry1-retry2",
+      "seed": 110610,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110610-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110610-a41781dd-retry1",
+      "seed": 110610,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110610-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110611-a41781dd-retry1-retry2",
+      "seed": 110611,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110611-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110611-a41781dd-retry1",
+      "seed": 110611,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110611-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110612-a41781dd-retry1-retry2",
+      "seed": 110612,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110612-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110612-a41781dd-retry1-retry2",
+      "seed": 110612,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110612-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110613-a41781dd-retry1-retry2",
+      "seed": 110613,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110613-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110613-a41781dd-retry1-retry2",
+      "seed": 110613,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110613-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110614-a41781dd-retry1-retry2",
+      "seed": 110614,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110614-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110614-a41781dd-retry1-retry2",
+      "seed": 110614,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110614-a41781dd-retry1-retry2/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110615-a41781dd-retry1",
+      "seed": 110615,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110615-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110615-a41781dd-retry1",
+      "seed": 110615,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110615-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110616-a41781dd-retry1",
+      "seed": 110616,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110616-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110616-a41781dd-retry1",
+      "seed": 110616,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110616-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110617-a41781dd-retry1",
+      "seed": 110617,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110617-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110617-a41781dd-retry1",
+      "seed": 110617,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110617-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110618-a41781dd-retry1",
+      "seed": 110618,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110618-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110618-a41781dd-retry1",
+      "seed": 110618,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110618-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110619-a41781dd-retry1",
+      "seed": 110619,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110619-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110619-a41781dd-retry1",
+      "seed": 110619,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110619-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110620-a41781dd-retry1",
+      "seed": 110620,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110620-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110620-a41781dd-retry1",
+      "seed": 110620,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110620-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110621-a41781dd-retry1",
+      "seed": 110621,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110621-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110621-a41781dd-retry1",
+      "seed": 110621,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110621-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110623-a41781dd-retry1",
+      "seed": 110623,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110623-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110623-a41781dd-retry1",
+      "seed": 110623,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110623-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110624-a41781dd-retry1",
+      "seed": 110624,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110624-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110624-a41781dd-retry1",
+      "seed": 110624,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110624-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110625-a41781dd-retry1",
+      "seed": 110625,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110625-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110625-a41781dd-retry1",
+      "seed": 110625,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110625-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110626-a41781dd-retry1",
+      "seed": 110626,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110626-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110626-a41781dd-retry1",
+      "seed": 110626,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110626-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110627-a41781dd-retry1",
+      "seed": 110627,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110627-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110627-a41781dd-retry1",
+      "seed": 110627,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110627-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110628-a41781dd-retry1",
+      "seed": 110628,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110628-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110628-a41781dd-retry1",
+      "seed": 110628,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110628-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110629-a41781dd-retry1",
+      "seed": 110629,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110629-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110629-a41781dd-retry1",
+      "seed": 110629,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110629-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110630-a41781dd-retry1",
+      "seed": 110630,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110630-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110630-a41781dd-retry1",
+      "seed": 110630,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110630-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110631-a41781dd-retry1",
+      "seed": 110631,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110631-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110631-a41781dd-retry1",
+      "seed": 110631,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110631-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110632-a41781dd-retry1",
+      "seed": 110632,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110632-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110632-a41781dd-retry1",
+      "seed": 110632,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110632-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "success",
+      "status": "complete",
+      "outcome": "teacher_done",
+      "recount_success": true,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110633-a41781dd-retry1",
+      "seed": 110633,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110633-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "failure",
+      "status": "complete",
+      "outcome": "release23_sweep_blocked:wall_north",
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110633-a41781dd-retry1",
+      "seed": 110633,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110633-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": "release23_sweep_blocked:wall_north",
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110634-a41781dd-retry1",
+      "seed": 110634,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110634-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110634-a41781dd-retry1",
+      "seed": 110634,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110634-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110635-a41781dd-retry1",
+      "seed": 110635,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110635-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110635-a41781dd-retry1",
+      "seed": 110635,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110635-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110636-a41781dd-retry1",
+      "seed": 110636,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110636-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110636-a41781dd-retry1",
+      "seed": 110636,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110636-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110637-a41781dd-retry1",
+      "seed": 110637,
+      "candidate": "current_A",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_A-110637-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_B-110637-a41781dd-retry1",
+      "seed": 110637,
+      "candidate": "current_B",
+      "raw": "/home/ugrp/ugrp-sim/runs/gv5-release-gate-current_B-110637-a41781dd-retry1/raw",
+      "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+      "started": true,
+      "category": "supervisor_stop",
+      "status": "interrupted",
+      "outcome": null,
+      "recount_success": false,
+      "audit": {
+        "invisible_measurements": 0,
+        "held_world_reads": 0,
+        "control_top_camera_reads": 0
+      }
+    },
+    {
+      "name": "gv5-release-gate-current_A-110638-a41781dd-retry1",
+      "seed": 110638,
+      "candidate": "current_A",
+      "started": false,
+      "category": "not_started"
+    },
+    {
+      "name": "gv5-release-gate-current_B-110638-a41781dd-retry1",
+      "seed": 110638,
+      "candidate": "current_B",
+      "started": false,
+      "category": "not_started"
+    }
+  ]
+}

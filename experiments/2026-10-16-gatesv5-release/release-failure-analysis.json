@@ -1,0 +1,1554 @@
+{
+  "source_sha": "a41781dd122b1e20b8eec7e43c553e779e6cfc30",
+  "rows": [
+    {
+      "run": "gv5-release-gate-current_A-110633-a41781dd-retry1",
+      "saved_status": "complete",
+      "outcome": "release23_sweep_blocked:wall_north",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "held_world_reads": 0,
+        "held_world_reads_by_site": {},
+        "invisible_measurements": 0,
+        "measurements_by_phase": {
+          "lookaround": {
+            "own_rgb_landmarks": {
+              "n": 1014,
+              "invisible": 0
+            }
+          }
+        },
+        "pick_target_uses": [
+          {
+            "phase": "line_aligned_station",
+            "robot": "r1",
+            "t": 30.90000000005653,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          },
+          {
+            "phase": "line_aligned_station",
+            "robot": "r2",
+            "t": 33.500000000068944,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          },
+          {
+            "phase": "approach",
+            "robot": "r1",
+            "t": 33.500000000068944,
+            "source": "own_command",
+            "age_s": 18.600000000080996
+          },
+          {
+            "phase": "approach",
+            "robot": "r2",
+            "t": 33.500000000068944,
+            "source": "own_command",
+            "age_s": 18.600000000080996
+          },
+          {
+            "phase": "line_aligned_station",
+            "robot": "r1",
+            "t": 35.100000000076584,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          },
+          {
+            "phase": "line_aligned_station",
+            "robot": "r2",
+            "t": 35.500000000078494,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          },
+          {
+            "phase": "repick",
+            "robot": "r1",
+            "t": 35.500000000078494,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          },
+          {
+            "phase": "repick",
+            "robot": "r2",
+            "t": 35.500000000078494,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          }
+        ],
+        "assigned_end_visibility_by_phase": {
+          "r1": {
+            "look": {
+              "N": 7,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.7
+            },
+            "await_look": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            },
+            "lower": {
+              "N": 24,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 2.400000000000001
+            },
+            "await_open": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            },
+            "open": {
+              "N": 15,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 1.5000000000000002
+            },
+            "observe_back": {
+              "N": 36,
+              "visible": 24,
+              "visible_fraction": 0.6666666666666666,
+              "max_blind_s": 1.0999999999999999
+            },
+            "lookaround": {
+              "N": 90,
+              "visible": 11,
+              "visible_fraction": 0.12222222222222222,
+              "max_blind_s": 4.300000000000001
+            },
+            "observe_move": {
+              "N": 10,
+              "visible": 10,
+              "visible_fraction": 1.0,
+              "max_blind_s": 0.0
+            },
+            "observe": {
+              "N": 6,
+              "visible": 6,
+              "visible_fraction": 1.0,
+              "max_blind_s": 0.0
+            },
+            "await_observe": {
+              "N": 1,
+              "visible": 1,
+              "visible_fraction": 1.0,
+              "max_blind_s": 0.0
+            },
+            "line_recheck": {
+              "N": 50,
+              "visible": 1,
+              "visible_fraction": 0.02,
+              "max_blind_s": 4.200000000000001
+            },
+            "approach": {
+              "N": 13,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 1.3
+            },
+            "repick": {
+              "N": 61,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 6.099999999999994
+            },
+            "regrasp_check": {
+              "N": 138,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 13.799999999999967
+            },
+            "await_regrasp": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            }
+          },
+          "r2": {
+            "look": {
+              "N": 7,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.7
+            },
+            "await_look": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            },
+            "lower": {
+              "N": 24,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 2.400000000000001
+            },
+            "await_open": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            },
+            "open": {
+              "N": 15,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 1.5000000000000002
+            },
+            "observe_back": {
+              "N": 36,
+              "visible": 19,
+              "visible_fraction": 0.5277777777777778,
+              "max_blind_s": 1.0999999999999999
+            },
+            "lookaround": {
+              "N": 90,
+              "visible": 2,
+              "visible_fraction": 0.022222222222222223,
+              "max_blind_s": 4.300000000000001
+            },
+            "observe_move": {
+              "N": 10,
+              "visible": 9,
+              "visible_fraction": 0.9,
+              "max_blind_s": 0.1
+            },
+            "observe": {
+              "N": 6,
+              "visible": 6,
+              "visible_fraction": 1.0,
+              "max_blind_s": 0.0
+            },
+            "await_observe": {
+              "N": 1,
+              "visible": 1,
+              "visible_fraction": 1.0,
+              "max_blind_s": 0.0
+            },
+            "line_recheck": {
+              "N": 50,
+              "visible": 43,
+              "visible_fraction": 0.86,
+              "max_blind_s": 0.7
+            },
+            "approach": {
+              "N": 13,
+              "visible": 8,
+              "visible_fraction": 0.6153846153846154,
+              "max_blind_s": 0.5
+            },
+            "repick": {
+              "N": 61,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 6.099999999999994
+            },
+            "regrasp_check": {
+              "N": 138,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 13.799999999999967
+            },
+            "await_regrasp": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            }
+          }
+        },
+        "max_assigned_end_blind_s": {
+          "r1": 26.200000000000102,
+          "r2": 21.20000000000003
+        },
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0,
+        "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded",
+        "visibility_by_phase": {
+          "r1": {
+            "look": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 8
+            },
+            "await_look": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 1
+            },
+            "lower": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 24
+            },
+            "await_open": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 1
+            },
+            "open": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 15
+            },
+            "observe_back": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 36
+            },
+            "lookaround": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 90
+            },
+            "observe_move": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 10
+            },
+            "observe": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 6
+            },
+            "await_observe": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 1
+            },
+            "line_recheck": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 52
+            },
+            "approach": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 13
+            },
+            "repick": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 61
+            },
+            "regrasp_check": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 138
+            },
+            "await_regrasp": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 1
+            }
+          },
+          "r2": {
+            "look": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 8
+            },
+            "await_look": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 1
+            },
+            "lower": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 24
+            },
+            "await_open": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 1
+            },
+            "open": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 15
+            },
+            "observe_back": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 36
+            },
+            "lookaround": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 90
+            },
+            "observe_move": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 10
+            },
+            "observe": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 6
+            },
+            "await_observe": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 1
+            },
+            "line_recheck": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 52
+            },
+            "approach": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 13
+            },
+            "repick": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 61
+            },
+            "regrasp_check": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 138
+            },
+            "await_regrasp": {
+              "destination": 0,
+              "end_area": 0,
+              "own_band": 0,
+              "partner": 0,
+              "N": 1
+            }
+          }
+        },
+        "max_destination_blind_s_by_phase": {
+          "r1": {
+            "look": 0.7999999999999999,
+            "await_look": 0.8999999999999999,
+            "lower": 3.3000000000000016,
+            "await_open": 3.4000000000000017,
+            "open": 4.899999999999999,
+            "observe_back": 12.99999999999997,
+            "lookaround": 17.49999999999998,
+            "observe_move": 18.499999999999993,
+            "observe": 19.1,
+            "await_observe": 19.200000000000003,
+            "line_recheck": 25.700000000000095,
+            "approach": 24.900000000000084,
+            "repick": 31.800000000000182,
+            "regrasp_check": 45.60000000000038,
+            "await_regrasp": 45.70000000000038
+          },
+          "r2": {
+            "look": 0.7999999999999999,
+            "await_look": 0.8999999999999999,
+            "lower": 3.3000000000000016,
+            "await_open": 3.4000000000000017,
+            "open": 4.899999999999999,
+            "observe_back": 12.99999999999997,
+            "lookaround": 17.49999999999998,
+            "observe_move": 18.499999999999993,
+            "observe": 19.1,
+            "await_observe": 19.200000000000003,
+            "line_recheck": 25.700000000000095,
+            "approach": 24.900000000000084,
+            "repick": 31.800000000000182,
+            "regrasp_check": 45.60000000000038,
+            "await_regrasp": 45.70000000000038
+          }
+        }
+      },
+      "choice": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.3,
+          "reason": "localized_margin_correction",
+          "t": 29.200000000048412,
+          "margins_m": [
+            0.005634930330505328,
+            0.7010235585930253
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            0.03436506966949467,
+            0.6610235585930253
+          ],
+          "raw_margins_m": [
+            0.024813294224431348,
+            0.7202019224869514
+          ],
+          "corrected_margins_m": [
+            0.05267868918926222,
+            0.7480673174517822
+          ],
+          "margin_lower_bounds_m": [
+            0.005634930330505328,
+            0.7010235585930253
+          ],
+          "common_bias_m": -0.02786539496483087,
+          "sum_residual_m": -0.05573078992966174,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 1,
+          "raw_axis_errors_rad": [
+            0.04656778168655751,
+            0.05297043691893055
+          ],
+          "fused_axis_error_rad": 0.04992468501131486,
+          "axis_weights": [
+            0.4757013765501186,
+            0.5242986234498813
+          ],
+          "axis_disagreement_rad": 0.006402655232373045,
+          "axis_ci_variance_rad2": 0.00022613237940977222,
+          "axis_observation_epoch": 1,
+          "axis_fusion": "axis_fusion_v1"
+        }
+      ],
+      "shift_steps": 0,
+      "reported_sweep": [
+        {
+          "t": 55.50000000017399,
+          "accepted": false,
+          "checks": [
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "map bounds",
+              "minimum_gap": -0.07428832630531082,
+              "gap_unit": "m",
+              "accepted": false
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_north",
+              "minimum_gap": -0.09928832630531081,
+              "gap_unit": "m",
+              "accepted": false
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_south",
+              "minimum_gap": 3.7847988263464125,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_west",
+              "minimum_gap": 5.479699345019987,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_east",
+              "minimum_gap": 0.3432920430834949,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_1",
+              "minimum_gap": 2.4578084639988225,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_2",
+              "minimum_gap": 2.229699345019987,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "map bounds",
+              "minimum_gap": 0.2762920478946461,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_north",
+              "minimum_gap": 0.2512920478946461,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_south",
+              "minimum_gap": 3.195950035683844,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_west",
+              "minimum_gap": 5.649116717960485,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_east",
+              "minimum_gap": 0.46893063357483555,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_1",
+              "minimum_gap": 2.4510657878132727,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_2",
+              "minimum_gap": 2.399116717960485,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "map bounds",
+              "minimum_gap": 0.3211260960062702,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_north",
+              "minimum_gap": 0.8914604265097577,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_south",
+              "minimum_gap": 2.7905051089481323,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_west",
+              "minimum_gap": 5.521293869266965,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_east",
+              "minimum_gap": 0.2961260960062706,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_1",
+              "minimum_gap": 2.287952637960113,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_2",
+              "minimum_gap": 2.2712938692669646,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "map bounds",
+              "minimum_gap": 0.32790069904849706,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_north",
+              "minimum_gap": 0.30290069904849704,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_south",
+              "minimum_gap": 3.1410749924029786,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_west",
+              "minimum_gap": 5.642185087822261,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_east",
+              "minimum_gap": 0.46680999964276015,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_1",
+              "minimum_gap": 2.447952637960113,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_2",
+              "minimum_gap": 2.3921850878222606,
+              "gap_unit": "m",
+              "accepted": true
+            }
+          ],
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": -0.09928832630531081,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        }
+      ],
+      "localizers": {
+        "r1": {
+          "final_estimate": [
+            4.73617771567926,
+            1.2428099556460368,
+            -1.5242285451083393
+          ],
+          "final_sigma": [
+            0.05000339081915687,
+            0.05000266407083537,
+            0.052359979262031585
+          ],
+          "halo_m": 0.10000678163831374,
+          "starting_robot_only_north_gap_m": -0.09928832314190927,
+          "same_geometry_without_uncertainty_halo_gap_m": 0.000718458496404617,
+          "decision_accepted": true,
+          "decision_reason": "global_consensus",
+          "fit_segment_rms_m": 0.015924979983802146,
+          "last_lookaround_evaluation": {
+            "error_xy_m": 0.04489402919142282,
+            "error_yaw_deg": 0.05284934203126807,
+            "truth": [
+              4.736575160918124,
+              1.2030748612016613,
+              -1.5251509401342975
+            ],
+            "error_frame": "map",
+            "camera_fk_origin_error_m": 0.0006544311661007704,
+            "camera_fk_axis_error_deg": 0.0662125884126373
+          },
+          "view_count": 6
+        },
+        "r2": {
+          "final_estimate": [
+            4.779592796799305,
+            0.25024064595790246,
+            1.623766763713828
+          ],
+          "final_sigma": [
+            0.0508260944260227,
+            0.050196264655182184,
+            0.05236731998872367
+          ],
+          "halo_m": 0.1016521888520454,
+          "starting_robot_only_north_gap_m": 0.8914639554882611,
+          "same_geometry_without_uncertainty_halo_gap_m": 0.9931161443403065,
+          "decision_accepted": true,
+          "decision_reason": "global_consensus",
+          "fit_segment_rms_m": 0.009591846380882669,
+          "last_lookaround_evaluation": {
+            "error_xy_m": 0.013436028551375661,
+            "error_yaw_deg": 0.5337764345055871,
+            "truth": [
+              4.780713646248197,
+              0.10917809857091634,
+              1.6144506074621492
+            ],
+            "error_frame": "map",
+            "camera_fk_origin_error_m": 0.0006597243167683699,
+            "camera_fk_axis_error_deg": 0.07445926615684104
+          },
+          "view_count": 6
+        }
+      },
+      "final_evaluation": {
+        "t": 57.90000000018545,
+        "fit": true,
+        "z": 0.06691085683007907,
+        "tilt_deg": 0.0964365410752621,
+        "contact_n": {
+          "r1": [
+            5.3759562703669,
+            5.375381627683139
+          ],
+          "r2": [
+            5.3746098679640815,
+            5.377762223009377
+          ]
+        },
+        "grip_to_beam_m": [
+          0.023447472413050587,
+          0.023372556283014358
+        ],
+        "open_pwm": {
+          "r1": 1500,
+          "r2": 1500
+        },
+        "beam_xy_yaw": [
+          4.754827958752704,
+          0.7364682724396433,
+          -1.5297523725286626
+        ]
+      },
+      "failure_reasons": [
+        "not_on_floor",
+        "finger_contact",
+        "gripper_closed",
+        "gripper_not_clear"
+      ],
+      "missing_finalization_fields": false
+    },
+    {
+      "run": "gv5-release-gate-current_B-110633-a41781dd-retry1",
+      "saved_status": "interrupted",
+      "outcome": "release23_sweep_blocked:wall_north",
+      "input_audit": {
+        "held_object": "hidden_v1",
+        "held_world_reads": 0,
+        "held_world_reads_by_site": {},
+        "invisible_measurements": 0,
+        "measurements_by_phase": {
+          "lookaround": {
+            "own_rgb_landmarks": {
+              "n": 1018,
+              "invisible": 0
+            }
+          }
+        },
+        "pick_target_uses": [
+          {
+            "phase": "line_aligned_station",
+            "robot": "r1",
+            "t": 29.30000000004889,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          },
+          {
+            "phase": "line_aligned_station",
+            "robot": "r2",
+            "t": 31.900000000061304,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          },
+          {
+            "phase": "approach",
+            "robot": "r1",
+            "t": 31.900000000061304,
+            "source": "own_command",
+            "age_s": 17.000000000073356
+          },
+          {
+            "phase": "approach",
+            "robot": "r2",
+            "t": 31.900000000061304,
+            "source": "own_command",
+            "age_s": 17.000000000073356
+          },
+          {
+            "phase": "line_aligned_station",
+            "robot": "r1",
+            "t": 33.500000000068944,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          },
+          {
+            "phase": "line_aligned_station",
+            "robot": "r2",
+            "t": 33.900000000070854,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          },
+          {
+            "phase": "repick",
+            "robot": "r1",
+            "t": 33.900000000070854,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          },
+          {
+            "phase": "repick",
+            "robot": "r2",
+            "t": 33.900000000070854,
+            "source": "commanded_station",
+            "xy": [
+              0.2002,
+              0.0
+            ],
+            "age_s": 0.0
+          }
+        ],
+        "assigned_end_visibility_by_phase": {
+          "r1": {
+            "look": {
+              "N": 7,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.7
+            },
+            "await_look": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            },
+            "lower": {
+              "N": 24,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 2.400000000000001
+            },
+            "await_open": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            },
+            "open": {
+              "N": 15,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 1.5000000000000002
+            },
+            "observe_back": {
+              "N": 36,
+              "visible": 24,
+              "visible_fraction": 0.6666666666666666,
+              "max_blind_s": 1.0999999999999999
+            },
+            "lookaround": {
+              "N": 74,
+              "visible": 11,
+              "visible_fraction": 0.14864864864864866,
+              "max_blind_s": 3.5000000000000018
+            },
+            "observe_move": {
+              "N": 10,
+              "visible": 10,
+              "visible_fraction": 1.0,
+              "max_blind_s": 0.0
+            },
+            "observe": {
+              "N": 6,
+              "visible": 6,
+              "visible_fraction": 1.0,
+              "max_blind_s": 0.0
+            },
+            "await_observe": {
+              "N": 1,
+              "visible": 1,
+              "visible_fraction": 1.0,
+              "max_blind_s": 0.0
+            },
+            "line_recheck": {
+              "N": 50,
+              "visible": 1,
+              "visible_fraction": 0.02,
+              "max_blind_s": 4.200000000000001
+            },
+            "approach": {
+              "N": 13,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 1.3
+            },
+            "repick": {
+              "N": 61,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 6.099999999999994
+            },
+            "regrasp_check": {
+              "N": 138,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 13.799999999999967
+            },
+            "await_regrasp": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            }
+          },
+          "r2": {
+            "look": {
+              "N": 7,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.7
+            },
+            "await_look": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            },
+            "lower": {
+              "N": 24,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 2.400000000000001
+            },
+            "await_open": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            },
+            "open": {
+              "N": 15,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 1.5000000000000002
+            },
+            "observe_back": {
+              "N": 36,
+              "visible": 19,
+              "visible_fraction": 0.5277777777777778,
+              "max_blind_s": 1.0999999999999999
+            },
+            "lookaround": {
+              "N": 74,
+              "visible": 2,
+              "visible_fraction": 0.02702702702702703,
+              "max_blind_s": 3.5000000000000018
+            },
+            "observe_move": {
+              "N": 10,
+              "visible": 9,
+              "visible_fraction": 0.9,
+              "max_blind_s": 0.1
+            },
+            "observe": {
+              "N": 6,
+              "visible": 6,
+              "visible_fraction": 1.0,
+              "max_blind_s": 0.0
+            },
+            "await_observe": {
+              "N": 1,
+              "visible": 1,
+              "visible_fraction": 1.0,
+              "max_blind_s": 0.0
+            },
+            "line_recheck": {
+              "N": 50,
+              "visible": 43,
+              "visible_fraction": 0.86,
+              "max_blind_s": 0.7
+            },
+            "approach": {
+              "N": 13,
+              "visible": 8,
+              "visible_fraction": 0.6153846153846154,
+              "max_blind_s": 0.5
+            },
+            "repick": {
+              "N": 61,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 6.099999999999994
+            },
+            "regrasp_check": {
+              "N": 138,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 13.799999999999967
+            },
+            "await_regrasp": {
+              "N": 1,
+              "visible": 0,
+              "visible_fraction": 0.0,
+              "max_blind_s": 0.1
+            }
+          }
+        },
+        "max_assigned_end_blind_s": {
+          "r1": 26.200000000000102,
+          "r2": 21.20000000000003
+        },
+        "scope": "decision inputs from release start to release complete; truth stays in evaluation-only outputs; prefix grasp teacher stops at the held check",
+        "control_top_camera_reads": 0,
+        "evaluation_top_camera_reads": 0,
+        "top_camera_counter_scope": "guarded world.render_team_jpeg, from world creation through cleanup; private renderer APIs excluded"
+      },
+      "choice": [
+        {
+          "action": "lower",
+          "lo": null,
+          "hi": null,
+          "evidence": [
+            "none",
+            "none"
+          ],
+          "exact": {
+            "r1": false,
+            "r2": false
+          },
+          "t": 10.899999999997272
+        },
+        {
+          "action": "shift",
+          "shift_m": 0.3,
+          "reason": "localized_margin_correction",
+          "t": 27.600000000040772,
+          "margins_m": [
+            0.007997381356303623,
+            0.6986749940172894
+          ],
+          "shift_target": "existing_end_balance",
+          "admissible_shift_m": [
+            0.03200261864369638,
+            0.6586749940172894
+          ],
+          "raw_margins_m": [
+            0.028793364513475805,
+            0.7194709771744616
+          ],
+          "corrected_margins_m": [
+            0.05504114021506051,
+            0.7457187528760463
+          ],
+          "margin_lower_bounds_m": [
+            0.007997381356303623,
+            0.6986749940172894
+          ],
+          "common_bias_m": -0.026247775701584708,
+          "sum_residual_m": -0.052495551403169416,
+          "error_bound_m": 0.04704375885875689,
+          "observation_epoch": 1,
+          "raw_axis_errors_rad": [
+            0.04932480096653169,
+            0.051323379921512036
+          ],
+          "fused_axis_error_rad": 0.05037265316148387,
+          "axis_weights": [
+            0.4757013765501186,
+            0.5242986234498813
+          ],
+          "axis_disagreement_rad": 0.0019985789549803457,
+          "axis_ci_variance_rad2": 0.00022613237940977222,
+          "axis_observation_epoch": 1,
+          "axis_fusion": "axis_fusion_v1"
+        }
+      ],
+      "shift_steps": null,
+      "reported_sweep": [
+        {
+          "t": 53.90000000016635,
+          "accepted": false,
+          "checks": [
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "map bounds",
+              "minimum_gap": -0.07036089714876562,
+              "gap_unit": "m",
+              "accepted": false
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_north",
+              "minimum_gap": -0.09536089714876561,
+              "gap_unit": "m",
+              "accepted": false
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_south",
+              "minimum_gap": 3.780761655218238,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_west",
+              "minimum_gap": 5.476480730400797,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_east",
+              "minimum_gap": 0.34552975133336883,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_1",
+              "minimum_gap": 2.453767901354304,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_2",
+              "minimum_gap": 2.226480730400797,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "map bounds",
+              "minimum_gap": 0.2802167215170196,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_north",
+              "minimum_gap": 0.2552167215170196,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_south",
+              "minimum_gap": 3.1920343781870866,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_west",
+              "minimum_gap": 5.64644433302121,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_east",
+              "minimum_gap": 0.46912471685067914,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_1",
+              "minimum_gap": 2.451107752360617,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r1 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_2",
+              "minimum_gap": 2.3964443330212104,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "map bounds",
+              "minimum_gap": 0.32149213108577,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_north",
+              "minimum_gap": 0.8922494219242043,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_south",
+              "minimum_gap": 2.7897770757167923,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_west",
+              "minimum_gap": 5.521511215782112,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_east",
+              "minimum_gap": 0.29649213108577044,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_1",
+              "minimum_gap": 2.2877252952598264,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_2",
+              "minimum_gap": 2.271511215782111,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "map bounds",
+              "minimum_gap": 0.32861302862912656,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_north",
+              "minimum_gap": 0.30361302862912654,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_south",
+              "minimum_gap": 3.140351030857533,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_west",
+              "minimum_gap": 5.643624157692999,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_east",
+              "minimum_gap": 0.46685089124136514,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_1",
+              "minimum_gap": 2.4477252952598274,
+              "gap_unit": "m",
+              "accepted": true
+            },
+            {
+              "body": "r2 beam from own commands",
+              "reason_category": "static_sweep",
+              "blocking_object": "wall_divider_2",
+              "minimum_gap": 2.3936241576929986,
+              "gap_unit": "m",
+              "accepted": true
+            }
+          ],
+          "reason_category": "static_sweep",
+          "blocking_object": "wall_north",
+          "minimum_gap": -0.09536089714876561,
+          "gap_unit": "m",
+          "computation_checks": 28,
+          "computation_budget": 28,
+          "budget_basis": "finite issued-plan convex hull and authored obstacle count"
+        }
+      ],
+      "localizers": {},
+      "final_evaluation": null,
+      "failure_reasons": null,
+      "missing_finalization_fields": true
+    }
+  ],
+  "source_geometry": "sim/release23.py:137-187, unchanged robot envelope0.18m and halo=max(.02,2sigma); these are diagnostic reuse of existing constants, not new acceptance values",
+  "scope": "The logged rejection is the uncertainty-expanded planned sweep. Starting robot envelope is checked separately from the full original sweep; no prediction is a physical collision measurement. The exact localization/uncertainty/planner cause and whether the block is unnecessary remain unresolved. No evidence here establishes a scene color detection regression.",
+  "reproduce": "/home/ugrp/ugrp-sim/ugrp/.venv-sim/bin/python /home/ugrp/ugrp-sim/ops-reviews/gatesv5/release_failure_analysis.py"
+}

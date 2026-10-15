@@ -1,0 +1,23 @@
+{
+  "time_utc": "2026-10-15T20:23:36.649475+00:00",
+  "own_processes": [],
+  "removed_own_leases": [
+    "gatesv5.json"
+  ],
+  "other_leases": {
+    "beampair7.json": {
+      "task": "beampair7",
+      "pid": 203696,
+      "pid_scope": "completed batch; analysis reservation",
+      "started": "2026-10-15T20:22:00.314757+00:00",
+      "expected_end": "analysis and final retrieval",
+      "concurrency": 0,
+      "source_sha": "835ccef26aa84b08cc8f7e256fd0f43aa1583ef9"
+    }
+  },
+  "other_processes": [],
+  "stop_vm": false,
+  "reason": "Other lease or foreign managed process exists; leave gcp2 running under existing idle/budget/max-duration guards",
+  "source_copies_preserved": true,
+  "raw_evidence_preserved": true
+}
