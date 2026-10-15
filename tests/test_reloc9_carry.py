@@ -113,7 +113,11 @@ def test_rotation_check_mock_clock_truth_cannot_change_commands(monkeypatch,tmp_
     import scripts.run_reloc9_rotation_check as check
     import scripts.grasp_act_host as host
     import sim.grasp_act_scene as scene_module
-    import sim.masterpi_drive_friction_v7 as drive_module
+    import types
+    drive_module=types.ModuleType('sim.masterpi_drive_friction_v7')
+    drive_module.PROFILE='masterpi_drive_friction_v7'
+    drive_module.build_world=None
+    monkeypatch.setitem(sys.modules,'sim.masterpi_drive_friction_v7',drive_module)
     import sim.grasp_act_port as port_module
     from scripts.prepare_reloc9_carry_queue import PLAN,ROOT
     monkeypatch.setattr(check.platform,'system',lambda:'Linux')
