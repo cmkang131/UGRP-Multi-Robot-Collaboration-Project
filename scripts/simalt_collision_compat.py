@@ -9,15 +9,15 @@ from typing import Tuple
 
 
 def install_native_legacy_plane():
-    """C3.16 diagnostic counterpart, using its own public headers/ABI."""
+    """Native diagnostic counterpart, using each version's public headers/ABI."""
     import ctypes
     import hashlib
     from pathlib import Path
     import subprocess
     import tempfile
     import mujoco
-    if mujoco.__version__ != '3.16.0':
-        raise RuntimeError('native legacy adapter is audited for C3.16.0 only')
+    if mujoco.__version__ not in ('3.12.0', '3.16.0'):
+        raise RuntimeError('native legacy adapter requires C3.12 self-control or C3.16')
     package = Path(mujoco.__file__).parent
     source = Path(__file__).with_name('simalt_native_plane.c')
     folder = tempfile.TemporaryDirectory(prefix='simalt5-native-')
@@ -32,6 +32,7 @@ def install_native_legacy_plane():
     # Keep the code mapped and the temporary file alive until process exit.
     install_native_legacy_plane.keepalive = (adapter, library, folder)
     return {'mode': 'native-legacy-plane-v1', 'maxplanemesh': 3, 'tolplanemesh': .3,
+            'compiled_for_MuJoCo': mujoco.__version__,
             'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest(),
             'source': 'https://github.com/google-deepmind/mujoco/blob/3.12.0/src/engine/engine_collision_convex.c#L966',
             'physics_parameters_modified': False}
