@@ -327,15 +327,15 @@
   "model_calls": 0,
   "source_base_sha": "221755a5b4a6b3588fed0d61bb49b6e5142d63ef",
   "tests": {
-    "passed": 81,
+    "passed": 82,
     "pytest_processes": 1,
     "files": [
       "tests/test_crate17.py",
       "tests/test_crate16.py",
       "tests/test_crate15.py"
     ],
-    "junit": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate17-local-v2/pytest-final.xml",
-    "sha256": "57436839281b9448a839dbb1f44ff2f3d15039b6c4dba61308112e970cea72f4",
+    "junit": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate17-local-v2/pytest-final-guard.xml",
+    "sha256": "58b96886eb761a06a7ec8f48cd818d5638b2e136ad90a36fa5a69d6bef66e3cd",
     "random_collision_draws": 5400
   },
   "original_gcp_runs": [
@@ -393,11 +393,25 @@
   },
   "remaining": [
     "GCP candidate runs/success/speed unmeasured; queue all flags false",
-    "Sonnet read-only review before admission"
+    "Sonnet final verdict incomplete (30-turn limit); no approval"
   ],
   "reproduction_command": "bash experiments/2026-10-15-crate17/check.sh /private/tmp/crate17-check-NEW",
   "verification_artifact": {
     "path": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate17-local-v2/verification.json",
     "sha256": "49fca6ea4d541a6b1b913efbcb6f7e40bc4c11bbe77373f91e873be7f9d3d95a"
+  },
+  "replay_source_sha": "2effca22c5f5e60b15041d1cacaa5abb0981e296",
+  "post_replay_changes": "verification helper import guard isolation and test seed diversity only; controller/runner source unchanged",
+  "review": {
+    "model": "claude-sonnet-5-5",
+    "effort": "xhigh",
+    "reviewed_commit": "2effca22c5f5e60b15041d1cacaa5abb0981e296",
+    "status": "incomplete",
+    "verdict": null,
+    "reason": "error_max_turns: reached 30-turn limit; 31 turns reported",
+    "approval_granted": false,
+    "raw": "/Users/changmin/projects/ugrp/outputs/e2e18-admin/analysis/crate17-local-v2/sonnet-review.json",
+    "sha256": "1bf96e515bcc8f890d903dd1e5b8e351713696fbde9ee1bce2aa7dc3827d7ae3",
+    "followup": "operations requires a completed Sonnet verdict before approving remaining queue rows"
   }
 }

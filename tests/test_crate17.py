@@ -145,7 +145,7 @@ def test_clearance_preference_is_the_only_difference_between_paired_modes():
 
 @pytest.mark.parametrize('kind', ('wall','crate','peer'))
 def test_random_real_collision_rejection_with_independent_polygon_oracle(kind):
-    rng = random.Random(1701); collisions = 0; checked = 0
+    rng = random.Random({'wall':1701,'crate':1702,'peer':1703}[kind]); collisions = 0; checked = 0
     for _ in range(1800):
         w = empty(); w['beam'] = None
         nav = Navigation(w,'r1',True,CRATE,(-20,20,-20,20),search=True)
@@ -232,3 +232,18 @@ def test_held_input_audit_and_new_tick_cache_expiry():
     nav = t._navigation(held)
     assert nav.crate_source == 'none' and all(k != 'crate' for k,_ in nav.rectangles)
     assert audit['held_world_reads'] == audit['invisible_measurements'] == 0
+
+
+def test_verification_helper_import_preserves_shared_mujoco_functions():
+    # A separate interpreter checks collection-time side effects without ever
+    # calling a physics or rendering entry point.
+    import subprocess,sys
+    script = """
+import importlib.util,mujoco
+names=('mj_step','mj_step1','mj_step2','mj_forward','mj_inverse','Renderer','mjr_render')
+before={n:getattr(mujoco,n) for n in names}
+s=importlib.util.spec_from_file_location('verify17','experiments/2026-10-15-crate17/verify.py')
+m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+assert all(getattr(mujoco,n) is f for n,f in before.items())
+"""
+    subprocess.run([sys.executable,'-c',script],cwd=HERE.parents[1],check=True)

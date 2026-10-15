@@ -15,6 +15,9 @@ ROOT = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(HERE.parent/'2026-10-15-crate15'))
+import mujoco
+_PHYSICS_NAMES = ('mj_step', 'mj_step1', 'mj_step2', 'mj_forward', 'mj_inverse', 'Renderer', 'mjr_render')
+_prior_physics = {name:getattr(mujoco,name) for name in _PHYSICS_NAMES}
 import replay as saved_replay
 from replay import replay, js, rows, read, RAW, forbidden
 # The historical replay helper memoizes IK/lift. Remove those wrappers for this
@@ -24,9 +27,11 @@ for module in list(sys.modules.values()):
                                     ('plan_lift', saved_replay.cached_lift, saved_replay._original_lift)):
         if getattr(module, attr, None) is cached:
             setattr(module, attr, original)
-import mujoco
-for name in ('mj_step', 'mj_step1', 'mj_step2', 'mj_forward', 'mj_inverse', 'Renderer', 'mjr_render'):
-    setattr(mujoco, name, forbidden)
+# Importing this helper from a pytest collection must not poison unrelated
+# tests. Its executable path installs the guard before doing any work; tests
+# install their own restoring monkeypatch fixture.
+for name, function in _prior_physics.items():
+    setattr(mujoco, name, function)
 from harness.grasp_act_visible_world import command_delta
 from sim.crate_grasp_teacher import CrateGraspTeacher
 from sim.crate_motion_v17 import MODE, NO_CLEARANCE, Navigation, advance
@@ -148,6 +153,8 @@ def timed_replay(run, mode):
 
 
 def main():
+    for name in _PHYSICS_NAMES:
+        setattr(mujoco, name, forbidden)
     ap = argparse.ArgumentParser(); ap.add_argument('--output', type=Path, required=True)
     ap.add_argument('--capture-fixtures', action='store_true'); a = ap.parse_args()
     a.output.mkdir(parents=True, exist_ok=True)
