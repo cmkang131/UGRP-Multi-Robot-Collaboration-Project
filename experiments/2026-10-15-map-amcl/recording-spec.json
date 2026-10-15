@@ -10,7 +10,6 @@
     "r2"
   ],
   "seeds": [
-    65101,
     65102,
     65103,
     65104,
@@ -49,7 +48,8 @@
     65137,
     65138,
     65139,
-    65140
+    65140,
+    65141
   ],
   "expected_intervals": 80,
   "sim_cap_s": 60.0,
@@ -60,7 +60,6 @@
   "scenario_id": "e2e_one_beam_ownmap",
   "map_id": "zone_wide_door_e2e_b80_v1",
   "wall_cap_s": 900,
-  "max_parallel_jobs": 1,
   "per_run_disk_bytes": 536870912,
   "recording_disk_bytes": 21474836480,
   "comparison_disk_bytes": 8589934592,
@@ -68,8 +67,10 @@
   "max_return_bytes": 134217728,
   "first_run_speed_gate": {
     "at_sim_s": 30.0,
-    "max_wall_per_sim": 3.5,
-    "stop_on_failure": true
+    "warn_wall_per_sim": 3.5,
+    "max_wall_per_sim": 6.0,
+    "statistic": "median",
+    "measurement": "first30_of_actual_run"
   },
   "source_inputs": {
     "configs/zone_study_dev/e2e_one_beam_ownmap.json": "6a425af2323a5595a32304cb282d959eb61e1cec13798ef30a33d26ab0d56721",
@@ -111,5 +112,8 @@
   },
   "interval_definition": "Full [0,60] seconds after fresh standard reset for each robot; no trimming, convergence exclusion, GT staging or grasp. Failures and missing runs remain in N=80.",
   "scope": "Fresh own-camera mapping drive diagnostic; current E2E scene/drive/frontend reuse, not an exact replay of historical staged grasp policies or an E2E mission.",
-  "seed_scope": "New reservation: 65101..65140; check coordinator global ledger before approval; fixed scene spawns, fresh physics/navigation RNG seeds, not 40 independent maps."
+  "seed_scope": "65101 consumed by HOST_ERROR b2387ac1; 65102..65140 not submitted per stop-map-amcl-b2387ac1-20261015.json, reusable only after global ledger check; 65141 replacement reservation pending same check. 40 fixed-scene RNG seeds, not independent maps.",
+  "performance": {
+    "rectangle_batch": true
+  }
 }

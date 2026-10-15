@@ -6,6 +6,7 @@ the next capture, or close. Thus a requested historical frame never renders a
 newer physics state. The default is the original eager capture order.
 """
 from collections.abc import Mapping
+from contextlib import nullcontext
 from functools import wraps
 import base64
 import hashlib
@@ -134,12 +135,15 @@ def capture_robot_frames(host, robot_ids):
         started = time.perf_counter()
         obs = host.ports[rid].capture()
         record['render_wall_s'] += time.perf_counter()-started
-        jpeg = base64.b64decode(obs['image'], validate=True)
-        rgb = np.asarray(Image.open(io.BytesIO(jpeg)).convert('RGB'))
+        metrics = getattr(host, 'recording_metrics', None)
+        with metrics.measure('jpeg_decode') if metrics else nullcontext():
+            jpeg = base64.b64decode(obs['image'], validate=True)
+            rgb = np.asarray(Image.open(io.BytesIO(jpeg)).convert('RGB'))
         relative = f'robots/{rid}/rgb/{index:05d}.jpg'
         path = host.out/relative
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_bytes(jpeg)
+        with metrics.measure('jpeg_save') if metrics else nullcontext():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(jpeg)
         host._append(f'robots/{rid}/frames.jsonl', {
             **{k: v for k, v in obs.items() if k != 'image'},
             'path': relative, 'commanded_servo': host.commands[rid]})

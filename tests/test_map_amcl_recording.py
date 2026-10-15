@@ -59,7 +59,10 @@ def fixture_run(root, *, status='RECORDED'):
         (target/'trajectory.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in truth))
     write(raw/'inputs/static_map.json', dict(bounds_m=[-1., 2., -1., 2.],
         obstacles=[dict(kind='wall', center_m=[.5, -.9], half_extents_m=[1.5, .05])], regions={}))
-    write(raw/'result.json', dict(status=status, source_sha='a'*40, seed=65101,
+    audit = dict(status='MEASURED_CONTROLLER_BOUNDARY', top_camera_inputs=0, truth_reads=0,
+                 held_world_reads=0, rejected_inputs=0, own_rgb_inputs=10, controller_calls=10)
+    write(raw/'input-audit.json', audit)
+    write(raw/'result.json', dict(status=status, source_sha='a'*40, seed=65101, input_audit=audit,
         finalization_complete=True, finalization_errors=[], host='gcp1', machine_type=spec['machine_type'],
         project=spec['project'], spec_sha256='spec', frames_per_robot=5, origin_s=1.3,
         top_camera_input=False, candidate_in_control=False))
@@ -89,7 +92,7 @@ def test_spec_is_finite_off_and_reuses_current_configuration():
 
 def test_default_off_and_mac_execution_rejected_before_physics(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(record, 'record', lambda *args: pytest.fail('physics entry reached'))
-    args = ['--seed', '65101', '--expected-source-sha', 'a'*40, '--output', str(tmp_path/'out')]
+    args = ['--seed', '65102', '--expected-source-sha', 'a'*40, '--output', str(tmp_path/'out')]
     assert record.main(args) == 0
     assert 'EXECUTION_OFF' in capsys.readouterr().out
     assert not (tmp_path/'out').exists()
@@ -109,19 +112,19 @@ def test_linux_requires_real_source_bound_approval(tmp_path, monkeypatch):
              coordinator_approval=dict(approved=False, source_sha=None))
     write(tmp_path/'queue.json', q)
     with pytest.raises(ValueError, match='COORDINATOR_APPROVAL'):
-        record.admission(record.load_spec(), 65101, 'a'*40, tmp_path/'queue.json', tmp_path/'out')
-    q.update(execution_enabled=True, physical_execution_authorized=True, rendering_authorized=True,
+        record.admission(record.load_spec(), 65102, 'a'*40, tmp_path/'queue.json', tmp_path/record.run_name(65102))
+    q.update(raw_root=str(tmp_path), limits=dict(max_parallel_jobs=3), execution_enabled=True, physical_execution_authorized=True, rendering_authorized=True,
         recording_spec_sha256=sha256(record.SPEC), machine_type=record.load_spec()['machine_type'],
         coordinator_approval=dict(approved=True, source_sha='a'*40, credit_stop_verified=True,
             seeds_unused_verified=True, storage_budget_verified=True, machine_verified=True))
     write(tmp_path/'queue.json', q)
     monkeypatch.setattr(record.shutil, 'disk_usage', lambda p: SimpleNamespace(free=10**12))
-    record.admission(record.load_spec(), 65101, 'a'*40, tmp_path/'queue.json', tmp_path/'out')
+    record.admission(record.load_spec(), 65102, 'a'*40, tmp_path/'queue.json', tmp_path/record.run_name(65102))
     assert not (tmp_path/'out').exists()  # Admission itself never starts a run.
     q['source_sha'] = 'b'*40
     write(tmp_path/'queue.json', q)
     with pytest.raises(ValueError, match='COORDINATOR_APPROVAL'):
-        record.admission(record.load_spec(), 65101, 'a'*40, tmp_path/'queue.json', tmp_path/'out')
+        record.admission(record.load_spec(), 65102, 'a'*40, tmp_path/'queue.json', tmp_path/record.run_name(65102))
 
 
 def test_real_actor_dependencies_load_without_world_or_renderer():
@@ -129,6 +132,7 @@ def test_real_actor_dependencies_load_without_world_or_renderer():
     from harness.e2e_record_scalars import normalize
     from scripts.run_e2e_ownmap_live import ownmap_record
     robots = record.make_robots(record.load_spec(), 65101)
+    audit = record.InputAudit()
     assert set(robots) == {'r1', 'r2'}
     for robot in robots.values():
         assert robot.goal.e2e_vo.range_stall is None
@@ -140,11 +144,36 @@ def test_real_actor_dependencies_load_without_world_or_renderer():
         for i in range(5):
             obs = dict(frame_id=i, sim_time=i*.1, image=base64.b64encode(data).decode(),
                        sha256=hashlib.sha256(data).hexdigest())
-            trace = robot.receive(obs, np.full((480, 640, 3), 110, np.uint8))
+            trace = audit.receive(robot, obs, np.full((480, 640, 3), 110, np.uint8), i*.1)
             row = normalize(ownmap_record(robot, obs, trace, i*.1))
             assert 'fused_delta' in row['stall_odometry']
             json.dumps(row, allow_nan=False)
             if i % 2 == 0: robot.commanded(robot.nav_command, i*.1)
+    assert audit.snapshot()['controller_calls'] == 10
+
+
+def test_instance_stage_timers_preserve_native_port_output_and_render_count(tmp_path):
+    from tests.test_camera_robot_port import _WorldSpy
+    from sim.camera_robot_port import CameraRobotPort
+    world = _WorldSpy()
+    rendered = []
+    world.render_rgb = lambda **kw: rendered.append(kw)
+    def jpeg(**kw):
+        world.render_rgb(**kw)
+        return world.jpeg
+    world.render_jpeg = jpeg
+    world._physics_step_for = lambda robot: None
+    backend = SimpleNamespace(world=world, ports={'r1': CameraRobotPort(world, 'r1')},
+        advance_to=lambda t: world._physics_step_for(None), _append=lambda *a: None,
+        flush=lambda: None, eval_sample=lambda: None, issue=lambda *a: None)
+    metrics = record.Metrics()
+    metrics.install(backend)
+    obs = backend.ports['r1'].capture()
+    backend.advance_to(.1)
+    assert len(rendered) == 1 and base64.b64decode(obs['image']) == world.jpeg
+    for key in ('render_rgb_and_sync_r1', 'jpeg_encode_r1', 'image_hash', 'camera_capture_r1',
+                'physics_step', 'physics_advance'):
+        assert metrics.timers[key]['calls'] == 1
 
 
 @pytest.mark.parametrize('speed_failure', [False, True])
@@ -152,6 +181,7 @@ def test_native_writer_retains_every_tick_and_only_own_fields(tmp_path, monkeypa
     from scripts import run_e2e_ownmap_live
     image = jpeg_bytes()
     spec = tiny_spec()
+    metrics, audit = record.Metrics(), record.InputAudit()
     if speed_failure:
         spec.update(sim_cap_s=60., frames_per_robot=601)
     issued, observed, evaluations = [], [], []
@@ -160,6 +190,7 @@ def test_native_writer_retains_every_tick_and_only_own_fields(tmp_path, monkeypa
         frame = 0
         def __init__(self):
             self.out = tmp_path
+            self.recording_metrics = metrics
             self.commands = {rid: dict(SERVO) for rid in spec['robots']}
             self.ports = {rid: SimpleNamespace(capture=lambda rid=rid: dict(frame_id=self.frame-1,
                 sim_time=self.now, sha256=hashlib.sha256(image).hexdigest(),
@@ -174,6 +205,7 @@ def test_native_writer_retains_every_tick_and_only_own_fields(tmp_path, monkeypa
             p.parent.mkdir(parents=True, exist_ok=True)
             with p.open('a') as f: f.write(json.dumps(value)+'\n')
     class Robot:
+        robot_id = 'fixture'
         nav_command = dict(kind='hold')
         translation_commands = 0
         def commanded(self, action, now): pass
@@ -188,17 +220,22 @@ def test_native_writer_retains_every_tick_and_only_own_fields(tmp_path, monkeypa
     if speed_failure:
         with pytest.raises(TimeoutError, match='SPEED_GATE_FAILED'):
             record.record_loop(b, {r: Robot() for r in spec['robots']}, spec, tmp_path,
-                               clock=lambda: 4*(b.now-1.3))
+                               clock=lambda: 7*(b.now-1.3), metrics=metrics, audit=audit)
         assert len(evaluations) == 301 and len(list(tmp_path.glob('robots/*/rgb/*.jpg'))) == 602
         assert json.loads((tmp_path/'first30.json').read_text())['passed'] is False
+        assert audit.snapshot()['controller_calls'] == 602
+        assert audit.snapshot()['truth_reads'] == audit.snapshot()['top_camera_inputs'] == 0
         return
-    result = record.record_loop(b, {r: Robot() for r in spec['robots']}, spec, tmp_path, clock=lambda: 0.)
+    result = record.record_loop(b, {r: Robot() for r in spec['robots']}, spec, tmp_path,
+                                clock=lambda: 0., metrics=metrics, audit=audit)
     assert result['frames_per_robot'] == 5 and len(evaluations) == 5
     assert observed == pytest.approx([t for t in [0., .1, .2, .3, .4] for _ in range(2)])
     assert len(list(tmp_path.glob('robots/*/rgb/*.jpg'))) == 10
     # Native writer stores even byte-identical stationary frames.
     assert all(p.read_bytes() == image for p in tmp_path.glob('robots/*/rgb/*.jpg'))
     assert [t for t, r, a in issued if a['kind'] == 'hold'] == pytest.approx([1.3, 1.3, 1.5, 1.5])
+    assert metrics.timers['jpeg_save']['calls'] == metrics.timers['jpeg_decode']['calls'] == 10
+    assert audit.snapshot()['controller_calls'] == audit.snapshot()['own_rgb_inputs'] == 10
 
 
 def test_saved_jpeg_to_five_candidates_and_evaluation_last(tmp_path, monkeypatch):
@@ -228,7 +265,7 @@ def test_saved_jpeg_to_five_candidates_and_evaluation_last(tmp_path, monkeypatch
     assert len({t['sha256'] for t in traces}) == 1
 
 
-@pytest.mark.parametrize('damage', ['missing_jpeg', 'clock', 'frame_count', 'host', 'failed', 'bytes'])
+@pytest.mark.parametrize('damage', ['missing_jpeg', 'clock', 'frame_count', 'host', 'failed', 'bytes', 'audit_missing', 'audit_nonzero'])
 def test_failed_or_incomplete_recording_keeps_all_denominators(tmp_path, damage):
     spec, raw = fixture_run(tmp_path/'runs')
     if damage == 'missing_jpeg': (raw/'robots/r1/rgb/00002.jpg').unlink()
@@ -243,7 +280,9 @@ def test_failed_or_incomplete_recording_keeps_all_denominators(tmp_path, damage)
     else:
         p = raw/'result.json'
         r = json.loads(p.read_text())
-        r.update({'host': 'azure3'} if damage == 'host' else {'status': 'HOST_ERROR'})
+        if damage == 'audit_missing': r.pop('input_audit')
+        elif damage == 'audit_nonzero': r['input_audit']['truth_reads'] = 1
+        else: r.update({'host': 'azure3'} if damage == 'host' else {'status': 'HOST_ERROR'})
         write(p, r)
         seal(raw)
     cohort = compare.cohort_for(tmp_path/'runs', spec, 'a'*40, 'spec')
@@ -303,3 +342,92 @@ def test_corrupt_compressed_result_is_a_recorded_failure(tmp_path):
     cohort = compare.cohort_for(tmp_path/'runs', spec, 'a'*40, 'spec')
     assert cohort['expected_N'] == 2
     assert all('CORRUPT_COMPRESSED_SOURCE' in i['unavailable_reason'] for i in cohort['intervals'])
+
+
+@pytest.mark.parametrize('values,warning,blocked', [
+    ([3.5], False, False), ([3.51], True, False), ([6.], True, False),
+    ([6.01], True, True), ([2., 4., 15.], True, False),
+    ([None, 2.], False, True), ([], False, True), ([float('nan')], False, True)])
+def test_speed_policy_uses_complete_wave_median(values, warning, blocked):
+    result = record.speed_summary([None if v is None else dict(wall_per_sim=v) for v in values])
+    assert result['warning'] is warning and result['blocked'] is blocked
+
+
+def test_queue_slot_limit_and_release_on_error(tmp_path):
+    from harness.map_recording_audit import Metrics
+    metrics = Metrics()
+    with record.recording_slot(tmp_path, 2, metrics) as first:
+        with pytest.raises(RuntimeError):
+            with record.recording_slot(tmp_path, 2, metrics) as second:
+                assert (first, second) == (0, 1)
+                with pytest.raises(BlockingIOError, match='LIMIT_REACHED'):
+                    with record.recording_slot(tmp_path, 2, metrics): pytest.fail('over limit')
+                raise RuntimeError('interrupted run')
+        with record.recording_slot(tmp_path, 2, metrics) as freed:
+            assert freed == 1
+    assert metrics.timers['flock_acquire']['calls'] == 4
+
+
+def test_timers_separate_nested_cost_and_keep_exceptions():
+    from harness.map_recording_audit import Metrics
+    clock = iter([0., 1., 3., 5.])
+    metrics = Metrics(clock=lambda: next(clock))
+    with pytest.raises(ValueError):
+        with metrics.measure('capture'):
+            with metrics.measure('render'):
+                raise ValueError('failed')
+    assert metrics.timers['capture'] == dict(calls=1, inclusive_s=5., exclusive_s=3.)
+    assert metrics.timers['render'] == dict(calls=1, inclusive_s=2., exclusive_s=2.)
+
+
+def test_audit_measures_calls_and_denies_truth_top_and_held_reads():
+    from harness.map_recording_audit import InputAudit
+    audit = InputAudit()
+    obs = dict(frame_id=1, sim_time=1., sha256='a'*64, image='jpeg',
+               camera='robot_cam', robot_id='r1', actuator_state='NEVER_FORWARDED')
+    saved = []
+    actor = SimpleNamespace(robot_id='r1', receive=lambda own, rgb: saved.append(copy.deepcopy(own)))
+    audit.receive(actor, obs, None, 0.)
+    assert set(saved[0]) == audit.allowed and saved[0]['sim_time'] == 0.
+    assert audit.snapshot()['controller_calls'] == audit.snapshot()['own_rgb_inputs'] == 1
+    assert audit.snapshot()['truth_reads'] == audit.snapshot()['held_world_reads'] == 0
+    with pytest.raises(ValueError, match='FORBIDDEN'):
+        saved[0].get('truth')
+    assert audit.snapshot()['truth_reads'] == 1
+    audit.receive(actor, obs, None, .1, held=True)
+    with pytest.raises(ValueError, match='FORBIDDEN'):
+        saved[-1]['held_world_position']
+    assert audit.snapshot()['held_world_reads'] == 1
+    with pytest.raises(ValueError, match='FORBIDDEN'):
+        audit.receive(actor, dict(obs, camera='cctv_top'), None, .2)
+    assert audit.snapshot()['top_camera_inputs'] == 1
+    assert audit.snapshot()['controller_calls'] == 2
+
+
+def test_speed_checker_keeps_failed_and_missing_runs(tmp_path):
+    from scripts.check_map_amcl_speed import check_wave
+    for n, ratio in enumerate((2., 4., 15.)):
+        raw = tmp_path/str(n)/'raw'
+        write(raw/'result.json', dict(source_sha='a'*40, status='RECORDED', finalization_complete=True))
+        write(raw/'first30.json', dict(wall_per_sim=ratio, frames_per_robot=301, observation_period_s=.1))
+    runs = [tmp_path/str(n) for n in range(3)]
+    assert check_wave(runs, 'a'*40)['median_wall_per_sim'] == 4.
+    assert not check_wave(runs, 'a'*40)['blocked']
+    assert check_wave(runs+[tmp_path/'missing'], 'a'*40)['blocked']
+    write(runs[0]/'raw/result.json', dict(source_sha='a'*40, status='HOST_ERROR', finalization_complete=True))
+    assert check_wave(runs, 'a'*40)['blocked']
+
+
+@pytest.mark.parametrize('interior', [False, True])
+def test_rectangle_batches_keep_all_candidate_costs_bit_exact(interior):
+    from harness.e2e_b_partial import rect_sd
+    from harness.map_recording_speed import grid_cost
+    rng = np.random.default_rng(41)
+    points = rng.normal(size=(300, 2))
+    centers = rng.normal(size=(1681, 2))
+    for yaw in (0., .131, 1.8):
+        sd = rect_sd(points[None], centers[:, None], yaw, (.4, .7))
+        residual = np.maximum(sd, 0) if interior else np.abs(sd)
+        baseline = (np.minimum(residual, .06)**2).mean(axis=1)
+        candidate = grid_cost(points, centers, yaw, (.4, .7), .06, interior=interior)
+        assert np.array_equal(baseline, candidate)

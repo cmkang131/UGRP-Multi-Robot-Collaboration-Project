@@ -31,11 +31,19 @@ def cohort_for(raw_root, spec, source_sha, spec_sha):
                     result['top_camera_input'] is not False or result['candidate_in_control'] is not False):
                 raise ValueError('RECORDING_PROVENANCE_OR_COMPLETION_MISMATCH')
             origin = result['origin_s']
+            audit = result.get('input_audit', {})
+            if (audit.get('status') != 'MEASURED_CONTROLLER_BOUNDARY' or
+                    any(audit.get(k) != 0 for k in ('top_camera_inputs', 'truth_reads', 'held_world_reads', 'rejected_inputs')) or
+                    audit.get('own_rgb_inputs') != spec['frames_per_robot']*len(spec['robots']) or
+                    audit.get('controller_calls') != audit.get('own_rgb_inputs') or
+                    read(raw/'input-audit.json') != audit):
+                raise ValueError('MEASURED_INPUT_AUDIT_REQUIRED')
             hashes = read(raw/'artifacts.sha256.json')
             # Verify all mandatory raw files, including original JPEG bytes;
             # no evaluator file is opened for its values until replay estimates
             # have been produced. A digest is not a control observation.
-            required = ['result.json', 'bundle.json', 'scene.json', 'scene.xml', 'inputs/static_map.json']
+            required = ['result.json', 'bundle.json', 'scene.json', 'scene.xml', 'inputs/static_map.json',
+                        'input-audit.json']
             for rid in spec['robots']:
                 required += [f'robots/{rid}/{n}.jsonl' for n in ('frames', 'commands', 'ownmap')]
                 required += [f'eval_only/{rid}/trajectory.jsonl']

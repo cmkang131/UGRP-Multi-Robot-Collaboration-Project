@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import math
+from contextlib import nullcontext
 from collections.abc import Mapping
 from typing import Any
 
@@ -107,12 +108,15 @@ class CameraRobotPort:
             )
         )
         self._frame_id += 1
+        metrics = getattr(self, 'recording_metrics', None)
+        with metrics.measure('image_hash') if metrics else nullcontext():
+            digest = hashlib.sha256(jpeg).hexdigest()
         return {
             "robot_id": self.robot_id,
             "frame_id": self._frame_id,
             "sim_time": self._clock_time(),
             "image": base64.b64encode(jpeg).decode("ascii"),
-            "sha256": hashlib.sha256(jpeg).hexdigest(),
+            "sha256": digest,
             "camera": camera,
             "actuator_state": self._actuator_state(),
         }

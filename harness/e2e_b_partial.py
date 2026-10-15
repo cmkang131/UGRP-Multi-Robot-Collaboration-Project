@@ -95,7 +95,14 @@ def estimate(contour, servo, usable, board_half=None, *, cfg=CFG):
     yaws = np.deg2rad(np.arange(0, 180, cfg['yaw_step_deg']))
     t = cfg['trunc_m']; cost = np.empty((len(yaws), len(centers)))
     from harness.e2e_speed5 import ACTIVE, rectangle_grid_cost
+    from harness.map_recording_speed import ACTIVE as RECORD_BATCH, grid_cost
     for i, yaw in enumerate(yaws):
+        if RECORD_BATCH.get():
+            c = grid_cost(sub, centers, yaw, half, t)
+            if len(floor_i):
+                c = c+grid_cost(floor_i, centers, yaw, half, t, interior=True)
+            cost[i] = c
+            continue
         if ACTIVE.get() in ('lean_v2','lean_v3'):
             c=rectangle_grid_cost(sub,centers,yaw,half,t)
             if len(floor_i):c+=rectangle_grid_cost(floor_i,centers,yaw,half,t,interior=True)
