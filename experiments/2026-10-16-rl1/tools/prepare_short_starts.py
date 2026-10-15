@@ -69,6 +69,8 @@ def main():
                 row['shared_scene_seed_v1']=a.shared_scene_seed_v1
                 row['scene_profile']+=f'_shared_scene_seed{a.shared_scene_seed_v1}'
                 row['setup_fingerprint']=hashlib.sha256((fingerprint(row)+str(a.shared_scene_seed_v1)).encode()).hexdigest()
+        by_seed={r['seed']:r for r in groups['train']}
+        startup=[by_seed[r['seed']] for r in startup]
     for name,rows in (('train-starts',groups['train']),('eval-starts',groups['eval']),
                       ('startup-train',startup),('startup-eval',groups['eval'][:8])):
         (a.out/(name+'.json')).write_text(json.dumps(dict(host=host,episodes=rows,
