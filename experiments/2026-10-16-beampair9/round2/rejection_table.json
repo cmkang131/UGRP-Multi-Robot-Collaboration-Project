@@ -1,0 +1,2012 @@
+{
+  "source_sha": "1fe9450af46f9680f1409cd3efb2b595f75507fa",
+  "candidate": "soft",
+  "raw_root": "/home/ugrp/ugrp-sim/ops-reviews/beampair9/round2-1fe9450a",
+  "episode_funnel": [
+    {
+      "gate": "started",
+      "entered": 20,
+      "passed": 16,
+      "rejected": 4
+    },
+    {
+      "gate": "finalized_complete",
+      "entered": 16,
+      "passed": 12,
+      "rejected": 4
+    },
+    {
+      "gate": "both_align",
+      "entered": 12,
+      "passed": 7,
+      "rejected": 5
+    },
+    {
+      "gate": "both_ready",
+      "entered": 7,
+      "passed": 5,
+      "rejected": 2
+    },
+    {
+      "gate": "both_pick",
+      "entered": 5,
+      "passed": 4,
+      "rejected": 1
+    },
+    {
+      "gate": "both_command_complete",
+      "entered": 4,
+      "passed": 2,
+      "rejected": 2
+    },
+    {
+      "gate": "strict_joint_hold_3s",
+      "entered": 2,
+      "passed": 1,
+      "rejected": 1
+    },
+    {
+      "gate": "visible_input_eligible_success",
+      "entered": 1,
+      "passed": 1,
+      "rejected": 0
+    }
+  ],
+  "candidate_populations": {
+    "8328152": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "full_or_retained": {
+        "N": 91,
+        "reason_distribution": {
+          "blocked_retreat": 65,
+          "planning_budget": 26
+        },
+        "ordered_funnel": [
+          {
+            "gate": "ik_unreachable",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "gripper_angle",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "outside_bounds",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "blocked_goal",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "blocked_retreat",
+            "entered": 91,
+            "rejected": 65,
+            "terminal_pass": 0,
+            "continued": 26
+          },
+          {
+            "gate": "no_path",
+            "entered": 26,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 26
+          },
+          {
+            "gate": "unsafe_body_sweep",
+            "entered": 26,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 26
+          },
+          {
+            "gate": "band_not_visible",
+            "entered": 26,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 26
+          },
+          {
+            "gate": "arm",
+            "entered": 26,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 26
+          },
+          {
+            "gate": "endpoint_feasible",
+            "entered": 26,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 26
+          },
+          {
+            "gate": "connector",
+            "entered": 26,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 26
+          },
+          {
+            "gate": "planning_budget",
+            "entered": 26,
+            "rejected": 26,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "feasible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          }
+        ]
+      }
+    },
+    "8328188": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "full_or_retained": {
+        "N": 91,
+        "reason_distribution": {
+          "blocked_retreat": 52,
+          "planning_budget": 39
+        },
+        "ordered_funnel": [
+          {
+            "gate": "ik_unreachable",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "gripper_angle",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "outside_bounds",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "blocked_goal",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "blocked_retreat",
+            "entered": 91,
+            "rejected": 52,
+            "terminal_pass": 0,
+            "continued": 39
+          },
+          {
+            "gate": "no_path",
+            "entered": 39,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 39
+          },
+          {
+            "gate": "unsafe_body_sweep",
+            "entered": 39,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 39
+          },
+          {
+            "gate": "band_not_visible",
+            "entered": 39,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 39
+          },
+          {
+            "gate": "arm",
+            "entered": 39,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 39
+          },
+          {
+            "gate": "endpoint_feasible",
+            "entered": 39,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 39
+          },
+          {
+            "gate": "connector",
+            "entered": 39,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 39
+          },
+          {
+            "gate": "planning_budget",
+            "entered": 39,
+            "rejected": 39,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "feasible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          }
+        ]
+      }
+    },
+    "8328183": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "full_or_retained": {
+        "N": 1274,
+        "reason_distribution": {
+          "blocked_retreat": 1274
+        },
+        "ordered_funnel": [
+          {
+            "gate": "ik_unreachable",
+            "entered": 1274,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 1274
+          },
+          {
+            "gate": "gripper_angle",
+            "entered": 1274,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 1274
+          },
+          {
+            "gate": "outside_bounds",
+            "entered": 1274,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 1274
+          },
+          {
+            "gate": "blocked_goal",
+            "entered": 1274,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 1274
+          },
+          {
+            "gate": "blocked_retreat",
+            "entered": 1274,
+            "rejected": 1274,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "no_path",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "unsafe_body_sweep",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "band_not_visible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "arm",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "endpoint_feasible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "connector",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "planning_budget",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "feasible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          }
+        ]
+      }
+    },
+    "8328068": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "full_or_retained": {
+        "N": 325,
+        "reason_distribution": {
+          "blocked_retreat": 273,
+          "planning_budget": 52
+        },
+        "ordered_funnel": [
+          {
+            "gate": "ik_unreachable",
+            "entered": 325,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 325
+          },
+          {
+            "gate": "gripper_angle",
+            "entered": 325,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 325
+          },
+          {
+            "gate": "outside_bounds",
+            "entered": 325,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 325
+          },
+          {
+            "gate": "blocked_goal",
+            "entered": 325,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 325
+          },
+          {
+            "gate": "blocked_retreat",
+            "entered": 325,
+            "rejected": 273,
+            "terminal_pass": 0,
+            "continued": 52
+          },
+          {
+            "gate": "no_path",
+            "entered": 52,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 52
+          },
+          {
+            "gate": "unsafe_body_sweep",
+            "entered": 52,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 52
+          },
+          {
+            "gate": "band_not_visible",
+            "entered": 52,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 52
+          },
+          {
+            "gate": "arm",
+            "entered": 52,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 52
+          },
+          {
+            "gate": "endpoint_feasible",
+            "entered": 52,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 52
+          },
+          {
+            "gate": "connector",
+            "entered": 52,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 52
+          },
+          {
+            "gate": "planning_budget",
+            "entered": 52,
+            "rejected": 52,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "feasible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          }
+        ]
+      }
+    },
+    "8328000": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "8328015": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "8328061": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "8328038": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "full_or_retained": {
+        "N": 3549,
+        "reason_distribution": {
+          "blocked_retreat": 1499,
+          "planning_budget": 2001,
+          "unsafe_body_sweep": 49
+        },
+        "ordered_funnel": [
+          {
+            "gate": "ik_unreachable",
+            "entered": 3549,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 3549
+          },
+          {
+            "gate": "gripper_angle",
+            "entered": 3549,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 3549
+          },
+          {
+            "gate": "outside_bounds",
+            "entered": 3549,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 3549
+          },
+          {
+            "gate": "blocked_goal",
+            "entered": 3549,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 3549
+          },
+          {
+            "gate": "blocked_retreat",
+            "entered": 3549,
+            "rejected": 1499,
+            "terminal_pass": 0,
+            "continued": 2050
+          },
+          {
+            "gate": "no_path",
+            "entered": 2050,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 2050
+          },
+          {
+            "gate": "unsafe_body_sweep",
+            "entered": 2050,
+            "rejected": 49,
+            "terminal_pass": 0,
+            "continued": 2001
+          },
+          {
+            "gate": "band_not_visible",
+            "entered": 2001,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 2001
+          },
+          {
+            "gate": "arm",
+            "entered": 2001,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 2001
+          },
+          {
+            "gate": "endpoint_feasible",
+            "entered": 2001,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 2001
+          },
+          {
+            "gate": "connector",
+            "entered": 2001,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 2001
+          },
+          {
+            "gate": "planning_budget",
+            "entered": 2001,
+            "rejected": 2001,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "feasible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          }
+        ]
+      }
+    },
+    "8328036": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "8328052": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "8328195": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 2,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 2,
+            "passed": 1,
+            "rejected": 1
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 1,
+            "passed": 1,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "8328198": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "full_or_retained": {
+        "N": 0,
+        "reason_distribution": {},
+        "ordered_funnel": [
+          {
+            "gate": "ik_unreachable",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "gripper_angle",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "outside_bounds",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "blocked_goal",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "blocked_retreat",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "no_path",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "unsafe_body_sweep",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "band_not_visible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "arm",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "endpoint_feasible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "connector",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "planning_budget",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "feasible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          }
+        ]
+      }
+    },
+    "8328122": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 4,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 4,
+            "passed": 4,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 4,
+            "passed": 3,
+            "rejected": 1
+          }
+        ]
+      }
+    },
+    "8328010": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "full_or_retained": {
+        "N": 91,
+        "reason_distribution": {
+          "blocked_retreat": 64,
+          "planning_budget": 26,
+          "connector_connector_band_not_visible": 1
+        },
+        "ordered_funnel": [
+          {
+            "gate": "ik_unreachable",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "gripper_angle",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "outside_bounds",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "blocked_goal",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "blocked_retreat",
+            "entered": 91,
+            "rejected": 64,
+            "terminal_pass": 0,
+            "continued": 27
+          },
+          {
+            "gate": "no_path",
+            "entered": 27,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 27
+          },
+          {
+            "gate": "unsafe_body_sweep",
+            "entered": 27,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 27
+          },
+          {
+            "gate": "band_not_visible",
+            "entered": 27,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 27
+          },
+          {
+            "gate": "arm",
+            "entered": 27,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 27
+          },
+          {
+            "gate": "endpoint_feasible",
+            "entered": 27,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 27
+          },
+          {
+            "gate": "connector",
+            "entered": 27,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 27
+          },
+          {
+            "gate": "planning_budget",
+            "entered": 27,
+            "rejected": 26,
+            "terminal_pass": 0,
+            "continued": 1
+          },
+          {
+            "gate": "feasible",
+            "entered": 1,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 1
+          },
+          {
+            "gate": "connector_connector_band_not_visible",
+            "entered": 1,
+            "rejected": 1,
+            "terminal_pass": 0,
+            "continued": 0
+          }
+        ]
+      }
+    },
+    "8328128": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      }
+    },
+    "8328168": {
+      "reservation_escape_anchors": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "inside_planning_bounds",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "endpoint_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "continuous_connector_clear",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "reservation_escape_routes": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "selected_checked_anchor",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "native_continuation_found",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "rendezvous_wait_candidates": {
+        "N": 0,
+        "ordered_funnel": [
+          {
+            "gate": "current_and_predicted_clear_path",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          },
+          {
+            "gate": "nonrepeated_selected_wait",
+            "entered": 0,
+            "passed": 0,
+            "rejected": 0
+          }
+        ]
+      },
+      "full_or_retained": {
+        "N": 91,
+        "reason_distribution": {
+          "blocked_retreat": 71,
+          "planning_budget": 20
+        },
+        "ordered_funnel": [
+          {
+            "gate": "ik_unreachable",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "gripper_angle",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "outside_bounds",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "blocked_goal",
+            "entered": 91,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 91
+          },
+          {
+            "gate": "blocked_retreat",
+            "entered": 91,
+            "rejected": 71,
+            "terminal_pass": 0,
+            "continued": 20
+          },
+          {
+            "gate": "no_path",
+            "entered": 20,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 20
+          },
+          {
+            "gate": "unsafe_body_sweep",
+            "entered": 20,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 20
+          },
+          {
+            "gate": "band_not_visible",
+            "entered": 20,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 20
+          },
+          {
+            "gate": "arm",
+            "entered": 20,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 20
+          },
+          {
+            "gate": "endpoint_feasible",
+            "entered": 20,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 20
+          },
+          {
+            "gate": "connector",
+            "entered": 20,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 20
+          },
+          {
+            "gate": "planning_budget",
+            "entered": 20,
+            "rejected": 20,
+            "terminal_pass": 0,
+            "continued": 0
+          },
+          {
+            "gate": "feasible",
+            "entered": 0,
+            "rejected": 0,
+            "terminal_pass": 0,
+            "continued": 0
+          }
+        ]
+      }
+    }
+  },
+  "frame_funnel": [
+    {
+      "gate": "any_visible",
+      "entered": 12968,
+      "passed": 9032,
+      "rejected": 3936
+    },
+    {
+      "gate": "meaningful_visible",
+      "entered": 9032,
+      "passed": 8881,
+      "rejected": 151
+    },
+    {
+      "gate": "admitted_not_held",
+      "entered": 8881,
+      "passed": 8881,
+      "rejected": 0
+    }
+  ],
+  "event_funnel": [
+    {
+      "gate": "own_ready",
+      "entered": 32,
+      "passed": 15,
+      "rejected": 17
+    },
+    {
+      "gate": "own_pick",
+      "entered": 15,
+      "passed": 8,
+      "rejected": 7
+    },
+    {
+      "gate": "own_complete",
+      "entered": 8,
+      "passed": 4,
+      "rejected": 4
+    }
+  ],
+  "reason_object_distribution": [
+    {
+      "reason_category": "planning_budget",
+      "blocked_object": "not_applicable",
+      "N": 2164,
+      "affected_seeds": [
+        8328010,
+        8328038,
+        8328068,
+        8328152,
+        8328168,
+        8328188
+      ],
+      "min_gap_m": null
+    },
+    {
+      "reason_category": "interpolation_envelope",
+      "blocked_object": "cyan_1",
+      "N": 1599,
+      "affected_seeds": [
+        8328068,
+        8328183,
+        8328188
+      ],
+      "min_gap_m": 0.0
+    },
+    {
+      "reason_category": "interpolation_envelope",
+      "blocked_object": "zone_wall_south",
+      "N": 1499,
+      "affected_seeds": [
+        8328038
+      ],
+      "min_gap_m": 0.0
+    },
+    {
+      "reason_category": "peer_goal",
+      "blocked_object": "r3",
+      "N": 398,
+      "affected_seeds": [
+        8328122,
+        8328195
+      ],
+      "min_gap_m": -0.07612877348195385
+    },
+    {
+      "reason_category": "peer_goal",
+      "blocked_object": "r1",
+      "N": 100,
+      "affected_seeds": [
+        8328128
+      ],
+      "min_gap_m": -0.07051497279260283
+    },
+    {
+      "reason_category": "interpolation_envelope",
+      "blocked_object": "zone_wall_north",
+      "N": 71,
+      "affected_seeds": [
+        8328168
+      ],
+      "min_gap_m": 0.0
+    },
+    {
+      "reason_category": "interpolation_envelope",
+      "blocked_object": "red_1",
+      "N": 65,
+      "affected_seeds": [
+        8328152
+      ],
+      "min_gap_m": 0.0
+    },
+    {
+      "reason_category": "interpolation_envelope",
+      "blocked_object": "zone_wall_divider_1",
+      "N": 64,
+      "affected_seeds": [
+        8328010
+      ],
+      "min_gap_m": 0.0
+    },
+    {
+      "reason_category": "current_geometry",
+      "blocked_object": "r1",
+      "N": 49,
+      "affected_seeds": [
+        8328038
+      ],
+      "min_gap_m": -0.01994356249158935
+    },
+    {
+      "reason_category": "visibility",
+      "blocked_object": "camera_view_cone",
+      "N": 12,
+      "affected_seeds": [
+        8328010
+      ],
+      "min_gap_m": -0.03038429988123082
+    },
+    {
+      "reason_category": "cap_end",
+      "blocked_object": "none:cap_end",
+      "N": 5,
+      "affected_seeds": [
+        8328052,
+        8328122,
+        8328128,
+        8328195,
+        8328198
+      ],
+      "min_gap_m": null
+    },
+    {
+      "reason_category": "HOST_ERROR",
+      "blocked_object": "none:HOST_ERROR",
+      "N": 4,
+      "affected_seeds": [
+        8328068,
+        8328152,
+        8328183,
+        8328188
+      ],
+      "min_gap_m": null
+    },
+    {
+      "reason_category": "cargo_goal",
+      "blocked_object": "beam_1",
+      "N": 3,
+      "affected_seeds": [
+        8328122,
+        8328128,
+        8328195
+      ],
+      "min_gap_m": 0.05299999999999991
+    },
+    {
+      "reason_category": "no_goal_error_progress",
+      "blocked_object": "none:progress_window",
+      "N": 2,
+      "affected_seeds": [
+        8328168
+      ],
+      "min_gap_m": null
+    },
+    {
+      "reason_category": "cargo_goal",
+      "blocked_object": "cyan_1",
+      "N": 1,
+      "affected_seeds": [
+        8328195
+      ],
+      "min_gap_m": -0.026674295386798663
+    },
+    {
+      "reason_category": "unchanged_choice_3",
+      "blocked_object": "beam_1",
+      "N": 1,
+      "affected_seeds": [
+        8328122
+      ],
+      "min_gap_m": 0.07915805520178293
+    }
+  ],
+  "missing_rejection_audit_N": 0,
+  "reproduce": "/home/ugrp/ugrp-sim/ops-reviews/beampair9/analyze_round.py --batch /home/ugrp/ugrp-sim/ops-reviews/beampair9/round2-1fe9450a --source /home/ugrp/ugrp-sim/src/1fe9450af46f9680f1409cd3efb2b595f75507fa --out /home/ugrp/ugrp-sim/ops-reviews/beampair9/analysis-round2",
+  "analysis_sha256": "1cfe0928aaabf9106f173e468ba67e7c114734f505943aadf13ff1e2a64e39a8"
+}

@@ -142,3 +142,15 @@ tail은 원촬영202장이다. [원본·해시·검토](../experiments/2026-10-1
 ## 2026-10-16 beampair7 R2 — 깊은 예약 시작점의 연속 연결
 
 실행 소스 `835ccef26aa84b08cc8f7e256fd0f43aa1583ef9`, gcp2/C MuJoCo3.12, 같은 확정 장면·기본 off 토글이다. [8318728 대표 영상](../experiments/2026-10-16-beampair7/representative-r2-8318728.mp4)309130B,SHA256 `c763b8b87f2d67f3537af9850051a36a3475326276a875de3d55991f3e630861`. 전체0–38.9초2Hz79시점을 직접 보았다. 예약 자리에서 뒤로 빠져나온 뒤 다른 끝으로 접근·정렬·공동파지한다. 개요는 평가용,자기 화면은 저장 qpos 재렌더이며 원촬영10Hz가 아니다. [출처/ffprobe/검토](../experiments/2026-10-16-beampair7/playback-short-r2-8318728.json). 짧은5/5와 새로운 gate40 결과는 분리한다.
+
+
+## 2026-10-16 beampair9 — NOT_READY
+
+`67d65d8e` + dependency `26f84d0f`, gcp2/n4-highcpu-64, C MuJoCo3.12 CPU.
+최종 run-first 실패 회복0/15·성공 비교5/5이며 새40은 미제출이다.
+대표 실패8328152: gcp2 `/home/ugrp/ugrp-sim/ops-reviews/beampair9/playback-r3/8328152/playback-3x.mp4`
+(170507bytes, SHA256 `5468136acaffaac5796a0d95e2f682898c08118f7623981d2324ff64486bfe20`).
+[원본·ffprobe·직접 검토](../experiments/2026-10-16-beampair9/representative.json).
+평가 개요는 qpos 복원, 자기 영상은 마지막10SIM초의 원본10Hz를 우선 사용하며
+그 이전 일부는 보정된 qpos 복원이다. 물리/제어 재실행이나 새 학습 관측이 아니다.
+Mac에는 요약·몽타주/프레임 띠만 회수했다. 학생·운반·놓기·실물 성공은 아니다.

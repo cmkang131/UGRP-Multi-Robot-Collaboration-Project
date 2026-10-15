@@ -27,6 +27,7 @@ TEST_PATTERNS = (
     "tests/test_beampair1.py",
     "tests/test_beampair2.py",
     "tests/test_beampair4.py",
+    "tests/test_beampair6.py",
     "tests/test_beampair7.py",
     "tests/test_beampair8.py",
     "tests/test_beampair9.py",
